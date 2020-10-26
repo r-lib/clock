@@ -6,6 +6,8 @@ library(glue)
 #
 # The `tz.cpp` file that is downloaded into `src/tz.cpp` will need to be updated
 # to pass R CMD Check. All calls to `std::cerr` will have to be commented out.
+#
+# The rest of the date API is downloaded into `src/date/` and is header only.
 
 # ------------------------------------------------------------------------------
 # cd into temp dir
@@ -28,12 +30,14 @@ dir_date <- path(dir_dest, "date")
 
 # ------------------------------------------------------------------------------
 # Update headers and tz.cpp
-# Will overwrite src/tz.cpp (which will need to be tweaked)
+# Will overwrite `src/tz.cpp` (which will need to be tweaked)
+# and `src/date/`
 
-dir_src <- here("src")
+dir_pkg_src <- here("src")
 
 dir_date_include_date <- path(dir_date, "include", "date")
-dir_copy(dir_date_include_date, dir_src, overwrite = TRUE)
+dir_pkg_src_date <- path(dir_pkg_src, "date")
+dir_copy(dir_date_include_date, dir_pkg_src_date, overwrite = TRUE)
 
 file_date_src_tz <- path(dir_date, "src", "tz.cpp")
 file_pkg_src_tz <- path(dir_src, "tz.cpp")
