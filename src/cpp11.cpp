@@ -4,21 +4,21 @@
 
 #include "cpp11/declarations.hpp"
 
-// code.cpp
-void fun();
-extern "C" SEXP _civil_fun() {
+// install.cpp
+void civil_set_install(cpp11::strings path);
+extern "C" SEXP _civil_civil_set_install(SEXP path) {
   BEGIN_CPP11
-    fun();
+    civil_set_install(cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(path));
     return R_NilValue;
   END_CPP11
 }
 
 extern "C" {
 /* .Call calls */
-extern SEXP _civil_fun();
+extern SEXP _civil_civil_set_install(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_civil_fun", (DL_FUNC) &_civil_fun, 0},
+    {"_civil_civil_set_install", (DL_FUNC) &_civil_civil_set_install, 1},
     {NULL, NULL, 0}
 };
 }
