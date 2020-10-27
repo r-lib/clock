@@ -1,3 +1,4 @@
+#' @export
 civil_add_calendrical <- function(x,
                                   n,
                                   unit,

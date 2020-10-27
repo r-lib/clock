@@ -1,3 +1,4 @@
+#' @export
 civil_add_chrono <- function(x,
                              ...,
                              years = NULL,

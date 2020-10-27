@@ -1,3 +1,4 @@
+#' @export
 civil_add_local <- function(x,
                             ...,
                             years = NULL,

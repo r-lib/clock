@@ -1,3 +1,4 @@
+#' @export
 civil_update <- function(x,
                          value,
                          unit,

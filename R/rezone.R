@@ -1,3 +1,4 @@
+#' @export
 civil_in_zone <- function(x, zone) {
   if (!civil_zone_is_valid(zone)) {
     abort("`zone` is not a recognized time zone name.")
@@ -7,6 +8,7 @@ civil_in_zone <- function(x, zone) {
   x
 }
 
+#' @export
 civil_force_zone <- function(x,
                              zone,
                              ...,
