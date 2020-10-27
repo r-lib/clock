@@ -63,7 +63,7 @@ enum dst_ambiguous parse_dst_ambiguous(sexp x) {
 
 // [[ include("enums.h") ]]
 enum unit parse_unit(sexp x) {
-  if (r_is_string(x)) {
+  if (!r_is_string(x)) {
     r_abort("`unit` must be a string with length 1.");
   }
 
@@ -72,7 +72,6 @@ enum unit parse_unit(sexp x) {
   if (!strcmp(string, "year")) return unit::year;
   if (!strcmp(string, "month")) return unit::month;
   if (!strcmp(string, "week")) return unit::week;
-  if (!strcmp(string, "yday")) return unit::yday;
   if (!strcmp(string, "day")) return unit::day;
   if (!strcmp(string, "hour")) return unit::hour;
   if (!strcmp(string, "minute")) return unit::minute;

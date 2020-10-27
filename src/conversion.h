@@ -7,8 +7,8 @@
 
 double civil_local_seconds_to_posixt(const date::local_seconds& lsec,
                                      const date::time_zone* p_zone,
-                                     const std::chrono::seconds& duration,
                                      r_ssize i,
+                                     const enum dst_direction& dst_direction,
                                      const enum dst_nonexistant& dst_nonexistant,
                                      const enum dst_ambiguous& dst_ambiguous);
 

@@ -21,8 +21,8 @@ static inline double info_nonexistant_previous(const date::local_info& info) {
 }
 
 static inline double info_nonexistant_directional(const date::local_info& info,
-                                                  const std::chrono::seconds& duration) {
-  if (duration.count() >= 0) {
+                                                  const enum dst_direction& dst_direction) {
+  if (dst_direction == dst_direction::positive) {
     return info_nonexistant_next(info);
   } else {
     return info_nonexistant_previous(info);
@@ -55,8 +55,8 @@ static inline double info_ambiguous_earliest(const date::local_info& info,
 
 static inline double info_ambiguous_directional(const date::local_info& info,
                                                 const date::local_seconds& lsec,
-                                                const std::chrono::seconds& duration) {
-  if (duration.count() >= 0) {
+                                                const enum dst_direction& dst_direction) {
+  if (dst_direction == dst_direction::positive) {
     return info_ambiguous_latest(info, lsec);
   } else {
     return info_ambiguous_earliest(info, lsec);
@@ -76,8 +76,8 @@ static inline double info_ambiguous_error(r_ssize i) {
 // [[ include("conversion.h") ]]
 double civil_local_seconds_to_posixt(const date::local_seconds& lsec,
                                      const date::time_zone* p_zone,
-                                     const std::chrono::seconds& duration,
                                      r_ssize i,
+                                     const enum dst_direction& dst_direction,
                                      const enum dst_nonexistant& dst_nonexistant,
                                      const enum dst_ambiguous& dst_ambiguous) {
   date::local_info info = p_zone->get_info(lsec);
@@ -89,7 +89,7 @@ double civil_local_seconds_to_posixt(const date::local_seconds& lsec,
   if (info.result == date::local_info::nonexistent) {
     switch (dst_nonexistant) {
     case dst_nonexistant::directional: {
-      return info_nonexistant_directional(info, duration);
+      return info_nonexistant_directional(info, dst_direction);
     }
     case dst_nonexistant::next: {
       return info_nonexistant_next(info);
@@ -109,7 +109,7 @@ double civil_local_seconds_to_posixt(const date::local_seconds& lsec,
   if (info.result == date::local_info::ambiguous) {
     switch (dst_ambiguous) {
     case dst_ambiguous::directional: {
-      return info_ambiguous_directional(info, lsec, duration);
+      return info_ambiguous_directional(info, lsec, dst_direction);
     }
     case dst_ambiguous::latest: {
       return info_ambiguous_latest(info, lsec);

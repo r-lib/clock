@@ -16,6 +16,13 @@ enum day_nonexistant parse_day_nonexistant(sexp x);
 
 // -----------------------------------------------------------------------------
 
+enum class dst_direction {
+  positive,
+  negative
+};
+
+// -----------------------------------------------------------------------------
+
 enum class dst_nonexistant {
   directional,
   next,
@@ -44,7 +51,6 @@ enum class unit {
   year,
   month,
   week,
-  yday,
   day,
   hour,
   minute,

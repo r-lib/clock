@@ -4,6 +4,13 @@
 
 #include "cpp11/declarations.hpp"
 
+// calendrical.cpp
+SEXP civil_add_calendrical_cpp(SEXP x, SEXP n, SEXP unit, SEXP day_nonexistant, SEXP dst_nonexistant, SEXP dst_ambiguous, SEXP size);
+extern "C" SEXP _civil_civil_add_calendrical_cpp(SEXP x, SEXP n, SEXP unit, SEXP day_nonexistant, SEXP dst_nonexistant, SEXP dst_ambiguous, SEXP size) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(civil_add_calendrical_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_nonexistant), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistant), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size)));
+  END_CPP11
+}
 // chrono.cpp
 SEXP civil_add_chrono_cpp(SEXP x, SEXP years, SEXP months, SEXP weeks, SEXP days, SEXP hours, SEXP minutes, SEXP seconds, SEXP size);
 extern "C" SEXP _civil_civil_add_chrono_cpp(SEXP x, SEXP years, SEXP months, SEXP weeks, SEXP days, SEXP hours, SEXP minutes, SEXP seconds, SEXP size) {
@@ -36,16 +43,18 @@ extern "C" SEXP _civil_civil_add_local_cpp(SEXP x, SEXP years, SEXP months, SEXP
 
 extern "C" {
 /* .Call calls */
+extern SEXP _civil_civil_add_calendrical_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_add_chrono_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_add_local_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_init();
 extern SEXP _civil_civil_set_install(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_civil_civil_add_chrono_cpp", (DL_FUNC) &_civil_civil_add_chrono_cpp,  9},
-    {"_civil_civil_add_local_cpp",  (DL_FUNC) &_civil_civil_add_local_cpp,  11},
-    {"_civil_civil_init",           (DL_FUNC) &_civil_civil_init,            0},
-    {"_civil_civil_set_install",    (DL_FUNC) &_civil_civil_set_install,     1},
+    {"_civil_civil_add_calendrical_cpp", (DL_FUNC) &_civil_civil_add_calendrical_cpp,  7},
+    {"_civil_civil_add_chrono_cpp",      (DL_FUNC) &_civil_civil_add_chrono_cpp,       9},
+    {"_civil_civil_add_local_cpp",       (DL_FUNC) &_civil_civil_add_local_cpp,       11},
+    {"_civil_civil_init",                (DL_FUNC) &_civil_civil_init,                 0},
+    {"_civil_civil_set_install",         (DL_FUNC) &_civil_civil_set_install,          1},
     {NULL, NULL, 0}
 };
 }

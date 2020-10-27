@@ -1,22 +1,9 @@
-#include "r.h"
+#include "local.h"
 #include "utils.h"
 #include "zone.h"
-#include "enums.h"
 #include "conversion.h"
 #include <date/date.h>
 #include <date/tz.h>
-
-static sexp civil_add_local_impl(sexp x,
-                                 sexp years,
-                                 sexp months,
-                                 sexp weeks,
-                                 sexp days,
-                                 sexp hours,
-                                 sexp minutes,
-                                 sexp seconds,
-                                 dst_nonexistant dst_nonexistant,
-                                 dst_ambiguous dst_ambiguous,
-                                 r_ssize size);
 
 [[cpp11::register]]
 SEXP civil_add_local_cpp(SEXP x,
@@ -50,17 +37,17 @@ SEXP civil_add_local_cpp(SEXP x,
 }
 
 
-static sexp civil_add_local_impl(sexp x,
-                                 sexp years,
-                                 sexp months,
-                                 sexp weeks,
-                                 sexp days,
-                                 sexp hours,
-                                 sexp minutes,
-                                 sexp seconds,
-                                 dst_nonexistant dst_nonexistant,
-                                 dst_ambiguous dst_ambiguous,
-                                 r_ssize size) {
+sexp civil_add_local_impl(sexp x,
+                          sexp years,
+                          sexp months,
+                          sexp weeks,
+                          sexp days,
+                          sexp hours,
+                          sexp minutes,
+                          sexp seconds,
+                          dst_nonexistant dst_nonexistant,
+                          dst_ambiguous dst_ambiguous,
+                          r_ssize size) {
   sexp out = PROTECT(r_new_double(size));
   double* p_out = r_dbl_deref(out);
 
@@ -140,11 +127,16 @@ static sexp civil_add_local_impl(sexp x,
 
     const date::local_seconds out_lsec = elt_lsec + duration;
 
+    const enum dst_direction dst_direction =
+      duration.count() > 0 ?
+      dst_direction::positive :
+      dst_direction::negative;
+
     p_out[i] = civil_local_seconds_to_posixt(
       out_lsec,
       p_zone,
-      duration,
       i,
+      dst_direction,
       dst_nonexistant,
       dst_ambiguous
     );
