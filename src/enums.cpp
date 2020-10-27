@@ -40,6 +40,17 @@ enum dst_nonexistant parse_dst_nonexistant(sexp x) {
   r_abort("'%s' is not a recognized `dst_nonexistant` option.", string);
 }
 
+// [[ include("enums.h") ]]
+enum dst_nonexistant parse_dst_nonexistant_no_directional(sexp x) {
+  enum dst_nonexistant out = parse_dst_nonexistant(x);
+
+  if (out == dst_nonexistant::directional) {
+    r_abort("'directional' is not allowed for `dst_nonexistant` here.");
+  }
+
+  return out;
+}
+
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
@@ -57,6 +68,17 @@ enum dst_ambiguous parse_dst_ambiguous(sexp x) {
   if (!strcmp(string, "error")) return dst_ambiguous::error;
 
   r_abort("'%s' is not a recognized `dst_ambiguous` option.", string);
+}
+
+// [[ include("enums.h") ]]
+enum dst_ambiguous parse_dst_ambiguous_no_directional(sexp x) {
+  enum dst_ambiguous out = parse_dst_ambiguous(x);
+
+  if (out == dst_ambiguous::directional) {
+    r_abort("'directional' is not allowed for `dst_ambiguous` here.");
+  }
+
+  return out;
 }
 
 // -----------------------------------------------------------------------------

@@ -40,21 +40,39 @@ extern "C" SEXP _civil_civil_add_local_cpp(SEXP x, SEXP years, SEXP months, SEXP
     return cpp11::as_sexp(civil_add_local_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(years), cpp11::as_cpp<cpp11::decay_t<SEXP>>(months), cpp11::as_cpp<cpp11::decay_t<SEXP>>(weeks), cpp11::as_cpp<cpp11::decay_t<SEXP>>(days), cpp11::as_cpp<cpp11::decay_t<SEXP>>(hours), cpp11::as_cpp<cpp11::decay_t<SEXP>>(minutes), cpp11::as_cpp<cpp11::decay_t<SEXP>>(seconds), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistant), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size)));
   END_CPP11
 }
+// rezone.cpp
+SEXP civil_force_zone_cpp(SEXP x, SEXP tzone, SEXP dst_nonexistant, SEXP dst_ambiguous);
+extern "C" SEXP _civil_civil_force_zone_cpp(SEXP x, SEXP tzone, SEXP dst_nonexistant, SEXP dst_ambiguous) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(civil_force_zone_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(tzone), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistant), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous)));
+  END_CPP11
+}
+// zone.cpp
+SEXP civil_zone_is_valid(SEXP tzone);
+extern "C" SEXP _civil_civil_zone_is_valid(SEXP tzone) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(civil_zone_is_valid(cpp11::as_cpp<cpp11::decay_t<SEXP>>(tzone)));
+  END_CPP11
+}
 
 extern "C" {
 /* .Call calls */
 extern SEXP _civil_civil_add_calendrical_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_add_chrono_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_add_local_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_civil_force_zone_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_init();
 extern SEXP _civil_civil_set_install(SEXP);
+extern SEXP _civil_civil_zone_is_valid(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
     {"_civil_civil_add_calendrical_cpp", (DL_FUNC) &_civil_civil_add_calendrical_cpp,  7},
     {"_civil_civil_add_chrono_cpp",      (DL_FUNC) &_civil_civil_add_chrono_cpp,       9},
     {"_civil_civil_add_local_cpp",       (DL_FUNC) &_civil_civil_add_local_cpp,       11},
+    {"_civil_civil_force_zone_cpp",      (DL_FUNC) &_civil_civil_force_zone_cpp,       4},
     {"_civil_civil_init",                (DL_FUNC) &_civil_civil_init,                 0},
     {"_civil_civil_set_install",         (DL_FUNC) &_civil_civil_set_install,          1},
+    {"_civil_civil_zone_is_valid",       (DL_FUNC) &_civil_civil_zone_is_valid,        1},
     {NULL, NULL, 0}
 };
 }

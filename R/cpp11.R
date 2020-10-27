@@ -19,3 +19,11 @@ civil_set_install <- function(path) {
 civil_add_local_cpp <- function(x, years, months, weeks, days, hours, minutes, seconds, dst_nonexistant, dst_ambiguous, size) {
   .Call("_civil_civil_add_local_cpp", x, years, months, weeks, days, hours, minutes, seconds, dst_nonexistant, dst_ambiguous, size, PACKAGE = "civil")
 }
+
+civil_force_zone_cpp <- function(x, tzone, dst_nonexistant, dst_ambiguous) {
+  .Call("_civil_civil_force_zone_cpp", x, tzone, dst_nonexistant, dst_ambiguous, PACKAGE = "civil")
+}
+
+civil_zone_is_valid <- function(tzone) {
+  .Call("_civil_civil_zone_is_valid", tzone, PACKAGE = "civil")
+}

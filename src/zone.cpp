@@ -55,6 +55,25 @@ std::string civil_zone_name_from_posixt(sexp x) {
 
 // -----------------------------------------------------------------------------
 
+[[cpp11::register]]
+SEXP civil_zone_is_valid(SEXP tzone) {
+  std::string zone_name = civil_zone_name_from_tzone(tzone);
+
+  // Local time
+  if (zone_name.size() == 0) {
+    return r_new_scalar_logical(true);
+  }
+
+  try {
+    date::locate_zone(zone_name);
+    return r_new_scalar_logical(true);
+  } catch (const std::runtime_error& error) {
+    return r_new_scalar_logical(false);
+  };
+}
+
+// -----------------------------------------------------------------------------
+
 const char* zone_name_local();
 const date::time_zone* zone_name_load_try(const std::string& zone_name);
 

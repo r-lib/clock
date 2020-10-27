@@ -99,6 +99,9 @@ static inline sexp r_new_scalar_character_from_c_string(const char* x) {
 static inline sexp r_new_scalar_integer(int x) {
   return Rf_ScalarInteger(x);
 }
+static inline sexp r_new_scalar_logical(int x) {
+  return Rf_ScalarLogical(x);
+}
 
 static inline sexp r_new_vector(r_type type, r_ssize size) {
   return Rf_allocVector(type, size);
