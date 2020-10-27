@@ -97,25 +97,82 @@ static sexp civil_add_chrono_impl(sexp x,
     std::chrono::seconds duration{0};
 
     if (do_years) {
-      duration += date::years{recycle_years ? p_years[0] : p_years[i]};
+      int elt_years = recycle_years ? p_years[0] : p_years[i];
+
+      if (elt_years == NA_INTEGER) {
+        p_out[i] = r_dbl_na;
+        continue;
+      }
+
+      duration += date::years{elt_years};
     }
+
     if (do_months) {
-      duration += date::months{recycle_months ? p_months[0] : p_months[i]};
+      int elt_months = recycle_months ? p_months[0] : p_months[i];
+
+      if (elt_months == NA_INTEGER) {
+        p_out[i] = r_dbl_na;
+        continue;
+      }
+
+      duration += date::months{elt_months};
     }
+
     if (do_weeks) {
-      duration += date::days{(recycle_weeks ? p_weeks[0] : p_weeks[i]) * 7};
+      int elt_weeks = recycle_weeks ? p_weeks[0] : p_weeks[i];
+
+      if (elt_weeks == NA_INTEGER) {
+        p_out[i] = r_dbl_na;
+        continue;
+      }
+
+      elt_weeks *= 7;
+
+      duration += date::days{elt_weeks};
     }
+
     if (do_days) {
-      duration += date::days{recycle_days ? p_days[0] : p_days[i]};
+      int elt_days = recycle_days ? p_days[0] : p_days[i];
+
+      if (elt_days == NA_INTEGER) {
+        p_out[i] = r_dbl_na;
+        continue;
+      }
+
+      duration += date::days{elt_days};
     }
+
     if (do_hours) {
-      duration += std::chrono::hours{recycle_hours ? p_hours[0] : p_hours[i]};
+      int elt_hours = recycle_hours ? p_hours[0] : p_hours[i];
+
+      if (elt_hours == NA_INTEGER) {
+        p_out[i] = r_dbl_na;
+        continue;
+      }
+
+      duration += std::chrono::hours{elt_hours};
     }
+
     if (do_minutes) {
-      duration += std::chrono::minutes{recycle_minutes ? p_minutes[0] : p_minutes[i]};
+      int elt_minutes = recycle_minutes ? p_minutes[0] : p_minutes[i];
+
+      if (elt_minutes == NA_INTEGER) {
+        p_out[i] = r_dbl_na;
+        continue;
+      }
+
+      duration += std::chrono::minutes{elt_minutes};
     }
+
     if (do_seconds) {
-      duration += std::chrono::seconds{recycle_seconds ? p_seconds[0] : p_seconds[i]};
+      int elt_seconds = recycle_seconds ? p_seconds[0] : p_seconds[i];
+
+      if (elt_seconds == NA_INTEGER) {
+        p_out[i] = r_dbl_na;
+        continue;
+      }
+
+      duration += std::chrono::seconds{elt_seconds};
     }
 
     const date::sys_seconds out_ssec = elt_ssec + duration;
