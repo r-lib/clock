@@ -9,7 +9,7 @@ civil_add_chrono <- function(x,
                              seconds = NULL) {
   check_dots_empty()
 
-  x <- cast_posixct(x)
+  x <- to_posixct(x)
 
   years <- vec_cast(years, integer(), x_arg = "years")
   months <- vec_cast(months, integer(), x_arg = "months")

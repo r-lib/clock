@@ -12,7 +12,7 @@ civil_add_calendrical <- function(x,
     n = n
   )
 
-  x_ct <- cast_posixct(x)
+  x_ct <- to_posixct(x)
   n <- vec_cast(n, integer(), x_arg = "n")
 
   out <- civil_add_calendrical_cpp(
@@ -28,7 +28,7 @@ civil_add_calendrical <- function(x,
   if (is_time_based_unit(unit)) {
     out
   } else {
-    restore(out, x)
+    from_posixct(out, x)
   }
 }
 

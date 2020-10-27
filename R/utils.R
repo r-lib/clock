@@ -1,22 +1,22 @@
-cast_posixct <- function(x) {
+to_posixct <- function(x) {
   if (is_Date(x)) {
-    cast_posixct_from_date(x)
+    to_posixct_from_date(x)
   } else if (is_POSIXct(x)) {
-    cast_posixct_from_posixct(x)
+    to_posixct_from_posixct(x)
   } else if (is_POSIXlt(x)) {
-    cast_posixct_from_posixlt(x)
+    to_posixct_from_posixlt(x)
   } else {
     stop_civil_unsupported_class(x)
   }
 }
 
-cast_posixct_from_date <- function(x) {
+to_posixct_from_date <- function(x) {
   x <- unclass(x)
   x <- x * 86400
   new_datetime(x, "UTC")
 }
 
-cast_posixct_from_posixct <- function(x) {
+to_posixct_from_posixct <- function(x) {
   if (identical(typeof(x), "double")) {
     return(x)
   }
@@ -28,7 +28,7 @@ cast_posixct_from_posixct <- function(x) {
   x
 }
 
-cast_posixct_from_posixlt <- function(x) {
+to_posixct_from_posixlt <- function(x) {
   as.POSIXct.POSIXlt(x)
 }
 
@@ -36,24 +36,24 @@ cast_posixct_from_posixlt <- function(x) {
 
 # `x` is POSIXct
 # If `to` is Date, then `x` has a UTC time zone
-restore <- function(x, to) {
+from_posixct <- function(x, to) {
   if (is_Date(to)) {
-    restore_to_date(x)
+    from_posixct_to_date(x)
   } else if (is_POSIXct(to)) {
-    restore_to_posixct(x)
+    from_posixct_to_posixct(x)
   } else if (is_POSIXlt(to)) {
     # Push towards POSIXct
-    restore_to_posixct(x)
+    from_posixct_to_posixct(x)
   }
 }
 
-restore_to_date <- function(x) {
+from_posixct_to_date <- function(x) {
   out <- floor(unclass(x) / 86400)
   attr(out, "tzone") <- NULL
   structure(out, class = "Date")
 }
 
-restore_to_posixct <- function(x) {
+from_posixct_to_posixct <- function(x) {
   x
 }
 
