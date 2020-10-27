@@ -30,8 +30,6 @@ civil_add_chrono <- function(x,
     seconds
   )
 
-  out <- restore(out, x)
-
   out
 }
 
