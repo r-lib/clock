@@ -9,7 +9,7 @@ civil_add_chrono <- function(x,
                              seconds = NULL) {
   check_dots_empty()
 
-  x_ct <- cast_posixct(x)
+  x <- cast_posixct(x)
 
   years <- vec_cast(years, integer(), x_arg = "years")
   months <- vec_cast(months, integer(), x_arg = "months")
@@ -19,18 +19,28 @@ civil_add_chrono <- function(x,
   minutes <- vec_cast(minutes, integer(), x_arg = "minutes")
   seconds <- vec_cast(seconds, integer(), x_arg = "seconds")
 
-  out <- civil_add_chrono_cpp(
-    x_ct,
+  size <- vec_size_common(
+    x = x,
+    years = years,
+    months = months,
+    weeks = weeks,
+    days = days,
+    hours = hours,
+    minutes = minutes,
+    seconds = seconds
+  )
+
+  civil_add_chrono_cpp(
+    x,
     years,
     months,
     weeks,
     days,
     hours,
     minutes,
-    seconds
+    seconds,
+    size
   )
-
-  out
 }
 
 

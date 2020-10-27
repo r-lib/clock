@@ -11,25 +11,26 @@ SEXP civil_add_chrono_cpp(SEXP x,
                           SEXP days,
                           SEXP hours,
                           SEXP minutes,
-                          SEXP seconds) {
-  r_ssize size = r_length(x);
+                          SEXP seconds,
+                          SEXP size) {
+  r_ssize out_size = r_int_get(size, 0);
 
-  const double* p_x = r_dbl_deref_const(x);
-
-  sexp out = PROTECT(r_new_double(size));
+  sexp out = PROTECT(r_new_double(out_size));
   double* p_out = r_dbl_deref(out);
 
   r_poke_names(out, r_get_names(x));
   r_poke_class(out, civil_classes_posixct);
   civil_poke_tzone(out, civil_get_tzone(x));
 
-  bool do_years = !r_is_null(years);
-  bool do_months = !r_is_null(months);
-  bool do_weeks = !r_is_null(weeks);
-  bool do_days = !r_is_null(days);
-  bool do_hours = !r_is_null(hours);
-  bool do_minutes = !r_is_null(minutes);
-  bool do_seconds = !r_is_null(seconds);
+  const bool do_years = !r_is_null(years);
+  const bool do_months = !r_is_null(months);
+  const bool do_weeks = !r_is_null(weeks);
+  const bool do_days = !r_is_null(days);
+  const bool do_hours = !r_is_null(hours);
+  const bool do_minutes = !r_is_null(minutes);
+  const bool do_seconds = !r_is_null(seconds);
+
+  const double* p_x = r_dbl_deref_const(x);
 
   const int* p_years = do_years ? r_int_deref_const(years) : NULL;
   const int* p_months = do_months ? r_int_deref_const(months) : NULL;
@@ -39,6 +40,8 @@ SEXP civil_add_chrono_cpp(SEXP x,
   const int* p_minutes = do_minutes ? r_int_deref_const(minutes) : NULL;
   const int* p_seconds = do_seconds ? r_int_deref_const(seconds) : NULL;
 
+  const bool recycle_x = r_is_scalar(x);
+
   const bool recycle_years = do_years && r_is_scalar(years);
   const bool recycle_months = do_months && r_is_scalar(months);
   const bool recycle_weeks = do_weeks && r_is_scalar(weeks);
@@ -47,17 +50,17 @@ SEXP civil_add_chrono_cpp(SEXP x,
   const bool recycle_minutes = do_minutes && r_is_scalar(minutes);
   const bool recycle_seconds = do_seconds && r_is_scalar(seconds);
 
-  for (r_ssize i = 0; i < size; ++i) {
-    const double x_elt = p_x[i];
-    int64_t elt = as_int64(x_elt);
+  for (r_ssize i = 0; i < out_size; ++i) {
+    const double x_elt = recycle_x ? p_x[0] : p_x[i];
+    const int64_t elt = as_int64(x_elt);
 
     if (elt == r_int64_na) {
       p_out[i] = r_dbl_na;
       continue;
     }
 
-    std::chrono::seconds elt_sec{elt};
-    date::sys_seconds elt_ssec{elt_sec};
+    const std::chrono::seconds elt_sec{elt};
+    const date::sys_seconds elt_ssec{elt_sec};
 
     std::chrono::seconds duration{0};
 
@@ -83,7 +86,7 @@ SEXP civil_add_chrono_cpp(SEXP x,
       duration += std::chrono::seconds{recycle_seconds ? p_seconds[0] : p_seconds[i]};
     }
 
-    date::sys_seconds out_ssec = elt_ssec + duration;
+    const date::sys_seconds out_ssec = elt_ssec + duration;
 
     p_out[i] = out_ssec.time_since_epoch().count();
   }

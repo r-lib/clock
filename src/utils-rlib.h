@@ -112,6 +112,9 @@ static inline sexp r_new_double(r_ssize size) {
 static inline sexp r_list_get(sexp x, r_ssize i) {
   return VECTOR_ELT(x, i);
 }
+static inline int r_int_get(sexp x, r_ssize i) {
+  return INTEGER_ELT(x, i);
+}
 
 // -----------------------------------------------------------------------------
 
