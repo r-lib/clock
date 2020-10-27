@@ -38,7 +38,7 @@ cast_posixct_from_posixlt <- function(x) {
 # If `to` is Date, then `x` has a UTC time zone
 restore <- function(x, to) {
   if (is_Date(to)) {
-    restore_to_date(x, to)
+    restore_to_date(x)
   } else if (is_POSIXct(to)) {
     restore_to_posixct(x)
   } else if (is_POSIXlt(to)) {
@@ -69,6 +69,14 @@ is_POSIXct <- function(x) {
 
 is_POSIXlt <- function(x) {
   inherits(x, "POSIXlt")
+}
+
+# ------------------------------------------------------------------------------
+
+is_time_based_unit <- function(unit) {
+  identical(unit, "hour") ||
+    identical(unit, "minute") ||
+    identical(unit, "second")
 }
 
 # ------------------------------------------------------------------------------

@@ -7,16 +7,16 @@ civil_add_calendrical <- function(x,
                                   dst_ambiguous = "directional") {
   check_dots_empty()
 
-  x <- cast_posixct(x)
-  n <- vec_cast(n, integer(), x_arg = "n")
-
   size <- vec_size_common(
     x = x,
     n = n
   )
 
-  civil_add_calendrical_cpp(
-    x,
+  x_ct <- cast_posixct(x)
+  n <- vec_cast(n, integer(), x_arg = "n")
+
+  out <- civil_add_calendrical_cpp(
+    x_ct,
     n,
     unit,
     day_nonexistant,
@@ -24,6 +24,12 @@ civil_add_calendrical <- function(x,
     dst_ambiguous,
     size
   )
+
+  if (is_time_based_unit(unit)) {
+    out
+  } else {
+    restore(out, x)
+  }
 }
 
 
