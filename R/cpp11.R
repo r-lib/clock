@@ -24,6 +24,10 @@ civil_force_zone_cpp <- function(x, tzone, dst_nonexistant, dst_ambiguous) {
   .Call("_civil_civil_force_zone_cpp", x, tzone, dst_nonexistant, dst_ambiguous, PACKAGE = "civil")
 }
 
+civil_update_cpp <- function(x, value, unit, day_nonexistant, dst_nonexistant, dst_ambiguous) {
+  .Call("_civil_civil_update_cpp", x, value, unit, day_nonexistant, dst_nonexistant, dst_ambiguous, PACKAGE = "civil")
+}
+
 civil_zone_is_valid <- function(tzone) {
   .Call("_civil_civil_zone_is_valid", tzone, PACKAGE = "civil")
 }

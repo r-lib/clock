@@ -47,6 +47,13 @@ extern "C" SEXP _civil_civil_force_zone_cpp(SEXP x, SEXP tzone, SEXP dst_nonexis
     return cpp11::as_sexp(civil_force_zone_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(tzone), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistant), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous)));
   END_CPP11
 }
+// update.cpp
+SEXP civil_update_cpp(SEXP x, SEXP value, SEXP unit, SEXP day_nonexistant, SEXP dst_nonexistant, SEXP dst_ambiguous);
+extern "C" SEXP _civil_civil_update_cpp(SEXP x, SEXP value, SEXP unit, SEXP day_nonexistant, SEXP dst_nonexistant, SEXP dst_ambiguous) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(civil_update_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(value), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_nonexistant), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistant), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous)));
+  END_CPP11
+}
 // zone.cpp
 SEXP civil_zone_is_valid(SEXP tzone);
 extern "C" SEXP _civil_civil_zone_is_valid(SEXP tzone) {
@@ -63,6 +70,7 @@ extern SEXP _civil_civil_add_local_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP,
 extern SEXP _civil_civil_force_zone_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_init();
 extern SEXP _civil_civil_set_install(SEXP);
+extern SEXP _civil_civil_update_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_zone_is_valid(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
@@ -72,6 +80,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_civil_force_zone_cpp",      (DL_FUNC) &_civil_civil_force_zone_cpp,       4},
     {"_civil_civil_init",                (DL_FUNC) &_civil_civil_init,                 0},
     {"_civil_civil_set_install",         (DL_FUNC) &_civil_civil_set_install,          1},
+    {"_civil_civil_update_cpp",          (DL_FUNC) &_civil_civil_update_cpp,           6},
     {"_civil_civil_zone_is_valid",       (DL_FUNC) &_civil_civil_zone_is_valid,        1},
     {NULL, NULL, 0}
 };

@@ -101,3 +101,24 @@ enum unit parse_unit(sexp x) {
 
   r_abort("'%s' is not a recognized `unit` option.", string);
 }
+
+// -----------------------------------------------------------------------------
+
+// [[ include("enums.h") ]]
+enum update_unit parse_update_unit(sexp x) {
+  if (!r_is_string(x)) {
+    r_abort("`unit` must be a string with length 1.");
+  }
+
+  const char* string = CHAR(STRING_ELT(x, 0));
+
+  if (!strcmp(string, "year")) return update_unit::year;
+  if (!strcmp(string, "month")) return update_unit::month;
+  if (!strcmp(string, "yday")) return update_unit::yday;
+  if (!strcmp(string, "day")) return update_unit::day;
+  if (!strcmp(string, "hour")) return update_unit::hour;
+  if (!strcmp(string, "minute")) return update_unit::minute;
+  if (!strcmp(string, "second")) return update_unit::second;
+
+  r_abort("'%s' is not a recognized `unit` option.", string);
+}

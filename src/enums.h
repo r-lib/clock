@@ -62,4 +62,18 @@ enum class unit {
 enum unit parse_unit(sexp x);
 
 // -----------------------------------------------------------------------------
+
+enum class update_unit {
+  year,
+  month,
+  yday,
+  day,
+  hour,
+  minute,
+  second
+};
+
+enum update_unit parse_update_unit(sexp x);
+
+// -----------------------------------------------------------------------------
 #endif
