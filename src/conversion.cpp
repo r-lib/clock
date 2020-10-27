@@ -57,9 +57,9 @@ static inline double info_ambiguous_directional(const date::local_info& info,
                                                 const date::local_seconds& lsec,
                                                 const enum dst_direction& dst_direction) {
   if (dst_direction == dst_direction::positive) {
-    return info_ambiguous_latest(info, lsec);
-  } else {
     return info_ambiguous_earliest(info, lsec);
+  } else {
+    return info_ambiguous_latest(info, lsec);
   }
 }
 
