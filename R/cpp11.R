@@ -11,3 +11,7 @@ civil_init <- function() {
 civil_set_install <- function(path) {
   invisible(.Call("_civil_civil_set_install", path, PACKAGE = "civil"))
 }
+
+civil_add_local_cpp <- function(x, years, months, weeks, days, hours, minutes, seconds, dst_nonexistant, dst_ambiguous, size) {
+  .Call("_civil_civil_add_local_cpp", x, years, months, weeks, days, hours, minutes, seconds, dst_nonexistant, dst_ambiguous, size, PACKAGE = "civil")
+}

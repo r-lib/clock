@@ -31,6 +31,7 @@ enum dst_nonexistant parse_dst_nonexistant(sexp x) {
 
   const char* string = CHAR(STRING_ELT(x, 0));
 
+  if (!strcmp(string, "directional")) return dst_nonexistant::directional;
   if (!strcmp(string, "next")) return dst_nonexistant::next;
   if (!strcmp(string, "previous")) return dst_nonexistant::previous;
   if (!strcmp(string, "NA")) return dst_nonexistant::na;
@@ -49,6 +50,7 @@ enum dst_ambiguous parse_dst_ambiguous(sexp x) {
 
   const char* string = CHAR(STRING_ELT(x, 0));
 
+  if (!strcmp(string, "directional")) return dst_ambiguous::directional;
   if (!strcmp(string, "earliest")) return dst_ambiguous::earliest;
   if (!strcmp(string, "latest")) return dst_ambiguous::latest;
   if (!strcmp(string, "NA")) return dst_ambiguous::na;

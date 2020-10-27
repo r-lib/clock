@@ -17,6 +17,7 @@ enum day_nonexistant parse_day_nonexistant(sexp x);
 // -----------------------------------------------------------------------------
 
 enum class dst_nonexistant {
+  directional,
   next,
   previous,
   na,
@@ -28,6 +29,7 @@ enum dst_nonexistant parse_dst_nonexistant(sexp x);
 // -----------------------------------------------------------------------------
 
 enum class dst_ambiguous {
+  directional,
   earliest,
   latest,
   na,

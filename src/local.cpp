@@ -1,31 +1,40 @@
 #include "r.h"
 #include "utils.h"
 #include "zone.h"
+#include "enums.h"
+#include "conversion.h"
 #include <date/date.h>
+#include <date/tz.h>
 
-static sexp civil_add_chrono_impl(sexp x,
-                                  sexp years,
-                                  sexp months,
-                                  sexp weeks,
-                                  sexp days,
-                                  sexp hours,
-                                  sexp minutes,
-                                  sexp seconds,
-                                  r_ssize size);
+static sexp civil_add_local_impl(sexp x,
+                                 sexp years,
+                                 sexp months,
+                                 sexp weeks,
+                                 sexp days,
+                                 sexp hours,
+                                 sexp minutes,
+                                 sexp seconds,
+                                 dst_nonexistant dst_nonexistant,
+                                 dst_ambiguous dst_ambiguous,
+                                 r_ssize size);
 
 [[cpp11::register]]
-SEXP civil_add_chrono_cpp(SEXP x,
-                          SEXP years,
-                          SEXP months,
-                          SEXP weeks,
-                          SEXP days,
-                          SEXP hours,
-                          SEXP minutes,
-                          SEXP seconds,
-                          SEXP size) {
+SEXP civil_add_local_cpp(SEXP x,
+                         SEXP years,
+                         SEXP months,
+                         SEXP weeks,
+                         SEXP days,
+                         SEXP hours,
+                         SEXP minutes,
+                         SEXP seconds,
+                         SEXP dst_nonexistant,
+                         SEXP dst_ambiguous,
+                         SEXP size) {
+  enum dst_nonexistant c_dst_nonexistant = parse_dst_nonexistant(dst_nonexistant);
+  enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous(dst_ambiguous);
   r_ssize c_size = r_int_get(size, 0);
 
-  return civil_add_chrono_impl(
+  return civil_add_local_impl(
     x,
     years,
     months,
@@ -34,25 +43,34 @@ SEXP civil_add_chrono_cpp(SEXP x,
     hours,
     minutes,
     seconds,
+    c_dst_nonexistant,
+    c_dst_ambiguous,
     c_size
   );
 }
 
-static sexp civil_add_chrono_impl(sexp x,
-                                  sexp years,
-                                  sexp months,
-                                  sexp weeks,
-                                  sexp days,
-                                  sexp hours,
-                                  sexp minutes,
-                                  sexp seconds,
-                                  r_ssize size) {
+
+static sexp civil_add_local_impl(sexp x,
+                                 sexp years,
+                                 sexp months,
+                                 sexp weeks,
+                                 sexp days,
+                                 sexp hours,
+                                 sexp minutes,
+                                 sexp seconds,
+                                 dst_nonexistant dst_nonexistant,
+                                 dst_ambiguous dst_ambiguous,
+                                 r_ssize size) {
   sexp out = PROTECT(r_new_double(size));
   double* p_out = r_dbl_deref(out);
 
+  sexp tzone = civil_get_tzone(x);
+  std::string zone_name = civil_zone_name_from_tzone(tzone);
+  const date::time_zone* p_zone = civil_zone_name_load(zone_name);
+
   r_poke_names(out, r_get_names(x));
   r_poke_class(out, civil_classes_posixct);
-  civil_poke_tzone(out, civil_get_tzone(x));
+  civil_poke_tzone(out, tzone);
 
   const bool do_years = !r_is_null(years);
   const bool do_months = !r_is_null(months);
@@ -93,6 +111,8 @@ static sexp civil_add_chrono_impl(sexp x,
 
     const std::chrono::seconds elt_sec{elt};
     const date::sys_seconds elt_ssec{elt_sec};
+    const date::zoned_seconds elt_zsec = date::make_zoned(p_zone, elt_ssec);
+    const date::local_seconds elt_lsec = elt_zsec.get_local_time();
 
     std::chrono::seconds duration{0};
 
@@ -118,9 +138,16 @@ static sexp civil_add_chrono_impl(sexp x,
       duration += std::chrono::seconds{recycle_seconds ? p_seconds[0] : p_seconds[i]};
     }
 
-    const date::sys_seconds out_ssec = elt_ssec + duration;
+    const date::local_seconds out_lsec = elt_lsec + duration;
 
-    p_out[i] = out_ssec.time_since_epoch().count();
+    p_out[i] = civil_local_seconds_to_posixt(
+      out_lsec,
+      p_zone,
+      duration,
+      i,
+      dst_nonexistant,
+      dst_ambiguous
+    );
   }
 
   UNPROTECT(1);
