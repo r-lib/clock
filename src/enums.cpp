@@ -1,10 +1,14 @@
 #include "enums.h"
+#include "utils.h"
+#include <cstring>
+#include <string>
+
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum day_nonexistant parse_day_nonexistant(cpp11::strings x) {
-  if (Rf_length(x) != 1) {
-    cpp11::stop("`day_nonexistant` must be a string with length 1.");
+enum day_nonexistant parse_day_nonexistant(sexp x) {
+  if (!r_is_string(x)) {
+    r_abort("`day_nonexistant` must be a string with length 1.");
   }
 
   const char* string = CHAR(STRING_ELT(x, 0));
@@ -14,17 +18,15 @@ enum day_nonexistant parse_day_nonexistant(cpp11::strings x) {
   if (!strcmp(string, "NA")) return day_nonexistant::na;
   if (!strcmp(string, "error")) return day_nonexistant::error;
 
-  std::string cpp_string = string;
-
-  cpp11::stop("'" + cpp_string + "' is not a recognized `day_nonexistant` option.");
+  r_abort("'%s' is not a recognized `day_nonexistant` option.", string);
 }
 
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum dst_nonexistant parse_dst_nonexistant(cpp11::strings x) {
-  if (Rf_length(x) != 1) {
-    cpp11::stop("`dst_nonexistant` must be a string with length 1.");
+enum dst_nonexistant parse_dst_nonexistant(sexp x) {
+  if (!r_is_string(x)) {
+    r_abort("`dst_nonexistant` must be a string with length 1.");
   }
 
   const char* string = CHAR(STRING_ELT(x, 0));
@@ -34,17 +36,15 @@ enum dst_nonexistant parse_dst_nonexistant(cpp11::strings x) {
   if (!strcmp(string, "NA")) return dst_nonexistant::na;
   if (!strcmp(string, "error")) return dst_nonexistant::error;
 
-  std::string cpp_string = string;
-
-  cpp11::stop("'" + cpp_string + "' is not a recognized `dst_nonexistant` option.");
+  r_abort("'%s' is not a recognized `dst_nonexistant` option.", string);
 }
 
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum dst_ambiguous parse_dst_ambiguous(cpp11::strings x) {
-  if (Rf_length(x) != 1) {
-    cpp11::stop("`dst_ambiguous` must be a string with length 1.");
+enum dst_ambiguous parse_dst_ambiguous(sexp x) {
+  if (!r_is_string(x)) {
+    r_abort("`dst_ambiguous` must be a string with length 1.");
   }
 
   const char* string = CHAR(STRING_ELT(x, 0));
@@ -54,17 +54,15 @@ enum dst_ambiguous parse_dst_ambiguous(cpp11::strings x) {
   if (!strcmp(string, "NA")) return dst_ambiguous::na;
   if (!strcmp(string, "error")) return dst_ambiguous::error;
 
-  std::string cpp_string = string;
-
-  cpp11::stop("'" + cpp_string + "' is not a recognized `dst_ambiguous` option.");
+  r_abort("'%s' is not a recognized `dst_ambiguous` option.", string);
 }
 
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum unit parse_unit(cpp11::strings x) {
-  if (Rf_length(x) != 1) {
-    Rf_errorcall(R_NilValue, "`unit` must be a string with length 1.");
+enum unit parse_unit(sexp x) {
+  if (r_is_string(x)) {
+    r_abort("`unit` must be a string with length 1.");
   }
 
   const char* string = CHAR(STRING_ELT(x, 0));
@@ -78,7 +76,5 @@ enum unit parse_unit(cpp11::strings x) {
   if (!strcmp(string, "minute")) return unit::minute;
   if (!strcmp(string, "second")) return unit::second;
 
-  std::string cpp_string = string;
-
-  cpp11::stop("'" + cpp_string + "' is not a recognized `unit` option.");
+  r_abort("'%s' is not a recognized `unit` option.", string);
 }

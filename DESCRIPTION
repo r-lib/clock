@@ -18,3 +18,7 @@ BugReports: https://github.com/DavisVaughan/civil/issues
 LinkingTo: 
     cpp11
 SystemRequirements: C++11
+Imports: 
+    vctrs,
+    ellipsis,
+    rlang

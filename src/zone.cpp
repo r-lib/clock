@@ -1,4 +1,5 @@
 #include "zone.h"
+#include "utils.h"
 
 /*
  * Brought over from lubridate/timechange
@@ -24,19 +25,19 @@
  * https://github.com/tidyverse/lubridate/blob/b9025e6d5152f9da3857d7ef18f2571d3d861bae/src/update.cpp#L49
  */
 // [[ include("zone.h") ]]
-std::string civil_zone_name_from_tzone(cpp11::sexp tzone) {
-  if (tzone == R_NilValue) {
+std::string civil_zone_name_from_tzone(sexp tzone) {
+  if (r_is_null(tzone)) {
     return "";
   }
 
-  if (TYPEOF(tzone) != STRSXP) {
-    cpp11::stop("`tzone` must be a character vector or `NULL`.");
+  if (r_typeof(tzone) != r_type_character) {
+    r_abort("`tzone` must be a character vector or `NULL`.");
   }
 
-  R_xlen_t n = Rf_xlength(tzone);
+  r_ssize size = r_length(tzone);
 
   // Assume `character()` tzone is also local time
-  if (n == 0) {
+  if (size == 0) {
     return "";
   }
 
@@ -47,8 +48,8 @@ std::string civil_zone_name_from_tzone(cpp11::sexp tzone) {
 }
 
 // [[ include("zone.h") ]]
-std::string civil_zone_name_from_posixt(cpp11::sexp x) {
-  cpp11::sexp tzone = cpp11::as_sexp(x.attr("tzone"));
+std::string civil_zone_name_from_posixt(sexp x) {
+  sexp tzone = civil_get_tzone(x);
   return civil_zone_name_from_tzone(tzone);
 }
 
@@ -74,7 +75,7 @@ const date::time_zone* zone_name_load_try(const std::string& zone_name) {
   try {
     return date::locate_zone(zone_name);
   } catch (const std::runtime_error& error) {
-    cpp11::stop("'" + std::string(zone_name) + "' not found in the timezone database.");
+    r_abort("'%s' not found in the timezone database.", zone_name.c_str());
   };
 }
 
@@ -91,7 +92,7 @@ const char* zone_name_local() {
   if (strlen(tz_env) == 0) {
     // If set but empty, R behaves in a system specific way and there is no way
     // to infer local time zone.
-    cpp11::warning("Environment variable `TZ` is set to \"\". Using system time zone.");
+    Rf_warningcall(r_null, "Environment variable `TZ` is set to \"\". Using system time zone.");
     return zone_name_system();
   }
 
@@ -116,8 +117,8 @@ static const char* zone_name_system_get() {
   SEXP call = PROTECT(Rf_lang1(fn));
   SEXP timezone = PROTECT(Rf_eval(call, R_GlobalEnv));
 
-  if (TYPEOF(timezone) != STRSXP || Rf_length(timezone) != 1) {
-    cpp11::warning("Unexpected result from `Sys.timezone()`, returning 'UTC'.");
+  if (!r_is_string(timezone)) {
+    Rf_warningcall(r_null, "Unexpected result from `Sys.timezone()`, returning 'UTC'.");
     UNPROTECT(2);
     return "UTC";
   }
@@ -125,7 +126,8 @@ static const char* zone_name_system_get() {
   SEXP tz = STRING_ELT(timezone, 0);
 
   if (tz == NA_STRING || strlen(CHAR(tz)) == 0) {
-    cpp11::warning(
+    Rf_warningcall(
+      r_null,
       "System timezone name is unknown. "
       "Please set the environment variable `TZ`. "
       "Defaulting to 'UTC'."

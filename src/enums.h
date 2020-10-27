@@ -1,7 +1,8 @@
 #ifndef CIVIL_ENUMS_H
 #define CIVIL_ENUMS_H
 
-#include <cpp11.hpp>
+#include "r.h"
+#include "utils.h"
 // -----------------------------------------------------------------------------
 
 enum class day_nonexistant {
@@ -11,7 +12,7 @@ enum class day_nonexistant {
   error
 };
 
-enum day_nonexistant parse_day_nonexistant(cpp11::strings x);
+enum day_nonexistant parse_day_nonexistant(sexp x);
 
 // -----------------------------------------------------------------------------
 
@@ -22,7 +23,7 @@ enum class dst_nonexistant {
   error
 };
 
-enum dst_nonexistant parse_dst_nonexistant(cpp11::strings x);
+enum dst_nonexistant parse_dst_nonexistant(sexp x);
 
 // -----------------------------------------------------------------------------
 
@@ -33,7 +34,7 @@ enum class dst_ambiguous {
   error
 };
 
-enum dst_ambiguous parse_dst_ambiguous(cpp11::strings x);
+enum dst_ambiguous parse_dst_ambiguous(sexp x);
 
 // -----------------------------------------------------------------------------
 
@@ -48,7 +49,7 @@ enum class unit {
   second
 };
 
-enum unit parse_unit(cpp11::strings x);
+enum unit parse_unit(sexp x);
 
 // -----------------------------------------------------------------------------
 #endif

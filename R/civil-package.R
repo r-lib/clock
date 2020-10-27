@@ -5,5 +5,8 @@
 # roxygen namespace tags. Modify with care!
 ## usethis namespace: start
 #' @useDynLib civil, .registration = TRUE
+#' @import vctrs
+#' @import ellipsis
+#' @import rlang
 ## usethis namespace: end
 NULL

@@ -1,4 +1,5 @@
-#include <cpp11/strings.hpp>
+#include "r.h"
+#include "utils.h"
 #include <date/tz.h>
 
 /*
@@ -9,9 +10,9 @@
  * always run.
  */
 [[cpp11::register]]
-void civil_set_install(cpp11::strings path) {
-  if (Rf_length(path) != 1) {
-    cpp11::stop("Internal error: Time zone database installation path should have size 1.");
+void civil_set_install(SEXP path) {
+  if (!r_is_string(path)) {
+    r_abort("Internal error: Time zone database installation path should have size 1.");
   }
 
   const char* c_path = CHAR(STRING_PTR(path)[0]);

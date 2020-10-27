@@ -4,21 +4,39 @@
 
 #include "cpp11/declarations.hpp"
 
+// chrono.cpp
+SEXP civil_add_chrono_cpp(SEXP x, SEXP years, SEXP months, SEXP weeks, SEXP days, SEXP hours, SEXP minutes, SEXP seconds);
+extern "C" SEXP _civil_civil_add_chrono_cpp(SEXP x, SEXP years, SEXP months, SEXP weeks, SEXP days, SEXP hours, SEXP minutes, SEXP seconds) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(civil_add_chrono_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(years), cpp11::as_cpp<cpp11::decay_t<SEXP>>(months), cpp11::as_cpp<cpp11::decay_t<SEXP>>(weeks), cpp11::as_cpp<cpp11::decay_t<SEXP>>(days), cpp11::as_cpp<cpp11::decay_t<SEXP>>(hours), cpp11::as_cpp<cpp11::decay_t<SEXP>>(minutes), cpp11::as_cpp<cpp11::decay_t<SEXP>>(seconds)));
+  END_CPP11
+}
+// initialize.cpp
+SEXP civil_init();
+extern "C" SEXP _civil_civil_init() {
+  BEGIN_CPP11
+    return cpp11::as_sexp(civil_init());
+  END_CPP11
+}
 // install.cpp
-void civil_set_install(cpp11::strings path);
+void civil_set_install(SEXP path);
 extern "C" SEXP _civil_civil_set_install(SEXP path) {
   BEGIN_CPP11
-    civil_set_install(cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(path));
+    civil_set_install(cpp11::as_cpp<cpp11::decay_t<SEXP>>(path));
     return R_NilValue;
   END_CPP11
 }
 
 extern "C" {
 /* .Call calls */
+extern SEXP _civil_civil_add_chrono_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_civil_init();
 extern SEXP _civil_civil_set_install(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_civil_civil_set_install", (DL_FUNC) &_civil_civil_set_install, 1},
+    {"_civil_civil_add_chrono_cpp", (DL_FUNC) &_civil_civil_add_chrono_cpp, 8},
+    {"_civil_civil_init",           (DL_FUNC) &_civil_civil_init,           0},
+    {"_civil_civil_set_install",    (DL_FUNC) &_civil_civil_set_install,    1},
     {NULL, NULL, 0}
 };
 }
