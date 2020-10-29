@@ -29,6 +29,30 @@ static inline double info_nonexistant_directional(const date::local_info& info,
   }
 }
 
+static inline double info_nonexistant_next_shift(const date::local_info& info,
+                                                 const date::local_seconds& lsec) {
+  std::chrono::seconds gap = info.second.offset - info.first.offset;
+  date::local_seconds out = lsec + gap;
+  return out.time_since_epoch().count();
+}
+
+static inline double info_nonexistant_previous_shift(const date::local_info& info,
+                                                     const date::local_seconds& lsec) {
+  std::chrono::seconds gap = info.second.offset - info.first.offset;
+  date::local_seconds out = lsec - gap;
+  return out.time_since_epoch().count();
+}
+
+static inline double info_nonexistant_directional_shift(const date::local_info& info,
+                                                        const date::local_seconds& lsec,
+                                                        const enum dst_direction& dst_direction) {
+  if (dst_direction == dst_direction::positive) {
+    return info_nonexistant_next_shift(info, lsec);
+  } else {
+    return info_nonexistant_previous_shift(info, lsec);
+  }
+}
+
 static inline double info_nonexistant_na() {
   return NA_REAL;
 }
@@ -74,12 +98,12 @@ static inline double info_ambiguous_error(r_ssize i) {
 // -----------------------------------------------------------------------------
 
 // [[ include("conversion.h") ]]
-double civil_local_seconds_to_posixt(const date::local_seconds& lsec,
-                                     const date::time_zone* p_zone,
-                                     r_ssize i,
-                                     const enum dst_direction& dst_direction,
-                                     const enum dst_nonexistant& dst_nonexistant,
-                                     const enum dst_ambiguous& dst_ambiguous) {
+double convert_local_seconds_to_posixt(const date::local_seconds& lsec,
+                                       const date::time_zone* p_zone,
+                                       r_ssize i,
+                                       const enum dst_direction& dst_direction,
+                                       const enum dst_nonexistant& dst_nonexistant,
+                                       const enum dst_ambiguous& dst_ambiguous) {
   date::local_info info = p_zone->get_info(lsec);
 
   if (info.result == date::local_info::unique) {
@@ -96,6 +120,15 @@ double civil_local_seconds_to_posixt(const date::local_seconds& lsec,
     }
     case dst_nonexistant::previous: {
       return info_nonexistant_previous(info);
+    }
+    case dst_nonexistant::directional_shift: {
+      return info_nonexistant_directional_shift(info, lsec, dst_direction);
+    }
+    case dst_nonexistant::next_shift: {
+      return info_nonexistant_next_shift(info, lsec);
+    }
+    case dst_nonexistant::previous_shift: {
+      return info_nonexistant_previous_shift(info, lsec);
     }
     case dst_nonexistant::na: {
       return info_nonexistant_na();
@@ -126,5 +159,5 @@ double civil_local_seconds_to_posixt(const date::local_seconds& lsec,
     }
   }
 
-  never_reached("civil_local_seconds_to_posixt");
+  never_reached("convert_local_seconds_to_posixt");
 }

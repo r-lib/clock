@@ -8,10 +8,6 @@ add_years_local_cpp <- function(x, n, day_resolver, size) {
   .Call("_civil_add_years_local_cpp", x, n, day_resolver, size, PACKAGE = "civil")
 }
 
-civil_add_chrono_cpp <- function(x, years, months, weeks, days, hours, minutes, seconds, size) {
-  .Call("_civil_civil_add_chrono_cpp", x, years, months, weeks, days, hours, minutes, seconds, size, PACKAGE = "civil")
-}
-
 civil_init <- function() {
   .Call("_civil_civil_init", PACKAGE = "civil")
 }
@@ -26,10 +22,6 @@ localize_posixct_cpp <- function(x) {
 
 unlocalize_cpp <- function(x, zone, dst_resolver) {
   .Call("_civil_unlocalize_cpp", x, zone, dst_resolver, PACKAGE = "civil")
-}
-
-civil_add_local_cpp <- function(x, years, months, weeks, days, hours, minutes, seconds, dst_nonexistant, dst_ambiguous, size) {
-  .Call("_civil_civil_add_local_cpp", x, years, months, weeks, days, hours, minutes, seconds, dst_nonexistant, dst_ambiguous, size, PACKAGE = "civil")
 }
 
 civil_force_zone_cpp <- function(x, tzone, dst_nonexistant, dst_ambiguous) {

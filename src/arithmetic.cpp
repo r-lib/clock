@@ -2,7 +2,6 @@
 #include "utils.h"
 #include "zone.h"
 #include "enums.h"
-#include "local.h"
 #include "conversion.h"
 #include <date/date.h>
 #include <date/tz.h>
@@ -21,8 +20,8 @@ SEXP add_years_posixct_cpp(SEXP x,
                            SEXP dst_resolver,
                            SEXP size) {
   enum day_nonexistant c_day_nonexistant = parse_day_nonexistant(r_list_get(day_resolver, 0));
-  enum dst_nonexistant c_dst_nonexistant = parse_dst_nonexistant(r_list_get(dst_resolver, 0));
-  enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous(r_list_get(dst_resolver, 1));
+  enum dst_nonexistant c_dst_nonexistant = parse_dst_nonexistant_arithmetic(r_list_get(dst_resolver, 0));
+  enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous_arithmetic(r_list_get(dst_resolver, 1));
   r_ssize c_size = r_int_get(size, 0);
 
   return add_years_posixct_impl(
@@ -132,7 +131,7 @@ static sexp add_years_posixct_impl(sexp x,
       dst_direction::positive :
       dst_direction::negative;
 
-    p_out[i] = civil_local_seconds_to_posixt(
+    p_out[i] = convert_local_seconds_to_posixt(
       out_lsec,
       p_zone,
       i,

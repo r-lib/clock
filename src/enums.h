@@ -29,12 +29,15 @@ enum class dst_nonexistant {
   directional,
   next,
   previous,
+  directional_shift,
+  next_shift,
+  previous_shift,
   na,
   error
 };
 
 enum dst_nonexistant parse_dst_nonexistant(sexp x);
-enum dst_nonexistant parse_dst_nonexistant_no_directional(sexp x);
+enum dst_nonexistant parse_dst_nonexistant_arithmetic(sexp x);
 
 // -----------------------------------------------------------------------------
 
@@ -47,7 +50,7 @@ enum class dst_ambiguous {
 };
 
 enum dst_ambiguous parse_dst_ambiguous(sexp x);
-enum dst_ambiguous parse_dst_ambiguous_no_directional(sexp x);
+enum dst_ambiguous parse_dst_ambiguous_arithmetic(sexp x);
 
 // -----------------------------------------------------------------------------
 

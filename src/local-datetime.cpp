@@ -2,7 +2,6 @@
 #include "utils.h"
 #include "zone.h"
 #include "enums.h"
-#include "local.h"
 #include "conversion.h"
 #include <date/date.h>
 #include <date/tz.h>
@@ -56,10 +55,9 @@ SEXP unlocalize_cpp(SEXP x, SEXP zone, SEXP dst_resolver) {
   std::string zone_name = zone_unwrap(zone);
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
-  // TODO: Fix these parses to new API
   enum dst_direction dst_direction = dst_direction::positive;
-  enum dst_nonexistant dst_nonexistant = parse_dst_nonexistant_no_directional(r_list_get(dst_resolver, 0));
-  enum dst_ambiguous dst_ambiguous = parse_dst_ambiguous_no_directional(r_list_get(dst_resolver, 1));
+  enum dst_nonexistant dst_nonexistant = parse_dst_nonexistant(r_list_get(dst_resolver, 0));
+  enum dst_ambiguous dst_ambiguous = parse_dst_ambiguous(r_list_get(dst_resolver, 1));
 
   r_poke_names(out, r_get_names(x));
   r_poke_class(out, civil_classes_posixct);
@@ -80,7 +78,7 @@ SEXP unlocalize_cpp(SEXP x, SEXP zone, SEXP dst_resolver) {
     std::chrono::seconds elt_sec{elt};
     date::local_seconds elt_lsec{elt_sec};
 
-    p_out[i] = civil_local_seconds_to_posixt(
+    p_out[i] = convert_local_seconds_to_posixt(
       elt_lsec,
       p_time_zone,
       i,

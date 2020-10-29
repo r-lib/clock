@@ -15,8 +15,8 @@ SEXP civil_force_zone_cpp(SEXP x,
                           SEXP tzone,
                           SEXP dst_nonexistant,
                           SEXP dst_ambiguous) {
-  enum dst_nonexistant c_dst_nonexistant = parse_dst_nonexistant_no_directional(dst_nonexistant);
-  enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous_no_directional(dst_ambiguous);
+  enum dst_nonexistant c_dst_nonexistant = parse_dst_nonexistant(dst_nonexistant);
+  enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous(dst_ambiguous);
 
   return civil_force_zone_impl(
     x,
@@ -73,7 +73,7 @@ static sexp civil_force_zone_impl(sexp x,
     date::zoned_seconds elt_zsec = date::make_zoned(p_old_zone, elt_ssec);
     date::local_seconds elt_lsec = elt_zsec.get_local_time();
 
-    p_out[i] = civil_local_seconds_to_posixt(
+    p_out[i] = convert_local_seconds_to_posixt(
       elt_lsec,
       p_new_zone,
       i,
