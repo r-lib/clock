@@ -4,11 +4,18 @@
 
 #include "cpp11/declarations.hpp"
 
-// calendrical.cpp
-SEXP civil_add_calendrical_cpp(SEXP x, SEXP n, SEXP unit, SEXP day_nonexistant, SEXP dst_nonexistant, SEXP dst_ambiguous, SEXP size);
-extern "C" SEXP _civil_civil_add_calendrical_cpp(SEXP x, SEXP n, SEXP unit, SEXP day_nonexistant, SEXP dst_nonexistant, SEXP dst_ambiguous, SEXP size) {
+// arithmetic.cpp
+SEXP add_years_posixct_cpp(SEXP x, SEXP n, SEXP day_resolver, SEXP dst_resolver, SEXP size);
+extern "C" SEXP _civil_add_years_posixct_cpp(SEXP x, SEXP n, SEXP day_resolver, SEXP dst_resolver, SEXP size) {
   BEGIN_CPP11
-    return cpp11::as_sexp(civil_add_calendrical_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_nonexistant), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistant), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size)));
+    return cpp11::as_sexp(add_years_posixct_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_resolver), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_resolver), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size)));
+  END_CPP11
+}
+// arithmetic.cpp
+SEXP add_years_local_cpp(SEXP x, SEXP n, SEXP day_resolver, SEXP size);
+extern "C" SEXP _civil_add_years_local_cpp(SEXP x, SEXP n, SEXP day_resolver, SEXP size) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(add_years_local_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_resolver), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size)));
   END_CPP11
 }
 // chrono.cpp
@@ -61,13 +68,6 @@ extern "C" SEXP _civil_civil_force_zone_cpp(SEXP x, SEXP tzone, SEXP dst_nonexis
     return cpp11::as_sexp(civil_force_zone_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(tzone), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistant), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous)));
   END_CPP11
 }
-// update.cpp
-SEXP civil_update_cpp(SEXP x, SEXP value, SEXP unit, SEXP day_nonexistant, SEXP dst_nonexistant, SEXP dst_ambiguous);
-extern "C" SEXP _civil_civil_update_cpp(SEXP x, SEXP value, SEXP unit, SEXP day_nonexistant, SEXP dst_nonexistant, SEXP dst_ambiguous) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(civil_update_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(value), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_nonexistant), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistant), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous)));
-  END_CPP11
-}
 // zone.cpp
 SEXP zone_standardize(SEXP zone);
 extern "C" SEXP _civil_zone_standardize(SEXP zone) {
@@ -85,30 +85,30 @@ extern "C" SEXP _civil_zone_is_valid(SEXP zone) {
 
 extern "C" {
 /* .Call calls */
-extern SEXP _civil_civil_add_calendrical_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_add_years_local_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_add_years_posixct_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_add_chrono_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_add_local_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_force_zone_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_init();
 extern SEXP _civil_civil_set_install(SEXP);
-extern SEXP _civil_civil_update_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_localize_posixct_cpp(SEXP);
 extern SEXP _civil_unlocalize_cpp(SEXP, SEXP, SEXP);
 extern SEXP _civil_zone_is_valid(SEXP);
 extern SEXP _civil_zone_standardize(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_civil_civil_add_calendrical_cpp", (DL_FUNC) &_civil_civil_add_calendrical_cpp,  7},
-    {"_civil_civil_add_chrono_cpp",      (DL_FUNC) &_civil_civil_add_chrono_cpp,       9},
-    {"_civil_civil_add_local_cpp",       (DL_FUNC) &_civil_civil_add_local_cpp,       11},
-    {"_civil_civil_force_zone_cpp",      (DL_FUNC) &_civil_civil_force_zone_cpp,       4},
-    {"_civil_civil_init",                (DL_FUNC) &_civil_civil_init,                 0},
-    {"_civil_civil_set_install",         (DL_FUNC) &_civil_civil_set_install,          1},
-    {"_civil_civil_update_cpp",          (DL_FUNC) &_civil_civil_update_cpp,           6},
-    {"_civil_localize_posixct_cpp",      (DL_FUNC) &_civil_localize_posixct_cpp,       1},
-    {"_civil_unlocalize_cpp",            (DL_FUNC) &_civil_unlocalize_cpp,             3},
-    {"_civil_zone_is_valid",             (DL_FUNC) &_civil_zone_is_valid,              1},
-    {"_civil_zone_standardize",          (DL_FUNC) &_civil_zone_standardize,           1},
+    {"_civil_add_years_local_cpp",   (DL_FUNC) &_civil_add_years_local_cpp,    4},
+    {"_civil_add_years_posixct_cpp", (DL_FUNC) &_civil_add_years_posixct_cpp,  5},
+    {"_civil_civil_add_chrono_cpp",  (DL_FUNC) &_civil_civil_add_chrono_cpp,   9},
+    {"_civil_civil_add_local_cpp",   (DL_FUNC) &_civil_civil_add_local_cpp,   11},
+    {"_civil_civil_force_zone_cpp",  (DL_FUNC) &_civil_civil_force_zone_cpp,   4},
+    {"_civil_civil_init",            (DL_FUNC) &_civil_civil_init,             0},
+    {"_civil_civil_set_install",     (DL_FUNC) &_civil_civil_set_install,      1},
+    {"_civil_localize_posixct_cpp",  (DL_FUNC) &_civil_localize_posixct_cpp,   1},
+    {"_civil_unlocalize_cpp",        (DL_FUNC) &_civil_unlocalize_cpp,         3},
+    {"_civil_zone_is_valid",         (DL_FUNC) &_civil_zone_is_valid,          1},
+    {"_civil_zone_standardize",      (DL_FUNC) &_civil_zone_standardize,       1},
     {NULL, NULL, 0}
 };
 }

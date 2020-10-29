@@ -13,8 +13,10 @@ enum day_nonexistant parse_day_nonexistant(sexp x) {
 
   const char* string = CHAR(STRING_ELT(x, 0));
 
-  if (!strcmp(string, "month-start")) return day_nonexistant::month_start;
-  if (!strcmp(string, "month-end")) return day_nonexistant::month_end;
+  if (!strcmp(string, "end")) return day_nonexistant::end;
+  if (!strcmp(string, "start")) return day_nonexistant::start;
+  if (!strcmp(string, "end-keep")) return day_nonexistant::end_keep;
+  if (!strcmp(string, "start-keep")) return day_nonexistant::start_keep;
   if (!strcmp(string, "NA")) return day_nonexistant::na;
   if (!strcmp(string, "error")) return day_nonexistant::error;
 

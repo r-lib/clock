@@ -6,8 +6,10 @@
 // -----------------------------------------------------------------------------
 
 enum class day_nonexistant {
-  month_start,
-  month_end,
+  end,
+  start,
+  end_keep,
+  start_keep,
   na,
   error
 };
