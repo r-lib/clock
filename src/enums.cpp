@@ -132,3 +132,19 @@ enum update_unit parse_update_unit(sexp x) {
 
   r_abort("'%s' is not a recognized `unit` option.", string);
 }
+
+// -----------------------------------------------------------------------------
+
+// [[ include("enums.h") ]]
+enum adjuster parse_adjuster(sexp x) {
+  if (!r_is_string(x)) {
+    r_abort("`adjuster` must be a string with length 1.");
+  }
+
+  const char* string = CHAR(STRING_ELT(x, 0));
+
+  if (!strcmp(string, "day_of_month")) return adjuster::day_of_month;
+  if (!strcmp(string, "last_day_of_month")) return adjuster::last_day_of_month;
+
+  r_abort("'%s' is not a recognized `adjuster` option.", string);
+}

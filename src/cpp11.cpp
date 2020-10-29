@@ -4,6 +4,20 @@
 
 #include "cpp11/declarations.hpp"
 
+// adjust.cpp
+SEXP adjust_posixct_cpp(SEXP x, SEXP value, SEXP day_resolver, SEXP dst_resolver, SEXP size, SEXP adjuster);
+extern "C" SEXP _civil_adjust_posixct_cpp(SEXP x, SEXP value, SEXP day_resolver, SEXP dst_resolver, SEXP size, SEXP adjuster) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(adjust_posixct_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(value), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_resolver), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_resolver), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size), cpp11::as_cpp<cpp11::decay_t<SEXP>>(adjuster)));
+  END_CPP11
+}
+// adjust.cpp
+SEXP adjust_local_cpp(SEXP x, SEXP value, SEXP day_resolver, SEXP size, SEXP adjuster);
+extern "C" SEXP _civil_adjust_local_cpp(SEXP x, SEXP value, SEXP day_resolver, SEXP size, SEXP adjuster) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(adjust_local_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(value), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_resolver), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size), cpp11::as_cpp<cpp11::decay_t<SEXP>>(adjuster)));
+  END_CPP11
+}
 // arithmetic.cpp
 SEXP add_period_posixct_cpp(SEXP x, SEXP n, SEXP day_resolver, SEXP dst_resolver, SEXP size, SEXP unit);
 extern "C" SEXP _civil_add_period_posixct_cpp(SEXP x, SEXP n, SEXP day_resolver, SEXP dst_resolver, SEXP size, SEXP unit) {
@@ -81,6 +95,8 @@ extern "C" {
 extern SEXP _civil_add_duration_posixct_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_period_local_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_period_posixct_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_adjust_local_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_adjust_posixct_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_force_zone_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_init();
 extern SEXP _civil_civil_set_install(SEXP);
@@ -93,6 +109,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_add_duration_posixct_cpp", (DL_FUNC) &_civil_add_duration_posixct_cpp, 4},
     {"_civil_add_period_local_cpp",     (DL_FUNC) &_civil_add_period_local_cpp,     5},
     {"_civil_add_period_posixct_cpp",   (DL_FUNC) &_civil_add_period_posixct_cpp,   6},
+    {"_civil_adjust_local_cpp",         (DL_FUNC) &_civil_adjust_local_cpp,         5},
+    {"_civil_adjust_posixct_cpp",       (DL_FUNC) &_civil_adjust_posixct_cpp,       6},
     {"_civil_civil_force_zone_cpp",     (DL_FUNC) &_civil_civil_force_zone_cpp,     4},
     {"_civil_civil_init",               (DL_FUNC) &_civil_civil_init,               0},
     {"_civil_civil_set_install",        (DL_FUNC) &_civil_civil_set_install,        1},

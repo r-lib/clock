@@ -81,4 +81,13 @@ enum class update_unit {
 enum update_unit parse_update_unit(sexp x);
 
 // -----------------------------------------------------------------------------
+
+enum class adjuster {
+  day_of_month,
+  last_day_of_month
+};
+
+enum adjuster parse_adjuster(sexp x);
+
+// -----------------------------------------------------------------------------
 #endif
