@@ -17,6 +17,14 @@ to_posixct_from_date <- function(x) {
 }
 
 to_posixct_from_posixct <- function(x) {
+  posixct_standardize(x)
+}
+
+to_posixct_from_posixlt <- function(x) {
+  as.POSIXct.POSIXlt(x)
+}
+
+posixct_standardize <- function(x) {
   if (identical(typeof(x), "double")) {
     return(x)
   }
@@ -26,10 +34,6 @@ to_posixct_from_posixct <- function(x) {
   storage.mode(x) <- "double"
 
   x
-}
-
-to_posixct_from_posixlt <- function(x) {
-  as.POSIXct.POSIXlt(x)
 }
 
 # ------------------------------------------------------------------------------
@@ -77,6 +81,21 @@ is_time_based_unit <- function(unit) {
   identical(unit, "hour") ||
     identical(unit, "minute") ||
     identical(unit, "second")
+}
+
+# ------------------------------------------------------------------------------
+
+cat_line <- function(...) {
+  cat(paste0(..., "\n", collapse = ""))
+}
+
+unstructure <- function(x) {
+  attributes(x) <- NULL
+  x
+}
+
+get_tzone <- function(x) {
+  attr(x, "tzone", exact = TRUE)
 }
 
 # ------------------------------------------------------------------------------

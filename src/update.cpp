@@ -76,8 +76,9 @@ static sexp civil_update_impl(sexp x,
                               enum dst_nonexistant dst_nonexistant,
                               enum dst_ambiguous dst_ambiguous) {
   sexp tzone = civil_get_tzone(x);
-  std::string zone_name = civil_zone_name_from_tzone(tzone);
-  const date::time_zone* p_zone = civil_zone_name_load(zone_name);
+  tzone = PROTECT(zone_standardize(tzone));
+  std::string zone_name = zone_unwrap(tzone);
+  const date::time_zone* p_zone = zone_name_load(zone_name);
 
   r_ssize size = r_length(x);
   const double* p_x = r_dbl_deref_const(x);
@@ -147,7 +148,7 @@ static sexp civil_update_impl(sexp x,
   }
   }
 
-  UNPROTECT(1);
+  UNPROTECT(2);
   return out;
 }
 

@@ -16,6 +16,14 @@ civil_set_install <- function(path) {
   invisible(.Call("_civil_civil_set_install", path, PACKAGE = "civil"))
 }
 
+localize_posixct_cpp <- function(x) {
+  .Call("_civil_localize_posixct_cpp", x, PACKAGE = "civil")
+}
+
+unlocalize_cpp <- function(x, zone, dst_resolver) {
+  .Call("_civil_unlocalize_cpp", x, zone, dst_resolver, PACKAGE = "civil")
+}
+
 civil_add_local_cpp <- function(x, years, months, weeks, days, hours, minutes, seconds, dst_nonexistant, dst_ambiguous, size) {
   .Call("_civil_civil_add_local_cpp", x, years, months, weeks, days, hours, minutes, seconds, dst_nonexistant, dst_ambiguous, size, PACKAGE = "civil")
 }
@@ -28,6 +36,10 @@ civil_update_cpp <- function(x, value, unit, day_nonexistant, dst_nonexistant, d
   .Call("_civil_civil_update_cpp", x, value, unit, day_nonexistant, dst_nonexistant, dst_ambiguous, PACKAGE = "civil")
 }
 
-civil_zone_is_valid <- function(tzone) {
-  .Call("_civil_civil_zone_is_valid", tzone, PACKAGE = "civil")
+zone_standardize <- function(zone) {
+  .Call("_civil_zone_standardize", zone, PACKAGE = "civil")
+}
+
+zone_is_valid <- function(zone) {
+  .Call("_civil_zone_is_valid", zone, PACKAGE = "civil")
 }

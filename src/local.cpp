@@ -52,8 +52,9 @@ sexp civil_add_local_impl(sexp x,
   double* p_out = r_dbl_deref(out);
 
   sexp tzone = civil_get_tzone(x);
-  std::string zone_name = civil_zone_name_from_tzone(tzone);
-  const date::time_zone* p_zone = civil_zone_name_load(zone_name);
+  tzone = PROTECT(zone_standardize(tzone));
+  std::string zone_name = zone_unwrap(tzone);
+  const date::time_zone* p_zone = zone_name_load(zone_name);
 
   r_poke_names(out, r_get_names(x));
   r_poke_class(out, civil_classes_posixct);
@@ -199,7 +200,7 @@ sexp civil_add_local_impl(sexp x,
     );
   }
 
-  UNPROTECT(1);
+  UNPROTECT(2);
   return out;
 }
 

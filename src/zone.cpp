@@ -9,7 +9,7 @@
 // -----------------------------------------------------------------------------
 
 /*
- * Extract a string time zone from an R `tzone` attribute
+ * Standardize an R time zone attribute
  *
  * This is slightly different from the lubridate version. For POSIXlt objects,
  * the time zone attribute might be a character vector of length 3.
@@ -25,39 +25,43 @@
  * https://github.com/tidyverse/lubridate/blob/b9025e6d5152f9da3857d7ef18f2571d3d861bae/src/update.cpp#L49
  */
 // [[ include("zone.h") ]]
-std::string civil_zone_name_from_tzone(sexp tzone) {
-  if (r_is_null(tzone)) {
-    return "";
+[[cpp11::register]]
+SEXP zone_standardize(SEXP zone) {
+  if (r_is_null(zone)) {
+    return r_new_scalar_character_from_c_string("");
   }
 
-  if (r_typeof(tzone) != r_type_character) {
-    r_abort("`tzone` must be a character vector or `NULL`.");
+  if (r_typeof(zone) != r_type_character) {
+    r_abort("`zone` must be a character vector or `NULL`.");
   }
 
-  r_ssize size = r_length(tzone);
+  r_ssize size = r_length(zone);
 
   // Assume `character()` tzone is also local time
   if (size == 0) {
-    return "";
+    return r_new_scalar_character_from_c_string("");
   }
 
-  const char* char_out = CHAR(STRING_ELT(tzone, 0));
-  std::string out = char_out;
+  sexp out = STRING_ELT(zone, 0);
 
-  return out;
+  return r_new_scalar_character(out);
 }
 
+/*
+ * Assumes it has been standardized
+ */
 // [[ include("zone.h") ]]
-std::string civil_zone_name_from_posixt(sexp x) {
-  sexp tzone = civil_get_tzone(x);
-  return civil_zone_name_from_tzone(tzone);
+std::string zone_unwrap(sexp zone) {
+  return CHAR(STRING_ELT(zone, 0));
 }
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-SEXP civil_zone_is_valid(SEXP tzone) {
-  std::string zone_name = civil_zone_name_from_tzone(tzone);
+SEXP zone_is_valid(SEXP zone) {
+  zone = PROTECT(zone_standardize(zone));
+  std::string zone_name = zone_unwrap(zone);
+  UNPROTECT(1);
 
   // Local time
   if (zone_name.size() == 0) {
@@ -78,7 +82,7 @@ const char* zone_name_local();
 const date::time_zone* zone_name_load_try(const std::string& zone_name);
 
 // [[ include("zone.h") ]]
-const date::time_zone* civil_zone_name_load(const std::string& zone_name) {
+const date::time_zone* zone_name_load(const std::string& zone_name) {
   if (zone_name.size() == 0) {
     // We look up the local time zone using R's `Sys.timezone()`
     // or the `TZ` envvar when an empty string is the input.
