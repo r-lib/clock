@@ -663,6 +663,8 @@ add_period_posixct <- function(x, n, ..., day_resolver, dst_resolver, unit) {
   validate_day_resolver(day_resolver)
   validate_dst_arithmetic_resolver(dst_resolver)
 
+  x <- posixct_standardize(x)
+
   add_period_posixct_cpp(x, n, day_resolver, dst_resolver, size, unit)
 }
 
@@ -697,6 +699,8 @@ add_duration_posixct <- function(x, n, ..., unit) {
 
   n <- vec_cast(n, integer(), x_arg = "n")
   size <- vec_size_common(x = x, n = n)
+
+  x <- posixct_standardize(x)
 
   add_duration_posixct_cpp(x, n, size, unit)
 }

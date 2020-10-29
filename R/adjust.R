@@ -151,6 +151,8 @@ adjust_posixct <- function(x, value, ..., day_resolver, dst_resolver, adjuster) 
   value <- vec_cast(value, integer(), x_arg = "value")
   size <- vec_size_common(x = x, value = value)
 
+  x <- posixct_standardize(x)
+
   validate_day_resolver(day_resolver)
   validate_dst_resolver(dst_resolver)
 
