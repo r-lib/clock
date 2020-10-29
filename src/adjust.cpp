@@ -285,6 +285,80 @@ static inline date::local_seconds adjust_second(const date::local_seconds& lsec,
   return out_lsec;
 }
 
+static inline date::local_seconds adjust_year(const date::local_seconds& lsec,
+                                              const int& value,
+                                              const r_ssize& i,
+                                              const enum day_nonexistant& day_nonexistant,
+                                              bool& na) {
+  if (value > 9999 || value < 0) {
+    r_abort("`value` must be within the range of [0, 9999], not %i.", value);
+  }
+
+  date::local_days lday = date::floor<date::days>(lsec);
+  date::local_seconds lsec_floor = lday;
+
+  std::chrono::seconds time_of_day = lsec - lsec_floor;
+
+  date::year_month_day ymd{lday};
+
+  date::year_month_day out_ymd = date::year{value} / ymd.month() / ymd.day();
+
+  if (!out_ymd.ok()) {
+    bool na_resolve = false;
+
+    resolve_day_nonexistant(i, day_nonexistant, out_ymd, time_of_day, na_resolve);
+
+    if (na_resolve) {
+      na = true;
+      return lsec;
+    }
+  }
+
+  date::local_days out_lday{out_ymd};
+  date::local_seconds out_lsec_floor{out_lday};
+  date::local_seconds out_lsec{out_lsec_floor + time_of_day};
+
+  return out_lsec;
+}
+
+static inline date::local_seconds adjust_month(const date::local_seconds& lsec,
+                                               const int& value,
+                                               const r_ssize& i,
+                                               const enum day_nonexistant& day_nonexistant,
+                                               bool& na) {
+  if (value > 12 || value < 1) {
+    r_abort("`value` must be within the range of [1, 12], not %i.", value);
+  }
+
+  date::local_days lday = date::floor<date::days>(lsec);
+  date::local_seconds lsec_floor = lday;
+
+  std::chrono::seconds time_of_day = lsec - lsec_floor;
+
+  date::year_month_day ymd{lday};
+
+  unsigned int month = static_cast<unsigned int>(value);
+
+  date::year_month_day out_ymd = ymd.year() / date::month{month} / ymd.day();
+
+  if (!out_ymd.ok()) {
+    bool na_resolve = false;
+
+    resolve_day_nonexistant(i, day_nonexistant, out_ymd, time_of_day, na_resolve);
+
+    if (na_resolve) {
+      na = true;
+      return lsec;
+    }
+  }
+
+  date::local_days out_lday{out_ymd};
+  date::local_seconds out_lsec_floor{out_lday};
+  date::local_seconds out_lsec{out_lsec_floor + time_of_day};
+
+  return out_lsec;
+}
+
 static inline date::local_seconds adjust_day(const date::local_seconds& lsec,
                                              const int& value,
                                              const r_ssize& i,
@@ -350,6 +424,15 @@ static inline date::local_seconds adjust_switch(const date::local_seconds& lsec,
                                                 const enum adjuster& adjuster,
                                                 bool& na) {
   switch (adjuster) {
+  case adjuster::year: {
+    return adjust_year(lsec, value, i, day_nonexistant, na);
+  }
+  case adjuster::month: {
+    return adjust_month(lsec, value, i, day_nonexistant, na);
+  }
+  case adjuster::day: {
+    return adjust_day(lsec, value, i, day_nonexistant, na);
+  }
   case adjuster::hour: {
     return adjust_hour(lsec, value);
   }
@@ -358,9 +441,6 @@ static inline date::local_seconds adjust_switch(const date::local_seconds& lsec,
   }
   case adjuster::second: {
     return adjust_second(lsec, value);
-  }
-  case adjuster::day: {
-    return adjust_day(lsec, value, i, day_nonexistant, na);
   }
   case adjuster::last_day_of_month: {
     return adjust_last_day_of_month(lsec, value);

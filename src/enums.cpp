@@ -143,10 +143,12 @@ enum adjuster parse_adjuster(sexp x) {
 
   const char* string = CHAR(STRING_ELT(x, 0));
 
+  if (!strcmp(string, "year")) return adjuster::year;
+  if (!strcmp(string, "month")) return adjuster::month;
+  if (!strcmp(string, "day")) return adjuster::day;
   if (!strcmp(string, "hour")) return adjuster::hour;
   if (!strcmp(string, "minute")) return adjuster::minute;
   if (!strcmp(string, "second")) return adjuster::second;
-  if (!strcmp(string, "day")) return adjuster::day;
   if (!strcmp(string, "last_day_of_month")) return adjuster::last_day_of_month;
 
   r_abort("'%s' is not a recognized `adjuster` option.", string);

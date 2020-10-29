@@ -1,3 +1,55 @@
+#' @export
+adjust_year <- function(x,
+                        value,
+                        ...,
+                        day_resolver = default_day_resolver(),
+                        dst_resolver = default_dst_resolver()) {
+  adjust(
+    x = x,
+    value = value,
+    ...,
+    day_resolver = day_resolver,
+    dst_resolver = dst_resolver,
+    adjuster = "year"
+  )
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+adjust_month <- function(x,
+                         value,
+                         ...,
+                         day_resolver = default_day_resolver(),
+                         dst_resolver = default_dst_resolver()) {
+  adjust(
+    x = x,
+    value = value,
+    ...,
+    day_resolver = day_resolver,
+    dst_resolver = dst_resolver,
+    adjuster = "month"
+  )
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+adjust_day <- function(x,
+                       value,
+                       ...,
+                       day_resolver = default_day_resolver(),
+                       dst_resolver = default_dst_resolver()) {
+  adjust(
+    x = x,
+    value = value,
+    ...,
+    day_resolver = day_resolver,
+    dst_resolver = dst_resolver,
+    adjuster = "day"
+  )
+}
+
 # ------------------------------------------------------------------------------
 
 #' @export
@@ -46,24 +98,6 @@ adjust_second <- function(x,
     day_resolver = default_day_resolver(),
     dst_resolver = dst_resolver,
     adjuster = "second"
-  )
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
-adjust_day <- function(x,
-                       value,
-                       ...,
-                       day_resolver = default_day_resolver(),
-                       dst_resolver = default_dst_resolver()) {
-  adjust(
-    x = x,
-    value = value,
-    ...,
-    day_resolver = day_resolver,
-    dst_resolver = dst_resolver,
-    adjuster = "day"
   )
 }
 
