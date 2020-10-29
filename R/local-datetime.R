@@ -28,6 +28,10 @@ vec_ptype_full.civil_local_datetime <- function(x, ...) {
   "local_datetime"
 }
 
+is_local_datetime <- function(x) {
+  inherits(x, "civil_local_datetime")
+}
+
 # ------------------------------------------------------------------------------
 
 #' @export

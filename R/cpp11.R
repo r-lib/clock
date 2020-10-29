@@ -12,16 +12,16 @@ adjust_local_cpp <- function(x, value, day_resolver, size, adjuster) {
   .Call("_civil_adjust_local_cpp", x, value, day_resolver, size, adjuster, PACKAGE = "civil")
 }
 
-add_period_posixct_cpp <- function(x, n, day_resolver, dst_resolver, size, unit) {
-  .Call("_civil_add_period_posixct_cpp", x, n, day_resolver, dst_resolver, size, unit, PACKAGE = "civil")
+add_period_to_posixct_cpp <- function(x, n, day_resolver, dst_resolver, size, unit) {
+  .Call("_civil_add_period_to_posixct_cpp", x, n, day_resolver, dst_resolver, size, unit, PACKAGE = "civil")
 }
 
-add_duration_posixct_cpp <- function(x, n, size, unit) {
-  .Call("_civil_add_duration_posixct_cpp", x, n, size, unit, PACKAGE = "civil")
+add_duration_to_posixct_cpp <- function(x, n, size, unit) {
+  .Call("_civil_add_duration_to_posixct_cpp", x, n, size, unit, PACKAGE = "civil")
 }
 
-add_period_local_cpp <- function(x, n, day_resolver, size, unit) {
-  .Call("_civil_add_period_local_cpp", x, n, day_resolver, size, unit, PACKAGE = "civil")
+add_period_to_local_cpp <- function(x, n, day_resolver, size, unit) {
+  .Call("_civil_add_period_to_local_cpp", x, n, day_resolver, size, unit, PACKAGE = "civil")
 }
 
 civil_init <- function() {

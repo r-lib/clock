@@ -9,34 +9,34 @@
 
 // -----------------------------------------------------------------------------
 
-static date::local_seconds add_ym_local_one(const date::local_seconds& lsec,
-                                            int n,
-                                            r_ssize i,
-                                            const enum day_nonexistant& day_nonexistant,
-                                            const enum unit& unit,
-                                            bool& na);
+static date::local_seconds add_ym_to_local_one(const date::local_seconds& lsec,
+                                               int n,
+                                               r_ssize i,
+                                               const enum day_nonexistant& day_nonexistant,
+                                               const enum unit& unit,
+                                               bool& na);
 
-static inline date::local_seconds add_dhms_local_one(const date::local_seconds& lsec,
-                                                     const int& n,
-                                                     const enum unit& unit);
+static inline date::local_seconds add_dhms_to_local_one(const date::local_seconds& lsec,
+                                                        const int& n,
+                                                        const enum unit& unit);
 
 // -----------------------------------------------------------------------------
 
-static sexp add_period_posixct_impl(sexp x,
-                                    sexp n,
-                                    enum day_nonexistant day_nonexistant,
-                                    enum dst_nonexistant dst_nonexistant,
-                                    enum dst_ambiguous dst_ambiguous,
-                                    r_ssize size,
-                                    enum unit unit);
+static sexp add_period_to_posixct(sexp x,
+                                  sexp n,
+                                  enum day_nonexistant day_nonexistant,
+                                  enum dst_nonexistant dst_nonexistant,
+                                  enum dst_ambiguous dst_ambiguous,
+                                  r_ssize size,
+                                  enum unit unit);
 
 [[cpp11::register]]
-SEXP add_period_posixct_cpp(SEXP x,
-                            SEXP n,
-                            SEXP day_resolver,
-                            SEXP dst_resolver,
-                            SEXP size,
-                            SEXP unit) {
+SEXP add_period_to_posixct_cpp(SEXP x,
+                               SEXP n,
+                               SEXP day_resolver,
+                               SEXP dst_resolver,
+                               SEXP size,
+                               SEXP unit) {
   sexp day_nonexistant = r_list_get(day_resolver, 0);
   sexp dst_nonexistant = r_list_get(dst_resolver, 0);
   sexp dst_ambiguous = r_list_get(dst_resolver, 1);
@@ -49,7 +49,7 @@ SEXP add_period_posixct_cpp(SEXP x,
 
   enum unit c_unit = parse_unit(unit);
 
-  return add_period_posixct_impl(
+  return add_period_to_posixct(
     x,
     n,
     c_day_nonexistant,
@@ -60,32 +60,32 @@ SEXP add_period_posixct_cpp(SEXP x,
   );
 }
 
-static sexp add_ym_posixct(sexp x,
-                           sexp n,
-                           enum day_nonexistant day_nonexistant,
-                           enum dst_nonexistant dst_nonexistant,
-                           enum dst_ambiguous dst_ambiguous,
-                           r_ssize size,
-                           enum unit unit);
+static sexp add_ym_to_posixct(sexp x,
+                              sexp n,
+                              enum day_nonexistant day_nonexistant,
+                              enum dst_nonexistant dst_nonexistant,
+                              enum dst_ambiguous dst_ambiguous,
+                              r_ssize size,
+                              enum unit unit);
 
-static sexp add_d_posixct(sexp x,
-                          sexp n,
-                          enum dst_nonexistant dst_nonexistant,
-                          enum dst_ambiguous dst_ambiguous,
-                          r_ssize size,
-                          enum unit unit);
+static sexp add_d_to_posixct(sexp x,
+                             sexp n,
+                             enum dst_nonexistant dst_nonexistant,
+                             enum dst_ambiguous dst_ambiguous,
+                             r_ssize size,
+                             enum unit unit);
 
-static sexp add_period_posixct_impl(sexp x,
-                                    sexp n,
-                                    enum day_nonexistant day_nonexistant,
-                                    enum dst_nonexistant dst_nonexistant,
-                                    enum dst_ambiguous dst_ambiguous,
-                                    r_ssize size,
-                                    enum unit unit) {
+static sexp add_period_to_posixct(sexp x,
+                                  sexp n,
+                                  enum day_nonexistant day_nonexistant,
+                                  enum dst_nonexistant dst_nonexistant,
+                                  enum dst_ambiguous dst_ambiguous,
+                                  r_ssize size,
+                                  enum unit unit) {
   switch (unit) {
   case unit::year:
   case unit::month: {
-    return add_ym_posixct(
+    return add_ym_to_posixct(
       x,
       n,
       day_nonexistant,
@@ -97,7 +97,7 @@ static sexp add_period_posixct_impl(sexp x,
   }
   case unit::week:
   case unit::day: {
-    return add_d_posixct(
+    return add_d_to_posixct(
       x,
       n,
       dst_nonexistant,
@@ -116,13 +116,13 @@ static sexp add_period_posixct_impl(sexp x,
 
 // -----------------------------------------------------------------------------
 
-static sexp add_ym_posixct(sexp x,
-                           sexp n,
-                           enum day_nonexistant day_nonexistant,
-                           enum dst_nonexistant dst_nonexistant,
-                           enum dst_ambiguous dst_ambiguous,
-                           r_ssize size,
-                           enum unit unit) {
+static sexp add_ym_to_posixct(sexp x,
+                              sexp n,
+                              enum day_nonexistant day_nonexistant,
+                              enum dst_nonexistant dst_nonexistant,
+                              enum dst_ambiguous dst_ambiguous,
+                              r_ssize size,
+                              enum unit unit) {
   sexp out = PROTECT(r_new_double(size));
   double* p_out = r_dbl_deref(out);
 
@@ -164,7 +164,7 @@ static sexp add_ym_posixct(sexp x,
 
     bool na = false;
 
-    date::local_seconds out_lsec = add_ym_local_one(
+    date::local_seconds out_lsec = add_ym_to_local_one(
       elt_lsec,
       elt_n,
       i,
@@ -199,12 +199,12 @@ static sexp add_ym_posixct(sexp x,
 
 // -----------------------------------------------------------------------------
 
-static sexp add_d_posixct(sexp x,
-                          sexp n,
-                          enum dst_nonexistant dst_nonexistant,
-                          enum dst_ambiguous dst_ambiguous,
-                          r_ssize size,
-                          enum unit unit) {
+static sexp add_d_to_posixct(sexp x,
+                             sexp n,
+                             enum dst_nonexistant dst_nonexistant,
+                             enum dst_ambiguous dst_ambiguous,
+                             r_ssize size,
+                             enum unit unit) {
   sexp out = PROTECT(r_new_double(size));
   double* p_out = r_dbl_deref(out);
 
@@ -244,7 +244,7 @@ static sexp add_d_posixct(sexp x,
     date::zoned_seconds elt_zsec = date::make_zoned(p_zone, elt_ssec);
     date::local_seconds elt_lsec = elt_zsec.get_local_time();
 
-    date::local_seconds out_lsec = add_dhms_local_one(elt_lsec, elt_n, unit);
+    date::local_seconds out_lsec = add_dhms_to_local_one(elt_lsec, elt_n, unit);
 
     const enum dst_direction dst_direction =
       elt_n >= 0 ?
@@ -267,20 +267,20 @@ static sexp add_d_posixct(sexp x,
 
 // -----------------------------------------------------------------------------
 
-static sexp add_duration_posixct_impl(sexp x,
-                                      sexp n,
-                                      r_ssize size,
-                                      enum unit unit);
+static sexp add_duration_to_posixct(sexp x,
+                                    sexp n,
+                                    r_ssize size,
+                                    enum unit unit);
 
 [[cpp11::register]]
-SEXP add_duration_posixct_cpp(SEXP x,
-                              SEXP n,
-                              SEXP size,
-                              SEXP unit) {
+SEXP add_duration_to_posixct_cpp(SEXP x,
+                                 SEXP n,
+                                 SEXP size,
+                                 SEXP unit) {
   r_ssize c_size = r_int_get(size, 0);
   enum unit c_unit = parse_unit(unit);
 
-  return add_duration_posixct_impl(
+  return add_duration_to_posixct(
     x,
     n,
     c_size,
@@ -288,15 +288,15 @@ SEXP add_duration_posixct_cpp(SEXP x,
   );
 }
 
-static sexp add_hms_posixct(sexp x,
-                            sexp n,
-                            r_ssize size,
-                            enum unit unit);
+static sexp add_hms_to_posixct(sexp x,
+                               sexp n,
+                               r_ssize size,
+                               enum unit unit);
 
-static sexp add_duration_posixct_impl(sexp x,
-                                      sexp n,
-                                      r_ssize size,
-                                      enum unit unit) {
+static sexp add_duration_to_posixct(sexp x,
+                                    sexp n,
+                                    r_ssize size,
+                                    enum unit unit) {
   switch (unit) {
   case unit::year:
   case unit::month:
@@ -307,7 +307,7 @@ static sexp add_duration_posixct_impl(sexp x,
   case unit::hour:
   case unit::minute:
   case unit::second: {
-    return add_hms_posixct(
+    return add_hms_to_posixct(
       x,
       n,
       size,
@@ -319,14 +319,14 @@ static sexp add_duration_posixct_impl(sexp x,
 
 // -----------------------------------------------------------------------------
 
-static inline date::sys_seconds add_hms_sys_one(const date::sys_seconds& ssec,
-                                                const int& n,
-                                                const enum unit& unit);
+static inline date::sys_seconds add_hms_to_sys_one(const date::sys_seconds& ssec,
+                                                   const int& n,
+                                                   const enum unit& unit);
 
-static sexp add_hms_posixct(sexp x,
-                            sexp n,
-                            r_ssize size,
-                            enum unit unit) {
+static sexp add_hms_to_posixct(sexp x,
+                               sexp n,
+                               r_ssize size,
+                               enum unit unit) {
   sexp out = PROTECT(r_new_double(size));
   double* p_out = r_dbl_deref(out);
 
@@ -362,7 +362,7 @@ static sexp add_hms_posixct(sexp x,
     std::chrono::seconds elt_sec{elt};
     date::sys_seconds elt_ssec{elt_sec};
 
-    date::sys_seconds out_ssec = add_hms_sys_one(
+    date::sys_seconds out_ssec = add_hms_to_sys_one(
       elt_ssec,
       elt_n,
       unit
@@ -377,18 +377,18 @@ static sexp add_hms_posixct(sexp x,
 
 // -----------------------------------------------------------------------------
 
-static sexp add_period_local_impl(sexp x,
-                                  sexp n,
-                                  enum day_nonexistant day_nonexistant,
-                                  r_ssize size,
-                                  enum unit unit);
+static sexp add_period_to_local(sexp x,
+                                sexp n,
+                                enum day_nonexistant day_nonexistant,
+                                r_ssize size,
+                                enum unit unit);
 
 [[cpp11::register]]
-SEXP add_period_local_cpp(SEXP x,
-                          SEXP n,
-                          SEXP day_resolver,
-                          SEXP size,
-                          SEXP unit) {
+SEXP add_period_to_local_cpp(SEXP x,
+                             SEXP n,
+                             SEXP day_resolver,
+                             SEXP size,
+                             SEXP unit) {
   sexp day_nonexistant = r_list_get(day_resolver, 0);
 
   enum day_nonexistant c_day_nonexistant = parse_day_nonexistant(day_nonexistant);
@@ -397,7 +397,7 @@ SEXP add_period_local_cpp(SEXP x,
 
   enum unit c_unit = parse_unit(unit);
 
-  return add_period_local_impl(
+  return add_period_to_local(
     x,
     n,
     c_day_nonexistant,
@@ -406,26 +406,26 @@ SEXP add_period_local_cpp(SEXP x,
   );
 }
 
-static sexp add_ym_local(sexp x,
-                         sexp n,
-                         enum day_nonexistant day_nonexistant,
-                         r_ssize size,
-                         enum unit unit);
+static sexp add_ym_to_local(sexp x,
+                            sexp n,
+                            enum day_nonexistant day_nonexistant,
+                            r_ssize size,
+                            enum unit unit);
 
-static sexp add_dhms_local(sexp x,
-                           sexp n,
-                           r_ssize size,
-                           enum unit unit);
+static sexp add_dhms_to_local(sexp x,
+                              sexp n,
+                              r_ssize size,
+                              enum unit unit);
 
-static sexp add_period_local_impl(sexp x,
-                                  sexp n,
-                                  enum day_nonexistant day_nonexistant,
-                                  r_ssize size,
-                                  enum unit unit) {
+static sexp add_period_to_local(sexp x,
+                                sexp n,
+                                enum day_nonexistant day_nonexistant,
+                                r_ssize size,
+                                enum unit unit) {
   switch (unit) {
   case unit::year:
   case unit::month: {
-    return add_ym_local(
+    return add_ym_to_local(
       x,
       n,
       day_nonexistant,
@@ -438,7 +438,7 @@ static sexp add_period_local_impl(sexp x,
   case unit::hour:
   case unit::minute:
   case unit::second: {
-    return add_dhms_local(
+    return add_dhms_to_local(
       x,
       n,
       size,
@@ -450,11 +450,11 @@ static sexp add_period_local_impl(sexp x,
 
 // -----------------------------------------------------------------------------
 
-static sexp add_ym_local(sexp x,
-                         sexp n,
-                         enum day_nonexistant day_nonexistant,
-                         r_ssize size,
-                         enum unit unit) {
+static sexp add_ym_to_local(sexp x,
+                            sexp n,
+                            enum day_nonexistant day_nonexistant,
+                            r_ssize size,
+                            enum unit unit) {
   sexp out = PROTECT(r_new_double(size));
   double* p_out = r_dbl_deref(out);
 
@@ -487,7 +487,7 @@ static sexp add_ym_local(sexp x,
 
     bool na = false;
 
-    date::local_seconds out_lsec = add_ym_local_one(
+    date::local_seconds out_lsec = add_ym_to_local_one(
       elt_lsec,
       elt_n,
       i,
@@ -509,10 +509,10 @@ static sexp add_ym_local(sexp x,
 
 // -----------------------------------------------------------------------------
 
-static sexp add_dhms_local(sexp x,
-                           sexp n,
-                           r_ssize size,
-                           enum unit unit) {
+static sexp add_dhms_to_local(sexp x,
+                              sexp n,
+                              r_ssize size,
+                              enum unit unit) {
   sexp out = PROTECT(r_new_double(size));
   double* p_out = r_dbl_deref(out);
 
@@ -543,7 +543,7 @@ static sexp add_dhms_local(sexp x,
     std::chrono::seconds elt_sec{elt};
     date::local_seconds elt_lsec{elt_sec};
 
-    date::local_seconds out_lsec = add_dhms_local_one(elt_lsec, elt_n, unit);
+    date::local_seconds out_lsec = add_dhms_to_local_one(elt_lsec, elt_n, unit);
 
     p_out[i] = out_lsec.time_since_epoch().count();
   }
@@ -554,12 +554,12 @@ static sexp add_dhms_local(sexp x,
 
 // -----------------------------------------------------------------------------
 
-static date::local_seconds add_ym_local_one(const date::local_seconds& lsec,
-                                            int n,
-                                            r_ssize i,
-                                            const enum day_nonexistant& day_nonexistant,
-                                            const enum unit& unit,
-                                            bool& na) {
+static date::local_seconds add_ym_to_local_one(const date::local_seconds& lsec,
+                                               int n,
+                                               r_ssize i,
+                                               const enum day_nonexistant& day_nonexistant,
+                                               const enum unit& unit,
+                                               bool& na) {
   date::local_days lday = date::floor<date::days>(lsec);
   date::local_seconds lsec_floor = lday;
 
@@ -595,9 +595,9 @@ static date::local_seconds add_ym_local_one(const date::local_seconds& lsec,
 
 // -----------------------------------------------------------------------------
 
-static inline date::local_seconds add_dhms_local_one(const date::local_seconds& lsec,
-                                                     const int& n,
-                                                     const enum unit& unit) {
+static inline date::local_seconds add_dhms_to_local_one(const date::local_seconds& lsec,
+                                                        const int& n,
+                                                        const enum unit& unit) {
   switch (unit) {
   case unit::week: {
     return lsec + date::days{n * 7};
@@ -623,9 +623,9 @@ static inline date::local_seconds add_dhms_local_one(const date::local_seconds& 
 
 // -----------------------------------------------------------------------------
 
-static inline date::sys_seconds add_hms_sys_one(const date::sys_seconds& ssec,
-                                                const int& n,
-                                                const enum unit& unit) {
+static inline date::sys_seconds add_hms_to_sys_one(const date::sys_seconds& ssec,
+                                                   const int& n,
+                                                   const enum unit& unit) {
   switch (unit) {
   case unit::hour: {
     return ssec + std::chrono::hours{n};
