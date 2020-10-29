@@ -213,7 +213,7 @@ add_period_to_zoned <- function(x, n, ..., day_resolver, dst_resolver, unit) {
 
   x_ct <- to_posixct(x)
 
-  out <- add_period_to_posixct_cpp(
+  out <- add_period_to_zoned_cpp(
     x = x_ct,
     n = n,
     day_resolver = day_resolver,
@@ -233,7 +233,7 @@ add_duration_to_zoned <- function(x, n, ..., unit) {
 
   x_ct <- to_posixct(x)
 
-  out <- add_duration_to_posixct_cpp(
+  out <- add_duration_to_zoned_cpp(
     x = x_ct,
     n = n,
     size = size,

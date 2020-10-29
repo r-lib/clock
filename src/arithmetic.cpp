@@ -22,21 +22,21 @@ static inline date::local_seconds add_dhms_to_local_one(const date::local_second
 
 // -----------------------------------------------------------------------------
 
-static sexp add_period_to_posixct(sexp x,
-                                  sexp n,
-                                  enum day_nonexistant day_nonexistant,
-                                  enum dst_nonexistant dst_nonexistant,
-                                  enum dst_ambiguous dst_ambiguous,
-                                  r_ssize size,
-                                  enum unit unit);
+static sexp add_period_to_zoned(sexp x,
+                                sexp n,
+                                enum day_nonexistant day_nonexistant,
+                                enum dst_nonexistant dst_nonexistant,
+                                enum dst_ambiguous dst_ambiguous,
+                                r_ssize size,
+                                enum unit unit);
 
 [[cpp11::register]]
-SEXP add_period_to_posixct_cpp(SEXP x,
-                               SEXP n,
-                               SEXP day_resolver,
-                               SEXP dst_resolver,
-                               SEXP size,
-                               SEXP unit) {
+SEXP add_period_to_zoned_cpp(SEXP x,
+                             SEXP n,
+                             SEXP day_resolver,
+                             SEXP dst_resolver,
+                             SEXP size,
+                             SEXP unit) {
   sexp day_nonexistant = r_list_get(day_resolver, 0);
   sexp dst_nonexistant = r_list_get(dst_resolver, 0);
   sexp dst_ambiguous = r_list_get(dst_resolver, 1);
@@ -49,7 +49,7 @@ SEXP add_period_to_posixct_cpp(SEXP x,
 
   enum unit c_unit = parse_unit(unit);
 
-  return add_period_to_posixct(
+  return add_period_to_zoned(
     x,
     n,
     c_day_nonexistant,
@@ -60,32 +60,32 @@ SEXP add_period_to_posixct_cpp(SEXP x,
   );
 }
 
-static sexp add_ym_to_posixct(sexp x,
-                              sexp n,
-                              enum day_nonexistant day_nonexistant,
-                              enum dst_nonexistant dst_nonexistant,
-                              enum dst_ambiguous dst_ambiguous,
-                              r_ssize size,
-                              enum unit unit);
+static sexp add_ym_to_zoned(sexp x,
+                            sexp n,
+                            enum day_nonexistant day_nonexistant,
+                            enum dst_nonexistant dst_nonexistant,
+                            enum dst_ambiguous dst_ambiguous,
+                            r_ssize size,
+                            enum unit unit);
 
-static sexp add_d_to_posixct(sexp x,
-                             sexp n,
-                             enum dst_nonexistant dst_nonexistant,
-                             enum dst_ambiguous dst_ambiguous,
-                             r_ssize size,
-                             enum unit unit);
+static sexp add_d_to_zoned(sexp x,
+                           sexp n,
+                           enum dst_nonexistant dst_nonexistant,
+                           enum dst_ambiguous dst_ambiguous,
+                           r_ssize size,
+                           enum unit unit);
 
-static sexp add_period_to_posixct(sexp x,
-                                  sexp n,
-                                  enum day_nonexistant day_nonexistant,
-                                  enum dst_nonexistant dst_nonexistant,
-                                  enum dst_ambiguous dst_ambiguous,
-                                  r_ssize size,
-                                  enum unit unit) {
+static sexp add_period_to_zoned(sexp x,
+                                sexp n,
+                                enum day_nonexistant day_nonexistant,
+                                enum dst_nonexistant dst_nonexistant,
+                                enum dst_ambiguous dst_ambiguous,
+                                r_ssize size,
+                                enum unit unit) {
   switch (unit) {
   case unit::year:
   case unit::month: {
-    return add_ym_to_posixct(
+    return add_ym_to_zoned(
       x,
       n,
       day_nonexistant,
@@ -97,7 +97,7 @@ static sexp add_period_to_posixct(sexp x,
   }
   case unit::week:
   case unit::day: {
-    return add_d_to_posixct(
+    return add_d_to_zoned(
       x,
       n,
       dst_nonexistant,
@@ -116,13 +116,13 @@ static sexp add_period_to_posixct(sexp x,
 
 // -----------------------------------------------------------------------------
 
-static sexp add_ym_to_posixct(sexp x,
-                              sexp n,
-                              enum day_nonexistant day_nonexistant,
-                              enum dst_nonexistant dst_nonexistant,
-                              enum dst_ambiguous dst_ambiguous,
-                              r_ssize size,
-                              enum unit unit) {
+static sexp add_ym_to_zoned(sexp x,
+                            sexp n,
+                            enum day_nonexistant day_nonexistant,
+                            enum dst_nonexistant dst_nonexistant,
+                            enum dst_ambiguous dst_ambiguous,
+                            r_ssize size,
+                            enum unit unit) {
   sexp out = PROTECT(r_new_double(size));
   double* p_out = r_dbl_deref(out);
 
@@ -199,12 +199,12 @@ static sexp add_ym_to_posixct(sexp x,
 
 // -----------------------------------------------------------------------------
 
-static sexp add_d_to_posixct(sexp x,
-                             sexp n,
-                             enum dst_nonexistant dst_nonexistant,
-                             enum dst_ambiguous dst_ambiguous,
-                             r_ssize size,
-                             enum unit unit) {
+static sexp add_d_to_zoned(sexp x,
+                           sexp n,
+                           enum dst_nonexistant dst_nonexistant,
+                           enum dst_ambiguous dst_ambiguous,
+                           r_ssize size,
+                           enum unit unit) {
   sexp out = PROTECT(r_new_double(size));
   double* p_out = r_dbl_deref(out);
 
@@ -267,20 +267,20 @@ static sexp add_d_to_posixct(sexp x,
 
 // -----------------------------------------------------------------------------
 
-static sexp add_duration_to_posixct(sexp x,
-                                    sexp n,
-                                    r_ssize size,
-                                    enum unit unit);
+static sexp add_duration_to_zoned(sexp x,
+                                  sexp n,
+                                  r_ssize size,
+                                  enum unit unit);
 
 [[cpp11::register]]
-SEXP add_duration_to_posixct_cpp(SEXP x,
-                                 SEXP n,
-                                 SEXP size,
-                                 SEXP unit) {
+SEXP add_duration_to_zoned_cpp(SEXP x,
+                               SEXP n,
+                               SEXP size,
+                               SEXP unit) {
   r_ssize c_size = r_int_get(size, 0);
   enum unit c_unit = parse_unit(unit);
 
-  return add_duration_to_posixct(
+  return add_duration_to_zoned(
     x,
     n,
     c_size,
@@ -288,15 +288,15 @@ SEXP add_duration_to_posixct_cpp(SEXP x,
   );
 }
 
-static sexp add_hms_to_posixct(sexp x,
-                               sexp n,
-                               r_ssize size,
-                               enum unit unit);
+static sexp add_hms_to_zoned(sexp x,
+                             sexp n,
+                             r_ssize size,
+                             enum unit unit);
 
-static sexp add_duration_to_posixct(sexp x,
-                                    sexp n,
-                                    r_ssize size,
-                                    enum unit unit) {
+static sexp add_duration_to_zoned(sexp x,
+                                  sexp n,
+                                  r_ssize size,
+                                  enum unit unit) {
   switch (unit) {
   case unit::year:
   case unit::month:
@@ -307,7 +307,7 @@ static sexp add_duration_to_posixct(sexp x,
   case unit::hour:
   case unit::minute:
   case unit::second: {
-    return add_hms_to_posixct(
+    return add_hms_to_zoned(
       x,
       n,
       size,
@@ -323,10 +323,10 @@ static inline date::sys_seconds add_hms_to_sys_one(const date::sys_seconds& ssec
                                                    const int& n,
                                                    const enum unit& unit);
 
-static sexp add_hms_to_posixct(sexp x,
-                               sexp n,
-                               r_ssize size,
-                               enum unit unit) {
+static sexp add_hms_to_zoned(sexp x,
+                             sexp n,
+                             r_ssize size,
+                             enum unit unit) {
   sexp out = PROTECT(r_new_double(size));
   double* p_out = r_dbl_deref(out);
 

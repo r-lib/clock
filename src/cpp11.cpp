@@ -26,17 +26,17 @@ extern "C" SEXP _civil_adjust_local_cpp(SEXP x, SEXP value, SEXP day_resolver, S
   END_CPP11
 }
 // arithmetic.cpp
-SEXP add_period_to_posixct_cpp(SEXP x, SEXP n, SEXP day_resolver, SEXP dst_resolver, SEXP size, SEXP unit);
-extern "C" SEXP _civil_add_period_to_posixct_cpp(SEXP x, SEXP n, SEXP day_resolver, SEXP dst_resolver, SEXP size, SEXP unit) {
+SEXP add_period_to_zoned_cpp(SEXP x, SEXP n, SEXP day_resolver, SEXP dst_resolver, SEXP size, SEXP unit);
+extern "C" SEXP _civil_add_period_to_zoned_cpp(SEXP x, SEXP n, SEXP day_resolver, SEXP dst_resolver, SEXP size, SEXP unit) {
   BEGIN_CPP11
-    return cpp11::as_sexp(add_period_to_posixct_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_resolver), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_resolver), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit)));
+    return cpp11::as_sexp(add_period_to_zoned_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_resolver), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_resolver), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit)));
   END_CPP11
 }
 // arithmetic.cpp
-SEXP add_duration_to_posixct_cpp(SEXP x, SEXP n, SEXP size, SEXP unit);
-extern "C" SEXP _civil_add_duration_to_posixct_cpp(SEXP x, SEXP n, SEXP size, SEXP unit) {
+SEXP add_duration_to_zoned_cpp(SEXP x, SEXP n, SEXP size, SEXP unit);
+extern "C" SEXP _civil_add_duration_to_zoned_cpp(SEXP x, SEXP n, SEXP size, SEXP unit) {
   BEGIN_CPP11
-    return cpp11::as_sexp(add_duration_to_posixct_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit)));
+    return cpp11::as_sexp(add_duration_to_zoned_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit)));
   END_CPP11
 }
 // arithmetic.cpp
@@ -92,9 +92,9 @@ extern "C" SEXP _civil_zone_is_valid(SEXP zone) {
 
 extern "C" {
 /* .Call calls */
-extern SEXP _civil_add_duration_to_posixct_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_add_duration_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_period_to_local_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _civil_add_period_to_posixct_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_add_period_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_local_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_posixct_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_zone_retain_clock_cpp(SEXP, SEXP, SEXP);
@@ -106,9 +106,9 @@ extern SEXP _civil_zone_is_valid(SEXP);
 extern SEXP _civil_zone_standardize(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_civil_add_duration_to_posixct_cpp",  (DL_FUNC) &_civil_add_duration_to_posixct_cpp,  4},
+    {"_civil_add_duration_to_zoned_cpp",    (DL_FUNC) &_civil_add_duration_to_zoned_cpp,    4},
     {"_civil_add_period_to_local_cpp",      (DL_FUNC) &_civil_add_period_to_local_cpp,      5},
-    {"_civil_add_period_to_posixct_cpp",    (DL_FUNC) &_civil_add_period_to_posixct_cpp,    6},
+    {"_civil_add_period_to_zoned_cpp",      (DL_FUNC) &_civil_add_period_to_zoned_cpp,      6},
     {"_civil_adjust_local_cpp",             (DL_FUNC) &_civil_adjust_local_cpp,             5},
     {"_civil_adjust_posixct_cpp",           (DL_FUNC) &_civil_adjust_posixct_cpp,           6},
     {"_civil_adjust_zone_retain_clock_cpp", (DL_FUNC) &_civil_adjust_zone_retain_clock_cpp, 3},
