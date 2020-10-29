@@ -12,6 +12,13 @@ extern "C" SEXP _civil_add_period_posixct_cpp(SEXP x, SEXP n, SEXP day_resolver,
   END_CPP11
 }
 // arithmetic.cpp
+SEXP add_duration_posixct_cpp(SEXP x, SEXP n, SEXP size, SEXP unit);
+extern "C" SEXP _civil_add_duration_posixct_cpp(SEXP x, SEXP n, SEXP size, SEXP unit) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(add_duration_posixct_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit)));
+  END_CPP11
+}
+// arithmetic.cpp
 SEXP add_period_local_cpp(SEXP x, SEXP n, SEXP day_resolver, SEXP size, SEXP unit);
 extern "C" SEXP _civil_add_period_local_cpp(SEXP x, SEXP n, SEXP day_resolver, SEXP size, SEXP unit) {
   BEGIN_CPP11
@@ -71,6 +78,7 @@ extern "C" SEXP _civil_zone_is_valid(SEXP zone) {
 
 extern "C" {
 /* .Call calls */
+extern SEXP _civil_add_duration_posixct_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_period_local_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_period_posixct_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_force_zone_cpp(SEXP, SEXP, SEXP, SEXP);
@@ -82,15 +90,16 @@ extern SEXP _civil_zone_is_valid(SEXP);
 extern SEXP _civil_zone_standardize(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_civil_add_period_local_cpp",   (DL_FUNC) &_civil_add_period_local_cpp,   5},
-    {"_civil_add_period_posixct_cpp", (DL_FUNC) &_civil_add_period_posixct_cpp, 6},
-    {"_civil_civil_force_zone_cpp",   (DL_FUNC) &_civil_civil_force_zone_cpp,   4},
-    {"_civil_civil_init",             (DL_FUNC) &_civil_civil_init,             0},
-    {"_civil_civil_set_install",      (DL_FUNC) &_civil_civil_set_install,      1},
-    {"_civil_localize_posixct_cpp",   (DL_FUNC) &_civil_localize_posixct_cpp,   1},
-    {"_civil_unlocalize_cpp",         (DL_FUNC) &_civil_unlocalize_cpp,         3},
-    {"_civil_zone_is_valid",          (DL_FUNC) &_civil_zone_is_valid,          1},
-    {"_civil_zone_standardize",       (DL_FUNC) &_civil_zone_standardize,       1},
+    {"_civil_add_duration_posixct_cpp", (DL_FUNC) &_civil_add_duration_posixct_cpp, 4},
+    {"_civil_add_period_local_cpp",     (DL_FUNC) &_civil_add_period_local_cpp,     5},
+    {"_civil_add_period_posixct_cpp",   (DL_FUNC) &_civil_add_period_posixct_cpp,   6},
+    {"_civil_civil_force_zone_cpp",     (DL_FUNC) &_civil_civil_force_zone_cpp,     4},
+    {"_civil_civil_init",               (DL_FUNC) &_civil_civil_init,               0},
+    {"_civil_civil_set_install",        (DL_FUNC) &_civil_civil_set_install,        1},
+    {"_civil_localize_posixct_cpp",     (DL_FUNC) &_civil_localize_posixct_cpp,     1},
+    {"_civil_unlocalize_cpp",           (DL_FUNC) &_civil_unlocalize_cpp,           3},
+    {"_civil_zone_is_valid",            (DL_FUNC) &_civil_zone_is_valid,            1},
+    {"_civil_zone_standardize",         (DL_FUNC) &_civil_zone_standardize,         1},
     {NULL, NULL, 0}
 };
 }

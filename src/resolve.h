@@ -11,7 +11,7 @@ static inline void resolve_day_nonexistant_start_keep(date::year_month_day& ymd)
 static inline void resolve_day_nonexistant_start(date::year_month_day& ymd, std::chrono::seconds& tod);
 static inline void resolve_day_nonexistant_end_keep(date::year_month_day& ymd);
 static inline void resolve_day_nonexistant_end(date::year_month_day& ymd, std::chrono::seconds& tod);
-static inline void resolve_day_nonexistant_na(date::year_month_day& ymd, std::chrono::seconds& tod);
+static inline void resolve_day_nonexistant_na(bool& na);
 static inline void resolve_day_nonexistant_error(r_ssize i);
 
 /*
@@ -21,7 +21,8 @@ static inline void resolve_day_nonexistant_error(r_ssize i);
 static inline void resolve_day_nonexistant(r_ssize i,
                                            const enum day_nonexistant& day_nonexistant,
                                            date::year_month_day& ymd,
-                                           std::chrono::seconds& tod) {
+                                           std::chrono::seconds& tod,
+                                           bool& na) {
   switch (day_nonexistant) {
   case day_nonexistant::start_keep: {
     return resolve_day_nonexistant_start_keep(ymd);
@@ -36,7 +37,7 @@ static inline void resolve_day_nonexistant(r_ssize i,
     return resolve_day_nonexistant_end(ymd, tod);
   }
   case day_nonexistant::na: {
-    return resolve_day_nonexistant_na(ymd, tod);
+    return resolve_day_nonexistant_na(na);
   }
   case day_nonexistant::error: {
     resolve_day_nonexistant_error(i);
@@ -66,9 +67,8 @@ static inline void resolve_day_nonexistant_end(date::year_month_day& ymd, std::c
   tod = std::chrono::seconds{86400 - 1};
 }
 
-static inline void resolve_day_nonexistant_na(date::year_month_day& ymd, std::chrono::seconds& tod) {
-  ymd = na_ymd();
-  tod = std::chrono::seconds{0};
+static inline void resolve_day_nonexistant_na(bool& na) {
+  na = true;
 }
 
 static inline void resolve_day_nonexistant_error(r_ssize i) {
