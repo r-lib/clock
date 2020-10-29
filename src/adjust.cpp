@@ -38,8 +38,8 @@ SEXP adjust_zoned_cpp(SEXP x,
   sexp dst_ambiguous = r_list_get(dst_resolver, 1);
 
   enum day_nonexistant c_day_nonexistant = parse_day_nonexistant(day_nonexistant);
-  enum dst_nonexistant c_dst_nonexistant = parse_dst_nonexistant_arithmetic(dst_nonexistant);
-  enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous_arithmetic(dst_ambiguous);
+  enum dst_nonexistant c_dst_nonexistant = parse_dst_nonexistant(dst_nonexistant);
+  enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous(dst_ambiguous);
 
   r_ssize c_size = r_int_get(size, 0);
 
