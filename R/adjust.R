@@ -67,7 +67,14 @@ adjust_zoned <- function(x, value, ..., day_resolver, dst_resolver, adjuster) {
   validate_day_resolver(day_resolver)
   validate_dst_resolver(dst_resolver)
 
-  out <- adjust_posixct_cpp(x, value, day_resolver, dst_resolver, size, adjuster)
+  out <- adjust_zoned_cpp(
+    x = x,
+    value = value,
+    day_resolver = day_resolver,
+    dst_resolver = dst_resolver,
+    size = size,
+    adjuster = adjuster
+  )
 
   if (is_hms_adjuster(adjuster)) {
     out
@@ -84,7 +91,13 @@ adjust_local <- function(x, value, ..., day_resolver, adjuster) {
 
   validate_day_resolver(day_resolver)
 
-  out <- adjust_local_cpp(x, value, day_resolver, size, adjuster)
+  out <- adjust_local_cpp(
+    x = x,
+    value = value,
+    day_resolver = day_resolver,
+    size = size,
+    adjuster = adjuster
+  )
 
   new_local_datetime(out)
 }

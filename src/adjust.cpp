@@ -18,21 +18,21 @@ static date::local_seconds adjust_ymd_based(const date::local_seconds& lsec,
 
 // -----------------------------------------------------------------------------
 
-static sexp adjust_posixct(sexp x,
-                           sexp value,
-                           enum day_nonexistant day_nonexistant,
-                           enum dst_nonexistant dst_nonexistant,
-                           enum dst_ambiguous dst_ambiguous,
-                           r_ssize size,
-                           enum adjuster adjuster);
+static sexp adjust_zoned(sexp x,
+                         sexp value,
+                         enum day_nonexistant day_nonexistant,
+                         enum dst_nonexistant dst_nonexistant,
+                         enum dst_ambiguous dst_ambiguous,
+                         r_ssize size,
+                         enum adjuster adjuster);
 
 [[cpp11::register]]
-SEXP adjust_posixct_cpp(SEXP x,
-                        SEXP value,
-                        SEXP day_resolver,
-                        SEXP dst_resolver,
-                        SEXP size,
-                        SEXP adjuster) {
+SEXP adjust_zoned_cpp(SEXP x,
+                      SEXP value,
+                      SEXP day_resolver,
+                      SEXP dst_resolver,
+                      SEXP size,
+                      SEXP adjuster) {
   sexp day_nonexistant = r_list_get(day_resolver, 0);
   sexp dst_nonexistant = r_list_get(dst_resolver, 0);
   sexp dst_ambiguous = r_list_get(dst_resolver, 1);
@@ -45,7 +45,7 @@ SEXP adjust_posixct_cpp(SEXP x,
 
   enum adjuster c_adjuster = parse_adjuster(adjuster);
 
-  return adjust_posixct(
+  return adjust_zoned(
     x,
     value,
     c_day_nonexistant,
@@ -56,13 +56,13 @@ SEXP adjust_posixct_cpp(SEXP x,
   );
 }
 
-static sexp adjust_posixct(sexp x,
-                           sexp value,
-                           enum day_nonexistant day_nonexistant,
-                           enum dst_nonexistant dst_nonexistant,
-                           enum dst_ambiguous dst_ambiguous,
-                           r_ssize size,
-                           enum adjuster adjuster) {
+static sexp adjust_zoned(sexp x,
+                         sexp value,
+                         enum day_nonexistant day_nonexistant,
+                         enum dst_nonexistant dst_nonexistant,
+                         enum dst_ambiguous dst_ambiguous,
+                         r_ssize size,
+                         enum adjuster adjuster) {
   sexp out = PROTECT(r_new_double(size));
   double* p_out = r_dbl_deref(out);
 
@@ -165,10 +165,10 @@ SEXP adjust_local_cpp(SEXP x,
 }
 
 static sexp adjust_local(sexp x,
-                           sexp value,
-                           enum day_nonexistant day_nonexistant,
-                           r_ssize size,
-                           enum adjuster adjuster) {
+                         sexp value,
+                         enum day_nonexistant day_nonexistant,
+                         r_ssize size,
+                         enum adjuster adjuster) {
   sexp out = PROTECT(r_new_double(size));
   double* p_out = r_dbl_deref(out);
 
