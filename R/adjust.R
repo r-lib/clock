@@ -1,24 +1,73 @@
 # ------------------------------------------------------------------------------
-# day of month
 
 #' @export
-adjust_day_of_month <- function(x,
-                                value,
-                                ...,
-                                day_resolver = default_day_resolver(),
-                                dst_resolver = default_dst_resolver()) {
+adjust_hour <- function(x,
+                        value,
+                        ...,
+                        dst_resolver = default_dst_resolver()) {
+  adjust(
+    x = x,
+    value = value,
+    ...,
+    day_resolver = default_day_resolver(),
+    dst_resolver = dst_resolver,
+    adjuster = "hour"
+  )
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+adjust_minute <- function(x,
+                          value,
+                          ...,
+                          dst_resolver = default_dst_resolver()) {
+  adjust(
+    x = x,
+    value = value,
+    ...,
+    day_resolver = default_day_resolver(),
+    dst_resolver = dst_resolver,
+    adjuster = "minute"
+  )
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+adjust_second <- function(x,
+                          value,
+                          ...,
+                          dst_resolver = default_dst_resolver()) {
+  adjust(
+    x = x,
+    value = value,
+    ...,
+    day_resolver = default_day_resolver(),
+    dst_resolver = dst_resolver,
+    adjuster = "second"
+  )
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+adjust_day <- function(x,
+                       value,
+                       ...,
+                       day_resolver = default_day_resolver(),
+                       dst_resolver = default_dst_resolver()) {
   adjust(
     x = x,
     value = value,
     ...,
     day_resolver = day_resolver,
     dst_resolver = dst_resolver,
-    adjuster = "day_of_month"
+    adjuster = "day"
   )
 }
 
 # ------------------------------------------------------------------------------
-# last day of month
 
 #' @export
 adjust_last_day_of_month <- function(x,
@@ -62,13 +111,13 @@ adjust_zoned <- function(x, value, ..., day_resolver, dst_resolver, adjuster) {
   value <- vec_cast(value, integer(), x_arg = "value")
   size <- vec_size_common(x = x, value = value)
 
-  x <- to_posixct(x)
+  x_ct <- to_posixct(x)
 
   validate_day_resolver(day_resolver)
   validate_dst_resolver(dst_resolver)
 
   out <- adjust_zoned_cpp(
-    x = x,
+    x = x_ct,
     value = value,
     day_resolver = day_resolver,
     dst_resolver = dst_resolver,

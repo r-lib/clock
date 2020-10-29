@@ -83,7 +83,10 @@ enum update_unit parse_update_unit(sexp x);
 // -----------------------------------------------------------------------------
 
 enum class adjuster {
-  day_of_month,
+  hour,
+  minute,
+  second,
+  day,
   last_day_of_month
 };
 
