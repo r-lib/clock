@@ -47,8 +47,7 @@ dst_arithmetic_resolver <- function(...,
   arg_match0(nonexistant, dst_arithmetic_nonexistant_opts(), "nonexistant")
   arg_match0(ambiguous, dst_arithmetic_ambiguous_opts(), "ambiguous")
 
-  out <- list(nonexistant = nonexistant, ambiguous = ambiguous)
-  structure(out, class = "civil_dst_arithmetic_resolver")
+  new_dst_resolver(nonexistant, ambiguous, class = "civil_dst_arithmetic_resolver")
 }
 
 #' @export
@@ -80,19 +79,22 @@ dst_arithmetic_ambiguous_opts <- function() {
   c("directional", "earliest", "latest", "NA", "error")
 }
 
-is_dst_arithmetic_resolver <- function(x) {
-  inherits(x, "civil_dst_arithmetic_resolver")
-}
-
 validate_dst_arithmetic_resolver <- function(x) {
-  if (is_dst_arithmetic_resolver(x)) {
+  if (is_dst_resolver(x)) {
     invisible(x)
   } else {
-    abort("`dst_resolver` must be created by `dst_arithmetic_resolver()`.")
+    abort("`dst_resolver` must be created by `dst_resolver()` or `dst_arithmetic_resolver()`.")
   }
 }
 
 # ------------------------------------------------------------------------------
+
+new_dst_resolver <- function(nonexistant = "next",
+                             ambiguous = "earliest",
+                             class = character()) {
+  out <- list(nonexistant = nonexistant, ambiguous = ambiguous)
+  structure(out, class = c(class, "civil_dst_resolver"))
+}
 
 #' @export
 dst_resolver <- function(..., nonexistant = "next", ambiguous = "earliest") {
@@ -101,8 +103,7 @@ dst_resolver <- function(..., nonexistant = "next", ambiguous = "earliest") {
   arg_match0(nonexistant, dst_nonexistant_opts(), "nonexistant")
   arg_match0(ambiguous, dst_ambiguous_opts(), "ambiguous")
 
-  out <- list(nonexistant = nonexistant, ambiguous = ambiguous)
-  structure(out, class = "civil_dst_resolver")
+  new_dst_resolver(nonexistant, ambiguous)
 }
 
 #' @export

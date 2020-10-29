@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# year
+# year - add
 
 #' @export
 add_years <- function(x, n, ...) {
@@ -67,7 +67,49 @@ add_years.civil_local_datetime <- function(x,
 }
 
 # ------------------------------------------------------------------------------
-# month
+# year - subtract
+
+#' @export
+subtract_years <- function(x, n, ...) {
+  UseMethod("subtract_years")
+}
+
+#' @export
+subtract_years.Date <- function(x,
+                                n,
+                                ...,
+                                day_resolver = default_day_resolver()) {
+  add_years(x, -n, ..., day_resolver = day_resolver)
+}
+
+#' @export
+subtract_years.POSIXct <- function(x,
+                                   n,
+                                   ...,
+                                   day_resolver = default_day_resolver(),
+                                   dst_resolver = default_dst_arithmetic_resolver()) {
+  add_years(x, -n, ..., day_resolver = day_resolver, dst_resolver = dst_resolver)
+}
+
+#' @export
+subtract_years.POSIXlt <- function(x,
+                                   n,
+                                   ...,
+                                   day_resolver = default_day_resolver(),
+                                   dst_resolver = default_dst_arithmetic_resolver()) {
+  add_years(x, -n, ..., day_resolver = day_resolver, dst_resolver = dst_resolver)
+}
+
+#' @export
+subtract_years.civil_local_datetime <- function(x,
+                                                n,
+                                                ...,
+                                                day_resolver = default_day_resolver()) {
+  add_years(x, -n, ..., day_resolver = day_resolver)
+}
+
+# ------------------------------------------------------------------------------
+# month - add
 
 #' @export
 add_months <- function(x, n, ...) {
@@ -135,7 +177,49 @@ add_months.civil_local_datetime <- function(x,
 }
 
 # ------------------------------------------------------------------------------
-# week
+# month - subtract
+
+#' @export
+subtract_months <- function(x, n, ...) {
+  UseMethod("subtract_months")
+}
+
+#' @export
+subtract_months.Date <- function(x,
+                                 n,
+                                 ...,
+                                 day_resolver = default_day_resolver()) {
+  add_months(x, -n, ..., day_resolver = day_resolver)
+}
+
+#' @export
+subtract_months.POSIXct <- function(x,
+                                    n,
+                                    ...,
+                                    day_resolver = default_day_resolver(),
+                                    dst_resolver = default_dst_arithmetic_resolver()) {
+  add_months(x, -n, ..., day_resolver = day_resolver, dst_resolver = dst_resolver)
+}
+
+#' @export
+subtract_months.POSIXlt <- function(x,
+                                    n,
+                                    ...,
+                                    day_resolver = default_day_resolver(),
+                                    dst_resolver = default_dst_arithmetic_resolver()) {
+  add_months(x, -n, ..., day_resolver = day_resolver, dst_resolver = dst_resolver)
+}
+
+#' @export
+subtract_months.civil_local_datetime <- function(x,
+                                                 n,
+                                                 ...,
+                                                 day_resolver = default_day_resolver()) {
+  add_months(x, -n, ..., day_resolver = day_resolver)
+}
+
+# ------------------------------------------------------------------------------
+# week - add
 
 #' @export
 add_weeks <- function(x, n, ...) {
@@ -195,7 +279,41 @@ add_weeks.civil_local_datetime <- function(x, n, ...) {
 }
 
 # ------------------------------------------------------------------------------
-# day
+# week - subtract
+
+#' @export
+subtract_weeks <- function(x, n, ...) {
+  UseMethod("subtract_weeks")
+}
+
+#' @export
+subtract_weeks.Date <- function(x, n, ...) {
+  add_weeks(x, -n, ...)
+}
+
+#' @export
+subtract_weeks.POSIXct <- function(x,
+                                   n,
+                                   ...,
+                                   dst_resolver = default_dst_arithmetic_resolver()) {
+  add_weeks(x, -n, ..., dst_resolver = dst_resolver)
+}
+
+#' @export
+subtract_weeks.POSIXlt <- function(x,
+                                   n,
+                                   ...,
+                                   dst_resolver = default_dst_arithmetic_resolver()) {
+  add_weeks(x, -n, ..., dst_resolver = dst_resolver)
+}
+
+#' @export
+subtract_weeks.civil_local_datetime <- function(x, n, ...) {
+  add_weeks(x, -n, ...)
+}
+
+# ------------------------------------------------------------------------------
+# day - add
 
 #' @export
 add_days <- function(x, n, ...) {
@@ -255,7 +373,41 @@ add_days.civil_local_datetime <- function(x, n, ...) {
 }
 
 # ------------------------------------------------------------------------------
-# hour
+# day - subtract
+
+#' @export
+subtract_days <- function(x, n, ...) {
+  UseMethod("subtract_days")
+}
+
+#' @export
+subtract_days.Date <- function(x, n, ...) {
+  add_days(x, -n, ...)
+}
+
+#' @export
+subtract_days.POSIXct <- function(x,
+                                  n,
+                                  ...,
+                                  dst_resolver = default_dst_arithmetic_resolver()) {
+  add_days(x, -n, ..., dst_resolver = dst_resolver)
+}
+
+#' @export
+subtract_days.POSIXlt <- function(x,
+                                  n,
+                                  ...,
+                                  dst_resolver = default_dst_arithmetic_resolver()) {
+  add_days(x, -n, ..., dst_resolver = dst_resolver)
+}
+
+#' @export
+subtract_days.civil_local_datetime <- function(x, n, ...) {
+  add_days(x, -n, ...)
+}
+
+# ------------------------------------------------------------------------------
+# hour - add
 
 #' @export
 add_hours <- function(x, n, ...) {
@@ -304,7 +456,35 @@ add_hours.civil_local_datetime <- function(x, n, ...) {
 }
 
 # ------------------------------------------------------------------------------
-# minute
+# hour - subtract
+
+#' @export
+subtract_hours <- function(x, n, ...) {
+  UseMethod("subtract_hours")
+}
+
+#' @export
+subtract_hours.Date <- function(x, n, ...) {
+  add_hours(x, -n, ...)
+}
+
+#' @export
+subtract_hours.POSIXct <- function(x, n, ...) {
+  add_hours(x, -n, ...)
+}
+
+#' @export
+subtract_hours.POSIXlt <- function(x, n, ...) {
+  add_hours(x, -n, ...)
+}
+
+#' @export
+subtract_hours.civil_local_datetime <- function(x, n, ...) {
+  add_hours(x, -n, ...)
+}
+
+# ------------------------------------------------------------------------------
+# minute - add
 
 #' @export
 add_minutes <- function(x, n, ...) {
@@ -353,7 +533,35 @@ add_minutes.civil_local_datetime <- function(x, n, ...) {
 }
 
 # ------------------------------------------------------------------------------
-# second
+# minute - subtract
+
+#' @export
+subtract_minutes <- function(x, n, ...) {
+  UseMethod("subtract_minutes")
+}
+
+#' @export
+subtract_minutes.Date <- function(x, n, ...) {
+  add_minutes(x, -n, ...)
+}
+
+#' @export
+subtract_minutes.POSIXct <- function(x, n, ...) {
+  add_minutes(x, -n, ...)
+}
+
+#' @export
+subtract_minutes.POSIXlt <- function(x, n, ...) {
+  add_minutes(x, -n, ...)
+}
+
+#' @export
+subtract_minutes.civil_local_datetime <- function(x, n, ...) {
+  add_minutes(x, -n, ...)
+}
+
+# ------------------------------------------------------------------------------
+# second - add
 
 #' @export
 add_seconds <- function(x, n, ...) {
@@ -399,6 +607,34 @@ add_seconds.civil_local_datetime <- function(x, n, ...) {
     day_resolver = default_day_resolver(),
     unit = "second"
   )
+}
+
+# ------------------------------------------------------------------------------
+# second - subtract
+
+#' @export
+subtract_seconds <- function(x, n, ...) {
+  UseMethod("subtract_seconds")
+}
+
+#' @export
+subtract_seconds.Date <- function(x, n, ...) {
+  add_seconds(x, -n, ...)
+}
+
+#' @export
+subtract_seconds.POSIXct <- function(x, n, ...) {
+  add_seconds(x, -n, ...)
+}
+
+#' @export
+subtract_seconds.POSIXlt <- function(x, n, ...) {
+  add_seconds(x, -n, ...)
+}
+
+#' @export
+subtract_seconds.civil_local_datetime <- function(x, n, ...) {
+  add_seconds(x, -n, ...)
 }
 
 # ------------------------------------------------------------------------------
