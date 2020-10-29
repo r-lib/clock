@@ -6,40 +6,91 @@
 #include <date/date.h>
 #include <date/tz.h>
 
-static sexp add_years_posixct_impl(sexp x,
-                                   sexp n,
-                                   enum day_nonexistant day_nonexistant,
-                                   enum dst_nonexistant dst_nonexistant,
-                                   enum dst_ambiguous dst_ambiguous,
-                                   r_ssize size);
+static sexp add_period_posixct_impl(sexp x,
+                                    sexp n,
+                                    enum day_nonexistant day_nonexistant,
+                                    enum dst_nonexistant dst_nonexistant,
+                                    enum dst_ambiguous dst_ambiguous,
+                                    r_ssize size,
+                                    enum unit unit);
 
 [[cpp11::register]]
-SEXP add_years_posixct_cpp(SEXP x,
-                           SEXP n,
-                           SEXP day_resolver,
-                           SEXP dst_resolver,
-                           SEXP size) {
-  enum day_nonexistant c_day_nonexistant = parse_day_nonexistant(r_list_get(day_resolver, 0));
-  enum dst_nonexistant c_dst_nonexistant = parse_dst_nonexistant_arithmetic(r_list_get(dst_resolver, 0));
-  enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous_arithmetic(r_list_get(dst_resolver, 1));
+SEXP add_period_posixct_cpp(SEXP x,
+                            SEXP n,
+                            SEXP day_resolver,
+                            SEXP dst_resolver,
+                            SEXP size,
+                            SEXP unit) {
+  sexp day_nonexistant = r_list_get(day_resolver, 0);
+  sexp dst_nonexistant = r_list_get(dst_resolver, 0);
+  sexp dst_ambiguous = r_list_get(dst_resolver, 1);
+
+  enum day_nonexistant c_day_nonexistant = parse_day_nonexistant(day_nonexistant);
+  enum dst_nonexistant c_dst_nonexistant = parse_dst_nonexistant_arithmetic(dst_nonexistant);
+  enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous_arithmetic(dst_ambiguous);
+
   r_ssize c_size = r_int_get(size, 0);
 
-  return add_years_posixct_impl(
+  enum unit c_unit = parse_unit(unit);
+
+  return add_period_posixct_impl(
     x,
     n,
     c_day_nonexistant,
     c_dst_nonexistant,
     c_dst_ambiguous,
-    c_size
+    c_size,
+    c_unit
   );
 }
 
-static sexp add_years_posixct_impl(sexp x,
+static sexp add_year_month_posixct(sexp x,
                                    sexp n,
                                    enum day_nonexistant day_nonexistant,
                                    enum dst_nonexistant dst_nonexistant,
                                    enum dst_ambiguous dst_ambiguous,
-                                   r_ssize size) {
+                                   r_ssize size,
+                                   enum unit unit);
+
+static sexp add_period_posixct_impl(sexp x,
+                                    sexp n,
+                                    enum day_nonexistant day_nonexistant,
+                                    enum dst_nonexistant dst_nonexistant,
+                                    enum dst_ambiguous dst_ambiguous,
+                                    r_ssize size,
+                                    enum unit unit) {
+  switch (unit) {
+  case unit::year:
+  case unit::month: {
+    return add_year_month_posixct(
+      x,
+      n,
+      day_nonexistant,
+      dst_nonexistant,
+      dst_ambiguous,
+      size,
+      unit
+    );
+  }
+  case unit::week:
+  case unit::day:
+  case unit::hour:
+  case unit::minute:
+  case unit::second: {
+    r_abort("not yet supported");
+  }
+  }
+}
+
+// -----------------------------------------------------------------------------
+
+static sexp add_year_month_posixct(sexp x,
+                                   sexp n,
+                                   enum day_nonexistant day_nonexistant,
+                                   enum dst_nonexistant dst_nonexistant,
+                                   enum dst_ambiguous dst_ambiguous,
+                                   r_ssize size,
+                                   enum unit unit) {
   sexp out = PROTECT(r_new_double(size));
   double* p_out = r_dbl_deref(out);
 
@@ -86,7 +137,13 @@ static sexp add_years_posixct_impl(sexp x,
 
     date::year_month_day elt_ymd{elt_lday};
 
-    date::year_month_day out_ymd = elt_ymd + date::years{n_elt};
+    date::year_month_day out_ymd;
+
+    if (unit == unit::year) {
+      out_ymd = elt_ymd + date::years{n_elt};
+    } else {
+      out_ymd = elt_ymd + date::months{n_elt};
+    }
 
     if (!out_ymd.ok()) {
       switch (day_nonexistant) {
@@ -147,31 +204,74 @@ static sexp add_years_posixct_impl(sexp x,
 
 // -----------------------------------------------------------------------------
 
-static sexp add_years_local_impl(sexp x,
-                                 sexp n,
-                                 enum day_nonexistant day_nonexistant,
-                                 r_ssize size);
+static sexp add_period_local_impl(sexp x,
+                                  sexp n,
+                                  enum day_nonexistant day_nonexistant,
+                                  r_ssize size,
+                                  enum unit unit);
 
 [[cpp11::register]]
-SEXP add_years_local_cpp(SEXP x,
-                         SEXP n,
-                         SEXP day_resolver,
-                         SEXP size) {
-  enum day_nonexistant c_day_nonexistant = parse_day_nonexistant(r_list_get(day_resolver, 0));
+SEXP add_period_local_cpp(SEXP x,
+                          SEXP n,
+                          SEXP day_resolver,
+                          SEXP size,
+                          SEXP unit) {
+  sexp day_nonexistant = r_list_get(day_resolver, 0);
+
+  enum day_nonexistant c_day_nonexistant = parse_day_nonexistant(day_nonexistant);
+
   r_ssize c_size = r_int_get(size, 0);
 
-  return add_years_local_impl(
+  enum unit c_unit = parse_unit(unit);
+
+  return add_period_local_impl(
     x,
     n,
     c_day_nonexistant,
-    c_size
+    c_size,
+    c_unit
   );
 }
 
-static sexp add_years_local_impl(sexp x,
+static sexp add_year_month_local(sexp x,
                                  sexp n,
                                  enum day_nonexistant day_nonexistant,
-                                 r_ssize size) {
+                                 r_ssize size,
+                                 enum unit unit);
+
+static sexp add_period_local_impl(sexp x,
+                                  sexp n,
+                                  enum day_nonexistant day_nonexistant,
+                                  r_ssize size,
+                                  enum unit unit) {
+  switch (unit) {
+  case unit::year:
+  case unit::month: {
+    return add_year_month_local(
+      x,
+      n,
+      day_nonexistant,
+      size,
+      unit
+    );
+  }
+  case unit::week:
+  case unit::day:
+  case unit::hour:
+  case unit::minute:
+  case unit::second: {
+    r_abort("not yet supported");
+  }
+  }
+}
+
+// -----------------------------------------------------------------------------
+
+static sexp add_year_month_local(sexp x,
+                                 sexp n,
+                                 enum day_nonexistant day_nonexistant,
+                                 r_ssize size,
+                                 enum unit unit) {
   sexp out = PROTECT(r_new_double(size));
   double* p_out = r_dbl_deref(out);
 
@@ -209,7 +309,13 @@ static sexp add_years_local_impl(sexp x,
 
     date::year_month_day elt_ymd{elt_lday};
 
-    date::year_month_day out_ymd = elt_ymd + date::years{n_elt};
+    date::year_month_day out_ymd;
+
+    if (unit == unit::year) {
+      out_ymd = elt_ymd + date::years{n_elt};
+    } else {
+      out_ymd = elt_ymd + date::months{n_elt};
+    }
 
     if (!out_ymd.ok()) {
       switch (day_nonexistant) {

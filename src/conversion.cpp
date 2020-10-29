@@ -12,8 +12,12 @@ static inline double info_unique(const date::local_info& info,
 
 // -----------------------------------------------------------------------------
 
+/*
+ * I'm using `info.second.begin` here because that seems more intuitive, but
+ * I think date uses `info.first.end`. As far as I can tell, these are identical.
+ */
 static inline double info_nonexistant_next(const date::local_info& info) {
-  return info.first.end.time_since_epoch().count();
+  return info.second.begin.time_since_epoch().count();
 }
 
 static inline double info_nonexistant_previous(const date::local_info& info) {
@@ -31,15 +35,19 @@ static inline double info_nonexistant_directional(const date::local_info& info,
 
 static inline double info_nonexistant_next_shift(const date::local_info& info,
                                                  const date::local_seconds& lsec) {
+  std::chrono::seconds offset = info.second.offset;
   std::chrono::seconds gap = info.second.offset - info.first.offset;
-  date::local_seconds out = lsec + gap;
+  date::local_seconds lsec_shift = lsec + gap;
+  date::sys_seconds out = date::sys_seconds{lsec_shift.time_since_epoch()} - offset;
   return out.time_since_epoch().count();
 }
 
 static inline double info_nonexistant_previous_shift(const date::local_info& info,
                                                      const date::local_seconds& lsec) {
+  std::chrono::seconds offset = info.first.offset;
   std::chrono::seconds gap = info.second.offset - info.first.offset;
-  date::local_seconds out = lsec - gap;
+  date::local_seconds lsec_shift = lsec - gap;
+  date::sys_seconds out = date::sys_seconds{lsec_shift.time_since_epoch()} - offset;
   return out.time_since_epoch().count();
 }
 
