@@ -3,6 +3,7 @@
 
 #include "r.h"
 #include "utils-rlib.h"
+#include <date/date.h>
 #include <cstdint>
 #include <cmath>
 
@@ -29,6 +30,32 @@ static inline int64_t as_int64(double x) {
   }
 
   return static_cast<int64_t>(x);
+}
+
+// -----------------------------------------------------------------------------
+
+// Signal that we want to return an NA result
+// year::min() is -32767 so it should be fine
+static inline date::year_month_day na_ymd() {
+  static date::year_month_day x =
+    date::year::min() /
+      date::month{12} /
+        date::day{31};
+
+  return x;
+}
+
+static inline bool is_na_ymd(const date::year_month_day& ymd) {
+  return ymd == na_ymd();
+}
+
+static inline date::local_seconds na_lsec() {
+  static date::local_seconds x = date::local_seconds::min();
+  return x;
+}
+
+static inline bool is_na_lsec(const date::local_seconds& lsec) {
+  return lsec == na_lsec();
 }
 
 // -----------------------------------------------------------------------------

@@ -3,8 +3,20 @@
 #include "zone.h"
 #include "enums.h"
 #include "conversion.h"
+#include "resolve.h"
 #include <date/date.h>
 #include <date/tz.h>
+
+// -----------------------------------------------------------------------------
+
+static date::local_seconds add_year_month_local_one(const date::local_seconds& lsec,
+                                                    int n,
+                                                    r_ssize i,
+                                                    const enum day_nonexistant& day_nonexistant,
+                                                    const enum unit& unit);
+
+// -----------------------------------------------------------------------------
+
 
 static sexp add_period_posixct_impl(sexp x,
                                     sexp n,
@@ -110,17 +122,17 @@ static sexp add_year_month_posixct(sexp x,
   const bool recycle_n = r_is_scalar(n);
 
   for (r_ssize i = 0; i < size; ++i) {
-    double x_elt = recycle_x ? p_x[0] : p_x[i];
-    int n_elt = recycle_n ? p_n[0] : p_n[i];
+    double elt_x = recycle_x ? p_x[0] : p_x[i];
+    int elt_n = recycle_n ? p_n[0] : p_n[i];
 
-    int64_t elt = as_int64(x_elt);
+    int64_t elt = as_int64(elt_x);
 
     if (elt == r_int64_na) {
       p_out[i] = r_dbl_na;
       continue;
     }
 
-    if (n_elt == NA_INTEGER) {
+    if (elt_n == NA_INTEGER) {
       p_out[i] = r_dbl_na;
       continue;
     }
@@ -130,61 +142,21 @@ static sexp add_year_month_posixct(sexp x,
     date::zoned_seconds elt_zsec = date::make_zoned(p_zone, elt_ssec);
     date::local_seconds elt_lsec = elt_zsec.get_local_time();
 
-    date::local_days elt_lday = date::floor<date::days>(elt_lsec);
-    date::local_seconds elt_lsec_floor = elt_lday;
+    date::local_seconds out_lsec = add_year_month_local_one(
+      elt_lsec,
+      elt_n,
+      i,
+      day_nonexistant,
+      unit
+    );
 
-    std::chrono::seconds elt_time_of_day = elt_lsec - elt_lsec_floor;
-
-    date::year_month_day elt_ymd{elt_lday};
-
-    date::year_month_day out_ymd;
-
-    if (unit == unit::year) {
-      out_ymd = elt_ymd + date::years{n_elt};
-    } else {
-      out_ymd = elt_ymd + date::months{n_elt};
+    if (is_na_lsec(elt_lsec)) {
+      p_out[i] = NA_REAL;
+      continue;
     }
-
-    if (!out_ymd.ok()) {
-      switch (day_nonexistant) {
-      case day_nonexistant::start_keep: {
-        // First day of next month - cancels out time of day
-        out_ymd = out_ymd.year() / (out_ymd.month() + date::months(1)) / date::day(1);
-        break;
-      }
-      case day_nonexistant::start: {
-        // First day of next month - cancels out time of day
-        out_ymd = out_ymd.year() / (out_ymd.month() + date::months(1)) / date::day(1);
-        elt_time_of_day = std::chrono::seconds{0};
-        break;
-      }
-      case day_nonexistant::end_keep: {
-        // Last day of current month, shifts time of day to last second
-        out_ymd = out_ymd.year() / out_ymd.month() / date::last;
-        break;
-      }
-      case day_nonexistant::end: {
-        // Last day of current month, shifts time of day to last second
-        out_ymd = out_ymd.year() / out_ymd.month() / date::last;
-        elt_time_of_day = std::chrono::seconds{86400 - 1};
-        break;
-      }
-      case day_nonexistant::na: {
-        p_out[i] = NA_REAL;
-        continue;
-      }
-      case day_nonexistant::error: {
-        r_abort("Nonexistant day found at location %i.", (int) i + 1);
-      }
-      }
-    }
-
-    date::local_days out_lday{out_ymd};
-    date::local_seconds out_lsec_floor{out_lday};
-    date::local_seconds out_lsec{out_lsec_floor + elt_time_of_day};
 
     const enum dst_direction dst_direction =
-      n_elt >= 0 ?
+      elt_n >= 0 ?
       dst_direction::positive :
       dst_direction::negative;
 
@@ -284,17 +256,17 @@ static sexp add_year_month_local(sexp x,
   const bool recycle_n = r_is_scalar(n);
 
   for (r_ssize i = 0; i < size; ++i) {
-    double x_elt = recycle_x ? p_x[0] : p_x[i];
-    int n_elt = recycle_n ? p_n[0] : p_n[i];
+    double elt_x = recycle_x ? p_x[0] : p_x[i];
+    int elt_n = recycle_n ? p_n[0] : p_n[i];
 
-    int64_t elt = as_int64(x_elt);
+    int64_t elt = as_int64(elt_x);
 
     if (elt == r_int64_na) {
       p_out[i] = r_dbl_na;
       continue;
     }
 
-    if (n_elt == NA_INTEGER) {
+    if (elt_n == NA_INTEGER) {
       p_out[i] = r_dbl_na;
       continue;
     }
@@ -302,62 +274,61 @@ static sexp add_year_month_local(sexp x,
     std::chrono::seconds elt_sec{elt};
     date::local_seconds elt_lsec{elt_sec};
 
-    date::local_days elt_lday = date::floor<date::days>(elt_lsec);
-    date::local_seconds elt_lsec_floor = elt_lday;
+    date::local_seconds out_lsec = add_year_month_local_one(
+      elt_lsec,
+      elt_n,
+      i,
+      day_nonexistant,
+      unit
+    );
 
-    std::chrono::seconds elt_time_of_day = elt_lsec - elt_lsec_floor;
-
-    date::year_month_day elt_ymd{elt_lday};
-
-    date::year_month_day out_ymd;
-
-    if (unit == unit::year) {
-      out_ymd = elt_ymd + date::years{n_elt};
+    if (is_na_lsec(elt_lsec)) {
+      p_out[i] = NA_REAL;
     } else {
-      out_ymd = elt_ymd + date::months{n_elt};
+      p_out[i] = out_lsec.time_since_epoch().count();
     }
-
-    if (!out_ymd.ok()) {
-      switch (day_nonexistant) {
-      case day_nonexistant::start_keep: {
-        // First day of next month - cancels out time of day
-        out_ymd = out_ymd.year() / (out_ymd.month() + date::months(1)) / date::day(1);
-        break;
-      }
-      case day_nonexistant::start: {
-        // First day of next month - cancels out time of day
-        out_ymd = out_ymd.year() / (out_ymd.month() + date::months(1)) / date::day(1);
-        elt_time_of_day = std::chrono::seconds{0};
-        break;
-      }
-      case day_nonexistant::end_keep: {
-        // Last day of current month, shifts time of day to last second
-        out_ymd = out_ymd.year() / out_ymd.month() / date::last;
-        break;
-      }
-      case day_nonexistant::end: {
-        // Last day of current month, shifts time of day to last second
-        out_ymd = out_ymd.year() / out_ymd.month() / date::last;
-        elt_time_of_day = std::chrono::seconds{86400 - 1};
-        break;
-      }
-      case day_nonexistant::na: {
-        p_out[i] = NA_REAL;
-        continue;
-      }
-      case day_nonexistant::error: {
-        r_abort("Nonexistant day found at location %i.", (int) i + 1);
-      }
-      }
-    }
-
-    date::local_days out_lday{out_ymd};
-    date::local_seconds out_lsec_floor{out_lday};
-    date::local_seconds out_lsec{out_lsec_floor + elt_time_of_day};
-
-    p_out[i] = out_lsec.time_since_epoch().count();
   }
 
   UNPROTECT(1);
   return out;
 }
+
+// -----------------------------------------------------------------------------
+
+static date::local_seconds add_year_month_local_one(const date::local_seconds& lsec,
+                                                    int n,
+                                                    r_ssize i,
+                                                    const enum day_nonexistant& day_nonexistant,
+                                                    const enum unit& unit) {
+  date::local_days lday = date::floor<date::days>(lsec);
+  date::local_seconds lsec_floor = lday;
+
+  std::chrono::seconds time_of_day = lsec - lsec_floor;
+
+  date::year_month_day ymd{lday};
+
+  date::year_month_day out_ymd;
+
+  if (unit == unit::year) {
+    out_ymd = ymd + date::years{n};
+  } else {
+    out_ymd = ymd + date::months{n};
+  }
+
+  if (!out_ymd.ok()) {
+    resolve_day_nonexistant(i, day_nonexistant, out_ymd, time_of_day);
+
+    if (is_na_ymd(out_ymd)) {
+      return na_lsec();
+    }
+  }
+
+  date::local_days out_lday{out_ymd};
+  date::local_seconds out_lsec_floor{out_lday};
+  date::local_seconds out_lsec{out_lsec_floor + time_of_day};
+
+  return out_lsec;
+}
+
+
+

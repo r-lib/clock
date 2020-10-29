@@ -8,6 +8,8 @@ sexp civil_strings_posixt = NULL;
 
 sexp civil_classes_posixct = NULL;
 
+// -----------------------------------------------------------------------------
+
 void civil_init_utils() {
   civil_syms_tzone = r_sym("tzone");
 
