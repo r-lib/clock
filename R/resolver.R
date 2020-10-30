@@ -1,3 +1,45 @@
+
+# ------------------------------------------------------------------------------
+
+validate_dst_ambiguous_arithmetic <- function(x, arg = "dst_ambiguous") {
+  arg_match0(x, dst_ambiguous_arithmetic_opts(), arg)
+}
+
+dst_ambiguous_arithmetic_opts <- function() {
+  c("directional", "earliest", "latest", "NA", "error")
+}
+
+# ------------------------------------------------------------------------------
+
+validate_dst_nonexistant_arithmetic <- function(x, arg = "dst_nonexistant") {
+  arg_match0(x, dst_nonexistant_arithmetic_opts(), arg)
+}
+
+dst_nonexistant_arithmetic_opts <- function() {
+  c(
+    "directional",
+    "next",
+    "previous",
+    "directional-shift",
+    "next-shift",
+    "previous-shift",
+    "NA",
+    "error"
+  )
+}
+
+# ------------------------------------------------------------------------------
+
+validate_day_nonexistant <- function(x, arg = "day_nonexistant") {
+  arg_match0(x, day_nonexistant_opts(), arg)
+}
+
+day_nonexistant_opts <- function() {
+  c("end", "start", "end-keep", "start-keep", "NA", "error")
+}
+
+# ------------------------------------------------------------------------------
+
 #' @export
 day_resolver <- function(..., nonexistant = "end") {
   check_dots_empty()
@@ -20,9 +62,7 @@ print.civil_day_resolver <- function(x, ...) {
   invisible(x)
 }
 
-day_nonexistant_opts <- function() {
-  c("end", "start", "end-keep", "start-keep", "NA", "error")
-}
+
 
 is_day_resolver <- function(x) {
   inherits(x, "civil_day_resolver")

@@ -22,3 +22,8 @@ Imports:
     vctrs,
     ellipsis,
     rlang
+Suggests: 
+    knitr,
+    rmarkdown,
+    magrittr
+VignetteBuilder: knitr

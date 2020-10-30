@@ -33,14 +33,11 @@ static sexp add_period_to_zoned(sexp x,
 [[cpp11::register]]
 SEXP add_period_to_zoned_cpp(SEXP x,
                              SEXP n,
-                             SEXP day_resolver,
-                             SEXP dst_resolver,
+                             SEXP day_nonexistant,
+                             SEXP dst_nonexistant,
+                             SEXP dst_ambiguous,
                              SEXP size,
                              SEXP unit) {
-  sexp day_nonexistant = r_list_get(day_resolver, 0);
-  sexp dst_nonexistant = r_list_get(dst_resolver, 0);
-  sexp dst_ambiguous = r_list_get(dst_resolver, 1);
-
   enum day_nonexistant c_day_nonexistant = parse_day_nonexistant(day_nonexistant);
   enum dst_nonexistant c_dst_nonexistant = parse_dst_nonexistant_arithmetic(dst_nonexistant);
   enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous_arithmetic(dst_ambiguous);
@@ -386,11 +383,9 @@ static sexp add_period_to_local(sexp x,
 [[cpp11::register]]
 SEXP add_period_to_local_cpp(SEXP x,
                              SEXP n,
-                             SEXP day_resolver,
+                             SEXP day_nonexistant,
                              SEXP size,
                              SEXP unit) {
-  sexp day_nonexistant = r_list_get(day_resolver, 0);
-
   enum day_nonexistant c_day_nonexistant = parse_day_nonexistant(day_nonexistant);
 
   r_ssize c_size = r_int_get(size, 0);
