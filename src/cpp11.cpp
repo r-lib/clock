@@ -5,10 +5,10 @@
 #include "cpp11/declarations.hpp"
 
 // adjust-zone.cpp
-SEXP adjust_zone_retain_clock_cpp(SEXP x, SEXP zone, SEXP dst_resolver);
-extern "C" SEXP _civil_adjust_zone_retain_clock_cpp(SEXP x, SEXP zone, SEXP dst_resolver) {
+SEXP adjust_zone_retain_clock_cpp(SEXP x, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous);
+extern "C" SEXP _civil_adjust_zone_retain_clock_cpp(SEXP x, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous) {
   BEGIN_CPP11
-    return cpp11::as_sexp(adjust_zone_retain_clock_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(zone), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_resolver)));
+    return cpp11::as_sexp(adjust_zone_retain_clock_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(zone), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous)));
   END_CPP11
 }
 // adjust.cpp
@@ -96,7 +96,7 @@ extern SEXP _civil_add_duration_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_period_to_local_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_period_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_local_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _civil_adjust_zone_retain_clock_cpp(SEXP, SEXP, SEXP);
+extern SEXP _civil_adjust_zone_retain_clock_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_init();
 extern SEXP _civil_civil_set_install(SEXP);
@@ -110,7 +110,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_add_period_to_local_cpp",      (DL_FUNC) &_civil_add_period_to_local_cpp,      5},
     {"_civil_add_period_to_zoned_cpp",      (DL_FUNC) &_civil_add_period_to_zoned_cpp,      7},
     {"_civil_adjust_local_cpp",             (DL_FUNC) &_civil_adjust_local_cpp,             5},
-    {"_civil_adjust_zone_retain_clock_cpp", (DL_FUNC) &_civil_adjust_zone_retain_clock_cpp, 3},
+    {"_civil_adjust_zone_retain_clock_cpp", (DL_FUNC) &_civil_adjust_zone_retain_clock_cpp, 4},
     {"_civil_adjust_zoned_cpp",             (DL_FUNC) &_civil_adjust_zoned_cpp,             6},
     {"_civil_civil_init",                   (DL_FUNC) &_civil_civil_init,                   0},
     {"_civil_civil_set_install",            (DL_FUNC) &_civil_civil_set_install,            1},

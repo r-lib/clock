@@ -2,11 +2,13 @@
 adjust_zone_retain_clock <- function(x,
                                      zone,
                                      ...,
-                                     dst_resolver = default_dst_resolver()) {
+                                     dst_nonexistent = "next",
+                                     dst_ambiguous = "earliest") {
   check_dots_empty()
-  validate_dst_resolver(dst_resolver)
+  validate_dst_nonexistent(dst_nonexistent)
+  validate_dst_ambiguous(dst_ambiguous)
   x <- to_posixct(x)
-  adjust_zone_retain_clock_cpp(x, zone, dst_resolver)
+  adjust_zone_retain_clock_cpp(x, zone, dst_nonexistent, dst_ambiguous)
 }
 
 #' @export

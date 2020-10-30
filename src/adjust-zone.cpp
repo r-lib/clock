@@ -13,10 +13,8 @@ static sexp adjust_zone_retain_clock(sexp x,
 [[cpp11::register]]
 SEXP adjust_zone_retain_clock_cpp(SEXP x,
                                   SEXP zone,
-                                  SEXP dst_resolver) {
-  sexp dst_nonexistent = r_list_get(dst_resolver, 0);
-  sexp dst_ambiguous = r_list_get(dst_resolver, 1);
-
+                                  SEXP dst_nonexistent,
+                                  SEXP dst_ambiguous) {
   enum dst_nonexistent c_dst_nonexistent = parse_dst_nonexistent(dst_nonexistent);
   enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous(dst_ambiguous);
 
