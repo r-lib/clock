@@ -29,14 +29,11 @@ static sexp adjust_zoned(sexp x,
 [[cpp11::register]]
 SEXP adjust_zoned_cpp(SEXP x,
                       SEXP value,
-                      SEXP day_resolver,
-                      SEXP dst_resolver,
+                      SEXP day_nonexistent,
+                      SEXP dst_nonexistent,
+                      SEXP dst_ambiguous,
                       SEXP size,
                       SEXP adjuster) {
-  sexp day_nonexistent = r_list_get(day_resolver, 0);
-  sexp dst_nonexistent = r_list_get(dst_resolver, 0);
-  sexp dst_ambiguous = r_list_get(dst_resolver, 1);
-
   enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
   enum dst_nonexistent c_dst_nonexistent = parse_dst_nonexistent(dst_nonexistent);
   enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous(dst_ambiguous);
@@ -144,10 +141,9 @@ static sexp adjust_local(sexp x,
 [[cpp11::register]]
 SEXP adjust_local_cpp(SEXP x,
                       SEXP value,
-                      SEXP day_resolver,
+                      SEXP day_nonexistent,
                       SEXP size,
                       SEXP adjuster) {
-  sexp day_nonexistent = r_list_get(day_resolver, 0);
   enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
 
   r_ssize c_size = r_int_get(size, 0);
