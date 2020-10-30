@@ -36,8 +36,8 @@ localize_posixct_cpp <- function(x) {
   .Call("_civil_localize_posixct_cpp", x, PACKAGE = "civil")
 }
 
-unlocalize_cpp <- function(x, zone, dst_resolver) {
-  .Call("_civil_unlocalize_cpp", x, zone, dst_resolver, PACKAGE = "civil")
+unlocalize_cpp <- function(x, zone, dst_nonexistent, dst_ambiguous) {
+  .Call("_civil_unlocalize_cpp", x, zone, dst_nonexistent, dst_ambiguous, PACKAGE = "civil")
 }
 
 zone_standardize <- function(zone) {

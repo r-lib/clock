@@ -36,43 +36,27 @@ is_local_datetime <- function(x) {
 
 #' @export
 localize <- function(x) {
-  UseMethod("localize")
-}
-
-#' @export
-localize.Date <- function(x) {
-  out <- unstructure(x) * 86400
-  names(out) <- names(x)
-  new_local_datetime(out)
-}
-
-#' @export
-localize.POSIXct <- function(x) {
-  x <- posixct_standardize(x)
-  # convert to local seconds
+  x <- to_posixct(x)
   out <- localize_posixct_cpp(x)
   new_local_datetime(out)
-}
-
-#' @export
-localize.POSIXlt <- function(x) {
-  x <- as.POSIXct.POSIXlt(x)
-  localize(x)
 }
 
 # ------------------------------------------------------------------------------
 
 #' @export
-unlocalize <- function(x, zone, ...) {
-  UseMethod("unlocalize")
-}
-
-#' @export
-unlocalize.civil_local_datetime <- function(x,
-                                            zone,
-                                            ...,
-                                            dst_resolver = default_dst_resolver()) {
+unlocalize <- function(x,
+                       zone,
+                       ...,
+                       dst_nonexistent = "next",
+                       dst_ambiguous = "earliest") {
   check_dots_empty()
-  validate_dst_resolver(dst_resolver)
-  unlocalize_cpp(x, zone, dst_resolver)
+
+  if (!is_local_datetime(x)) {
+    abort("`x` must be a local datetime object to unlocalize.")
+  }
+
+  validate_dst_nonexistent(dst_nonexistent)
+  validate_dst_ambiguous(dst_ambiguous)
+
+  unlocalize_cpp(x, zone, dst_nonexistent, dst_ambiguous)
 }

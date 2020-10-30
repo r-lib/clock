@@ -69,10 +69,10 @@ extern "C" SEXP _civil_localize_posixct_cpp(SEXP x) {
   END_CPP11
 }
 // local-datetime.cpp
-SEXP unlocalize_cpp(SEXP x, SEXP zone, SEXP dst_resolver);
-extern "C" SEXP _civil_unlocalize_cpp(SEXP x, SEXP zone, SEXP dst_resolver) {
+SEXP unlocalize_cpp(SEXP x, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous);
+extern "C" SEXP _civil_unlocalize_cpp(SEXP x, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous) {
   BEGIN_CPP11
-    return cpp11::as_sexp(unlocalize_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(zone), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_resolver)));
+    return cpp11::as_sexp(unlocalize_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(zone), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous)));
   END_CPP11
 }
 // zone.cpp
@@ -101,7 +101,7 @@ extern SEXP _civil_adjust_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_init();
 extern SEXP _civil_civil_set_install(SEXP);
 extern SEXP _civil_localize_posixct_cpp(SEXP);
-extern SEXP _civil_unlocalize_cpp(SEXP, SEXP, SEXP);
+extern SEXP _civil_unlocalize_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_zone_is_valid(SEXP);
 extern SEXP _civil_zone_standardize(SEXP);
 
@@ -115,7 +115,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_civil_init",                   (DL_FUNC) &_civil_civil_init,                   0},
     {"_civil_civil_set_install",            (DL_FUNC) &_civil_civil_set_install,            1},
     {"_civil_localize_posixct_cpp",         (DL_FUNC) &_civil_localize_posixct_cpp,         1},
-    {"_civil_unlocalize_cpp",               (DL_FUNC) &_civil_unlocalize_cpp,               3},
+    {"_civil_unlocalize_cpp",               (DL_FUNC) &_civil_unlocalize_cpp,               4},
     {"_civil_zone_is_valid",                (DL_FUNC) &_civil_zone_is_valid,                1},
     {"_civil_zone_standardize",             (DL_FUNC) &_civil_zone_standardize,             1},
     {NULL, NULL, 0}

@@ -45,7 +45,10 @@ SEXP localize_posixct_cpp(SEXP x) {
 }
 
 [[cpp11::register]]
-SEXP unlocalize_cpp(SEXP x, SEXP zone, SEXP dst_resolver) {
+SEXP unlocalize_cpp(SEXP x,
+                    SEXP zone,
+                    SEXP dst_nonexistent,
+                    SEXP dst_ambiguous) {
   r_ssize size = r_length(x);
 
   sexp out = PROTECT(r_new_double(size));
@@ -56,8 +59,8 @@ SEXP unlocalize_cpp(SEXP x, SEXP zone, SEXP dst_resolver) {
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
   enum dst_direction dst_direction = dst_direction::positive;
-  enum dst_nonexistent dst_nonexistent = parse_dst_nonexistent(r_list_get(dst_resolver, 0));
-  enum dst_ambiguous dst_ambiguous = parse_dst_ambiguous(r_list_get(dst_resolver, 1));
+  enum dst_nonexistent c_dst_nonexistent = parse_dst_nonexistent(dst_nonexistent);
+  enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous(dst_ambiguous);
 
   r_poke_names(out, r_get_names(x));
   r_poke_class(out, civil_classes_posixct);
@@ -83,8 +86,8 @@ SEXP unlocalize_cpp(SEXP x, SEXP zone, SEXP dst_resolver) {
       p_time_zone,
       i,
       dst_direction,
-      dst_nonexistent,
-      dst_ambiguous
+      c_dst_nonexistent,
+      c_dst_ambiguous
     );
   }
 
