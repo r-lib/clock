@@ -12,7 +12,7 @@
 static date::local_seconds add_ym_to_local_one(const date::local_seconds& lsec,
                                                int n,
                                                r_ssize i,
-                                               const enum day_nonexistant& day_nonexistant,
+                                               const enum day_nonexistent& day_nonexistent,
                                                const enum unit& unit,
                                                bool& na);
 
@@ -24,8 +24,8 @@ static inline date::local_seconds add_dhms_to_local_one(const date::local_second
 
 static sexp add_period_to_zoned(sexp x,
                                 sexp n,
-                                enum day_nonexistant day_nonexistant,
-                                enum dst_nonexistant dst_nonexistant,
+                                enum day_nonexistent day_nonexistent,
+                                enum dst_nonexistent dst_nonexistent,
                                 enum dst_ambiguous dst_ambiguous,
                                 r_ssize size,
                                 enum unit unit);
@@ -33,13 +33,13 @@ static sexp add_period_to_zoned(sexp x,
 [[cpp11::register]]
 SEXP add_period_to_zoned_cpp(SEXP x,
                              SEXP n,
-                             SEXP day_nonexistant,
-                             SEXP dst_nonexistant,
+                             SEXP day_nonexistent,
+                             SEXP dst_nonexistent,
                              SEXP dst_ambiguous,
                              SEXP size,
                              SEXP unit) {
-  enum day_nonexistant c_day_nonexistant = parse_day_nonexistant(day_nonexistant);
-  enum dst_nonexistant c_dst_nonexistant = parse_dst_nonexistant_arithmetic(dst_nonexistant);
+  enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
+  enum dst_nonexistent c_dst_nonexistent = parse_dst_nonexistent_arithmetic(dst_nonexistent);
   enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous_arithmetic(dst_ambiguous);
 
   r_ssize c_size = r_int_get(size, 0);
@@ -49,8 +49,8 @@ SEXP add_period_to_zoned_cpp(SEXP x,
   return add_period_to_zoned(
     x,
     n,
-    c_day_nonexistant,
-    c_dst_nonexistant,
+    c_day_nonexistent,
+    c_dst_nonexistent,
     c_dst_ambiguous,
     c_size,
     c_unit
@@ -59,23 +59,23 @@ SEXP add_period_to_zoned_cpp(SEXP x,
 
 static sexp add_ym_to_zoned(sexp x,
                             sexp n,
-                            enum day_nonexistant day_nonexistant,
-                            enum dst_nonexistant dst_nonexistant,
+                            enum day_nonexistent day_nonexistent,
+                            enum dst_nonexistent dst_nonexistent,
                             enum dst_ambiguous dst_ambiguous,
                             r_ssize size,
                             enum unit unit);
 
 static sexp add_d_to_zoned(sexp x,
                            sexp n,
-                           enum dst_nonexistant dst_nonexistant,
+                           enum dst_nonexistent dst_nonexistent,
                            enum dst_ambiguous dst_ambiguous,
                            r_ssize size,
                            enum unit unit);
 
 static sexp add_period_to_zoned(sexp x,
                                 sexp n,
-                                enum day_nonexistant day_nonexistant,
-                                enum dst_nonexistant dst_nonexistant,
+                                enum day_nonexistent day_nonexistent,
+                                enum dst_nonexistent dst_nonexistent,
                                 enum dst_ambiguous dst_ambiguous,
                                 r_ssize size,
                                 enum unit unit) {
@@ -85,8 +85,8 @@ static sexp add_period_to_zoned(sexp x,
     return add_ym_to_zoned(
       x,
       n,
-      day_nonexistant,
-      dst_nonexistant,
+      day_nonexistent,
+      dst_nonexistent,
       dst_ambiguous,
       size,
       unit
@@ -97,7 +97,7 @@ static sexp add_period_to_zoned(sexp x,
     return add_d_to_zoned(
       x,
       n,
-      dst_nonexistant,
+      dst_nonexistent,
       dst_ambiguous,
       size,
       unit
@@ -115,8 +115,8 @@ static sexp add_period_to_zoned(sexp x,
 
 static sexp add_ym_to_zoned(sexp x,
                             sexp n,
-                            enum day_nonexistant day_nonexistant,
-                            enum dst_nonexistant dst_nonexistant,
+                            enum day_nonexistent day_nonexistent,
+                            enum dst_nonexistent dst_nonexistent,
                             enum dst_ambiguous dst_ambiguous,
                             r_ssize size,
                             enum unit unit) {
@@ -165,7 +165,7 @@ static sexp add_ym_to_zoned(sexp x,
       elt_lsec,
       elt_n,
       i,
-      day_nonexistant,
+      day_nonexistent,
       unit,
       na
     );
@@ -185,7 +185,7 @@ static sexp add_ym_to_zoned(sexp x,
       p_zone,
       i,
       dst_direction,
-      dst_nonexistant,
+      dst_nonexistent,
       dst_ambiguous
     );
   }
@@ -198,7 +198,7 @@ static sexp add_ym_to_zoned(sexp x,
 
 static sexp add_d_to_zoned(sexp x,
                            sexp n,
-                           enum dst_nonexistant dst_nonexistant,
+                           enum dst_nonexistent dst_nonexistent,
                            enum dst_ambiguous dst_ambiguous,
                            r_ssize size,
                            enum unit unit) {
@@ -253,7 +253,7 @@ static sexp add_d_to_zoned(sexp x,
       p_zone,
       i,
       dst_direction,
-      dst_nonexistant,
+      dst_nonexistent,
       dst_ambiguous
     );
   }
@@ -376,17 +376,17 @@ static sexp add_hms_to_zoned(sexp x,
 
 static sexp add_period_to_local(sexp x,
                                 sexp n,
-                                enum day_nonexistant day_nonexistant,
+                                enum day_nonexistent day_nonexistent,
                                 r_ssize size,
                                 enum unit unit);
 
 [[cpp11::register]]
 SEXP add_period_to_local_cpp(SEXP x,
                              SEXP n,
-                             SEXP day_nonexistant,
+                             SEXP day_nonexistent,
                              SEXP size,
                              SEXP unit) {
-  enum day_nonexistant c_day_nonexistant = parse_day_nonexistant(day_nonexistant);
+  enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
 
   r_ssize c_size = r_int_get(size, 0);
 
@@ -395,7 +395,7 @@ SEXP add_period_to_local_cpp(SEXP x,
   return add_period_to_local(
     x,
     n,
-    c_day_nonexistant,
+    c_day_nonexistent,
     c_size,
     c_unit
   );
@@ -403,7 +403,7 @@ SEXP add_period_to_local_cpp(SEXP x,
 
 static sexp add_ym_to_local(sexp x,
                             sexp n,
-                            enum day_nonexistant day_nonexistant,
+                            enum day_nonexistent day_nonexistent,
                             r_ssize size,
                             enum unit unit);
 
@@ -414,7 +414,7 @@ static sexp add_dhms_to_local(sexp x,
 
 static sexp add_period_to_local(sexp x,
                                 sexp n,
-                                enum day_nonexistant day_nonexistant,
+                                enum day_nonexistent day_nonexistent,
                                 r_ssize size,
                                 enum unit unit) {
   switch (unit) {
@@ -423,7 +423,7 @@ static sexp add_period_to_local(sexp x,
     return add_ym_to_local(
       x,
       n,
-      day_nonexistant,
+      day_nonexistent,
       size,
       unit
     );
@@ -447,7 +447,7 @@ static sexp add_period_to_local(sexp x,
 
 static sexp add_ym_to_local(sexp x,
                             sexp n,
-                            enum day_nonexistant day_nonexistant,
+                            enum day_nonexistent day_nonexistent,
                             r_ssize size,
                             enum unit unit) {
   sexp out = PROTECT(r_new_double(size));
@@ -486,7 +486,7 @@ static sexp add_ym_to_local(sexp x,
       elt_lsec,
       elt_n,
       i,
-      day_nonexistant,
+      day_nonexistent,
       unit,
       na
     );
@@ -552,7 +552,7 @@ static sexp add_dhms_to_local(sexp x,
 static date::local_seconds add_ym_to_local_one(const date::local_seconds& lsec,
                                                int n,
                                                r_ssize i,
-                                               const enum day_nonexistant& day_nonexistant,
+                                               const enum day_nonexistent& day_nonexistent,
                                                const enum unit& unit,
                                                bool& na) {
   date::local_days lday = date::floor<date::days>(lsec);
@@ -573,7 +573,7 @@ static date::local_seconds add_ym_to_local_one(const date::local_seconds& lsec,
   if (!out_ymd.ok()) {
     bool na_resolve = false;
 
-    resolve_day_nonexistant(i, day_nonexistant, out_ymd, time_of_day, na_resolve);
+    resolve_day_nonexistent(i, day_nonexistent, out_ymd, time_of_day, na_resolve);
 
     if (na_resolve) {
       na = true;

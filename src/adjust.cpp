@@ -12,7 +12,7 @@
 static inline date::local_seconds adjust_switch(const date::local_seconds& lsec,
                                                 const int& value,
                                                 const r_ssize& i,
-                                                const enum day_nonexistant& day_nonexistant,
+                                                const enum day_nonexistent& day_nonexistent,
                                                 const enum adjuster& adjuster,
                                                 bool& na);
 
@@ -20,8 +20,8 @@ static inline date::local_seconds adjust_switch(const date::local_seconds& lsec,
 
 static sexp adjust_zoned(sexp x,
                          sexp value,
-                         const enum day_nonexistant& day_nonexistant,
-                         const enum dst_nonexistant& dst_nonexistant,
+                         const enum day_nonexistent& day_nonexistent,
+                         const enum dst_nonexistent& dst_nonexistent,
                          const enum dst_ambiguous& dst_ambiguous,
                          const r_ssize& size,
                          const enum adjuster& adjuster);
@@ -33,12 +33,12 @@ SEXP adjust_zoned_cpp(SEXP x,
                       SEXP dst_resolver,
                       SEXP size,
                       SEXP adjuster) {
-  sexp day_nonexistant = r_list_get(day_resolver, 0);
-  sexp dst_nonexistant = r_list_get(dst_resolver, 0);
+  sexp day_nonexistent = r_list_get(day_resolver, 0);
+  sexp dst_nonexistent = r_list_get(dst_resolver, 0);
   sexp dst_ambiguous = r_list_get(dst_resolver, 1);
 
-  enum day_nonexistant c_day_nonexistant = parse_day_nonexistant(day_nonexistant);
-  enum dst_nonexistant c_dst_nonexistant = parse_dst_nonexistant(dst_nonexistant);
+  enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
+  enum dst_nonexistent c_dst_nonexistent = parse_dst_nonexistent(dst_nonexistent);
   enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous(dst_ambiguous);
 
   r_ssize c_size = r_int_get(size, 0);
@@ -48,8 +48,8 @@ SEXP adjust_zoned_cpp(SEXP x,
   return adjust_zoned(
     x,
     value,
-    c_day_nonexistant,
-    c_dst_nonexistant,
+    c_day_nonexistent,
+    c_dst_nonexistent,
     c_dst_ambiguous,
     c_size,
     c_adjuster
@@ -58,8 +58,8 @@ SEXP adjust_zoned_cpp(SEXP x,
 
 static sexp adjust_zoned(sexp x,
                          sexp value,
-                         const enum day_nonexistant& day_nonexistant,
-                         const enum dst_nonexistant& dst_nonexistant,
+                         const enum day_nonexistent& day_nonexistent,
+                         const enum dst_nonexistent& dst_nonexistent,
                          const enum dst_ambiguous& dst_ambiguous,
                          const r_ssize& size,
                          const enum adjuster& adjuster) {
@@ -110,7 +110,7 @@ static sexp adjust_zoned(sexp x,
       elt_lsec,
       elt_value,
       i,
-      day_nonexistant,
+      day_nonexistent,
       adjuster,
       na
     );
@@ -123,7 +123,7 @@ static sexp adjust_zoned(sexp x,
         p_zone,
         i,
         dst_direction,
-        dst_nonexistant,
+        dst_nonexistent,
         dst_ambiguous
       );
     }
@@ -137,7 +137,7 @@ static sexp adjust_zoned(sexp x,
 
 static sexp adjust_local(sexp x,
                          sexp value,
-                         const enum day_nonexistant& day_nonexistant,
+                         const enum day_nonexistent& day_nonexistent,
                          const r_ssize& size,
                          const enum adjuster& adjuster);
 
@@ -147,8 +147,8 @@ SEXP adjust_local_cpp(SEXP x,
                       SEXP day_resolver,
                       SEXP size,
                       SEXP adjuster) {
-  sexp day_nonexistant = r_list_get(day_resolver, 0);
-  enum day_nonexistant c_day_nonexistant = parse_day_nonexistant(day_nonexistant);
+  sexp day_nonexistent = r_list_get(day_resolver, 0);
+  enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
 
   r_ssize c_size = r_int_get(size, 0);
 
@@ -157,7 +157,7 @@ SEXP adjust_local_cpp(SEXP x,
   return adjust_local(
     x,
     value,
-    c_day_nonexistant,
+    c_day_nonexistent,
     c_size,
     c_adjuster
   );
@@ -165,7 +165,7 @@ SEXP adjust_local_cpp(SEXP x,
 
 static sexp adjust_local(sexp x,
                          sexp value,
-                         const enum day_nonexistant& day_nonexistant,
+                         const enum day_nonexistent& day_nonexistent,
                          const r_ssize& size,
                          const enum adjuster& adjuster) {
   sexp out = PROTECT(r_new_double(size));
@@ -207,7 +207,7 @@ static sexp adjust_local(sexp x,
       elt_lsec,
       elt_value,
       i,
-      day_nonexistant,
+      day_nonexistent,
       adjuster,
       na
     );
@@ -288,7 +288,7 @@ static inline date::local_seconds adjust_second(const date::local_seconds& lsec,
 static inline date::local_seconds adjust_year(const date::local_seconds& lsec,
                                               const int& value,
                                               const r_ssize& i,
-                                              const enum day_nonexistant& day_nonexistant,
+                                              const enum day_nonexistent& day_nonexistent,
                                               bool& na) {
   if (value > 9999 || value < 0) {
     r_abort("`value` must be within the range of [0, 9999], not %i.", value);
@@ -306,7 +306,7 @@ static inline date::local_seconds adjust_year(const date::local_seconds& lsec,
   if (!out_ymd.ok()) {
     bool na_resolve = false;
 
-    resolve_day_nonexistant(i, day_nonexistant, out_ymd, time_of_day, na_resolve);
+    resolve_day_nonexistent(i, day_nonexistent, out_ymd, time_of_day, na_resolve);
 
     if (na_resolve) {
       na = true;
@@ -324,7 +324,7 @@ static inline date::local_seconds adjust_year(const date::local_seconds& lsec,
 static inline date::local_seconds adjust_month(const date::local_seconds& lsec,
                                                const int& value,
                                                const r_ssize& i,
-                                               const enum day_nonexistant& day_nonexistant,
+                                               const enum day_nonexistent& day_nonexistent,
                                                bool& na) {
   if (value > 12 || value < 1) {
     r_abort("`value` must be within the range of [1, 12], not %i.", value);
@@ -344,7 +344,7 @@ static inline date::local_seconds adjust_month(const date::local_seconds& lsec,
   if (!out_ymd.ok()) {
     bool na_resolve = false;
 
-    resolve_day_nonexistant(i, day_nonexistant, out_ymd, time_of_day, na_resolve);
+    resolve_day_nonexistent(i, day_nonexistent, out_ymd, time_of_day, na_resolve);
 
     if (na_resolve) {
       na = true;
@@ -362,7 +362,7 @@ static inline date::local_seconds adjust_month(const date::local_seconds& lsec,
 static inline date::local_seconds adjust_day(const date::local_seconds& lsec,
                                              const int& value,
                                              const r_ssize& i,
-                                             const enum day_nonexistant& day_nonexistant,
+                                             const enum day_nonexistent& day_nonexistent,
                                              bool& na) {
   if (value > 31 || value < 1) {
     r_abort("`value` must be within the range of [1, 31], not %i.", value);
@@ -382,7 +382,7 @@ static inline date::local_seconds adjust_day(const date::local_seconds& lsec,
   if (!out_ymd.ok()) {
     bool na_resolve = false;
 
-    resolve_day_nonexistant(i, day_nonexistant, out_ymd, time_of_day, na_resolve);
+    resolve_day_nonexistent(i, day_nonexistent, out_ymd, time_of_day, na_resolve);
 
     if (na_resolve) {
       na = true;
@@ -420,18 +420,18 @@ static inline date::local_seconds adjust_last_day_of_month(const date::local_sec
 static inline date::local_seconds adjust_switch(const date::local_seconds& lsec,
                                                 const int& value,
                                                 const r_ssize& i,
-                                                const enum day_nonexistant& day_nonexistant,
+                                                const enum day_nonexistent& day_nonexistent,
                                                 const enum adjuster& adjuster,
                                                 bool& na) {
   switch (adjuster) {
   case adjuster::year: {
-    return adjust_year(lsec, value, i, day_nonexistant, na);
+    return adjust_year(lsec, value, i, day_nonexistent, na);
   }
   case adjuster::month: {
-    return adjust_month(lsec, value, i, day_nonexistant, na);
+    return adjust_month(lsec, value, i, day_nonexistent, na);
   }
   case adjuster::day: {
-    return adjust_day(lsec, value, i, day_nonexistant, na);
+    return adjust_day(lsec, value, i, day_nonexistent, na);
   }
   case adjuster::hour: {
     return adjust_hour(lsec, value);

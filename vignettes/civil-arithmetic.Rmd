@@ -78,14 +78,14 @@ x
 add_months(x, 1)
 ```
 
-But there is nothing stopping you from choosing a different behavior. You can adjust the default behavior with `day_nonexistant`.
+But there is nothing stopping you from choosing a different behavior. You can adjust the default behavior with `day_nonexistent`.
 
 ```{r}
 x
 
-add_months(x, 1, day_nonexistant = "start")
+add_months(x, 1, day_nonexistent = "start")
 
-add_months(x, 1, day_nonexistant = "end-keep")
+add_months(x, 1, day_nonexistent = "end-keep")
 ```
 
 In isolation, it might seem intuitive to keep the original time of day using `"end-keep"`, but this can be dangerous when doing data science, which often involves a vector of dates rather than just one. Retaining the original time of day can alter the relative ordering within the vector, which can cause many issues. See the section on Relative Ordering for more information.
@@ -132,9 +132,9 @@ add_days(x, 1)
 But you are more than welcome to choose the other options:
 
 ```{r}
-add_days(x, 1, dst_nonexistant = "previous")
+add_days(x, 1, dst_nonexistent = "previous")
 
-add_days(x, 1, dst_nonexistant = "NA")
+add_days(x, 1, dst_nonexistent = "NA")
 ```
 
 ### Shifting
@@ -142,7 +142,7 @@ add_days(x, 1, dst_nonexistant = "NA")
 The _shifting_ options deserve special mention. The following will add the 1 hour gap to the nonexistent time of `02:30:00`:
 
 ```{r}
-add_days(x, 1, dst_nonexistant = "next-shift")
+add_days(x, 1, dst_nonexistent = "next-shift")
 ```
 
 A word of warning about this. While it might seem convenient in isolation, this behavior can be very problematic when used with a vector of dates because it doesn't preserve the _relative ordering_ within that vector. For examples, see the Relative Ordering section below.
@@ -160,7 +160,7 @@ y <- as.POSIXct("1970-04-27 02:30:00", "America/New_York")
 
 To resolve this nonexistent date, it seems intuitive to take into account the _direction_ that you are traveling when performing this arithmetic. Rather than moving forward to `03:00:00`, it makes sense to roll back to the previous instant in time of `01:59:59` since that matches the direction of travel you are already moving in.
 
-To handle this, the `dst_nonexistant` argument defaults to `"directional"`, which chooses `"next"` if you are adding time and `"previous"` if you are subtracting it. This hopefully gives the most intuitive result of:
+To handle this, the `dst_nonexistent` argument defaults to `"directional"`, which chooses `"next"` if you are adding time and `"previous"` if you are subtracting it. This hopefully gives the most intuitive result of:
 
 ```{r}
 subtract_days(y, 1)
@@ -169,7 +169,7 @@ subtract_days(y, 1)
 But again you can change this if you did want `03:00:00`.
 
 ```{r}
-subtract_days(y, 1, dst_nonexistant = "next")
+subtract_days(y, 1, dst_nonexistent = "next")
 ```
 
 ## Ambiguous times due to daylight savings fallbacks
@@ -227,7 +227,7 @@ add_months(x, 1, dst_ambiguous = "latest")
 
 ### Direction
 
-Like with `dst_nonexistant`, the direction that you approach from can influence what you expect the result of this arithmetic to be. Let's shift past the fallback time, and then subtract a month:
+Like with `dst_nonexistent`, the direction that you approach from can influence what you expect the result of this arithmetic to be. Let's shift past the fallback time, and then subtract a month:
 
 ```{r}
 x <- as.POSIXct("1970-11-25 01:30:00", "America/New_York")
@@ -251,11 +251,11 @@ subtract_months(x, 1, dst_ambiguous = "earliest")
 
 ## Relative ordering
 
-In previous sections, we noted that there are arguments to `day_nonexistant` and `dst_nonexistant` that attempt to retain the sub-daily components of you date-time vector when resolving nonexistant date-times.
+In previous sections, we noted that there are arguments to `day_nonexistent` and `dst_nonexistent` that attempt to retain the sub-daily components of you date-time vector when resolving nonexistent date-times.
 
-For `day_nonexistant`, these are `"end-keep"` and `"start-keep"`.
+For `day_nonexistent`, these are `"end-keep"` and `"start-keep"`.
 
-For `dst_nonexistant`, these are `"next-shift"`, `"previous-shift"`, and `"directional-shift"`.
+For `dst_nonexistent`, these are `"next-shift"`, `"previous-shift"`, and `"directional-shift"`.
 
 While these options can be useful in other situations, I would highly advise against using them when doing date-time arithmetic since none of these options preserve the _relative ordering_ within your vector. To understand this, we'll go through a few examples.
 
@@ -270,10 +270,10 @@ x <- as.POSIXct(x, "America/New_York")
 x[1] < x[2]
 ```
 
-What happens if you add 1 month to this vector, and want to keep the time of day? Note that the second element in the vector will have to consult `day_nonexistant` since `"1970-02-31"` doesn't exist.
+What happens if you add 1 month to this vector, and want to keep the time of day? Note that the second element in the vector will have to consult `day_nonexistent` since `"1970-02-31"` doesn't exist.
 
 ```{r}
-y <- add_months(x, 1, day_nonexistant = "end-keep")
+y <- add_months(x, 1, day_nonexistent = "end-keep")
 
 y
 ```
@@ -294,17 +294,17 @@ stops <- index + months(n)
 
 It is often a requirement that `index` is an increasing series here, and similarly it is expected that `starts` and `stops` are also increasing. If the relative ordering is lost then you can't ensure that this holds.
 
-The defaults in civil will always preserve relative ordering. For `day_nonexistant`, it is always safe to use `"end"` and `"start"`. This is why `"end"` pins the time of day to the last possible second in the day.
+The defaults in civil will always preserve relative ordering. For `day_nonexistent`, it is always safe to use `"end"` and `"start"`. This is why `"end"` pins the time of day to the last possible second in the day.
 
 ```{r}
-z <- add_months(x, 1, day_nonexistant = "end")
+z <- add_months(x, 1, day_nonexistent = "end")
 z
 
 x[1] < x[2]
 z[1] < z[2]
 ```
 
-### Nonexistant times due to daylight savings gaps
+### nonexistent times due to daylight savings gaps
 
 Relative ordering can also be lost when daylight saving gaps are involved. For this example, `x[1]` is after `x[2]`.
 
@@ -318,7 +318,7 @@ x[1] < x[2]
 If we added 1 day to this vector and used `"next-shift"` to keep the time of day by "shifting" forward by the size of the gap, then we'd end up with:
 
 ```{r}
-y <- add_days(x, 1, dst_nonexistant = "next-shift")
+y <- add_days(x, 1, dst_nonexistent = "next-shift")
 y
 
 x[1] < x[2]
@@ -327,7 +327,7 @@ y[1] < y[2]
 
 The relative ordering is lost!
 
-The default option for `dst_nonexistant` of `"directional"` will preserve relative ordering, as will choosing `"next"` or `"previous"` directly. This is why `"next"` pins the time of day to the first possible second after the gap (and similar reasoning applies for `"previous"`).
+The default option for `dst_nonexistent` of `"directional"` will preserve relative ordering, as will choosing `"next"` or `"previous"` directly. This is why `"next"` pins the time of day to the first possible second after the gap (and similar reasoning applies for `"previous"`).
 
 ```{r}
 z <- add_days(x, 1)
@@ -350,7 +350,7 @@ x <- as.POSIXct("1970-04-25 02:30:00", "America/New_York")
 # 1970-04-26 03:30:00
 ```
 
-The issue with adding multiple periods is that `add_days()` and friends will _immediately_ try to fix any daylight savings issues (i.e. with `dst_nonexistant`) after each individual unit is added. This means that result of adding multiple periods can depend on the order in which you apply them.
+The issue with adding multiple periods is that `add_days()` and friends will _immediately_ try to fix any daylight savings issues (i.e. with `dst_nonexistent`) after each individual unit is added. This means that result of adding multiple periods can depend on the order in which you apply them.
 
 ```{r}
 x %>%
@@ -368,7 +368,7 @@ To avoid these issues, when working with multiple transformations it is often us
 
 A zoned date-time is one that has a time zone attached. All POSIXct objects are zoned. In the above example, `x` is associated with the `"America/New_York"` time zone. All Date objects are also zoned, they are implicitly assumed to be `"UTC"` throughout R.
 
-A local date-time is one that isn't associated with any time zones. This frees it from the issues that `dst_nonexistant` and `dst_ambiguous` have to handle.
+A local date-time is one that isn't associated with any time zones. This frees it from the issues that `dst_nonexistent` and `dst_ambiguous` have to handle.
 
 To create a local date-time, use `localize()`. It prints with the same clock time as `x`, but notice how there is no time zone attached.
 

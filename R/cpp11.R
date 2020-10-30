@@ -12,16 +12,16 @@ adjust_local_cpp <- function(x, value, day_resolver, size, adjuster) {
   .Call("_civil_adjust_local_cpp", x, value, day_resolver, size, adjuster, PACKAGE = "civil")
 }
 
-add_period_to_zoned_cpp <- function(x, n, day_nonexistant, dst_nonexistant, dst_ambiguous, size, unit) {
-  .Call("_civil_add_period_to_zoned_cpp", x, n, day_nonexistant, dst_nonexistant, dst_ambiguous, size, unit, PACKAGE = "civil")
+add_period_to_zoned_cpp <- function(x, n, day_nonexistent, dst_nonexistent, dst_ambiguous, size, unit) {
+  .Call("_civil_add_period_to_zoned_cpp", x, n, day_nonexistent, dst_nonexistent, dst_ambiguous, size, unit, PACKAGE = "civil")
 }
 
 add_duration_to_zoned_cpp <- function(x, n, size, unit) {
   .Call("_civil_add_duration_to_zoned_cpp", x, n, size, unit, PACKAGE = "civil")
 }
 
-add_period_to_local_cpp <- function(x, n, day_nonexistant, size, unit) {
-  .Call("_civil_add_period_to_local_cpp", x, n, day_nonexistant, size, unit, PACKAGE = "civil")
+add_period_to_local_cpp <- function(x, n, day_nonexistent, size, unit) {
+  .Call("_civil_add_period_to_local_cpp", x, n, day_nonexistent, size, unit, PACKAGE = "civil")
 }
 
 civil_init <- function() {

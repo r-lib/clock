@@ -21,7 +21,7 @@
 #' * `add_seconds()`
 #'
 #' When nonexistent or ambiguous date-times are landed on, the
-#' `day_nonexistant`, `dst_nonexistant`, and `dst_ambiguous` options are
+#' `day_nonexistent`, `dst_nonexistent`, and `dst_ambiguous` options are
 #' consulted to resolve any issues.
 #'
 #' @param x `[Date / POSIXct / POSIXlt / local_datetime]`
@@ -33,7 +33,7 @@
 #'   An integer vector representing the number of units to add to or
 #'   subtract from `x`.
 #'
-#' @param day_nonexistant `[character(1)]`
+#' @param day_nonexistent `[character(1)]`
 #'
 #'   Control the behavior when a nonexistent day is generated. This only happens
 #'   when adding years or months.
@@ -61,7 +61,7 @@
 #'   _Warning_: When used in arithmetic, `"end-keep"` and `"start-keep"` do not
 #'   guarantee that the relative ordering of `x` is maintained.
 #'
-#' @param dst_nonexistant `[character(1)]`
+#' @param dst_nonexistent `[character(1)]`
 #'
 #'   Control the behavior when a nonexistent time is generated due to a
 #'   daylight savings gap. Only applicable for POSIXct and POSIXlt.
@@ -131,10 +131,10 @@
 #'
 #' # Adding one month theoretically lands us on
 #' # "2019-02-31"
-#' # but this doesn't exist, so `day_nonexistant`
+#' # but this doesn't exist, so `day_nonexistent`
 #' # is consulted
 #' add_months(x, 1)
-#' add_months(x, 1, day_nonexistant = "start")
+#' add_months(x, 1, day_nonexistent = "start")
 #'
 #' x <- as.POSIXct("1970-04-25 02:30:00", "America/New_York")
 #' y <- as.POSIXct("1970-04-27 02:30:00", "America/New_York")
@@ -142,7 +142,7 @@
 #' # Adding 1 day to `x` results in the nonexistent time of:
 #' # "1970-04-26 02:30:00"
 #' # at which point we have to make a decision about how to proceed using
-#' # `dst_nonexistant`.
+#' # `dst_nonexistent`.
 #' #
 #' # The default is to use `"directional"`. Since we are adding a positive
 #' # number of days, this chooses `"next"` which adjusts to the next possible
@@ -155,9 +155,9 @@
 #' subtract_days(y, 1)
 #'
 #' # If you want to force one of these options,
-#' # you can set `dst_nonexistant` directly
-#' add_days(x, 1, dst_nonexistant = "previous")
-#' add_days(x, 1, dst_nonexistant = "NA")
+#' # you can set `dst_nonexistent` directly
+#' add_days(x, 1, dst_nonexistent = "previous")
+#' add_days(x, 1, dst_nonexistent = "NA")
 NULL
 
 # ------------------------------------------------------------------------------
@@ -167,15 +167,15 @@ NULL
 add_years <- function(x,
                       n,
                       ...,
-                      day_nonexistant = "end",
-                      dst_nonexistant = "directional",
+                      day_nonexistent = "end",
+                      dst_nonexistent = "directional",
                       dst_ambiguous = "directional") {
   add_ymd(
     x = x,
     n = n,
     ...,
-    day_nonexistant = day_nonexistant,
-    dst_nonexistant = dst_nonexistant,
+    day_nonexistent = day_nonexistent,
+    dst_nonexistent = dst_nonexistent,
     dst_ambiguous = dst_ambiguous,
     unit = "year"
   )
@@ -186,15 +186,15 @@ add_years <- function(x,
 subtract_years <- function(x,
                            n,
                            ...,
-                           day_nonexistant = "end",
-                           dst_nonexistant = "directional",
+                           day_nonexistent = "end",
+                           dst_nonexistent = "directional",
                            dst_ambiguous = "directional") {
   add_years(
     x = x,
     n = -n,
     ...,
-    day_nonexistant = day_nonexistant,
-    dst_nonexistant = dst_nonexistant,
+    day_nonexistent = day_nonexistent,
+    dst_nonexistent = dst_nonexistent,
     dst_ambiguous = dst_ambiguous
   )
 }
@@ -206,15 +206,15 @@ subtract_years <- function(x,
 add_months <- function(x,
                        n,
                        ...,
-                       day_nonexistant = "end",
-                       dst_nonexistant = "directional",
+                       day_nonexistent = "end",
+                       dst_nonexistent = "directional",
                        dst_ambiguous = "directional") {
   add_ymd(
     x = x,
     n = n,
     ...,
-    day_nonexistant = day_nonexistant,
-    dst_nonexistant = dst_nonexistant,
+    day_nonexistent = day_nonexistent,
+    dst_nonexistent = dst_nonexistent,
     dst_ambiguous = dst_ambiguous,
     unit = "month"
   )
@@ -225,15 +225,15 @@ add_months <- function(x,
 subtract_months <- function(x,
                             n,
                             ...,
-                            day_nonexistant = "end",
-                            dst_nonexistant = "directional",
+                            day_nonexistent = "end",
+                            dst_nonexistent = "directional",
                             dst_ambiguous = "directional") {
   add_months(
     x = x,
     n = -n,
     ...,
-    day_nonexistant = day_nonexistant,
-    dst_nonexistant = dst_nonexistant,
+    day_nonexistent = day_nonexistent,
+    dst_nonexistent = dst_nonexistent,
     dst_ambiguous = dst_ambiguous
   )
 }
@@ -245,14 +245,14 @@ subtract_months <- function(x,
 add_weeks <- function(x,
                       n,
                       ...,
-                      dst_nonexistant = "directional",
+                      dst_nonexistent = "directional",
                       dst_ambiguous = "directional") {
   add_ymd(
     x = x,
     n = n,
     ...,
-    day_nonexistant = "end",
-    dst_nonexistant = dst_nonexistant,
+    day_nonexistent = "end",
+    dst_nonexistent = dst_nonexistent,
     dst_ambiguous = dst_ambiguous,
     unit = "week"
   )
@@ -263,13 +263,13 @@ add_weeks <- function(x,
 subtract_weeks <- function(x,
                            n,
                            ...,
-                           dst_nonexistant = "directional",
+                           dst_nonexistent = "directional",
                            dst_ambiguous = "directional") {
   add_weeks(
     x = x,
     n = -n,
     ...,
-    dst_nonexistant = dst_nonexistant,
+    dst_nonexistent = dst_nonexistent,
     dst_ambiguous = dst_ambiguous
   )
 }
@@ -281,14 +281,14 @@ subtract_weeks <- function(x,
 add_days <- function(x,
                      n,
                      ...,
-                     dst_nonexistant = "directional",
+                     dst_nonexistent = "directional",
                      dst_ambiguous = "directional") {
   add_ymd(
     x = x,
     n = n,
     ...,
-    day_nonexistant = "end",
-    dst_nonexistant = dst_nonexistant,
+    day_nonexistent = "end",
+    dst_nonexistent = dst_nonexistent,
     dst_ambiguous = dst_ambiguous,
     unit = "day"
   )
@@ -299,13 +299,13 @@ add_days <- function(x,
 subtract_days <- function(x,
                           n,
                           ...,
-                          dst_nonexistant = "directional",
+                          dst_nonexistent = "directional",
                           dst_ambiguous = "directional") {
   add_days(
     x = x,
     n = -n,
     ...,
-    dst_nonexistant = dst_nonexistant,
+    dst_nonexistent = dst_nonexistent,
     dst_ambiguous = dst_ambiguous
   )
 }
@@ -357,8 +357,8 @@ subtract_seconds <- function(x, n) {
 add_ymd <- function(x,
                     n,
                     ...,
-                    day_nonexistant,
-                    dst_nonexistant,
+                    day_nonexistent,
+                    dst_nonexistent,
                     dst_ambiguous,
                     unit) {
   if (is_local_datetime(x)) {
@@ -366,7 +366,7 @@ add_ymd <- function(x,
       x = x,
       n = n,
       ...,
-      day_nonexistant = day_nonexistant,
+      day_nonexistent = day_nonexistent,
       unit = unit
     )
   } else {
@@ -374,8 +374,8 @@ add_ymd <- function(x,
       x = x,
       n = n,
       ...,
-      day_nonexistant = day_nonexistant,
-      dst_nonexistant = dst_nonexistant,
+      day_nonexistent = day_nonexistent,
+      dst_nonexistent = dst_nonexistent,
       dst_ambiguous = dst_ambiguous,
       unit = unit
     )
@@ -388,7 +388,7 @@ add_hms <- function(x, n, ..., unit) {
       x = x,
       n = n,
       ...,
-      day_nonexistant = "end",
+      day_nonexistent = "end",
       unit = unit
     )
   } else {
@@ -406,8 +406,8 @@ add_hms <- function(x, n, ..., unit) {
 add_period_to_zoned <- function(x,
                                 n,
                                 ...,
-                                day_nonexistant,
-                                dst_nonexistant,
+                                day_nonexistent,
+                                dst_nonexistent,
                                 dst_ambiguous,
                                 unit) {
   check_dots_empty()
@@ -415,8 +415,8 @@ add_period_to_zoned <- function(x,
   n <- vec_cast(n, integer(), x_arg = "n")
   size <- vec_size_common(x = x, n = n)
 
-  validate_day_nonexistant(day_nonexistant)
-  validate_dst_nonexistant_arithmetic(dst_nonexistant)
+  validate_day_nonexistent(day_nonexistent)
+  validate_dst_nonexistent_arithmetic(dst_nonexistent)
   validate_dst_ambiguous_arithmetic(dst_ambiguous)
 
   x_ct <- to_posixct(x)
@@ -424,8 +424,8 @@ add_period_to_zoned <- function(x,
   out <- add_period_to_zoned_cpp(
     x = x_ct,
     n = n,
-    day_nonexistant = day_nonexistant,
-    dst_nonexistant = dst_nonexistant,
+    day_nonexistent = day_nonexistent,
+    dst_nonexistent = dst_nonexistent,
     dst_ambiguous = dst_ambiguous,
     size = size,
     unit = unit
@@ -452,18 +452,18 @@ add_duration_to_zoned <- function(x, n, ..., unit) {
   out
 }
 
-add_period_to_local <- function(x, n, ..., day_nonexistant, unit) {
+add_period_to_local <- function(x, n, ..., day_nonexistent, unit) {
   check_dots_empty()
 
   n <- vec_cast(n, integer(), x_arg = "n")
   size <- vec_size_common(x = x, n = n)
 
-  validate_day_nonexistant(day_nonexistant)
+  validate_day_nonexistent(day_nonexistent)
 
   out <- add_period_to_local_cpp(
     x = x,
     n = n,
-    day_nonexistant = day_nonexistant,
+    day_nonexistent = day_nonexistent,
     size = size,
     unit = unit
   )

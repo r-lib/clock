@@ -6,34 +6,34 @@
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum day_nonexistant parse_day_nonexistant(sexp x) {
+enum day_nonexistent parse_day_nonexistent(sexp x) {
   if (!r_is_string(x)) {
-    r_abort("`day_nonexistant` must be a string with length 1.");
+    r_abort("`day_nonexistent` must be a string with length 1.");
   }
 
   const char* string = CHAR(STRING_ELT(x, 0));
 
-  if (!strcmp(string, "end")) return day_nonexistant::end;
-  if (!strcmp(string, "start")) return day_nonexistant::start;
-  if (!strcmp(string, "end-keep")) return day_nonexistant::end_keep;
-  if (!strcmp(string, "start-keep")) return day_nonexistant::start_keep;
-  if (!strcmp(string, "NA")) return day_nonexistant::na;
-  if (!strcmp(string, "error")) return day_nonexistant::error;
+  if (!strcmp(string, "end")) return day_nonexistent::end;
+  if (!strcmp(string, "start")) return day_nonexistent::start;
+  if (!strcmp(string, "end-keep")) return day_nonexistent::end_keep;
+  if (!strcmp(string, "start-keep")) return day_nonexistent::start_keep;
+  if (!strcmp(string, "NA")) return day_nonexistent::na;
+  if (!strcmp(string, "error")) return day_nonexistent::error;
 
-  r_abort("'%s' is not a recognized `day_nonexistant` option.", string);
+  r_abort("'%s' is not a recognized `day_nonexistent` option.", string);
 }
 
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum dst_nonexistant parse_dst_nonexistant(sexp x) {
-  enum dst_nonexistant out = parse_dst_nonexistant_arithmetic(x);
+enum dst_nonexistent parse_dst_nonexistent(sexp x) {
+  enum dst_nonexistent out = parse_dst_nonexistent_arithmetic(x);
 
-  if (out == dst_nonexistant::directional) {
-    r_abort("Internal error: 'directional' is not allowed for `dst_nonexistant` here.");
+  if (out == dst_nonexistent::directional) {
+    r_abort("Internal error: 'directional' is not allowed for `dst_nonexistent` here.");
   }
-  if (out == dst_nonexistant::directional_shift) {
-    r_abort("Internal error: 'directional-shift' is not allowed for `dst_nonexistant` here.");
+  if (out == dst_nonexistent::directional_shift) {
+    r_abort("Internal error: 'directional-shift' is not allowed for `dst_nonexistent` here.");
   }
 
   return out;
@@ -42,23 +42,23 @@ enum dst_nonexistant parse_dst_nonexistant(sexp x) {
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum dst_nonexistant parse_dst_nonexistant_arithmetic(sexp x) {
+enum dst_nonexistent parse_dst_nonexistent_arithmetic(sexp x) {
   if (!r_is_string(x)) {
-    r_abort("`dst_nonexistant` must be a string with length 1.");
+    r_abort("`dst_nonexistent` must be a string with length 1.");
   }
 
   const char* string = CHAR(STRING_ELT(x, 0));
 
-  if (!strcmp(string, "directional")) return dst_nonexistant::directional;
-  if (!strcmp(string, "next")) return dst_nonexistant::next;
-  if (!strcmp(string, "previous")) return dst_nonexistant::previous;
-  if (!strcmp(string, "directional-shift")) return dst_nonexistant::directional_shift;
-  if (!strcmp(string, "next-shift")) return dst_nonexistant::next_shift;
-  if (!strcmp(string, "previous-shift")) return dst_nonexistant::previous_shift;
-  if (!strcmp(string, "NA")) return dst_nonexistant::na;
-  if (!strcmp(string, "error")) return dst_nonexistant::error;
+  if (!strcmp(string, "directional")) return dst_nonexistent::directional;
+  if (!strcmp(string, "next")) return dst_nonexistent::next;
+  if (!strcmp(string, "previous")) return dst_nonexistent::previous;
+  if (!strcmp(string, "directional-shift")) return dst_nonexistent::directional_shift;
+  if (!strcmp(string, "next-shift")) return dst_nonexistent::next_shift;
+  if (!strcmp(string, "previous-shift")) return dst_nonexistent::previous_shift;
+  if (!strcmp(string, "NA")) return dst_nonexistent::na;
+  if (!strcmp(string, "error")) return dst_nonexistent::error;
 
-  r_abort("'%s' is not a recognized `dst_nonexistant` option.", string);
+  r_abort("'%s' is not a recognized `dst_nonexistent` option.", string);
 }
 
 // -----------------------------------------------------------------------------

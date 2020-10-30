@@ -7,30 +7,30 @@
 
 static sexp adjust_zone_retain_clock(sexp x,
                                      sexp zone,
-                                     enum dst_nonexistant dst_nonexistant,
+                                     enum dst_nonexistent dst_nonexistent,
                                      enum dst_ambiguous dst_ambiguous);
 
 [[cpp11::register]]
 SEXP adjust_zone_retain_clock_cpp(SEXP x,
                                   SEXP zone,
                                   SEXP dst_resolver) {
-  sexp dst_nonexistant = r_list_get(dst_resolver, 0);
+  sexp dst_nonexistent = r_list_get(dst_resolver, 0);
   sexp dst_ambiguous = r_list_get(dst_resolver, 1);
 
-  enum dst_nonexistant c_dst_nonexistant = parse_dst_nonexistant(dst_nonexistant);
+  enum dst_nonexistent c_dst_nonexistent = parse_dst_nonexistent(dst_nonexistent);
   enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous(dst_ambiguous);
 
   return adjust_zone_retain_clock(
     x,
     zone,
-    c_dst_nonexistant,
+    c_dst_nonexistent,
     c_dst_ambiguous
   );
 }
 
 static sexp adjust_zone_retain_clock(sexp x,
                                      sexp zone,
-                                     enum dst_nonexistant dst_nonexistant,
+                                     enum dst_nonexistent dst_nonexistent,
                                      enum dst_ambiguous dst_ambiguous) {
   sexp x_zone = civil_get_tzone(x);
 
@@ -80,7 +80,7 @@ static sexp adjust_zone_retain_clock(sexp x,
       p_new_time_zone,
       i,
       dst_direction,
-      dst_nonexistant,
+      dst_nonexistent,
       dst_ambiguous
     );
   }

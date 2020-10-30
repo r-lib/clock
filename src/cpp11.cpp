@@ -26,10 +26,10 @@ extern "C" SEXP _civil_adjust_local_cpp(SEXP x, SEXP value, SEXP day_resolver, S
   END_CPP11
 }
 // arithmetic.cpp
-SEXP add_period_to_zoned_cpp(SEXP x, SEXP n, SEXP day_nonexistant, SEXP dst_nonexistant, SEXP dst_ambiguous, SEXP size, SEXP unit);
-extern "C" SEXP _civil_add_period_to_zoned_cpp(SEXP x, SEXP n, SEXP day_nonexistant, SEXP dst_nonexistant, SEXP dst_ambiguous, SEXP size, SEXP unit) {
+SEXP add_period_to_zoned_cpp(SEXP x, SEXP n, SEXP day_nonexistent, SEXP dst_nonexistent, SEXP dst_ambiguous, SEXP size, SEXP unit);
+extern "C" SEXP _civil_add_period_to_zoned_cpp(SEXP x, SEXP n, SEXP day_nonexistent, SEXP dst_nonexistent, SEXP dst_ambiguous, SEXP size, SEXP unit) {
   BEGIN_CPP11
-    return cpp11::as_sexp(add_period_to_zoned_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_nonexistant), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistant), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit)));
+    return cpp11::as_sexp(add_period_to_zoned_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit)));
   END_CPP11
 }
 // arithmetic.cpp
@@ -40,10 +40,10 @@ extern "C" SEXP _civil_add_duration_to_zoned_cpp(SEXP x, SEXP n, SEXP size, SEXP
   END_CPP11
 }
 // arithmetic.cpp
-SEXP add_period_to_local_cpp(SEXP x, SEXP n, SEXP day_nonexistant, SEXP size, SEXP unit);
-extern "C" SEXP _civil_add_period_to_local_cpp(SEXP x, SEXP n, SEXP day_nonexistant, SEXP size, SEXP unit) {
+SEXP add_period_to_local_cpp(SEXP x, SEXP n, SEXP day_nonexistent, SEXP size, SEXP unit);
+extern "C" SEXP _civil_add_period_to_local_cpp(SEXP x, SEXP n, SEXP day_nonexistent, SEXP size, SEXP unit) {
   BEGIN_CPP11
-    return cpp11::as_sexp(add_period_to_local_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_nonexistant), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit)));
+    return cpp11::as_sexp(add_period_to_local_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit)));
   END_CPP11
 }
 // initialize.cpp

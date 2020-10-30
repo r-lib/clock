@@ -22,8 +22,8 @@ add_years(
   x,
   n,
   ...,
-  day_nonexistant = "end",
-  dst_nonexistant = "directional",
+  day_nonexistent = "end",
+  dst_nonexistent = "directional",
   dst_ambiguous = "directional"
 )
 
@@ -31,8 +31,8 @@ subtract_years(
   x,
   n,
   ...,
-  day_nonexistant = "end",
-  dst_nonexistant = "directional",
+  day_nonexistent = "end",
+  dst_nonexistent = "directional",
   dst_ambiguous = "directional"
 )
 
@@ -40,8 +40,8 @@ add_months(
   x,
   n,
   ...,
-  day_nonexistant = "end",
-  dst_nonexistant = "directional",
+  day_nonexistent = "end",
+  dst_nonexistent = "directional",
   dst_ambiguous = "directional"
 )
 
@@ -49,8 +49,8 @@ subtract_months(
   x,
   n,
   ...,
-  day_nonexistant = "end",
-  dst_nonexistant = "directional",
+  day_nonexistent = "end",
+  dst_nonexistent = "directional",
   dst_ambiguous = "directional"
 )
 
@@ -58,7 +58,7 @@ add_weeks(
   x,
   n,
   ...,
-  dst_nonexistant = "directional",
+  dst_nonexistent = "directional",
   dst_ambiguous = "directional"
 )
 
@@ -66,7 +66,7 @@ subtract_weeks(
   x,
   n,
   ...,
-  dst_nonexistant = "directional",
+  dst_nonexistent = "directional",
   dst_ambiguous = "directional"
 )
 
@@ -74,7 +74,7 @@ add_days(
   x,
   n,
   ...,
-  dst_nonexistant = "directional",
+  dst_nonexistent = "directional",
   dst_ambiguous = "directional"
 )
 
@@ -82,7 +82,7 @@ subtract_days(
   x,
   n,
   ...,
-  dst_nonexistant = "directional",
+  dst_nonexistent = "directional",
   dst_ambiguous = "directional"
 )
 
@@ -110,7 +110,7 @@ subtract from \code{x}.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{day_nonexistant}{\verb{[character(1)]}
+\item{day_nonexistent}{\verb{[character(1)]}
 
 Control the behavior when a nonexistent day is generated. This only happens
 when adding years or months.
@@ -134,7 +134,7 @@ date-times, the sub-daily components are kept.
 \emph{Warning}: When used in arithmetic, \code{"end-keep"} and \code{"start-keep"} do not
 guarantee that the relative ordering of \code{x} is maintained.}
 
-\item{dst_nonexistant}{\verb{[character(1)]}
+\item{dst_nonexistent}{\verb{[character(1)]}
 
 Control the behavior when a nonexistent time is generated due to a
 daylight savings gap. Only applicable for POSIXct and POSIXlt.
@@ -206,7 +206,7 @@ based on a set number of seconds.
 }
 
 When nonexistent or ambiguous date-times are landed on, the
-\code{day_nonexistant}, \code{dst_nonexistant}, and \code{dst_ambiguous} options are
+\code{day_nonexistent}, \code{dst_nonexistent}, and \code{dst_ambiguous} options are
 consulted to resolve any issues.
 }
 \examples{
@@ -216,10 +216,10 @@ add_days(x, 2)
 
 # Adding one month theoretically lands us on
 # "2019-02-31"
-# but this doesn't exist, so `day_nonexistant`
+# but this doesn't exist, so `day_nonexistent`
 # is consulted
 add_months(x, 1)
-add_months(x, 1, day_nonexistant = "start")
+add_months(x, 1, day_nonexistent = "start")
 
 x <- as.POSIXct("1970-04-25 02:30:00", "America/New_York")
 y <- as.POSIXct("1970-04-27 02:30:00", "America/New_York")
@@ -227,7 +227,7 @@ y <- as.POSIXct("1970-04-27 02:30:00", "America/New_York")
 # Adding 1 day to `x` results in the nonexistent time of:
 # "1970-04-26 02:30:00"
 # at which point we have to make a decision about how to proceed using
-# `dst_nonexistant`.
+# `dst_nonexistent`.
 #
 # The default is to use `"directional"`. Since we are adding a positive
 # number of days, this chooses `"next"` which adjusts to the next possible
@@ -240,7 +240,7 @@ add_days(x, 1)
 subtract_days(y, 1)
 
 # If you want to force one of these options,
-# you can set `dst_nonexistant` directly
-add_days(x, 1, dst_nonexistant = "previous")
-add_days(x, 1, dst_nonexistant = "NA")
+# you can set `dst_nonexistent` directly
+add_days(x, 1, dst_nonexistent = "previous")
+add_days(x, 1, dst_nonexistent = "NA")
 }

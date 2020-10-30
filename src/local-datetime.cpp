@@ -56,7 +56,7 @@ SEXP unlocalize_cpp(SEXP x, SEXP zone, SEXP dst_resolver) {
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
   enum dst_direction dst_direction = dst_direction::positive;
-  enum dst_nonexistant dst_nonexistant = parse_dst_nonexistant(r_list_get(dst_resolver, 0));
+  enum dst_nonexistent dst_nonexistent = parse_dst_nonexistent(r_list_get(dst_resolver, 0));
   enum dst_ambiguous dst_ambiguous = parse_dst_ambiguous(r_list_get(dst_resolver, 1));
 
   r_poke_names(out, r_get_names(x));
@@ -83,7 +83,7 @@ SEXP unlocalize_cpp(SEXP x, SEXP zone, SEXP dst_resolver) {
       p_time_zone,
       i,
       dst_direction,
-      dst_nonexistant,
+      dst_nonexistent,
       dst_ambiguous
     );
   }

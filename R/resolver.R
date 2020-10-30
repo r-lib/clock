@@ -11,11 +11,11 @@ dst_ambiguous_arithmetic_opts <- function() {
 
 # ------------------------------------------------------------------------------
 
-validate_dst_nonexistant_arithmetic <- function(x, arg = "dst_nonexistant") {
-  arg_match0(x, dst_nonexistant_arithmetic_opts(), arg)
+validate_dst_nonexistent_arithmetic <- function(x, arg = "dst_nonexistent") {
+  arg_match0(x, dst_nonexistent_arithmetic_opts(), arg)
 }
 
-dst_nonexistant_arithmetic_opts <- function() {
+dst_nonexistent_arithmetic_opts <- function() {
   c(
     "directional",
     "next",
@@ -30,23 +30,23 @@ dst_nonexistant_arithmetic_opts <- function() {
 
 # ------------------------------------------------------------------------------
 
-validate_day_nonexistant <- function(x, arg = "day_nonexistant") {
-  arg_match0(x, day_nonexistant_opts(), arg)
+validate_day_nonexistent <- function(x, arg = "day_nonexistent") {
+  arg_match0(x, day_nonexistent_opts(), arg)
 }
 
-day_nonexistant_opts <- function() {
+day_nonexistent_opts <- function() {
   c("end", "start", "end-keep", "start-keep", "NA", "error")
 }
 
 # ------------------------------------------------------------------------------
 
 #' @export
-day_resolver <- function(..., nonexistant = "end") {
+day_resolver <- function(..., nonexistent = "end") {
   check_dots_empty()
 
-  arg_match0(nonexistant, day_nonexistant_opts(), "nonexistant")
+  arg_match0(nonexistent, day_nonexistent_opts(), "nonexistent")
 
-  out <- list(nonexistant = nonexistant)
+  out <- list(nonexistent = nonexistent)
   structure(out, class = "civil_day_resolver")
 }
 
@@ -58,7 +58,7 @@ default_day_resolver <- function() {
 #' @export
 print.civil_day_resolver <- function(x, ...) {
   cat_line("<day_resolver>")
-  cat_line("nonexistant: ", x$nonexistant)
+  cat_line("nonexistent: ", x$nonexistent)
   invisible(x)
 }
 
@@ -80,14 +80,14 @@ validate_day_resolver <- function(x) {
 
 #' @export
 dst_arithmetic_resolver <- function(...,
-                                    nonexistant = "directional",
+                                    nonexistent = "directional",
                                     ambiguous = "directional") {
   check_dots_empty()
 
-  arg_match0(nonexistant, dst_arithmetic_nonexistant_opts(), "nonexistant")
+  arg_match0(nonexistent, dst_arithmetic_nonexistent_opts(), "nonexistent")
   arg_match0(ambiguous, dst_arithmetic_ambiguous_opts(), "ambiguous")
 
-  new_dst_resolver(nonexistant, ambiguous, class = "civil_dst_arithmetic_resolver")
+  new_dst_resolver(nonexistent, ambiguous, class = "civil_dst_arithmetic_resolver")
 }
 
 #' @export
@@ -98,12 +98,12 @@ default_dst_arithmetic_resolver <- function() {
 #' @export
 print.civil_dst_arithmetic_resolver <- function(x, ...) {
   cat_line("<dst_arithmetic_resolver>")
-  cat_line("nonexistant: ", x$nonexistant)
+  cat_line("nonexistent: ", x$nonexistent)
   cat_line("ambiguous: ", x$ambiguous)
   invisible(x)
 }
 
-dst_arithmetic_nonexistant_opts <- function() {
+dst_arithmetic_nonexistent_opts <- function() {
   c(
     "directional",
     "next",
@@ -129,21 +129,21 @@ validate_dst_arithmetic_resolver <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-new_dst_resolver <- function(nonexistant = "next",
+new_dst_resolver <- function(nonexistent = "next",
                              ambiguous = "earliest",
                              class = character()) {
-  out <- list(nonexistant = nonexistant, ambiguous = ambiguous)
+  out <- list(nonexistent = nonexistent, ambiguous = ambiguous)
   structure(out, class = c(class, "civil_dst_resolver"))
 }
 
 #' @export
-dst_resolver <- function(..., nonexistant = "next", ambiguous = "earliest") {
+dst_resolver <- function(..., nonexistent = "next", ambiguous = "earliest") {
   check_dots_empty()
 
-  arg_match0(nonexistant, dst_nonexistant_opts(), "nonexistant")
+  arg_match0(nonexistent, dst_nonexistent_opts(), "nonexistent")
   arg_match0(ambiguous, dst_ambiguous_opts(), "ambiguous")
 
-  new_dst_resolver(nonexistant, ambiguous)
+  new_dst_resolver(nonexistent, ambiguous)
 }
 
 #' @export
@@ -154,12 +154,12 @@ default_dst_resolver <- function() {
 #' @export
 print.civil_dst_resolver <- function(x, ...) {
   cat_line("<dst_resolver>")
-  cat_line("nonexistant: ", x$nonexistant)
+  cat_line("nonexistent: ", x$nonexistent)
   cat_line("ambiguous: ", x$ambiguous)
   invisible(x)
 }
 
-dst_nonexistant_opts <- function() {
+dst_nonexistent_opts <- function() {
   c("next", "previous", "next-shift", "previous-shift", "NA", "error")
 }
 dst_ambiguous_opts <- function() {

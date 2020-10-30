@@ -5,7 +5,7 @@
 #include "utils.h"
 // -----------------------------------------------------------------------------
 
-enum class day_nonexistant {
+enum class day_nonexistent {
   end,
   start,
   end_keep,
@@ -14,7 +14,7 @@ enum class day_nonexistant {
   error
 };
 
-enum day_nonexistant parse_day_nonexistant(sexp x);
+enum day_nonexistent parse_day_nonexistent(sexp x);
 
 // -----------------------------------------------------------------------------
 
@@ -25,7 +25,7 @@ enum class dst_direction {
 
 // -----------------------------------------------------------------------------
 
-enum class dst_nonexistant {
+enum class dst_nonexistent {
   directional,
   next,
   previous,
@@ -36,8 +36,8 @@ enum class dst_nonexistant {
   error
 };
 
-enum dst_nonexistant parse_dst_nonexistant(sexp x);
-enum dst_nonexistant parse_dst_nonexistant_arithmetic(sexp x);
+enum dst_nonexistent parse_dst_nonexistent(sexp x);
+enum dst_nonexistent parse_dst_nonexistent_arithmetic(sexp x);
 
 // -----------------------------------------------------------------------------
 
