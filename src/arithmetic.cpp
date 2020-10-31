@@ -177,8 +177,8 @@ static sexp add_ym_to_zoned(sexp x,
 
     const enum dst_direction dst_direction =
       elt_n >= 0 ?
-      dst_direction::positive :
-      dst_direction::negative;
+      dst_direction::forward :
+      dst_direction::backward;
 
     p_out[i] = convert_local_seconds_to_posixt(
       out_lsec,
@@ -245,8 +245,8 @@ static sexp add_d_to_zoned(sexp x,
 
     const enum dst_direction dst_direction =
       elt_n >= 0 ?
-      dst_direction::positive :
-      dst_direction::negative;
+      dst_direction::forward :
+      dst_direction::backward;
 
     p_out[i] = convert_local_seconds_to_posixt(
       out_lsec,

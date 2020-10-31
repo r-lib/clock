@@ -23,7 +23,7 @@ add_years(
   n,
   ...,
   day_nonexistent = "last-time",
-  dst_nonexistent = "directional",
+  dst_nonexistent = "roll-directional",
   dst_ambiguous = "directional"
 )
 
@@ -32,7 +32,7 @@ subtract_years(
   n,
   ...,
   day_nonexistent = "last-time",
-  dst_nonexistent = "directional",
+  dst_nonexistent = "roll-directional",
   dst_ambiguous = "directional"
 )
 
@@ -41,7 +41,7 @@ add_months(
   n,
   ...,
   day_nonexistent = "last-time",
-  dst_nonexistent = "directional",
+  dst_nonexistent = "roll-directional",
   dst_ambiguous = "directional"
 )
 
@@ -50,7 +50,7 @@ subtract_months(
   n,
   ...,
   day_nonexistent = "last-time",
-  dst_nonexistent = "directional",
+  dst_nonexistent = "roll-directional",
   dst_ambiguous = "directional"
 )
 
@@ -58,7 +58,7 @@ add_weeks(
   x,
   n,
   ...,
-  dst_nonexistent = "directional",
+  dst_nonexistent = "roll-directional",
   dst_ambiguous = "directional"
 )
 
@@ -66,7 +66,7 @@ subtract_weeks(
   x,
   n,
   ...,
-  dst_nonexistent = "directional",
+  dst_nonexistent = "roll-directional",
   dst_ambiguous = "directional"
 )
 
@@ -74,7 +74,7 @@ add_days(
   x,
   n,
   ...,
-  dst_nonexistent = "directional",
+  dst_nonexistent = "roll-directional",
   dst_ambiguous = "directional"
 )
 
@@ -82,7 +82,7 @@ subtract_days(
   x,
   n,
   ...,
-  dst_nonexistent = "directional",
+  dst_nonexistent = "roll-directional",
   dst_ambiguous = "directional"
 )
 
@@ -141,25 +141,25 @@ One example is adding a day to \code{"1970-04-25 02:30:00"} in the time zone of
 day, adding a duration of 1 second to \code{01:59:59} jumps forward to
 \code{03:00:00}.
 \itemize{
-\item \code{"directional"}: If \code{n} is positive, choose \code{"next"}. If \code{n} is negative,
-choose \code{"previous"}.
-\item \code{"next"}: Adjust forward to the next instant in time. This
-adjusts minutes and seconds to \code{HH:00:00}.
-\item \code{"previous"}: Adjust backwards to the previous instant in time. This
-adjusts minutes and seconds to \code{HH:59:59}.
-\item \code{"directional-shift"}: If \code{n} is positive, choose \code{"next-shift"}. If
-\code{n} is negative, choose \code{"previous-shift"}.
-\item \code{"next-shift"}: Adjust by shifting the nonexistent time forward by the
+\item \code{"roll-directional"}:
+If \code{n} is positive, choose \code{"roll-forward"}.
+If \code{n} is negative, choose \code{"roll-backward"}.
+\item \code{"roll-forward"}: Roll forward to the next valid moment in time.
+\item \code{"roll-backward"}: Roll backward to the previous valid moment in time.
+\item \code{"shift-directional"}:
+If \code{n} is positive, choose \code{"shift-forward"}.
+If \code{n} is negative, choose \code{"shift-backward"}.
+\item \code{"shift-forward"}: Shift the nonexistent time forward by the
 length of the daylight savings gap (which is usually 1 hour).
-\item \code{"previous-shift"}: Adjust by shifting the nonexistent time backwards
+\item \code{"shift-backward"}: Shift the nonexistent time backward
 by the length of the daylight savings gap (which is usually 1 hour).
 \item \code{"NA"}: Replace the nonexistent time with \code{NA}.
 \item \code{error}: Error on nonexistent times.
 }
 
-\emph{Warning}: When used in arithmetic, \code{"directional-shift"}, \code{"next-shift"},
-and \code{"previous-shift"} do not guarantee that the relative ordering of \code{x}
-is maintained.}
+\emph{Warning}: When used in arithmetic, \code{"shift-directional"},
+\code{"shift-forward"}, and \code{"shift-backward"} do not guarantee that the
+relative ordering of \code{x} is maintained.}
 
 \item{dst_ambiguous}{\verb{[character(1)]}
 
@@ -226,18 +226,18 @@ y <- as.POSIXct("1970-04-27 02:30:00", "America/New_York")
 # at which point we have to make a decision about how to proceed using
 # `dst_nonexistent`.
 #
-# The default is to use `"directional"`. Since we are adding a positive
-# number of days, this chooses `"next"` which adjusts to the next possible
-# instant in time.
+# The default is to use `"roll-directional"`. Since we are adding a positive
+# number of days, this chooses `"roll-forward"` which rolls forward to the
+# next valid moment in time.
 add_days(x, 1)
 
 # If we approach from the other side of the gap and subtract 1 day, then
-# `"directional"` chooses `"previous"`, which adjusts to the previous
-# possible instant in time.
+# `"roll-directional"` chooses `"roll-backward"`, which rolls backward
+# to the previous valid moment in time.
 subtract_days(y, 1)
 
 # If you want to force one of these options,
 # you can set `dst_nonexistent` directly
-add_days(x, 1, dst_nonexistent = "previous")
+add_days(x, 1, dst_nonexistent = "roll-backward")
 add_days(x, 1, dst_nonexistent = "NA")
 }

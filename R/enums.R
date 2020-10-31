@@ -26,10 +26,10 @@ validate_dst_nonexistent <- function(x, arg = "dst_nonexistent") {
 
 dst_nonexistent_opts <- function() {
   c(
-    "next",
-    "previous",
-    "next-shift",
-    "previous-shift",
+    "roll-forward",
+    "roll-backward",
+    "shift-forward",
+    "shift-backward",
     "NA",
     "error"
   )
@@ -43,12 +43,12 @@ validate_dst_nonexistent_arithmetic <- function(x, arg = "dst_nonexistent") {
 
 dst_nonexistent_arithmetic_opts <- function() {
   c(
-    "directional",
-    "next",
-    "previous",
-    "directional-shift",
-    "next-shift",
-    "previous-shift",
+    "roll-directional",
+    "roll-forward",
+    "roll-backward",
+    "shift-directional",
+    "shift-forward",
+    "shift-backward",
     "NA",
     "error"
   )

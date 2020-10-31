@@ -69,31 +69,31 @@
 #'   day, adding a duration of 1 second to `01:59:59` jumps forward to
 #'   `03:00:00`.
 #'
-#'   - `"directional"`: If `n` is positive, choose `"next"`. If `n` is negative,
-#'     choose `"previous"`.
+#'   - `"roll-directional"`:
+#'     If `n` is positive, choose `"roll-forward"`.
+#'     If `n` is negative, choose `"roll-backward"`.
 #'
-#'   - `"next"`: Adjust forward to the next instant in time. This
-#'     adjusts minutes and seconds to `HH:00:00`.
+#'   - `"roll-forward"`: Roll forward to the next valid moment in time.
 #'
-#'   - `"previous"`: Adjust backwards to the previous instant in time. This
-#'     adjusts minutes and seconds to `HH:59:59`.
+#'   - `"roll-backward"`: Roll backward to the previous valid moment in time.
 #'
-#'   - `"directional-shift"`: If `n` is positive, choose `"next-shift"`. If
-#'     `n` is negative, choose `"previous-shift"`.
+#'   - `"shift-directional"`:
+#'     If `n` is positive, choose `"shift-forward"`.
+#'     If `n` is negative, choose `"shift-backward"`.
 #'
-#'   - `"next-shift"`: Adjust by shifting the nonexistent time forward by the
+#'   - `"shift-forward"`: Shift the nonexistent time forward by the
 #'     length of the daylight savings gap (which is usually 1 hour).
 #'
-#'   - `"previous-shift"`: Adjust by shifting the nonexistent time backwards
+#'   - `"shift-backward"`: Shift the nonexistent time backward
 #'     by the length of the daylight savings gap (which is usually 1 hour).
 #'
 #'   - `"NA"`: Replace the nonexistent time with `NA`.
 #'
 #'   - `error`: Error on nonexistent times.
 #'
-#'   _Warning_: When used in arithmetic, `"directional-shift"`, `"next-shift"`,
-#'   and `"previous-shift"` do not guarantee that the relative ordering of `x`
-#'   is maintained.
+#'   _Warning_: When used in arithmetic, `"shift-directional"`,
+#'   `"shift-forward"`, and `"shift-backward"` do not guarantee that the
+#'   relative ordering of `x` is maintained.
 #'
 #' @param dst_ambiguous `[character(1)]`
 #'
@@ -141,19 +141,19 @@
 #' # at which point we have to make a decision about how to proceed using
 #' # `dst_nonexistent`.
 #' #
-#' # The default is to use `"directional"`. Since we are adding a positive
-#' # number of days, this chooses `"next"` which adjusts to the next possible
-#' # instant in time.
+#' # The default is to use `"roll-directional"`. Since we are adding a positive
+#' # number of days, this chooses `"roll-forward"` which rolls forward to the
+#' # next valid moment in time.
 #' add_days(x, 1)
 #'
 #' # If we approach from the other side of the gap and subtract 1 day, then
-#' # `"directional"` chooses `"previous"`, which adjusts to the previous
-#' # possible instant in time.
+#' # `"roll-directional"` chooses `"roll-backward"`, which rolls backward
+#' # to the previous valid moment in time.
 #' subtract_days(y, 1)
 #'
 #' # If you want to force one of these options,
 #' # you can set `dst_nonexistent` directly
-#' add_days(x, 1, dst_nonexistent = "previous")
+#' add_days(x, 1, dst_nonexistent = "roll-backward")
 #' add_days(x, 1, dst_nonexistent = "NA")
 NULL
 
@@ -165,7 +165,7 @@ add_years <- function(x,
                       n,
                       ...,
                       day_nonexistent = "last-time",
-                      dst_nonexistent = "directional",
+                      dst_nonexistent = "roll-directional",
                       dst_ambiguous = "directional") {
   add_ymd(
     x = x,
@@ -184,7 +184,7 @@ subtract_years <- function(x,
                            n,
                            ...,
                            day_nonexistent = "last-time",
-                           dst_nonexistent = "directional",
+                           dst_nonexistent = "roll-directional",
                            dst_ambiguous = "directional") {
   add_years(
     x = x,
@@ -204,7 +204,7 @@ add_months <- function(x,
                        n,
                        ...,
                        day_nonexistent = "last-time",
-                       dst_nonexistent = "directional",
+                       dst_nonexistent = "roll-directional",
                        dst_ambiguous = "directional") {
   add_ymd(
     x = x,
@@ -223,7 +223,7 @@ subtract_months <- function(x,
                             n,
                             ...,
                             day_nonexistent = "last-time",
-                            dst_nonexistent = "directional",
+                            dst_nonexistent = "roll-directional",
                             dst_ambiguous = "directional") {
   add_months(
     x = x,
@@ -242,7 +242,7 @@ subtract_months <- function(x,
 add_weeks <- function(x,
                       n,
                       ...,
-                      dst_nonexistent = "directional",
+                      dst_nonexistent = "roll-directional",
                       dst_ambiguous = "directional") {
   add_ymd(
     x = x,
@@ -260,7 +260,7 @@ add_weeks <- function(x,
 subtract_weeks <- function(x,
                            n,
                            ...,
-                           dst_nonexistent = "directional",
+                           dst_nonexistent = "roll-directional",
                            dst_ambiguous = "directional") {
   add_weeks(
     x = x,
@@ -278,7 +278,7 @@ subtract_weeks <- function(x,
 add_days <- function(x,
                      n,
                      ...,
-                     dst_nonexistent = "directional",
+                     dst_nonexistent = "roll-directional",
                      dst_ambiguous = "directional") {
   add_ymd(
     x = x,
@@ -296,7 +296,7 @@ add_days <- function(x,
 subtract_days <- function(x,
                           n,
                           ...,
-                          dst_nonexistent = "directional",
+                          dst_nonexistent = "roll-directional",
                           dst_ambiguous = "directional") {
   add_days(
     x = x,

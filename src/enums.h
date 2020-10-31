@@ -19,19 +19,19 @@ enum day_nonexistent parse_day_nonexistent(sexp x);
 // -----------------------------------------------------------------------------
 
 enum class dst_direction {
-  positive,
-  negative
+  forward,
+  backward
 };
 
 // -----------------------------------------------------------------------------
 
 enum class dst_nonexistent {
-  directional,
-  next,
-  previous,
-  directional_shift,
-  next_shift,
-  previous_shift,
+  roll_directional,
+  roll_forward,
+  roll_backward,
+  shift_directional,
+  shift_forward,
+  shift_backward,
   na,
   error
 };

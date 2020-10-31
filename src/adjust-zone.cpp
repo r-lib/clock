@@ -57,7 +57,7 @@ static sexp adjust_zone_retain_clock(sexp x,
   civil_poke_tzone(out, zone);
 
   // Not used, but required as an argument
-  const dst_direction dst_direction = dst_direction::positive;
+  const dst_direction dst_direction = dst_direction::forward;
 
   for (r_ssize i = 0; i < size; ++i) {
     const double x_elt = p_x[i];

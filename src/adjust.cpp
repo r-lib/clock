@@ -78,7 +78,7 @@ static sexp adjust_zoned(sexp x,
   const bool recycle_x = r_is_scalar(x);
   const bool recycle_value = r_is_scalar(value);
 
-  const enum dst_direction dst_direction = dst_direction::positive;
+  const enum dst_direction dst_direction = dst_direction::forward;
 
   for (r_ssize i = 0; i < size; ++i) {
     double elt_x = recycle_x ? p_x[0] : p_x[i];

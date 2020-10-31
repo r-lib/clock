@@ -29,11 +29,11 @@ enum day_nonexistent parse_day_nonexistent(sexp x) {
 enum dst_nonexistent parse_dst_nonexistent(sexp x) {
   enum dst_nonexistent out = parse_dst_nonexistent_arithmetic(x);
 
-  if (out == dst_nonexistent::directional) {
-    r_abort("Internal error: 'directional' is not allowed for `dst_nonexistent` here.");
+  if (out == dst_nonexistent::roll_directional) {
+    r_abort("Internal error: 'roll-directional' is not allowed for `dst_nonexistent` here.");
   }
-  if (out == dst_nonexistent::directional_shift) {
-    r_abort("Internal error: 'directional-shift' is not allowed for `dst_nonexistent` here.");
+  if (out == dst_nonexistent::shift_directional) {
+    r_abort("Internal error: 'shift-directional' is not allowed for `dst_nonexistent` here.");
   }
 
   return out;
@@ -49,12 +49,12 @@ enum dst_nonexistent parse_dst_nonexistent_arithmetic(sexp x) {
 
   const char* string = CHAR(STRING_ELT(x, 0));
 
-  if (!strcmp(string, "directional")) return dst_nonexistent::directional;
-  if (!strcmp(string, "next")) return dst_nonexistent::next;
-  if (!strcmp(string, "previous")) return dst_nonexistent::previous;
-  if (!strcmp(string, "directional-shift")) return dst_nonexistent::directional_shift;
-  if (!strcmp(string, "next-shift")) return dst_nonexistent::next_shift;
-  if (!strcmp(string, "previous-shift")) return dst_nonexistent::previous_shift;
+  if (!strcmp(string, "roll-directional")) return dst_nonexistent::roll_directional;
+  if (!strcmp(string, "roll-forward")) return dst_nonexistent::roll_forward;
+  if (!strcmp(string, "roll-backward")) return dst_nonexistent::roll_backward;
+  if (!strcmp(string, "shift-directional")) return dst_nonexistent::shift_directional;
+  if (!strcmp(string, "shift-forward")) return dst_nonexistent::shift_forward;
+  if (!strcmp(string, "shift-backward")) return dst_nonexistent::shift_backward;
   if (!strcmp(string, "NA")) return dst_nonexistent::na;
   if (!strcmp(string, "error")) return dst_nonexistent::error;
 

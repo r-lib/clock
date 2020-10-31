@@ -47,7 +47,7 @@ localize <- function(x) {
 unlocalize <- function(x,
                        zone,
                        ...,
-                       dst_nonexistent = "next",
+                       dst_nonexistent = "roll-forward",
                        dst_ambiguous = "earliest") {
   check_dots_empty()
 

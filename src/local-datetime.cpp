@@ -58,7 +58,7 @@ SEXP unlocalize_cpp(SEXP x,
   std::string zone_name = zone_unwrap(zone);
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
-  enum dst_direction dst_direction = dst_direction::positive;
+  enum dst_direction dst_direction = dst_direction::forward;
   enum dst_nonexistent c_dst_nonexistent = parse_dst_nonexistent(dst_nonexistent);
   enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous(dst_ambiguous);
 

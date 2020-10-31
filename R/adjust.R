@@ -3,7 +3,7 @@ adjust_year <- function(x,
                         value,
                         ...,
                         day_nonexistent = "last-time",
-                        dst_nonexistent = "next",
+                        dst_nonexistent = "roll-forward",
                         dst_ambiguous = "earliest") {
   adjust(
     x = x,
@@ -23,7 +23,7 @@ adjust_month <- function(x,
                          value,
                          ...,
                          day_nonexistent = "last-time",
-                         dst_nonexistent = "next",
+                         dst_nonexistent = "roll-forward",
                          dst_ambiguous = "earliest") {
   adjust(
     x = x,
@@ -43,7 +43,7 @@ adjust_day <- function(x,
                        value,
                        ...,
                        day_nonexistent = "last-time",
-                       dst_nonexistent = "next",
+                       dst_nonexistent = "roll-forward",
                        dst_ambiguous = "earliest") {
   adjust(
     x = x,
@@ -62,7 +62,7 @@ adjust_day <- function(x,
 adjust_hour <- function(x,
                         value,
                         ...,
-                        dst_nonexistent = "next",
+                        dst_nonexistent = "roll-forward",
                         dst_ambiguous = "earliest") {
   adjust(
     x = x,
@@ -81,7 +81,7 @@ adjust_hour <- function(x,
 adjust_minute <- function(x,
                           value,
                           ...,
-                          dst_nonexistent = "next",
+                          dst_nonexistent = "roll-forward",
                           dst_ambiguous = "earliest") {
   adjust(
     x = x,
@@ -100,7 +100,7 @@ adjust_minute <- function(x,
 adjust_second <- function(x,
                           value,
                           ...,
-                          dst_nonexistent = "next",
+                          dst_nonexistent = "roll-forward",
                           dst_ambiguous = "earliest") {
   adjust(
     x = x,
@@ -118,7 +118,7 @@ adjust_second <- function(x,
 #' @export
 adjust_last_day_of_month <- function(x,
                                      ...,
-                                     dst_nonexistent = "next",
+                                     dst_nonexistent = "roll-forward",
                                      dst_ambiguous = "earliest") {
   adjust(
     x = x,

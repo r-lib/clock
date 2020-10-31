@@ -2,7 +2,7 @@
 adjust_zone_retain_clock <- function(x,
                                      zone,
                                      ...,
-                                     dst_nonexistent = "next",
+                                     dst_nonexistent = "roll-forward",
                                      dst_ambiguous = "earliest") {
   check_dots_empty()
   validate_dst_nonexistent(dst_nonexistent)

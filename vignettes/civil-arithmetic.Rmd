@@ -132,7 +132,7 @@ add_days(x, 1)
 But you are more than welcome to choose the other options:
 
 ```{r}
-add_days(x, 1, dst_nonexistent = "previous")
+add_days(x, 1, dst_nonexistent = "roll-backward")
 
 add_days(x, 1, dst_nonexistent = "NA")
 ```
@@ -142,7 +142,7 @@ add_days(x, 1, dst_nonexistent = "NA")
 The _shifting_ options deserve special mention. The following will add the 1 hour gap to the nonexistent time of `02:30:00`:
 
 ```{r}
-add_days(x, 1, dst_nonexistent = "next-shift")
+add_days(x, 1, dst_nonexistent = "shift-forward")
 ```
 
 A word of warning about this. While it might seem convenient in isolation, this behavior can be very problematic when used with a vector of dates because it doesn't preserve the _relative ordering_ within that vector. For examples, see the Relative Ordering section below.
@@ -158,9 +158,9 @@ y <- as.POSIXct("1970-04-27 02:30:00", "America/New_York")
 # but this doesn't exist!
 ```
 
-To resolve this nonexistent date, it seems intuitive to take into account the _direction_ that you are traveling when performing this arithmetic. Rather than moving forward to `03:00:00`, it makes sense to roll back to the previous instant in time of `01:59:59` since that matches the direction of travel you are already moving in.
+To resolve this nonexistent date, it seems intuitive to take into account the _direction_ that you are traveling when performing this arithmetic. Rather than rolling forward to `03:00:00`, it makes sense to roll back to the previous instant in time of `01:59:59` since that matches the direction of travel you are already moving in.
 
-To handle this, the `dst_nonexistent` argument defaults to `"directional"`, which chooses `"next"` if you are adding time and `"previous"` if you are subtracting it. This hopefully gives the most intuitive result of:
+To handle this, the `dst_nonexistent` argument defaults to `"roll-directional"`, which chooses `"roll-forward"` if you are adding time and `"roll-backward"` if you are subtracting it. This hopefully gives the most intuitive result of:
 
 ```{r}
 subtract_days(y, 1)
@@ -169,7 +169,7 @@ subtract_days(y, 1)
 But again you can change this if you did want `03:00:00`.
 
 ```{r}
-subtract_days(y, 1, dst_nonexistent = "next")
+subtract_days(y, 1, dst_nonexistent = "roll-forward")
 ```
 
 ## Ambiguous times due to daylight savings fallbacks
@@ -255,7 +255,7 @@ In previous sections, we noted that there are arguments to `day_nonexistent` and
 
 For `day_nonexistent`, these are `"last-day"` and `"first-day"`.
 
-For `dst_nonexistent`, these are `"next-shift"`, `"previous-shift"`, and `"directional-shift"`.
+For `dst_nonexistent`, these are `"shift-forward"`, `"shift-backward"`, and `"shift-directional"`.
 
 While these options can be useful in other situations, I would highly advise against using them when doing date-time arithmetic since none of these options preserve the _relative ordering_ within your vector. To understand this, we'll go through a few examples.
 
@@ -315,10 +315,10 @@ x <- as.POSIXct(x, "America/New_York")
 x[1] < x[2]
 ```
 
-If we added 1 day to this vector and used `"next-shift"` to keep the time of day by "shifting" forward by the size of the gap, then we'd end up with:
+If we added 1 day to this vector and used `"shift-forward"` to keep the time of day by "shifting" forward by the size of the gap, then we'd end up with:
 
 ```{r}
-y <- add_days(x, 1, dst_nonexistent = "next-shift")
+y <- add_days(x, 1, dst_nonexistent = "shift-forward")
 y
 
 x[1] < x[2]
@@ -327,7 +327,7 @@ y[1] < y[2]
 
 The relative ordering is lost!
 
-The default option for `dst_nonexistent` of `"directional"` will preserve relative ordering, as will choosing `"next"` or `"previous"` directly. This is why `"next"` pins the time of day to the first possible second after the gap (and similar reasoning applies for `"previous"`).
+The default option for `dst_nonexistent` of `"roll-directional"` will preserve relative ordering, as will choosing `"roll-forward"` or `"roll-backward"` directly. This is why `"roll-forward"` pins the time of day to the first possible second after the gap (and similar reasoning applies for `"roll-backward"`).
 
 ```{r}
 z <- add_days(x, 1)
@@ -354,7 +354,7 @@ The issue with adding multiple periods is that `add_days()` and friends will _im
 
 ```{r}
 x %>%
-  add_days(1) %>% # immediately applies `dst_nonexistent = "next"`
+  add_days(1) %>% # immediately applies `dst_nonexistent = "roll-forward"`
   print() %>%
   add_hours(1)
 
