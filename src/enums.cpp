@@ -13,10 +13,10 @@ enum day_nonexistent parse_day_nonexistent(sexp x) {
 
   const char* string = CHAR(STRING_ELT(x, 0));
 
-  if (!strcmp(string, "end")) return day_nonexistent::end;
-  if (!strcmp(string, "start")) return day_nonexistent::start;
-  if (!strcmp(string, "end-keep")) return day_nonexistent::end_keep;
-  if (!strcmp(string, "start-keep")) return day_nonexistent::start_keep;
+  if (!strcmp(string, "last-time")) return day_nonexistent::last_time;
+  if (!strcmp(string, "first-time")) return day_nonexistent::first_time;
+  if (!strcmp(string, "last-day")) return day_nonexistent::last_day;
+  if (!strcmp(string, "first-day")) return day_nonexistent::first_day;
   if (!strcmp(string, "NA")) return day_nonexistent::na;
   if (!strcmp(string, "error")) return day_nonexistent::error;
 

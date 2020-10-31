@@ -6,10 +6,10 @@
 // -----------------------------------------------------------------------------
 
 enum class day_nonexistent {
-  end,
-  start,
-  end_keep,
-  start_keep,
+  last_time,
+  first_time,
+  last_day,
+  first_day,
   na,
   error
 };

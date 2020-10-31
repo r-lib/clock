@@ -7,10 +7,10 @@
 
 // -----------------------------------------------------------------------------
 
-static inline void resolve_day_nonexistent_start_keep(date::year_month_day& ymd);
-static inline void resolve_day_nonexistent_start(date::year_month_day& ymd, std::chrono::seconds& tod);
-static inline void resolve_day_nonexistent_end_keep(date::year_month_day& ymd);
-static inline void resolve_day_nonexistent_end(date::year_month_day& ymd, std::chrono::seconds& tod);
+static inline void resolve_day_nonexistent_first_day(date::year_month_day& ymd);
+static inline void resolve_day_nonexistent_first_time(date::year_month_day& ymd, std::chrono::seconds& tod);
+static inline void resolve_day_nonexistent_last_day(date::year_month_day& ymd);
+static inline void resolve_day_nonexistent_last_time(date::year_month_day& ymd, std::chrono::seconds& tod);
 static inline void resolve_day_nonexistent_na(bool& na);
 static inline void resolve_day_nonexistent_error(r_ssize i);
 
@@ -24,17 +24,17 @@ static inline void resolve_day_nonexistent(r_ssize i,
                                            std::chrono::seconds& tod,
                                            bool& na) {
   switch (day_nonexistent) {
-  case day_nonexistent::start_keep: {
-    return resolve_day_nonexistent_start_keep(ymd);
+  case day_nonexistent::first_day: {
+    return resolve_day_nonexistent_first_day(ymd);
   }
-  case day_nonexistent::start: {
-    return resolve_day_nonexistent_start(ymd, tod);
+  case day_nonexistent::first_time: {
+    return resolve_day_nonexistent_first_time(ymd, tod);
   }
-  case day_nonexistent::end_keep: {
-    return resolve_day_nonexistent_end_keep(ymd);
+  case day_nonexistent::last_day: {
+    return resolve_day_nonexistent_last_day(ymd);
   }
-  case day_nonexistent::end: {
-    return resolve_day_nonexistent_end(ymd, tod);
+  case day_nonexistent::last_time: {
+    return resolve_day_nonexistent_last_time(ymd, tod);
   }
   case day_nonexistent::na: {
     return resolve_day_nonexistent_na(na);
@@ -46,24 +46,24 @@ static inline void resolve_day_nonexistent(r_ssize i,
 }
 
 // First day of next month - keep time of day
-static inline void resolve_day_nonexistent_start_keep(date::year_month_day& ymd) {
+static inline void resolve_day_nonexistent_first_day(date::year_month_day& ymd) {
   ymd = ymd.year() / (ymd.month() + date::months(1)) / date::day(1);
 }
 
-// First day of next month - cancels out time of day
-static inline void resolve_day_nonexistent_start(date::year_month_day& ymd, std::chrono::seconds& tod) {
-  resolve_day_nonexistent_start_keep(ymd);
+// First time of next month - cancels out time of day
+static inline void resolve_day_nonexistent_first_time(date::year_month_day& ymd, std::chrono::seconds& tod) {
+  resolve_day_nonexistent_first_day(ymd);
   tod = std::chrono::seconds{0};
 }
 
 // Last day of current month - keep time of day
-static inline void resolve_day_nonexistent_end_keep(date::year_month_day& ymd) {
+static inline void resolve_day_nonexistent_last_day(date::year_month_day& ymd) {
   ymd = ymd.year() / ymd.month() / date::last;
 }
 
-// First day of next month - shifts time of day to last second
-static inline void resolve_day_nonexistent_end(date::year_month_day& ymd, std::chrono::seconds& tod) {
-  resolve_day_nonexistent_end_keep(ymd);
+// Last time of current month - shifts time of day to last second
+static inline void resolve_day_nonexistent_last_time(date::year_month_day& ymd, std::chrono::seconds& tod) {
+  resolve_day_nonexistent_last_day(ymd);
   tod = std::chrono::seconds{86400 - 1};
 }
 
@@ -72,7 +72,7 @@ static inline void resolve_day_nonexistent_na(bool& na) {
 }
 
 static inline void resolve_day_nonexistent_error(r_ssize i) {
-  r_abort("nonexistent day found at location %i.", (int) i + 1);
+  r_abort("Nonexistent day found at location %i.", (int) i + 1);
 }
 
 #endif

@@ -58,19 +58,19 @@ x <- as.POSIXct("2019-01-31 09:30:00", "America/New_York")
 
 As mentioned before, there are a number of options to resolve this. The full set is:
 
-- Pin to the exact end of the current month, including time of day.
+- Return the last possible time in the current month.
 
-- Pin to the exact start of the following month, including time of day.
+- Return the first possible time in the following month.
 
-- Adjust the day of the month to the end of the current month, but keep the original time of day.
+- Return the last day in the current month, retaining the time of day.
 
-- Adjust the day of the month to the start of the following month, but keep the original time of day.
+- Return the first day in the following month, retaining the time of day.
 
 - Return an `NA` because this date doesn't exist.
 
 - Error because this date doesn't exist.
 
-The most common behavior with the year/month/day components is to move to the end of the current month `"2019-02-28"`. By default, civil will also pin the time of day to the very end of the day, `23:59:59`.
+In civil, the default behavior is the first option, the last possible time in the current month will be returned.
 
 ```{r}
 x
@@ -83,12 +83,12 @@ But there is nothing stopping you from choosing a different behavior. You can ad
 ```{r}
 x
 
-add_months(x, 1, day_nonexistent = "start")
+add_months(x, 1, day_nonexistent = "first-time")
 
-add_months(x, 1, day_nonexistent = "end-keep")
+add_months(x, 1, day_nonexistent = "last-day")
 ```
 
-In isolation, it might seem intuitive to keep the original time of day using `"end-keep"`, but this can be dangerous when doing data science, which often involves a vector of dates rather than just one. Retaining the original time of day can alter the relative ordering within the vector, which can cause many issues. See the section on Relative Ordering for more information.
+In isolation, it might seem intuitive to keep the original time of day using `"last-day"`, but this can be dangerous when doing data science, which often involves a vector of dates rather than just one. Retaining the original time of day can alter the relative ordering within the vector, which can cause many issues. See the section on Relative Ordering for more information.
 
 ## Nonexistent times due to daylight savings gaps
 
@@ -253,7 +253,7 @@ subtract_months(x, 1, dst_ambiguous = "earliest")
 
 In previous sections, we noted that there are arguments to `day_nonexistent` and `dst_nonexistent` that attempt to retain the sub-daily components of you date-time vector when resolving nonexistent date-times.
 
-For `day_nonexistent`, these are `"end-keep"` and `"start-keep"`.
+For `day_nonexistent`, these are `"last-day"` and `"first-day"`.
 
 For `dst_nonexistent`, these are `"next-shift"`, `"previous-shift"`, and `"directional-shift"`.
 
@@ -273,7 +273,7 @@ x[1] < x[2]
 What happens if you add 1 month to this vector, and want to keep the time of day? Note that the second element in the vector will have to consult `day_nonexistent` since `"1970-02-31"` doesn't exist.
 
 ```{r}
-y <- add_months(x, 1, day_nonexistent = "end-keep")
+y <- add_months(x, 1, day_nonexistent = "last-day")
 
 y
 ```
@@ -294,10 +294,10 @@ stops <- index + months(n)
 
 It is often a requirement that `index` is an increasing series here, and similarly it is expected that `starts` and `stops` are also increasing. If the relative ordering is lost then you can't ensure that this holds.
 
-The defaults in civil will always preserve relative ordering. For `day_nonexistent`, it is always safe to use `"end"` and `"start"`. This is why `"end"` pins the time of day to the last possible second in the day.
+The defaults in civil will always preserve relative ordering. For `day_nonexistent`, it is always safe to use `"last-time"` and `"first-time"`. This is why `"last-time"` pins the time of day to the last possible second in the day.
 
 ```{r}
-z <- add_months(x, 1, day_nonexistent = "end")
+z <- add_months(x, 1, day_nonexistent = "last-time")
 z
 
 x[1] < x[2]

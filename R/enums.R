@@ -61,5 +61,5 @@ validate_day_nonexistent <- function(x, arg = "day_nonexistent") {
 }
 
 day_nonexistent_opts <- function() {
-  c("end", "start", "end-keep", "start-keep", "NA", "error")
+  c("last-time", "first-time", "last-day", "first-day", "NA", "error")
 }

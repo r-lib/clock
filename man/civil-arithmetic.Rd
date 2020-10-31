@@ -22,7 +22,7 @@ add_years(
   x,
   n,
   ...,
-  day_nonexistent = "end",
+  day_nonexistent = "last-time",
   dst_nonexistent = "directional",
   dst_ambiguous = "directional"
 )
@@ -31,7 +31,7 @@ subtract_years(
   x,
   n,
   ...,
-  day_nonexistent = "end",
+  day_nonexistent = "last-time",
   dst_nonexistent = "directional",
   dst_ambiguous = "directional"
 )
@@ -40,7 +40,7 @@ add_months(
   x,
   n,
   ...,
-  day_nonexistent = "end",
+  day_nonexistent = "last-time",
   dst_nonexistent = "directional",
   dst_ambiguous = "directional"
 )
@@ -49,7 +49,7 @@ subtract_months(
   x,
   n,
   ...,
-  day_nonexistent = "end",
+  day_nonexistent = "last-time",
   dst_nonexistent = "directional",
   dst_ambiguous = "directional"
 )
@@ -118,20 +118,17 @@ when adding years or months.
 One example is adding a month to March 31st, which theoretically lands on
 the nonexistent day of April 31st.
 \itemize{
-\item \code{"end"}: Adjust to the last day of the current month. For date-times, the
-sub-daily components are adjusted to the end of the day.
-\item \code{"start"}: Adjust to the first day of the following month. For
-date-times, the sub-daily components are adjusted to the start of
-the day.
-\item \code{"end-keep"}: Adjust to the last day of the current month. For
+\item \code{"last-time"}: Adjust to the last possible time of the current month.
+\item \code{"first-time"}: Adjust to the first possible time of the following month.
+\item \code{"last-day"}: Adjust to the last day of the current month. For
 date-times, the sub-daily components are kept.
-\item \code{"start-keep"}: Adjust to the first day of the following month. For
+\item \code{"first-day"}: Adjust to the first day of the following month. For
 date-times, the sub-daily components are kept.
 \item \code{"NA"}: Replace the nonexistent date with \code{NA}.
 \item \code{"error"}: Error on nonexistent dates.
 }
 
-\emph{Warning}: When used in arithmetic, \code{"end-keep"} and \code{"start-keep"} do not
+\emph{Warning}: When used in arithmetic, \code{"last-day"} and \code{"first-day"} do not
 guarantee that the relative ordering of \code{x} is maintained.}
 
 \item{dst_nonexistent}{\verb{[character(1)]}
@@ -219,7 +216,7 @@ add_days(x, 2)
 # but this doesn't exist, so `day_nonexistent`
 # is consulted
 add_months(x, 1)
-add_months(x, 1, day_nonexistent = "start")
+add_months(x, 1, day_nonexistent = "first-time")
 
 x <- as.POSIXct("1970-04-25 02:30:00", "America/New_York")
 y <- as.POSIXct("1970-04-27 02:30:00", "America/New_York")
