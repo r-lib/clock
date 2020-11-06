@@ -1,4 +1,7 @@
 new_local <- function(fields, ..., names = NULL, class = NULL) {
+  size <- length(fields[[1]])
+  validate_names(names, size)
+
   new_rcrd(
     fields = fields,
     ...,
@@ -24,15 +27,8 @@ names.civil_local <- function(x) {
     return(x)
   }
 
-  value <- as.character(value)
-  value <- unstructure(value)
-
-  if (vec_size(x) != vec_size(value)) {
-    abort("Names must have the same length as `x`.")
-  }
-  if (any(is.na(value))) {
-    abort("Names must not be `NA`.")
-  }
+  size <- vec_size(x)
+  value <- as_names(value, size)
 
   attrib[["civil_local:::names"]] <- value
   attributes(x) <- attrib
@@ -44,11 +40,45 @@ is_local <- function(x) {
   inherits(x, "civil_local")
 }
 
+as_names <- function(x, size) {
+  x <- unstructure(x)
+
+  if (!is_character(x)) {
+    x <- as.character(x)
+  }
+
+  validate_names(x, size)
+
+  x
+}
+
+validate_names <- function(names, size) {
+  if (is_null(names)) {
+    return(invisible(names))
+  }
+
+  if (!is_character(names)) {
+    abort("Names must be a character vector.")
+  }
+
+  if (length(names) != size) {
+    abort(paste0("Names must have length ", size, " not ", length(names), "."))
+  }
+
+  if (any(is.na(names))) {
+    abort("Names cannot be `NA`.")
+  }
+
+  invisible(names)
+}
+
 # ------------------------------------------------------------------------------
 
 new_local_date <- function(year = integer(),
                            month = integer(),
-                           day = integer()) {
+                           day = integer(),
+                           ...,
+                           names = NULL) {
   if (!is_integer(year)) {
     abort("`year` must be an integer.")
   }
@@ -69,12 +99,6 @@ new_local_date <- function(year = integer(),
     abort("All elements to `new_local_date()` must have the same length.")
   }
 
-  names <- names(year)
-
-  if (!is.null(names)) {
-    names(year) <- NULL
-  }
-
   fields <- list(
     year = year,
     month = month,
@@ -83,17 +107,31 @@ new_local_date <- function(year = integer(),
 
   new_local(
     fields,
+    ...,
     names = names,
     class = "civil_local_date"
   )
 }
 
-new_local_date_from_fields <- function(fields) {
+new_local_date_from_fields <- function(fields, names = NULL) {
   new_local_date(
     year = fields$year,
     month = fields$month,
-    day = fields$day
+    day = fields$day,
+    names = names
   )
+}
+
+#' @export
+vec_proxy.civil_local_date <- function(x, ...) {
+  proxy_civil_local(x)
+}
+
+#' @export
+vec_restore.civil_local_date <- function(x, to, ...) {
+  fields <- restore_civil_local_fields(x)
+  names <- restore_civil_local_names(x)
+  new_local_date_from_fields(fields, names)
 }
 
 #' @export
@@ -113,6 +151,8 @@ format.civil_local_date <- function(x, ...) {
   )
 
   out[is.na(x)] <- NA_character_
+
+  names(out) <- names(x)
 
   out
 }
@@ -134,7 +174,9 @@ new_local_datetime <- function(year = integer(),
                                hour = integer(),
                                minute = integer(),
                                second = integer(),
-                               zone = NULL) {
+                               zone = NULL,
+                               ...,
+                               names = NULL) {
   if (!is_integer(year)) {
     abort("`year` must be an integer.")
   }
@@ -170,12 +212,6 @@ new_local_datetime <- function(year = integer(),
     abort("All elements to `new_local_datetime()` must have the same length.")
   }
 
-  names <- names(year)
-
-  if (!is.null(names)) {
-    names(year) <- NULL
-  }
-
   fields <- list(
     year = year,
     month = month,
@@ -188,12 +224,13 @@ new_local_datetime <- function(year = integer(),
   new_local(
     fields,
     zone = zone,
+    ...,
     names = names,
     class = "civil_local_datetime"
   )
 }
 
-new_local_datetime_from_fields <- function(fields, zone) {
+new_local_datetime_from_fields <- function(fields, zone, names = NULL) {
   new_local_datetime(
     year = fields$year,
     month = fields$month,
@@ -201,8 +238,22 @@ new_local_datetime_from_fields <- function(fields, zone) {
     hour = fields$hour,
     minute = fields$minute,
     second = fields$second,
-    zone = zone
+    zone = zone,
+    names = names
   )
+}
+
+#' @export
+vec_proxy.civil_local_datetime <- function(x, ...) {
+  proxy_civil_local(x)
+}
+
+#' @export
+vec_restore.civil_local_datetime <- function(x, to, ...) {
+  fields <- restore_civil_local_fields(x)
+  names <- restore_civil_local_names(x)
+  zone <- local_datetime_zone(to)
+  new_local_datetime_from_fields(fields, zone, names)
 }
 
 #' @export
@@ -230,6 +281,8 @@ format.civil_local_datetime <- function(x, ...) {
   )
 
   out[is.na(x)] <- NA_character_
+
+  names(out) <- names(x)
 
   out
 }
@@ -276,11 +329,12 @@ localize <- function(x) {
   date <- is_Date(x)
   x <- to_posixct(x)
   fields <- localize_posixct_cpp(x)
+  names <- names(x)
 
   if (date) {
-    new_local_date_from_fields(fields)
+    new_local_date_from_fields(fields, names)
   } else {
-    new_local_datetime_from_fields(fields, get_zone(x))
+    new_local_datetime_from_fields(fields, get_zone(x), names)
   }
 }
 
@@ -318,6 +372,23 @@ unlocalize.civil_local_datetime <- function(x,
 }
 
 # ------------------------------------------------------------------------------
+
+proxy_civil_local <- function(x) {
+  out <- unclass(x)
+  out[["civil_local:::names"]] <- names(x)
+  out <- new_data_frame(out)
+  out
+}
+restore_civil_local_fields <- function(x) {
+  x[["civil_local:::names"]] <- NULL
+  names <- names(x)
+  x <- unstructure(x)
+  names(x) <- names
+  x
+}
+restore_civil_local_names <- function(x) {
+  x[["civil_local:::names"]]
+}
 
 format_year <- function(x) {
   sprintf("%04i", x)

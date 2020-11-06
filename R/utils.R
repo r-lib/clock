@@ -82,10 +82,9 @@ to_local_datetime_from_local_date <- function(x) {
     day = field(x, "day"),
     hour = zero,
     minute = zero,
-    second = zero
+    second = zero,
+    names = names(x)
   )
-
-  names(out) <- names(x)
 
   out
 }
@@ -110,10 +109,9 @@ from_local_datetime_to_local_date <- function(x) {
   out <- new_local_date(
     year = field(x, "year"),
     month = field(x, "month"),
-    day = field(x, "day")
+    day = field(x, "day"),
+    names = names(x)
   )
-
-  names(out) <- names(x)
 
   out
 }
