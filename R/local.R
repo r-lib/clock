@@ -1,9 +1,18 @@
-new_local <- function(fields, ..., names = NULL, class = NULL) {
+new_local <- function(fields, zone = NULL, ..., names = NULL, class = NULL) {
+  if (length(fields) == 0L) {
+    abort("`fields` must be a list of length 1 or greater.")
+  }
+
+  if (!is_null(zone) && !is_string(zone)) {
+    abort("`zone` must be `NULL` or a single character.")
+  }
+
   size <- length(fields[[1]])
   validate_names(names, size)
 
   new_rcrd(
     fields = fields,
+    zone = zone,
     ...,
     `civil_local:::names` = names,
     class = c(class, "civil_local")
@@ -38,6 +47,10 @@ names.civil_local <- function(x) {
 
 is_local <- function(x) {
   inherits(x, "civil_local")
+}
+
+local_zone <- function(x) {
+  attr(x, "zone", exact = TRUE)
 }
 
 as_names <- function(x, size) {
@@ -77,6 +90,7 @@ validate_names <- function(names, size) {
 new_local_date <- function(year = integer(),
                            month = integer(),
                            day = integer(),
+                           zone = NULL,
                            ...,
                            names = NULL) {
   if (!is_integer(year)) {
@@ -107,17 +121,19 @@ new_local_date <- function(year = integer(),
 
   new_local(
     fields,
+    zone = zone,
     ...,
     names = names,
     class = "civil_local_date"
   )
 }
 
-new_local_date_from_fields <- function(fields, names = NULL) {
+new_local_date_from_fields <- function(fields, zone, names) {
   new_local_date(
     year = fields$year,
     month = fields$month,
     day = fields$day,
+    zone = zone,
     names = names
   )
 }
@@ -131,7 +147,8 @@ vec_proxy.civil_local_date <- function(x, ...) {
 vec_restore.civil_local_date <- function(x, to, ...) {
   fields <- restore_civil_local_fields(x)
   names <- restore_civil_local_names(x)
-  new_local_date_from_fields(fields, names)
+  zone <- local_zone(to)
+  new_local_date_from_fields(fields, zone, names)
 }
 
 #' @export
@@ -230,7 +247,7 @@ new_local_datetime <- function(year = integer(),
   )
 }
 
-new_local_datetime_from_fields <- function(fields, zone, names = NULL) {
+new_local_datetime_from_fields <- function(fields, zone, names) {
   new_local_datetime(
     year = fields$year,
     month = fields$month,
@@ -252,7 +269,7 @@ vec_proxy.civil_local_datetime <- function(x, ...) {
 vec_restore.civil_local_datetime <- function(x, to, ...) {
   fields <- restore_civil_local_fields(x)
   names <- restore_civil_local_names(x)
-  zone <- local_datetime_zone(to)
+  zone <- local_zone(to)
   new_local_datetime_from_fields(fields, zone, names)
 }
 
@@ -292,34 +309,8 @@ vec_ptype_full.civil_local_datetime <- function(x, ...) {
   "local_datetime"
 }
 
-#' @export
-obj_print_header.civil_local_datetime <- function(x, ...) {
-  zone <- local_datetime_zone(x)
-  zone <- zone_printable(zone)
-
-  if (is_null(zone)) {
-    cat_line("<", vec_ptype_full(x), "[", vec_size(x), "]>")
-  } else {
-    cat_line("<", vec_ptype_full(x), "[zone: ", zone, "][", vec_size(x), "]>")
-  }
-
-  invisible(x)
-}
-
 is_local_datetime <- function(x) {
   inherits(x, "civil_local_datetime")
-}
-
-local_datetime_zone <- function(x) {
-  attr(x, "zone", exact = TRUE)
-}
-
-zone_printable <- function(zone) {
-  if (identical(zone, "")) {
-    "local"
-  } else {
-    zone
-  }
 }
 
 # ------------------------------------------------------------------------------
@@ -328,13 +319,15 @@ zone_printable <- function(zone) {
 localize <- function(x) {
   date <- is_Date(x)
   x <- to_posixct(x)
+
   fields <- localize_posixct_cpp(x)
+  zone <- get_zone(x)
   names <- names(x)
 
   if (date) {
-    new_local_date_from_fields(fields, names)
+    new_local_date_from_fields(fields, zone, names)
   } else {
-    new_local_datetime_from_fields(fields, get_zone(x), names)
+    new_local_datetime_from_fields(fields, zone, names)
   }
 }
 
@@ -362,7 +355,7 @@ unlocalize.civil_local_datetime <- function(x,
                                             dst_ambiguous = "earliest") {
   check_dots_empty()
 
-  zone <- resolve_zone(zone, x)
+  zone <- zone_resolve(zone, x)
 
   validate_day_nonexistent(day_nonexistent)
   validate_dst_nonexistent(dst_nonexistent)
@@ -409,12 +402,12 @@ format_second <- function(x) {
   sprintf("%02i", x)
 }
 
-resolve_zone <- function(zone, x) {
+zone_resolve <- function(zone, x) {
   if (!is_null(zone)) {
     return(zone)
   }
 
-  zone <- local_datetime_zone(x)
+  zone <- local_zone(x)
 
   if (is_null(zone)) {
     abort("`zone` is `NULL`, but `x` has no implicit time zone.")
