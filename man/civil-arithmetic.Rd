@@ -132,7 +132,7 @@ add_weeks(x, n, ...)
   dst_ambiguous = "directional"
 )
 
-\method{add_weeks}{civil_local}(x, n, ...)
+\method{add_weeks}{civil_local}(x, n, ..., day_nonexistent = "last-time")
 
 subtract_weeks(x, n, ...)
 
@@ -147,7 +147,7 @@ subtract_weeks(x, n, ...)
   dst_ambiguous = "directional"
 )
 
-\method{subtract_weeks}{civil_local}(x, n, ...)
+\method{subtract_weeks}{civil_local}(x, n, ..., day_nonexistent = "last-time")
 
 add_days(x, n, ...)
 
@@ -161,7 +161,7 @@ add_days(x, n, ...)
   dst_ambiguous = "directional"
 )
 
-\method{add_days}{civil_local}(x, n, ...)
+\method{add_days}{civil_local}(x, n, ..., day_nonexistent = "last-time")
 
 subtract_days(x, n, ...)
 
@@ -176,7 +176,7 @@ subtract_days(x, n, ...)
   dst_ambiguous = "directional"
 )
 
-\method{subtract_days}{civil_local}(x, n, ...)
+\method{subtract_days}{civil_local}(x, n, ..., day_nonexistent = "last-time")
 
 add_hours(x, n, ...)
 
