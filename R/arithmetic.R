@@ -1,10 +1,60 @@
-#' Date-time arithmetic
+#' Local date-time arithmetic
 #'
 #' @description
-#' Add or subtract units of time to a date-time object.
+#' Local arithmetic involves adding or subtracting units of time from a datetime
+#' that is independent of any time zone. This means that daylight savings time
+#' is never an issue while working with a local datetime. Usually, you will
+#' convert to a local datetime with [localize()], perform multiple arithmetic
+#' operations or adjustments with it, then convert it back to a zoned datetime
+#' with [unlocalize()].
 #'
-#' For many detailed examples and extended explanations, see the vignette
-#' on arithmetic: `vignette("civil-arithmetic")`.
+#' Local arithmetic is usually appropriate when performing multiple arithmetic
+#' operations in a row (like adding a set of years, months, and days). The
+#' alternative is [zoned arithmetic][civil-zoned-arithmetic], which is simpler
+#' and more straightforward when you just need to perform a single operation
+#' (like just adding 3 months).
+#'
+#' @section Nonexistent Days:
+#' Local datetimes are unique because they are allowed to land on _nonexistent
+#' days_. These might occur from adding 1 month to `"1971-01-29"`, which
+#' theoretically lands on `"1971-02-29"`, a nonexistent day. With zoned
+#' arithmetic, you are immediately forced to make a decision on how to handle
+#' this nonexistent day. With local arithmetic, that decision is delayed,
+#' allowing you precise control over how to handle this case. As an example, you
+#' might choose to add 1 year to this nonexistent date, resulting in
+#' `"1972-02-29"`, which does exist due to it being a leap year. Or you might
+#' convert it back to a zoned date with [unlocalize()], which forces you
+#' to deal with the nonexistent date using the `day_nonexistent` argument.
+#' The default would choose the last real day in February of that year,
+#' resulting in `"1971-02-28"`.
+#'
+#' There are operations that force you to resolve nonexistent days. Using
+#' `add_days()`, `add_hours()`, `add_minutes()`, or `add_seconds()` will
+#' force you to resolve the nonexistent day by using the `day_nonexistent`
+#' argument. After the nonexistent day has been resolved, the unit of time
+#' is added.
+#'
+#' @inheritParams add_years.Date
+#'
+#' @param x `[local_date / local_datetime]`
+#'
+#'   A local date-time vector.
+#'
+#' @name civil-local-arithmetic
+NULL
+
+#' Zoned date-time arithmetic
+#'
+#' @description
+#' Zoned arithmetic involves adding or subtracting units of time from a datetime
+#' that has a time zone attached. This means that all of the complexities of
+#' daylight savings time and nonexistent days have to be handled after each
+#' individual arithmetic operation. The alternative is
+#' [local arithmetic][civil-local-arithmetic], which only deals with the
+#' complexities of time zones once after all arithmetic has been performed.
+#'
+#' Zoned arithmetic is usually fine for additions of singular units of time.
+#' If you want to add multiple periods, consider switching to local arithmetic.
 #'
 #' The following add _periods_ of time. Periods are units of time that do
 #' not have a fixed constant duration (i.e. a "month" may be 30 or 31 days).
@@ -24,9 +74,9 @@
 #' `day_nonexistent`, `dst_nonexistent`, and `dst_ambiguous` options are
 #' consulted to resolve any issues.
 #'
-#' @param x `[Date / POSIXct / POSIXlt / local_datetime]`
+#' @param x `[Date / POSIXct / POSIXlt]`
 #'
-#'   A date-time vector.
+#'   A zoned date-time vector.
 #'
 #' @param n `[integer]`
 #'
@@ -35,11 +85,7 @@
 #'
 #' @param day_nonexistent `[character(1)]`
 #'
-#'   Control the behavior when a nonexistent day is generated. This only happens
-#'   when adding years or months.
-#'
-#'   One example is adding a month to March 31st, which theoretically lands on
-#'   the nonexistent day of April 31st.
+#'   Control the behavior when a nonexistent day is generated.
 #'
 #'   - `"last-time"`: Adjust to the last possible time of the current month.
 #'
@@ -55,19 +101,14 @@
 #'
 #'   - `"error"`: Error on nonexistent dates.
 #'
-#'   _Warning_: When used in arithmetic, `"last-day"` and `"first-day"` do not
-#'   guarantee that the relative ordering of `x` is maintained.
+#'   _Warning_: When used in arithmetic with date-times, `"last-day"` and
+#'   `"first-day"` do not guarantee that the relative ordering of `x` is
+#'   maintained.
 #'
 #' @param dst_nonexistent `[character(1)]`
 #'
 #'   Control the behavior when a nonexistent time is generated due to a
-#'   daylight savings gap. Only applicable for POSIXct and POSIXlt.
-#'
-#'   One example is adding a day to `"1970-04-25 02:30:00"` in the time zone of
-#'   `"America/New_York"`. This lands on the nonexistent time of `"1970-04-26
-#'   02:30:00"`, which does not exist due to a daylight savings gap. On this
-#'   day, adding a duration of 1 second to `01:59:59` jumps forward to
-#'   `03:00:00`.
+#'   daylight savings gap.
 #'
 #'   - `"roll-directional"`:
 #'     If `n` is positive, choose `"roll-forward"`.
@@ -98,13 +139,7 @@
 #' @param dst_ambiguous `[character(1)]`
 #'
 #'   Control the behavior when an ambiguous time is generated due to a daylight
-#'   savings fallback. Only applicable for POSIXct and POSIXlt.
-#'
-#'   One example is adding a day to `"1970-10-24 01:30:00"` in the time zone
-#'   of `"America/New_York"`. On the 25th, the clock read `01:00:00` two
-#'   separate times. One second after `01:59:59 EDT`, clocks "rolled back" to
-#'   `01:00:00 EST`. Adding a day to date-time mentioned before lands us in
-#'   this ambiguous zone.
+#'   savings fallback.
 #'
 #'   - `"directional"`: If `n` is positive, choose `"earliest"`. If `n` is
 #'     negative, choose `"latest"`.
@@ -119,7 +154,7 @@
 #'
 #' @param ... These dots are for future extensions and must be empty.
 #'
-#' @name civil-arithmetic
+#' @name civil-zoned-arithmetic
 #'
 #' @examples
 #' x <- as.Date("2019-01-31")
@@ -157,6 +192,33 @@
 #' add_days(x, 1, dst_nonexistent = "NA")
 NULL
 
+#' Date-time arithmetic
+#'
+#' @description
+#' Date-time arithmetic in civil is broken down into two types: zoned and local.
+#' Each type is documented on its own help page.
+#'
+#' [Zoned][civil-zoned-arithmetic] dates have a time zone attached. The two
+#' base R classes, POSIXct and Date, implement zoned dates (Date is assumed to
+#' implicitly have a time zone of UTC).
+#'
+#' [Local][civil-local-arithmetic] dates are independent of a time zone. The
+#' two civil objects, local_date and local_datetime, implement local dates.
+#'
+#' @param x `[Date / POSIXct / POSIXlt / local_date / local_datetime]`
+#'
+#'   A zoned or local date-time vector.
+#'
+#' @param n `[integer]`
+#'
+#'   An integer vector representing the number of units to add to or
+#'   subtract from `x`.
+#'
+#' @param ... These dots are for future extensions and must be empty.
+#'
+#' @name civil-arithmetic
+NULL
+
 # ------------------------------------------------------------------------------
 
 #' @rdname civil-arithmetic
@@ -166,7 +228,7 @@ add_years <- function(x, n, ...) {
   UseMethod("add_years")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 add_years.Date <- function(x,
                            n,
@@ -175,7 +237,7 @@ add_years.Date <- function(x,
   add_ymd_to_date(x, n, ..., day_nonexistent = day_nonexistent, unit = "year")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 add_years.POSIXt <- function(x,
                              n,
@@ -194,7 +256,7 @@ add_years.POSIXt <- function(x,
   )
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-local-arithmetic
 #' @export
 add_years.civil_local <- function(x, n, ...) {
   add_ym_to_local(x = x, n = n, ..., unit = "year")
@@ -209,7 +271,7 @@ subtract_years <- function(x, n, ...) {
   UseMethod("subtract_years")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 subtract_years.Date <- function(x,
                                 n,
@@ -218,7 +280,7 @@ subtract_years.Date <- function(x,
   add_years(x, -n, ..., day_nonexistent = day_nonexistent)
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 subtract_years.POSIXt <- function(x,
                                   n,
@@ -236,7 +298,7 @@ subtract_years.POSIXt <- function(x,
   )
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-local-arithmetic
 #' @export
 subtract_years.civil_local <- function(x, n, ...) {
   add_years(x, -n, ...)
@@ -251,7 +313,7 @@ add_months <- function(x, n, ...) {
   UseMethod("add_months")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 add_months.Date <- function(x,
                             n,
@@ -260,7 +322,7 @@ add_months.Date <- function(x,
   add_ymd_to_date(x, n, ..., day_nonexistent = day_nonexistent, unit = "month")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 add_months.POSIXt <- function(x,
                               n,
@@ -279,7 +341,7 @@ add_months.POSIXt <- function(x,
   )
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-local-arithmetic
 #' @export
 add_months.civil_local <- function(x, n, ...) {
   add_ym_to_local(x = x, n = n, ..., unit = "month")
@@ -294,7 +356,7 @@ subtract_months <- function(x, n, ...) {
   UseMethod("subtract_months")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 subtract_months.Date <- function(x,
                                  n,
@@ -303,7 +365,7 @@ subtract_months.Date <- function(x,
   add_months(x, -n, ..., day_nonexistent = day_nonexistent)
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 subtract_months.POSIXt <- function(x,
                                    n,
@@ -321,7 +383,7 @@ subtract_months.POSIXt <- function(x,
   )
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-local-arithmetic
 #' @export
 subtract_months.civil_local <- function(x, n, ...) {
   add_months(x, -n, ...)
@@ -336,13 +398,13 @@ add_weeks <- function(x, n, ...) {
   UseMethod("add_weeks")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 add_weeks.Date <- function(x, n, ...) {
   add_ymd_to_date(x, n, ..., day_nonexistent = "last-time", unit = "week")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 add_weeks.POSIXt <- function(x,
                              n,
@@ -360,7 +422,7 @@ add_weeks.POSIXt <- function(x,
   )
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-local-arithmetic
 #' @export
 add_weeks.civil_local <- function(x,
                                   n,
@@ -378,7 +440,7 @@ subtract_weeks <- function(x, n, ...) {
   UseMethod("subtract_weeks")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 subtract_weeks.Date <- function(x,
                                 n,
@@ -387,7 +449,7 @@ subtract_weeks.Date <- function(x,
   add_weeks(x, -n, ..., day_nonexistent = day_nonexistent)
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 subtract_weeks.POSIXt <- function(x,
                                   n,
@@ -405,7 +467,7 @@ subtract_weeks.POSIXt <- function(x,
   )
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-local-arithmetic
 #' @export
 subtract_weeks.civil_local <- function(x,
                                        n,
@@ -423,13 +485,13 @@ add_days <- function(x, n, ...) {
   UseMethod("add_days")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 add_days.Date <- function(x, n, ...) {
   add_ymd_to_date(x, n, ..., day_nonexistent = "last-time", unit = "day")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 add_days.POSIXt <- function(x,
                             n,
@@ -447,7 +509,7 @@ add_days.POSIXt <- function(x,
   )
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-local-arithmetic
 #' @export
 add_days.civil_local <- function(x,
                                  n,
@@ -465,7 +527,7 @@ subtract_days <- function(x, n, ...) {
   UseMethod("subtract_days")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 subtract_days.Date <- function(x,
                                n,
@@ -474,7 +536,7 @@ subtract_days.Date <- function(x,
   add_days(x, -n, ..., day_nonexistent = day_nonexistent)
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 subtract_days.POSIXt <- function(x,
                                  n,
@@ -492,7 +554,7 @@ subtract_days.POSIXt <- function(x,
   )
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-local-arithmetic
 #' @export
 subtract_days.civil_local <- function(x,
                                       n,
@@ -510,19 +572,19 @@ add_hours <- function(x, n, ...) {
   UseMethod("add_hours")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 add_hours.Date <- function(x, n, ...) {
   add_hms_to_date(x, n, ..., unit = "hour")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 add_hours.POSIXt <- function(x, n, ...) {
   add_hms_to_posixt(x, n, ..., unit = "hour")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-local-arithmetic
 #' @export
 add_hours.civil_local <- function(x,
                                   n,
@@ -540,19 +602,19 @@ subtract_hours <- function(x, n, ...) {
   UseMethod("subtract_hours")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 subtract_hours.Date <- function(x, n, ...) {
   add_hours(x, -n, ...)
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 subtract_hours.POSIXt <- function(x, n, ...) {
   add_hours(x, -n, ...)
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-local-arithmetic
 #' @export
 subtract_hours.civil_local <- function(x,
                                        n,
@@ -570,19 +632,19 @@ add_minutes <- function(x, n, ...) {
   UseMethod("add_minutes")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 add_minutes.Date <- function(x, n, ...) {
   add_hms_to_date(x, n, ..., unit = "minute")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 add_minutes.POSIXt <- function(x, n, ...) {
   add_hms_to_posixt(x, n, ..., unit = "minute")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-local-arithmetic
 #' @export
 add_minutes.civil_local <- function(x,
                                     n,
@@ -600,19 +662,19 @@ subtract_minutes <- function(x, n, ...) {
   UseMethod("subtract_minutes")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 subtract_minutes.Date <- function(x, n, ...) {
   add_minutes(x, -n, ...)
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 subtract_minutes.POSIXt <- function(x, n, ...) {
   add_minutes(x, -n, ...)
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-local-arithmetic
 #' @export
 subtract_minutes.civil_local <- function(x,
                                          n,
@@ -630,19 +692,19 @@ add_seconds <- function(x, n, ...) {
   UseMethod("add_seconds")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 add_seconds.Date <- function(x, n, ...) {
   add_hms_to_date(x, n, ..., unit = "second")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 add_seconds.POSIXt <- function(x, n, ...) {
   add_hms_to_posixt(x, n, ..., unit = "second")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-local-arithmetic
 #' @export
 add_seconds.civil_local <- function(x,
                                     n,
@@ -660,19 +722,19 @@ subtract_seconds <- function(x, n, ...) {
   UseMethod("subtract_seconds")
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 subtract_seconds.Date <- function(x, n, ...) {
   add_seconds(x, -n, ...)
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-zoned-arithmetic
 #' @export
 subtract_seconds.POSIXt <- function(x, n, ...) {
   add_seconds(x, -n, ...)
 }
 
-#' @rdname civil-arithmetic
+#' @rdname civil-local-arithmetic
 #' @export
 subtract_seconds.civil_local <- function(x,
                                          n,

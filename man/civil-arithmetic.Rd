@@ -3,233 +3,53 @@
 \name{civil-arithmetic}
 \alias{civil-arithmetic}
 \alias{add_years}
-\alias{add_years.Date}
-\alias{add_years.POSIXt}
-\alias{add_years.civil_local}
 \alias{subtract_years}
-\alias{subtract_years.Date}
-\alias{subtract_years.POSIXt}
-\alias{subtract_years.civil_local}
 \alias{add_months}
-\alias{add_months.Date}
-\alias{add_months.POSIXt}
-\alias{add_months.civil_local}
 \alias{subtract_months}
-\alias{subtract_months.Date}
-\alias{subtract_months.POSIXt}
-\alias{subtract_months.civil_local}
 \alias{add_weeks}
-\alias{add_weeks.Date}
-\alias{add_weeks.POSIXt}
-\alias{add_weeks.civil_local}
 \alias{subtract_weeks}
-\alias{subtract_weeks.Date}
-\alias{subtract_weeks.POSIXt}
-\alias{subtract_weeks.civil_local}
 \alias{add_days}
-\alias{add_days.Date}
-\alias{add_days.POSIXt}
-\alias{add_days.civil_local}
 \alias{subtract_days}
-\alias{subtract_days.Date}
-\alias{subtract_days.POSIXt}
-\alias{subtract_days.civil_local}
 \alias{add_hours}
-\alias{add_hours.Date}
-\alias{add_hours.POSIXt}
-\alias{add_hours.civil_local}
 \alias{subtract_hours}
-\alias{subtract_hours.Date}
-\alias{subtract_hours.POSIXt}
-\alias{subtract_hours.civil_local}
 \alias{add_minutes}
-\alias{add_minutes.Date}
-\alias{add_minutes.POSIXt}
-\alias{add_minutes.civil_local}
 \alias{subtract_minutes}
-\alias{subtract_minutes.Date}
-\alias{subtract_minutes.POSIXt}
-\alias{subtract_minutes.civil_local}
 \alias{add_seconds}
-\alias{add_seconds.Date}
-\alias{add_seconds.POSIXt}
-\alias{add_seconds.civil_local}
 \alias{subtract_seconds}
-\alias{subtract_seconds.Date}
-\alias{subtract_seconds.POSIXt}
-\alias{subtract_seconds.civil_local}
 \title{Date-time arithmetic}
 \usage{
 add_years(x, n, ...)
 
-\method{add_years}{Date}(x, n, ..., day_nonexistent = "last-time")
-
-\method{add_years}{POSIXt}(
-  x,
-  n,
-  ...,
-  day_nonexistent = "last-time",
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
-)
-
-\method{add_years}{civil_local}(x, n, ...)
-
 subtract_years(x, n, ...)
-
-\method{subtract_years}{Date}(x, n, ..., day_nonexistent = "last-time")
-
-\method{subtract_years}{POSIXt}(
-  x,
-  n,
-  ...,
-  day_nonexistent = "last-time",
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
-)
-
-\method{subtract_years}{civil_local}(x, n, ...)
 
 add_months(x, n, ...)
 
-\method{add_months}{Date}(x, n, ..., day_nonexistent = "last-time")
-
-\method{add_months}{POSIXt}(
-  x,
-  n,
-  ...,
-  day_nonexistent = "last-time",
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
-)
-
-\method{add_months}{civil_local}(x, n, ...)
-
 subtract_months(x, n, ...)
-
-\method{subtract_months}{Date}(x, n, ..., day_nonexistent = "last-time")
-
-\method{subtract_months}{POSIXt}(
-  x,
-  n,
-  ...,
-  day_nonexistent = "last-time",
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
-)
-
-\method{subtract_months}{civil_local}(x, n, ...)
 
 add_weeks(x, n, ...)
 
-\method{add_weeks}{Date}(x, n, ...)
-
-\method{add_weeks}{POSIXt}(
-  x,
-  n,
-  ...,
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
-)
-
-\method{add_weeks}{civil_local}(x, n, ..., day_nonexistent = "last-time")
-
 subtract_weeks(x, n, ...)
-
-\method{subtract_weeks}{Date}(x, n, ..., day_nonexistent = "last-time")
-
-\method{subtract_weeks}{POSIXt}(
-  x,
-  n,
-  ...,
-  day_nonexistent = "last-time",
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
-)
-
-\method{subtract_weeks}{civil_local}(x, n, ..., day_nonexistent = "last-time")
 
 add_days(x, n, ...)
 
-\method{add_days}{Date}(x, n, ...)
-
-\method{add_days}{POSIXt}(
-  x,
-  n,
-  ...,
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
-)
-
-\method{add_days}{civil_local}(x, n, ..., day_nonexistent = "last-time")
-
 subtract_days(x, n, ...)
-
-\method{subtract_days}{Date}(x, n, ..., day_nonexistent = "last-time")
-
-\method{subtract_days}{POSIXt}(
-  x,
-  n,
-  ...,
-  day_nonexistent = "last-time",
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
-)
-
-\method{subtract_days}{civil_local}(x, n, ..., day_nonexistent = "last-time")
 
 add_hours(x, n, ...)
 
-\method{add_hours}{Date}(x, n, ...)
-
-\method{add_hours}{POSIXt}(x, n, ...)
-
-\method{add_hours}{civil_local}(x, n, ..., day_nonexistent = "last-time")
-
 subtract_hours(x, n, ...)
-
-\method{subtract_hours}{Date}(x, n, ...)
-
-\method{subtract_hours}{POSIXt}(x, n, ...)
-
-\method{subtract_hours}{civil_local}(x, n, ..., day_nonexistent = "last-time")
 
 add_minutes(x, n, ...)
 
-\method{add_minutes}{Date}(x, n, ...)
-
-\method{add_minutes}{POSIXt}(x, n, ...)
-
-\method{add_minutes}{civil_local}(x, n, ..., day_nonexistent = "last-time")
-
 subtract_minutes(x, n, ...)
-
-\method{subtract_minutes}{Date}(x, n, ...)
-
-\method{subtract_minutes}{POSIXt}(x, n, ...)
-
-\method{subtract_minutes}{civil_local}(x, n, ..., day_nonexistent = "last-time")
 
 add_seconds(x, n, ...)
 
-\method{add_seconds}{Date}(x, n, ...)
-
-\method{add_seconds}{POSIXt}(x, n, ...)
-
-\method{add_seconds}{civil_local}(x, n, ..., day_nonexistent = "last-time")
-
 subtract_seconds(x, n, ...)
-
-\method{subtract_seconds}{Date}(x, n, ...)
-
-\method{subtract_seconds}{POSIXt}(x, n, ...)
-
-\method{subtract_seconds}{civil_local}(x, n, ..., day_nonexistent = "last-time")
 }
 \arguments{
-\item{x}{\verb{[Date / POSIXct / POSIXlt / local_datetime]}
+\item{x}{\verb{[Date / POSIXct / POSIXlt / local_date / local_datetime]}
 
-A date-time vector.}
+A zoned or local date-time vector.}
 
 \item{n}{\verb{[integer]}
 
@@ -237,135 +57,15 @@ An integer vector representing the number of units to add to or
 subtract from \code{x}.}
 
 \item{...}{These dots are for future extensions and must be empty.}
-
-\item{day_nonexistent}{\verb{[character(1)]}
-
-Control the behavior when a nonexistent day is generated. This only happens
-when adding years or months.
-
-One example is adding a month to March 31st, which theoretically lands on
-the nonexistent day of April 31st.
-\itemize{
-\item \code{"last-time"}: Adjust to the last possible time of the current month.
-\item \code{"first-time"}: Adjust to the first possible time of the following month.
-\item \code{"last-day"}: Adjust to the last day of the current month. For
-date-times, the sub-daily components are kept.
-\item \code{"first-day"}: Adjust to the first day of the following month. For
-date-times, the sub-daily components are kept.
-\item \code{"NA"}: Replace the nonexistent date with \code{NA}.
-\item \code{"error"}: Error on nonexistent dates.
-}
-
-\emph{Warning}: When used in arithmetic, \code{"last-day"} and \code{"first-day"} do not
-guarantee that the relative ordering of \code{x} is maintained.}
-
-\item{dst_nonexistent}{\verb{[character(1)]}
-
-Control the behavior when a nonexistent time is generated due to a
-daylight savings gap. Only applicable for POSIXct and POSIXlt.
-
-One example is adding a day to \code{"1970-04-25 02:30:00"} in the time zone of
-\code{"America/New_York"}. This lands on the nonexistent time of \code{"1970-04-26 02:30:00"}, which does not exist due to a daylight savings gap. On this
-day, adding a duration of 1 second to \code{01:59:59} jumps forward to
-\code{03:00:00}.
-\itemize{
-\item \code{"roll-directional"}:
-If \code{n} is positive, choose \code{"roll-forward"}.
-If \code{n} is negative, choose \code{"roll-backward"}.
-\item \code{"roll-forward"}: Roll forward to the next valid moment in time.
-\item \code{"roll-backward"}: Roll backward to the previous valid moment in time.
-\item \code{"shift-directional"}:
-If \code{n} is positive, choose \code{"shift-forward"}.
-If \code{n} is negative, choose \code{"shift-backward"}.
-\item \code{"shift-forward"}: Shift the nonexistent time forward by the
-length of the daylight savings gap (which is usually 1 hour).
-\item \code{"shift-backward"}: Shift the nonexistent time backward
-by the length of the daylight savings gap (which is usually 1 hour).
-\item \code{"NA"}: Replace the nonexistent time with \code{NA}.
-\item \code{error}: Error on nonexistent times.
-}
-
-\emph{Warning}: When used in arithmetic, \code{"shift-directional"},
-\code{"shift-forward"}, and \code{"shift-backward"} do not guarantee that the
-relative ordering of \code{x} is maintained.}
-
-\item{dst_ambiguous}{\verb{[character(1)]}
-
-Control the behavior when an ambiguous time is generated due to a daylight
-savings fallback. Only applicable for POSIXct and POSIXlt.
-
-One example is adding a day to \code{"1970-10-24 01:30:00"} in the time zone
-of \code{"America/New_York"}. On the 25th, the clock read \code{01:00:00} two
-separate times. One second after \verb{01:59:59 EDT}, clocks "rolled back" to
-\verb{01:00:00 EST}. Adding a day to date-time mentioned before lands us in
-this ambiguous zone.
-\itemize{
-\item \code{"directional"}: If \code{n} is positive, choose \code{"earliest"}. If \code{n} is
-negative, choose \code{"latest"}.
-\item \code{"earliest"}: Choose the earliest of the two possible ambiguous times.
-\item \code{"latest"}: Choose the latest of the two possible ambiguous times.
-\item \code{"NA"}: Replace the ambiguous time with \code{NA}.
-\item \code{"error"}: Error on ambiguous times.
-}}
 }
 \description{
-Add or subtract units of time to a date-time object.
+Date-time arithmetic in civil is broken down into two types: zoned and local.
+Each type is documented on its own help page.
 
-For many detailed examples and extended explanations, see the vignette
-on arithmetic: \code{vignette("civil-arithmetic")}.
+\link[=civil-zoned-arithmetic]{Zoned} dates have a time zone attached. The two
+base R classes, POSIXct and Date, implement zoned dates (Date is assumed to
+implicitly have a time zone of UTC).
 
-The following add \emph{periods} of time. Periods are units of time that do
-not have a fixed constant duration (i.e. a "month" may be 30 or 31 days).
-\itemize{
-\item \code{add_years()}
-\item \code{add_months()}
-\item \code{add_days()}
-}
-
-The following add \emph{durations} of time. Durations are fixed units of time
-based on a set number of seconds.
-\itemize{
-\item \code{add_hours()}
-\item \code{add_minutes()}
-\item \code{add_seconds()}
-}
-
-When nonexistent or ambiguous date-times are landed on, the
-\code{day_nonexistent}, \code{dst_nonexistent}, and \code{dst_ambiguous} options are
-consulted to resolve any issues.
-}
-\examples{
-x <- as.Date("2019-01-31")
-
-add_days(x, 2)
-
-# Adding one month theoretically lands us on
-# "2019-02-31"
-# but this doesn't exist, so `day_nonexistent`
-# is consulted
-add_months(x, 1)
-add_months(x, 1, day_nonexistent = "first-time")
-
-x <- as.POSIXct("1970-04-25 02:30:00", "America/New_York")
-y <- as.POSIXct("1970-04-27 02:30:00", "America/New_York")
-
-# Adding 1 day to `x` results in the nonexistent time of:
-# "1970-04-26 02:30:00"
-# at which point we have to make a decision about how to proceed using
-# `dst_nonexistent`.
-#
-# The default is to use `"roll-directional"`. Since we are adding a positive
-# number of days, this chooses `"roll-forward"` which rolls forward to the
-# next valid moment in time.
-add_days(x, 1)
-
-# If we approach from the other side of the gap and subtract 1 day, then
-# `"roll-directional"` chooses `"roll-backward"`, which rolls backward
-# to the previous valid moment in time.
-subtract_days(y, 1)
-
-# If you want to force one of these options,
-# you can set `dst_nonexistent` directly
-add_days(x, 1, dst_nonexistent = "roll-backward")
-add_days(x, 1, dst_nonexistent = "NA")
+\link[=civil-local-arithmetic]{Local} dates are independent of a time zone. The
+two civil objects, local_date and local_datetime, implement local dates.
 }
