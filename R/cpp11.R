@@ -36,8 +36,12 @@ localize_posixct_cpp <- function(x) {
   .Call("_civil_localize_posixct_cpp", x, PACKAGE = "civil")
 }
 
-unlocalize_cpp <- function(x, zone, dst_nonexistent, dst_ambiguous) {
-  .Call("_civil_unlocalize_cpp", x, zone, dst_nonexistent, dst_ambiguous, PACKAGE = "civil")
+unlocalize_date_cpp <- function(x, day_nonexistent) {
+  .Call("_civil_unlocalize_date_cpp", x, day_nonexistent, PACKAGE = "civil")
+}
+
+unlocalize_datetime_cpp <- function(x, zone, day_nonexistent, dst_nonexistent, dst_ambiguous) {
+  .Call("_civil_unlocalize_datetime_cpp", x, zone, day_nonexistent, dst_nonexistent, dst_ambiguous, PACKAGE = "civil")
 }
 
 zone_standardize <- function(zone) {

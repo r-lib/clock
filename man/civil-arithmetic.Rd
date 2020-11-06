@@ -3,22 +3,68 @@
 \name{civil-arithmetic}
 \alias{civil-arithmetic}
 \alias{add_years}
+\alias{add_years.Date}
+\alias{add_years.POSIXt}
+\alias{add_years.civil_local}
 \alias{subtract_years}
+\alias{subtract_years.Date}
+\alias{subtract_years.POSIXt}
+\alias{subtract_years.civil_local}
 \alias{add_months}
+\alias{add_months.Date}
+\alias{add_months.POSIXt}
+\alias{add_months.civil_local}
 \alias{subtract_months}
+\alias{subtract_months.Date}
+\alias{subtract_months.POSIXt}
+\alias{subtract_months.civil_local}
 \alias{add_weeks}
+\alias{add_weeks.Date}
+\alias{add_weeks.POSIXt}
+\alias{add_weeks.civil_local}
 \alias{subtract_weeks}
+\alias{subtract_weeks.Date}
+\alias{subtract_weeks.POSIXt}
+\alias{subtract_weeks.civil_local}
 \alias{add_days}
+\alias{add_days.Date}
+\alias{add_days.POSIXt}
+\alias{add_days.civil_local}
 \alias{subtract_days}
+\alias{subtract_days.Date}
+\alias{subtract_days.POSIXt}
+\alias{subtract_days.civil_local}
 \alias{add_hours}
+\alias{add_hours.Date}
+\alias{add_hours.POSIXt}
+\alias{add_hours.civil_local}
 \alias{subtract_hours}
+\alias{subtract_hours.Date}
+\alias{subtract_hours.POSIXt}
+\alias{subtract_hours.civil_local}
 \alias{add_minutes}
+\alias{add_minutes.Date}
+\alias{add_minutes.POSIXt}
+\alias{add_minutes.civil_local}
 \alias{subtract_minutes}
+\alias{subtract_minutes.Date}
+\alias{subtract_minutes.POSIXt}
+\alias{subtract_minutes.civil_local}
 \alias{add_seconds}
+\alias{add_seconds.Date}
+\alias{add_seconds.POSIXt}
+\alias{add_seconds.civil_local}
 \alias{subtract_seconds}
+\alias{subtract_seconds.Date}
+\alias{subtract_seconds.POSIXt}
+\alias{subtract_seconds.civil_local}
 \title{Date-time arithmetic}
 \usage{
-add_years(
+add_years(x, n, ...)
+
+\method{add_years}{Date}(x, n, ..., day_nonexistent = "last-time")
+
+\method{add_years}{POSIXt}(
   x,
   n,
   ...,
@@ -27,7 +73,13 @@ add_years(
   dst_ambiguous = "directional"
 )
 
-subtract_years(
+\method{add_years}{civil_local}(x, n, ...)
+
+subtract_years(x, n, ...)
+
+\method{subtract_years}{Date}(x, n, ..., day_nonexistent = "last-time")
+
+\method{subtract_years}{POSIXt}(
   x,
   n,
   ...,
@@ -36,7 +88,13 @@ subtract_years(
   dst_ambiguous = "directional"
 )
 
-add_months(
+\method{subtract_years}{civil_local}(x, n, ...)
+
+add_months(x, n, ...)
+
+\method{add_months}{Date}(x, n, ..., day_nonexistent = "last-time")
+
+\method{add_months}{POSIXt}(
   x,
   n,
   ...,
@@ -45,7 +103,13 @@ add_months(
   dst_ambiguous = "directional"
 )
 
-subtract_months(
+\method{add_months}{civil_local}(x, n, ...)
+
+subtract_months(x, n, ...)
+
+\method{subtract_months}{Date}(x, n, ..., day_nonexistent = "last-time")
+
+\method{subtract_months}{POSIXt}(
   x,
   n,
   ...,
@@ -54,7 +118,13 @@ subtract_months(
   dst_ambiguous = "directional"
 )
 
-add_weeks(
+\method{subtract_months}{civil_local}(x, n, ...)
+
+add_weeks(x, n, ...)
+
+\method{add_weeks}{Date}(x, n, ...)
+
+\method{add_weeks}{POSIXt}(
   x,
   n,
   ...,
@@ -62,7 +132,28 @@ add_weeks(
   dst_ambiguous = "directional"
 )
 
-subtract_weeks(
+\method{add_weeks}{civil_local}(x, n, ...)
+
+subtract_weeks(x, n, ...)
+
+\method{subtract_weeks}{Date}(x, n, ..., day_nonexistent = "last-time")
+
+\method{subtract_weeks}{POSIXt}(
+  x,
+  n,
+  ...,
+  day_nonexistent = "last-time",
+  dst_nonexistent = "roll-directional",
+  dst_ambiguous = "directional"
+)
+
+\method{subtract_weeks}{civil_local}(x, n, ...)
+
+add_days(x, n, ...)
+
+\method{add_days}{Date}(x, n, ...)
+
+\method{add_days}{POSIXt}(
   x,
   n,
   ...,
@@ -70,33 +161,70 @@ subtract_weeks(
   dst_ambiguous = "directional"
 )
 
-add_days(
+\method{add_days}{civil_local}(x, n, ...)
+
+subtract_days(x, n, ...)
+
+\method{subtract_days}{Date}(x, n, ..., day_nonexistent = "last-time")
+
+\method{subtract_days}{POSIXt}(
   x,
   n,
   ...,
+  day_nonexistent = "last-time",
   dst_nonexistent = "roll-directional",
   dst_ambiguous = "directional"
 )
 
-subtract_days(
-  x,
-  n,
-  ...,
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
-)
+\method{subtract_days}{civil_local}(x, n, ...)
 
-add_hours(x, n)
+add_hours(x, n, ...)
 
-subtract_hours(x, n)
+\method{add_hours}{Date}(x, n, ...)
 
-add_minutes(x, n)
+\method{add_hours}{POSIXt}(x, n, ...)
 
-subtract_minutes(x, n)
+\method{add_hours}{civil_local}(x, n, ..., day_nonexistent = "last-time")
 
-add_seconds(x, n)
+subtract_hours(x, n, ...)
 
-subtract_seconds(x, n)
+\method{subtract_hours}{Date}(x, n, ...)
+
+\method{subtract_hours}{POSIXt}(x, n, ...)
+
+\method{subtract_hours}{civil_local}(x, n, ..., day_nonexistent = "last-time")
+
+add_minutes(x, n, ...)
+
+\method{add_minutes}{Date}(x, n, ...)
+
+\method{add_minutes}{POSIXt}(x, n, ...)
+
+\method{add_minutes}{civil_local}(x, n, ..., day_nonexistent = "last-time")
+
+subtract_minutes(x, n, ...)
+
+\method{subtract_minutes}{Date}(x, n, ...)
+
+\method{subtract_minutes}{POSIXt}(x, n, ...)
+
+\method{subtract_minutes}{civil_local}(x, n, ..., day_nonexistent = "last-time")
+
+add_seconds(x, n, ...)
+
+\method{add_seconds}{Date}(x, n, ...)
+
+\method{add_seconds}{POSIXt}(x, n, ...)
+
+\method{add_seconds}{civil_local}(x, n, ..., day_nonexistent = "last-time")
+
+subtract_seconds(x, n, ...)
+
+\method{subtract_seconds}{Date}(x, n, ...)
+
+\method{subtract_seconds}{POSIXt}(x, n, ...)
+
+\method{subtract_seconds}{civil_local}(x, n, ..., day_nonexistent = "last-time")
 }
 \arguments{
 \item{x}{\verb{[Date / POSIXct / POSIXlt / local_datetime]}

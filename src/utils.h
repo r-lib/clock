@@ -11,6 +11,7 @@
 
 extern sexp civil_syms_tzone;
 
+extern sexp civil_classes_date;
 extern sexp civil_classes_posixct;
 
 // -----------------------------------------------------------------------------

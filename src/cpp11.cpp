@@ -61,18 +61,25 @@ extern "C" SEXP _civil_civil_set_install(SEXP path) {
     return R_NilValue;
   END_CPP11
 }
-// local-datetime.cpp
+// local.cpp
 SEXP localize_posixct_cpp(SEXP x);
 extern "C" SEXP _civil_localize_posixct_cpp(SEXP x) {
   BEGIN_CPP11
     return cpp11::as_sexp(localize_posixct_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x)));
   END_CPP11
 }
-// local-datetime.cpp
-SEXP unlocalize_cpp(SEXP x, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous);
-extern "C" SEXP _civil_unlocalize_cpp(SEXP x, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous) {
+// local.cpp
+SEXP unlocalize_date_cpp(SEXP x, SEXP day_nonexistent);
+extern "C" SEXP _civil_unlocalize_date_cpp(SEXP x, SEXP day_nonexistent) {
   BEGIN_CPP11
-    return cpp11::as_sexp(unlocalize_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(zone), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous)));
+    return cpp11::as_sexp(unlocalize_date_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_nonexistent)));
+  END_CPP11
+}
+// local.cpp
+SEXP unlocalize_datetime_cpp(SEXP x, SEXP zone, SEXP day_nonexistent, SEXP dst_nonexistent, SEXP dst_ambiguous);
+extern "C" SEXP _civil_unlocalize_datetime_cpp(SEXP x, SEXP zone, SEXP day_nonexistent, SEXP dst_nonexistent, SEXP dst_ambiguous) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(unlocalize_datetime_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(zone), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous)));
   END_CPP11
 }
 // zone.cpp
@@ -101,7 +108,8 @@ extern SEXP _civil_adjust_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_init();
 extern SEXP _civil_civil_set_install(SEXP);
 extern SEXP _civil_localize_posixct_cpp(SEXP);
-extern SEXP _civil_unlocalize_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_unlocalize_date_cpp(SEXP, SEXP);
+extern SEXP _civil_unlocalize_datetime_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_zone_is_valid(SEXP);
 extern SEXP _civil_zone_standardize(SEXP);
 
@@ -115,7 +123,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_civil_init",                   (DL_FUNC) &_civil_civil_init,                   0},
     {"_civil_civil_set_install",            (DL_FUNC) &_civil_civil_set_install,            1},
     {"_civil_localize_posixct_cpp",         (DL_FUNC) &_civil_localize_posixct_cpp,         1},
-    {"_civil_unlocalize_cpp",               (DL_FUNC) &_civil_unlocalize_cpp,               4},
+    {"_civil_unlocalize_date_cpp",          (DL_FUNC) &_civil_unlocalize_date_cpp,          2},
+    {"_civil_unlocalize_datetime_cpp",      (DL_FUNC) &_civil_unlocalize_datetime_cpp,      5},
     {"_civil_zone_is_valid",                (DL_FUNC) &_civil_zone_is_valid,                1},
     {"_civil_zone_standardize",             (DL_FUNC) &_civil_zone_standardize,             1},
     {NULL, NULL, 0}

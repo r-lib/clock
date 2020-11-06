@@ -109,6 +109,15 @@ static inline sexp r_new_vector(r_type type, r_ssize size) {
 static inline sexp r_new_double(r_ssize size) {
   return r_new_vector(r_type_double, size);
 }
+static inline sexp r_new_integer(r_ssize size) {
+  return r_new_vector(r_type_integer, size);
+}
+static inline sexp r_new_character(r_ssize size) {
+  return r_new_vector(r_type_character, size);
+}
+static inline sexp r_new_list(r_ssize size) {
+  return r_new_vector(r_type_list, size);
+}
 
 // -----------------------------------------------------------------------------
 
@@ -118,15 +127,24 @@ static inline sexp r_list_get(sexp x, r_ssize i) {
 static inline int r_int_get(sexp x, r_ssize i) {
   return INTEGER_ELT(x, i);
 }
+static inline sexp r_chr_get(sexp x, r_ssize i) {
+  return STRING_ELT(x, i);
+}
 
 // -----------------------------------------------------------------------------
 
 static inline void r_chr_poke(sexp x, r_ssize i, sexp value) {
   return SET_STRING_ELT(x, i, value);
 }
+static inline sexp r_list_poke(sexp x, r_ssize i, sexp value) {
+  return SET_VECTOR_ELT(x, i, value);
+}
 
 // -----------------------------------------------------------------------------
 
+static inline int* r_int_deref(sexp x) {
+  return INTEGER(x);
+}
 static inline double* r_dbl_deref(sexp x) {
   return REAL(x);
 }
@@ -147,9 +165,13 @@ static inline void r_unmark_precious(sexp x) {
   return R_ReleaseObject(x);
 }
 
+static inline bool r_is_shared(sexp x) {
+  return MAYBE_REFERENCED(x);
+}
 static inline void r_mark_shared(sexp x) {
   MARK_NOT_MUTABLE(x);
 }
+
 
 static inline sexp r_new_shared_vector(r_type type, r_ssize size) {
   sexp out = r_new_vector(type, size);
@@ -282,6 +304,66 @@ static inline sexp r_get_names(sexp x) {
 }
 static inline sexp r_get_class(sexp x) {
   return r_get_attribute(x, r_syms_class);
+}
+
+// -----------------------------------------------------------------------------
+
+static inline sexp r_clone(sexp x) {
+  return Rf_shallow_duplicate(x);
+}
+static inline sexp r_maybe_clone(sexp x) {
+  if (r_is_shared(x)) {
+    return r_clone(x);
+  } else {
+    return x;
+  }
+}
+
+// -----------------------------------------------------------------------------
+
+static inline sexp r_int_recycle(sexp x, r_ssize size) {
+  r_ssize x_size = r_length(x);
+
+  if (x_size == size) {
+    return x;
+  }
+  if (x_size != 1) {
+    Rf_errorcall(r_null, "`x` must be size 1 or %i.", (int) size);
+  }
+
+  int val = r_int_get(x, 0);
+
+  sexp out = PROTECT(r_new_integer(size));
+  int* p_out = r_int_deref(out);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    p_out[i] = val;
+  }
+
+  UNPROTECT(1);
+  return out;
+}
+
+static inline sexp r_chr_recycle(sexp x, r_ssize size) {
+  r_ssize x_size = r_length(x);
+
+  if (x_size == size) {
+    return x;
+  }
+  if (x_size != 1) {
+    Rf_errorcall(r_null, "`x` must be size 1 or %i.", (int) size);
+  }
+
+  sexp val = r_chr_get(x, 0);
+
+  sexp out = PROTECT(r_new_character(size));
+
+  for (r_ssize i = 0; i < size; ++i) {
+    r_chr_poke(out, i, val);
+  }
+
+  UNPROTECT(1);
+  return out;
 }
 
 // -----------------------------------------------------------------------------

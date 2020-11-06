@@ -10,6 +10,7 @@
 #define sexp SEXP
 
 #define r_dbl_na NA_REAL
+#define r_int_na NA_INTEGER
 
 #define r_base_env R_BaseEnv
 #define r_empty_env R_EmptyEnv
