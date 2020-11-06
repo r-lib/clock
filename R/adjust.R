@@ -1,9 +1,69 @@
+#' Adjust the year
+#'
+#' `adjust_year()` adjusts the year of `x` to `value`.
+#'
+#' @param x `[Date / POSIXct / POSIXlt / local_datetime]`
+#'
+#'   A date-time vector.
+#'
+#' @param value `[integer]`
+#'
+#'   An integer vector containing the value to adjust to.
+#'
+#' @param day_nonexistent `[character(1)]`
+#'
+#'   Control the behavior when a nonexistent day is generated. This only happens
+#'   when adjusting years, months, or days.
+#'
+#'   - `"last-time"`: Adjust to the last possible time of the current month.
+#'
+#'   - `"first-time"`: Adjust to the first possible time of the following month.
+#'
+#'   - `"last-day"`: Adjust to the last day of the current month. For
+#'     date-times, the sub-daily components are kept.
+#'
+#'   - `"first-day"`: Adjust to the first day of the following month. For
+#'     date-times, the sub-daily components are kept.
+#'
+#'   - `"NA"`: Replace the nonexistent date with `NA`.
+#'
+#'   - `"error"`: Error on nonexistent dates.
+#'
 #' @export
+#' @examples
+#' x <- as.Date(c("1970-01-01", "1971-01-01"))
+#' adjust_year(x, 1972)
+#'
+#' # Leap day
+#' x <- as.Date("1972-02-29")
+#'
+#' # "1973-02-29" doesn't exist. By default this rolls back to the
+#' # the last day in that month.
+#' adjust_year(x, 1973)
+#'
+#' # But you can adjust that behavior
+#' adjust_year(x, 1973, day_nonexistent = "first-day")
+#' adjust_year(x, 1973, day_nonexistent = "NA")
+#'
+#' # It is possible to adjust into a daylight savings time gap.
+#' # Due to a change in how daylight savings was handled, the Pacific
+#' # island of Samoa skipped all of "2011-12-30" and went straight to the
+#' # 31st. This is considered a "nonexistent" time due to DST.
+#' x <- as.POSIXct("2010-12-30 02:00:00", "Pacific/Apia")
+#'
+#' # So "2011-12-30 02:00:00" doesn't exist, and by default we "roll forward"
+#' # to the next possible time, which is "2011-12-31 00:00:00".
+#' adjust_year(x, 2011)
+#'
+#' # But you can adjust that too
+#' adjust_year(x, 2011, dst_nonexistent = "roll-backward")
+#' adjust_year(x, 2011, dst_nonexistent = "shift-forward")
 adjust_year <- function(x, value, ...) {
   restrict_civil_supported(x)
   UseMethod("adjust_year")
 }
 
+#' @rdname adjust_year
 #' @export
 adjust_year.Date <- function(x,
                              value,
@@ -12,6 +72,7 @@ adjust_year.Date <- function(x,
   adjust_date(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "year")
 }
 
+#' @rdname adjust_year
 #' @export
 adjust_year.POSIXt <- function(x,
                                value,
@@ -30,6 +91,7 @@ adjust_year.POSIXt <- function(x,
   )
 }
 
+#' @rdname adjust_year
 #' @export
 adjust_year.civil_local <- function(x, value, ...) {
   adjust_local(x, value, ..., adjuster = "year")
