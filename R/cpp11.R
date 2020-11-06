@@ -8,8 +8,8 @@ adjust_zoned_cpp <- function(x, value, day_nonexistent, dst_nonexistent, dst_amb
   .Call("_civil_adjust_zoned_cpp", x, value, day_nonexistent, dst_nonexistent, dst_ambiguous, size, adjuster, PACKAGE = "civil")
 }
 
-adjust_local_cpp <- function(x, value, day_nonexistent, size, adjuster) {
-  .Call("_civil_adjust_local_cpp", x, value, day_nonexistent, size, adjuster, PACKAGE = "civil")
+adjust_local_cpp <- function(x, value, size, adjuster) {
+  .Call("_civil_adjust_local_cpp", x, value, size, adjuster, PACKAGE = "civil")
 }
 
 add_period_to_zoned_cpp <- function(x, n, day_nonexistent, dst_nonexistent, dst_ambiguous, size, unit) {

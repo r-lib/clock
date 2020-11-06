@@ -79,4 +79,18 @@ static inline sexp local_datetime_recycle(sexp x, r_ssize size) {
   return x;
 }
 
+static inline sexp local_datetime_maybe_clone(sexp x) {
+  x = PROTECT(r_maybe_clone(x));
+
+  local_datetime_poke_year(x, r_maybe_clone(local_datetime_year(x)));
+  local_datetime_poke_month(x, r_maybe_clone(local_datetime_month(x)));
+  local_datetime_poke_day(x, r_maybe_clone(local_datetime_day(x)));
+  local_datetime_poke_hour(x, r_maybe_clone(local_datetime_hour(x)));
+  local_datetime_poke_minute(x, r_maybe_clone(local_datetime_minute(x)));
+  local_datetime_poke_second(x, r_maybe_clone(local_datetime_second(x)));
+
+  UNPROTECT(1);
+  return x;
+}
+
 #endif

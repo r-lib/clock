@@ -4,6 +4,7 @@
 #include "enums.h"
 #include "conversion.h"
 #include "resolve.h"
+#include "local.h"
 #include <date/date.h>
 #include <date/tz.h>
 
@@ -15,8 +16,6 @@ static inline date::local_seconds adjust_switch(const date::local_seconds& lsec,
                                                 const enum day_nonexistent& day_nonexistent,
                                                 const enum adjuster& adjuster,
                                                 bool& na);
-
-// -----------------------------------------------------------------------------
 
 static sexp adjust_zoned(sexp x,
                          sexp value,
@@ -134,18 +133,14 @@ static sexp adjust_zoned(sexp x,
 
 static sexp adjust_local(sexp x,
                          sexp value,
-                         const enum day_nonexistent& day_nonexistent,
                          const r_ssize& size,
                          const enum adjuster& adjuster);
 
 [[cpp11::register]]
 SEXP adjust_local_cpp(SEXP x,
                       SEXP value,
-                      SEXP day_nonexistent,
                       SEXP size,
                       SEXP adjuster) {
-  enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
-
   r_ssize c_size = r_int_get(size, 0);
 
   enum adjuster c_adjuster = parse_adjuster(adjuster);
@@ -153,79 +148,112 @@ SEXP adjust_local_cpp(SEXP x,
   return adjust_local(
     x,
     value,
-    c_day_nonexistent,
     c_size,
     c_adjuster
   );
 }
 
+static inline void adjust_local_switch(const enum adjuster& adjuster,
+                                       const r_ssize& i,
+                                       const int& value,
+                                       int* p_year,
+                                       int* p_month,
+                                       int* p_day,
+                                       int* p_hour,
+                                       int* p_minute,
+                                       int* p_second);
+
 static sexp adjust_local(sexp x,
                          sexp value,
-                         const enum day_nonexistent& day_nonexistent,
                          const r_ssize& size,
                          const enum adjuster& adjuster) {
-  sexp out = PROTECT(r_new_double(size));
-  double* p_out = r_dbl_deref(out);
+  x = PROTECT(r_maybe_clone(x));
+  x = PROTECT(local_datetime_recycle(x, size));
+  x = PROTECT(local_datetime_maybe_clone(x));
 
-  sexp tzone = civil_get_tzone(x);
-  tzone = PROTECT(zone_standardize(tzone));
+  int* p_year = r_int_deref(local_datetime_year(x));
+  int* p_month = r_int_deref(local_datetime_month(x));
+  int* p_day = r_int_deref(local_datetime_day(x));
+  int* p_hour = r_int_deref(local_datetime_hour(x));
+  int* p_minute = r_int_deref(local_datetime_minute(x));
+  int* p_second = r_int_deref(local_datetime_second(x));
 
-  r_poke_names(out, r_get_names(x));
-
-  const double* p_x = r_dbl_deref_const(x);
-  const int* p_value = r_int_deref_const(value);
-
-  const bool recycle_x = r_is_scalar(x);
   const bool recycle_value = r_is_scalar(value);
 
+  const int* p_value = r_int_deref_const(value);
+
   for (r_ssize i = 0; i < size; ++i) {
-    double elt_x = recycle_x ? p_x[0] : p_x[i];
+    if (p_year[i] == r_int_na) {
+      continue;
+    }
+
     int elt_value = recycle_value ? p_value[0] : p_value[i];
 
-    int64_t elt = as_int64(elt_x);
-
-    if (elt == r_int64_na) {
-      p_out[i] = r_dbl_na;
+    if (elt_value == r_int_na) {
+      p_year[i] = r_int_na;
+      p_month[i] = r_int_na;
+      p_day[i] = r_int_na;
+      p_hour[i] = r_int_na;
+      p_minute[i] = r_int_na;
+      p_second[i] = r_int_na;
       continue;
     }
 
-    if (elt_value == NA_INTEGER) {
-      p_out[i] = r_dbl_na;
-      continue;
-    }
-
-    std::chrono::seconds elt_sec{elt};
-    date::local_seconds elt_lsec{elt_sec};
-
-    bool na = false;
-
-    date::local_seconds out_lsec = adjust_switch(
-      elt_lsec,
-      elt_value,
-      i,
-      day_nonexistent,
+    adjust_local_switch(
       adjuster,
-      na
+      i,
+      elt_value,
+      p_year,
+      p_month,
+      p_day,
+      p_hour,
+      p_minute,
+      p_second
     );
-
-    if (na) {
-      p_out[i] = NA_REAL;
-    } else {
-      p_out[i] = out_lsec.time_since_epoch().count();
-    }
   }
 
-  UNPROTECT(2);
-  return out;
+  UNPROTECT(3);
+  return x;
+}
+
+// -----------------------------------------------------------------------------
+
+static inline void check_value_adjust_year(const int& value) {
+  if (value > 9999 || value < 0) {
+    r_abort("`value` must be within the range of [0, 9999], not %i.", value);
+  }
+}
+static inline void check_value_adjust_month(const int& value) {
+  if (value > 12 || value < 1) {
+    r_abort("`value` must be within the range of [1, 12], not %i.", value);
+  }
+}
+static inline void check_value_adjust_day(const int& value) {
+  if (value > 31 || value < 1) {
+    r_abort("`value` must be within the range of [1, 31], not %i.", value);
+  }
+}
+static inline void check_value_adjust_hour(const int& value) {
+  if (value > 23 || value < 0) {
+    r_abort("`value` must be within the range of [0, 23], not %i.", value);
+  }
+}
+static inline void check_value_adjust_minute(const int& value) {
+  if (value > 59 || value < 0) {
+    r_abort("`value` must be within the range of [0, 59], not %i.", value);
+  }
+}
+static inline void check_value_adjust_second(const int& value) {
+  if (value > 59 || value < 0) {
+    r_abort("`value` must be within the range of [0, 59], not %i.", value);
+  }
 }
 
 // -----------------------------------------------------------------------------
 
 static inline date::local_seconds adjust_hour(const date::local_seconds& lsec,
                                               const int& value) {
-  if (value > 23 || value < 0) {
-    r_abort("`value` must be within the range of [0, 23], not %i.", value);
-  }
+  check_value_adjust_hour(value);
 
   date::local_days lday = date::floor<date::days>(lsec);
   date::local_seconds lsec_floor = lday;
@@ -243,9 +271,7 @@ static inline date::local_seconds adjust_hour(const date::local_seconds& lsec,
 
 static inline date::local_seconds adjust_minute(const date::local_seconds& lsec,
                                                 const int& value) {
-  if (value > 59 || value < 0) {
-    r_abort("`value` must be within the range of [0, 59], not %i.", value);
-  }
+  check_value_adjust_minute(value);
 
   date::local_days lday = date::floor<date::days>(lsec);
   date::local_seconds lsec_floor = lday;
@@ -263,9 +289,7 @@ static inline date::local_seconds adjust_minute(const date::local_seconds& lsec,
 
 static inline date::local_seconds adjust_second(const date::local_seconds& lsec,
                                                 const int& value) {
-  if (value > 59 || value < 0) {
-    r_abort("`value` must be within the range of [0, 59], not %i.", value);
-  }
+  check_value_adjust_second(value);
 
   date::local_days lday = date::floor<date::days>(lsec);
   date::local_seconds lsec_floor = lday;
@@ -286,9 +310,7 @@ static inline date::local_seconds adjust_year(const date::local_seconds& lsec,
                                               const r_ssize& i,
                                               const enum day_nonexistent& day_nonexistent,
                                               bool& na) {
-  if (value > 9999 || value < 0) {
-    r_abort("`value` must be within the range of [0, 9999], not %i.", value);
-  }
+  check_value_adjust_year(value);
 
   date::local_days lday = date::floor<date::days>(lsec);
   date::local_seconds lsec_floor = lday;
@@ -322,9 +344,7 @@ static inline date::local_seconds adjust_month(const date::local_seconds& lsec,
                                                const r_ssize& i,
                                                const enum day_nonexistent& day_nonexistent,
                                                bool& na) {
-  if (value > 12 || value < 1) {
-    r_abort("`value` must be within the range of [1, 12], not %i.", value);
-  }
+  check_value_adjust_month(value);
 
   date::local_days lday = date::floor<date::days>(lsec);
   date::local_seconds lsec_floor = lday;
@@ -360,9 +380,7 @@ static inline date::local_seconds adjust_day(const date::local_seconds& lsec,
                                              const r_ssize& i,
                                              const enum day_nonexistent& day_nonexistent,
                                              bool& na) {
-  if (value > 31 || value < 1) {
-    r_abort("`value` must be within the range of [1, 31], not %i.", value);
-  }
+  check_value_adjust_day(value);
 
   date::local_days lday = date::floor<date::days>(lsec);
   date::local_seconds lsec_floor = lday;
@@ -411,8 +429,6 @@ static inline date::local_seconds adjust_last_day_of_month(const date::local_sec
   return out_lsec;
 }
 
-// -----------------------------------------------------------------------------
-
 static inline date::local_seconds adjust_switch(const date::local_seconds& lsec,
                                                 const int& value,
                                                 const r_ssize& i,
@@ -440,6 +456,76 @@ static inline date::local_seconds adjust_switch(const date::local_seconds& lsec,
   }
   case adjuster::last_day_of_month: {
     return adjust_last_day_of_month(lsec, value);
+  }
+  }
+}
+
+// -----------------------------------------------------------------------------
+
+static inline void adjust_local_year(const r_ssize& i, const int& value, int* p_x) {
+  check_value_adjust_year(value);
+  p_x[i] = value;
+}
+static inline void adjust_local_month(const r_ssize& i, const int& value, int* p_x) {
+  check_value_adjust_month(value);
+  p_x[i] = value;
+}
+static inline void adjust_local_day(const r_ssize& i, const int& value, int* p_x) {
+  check_value_adjust_day(value);
+  p_x[i] = value;
+}
+static inline void adjust_local_hour(const r_ssize& i, const int& value, int* p_x) {
+  check_value_adjust_hour(value);
+  p_x[i] = value;
+}
+static inline void adjust_local_minute(const r_ssize& i, const int& value, int* p_x) {
+  check_value_adjust_minute(value);
+  p_x[i] = value;
+}
+static inline void adjust_local_second(const r_ssize& i, const int& value, int* p_x) {
+  check_value_adjust_second(value);
+  p_x[i] = value;
+}
+static inline void adjust_local_last_day_of_month(const r_ssize& i,
+                                                  const int* p_year,
+                                                  const int* p_month,
+                                                  int* p_x) {
+  int year = p_year[i];
+  unsigned int month = static_cast<unsigned int>(p_month[i]);
+  date::year_month_day ymd = date::year{year} / date::month{month} / date::last;
+  p_x[i] = static_cast<unsigned int>(ymd.day());
+}
+
+static inline void adjust_local_switch(const enum adjuster& adjuster,
+                                       const r_ssize& i,
+                                       const int& value,
+                                       int* p_year,
+                                       int* p_month,
+                                       int* p_day,
+                                       int* p_hour,
+                                       int* p_minute,
+                                       int* p_second) {
+  switch (adjuster) {
+  case adjuster::year: {
+    return adjust_local_year(i, value, p_year);
+  }
+  case adjuster::month: {
+    return adjust_local_month(i, value, p_month);
+  }
+  case adjuster::day: {
+    return adjust_local_day(i, value, p_day);
+  }
+  case adjuster::hour: {
+    return adjust_local_hour(i, value, p_hour);
+  }
+  case adjuster::minute: {
+    return adjust_local_minute(i, value, p_minute);
+  }
+  case adjuster::second: {
+    return adjust_local_second(i, value, p_second);
+  }
+  case adjuster::last_day_of_month: {
+    return adjust_local_last_day_of_month(i, p_year, p_month, p_day);
   }
   }
 }
