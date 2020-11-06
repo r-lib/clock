@@ -87,6 +87,56 @@ validate_names <- function(names, size) {
 
 # ------------------------------------------------------------------------------
 
+local_date <- function(year = NULL,
+                       month = NULL,
+                       day = NULL,
+                       zone = NULL) {
+  size <- vec_size_common(year = year, month = month, day = day)
+  fields <- vec_recycle_common(year = year, month = month, day = day, .size = size)
+
+  if (is_null(year)) {
+    fields$year <- integer()
+  }
+
+  if (is_null(month)) {
+    fields$month <- rep(1L, size)
+  } else if (is_null(year)) {
+    abort("Can't specify `month` without `year`.")
+  }
+
+  if (is_null(day)) {
+    fields$day <- rep(1L, size)
+  } else if (is_null(year) || is_null(month)) {
+    abort("Can't specify `day` without `year` and `month`.")
+  }
+
+  fields <- lapply(fields, vec_cast, to = integer())
+
+  if (any(fields$year < 0L | fields$year > 9999L, na.rm = TRUE)) {
+    abort("`year` must be within [0, 9999].")
+  }
+  if (any(fields$month < 1L | fields$month > 12L, na.rm = TRUE)) {
+    abort("`month` must be within [1, 12].")
+  }
+  if (any(fields$day < 1L | fields$day > 32L, na.rm = TRUE)) {
+    abort("`day` must be within [1, 32].")
+  }
+
+  na <- is.na(fields$year) | is.na(fields$month) | is.na(fields$day)
+
+  if (any(na)) {
+    fields$year[na] <- NA_integer_
+    fields$month[na] <- NA_integer_
+    fields$day[na] <- NA_integer_
+  }
+
+  new_local_date_from_fields(
+    fields = fields,
+    zone = zone,
+    names = NULL
+  )
+}
+
 new_local_date <- function(year = integer(),
                            month = integer(),
                            day = integer(),
