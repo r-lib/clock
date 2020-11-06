@@ -83,7 +83,6 @@ to_local_datetime_from_local_date <- function(x) {
     hour = zero,
     minute = zero,
     second = zero,
-    zone = local_zone(x),
     names = names(x)
   )
 
@@ -111,7 +110,6 @@ from_local_datetime_to_local_date <- function(x) {
     year = field(x, "year"),
     month = field(x, "month"),
     day = field(x, "day"),
-    zone = local_zone(x),
     names = names(x)
   )
 

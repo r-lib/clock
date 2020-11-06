@@ -1,10 +1,6 @@
-new_local <- function(fields, zone = NULL, ..., names = NULL, class = NULL) {
+new_local <- function(fields, ..., names = NULL, class = NULL) {
   if (length(fields) == 0L) {
     abort("`fields` must be a list of length 1 or greater.")
-  }
-
-  if (!is_null(zone) && !is_string(zone)) {
-    abort("`zone` must be `NULL` or a single character.")
   }
 
   size <- length(fields[[1]])
@@ -12,7 +8,6 @@ new_local <- function(fields, zone = NULL, ..., names = NULL, class = NULL) {
 
   new_rcrd(
     fields = fields,
-    zone = zone,
     ...,
     `civil_local:::names` = names,
     class = c(class, "civil_local")
@@ -49,10 +44,6 @@ is_local <- function(x) {
   inherits(x, "civil_local")
 }
 
-local_zone <- function(x) {
-  attr(x, "zone", exact = TRUE)
-}
-
 as_names <- function(x, size) {
   x <- unstructure(x)
 
@@ -87,10 +78,8 @@ validate_names <- function(names, size) {
 
 # ------------------------------------------------------------------------------
 
-local_date <- function(year = NULL,
-                       month = NULL,
-                       day = NULL,
-                       zone = NULL) {
+# TODO: Uncertain if we need this
+local_date <- function(year = NULL, month = NULL, day = NULL) {
   size <- vec_size_common(year = year, month = month, day = day)
   fields <- vec_recycle_common(year = year, month = month, day = day, .size = size)
 
@@ -132,7 +121,6 @@ local_date <- function(year = NULL,
 
   new_local_date_from_fields(
     fields = fields,
-    zone = zone,
     names = NULL
   )
 }
@@ -140,7 +128,6 @@ local_date <- function(year = NULL,
 new_local_date <- function(year = integer(),
                            month = integer(),
                            day = integer(),
-                           zone = NULL,
                            ...,
                            names = NULL) {
   if (!is_integer(year)) {
@@ -171,19 +158,17 @@ new_local_date <- function(year = integer(),
 
   new_local(
     fields,
-    zone = zone,
     ...,
     names = names,
     class = "civil_local_date"
   )
 }
 
-new_local_date_from_fields <- function(fields, zone, names) {
+new_local_date_from_fields <- function(fields, names) {
   new_local_date(
     year = fields$year,
     month = fields$month,
     day = fields$day,
-    zone = zone,
     names = names
   )
 }
@@ -197,8 +182,7 @@ vec_proxy.civil_local_date <- function(x, ...) {
 vec_restore.civil_local_date <- function(x, to, ...) {
   fields <- restore_civil_local_fields(x)
   names <- restore_civil_local_names(x)
-  zone <- local_zone(to)
-  new_local_date_from_fields(fields, zone, names)
+  new_local_date_from_fields(fields, names)
 }
 
 #' @export
@@ -241,7 +225,6 @@ new_local_datetime <- function(year = integer(),
                                hour = integer(),
                                minute = integer(),
                                second = integer(),
-                               zone = NULL,
                                ...,
                                names = NULL) {
   if (!is_integer(year)) {
@@ -261,9 +244,6 @@ new_local_datetime <- function(year = integer(),
   }
   if (!is_integer(second)) {
     abort("`second` must be an integer.")
-  }
-  if (!is_null(zone) && !is_string(zone)) {
-    abort("`zone` must be `NULL` or a single character.")
   }
 
   size <- length(year)
@@ -290,14 +270,13 @@ new_local_datetime <- function(year = integer(),
 
   new_local(
     fields,
-    zone = zone,
     ...,
     names = names,
     class = "civil_local_datetime"
   )
 }
 
-new_local_datetime_from_fields <- function(fields, zone, names) {
+new_local_datetime_from_fields <- function(fields, names) {
   new_local_datetime(
     year = fields$year,
     month = fields$month,
@@ -305,7 +284,6 @@ new_local_datetime_from_fields <- function(fields, zone, names) {
     hour = fields$hour,
     minute = fields$minute,
     second = fields$second,
-    zone = zone,
     names = names
   )
 }
@@ -319,8 +297,7 @@ vec_proxy.civil_local_datetime <- function(x, ...) {
 vec_restore.civil_local_datetime <- function(x, to, ...) {
   fields <- restore_civil_local_fields(x)
   names <- restore_civil_local_names(x)
-  zone <- local_zone(to)
-  new_local_datetime_from_fields(fields, zone, names)
+  new_local_datetime_from_fields(fields, names)
 }
 
 #' @export
@@ -371,13 +348,12 @@ localize <- function(x) {
   x <- to_posixct(x)
 
   fields <- localize_posixct_cpp(x)
-  zone <- get_zone(x)
   names <- names(x)
 
   if (date) {
-    new_local_date_from_fields(fields, zone, names)
+    new_local_date_from_fields(fields, names)
   } else {
-    new_local_datetime_from_fields(fields, zone, names)
+    new_local_datetime_from_fields(fields, names)
   }
 }
 
@@ -398,14 +374,19 @@ unlocalize.civil_local_date <- function(x,
 
 #' @export
 unlocalize.civil_local_datetime <- function(x,
+                                            zone,
                                             ...,
-                                            zone = NULL,
                                             day_nonexistent = "last-time",
                                             dst_nonexistent = "roll-forward",
                                             dst_ambiguous = "earliest") {
   check_dots_empty()
 
-  zone <- zone_resolve(zone, x)
+  if (missing(zone)) {
+    abort(paste0(
+      "In `unlocalize()`, `zone` is missing. ",
+      "This argument is required with 'local_datetime' input."
+    ))
+  }
 
   validate_day_nonexistent(day_nonexistent)
   validate_dst_nonexistent(dst_nonexistent)
@@ -450,18 +431,4 @@ format_minute <- function(x) {
 }
 format_second <- function(x) {
   sprintf("%02i", x)
-}
-
-zone_resolve <- function(zone, x) {
-  if (!is_null(zone)) {
-    return(zone)
-  }
-
-  zone <- local_zone(x)
-
-  if (is_null(zone)) {
-    abort("`zone` is `NULL`, but `x` has no implicit time zone.")
-  }
-
-  zone
 }
