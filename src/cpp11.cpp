@@ -69,17 +69,38 @@ extern "C" SEXP _civil_localize_posixct_cpp(SEXP x) {
   END_CPP11
 }
 // local.cpp
-SEXP unlocalize_date_cpp(SEXP x, SEXP day_nonexistent);
-extern "C" SEXP _civil_unlocalize_date_cpp(SEXP x, SEXP day_nonexistent) {
+SEXP unlocalize_datetime_cpp(SEXP x, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous);
+extern "C" SEXP _civil_unlocalize_datetime_cpp(SEXP x, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous) {
   BEGIN_CPP11
-    return cpp11::as_sexp(unlocalize_date_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_nonexistent)));
+    return cpp11::as_sexp(unlocalize_datetime_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(zone), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous)));
   END_CPP11
 }
 // local.cpp
-SEXP unlocalize_datetime_cpp(SEXP x, SEXP zone, SEXP day_nonexistent, SEXP dst_nonexistent, SEXP dst_ambiguous);
-extern "C" SEXP _civil_unlocalize_datetime_cpp(SEXP x, SEXP zone, SEXP day_nonexistent, SEXP dst_nonexistent, SEXP dst_ambiguous) {
+SEXP convert_days_to_year_month_day_cpp(SEXP days);
+extern "C" SEXP _civil_convert_days_to_year_month_day_cpp(SEXP days) {
   BEGIN_CPP11
-    return cpp11::as_sexp(unlocalize_datetime_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(zone), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous)));
+    return cpp11::as_sexp(convert_days_to_year_month_day_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(days)));
+  END_CPP11
+}
+// local.cpp
+SEXP convert_year_month_day_to_days_cpp(SEXP year, SEXP month, SEXP day, SEXP day_nonexistent);
+extern "C" SEXP _civil_convert_year_month_day_to_days_cpp(SEXP year, SEXP month, SEXP day, SEXP day_nonexistent) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(convert_year_month_day_to_days_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(year), cpp11::as_cpp<cpp11::decay_t<SEXP>>(month), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_nonexistent)));
+  END_CPP11
+}
+// local.cpp
+SEXP convert_time_of_day_to_hour_minute_second_cpp(SEXP time_of_day);
+extern "C" SEXP _civil_convert_time_of_day_to_hour_minute_second_cpp(SEXP time_of_day) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(convert_time_of_day_to_hour_minute_second_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(time_of_day)));
+  END_CPP11
+}
+// local.cpp
+SEXP convert_hour_minute_second_to_time_of_day_cpp(SEXP hour, SEXP minute, SEXP second);
+extern "C" SEXP _civil_convert_hour_minute_second_to_time_of_day_cpp(SEXP hour, SEXP minute, SEXP second) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(convert_hour_minute_second_to_time_of_day_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(hour), cpp11::as_cpp<cpp11::decay_t<SEXP>>(minute), cpp11::as_cpp<cpp11::decay_t<SEXP>>(second)));
   END_CPP11
 }
 // zone.cpp
@@ -107,26 +128,32 @@ extern SEXP _civil_adjust_zone_retain_clock_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_init();
 extern SEXP _civil_civil_set_install(SEXP);
+extern SEXP _civil_convert_days_to_year_month_day_cpp(SEXP);
+extern SEXP _civil_convert_hour_minute_second_to_time_of_day_cpp(SEXP, SEXP, SEXP);
+extern SEXP _civil_convert_time_of_day_to_hour_minute_second_cpp(SEXP);
+extern SEXP _civil_convert_year_month_day_to_days_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_localize_posixct_cpp(SEXP);
-extern SEXP _civil_unlocalize_date_cpp(SEXP, SEXP);
-extern SEXP _civil_unlocalize_datetime_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_unlocalize_datetime_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_zone_is_valid(SEXP);
 extern SEXP _civil_zone_standardize(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_civil_add_duration_to_zoned_cpp",    (DL_FUNC) &_civil_add_duration_to_zoned_cpp,    4},
-    {"_civil_add_period_to_local_cpp",      (DL_FUNC) &_civil_add_period_to_local_cpp,      5},
-    {"_civil_add_period_to_zoned_cpp",      (DL_FUNC) &_civil_add_period_to_zoned_cpp,      7},
-    {"_civil_adjust_local_cpp",             (DL_FUNC) &_civil_adjust_local_cpp,             4},
-    {"_civil_adjust_zone_retain_clock_cpp", (DL_FUNC) &_civil_adjust_zone_retain_clock_cpp, 4},
-    {"_civil_adjust_zoned_cpp",             (DL_FUNC) &_civil_adjust_zoned_cpp,             7},
-    {"_civil_civil_init",                   (DL_FUNC) &_civil_civil_init,                   0},
-    {"_civil_civil_set_install",            (DL_FUNC) &_civil_civil_set_install,            1},
-    {"_civil_localize_posixct_cpp",         (DL_FUNC) &_civil_localize_posixct_cpp,         1},
-    {"_civil_unlocalize_date_cpp",          (DL_FUNC) &_civil_unlocalize_date_cpp,          2},
-    {"_civil_unlocalize_datetime_cpp",      (DL_FUNC) &_civil_unlocalize_datetime_cpp,      5},
-    {"_civil_zone_is_valid",                (DL_FUNC) &_civil_zone_is_valid,                1},
-    {"_civil_zone_standardize",             (DL_FUNC) &_civil_zone_standardize,             1},
+    {"_civil_add_duration_to_zoned_cpp",                     (DL_FUNC) &_civil_add_duration_to_zoned_cpp,                     4},
+    {"_civil_add_period_to_local_cpp",                       (DL_FUNC) &_civil_add_period_to_local_cpp,                       5},
+    {"_civil_add_period_to_zoned_cpp",                       (DL_FUNC) &_civil_add_period_to_zoned_cpp,                       7},
+    {"_civil_adjust_local_cpp",                              (DL_FUNC) &_civil_adjust_local_cpp,                              4},
+    {"_civil_adjust_zone_retain_clock_cpp",                  (DL_FUNC) &_civil_adjust_zone_retain_clock_cpp,                  4},
+    {"_civil_adjust_zoned_cpp",                              (DL_FUNC) &_civil_adjust_zoned_cpp,                              7},
+    {"_civil_civil_init",                                    (DL_FUNC) &_civil_civil_init,                                    0},
+    {"_civil_civil_set_install",                             (DL_FUNC) &_civil_civil_set_install,                             1},
+    {"_civil_convert_days_to_year_month_day_cpp",            (DL_FUNC) &_civil_convert_days_to_year_month_day_cpp,            1},
+    {"_civil_convert_hour_minute_second_to_time_of_day_cpp", (DL_FUNC) &_civil_convert_hour_minute_second_to_time_of_day_cpp, 3},
+    {"_civil_convert_time_of_day_to_hour_minute_second_cpp", (DL_FUNC) &_civil_convert_time_of_day_to_hour_minute_second_cpp, 1},
+    {"_civil_convert_year_month_day_to_days_cpp",            (DL_FUNC) &_civil_convert_year_month_day_to_days_cpp,            4},
+    {"_civil_localize_posixct_cpp",                          (DL_FUNC) &_civil_localize_posixct_cpp,                          1},
+    {"_civil_unlocalize_datetime_cpp",                       (DL_FUNC) &_civil_unlocalize_datetime_cpp,                       4},
+    {"_civil_zone_is_valid",                                 (DL_FUNC) &_civil_zone_is_valid,                                 1},
+    {"_civil_zone_standardize",                              (DL_FUNC) &_civil_zone_standardize,                              1},
     {NULL, NULL, 0}
 };
 }
