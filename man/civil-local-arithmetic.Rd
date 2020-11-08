@@ -18,33 +18,33 @@
 \alias{subtract_seconds.civil_local}
 \title{Local date-time arithmetic}
 \usage{
-\method{add_years}{civil_local}(x, n, ...)
+\method{add_years}{civil_local}(x, n, ..., day_nonexistent = "last-time")
 
-\method{subtract_years}{civil_local}(x, n, ...)
+\method{subtract_years}{civil_local}(x, n, ..., day_nonexistent = "last-time")
 
-\method{add_months}{civil_local}(x, n, ...)
+\method{add_months}{civil_local}(x, n, ..., day_nonexistent = "last-time")
 
-\method{subtract_months}{civil_local}(x, n, ...)
+\method{subtract_months}{civil_local}(x, n, ..., day_nonexistent = "last-time")
 
-\method{add_weeks}{civil_local}(x, n, ..., day_nonexistent = "last-time")
+\method{add_weeks}{civil_local}(x, n, ...)
 
-\method{subtract_weeks}{civil_local}(x, n, ..., day_nonexistent = "last-time")
+\method{subtract_weeks}{civil_local}(x, n, ...)
 
-\method{add_days}{civil_local}(x, n, ..., day_nonexistent = "last-time")
+\method{add_days}{civil_local}(x, n, ...)
 
-\method{subtract_days}{civil_local}(x, n, ..., day_nonexistent = "last-time")
+\method{subtract_days}{civil_local}(x, n, ...)
 
-\method{add_hours}{civil_local}(x, n, ..., day_nonexistent = "last-time")
+\method{add_hours}{civil_local}(x, n, ...)
 
-\method{subtract_hours}{civil_local}(x, n, ..., day_nonexistent = "last-time")
+\method{subtract_hours}{civil_local}(x, n, ...)
 
-\method{add_minutes}{civil_local}(x, n, ..., day_nonexistent = "last-time")
+\method{add_minutes}{civil_local}(x, n, ...)
 
-\method{subtract_minutes}{civil_local}(x, n, ..., day_nonexistent = "last-time")
+\method{subtract_minutes}{civil_local}(x, n, ...)
 
-\method{add_seconds}{civil_local}(x, n, ..., day_nonexistent = "last-time")
+\method{add_seconds}{civil_local}(x, n, ...)
 
-\method{subtract_seconds}{civil_local}(x, n, ..., day_nonexistent = "last-time")
+\method{subtract_seconds}{civil_local}(x, n, ...)
 }
 \arguments{
 \item{x}{\verb{[local_date / local_datetime]}

@@ -27,16 +27,25 @@ enum day_nonexistent parse_day_nonexistent(sexp x) {
 
 // [[ include("enums.h") ]]
 enum dst_nonexistent parse_dst_nonexistent(sexp x) {
-  enum dst_nonexistent out = parse_dst_nonexistent_arithmetic(x);
-
-  if (out == dst_nonexistent::roll_directional) {
-    r_abort("Internal error: 'roll-directional' is not allowed for `dst_nonexistent` here.");
-  }
-  if (out == dst_nonexistent::shift_directional) {
-    r_abort("Internal error: 'shift-directional' is not allowed for `dst_nonexistent` here.");
+  if (!r_is_string(x)) {
+    r_abort("`dst_nonexistent` must be a string with length 1.");
   }
 
-  return out;
+  const char* string = CHAR(STRING_ELT(x, 0));
+
+  return parse_dst_nonexistent_one(string);
+}
+
+// [[ include("enums.h") ]]
+enum dst_nonexistent parse_dst_nonexistent_one(const char* x) {
+  if (!strcmp(x, "roll-forward")) return dst_nonexistent::roll_forward;
+  if (!strcmp(x, "roll-backward")) return dst_nonexistent::roll_backward;
+  if (!strcmp(x, "shift-forward")) return dst_nonexistent::shift_forward;
+  if (!strcmp(x, "shift-backward")) return dst_nonexistent::shift_backward;
+  if (!strcmp(x, "NA")) return dst_nonexistent::na;
+  if (!strcmp(x, "error")) return dst_nonexistent::error;
+
+  r_abort("'%s' is not a recognized `dst_nonexistent` option.", x);
 }
 
 // -----------------------------------------------------------------------------
@@ -49,29 +58,44 @@ enum dst_nonexistent parse_dst_nonexistent_arithmetic(sexp x) {
 
   const char* string = CHAR(STRING_ELT(x, 0));
 
-  if (!strcmp(string, "roll-directional")) return dst_nonexistent::roll_directional;
-  if (!strcmp(string, "roll-forward")) return dst_nonexistent::roll_forward;
-  if (!strcmp(string, "roll-backward")) return dst_nonexistent::roll_backward;
-  if (!strcmp(string, "shift-directional")) return dst_nonexistent::shift_directional;
-  if (!strcmp(string, "shift-forward")) return dst_nonexistent::shift_forward;
-  if (!strcmp(string, "shift-backward")) return dst_nonexistent::shift_backward;
-  if (!strcmp(string, "NA")) return dst_nonexistent::na;
-  if (!strcmp(string, "error")) return dst_nonexistent::error;
+  return parse_dst_nonexistent_arithmetic_one(string);
+}
 
-  r_abort("'%s' is not a recognized `dst_nonexistent` option.", string);
+// [[ include("enums.h") ]]
+enum dst_nonexistent parse_dst_nonexistent_arithmetic_one(const char* x) {
+  if (!strcmp(x, "roll-directional")) return dst_nonexistent::roll_directional;
+  if (!strcmp(x, "roll-forward")) return dst_nonexistent::roll_forward;
+  if (!strcmp(x, "roll-backward")) return dst_nonexistent::roll_backward;
+  if (!strcmp(x, "shift-directional")) return dst_nonexistent::shift_directional;
+  if (!strcmp(x, "shift-forward")) return dst_nonexistent::shift_forward;
+  if (!strcmp(x, "shift-backward")) return dst_nonexistent::shift_backward;
+  if (!strcmp(x, "NA")) return dst_nonexistent::na;
+  if (!strcmp(x, "error")) return dst_nonexistent::error;
+
+  r_abort("'%s' is not a recognized `dst_nonexistent` option.", x);
 }
 
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
 enum dst_ambiguous parse_dst_ambiguous(sexp x) {
-  enum dst_ambiguous out = parse_dst_ambiguous_arithmetic(x);
-
-  if (out == dst_ambiguous::directional) {
-    r_abort("'directional' is not allowed for `dst_ambiguous` here.");
+  if (!r_is_string(x)) {
+    r_abort("`dst_ambiguous` must be a string with length 1.");
   }
 
-  return out;
+  const char* string = CHAR(STRING_ELT(x, 0));
+
+  return parse_dst_ambiguous_one(string);
+}
+
+// [[ include("enums.h") ]]
+enum dst_ambiguous parse_dst_ambiguous_one(const char* x) {
+  if (!strcmp(x, "earliest")) return dst_ambiguous::earliest;
+  if (!strcmp(x, "latest")) return dst_ambiguous::latest;
+  if (!strcmp(x, "NA")) return dst_ambiguous::na;
+  if (!strcmp(x, "error")) return dst_ambiguous::error;
+
+  r_abort("'%s' is not a recognized `dst_ambiguous` option.", x);
 }
 
 // [[ include("enums.h") ]]
@@ -82,13 +106,18 @@ enum dst_ambiguous parse_dst_ambiguous_arithmetic(sexp x) {
 
   const char* string = CHAR(STRING_ELT(x, 0));
 
-  if (!strcmp(string, "directional")) return dst_ambiguous::directional;
-  if (!strcmp(string, "earliest")) return dst_ambiguous::earliest;
-  if (!strcmp(string, "latest")) return dst_ambiguous::latest;
-  if (!strcmp(string, "NA")) return dst_ambiguous::na;
-  if (!strcmp(string, "error")) return dst_ambiguous::error;
+  return parse_dst_ambiguous_arithmetic_one(string);
+}
 
-  r_abort("'%s' is not a recognized `dst_ambiguous` option.", string);
+// [[ include("enums.h") ]]
+enum dst_ambiguous parse_dst_ambiguous_arithmetic_one(const char* x) {
+  if (!strcmp(x, "directional")) return dst_ambiguous::directional;
+  if (!strcmp(x, "earliest")) return dst_ambiguous::earliest;
+  if (!strcmp(x, "latest")) return dst_ambiguous::latest;
+  if (!strcmp(x, "NA")) return dst_ambiguous::na;
+  if (!strcmp(x, "error")) return dst_ambiguous::error;
+
+  r_abort("'%s' is not a recognized `dst_ambiguous` option.", x);
 }
 
 // -----------------------------------------------------------------------------

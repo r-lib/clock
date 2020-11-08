@@ -517,5 +517,19 @@ convert_days_and_time_of_day_to_seconds <- function(days,
                                                     dst_ambiguous) {
   validate_dst_nonexistent(dst_nonexistent)
   validate_dst_ambiguous(dst_ambiguous)
+
+  size_days <- length(days)
+  size_dst_nonexistent <- vec_size(dst_nonexistent)
+  size_dst_ambiguous <- vec_size(dst_ambiguous)
+
+  # These may be vectorized (for arithmetic), but must be the same length
+  # as x if they are - x is not recycled to their length
+  if (size_dst_nonexistent != 1L && size_dst_nonexistent != size_days) {
+    abort("`dst_nonexistent` must be size 1 or the same size as `x`.")
+  }
+  if (size_dst_ambiguous != 1L && size_dst_ambiguous != size_days) {
+    abort("`dst_ambiguous` must be size 1 or the same size as `x`.")
+  }
+
   convert_days_and_time_of_day_to_seconds_cpp(days, time_of_day, zone, dst_nonexistent, dst_ambiguous)
 }

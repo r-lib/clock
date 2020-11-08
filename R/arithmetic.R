@@ -234,7 +234,9 @@ add_years.Date <- function(x,
                            n,
                            ...,
                            day_nonexistent = "last-time") {
-  add_ymd_to_date(x, n, ..., day_nonexistent = day_nonexistent, unit = "year")
+  x <- localize(x)
+  out <- add_years(x, n, ..., day_nonexistent = day_nonexistent)
+  unlocalize(out)
 }
 
 #' @rdname civil-zoned-arithmetic
@@ -245,21 +247,18 @@ add_years.POSIXt <- function(x,
                              day_nonexistent = "last-time",
                              dst_nonexistent = "roll-directional",
                              dst_ambiguous = "directional") {
-  add_ymd_to_posixt(
-    x = x,
-    n = n,
-    ...,
-    day_nonexistent = day_nonexistent,
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous,
-    unit = "year"
-  )
+  zone <- get_zone(x)
+  x <- localize(x)
+  out <- add_years(x, n, ..., day_nonexistent = day_nonexistent)
+  dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
+  dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
+  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @rdname civil-local-arithmetic
 #' @export
-add_years.civil_local <- function(x, n, ...) {
-  add_ym_to_local(x = x, n = n, ..., unit = "year")
+add_years.civil_local <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_years_impl(x, n, ..., day_nonexistent = day_nonexistent)
 }
 
 # ------------------------------------------------------------------------------
@@ -288,20 +287,13 @@ subtract_years.POSIXt <- function(x,
                                   day_nonexistent = "last-time",
                                   dst_nonexistent = "roll-directional",
                                   dst_ambiguous = "directional") {
-  add_years(
-    x = x,
-    n = -n,
-    ...,
-    day_nonexistent = day_nonexistent,
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous
-  )
+  add_years(x, -n, ..., day_nonexistent = day_nonexistent, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @rdname civil-local-arithmetic
 #' @export
-subtract_years.civil_local <- function(x, n, ...) {
-  add_years(x, -n, ...)
+subtract_years.civil_local <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_years(x, -n, ..., day_nonexistent = day_nonexistent)
 }
 
 # ------------------------------------------------------------------------------
@@ -319,7 +311,9 @@ add_months.Date <- function(x,
                             n,
                             ...,
                             day_nonexistent = "last-time") {
-  add_ymd_to_date(x, n, ..., day_nonexistent = day_nonexistent, unit = "month")
+  x <- localize(x)
+  out <- add_months(x, n, ..., day_nonexistent = day_nonexistent)
+  unlocalize(out)
 }
 
 #' @rdname civil-zoned-arithmetic
@@ -330,21 +324,18 @@ add_months.POSIXt <- function(x,
                               day_nonexistent = "last-time",
                               dst_nonexistent = "roll-directional",
                               dst_ambiguous = "directional") {
-  add_ymd_to_posixt(
-    x = x,
-    n = n,
-    ...,
-    day_nonexistent = day_nonexistent,
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous,
-    unit = "month"
-  )
+  zone <- get_zone(x)
+  x <- localize(x)
+  out <- add_months(x, n, ..., day_nonexistent = day_nonexistent)
+  dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
+  dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
+  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @rdname civil-local-arithmetic
 #' @export
-add_months.civil_local <- function(x, n, ...) {
-  add_ym_to_local(x = x, n = n, ..., unit = "month")
+add_months.civil_local <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_months_impl(x, n, ..., day_nonexistent = day_nonexistent)
 }
 
 # ------------------------------------------------------------------------------
@@ -373,20 +364,13 @@ subtract_months.POSIXt <- function(x,
                                    day_nonexistent = "last-time",
                                    dst_nonexistent = "roll-directional",
                                    dst_ambiguous = "directional") {
-  add_months(
-    x = x,
-    n = -n,
-    ...,
-    day_nonexistent = day_nonexistent,
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous
-  )
+  add_months(x, -n, ..., day_nonexistent = day_nonexistent, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @rdname civil-local-arithmetic
 #' @export
-subtract_months.civil_local <- function(x, n, ...) {
-  add_months(x, -n, ...)
+subtract_months.civil_local <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_months(x, -n, ..., day_nonexistent = day_nonexistent)
 }
 
 # ------------------------------------------------------------------------------
@@ -401,7 +385,9 @@ add_weeks <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_weeks.Date <- function(x, n, ...) {
-  add_ymd_to_date(x, n, ..., day_nonexistent = "last-time", unit = "week")
+  x <- localize(x)
+  out <- add_weeks(x = x, n = n, ...)
+  unlocalize(out)
 }
 
 #' @rdname civil-zoned-arithmetic
@@ -411,24 +397,18 @@ add_weeks.POSIXt <- function(x,
                              ...,
                              dst_nonexistent = "roll-directional",
                              dst_ambiguous = "directional") {
-  add_ymd_to_posixt(
-    x = x,
-    n = n,
-    ...,
-    day_nonexistent = "last-time",
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous,
-    unit = "week"
-  )
+  zone <- get_zone(x)
+  x <- localize(x)
+  out <- add_weeks(x, n, ...)
+  dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
+  dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
+  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @rdname civil-local-arithmetic
 #' @export
-add_weeks.civil_local <- function(x,
-                                  n,
-                                  ...,
-                                  day_nonexistent = "last-time") {
-  add_dhms_to_local(x = x, n = n, ..., day_nonexistent = day_nonexistent, unit = "week")
+add_weeks.civil_local <- function(x, n, ...) {
+  add_weeks_impl(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -442,11 +422,8 @@ subtract_weeks <- function(x, n, ...) {
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-subtract_weeks.Date <- function(x,
-                                n,
-                                ...,
-                                day_nonexistent = "last-time") {
-  add_weeks(x, -n, ..., day_nonexistent = day_nonexistent)
+subtract_weeks.Date <- function(x, n, ...) {
+  add_weeks(x, -n, ...)
 }
 
 #' @rdname civil-zoned-arithmetic
@@ -454,26 +431,15 @@ subtract_weeks.Date <- function(x,
 subtract_weeks.POSIXt <- function(x,
                                   n,
                                   ...,
-                                  day_nonexistent = "last-time",
                                   dst_nonexistent = "roll-directional",
                                   dst_ambiguous = "directional") {
-  add_weeks(
-    x = x,
-    n = -n,
-    ...,
-    day_nonexistent = day_nonexistent,
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous
-  )
+  add_weeks(x, -n, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @rdname civil-local-arithmetic
 #' @export
-subtract_weeks.civil_local <- function(x,
-                                       n,
-                                       ...,
-                                       day_nonexistent = "last-time") {
-  add_weeks(x, -n, ..., day_nonexistent = day_nonexistent)
+subtract_weeks.civil_local <- function(x, n, ...) {
+  add_weeks(x, -n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -488,7 +454,9 @@ add_days <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_days.Date <- function(x, n, ...) {
-  add_ymd_to_date(x, n, ..., day_nonexistent = "last-time", unit = "day")
+  x <- localize(x)
+  out <- add_days(x = x, n = n, ...)
+  unlocalize(out)
 }
 
 #' @rdname civil-zoned-arithmetic
@@ -498,24 +466,18 @@ add_days.POSIXt <- function(x,
                             ...,
                             dst_nonexistent = "roll-directional",
                             dst_ambiguous = "directional") {
-  add_ymd_to_posixt(
-    x = x,
-    n = n,
-    ...,
-    day_nonexistent = "last-time",
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous,
-    unit = "day"
-  )
+  zone <- get_zone(x)
+  x <- localize(x)
+  out <- add_days(x, n, ...)
+  dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
+  dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
+  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @rdname civil-local-arithmetic
 #' @export
-add_days.civil_local <- function(x,
-                                 n,
-                                 ...,
-                                 day_nonexistent = "last-time") {
-  add_dhms_to_local(x = x, n = n, ..., day_nonexistent = day_nonexistent, unit = "day")
+add_days.civil_local <- function(x, n, ...) {
+  add_days_impl(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -529,11 +491,8 @@ subtract_days <- function(x, n, ...) {
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-subtract_days.Date <- function(x,
-                               n,
-                               ...,
-                               day_nonexistent = "last-time") {
-  add_days(x, -n, ..., day_nonexistent = day_nonexistent)
+subtract_days.Date <- function(x, n, ...) {
+  add_days(x, -n, ...)
 }
 
 #' @rdname civil-zoned-arithmetic
@@ -541,26 +500,15 @@ subtract_days.Date <- function(x,
 subtract_days.POSIXt <- function(x,
                                  n,
                                  ...,
-                                 day_nonexistent = "last-time",
                                  dst_nonexistent = "roll-directional",
                                  dst_ambiguous = "directional") {
-  add_days(
-    x = x,
-    n = -n,
-    ...,
-    day_nonexistent = day_nonexistent,
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous
-  )
+  add_days(x, -n, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @rdname civil-local-arithmetic
 #' @export
-subtract_days.civil_local <- function(x,
-                                      n,
-                                      ...,
-                                      day_nonexistent = "last-time") {
-  add_days(x, -n, ..., day_nonexistent = day_nonexistent)
+subtract_days.civil_local <- function(x, n, ...) {
+  add_days(x, -n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -575,22 +523,20 @@ add_hours <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_hours.Date <- function(x, n, ...) {
-  add_hms_to_date(x, n, ..., unit = "hour")
+  x <- to_posixct(x)
+  add_hours(x, n, ...)
 }
 
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_hours.POSIXt <- function(x, n, ...) {
-  add_hms_to_posixt(x, n, ..., unit = "hour")
+  add_hours_posixt_impl(x, n, ...)
 }
 
 #' @rdname civil-local-arithmetic
 #' @export
-add_hours.civil_local <- function(x,
-                                  n,
-                                  ...,
-                                  day_nonexistent = "last-time") {
-  add_dhms_to_local(x, n, ..., day_nonexistent = day_nonexistent, unit = "hour")
+add_hours.civil_local <- function(x, n, ...) {
+  add_hours_local_impl(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -616,11 +562,8 @@ subtract_hours.POSIXt <- function(x, n, ...) {
 
 #' @rdname civil-local-arithmetic
 #' @export
-subtract_hours.civil_local <- function(x,
-                                       n,
-                                       ...,
-                                       day_nonexistent = "last-time") {
-  add_hours(x, -n, ..., day_nonexistent = day_nonexistent)
+subtract_hours.civil_local <- function(x, n, ...) {
+  add_hours(x, -n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -635,22 +578,20 @@ add_minutes <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_minutes.Date <- function(x, n, ...) {
-  add_hms_to_date(x, n, ..., unit = "minute")
+  x <- to_posixct(x)
+  add_minutes(x, n, ...)
 }
 
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_minutes.POSIXt <- function(x, n, ...) {
-  add_hms_to_posixt(x, n, ..., unit = "minute")
+  add_minutes_posixt_impl(x, n, ...)
 }
 
 #' @rdname civil-local-arithmetic
 #' @export
-add_minutes.civil_local <- function(x,
-                                    n,
-                                    ...,
-                                    day_nonexistent = "last-time") {
-  add_dhms_to_local(x, n, ..., day_nonexistent = day_nonexistent, unit = "minute")
+add_minutes.civil_local <- function(x, n, ...) {
+  add_minutes_local_impl(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -676,11 +617,8 @@ subtract_minutes.POSIXt <- function(x, n, ...) {
 
 #' @rdname civil-local-arithmetic
 #' @export
-subtract_minutes.civil_local <- function(x,
-                                         n,
-                                         ...,
-                                         day_nonexistent = "last-time") {
-  add_minutes(x, -n, ..., day_nonexistent = day_nonexistent)
+subtract_minutes.civil_local <- function(x, n, ...) {
+  add_minutes(x, -n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -695,22 +633,20 @@ add_seconds <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_seconds.Date <- function(x, n, ...) {
-  add_hms_to_date(x, n, ..., unit = "second")
+  x <- to_posixct(x)
+  add_seconds(x, n, ...)
 }
 
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_seconds.POSIXt <- function(x, n, ...) {
-  add_hms_to_posixt(x, n, ..., unit = "second")
+  add_seconds_posixt_impl(x, n, ...)
 }
 
 #' @rdname civil-local-arithmetic
 #' @export
-add_seconds.civil_local <- function(x,
-                                    n,
-                                    ...,
-                                    day_nonexistent = "last-time") {
-  add_dhms_to_local(x, n, ..., day_nonexistent = day_nonexistent, unit = "second")
+add_seconds.civil_local <- function(x, n, ...) {
+  add_seconds_local_impl(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -736,158 +672,22 @@ subtract_seconds.POSIXt <- function(x, n, ...) {
 
 #' @rdname civil-local-arithmetic
 #' @export
-subtract_seconds.civil_local <- function(x,
-                                         n,
-                                         ...,
-                                         day_nonexistent = "last-time") {
-  add_seconds(x, -n, ..., day_nonexistent = day_nonexistent)
+subtract_seconds.civil_local <- function(x, n, ...) {
+  add_seconds(x, -n, ...)
 }
 
 # ------------------------------------------------------------------------------
 
-add_ymd <- function(x,
-                    n,
-                    ...,
-                    day_nonexistent,
-                    dst_nonexistent,
-                    dst_ambiguous,
-                    unit) {
-  if (is_local(x)) {
-    add_period_to_local(
-      x = x,
-      n = n,
-      ...,
-      day_nonexistent = day_nonexistent,
-      unit = unit
-    )
-  } else {
-    add_period_to_zoned(
-      x = x,
-      n = n,
-      ...,
-      day_nonexistent = day_nonexistent,
-      dst_nonexistent = dst_nonexistent,
-      dst_ambiguous = dst_ambiguous,
-      unit = unit
-    )
-  }
+add_years_impl <- function(x, n, ..., day_nonexistent, unit) {
+  # TODO: Promote at least local-year?
+  add_years_or_months(x, n, ..., day_nonexistent = day_nonexistent, unit = "year")
+}
+add_months_impl <- function(x, n, ..., day_nonexistent, unit) {
+  # TODO: Promote at least local-year-month?
+  add_years_or_months(x, n, ..., day_nonexistent = day_nonexistent, unit = "month")
 }
 
-add_hms <- function(x, n, ..., day_nonexistent, unit) {
-  if (is_local(x)) {
-    add_period_to_local(
-      x = x,
-      n = n,
-      ...,
-      day_nonexistent = day_nonexistent,
-      unit = unit
-    )
-  } else {
-    add_duration_to_zoned(
-      x = x,
-      n = n,
-      ...,
-      unit = unit
-    )
-  }
-}
-
-# ------------------------------------------------------------------------------
-
-add_period_to_zoned <- function(x,
-                                n,
-                                ...,
-                                day_nonexistent,
-                                dst_nonexistent,
-                                dst_ambiguous,
-                                unit) {
-  check_dots_empty()
-
-  n <- vec_cast(n, integer(), x_arg = "n")
-  size <- vec_size_common(x = x, n = n)
-
-  validate_day_nonexistent(day_nonexistent)
-  validate_dst_nonexistent_arithmetic(dst_nonexistent)
-  validate_dst_ambiguous_arithmetic(dst_ambiguous)
-
-  x_ct <- to_posixct(x)
-
-  out <- add_period_to_zoned_cpp(
-    x = x_ct,
-    n = n,
-    day_nonexistent = day_nonexistent,
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous,
-    size = size,
-    unit = unit
-  )
-
-  from_posixct(out, x)
-}
-
-add_ymd_to_date <- function(x,
-                            n,
-                            ...,
-                            day_nonexistent,
-                            unit) {
-  add_period_to_zoned(
-    x = x,
-    n = n,
-    ...,
-    day_nonexistent = day_nonexistent,
-    dst_nonexistent = "roll-directional",
-    dst_ambiguous = "directional",
-    unit = unit
-  )
-}
-add_ymd_to_posixt <- function(x,
-                              n,
-                              ...,
-                              day_nonexistent,
-                              dst_nonexistent,
-                              dst_ambiguous,
-                              unit) {
-  add_period_to_zoned(
-    x = x,
-    n = n,
-    ...,
-    day_nonexistent = day_nonexistent,
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous,
-    unit = unit
-  )
-}
-
-# ------------------------------------------------------------------------------
-
-add_duration_to_zoned <- function(x, n, ..., unit) {
-  check_dots_empty()
-
-  n <- vec_cast(n, integer(), x_arg = "n")
-  size <- vec_size_common(x = x, n = n)
-
-  x_ct <- to_posixct(x)
-
-  out <- add_duration_to_zoned_cpp(
-    x = x_ct,
-    n = n,
-    size = size,
-    unit = unit
-  )
-
-  out
-}
-
-add_hms_to_date <- function(x, n, ..., unit) {
-  add_duration_to_zoned(x, n, ..., unit = unit)
-}
-add_hms_to_posixt <- function(x, n, ..., unit) {
-  add_duration_to_zoned(x, n, ..., unit = unit)
-}
-
-# ------------------------------------------------------------------------------
-
-add_period_to_local <- function(x, n, ..., day_nonexistent, unit) {
+add_years_or_months <- function(x, n, ..., day_nonexistent, unit) {
   check_dots_empty()
 
   n <- vec_cast(n, integer(), x_arg = "n")
@@ -895,26 +695,135 @@ add_period_to_local <- function(x, n, ..., day_nonexistent, unit) {
 
   validate_day_nonexistent(day_nonexistent)
 
-  x_ld <- to_local_datetime(x)
+  add_years_or_months_cpp(x, n, day_nonexistent, unit, size)
+}
 
-  out <- add_period_to_local_cpp(
-    x = x_ld,
-    n = n,
-    day_nonexistent = day_nonexistent,
-    size = size,
-    unit = unit
-  )
+# ------------------------------------------------------------------------------
 
-  if (is_time_based_unit(unit)) {
-    out
-  } else {
-    from_local_datetime(out, x)
+add_weeks_impl <- function(x, n, ...) {
+  # TODO: Promote at least local-year-week?
+  add_weeks_or_days(x, n, ..., unit = "week")
+}
+add_days_impl <- function(x, n, ...) {
+  # TODO: Promote at least local-date?
+  add_weeks_or_days(x, n, ..., unit = "day")
+}
+
+add_weeks_or_days <- function(x, n, ..., unit) {
+  check_dots_empty()
+
+  n <- vec_cast(n, integer(), x_arg = "n")
+  size <- vec_size_common(x = x, n = n)
+
+  add_weeks_or_days_cpp(x, n, unit, size)
+}
+
+# ------------------------------------------------------------------------------
+
+add_hours_local_impl <- function(x, n, ...) {
+  # TODO: Correctly promote at least local-datetime?
+  x <- to_local_datetime(x)
+  add_hours_or_minutes_or_seconds_local(x, n, ..., unit = "hour")
+}
+add_minutes_local_impl <- function(x, n, ...) {
+  # TODO: Correctly promote at least local-datetime?
+  x <- to_local_datetime(x)
+  add_hours_or_minutes_or_seconds_local(x, n, ..., unit = "minute")
+}
+add_seconds_local_impl <- function(x, n, ...) {
+  # TODO: Correctly promote at least local-datetime?
+  x <- to_local_datetime(x)
+  add_hours_or_minutes_or_seconds_local(x, n, ..., unit = "second")
+}
+
+add_hours_or_minutes_or_seconds_local <- function(x, n, ..., unit) {
+  check_dots_empty()
+
+  n <- vec_cast(n, integer(), x_arg = "n")
+  size <- vec_size_common(x = x, n = n)
+
+  add_hours_or_minutes_or_seconds_local_cpp(x, n, unit, size)
+}
+
+# ------------------------------------------------------------------------------
+
+add_hours_posixt_impl <- function(x, n, ...) {
+  add_hours_or_minutes_or_seconds_posixt(x, n, ..., unit = "hour")
+}
+add_minutes_posixt_impl <- function(x, n, ...) {
+  add_hours_or_minutes_or_seconds_posixt(x, n, ..., unit = "minute")
+}
+add_seconds_posixt_impl <- function(x, n, ...) {
+  add_hours_or_minutes_or_seconds_posixt(x, n, ..., unit = "second")
+}
+
+add_hours_or_minutes_or_seconds_posixt <- function(x, n, ..., unit) {
+  check_dots_empty()
+
+  n <- vec_cast(n, integer(), x_arg = "n")
+
+  if (identical(unit, "hour")) {
+    n <- n * seconds_in_hour()
+  } else if (identical(unit, "minute")) {
+    n <- n * seconds_in_minute()
   }
+
+  # Check tidyverse recyclability
+  vec_size_common(x = x, n = n)
+
+  x + n
 }
 
-add_ym_to_local <- function(x, n, ..., unit) {
-  add_period_to_local(x, n, ..., day_nonexistent = "last-time", unit = unit)
+seconds_in_hour <- function() {
+  3600L
 }
-add_dhms_to_local <- function(x, n, ..., day_nonexistent, unit) {
-  add_period_to_local(x, n, ..., day_nonexistent = day_nonexistent, unit = unit)
+seconds_in_minute <- function() {
+  60L
+}
+
+# ------------------------------------------------------------------------------
+
+dst_nonexistent_standardize <- function(dst_nonexistent, n) {
+  if (identical(dst_nonexistent, "roll-directional")) {
+    out <- if_else(n >= 0L, true = "roll-forward", false = "roll-backward", na = "roll-forward")
+    return(out)
+  }
+
+  if (identical(dst_nonexistent, "shift-directional")) {
+    out <- if_else(n >= 0L, true = "roll-forward", false = "roll-backward", na = "roll-forward")
+    return(out)
+  }
+
+  if (anyNA(dst_nonexistent)) {
+    abort("`dst_nonexistent` cannot be `NA`.")
+  }
+
+  # Can't mix roll/shift-directional with other options if vectorized
+  issue <- any(dst_nonexistent == "roll-directional" | dst_nonexistent == "shift-directional")
+
+  if (issue) {
+    abort("Can't mix 'roll-directional' or 'shift-directional' with other 'dst_nonexistent' options.")
+  }
+
+  dst_nonexistent
+}
+
+dst_ambiguous_standardize <- function(dst_ambiguous, n) {
+  if (identical(dst_ambiguous, "directional")) {
+    out <- if_else(n >= 0L, true = "earliest", false = "latest", na = "earliest")
+    return(out)
+  }
+
+  if (anyNA(dst_ambiguous)) {
+    abort("`dst_ambiguous` cannot be `NA`.")
+  }
+
+  # Can't mix directional with other options if vectorized
+  issue <- any(dst_ambiguous == "directional")
+
+  if (issue) {
+    abort("Can't mix 'directional' with other 'dst_ambiguous' options.")
+  }
+
+  dst_ambiguous
 }

@@ -1,7 +1,12 @@
 # ------------------------------------------------------------------------------
 
 validate_dst_ambiguous <- function(x, arg = "dst_ambiguous") {
-  arg_match0(x, dst_ambiguous_opts(), arg)
+  is_valid <- x %in% dst_ambiguous_opts()
+
+  if (any(!is_valid)) {
+    options <- paste0(sQuote(dst_ambiguous_opts(), q = FALSE), collapse = ", ")
+    abort(sprintf("`%s` must be one of: %s.", arg, options))
+  }
 }
 
 dst_ambiguous_opts <- function() {
@@ -21,7 +26,12 @@ dst_ambiguous_arithmetic_opts <- function() {
 # ------------------------------------------------------------------------------
 
 validate_dst_nonexistent <- function(x, arg = "dst_nonexistent") {
-  arg_match0(x, dst_nonexistent_opts(), arg)
+  is_valid <- x %in% dst_nonexistent_opts()
+
+  if (any(!is_valid)) {
+    options <- paste0(sQuote(dst_nonexistent_opts(), q = FALSE), collapse = ", ")
+    abort(sprintf("`%s` must be one of: %s.", arg, options))
+  }
 }
 
 dst_nonexistent_opts <- function() {

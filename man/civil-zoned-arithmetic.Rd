@@ -86,13 +86,12 @@
   dst_ambiguous = "directional"
 )
 
-\method{subtract_weeks}{Date}(x, n, ..., day_nonexistent = "last-time")
+\method{subtract_weeks}{Date}(x, n, ...)
 
 \method{subtract_weeks}{POSIXt}(
   x,
   n,
   ...,
-  day_nonexistent = "last-time",
   dst_nonexistent = "roll-directional",
   dst_ambiguous = "directional"
 )
@@ -107,13 +106,12 @@
   dst_ambiguous = "directional"
 )
 
-\method{subtract_days}{Date}(x, n, ..., day_nonexistent = "last-time")
+\method{subtract_days}{Date}(x, n, ...)
 
 \method{subtract_days}{POSIXt}(
   x,
   n,
   ...,
-  day_nonexistent = "last-time",
   dst_nonexistent = "roll-directional",
   dst_ambiguous = "directional"
 )

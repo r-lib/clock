@@ -74,15 +74,12 @@ to_local_datetime <- function(x) {
 }
 
 to_local_datetime_from_local_date <- function(x) {
-  zero <- rep.int(0L, vec_size(x))
+  days <- field(x, "days")
+  time_of_day <- rep.int(0L, vec_size(x))
 
   out <- new_local_datetime(
-    year = field(x, "year"),
-    month = field(x, "month"),
-    day = field(x, "day"),
-    hour = zero,
-    minute = zero,
-    second = zero,
+    days = days,
+    time_of_day = time_of_day,
     names = names(x)
   )
 
@@ -106,10 +103,10 @@ from_local_datetime <- function(x, to) {
 }
 
 from_local_datetime_to_local_date <- function(x) {
+  days <- field(x, "days")
+
   out <- new_local_date(
-    year = field(x, "year"),
-    month = field(x, "month"),
-    day = field(x, "day"),
+    days = days,
     names = names(x)
   )
 
@@ -210,4 +207,34 @@ stop_civil_unsupported_class <- function(x) {
 paste_class <- function(x) {
   out <- paste0(class(x), collapse = "/")
   paste0("<", out, ">")
+}
+
+# ------------------------------------------------------------------------------
+
+if_else <- function(condition, true, false, na = NULL) {
+  vec_assert(condition, logical())
+
+  # output size from `condition`
+  size <- vec_size(condition)
+
+  # output type from `true`/`false`/`na`
+  ptype <- vec_ptype_common(true = true, false = false, na = na)
+
+  args <- vec_recycle_common(true = true, false = false, na = na, .size = size)
+  args <- vec_cast_common(!!!args, .to = ptype)
+
+  out <- vec_init(ptype, size)
+
+  loc_true <- condition
+  loc_false <- !condition
+
+  out <- vec_assign(out, loc_true, vec_slice(args$true, loc_true))
+  out <- vec_assign(out, loc_false, vec_slice(args$false, loc_false))
+
+  if (!is_null(na)) {
+    loc_na <- vec_equal_na(condition)
+    out <- vec_assign(out, loc_na, vec_slice(args$na, loc_na))
+  }
+
+  out
 }

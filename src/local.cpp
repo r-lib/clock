@@ -89,9 +89,24 @@ SEXP convert_days_and_time_of_day_to_seconds_cpp(SEXP days,
   std::string zone_name = zone_unwrap(zone);
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
+  const sexp* p_dst_nonexistent = STRING_PTR_RO(dst_nonexistent);
+  const sexp* p_dst_ambiguous = STRING_PTR_RO(dst_ambiguous);
+
+  bool recycle_dst_nonexistent = r_is_scalar(dst_nonexistent);
+  bool recycle_dst_ambiguous = r_is_scalar(dst_ambiguous);
+
+  enum dst_nonexistent c_dst_nonexistent;
+  if (recycle_dst_nonexistent) {
+    c_dst_nonexistent = parse_dst_nonexistent_one(CHAR(p_dst_nonexistent[0]));
+  }
+
+  enum dst_ambiguous c_dst_ambiguous;
+  if (recycle_dst_ambiguous) {
+    c_dst_ambiguous = parse_dst_ambiguous_one(CHAR(p_dst_ambiguous[0]));
+  }
+
+  // TODO: Remove me
   enum dst_direction dst_direction = dst_direction::forward;
-  enum dst_nonexistent c_dst_nonexistent = parse_dst_nonexistent(dst_nonexistent);
-  enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous(dst_ambiguous);
 
   for (r_ssize i = 0; i < size; ++i) {
     const int elt_days = p_days[i];
@@ -101,6 +116,16 @@ SEXP convert_days_and_time_of_day_to_seconds_cpp(SEXP days,
       p_out[i] = r_dbl_na;
       continue;
     }
+
+    const enum dst_nonexistent elt_dst_nonexistent =
+      recycle_dst_nonexistent ?
+      c_dst_nonexistent :
+      parse_dst_nonexistent_one(CHAR(p_dst_nonexistent[i]));
+
+    const enum dst_ambiguous elt_dst_ambiguous =
+      recycle_dst_ambiguous ?
+      c_dst_ambiguous :
+      parse_dst_ambiguous_one(CHAR(p_dst_ambiguous[i]));
 
     date::local_days elt_lday{date::days{elt_days}};
     date::local_seconds elt_lsec_floor{elt_lday};
@@ -114,8 +139,8 @@ SEXP convert_days_and_time_of_day_to_seconds_cpp(SEXP days,
       p_time_zone,
       i,
       dst_direction,
-      c_dst_nonexistent,
-      c_dst_ambiguous
+      elt_dst_nonexistent,
+      elt_dst_ambiguous
     );
   }
 

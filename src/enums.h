@@ -37,7 +37,9 @@ enum class dst_nonexistent {
 };
 
 enum dst_nonexistent parse_dst_nonexistent(sexp x);
+enum dst_nonexistent parse_dst_nonexistent_one(const char* x);
 enum dst_nonexistent parse_dst_nonexistent_arithmetic(sexp x);
+enum dst_nonexistent parse_dst_nonexistent_arithmetic_one(const char* x);
 
 // -----------------------------------------------------------------------------
 
@@ -50,7 +52,9 @@ enum class dst_ambiguous {
 };
 
 enum dst_ambiguous parse_dst_ambiguous(sexp x);
+enum dst_ambiguous parse_dst_ambiguous_one(const char* x);
 enum dst_ambiguous parse_dst_ambiguous_arithmetic(sexp x);
+enum dst_ambiguous parse_dst_ambiguous_arithmetic_one(const char* x);
 
 // -----------------------------------------------------------------------------
 
