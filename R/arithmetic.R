@@ -377,6 +377,100 @@ subtract_months.civil_local <- function(x, n, ..., day_nonexistent = "last-time"
 
 #' @rdname civil-arithmetic
 #' @export
+add_years_and_months <- function(x, years, months, ...) {
+  restrict_civil_supported(x)
+  UseMethod("add_years_and_months")
+}
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_years_and_months.Date <- function(x,
+                                      years,
+                                      months,
+                                      ...,
+                                      day_nonexistent = "last-time") {
+  n <- convert_years_and_months_to_n(years, months)
+  add_months(x, n, ..., day_nonexistent = day_nonexistent)
+}
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_years_and_months.POSIXt <- function(x,
+                                        years,
+                                        months,
+                                        ...,
+                                        day_nonexistent = "last-time",
+                                        dst_nonexistent = "roll-directional",
+                                        dst_ambiguous = "directional") {
+  n <- convert_years_and_months_to_n(years, months)
+  add_months(x, n, ..., day_nonexistent = day_nonexistent, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
+
+#' @rdname civil-local-arithmetic
+#' @export
+add_years_and_months.civil_local <- function(x, years, months, ..., day_nonexistent = "last-time") {
+  n <- convert_years_and_months_to_n(years, months)
+  add_months(x, n, ..., day_nonexistent = day_nonexistent)
+}
+
+convert_years_and_months_to_n <- function(years, months) {
+  # Assert common size
+  vec_size_common(years = years, months = months)
+
+  years <- vec_cast(years, integer(), x_arg = "years")
+  months <- vec_cast(months, integer(), x_arg = "months")
+
+  # Check offset signs
+  not_ok <- ((years > 0L) & (months < 0L)) | ((years < 0L) & (months > 0L))
+
+  if (any(not_ok, na.rm = TRUE)) {
+    abort("`years` and `months` must have the same sign.")
+  }
+
+  years * 12L + months
+}
+
+# ------------------------------------------------------------------------------
+
+#' @rdname civil-arithmetic
+#' @export
+subtract_years_and_months <- function(x, years, months, ...) {
+  restrict_civil_supported(x)
+  UseMethod("subtract_years_and_months")
+}
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_years_and_months.Date <- function(x,
+                                           years,
+                                           months,
+                                           ...,
+                                           day_nonexistent = "last-time") {
+  add_years_and_months(x, -years, -months, ..., day_nonexistent = day_nonexistent)
+}
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_years_and_months.POSIXt <- function(x,
+                                             years,
+                                             months,
+                                             ...,
+                                             day_nonexistent = "last-time",
+                                             dst_nonexistent = "roll-directional",
+                                             dst_ambiguous = "directional") {
+  add_years_and_months(x, -years, -months, ..., day_nonexistent = day_nonexistent, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
+
+#' @rdname civil-local-arithmetic
+#' @export
+subtract_years_and_months.civil_local <- function(x, years, months, ..., day_nonexistent = "last-time") {
+  add_years_and_months(x, -years, -months, ..., day_nonexistent = day_nonexistent)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @rdname civil-arithmetic
+#' @export
 add_weeks <- function(x, n, ...) {
   restrict_civil_supported(x)
   UseMethod("add_weeks")

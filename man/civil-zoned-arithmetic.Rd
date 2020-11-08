@@ -10,6 +10,10 @@
 \alias{add_months.POSIXt}
 \alias{subtract_months.Date}
 \alias{subtract_months.POSIXt}
+\alias{add_years_and_months.Date}
+\alias{add_years_and_months.POSIXt}
+\alias{subtract_years_and_months.Date}
+\alias{subtract_years_and_months.POSIXt}
 \alias{add_weeks.Date}
 \alias{add_weeks.POSIXt}
 \alias{subtract_weeks.Date}
@@ -70,6 +74,30 @@
 \method{subtract_months}{POSIXt}(
   x,
   n,
+  ...,
+  day_nonexistent = "last-time",
+  dst_nonexistent = "roll-directional",
+  dst_ambiguous = "directional"
+)
+
+\method{add_years_and_months}{Date}(x, years, months, ..., day_nonexistent = "last-time")
+
+\method{add_years_and_months}{POSIXt}(
+  x,
+  years,
+  months,
+  ...,
+  day_nonexistent = "last-time",
+  dst_nonexistent = "roll-directional",
+  dst_ambiguous = "directional"
+)
+
+\method{subtract_years_and_months}{Date}(x, years, months, ..., day_nonexistent = "last-time")
+
+\method{subtract_years_and_months}{POSIXt}(
+  x,
+  years,
+  months,
   ...,
   day_nonexistent = "last-time",
   dst_nonexistent = "roll-directional",

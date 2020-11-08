@@ -6,6 +6,8 @@
 \alias{subtract_years}
 \alias{add_months}
 \alias{subtract_months}
+\alias{add_years_and_months}
+\alias{subtract_years_and_months}
 \alias{add_weeks}
 \alias{subtract_weeks}
 \alias{add_days}
@@ -25,6 +27,10 @@ subtract_years(x, n, ...)
 add_months(x, n, ...)
 
 subtract_months(x, n, ...)
+
+add_years_and_months(x, years, months, ...)
+
+subtract_years_and_months(x, years, months, ...)
 
 add_weeks(x, n, ...)
 

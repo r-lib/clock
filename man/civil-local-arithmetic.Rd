@@ -6,6 +6,8 @@
 \alias{subtract_years.civil_local}
 \alias{add_months.civil_local}
 \alias{subtract_months.civil_local}
+\alias{add_years_and_months.civil_local}
+\alias{subtract_years_and_months.civil_local}
 \alias{add_weeks.civil_local}
 \alias{subtract_weeks.civil_local}
 \alias{add_days.civil_local}
@@ -25,6 +27,10 @@
 \method{add_months}{civil_local}(x, n, ..., day_nonexistent = "last-time")
 
 \method{subtract_months}{civil_local}(x, n, ..., day_nonexistent = "last-time")
+
+\method{add_years_and_months}{civil_local}(x, years, months, ..., day_nonexistent = "last-time")
+
+\method{subtract_years_and_months}{civil_local}(x, years, months, ..., day_nonexistent = "last-time")
 
 \method{add_weeks}{civil_local}(x, n, ...)
 
