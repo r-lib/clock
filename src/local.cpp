@@ -8,13 +8,13 @@
 #include <date/date.h>
 #include <date/tz.h>
 
-static sexp new_local_datetime_list(r_ssize size);
+static sexp new_local_datetime_fields(r_ssize size);
 
 [[cpp11::register]]
-SEXP localize_posixct_cpp(SEXP x) {
-  r_ssize size = r_length(x);
+SEXP convert_seconds_to_days_and_time_of_day_cpp(SEXP seconds, SEXP zone) {
+  r_ssize size = r_length(seconds);
 
-  sexp out = PROTECT(new_local_datetime_list(size));
+  sexp out = PROTECT(new_local_datetime_fields(size));
 
   sexp days = r_list_get(out, 0);
   sexp time_of_day = r_list_get(out, 1);
@@ -22,16 +22,15 @@ SEXP localize_posixct_cpp(SEXP x) {
   int* p_days = r_int_deref(days);
   int* p_time_of_day = r_int_deref(time_of_day);
 
-  sexp tzone = civil_get_tzone(x);
-  tzone = PROTECT(zone_standardize(tzone));
-  std::string zone_name = zone_unwrap(tzone);
+  zone = PROTECT(zone_standardize(zone));
+  std::string zone_name = zone_unwrap(zone);
   const date::time_zone* p_zone = zone_name_load(zone_name);
 
-  const double* p_x = r_dbl_deref_const(x);
+  const double* p_seconds = r_dbl_deref_const(seconds);
 
   for (r_ssize i = 0; i < size; ++i) {
-    double x_elt = p_x[i];
-    int64_t elt = as_int64(x_elt);
+    double elt_seconds = p_seconds[i];
+    int64_t elt = as_int64(elt_seconds);
 
     if (elt == r_int64_na) {
       p_days[i] = p_time_of_day[i] = r_int_na;
@@ -56,14 +55,28 @@ SEXP localize_posixct_cpp(SEXP x) {
   return out;
 }
 
-[[cpp11::register]]
-SEXP unlocalize_datetime_cpp(SEXP x,
-                             SEXP zone,
-                             SEXP dst_nonexistent,
-                             SEXP dst_ambiguous) {
-  sexp days = r_list_get(x, 0);
-  sexp time_of_day = r_list_get(x, 1);
+static sexp new_local_datetime_fields(r_ssize size) {
+  sexp out = PROTECT(r_new_list(2));
 
+  r_list_poke(out, 0, r_new_integer(size));
+  r_list_poke(out, 1, r_new_integer(size));
+
+  sexp names = PROTECT(r_new_character(2));
+  r_chr_poke(names, 0, r_new_string("days"));
+  r_chr_poke(names, 1, r_new_string("time_of_day"));
+
+  r_poke_names(out, names);
+
+  UNPROTECT(2);
+  return out;
+}
+
+[[cpp11::register]]
+SEXP convert_days_and_time_of_day_to_seconds_cpp(SEXP days,
+                                                 SEXP time_of_day,
+                                                 SEXP zone,
+                                                 SEXP dst_nonexistent,
+                                                 SEXP dst_ambiguous) {
   const int* p_days = r_int_deref_const(days);
   const int* p_time_of_day = r_int_deref_const(time_of_day);
 
@@ -79,10 +92,6 @@ SEXP unlocalize_datetime_cpp(SEXP x,
   enum dst_direction dst_direction = dst_direction::forward;
   enum dst_nonexistent c_dst_nonexistent = parse_dst_nonexistent(dst_nonexistent);
   enum dst_ambiguous c_dst_ambiguous = parse_dst_ambiguous(dst_ambiguous);
-
-  r_poke_names(out, local_names(x));
-  r_poke_class(out, civil_classes_posixct);
-  civil_poke_tzone(out, zone);
 
   for (r_ssize i = 0; i < size; ++i) {
     const int elt_days = p_days[i];
@@ -109,22 +118,6 @@ SEXP unlocalize_datetime_cpp(SEXP x,
       c_dst_ambiguous
     );
   }
-
-  UNPROTECT(2);
-  return out;
-}
-
-static sexp new_local_datetime_list(r_ssize size) {
-  sexp out = PROTECT(r_new_list(2));
-
-  r_list_poke(out, 0, r_new_integer(size));
-  r_list_poke(out, 1, r_new_integer(size));
-
-  sexp names = PROTECT(r_new_character(2));
-  r_chr_poke(names, 0, r_new_string("days"));
-  r_chr_poke(names, 1, r_new_string("time_of_day"));
-
-  r_poke_names(out, names);
 
   UNPROTECT(2);
   return out;

@@ -32,12 +32,12 @@ civil_set_install <- function(path) {
   invisible(.Call("_civil_civil_set_install", path, PACKAGE = "civil"))
 }
 
-localize_posixct_cpp <- function(x) {
-  .Call("_civil_localize_posixct_cpp", x, PACKAGE = "civil")
+convert_seconds_to_days_and_time_of_day_cpp <- function(seconds, zone) {
+  .Call("_civil_convert_seconds_to_days_and_time_of_day_cpp", seconds, zone, PACKAGE = "civil")
 }
 
-unlocalize_datetime_cpp <- function(x, zone, dst_nonexistent, dst_ambiguous) {
-  .Call("_civil_unlocalize_datetime_cpp", x, zone, dst_nonexistent, dst_ambiguous, PACKAGE = "civil")
+convert_days_and_time_of_day_to_seconds_cpp <- function(days, time_of_day, zone, dst_nonexistent, dst_ambiguous) {
+  .Call("_civil_convert_days_and_time_of_day_to_seconds_cpp", days, time_of_day, zone, dst_nonexistent, dst_ambiguous, PACKAGE = "civil")
 }
 
 convert_days_to_year_month_day_cpp <- function(days) {

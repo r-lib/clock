@@ -136,6 +136,23 @@ is_POSIXlt <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+# Purposefully drop names and all attributes, as this is the structure
+# we end up storing in the rcrd object
+date_to_days <- function(x) {
+  days <- unstructure(x)
+  days <- as.integer(days)
+  days
+}
+
+days_to_date <- function(x, names = NULL) {
+  date <- unstructure(x)
+  date <- as.double(date)
+  names(date) <- names
+  new_date(date)
+}
+
+# ------------------------------------------------------------------------------
+
 is_time_based_unit <- function(unit) {
   identical(unit, "hour") ||
     identical(unit, "minute") ||

@@ -385,16 +385,21 @@ localize <- function(x) {
 
 localize_date <- function(x) {
   names <- names(x)
-  x <- unstructure(x)
-  x <- as.integer(x)
-  new_local_date(x, names = names)
+  days <- date_to_days(x)
+
+  new_local_date(days, names = names)
 }
 
 localize_posixt <- function(x) {
-  names <- names(x)
   x <- to_posixct(x)
-  fields <- localize_posixct_cpp(x)
-  new_local_datetime(fields$days, fields$time_of_day, names = names)
+
+  names <- names(x)
+  seconds <- unstructure(x)
+  zone <- get_zone(x)
+
+  fields <- convert_seconds_to_days_and_time_of_day(seconds, zone)
+
+  new_local_datetime_from_fields(fields, names)
 }
 
 #' @export
@@ -407,9 +412,7 @@ unlocalize <- function(x, ...) {
 unlocalize.civil_local_date <- function(x, ...) {
   check_dots_empty()
   days <- field(x, "days")
-  days <- as.double(days)
-  names(days) <- names(x)
-  new_date(days)
+  days_to_date(days, names(x))
 }
 
 #' @export
@@ -427,10 +430,22 @@ unlocalize.civil_local_datetime <- function(x,
     ))
   }
 
-  validate_dst_nonexistent(dst_nonexistent)
-  validate_dst_ambiguous(dst_ambiguous)
+  zone <- zone_standardize(zone)
 
-  unlocalize_datetime_cpp(x, zone, dst_nonexistent, dst_ambiguous)
+  days <- field(x, "days")
+  time_of_day <- field(x, "time_of_day")
+
+  seconds <- convert_days_and_time_of_day_to_seconds(
+    days = days,
+    time_of_day = time_of_day,
+    zone = zone,
+    dst_nonexistent = dst_nonexistent,
+    dst_ambiguous = dst_ambiguous
+  )
+
+  names(seconds) <- names(x)
+
+  new_datetime(seconds, zone)
 }
 
 # ------------------------------------------------------------------------------
@@ -489,4 +504,18 @@ convert_hour_minute_second_to_time_of_day <- function(hour, minute, second) {
 
 convert_time_of_day_to_hour_minute_second <- function(time_of_day) {
   convert_time_of_day_to_hour_minute_second_cpp(time_of_day)
+}
+
+convert_seconds_to_days_and_time_of_day <- function(seconds, zone) {
+  convert_seconds_to_days_and_time_of_day_cpp(seconds, zone)
+}
+
+convert_days_and_time_of_day_to_seconds <- function(days,
+                                                    time_of_day,
+                                                    zone,
+                                                    dst_nonexistent,
+                                                    dst_ambiguous) {
+  validate_dst_nonexistent(dst_nonexistent)
+  validate_dst_ambiguous(dst_ambiguous)
+  convert_days_and_time_of_day_to_seconds_cpp(days, time_of_day, zone, dst_nonexistent, dst_ambiguous)
 }
