@@ -5,8 +5,6 @@ adjust_zone_retain_clock <- function(x,
                                      dst_nonexistent = "roll-forward",
                                      dst_ambiguous = "earliest") {
   check_dots_empty()
-  validate_dst_nonexistent(dst_nonexistent)
-  validate_dst_ambiguous(dst_ambiguous)
   x <- to_posixct(x)
   adjust_zone_retain_clock_cpp(x, zone, dst_nonexistent, dst_ambiguous)
 }

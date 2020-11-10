@@ -341,10 +341,6 @@ adjust_zoned <- function(x,
 
   x_ct <- to_posixct(x)
 
-  validate_day_nonexistent(day_nonexistent)
-  validate_dst_nonexistent(dst_nonexistent)
-  validate_dst_ambiguous(dst_ambiguous)
-
   out <- adjust_zoned_cpp(
     x = x_ct,
     value = value,

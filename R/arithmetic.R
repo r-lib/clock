@@ -784,8 +784,6 @@ add_years_or_months <- function(x, n, ..., day_nonexistent, unit) {
   n <- vec_cast(n, integer(), x_arg = "n")
   size <- vec_size_common(x = x, n = n)
 
-  validate_day_nonexistent(day_nonexistent)
-
   add_years_or_months_cpp(x, n, day_nonexistent, unit, size)
 }
 
