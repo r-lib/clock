@@ -47,26 +47,13 @@ static SEXP add_years_or_months(sexp x,
       out_ymd = elt_ymd + date::months{elt_n};
     }
 
-    if (!out_ymd.ok()) {
-      bool na = false;
-
-      resolve_day_nonexistent_ymd(i, day_nonexistent, out_ymd, na);
-
-      if (na) {
-        local_assign_missing(i, p_days, p_time_of_day);
-        continue;
-      }
-
-      if (p_time_of_day != NULL) {
-        std::chrono::seconds elt_tod{p_time_of_day[i]};
-        resolve_day_nonexistent_tod(day_nonexistent, elt_tod);
-        p_time_of_day[i] = elt_tod.count();
-      }
-    }
-
-    date::local_days out_lday{out_ymd};
-
-    p_days[i] = out_lday.time_since_epoch().count();
+    convert_year_month_day_to_days_one(
+      i,
+      day_nonexistent,
+      out_ymd,
+      p_days,
+      p_time_of_day
+    );
   }
 
   UNPROTECT(2);

@@ -65,11 +65,10 @@ adjust_year <- function(x, value, ...) {
 
 #' @rdname adjust_year
 #' @export
-adjust_year.Date <- function(x,
-                             value,
-                             ...,
-                             day_nonexistent = "last-time") {
-  adjust_date(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "year")
+adjust_year.Date <- function(x, value, ..., day_nonexistent = "last-time") {
+  x <- localize(x)
+  out <- adjust_year(x, value, ..., day_nonexistent = day_nonexistent)
+  unlocalize(out)
 }
 
 #' @rdname adjust_year
@@ -80,21 +79,16 @@ adjust_year.POSIXt <- function(x,
                                day_nonexistent = "last-time",
                                dst_nonexistent = "roll-forward",
                                dst_ambiguous = "earliest") {
-  adjust_posixt(
-    x = x,
-    value = value,
-    ...,
-    day_nonexistent = day_nonexistent,
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous,
-    adjuster = "year"
-  )
+  zone <- get_zone(x)
+  x <- localize(x)
+  out <- adjust_year(x, value, ..., day_nonexistent = day_nonexistent)
+  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @rdname adjust_year
 #' @export
-adjust_year.civil_local <- function(x, value, ...) {
-  adjust_local(x, value, ..., adjuster = "year")
+adjust_year.civil_local <- function(x, value, ..., day_nonexistent = "last-time") {
+  adjust_year_impl(x, value, ..., day_nonexistent = day_nonexistent)
 }
 
 # ------------------------------------------------------------------------------
@@ -106,11 +100,10 @@ adjust_month <- function(x, value, ...) {
 }
 
 #' @export
-adjust_month.Date <- function(x,
-                              value,
-                              ...,
-                              day_nonexistent = "last-time") {
-  adjust_date(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "month")
+adjust_month.Date <- function(x, value, ..., day_nonexistent = "last-time") {
+  x <- localize(x)
+  out <- adjust_month(x, value, ..., day_nonexistent = day_nonexistent)
+  unlocalize(out)
 }
 
 #' @export
@@ -120,20 +113,15 @@ adjust_month.POSIXt <- function(x,
                                 day_nonexistent = "last-time",
                                 dst_nonexistent = "roll-forward",
                                 dst_ambiguous = "earliest") {
-  adjust_posixt(
-    x = x,
-    value = value,
-    ...,
-    day_nonexistent = day_nonexistent,
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous,
-    adjuster = "month"
-  )
+  zone <- get_zone(x)
+  x <- localize(x)
+  out <- adjust_month(x, value, ..., day_nonexistent = day_nonexistent)
+  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @export
-adjust_month.civil_local <- function(x, value, ...) {
-  adjust_local(x, value, ..., adjuster = "month")
+adjust_month.civil_local <- function(x, value, ..., day_nonexistent = "last-time") {
+  adjust_month_impl(x, value, ..., day_nonexistent = day_nonexistent)
 }
 
 # ------------------------------------------------------------------------------
@@ -145,11 +133,10 @@ adjust_day <- function(x, value, ...) {
 }
 
 #' @export
-adjust_day.Date <- function(x,
-                            value,
-                            ...,
-                            day_nonexistent = "last-time") {
-  adjust_date(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "day")
+adjust_day.Date <- function(x, value, ..., day_nonexistent = "last-time") {
+  x <- localize(x)
+  out <- adjust_day(x, value, ..., day_nonexistent = day_nonexistent)
+  unlocalize(out)
 }
 
 #' @export
@@ -159,125 +146,15 @@ adjust_day.POSIXt <- function(x,
                               day_nonexistent = "last-time",
                               dst_nonexistent = "roll-forward",
                               dst_ambiguous = "earliest") {
-  adjust_posixt(
-    x = x,
-    value = value,
-    ...,
-    day_nonexistent = day_nonexistent,
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous,
-    adjuster = "day"
-  )
+  zone <- get_zone(x)
+  x <- localize(x)
+  out <- adjust_day(x, value, ..., day_nonexistent = day_nonexistent)
+  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @export
-adjust_day.civil_local <- function(x, value, ...) {
-  adjust_local(x, value, ..., adjuster = "day")
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
-adjust_hour <- function(x, value, ...) {
-  restrict_civil_supported(x)
-  UseMethod("adjust_hour")
-}
-
-#' @export
-adjust_hour.Date <- function(x, value, ...) {
-  adjust_date(x, value, ..., day_nonexistent = "last-time", adjuster = "hour")
-}
-
-#' @export
-adjust_hour.POSIXt <- function(x,
-                               value,
-                               ...,
-                               dst_nonexistent = "roll-forward",
-                               dst_ambiguous = "earliest") {
-  adjust_posixt(
-    x = x,
-    value = value,
-    ...,
-    day_nonexistent = "last-time",
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous,
-    adjuster = "hour"
-  )
-}
-
-#' @export
-adjust_hour.civil_local <- function(x, value, ...) {
-  adjust_local(x, value, ..., adjuster = "hour")
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
-adjust_minute <- function(x, value, ...) {
-  restrict_civil_supported(x)
-  UseMethod("adjust_minute")
-}
-
-#' @export
-adjust_minute.Date <- function(x, value, ...) {
-  adjust_date(x, value, ..., day_nonexistent = "last-time", adjuster = "minute")
-}
-
-#' @export
-adjust_minute.POSIXt <- function(x,
-                                 value,
-                                 ...,
-                                 dst_nonexistent = "roll-forward",
-                                 dst_ambiguous = "earliest") {
-  adjust_posixt(
-    x = x,
-    value = value,
-    ...,
-    day_nonexistent = "last-time",
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous,
-    adjuster = "minute"
-  )
-}
-
-#' @export
-adjust_minute.civil_local <- function(x, value, ...) {
-  adjust_local(x, value, ..., adjuster = "minute")
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
-adjust_second <- function(x, value, ...) {
-  restrict_civil_supported(x)
-  UseMethod("adjust_second")
-}
-
-#' @export
-adjust_second.Date <- function(x, value, ...) {
-  adjust_date(x, value, ..., day_nonexistent = "last-time", adjuster = "second")
-}
-
-#' @export
-adjust_second.POSIXt <- function(x,
-                                 value,
-                                 ...,
-                                 dst_nonexistent = "roll-forward",
-                                 dst_ambiguous = "earliest") {
-  adjust_posixt(
-    x = x,
-    value = value,
-    ...,
-    day_nonexistent = "last-time",
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous,
-    adjuster = "second"
-  )
-}
-
-#' @export
-adjust_second.civil_local <- function(x, value, ...) {
-  adjust_local(x, value, ..., adjuster = "second")
+adjust_day.civil_local <- function(x, value, ..., day_nonexistent = "last-time") {
+  adjust_day_impl(x, value, ..., day_nonexistent = day_nonexistent)
 }
 
 # ------------------------------------------------------------------------------
@@ -290,13 +167,9 @@ adjust_last_day_of_month <- function(x, ...) {
 
 #' @export
 adjust_last_day_of_month.Date <- function(x, ...) {
-  adjust_date(
-    x = x,
-    value = VALUE_PLACEHOLDER,
-    ...,
-    day_nonexistent = "last-time",
-    adjuster = "last_day_of_month"
-  )
+  x <- localize(x)
+  out <- adjust_last_day_of_month(x, ...)
+  unlocalize(out)
 }
 
 #' @export
@@ -304,129 +177,164 @@ adjust_last_day_of_month.POSIXt <- function(x,
                                             ...,
                                             dst_nonexistent = "roll-forward",
                                             dst_ambiguous = "earliest") {
-  adjust_posixt(
-    x = x,
-    value = VALUE_PLACEHOLDER,
-    ...,
-    day_nonexistent = "last-time",
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous,
-    adjuster = "last_day_of_month"
-  )
+  zone <- get_zone(x)
+  x <- localize(x)
+  out <- adjust_last_day_of_month(x, ...)
+  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @export
 adjust_last_day_of_month.civil_local <- function(x, ...) {
-  adjust_local(
-    x = x,
-    value = VALUE_PLACEHOLDER,
-    ...,
-    adjuster = "last_day_of_month"
-  )
+  adjust_last_day_of_month_impl(x, ...)
 }
 
 # ------------------------------------------------------------------------------
 
-adjust_zoned <- function(x,
-                         value,
-                         ...,
-                         day_nonexistent,
-                         dst_nonexistent,
-                         dst_ambiguous,
-                         adjuster) {
+#' @export
+adjust_hour <- function(x, value, ...) {
+  restrict_civil_supported(x)
+  UseMethod("adjust_hour")
+}
+
+#' @export
+adjust_hour.Date <- function(x, value, ...) {
+  zone <- get_zone(x)
+  x <- localize(x)
+  out <- adjust_hour(x, value, ...)
+  unlocalize(out, zone = zone)
+}
+
+#' @export
+adjust_hour.POSIXt <- function(x,
+                               value,
+                               ...,
+                               dst_nonexistent = "roll-forward",
+                               dst_ambiguous = "earliest") {
+  zone <- get_zone(x)
+  x <- localize(x)
+  out <- adjust_hour(x, value, ...)
+  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
+
+#' @export
+adjust_hour.civil_local <- function(x, value, ...) {
+  adjust_hour_impl(x, value, ...)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+adjust_minute <- function(x, value, ...) {
+  restrict_civil_supported(x)
+  UseMethod("adjust_minute")
+}
+
+#' @export
+adjust_minute.Date <- function(x, value, ...) {
+  zone <- get_zone(x)
+  x <- localize(x)
+  out <- adjust_minute(x, value, ...)
+  unlocalize(out, zone = zone)
+}
+
+#' @export
+adjust_minute.POSIXt <- function(x,
+                                 value,
+                                 ...,
+                                 dst_nonexistent = "roll-forward",
+                                 dst_ambiguous = "earliest") {
+  zone <- get_zone(x)
+  x <- localize(x)
+  out <- adjust_minute(x, value, ...)
+  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
+
+#' @export
+adjust_minute.civil_local <- function(x, value, ...) {
+  adjust_minute_impl(x, value, ...)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+adjust_second <- function(x, value, ...) {
+  restrict_civil_supported(x)
+  UseMethod("adjust_second")
+}
+
+#' @export
+adjust_second.Date <- function(x, value, ...) {
+  zone <- get_zone(x)
+  x <- localize(x)
+  out <- adjust_second(x, value, ...)
+  unlocalize(out, zone = zone)
+}
+
+#' @export
+adjust_second.POSIXt <- function(x,
+                                 value,
+                                 ...,
+                                 dst_nonexistent = "roll-forward",
+                                 dst_ambiguous = "earliest") {
+  zone <- get_zone(x)
+  x <- localize(x)
+  out <- adjust_second(x, value, ...)
+  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
+
+#' @export
+adjust_second.civil_local <- function(x, value, ...) {
+  adjust_second_impl(x, value, ...)
+}
+
+# ------------------------------------------------------------------------------
+
+adjust_year_impl <- function(x, value, ..., day_nonexistent) {
+  # TODO: x <- promote_at_least_local_year(x)
+  adjust_local_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "year")
+}
+adjust_month_impl <- function(x, value, ..., day_nonexistent) {
+  # TODO: x <- promote_at_least_local_year_month(x)
+  adjust_local_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "month")
+}
+adjust_day_impl <- function(x, value, ..., day_nonexistent) {
+  # TODO: x <- promote_at_least_local_date(x)
+  adjust_local_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "day")
+}
+adjust_last_day_of_month_impl <- function(x, ...) {
+  # TODO: x <- promote_at_least_local_date(x)
+  adjust_local_days(x, -1L, ..., day_nonexistent = "last-time", adjuster = "last_day_of_month")
+}
+
+adjust_local_days <- function(x, value, ..., day_nonexistent, adjuster) {
   check_dots_empty()
 
   value <- vec_cast(value, integer(), x_arg = "value")
   size <- vec_size_common(x = x, value = value)
 
-  x_ct <- to_posixct(x)
-
-  out <- adjust_zoned_cpp(
-    x = x_ct,
-    value = value,
-    day_nonexistent = day_nonexistent,
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous,
-    size = size,
-    adjuster = adjuster
-  )
-
-  if (is_time_based_adjuster(adjuster)) {
-    out
-  } else {
-    from_posixct(out, x)
-  }
-}
-
-adjust_date <- function(x, value, ..., day_nonexistent, adjuster) {
-  adjust_zoned(
-    x = x,
-    value = value,
-    ...,
-    day_nonexistent = day_nonexistent,
-    dst_nonexistent = "roll-forward",
-    dst_ambiguous = "earliest",
-    adjuster = adjuster
-  )
-}
-
-adjust_posixt <- function(x,
-                          value,
-                          ...,
-                          day_nonexistent,
-                          dst_nonexistent,
-                          dst_ambiguous,
-                          adjuster) {
-  adjust_zoned(
-    x = x,
-    value = value,
-    ...,
-    day_nonexistent = day_nonexistent,
-    dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous,
-    adjuster = adjuster
-  )
+  adjust_local_days_cpp(x, value, day_nonexistent, size, adjuster)
 }
 
 # ------------------------------------------------------------------------------
 
-adjust_local <- function(x, value, ..., adjuster) {
+adjust_hour_impl <- function(x, value, ...) {
+  adjust_local_time_of_day(x, value, ..., adjuster = "hour")
+}
+adjust_minute_impl <- function(x, value, ...) {
+  adjust_local_time_of_day(x, value, ..., adjuster = "minute")
+}
+adjust_second_impl <- function(x, value, ...) {
+  adjust_local_time_of_day(x, value, ..., adjuster = "second")
+}
+
+adjust_local_time_of_day <- function(x, value, ..., adjuster) {
   check_dots_empty()
 
   value <- vec_cast(value, integer(), x_arg = "value")
   size <- vec_size_common(x = x, value = value)
 
-  to <- x
+  # TODO: x <- promote_at_least_local_datetime(x)
   x <- to_local_datetime(x)
 
-  out <- adjust_local_cpp(
-    x = x,
-    value = value,
-    size = size,
-    adjuster = adjuster
-  )
-
-  if (is_time_based_adjuster(adjuster)) {
-    out
-  } else {
-    from_local_datetime(out, to)
-  }
+  adjust_local_time_of_day_cpp(x, value, size, adjuster)
 }
-
-# ------------------------------------------------------------------------------
-
-is_time_based_adjuster <- function(adjuster) {
-  adjuster %in% time_based_adjusters()
-}
-
-time_based_adjusters <- function() {
-  c(
-    "hour",
-    "minute",
-    "second"
-  )
-}
-
-# ------------------------------------------------------------------------------
-
-VALUE_PLACEHOLDER = -1L

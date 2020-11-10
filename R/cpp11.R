@@ -4,12 +4,12 @@ adjust_zone_retain_clock_cpp <- function(x, zone, dst_nonexistent, dst_ambiguous
   .Call("_civil_adjust_zone_retain_clock_cpp", x, zone, dst_nonexistent, dst_ambiguous, PACKAGE = "civil")
 }
 
-adjust_zoned_cpp <- function(x, value, day_nonexistent, dst_nonexistent, dst_ambiguous, size, adjuster) {
-  .Call("_civil_adjust_zoned_cpp", x, value, day_nonexistent, dst_nonexistent, dst_ambiguous, size, adjuster, PACKAGE = "civil")
+adjust_local_days_cpp <- function(x, value, day_nonexistent, size, adjuster) {
+  .Call("_civil_adjust_local_days_cpp", x, value, day_nonexistent, size, adjuster, PACKAGE = "civil")
 }
 
-adjust_local_cpp <- function(x, value, size, adjuster) {
-  .Call("_civil_adjust_local_cpp", x, value, size, adjuster, PACKAGE = "civil")
+adjust_local_time_of_day_cpp <- function(x, value, size, adjuster) {
+  .Call("_civil_adjust_local_time_of_day_cpp", x, value, size, adjuster, PACKAGE = "civil")
 }
 
 add_years_or_months_cpp <- function(x, n, day_nonexistent, unit, size) {

@@ -20,7 +20,7 @@ adjust_year(x, value, ...)
   dst_ambiguous = "earliest"
 )
 
-\method{adjust_year}{civil_local}(x, value, ...)
+\method{adjust_year}{civil_local}(x, value, ..., day_nonexistent = "last-time")
 }
 \arguments{
 \item{x}{\verb{[Date / POSIXct / POSIXlt / local_datetime]}

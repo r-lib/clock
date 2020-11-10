@@ -3,6 +3,7 @@
 
 #include "r.h"
 #include "enums.h"
+#include "local.h"
 #include <date/date.h>
 
 // -----------------------------------------------------------------------------
@@ -117,6 +118,38 @@ static inline void resolve_day_nonexistent_na(bool& na) {
 
 static inline void resolve_day_nonexistent_error(r_ssize i) {
   r_abort("Nonexistent day found at location %i.", (int) i + 1);
+}
+
+// -----------------------------------------------------------------------------
+
+static inline void convert_year_month_day_to_days_one(const r_ssize& i,
+                                                      const enum day_nonexistent& day_nonexistent,
+                                                      date::year_month_day& ymd,
+                                                      int* p_days,
+                                                      int* p_time_of_day) {
+  // Simple case - convert to local_days, no changes to time-of-day
+  if (ymd.ok()) {
+    date::local_days out_lday{ymd};
+    p_days[i] = out_lday.time_since_epoch().count();
+    return;
+  }
+
+  bool na = false;
+  resolve_day_nonexistent_ymd(i, day_nonexistent, ymd, na);
+
+  if (na) {
+    local_assign_missing(i, p_days, p_time_of_day);
+    return;
+  }
+
+  if (p_time_of_day != NULL) {
+    std::chrono::seconds elt_tod{p_time_of_day[i]};
+    resolve_day_nonexistent_tod(day_nonexistent, elt_tod);
+    p_time_of_day[i] = elt_tod.count();
+  }
+
+  date::local_days out_lday{ymd};
+  p_days[i] = out_lday.time_since_epoch().count();
 }
 
 // -----------------------------------------------------------------------------

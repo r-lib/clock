@@ -227,8 +227,10 @@ SEXP convert_year_month_day_to_days_cpp(SEXP year,
 
   r_ssize size = r_length(year);
 
-  sexp out = PROTECT(r_new_integer(size));
-  int* p_out = r_int_deref(out);
+  sexp days = PROTECT(r_new_integer(size));
+  int* p_days = r_int_deref(days);
+
+  int* p_time_of_day = NULL;
 
   const int* p_year = r_int_deref_const(year);
   const int* p_month = r_int_deref_const(month);
@@ -240,7 +242,7 @@ SEXP convert_year_month_day_to_days_cpp(SEXP year,
     int elt_day = p_day[i];
 
     if (elt_year == r_int_na || elt_month == r_int_na || elt_day == r_int_na) {
-      p_out[i] = r_int_na;
+      p_days[i] = r_int_na;
       continue;
     }
 
@@ -251,30 +253,21 @@ SEXP convert_year_month_day_to_days_cpp(SEXP year,
     unsigned int elt_date_month = static_cast<unsigned int>(elt_month);
     unsigned int elt_date_day = static_cast<unsigned int>(elt_day);
 
-    date::year_month_day elt_ymd{
+    date::year_month_day out_ymd{
       date::year{elt_year} / date::month{elt_date_month} / date::day{elt_date_day}
     };
 
-    std::chrono::seconds elt_tod{0};
-
-    if (!elt_ymd.ok()) {
-      bool na = false;
-
-      resolve_day_nonexistent(i, c_day_nonexistent, elt_ymd, elt_tod, na);
-
-      if (na) {
-        p_out[i] = r_int_na;
-        continue;
-      }
-    }
-
-    date::local_days elt_lday{elt_ymd};
-
-    p_out[i] = elt_lday.time_since_epoch().count();
+    convert_year_month_day_to_days_one(
+      i,
+      c_day_nonexistent,
+      out_ymd,
+      p_days,
+      p_time_of_day
+    );
   }
 
   UNPROTECT(1);
-  return out;
+  return days;
 }
 
 static sexp new_hms(r_ssize size) {
