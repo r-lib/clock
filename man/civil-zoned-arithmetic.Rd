@@ -43,8 +43,8 @@
   n,
   ...,
   day_nonexistent = "last-time",
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
+  dst_nonexistent = NULL,
+  dst_ambiguous = NULL
 )
 
 \method{subtract_years}{Date}(x, n, ..., day_nonexistent = "last-time")
@@ -54,8 +54,8 @@
   n,
   ...,
   day_nonexistent = "last-time",
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
+  dst_nonexistent = NULL,
+  dst_ambiguous = NULL
 )
 
 \method{add_months}{Date}(x, n, ..., day_nonexistent = "last-time")
@@ -65,8 +65,8 @@
   n,
   ...,
   day_nonexistent = "last-time",
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
+  dst_nonexistent = NULL,
+  dst_ambiguous = NULL
 )
 
 \method{subtract_months}{Date}(x, n, ..., day_nonexistent = "last-time")
@@ -76,8 +76,8 @@
   n,
   ...,
   day_nonexistent = "last-time",
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
+  dst_nonexistent = NULL,
+  dst_ambiguous = NULL
 )
 
 \method{add_years_and_months}{Date}(x, years, months, ..., day_nonexistent = "last-time")
@@ -88,8 +88,8 @@
   months,
   ...,
   day_nonexistent = "last-time",
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
+  dst_nonexistent = NULL,
+  dst_ambiguous = NULL
 )
 
 \method{subtract_years_and_months}{Date}(x, years, months, ..., day_nonexistent = "last-time")
@@ -100,49 +100,25 @@
   months,
   ...,
   day_nonexistent = "last-time",
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
+  dst_nonexistent = NULL,
+  dst_ambiguous = NULL
 )
 
 \method{add_weeks}{Date}(x, n, ...)
 
-\method{add_weeks}{POSIXt}(
-  x,
-  n,
-  ...,
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
-)
+\method{add_weeks}{POSIXt}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
 
 \method{subtract_weeks}{Date}(x, n, ...)
 
-\method{subtract_weeks}{POSIXt}(
-  x,
-  n,
-  ...,
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
-)
+\method{subtract_weeks}{POSIXt}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
 
 \method{add_days}{Date}(x, n, ...)
 
-\method{add_days}{POSIXt}(
-  x,
-  n,
-  ...,
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
-)
+\method{add_days}{POSIXt}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
 
 \method{subtract_days}{Date}(x, n, ...)
 
-\method{subtract_days}{POSIXt}(
-  x,
-  n,
-  ...,
-  dst_nonexistent = "roll-directional",
-  dst_ambiguous = "directional"
-)
+\method{subtract_days}{POSIXt}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
 
 \method{add_hours}{Date}(x, n, ...)
 
@@ -198,19 +174,16 @@ date-times, the sub-daily components are kept.
 \code{"first-day"} do not guarantee that the relative ordering of \code{x} is
 maintained.}
 
-\item{dst_nonexistent}{\verb{[character(1)]}
+\item{dst_nonexistent}{\verb{[NULL / character]}
 
 Control the behavior when a nonexistent time is generated due to a
 daylight savings gap.
 \itemize{
-\item \code{"roll-directional"}:
+\item \code{NULL}:
 If \code{n} is positive, choose \code{"roll-forward"}.
 If \code{n} is negative, choose \code{"roll-backward"}.
 \item \code{"roll-forward"}: Roll forward to the next valid moment in time.
 \item \code{"roll-backward"}: Roll backward to the previous valid moment in time.
-\item \code{"shift-directional"}:
-If \code{n} is positive, choose \code{"shift-forward"}.
-If \code{n} is negative, choose \code{"shift-backward"}.
 \item \code{"shift-forward"}: Shift the nonexistent time forward by the
 length of the daylight savings gap (which is usually 1 hour).
 \item \code{"shift-backward"}: Shift the nonexistent time backward
@@ -223,13 +196,14 @@ by the length of the daylight savings gap (which is usually 1 hour).
 \code{"shift-forward"}, and \code{"shift-backward"} do not guarantee that the
 relative ordering of \code{x} is maintained.}
 
-\item{dst_ambiguous}{\verb{[character(1)]}
+\item{dst_ambiguous}{\verb{[NULL / character]}
 
 Control the behavior when an ambiguous time is generated due to a daylight
 savings fallback.
 \itemize{
-\item \code{"directional"}: If \code{n} is positive, choose \code{"earliest"}. If \code{n} is
-negative, choose \code{"latest"}.
+\item \code{NULL}:
+If \code{n} is positive, choose \code{"earliest"}.
+If \code{n} is negative, choose \code{"latest"}.
 \item \code{"earliest"}: Choose the earliest of the two possible ambiguous times.
 \item \code{"latest"}: Choose the latest of the two possible ambiguous times.
 \item \code{"NA"}: Replace the ambiguous time with \code{NA}.
@@ -287,13 +261,13 @@ y <- as.POSIXct("1970-04-27 02:30:00", "America/New_York")
 # at which point we have to make a decision about how to proceed using
 # `dst_nonexistent`.
 #
-# The default is to use `"roll-directional"`. Since we are adding a positive
-# number of days, this chooses `"roll-forward"` which rolls forward to the
+# Since we are adding a positive number of days, the default
+# chooses `"roll-forward"` which rolls forward to the
 # next valid moment in time.
 add_days(x, 1)
 
 # If we approach from the other side of the gap and subtract 1 day, then
-# `"roll-directional"` chooses `"roll-backward"`, which rolls backward
+# the default chooses `"roll-backward"`, which rolls backward
 # to the previous valid moment in time.
 subtract_days(y, 1)
 

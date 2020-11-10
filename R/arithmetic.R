@@ -105,22 +105,18 @@ NULL
 #'   `"first-day"` do not guarantee that the relative ordering of `x` is
 #'   maintained.
 #'
-#' @param dst_nonexistent `[character(1)]`
+#' @param dst_nonexistent `[NULL / character]`
 #'
 #'   Control the behavior when a nonexistent time is generated due to a
 #'   daylight savings gap.
 #'
-#'   - `"roll-directional"`:
+#'   - `NULL`:
 #'     If `n` is positive, choose `"roll-forward"`.
 #'     If `n` is negative, choose `"roll-backward"`.
 #'
 #'   - `"roll-forward"`: Roll forward to the next valid moment in time.
 #'
 #'   - `"roll-backward"`: Roll backward to the previous valid moment in time.
-#'
-#'   - `"shift-directional"`:
-#'     If `n` is positive, choose `"shift-forward"`.
-#'     If `n` is negative, choose `"shift-backward"`.
 #'
 #'   - `"shift-forward"`: Shift the nonexistent time forward by the
 #'     length of the daylight savings gap (which is usually 1 hour).
@@ -136,13 +132,14 @@ NULL
 #'   `"shift-forward"`, and `"shift-backward"` do not guarantee that the
 #'   relative ordering of `x` is maintained.
 #'
-#' @param dst_ambiguous `[character(1)]`
+#' @param dst_ambiguous `[NULL / character]`
 #'
 #'   Control the behavior when an ambiguous time is generated due to a daylight
 #'   savings fallback.
 #'
-#'   - `"directional"`: If `n` is positive, choose `"earliest"`. If `n` is
-#'     negative, choose `"latest"`.
+#'   - `NULL`:
+#'     If `n` is positive, choose `"earliest"`.
+#'     If `n` is negative, choose `"latest"`.
 #'
 #'   - `"earliest"`: Choose the earliest of the two possible ambiguous times.
 #'
@@ -176,13 +173,13 @@ NULL
 #' # at which point we have to make a decision about how to proceed using
 #' # `dst_nonexistent`.
 #' #
-#' # The default is to use `"roll-directional"`. Since we are adding a positive
-#' # number of days, this chooses `"roll-forward"` which rolls forward to the
+#' # Since we are adding a positive number of days, the default
+#' # chooses `"roll-forward"` which rolls forward to the
 #' # next valid moment in time.
 #' add_days(x, 1)
 #'
 #' # If we approach from the other side of the gap and subtract 1 day, then
-#' # `"roll-directional"` chooses `"roll-backward"`, which rolls backward
+#' # the default chooses `"roll-backward"`, which rolls backward
 #' # to the previous valid moment in time.
 #' subtract_days(y, 1)
 #'
@@ -245,8 +242,8 @@ add_years.POSIXt <- function(x,
                              n,
                              ...,
                              day_nonexistent = "last-time",
-                             dst_nonexistent = "roll-directional",
-                             dst_ambiguous = "directional") {
+                             dst_nonexistent = NULL,
+                             dst_ambiguous = NULL) {
   zone <- get_zone(x)
   x <- localize(x)
   out <- add_years(x, n, ..., day_nonexistent = day_nonexistent)
@@ -285,8 +282,8 @@ subtract_years.POSIXt <- function(x,
                                   n,
                                   ...,
                                   day_nonexistent = "last-time",
-                                  dst_nonexistent = "roll-directional",
-                                  dst_ambiguous = "directional") {
+                                  dst_nonexistent = NULL,
+                                  dst_ambiguous = NULL) {
   add_years(x, -n, ..., day_nonexistent = day_nonexistent, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
@@ -322,8 +319,8 @@ add_months.POSIXt <- function(x,
                               n,
                               ...,
                               day_nonexistent = "last-time",
-                              dst_nonexistent = "roll-directional",
-                              dst_ambiguous = "directional") {
+                              dst_nonexistent = NULL,
+                              dst_ambiguous = NULL) {
   zone <- get_zone(x)
   x <- localize(x)
   out <- add_months(x, n, ..., day_nonexistent = day_nonexistent)
@@ -362,8 +359,8 @@ subtract_months.POSIXt <- function(x,
                                    n,
                                    ...,
                                    day_nonexistent = "last-time",
-                                   dst_nonexistent = "roll-directional",
-                                   dst_ambiguous = "directional") {
+                                   dst_nonexistent = NULL,
+                                   dst_ambiguous = NULL) {
   add_months(x, -n, ..., day_nonexistent = day_nonexistent, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
@@ -400,8 +397,8 @@ add_years_and_months.POSIXt <- function(x,
                                         months,
                                         ...,
                                         day_nonexistent = "last-time",
-                                        dst_nonexistent = "roll-directional",
-                                        dst_ambiguous = "directional") {
+                                        dst_nonexistent = NULL,
+                                        dst_ambiguous = NULL) {
   n <- convert_years_and_months_to_n(years, months)
   add_months(x, n, ..., day_nonexistent = day_nonexistent, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
@@ -456,8 +453,8 @@ subtract_years_and_months.POSIXt <- function(x,
                                              months,
                                              ...,
                                              day_nonexistent = "last-time",
-                                             dst_nonexistent = "roll-directional",
-                                             dst_ambiguous = "directional") {
+                                             dst_nonexistent = NULL,
+                                             dst_ambiguous = NULL) {
   add_years_and_months(x, -years, -months, ..., day_nonexistent = day_nonexistent, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
@@ -489,8 +486,8 @@ add_weeks.Date <- function(x, n, ...) {
 add_weeks.POSIXt <- function(x,
                              n,
                              ...,
-                             dst_nonexistent = "roll-directional",
-                             dst_ambiguous = "directional") {
+                             dst_nonexistent = NULL,
+                             dst_ambiguous = NULL) {
   zone <- get_zone(x)
   x <- localize(x)
   out <- add_weeks(x, n, ...)
@@ -525,8 +522,8 @@ subtract_weeks.Date <- function(x, n, ...) {
 subtract_weeks.POSIXt <- function(x,
                                   n,
                                   ...,
-                                  dst_nonexistent = "roll-directional",
-                                  dst_ambiguous = "directional") {
+                                  dst_nonexistent = NULL,
+                                  dst_ambiguous = NULL) {
   add_weeks(x, -n, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
@@ -558,8 +555,8 @@ add_days.Date <- function(x, n, ...) {
 add_days.POSIXt <- function(x,
                             n,
                             ...,
-                            dst_nonexistent = "roll-directional",
-                            dst_ambiguous = "directional") {
+                            dst_nonexistent = NULL,
+                            dst_ambiguous = NULL) {
   zone <- get_zone(x)
   x <- localize(x)
   out <- add_days(x, n, ...)
@@ -594,8 +591,8 @@ subtract_days.Date <- function(x, n, ...) {
 subtract_days.POSIXt <- function(x,
                                  n,
                                  ...,
-                                 dst_nonexistent = "roll-directional",
-                                 dst_ambiguous = "directional") {
+                                 dst_nonexistent = NULL,
+                                 dst_ambiguous = NULL) {
   add_days(x, -n, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
@@ -878,46 +875,35 @@ seconds_in_minute <- function() {
 # ------------------------------------------------------------------------------
 
 dst_nonexistent_standardize <- function(dst_nonexistent, n) {
-  if (identical(dst_nonexistent, "roll-directional")) {
-    out <- if_else(n >= 0L, true = "roll-forward", false = "roll-backward", na = "roll-forward")
-    return(out)
+  # User specified
+  if (!is.null(dst_nonexistent)) {
+    return(dst_nonexistent)
   }
 
-  if (identical(dst_nonexistent, "shift-directional")) {
-    out <- if_else(n >= 0L, true = "roll-forward", false = "roll-backward", na = "roll-forward")
-    return(out)
-  }
-
-  if (anyNA(dst_nonexistent)) {
-    abort("`dst_nonexistent` cannot be `NA`.")
-  }
-
-  # Can't mix roll/shift-directional with other options if vectorized
-  issue <- any(dst_nonexistent == "roll-directional" | dst_nonexistent == "shift-directional")
-
-  if (issue) {
-    abort("Can't mix 'roll-directional' or 'shift-directional' with other 'dst_nonexistent' options.")
-  }
+  # Directional smart default
+  dst_nonexistent <- if_else(
+    condition = n >= 0L,
+    true = "roll-forward",
+    false = "roll-backward",
+    na = "roll-forward"
+  )
 
   dst_nonexistent
 }
 
 dst_ambiguous_standardize <- function(dst_ambiguous, n) {
-  if (identical(dst_ambiguous, "directional")) {
-    out <- if_else(n >= 0L, true = "earliest", false = "latest", na = "earliest")
-    return(out)
+  # User specified
+  if (!is.null(dst_ambiguous)) {
+    return(dst_ambiguous)
   }
 
-  if (anyNA(dst_ambiguous)) {
-    abort("`dst_ambiguous` cannot be `NA`.")
-  }
-
-  # Can't mix directional with other options if vectorized
-  issue <- any(dst_ambiguous == "directional")
-
-  if (issue) {
-    abort("Can't mix 'directional' with other 'dst_ambiguous' options.")
-  }
+  # Directional smart default
+  dst_ambiguous <- if_else(
+    condition = n >= 0L,
+    true = "earliest",
+    false = "latest",
+    na = "earliest"
+  )
 
   dst_ambiguous
 }
