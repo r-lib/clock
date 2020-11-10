@@ -388,7 +388,6 @@ localize <- function(x) {
 localize_date <- function(x) {
   names <- names(x)
   days <- date_to_days(x)
-
   new_local_date(days, names = names)
 }
 
@@ -496,7 +495,6 @@ convert_year_month_day_to_days <- function(year,
                                            month,
                                            day,
                                            day_nonexistent) {
-  validate_day_nonexistent(day_nonexistent)
   convert_year_month_day_to_days_cpp(year, month, day, day_nonexistent)
 }
 
@@ -517,21 +515,19 @@ convert_days_and_time_of_day_to_seconds <- function(days,
                                                     zone,
                                                     dst_nonexistent,
                                                     dst_ambiguous) {
-  validate_dst_nonexistent(dst_nonexistent)
-  validate_dst_ambiguous(dst_ambiguous)
+  size <- vec_size_common(
+    days = days,
+    time_of_day = time_of_day,
+    dst_nonexistent = dst_nonexistent,
+    dst_ambiguous = dst_ambiguous
+  )
 
-  size_days <- length(days)
-  size_dst_nonexistent <- vec_size(dst_nonexistent)
-  size_dst_ambiguous <- vec_size(dst_ambiguous)
-
-  # These may be vectorized (for arithmetic), but must be the same length
-  # as x if they are - x is not recycled to their length
-  if (size_dst_nonexistent != 1L && size_dst_nonexistent != size_days) {
-    abort("`dst_nonexistent` must be size 1 or the same size as `x`.")
-  }
-  if (size_dst_ambiguous != 1L && size_dst_ambiguous != size_days) {
-    abort("`dst_ambiguous` must be size 1 or the same size as `x`.")
-  }
-
-  convert_days_and_time_of_day_to_seconds_cpp(days, time_of_day, zone, dst_nonexistent, dst_ambiguous)
+  convert_days_and_time_of_day_to_seconds_cpp(
+    days = days,
+    time_of_day = time_of_day,
+    zone = zone,
+    dst_nonexistent = dst_nonexistent,
+    dst_ambiguous = dst_ambiguous,
+    size = size
+  )
 }
