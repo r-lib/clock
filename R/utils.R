@@ -63,62 +63,6 @@ from_posixct_to_posixct <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-to_local_datetime <- function(x) {
-  if (is_local_date(x)) {
-    to_local_datetime_from_local_date(x)
-  } else if (is_local_datetime(x)) {
-    to_local_datetime_from_local_datetime(x)
-  } else {
-    abort("Internal error: Unexpected class.")
-  }
-}
-
-to_local_datetime_from_local_date <- function(x) {
-  days <- field(x, "days")
-  time_of_day <- rep.int(0L, vec_size(x))
-
-  out <- new_local_datetime(
-    days = days,
-    time_of_day = time_of_day,
-    names = names(x)
-  )
-
-  out
-}
-
-to_local_datetime_from_local_datetime <- function(x) {
-  x
-}
-
-# ------------------------------------------------------------------------------
-
-from_local_datetime <- function(x, to) {
-  if (is_local_date(to)) {
-    from_local_datetime_to_local_date(x)
-  } else if (is_local_datetime(to)) {
-    from_local_datetime_to_local_datetime(x)
-  } else {
-    abort("Internal error: Unexpected `to` class.")
-  }
-}
-
-from_local_datetime_to_local_date <- function(x) {
-  days <- field(x, "days")
-
-  out <- new_local_date(
-    days = days,
-    names = names(x)
-  )
-
-  out
-}
-
-from_local_datetime_to_local_datetime <- function(x) {
-  x
-}
-
-# ------------------------------------------------------------------------------
-
 is_Date <- function(x) {
   inherits(x, "Date")
 }
@@ -202,6 +146,12 @@ stop_civil <- function(message, class = character()) {
 stop_civil_unsupported_class <- function(x) {
   message <- paste0("Unsupported class ", paste_class(x))
   stop_civil(message, class = "civil_error_unsupported_class")
+}
+
+stop_civil_unsupported_conversion <- function(x, to_arg) {
+  to_arg <- paste0("<", to_arg, ">")
+  message <- paste0("Can't convert ", paste_class(x), " to ", to_arg, ".")
+  stop_civil(message, "civil_error_unsupported_conversion")
 }
 
 paste_class <- function(x) {

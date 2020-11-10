@@ -770,11 +770,11 @@ subtract_seconds.civil_local <- function(x, n, ...) {
 # ------------------------------------------------------------------------------
 
 add_years_impl <- function(x, n, ..., day_nonexistent, unit) {
-  # TODO: Promote at least local-year?
+  x <- promote_at_least_local_year(x)
   add_years_or_months(x, n, ..., day_nonexistent = day_nonexistent, unit = "year")
 }
 add_months_impl <- function(x, n, ..., day_nonexistent, unit) {
-  # TODO: Promote at least local-year-month?
+  x <- promote_at_least_local_year_month(x)
   add_years_or_months(x, n, ..., day_nonexistent = day_nonexistent, unit = "month")
 }
 
@@ -790,11 +790,11 @@ add_years_or_months <- function(x, n, ..., day_nonexistent, unit) {
 # ------------------------------------------------------------------------------
 
 add_weeks_impl <- function(x, n, ...) {
-  # TODO: Promote at least local-year-week?
+  x <- promote_at_least_local_year_week(x)
   add_weeks_or_days(x, n, ..., unit = "week")
 }
 add_days_impl <- function(x, n, ...) {
-  # TODO: Promote at least local-date?
+  x <- promote_at_least_local_year_date(x)
   add_weeks_or_days(x, n, ..., unit = "day")
 }
 
@@ -810,18 +810,12 @@ add_weeks_or_days <- function(x, n, ..., unit) {
 # ------------------------------------------------------------------------------
 
 add_hours_local_impl <- function(x, n, ...) {
-  # TODO: Correctly promote at least local-datetime?
-  x <- to_local_datetime(x)
   add_hours_or_minutes_or_seconds_local(x, n, ..., unit = "hour")
 }
 add_minutes_local_impl <- function(x, n, ...) {
-  # TODO: Correctly promote at least local-datetime?
-  x <- to_local_datetime(x)
   add_hours_or_minutes_or_seconds_local(x, n, ..., unit = "minute")
 }
 add_seconds_local_impl <- function(x, n, ...) {
-  # TODO: Correctly promote at least local-datetime?
-  x <- to_local_datetime(x)
   add_hours_or_minutes_or_seconds_local(x, n, ..., unit = "second")
 }
 
@@ -830,6 +824,8 @@ add_hours_or_minutes_or_seconds_local <- function(x, n, ..., unit) {
 
   n <- vec_cast(n, integer(), x_arg = "n")
   size <- vec_size_common(x = x, n = n)
+
+  x <- promote_at_least_local_datetime(x)
 
   add_hours_or_minutes_or_seconds_local_cpp(x, n, unit, size)
 }

@@ -290,19 +290,19 @@ adjust_second.civil_local <- function(x, value, ...) {
 # ------------------------------------------------------------------------------
 
 adjust_year_impl <- function(x, value, ..., day_nonexistent) {
-  # TODO: x <- promote_at_least_local_year(x)
+  x <- promote_at_least_local_year(x)
   adjust_local_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "year")
 }
 adjust_month_impl <- function(x, value, ..., day_nonexistent) {
-  # TODO: x <- promote_at_least_local_year_month(x)
+  x <- promote_at_least_local_year_month(x)
   adjust_local_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "month")
 }
 adjust_day_impl <- function(x, value, ..., day_nonexistent) {
-  # TODO: x <- promote_at_least_local_date(x)
+  x <- promote_at_least_local_date(x)
   adjust_local_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "day")
 }
 adjust_last_day_of_month_impl <- function(x, ...) {
-  # TODO: x <- promote_at_least_local_date(x)
+  x <- promote_at_least_local_date(x)
   adjust_local_days(x, -1L, ..., day_nonexistent = "last-time", adjuster = "last_day_of_month")
 }
 
@@ -333,8 +333,7 @@ adjust_local_time_of_day <- function(x, value, ..., adjuster) {
   value <- vec_cast(value, integer(), x_arg = "value")
   size <- vec_size_common(x = x, value = value)
 
-  # TODO: x <- promote_at_least_local_datetime(x)
-  x <- to_local_datetime(x)
+  x <- promote_at_least_local_datetime(x)
 
   adjust_local_time_of_day_cpp(x, value, size, adjuster)
 }

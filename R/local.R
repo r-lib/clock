@@ -372,6 +372,10 @@ is_local_datetime <- function(x) {
   inherits(x, "civil_local_datetime")
 }
 
+time_of_day_along <- function(x) {
+  vec_rep(0L, times = vec_size(x))
+}
+
 # ------------------------------------------------------------------------------
 
 #' @export
