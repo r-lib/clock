@@ -63,6 +63,33 @@ from_posixct_to_posixct <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+time_of_day_along <- function(x) {
+  vec_rep(0L, times = vec_size(x))
+}
+
+# ------------------------------------------------------------------------------
+
+format_year <- function(x) {
+  sprintf("%04i", x)
+}
+format_month <- function(x) {
+  sprintf("%02i", x)
+}
+format_day <- function(x) {
+  sprintf("%02i", x)
+}
+format_hour <- function(x) {
+  sprintf("%02i", x)
+}
+format_minute <- function(x) {
+  sprintf("%02i", x)
+}
+format_second <- function(x) {
+  sprintf("%02i", x)
+}
+
+# ------------------------------------------------------------------------------
+
 is_Date <- function(x) {
   inherits(x, "Date")
 }

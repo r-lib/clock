@@ -24,14 +24,6 @@ add_hours_or_minutes_or_seconds_local_cpp <- function(x, n, unit, size) {
   .Call("_civil_add_hours_or_minutes_or_seconds_local_cpp", x, n, unit, size, PACKAGE = "civil")
 }
 
-civil_init <- function() {
-  .Call("_civil_civil_init", PACKAGE = "civil")
-}
-
-civil_set_install <- function(path) {
-  invisible(.Call("_civil_civil_set_install", path, PACKAGE = "civil"))
-}
-
 convert_seconds_to_days_and_time_of_day_cpp <- function(seconds, zone) {
   .Call("_civil_convert_seconds_to_days_and_time_of_day_cpp", seconds, zone, PACKAGE = "civil")
 }
@@ -54,6 +46,14 @@ convert_time_of_day_to_hour_minute_second_cpp <- function(time_of_day) {
 
 convert_hour_minute_second_to_time_of_day_cpp <- function(hour, minute, second) {
   .Call("_civil_convert_hour_minute_second_to_time_of_day_cpp", hour, minute, second, PACKAGE = "civil")
+}
+
+civil_init <- function() {
+  .Call("_civil_civil_init", PACKAGE = "civil")
+}
+
+civil_set_install <- function(path) {
+  invisible(.Call("_civil_civil_set_install", path, PACKAGE = "civil"))
 }
 
 zone_standardize <- function(zone) {

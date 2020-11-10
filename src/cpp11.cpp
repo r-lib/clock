@@ -46,6 +46,48 @@ extern "C" SEXP _civil_add_hours_or_minutes_or_seconds_local_cpp(SEXP x, SEXP n,
     return cpp11::as_sexp(add_hours_or_minutes_or_seconds_local_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size)));
   END_CPP11
 }
+// converters.cpp
+SEXP convert_seconds_to_days_and_time_of_day_cpp(SEXP seconds, SEXP zone);
+extern "C" SEXP _civil_convert_seconds_to_days_and_time_of_day_cpp(SEXP seconds, SEXP zone) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(convert_seconds_to_days_and_time_of_day_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(seconds), cpp11::as_cpp<cpp11::decay_t<SEXP>>(zone)));
+  END_CPP11
+}
+// converters.cpp
+SEXP convert_days_and_time_of_day_to_seconds_cpp(SEXP days, SEXP time_of_day, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous, SEXP size);
+extern "C" SEXP _civil_convert_days_and_time_of_day_to_seconds_cpp(SEXP days, SEXP time_of_day, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous, SEXP size) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(convert_days_and_time_of_day_to_seconds_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(days), cpp11::as_cpp<cpp11::decay_t<SEXP>>(time_of_day), cpp11::as_cpp<cpp11::decay_t<SEXP>>(zone), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size)));
+  END_CPP11
+}
+// converters.cpp
+SEXP convert_days_to_year_month_day_cpp(SEXP days);
+extern "C" SEXP _civil_convert_days_to_year_month_day_cpp(SEXP days) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(convert_days_to_year_month_day_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(days)));
+  END_CPP11
+}
+// converters.cpp
+SEXP convert_year_month_day_to_days_cpp(SEXP year, SEXP month, SEXP day, SEXP day_nonexistent);
+extern "C" SEXP _civil_convert_year_month_day_to_days_cpp(SEXP year, SEXP month, SEXP day, SEXP day_nonexistent) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(convert_year_month_day_to_days_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(year), cpp11::as_cpp<cpp11::decay_t<SEXP>>(month), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_nonexistent)));
+  END_CPP11
+}
+// converters.cpp
+SEXP convert_time_of_day_to_hour_minute_second_cpp(SEXP time_of_day);
+extern "C" SEXP _civil_convert_time_of_day_to_hour_minute_second_cpp(SEXP time_of_day) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(convert_time_of_day_to_hour_minute_second_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(time_of_day)));
+  END_CPP11
+}
+// converters.cpp
+SEXP convert_hour_minute_second_to_time_of_day_cpp(SEXP hour, SEXP minute, SEXP second);
+extern "C" SEXP _civil_convert_hour_minute_second_to_time_of_day_cpp(SEXP hour, SEXP minute, SEXP second) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(convert_hour_minute_second_to_time_of_day_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(hour), cpp11::as_cpp<cpp11::decay_t<SEXP>>(minute), cpp11::as_cpp<cpp11::decay_t<SEXP>>(second)));
+  END_CPP11
+}
 // initialize.cpp
 SEXP civil_init();
 extern "C" SEXP _civil_civil_init() {
@@ -59,48 +101,6 @@ extern "C" SEXP _civil_civil_set_install(SEXP path) {
   BEGIN_CPP11
     civil_set_install(cpp11::as_cpp<cpp11::decay_t<SEXP>>(path));
     return R_NilValue;
-  END_CPP11
-}
-// local.cpp
-SEXP convert_seconds_to_days_and_time_of_day_cpp(SEXP seconds, SEXP zone);
-extern "C" SEXP _civil_convert_seconds_to_days_and_time_of_day_cpp(SEXP seconds, SEXP zone) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(convert_seconds_to_days_and_time_of_day_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(seconds), cpp11::as_cpp<cpp11::decay_t<SEXP>>(zone)));
-  END_CPP11
-}
-// local.cpp
-SEXP convert_days_and_time_of_day_to_seconds_cpp(SEXP days, SEXP time_of_day, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous, SEXP size);
-extern "C" SEXP _civil_convert_days_and_time_of_day_to_seconds_cpp(SEXP days, SEXP time_of_day, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous, SEXP size) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(convert_days_and_time_of_day_to_seconds_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(days), cpp11::as_cpp<cpp11::decay_t<SEXP>>(time_of_day), cpp11::as_cpp<cpp11::decay_t<SEXP>>(zone), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size)));
-  END_CPP11
-}
-// local.cpp
-SEXP convert_days_to_year_month_day_cpp(SEXP days);
-extern "C" SEXP _civil_convert_days_to_year_month_day_cpp(SEXP days) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(convert_days_to_year_month_day_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(days)));
-  END_CPP11
-}
-// local.cpp
-SEXP convert_year_month_day_to_days_cpp(SEXP year, SEXP month, SEXP day, SEXP day_nonexistent);
-extern "C" SEXP _civil_convert_year_month_day_to_days_cpp(SEXP year, SEXP month, SEXP day, SEXP day_nonexistent) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(convert_year_month_day_to_days_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(year), cpp11::as_cpp<cpp11::decay_t<SEXP>>(month), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day), cpp11::as_cpp<cpp11::decay_t<SEXP>>(day_nonexistent)));
-  END_CPP11
-}
-// local.cpp
-SEXP convert_time_of_day_to_hour_minute_second_cpp(SEXP time_of_day);
-extern "C" SEXP _civil_convert_time_of_day_to_hour_minute_second_cpp(SEXP time_of_day) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(convert_time_of_day_to_hour_minute_second_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(time_of_day)));
-  END_CPP11
-}
-// local.cpp
-SEXP convert_hour_minute_second_to_time_of_day_cpp(SEXP hour, SEXP minute, SEXP second);
-extern "C" SEXP _civil_convert_hour_minute_second_to_time_of_day_cpp(SEXP hour, SEXP minute, SEXP second) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(convert_hour_minute_second_to_time_of_day_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(hour), cpp11::as_cpp<cpp11::decay_t<SEXP>>(minute), cpp11::as_cpp<cpp11::decay_t<SEXP>>(second)));
   END_CPP11
 }
 // zone.cpp
