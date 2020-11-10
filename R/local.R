@@ -78,6 +78,7 @@ validate_names <- function(names, size) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
 local_date <- function(year = NULL,
                        month = NULL,
                        day = NULL,
@@ -202,6 +203,7 @@ is_local_date <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
 local_datetime <- function(year = NULL,
                            month = NULL,
                            day = NULL,
