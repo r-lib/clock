@@ -18,18 +18,9 @@ enum day_nonexistent parse_day_nonexistent(sexp x);
 
 // -----------------------------------------------------------------------------
 
-enum class dst_direction {
-  forward,
-  backward
-};
-
-// -----------------------------------------------------------------------------
-
 enum class dst_nonexistent {
-  roll_directional,
   roll_forward,
   roll_backward,
-  shift_directional,
   shift_forward,
   shift_backward,
   na,
@@ -38,13 +29,10 @@ enum class dst_nonexistent {
 
 enum dst_nonexistent parse_dst_nonexistent(sexp x);
 enum dst_nonexistent parse_dst_nonexistent_one(const char* x);
-enum dst_nonexistent parse_dst_nonexistent_arithmetic(sexp x);
-enum dst_nonexistent parse_dst_nonexistent_arithmetic_one(const char* x);
 
 // -----------------------------------------------------------------------------
 
 enum class dst_ambiguous {
-  directional,
   earliest,
   latest,
   na,
@@ -53,8 +41,6 @@ enum class dst_ambiguous {
 
 enum dst_ambiguous parse_dst_ambiguous(sexp x);
 enum dst_ambiguous parse_dst_ambiguous_one(const char* x);
-enum dst_ambiguous parse_dst_ambiguous_arithmetic(sexp x);
-enum dst_ambiguous parse_dst_ambiguous_arithmetic_one(const char* x);
 
 // -----------------------------------------------------------------------------
 
@@ -69,20 +55,6 @@ enum class unit {
 };
 
 enum unit parse_unit(sexp x);
-
-// -----------------------------------------------------------------------------
-
-enum class update_unit {
-  year,
-  month,
-  yday,
-  day,
-  hour,
-  minute,
-  second
-};
-
-enum update_unit parse_update_unit(sexp x);
 
 // -----------------------------------------------------------------------------
 

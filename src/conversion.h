@@ -8,7 +8,6 @@
 double convert_local_seconds_to_posixt(const date::local_seconds& lsec,
                                        const date::time_zone* p_zone,
                                        r_ssize i,
-                                       const enum dst_direction& dst_direction,
                                        const enum dst_nonexistent& dst_nonexistent,
                                        const enum dst_ambiguous& dst_ambiguous);
 

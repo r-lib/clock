@@ -24,15 +24,6 @@ static inline double info_nonexistent_roll_backward(const date::local_info& info
   return info_nonexistent_roll_forward(info) - 1;
 }
 
-static inline double info_nonexistent_roll_directional(const date::local_info& info,
-                                                       const enum dst_direction& dst_direction) {
-  if (dst_direction == dst_direction::forward) {
-    return info_nonexistent_roll_forward(info);
-  } else {
-    return info_nonexistent_roll_backward(info);
-  }
-}
-
 static inline double info_nonexistent_shift_forward(const date::local_info& info,
                                                     const date::local_seconds& lsec) {
   std::chrono::seconds offset = info.second.offset;
@@ -49,16 +40,6 @@ static inline double info_nonexistent_shift_backward(const date::local_info& inf
   date::local_seconds lsec_shift = lsec - gap;
   date::sys_seconds out = date::sys_seconds{lsec_shift.time_since_epoch()} - offset;
   return out.time_since_epoch().count();
-}
-
-static inline double info_nonexistent_shift_directional(const date::local_info& info,
-                                                        const date::local_seconds& lsec,
-                                                        const enum dst_direction& dst_direction) {
-  if (dst_direction == dst_direction::forward) {
-    return info_nonexistent_shift_forward(info, lsec);
-  } else {
-    return info_nonexistent_shift_backward(info, lsec);
-  }
 }
 
 static inline double info_nonexistent_na() {
@@ -85,16 +66,6 @@ static inline double info_ambiguous_earliest(const date::local_info& info,
   return out.time_since_epoch().count();
 }
 
-static inline double info_ambiguous_directional(const date::local_info& info,
-                                                const date::local_seconds& lsec,
-                                                const enum dst_direction& dst_direction) {
-  if (dst_direction == dst_direction::forward) {
-    return info_ambiguous_earliest(info, lsec);
-  } else {
-    return info_ambiguous_latest(info, lsec);
-  }
-}
-
 static inline double info_ambiguous_na() {
   return NA_REAL;
 }
@@ -109,7 +80,6 @@ static inline double info_ambiguous_error(r_ssize i) {
 double convert_local_seconds_to_posixt(const date::local_seconds& lsec,
                                        const date::time_zone* p_zone,
                                        r_ssize i,
-                                       const enum dst_direction& dst_direction,
                                        const enum dst_nonexistent& dst_nonexistent,
                                        const enum dst_ambiguous& dst_ambiguous) {
   date::local_info info = p_zone->get_info(lsec);
@@ -120,17 +90,11 @@ double convert_local_seconds_to_posixt(const date::local_seconds& lsec,
 
   if (info.result == date::local_info::nonexistent) {
     switch (dst_nonexistent) {
-    case dst_nonexistent::roll_directional: {
-      return info_nonexistent_roll_directional(info, dst_direction);
-    }
     case dst_nonexistent::roll_forward: {
       return info_nonexistent_roll_forward(info);
     }
     case dst_nonexistent::roll_backward: {
       return info_nonexistent_roll_backward(info);
-    }
-    case dst_nonexistent::shift_directional: {
-      return info_nonexistent_shift_directional(info, lsec, dst_direction);
     }
     case dst_nonexistent::shift_forward: {
       return info_nonexistent_shift_forward(info, lsec);
@@ -149,9 +113,6 @@ double convert_local_seconds_to_posixt(const date::local_seconds& lsec,
 
   if (info.result == date::local_info::ambiguous) {
     switch (dst_ambiguous) {
-    case dst_ambiguous::directional: {
-      return info_ambiguous_directional(info, lsec, dst_direction);
-    }
     case dst_ambiguous::latest: {
       return info_ambiguous_latest(info, lsec);
     }

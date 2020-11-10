@@ -107,9 +107,6 @@ SEXP convert_days_and_time_of_day_to_seconds_cpp(SEXP days,
     c_dst_ambiguous = parse_dst_ambiguous_one(CHAR(p_dst_ambiguous[0]));
   }
 
-  // TODO: Remove me
-  enum dst_direction dst_direction = dst_direction::forward;
-
   for (r_ssize i = 0; i < c_size; ++i) {
     const int elt_days =
       recycle_days ?
@@ -147,7 +144,6 @@ SEXP convert_days_and_time_of_day_to_seconds_cpp(SEXP days,
       elt_lsec,
       p_time_zone,
       i,
-      dst_direction,
       elt_dst_nonexistent,
       elt_dst_ambiguous
     );
