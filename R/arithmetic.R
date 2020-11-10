@@ -794,7 +794,7 @@ add_weeks_impl <- function(x, n, ...) {
   add_weeks_or_days(x, n, ..., unit = "week")
 }
 add_days_impl <- function(x, n, ...) {
-  x <- promote_at_least_local_year_date(x)
+  x <- promote_at_least_local_date(x)
   add_weeks_or_days(x, n, ..., unit = "day")
 }
 
