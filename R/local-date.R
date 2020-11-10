@@ -27,16 +27,6 @@ local_date <- function(year = NULL,
 
   fields <- lapply(fields, vec_cast, to = integer())
 
-  if (any(fields$year < 0L | fields$year > 9999L, na.rm = TRUE)) {
-    abort("`year` must be within [0, 9999].")
-  }
-  if (any(fields$month < 1L | fields$month > 12L, na.rm = TRUE)) {
-    abort("`month` must be within [1, 12].")
-  }
-  if (any(fields$day < 1L | fields$day > 31L, na.rm = TRUE)) {
-    abort("`day` must be within [1, 31].")
-  }
-
   days <- convert_year_month_day_to_days(
     fields$year,
     fields$month,
