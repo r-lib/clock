@@ -8,7 +8,9 @@ LEVEL_LOCAL_DATETIME = 5L
 LEVEL_LOCAL_NANO_DATETIME = 6L
 
 local_level <- function(x) {
-  if (is_local_date(x)) {
+  if (is_local_year_month(x)) {
+    LEVEL_LOCAL_YEAR_MONTH
+  } else if (is_local_date(x)) {
     LEVEL_LOCAL_DATE
   } else if (is_local_datetime(x)) {
     LEVEL_LOCAL_DATETIME
@@ -51,7 +53,7 @@ promote_at_least_local_year_month <- function(x) {
   if (is_at_least_local_year_month(x)) {
     x
   } else {
-    # as_local_year_month(x)
+    as_local_year_month(x)
   }
 }
 
