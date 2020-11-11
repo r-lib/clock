@@ -9,7 +9,7 @@ local_datetime <- function(year,
                            day_nonexistent = "last-time") {
   check_dots_empty()
 
-  fields <- list(
+  args <- list(
     year = year,
     month = month,
     day = day,
@@ -18,31 +18,21 @@ local_datetime <- function(year,
     second = second
   )
 
-  size <- vec_size_common(!!!fields)
-  fields <- vec_recycle_common(!!!fields, .size = size)
-  fields <- vec_cast_common(!!!fields, .to = integer())
+  size <- vec_size_common(!!!args)
+  args <- vec_recycle_common(!!!args, .size = size)
+  args <- vec_cast_common(!!!args, .to = integer())
 
-  days <- convert_year_month_day_to_days(
-    fields$year,
-    fields$month,
-    fields$day,
+  fields <- convert_year_month_day_hour_minute_second_to_fields(
+    args$year,
+    args$month,
+    args$day,
+    args$hour,
+    args$minute,
+    args$second,
     day_nonexistent
   )
 
-  time_of_day <- convert_hour_minute_second_to_time_of_day(
-    fields$hour,
-    fields$minute,
-    fields$second
-  )
-
-  na <- is.na(days) | is.na(time_of_day)
-
-  if (any(na)) {
-    days[na] <- NA_integer_
-    time_of_day[na] <- NA_integer_
-  }
-
-  new_local_datetime(days, time_of_day)
+  new_local_datetime_from_fields(fields)
 }
 
 new_local_datetime <- function(days = integer(),
@@ -73,7 +63,7 @@ new_local_datetime <- function(days = integer(),
   )
 }
 
-new_local_datetime_from_fields <- function(fields, names) {
+new_local_datetime_from_fields <- function(fields, names = NULL) {
   new_local_datetime(
     days = fields$days,
     time_of_day = fields$time_of_day,

@@ -1,20 +1,21 @@
 #' @export
 local_year_month <- function(year, month = 1L) {
-  fields <- list(year = year, month = month)
-  size <- vec_size_common(!!!fields)
-  fields <- vec_recycle_common(!!!fields, .size = size)
-  fields <- vec_cast_common(!!!fields, .to = integer())
+  args <- list(year = year, month = month)
+  size <- vec_size_common(!!!args)
+  args <- vec_recycle_common(!!!args, .size = size)
+  args <- vec_cast_common(!!!args, .to = integer())
 
-  day <- vec_rep(1L, size)
+  day <- ones_along(args$year)
+  day_nonexistent <- "last-time"
 
-  days <- convert_year_month_day_to_days(
-    fields$year,
-    fields$month,
+  fields <- convert_year_month_day_to_fields(
+    args$year,
+    args$month,
     day,
-    "last-time"
+    day_nonexistent
   )
 
-  new_local_year_month(days)
+  new_local_year_month_from_fields(fields)
 }
 
 new_local_year_month <- function(days = integer(),
@@ -36,7 +37,7 @@ new_local_year_month <- function(days = integer(),
   )
 }
 
-new_local_year_month_from_fields <- function(fields, names) {
+new_local_year_month_from_fields <- function(fields, names = NULL) {
   new_local_year_month(
     days = fields$days,
     names = names

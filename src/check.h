@@ -34,5 +34,10 @@ static inline void check_range_second(const int& value, const char* arg) {
     r_abort("`%s` must be within the range of [0, 59], not %i.", arg, value);
   }
 }
+static inline void check_range_nanos(const int& value, const char* arg) {
+  if (value > 999999999 || value < 0) {
+    r_abort("`%s` must be within the range of [0, 999999999], not %i.", arg, value);
+  }
+}
 
 #endif

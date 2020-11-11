@@ -1,22 +1,3 @@
-convert_days_to_year_month_day <- function(days) {
-  convert_days_to_year_month_day_cpp(days)
-}
-
-convert_year_month_day_to_days <- function(year,
-                                           month,
-                                           day,
-                                           day_nonexistent) {
-  convert_year_month_day_to_days_cpp(year, month, day, day_nonexistent)
-}
-
-convert_hour_minute_second_to_time_of_day <- function(hour, minute, second) {
-  convert_hour_minute_second_to_time_of_day_cpp(hour, minute, second)
-}
-
-convert_time_of_day_to_hour_minute_second <- function(time_of_day) {
-  convert_time_of_day_to_hour_minute_second_cpp(time_of_day)
-}
-
 convert_seconds_to_days_and_time_of_day <- function(seconds, zone) {
   convert_seconds_to_days_and_time_of_day_cpp(seconds, zone)
 }
@@ -42,3 +23,64 @@ convert_days_and_time_of_day_to_seconds <- function(days,
     size = size
   )
 }
+
+# ------------------------------------------------------------------------------
+
+convert_year_month_day_to_fields <- function(year, month, day, day_nonexistent) {
+  convert_year_month_day_to_fields_cpp(
+    year = year,
+    month = month,
+    day = day,
+    day_nonexistent = day_nonexistent
+  )
+}
+
+convert_year_month_day_hour_minute_second_to_fields <- function(year,
+                                                                month,
+                                                                day,
+                                                                hour,
+                                                                minute,
+                                                                second,
+                                                                day_nonexistent) {
+  convert_year_month_day_hour_minute_second_to_fields_cpp(
+    year = year,
+    month = month,
+    day = day,
+    hour = hour,
+    minute = minute,
+    second = second,
+    day_nonexistent = day_nonexistent
+  )
+}
+
+convert_year_month_day_hour_minute_second_nanos_to_fields <- function(year,
+                                                                      month,
+                                                                      day,
+                                                                      hour,
+                                                                      minute,
+                                                                      second,
+                                                                      nanos,
+                                                                      day_nonexistent) {
+  convert_year_month_day_hour_minute_second_nanos_to_fields_cpp(
+    year = year,
+    month = month,
+    day = day,
+    hour = hour,
+    minute = minute,
+    second = second,
+    nanos = nanos,
+    day_nonexistent = day_nonexistent
+  )
+}
+
+# ------------------------------------------------------------------------------
+
+convert_days_to_year_month_day <- function(days) {
+  convert_days_to_year_month_day_cpp(days)
+}
+
+convert_time_of_day_to_hour_minute_second <- function(time_of_day) {
+  convert_time_of_day_to_hour_minute_second_cpp(time_of_day)
+}
+
+

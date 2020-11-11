@@ -194,14 +194,6 @@ paste_class <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-check_range_nanos <- function(x) {
-  if (any(x > 999999999L | x < 0L, na.rm = TRUE)) {
-    abort("`nanos` must be within the range of [0, 999999999].")
-  }
-}
-
-# ------------------------------------------------------------------------------
-
 if_else <- function(condition, true, false, na = NULL) {
   vec_assert(condition, logical())
 

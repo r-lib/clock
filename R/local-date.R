@@ -6,19 +6,19 @@ local_date <- function(year,
                        day_nonexistent = "last-time") {
   check_dots_empty()
 
-  fields <- list(year = year, month = month, day = day)
-  size <- vec_size_common(!!!fields)
-  fields <- vec_recycle_common(!!!fields, .size = size)
-  fields <- vec_cast_common(!!!fields, .to = integer())
+  args <- list(year = year, month = month, day = day)
+  size <- vec_size_common(!!!args)
+  args <- vec_recycle_common(!!!args, .size = size)
+  args <- vec_cast_common(!!!args, .to = integer())
 
-  days <- convert_year_month_day_to_days(
-    fields$year,
-    fields$month,
-    fields$day,
+  fields <- convert_year_month_day_to_fields(
+    args$year,
+    args$month,
+    args$day,
     day_nonexistent
   )
 
-  new_local_date(days)
+  new_local_date_from_fields(fields)
 }
 
 new_local_date <- function(days = integer(),
@@ -40,7 +40,7 @@ new_local_date <- function(days = integer(),
   )
 }
 
-new_local_date_from_fields <- function(fields, names) {
+new_local_date_from_fields <- function(fields, names = NULL) {
   new_local_date(
     days = fields$days,
     names = names
