@@ -35,6 +35,13 @@ local_datetime <- function(year,
     fields$second
   )
 
+  na <- is.na(days) | is.na(time_of_day)
+
+  if (any(na)) {
+    days[na] <- NA_integer_
+    time_of_day[na] <- NA_integer_
+  }
+
   new_local_datetime(days, time_of_day)
 }
 
