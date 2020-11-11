@@ -1,19 +1,9 @@
 #' @export
-local_year_month <- function(year = NULL, month = NULL) {
-  size <- vec_size_common(year = year, month = month)
-  fields <- vec_recycle_common(year = year, month = month, .size = size)
-
-  if (is_null(year)) {
-    fields$year <- integer()
-  }
-
-  if (is_null(month)) {
-    fields$month <- rep(1L, size)
-  } else if (is_null(year)) {
-    abort("Can't specify `month` without `year`.")
-  }
-
-  fields <- lapply(fields, vec_cast, to = integer())
+local_year_month <- function(year, month = 1L) {
+  fields <- list(year = year, month = month)
+  size <- vec_size_common(!!!fields)
+  fields <- vec_recycle_common(!!!fields, .size = size)
+  fields <- vec_cast_common(!!!fields, .to = integer())
 
   day <- vec_rep(1L, size)
 

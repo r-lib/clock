@@ -1,10 +1,10 @@
 #' @export
-local_datetime <- function(year = NULL,
-                           month = NULL,
-                           day = NULL,
-                           hour = NULL,
-                           minute = NULL,
-                           second = NULL,
+local_datetime <- function(year,
+                           month = 1L,
+                           day = 1L,
+                           hour = 0L,
+                           minute = 0L,
+                           second = 0L,
                            ...,
                            day_nonexistent = "last-time") {
   check_dots_empty()
@@ -20,42 +20,7 @@ local_datetime <- function(year = NULL,
 
   size <- vec_size_common(!!!fields)
   fields <- vec_recycle_common(!!!fields, .size = size)
-
-  if (is_null(year)) {
-    fields$year <- integer()
-  }
-
-  if (is_null(month)) {
-    fields$month <- rep(1L, size)
-  } else if (is_null(year)) {
-    abort("Can't specify `month` without `year`.")
-  }
-
-  if (is_null(day)) {
-    fields$day <- rep(1L, size)
-  } else if (is_null(year) || is_null(month)) {
-    abort("Can't specify `day` without `year` and `month`.")
-  }
-
-  if (is_null(hour)) {
-    fields$hour <- rep(0L, size)
-  } else if (is_null(year) || is_null(month) || is_null(day)) {
-    abort("Can't specify `hour` without `year`, `month`, and `day`.")
-  }
-
-  if (is_null(minute)) {
-    fields$minute <- rep(0L, size)
-  } else if (is_null(year) || is_null(month) || is_null(day) || is_null(hour)) {
-    abort("Can't specify `minute` without `year`, `month`, `day`, and `hour`.")
-  }
-
-  if (is_null(second)) {
-    fields$second <- rep(0L, size)
-  } else if (is_null(year) || is_null(month) || is_null(day) || is_null(hour) || is_null(minute)) {
-    abort("Can't specify `second` without `year`, `month`, `day`, `hour`, and `minute`.")
-  }
-
-  fields <- lapply(fields, vec_cast, to = integer())
+  fields <- vec_cast_common(!!!fields, .to = integer())
 
   days <- convert_year_month_day_to_days(
     fields$year,

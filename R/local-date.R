@@ -1,31 +1,15 @@
 #' @export
-local_date <- function(year = NULL,
-                       month = NULL,
-                       day = NULL,
+local_date <- function(year,
+                       month = 1L,
+                       day = 1L,
                        ...,
                        day_nonexistent = "last-time") {
   check_dots_empty()
 
-  size <- vec_size_common(year = year, month = month, day = day)
-  fields <- vec_recycle_common(year = year, month = month, day = day, .size = size)
-
-  if (is_null(year)) {
-    fields$year <- integer()
-  }
-
-  if (is_null(month)) {
-    fields$month <- rep(1L, size)
-  } else if (is_null(year)) {
-    abort("Can't specify `month` without `year`.")
-  }
-
-  if (is_null(day)) {
-    fields$day <- rep(1L, size)
-  } else if (is_null(year) || is_null(month)) {
-    abort("Can't specify `day` without `year` and `month`.")
-  }
-
-  fields <- lapply(fields, vec_cast, to = integer())
+  fields <- list(year = year, month = month, day = day)
+  size <- vec_size_common(!!!fields)
+  fields <- vec_recycle_common(!!!fields, .size = size)
+  fields <- vec_cast_common(!!!fields, .to = integer())
 
   days <- convert_year_month_day_to_days(
     fields$year,
