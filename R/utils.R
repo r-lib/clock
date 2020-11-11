@@ -127,14 +127,6 @@ days_to_date <- function(x, names = NULL) {
 
 # ------------------------------------------------------------------------------
 
-is_time_based_unit <- function(unit) {
-  identical(unit, "hour") ||
-    identical(unit, "minute") ||
-    identical(unit, "second")
-}
-
-# ------------------------------------------------------------------------------
-
 restrict_civil_supported <- function(x) {
   if (is_Date(x) || is_POSIXct(x) || is_POSIXlt(x) || is_local(x)) {
     invisible(x)
