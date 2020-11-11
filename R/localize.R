@@ -1,21 +1,18 @@
 #' @export
 localize <- function(x) {
-  if (is_Date(x)) {
-    localize_date(x)
-  } else if (is_POSIXct(x) || is_POSIXlt(x)) {
-    localize_posixt(x)
-  } else {
-    stop_civil_unsupported_class(x)
-  }
+  restrict_civil_supported(x)
+  UseMethod("localize")
 }
 
-localize_date <- function(x) {
+#' @export
+localize.Date <- function(x) {
   names <- names(x)
   days <- date_to_days(x)
   new_local_date(days, names = names)
 }
 
-localize_posixt <- function(x) {
+#' @export
+localize.POSIXt <- function(x) {
   x <- to_posixct(x)
 
   names <- names(x)
@@ -28,16 +25,26 @@ localize_posixt <- function(x) {
 }
 
 #' @export
+localize.civil_local <- function(x) {
+  x
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 unlocalize <- function(x, ...) {
   restrict_local(x)
   UseMethod("unlocalize")
 }
 
 #' @export
+unlocalize.civil_local_year_month <- function(x, ...) {
+  unlocalize_to_date(x, ...)
+}
+
+#' @export
 unlocalize.civil_local_date <- function(x, ...) {
-  check_dots_empty()
-  days <- field(x, "days")
-  days_to_date(days, names(x))
+  unlocalize_to_date(x, ...)
 }
 
 #' @export
@@ -71,4 +78,10 @@ unlocalize.civil_local_datetime <- function(x,
   names(seconds) <- names(x)
 
   new_datetime(seconds, zone)
+}
+
+unlocalize_to_date <- function(x, ...) {
+  check_dots_empty()
+  days <- field(x, "days")
+  days_to_date(days, names(x))
 }
