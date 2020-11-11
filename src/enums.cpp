@@ -88,6 +88,9 @@ enum unit parse_unit(sexp x) {
   if (!strcmp(string, "hour")) return unit::hour;
   if (!strcmp(string, "minute")) return unit::minute;
   if (!strcmp(string, "second")) return unit::second;
+  if (!strcmp(string, "millisecond")) return unit::millisecond;
+  if (!strcmp(string, "microsecond")) return unit::microsecond;
+  if (!strcmp(string, "nanosecond")) return unit::nanosecond;
 
   r_abort("'%s' is not a recognized `unit` option.", string);
 }

@@ -14,6 +14,8 @@ local_level <- function(x) {
     LEVEL_LOCAL_DATE
   } else if (is_local_datetime(x)) {
     LEVEL_LOCAL_DATETIME
+  } else if (is_local_nano_datetime(x)) {
+    LEVEL_LOCAL_NANO_DATETIME
   } else {
     stop_civil_unsupported_class(x)
   }
@@ -109,7 +111,7 @@ promote_at_least_local_nano_datetime <- function(x) {
   if (is_at_least_local_nano_datetime(x)) {
     x
   } else {
-    # as_local_nano_datetime(x)
+    as_local_nano_datetime(x)
   }
 }
 

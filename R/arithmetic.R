@@ -769,6 +769,168 @@ subtract_seconds.civil_local <- function(x, n, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' @rdname civil-arithmetic
+#' @export
+add_milliseconds <- function(x, n, ...) {
+  restrict_civil_supported(x)
+  UseMethod("add_milliseconds")
+}
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_milliseconds.Date <- function(x, n, ...) {
+  abort("Can't currently add milliseconds to Date.")
+}
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_milliseconds.POSIXt <- function(x, n, ...) {
+  abort("Can't currently add milliseconds to POSIXct/POSIXlt.")
+}
+
+#' @rdname civil-local-arithmetic
+#' @export
+add_milliseconds.civil_local <- function(x, n, ...) {
+  add_milliseconds_local_impl(x, n, ...)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @rdname civil-arithmetic
+#' @export
+subtract_milliseconds <- function(x, n, ...) {
+  restrict_civil_supported(x)
+  UseMethod("subtract_milliseconds")
+}
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_milliseconds.Date <- function(x, n, ...) {
+  abort("Can't currently subtract milliseconds from Date.")
+}
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_milliseconds.POSIXt <- function(x, n, ...) {
+  abort("Can't currently subtract milliseconds from POSIXct/POSIXlt.")
+}
+
+#' @rdname civil-local-arithmetic
+#' @export
+subtract_milliseconds.civil_local <- function(x, n, ...) {
+  add_milliseconds(x, -n, ...)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @rdname civil-arithmetic
+#' @export
+add_microseconds <- function(x, n, ...) {
+  restrict_civil_supported(x)
+  UseMethod("add_microseconds")
+}
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_microseconds.Date <- function(x, n, ...) {
+  abort("Can't currently add microseconds to Date.")
+}
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_microseconds.POSIXt <- function(x, n, ...) {
+  abort("Can't currently add microseconds to POSIXct/POSIXlt.")
+}
+
+#' @rdname civil-local-arithmetic
+#' @export
+add_microseconds.civil_local <- function(x, n, ...) {
+  add_microseconds_local_impl(x, n, ...)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @rdname civil-arithmetic
+#' @export
+subtract_microseconds <- function(x, n, ...) {
+  restrict_civil_supported(x)
+  UseMethod("subtract_microseconds")
+}
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_microseconds.Date <- function(x, n, ...) {
+  abort("Can't currently subtract microseconds from Date.")
+}
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_microseconds.POSIXt <- function(x, n, ...) {
+  abort("Can't currently subtract microseconds from POSIXct/POSIXlt.")
+}
+
+#' @rdname civil-local-arithmetic
+#' @export
+subtract_microseconds.civil_local <- function(x, n, ...) {
+  add_microseconds(x, -n, ...)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @rdname civil-arithmetic
+#' @export
+add_nanoseconds <- function(x, n, ...) {
+  restrict_civil_supported(x)
+  UseMethod("add_nanoseconds")
+}
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_nanoseconds.Date <- function(x, n, ...) {
+  abort("Can't currently add nanoseconds to Date.")
+}
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_nanoseconds.POSIXt <- function(x, n, ...) {
+  abort("Can't currently add nanoseconds to POSIXct/POSIXlt.")
+}
+
+#' @rdname civil-local-arithmetic
+#' @export
+add_nanoseconds.civil_local <- function(x, n, ...) {
+  add_nanoseconds_local_impl(x, n, ...)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @rdname civil-arithmetic
+#' @export
+subtract_nanoseconds <- function(x, n, ...) {
+  restrict_civil_supported(x)
+  UseMethod("subtract_nanoseconds")
+}
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_nanoseconds.Date <- function(x, n, ...) {
+  abort("Can't currently subtract nanoseconds from Date.")
+}
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_nanoseconds.POSIXt <- function(x, n, ...) {
+  abort("Can't currently subtract nanoseconds from POSIXct/POSIXlt.")
+}
+
+#' @rdname civil-local-arithmetic
+#' @export
+subtract_nanoseconds.civil_local <- function(x, n, ...) {
+  add_nanoseconds(x, -n, ...)
+}
+
+# ------------------------------------------------------------------------------
+
 add_years_impl <- function(x, n, ..., day_nonexistent, unit) {
   x <- promote_at_least_local_year(x)
   add_years_or_months(x, n, ..., day_nonexistent = day_nonexistent, unit = "year")
@@ -864,6 +1026,29 @@ seconds_in_hour <- function() {
 }
 seconds_in_minute <- function() {
   60L
+}
+
+# ------------------------------------------------------------------------------
+
+add_milliseconds_local_impl <- function(x, n, ...) {
+  add_milliseconds_or_microseconds_or_nanoseconds_local(x, n, ..., unit = "millisecond")
+}
+add_microseconds_local_impl <- function(x, n, ...) {
+  add_milliseconds_or_microseconds_or_nanoseconds_local(x, n, ..., unit = "microsecond")
+}
+add_nanoseconds_local_impl <- function(x, n, ...) {
+  add_milliseconds_or_microseconds_or_nanoseconds_local(x, n, ..., unit = "nanosecond")
+}
+
+add_milliseconds_or_microseconds_or_nanoseconds_local <- function(x, n, ..., unit) {
+  check_dots_empty()
+
+  n <- vec_cast(n, integer(), x_arg = "n")
+  size <- vec_size_common(x = x, n = n)
+
+  x <- promote_at_least_local_nano_datetime(x)
+
+  add_milliseconds_or_microseconds_or_nanoseconds_local_cpp(x, n, unit, size)
 }
 
 # ------------------------------------------------------------------------------

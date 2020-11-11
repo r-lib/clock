@@ -63,7 +63,10 @@ from_posixct_to_posixct <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-time_of_day_along <- function(x) {
+ones_along <- function(x) {
+  vec_rep(1L, times = vec_size(x))
+}
+zeros_along <- function(x) {
   vec_rep(0L, times = vec_size(x))
 }
 
@@ -86,6 +89,9 @@ format_minute <- function(x) {
 }
 format_second <- function(x) {
   sprintf("%02i", x)
+}
+format_nanos <- function(x) {
+  sprintf("%09i", x)
 }
 
 # ------------------------------------------------------------------------------
@@ -184,6 +190,14 @@ stop_civil_unsupported_conversion <- function(x, to_arg) {
 paste_class <- function(x) {
   out <- paste0(class(x), collapse = "/")
   paste0("<", out, ">")
+}
+
+# ------------------------------------------------------------------------------
+
+check_range_nanos <- function(x) {
+  if (any(x > 999999999L | x < 0L, na.rm = TRUE)) {
+    abort("`nanos` must be within the range of [0, 999999999].")
+  }
 }
 
 # ------------------------------------------------------------------------------

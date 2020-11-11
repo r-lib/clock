@@ -80,6 +80,15 @@ unlocalize.civil_local_datetime <- function(x,
   new_datetime(seconds, zone)
 }
 
+#' @export
+unlocalize.civil_local_nano_datetime <- function(x,
+                                                 zone,
+                                                 ...,
+                                                 dst_nonexistent = "roll-forward",
+                                                 dst_ambiguous = "earliest") {
+  abort("Cannot currently `unlocalize()` a 'local_nano_datetime'.")
+}
+
 unlocalize_to_date <- function(x, ...) {
   check_dots_empty()
   days <- field(x, "days")

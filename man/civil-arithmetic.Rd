@@ -18,6 +18,12 @@
 \alias{subtract_minutes}
 \alias{add_seconds}
 \alias{subtract_seconds}
+\alias{add_milliseconds}
+\alias{subtract_milliseconds}
+\alias{add_microseconds}
+\alias{subtract_microseconds}
+\alias{add_nanoseconds}
+\alias{subtract_nanoseconds}
 \title{Date-time arithmetic}
 \usage{
 add_years(x, n, ...)
@@ -51,6 +57,18 @@ subtract_minutes(x, n, ...)
 add_seconds(x, n, ...)
 
 subtract_seconds(x, n, ...)
+
+add_milliseconds(x, n, ...)
+
+subtract_milliseconds(x, n, ...)
+
+add_microseconds(x, n, ...)
+
+subtract_microseconds(x, n, ...)
+
+add_nanoseconds(x, n, ...)
+
+subtract_nanoseconds(x, n, ...)
 }
 \arguments{
 \item{x}{\verb{[Date / POSIXct / POSIXlt / local_date / local_datetime]}

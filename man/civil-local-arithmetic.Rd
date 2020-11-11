@@ -18,6 +18,12 @@
 \alias{subtract_minutes.civil_local}
 \alias{add_seconds.civil_local}
 \alias{subtract_seconds.civil_local}
+\alias{add_milliseconds.civil_local}
+\alias{subtract_milliseconds.civil_local}
+\alias{add_microseconds.civil_local}
+\alias{subtract_microseconds.civil_local}
+\alias{add_nanoseconds.civil_local}
+\alias{subtract_nanoseconds.civil_local}
 \title{Local date-time arithmetic}
 \usage{
 \method{add_years}{civil_local}(x, n, ..., day_nonexistent = "last-time")
@@ -51,6 +57,18 @@
 \method{add_seconds}{civil_local}(x, n, ...)
 
 \method{subtract_seconds}{civil_local}(x, n, ...)
+
+\method{add_milliseconds}{civil_local}(x, n, ...)
+
+\method{subtract_milliseconds}{civil_local}(x, n, ...)
+
+\method{add_microseconds}{civil_local}(x, n, ...)
+
+\method{subtract_microseconds}{civil_local}(x, n, ...)
+
+\method{add_nanoseconds}{civil_local}(x, n, ...)
+
+\method{subtract_nanoseconds}{civil_local}(x, n, ...)
 }
 \arguments{
 \item{x}{\verb{[local_date / local_datetime]}

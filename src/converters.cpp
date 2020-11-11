@@ -231,6 +231,7 @@ SEXP convert_year_month_day_to_days_cpp(SEXP year,
   int* p_days = r_int_deref(days);
 
   int* p_time_of_day = NULL;
+  int* p_nanos_of_second = NULL;
 
   const int* p_year = r_int_deref_const(year);
   const int* p_month = r_int_deref_const(month);
@@ -262,7 +263,8 @@ SEXP convert_year_month_day_to_days_cpp(SEXP year,
       c_day_nonexistent,
       out_ymd,
       p_days,
-      p_time_of_day
+      p_time_of_day,
+      p_nanos_of_second
     );
   }
 

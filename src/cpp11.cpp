@@ -46,6 +46,13 @@ extern "C" SEXP _civil_add_hours_or_minutes_or_seconds_local_cpp(SEXP x, SEXP n,
     return cpp11::as_sexp(add_hours_or_minutes_or_seconds_local_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size)));
   END_CPP11
 }
+// arithmetic.cpp
+SEXP add_milliseconds_or_microseconds_or_nanoseconds_local_cpp(SEXP x, SEXP n, SEXP unit, SEXP size);
+extern "C" SEXP _civil_add_milliseconds_or_microseconds_or_nanoseconds_local_cpp(SEXP x, SEXP n, SEXP unit, SEXP size) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(add_milliseconds_or_microseconds_or_nanoseconds_local_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size)));
+  END_CPP11
+}
 // converters.cpp
 SEXP convert_seconds_to_days_and_time_of_day_cpp(SEXP seconds, SEXP zone);
 extern "C" SEXP _civil_convert_seconds_to_days_and_time_of_day_cpp(SEXP seconds, SEXP zone) {
@@ -121,6 +128,7 @@ extern "C" SEXP _civil_zone_is_valid(SEXP zone) {
 extern "C" {
 /* .Call calls */
 extern SEXP _civil_add_hours_or_minutes_or_seconds_local_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_add_milliseconds_or_microseconds_or_nanoseconds_local_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_weeks_or_days_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_years_or_months_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_local_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -138,22 +146,23 @@ extern SEXP _civil_zone_is_valid(SEXP);
 extern SEXP _civil_zone_standardize(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_civil_add_hours_or_minutes_or_seconds_local_cpp",     (DL_FUNC) &_civil_add_hours_or_minutes_or_seconds_local_cpp,     4},
-    {"_civil_add_weeks_or_days_cpp",                         (DL_FUNC) &_civil_add_weeks_or_days_cpp,                         4},
-    {"_civil_add_years_or_months_cpp",                       (DL_FUNC) &_civil_add_years_or_months_cpp,                       5},
-    {"_civil_adjust_local_days_cpp",                         (DL_FUNC) &_civil_adjust_local_days_cpp,                         5},
-    {"_civil_adjust_local_time_of_day_cpp",                  (DL_FUNC) &_civil_adjust_local_time_of_day_cpp,                  4},
-    {"_civil_adjust_zone_retain_clock_cpp",                  (DL_FUNC) &_civil_adjust_zone_retain_clock_cpp,                  4},
-    {"_civil_civil_init",                                    (DL_FUNC) &_civil_civil_init,                                    0},
-    {"_civil_civil_set_install",                             (DL_FUNC) &_civil_civil_set_install,                             1},
-    {"_civil_convert_days_and_time_of_day_to_seconds_cpp",   (DL_FUNC) &_civil_convert_days_and_time_of_day_to_seconds_cpp,   6},
-    {"_civil_convert_days_to_year_month_day_cpp",            (DL_FUNC) &_civil_convert_days_to_year_month_day_cpp,            1},
-    {"_civil_convert_hour_minute_second_to_time_of_day_cpp", (DL_FUNC) &_civil_convert_hour_minute_second_to_time_of_day_cpp, 3},
-    {"_civil_convert_seconds_to_days_and_time_of_day_cpp",   (DL_FUNC) &_civil_convert_seconds_to_days_and_time_of_day_cpp,   2},
-    {"_civil_convert_time_of_day_to_hour_minute_second_cpp", (DL_FUNC) &_civil_convert_time_of_day_to_hour_minute_second_cpp, 1},
-    {"_civil_convert_year_month_day_to_days_cpp",            (DL_FUNC) &_civil_convert_year_month_day_to_days_cpp,            4},
-    {"_civil_zone_is_valid",                                 (DL_FUNC) &_civil_zone_is_valid,                                 1},
-    {"_civil_zone_standardize",                              (DL_FUNC) &_civil_zone_standardize,                              1},
+    {"_civil_add_hours_or_minutes_or_seconds_local_cpp",                 (DL_FUNC) &_civil_add_hours_or_minutes_or_seconds_local_cpp,                 4},
+    {"_civil_add_milliseconds_or_microseconds_or_nanoseconds_local_cpp", (DL_FUNC) &_civil_add_milliseconds_or_microseconds_or_nanoseconds_local_cpp, 4},
+    {"_civil_add_weeks_or_days_cpp",                                     (DL_FUNC) &_civil_add_weeks_or_days_cpp,                                     4},
+    {"_civil_add_years_or_months_cpp",                                   (DL_FUNC) &_civil_add_years_or_months_cpp,                                   5},
+    {"_civil_adjust_local_days_cpp",                                     (DL_FUNC) &_civil_adjust_local_days_cpp,                                     5},
+    {"_civil_adjust_local_time_of_day_cpp",                              (DL_FUNC) &_civil_adjust_local_time_of_day_cpp,                              4},
+    {"_civil_adjust_zone_retain_clock_cpp",                              (DL_FUNC) &_civil_adjust_zone_retain_clock_cpp,                              4},
+    {"_civil_civil_init",                                                (DL_FUNC) &_civil_civil_init,                                                0},
+    {"_civil_civil_set_install",                                         (DL_FUNC) &_civil_civil_set_install,                                         1},
+    {"_civil_convert_days_and_time_of_day_to_seconds_cpp",               (DL_FUNC) &_civil_convert_days_and_time_of_day_to_seconds_cpp,               6},
+    {"_civil_convert_days_to_year_month_day_cpp",                        (DL_FUNC) &_civil_convert_days_to_year_month_day_cpp,                        1},
+    {"_civil_convert_hour_minute_second_to_time_of_day_cpp",             (DL_FUNC) &_civil_convert_hour_minute_second_to_time_of_day_cpp,             3},
+    {"_civil_convert_seconds_to_days_and_time_of_day_cpp",               (DL_FUNC) &_civil_convert_seconds_to_days_and_time_of_day_cpp,               2},
+    {"_civil_convert_time_of_day_to_hour_minute_second_cpp",             (DL_FUNC) &_civil_convert_time_of_day_to_hour_minute_second_cpp,             1},
+    {"_civil_convert_year_month_day_to_days_cpp",                        (DL_FUNC) &_civil_convert_year_month_day_to_days_cpp,                        4},
+    {"_civil_zone_is_valid",                                             (DL_FUNC) &_civil_zone_is_valid,                                             1},
+    {"_civil_zone_standardize",                                          (DL_FUNC) &_civil_zone_standardize,                                          1},
     {NULL, NULL, 0}
 };
 }

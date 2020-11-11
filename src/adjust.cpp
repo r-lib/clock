@@ -51,6 +51,7 @@ static sexp adjust_local_days(sexp x,
 
   int* p_days = local_days_deref(x);
   int* p_time_of_day = local_time_of_day_deref(x);
+  int* p_nanos_of_second = local_nanos_of_second_deref(x);
 
   const bool recycle_value = r_is_scalar(value);
   const int* p_value = r_int_deref_const(value);
@@ -63,7 +64,7 @@ static sexp adjust_local_days(sexp x,
       continue;
     }
     if (elt_value == r_int_na) {
-      local_assign_missing(i, p_days, p_time_of_day);
+      local_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
       continue;
     }
 
@@ -81,7 +82,8 @@ static sexp adjust_local_days(sexp x,
       day_nonexistent,
       out_ymd,
       p_days,
-      p_time_of_day
+      p_time_of_day,
+      p_nanos_of_second
     );
   }
 
@@ -182,6 +184,7 @@ static sexp adjust_local_time_of_day(sexp x,
 
   int* p_days = local_days_deref(x);
   int* p_time_of_day = local_time_of_day_deref(x);
+  int* p_nanos_of_second = local_nanos_of_second_deref(x);
 
   const bool recycle_value = r_is_scalar(value);
   const int* p_value = r_int_deref_const(value);
@@ -195,7 +198,7 @@ static sexp adjust_local_time_of_day(sexp x,
       continue;
     }
     if (elt_value == r_int_na) {
-      local_assign_missing(i, p_days, p_time_of_day);
+      local_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
       continue;
     }
 

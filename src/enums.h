@@ -51,7 +51,10 @@ enum class unit {
   day,
   hour,
   minute,
-  second
+  second,
+  millisecond,
+  microsecond,
+  nanosecond
 };
 
 enum unit parse_unit(sexp x);

@@ -34,6 +34,18 @@
 \alias{add_seconds.POSIXt}
 \alias{subtract_seconds.Date}
 \alias{subtract_seconds.POSIXt}
+\alias{add_milliseconds.Date}
+\alias{add_milliseconds.POSIXt}
+\alias{subtract_milliseconds.Date}
+\alias{subtract_milliseconds.POSIXt}
+\alias{add_microseconds.Date}
+\alias{add_microseconds.POSIXt}
+\alias{subtract_microseconds.Date}
+\alias{subtract_microseconds.POSIXt}
+\alias{add_nanoseconds.Date}
+\alias{add_nanoseconds.POSIXt}
+\alias{subtract_nanoseconds.Date}
+\alias{subtract_nanoseconds.POSIXt}
 \title{Zoned date-time arithmetic}
 \usage{
 \method{add_years}{Date}(x, n, ..., day_nonexistent = "last-time")
@@ -143,6 +155,30 @@
 \method{subtract_seconds}{Date}(x, n, ...)
 
 \method{subtract_seconds}{POSIXt}(x, n, ...)
+
+\method{add_milliseconds}{Date}(x, n, ...)
+
+\method{add_milliseconds}{POSIXt}(x, n, ...)
+
+\method{subtract_milliseconds}{Date}(x, n, ...)
+
+\method{subtract_milliseconds}{POSIXt}(x, n, ...)
+
+\method{add_microseconds}{Date}(x, n, ...)
+
+\method{add_microseconds}{POSIXt}(x, n, ...)
+
+\method{subtract_microseconds}{Date}(x, n, ...)
+
+\method{subtract_microseconds}{POSIXt}(x, n, ...)
+
+\method{add_nanoseconds}{Date}(x, n, ...)
+
+\method{add_nanoseconds}{POSIXt}(x, n, ...)
+
+\method{subtract_nanoseconds}{Date}(x, n, ...)
+
+\method{subtract_nanoseconds}{POSIXt}(x, n, ...)
 }
 \arguments{
 \item{x}{\verb{[Date / POSIXct / POSIXlt]}
