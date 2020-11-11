@@ -102,6 +102,13 @@ extern "C" SEXP _civil_convert_time_of_day_to_hour_minute_second_cpp(SEXP time_o
     return cpp11::as_sexp(convert_time_of_day_to_hour_minute_second_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(time_of_day)));
   END_CPP11
 }
+// floor.cpp
+SEXP floor_days_to_year_month_cpp(SEXP days);
+extern "C" SEXP _civil_floor_days_to_year_month_cpp(SEXP days) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(floor_days_to_year_month_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(days)));
+  END_CPP11
+}
 // initialize.cpp
 SEXP civil_init();
 extern "C" SEXP _civil_civil_init() {
@@ -150,6 +157,7 @@ extern SEXP _civil_convert_time_of_day_to_hour_minute_second_cpp(SEXP);
 extern SEXP _civil_convert_year_month_day_hour_minute_second_nanos_to_fields_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_year_month_day_hour_minute_second_to_fields_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_year_month_day_to_fields_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_floor_days_to_year_month_cpp(SEXP);
 extern SEXP _civil_zone_is_valid(SEXP);
 extern SEXP _civil_zone_standardize(SEXP);
 
@@ -170,6 +178,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_convert_year_month_day_hour_minute_second_nanos_to_fields_cpp", (DL_FUNC) &_civil_convert_year_month_day_hour_minute_second_nanos_to_fields_cpp, 8},
     {"_civil_convert_year_month_day_hour_minute_second_to_fields_cpp",       (DL_FUNC) &_civil_convert_year_month_day_hour_minute_second_to_fields_cpp,       7},
     {"_civil_convert_year_month_day_to_fields_cpp",                          (DL_FUNC) &_civil_convert_year_month_day_to_fields_cpp,                          4},
+    {"_civil_floor_days_to_year_month_cpp",                                  (DL_FUNC) &_civil_floor_days_to_year_month_cpp,                                  1},
     {"_civil_zone_is_valid",                                                 (DL_FUNC) &_civil_zone_is_valid,                                                 1},
     {"_civil_zone_standardize",                                              (DL_FUNC) &_civil_zone_standardize,                                              1},
     {NULL, NULL, 0}

@@ -56,6 +56,10 @@ convert_time_of_day_to_hour_minute_second_cpp <- function(time_of_day) {
   .Call("_civil_convert_time_of_day_to_hour_minute_second_cpp", time_of_day, PACKAGE = "civil")
 }
 
+floor_days_to_year_month_cpp <- function(days) {
+  .Call("_civil_floor_days_to_year_month_cpp", days, PACKAGE = "civil")
+}
+
 civil_init <- function() {
   .Call("_civil_civil_init", PACKAGE = "civil")
 }

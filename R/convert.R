@@ -15,7 +15,9 @@ as_local_year_month.civil_local_year_month <- function(x) {
 
 #' @export
 as_local_year_month.civil_local_date <- function(x) {
-  new_local_year_month(days = field(x, "days"), names = names(x))
+  days <- field(x, "days")
+  days <- floor_days_to_year_month(days)
+  new_local_year_month(days = days, names = names(x))
 }
 
 #' @export
