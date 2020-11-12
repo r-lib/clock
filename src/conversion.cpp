@@ -50,6 +50,15 @@ static inline date::sys_seconds info_nonexistent_error(r_ssize i) {
 
 // -----------------------------------------------------------------------------
 
+static inline void info_nonexistent_roll_forward_nanos(std::chrono::nanoseconds& nanos) {
+  nanos = std::chrono::nanoseconds{0};
+}
+static inline void info_nonexistent_roll_backward_nanos(std::chrono::nanoseconds& nanos) {
+  nanos = std::chrono::nanoseconds{999999999};
+}
+
+// -----------------------------------------------------------------------------
+
 static inline date::sys_seconds info_ambiguous_latest(const date::local_info& info,
                                                       const date::local_seconds& lsec) {
   std::chrono::seconds offset = info.second.offset;
@@ -73,37 +82,41 @@ static inline date::sys_seconds info_ambiguous_error(r_ssize i) {
 
 // -----------------------------------------------------------------------------
 
+/*
+ * Converts local_seconds to sys_seconds
+ */
 // [[ include("conversion.h") ]]
-double convert_local_seconds_to_posixt(const date::local_seconds& lsec,
+date::sys_seconds convert_local_to_sys(const date::local_seconds& lsec,
                                        const date::time_zone* p_zone,
                                        r_ssize i,
                                        const enum dst_nonexistent& dst_nonexistent,
-                                       const enum dst_ambiguous& dst_ambiguous) {
+                                       const enum dst_ambiguous& dst_ambiguous,
+                                       bool& na) {
   date::local_info info = p_zone->get_info(lsec);
 
   if (info.result == date::local_info::unique) {
-    return info_unique(info, lsec).time_since_epoch().count();
+    return info_unique(info, lsec);
   }
 
   if (info.result == date::local_info::nonexistent) {
     switch (dst_nonexistent) {
     case dst_nonexistent::roll_forward: {
-      return info_nonexistent_roll_forward(info).time_since_epoch().count();
+      return info_nonexistent_roll_forward(info);
     }
     case dst_nonexistent::roll_backward: {
-      return info_nonexistent_roll_backward(info).time_since_epoch().count();
+      return info_nonexistent_roll_backward(info);
     }
     case dst_nonexistent::shift_forward: {
-      return info_nonexistent_shift_forward(info, lsec).time_since_epoch().count();
+      return info_nonexistent_shift_forward(info, lsec);
     }
     case dst_nonexistent::shift_backward: {
-      return info_nonexistent_shift_backward(info, lsec).time_since_epoch().count();
+      return info_nonexistent_shift_backward(info, lsec);
     }
     case dst_nonexistent::na: {
-      return NA_REAL;
+      return info_nonexistent_na(na);
     }
     case dst_nonexistent::error: {
-      return info_nonexistent_error(i).time_since_epoch().count();
+      return info_nonexistent_error(i);
     }
     }
   }
@@ -111,30 +124,21 @@ double convert_local_seconds_to_posixt(const date::local_seconds& lsec,
   if (info.result == date::local_info::ambiguous) {
     switch (dst_ambiguous) {
     case dst_ambiguous::latest: {
-      return info_ambiguous_latest(info, lsec).time_since_epoch().count();
+      return info_ambiguous_latest(info, lsec);
     }
     case dst_ambiguous::earliest: {
-      return info_ambiguous_earliest(info, lsec).time_since_epoch().count();
+      return info_ambiguous_earliest(info, lsec);
     }
     case dst_ambiguous::na: {
-      return NA_REAL;
+      return info_ambiguous_na(na);
     }
     case dst_ambiguous::error: {
-      return info_ambiguous_error(i).time_since_epoch().count();
+      return info_ambiguous_error(i);
     }
     }
   }
 
-  never_reached("convert_local_seconds_to_posixt");
-}
-
-// -----------------------------------------------------------------------------
-
-static inline void info_nonexistent_roll_forward_nanos(std::chrono::nanoseconds& nanos) {
-  nanos = std::chrono::nanoseconds{0};
-}
-static inline void info_nonexistent_roll_backward_nanos(std::chrono::nanoseconds& nanos) {
-  nanos = std::chrono::nanoseconds{999999999};
+  never_reached("convert_local_to_sys");
 }
 
 // -----------------------------------------------------------------------------
@@ -147,6 +151,7 @@ static inline void info_nonexistent_roll_backward_nanos(std::chrono::nanoseconds
  * `get_info()` floors to seconds, but that is appropriate because DST
  * handling is really only precise to the second level.
  */
+// [[ include("conversion.h") ]]
 date::sys_seconds convert_local_to_sys(const date::local_seconds& lsec,
                                        const date::time_zone* p_zone,
                                        r_ssize i,
@@ -202,5 +207,5 @@ date::sys_seconds convert_local_to_sys(const date::local_seconds& lsec,
     }
   }
 
-  never_reached("convert_local_seconds_to_posixt");
+  never_reached("convert_local_to_sys");
 }

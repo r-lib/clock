@@ -173,13 +173,22 @@ SEXP convert_days_and_time_of_day_to_seconds_cpp(SEXP days,
 
     date::local_seconds elt_lsec = elt_lsec_floor + elt_tod;
 
-    p_out[i] = convert_local_seconds_to_posixt(
+    bool na = false;
+
+    date::sys_seconds out_ssec = convert_local_to_sys(
       elt_lsec,
       p_time_zone,
       i,
       elt_dst_nonexistent,
-      elt_dst_ambiguous
+      elt_dst_ambiguous,
+      na
     );
+
+    if (na) {
+      p_out[i] = r_dbl_na;
+    } else {
+      p_out[i] = out_ssec.time_since_epoch().count();
+    }
   }
 
   UNPROTECT(2);

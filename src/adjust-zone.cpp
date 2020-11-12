@@ -70,13 +70,22 @@ static sexp adjust_zone_retain_clock(sexp x,
     date::zoned_seconds elt_zsec = date::make_zoned(p_old_time_zone, elt_ssec);
     date::local_seconds elt_lsec = elt_zsec.get_local_time();
 
-    p_out[i] = convert_local_seconds_to_posixt(
+    bool na = false;
+
+    date::sys_seconds out_ssec = convert_local_to_sys(
       elt_lsec,
       p_new_time_zone,
       i,
       dst_nonexistent,
-      dst_ambiguous
+      dst_ambiguous,
+      na
     );
+
+    if (na) {
+      p_out[i] = r_dbl_na;
+    } else {
+      p_out[i] = out_ssec.time_since_epoch().count();
+    }
   }
 
   UNPROTECT(3);
