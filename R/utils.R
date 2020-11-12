@@ -128,7 +128,7 @@ days_to_date <- function(x, names = NULL) {
 # ------------------------------------------------------------------------------
 
 restrict_civil_supported <- function(x) {
-  if (is_Date(x) || is_POSIXct(x) || is_POSIXlt(x) || is_local(x)) {
+  if (is_Date(x) || is_POSIXct(x) || is_POSIXlt(x) || is_zoned_nano_datetime(x) || is_local(x)) {
     invisible(x)
   } else {
     stop_civil_unsupported_class(x)
