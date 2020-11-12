@@ -190,20 +190,16 @@ static sexp adjust_local_time_of_day(sexp x,
   const int* p_value = r_int_deref_const(value);
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_days = p_days[i];
     int elt_time_of_day = p_time_of_day[i];
     int elt_value = recycle_value ? p_value[0] : p_value[i];
 
-    if (elt_days == r_int_na) {
+    if (elt_time_of_day == r_int_na) {
       continue;
     }
     if (elt_value == r_int_na) {
       local_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
       continue;
     }
-
-    date::local_days elt_lday{date::days{elt_days}};
-    date::local_seconds elt_lsec_floor;
 
     std::chrono::seconds elt_tod{elt_time_of_day};
     date::hh_mm_ss<std::chrono::seconds> elt_hms{elt_tod};
