@@ -82,10 +82,10 @@ extern "C" SEXP _civil_convert_seconds_to_days_and_time_of_day_cpp(SEXP seconds,
   END_CPP11
 }
 // converters.cpp
-SEXP convert_days_and_time_of_day_to_seconds_cpp(SEXP days, SEXP time_of_day, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous, SEXP size);
-extern "C" SEXP _civil_convert_days_and_time_of_day_to_seconds_cpp(SEXP days, SEXP time_of_day, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous, SEXP size) {
+SEXP convert_local_days_and_time_of_day_to_sys_seconds_cpp(SEXP days, SEXP time_of_day, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous, SEXP size);
+extern "C" SEXP _civil_convert_local_days_and_time_of_day_to_sys_seconds_cpp(SEXP days, SEXP time_of_day, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous, SEXP size) {
   BEGIN_CPP11
-    return cpp11::as_sexp(convert_days_and_time_of_day_to_seconds_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(days), cpp11::as_cpp<cpp11::decay_t<SEXP>>(time_of_day), cpp11::as_cpp<cpp11::decay_t<SEXP>>(zone), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size)));
+    return cpp11::as_sexp(convert_local_days_and_time_of_day_to_sys_seconds_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(days), cpp11::as_cpp<cpp11::decay_t<SEXP>>(time_of_day), cpp11::as_cpp<cpp11::decay_t<SEXP>>(zone), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size)));
   END_CPP11
 }
 // converters.cpp
@@ -203,8 +203,8 @@ extern SEXP _civil_adjust_zone_retain_clock_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_init();
 extern SEXP _civil_civil_set_install(SEXP);
 extern SEXP _civil_convert_datetime_fields_from_zoned_to_local_cpp(SEXP, SEXP, SEXP);
-extern SEXP _civil_convert_days_and_time_of_day_to_seconds_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_days_to_year_month_day_cpp(SEXP);
+extern SEXP _civil_convert_local_days_and_time_of_day_to_sys_seconds_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_nano_datetime_fields_from_local_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_seconds_to_days_and_time_of_day_cpp(SEXP, SEXP);
 extern SEXP _civil_convert_sys_seconds_to_sys_days_and_time_of_day_cpp(SEXP);
@@ -231,8 +231,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_civil_init",                                                    (DL_FUNC) &_civil_civil_init,                                                    0},
     {"_civil_civil_set_install",                                             (DL_FUNC) &_civil_civil_set_install,                                             1},
     {"_civil_convert_datetime_fields_from_zoned_to_local_cpp",               (DL_FUNC) &_civil_convert_datetime_fields_from_zoned_to_local_cpp,               3},
-    {"_civil_convert_days_and_time_of_day_to_seconds_cpp",                   (DL_FUNC) &_civil_convert_days_and_time_of_day_to_seconds_cpp,                   6},
     {"_civil_convert_days_to_year_month_day_cpp",                            (DL_FUNC) &_civil_convert_days_to_year_month_day_cpp,                            1},
+    {"_civil_convert_local_days_and_time_of_day_to_sys_seconds_cpp",         (DL_FUNC) &_civil_convert_local_days_and_time_of_day_to_sys_seconds_cpp,         6},
     {"_civil_convert_nano_datetime_fields_from_local_to_zoned_cpp",          (DL_FUNC) &_civil_convert_nano_datetime_fields_from_local_to_zoned_cpp,          7},
     {"_civil_convert_seconds_to_days_and_time_of_day_cpp",                   (DL_FUNC) &_civil_convert_seconds_to_days_and_time_of_day_cpp,                   2},
     {"_civil_convert_sys_seconds_to_sys_days_and_time_of_day_cpp",           (DL_FUNC) &_civil_convert_sys_seconds_to_sys_days_and_time_of_day_cpp,           1},

@@ -62,7 +62,7 @@ unlocalize.civil_local_datetime <- function(x,
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
 
-  seconds <- convert_days_and_time_of_day_to_seconds(
+  seconds <- convert_local_days_and_time_of_day_to_sys_seconds(
     days = days,
     time_of_day = time_of_day,
     zone = zone,

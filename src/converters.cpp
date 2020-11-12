@@ -105,12 +105,12 @@ SEXP convert_seconds_to_days_and_time_of_day_cpp(SEXP seconds, SEXP zone) {
 }
 
 [[cpp11::register]]
-SEXP convert_days_and_time_of_day_to_seconds_cpp(SEXP days,
-                                                 SEXP time_of_day,
-                                                 SEXP zone,
-                                                 SEXP dst_nonexistent,
-                                                 SEXP dst_ambiguous,
-                                                 SEXP size) {
+SEXP convert_local_days_and_time_of_day_to_sys_seconds_cpp(SEXP days,
+                                                           SEXP time_of_day,
+                                                           SEXP zone,
+                                                           SEXP dst_nonexistent,
+                                                           SEXP dst_ambiguous,
+                                                           SEXP size) {
   r_ssize c_size = r_int_get(size, 0);
 
   sexp out = PROTECT(r_new_double(c_size));

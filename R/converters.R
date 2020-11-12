@@ -2,11 +2,11 @@ convert_seconds_to_days_and_time_of_day <- function(seconds, zone) {
   convert_seconds_to_days_and_time_of_day_cpp(seconds, zone)
 }
 
-convert_days_and_time_of_day_to_seconds <- function(days,
-                                                    time_of_day,
-                                                    zone,
-                                                    dst_nonexistent,
-                                                    dst_ambiguous) {
+convert_local_days_and_time_of_day_to_sys_seconds <- function(days,
+                                                              time_of_day,
+                                                              zone,
+                                                              dst_nonexistent,
+                                                              dst_ambiguous) {
   size <- vec_size_common(
     days = days,
     time_of_day = time_of_day,
@@ -14,7 +14,7 @@ convert_days_and_time_of_day_to_seconds <- function(days,
     dst_ambiguous = dst_ambiguous
   )
 
-  convert_days_and_time_of_day_to_seconds_cpp(
+  convert_local_days_and_time_of_day_to_sys_seconds_cpp(
     days = days,
     time_of_day = time_of_day,
     zone = zone,
