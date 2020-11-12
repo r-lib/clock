@@ -19,6 +19,10 @@ is_zoned <- function(x) {
 zoned_zone <- function(x) {
   attr(x, "zone", exact = TRUE)
 }
+zoned_set_zone <- function(x, zone) {
+  attr(x, "zone") <- zone
+  x
+}
 
 pretty_zone <- function(zone) {
   if (identical(zone, "")) {
