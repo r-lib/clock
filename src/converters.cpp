@@ -723,3 +723,44 @@ SEXP convert_datetime_fields_from_zoned_to_local_cpp(SEXP days,
   UNPROTECT(4);
   return out;
 }
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+SEXP convert_sys_seconds_to_sys_days_and_time_of_day_cpp(SEXP seconds) {
+  r_ssize size = r_length(seconds);
+
+  sexp days = PROTECT(r_new_integer(size));
+  int* p_days = r_int_deref(days);
+
+  sexp time_of_day = PROTECT(r_new_integer(size));
+  int* p_time_of_day = r_int_deref(time_of_day);
+
+  sexp out = PROTECT(new_local_datetime_list(days, time_of_day));
+
+  const double* p_seconds = r_dbl_deref_const(seconds);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    double elt_seconds = p_seconds[i];
+    int64_t elt = as_int64(elt_seconds);
+
+    if (elt == r_int64_na) {
+      p_days[i] = p_time_of_day[i] = r_int_na;
+      continue;
+    }
+
+    std::chrono::seconds elt_sec{elt};
+    date::sys_seconds elt_ssec{elt_sec};
+
+    date::sys_days elt_sday = date::floor<date::days>(elt_ssec);
+    date::sys_seconds elt_ssec_floor{elt_sday};
+
+    std::chrono::seconds elt_tod{elt_ssec - elt_ssec_floor};
+
+    p_days[i] = elt_sday.time_since_epoch().count();
+    p_time_of_day[i] = elt_tod.count();
+  }
+
+  UNPROTECT(3);
+  return out;
+}

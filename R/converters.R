@@ -109,3 +109,9 @@ convert_nano_datetime_fields_from_local_to_zoned <- function(fields,
 convert_datetime_fields_from_zoned_to_local <- function(days, time_of_day, zone) {
   convert_datetime_fields_from_zoned_to_local_cpp(days, time_of_day, zone)
 }
+
+# ------------------------------------------------------------------------------
+
+convert_sys_seconds_to_sys_days_and_time_of_day <- function(seconds) {
+  convert_sys_seconds_to_sys_days_and_time_of_day_cpp(seconds)
+}

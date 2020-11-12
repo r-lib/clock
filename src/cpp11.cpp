@@ -123,6 +123,13 @@ extern "C" SEXP _civil_convert_datetime_fields_from_zoned_to_local_cpp(SEXP days
     return cpp11::as_sexp(convert_datetime_fields_from_zoned_to_local_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(days), cpp11::as_cpp<cpp11::decay_t<SEXP>>(time_of_day), cpp11::as_cpp<cpp11::decay_t<SEXP>>(zone)));
   END_CPP11
 }
+// converters.cpp
+SEXP convert_sys_seconds_to_sys_days_and_time_of_day_cpp(SEXP seconds);
+extern "C" SEXP _civil_convert_sys_seconds_to_sys_days_and_time_of_day_cpp(SEXP seconds) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(convert_sys_seconds_to_sys_days_and_time_of_day_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(seconds)));
+  END_CPP11
+}
 // floor.cpp
 SEXP floor_days_to_year_month_cpp(SEXP days);
 extern "C" SEXP _civil_floor_days_to_year_month_cpp(SEXP days) {
@@ -184,6 +191,7 @@ extern SEXP _civil_convert_days_and_time_of_day_to_seconds_cpp(SEXP, SEXP, SEXP,
 extern SEXP _civil_convert_days_to_year_month_day_cpp(SEXP);
 extern SEXP _civil_convert_nano_datetime_fields_from_local_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_seconds_to_days_and_time_of_day_cpp(SEXP, SEXP);
+extern SEXP _civil_convert_sys_seconds_to_sys_days_and_time_of_day_cpp(SEXP);
 extern SEXP _civil_convert_time_of_day_to_hour_minute_second_cpp(SEXP);
 extern SEXP _civil_convert_year_month_day_hour_minute_second_nanos_to_fields_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_year_month_day_hour_minute_second_to_fields_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -209,6 +217,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_convert_days_to_year_month_day_cpp",                            (DL_FUNC) &_civil_convert_days_to_year_month_day_cpp,                            1},
     {"_civil_convert_nano_datetime_fields_from_local_to_zoned_cpp",          (DL_FUNC) &_civil_convert_nano_datetime_fields_from_local_to_zoned_cpp,          5},
     {"_civil_convert_seconds_to_days_and_time_of_day_cpp",                   (DL_FUNC) &_civil_convert_seconds_to_days_and_time_of_day_cpp,                   2},
+    {"_civil_convert_sys_seconds_to_sys_days_and_time_of_day_cpp",           (DL_FUNC) &_civil_convert_sys_seconds_to_sys_days_and_time_of_day_cpp,           1},
     {"_civil_convert_time_of_day_to_hour_minute_second_cpp",                 (DL_FUNC) &_civil_convert_time_of_day_to_hour_minute_second_cpp,                 1},
     {"_civil_convert_year_month_day_hour_minute_second_nanos_to_fields_cpp", (DL_FUNC) &_civil_convert_year_month_day_hour_minute_second_nanos_to_fields_cpp, 8},
     {"_civil_convert_year_month_day_hour_minute_second_to_fields_cpp",       (DL_FUNC) &_civil_convert_year_month_day_hour_minute_second_to_fields_cpp,       7},

@@ -68,6 +68,10 @@ convert_datetime_fields_from_zoned_to_local_cpp <- function(days, time_of_day, z
   .Call("_civil_convert_datetime_fields_from_zoned_to_local_cpp", days, time_of_day, zone, PACKAGE = "civil")
 }
 
+convert_sys_seconds_to_sys_days_and_time_of_day_cpp <- function(seconds) {
+  .Call("_civil_convert_sys_seconds_to_sys_days_and_time_of_day_cpp", seconds, PACKAGE = "civil")
+}
+
 floor_days_to_year_month_cpp <- function(days) {
   .Call("_civil_floor_days_to_year_month_cpp", days, PACKAGE = "civil")
 }
