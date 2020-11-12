@@ -5,6 +5,11 @@ localize <- function(x) {
 }
 
 #' @export
+localize.civil_local <- function(x) {
+  x
+}
+
+#' @export
 localize.Date <- function(x) {
   as_local_date(x)
 }
@@ -19,28 +24,22 @@ localize.civil_zoned_nano_datetime <- function(x) {
   as_local_nano_datetime(x)
 }
 
-#' @export
-localize.civil_local <- function(x) {
-  x
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export
 unlocalize <- function(x, ...) {
-  restrict_local(x)
+  restrict_civil_supported(x)
   UseMethod("unlocalize")
 }
 
 #' @export
 unlocalize.civil_local_year_month <- function(x, ...) {
-  unlocalize_to_date(x, ...)
+  check_dots_empty()
+  as.Date(x, ...)
 }
 
 #' @export
-unlocalize.civil_local_date <- function(x, ...) {
-  unlocalize_to_date(x, ...)
-}
+unlocalize.civil_local_date <- unlocalize.civil_local_year_month
 
 #' @export
 unlocalize.civil_local_datetime <- function(x,
@@ -57,22 +56,12 @@ unlocalize.civil_local_datetime <- function(x,
     ))
   }
 
-  zone <- zone_standardize(zone)
-
-  days <- field(x, "days")
-  time_of_day <- field(x, "time_of_day")
-
-  seconds <- convert_local_days_and_time_of_day_to_sys_seconds(
-    days = days,
-    time_of_day = time_of_day,
-    zone = zone,
+  as.POSIXct(
+    x = x,
+    tz = zone,
     dst_nonexistent = dst_nonexistent,
     dst_ambiguous = dst_ambiguous
   )
-
-  names(seconds) <- names(x)
-
-  new_datetime(seconds, zone)
 }
 
 #' @export
@@ -81,6 +70,8 @@ unlocalize.civil_local_nano_datetime <- function(x,
                                                  ...,
                                                  dst_nonexistent = "roll-forward",
                                                  dst_ambiguous = "earliest") {
+  check_dots_empty()
+
   if (missing(zone)) {
     abort(paste0(
       "In `unlocalize()`, `zone` is missing. ",
@@ -97,8 +88,13 @@ unlocalize.civil_local_nano_datetime <- function(x,
   )
 }
 
-unlocalize_to_date <- function(x, ...) {
-  check_dots_empty()
-  days <- field(x, "days")
-  days_to_date(days, names(x))
+#' @export
+unlocalize.Date <- function(x) {
+  x
 }
+
+#' @export
+unlocalize.POSIXt <- unlocalize.Date
+
+#' @export
+unlocalize.civil_zoned <- unlocalize.Date
