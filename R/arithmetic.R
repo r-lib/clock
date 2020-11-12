@@ -614,14 +614,13 @@ add_hours <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_hours.Date <- function(x, n, ...) {
-  x <- to_posixct(x)
-  add_hours(x, n, ...)
+  add_hours_zoned_impl(x, n, ...)
 }
 
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_hours.POSIXt <- function(x, n, ...) {
-  add_hours_posixt_impl(x, n, ...)
+  add_hours_zoned_impl(x, n, ...)
 }
 
 #' @rdname civil-local-arithmetic
@@ -669,14 +668,13 @@ add_minutes <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_minutes.Date <- function(x, n, ...) {
-  x <- to_posixct(x)
-  add_minutes(x, n, ...)
+  add_minutes_zoned_impl(x, n, ...)
 }
 
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_minutes.POSIXt <- function(x, n, ...) {
-  add_minutes_posixt_impl(x, n, ...)
+  add_minutes_zoned_impl(x, n, ...)
 }
 
 #' @rdname civil-local-arithmetic
@@ -724,14 +722,13 @@ add_seconds <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_seconds.Date <- function(x, n, ...) {
-  x <- to_posixct(x)
-  add_seconds(x, n, ...)
+  add_seconds_zoned_impl(x, n, ...)
 }
 
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_seconds.POSIXt <- function(x, n, ...) {
-  add_seconds_posixt_impl(x, n, ...)
+  add_seconds_zoned_impl(x, n, ...)
 }
 
 #' @rdname civil-local-arithmetic
@@ -994,17 +991,17 @@ add_hours_or_minutes_or_seconds_local <- function(x, n, ..., unit) {
 
 # ------------------------------------------------------------------------------
 
-add_hours_posixt_impl <- function(x, n, ...) {
-  add_hours_or_minutes_or_seconds_posixt(x, n, ..., unit = "hour")
+add_hours_zoned_impl <- function(x, n, ...) {
+  add_hours_or_minutes_or_seconds_zoned(x, n, ..., unit = "hour")
 }
-add_minutes_posixt_impl <- function(x, n, ...) {
-  add_hours_or_minutes_or_seconds_posixt(x, n, ..., unit = "minute")
+add_minutes_zoned_impl <- function(x, n, ...) {
+  add_hours_or_minutes_or_seconds_zoned(x, n, ..., unit = "minute")
 }
-add_seconds_posixt_impl <- function(x, n, ...) {
-  add_hours_or_minutes_or_seconds_posixt(x, n, ..., unit = "second")
+add_seconds_zoned_impl <- function(x, n, ...) {
+  add_hours_or_minutes_or_seconds_zoned(x, n, ..., unit = "second")
 }
 
-add_hours_or_minutes_or_seconds_posixt <- function(x, n, ..., unit) {
+add_hours_or_minutes_or_seconds_zoned <- function(x, n, ..., unit) {
   check_dots_empty()
 
   n <- vec_cast(n, integer(), x_arg = "n")
@@ -1018,6 +1015,19 @@ add_hours_or_minutes_or_seconds_posixt <- function(x, n, ..., unit) {
   # Check tidyverse recyclability
   vec_size_common(x = x, n = n)
 
+  x <- promote_at_least_zoned_datetime(x)
+
+  if (is_zoned_nano_datetime(x)) {
+    add_seconds_zoned_nano_datetime(x, n)
+  } else {
+    add_seconds_zoned_datetime(x, n)
+  }
+}
+
+add_seconds_zoned_nano_datetime <- function(x, n) {
+  abort("Not yet implemented")
+}
+add_seconds_zoned_datetime <- function(x, n) {
   x + n
 }
 
