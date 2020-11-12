@@ -145,6 +145,21 @@ restrict_local <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+# Purposefully promote to double as this either avoids possible integer overflow
+# or converts integer fields to double to be used in a POSIXct
+
+seconds_in_day <- function() {
+  86400
+}
+seconds_in_hour <- function() {
+  3600
+}
+seconds_in_minute <- function() {
+  60
+}
+
+# ------------------------------------------------------------------------------
+
 glue <- function(...) {
   do.call(paste0, vctrs::vec_recycle_common(...))
 }

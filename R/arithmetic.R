@@ -1077,14 +1077,6 @@ add_hours_or_minutes_or_seconds_zoned_datetime <- function(x, n, unit) {
   x + n
 }
 
-# Purposefully promote to double to avoid possible integer overflow
-seconds_in_hour <- function() {
-  3600
-}
-seconds_in_minute <- function() {
-  60
-}
-
 # ------------------------------------------------------------------------------
 
 add_hours_local_impl <- function(x, n, ...) {
