@@ -1,3 +1,6 @@
+# Conversion to local
+# ------------------------------------------------------------------------------
+
 #' @export
 as_local_year_month <- function(x)  {
   UseMethod("as_local_year_month")
