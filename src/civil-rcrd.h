@@ -1,5 +1,5 @@
-#ifndef CIVIL_LOCAL_H
-#define CIVIL_LOCAL_H
+#ifndef CIVIL_CIVIL_RCRD_H
+#define CIVIL_CIVIL_RCRD_H
 
 #include "r.h"
 #include "utils-rlib.h"
