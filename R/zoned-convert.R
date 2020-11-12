@@ -1,3 +1,80 @@
+# Conversion to zoned
+# ------------------------------------------------------------------------------
+
+# Not using `check_dots_empty()` because that might
+# be too aggressive with base generics
+
+#' @export
+as.Date.civil_local <- function(x, ...) {
+  days <- field(x, "days")
+  days_to_date(days, names(x))
+}
+
+#' @export
+as.Date.civil_zoned <- function(x, ...) {
+  # Retain instant, like `as.Date(<POSIXct>)`. This is like:
+  # adjust_zone_retain_instant(x, "UTC")
+  days <- field(x, "days")
+  days_to_date(days, names(x))
+}
+
+# ------------------------------------------------------------------------------
+
+# Not using `check_dots_empty()` because that might
+# be too aggressive with base generics
+
+# Using `tz = ""` to be compatible with the generic of `as.POSIXct()`
+
+#' @export
+as.POSIXct.civil_local <- function(x,
+                                   tz = "",
+                                   ...,
+                                   dst_nonexistent = "roll-forward",
+                                   dst_ambiguous = "earliest") {
+  zone <- zone_standardize(tz)
+  x <- promote_at_least_local_datetime(x)
+
+  days <- field(x, "days")
+  time_of_day <- field(x, "time_of_day")
+
+  seconds <- convert_local_days_and_time_of_day_to_sys_seconds(
+    days = days,
+    time_of_day = time_of_day,
+    zone = zone,
+    dst_nonexistent = dst_nonexistent,
+    dst_ambiguous = dst_ambiguous
+  )
+
+  names(seconds) <- names(x)
+
+  new_datetime(seconds, zone)
+}
+
+#' @export
+as.POSIXct.civil_zoned <- function(x, tz = "", ...) {
+  if (!identical(tz, "")) {
+    msg <- paste0(
+      "`tz` is not used when converting a 'civil_zoned' to 'POSIXct' to ",
+      "be compatible with `as.POSIXct(<POSIXct>)`. Did you want ",
+      "`adjust_zone_retain_instant()` or `adjust_zone_retain_clock()`?"
+    )
+    warn(msg)
+  }
+
+  zone <- zoned_zone(x)
+
+  days <- field(x, "days")
+  time_of_day <- field(x, "time_of_day")
+
+  seconds <- days * seconds_in_day() + time_of_day
+
+  names(seconds) <- names(x)
+
+  new_datetime(seconds, zone)
+}
+
+# ------------------------------------------------------------------------------
+
 #' @export
 as_zoned_nano_datetime <- function(x, ...)  {
   UseMethod("as_zoned_nano_datetime")
@@ -86,5 +163,3 @@ as_zoned_nano_datetime.POSIXt <- function(x, ...) {
 as_zoned_nano_datetime.civil_zoned_nano_datetime <- function(x) {
   x
 }
-
-# ------------------------------------------------------------------------------
