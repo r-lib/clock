@@ -87,3 +87,7 @@ zone_standardize <- function(zone) {
 zone_is_valid <- function(zone) {
   .Call("_civil_zone_is_valid", zone, PACKAGE = "civil")
 }
+
+zone_current <- function() {
+  .Call("_civil_zone_current", PACKAGE = "civil")
+}

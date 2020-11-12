@@ -83,7 +83,12 @@ format.civil_local_year_month <- function(x, ...) {
 
 #' @export
 vec_ptype_full.civil_local_year_month <- function(x, ...) {
-  "local_year_month"
+  "civil_year_month"
+}
+
+#' @export
+vec_ptype_abbr.civil_local_year_month <- function(x, ...) {
+  "cvl_ym"
 }
 
 is_local_year_month <- function(x) {

@@ -159,6 +159,13 @@ extern "C" SEXP _civil_zone_is_valid(SEXP zone) {
     return cpp11::as_sexp(zone_is_valid(cpp11::as_cpp<cpp11::decay_t<SEXP>>(zone)));
   END_CPP11
 }
+// zone.cpp
+SEXP zone_current();
+extern "C" SEXP _civil_zone_current() {
+  BEGIN_CPP11
+    return cpp11::as_sexp(zone_current());
+  END_CPP11
+}
 
 extern "C" {
 /* .Call calls */
@@ -182,6 +189,7 @@ extern SEXP _civil_convert_year_month_day_hour_minute_second_nanos_to_fields_cpp
 extern SEXP _civil_convert_year_month_day_hour_minute_second_to_fields_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_year_month_day_to_fields_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_floor_days_to_year_month_cpp(SEXP);
+extern SEXP _civil_zone_current();
 extern SEXP _civil_zone_is_valid(SEXP);
 extern SEXP _civil_zone_standardize(SEXP);
 
@@ -206,6 +214,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_convert_year_month_day_hour_minute_second_to_fields_cpp",       (DL_FUNC) &_civil_convert_year_month_day_hour_minute_second_to_fields_cpp,       7},
     {"_civil_convert_year_month_day_to_fields_cpp",                          (DL_FUNC) &_civil_convert_year_month_day_to_fields_cpp,                          4},
     {"_civil_floor_days_to_year_month_cpp",                                  (DL_FUNC) &_civil_floor_days_to_year_month_cpp,                                  1},
+    {"_civil_zone_current",                                                  (DL_FUNC) &_civil_zone_current,                                                  0},
     {"_civil_zone_is_valid",                                                 (DL_FUNC) &_civil_zone_is_valid,                                                 1},
     {"_civil_zone_standardize",                                              (DL_FUNC) &_civil_zone_standardize,                                              1},
     {NULL, NULL, 0}

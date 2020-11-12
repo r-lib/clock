@@ -22,8 +22,9 @@ zoned_zone <- function(x) {
 
 pretty_zone <- function(zone) {
   if (identical(zone, "")) {
-    "Local"
-  } else {
-    zone
+    zone <- zone_current()
+    zone <- paste0(zone, " (current)")
   }
+
+  zone
 }

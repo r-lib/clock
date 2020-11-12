@@ -135,7 +135,12 @@ format.civil_local_nano_datetime <- function(x, ...) {
 
 #' @export
 vec_ptype_full.civil_local_nano_datetime <- function(x, ...) {
-  "local_nano_datetime"
+  "civil_nano_datetime"
+}
+
+#' @export
+vec_ptype_abbr.civil_local_nano_datetime <- function(x, ...) {
+  "cvl_nano_dttm"
 }
 
 is_local_nano_datetime <- function(x) {

@@ -157,11 +157,15 @@ format.civil_zoned_nano_datetime <- function(x, ...) {
 vec_ptype_full.civil_zoned_nano_datetime <- function(x, ...) {
   zone <- zoned_zone(x)
   zone <- pretty_zone(zone)
-  paste0("nano_datetime<", zone, ">")
+  paste0("civil_nano_datetime<", zone, ">")
 }
 
 #' @export
-vec_ptype_abbr.civil_zoned_nano_datetime <- vec_ptype_full.civil_zoned_nano_datetime
+vec_ptype_abbr.civil_zoned_nano_datetime <- function(x, ...) {
+  zone <- zoned_zone(x)
+  zone <- pretty_zone(zone)
+  paste0("cvl_nano_dttm<", zone, ">")
+}
 
 is_zoned_nano_datetime <- function(x) {
   inherits(x, "civil_zoned_nano_datetime")

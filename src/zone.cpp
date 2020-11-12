@@ -78,7 +78,16 @@ SEXP zone_is_valid(SEXP zone) {
 
 // -----------------------------------------------------------------------------
 
-const char* zone_name_local();
+const char* zone_name_current();
+
+[[cpp11::register]]
+SEXP zone_current() {
+  return r_new_scalar_character_from_c_string(zone_name_current());
+}
+
+// -----------------------------------------------------------------------------
+
+
 const date::time_zone* zone_name_load_try(const std::string& zone_name);
 
 // [[ include("zone.h") ]]
@@ -87,8 +96,8 @@ const date::time_zone* zone_name_load(const std::string& zone_name) {
     // We look up the local time zone using R's `Sys.timezone()`
     // or the `TZ` envvar when an empty string is the input.
     // This is consistent with lubridate.
-    std::string local_zone_name = zone_name_local();
-    return zone_name_load_try(local_zone_name);
+    std::string current_zone_name = zone_name_current();
+    return zone_name_load_try(current_zone_name);
   } else {
     return zone_name_load_try(zone_name);
   }
@@ -104,7 +113,7 @@ const date::time_zone* zone_name_load_try(const std::string& zone_name) {
 
 const char* zone_name_system();
 
-const char* zone_name_local() {
+const char* zone_name_current() {
   const char* tz_env = std::getenv("TZ");
 
   if (tz_env == NULL) {

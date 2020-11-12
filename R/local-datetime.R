@@ -122,7 +122,12 @@ format.civil_local_datetime <- function(x, ...) {
 
 #' @export
 vec_ptype_full.civil_local_datetime <- function(x, ...) {
-  "local_datetime"
+  "civil_datetime"
+}
+
+#' @export
+vec_ptype_abbr.civil_local_datetime <- function(x, ...) {
+  "cvl_dttm"
 }
 
 is_local_datetime <- function(x) {

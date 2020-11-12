@@ -88,7 +88,12 @@ format.civil_local_date <- function(x, ...) {
 
 #' @export
 vec_ptype_full.civil_local_date <- function(x, ...) {
-  "local_date"
+  "civil_date"
+}
+
+#' @export
+vec_ptype_abbr.civil_local_date <- function(x, ...) {
+  "cvl_date"
 }
 
 is_local_date <- function(x) {
