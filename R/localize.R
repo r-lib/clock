@@ -81,7 +81,20 @@ unlocalize.civil_local_nano_datetime <- function(x,
                                                  ...,
                                                  dst_nonexistent = "roll-forward",
                                                  dst_ambiguous = "earliest") {
-  abort("Cannot currently `unlocalize()` a 'local_nano_datetime'.")
+  if (missing(zone)) {
+    abort(paste0(
+      "In `unlocalize()`, `zone` is missing. ",
+      "This argument is required with 'local_nano_datetime' input."
+    ))
+  }
+
+  as_zoned_nano_datetime(
+    x = x,
+    ...,
+    zone = zone,
+    dst_nonexistent = dst_nonexistent,
+    dst_ambiguous = dst_ambiguous
+  )
 }
 
 unlocalize_to_date <- function(x, ...) {
