@@ -126,7 +126,7 @@ static inline void convert_year_month_day_to_days_one(const r_ssize& i,
   resolve_day_nonexistent_ymd(i, day_nonexistent, ymd, na);
 
   if (na) {
-    local_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+    civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
     return;
   }
 

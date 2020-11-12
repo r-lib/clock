@@ -46,12 +46,12 @@ static sexp adjust_local_days(sexp x,
                               const enum day_nonexistent& day_nonexistent,
                               const r_ssize& size,
                               const enum adjuster& adjuster) {
-  x = PROTECT(local_maybe_clone(x));
-  x = PROTECT(local_recycle(x, size));
+  x = PROTECT(civil_rcrd_maybe_clone(x));
+  x = PROTECT(civil_rcrd_recycle(x, size));
 
-  int* p_days = local_days_deref(x);
-  int* p_time_of_day = local_time_of_day_deref(x);
-  int* p_nanos_of_second = local_nanos_of_second_deref(x);
+  int* p_days = civil_rcrd_days_deref(x);
+  int* p_time_of_day = civil_rcrd_time_of_day_deref(x);
+  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(x);
 
   const bool recycle_value = r_is_scalar(value);
   const int* p_value = r_int_deref_const(value);
@@ -64,7 +64,7 @@ static sexp adjust_local_days(sexp x,
       continue;
     }
     if (elt_value == r_int_na) {
-      local_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
       continue;
     }
 
@@ -179,12 +179,12 @@ static sexp adjust_local_time_of_day(sexp x,
                                      sexp value,
                                      const r_ssize& size,
                                      const enum adjuster& adjuster) {
-  x = PROTECT(local_maybe_clone(x));
-  x = PROTECT(local_recycle(x, size));
+  x = PROTECT(civil_rcrd_maybe_clone(x));
+  x = PROTECT(civil_rcrd_recycle(x, size));
 
-  int* p_days = local_days_deref(x);
-  int* p_time_of_day = local_time_of_day_deref(x);
-  int* p_nanos_of_second = local_nanos_of_second_deref(x);
+  int* p_days = civil_rcrd_days_deref(x);
+  int* p_time_of_day = civil_rcrd_time_of_day_deref(x);
+  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(x);
 
   const bool recycle_value = r_is_scalar(value);
   const int* p_value = r_int_deref_const(value);
@@ -197,7 +197,7 @@ static sexp adjust_local_time_of_day(sexp x,
       continue;
     }
     if (elt_value == r_int_na) {
-      local_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
       continue;
     }
 
@@ -294,12 +294,12 @@ static sexp adjust_local_nanos_of_second(sexp x,
                                          sexp value,
                                          const r_ssize& size,
                                          const enum adjuster& adjuster) {
-  x = PROTECT(local_maybe_clone(x));
-  x = PROTECT(local_recycle(x, size));
+  x = PROTECT(civil_rcrd_maybe_clone(x));
+  x = PROTECT(civil_rcrd_recycle(x, size));
 
-  int* p_days = local_days_deref(x);
-  int* p_time_of_day = local_time_of_day_deref(x);
-  int* p_nanos_of_second = local_nanos_of_second_deref(x);
+  int* p_days = civil_rcrd_days_deref(x);
+  int* p_time_of_day = civil_rcrd_time_of_day_deref(x);
+  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(x);
 
   const bool recycle_value = r_is_scalar(value);
   const int* p_value = r_int_deref_const(value);
@@ -312,7 +312,7 @@ static sexp adjust_local_nanos_of_second(sexp x,
       continue;
     }
     if (elt_value == r_int_na) {
-      local_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
       continue;
     }
 

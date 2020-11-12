@@ -659,7 +659,7 @@ SEXP convert_nano_datetime_fields_from_local_to_zoned_cpp(SEXP days,
     );
 
     if (na) {
-      local_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
       continue;
     }
 
