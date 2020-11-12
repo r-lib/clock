@@ -259,7 +259,7 @@ add_years.civil_zoned <- add_years.POSIXt
 #' @rdname civil-local-arithmetic
 #' @export
 add_years.civil_local <- function(x, n, ..., day_nonexistent = "last-time") {
-  add_years_impl(x, n, ..., day_nonexistent = day_nonexistent)
+  add_years_local_impl(x, n, ..., day_nonexistent = day_nonexistent)
 }
 
 # ------------------------------------------------------------------------------
@@ -344,7 +344,7 @@ add_months.civil_zoned <- add_months.POSIXt
 #' @rdname civil-local-arithmetic
 #' @export
 add_months.civil_local <- function(x, n, ..., day_nonexistent = "last-time") {
-  add_months_impl(x, n, ..., day_nonexistent = day_nonexistent)
+  add_months_local_impl(x, n, ..., day_nonexistent = day_nonexistent)
 }
 
 # ------------------------------------------------------------------------------
@@ -527,7 +527,7 @@ add_weeks.civil_zoned <- add_weeks.POSIXt
 #' @rdname civil-local-arithmetic
 #' @export
 add_weeks.civil_local <- function(x, n, ...) {
-  add_weeks_impl(x, n, ...)
+  add_weeks_local_impl(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -604,7 +604,7 @@ add_days.civil_zoned <- add_days.POSIXt
 #' @rdname civil-local-arithmetic
 #' @export
 add_days.civil_local <- function(x, n, ...) {
-  add_days_impl(x, n, ...)
+  add_days_local_impl(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -992,42 +992,42 @@ subtract_nanoseconds.civil_local <- function(x, n, ...) {
 
 # ------------------------------------------------------------------------------
 
-add_years_impl <- function(x, n, ..., day_nonexistent, unit) {
+add_years_local_impl <- function(x, n, ..., day_nonexistent, unit) {
   x <- promote_at_least_local_year(x)
-  add_years_or_months(x, n, ..., day_nonexistent = day_nonexistent, unit = "year")
+  add_years_or_months_local(x, n, ..., day_nonexistent = day_nonexistent, unit = "year")
 }
-add_months_impl <- function(x, n, ..., day_nonexistent, unit) {
+add_months_local_impl <- function(x, n, ..., day_nonexistent, unit) {
   x <- promote_at_least_local_year_month(x)
-  add_years_or_months(x, n, ..., day_nonexistent = day_nonexistent, unit = "month")
+  add_years_or_months_local(x, n, ..., day_nonexistent = day_nonexistent, unit = "month")
 }
 
-add_years_or_months <- function(x, n, ..., day_nonexistent, unit) {
+add_years_or_months_local <- function(x, n, ..., day_nonexistent, unit) {
   check_dots_empty()
 
   n <- vec_cast(n, integer(), x_arg = "n")
   size <- vec_size_common(x = x, n = n)
 
-  add_years_or_months_cpp(x, n, day_nonexistent, unit, size)
+  add_years_or_months_local_cpp(x, n, day_nonexistent, unit, size)
 }
 
 # ------------------------------------------------------------------------------
 
-add_weeks_impl <- function(x, n, ...) {
+add_weeks_local_impl <- function(x, n, ...) {
   x <- promote_at_least_local_year_week(x)
-  add_weeks_or_days(x, n, ..., unit = "week")
+  add_weeks_or_days_local(x, n, ..., unit = "week")
 }
-add_days_impl <- function(x, n, ...) {
+add_days_local_impl <- function(x, n, ...) {
   x <- promote_at_least_local_date(x)
-  add_weeks_or_days(x, n, ..., unit = "day")
+  add_weeks_or_days_local(x, n, ..., unit = "day")
 }
 
-add_weeks_or_days <- function(x, n, ..., unit) {
+add_weeks_or_days_local <- function(x, n, ..., unit) {
   check_dots_empty()
 
   n <- vec_cast(n, integer(), x_arg = "n")
   size <- vec_size_common(x = x, n = n)
 
-  add_weeks_or_days_cpp(x, n, unit, size)
+  add_weeks_or_days_local_cpp(x, n, unit, size)
 }
 
 # ------------------------------------------------------------------------------

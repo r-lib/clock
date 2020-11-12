@@ -10,11 +10,11 @@
 
 // -----------------------------------------------------------------------------
 
-static SEXP add_years_or_months(sexp x,
-                                sexp n,
-                                enum day_nonexistent day_nonexistent,
-                                enum unit unit,
-                                r_ssize size) {
+static SEXP add_years_or_months_local(sexp x,
+                                      sexp n,
+                                      enum day_nonexistent day_nonexistent,
+                                      enum unit unit,
+                                      r_ssize size) {
   x = PROTECT(local_maybe_clone(x));
   x = PROTECT(local_recycle(x, size));
 
@@ -63,24 +63,24 @@ static SEXP add_years_or_months(sexp x,
 }
 
 [[cpp11::register]]
-SEXP add_years_or_months_cpp(SEXP x,
-                             SEXP n,
-                             SEXP day_nonexistent,
-                             SEXP unit,
-                             SEXP size) {
+SEXP add_years_or_months_local_cpp(SEXP x,
+                                   SEXP n,
+                                   SEXP day_nonexistent,
+                                   SEXP unit,
+                                   SEXP size) {
   enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
   enum unit c_unit = parse_unit(unit);
   r_ssize c_size = r_int_get(size, 0);
 
-  return add_years_or_months(x, n, c_day_nonexistent, c_unit, c_size);
+  return add_years_or_months_local(x, n, c_day_nonexistent, c_unit, c_size);
 }
 
 // -----------------------------------------------------------------------------
 
-static SEXP add_weeks_or_days(sexp x,
-                              sexp n,
-                              enum unit unit,
-                              r_ssize size) {
+static SEXP add_weeks_or_days_local(sexp x,
+                                    sexp n,
+                                    enum unit unit,
+                                    r_ssize size) {
   x = PROTECT(local_maybe_clone(x));
   x = PROTECT(local_recycle(x, size));
 
@@ -117,14 +117,14 @@ static SEXP add_weeks_or_days(sexp x,
 }
 
 [[cpp11::register]]
-SEXP add_weeks_or_days_cpp(SEXP x,
-                           SEXP n,
-                           SEXP unit,
-                           SEXP size) {
+SEXP add_weeks_or_days_local_cpp(SEXP x,
+                                 SEXP n,
+                                 SEXP unit,
+                                 SEXP size) {
   enum unit c_unit = parse_unit(unit);
   r_ssize c_size = r_int_get(size, 0);
 
-  return add_weeks_or_days(x, n, c_unit, c_size);
+  return add_weeks_or_days_local(x, n, c_unit, c_size);
 }
 
 // -----------------------------------------------------------------------------
