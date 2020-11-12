@@ -264,3 +264,97 @@ adjust_local_time_of_day_switch(const date::hh_mm_ss<std::chrono::seconds>& hms,
   }
   }
 }
+
+// -----------------------------------------------------------------------------
+
+static sexp adjust_local_nanos_of_second(sexp x,
+                                         sexp value,
+                                         const r_ssize& size,
+                                         const enum adjuster& adjuster);
+
+[[cpp11::register]]
+SEXP adjust_local_nanos_of_second_cpp(SEXP x,
+                                      SEXP value,
+                                      SEXP size,
+                                      SEXP adjuster) {
+  r_ssize c_size = r_int_get(size, 0);
+  enum adjuster c_adjuster = parse_adjuster(adjuster);
+
+  return adjust_local_nanos_of_second(
+    x,
+    value,
+    c_size,
+    c_adjuster
+  );
+}
+
+static inline
+std::chrono::nanoseconds
+adjust_local_nanos_of_second_switch(const std::chrono::nanoseconds& x,
+                                    const int& value,
+                                    const enum adjuster& adjuster);
+
+static sexp adjust_local_nanos_of_second(sexp x,
+                                         sexp value,
+                                         const r_ssize& size,
+                                         const enum adjuster& adjuster) {
+  x = PROTECT(local_maybe_clone(x));
+  x = PROTECT(local_recycle(x, size));
+
+  int* p_days = local_days_deref(x);
+  int* p_time_of_day = local_time_of_day_deref(x);
+  int* p_nanos_of_second = local_nanos_of_second_deref(x);
+
+  const bool recycle_value = r_is_scalar(value);
+  const int* p_value = r_int_deref_const(value);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    int elt_nanos_of_second = p_nanos_of_second[i];
+    int elt_value = recycle_value ? p_value[0] : p_value[i];
+
+    if (elt_nanos_of_second == r_int_na) {
+      continue;
+    }
+    if (elt_value == r_int_na) {
+      local_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      continue;
+    }
+
+    std::chrono::nanoseconds elt_nanos{elt_nanos_of_second};
+
+    std::chrono::nanoseconds out_nanos = adjust_local_nanos_of_second_switch(
+      elt_nanos,
+      elt_value,
+      adjuster
+    );
+
+    p_nanos_of_second[i] = out_nanos.count();
+  }
+
+  UNPROTECT(2);
+  return x;
+}
+
+// -----------------------------------------------------------------------------
+
+static inline
+std::chrono::nanoseconds
+adjust_local_nanos_of_second_nanosecond(const std::chrono::nanoseconds& nanos, const int& value) {
+  check_range_nanos(value, "value");
+  return std::chrono::nanoseconds{value};
+}
+
+static inline
+std::chrono::nanoseconds
+adjust_local_nanos_of_second_switch(const std::chrono::nanoseconds& nanos,
+                              const int& value,
+                              const enum adjuster& adjuster) {
+  switch (adjuster) {
+  case adjuster::nanosecond: {
+    return adjust_local_nanos_of_second_nanosecond(nanos, value);
+  }
+  default: {
+    r_abort("Internal error: Unknown `adjuster` in `adjust_local_time_of_day_switch()`.");
+  }
+  }
+}

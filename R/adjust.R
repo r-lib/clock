@@ -289,6 +289,29 @@ adjust_second.civil_local <- function(x, value, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+adjust_nanosecond <- function(x, value, ...) {
+  restrict_civil_supported(x)
+  UseMethod("adjust_nanosecond")
+}
+
+#' @export
+adjust_nanosecond.Date <- function(x, value, ...) {
+  abort("Can't currently adjust nanoseconds of a Date.")
+}
+
+#' @export
+adjust_nanosecond.POSIXt <- function(x, value, ...) {
+  abort("Can't currently adjust nanoseconds of a POSIXct/POSIXlt.")
+}
+
+#' @export
+adjust_nanosecond.civil_local <- function(x, value, ...) {
+  adjust_nanosecond_impl(x, value, ...)
+}
+
+# ------------------------------------------------------------------------------
+
 adjust_year_impl <- function(x, value, ..., day_nonexistent) {
   x <- promote_at_least_local_year(x)
   adjust_local_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "year")
@@ -336,4 +359,21 @@ adjust_local_time_of_day <- function(x, value, ..., adjuster) {
   x <- promote_at_least_local_datetime(x)
 
   adjust_local_time_of_day_cpp(x, value, size, adjuster)
+}
+
+# ------------------------------------------------------------------------------
+
+adjust_nanosecond_impl <- function(x, value, ...) {
+  adjust_local_nanos_of_second(x, value, ..., adjuster = "nanosecond")
+}
+
+adjust_local_nanos_of_second <- function(x, value, ..., adjuster) {
+  check_dots_empty()
+
+  value <- vec_cast(value, integer(), x_arg = "value")
+  size <- vec_size_common(x = x, value = value)
+
+  x <- promote_at_least_local_nano_datetime(x)
+
+  adjust_local_nanos_of_second_cpp(x, value, size, adjuster)
 }

@@ -68,6 +68,7 @@ enum class adjuster {
   hour,
   minute,
   second,
+  nanosecond,
   last_day_of_month
 };
 

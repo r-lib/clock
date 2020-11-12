@@ -12,6 +12,10 @@ adjust_local_time_of_day_cpp <- function(x, value, size, adjuster) {
   .Call("_civil_adjust_local_time_of_day_cpp", x, value, size, adjuster, PACKAGE = "civil")
 }
 
+adjust_local_nanos_of_second_cpp <- function(x, value, size, adjuster) {
+  .Call("_civil_adjust_local_nanos_of_second_cpp", x, value, size, adjuster, PACKAGE = "civil")
+}
+
 add_years_or_months_cpp <- function(x, n, day_nonexistent, unit, size) {
   .Call("_civil_add_years_or_months_cpp", x, n, day_nonexistent, unit, size, PACKAGE = "civil")
 }
