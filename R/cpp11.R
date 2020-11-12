@@ -60,6 +60,14 @@ convert_time_of_day_to_hour_minute_second_cpp <- function(time_of_day) {
   .Call("_civil_convert_time_of_day_to_hour_minute_second_cpp", time_of_day, PACKAGE = "civil")
 }
 
+convert_nano_datetime_fields_from_local_to_zoned_cpp <- function(fields, zone, dst_nonexistent, dst_ambiguous, size) {
+  .Call("_civil_convert_nano_datetime_fields_from_local_to_zoned_cpp", fields, zone, dst_nonexistent, dst_ambiguous, size, PACKAGE = "civil")
+}
+
+convert_datetime_fields_from_zoned_to_local_cpp <- function(days, time_of_day, zone) {
+  .Call("_civil_convert_datetime_fields_from_zoned_to_local_cpp", days, time_of_day, zone, PACKAGE = "civil")
+}
+
 floor_days_to_year_month_cpp <- function(days) {
   .Call("_civil_floor_days_to_year_month_cpp", days, PACKAGE = "civil")
 }

@@ -393,8 +393,8 @@ SEXP convert_year_month_day_hour_minute_second_nanos_to_fields_cpp(SEXP year,
     check_range_month(elt_month, "month");
     check_range_day(elt_day, "day");
     check_range_hour(elt_hour, "hour");
-    check_range_hour(elt_minute, "minute");
-    check_range_hour(elt_second, "second");
+    check_range_minute(elt_minute, "minute");
+    check_range_second(elt_second, "second");
     check_range_nanos(elt_nanos, "nanos");
 
     std::chrono::nanoseconds out_nanos_of_second{elt_nanos};
@@ -564,5 +564,153 @@ SEXP convert_time_of_day_to_hour_minute_second_cpp(SEXP time_of_day) {
   }
 
   UNPROTECT(1);
+  return out;
+}
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+SEXP convert_nano_datetime_fields_from_local_to_zoned_cpp(SEXP fields,
+                                                          SEXP zone,
+                                                          SEXP dst_nonexistent,
+                                                          SEXP dst_ambiguous,
+                                                          SEXP size) {
+  r_ssize c_size = r_int_get(size, 0);
+
+  fields = PROTECT(local_maybe_clone(fields));
+  fields = PROTECT(local_recycle(fields, c_size));
+
+  int* p_days = local_days_deref(fields);
+  int* p_time_of_day = local_time_of_day_deref(fields);
+  int* p_nanos_of_second = local_nanos_of_second_deref(fields);
+
+  const sexp* p_dst_nonexistent = STRING_PTR_RO(dst_nonexistent);
+  bool recycle_dst_nonexistent = r_is_scalar(dst_nonexistent);
+  enum dst_nonexistent c_dst_nonexistent;
+  if (recycle_dst_nonexistent) {
+    c_dst_nonexistent = parse_dst_nonexistent_one(CHAR(p_dst_nonexistent[0]));
+  }
+
+  const sexp* p_dst_ambiguous = STRING_PTR_RO(dst_ambiguous);
+  bool recycle_dst_ambiguous = r_is_scalar(dst_ambiguous);
+  enum dst_ambiguous c_dst_ambiguous;
+  if (recycle_dst_ambiguous) {
+    c_dst_ambiguous = parse_dst_ambiguous_one(CHAR(p_dst_ambiguous[0]));
+  }
+
+  zone = PROTECT(zone_standardize(zone));
+  std::string zone_name = zone_unwrap(zone);
+  const date::time_zone* p_time_zone = zone_name_load(zone_name);
+
+  for (r_ssize i = 0; i < c_size; ++i) {
+    int elt_days = p_days[i];
+    int elt_time_of_day = p_time_of_day[i];
+    int elt_nanos_of_second = p_nanos_of_second[i];
+
+    const enum dst_nonexistent elt_dst_nonexistent =
+      recycle_dst_nonexistent ?
+      c_dst_nonexistent :
+      parse_dst_nonexistent_one(CHAR(p_dst_nonexistent[i]));
+
+    const enum dst_ambiguous elt_dst_ambiguous =
+      recycle_dst_ambiguous ?
+      c_dst_ambiguous :
+      parse_dst_ambiguous_one(CHAR(p_dst_ambiguous[i]));
+
+    if (elt_days == r_int_na) {
+      continue;
+    }
+
+    date::local_days elt_lday{date::days{elt_days}};
+    std::chrono::seconds elt_tod{elt_time_of_day};
+    std::chrono::nanoseconds elt_nanos{elt_nanos_of_second};
+
+    date::local_seconds elt_lsec_floor{elt_lday};
+    date::local_seconds elt_lsec = elt_lsec_floor + elt_tod;
+
+    bool na = false;
+
+    date::sys_seconds out_ssec = convert_local_to_sys(
+      elt_lsec,
+      p_time_zone,
+      i,
+      elt_dst_nonexistent,
+      elt_dst_ambiguous,
+      na,
+      elt_nanos
+    );
+
+    if (na) {
+      local_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      continue;
+    }
+
+    date::sys_days out_sday = date::floor<date::days>(out_ssec);
+    date::sys_seconds out_ssec_floor{out_sday};
+
+    std::chrono::seconds out_tod{out_ssec - out_ssec_floor};
+
+    std::chrono::nanoseconds out_nanos{elt_nanos};
+
+    p_days[i] = out_sday.time_since_epoch().count();
+    p_time_of_day[i] = out_tod.count();
+    p_nanos_of_second[i] = out_nanos.count();
+  }
+
+  UNPROTECT(3);
+  return fields;
+}
+
+// -----------------------------------------------------------------------------
+
+/*
+ * Same for datetime and nano_datetime, since nanoseconds wont change when
+ * going from zoned->local. They are "beneath" time zone changes.
+ */
+[[cpp11::register]]
+SEXP convert_datetime_fields_from_zoned_to_local_cpp(SEXP days,
+                                                     SEXP time_of_day,
+                                                     SEXP zone) {
+  r_ssize size = r_length(days);
+
+  days = PROTECT(r_maybe_clone(days));
+  int* p_days = r_int_deref(days);
+
+  time_of_day = PROTECT(r_maybe_clone(time_of_day));
+  int* p_time_of_day = r_int_deref(time_of_day);
+
+  sexp out = PROTECT(new_local_datetime_list(days, time_of_day));
+
+  zone = PROTECT(zone_standardize(zone));
+  std::string zone_name = zone_unwrap(zone);
+  const date::time_zone* p_time_zone = zone_name_load(zone_name);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    int elt_days = p_days[i];
+    int elt_time_of_day = p_time_of_day[i];
+
+    if (elt_days == r_int_na) {
+      continue;
+    }
+
+    date::sys_days elt_sday{date::days{elt_days}};
+    std::chrono::seconds elt_tod{elt_time_of_day};
+
+    date::sys_seconds elt_ssec_floor{elt_sday};
+    date::sys_seconds elt_ssec = elt_ssec_floor + elt_tod;
+
+    date::zoned_seconds out_zsec = date::make_zoned(p_time_zone, elt_ssec);
+    date::local_seconds out_lsec = out_zsec.get_local_time();
+
+    date::local_days out_lday = date::floor<date::days>(out_lsec);
+    date::local_seconds out_lsec_floor{out_lday};
+
+    std::chrono::seconds out_tod{out_lsec - out_lsec_floor};
+
+    p_days[i] = out_lday.time_since_epoch().count();
+    p_time_of_day[i] = out_tod.count();
+  }
+
+  UNPROTECT(4);
   return out;
 }

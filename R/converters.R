@@ -83,4 +83,29 @@ convert_time_of_day_to_hour_minute_second <- function(time_of_day) {
   convert_time_of_day_to_hour_minute_second_cpp(time_of_day)
 }
 
+# ------------------------------------------------------------------------------
 
+convert_nano_datetime_fields_from_local_to_zoned <- function(fields,
+                                                             zone,
+                                                             dst_nonexistent,
+                                                             dst_ambiguous) {
+  size <- vec_size_common(
+    !!!fields,
+    dst_nonexistent = dst_nonexistent,
+    dst_ambiguous = dst_ambiguous
+  )
+
+  convert_nano_datetime_fields_from_local_to_zoned_cpp(
+    fields = fields,
+    zone = zone,
+    dst_nonexistent = dst_nonexistent,
+    dst_ambiguous = dst_ambiguous,
+    size = size
+  )
+}
+
+# ------------------------------------------------------------------------------
+
+convert_datetime_fields_from_zoned_to_local <- function(days, time_of_day, zone) {
+  convert_datetime_fields_from_zoned_to_local_cpp(days, time_of_day, zone)
+}

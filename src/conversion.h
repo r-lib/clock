@@ -11,4 +11,12 @@ double convert_local_seconds_to_posixt(const date::local_seconds& lsec,
                                        const enum dst_nonexistent& dst_nonexistent,
                                        const enum dst_ambiguous& dst_ambiguous);
 
+date::sys_seconds convert_local_to_sys(const date::local_seconds& lsec,
+                                       const date::time_zone* p_zone,
+                                       r_ssize i,
+                                       const enum dst_nonexistent& dst_nonexistent,
+                                       const enum dst_ambiguous& dst_ambiguous,
+                                       bool& na,
+                                       std::chrono::nanoseconds& nanos);
+
 #endif
