@@ -39,7 +39,9 @@ zoned_nano_datetime <- function(year,
   )
 
   fields <- convert_nano_datetime_fields_from_local_to_zoned(
-    fields,
+    fields$days,
+    fields$time_of_day,
+    fields$nanos_of_second,
     zone,
     dst_nonexistent,
     dst_ambiguous

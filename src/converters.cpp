@@ -579,19 +579,28 @@ SEXP convert_time_of_day_to_hour_minute_second_cpp(SEXP time_of_day) {
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-SEXP convert_nano_datetime_fields_from_local_to_zoned_cpp(SEXP fields,
+SEXP convert_nano_datetime_fields_from_local_to_zoned_cpp(SEXP days,
+                                                          SEXP time_of_day,
+                                                          SEXP nanos_of_second,
                                                           SEXP zone,
                                                           SEXP dst_nonexistent,
                                                           SEXP dst_ambiguous,
                                                           SEXP size) {
   r_ssize c_size = r_int_get(size, 0);
 
-  fields = PROTECT(local_maybe_clone(fields));
-  fields = PROTECT(local_recycle(fields, c_size));
+  days = PROTECT(r_maybe_clone(days));
+  days = PROTECT(r_int_recycle(days, c_size));
+  int* p_days = r_int_deref(days);
 
-  int* p_days = local_days_deref(fields);
-  int* p_time_of_day = local_time_of_day_deref(fields);
-  int* p_nanos_of_second = local_nanos_of_second_deref(fields);
+  time_of_day = PROTECT(r_maybe_clone(time_of_day));
+  time_of_day = PROTECT(r_int_recycle(time_of_day, c_size));
+  int* p_time_of_day = r_int_deref(time_of_day);
+
+  nanos_of_second = PROTECT(r_maybe_clone(nanos_of_second));
+  nanos_of_second = PROTECT(r_int_recycle(nanos_of_second, c_size));
+  int* p_nanos_of_second = r_int_deref(nanos_of_second);
+
+  sexp out = PROTECT(new_local_nano_datetime_list(days, time_of_day, nanos_of_second));
 
   const sexp* p_dst_nonexistent = STRING_PTR_RO(dst_nonexistent);
   bool recycle_dst_nonexistent = r_is_scalar(dst_nonexistent);
@@ -666,8 +675,8 @@ SEXP convert_nano_datetime_fields_from_local_to_zoned_cpp(SEXP fields,
     p_nanos_of_second[i] = out_nanos.count();
   }
 
-  UNPROTECT(3);
-  return fields;
+  UNPROTECT(8);
+  return out;
 }
 
 // -----------------------------------------------------------------------------

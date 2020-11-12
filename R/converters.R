@@ -85,18 +85,24 @@ convert_time_of_day_to_hour_minute_second <- function(time_of_day) {
 
 # ------------------------------------------------------------------------------
 
-convert_nano_datetime_fields_from_local_to_zoned <- function(fields,
+convert_nano_datetime_fields_from_local_to_zoned <- function(days,
+                                                             time_of_day,
+                                                             nanos_of_second,
                                                              zone,
                                                              dst_nonexistent,
                                                              dst_ambiguous) {
   size <- vec_size_common(
-    !!!fields,
+    days = days,
+    time_of_day = time_of_day,
+    nanos_of_second = nanos_of_second,
     dst_nonexistent = dst_nonexistent,
     dst_ambiguous = dst_ambiguous
   )
 
   convert_nano_datetime_fields_from_local_to_zoned_cpp(
-    fields = fields,
+    days = days,
+    time_of_day = time_of_day,
+    nanos_of_second = nanos_of_second,
     zone = zone,
     dst_nonexistent = dst_nonexistent,
     dst_ambiguous = dst_ambiguous,
