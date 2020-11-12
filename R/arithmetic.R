@@ -252,6 +252,10 @@ add_years.POSIXt <- function(x,
   unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_years.civil_zoned <- add_years.POSIXt
+
 #' @rdname civil-local-arithmetic
 #' @export
 add_years.civil_local <- function(x, n, ..., day_nonexistent = "last-time") {
@@ -286,6 +290,10 @@ subtract_years.POSIXt <- function(x,
                                   dst_ambiguous = NULL) {
   add_years(x, -n, ..., day_nonexistent = day_nonexistent, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_years.civil_zoned <- subtract_years.POSIXt
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -329,6 +337,10 @@ add_months.POSIXt <- function(x,
   unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_months.civil_zoned <- add_months.POSIXt
+
 #' @rdname civil-local-arithmetic
 #' @export
 add_months.civil_local <- function(x, n, ..., day_nonexistent = "last-time") {
@@ -363,6 +375,10 @@ subtract_months.POSIXt <- function(x,
                                    dst_ambiguous = NULL) {
   add_months(x, -n, ..., day_nonexistent = day_nonexistent, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_months.civil_zoned <- subtract_months.POSIXt
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -402,6 +418,10 @@ add_years_and_months.POSIXt <- function(x,
   n <- convert_years_and_months_to_n(years, months)
   add_months(x, n, ..., day_nonexistent = day_nonexistent, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_years_and_months.civil_zoned <- add_years_and_months.POSIXt
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -458,6 +478,10 @@ subtract_years_and_months.POSIXt <- function(x,
   add_years_and_months(x, -years, -months, ..., day_nonexistent = day_nonexistent, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_years_and_months.civil_zoned <- subtract_years_and_months.POSIXt
+
 #' @rdname civil-local-arithmetic
 #' @export
 subtract_years_and_months.civil_local <- function(x, years, months, ..., day_nonexistent = "last-time") {
@@ -496,6 +520,10 @@ add_weeks.POSIXt <- function(x,
   unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_weeks.civil_zoned <- add_weeks.POSIXt
+
 #' @rdname civil-local-arithmetic
 #' @export
 add_weeks.civil_local <- function(x, n, ...) {
@@ -526,6 +554,10 @@ subtract_weeks.POSIXt <- function(x,
                                   dst_ambiguous = NULL) {
   add_weeks(x, -n, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_weeks.civil_zoned <- subtract_weeks.POSIXt
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -565,6 +597,10 @@ add_days.POSIXt <- function(x,
   unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_days.civil_zoned <- add_days.POSIXt
+
 #' @rdname civil-local-arithmetic
 #' @export
 add_days.civil_local <- function(x, n, ...) {
@@ -596,6 +632,10 @@ subtract_days.POSIXt <- function(x,
   add_days(x, -n, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_days.civil_zoned <- subtract_days.POSIXt
+
 #' @rdname civil-local-arithmetic
 #' @export
 subtract_days.civil_local <- function(x, n, ...) {
@@ -619,9 +659,11 @@ add_hours.Date <- function(x, n, ...) {
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-add_hours.POSIXt <- function(x, n, ...) {
-  add_hours_zoned_impl(x, n, ...)
-}
+add_hours.POSIXt <- add_hours.Date
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_hours.civil_zoned <- add_hours.Date
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -646,9 +688,11 @@ subtract_hours.Date <- function(x, n, ...) {
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-subtract_hours.POSIXt <- function(x, n, ...) {
-  add_hours(x, -n, ...)
-}
+subtract_hours.POSIXt <- subtract_hours.Date
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_hours.civil_zoned <- subtract_hours.Date
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -673,9 +717,11 @@ add_minutes.Date <- function(x, n, ...) {
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-add_minutes.POSIXt <- function(x, n, ...) {
-  add_minutes_zoned_impl(x, n, ...)
-}
+add_minutes.POSIXt <- add_minutes.Date
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_minutes.civil_zoned <- add_minutes.Date
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -700,9 +746,11 @@ subtract_minutes.Date <- function(x, n, ...) {
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-subtract_minutes.POSIXt <- function(x, n, ...) {
-  add_minutes(x, -n, ...)
-}
+subtract_minutes.POSIXt <- subtract_minutes.Date
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_minutes.civil_zoned <- subtract_minutes.Date
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -727,9 +775,11 @@ add_seconds.Date <- function(x, n, ...) {
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-add_seconds.POSIXt <- function(x, n, ...) {
-  add_seconds_zoned_impl(x, n, ...)
-}
+add_seconds.POSIXt <- add_seconds.Date
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_seconds.civil_zoned <- add_seconds.Date
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -754,9 +804,11 @@ subtract_seconds.Date <- function(x, n, ...) {
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-subtract_seconds.POSIXt <- function(x, n, ...) {
-  add_seconds(x, -n, ...)
-}
+subtract_seconds.POSIXt <- subtract_seconds.Date
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_seconds.civil_zoned <- subtract_seconds.Date
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -776,14 +828,16 @@ add_milliseconds <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_milliseconds.Date <- function(x, n, ...) {
-  abort("Can't currently add milliseconds to Date.")
+  add_milliseconds_zoned_impl(x, n, ...)
 }
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-add_milliseconds.POSIXt <- function(x, n, ...) {
-  abort("Can't currently add milliseconds to POSIXct/POSIXlt.")
-}
+add_milliseconds.POSIXt <- add_milliseconds.Date
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_milliseconds.civil_zoned <- add_milliseconds.Date
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -803,14 +857,16 @@ subtract_milliseconds <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 subtract_milliseconds.Date <- function(x, n, ...) {
-  abort("Can't currently subtract milliseconds from Date.")
+  add_milliseconds(x, -n, ...)
 }
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-subtract_milliseconds.POSIXt <- function(x, n, ...) {
-  abort("Can't currently subtract milliseconds from POSIXct/POSIXlt.")
-}
+subtract_milliseconds.POSIXt <- subtract_milliseconds.Date
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_milliseconds.civil_zoned <- subtract_milliseconds.Date
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -830,14 +886,16 @@ add_microseconds <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_microseconds.Date <- function(x, n, ...) {
-  abort("Can't currently add microseconds to Date.")
+  add_microseconds_zoned_impl(x, n, ...)
 }
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-add_microseconds.POSIXt <- function(x, n, ...) {
-  abort("Can't currently add microseconds to POSIXct/POSIXlt.")
-}
+add_microseconds.POSIXt <- add_microseconds.Date
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_microseconds.civil_zoned <- add_microseconds.Date
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -857,14 +915,16 @@ subtract_microseconds <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 subtract_microseconds.Date <- function(x, n, ...) {
-  abort("Can't currently subtract microseconds from Date.")
+  add_microseconds(x, -n, ...)
 }
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-subtract_microseconds.POSIXt <- function(x, n, ...) {
-  abort("Can't currently subtract microseconds from POSIXct/POSIXlt.")
-}
+subtract_microseconds.POSIXt <- subtract_microseconds.Date
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_microseconds.civil_zoned <- subtract_microseconds.Date
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -884,14 +944,16 @@ add_nanoseconds <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_nanoseconds.Date <- function(x, n, ...) {
-  abort("Can't currently add nanoseconds to Date.")
+  add_nanoseconds_zoned_impl(x, n, ...)
 }
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-add_nanoseconds.POSIXt <- function(x, n, ...) {
-  abort("Can't currently add nanoseconds to POSIXct/POSIXlt.")
-}
+add_nanoseconds.POSIXt <- add_nanoseconds.Date
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+add_nanoseconds.civil_zoned <- add_nanoseconds.Date
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -911,14 +973,16 @@ subtract_nanoseconds <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 subtract_nanoseconds.Date <- function(x, n, ...) {
-  abort("Can't currently subtract nanoseconds from Date.")
+  add_nanoseconds(x, -n, ...)
 }
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-subtract_nanoseconds.POSIXt <- function(x, n, ...) {
-  abort("Can't currently subtract nanoseconds from POSIXct/POSIXlt.")
-}
+subtract_nanoseconds.POSIXt <- subtract_nanoseconds.Date
+
+#' @rdname civil-zoned-arithmetic
+#' @export
+subtract_nanoseconds.civil_zoned <- subtract_nanoseconds.Date
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -968,6 +1032,61 @@ add_weeks_or_days <- function(x, n, ..., unit) {
 
 # ------------------------------------------------------------------------------
 
+add_hours_zoned_impl <- function(x, n, ...) {
+  add_hours_or_minutes_or_seconds_zoned(x, n, ..., unit = "hour")
+}
+add_minutes_zoned_impl <- function(x, n, ...) {
+  add_hours_or_minutes_or_seconds_zoned(x, n, ..., unit = "minute")
+}
+add_seconds_zoned_impl <- function(x, n, ...) {
+  add_hours_or_minutes_or_seconds_zoned(x, n, ..., unit = "second")
+}
+
+add_hours_or_minutes_or_seconds_zoned <- function(x, n, ..., unit) {
+  check_dots_empty()
+
+  n <- vec_cast(n, integer(), x_arg = "n")
+  x <- promote_at_least_zoned_datetime(x)
+
+  if (is_zoned_nano_datetime(x)) {
+    add_hours_or_minutes_or_seconds_zoned_nano_datetime(x, n, unit)
+  } else {
+    add_hours_or_minutes_or_seconds_zoned_datetime(x, n, unit)
+  }
+}
+
+add_hours_or_minutes_or_seconds_zoned_nano_datetime <- function(x, n, unit) {
+  size <- vec_size_common(x = x, n = n)
+  add_hours_or_minutes_or_seconds_zoned_nano_datetime_cpp(x, n, unit, size)
+}
+
+add_hours_or_minutes_or_seconds_zoned_datetime <- function(x, n, unit) {
+  # Check tidyverse recyclability
+  vec_size_common(x = x, n = n)
+
+  if (identical(unit, "hour")) {
+    n <- n * seconds_in_hour()
+  } else if (identical(unit, "minute")) {
+    n <- n * seconds_in_minute()
+  } else if (identical(unit, "second")) {
+    n <- n
+  } else {
+    abort("Internal error: Unknown `unit` in hour/minute/second arithmetic.")
+  }
+
+  x + n
+}
+
+# Purposefully promote to double to avoid possible integer overflow
+seconds_in_hour <- function() {
+  3600
+}
+seconds_in_minute <- function() {
+  60
+}
+
+# ------------------------------------------------------------------------------
+
 add_hours_local_impl <- function(x, n, ...) {
   add_hours_or_minutes_or_seconds_local(x, n, ..., unit = "hour")
 }
@@ -991,51 +1110,25 @@ add_hours_or_minutes_or_seconds_local <- function(x, n, ..., unit) {
 
 # ------------------------------------------------------------------------------
 
-add_hours_zoned_impl <- function(x, n, ...) {
-  add_hours_or_minutes_or_seconds_zoned(x, n, ..., unit = "hour")
+add_milliseconds_zoned_impl <- function(x, n, ...) {
+  add_milliseconds_or_microseconds_or_nanoseconds_zoned(x, n, ..., unit = "millisecond")
 }
-add_minutes_zoned_impl <- function(x, n, ...) {
-  add_hours_or_minutes_or_seconds_zoned(x, n, ..., unit = "minute")
+add_microseconds_zoned_impl <- function(x, n, ...) {
+  add_milliseconds_or_microseconds_or_nanoseconds_zoned(x, n, ..., unit = "microsecond")
 }
-add_seconds_zoned_impl <- function(x, n, ...) {
-  add_hours_or_minutes_or_seconds_zoned(x, n, ..., unit = "second")
+add_nanoseconds_zoned_impl <- function(x, n, ...) {
+  add_milliseconds_or_microseconds_or_nanoseconds_zoned(x, n, ..., unit = "nanosecond")
 }
 
-add_hours_or_minutes_or_seconds_zoned <- function(x, n, ..., unit) {
+add_milliseconds_or_microseconds_or_nanoseconds_zoned <- function(x, n, ..., unit) {
   check_dots_empty()
 
   n <- vec_cast(n, integer(), x_arg = "n")
+  size <- vec_size_common(x = x, n = n)
 
-  if (identical(unit, "hour")) {
-    n <- n * seconds_in_hour()
-  } else if (identical(unit, "minute")) {
-    n <- n * seconds_in_minute()
-  }
+  x <- promote_at_least_zoned_nano_datetime(x)
 
-  # Check tidyverse recyclability
-  vec_size_common(x = x, n = n)
-
-  x <- promote_at_least_zoned_datetime(x)
-
-  if (is_zoned_nano_datetime(x)) {
-    add_seconds_zoned_nano_datetime(x, n)
-  } else {
-    add_seconds_zoned_datetime(x, n)
-  }
-}
-
-add_seconds_zoned_nano_datetime <- function(x, n) {
-  abort("Not yet implemented")
-}
-add_seconds_zoned_datetime <- function(x, n) {
-  x + n
-}
-
-seconds_in_hour <- function() {
-  3600L
-}
-seconds_in_minute <- function() {
-  60L
+  add_milliseconds_or_microseconds_or_nanoseconds_zoned_cpp(x, n, unit, size)
 }
 
 # ------------------------------------------------------------------------------
