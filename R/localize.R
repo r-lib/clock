@@ -6,22 +6,17 @@ localize <- function(x) {
 
 #' @export
 localize.Date <- function(x) {
-  names <- names(x)
-  days <- date_to_days(x)
-  new_local_date(days, names = names)
+  as_local_date(x)
 }
 
 #' @export
 localize.POSIXt <- function(x) {
-  x <- to_posixct(x)
+  as_local_datetime(x)
+}
 
-  names <- names(x)
-  seconds <- unstructure(x)
-  zone <- get_zone(x)
-
-  fields <- convert_seconds_to_days_and_time_of_day(seconds, zone)
-
-  new_local_datetime_from_fields(fields, names)
+#' @export
+localize.civil_zoned_nano_datetime <- function(x) {
+  as_local_nano_datetime(x)
 }
 
 #' @export
