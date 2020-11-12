@@ -49,13 +49,13 @@ new_local_date_from_fields <- function(fields, names = NULL) {
 
 #' @export
 vec_proxy.civil_local_date <- function(x, ...) {
-  proxy_civil_local(x)
+  proxy_civil_rcrd(x)
 }
 
 #' @export
 vec_restore.civil_local_date <- function(x, to, ...) {
-  fields <- restore_civil_local_fields(x)
-  names <- restore_civil_local_names(x)
+  fields <- restore_civil_rcrd_fields(x)
+  names <- restore_civil_rcrd_names(x)
   new_local_date_from_fields(fields, names)
 }
 
