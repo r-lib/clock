@@ -171,6 +171,7 @@ as_zoned_nano_datetime.POSIXt <- function(x, ...) {
 }
 
 #' @export
-as_zoned_nano_datetime.civil_zoned_nano_datetime <- function(x) {
+as_zoned_nano_datetime.civil_zoned_nano_datetime <- function(x, ...) {
+  check_dots_empty()
   x
 }
