@@ -307,8 +307,8 @@ SEXP convert_year_month_day_hour_minute_second_to_fields_cpp(SEXP year,
     check_range_month(elt_month, "month");
     check_range_day(elt_day, "day");
     check_range_hour(elt_hour, "hour");
-    check_range_hour(elt_minute, "minute");
-    check_range_hour(elt_second, "second");
+    check_range_minute(elt_minute, "minute");
+    check_range_second(elt_second, "second");
 
     std::chrono::seconds out_tod =
       std::chrono::hours{elt_hour} +
