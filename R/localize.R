@@ -89,7 +89,8 @@ unlocalize.civil_local_nano_datetime <- function(x,
 }
 
 #' @export
-unlocalize.Date <- function(x) {
+unlocalize.Date <- function(x, ...) {
+  check_dots_empty()
   x
 }
 
