@@ -20,8 +20,8 @@ zoned_level <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-promote_at_least_zoned_date <- function(x) {
-  if (is_at_least_zoned_date(x)) {
+promote_at_least_utc_date <- function(x) {
+  if (is_at_least_utc_date(x)) {
     x
   } else {
     abort("Internal error: There is no supported class below Date.")
