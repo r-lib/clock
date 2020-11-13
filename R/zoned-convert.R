@@ -23,16 +23,16 @@ as.Date.civil_zoned <- function(x, ...) {
 # Not using `check_dots_empty()` because that might
 # be too aggressive with base generics
 
-# Using `tz = ""` to be compatible with the generic of `as.POSIXct()`
-
 #' @export
 as.POSIXct.civil_local <- function(x,
                                    tz = "",
                                    ...,
                                    dst_nonexistent = "roll-forward",
                                    dst_ambiguous = "earliest") {
-  zone <- zone_standardize(tz)
   x <- promote_at_least_local_datetime(x)
+
+  # Using `tz = ""` to be compatible with the generic of `as.POSIXct()`
+  zone <- zone_standardize(tz)
 
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
@@ -51,16 +51,9 @@ as.POSIXct.civil_local <- function(x,
 }
 
 #' @export
-as.POSIXct.civil_zoned <- function(x, tz = "", ...) {
-  if (!identical(tz, "")) {
-    msg <- paste0(
-      "`tz` is not used when converting a 'civil_zoned' to 'POSIXct' to ",
-      "be compatible with `as.POSIXct(<POSIXct>)`. Did you want ",
-      "`adjust_zone_retain_instant()` or `adjust_zone_retain_clock()`?"
-    )
-    warn(msg)
-  }
-
+as.POSIXct.civil_zoned <- function(x, ...) {
+  # Keeps zone of `civil_zoned`.
+  # Should use `adjust_zone_retain_*()` first if that is required.
   zone <- zoned_zone(x)
 
   days <- field(x, "days")
@@ -71,6 +64,24 @@ as.POSIXct.civil_zoned <- function(x, tz = "", ...) {
   names(seconds) <- names(x)
 
   new_datetime(seconds, zone)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+as.POSIXlt.civil_local <- function(x,
+                                   tz = "",
+                                   ...,
+                                   dst_nonexistent = "roll-forward",
+                                   dst_ambiguous = "earliest") {
+  x <- as.POSIXct(x, tz = tz, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+  as.POSIXlt(x)
+}
+
+#' @export
+as.POSIXlt.civil_zoned <- function(x, ...) {
+  x <- as.POSIXct(x, ...)
+  as.POSIXlt(x)
 }
 
 # ------------------------------------------------------------------------------
