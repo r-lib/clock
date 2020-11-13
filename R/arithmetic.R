@@ -4,9 +4,9 @@
 #' Local arithmetic involves adding or subtracting units of time from a datetime
 #' that is independent of any time zone. This means that daylight savings time
 #' is never an issue while working with a local datetime. Usually, you will
-#' convert to a local datetime with [localize()], perform multiple arithmetic
+#' convert to a local datetime with [as_local()], perform multiple arithmetic
 #' operations or adjustments with it, then convert it back to a zoned datetime
-#' with [unlocalize()].
+#' with [as_zoned()].
 #'
 #' Local arithmetic is usually appropriate when performing multiple arithmetic
 #' operations in a row (like adding a set of years, months, and days). The
@@ -23,7 +23,7 @@
 #' allowing you precise control over how to handle this case. As an example, you
 #' might choose to add 1 year to this nonexistent date, resulting in
 #' `"1972-02-29"`, which does exist due to it being a leap year. Or you might
-#' convert it back to a zoned date with [unlocalize()], which forces you
+#' convert it back to a zoned date with [as_zoned()], which forces you
 #' to deal with the nonexistent date using the `day_nonexistent` argument.
 #' The default would choose the last real day in February of that year,
 #' resulting in `"1971-02-28"`.
@@ -231,9 +231,9 @@ add_years.Date <- function(x,
                            n,
                            ...,
                            day_nonexistent = "last-time") {
-  x <- localize(x)
+  x <- as_local(x)
   out <- add_years(x, n, ..., day_nonexistent = day_nonexistent)
-  unlocalize(out)
+  as.Date(out)
 }
 
 #' @rdname civil-zoned-arithmetic
@@ -245,16 +245,28 @@ add_years.POSIXt <- function(x,
                              dst_nonexistent = NULL,
                              dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- localize(x)
+  x <- as_local(x)
   out <- add_years(x, n, ..., day_nonexistent = day_nonexistent)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
-  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+  as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-add_years.civil_zoned <- add_years.POSIXt
+add_years.civil_zoned <- function(x,
+                                  n,
+                                  ...,
+                                  day_nonexistent = "last-time",
+                                  dst_nonexistent = NULL,
+                                  dst_ambiguous = NULL) {
+  zone <- get_zone(x)
+  x <- as_local(x)
+  out <- add_years(x, n, ..., day_nonexistent = day_nonexistent)
+  dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
+  dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
+  as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -316,9 +328,9 @@ add_months.Date <- function(x,
                             n,
                             ...,
                             day_nonexistent = "last-time") {
-  x <- localize(x)
+  x <- as_local(x)
   out <- add_months(x, n, ..., day_nonexistent = day_nonexistent)
-  unlocalize(out)
+  as.Date(out)
 }
 
 #' @rdname civil-zoned-arithmetic
@@ -330,16 +342,28 @@ add_months.POSIXt <- function(x,
                               dst_nonexistent = NULL,
                               dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- localize(x)
+  x <- as_local(x)
   out <- add_months(x, n, ..., day_nonexistent = day_nonexistent)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
-  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+  as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-add_months.civil_zoned <- add_months.POSIXt
+add_months.civil_zoned <- function(x,
+                                   n,
+                                   ...,
+                                   day_nonexistent = "last-time",
+                                   dst_nonexistent = NULL,
+                                   dst_ambiguous = NULL) {
+  zone <- get_zone(x)
+  x <- as_local(x)
+  out <- add_months(x, n, ..., day_nonexistent = day_nonexistent)
+  dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
+  dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
+  as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -500,9 +524,9 @@ add_weeks <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_weeks.Date <- function(x, n, ...) {
-  x <- localize(x)
+  x <- as_local(x)
   out <- add_weeks(x = x, n = n, ...)
-  unlocalize(out)
+  as.Date(out)
 }
 
 #' @rdname civil-zoned-arithmetic
@@ -513,16 +537,27 @@ add_weeks.POSIXt <- function(x,
                              dst_nonexistent = NULL,
                              dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- localize(x)
+  x <- as_local(x)
   out <- add_weeks(x, n, ...)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
-  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+  as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-add_weeks.civil_zoned <- add_weeks.POSIXt
+add_weeks.civil_zoned <- function(x,
+                                  n,
+                                  ...,
+                                  dst_nonexistent = NULL,
+                                  dst_ambiguous = NULL) {
+  zone <- get_zone(x)
+  x <- as_local(x)
+  out <- add_weeks(x, n, ...)
+  dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
+  dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
+  as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -577,9 +612,9 @@ add_days <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_days.Date <- function(x, n, ...) {
-  x <- localize(x)
+  x <- as_local(x)
   out <- add_days(x = x, n = n, ...)
-  unlocalize(out)
+  as.Date(out)
 }
 
 #' @rdname civil-zoned-arithmetic
@@ -590,16 +625,27 @@ add_days.POSIXt <- function(x,
                             dst_nonexistent = NULL,
                             dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- localize(x)
+  x <- as_local(x)
   out <- add_days(x, n, ...)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
-  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+  as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-add_days.civil_zoned <- add_days.POSIXt
+add_days.civil_zoned <- function(x,
+                                 n,
+                                 ...,
+                                 dst_nonexistent = NULL,
+                                 dst_ambiguous = NULL) {
+  zone <- get_zone(x)
+  x <- as_local(x)
+  out <- add_days(x, n, ...)
+  dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
+  dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
+  as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -654,7 +700,7 @@ add_hours <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_hours.Date <- function(x, n, ...) {
-  add_hours_zoned_impl(x, n, ...)
+  add_hours_posixct_impl(x, n, ...)
 }
 
 #' @rdname civil-zoned-arithmetic
@@ -663,7 +709,9 @@ add_hours.POSIXt <- add_hours.Date
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-add_hours.civil_zoned <- add_hours.Date
+add_hours.civil_zoned <- function(x, n, ...) {
+  add_hours_zoned_impl(x, n, ...)
+}
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -696,9 +744,7 @@ subtract_hours.civil_zoned <- subtract_hours.Date
 
 #' @rdname civil-local-arithmetic
 #' @export
-subtract_hours.civil_local <- function(x, n, ...) {
-  add_hours(x, -n, ...)
-}
+subtract_hours.civil_local <- subtract_hours.Date
 
 # ------------------------------------------------------------------------------
 
@@ -712,7 +758,7 @@ add_minutes <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_minutes.Date <- function(x, n, ...) {
-  add_minutes_zoned_impl(x, n, ...)
+  add_minutes_posixct_impl(x, n, ...)
 }
 
 #' @rdname civil-zoned-arithmetic
@@ -721,7 +767,9 @@ add_minutes.POSIXt <- add_minutes.Date
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-add_minutes.civil_zoned <- add_minutes.Date
+add_minutes.civil_zoned <- function(x, n, ...) {
+  add_minutes_zoned_impl(x, n, ...)
+}
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -754,9 +802,7 @@ subtract_minutes.civil_zoned <- subtract_minutes.Date
 
 #' @rdname civil-local-arithmetic
 #' @export
-subtract_minutes.civil_local <- function(x, n, ...) {
-  add_minutes(x, -n, ...)
-}
+subtract_minutes.civil_local <- subtract_minutes.Date
 
 # ------------------------------------------------------------------------------
 
@@ -770,7 +816,7 @@ add_seconds <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_seconds.Date <- function(x, n, ...) {
-  add_seconds_zoned_impl(x, n, ...)
+  add_seconds_posixct_impl(x, n, ...)
 }
 
 #' @rdname civil-zoned-arithmetic
@@ -779,7 +825,9 @@ add_seconds.POSIXt <- add_seconds.Date
 
 #' @rdname civil-zoned-arithmetic
 #' @export
-add_seconds.civil_zoned <- add_seconds.Date
+add_seconds.civil_zoned <- function(x, n, ...) {
+  add_seconds_zoned_impl(x, n, ...)
+}
 
 #' @rdname civil-local-arithmetic
 #' @export
@@ -812,9 +860,7 @@ subtract_seconds.civil_zoned <- subtract_seconds.Date
 
 #' @rdname civil-local-arithmetic
 #' @export
-subtract_seconds.civil_local <- function(x, n, ...) {
-  add_seconds(x, -n, ...)
-}
+subtract_seconds.civil_local <- subtract_seconds.Date
 
 # ------------------------------------------------------------------------------
 
@@ -870,9 +916,7 @@ subtract_milliseconds.civil_zoned <- subtract_milliseconds.Date
 
 #' @rdname civil-local-arithmetic
 #' @export
-subtract_milliseconds.civil_local <- function(x, n, ...) {
-  add_milliseconds(x, -n, ...)
-}
+subtract_milliseconds.civil_local <- subtract_milliseconds.Date
 
 # ------------------------------------------------------------------------------
 
@@ -928,9 +972,7 @@ subtract_microseconds.civil_zoned <- subtract_microseconds.Date
 
 #' @rdname civil-local-arithmetic
 #' @export
-subtract_microseconds.civil_local <- function(x, n, ...) {
-  add_microseconds(x, -n, ...)
-}
+subtract_microseconds.civil_local <- subtract_microseconds.Date
 
 # ------------------------------------------------------------------------------
 
@@ -986,9 +1028,7 @@ subtract_nanoseconds.civil_zoned <- subtract_nanoseconds.Date
 
 #' @rdname civil-local-arithmetic
 #' @export
-subtract_nanoseconds.civil_local <- function(x, n, ...) {
-  add_nanoseconds(x, -n, ...)
-}
+subtract_nanoseconds.civil_local <- subtract_nanoseconds.Date
 
 # ------------------------------------------------------------------------------
 
@@ -1032,6 +1072,40 @@ add_weeks_or_days_local <- function(x, n, ..., unit) {
 
 # ------------------------------------------------------------------------------
 
+add_hours_posixct_impl <- function(x, n, ...) {
+  add_hours_or_minutes_or_seconds_posixct(x, n, ..., unit = "hour")
+}
+add_minutes_posixct_impl <- function(x, n, ...) {
+  add_hours_or_minutes_or_seconds_posixct(x, n, ..., unit = "minute")
+}
+add_seconds_posixct_impl <- function(x, n, ...) {
+  add_hours_or_minutes_or_seconds_posixct(x, n, ..., unit = "second")
+}
+
+add_hours_or_minutes_or_seconds_posixct <- function(x, n, ..., unit) {
+  check_dots_empty()
+
+  n <- vec_cast(n, integer(), x_arg = "n")
+  x <- promote_at_least_zoned_posixct(x)
+
+  # Check tidyverse recyclability
+  vec_size_common(x = x, n = n)
+
+  if (identical(unit, "hour")) {
+    n <- n * seconds_in_hour()
+  } else if (identical(unit, "minute")) {
+    n <- n * seconds_in_minute()
+  } else if (identical(unit, "second")) {
+    n <- n
+  } else {
+    abort("Internal error: Unknown `unit` in hour/minute/second arithmetic.")
+  }
+
+  x + n
+}
+
+# ------------------------------------------------------------------------------
+
 add_hours_zoned_impl <- function(x, n, ...) {
   add_hours_or_minutes_or_seconds_zoned(x, n, ..., unit = "hour")
 }
@@ -1048,33 +1122,9 @@ add_hours_or_minutes_or_seconds_zoned <- function(x, n, ..., unit) {
   n <- vec_cast(n, integer(), x_arg = "n")
   x <- promote_at_least_zoned_datetime(x)
 
-  if (is_zoned_nano_datetime(x)) {
-    add_hours_or_minutes_or_seconds_zoned_nano_datetime(x, n, unit)
-  } else {
-    add_hours_or_minutes_or_seconds_zoned_datetime(x, n, unit)
-  }
-}
-
-add_hours_or_minutes_or_seconds_zoned_nano_datetime <- function(x, n, unit) {
   size <- vec_size_common(x = x, n = n)
-  add_hours_or_minutes_or_seconds_zoned_nano_datetime_cpp(x, n, unit, size)
-}
 
-add_hours_or_minutes_or_seconds_zoned_datetime <- function(x, n, unit) {
-  # Check tidyverse recyclability
-  vec_size_common(x = x, n = n)
-
-  if (identical(unit, "hour")) {
-    n <- n * seconds_in_hour()
-  } else if (identical(unit, "minute")) {
-    n <- n * seconds_in_minute()
-  } else if (identical(unit, "second")) {
-    n <- n
-  } else {
-    abort("Internal error: Unknown `unit` in hour/minute/second arithmetic.")
-  }
-
-  x + n
+  add_hours_or_minutes_or_seconds_zoned_cpp(x, n, unit, size)
 }
 
 # ------------------------------------------------------------------------------

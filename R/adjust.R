@@ -66,9 +66,9 @@ adjust_year <- function(x, value, ...) {
 #' @rdname adjust_year
 #' @export
 adjust_year.Date <- function(x, value, ..., day_nonexistent = "last-time") {
-  x <- localize(x)
+  x <- as_local(x)
   out <- adjust_year(x, value, ..., day_nonexistent = day_nonexistent)
-  unlocalize(out)
+  as.Date(out)
 }
 
 #' @rdname adjust_year
@@ -80,14 +80,24 @@ adjust_year.POSIXt <- function(x,
                                dst_nonexistent = "roll-forward",
                                dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- localize(x)
+  x <- as_local(x)
   out <- adjust_year(x, value, ..., day_nonexistent = day_nonexistent)
-  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+  as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @rdname adjust_year
 #' @export
-adjust_year.civil_zoned <- adjust_year.POSIXt
+adjust_year.civil_zoned <- function(x,
+                                    value,
+                                    ...,
+                                    day_nonexistent = "last-time",
+                                    dst_nonexistent = "roll-forward",
+                                    dst_ambiguous = "earliest") {
+  zone <- get_zone(x)
+  x <- as_local(x)
+  out <- adjust_year(x, value, ..., day_nonexistent = day_nonexistent)
+  as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
 
 #' @rdname adjust_year
 #' @export
@@ -105,9 +115,9 @@ adjust_month <- function(x, value, ...) {
 
 #' @export
 adjust_month.Date <- function(x, value, ..., day_nonexistent = "last-time") {
-  x <- localize(x)
+  x <- as_local(x)
   out <- adjust_month(x, value, ..., day_nonexistent = day_nonexistent)
-  unlocalize(out)
+  as.Date(out)
 }
 
 #' @export
@@ -118,13 +128,23 @@ adjust_month.POSIXt <- function(x,
                                 dst_nonexistent = "roll-forward",
                                 dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- localize(x)
+  x <- as_local(x)
   out <- adjust_month(x, value, ..., day_nonexistent = day_nonexistent)
-  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+  as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @export
-adjust_month.civil_zoned <- adjust_month.POSIXt
+adjust_month.civil_zoned <- function(x,
+                                     value,
+                                     ...,
+                                     day_nonexistent = "last-time",
+                                     dst_nonexistent = "roll-forward",
+                                     dst_ambiguous = "earliest") {
+  zone <- get_zone(x)
+  x <- as_local(x)
+  out <- adjust_month(x, value, ..., day_nonexistent = day_nonexistent)
+  as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
 
 #' @export
 adjust_month.civil_local <- function(x, value, ..., day_nonexistent = "last-time") {
@@ -141,9 +161,9 @@ adjust_day <- function(x, value, ...) {
 
 #' @export
 adjust_day.Date <- function(x, value, ..., day_nonexistent = "last-time") {
-  x <- localize(x)
+  x <- as_local(x)
   out <- adjust_day(x, value, ..., day_nonexistent = day_nonexistent)
-  unlocalize(out)
+  as.Date(out)
 }
 
 #' @export
@@ -154,13 +174,23 @@ adjust_day.POSIXt <- function(x,
                               dst_nonexistent = "roll-forward",
                               dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- localize(x)
+  x <- as_local(x)
   out <- adjust_day(x, value, ..., day_nonexistent = day_nonexistent)
-  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+  as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @export
-adjust_day.civil_zoned <- adjust_day.POSIXt
+adjust_day.civil_zoned <- function(x,
+                                   value,
+                                   ...,
+                                   day_nonexistent = "last-time",
+                                   dst_nonexistent = "roll-forward",
+                                   dst_ambiguous = "earliest") {
+  zone <- get_zone(x)
+  x <- as_local(x)
+  out <- adjust_day(x, value, ..., day_nonexistent = day_nonexistent)
+  as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
 
 #' @export
 adjust_day.civil_local <- function(x, value, ..., day_nonexistent = "last-time") {
@@ -177,9 +207,9 @@ adjust_last_day_of_month <- function(x, ...) {
 
 #' @export
 adjust_last_day_of_month.Date <- function(x, ...) {
-  x <- localize(x)
+  x <- as_local(x)
   out <- adjust_last_day_of_month(x, ...)
-  unlocalize(out)
+  as.Date(out)
 }
 
 #' @export
@@ -188,13 +218,21 @@ adjust_last_day_of_month.POSIXt <- function(x,
                                             dst_nonexistent = "roll-forward",
                                             dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- localize(x)
+  x <- as_local(x)
   out <- adjust_last_day_of_month(x, ...)
-  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+  as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @export
-adjust_last_day_of_month.civil_zoned <- adjust_last_day_of_month.POSIXt
+adjust_last_day_of_month.civil_zoned <- function(x,
+                                                 ...,
+                                                 dst_nonexistent = "roll-forward",
+                                                 dst_ambiguous = "earliest") {
+  zone <- get_zone(x)
+  x <- as_local(x)
+  out <- adjust_last_day_of_month(x, ...)
+  as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
 
 #' @export
 adjust_last_day_of_month.civil_local <- function(x, ...) {
@@ -212,9 +250,9 @@ adjust_hour <- function(x, value, ...) {
 #' @export
 adjust_hour.Date <- function(x, value, ...) {
   zone <- get_zone(x)
-  x <- localize(x)
+  x <- as_local(x)
   out <- adjust_hour(x, value, ...)
-  unlocalize(out, zone = zone)
+  as.POSIXct(out, tz = zone)
 }
 
 #' @export
@@ -224,13 +262,22 @@ adjust_hour.POSIXt <- function(x,
                                dst_nonexistent = "roll-forward",
                                dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- localize(x)
+  x <- as_local(x)
   out <- adjust_hour(x, value, ...)
-  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+  as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @export
-adjust_hour.civil_zoned <- adjust_hour.POSIXt
+adjust_hour.civil_zoned <- function(x,
+                                    value,
+                                    ...,
+                                    dst_nonexistent = "roll-forward",
+                                    dst_ambiguous = "earliest") {
+  zone <- get_zone(x)
+  x <- as_local(x)
+  out <- adjust_hour(x, value, ...)
+  as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
 
 #' @export
 adjust_hour.civil_local <- function(x, value, ...) {
@@ -248,9 +295,9 @@ adjust_minute <- function(x, value, ...) {
 #' @export
 adjust_minute.Date <- function(x, value, ...) {
   zone <- get_zone(x)
-  x <- localize(x)
+  x <- as_local(x)
   out <- adjust_minute(x, value, ...)
-  unlocalize(out, zone = zone)
+  as.POSIXct(out, tz = zone)
 }
 
 #' @export
@@ -260,13 +307,22 @@ adjust_minute.POSIXt <- function(x,
                                  dst_nonexistent = "roll-forward",
                                  dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- localize(x)
+  x <- as_local(x)
   out <- adjust_minute(x, value, ...)
-  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+  as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @export
-adjust_minute.civil_zoned <- adjust_minute.POSIXt
+adjust_minute.civil_zoned <- function(x,
+                                      value,
+                                      ...,
+                                      dst_nonexistent = "roll-forward",
+                                      dst_ambiguous = "earliest") {
+  zone <- get_zone(x)
+  x <- as_local(x)
+  out <- adjust_minute(x, value, ...)
+  as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
 
 #' @export
 adjust_minute.civil_local <- function(x, value, ...) {
@@ -284,9 +340,9 @@ adjust_second <- function(x, value, ...) {
 #' @export
 adjust_second.Date <- function(x, value, ...) {
   zone <- get_zone(x)
-  x <- localize(x)
+  x <- as_local(x)
   out <- adjust_second(x, value, ...)
-  unlocalize(out, zone = zone)
+  as.POSIXct(out, tz = zone)
 }
 
 #' @export
@@ -296,13 +352,22 @@ adjust_second.POSIXt <- function(x,
                                  dst_nonexistent = "roll-forward",
                                  dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- localize(x)
+  x <- as_local(x)
   out <- adjust_second(x, value, ...)
-  unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+  as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @export
-adjust_second.civil_zoned <- adjust_second.POSIXt
+adjust_second.civil_zoned <- function(x,
+                                      value,
+                                      ...,
+                                      dst_nonexistent = "roll-forward",
+                                      dst_ambiguous = "earliest") {
+  zone <- get_zone(x)
+  x <- as_local(x)
+  out <- adjust_second(x, value, ...)
+  as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
 
 #' @export
 adjust_second.civil_local <- function(x, value, ...) {
@@ -320,21 +385,16 @@ adjust_nanosecond <- function(x, value, ...) {
 #' @export
 adjust_nanosecond.Date <- function(x, value, ...) {
   zone <- get_zone(x)
-  x <- localize(x)
+  x <- as_local(x)
   out <- adjust_nanosecond(x, value, ...)
-  unlocalize(out, zone = zone)
+  as_zoned(out, zone = zone)
 }
 
 #' @export
-adjust_nanosecond.POSIXt <- function(x, value, ...) {
-  zone <- get_zone(x)
-  x <- localize(x)
-  out <- adjust_second(x, value, ...)
-  unlocalize(out, zone = zone)
-}
+adjust_nanosecond.POSIXt <- adjust_nanosecond.Date
 
 #' @export
-adjust_nanosecond.civil_zoned <- adjust_nanosecond.POSIXt
+adjust_nanosecond.civil_zoned <- adjust_nanosecond.Date
 
 #' @export
 adjust_nanosecond.civil_local <- function(x, value, ...) {

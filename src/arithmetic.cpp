@@ -282,10 +282,10 @@ SEXP add_milliseconds_or_microseconds_or_nanoseconds_local_cpp(SEXP x,
 
 // -----------------------------------------------------------------------------
 
-static SEXP add_hours_or_minutes_or_seconds_zoned_nano_datetime(sexp x,
-                                                                sexp n,
-                                                                enum unit unit,
-                                                                r_ssize size) {
+static SEXP add_hours_or_minutes_or_seconds_zoned(sexp x,
+                                                  sexp n,
+                                                  enum unit unit,
+                                                  r_ssize size) {
   x = PROTECT(civil_rcrd_maybe_clone(x));
   x = PROTECT(civil_rcrd_recycle(x, size));
 
@@ -342,14 +342,14 @@ static SEXP add_hours_or_minutes_or_seconds_zoned_nano_datetime(sexp x,
 }
 
 [[cpp11::register]]
-SEXP add_hours_or_minutes_or_seconds_zoned_nano_datetime_cpp(SEXP x,
-                                                             SEXP n,
-                                                             SEXP unit,
-                                                             SEXP size) {
+SEXP add_hours_or_minutes_or_seconds_zoned_cpp(SEXP x,
+                                               SEXP n,
+                                               SEXP unit,
+                                               SEXP size) {
   enum unit c_unit = parse_unit(unit);
   r_ssize c_size = r_int_get(size, 0);
 
-  return add_hours_or_minutes_or_seconds_zoned_nano_datetime(x, n, c_unit, c_size);
+  return add_hours_or_minutes_or_seconds_zoned(x, n, c_unit, c_size);
 }
 
 // -----------------------------------------------------------------------------

@@ -2,6 +2,39 @@
 # ------------------------------------------------------------------------------
 
 #' @export
+as_local <- function(x) {
+  restrict_civil_supported(x)
+  UseMethod("as_local")
+}
+
+#' @export
+as_local.civil_local <- function(x) {
+  x
+}
+
+#' @export
+as_local.Date <- function(x) {
+  as_local_date(x)
+}
+
+#' @export
+as_local.POSIXt <- function(x) {
+  as_local_datetime(x)
+}
+
+#' @export
+as_local.civil_zoned_datetime <- function(x) {
+  as_local_datetime(x)
+}
+
+#' @export
+as_local.civil_zoned_nano_datetime <- function(x) {
+  as_local_nano_datetime(x)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 as_local_year_month <- function(x)  {
   UseMethod("as_local_year_month")
 }
@@ -42,8 +75,8 @@ as_local_year_month.POSIXt <- function(x) {
 }
 
 #' @export
-as_local_year_month.civil_zoned_nano_datetime <- function(x) {
-  x <- as_local_nano_datetime(x)
+as_local_year_month.civil_zoned <- function(x) {
+  x <- as_local_date(x)
   as_local_year_month(x)
 }
 
@@ -89,8 +122,8 @@ as_local_date.POSIXt <- function(x) {
 }
 
 #' @export
-as_local_date.civil_zoned_nano_datetime <- function(x) {
-  x <- as_local_nano_datetime(x)
+as_local_date.civil_zoned <- function(x) {
+  x <- as_local_datetime(x)
   as_local_date(x)
 }
 
@@ -152,6 +185,24 @@ as_local_datetime.POSIXt <- function(x) {
 }
 
 #' @export
+as_local_datetime.civil_zoned_datetime <- function(x) {
+  names <- names(x)
+  zone <- get_zone(x)
+
+  days <- field(x, "days")
+  time_of_day <- field(x, "time_of_day")
+  fields <- convert_datetime_fields_from_zoned_to_local(days, time_of_day, zone)
+  days <- fields$day
+  time_of_day <- fields$time_of_day
+
+  new_local_datetime(
+    days = days,
+    time_of_day = time_of_day,
+    names = names
+  )
+}
+
+#' @export
 as_local_datetime.civil_zoned_nano_datetime <- function(x) {
   x <- as_local_nano_datetime(x)
   as_local_datetime(x)
@@ -205,6 +256,12 @@ as_local_nano_datetime.Date <- function(x) {
 
 #' @export
 as_local_nano_datetime.POSIXt <- function(x) {
+  x <- as_local_datetime(x)
+  as_local_nano_datetime(x)
+}
+
+#' @export
+as_local_nano_datetime.civil_zoned_datetime <- function(x) {
   x <- as_local_datetime(x)
   as_local_nano_datetime(x)
 }
