@@ -87,6 +87,10 @@ adjust_year.POSIXt <- function(x,
 
 #' @rdname adjust_year
 #' @export
+adjust_year.civil_zoned <- adjust_year.POSIXt
+
+#' @rdname adjust_year
+#' @export
 adjust_year.civil_local <- function(x, value, ..., day_nonexistent = "last-time") {
   adjust_year_impl(x, value, ..., day_nonexistent = day_nonexistent)
 }
@@ -118,6 +122,9 @@ adjust_month.POSIXt <- function(x,
   out <- adjust_month(x, value, ..., day_nonexistent = day_nonexistent)
   unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
+
+#' @export
+adjust_month.civil_zoned <- adjust_month.POSIXt
 
 #' @export
 adjust_month.civil_local <- function(x, value, ..., day_nonexistent = "last-time") {
@@ -153,6 +160,9 @@ adjust_day.POSIXt <- function(x,
 }
 
 #' @export
+adjust_day.civil_zoned <- adjust_day.POSIXt
+
+#' @export
 adjust_day.civil_local <- function(x, value, ..., day_nonexistent = "last-time") {
   adjust_day_impl(x, value, ..., day_nonexistent = day_nonexistent)
 }
@@ -182,6 +192,9 @@ adjust_last_day_of_month.POSIXt <- function(x,
   out <- adjust_last_day_of_month(x, ...)
   unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
+
+#' @export
+adjust_last_day_of_month.civil_zoned <- adjust_last_day_of_month.POSIXt
 
 #' @export
 adjust_last_day_of_month.civil_local <- function(x, ...) {
@@ -217,6 +230,9 @@ adjust_hour.POSIXt <- function(x,
 }
 
 #' @export
+adjust_hour.civil_zoned <- adjust_hour.POSIXt
+
+#' @export
 adjust_hour.civil_local <- function(x, value, ...) {
   adjust_hour_impl(x, value, ...)
 }
@@ -248,6 +264,9 @@ adjust_minute.POSIXt <- function(x,
   out <- adjust_minute(x, value, ...)
   unlocalize(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
+
+#' @export
+adjust_minute.civil_zoned <- adjust_minute.POSIXt
 
 #' @export
 adjust_minute.civil_local <- function(x, value, ...) {
@@ -283,6 +302,9 @@ adjust_second.POSIXt <- function(x,
 }
 
 #' @export
+adjust_second.civil_zoned <- adjust_second.POSIXt
+
+#' @export
 adjust_second.civil_local <- function(x, value, ...) {
   adjust_second_impl(x, value, ...)
 }
@@ -297,13 +319,22 @@ adjust_nanosecond <- function(x, value, ...) {
 
 #' @export
 adjust_nanosecond.Date <- function(x, value, ...) {
-  abort("Can't currently adjust nanoseconds of a Date.")
+  zone <- get_zone(x)
+  x <- localize(x)
+  out <- adjust_nanosecond(x, value, ...)
+  unlocalize(out, zone = zone)
 }
 
 #' @export
 adjust_nanosecond.POSIXt <- function(x, value, ...) {
-  abort("Can't currently adjust nanoseconds of a POSIXct/POSIXlt.")
+  zone <- get_zone(x)
+  x <- localize(x)
+  out <- adjust_second(x, value, ...)
+  unlocalize(out, zone = zone)
 }
+
+#' @export
+adjust_nanosecond.civil_zoned <- adjust_nanosecond.POSIXt
 
 #' @export
 adjust_nanosecond.civil_local <- function(x, value, ...) {

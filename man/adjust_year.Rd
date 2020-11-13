@@ -4,6 +4,7 @@
 \alias{adjust_year}
 \alias{adjust_year.Date}
 \alias{adjust_year.POSIXt}
+\alias{adjust_year.civil_zoned}
 \alias{adjust_year.civil_local}
 \title{Adjust the year}
 \usage{
@@ -12,6 +13,15 @@ adjust_year(x, value, ...)
 \method{adjust_year}{Date}(x, value, ..., day_nonexistent = "last-time")
 
 \method{adjust_year}{POSIXt}(
+  x,
+  value,
+  ...,
+  day_nonexistent = "last-time",
+  dst_nonexistent = "roll-forward",
+  dst_ambiguous = "earliest"
+)
+
+\method{adjust_year}{civil_zoned}(
   x,
   value,
   ...,
