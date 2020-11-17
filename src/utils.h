@@ -43,4 +43,11 @@ static inline SEXP civil_get_tzone(SEXP x) {
 
 // -----------------------------------------------------------------------------
 
+template <typename... Args>
+void civil_abort [[noreturn]] (const char* fmt, Args... args) {
+  cpp11::safe.noreturn(r_abort)(fmt, args...);
+}
+
+// -----------------------------------------------------------------------------
+
 #endif

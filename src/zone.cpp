@@ -32,7 +32,7 @@ SEXP zone_standardize(SEXP zone) {
   }
 
   if (r_typeof(zone) != r_type_character) {
-    r_abort("`zone` must be a character vector or `NULL`.");
+    civil_abort("`zone` must be a character vector or `NULL`.");
   }
 
   r_ssize size = r_length(zone);
@@ -107,7 +107,7 @@ const date::time_zone* zone_name_load_try(const std::string& zone_name) {
   try {
     return date::locate_zone(zone_name);
   } catch (const std::runtime_error& error) {
-    r_abort("'%s' not found in the timezone database.", zone_name.c_str());
+    civil_abort("'%s' not found in the timezone database.", zone_name.c_str());
   };
 }
 

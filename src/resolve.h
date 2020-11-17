@@ -2,6 +2,7 @@
 #define CIVIL_RESOLVE_H
 
 #include "civil.h"
+#include "utils.h"
 #include "enums.h"
 #include "civil-rcrd.h"
 
@@ -103,7 +104,7 @@ static inline void resolve_day_nonexistent_na(bool& na) {
 }
 
 static inline void resolve_day_nonexistent_error(r_ssize i) {
-  r_abort("Nonexistent day found at location %i.", (int) i + 1);
+  civil_abort("Nonexistent day found at location %i.", (int) i + 1);
 }
 
 // -----------------------------------------------------------------------------

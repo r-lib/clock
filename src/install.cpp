@@ -1,4 +1,5 @@
 #include "civil.h"
+#include "utils.h"
 
 /*
  * This function won't do anything if `USE_OS_TZDB=1`. In that case, the date
@@ -10,7 +11,7 @@
 [[cpp11::register]]
 void civil_set_install(SEXP path) {
   if (!r_is_string(path)) {
-    r_abort("Internal error: Time zone database installation path should have size 1.");
+    civil_abort("Internal error: Time zone database installation path should have size 1.");
   }
 
   const char* c_path = CHAR(STRING_PTR(path)[0]);

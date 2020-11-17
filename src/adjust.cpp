@@ -1,4 +1,5 @@
 #include "civil.h"
+#include "utils.h"
 #include "enums.h"
 #include "conversion.h"
 #include "resolve.h"
@@ -138,7 +139,7 @@ adjust_local_days_switch(const date::year_month_day& ymd,
     return adjust_local_days_last_day_of_month(ymd);
   }
   default: {
-    r_abort("Internal error: Unknown `adjuster` in `adjust_local_date_switch()`.");
+    civil_abort("Internal error: Unknown `adjuster` in `adjust_local_date_switch()`.");
   }
   }
 }
@@ -253,7 +254,7 @@ adjust_local_time_of_day_switch(const date::hh_mm_ss<std::chrono::seconds>& hms,
     return adjust_local_time_of_day_second(hms, value);
   }
   default: {
-    r_abort("Internal error: Unknown `adjuster` in `adjust_local_time_of_day_switch()`.");
+    civil_abort("Internal error: Unknown `adjuster` in `adjust_local_time_of_day_switch()`.");
   }
   }
 }
@@ -347,7 +348,7 @@ adjust_local_nanos_of_second_switch(const std::chrono::nanoseconds& nanos,
     return adjust_local_nanos_of_second_nanosecond(nanos, value);
   }
   default: {
-    r_abort("Internal error: Unknown `adjuster` in `adjust_local_time_of_day_switch()`.");
+    civil_abort("Internal error: Unknown `adjuster` in `adjust_local_time_of_day_switch()`.");
   }
   }
 }

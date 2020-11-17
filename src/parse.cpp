@@ -1,4 +1,5 @@
 #include "civil.h"
+#include "utils.h"
 #include "enums.h"
 #include "conversion.h"
 #include "resolve.h"
@@ -64,7 +65,7 @@ SEXP parse_zoned_datetime_cpp(SEXP x,
     cpp_locale = std::locale{c_locale};
   }
   catch (const std::runtime_error& error) {
-    r_abort("Failed to load locale.");
+    civil_abort("Failed to load locale.");
   }
 
   SEXP days = PROTECT(r_new_integer(c_size));
@@ -204,7 +205,7 @@ SEXP parse_local_datetime_cpp(SEXP x,
     cpp_locale = std::locale{c_locale};
   }
   catch (const std::runtime_error& error) {
-    r_abort("Failed to load locale.");
+    civil_abort("Failed to load locale.");
   }
 
   SEXP days = PROTECT(r_new_integer(c_size));

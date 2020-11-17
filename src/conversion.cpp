@@ -1,4 +1,5 @@
 #include "conversion.h"
+#include "utils.h"
 
 // -----------------------------------------------------------------------------
 
@@ -44,7 +45,7 @@ static inline date::sys_seconds info_nonexistent_na(bool& na) {
 }
 
 static inline date::sys_seconds info_nonexistent_error(r_ssize i) {
-  r_abort("Nonexistent time due to daylight savings at location %i.", (int) i + 1);
+  civil_abort("Nonexistent time due to daylight savings at location %i.", (int) i + 1);
 }
 
 // -----------------------------------------------------------------------------
@@ -76,7 +77,7 @@ static inline date::sys_seconds info_ambiguous_na(bool& na) {
 }
 
 static inline date::sys_seconds info_ambiguous_error(r_ssize i) {
-  r_abort("Ambiguous time due to daylight savings at location %i.", (int) i + 1);
+  civil_abort("Ambiguous time due to daylight savings at location %i.", (int) i + 1);
 }
 
 // -----------------------------------------------------------------------------

@@ -1,4 +1,5 @@
 #include "enums.h"
+#include "utils.h"
 #include <cstring>
 #include <string>
 
@@ -7,7 +8,7 @@
 // [[ include("enums.h") ]]
 enum day_nonexistent parse_day_nonexistent(SEXP x) {
   if (!r_is_string(x)) {
-    r_abort("`day_nonexistent` must be a string with length 1.");
+    civil_abort("`day_nonexistent` must be a string with length 1.");
   }
 
   const char* string = CHAR(STRING_ELT(x, 0));
@@ -19,7 +20,7 @@ enum day_nonexistent parse_day_nonexistent(SEXP x) {
   if (!strcmp(string, "NA")) return day_nonexistent::na;
   if (!strcmp(string, "error")) return day_nonexistent::error;
 
-  r_abort("'%s' is not a recognized `day_nonexistent` option.", string);
+  civil_abort("'%s' is not a recognized `day_nonexistent` option.", string);
 }
 
 // -----------------------------------------------------------------------------
@@ -27,7 +28,7 @@ enum day_nonexistent parse_day_nonexistent(SEXP x) {
 // [[ include("enums.h") ]]
 enum dst_nonexistent parse_dst_nonexistent(SEXP x) {
   if (!r_is_string(x)) {
-    r_abort("`dst_nonexistent` must be a string with length 1.");
+    civil_abort("`dst_nonexistent` must be a string with length 1.");
   }
 
   const char* string = CHAR(STRING_ELT(x, 0));
@@ -44,7 +45,7 @@ enum dst_nonexistent parse_dst_nonexistent_one(const char* x) {
   if (!strcmp(x, "NA")) return dst_nonexistent::na;
   if (!strcmp(x, "error")) return dst_nonexistent::error;
 
-  r_abort("'%s' is not a recognized `dst_nonexistent` option.", x);
+  civil_abort("'%s' is not a recognized `dst_nonexistent` option.", x);
 }
 
 // -----------------------------------------------------------------------------
@@ -52,7 +53,7 @@ enum dst_nonexistent parse_dst_nonexistent_one(const char* x) {
 // [[ include("enums.h") ]]
 enum dst_ambiguous parse_dst_ambiguous(SEXP x) {
   if (!r_is_string(x)) {
-    r_abort("`dst_ambiguous` must be a string with length 1.");
+    civil_abort("`dst_ambiguous` must be a string with length 1.");
   }
 
   const char* string = CHAR(STRING_ELT(x, 0));
@@ -67,7 +68,7 @@ enum dst_ambiguous parse_dst_ambiguous_one(const char* x) {
   if (!strcmp(x, "NA")) return dst_ambiguous::na;
   if (!strcmp(x, "error")) return dst_ambiguous::error;
 
-  r_abort("'%s' is not a recognized `dst_ambiguous` option.", x);
+  civil_abort("'%s' is not a recognized `dst_ambiguous` option.", x);
 }
 
 // -----------------------------------------------------------------------------
@@ -75,7 +76,7 @@ enum dst_ambiguous parse_dst_ambiguous_one(const char* x) {
 // [[ include("enums.h") ]]
 enum unit parse_unit(SEXP x) {
   if (!r_is_string(x)) {
-    r_abort("`unit` must be a string with length 1.");
+    civil_abort("`unit` must be a string with length 1.");
   }
 
   const char* string = CHAR(STRING_ELT(x, 0));
@@ -91,7 +92,7 @@ enum unit parse_unit(SEXP x) {
   if (!strcmp(string, "microsecond")) return unit::microsecond;
   if (!strcmp(string, "nanosecond")) return unit::nanosecond;
 
-  r_abort("'%s' is not a recognized `unit` option.", string);
+  civil_abort("'%s' is not a recognized `unit` option.", string);
 }
 
 // -----------------------------------------------------------------------------
@@ -99,7 +100,7 @@ enum unit parse_unit(SEXP x) {
 // [[ include("enums.h") ]]
 enum adjuster parse_adjuster(SEXP x) {
   if (!r_is_string(x)) {
-    r_abort("`adjuster` must be a string with length 1.");
+    civil_abort("`adjuster` must be a string with length 1.");
   }
 
   const char* string = CHAR(STRING_ELT(x, 0));
@@ -113,5 +114,5 @@ enum adjuster parse_adjuster(SEXP x) {
   if (!strcmp(string, "nanosecond")) return adjuster::nanosecond;
   if (!strcmp(string, "last_day_of_month")) return adjuster::last_day_of_month;
 
-  r_abort("'%s' is not a recognized `adjuster` option.", string);
+  civil_abort("'%s' is not a recognized `adjuster` option.", string);
 }
