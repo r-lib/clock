@@ -84,6 +84,14 @@ civil_set_install <- function(path) {
   invisible(.Call("_civil_civil_set_install", path, PACKAGE = "civil"))
 }
 
+parse_zoned_datetime_cpp <- function(x, format, zone, locale, dst_nonexistent, dst_ambiguous, size) {
+  .Call("_civil_parse_zoned_datetime_cpp", x, format, zone, locale, dst_nonexistent, dst_ambiguous, size, PACKAGE = "civil")
+}
+
+parse_local_datetime_cpp <- function(x, format, locale) {
+  .Call("_civil_parse_local_datetime_cpp", x, format, locale, PACKAGE = "civil")
+}
+
 zone_standardize <- function(zone) {
   .Call("_civil_zone_standardize", zone, PACKAGE = "civil")
 }

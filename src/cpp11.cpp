@@ -152,6 +152,20 @@ extern "C" SEXP _civil_civil_set_install(SEXP path) {
     return R_NilValue;
   END_CPP11
 }
+// parse.cpp
+SEXP parse_zoned_datetime_cpp(SEXP x, SEXP format, SEXP zone, SEXP locale, SEXP dst_nonexistent, SEXP dst_ambiguous, SEXP size);
+extern "C" SEXP _civil_parse_zoned_datetime_cpp(SEXP x, SEXP format, SEXP zone, SEXP locale, SEXP dst_nonexistent, SEXP dst_ambiguous, SEXP size) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(parse_zoned_datetime_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(format), cpp11::as_cpp<cpp11::decay_t<SEXP>>(zone), cpp11::as_cpp<cpp11::decay_t<SEXP>>(locale), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size)));
+  END_CPP11
+}
+// parse.cpp
+SEXP parse_local_datetime_cpp(SEXP x, SEXP format, SEXP locale);
+extern "C" SEXP _civil_parse_local_datetime_cpp(SEXP x, SEXP format, SEXP locale) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(parse_local_datetime_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(format), cpp11::as_cpp<cpp11::decay_t<SEXP>>(locale)));
+  END_CPP11
+}
 // zone.cpp
 SEXP zone_standardize(SEXP zone);
 extern "C" SEXP _civil_zone_standardize(SEXP zone) {
@@ -197,6 +211,8 @@ extern SEXP _civil_convert_year_month_day_hour_minute_second_nanos_to_fields_cpp
 extern SEXP _civil_convert_year_month_day_hour_minute_second_to_fields_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_year_month_day_to_fields_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_floor_days_to_year_month_cpp(SEXP);
+extern SEXP _civil_parse_local_datetime_cpp(SEXP, SEXP, SEXP);
+extern SEXP _civil_parse_zoned_datetime_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_zone_current();
 extern SEXP _civil_zone_is_valid(SEXP);
 extern SEXP _civil_zone_standardize(SEXP);
@@ -223,6 +239,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_convert_year_month_day_hour_minute_second_to_fields_cpp",       (DL_FUNC) &_civil_convert_year_month_day_hour_minute_second_to_fields_cpp,       7},
     {"_civil_convert_year_month_day_to_fields_cpp",                          (DL_FUNC) &_civil_convert_year_month_day_to_fields_cpp,                          4},
     {"_civil_floor_days_to_year_month_cpp",                                  (DL_FUNC) &_civil_floor_days_to_year_month_cpp,                                  1},
+    {"_civil_parse_local_datetime_cpp",                                      (DL_FUNC) &_civil_parse_local_datetime_cpp,                                      3},
+    {"_civil_parse_zoned_datetime_cpp",                                      (DL_FUNC) &_civil_parse_zoned_datetime_cpp,                                      7},
     {"_civil_zone_current",                                                  (DL_FUNC) &_civil_zone_current,                                                  0},
     {"_civil_zone_is_valid",                                                 (DL_FUNC) &_civil_zone_is_valid,                                                 1},
     {"_civil_zone_standardize",                                              (DL_FUNC) &_civil_zone_standardize,                                              1},
