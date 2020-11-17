@@ -54,13 +54,6 @@ extern "C" SEXP _civil_add_hours_or_minutes_or_seconds_local_cpp(SEXP x, SEXP n,
   END_CPP11
 }
 // arithmetic.cpp
-SEXP add_milliseconds_or_microseconds_or_nanoseconds_local_cpp(SEXP x, SEXP n, SEXP unit, SEXP size);
-extern "C" SEXP _civil_add_milliseconds_or_microseconds_or_nanoseconds_local_cpp(SEXP x, SEXP n, SEXP unit, SEXP size) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(add_milliseconds_or_microseconds_or_nanoseconds_local_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size)));
-  END_CPP11
-}
-// arithmetic.cpp
 SEXP add_hours_or_minutes_or_seconds_zoned_cpp(SEXP x, SEXP n, SEXP unit, SEXP size);
 extern "C" SEXP _civil_add_hours_or_minutes_or_seconds_zoned_cpp(SEXP x, SEXP n, SEXP unit, SEXP size) {
   BEGIN_CPP11
@@ -68,10 +61,10 @@ extern "C" SEXP _civil_add_hours_or_minutes_or_seconds_zoned_cpp(SEXP x, SEXP n,
   END_CPP11
 }
 // arithmetic.cpp
-SEXP add_milliseconds_or_microseconds_or_nanoseconds_zoned_cpp(SEXP x, SEXP n, SEXP unit, SEXP size);
-extern "C" SEXP _civil_add_milliseconds_or_microseconds_or_nanoseconds_zoned_cpp(SEXP x, SEXP n, SEXP unit, SEXP size) {
+SEXP add_milliseconds_or_microseconds_or_nanoseconds_cpp(SEXP x, SEXP n, SEXP unit, SEXP size);
+extern "C" SEXP _civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp(SEXP x, SEXP n, SEXP unit, SEXP size) {
   BEGIN_CPP11
-    return cpp11::as_sexp(add_milliseconds_or_microseconds_or_nanoseconds_zoned_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size)));
+    return cpp11::as_sexp(add_milliseconds_or_microseconds_or_nanoseconds_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(n), cpp11::as_cpp<cpp11::decay_t<SEXP>>(unit), cpp11::as_cpp<cpp11::decay_t<SEXP>>(size)));
   END_CPP11
 }
 // converters.cpp
@@ -199,8 +192,7 @@ extern "C" {
 /* .Call calls */
 extern SEXP _civil_add_hours_or_minutes_or_seconds_local_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_hours_or_minutes_or_seconds_zoned_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _civil_add_milliseconds_or_microseconds_or_nanoseconds_local_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _civil_add_milliseconds_or_microseconds_or_nanoseconds_zoned_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_weeks_or_days_local_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_years_or_months_local_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_local_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -228,8 +220,7 @@ extern SEXP _civil_zone_standardize(SEXP);
 static const R_CallMethodDef CallEntries[] = {
     {"_civil_add_hours_or_minutes_or_seconds_local_cpp",                     (DL_FUNC) &_civil_add_hours_or_minutes_or_seconds_local_cpp,                     4},
     {"_civil_add_hours_or_minutes_or_seconds_zoned_cpp",                     (DL_FUNC) &_civil_add_hours_or_minutes_or_seconds_zoned_cpp,                     4},
-    {"_civil_add_milliseconds_or_microseconds_or_nanoseconds_local_cpp",     (DL_FUNC) &_civil_add_milliseconds_or_microseconds_or_nanoseconds_local_cpp,     4},
-    {"_civil_add_milliseconds_or_microseconds_or_nanoseconds_zoned_cpp",     (DL_FUNC) &_civil_add_milliseconds_or_microseconds_or_nanoseconds_zoned_cpp,     4},
+    {"_civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp",           (DL_FUNC) &_civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp,           4},
     {"_civil_add_weeks_or_days_local_cpp",                                   (DL_FUNC) &_civil_add_weeks_or_days_local_cpp,                                   4},
     {"_civil_add_years_or_months_local_cpp",                                 (DL_FUNC) &_civil_add_years_or_months_local_cpp,                                 5},
     {"_civil_adjust_local_days_cpp",                                         (DL_FUNC) &_civil_adjust_local_days_cpp,                                         5},

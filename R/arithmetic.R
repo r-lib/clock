@@ -1170,7 +1170,8 @@ add_milliseconds_or_microseconds_or_nanoseconds_zoned <- function(x, n, ..., uni
 
   x <- promote_at_least_zoned_nano_datetime(x)
 
-  add_milliseconds_or_microseconds_or_nanoseconds_zoned_cpp(x, n, unit, size)
+  # Zoned and Local sub-daily arithmetic are equivalent at the C level
+  add_milliseconds_or_microseconds_or_nanoseconds_cpp(x, n, unit, size)
 }
 
 # ------------------------------------------------------------------------------
@@ -1193,7 +1194,8 @@ add_milliseconds_or_microseconds_or_nanoseconds_local <- function(x, n, ..., uni
 
   x <- promote_at_least_local_nano_datetime(x)
 
-  add_milliseconds_or_microseconds_or_nanoseconds_local_cpp(x, n, unit, size)
+  # Zoned and Local sub-daily arithmetic are equivalent at the C level
+  add_milliseconds_or_microseconds_or_nanoseconds_cpp(x, n, unit, size)
 }
 
 # ------------------------------------------------------------------------------

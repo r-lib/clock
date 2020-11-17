@@ -28,16 +28,12 @@ add_hours_or_minutes_or_seconds_local_cpp <- function(x, n, unit, size) {
   .Call("_civil_add_hours_or_minutes_or_seconds_local_cpp", x, n, unit, size, PACKAGE = "civil")
 }
 
-add_milliseconds_or_microseconds_or_nanoseconds_local_cpp <- function(x, n, unit, size) {
-  .Call("_civil_add_milliseconds_or_microseconds_or_nanoseconds_local_cpp", x, n, unit, size, PACKAGE = "civil")
-}
-
 add_hours_or_minutes_or_seconds_zoned_cpp <- function(x, n, unit, size) {
   .Call("_civil_add_hours_or_minutes_or_seconds_zoned_cpp", x, n, unit, size, PACKAGE = "civil")
 }
 
-add_milliseconds_or_microseconds_or_nanoseconds_zoned_cpp <- function(x, n, unit, size) {
-  .Call("_civil_add_milliseconds_or_microseconds_or_nanoseconds_zoned_cpp", x, n, unit, size, PACKAGE = "civil")
+add_milliseconds_or_microseconds_or_nanoseconds_cpp <- function(x, n, unit, size) {
+  .Call("_civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp", x, n, unit, size, PACKAGE = "civil")
 }
 
 convert_seconds_to_days_and_time_of_day_cpp <- function(seconds, zone) {

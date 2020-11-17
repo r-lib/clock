@@ -200,88 +200,6 @@ SEXP add_hours_or_minutes_or_seconds_local_cpp(SEXP x,
 
 // -----------------------------------------------------------------------------
 
-static SEXP add_milliseconds_or_microseconds_or_nanoseconds_local(sexp x,
-                                                                  sexp n,
-                                                                  enum unit unit,
-                                                                  r_ssize size) {
-  x = PROTECT(civil_rcrd_maybe_clone(x));
-  x = PROTECT(civil_rcrd_recycle(x, size));
-
-  int* p_days = civil_rcrd_days_deref(x);
-  int* p_time_of_day = civil_rcrd_time_of_day_deref(x);
-  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(x);
-
-  const bool recycle_n = r_is_scalar(n);
-  const int* p_n = r_int_deref_const(n);
-
-  for (r_ssize i = 0; i < size; ++i) {
-    int elt_days = p_days[i];
-    int elt_time_of_day = p_time_of_day[i];
-    int elt_nanos_of_second = p_nanos_of_second[i];
-    int elt_n = recycle_n ? p_n[0] : p_n[i];
-
-    if (elt_days == r_int_na) {
-      continue;
-    }
-    if (elt_n == r_int_na) {
-      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
-      continue;
-    }
-
-    std::chrono::seconds elt_chrono_time_of_day{elt_time_of_day};
-    std::chrono::nanoseconds elt_chrono_nanos_of_second{elt_nanos_of_second};
-
-    date::local_days elt_lday{date::days{elt_days}};
-    date::local_seconds elt_lsec_floor{elt_lday};
-
-    local_nanoseconds elt_lnanosec =
-      elt_lsec_floor +
-      elt_chrono_time_of_day +
-      elt_chrono_nanos_of_second;
-
-    std::chrono::nanoseconds elt_chrono_n;
-
-    if (unit == unit::millisecond) {
-      elt_chrono_n = std::chrono::milliseconds{elt_n};
-    } else if (unit == unit::microsecond) {
-      elt_chrono_n = std::chrono::microseconds{elt_n};
-    } else if (unit == unit::nanosecond) {
-      elt_chrono_n = std::chrono::nanoseconds{elt_n};
-    }
-
-    local_nanoseconds out_lnanosec = elt_lnanosec + elt_chrono_n;
-
-    date::local_seconds out_lsec = date::floor<std::chrono::seconds>(out_lnanosec);
-    local_nanoseconds out_lnanosec_floor{out_lsec};
-
-    date::local_days out_lday = date::floor<date::days>(out_lsec);
-    date::local_seconds out_lsec_floor{out_lday};
-
-    std::chrono::nanoseconds out_chrono_nanos_of_second{out_lnanosec - out_lnanosec_floor};
-    std::chrono::seconds out_chrono_time_of_day{out_lsec - out_lsec_floor};
-
-    p_days[i] = out_lday.time_since_epoch().count();
-    p_time_of_day[i] = out_chrono_time_of_day.count();
-    p_nanos_of_second[i] = out_chrono_nanos_of_second.count();
-  }
-
-  UNPROTECT(2);
-  return x;
-}
-
-[[cpp11::register]]
-SEXP add_milliseconds_or_microseconds_or_nanoseconds_local_cpp(SEXP x,
-                                                               SEXP n,
-                                                               SEXP unit,
-                                                               SEXP size) {
-  enum unit c_unit = parse_unit(unit);
-  r_ssize c_size = r_int_get(size, 0);
-
-  return add_milliseconds_or_microseconds_or_nanoseconds_local(x, n, c_unit, c_size);
-}
-
-// -----------------------------------------------------------------------------
-
 static SEXP add_hours_or_minutes_or_seconds_zoned(sexp x,
                                                   sexp n,
                                                   enum unit unit,
@@ -354,10 +272,64 @@ SEXP add_hours_or_minutes_or_seconds_zoned_cpp(SEXP x,
 
 // -----------------------------------------------------------------------------
 
-static SEXP add_milliseconds_or_microseconds_or_nanoseconds_zoned(sexp x,
-                                                                  sexp n,
-                                                                  enum unit unit,
-                                                                  r_ssize size) {
+/*
+ * Handle sub-second arithmetic specially by avoiding conversion from
+ * nano_datetime fields to std::chrono::nanosecond. We try to support
+ * a wider range of years that would be supported by the int64_t that
+ * generally backs a nanosecond.
+ *
+ * Arithmetic "overflow" into larger units generally follows the strategy
+ * laid out by <date> with the year_month_day class
+ * https://github.com/HowardHinnant/date/blob/97246a638a6d8f0269f4555c5e31106a86e3fd94/include/date/date.h#L2189-L2199
+ */
+
+struct fields_datetime {
+  date::days days;
+  std::chrono::seconds time_of_day;
+};
+struct fields_nano_datetime {
+  date::days days;
+  std::chrono::seconds time_of_day;
+  std::chrono::nanoseconds nanos_of_second;
+};
+
+static
+inline
+date::days plus_days(const date::days& days, const date::days& n) {
+  return days + n;
+}
+
+static
+inline
+fields_datetime plus_time_of_day(const date::days& days,
+                                 const std::chrono::seconds& time_of_day,
+                                 const std::chrono::seconds& n) {
+  static std::chrono::seconds::rep sec_in_day = 86400;
+  std::chrono::seconds::rep count = time_of_day.count() + n.count();
+  date::days overflow{(count >= 0 ? count : count - (sec_in_day - 1)) / sec_in_day};
+  std::chrono::seconds out_time_of_day{count - overflow.count() * sec_in_day};
+  date::days out_days = plus_days(days, overflow);
+  return {out_days, out_time_of_day};
+}
+
+static
+inline
+fields_nano_datetime plus_nanos_of_second(const date::days& days,
+                                          const std::chrono::seconds& time_of_day,
+                                          const std::chrono::nanoseconds& nanos_of_second,
+                                          const std::chrono::nanoseconds& n) {
+  static std::chrono::nanoseconds::rep nanos_in_sec = 1000000000;
+  std::chrono::nanoseconds::rep count = nanos_of_second.count() + n.count();
+  std::chrono::seconds overflow{(count >= 0 ? count : count - (nanos_in_sec - 1)) / nanos_in_sec};
+  std::chrono::nanoseconds out_nanos_of_second{count - overflow.count() * nanos_in_sec};
+  fields_datetime fdt = plus_time_of_day(days, time_of_day, overflow);
+  return {fdt.days, fdt.time_of_day, out_nanos_of_second};
+}
+
+static SEXP add_milliseconds_or_microseconds_or_nanoseconds(sexp x,
+                                                            sexp n,
+                                                            enum unit unit,
+                                                            r_ssize size) {
   x = PROTECT(civil_rcrd_maybe_clone(x));
   x = PROTECT(civil_rcrd_recycle(x, size));
 
@@ -382,17 +354,6 @@ static SEXP add_milliseconds_or_microseconds_or_nanoseconds_zoned(sexp x,
       continue;
     }
 
-    std::chrono::seconds elt_tod{elt_time_of_day};
-    std::chrono::nanoseconds elt_nanos{elt_nanos_of_second};
-
-    date::sys_days elt_sday{date::days{elt_days}};
-    date::sys_seconds elt_ssec_floor{elt_sday};
-
-    sys_nanoseconds elt_snanosec =
-      elt_ssec_floor +
-      elt_tod +
-      elt_nanos;
-
     std::chrono::nanoseconds elt_chrono_n;
 
     if (unit == unit::millisecond) {
@@ -403,20 +364,16 @@ static SEXP add_milliseconds_or_microseconds_or_nanoseconds_zoned(sexp x,
       elt_chrono_n = std::chrono::nanoseconds{elt_n};
     }
 
-    sys_nanoseconds out_snanosec = elt_snanosec + elt_chrono_n;
+    fields_nano_datetime fndt = plus_nanos_of_second(
+      date::days{elt_days},
+      std::chrono::seconds{elt_time_of_day},
+      std::chrono::nanoseconds{elt_nanos_of_second},
+      elt_chrono_n
+    );
 
-    date::sys_seconds out_ssec = date::floor<std::chrono::seconds>(out_snanosec);
-    sys_nanoseconds out_snanosec_floor{out_ssec};
-
-    date::sys_days out_sday = date::floor<date::days>(out_ssec);
-    date::sys_seconds out_ssec_floor{out_sday};
-
-    std::chrono::nanoseconds out_nanos{out_snanosec - out_snanosec_floor};
-    std::chrono::seconds out_tod{out_ssec - out_ssec_floor};
-
-    p_days[i] = out_sday.time_since_epoch().count();
-    p_time_of_day[i] = out_tod.count();
-    p_nanos_of_second[i] = out_nanos.count();
+    p_days[i] = fndt.days.count();
+    p_time_of_day[i] = fndt.time_of_day.count();
+    p_nanos_of_second[i] = fndt.nanos_of_second.count();
   }
 
   UNPROTECT(2);
@@ -424,12 +381,13 @@ static SEXP add_milliseconds_or_microseconds_or_nanoseconds_zoned(sexp x,
 }
 
 [[cpp11::register]]
-SEXP add_milliseconds_or_microseconds_or_nanoseconds_zoned_cpp(SEXP x,
-                                                               SEXP n,
-                                                               SEXP unit,
-                                                               SEXP size) {
+SEXP add_milliseconds_or_microseconds_or_nanoseconds_cpp(SEXP x,
+                                                         SEXP n,
+                                                         SEXP unit,
+                                                         SEXP size) {
   enum unit c_unit = parse_unit(unit);
   r_ssize c_size = r_int_get(size, 0);
 
-  return add_milliseconds_or_microseconds_or_nanoseconds_zoned(x, n, c_unit, c_size);
+  return add_milliseconds_or_microseconds_or_nanoseconds(x, n, c_unit, c_size);
 }
+
