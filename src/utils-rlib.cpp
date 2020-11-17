@@ -99,7 +99,7 @@ void r_abort(const char* fmt, ...) {
 
 // -----------------------------------------------------------------------------
 
-void r_init_utils_rlib() {
+void r_init_utils() {
   r_syms_x = r_sym("x");
   r_syms_class = r_sym("class");
   r_syms_names = r_sym("names");
