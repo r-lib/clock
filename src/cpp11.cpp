@@ -4,13 +4,6 @@
 
 #include "cpp11/declarations.hpp"
 
-// adjust-zone.cpp
-SEXP adjust_zone_retain_clock_cpp(SEXP x, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous);
-extern "C" SEXP _civil_adjust_zone_retain_clock_cpp(SEXP x, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(adjust_zone_retain_clock_cpp(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(zone), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dst_ambiguous)));
-  END_CPP11
-}
 // adjust.cpp
 SEXP adjust_local_days_cpp(SEXP x, SEXP value, SEXP day_nonexistent, SEXP size, SEXP adjuster);
 extern "C" SEXP _civil_adjust_local_days_cpp(SEXP x, SEXP value, SEXP day_nonexistent, SEXP size, SEXP adjuster) {
@@ -190,7 +183,6 @@ extern SEXP _civil_add_years_or_months_local_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_local_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_local_nanos_of_second_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_local_time_of_day_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _civil_adjust_zone_retain_clock_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_init();
 extern SEXP _civil_civil_set_install(SEXP);
 extern SEXP _civil_convert_datetime_fields_from_local_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -217,7 +209,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_adjust_local_days_cpp",                                         (DL_FUNC) &_civil_adjust_local_days_cpp,                                         5},
     {"_civil_adjust_local_nanos_of_second_cpp",                              (DL_FUNC) &_civil_adjust_local_nanos_of_second_cpp,                              4},
     {"_civil_adjust_local_time_of_day_cpp",                                  (DL_FUNC) &_civil_adjust_local_time_of_day_cpp,                                  4},
-    {"_civil_adjust_zone_retain_clock_cpp",                                  (DL_FUNC) &_civil_adjust_zone_retain_clock_cpp,                                  4},
     {"_civil_civil_init",                                                    (DL_FUNC) &_civil_civil_init,                                                    0},
     {"_civil_civil_set_install",                                             (DL_FUNC) &_civil_civil_set_install,                                             1},
     {"_civil_convert_datetime_fields_from_local_to_zoned_cpp",               (DL_FUNC) &_civil_convert_datetime_fields_from_local_to_zoned_cpp,               6},
