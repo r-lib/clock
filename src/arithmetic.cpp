@@ -129,81 +129,10 @@ SEXP add_weeks_or_days_local_cpp(SEXP x,
 
 // -----------------------------------------------------------------------------
 
-static SEXP add_hours_or_minutes_or_seconds_local(sexp x,
-                                                  sexp n,
-                                                  enum unit unit,
-                                                  r_ssize size) {
-  x = PROTECT(civil_rcrd_maybe_clone(x));
-  x = PROTECT(civil_rcrd_recycle(x, size));
-
-  int* p_days = civil_rcrd_days_deref(x);
-  int* p_time_of_day = civil_rcrd_time_of_day_deref(x);
-  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(x);
-
-  const bool recycle_n = r_is_scalar(n);
-  const int* p_n = r_int_deref_const(n);
-
-  for (r_ssize i = 0; i < size; ++i) {
-    int elt_days = p_days[i];
-    int elt_time_of_day = p_time_of_day[i];
-    int elt_n = recycle_n ? p_n[0] : p_n[i];
-
-    if (elt_days == r_int_na) {
-      continue;
-    }
-    if (elt_n == r_int_na) {
-      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
-      continue;
-    }
-
-    std::chrono::seconds elt_chrono_time_of_day{elt_time_of_day};
-
-    date::local_days elt_lday{date::days{elt_days}};
-    date::local_seconds elt_lsec_floor{elt_lday};
-    date::local_seconds elt_lsec = elt_lsec_floor + elt_chrono_time_of_day;
-
-    std::chrono::seconds elt_chrono_n;
-
-    if (unit == unit::hour) {
-      elt_chrono_n = std::chrono::hours{elt_n};
-    } else if (unit == unit::minute) {
-      elt_chrono_n = std::chrono::minutes{elt_n};
-    } else if (unit == unit::second) {
-      elt_chrono_n = std::chrono::seconds{elt_n};
-    }
-
-    date::local_seconds out_lsec = elt_lsec + elt_chrono_n;
-
-    date::local_days out_lday = date::floor<date::days>(out_lsec);
-    date::local_seconds out_lsec_floor{out_lday};
-
-    std::chrono::seconds out_chrono_time_of_day = out_lsec - out_lsec_floor;
-
-    p_days[i] = out_lday.time_since_epoch().count();
-    p_time_of_day[i] = out_chrono_time_of_day.count();
-  }
-
-  UNPROTECT(2);
-  return x;
-}
-
-[[cpp11::register]]
-SEXP add_hours_or_minutes_or_seconds_local_cpp(SEXP x,
-                                               SEXP n,
-                                               SEXP unit,
-                                               SEXP size) {
-  enum unit c_unit = parse_unit(unit);
-  r_ssize c_size = r_int_get(size, 0);
-
-  return add_hours_or_minutes_or_seconds_local(x, n, c_unit, c_size);
-}
-
-// -----------------------------------------------------------------------------
-
-static SEXP add_hours_or_minutes_or_seconds_zoned(sexp x,
-                                                  sexp n,
-                                                  enum unit unit,
-                                                  r_ssize size) {
+static SEXP add_hours_or_minutes_or_seconds(sexp x,
+                                            sexp n,
+                                            enum unit unit,
+                                            r_ssize size) {
   x = PROTECT(civil_rcrd_maybe_clone(x));
   x = PROTECT(civil_rcrd_recycle(x, size));
 
@@ -260,14 +189,14 @@ static SEXP add_hours_or_minutes_or_seconds_zoned(sexp x,
 }
 
 [[cpp11::register]]
-SEXP add_hours_or_minutes_or_seconds_zoned_cpp(SEXP x,
-                                               SEXP n,
-                                               SEXP unit,
-                                               SEXP size) {
+SEXP add_hours_or_minutes_or_seconds_cpp(SEXP x,
+                                         SEXP n,
+                                         SEXP unit,
+                                         SEXP size) {
   enum unit c_unit = parse_unit(unit);
   r_ssize c_size = r_int_get(size, 0);
 
-  return add_hours_or_minutes_or_seconds_zoned(x, n, c_unit, c_size);
+  return add_hours_or_minutes_or_seconds(x, n, c_unit, c_size);
 }
 
 // -----------------------------------------------------------------------------

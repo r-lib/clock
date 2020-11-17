@@ -1124,7 +1124,8 @@ add_hours_or_minutes_or_seconds_zoned <- function(x, n, ..., unit) {
 
   size <- vec_size_common(x = x, n = n)
 
-  add_hours_or_minutes_or_seconds_zoned_cpp(x, n, unit, size)
+  # Zoned and Local sub-daily arithmetic are equivalent at the C++ level
+  add_hours_or_minutes_or_seconds_cpp(x, n, unit, size)
 }
 
 # ------------------------------------------------------------------------------
@@ -1147,7 +1148,8 @@ add_hours_or_minutes_or_seconds_local <- function(x, n, ..., unit) {
 
   x <- promote_at_least_local_datetime(x)
 
-  add_hours_or_minutes_or_seconds_local_cpp(x, n, unit, size)
+  # Zoned and Local sub-daily arithmetic are equivalent at the C++ level
+  add_hours_or_minutes_or_seconds_cpp(x, n, unit, size)
 }
 
 # ------------------------------------------------------------------------------
@@ -1170,7 +1172,7 @@ add_milliseconds_or_microseconds_or_nanoseconds_zoned <- function(x, n, ..., uni
 
   x <- promote_at_least_zoned_nano_datetime(x)
 
-  # Zoned and Local sub-daily arithmetic are equivalent at the C level
+  # Zoned and Local sub-daily arithmetic are equivalent at the C++ level
   add_milliseconds_or_microseconds_or_nanoseconds_cpp(x, n, unit, size)
 }
 
@@ -1194,7 +1196,7 @@ add_milliseconds_or_microseconds_or_nanoseconds_local <- function(x, n, ..., uni
 
   x <- promote_at_least_local_nano_datetime(x)
 
-  # Zoned and Local sub-daily arithmetic are equivalent at the C level
+  # Zoned and Local sub-daily arithmetic are equivalent at the C++ level
   add_milliseconds_or_microseconds_or_nanoseconds_cpp(x, n, unit, size)
 }
 
