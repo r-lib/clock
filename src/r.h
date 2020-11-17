@@ -1,9 +1,10 @@
 #ifndef CIVIL_R_H
 #define CIVIL_R_H
 
-// Required to include something with the cpp11 namespace so
-// cpp11 attributes work. This also includes <Rinternals.h> for us.
-#include <cpp11/R.hpp>
+#include <R.h>
+#include <Rinternals.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 #define r_null R_NilValue
 #define r_ssize R_xlen_t

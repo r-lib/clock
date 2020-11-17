@@ -1,9 +1,8 @@
 #ifndef CIVIL_CONVERSION_H
 #define CIVIL_CONVERSION_H
 
-#include "r.h"
+#include "civil.h"
 #include "enums.h"
-#include <date/tz.h>
 
 date::sys_seconds convert_local_to_sys(const date::local_seconds& lsec,
                                        const date::time_zone* p_zone,

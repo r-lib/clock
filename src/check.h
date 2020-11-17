@@ -1,8 +1,7 @@
 #ifndef CIVIL_CHECK_H
 #define CIVIL_CHECK_H
 
-#include "r.h"
-#include "utils-rlib.h"
+#include "civil.h"
 
 static inline void check_range_year(const int& value, const char* arg) {
   if (value > 9999 || value < 0) {

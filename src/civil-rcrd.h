@@ -1,9 +1,7 @@
 #ifndef CIVIL_CIVIL_RCRD_H
 #define CIVIL_CIVIL_RCRD_H
 
-#include "r.h"
-#include "utils-rlib.h"
-#include <date/date.h>
+#include "civil.h"
 
 static inline SEXP civil_rcrd_recycle(SEXP x, r_ssize size) {
   x = PROTECT(r_maybe_clone(x));

@@ -1,10 +1,9 @@
 #ifndef CIVIL_RESOLVE_H
 #define CIVIL_RESOLVE_H
 
-#include "r.h"
+#include "civil.h"
 #include "enums.h"
 #include "civil-rcrd.h"
-#include <date/date.h>
 
 // -----------------------------------------------------------------------------
 

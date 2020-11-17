@@ -1,9 +1,7 @@
 #ifndef CIVIL_UTILS_H
 #define CIVIL_UTILS_H
 
-#include "r.h"
-#include "utils-rlib.h"
-#include <date/date.h>
+#include "civil.h"
 #include <cstdint>
 #include <cmath>
 

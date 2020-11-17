@@ -1,8 +1,7 @@
 #ifndef CIVIL_ZONE_H
 #define CIVIL_ZONE_H
 
-#include "r.h"
-#include <date/tz.h>
+#include "civil.h"
 
 SEXP zone_standardize(SEXP zone);
 std::string zone_unwrap(SEXP zone);
