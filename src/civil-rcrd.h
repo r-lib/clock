@@ -68,4 +68,53 @@ static inline void civil_rcrd_assign_missing(r_ssize i,
   }
 }
 
+// -----------------------------------------------------------------------------
+
+static inline sexp new_days_list(sexp days) {
+  sexp out = PROTECT(r_new_list(1));
+  r_list_poke(out, 0, days);
+
+  sexp names = PROTECT(r_new_character(1));
+  r_chr_poke(names, 0, r_new_string("days"));
+
+  r_poke_names(out, names);
+
+  UNPROTECT(2);
+  return out;
+}
+
+static inline sexp new_days_time_of_day_list(sexp days, sexp time_of_day) {
+  sexp out = PROTECT(r_new_list(2));
+  r_list_poke(out, 0, days);
+  r_list_poke(out, 1, time_of_day);
+
+  sexp names = PROTECT(r_new_character(2));
+  r_chr_poke(names, 0, r_new_string("days"));
+  r_chr_poke(names, 1, r_new_string("time_of_day"));
+
+  r_poke_names(out, names);
+
+  UNPROTECT(2);
+  return out;
+}
+
+static inline sexp new_days_time_of_day_nanos_of_second_list(sexp days,
+                                                             sexp time_of_day,
+                                                             sexp nanos_of_second) {
+  sexp out = PROTECT(r_new_list(3));
+  r_list_poke(out, 0, days);
+  r_list_poke(out, 1, time_of_day);
+  r_list_poke(out, 2, nanos_of_second);
+
+  sexp names = PROTECT(r_new_character(3));
+  r_chr_poke(names, 0, r_new_string("days"));
+  r_chr_poke(names, 1, r_new_string("time_of_day"));
+  r_chr_poke(names, 2, r_new_string("nanos_of_second"));
+
+  r_poke_names(out, names);
+
+  UNPROTECT(2);
+  return out;
+}
+
 #endif

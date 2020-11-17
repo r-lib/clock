@@ -10,55 +10,6 @@
 
 // -----------------------------------------------------------------------------
 
-static sexp new_local_date_list(sexp days) {
-  sexp out = PROTECT(r_new_list(1));
-  r_list_poke(out, 0, days);
-
-  sexp names = PROTECT(r_new_character(1));
-  r_chr_poke(names, 0, r_new_string("days"));
-
-  r_poke_names(out, names);
-
-  UNPROTECT(2);
-  return out;
-}
-
-static sexp new_local_datetime_list(sexp days, sexp time_of_day) {
-  sexp out = PROTECT(r_new_list(2));
-  r_list_poke(out, 0, days);
-  r_list_poke(out, 1, time_of_day);
-
-  sexp names = PROTECT(r_new_character(2));
-  r_chr_poke(names, 0, r_new_string("days"));
-  r_chr_poke(names, 1, r_new_string("time_of_day"));
-
-  r_poke_names(out, names);
-
-  UNPROTECT(2);
-  return out;
-}
-
-static sexp new_local_nano_datetime_list(sexp days,
-                                         sexp time_of_day,
-                                         sexp nanos_of_second) {
-  sexp out = PROTECT(r_new_list(3));
-  r_list_poke(out, 0, days);
-  r_list_poke(out, 1, time_of_day);
-  r_list_poke(out, 2, nanos_of_second);
-
-  sexp names = PROTECT(r_new_character(3));
-  r_chr_poke(names, 0, r_new_string("days"));
-  r_chr_poke(names, 1, r_new_string("time_of_day"));
-  r_chr_poke(names, 2, r_new_string("nanos_of_second"));
-
-  r_poke_names(out, names);
-
-  UNPROTECT(2);
-  return out;
-}
-
-// -----------------------------------------------------------------------------
-
 [[cpp11::register]]
 SEXP convert_seconds_to_days_and_time_of_day_cpp(SEXP seconds, SEXP zone) {
   r_ssize size = r_length(seconds);
@@ -69,7 +20,7 @@ SEXP convert_seconds_to_days_and_time_of_day_cpp(SEXP seconds, SEXP zone) {
   sexp time_of_day = PROTECT(r_new_integer(size));
   int* p_time_of_day = r_int_deref(time_of_day);
 
-  sexp out = PROTECT(new_local_datetime_list(days, time_of_day));
+  sexp out = PROTECT(new_days_time_of_day_list(days, time_of_day));
 
   zone = PROTECT(zone_standardize(zone));
   std::string zone_name = zone_unwrap(zone);
@@ -209,7 +160,7 @@ SEXP convert_year_month_day_to_fields_cpp(SEXP year,
   sexp days = PROTECT(r_new_integer(size));
   int* p_days = r_int_deref(days);
 
-  sexp out = PROTECT(new_local_date_list(days));
+  sexp out = PROTECT(new_days_list(days));
 
   const int* p_year = r_int_deref_const(year);
   const int* p_month = r_int_deref_const(month);
@@ -275,7 +226,7 @@ SEXP convert_year_month_day_hour_minute_second_to_fields_cpp(SEXP year,
   sexp time_of_day = PROTECT(r_new_integer(size));
   int* p_time_of_day = r_int_deref(time_of_day);
 
-  sexp out = PROTECT(new_local_datetime_list(days, time_of_day));
+  sexp out = PROTECT(new_days_time_of_day_list(days, time_of_day));
 
   const int* p_year = r_int_deref_const(year);
   const int* p_month = r_int_deref_const(month);
@@ -366,7 +317,7 @@ SEXP convert_year_month_day_hour_minute_second_nanos_to_fields_cpp(SEXP year,
   sexp nanos_of_second = PROTECT(r_new_integer(size));
   int* p_nanos_of_second = r_int_deref(nanos_of_second);
 
-  sexp out = PROTECT(new_local_nano_datetime_list(days, time_of_day, nanos_of_second));
+  sexp out = PROTECT(new_days_time_of_day_nanos_of_second_list(days, time_of_day, nanos_of_second));
 
   const int* p_year = r_int_deref_const(year);
   const int* p_month = r_int_deref_const(month);
@@ -597,7 +548,7 @@ SEXP convert_datetime_fields_from_local_to_zoned_cpp(SEXP days,
 
   int* p_nanos_of_second = NULL;
 
-  sexp out = PROTECT(new_local_datetime_list(days, time_of_day));
+  sexp out = PROTECT(new_days_time_of_day_list(days, time_of_day));
 
   const sexp* p_dst_nonexistent = STRING_PTR_RO(dst_nonexistent);
   bool recycle_dst_nonexistent = r_is_scalar(dst_nonexistent);
@@ -694,7 +645,7 @@ SEXP convert_nano_datetime_fields_from_local_to_zoned_cpp(SEXP days,
   nanos_of_second = PROTECT(r_int_recycle(nanos_of_second, c_size));
   int* p_nanos_of_second = r_int_deref(nanos_of_second);
 
-  sexp out = PROTECT(new_local_nano_datetime_list(days, time_of_day, nanos_of_second));
+  sexp out = PROTECT(new_days_time_of_day_nanos_of_second_list(days, time_of_day, nanos_of_second));
 
   const sexp* p_dst_nonexistent = STRING_PTR_RO(dst_nonexistent);
   bool recycle_dst_nonexistent = r_is_scalar(dst_nonexistent);
@@ -791,7 +742,7 @@ SEXP convert_datetime_fields_from_zoned_to_local_cpp(SEXP days,
   time_of_day = PROTECT(r_maybe_clone(time_of_day));
   int* p_time_of_day = r_int_deref(time_of_day);
 
-  sexp out = PROTECT(new_local_datetime_list(days, time_of_day));
+  sexp out = PROTECT(new_days_time_of_day_list(days, time_of_day));
 
   zone = PROTECT(zone_standardize(zone));
   std::string zone_name = zone_unwrap(zone);
@@ -839,7 +790,7 @@ SEXP convert_sys_seconds_to_sys_days_and_time_of_day_cpp(SEXP seconds) {
   sexp time_of_day = PROTECT(r_new_integer(size));
   int* p_time_of_day = r_int_deref(time_of_day);
 
-  sexp out = PROTECT(new_local_datetime_list(days, time_of_day));
+  sexp out = PROTECT(new_days_time_of_day_list(days, time_of_day));
 
   const double* p_seconds = r_dbl_deref_const(seconds);
 
