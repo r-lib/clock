@@ -5,9 +5,6 @@
 #include "utils-rlib.h"
 #include <date/date.h>
 
-using sys_nanoseconds = date::sys_time<std::chrono::nanoseconds>;
-using local_nanoseconds = date::local_time<std::chrono::nanoseconds>;
-
 static inline sexp civil_rcrd_recycle(sexp x, r_ssize size) {
   x = PROTECT(r_maybe_clone(x));
 
