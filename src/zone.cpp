@@ -42,7 +42,7 @@ SEXP zone_standardize(SEXP zone) {
     return r_new_scalar_character_from_c_string("");
   }
 
-  sexp out = STRING_ELT(zone, 0);
+  SEXP out = STRING_ELT(zone, 0);
 
   return r_new_scalar_character(out);
 }
@@ -51,7 +51,7 @@ SEXP zone_standardize(SEXP zone) {
  * Assumes it has been standardized
  */
 // [[ include("zone.h") ]]
-std::string zone_unwrap(sexp zone) {
+std::string zone_unwrap(SEXP zone) {
   return CHAR(STRING_ELT(zone, 0));
 }
 

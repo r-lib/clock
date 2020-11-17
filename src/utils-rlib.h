@@ -5,9 +5,9 @@
 
 // -----------------------------------------------------------------------------
 
-extern sexp r_syms_x;
-extern sexp r_syms_class;
-extern sexp r_syms_names;
+extern SEXP r_syms_x;
+extern SEXP r_syms_class;
+extern SEXP r_syms_names;
 
 // -----------------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ __attribute__((noreturn)) static inline void never_reached(const char* fn) {
 
 // -----------------------------------------------------------------------------
 
-static inline enum r_type r_typeof(sexp x) {
+static inline enum r_type r_typeof(SEXP x) {
   return static_cast<enum r_type>(TYPEOF(x));
 }
 
@@ -59,19 +59,19 @@ static inline const char* r_type_as_friendly_c_string(enum r_type type) {
   never_reached("r_type_as_friendly_c_string");
 }
 
-static inline const char* r_sexp_as_friendly_c_string(sexp x) {
+static inline const char* r_sexp_as_friendly_c_string(SEXP x) {
   return r_type_as_friendly_c_string(r_typeof(x));
 }
 
 // -----------------------------------------------------------------------------
 
-static inline bool r_is_number(sexp x) {
+static inline bool r_is_number(SEXP x) {
   return (TYPEOF(x) == INTSXP) &&
     (Rf_length(x) == 1) &&
     (INTEGER(x)[0] != NA_INTEGER);
 }
 
-static inline bool r_is_string(sexp x) {
+static inline bool r_is_string(SEXP x) {
   return (TYPEOF(x) == STRSXP) &&
     (Rf_length(x) == 1) &&
     (STRING_ELT(x, 0) != NA_STRING);
@@ -85,101 +85,101 @@ static inline bool r_dbl_is_missing(double x) {
 
 // -----------------------------------------------------------------------------
 
-static inline sexp r_new_string(const char* x) {
+static inline SEXP r_new_string(const char* x) {
   return Rf_mkCharCE(x, CE_UTF8);
 }
 
-static inline sexp r_new_scalar_character(sexp x) {
+static inline SEXP r_new_scalar_character(SEXP x) {
   return Rf_ScalarString(x);
 }
-static inline sexp r_new_scalar_character_from_c_string(const char* x) {
+static inline SEXP r_new_scalar_character_from_c_string(const char* x) {
   return Rf_mkString(x);
 }
 
-static inline sexp r_new_scalar_integer(int x) {
+static inline SEXP r_new_scalar_integer(int x) {
   return Rf_ScalarInteger(x);
 }
-static inline sexp r_new_scalar_logical(int x) {
+static inline SEXP r_new_scalar_logical(int x) {
   return Rf_ScalarLogical(x);
 }
 
-static inline sexp r_new_vector(r_type type, r_ssize size) {
+static inline SEXP r_new_vector(r_type type, r_ssize size) {
   return Rf_allocVector(type, size);
 }
-static inline sexp r_new_double(r_ssize size) {
+static inline SEXP r_new_double(r_ssize size) {
   return r_new_vector(r_type_double, size);
 }
-static inline sexp r_new_integer(r_ssize size) {
+static inline SEXP r_new_integer(r_ssize size) {
   return r_new_vector(r_type_integer, size);
 }
-static inline sexp r_new_character(r_ssize size) {
+static inline SEXP r_new_character(r_ssize size) {
   return r_new_vector(r_type_character, size);
 }
-static inline sexp r_new_list(r_ssize size) {
+static inline SEXP r_new_list(r_ssize size) {
   return r_new_vector(r_type_list, size);
 }
 
 // -----------------------------------------------------------------------------
 
-static inline sexp r_list_get(sexp x, r_ssize i) {
+static inline SEXP r_list_get(SEXP x, r_ssize i) {
   return VECTOR_ELT(x, i);
 }
-static inline int r_int_get(sexp x, r_ssize i) {
+static inline int r_int_get(SEXP x, r_ssize i) {
   return INTEGER_ELT(x, i);
 }
-static inline sexp r_chr_get(sexp x, r_ssize i) {
+static inline SEXP r_chr_get(SEXP x, r_ssize i) {
   return STRING_ELT(x, i);
 }
 
 // -----------------------------------------------------------------------------
 
-static inline void r_chr_poke(sexp x, r_ssize i, sexp value) {
+static inline void r_chr_poke(SEXP x, r_ssize i, SEXP value) {
   return SET_STRING_ELT(x, i, value);
 }
-static inline sexp r_list_poke(sexp x, r_ssize i, sexp value) {
+static inline SEXP r_list_poke(SEXP x, r_ssize i, SEXP value) {
   return SET_VECTOR_ELT(x, i, value);
 }
 
 // -----------------------------------------------------------------------------
 
-static inline int* r_int_deref(sexp x) {
+static inline int* r_int_deref(SEXP x) {
   return INTEGER(x);
 }
-static inline double* r_dbl_deref(sexp x) {
+static inline double* r_dbl_deref(SEXP x) {
   return REAL(x);
 }
 
-static inline const int* r_int_deref_const(sexp x) {
+static inline const int* r_int_deref_const(SEXP x) {
   return (const int*) INTEGER(x);
 }
-static inline const double* r_dbl_deref_const(sexp x) {
+static inline const double* r_dbl_deref_const(SEXP x) {
   return (const double*) REAL(x);
 }
 
 // -----------------------------------------------------------------------------
 
-static inline void r_mark_precious(sexp x) {
+static inline void r_mark_precious(SEXP x) {
   return R_PreserveObject(x);
 }
-static inline void r_unmark_precious(sexp x) {
+static inline void r_unmark_precious(SEXP x) {
   return R_ReleaseObject(x);
 }
 
-static inline bool r_is_shared(sexp x) {
+static inline bool r_is_shared(SEXP x) {
   return MAYBE_REFERENCED(x);
 }
-static inline void r_mark_shared(sexp x) {
+static inline void r_mark_shared(SEXP x) {
   MARK_NOT_MUTABLE(x);
 }
 
 
-static inline sexp r_new_shared_vector(r_type type, r_ssize size) {
-  sexp out = r_new_vector(type, size);
+static inline SEXP r_new_shared_vector(r_type type, r_ssize size) {
+  SEXP out = r_new_vector(type, size);
   r_mark_precious(out);
   r_mark_shared(out);
   return out;
 }
-static inline sexp r_new_shared_character_from_c_string(const char* name) {
+static inline SEXP r_new_shared_character_from_c_string(const char* name) {
   SEXP out = r_new_scalar_character_from_c_string(name);
   r_mark_precious(out);
   r_mark_shared(out);
@@ -188,81 +188,81 @@ static inline sexp r_new_shared_character_from_c_string(const char* name) {
 
 // -----------------------------------------------------------------------------
 
-static inline r_ssize r_length(sexp x) {
+static inline r_ssize r_length(SEXP x) {
   return Rf_xlength(x);
 }
 
-static inline bool r_is_scalar(sexp x) {
+static inline bool r_is_scalar(SEXP x) {
   return r_length(x) == 1;
 }
 
 // -----------------------------------------------------------------------------
 
-static inline bool r_is_null(sexp x) {
+static inline bool r_is_null(SEXP x) {
   return x == r_null;
 }
 
 // -----------------------------------------------------------------------------
 
-static inline sexp r_eval(sexp expr, sexp env) {
+static inline SEXP r_eval(SEXP expr, SEXP env) {
   return Rf_eval(expr, env);
 }
 
 // -----------------------------------------------------------------------------
 
-static inline sexp r_env_poke(sexp env, sexp sym, sexp value) {
+static inline SEXP r_env_poke(SEXP env, SEXP sym, SEXP value) {
   Rf_defineVar(sym, value, env);
   return env;
 }
 
 // -----------------------------------------------------------------------------
 
-static inline sexp r_sym(const char* x) {
+static inline SEXP r_sym(const char* x) {
   return Rf_install(x);
 }
 
 // -----------------------------------------------------------------------------
 
-static inline sexp r_node_car(sexp x) { return CAR(x); }
-static inline sexp r_node_cdr(sexp x) { return CDR(x); }
-static inline sexp r_node_tag(sexp x) { return TAG(x); }
-static inline sexp r_node_caar(sexp x) { return CAAR(x); }
-static inline sexp r_node_cadr(sexp x) { return CADR(x); }
-static inline sexp r_node_cdar(sexp x) { return CDAR(x); }
-static inline sexp r_node_cddr(sexp x) { return CDDR(x); }
+static inline SEXP r_node_car(SEXP x) { return CAR(x); }
+static inline SEXP r_node_cdr(SEXP x) { return CDR(x); }
+static inline SEXP r_node_tag(SEXP x) { return TAG(x); }
+static inline SEXP r_node_caar(SEXP x) { return CAAR(x); }
+static inline SEXP r_node_cadr(SEXP x) { return CADR(x); }
+static inline SEXP r_node_cdar(SEXP x) { return CDAR(x); }
+static inline SEXP r_node_cddr(SEXP x) { return CDDR(x); }
 
-static inline sexp r_node_poke_car(sexp x, sexp newcar) {
+static inline SEXP r_node_poke_car(SEXP x, SEXP newcar) {
   SETCAR(x, newcar);
   return x;
 }
-static inline sexp r_node_poke_cdr(sexp x, sexp newcdr) {
+static inline SEXP r_node_poke_cdr(SEXP x, SEXP newcdr) {
   SETCDR(x, newcdr);
   return x;
 }
-static inline sexp r_node_poke_tag(sexp x, sexp tag) {
+static inline SEXP r_node_poke_tag(SEXP x, SEXP tag) {
   SET_TAG(x, tag);
   return x;
 }
-static inline sexp r_node_poke_caar(sexp x, sexp newcaar) {
+static inline SEXP r_node_poke_caar(SEXP x, SEXP newcaar) {
   SETCAR(CAR(x), newcaar);
   return x;
 }
-static inline sexp r_node_poke_cadr(sexp x, sexp newcar) {
+static inline SEXP r_node_poke_cadr(SEXP x, SEXP newcar) {
   SETCADR(x, newcar);
   return x;
 }
-static inline sexp r_node_poke_cdar(sexp x, sexp newcdar) {
+static inline SEXP r_node_poke_cdar(SEXP x, SEXP newcdar) {
   SETCDR(CAR(x), newcdar);
   return x;
 }
-static inline sexp r_node_poke_cddr(sexp x, sexp newcdr) {
+static inline SEXP r_node_poke_cddr(SEXP x, SEXP newcdr) {
   SETCDR(CDR(x), newcdr);
   return x;
 }
 
 // -----------------------------------------------------------------------------
 
-static inline sexp r_pairlist_find(sexp node, sexp tag) {
+static inline SEXP r_pairlist_find(SEXP node, SEXP tag) {
   while (node != r_null) {
     if (r_node_tag(node) == tag) {
       return node;
@@ -273,45 +273,45 @@ static inline sexp r_pairlist_find(sexp node, sexp tag) {
   return r_null;
 }
 
-static inline sexp r_pairlist_get(sexp node, sexp tag) {
+static inline SEXP r_pairlist_get(SEXP node, SEXP tag) {
   return r_node_car(r_pairlist_find(node, tag));
 }
 
 // -----------------------------------------------------------------------------
 
-static inline void r_poke_attribute(sexp x, sexp tag, sexp value) {
+static inline void r_poke_attribute(SEXP x, SEXP tag, SEXP value) {
   Rf_setAttrib(x, tag, value);
 }
-static inline void r_poke_class(sexp x, sexp value) {
+static inline void r_poke_class(SEXP x, SEXP value) {
   r_poke_attribute(x, r_syms_class, value);
 }
-static inline void r_poke_names(sexp x, sexp value) {
+static inline void r_poke_names(SEXP x, SEXP value) {
   r_poke_attribute(x, r_syms_names, value);
 }
 
 
-static inline sexp r_attrib(sexp x) {
+static inline SEXP r_attrib(SEXP x) {
   return ATTRIB(x);
 }
 
 // Unlike Rf_getAttrib(), this never allocates. This also doesn't bump
 // refcounts or namedness.
-static inline sexp r_get_attribute(sexp x, sexp tag) {
+static inline SEXP r_get_attribute(SEXP x, SEXP tag) {
   return r_pairlist_get(r_attrib(x), tag);
 }
-static inline sexp r_get_names(sexp x) {
+static inline SEXP r_get_names(SEXP x) {
   return r_get_attribute(x, r_syms_names);
 }
-static inline sexp r_get_class(sexp x) {
+static inline SEXP r_get_class(SEXP x) {
   return r_get_attribute(x, r_syms_class);
 }
 
 // -----------------------------------------------------------------------------
 
-static inline sexp r_clone(sexp x) {
+static inline SEXP r_clone(SEXP x) {
   return Rf_shallow_duplicate(x);
 }
-static inline sexp r_maybe_clone(sexp x) {
+static inline SEXP r_maybe_clone(SEXP x) {
   if (r_is_shared(x)) {
     return r_clone(x);
   } else {
@@ -321,7 +321,7 @@ static inline sexp r_maybe_clone(sexp x) {
 
 // -----------------------------------------------------------------------------
 
-static inline sexp r_int_recycle(sexp x, r_ssize size) {
+static inline SEXP r_int_recycle(SEXP x, r_ssize size) {
   r_ssize x_size = r_length(x);
 
   if (x_size == size) {
@@ -333,7 +333,7 @@ static inline sexp r_int_recycle(sexp x, r_ssize size) {
 
   int val = r_int_get(x, 0);
 
-  sexp out = PROTECT(r_new_integer(size));
+  SEXP out = PROTECT(r_new_integer(size));
   int* p_out = r_int_deref(out);
 
   for (r_ssize i = 0; i < size; ++i) {
@@ -344,7 +344,7 @@ static inline sexp r_int_recycle(sexp x, r_ssize size) {
   return out;
 }
 
-static inline sexp r_chr_recycle(sexp x, r_ssize size) {
+static inline SEXP r_chr_recycle(SEXP x, r_ssize size) {
   r_ssize x_size = r_length(x);
 
   if (x_size == size) {
@@ -354,9 +354,9 @@ static inline sexp r_chr_recycle(sexp x, r_ssize size) {
     Rf_errorcall(r_null, "`x` must be size 1 or %i.", (int) size);
   }
 
-  sexp val = r_chr_get(x, 0);
+  SEXP val = r_chr_get(x, 0);
 
-  sexp out = PROTECT(r_new_character(size));
+  SEXP out = PROTECT(r_new_character(size));
 
   for (r_ssize i = 0; i < size; ++i) {
     r_chr_poke(out, i, val);

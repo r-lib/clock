@@ -5,7 +5,7 @@
 SEXP floor_days_to_year_month_cpp(SEXP days) {
   r_ssize size = r_length(days);
 
-  sexp out = PROTECT(r_new_integer(size));
+  SEXP out = PROTECT(r_new_integer(size));
   int* p_out = r_int_deref(out);
 
   const int* p_days = r_int_deref_const(days);

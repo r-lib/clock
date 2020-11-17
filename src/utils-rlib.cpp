@@ -3,17 +3,17 @@
 
 // -----------------------------------------------------------------------------
 
-sexp r_syms_x;
-sexp r_syms_class;
-sexp r_syms_names;
+SEXP r_syms_x;
+SEXP r_syms_class;
+SEXP r_syms_names;
 
 // -----------------------------------------------------------------------------
 
-sexp r_parse(const char* str) {
-  sexp str_ = PROTECT(r_new_scalar_character_from_c_string(str));
+SEXP r_parse(const char* str) {
+  SEXP str_ = PROTECT(r_new_scalar_character_from_c_string(str));
 
   ParseStatus status;
-  sexp out = PROTECT(R_ParseVector(str_, -1, &status, r_null));
+  SEXP out = PROTECT(R_ParseVector(str_, -1, &status, r_null));
   if (status != PARSE_OK) {
     Rf_errorcall(R_NilValue, "Parsing failed");
   }
@@ -27,26 +27,26 @@ sexp r_parse(const char* str) {
   return out;
 }
 
-sexp r_parse_eval(const char* str, sexp env) {
-  sexp out = r_eval(PROTECT(r_parse(str)), env);
+SEXP r_parse_eval(const char* str, SEXP env) {
+  SEXP out = r_eval(PROTECT(r_parse(str)), env);
   UNPROTECT(1);
   return out;
 }
 
 // -----------------------------------------------------------------------------
 
-static sexp new_env_call = NULL;
-static sexp new_env__parent_node = NULL;
-static sexp new_env__size_node = NULL;
+static SEXP new_env_call = NULL;
+static SEXP new_env__parent_node = NULL;
+static SEXP new_env__size_node = NULL;
 
-sexp r_new_environment(sexp parent, r_ssize size) {
+SEXP r_new_environment(SEXP parent, r_ssize size) {
   parent = parent ? parent : r_empty_env;
   r_node_poke_car(new_env__parent_node, parent);
 
   size = size ? size : 29;
   r_node_poke_car(new_env__size_node, r_new_scalar_integer(size));
 
-  sexp env = r_eval(new_env_call, r_base_env);
+  SEXP env = r_eval(new_env_call, r_base_env);
 
   // Free for gc
   r_node_poke_car(new_env__parent_node, r_null);
@@ -56,15 +56,15 @@ sexp r_new_environment(sexp parent, r_ssize size) {
 
 // -----------------------------------------------------------------------------
 
-sexp r_eval_in_with_x(sexp call, sexp env,
-                      sexp x, sexp x_sym) {
+SEXP r_eval_in_with_x(SEXP call, SEXP env,
+                      SEXP x, SEXP x_sym) {
   r_env_poke(env, x_sym, x);
   return r_eval(call, env);
 }
 
-sexp r_eval_with_x(sexp call, sexp parent, sexp x) {
-  sexp env = PROTECT(r_new_environment(parent, 1));
-  sexp out = r_eval_in_with_x(call, env, x, r_syms_x);
+SEXP r_eval_with_x(SEXP call, SEXP parent, SEXP x) {
+  SEXP env = PROTECT(r_new_environment(parent, 1));
+  SEXP out = r_eval_in_with_x(call, env, x, r_syms_x);
   UNPROTECT(1);
   return out;
 }
@@ -83,12 +83,12 @@ sexp r_eval_with_x(sexp call, sexp parent, sexp x) {
   BUF[BUFSIZE - 1] = '\0';                      \
 }
 
-static sexp err_call = NULL;
+static SEXP err_call = NULL;
 void r_abort(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  sexp sexp_buf = PROTECT(r_new_scalar_character_from_c_string(buf));
+  SEXP sexp_buf = PROTECT(r_new_scalar_character_from_c_string(buf));
 
   r_eval_with_x(err_call, r_base_env, sexp_buf);
 

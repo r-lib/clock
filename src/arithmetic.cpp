@@ -10,8 +10,8 @@
 
 // -----------------------------------------------------------------------------
 
-static SEXP add_years_or_months_local(sexp x,
-                                      sexp n,
+static SEXP add_years_or_months_local(SEXP x,
+                                      SEXP n,
                                       enum day_nonexistent day_nonexistent,
                                       enum unit unit,
                                       r_ssize size) {
@@ -77,8 +77,8 @@ SEXP add_years_or_months_local_cpp(SEXP x,
 
 // -----------------------------------------------------------------------------
 
-static SEXP add_weeks_or_days_local(sexp x,
-                                    sexp n,
+static SEXP add_weeks_or_days_local(SEXP x,
+                                    SEXP n,
                                     enum unit unit,
                                     r_ssize size) {
   x = PROTECT(civil_rcrd_maybe_clone(x));
@@ -129,8 +129,8 @@ SEXP add_weeks_or_days_local_cpp(SEXP x,
 
 // -----------------------------------------------------------------------------
 
-static SEXP add_hours_or_minutes_or_seconds(sexp x,
-                                            sexp n,
+static SEXP add_hours_or_minutes_or_seconds(SEXP x,
+                                            SEXP n,
                                             enum unit unit,
                                             r_ssize size) {
   x = PROTECT(civil_rcrd_maybe_clone(x));
@@ -255,8 +255,8 @@ fields_nano_datetime plus_nanos_of_second(const date::days& days,
   return {fdt.days, fdt.time_of_day, out_nanos_of_second};
 }
 
-static SEXP add_milliseconds_or_microseconds_or_nanoseconds(sexp x,
-                                                            sexp n,
+static SEXP add_milliseconds_or_microseconds_or_nanoseconds(SEXP x,
+                                                            SEXP n,
                                                             enum unit unit,
                                                             r_ssize size) {
   x = PROTECT(civil_rcrd_maybe_clone(x));

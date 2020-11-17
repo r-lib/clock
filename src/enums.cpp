@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum day_nonexistent parse_day_nonexistent(sexp x) {
+enum day_nonexistent parse_day_nonexistent(SEXP x) {
   if (!r_is_string(x)) {
     r_abort("`day_nonexistent` must be a string with length 1.");
   }
@@ -26,7 +26,7 @@ enum day_nonexistent parse_day_nonexistent(sexp x) {
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum dst_nonexistent parse_dst_nonexistent(sexp x) {
+enum dst_nonexistent parse_dst_nonexistent(SEXP x) {
   if (!r_is_string(x)) {
     r_abort("`dst_nonexistent` must be a string with length 1.");
   }
@@ -51,7 +51,7 @@ enum dst_nonexistent parse_dst_nonexistent_one(const char* x) {
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum dst_ambiguous parse_dst_ambiguous(sexp x) {
+enum dst_ambiguous parse_dst_ambiguous(SEXP x) {
   if (!r_is_string(x)) {
     r_abort("`dst_ambiguous` must be a string with length 1.");
   }
@@ -74,7 +74,7 @@ enum dst_ambiguous parse_dst_ambiguous_one(const char* x) {
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum unit parse_unit(sexp x) {
+enum unit parse_unit(SEXP x) {
   if (!r_is_string(x)) {
     r_abort("`unit` must be a string with length 1.");
   }
@@ -98,7 +98,7 @@ enum unit parse_unit(sexp x) {
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum adjuster parse_adjuster(sexp x) {
+enum adjuster parse_adjuster(SEXP x) {
   if (!r_is_string(x)) {
     r_abort("`adjuster` must be a string with length 1.");
   }

@@ -7,7 +7,6 @@
 
 #define r_null R_NilValue
 #define r_ssize R_xlen_t
-#define sexp SEXP
 
 #define r_dbl_na NA_REAL
 #define r_int_na NA_INTEGER

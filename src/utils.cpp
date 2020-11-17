@@ -1,14 +1,14 @@
 #include "utils.h"
 
-sexp civil_syms_tzone = NULL;
+SEXP civil_syms_tzone = NULL;
 
-sexp civil_strings = NULL;
-sexp civil_strings_posixct = NULL;
-sexp civil_strings_posixt = NULL;
-sexp civil_strings_date = NULL;
+SEXP civil_strings = NULL;
+SEXP civil_strings_posixct = NULL;
+SEXP civil_strings_posixt = NULL;
+SEXP civil_strings_date = NULL;
 
-sexp civil_classes_date = NULL;
-sexp civil_classes_posixct = NULL;
+SEXP civil_classes_date = NULL;
+SEXP civil_classes_posixct = NULL;
 
 // -----------------------------------------------------------------------------
 

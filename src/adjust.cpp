@@ -10,8 +10,8 @@
 
 // -----------------------------------------------------------------------------
 
-static sexp adjust_local_days(sexp x,
-                              sexp value,
+static SEXP adjust_local_days(SEXP x,
+                              SEXP value,
                               const enum day_nonexistent& day_nonexistent,
                               const r_ssize& size,
                               const enum adjuster& adjuster);
@@ -41,8 +41,8 @@ adjust_local_days_switch(const date::year_month_day& ymd,
                          const int& value,
                          const enum adjuster& adjuster);
 
-static sexp adjust_local_days(sexp x,
-                              sexp value,
+static SEXP adjust_local_days(SEXP x,
+                              SEXP value,
                               const enum day_nonexistent& day_nonexistent,
                               const r_ssize& size,
                               const enum adjuster& adjuster) {
@@ -148,8 +148,8 @@ adjust_local_days_switch(const date::year_month_day& ymd,
 
 // -----------------------------------------------------------------------------
 
-static sexp adjust_local_time_of_day(sexp x,
-                                     sexp value,
+static SEXP adjust_local_time_of_day(SEXP x,
+                                     SEXP value,
                                      const r_ssize& size,
                                      const enum adjuster& adjuster);
 
@@ -175,8 +175,8 @@ adjust_local_time_of_day_switch(const date::hh_mm_ss<std::chrono::seconds>& hms,
                                 const int& value,
                                 const enum adjuster& adjuster);
 
-static sexp adjust_local_time_of_day(sexp x,
-                                     sexp value,
+static SEXP adjust_local_time_of_day(SEXP x,
+                                     SEXP value,
                                      const r_ssize& size,
                                      const enum adjuster& adjuster) {
   x = PROTECT(civil_rcrd_maybe_clone(x));
@@ -263,8 +263,8 @@ adjust_local_time_of_day_switch(const date::hh_mm_ss<std::chrono::seconds>& hms,
 
 // -----------------------------------------------------------------------------
 
-static sexp adjust_local_nanos_of_second(sexp x,
-                                         sexp value,
+static SEXP adjust_local_nanos_of_second(SEXP x,
+                                         SEXP value,
                                          const r_ssize& size,
                                          const enum adjuster& adjuster);
 
@@ -290,8 +290,8 @@ adjust_local_nanos_of_second_switch(const std::chrono::nanoseconds& x,
                                     const int& value,
                                     const enum adjuster& adjuster);
 
-static sexp adjust_local_nanos_of_second(sexp x,
-                                         sexp value,
+static SEXP adjust_local_nanos_of_second(SEXP x,
+                                         SEXP value,
                                          const r_ssize& size,
                                          const enum adjuster& adjuster) {
   x = PROTECT(civil_rcrd_maybe_clone(x));

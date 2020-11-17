@@ -70,37 +70,37 @@ SEXP parse_zoned_datetime_cpp(SEXP x,
     r_abort("Failed to load locale.");
   }
 
-  sexp days = PROTECT(r_new_integer(c_size));
+  SEXP days = PROTECT(r_new_integer(c_size));
   int* p_days = r_int_deref(days);
 
-  sexp time_of_day = PROTECT(r_new_integer(c_size));
+  SEXP time_of_day = PROTECT(r_new_integer(c_size));
   int* p_time_of_day = r_int_deref(time_of_day);
 
   int* p_nanos_of_second = NULL;
 
-  sexp out = PROTECT(new_days_time_of_day_list(days, time_of_day));
+  SEXP out = PROTECT(new_days_time_of_day_list(days, time_of_day));
 
-  const sexp* p_dst_nonexistent = STRING_PTR_RO(dst_nonexistent);
+  const SEXP* p_dst_nonexistent = STRING_PTR_RO(dst_nonexistent);
   bool recycle_dst_nonexistent = r_is_scalar(dst_nonexistent);
   enum dst_nonexistent c_dst_nonexistent;
   if (recycle_dst_nonexistent) {
     c_dst_nonexistent = parse_dst_nonexistent_one(CHAR(p_dst_nonexistent[0]));
   }
 
-  const sexp* p_dst_ambiguous = STRING_PTR_RO(dst_ambiguous);
+  const SEXP* p_dst_ambiguous = STRING_PTR_RO(dst_ambiguous);
   bool recycle_dst_ambiguous = r_is_scalar(dst_ambiguous);
   enum dst_ambiguous c_dst_ambiguous;
   if (recycle_dst_ambiguous) {
     c_dst_ambiguous = parse_dst_ambiguous_one(CHAR(p_dst_ambiguous[0]));
   }
 
-  const sexp* p_x = STRING_PTR_RO(x);
+  const SEXP* p_x = STRING_PTR_RO(x);
 
   std::istringstream elt_stream;
   elt_stream.imbue(cpp_locale);
 
   for (r_ssize i = 0; i < c_size; ++i) {
-    sexp elt_x = p_x[i];
+    SEXP elt_x = p_x[i];
 
     if (elt_x == NA_STRING) {
       civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
@@ -210,23 +210,23 @@ SEXP parse_local_datetime_cpp(SEXP x,
     r_abort("Failed to load locale.");
   }
 
-  sexp days = PROTECT(r_new_integer(c_size));
+  SEXP days = PROTECT(r_new_integer(c_size));
   int* p_days = r_int_deref(days);
 
-  sexp time_of_day = PROTECT(r_new_integer(c_size));
+  SEXP time_of_day = PROTECT(r_new_integer(c_size));
   int* p_time_of_day = r_int_deref(time_of_day);
 
   int* p_nanos_of_second = NULL;
 
-  sexp out = PROTECT(new_days_time_of_day_list(days, time_of_day));
+  SEXP out = PROTECT(new_days_time_of_day_list(days, time_of_day));
 
-  const sexp* p_x = STRING_PTR_RO(x);
+  const SEXP* p_x = STRING_PTR_RO(x);
 
   std::istringstream elt_stream;
   elt_stream.imbue(cpp_locale);
 
   for (r_ssize i = 0; i < c_size; ++i) {
-    sexp elt_x = p_x[i];
+    SEXP elt_x = p_x[i];
 
     if (elt_x == NA_STRING) {
       civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);

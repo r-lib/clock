@@ -5,7 +5,7 @@
 #include <date/tz.h>
 
 SEXP zone_standardize(SEXP zone);
-std::string zone_unwrap(sexp zone);
+std::string zone_unwrap(SEXP zone);
 
 /*
  * Load a time zone name, or throw an R error if it can't be loaded

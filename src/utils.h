@@ -9,10 +9,10 @@
 
 // -----------------------------------------------------------------------------
 
-extern sexp civil_syms_tzone;
+extern SEXP civil_syms_tzone;
 
-extern sexp civil_classes_date;
-extern sexp civil_classes_posixct;
+extern SEXP civil_classes_date;
+extern SEXP civil_classes_posixct;
 
 // -----------------------------------------------------------------------------
 
@@ -35,11 +35,11 @@ static inline int64_t as_int64(double x) {
 
 // -----------------------------------------------------------------------------
 
-static inline void civil_poke_tzone(sexp x, sexp value) {
+static inline void civil_poke_tzone(SEXP x, SEXP value) {
   r_poke_attribute(x, civil_syms_tzone, value);
 }
 
-static inline sexp civil_get_tzone(sexp x) {
+static inline SEXP civil_get_tzone(SEXP x) {
   return r_get_attribute(x, civil_syms_tzone);
 }
 
