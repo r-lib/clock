@@ -4,6 +4,7 @@ adjust_zone_retain_clock <- function(x,
                                      ...,
                                      dst_nonexistent = "roll-forward",
                                      dst_ambiguous = "earliest") {
+  restrict_zoned_or_base(x)
   UseMethod("adjust_zone_retain_clock")
 }
 
@@ -34,7 +35,7 @@ adjust_zone_retain_clock.civil_zoned <- function(x,
 
 #' @export
 adjust_zone_retain_instant <- function(x, zone, ...) {
-  restrict_civil_supported(x)
+  restrict_zoned_or_base(x)
   UseMethod("adjust_zone_retain_instant")
 }
 

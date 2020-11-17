@@ -108,6 +108,10 @@ is_POSIXlt <- function(x) {
   inherits(x, "POSIXlt")
 }
 
+is_zoned_or_base <- function(x) {
+  is_zoned(x) || is_Date(x) || is_POSIXct(x) || is_POSIXlt(x)
+}
+
 # ------------------------------------------------------------------------------
 
 # Purposefully drop names and all attributes, as this is the structure
@@ -128,7 +132,23 @@ days_to_date <- function(x, names = NULL) {
 # ------------------------------------------------------------------------------
 
 restrict_civil_supported <- function(x) {
-  if (is_Date(x) || is_POSIXct(x) || is_POSIXlt(x) || is_zoned(x) || is_local(x)) {
+  if (is_local(x) || is_zoned_or_base(x)) {
+    invisible(x)
+  } else {
+    stop_civil_unsupported_class(x)
+  }
+}
+
+restrict_zoned_or_base <- function(x) {
+  if (is_zoned_or_base(x)) {
+    invisible(x)
+  } else {
+    stop_civil_unsupported_class(x)
+  }
+}
+
+restrict_zoned <- function(x) {
+  if (is_zoned(x)) {
     invisible(x)
   } else {
     stop_civil_unsupported_class(x)
