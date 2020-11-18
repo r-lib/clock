@@ -84,6 +84,11 @@ vec_restore.civil_local_datetime <- function(x, to, ...) {
 }
 
 #' @export
+vec_proxy_equal.civil_local_datetime <- function(x, ...) {
+  proxy_equal_civil_rcrd(x)
+}
+
+#' @export
 format.civil_local_datetime <- function(x, ...) {
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")

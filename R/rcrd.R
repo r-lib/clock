@@ -87,6 +87,12 @@ proxy_civil_rcrd <- function(x) {
   out
 }
 
+proxy_equal_civil_rcrd <- function(x) {
+  out <- unclass(x)
+  out <- new_data_frame(out)
+  out
+}
+
 restore_civil_rcrd_fields <- function(x) {
   x[["civil_rcrd:::names"]] <- NULL
   names <- names(x)

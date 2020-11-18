@@ -109,6 +109,11 @@ vec_restore.civil_zoned_nano_datetime <- function(x, to, ...) {
 }
 
 #' @export
+vec_proxy_equal.civil_zoned_nano_datetime <- function(x, ...) {
+  proxy_equal_civil_rcrd(x)
+}
+
+#' @export
 format.civil_zoned_nano_datetime <- function(x, ...) {
   zone <- zoned_zone(x)
 

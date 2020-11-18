@@ -57,6 +57,11 @@ vec_restore.civil_local_year_month <- function(x, to, ...) {
 }
 
 #' @export
+vec_proxy_equal.civil_local_year_month <- function(x, ...) {
+  proxy_equal_civil_rcrd(x)
+}
+
+#' @export
 format.civil_local_year_month <- function(x, ...) {
   days <- field(x, "days")
 
