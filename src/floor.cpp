@@ -1,19 +1,16 @@
 #include "civil.h"
 
 [[cpp11::register]]
-SEXP floor_days_to_year_month_cpp(SEXP days) {
-  r_ssize size = r_length(days);
+civil_writable_field floor_days_to_year_month_cpp(const civil_field& days) {
+  r_ssize size = days.size();
 
-  SEXP out = PROTECT(r_new_integer(size));
-  int* p_out = r_int_deref(out);
-
-  const int* p_days = r_int_deref_const(days);
+  civil_writable_field out_days(size);
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_days = p_days[i];
+    int elt_days = days[i];
 
     if (elt_days == r_int_na) {
-      p_out[i] = r_int_na;
+      out_days[i] = r_int_na;
       continue;
     }
 
@@ -26,9 +23,8 @@ SEXP floor_days_to_year_month_cpp(SEXP days) {
 
     date::local_days out_lday{out_ymd};
 
-    p_out[i] = out_lday.time_since_epoch().count();
+    out_days[i] = out_lday.time_since_epoch().count();
   }
 
-  UNPROTECT(1);
-  return out;
+  return out_days;
 }

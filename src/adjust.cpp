@@ -8,28 +8,24 @@
 
 // -----------------------------------------------------------------------------
 
-static SEXP adjust_local_days(SEXP x,
-                              SEXP value,
-                              const enum day_nonexistent& day_nonexistent,
-                              const r_ssize& size,
-                              const enum adjuster& adjuster);
+static civil_writable_rcrd adjust_local_days(const civil_rcrd& x,
+                                             const cpp11::integers& value,
+                                             const enum day_nonexistent& day_nonexistent,
+                                             const r_ssize& size,
+                                             const enum adjuster& adjuster);
 
 [[cpp11::register]]
-SEXP adjust_local_days_cpp(SEXP x,
-                           SEXP value,
-                           SEXP day_nonexistent,
-                           SEXP size,
-                           SEXP adjuster) {
-  enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
-  r_ssize c_size = r_int_get(size, 0);
-  enum adjuster c_adjuster = parse_adjuster(adjuster);
-
+civil_writable_rcrd adjust_local_days_cpp(const civil_rcrd& x,
+                                          const cpp11::integers& value,
+                                          const cpp11::strings& day_nonexistent,
+                                          const cpp11::integers& size,
+                                          const cpp11::strings& adjuster) {
   return adjust_local_days(
     x,
     value,
-    c_day_nonexistent,
-    c_size,
-    c_adjuster
+    parse_day_nonexistent(day_nonexistent),
+    size[0],
+    parse_adjuster(adjuster)
   );
 }
 
@@ -39,24 +35,23 @@ adjust_local_days_switch(const date::year_month_day& ymd,
                          const int& value,
                          const enum adjuster& adjuster);
 
-static SEXP adjust_local_days(SEXP x,
-                              SEXP value,
-                              const enum day_nonexistent& day_nonexistent,
-                              const r_ssize& size,
-                              const enum adjuster& adjuster) {
-  x = PROTECT(civil_rcrd_maybe_clone(x));
-  x = PROTECT(civil_rcrd_recycle(x, size));
+static civil_writable_rcrd adjust_local_days(const civil_rcrd& x,
+                                             const cpp11::integers& value,
+                                             const enum day_nonexistent& day_nonexistent,
+                                             const r_ssize& size,
+                                             const enum adjuster& adjuster) {
+  civil_writable_rcrd out(x);
+  civil_rcrd_recycle_fields(out, size);
 
-  int* p_days = civil_rcrd_days_deref(x);
-  int* p_time_of_day = civil_rcrd_time_of_day_deref(x);
-  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(x);
+  int* p_days = civil_rcrd_days_deref(out);
+  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
+  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
 
-  const bool recycle_value = r_is_scalar(value);
-  const int* p_value = r_int_deref_const(value);
+  const bool recycle_value = civil_is_scalar(value);
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_days = p_days[i];
-    int elt_value = recycle_value ? p_value[0] : p_value[i];
+    int elt_value = recycle_value ? value[0] : value[i];
 
     if (elt_days == r_int_na) {
       continue;
@@ -85,8 +80,7 @@ static SEXP adjust_local_days(SEXP x,
     );
   }
 
-  UNPROTECT(2);
-  return x;
+  return out;
 }
 
 // -----------------------------------------------------------------------------
@@ -146,17 +140,17 @@ adjust_local_days_switch(const date::year_month_day& ymd,
 
 // -----------------------------------------------------------------------------
 
-static SEXP adjust_local_time_of_day(SEXP x,
-                                     SEXP value,
-                                     const r_ssize& size,
-                                     const enum adjuster& adjuster);
+static civil_writable_rcrd adjust_local_time_of_day(const civil_rcrd& x,
+                                                    const cpp11::integers& value,
+                                                    const r_ssize& size,
+                                                    const enum adjuster& adjuster);
 
 [[cpp11::register]]
-SEXP adjust_local_time_of_day_cpp(SEXP x,
-                                  SEXP value,
-                                  SEXP size,
-                                  SEXP adjuster) {
-  r_ssize c_size = r_int_get(size, 0);
+civil_writable_rcrd adjust_local_time_of_day_cpp(const civil_rcrd& x,
+                                                 const cpp11::integers& value,
+                                                 const cpp11::integers& size,
+                                                 const cpp11::strings& adjuster) {
+  r_ssize c_size = size[0];
   enum adjuster c_adjuster = parse_adjuster(adjuster);
 
   return adjust_local_time_of_day(
@@ -173,23 +167,22 @@ adjust_local_time_of_day_switch(const date::hh_mm_ss<std::chrono::seconds>& hms,
                                 const int& value,
                                 const enum adjuster& adjuster);
 
-static SEXP adjust_local_time_of_day(SEXP x,
-                                     SEXP value,
-                                     const r_ssize& size,
-                                     const enum adjuster& adjuster) {
-  x = PROTECT(civil_rcrd_maybe_clone(x));
-  x = PROTECT(civil_rcrd_recycle(x, size));
+static civil_writable_rcrd adjust_local_time_of_day(const civil_rcrd& x,
+                                                    const cpp11::integers& value,
+                                                    const r_ssize& size,
+                                                    const enum adjuster& adjuster) {
+  civil_writable_rcrd out(x);
+  civil_rcrd_recycle_fields(out, size);
 
-  int* p_days = civil_rcrd_days_deref(x);
-  int* p_time_of_day = civil_rcrd_time_of_day_deref(x);
-  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(x);
+  int* p_days = civil_rcrd_days_deref(out);
+  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
+  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
 
-  const bool recycle_value = r_is_scalar(value);
-  const int* p_value = r_int_deref_const(value);
+  const bool recycle_value = civil_is_scalar(value);
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_time_of_day = p_time_of_day[i];
-    int elt_value = recycle_value ? p_value[0] : p_value[i];
+    int elt_value = recycle_value ? value[0] : value[i];
 
     if (elt_time_of_day == r_int_na) {
       continue;
@@ -211,8 +204,7 @@ static SEXP adjust_local_time_of_day(SEXP x,
     p_time_of_day[i] = out_tod.count();
   }
 
-  UNPROTECT(2);
-  return x;
+  return out;
 }
 
 // -----------------------------------------------------------------------------
@@ -261,17 +253,17 @@ adjust_local_time_of_day_switch(const date::hh_mm_ss<std::chrono::seconds>& hms,
 
 // -----------------------------------------------------------------------------
 
-static SEXP adjust_local_nanos_of_second(SEXP x,
-                                         SEXP value,
-                                         const r_ssize& size,
-                                         const enum adjuster& adjuster);
+static civil_writable_rcrd adjust_local_nanos_of_second(const civil_rcrd& x,
+                                                        const cpp11::integers& value,
+                                                        const r_ssize& size,
+                                                        const enum adjuster& adjuster);
 
 [[cpp11::register]]
-SEXP adjust_local_nanos_of_second_cpp(SEXP x,
-                                      SEXP value,
-                                      SEXP size,
-                                      SEXP adjuster) {
-  r_ssize c_size = r_int_get(size, 0);
+civil_writable_rcrd adjust_local_nanos_of_second_cpp(const civil_rcrd& x,
+                                                     const cpp11::integers& value,
+                                                     const cpp11::integers& size,
+                                                     const cpp11::strings& adjuster) {
+  r_ssize c_size = size[0];
   enum adjuster c_adjuster = parse_adjuster(adjuster);
 
   return adjust_local_nanos_of_second(
@@ -288,23 +280,22 @@ adjust_local_nanos_of_second_switch(const std::chrono::nanoseconds& x,
                                     const int& value,
                                     const enum adjuster& adjuster);
 
-static SEXP adjust_local_nanos_of_second(SEXP x,
-                                         SEXP value,
-                                         const r_ssize& size,
-                                         const enum adjuster& adjuster) {
-  x = PROTECT(civil_rcrd_maybe_clone(x));
-  x = PROTECT(civil_rcrd_recycle(x, size));
+static civil_writable_rcrd adjust_local_nanos_of_second(const civil_rcrd& x,
+                                                        const cpp11::integers& value,
+                                                        const r_ssize& size,
+                                                        const enum adjuster& adjuster) {
+  civil_writable_rcrd out(x);
+  civil_rcrd_recycle_fields(out, size);
 
-  int* p_days = civil_rcrd_days_deref(x);
-  int* p_time_of_day = civil_rcrd_time_of_day_deref(x);
-  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(x);
+  int* p_days = civil_rcrd_days_deref(out);
+  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
+  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
 
-  const bool recycle_value = r_is_scalar(value);
-  const int* p_value = r_int_deref_const(value);
+  const bool recycle_value = civil_is_scalar(value);
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_nanos_of_second = p_nanos_of_second[i];
-    int elt_value = recycle_value ? p_value[0] : p_value[i];
+    int elt_value = recycle_value ? value[0] : value[i];
 
     if (elt_nanos_of_second == r_int_na) {
       continue;
@@ -325,8 +316,7 @@ static SEXP adjust_local_nanos_of_second(SEXP x,
     p_nanos_of_second[i] = out_nanos.count();
   }
 
-  UNPROTECT(2);
-  return x;
+  return out;
 }
 
 // -----------------------------------------------------------------------------
@@ -341,8 +331,8 @@ adjust_local_nanos_of_second_nanosecond(const std::chrono::nanoseconds& nanos, c
 static inline
 std::chrono::nanoseconds
 adjust_local_nanos_of_second_switch(const std::chrono::nanoseconds& nanos,
-                              const int& value,
-                              const enum adjuster& adjuster) {
+                                    const int& value,
+                                    const enum adjuster& adjuster) {
   switch (adjuster) {
   case adjuster::nanosecond: {
     return adjust_local_nanos_of_second_nanosecond(nanos, value);

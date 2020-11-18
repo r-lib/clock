@@ -13,7 +13,7 @@ enum class day_nonexistent {
   error
 };
 
-enum day_nonexistent parse_day_nonexistent(SEXP x);
+enum day_nonexistent parse_day_nonexistent(const cpp11::strings& x);
 
 // -----------------------------------------------------------------------------
 
@@ -26,8 +26,8 @@ enum class dst_nonexistent {
   error
 };
 
-enum dst_nonexistent parse_dst_nonexistent(SEXP x);
-enum dst_nonexistent parse_dst_nonexistent_one(const char* x);
+enum dst_nonexistent parse_dst_nonexistent(const cpp11::strings& x);
+enum dst_nonexistent parse_dst_nonexistent_one(const cpp11::r_string& x);
 
 // -----------------------------------------------------------------------------
 
@@ -38,8 +38,8 @@ enum class dst_ambiguous {
   error
 };
 
-enum dst_ambiguous parse_dst_ambiguous(SEXP x);
-enum dst_ambiguous parse_dst_ambiguous_one(const char* x);
+enum dst_ambiguous parse_dst_ambiguous(const cpp11::strings& x);
+enum dst_ambiguous parse_dst_ambiguous_one(const cpp11::r_string& x);
 
 // -----------------------------------------------------------------------------
 
@@ -56,7 +56,7 @@ enum class unit {
   nanosecond
 };
 
-enum unit parse_unit(SEXP x);
+enum unit parse_unit(const cpp11::strings& x);
 
 // -----------------------------------------------------------------------------
 
@@ -71,7 +71,7 @@ enum class adjuster {
   last_day_of_month
 };
 
-enum adjuster parse_adjuster(SEXP x);
+enum adjuster parse_adjuster(const cpp11::strings& x);
 
 // -----------------------------------------------------------------------------
 #endif

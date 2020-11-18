@@ -50,4 +50,38 @@ void civil_abort [[noreturn]] (const char* fmt, Args... args) {
 
 // -----------------------------------------------------------------------------
 
+static inline bool civil_is_scalar(const cpp11::sexp& x) {
+  return cpp11::safe[r_is_scalar](x);
+}
+
+static inline bool civil_is_string(const cpp11::sexp& x) {
+  return cpp11::safe[r_is_string](x);
+}
+
+// -----------------------------------------------------------------------------
+
+static inline
+cpp11::writable::integers civil_int_recycle(const cpp11::writable::integers& x,
+                                            const r_ssize& size) {
+  r_ssize x_size = x.size();
+
+  if (x_size == size) {
+    return x;
+  }
+  if (x_size != 1) {
+    civil_abort("`x` must be size 1 or %i.", (int) size);
+  }
+
+  int val = x[0];
+  cpp11::writable::integers out(size);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    out[i] = val;
+  }
+
+  return out;
+}
+
+// -----------------------------------------------------------------------------
+
 #endif

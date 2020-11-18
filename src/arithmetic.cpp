@@ -7,24 +7,23 @@
 
 // -----------------------------------------------------------------------------
 
-static SEXP add_years_or_months_local(SEXP x,
-                                      SEXP n,
-                                      enum day_nonexistent day_nonexistent,
-                                      enum unit unit,
-                                      r_ssize size) {
-  x = PROTECT(civil_rcrd_maybe_clone(x));
-  x = PROTECT(civil_rcrd_recycle(x, size));
+static civil_writable_rcrd add_years_or_months_local(const civil_rcrd& x,
+                                                     const cpp11::integers& n,
+                                                     const enum day_nonexistent& day_nonexistent,
+                                                     const enum unit& unit,
+                                                     const r_ssize& size) {
+  civil_writable_rcrd out(x);
+  civil_rcrd_recycle_fields(out, size);
 
-  int* p_days = civil_rcrd_days_deref(x);
-  int* p_time_of_day = civil_rcrd_time_of_day_deref(x);
-  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(x);
+  int* p_days = civil_rcrd_days_deref(out);
+  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
+  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
 
-  const bool recycle_n = r_is_scalar(n);
-  const int* p_n = r_int_deref_const(n);
+  const bool recycle_n = civil_is_scalar(n);
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_days = p_days[i];
-    int elt_n = recycle_n ? p_n[0] : p_n[i];
+    int elt_n = recycle_n ? n[0] : n[i];
 
     if (elt_days == r_int_na) {
       continue;
@@ -55,16 +54,15 @@ static SEXP add_years_or_months_local(SEXP x,
     );
   }
 
-  UNPROTECT(2);
-  return x;
+  return out;
 }
 
 [[cpp11::register]]
-SEXP add_years_or_months_local_cpp(SEXP x,
-                                   SEXP n,
-                                   SEXP day_nonexistent,
-                                   SEXP unit,
-                                   SEXP size) {
+civil_writable_rcrd add_years_or_months_local_cpp(const civil_rcrd& x,
+                                                  const cpp11::integers& n,
+                                                  const cpp11::strings& day_nonexistent,
+                                                  const cpp11::strings& unit,
+                                                  const cpp11::integers& size) {
   enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
   enum unit c_unit = parse_unit(unit);
   r_ssize c_size = r_int_get(size, 0);
@@ -74,23 +72,22 @@ SEXP add_years_or_months_local_cpp(SEXP x,
 
 // -----------------------------------------------------------------------------
 
-static SEXP add_weeks_or_days_local(SEXP x,
-                                    SEXP n,
-                                    enum unit unit,
-                                    r_ssize size) {
-  x = PROTECT(civil_rcrd_maybe_clone(x));
-  x = PROTECT(civil_rcrd_recycle(x, size));
+static civil_writable_rcrd add_weeks_or_days_local(const civil_rcrd& x,
+                                                   const cpp11::integers& n,
+                                                   const enum unit& unit,
+                                                   const r_ssize& size) {
+  civil_writable_rcrd out(x);
+  civil_rcrd_recycle_fields(out, size);
 
-  int* p_days = civil_rcrd_days_deref(x);
-  int* p_time_of_day = civil_rcrd_time_of_day_deref(x);
-  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(x);
+  int* p_days = civil_rcrd_days_deref(out);
+  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
+  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
 
-  const bool recycle_n = r_is_scalar(n);
-  const int* p_n = r_int_deref_const(n);
+  const bool recycle_n = civil_is_scalar(n);
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_days = p_days[i];
-    int elt_n = recycle_n ? p_n[0] : p_n[i];
+    int elt_n = recycle_n ? n[0] : n[i];
 
     if (elt_days == r_int_na) {
       continue;
@@ -109,15 +106,14 @@ static SEXP add_weeks_or_days_local(SEXP x,
     p_days[i] = out_lday.time_since_epoch().count();
   }
 
-  UNPROTECT(2);
-  return x;
+  return out;
 }
 
 [[cpp11::register]]
-SEXP add_weeks_or_days_local_cpp(SEXP x,
-                                 SEXP n,
-                                 SEXP unit,
-                                 SEXP size) {
+civil_writable_rcrd add_weeks_or_days_local_cpp(const civil_rcrd& x,
+                                                const cpp11::integers& n,
+                                                const cpp11::strings& unit,
+                                                const cpp11::integers& size) {
   enum unit c_unit = parse_unit(unit);
   r_ssize c_size = r_int_get(size, 0);
 
@@ -126,24 +122,23 @@ SEXP add_weeks_or_days_local_cpp(SEXP x,
 
 // -----------------------------------------------------------------------------
 
-static SEXP add_hours_or_minutes_or_seconds(SEXP x,
-                                            SEXP n,
-                                            enum unit unit,
-                                            r_ssize size) {
-  x = PROTECT(civil_rcrd_maybe_clone(x));
-  x = PROTECT(civil_rcrd_recycle(x, size));
+static civil_writable_rcrd add_hours_or_minutes_or_seconds(const civil_rcrd& x,
+                                                           const cpp11::integers& n,
+                                                           const enum unit& unit,
+                                                           const r_ssize& size) {
+  civil_writable_rcrd out(x);
+  civil_rcrd_recycle_fields(out, size);
 
-  int* p_days = civil_rcrd_days_deref(x);
-  int* p_time_of_day = civil_rcrd_time_of_day_deref(x);
-  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(x);
+  int* p_days = civil_rcrd_days_deref(out);
+  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
+  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
 
-  const bool recycle_n = r_is_scalar(n);
-  const int* p_n = r_int_deref_const(n);
+  const bool recycle_n = civil_is_scalar(n);
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_days = p_days[i];
     int elt_time_of_day = p_time_of_day[i];
-    int elt_n = recycle_n ? p_n[0] : p_n[i];
+    int elt_n = recycle_n ? n[0] : n[i];
 
     if (elt_days == r_int_na) {
       continue;
@@ -181,15 +176,14 @@ static SEXP add_hours_or_minutes_or_seconds(SEXP x,
     p_time_of_day[i] = out_tod.count();
   }
 
-  UNPROTECT(2);
-  return x;
+  return out;
 }
 
 [[cpp11::register]]
-SEXP add_hours_or_minutes_or_seconds_cpp(SEXP x,
-                                         SEXP n,
-                                         SEXP unit,
-                                         SEXP size) {
+civil_writable_rcrd add_hours_or_minutes_or_seconds_cpp(const civil_rcrd& x,
+                                                        const cpp11::integers& n,
+                                                        const cpp11::strings& unit,
+                                                        const cpp11::integers& size) {
   enum unit c_unit = parse_unit(unit);
   r_ssize c_size = r_int_get(size, 0);
 
@@ -221,7 +215,8 @@ struct fields_nano_datetime {
 
 static
 inline
-date::days plus_days(const date::days& days, const date::days& n) {
+date::days plus_days(const date::days& days,
+                     const date::days& n) {
   return days + n;
 }
 
@@ -252,25 +247,24 @@ fields_nano_datetime plus_nanos_of_second(const date::days& days,
   return {fdt.days, fdt.time_of_day, out_nanos_of_second};
 }
 
-static SEXP add_milliseconds_or_microseconds_or_nanoseconds(SEXP x,
-                                                            SEXP n,
-                                                            enum unit unit,
-                                                            r_ssize size) {
-  x = PROTECT(civil_rcrd_maybe_clone(x));
-  x = PROTECT(civil_rcrd_recycle(x, size));
+static civil_writable_rcrd add_milliseconds_or_microseconds_or_nanoseconds(const civil_rcrd& x,
+                                                                           const cpp11::integers& n,
+                                                                           const enum unit& unit,
+                                                                           const r_ssize& size) {
+  civil_writable_rcrd out(x);
+  civil_rcrd_recycle_fields(out, size);
 
-  int* p_days = civil_rcrd_days_deref(x);
-  int* p_time_of_day = civil_rcrd_time_of_day_deref(x);
-  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(x);
+  int* p_days = civil_rcrd_days_deref(out);
+  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
+  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
 
-  const bool recycle_n = r_is_scalar(n);
-  const int* p_n = r_int_deref_const(n);
+  const bool recycle_n = civil_is_scalar(n);
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_days = p_days[i];
     int elt_time_of_day = p_time_of_day[i];
     int elt_nanos_of_second = p_nanos_of_second[i];
-    int elt_n = recycle_n ? p_n[0] : p_n[i];
+    int elt_n = recycle_n ? n[0] : n[i];
 
     if (elt_days == r_int_na) {
       continue;
@@ -302,15 +296,14 @@ static SEXP add_milliseconds_or_microseconds_or_nanoseconds(SEXP x,
     p_nanos_of_second[i] = fndt.nanos_of_second.count();
   }
 
-  UNPROTECT(2);
-  return x;
+  return out;
 }
 
 [[cpp11::register]]
-SEXP add_milliseconds_or_microseconds_or_nanoseconds_cpp(SEXP x,
-                                                         SEXP n,
-                                                         SEXP unit,
-                                                         SEXP size) {
+civil_writable_rcrd add_milliseconds_or_microseconds_or_nanoseconds_cpp(const civil_rcrd& x,
+                                                                        const cpp11::integers& n,
+                                                                        const cpp11::strings& unit,
+                                                                        const cpp11::integers& size) {
   enum unit c_unit = parse_unit(unit);
   r_ssize c_size = r_int_get(size, 0);
 

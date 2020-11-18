@@ -42,82 +42,91 @@ from_stream(std::basic_istream<CharT, Traits>& is,
 
 // -----------------------------------------------------------------------------
 
-[[cpp11::register]]
-SEXP parse_zoned_datetime_cpp(SEXP x,
-                              SEXP format,
-                              SEXP zone,
-                              SEXP locale,
-                              SEXP dst_nonexistent,
-                              SEXP dst_ambiguous,
-                              SEXP size) {
-  r_ssize c_size = r_int_get(size, 0);
-
-  zone = PROTECT(zone_standardize(zone));
-  std::string zone_name = zone_unwrap(zone);
-  const date::time_zone* p_time_zone = zone_name_load(zone_name);
-
-  const char* c_format = CHAR(r_chr_get(format, 0));
-
-  const char* c_locale = CHAR(r_chr_get(locale, 0));
-  std::locale cpp_locale;
-
+static inline std::locale civil_load_locale(const std::string& locale) {
   try {
-    cpp_locale = std::locale{c_locale};
+    return std::locale{locale};
   }
   catch (const std::runtime_error& error) {
     civil_abort("Failed to load locale.");
   }
+}
 
-  SEXP days = PROTECT(r_new_integer(c_size));
-  int* p_days = r_int_deref(days);
+// -----------------------------------------------------------------------------
 
-  SEXP time_of_day = PROTECT(r_new_integer(c_size));
-  int* p_time_of_day = r_int_deref(time_of_day);
+[[cpp11::register]]
+civil_writable_rcrd parse_zoned_datetime_cpp(const cpp11::strings& x,
+                                             const cpp11::strings& format,
+                                             const cpp11::strings& zone,
+                                             const cpp11::strings& locale,
+                                             const cpp11::strings& dst_nonexistent,
+                                             const cpp11::strings& dst_ambiguous,
+                                             const cpp11::integers& size) {
+  r_ssize c_size = size[0];
 
-  int* p_nanos_of_second = NULL;
+  cpp11::writable::strings zone_standard = zone_standardize(zone);
+  cpp11::r_string zone_name_r(zone_standard[0]);
+  std::string zone_name(zone_name_r);
+  const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
-  SEXP out = PROTECT(new_days_time_of_day_list(days, time_of_day));
+  if (format.size() != 1) {
+    civil_abort("`format` must have size 1.");
+  }
 
-  const SEXP* p_dst_nonexistent = STRING_PTR_RO(dst_nonexistent);
-  bool recycle_dst_nonexistent = r_is_scalar(dst_nonexistent);
+  std::string string_format(format[0]);
+  const char* c_format = string_format.c_str();
+
+  if (locale.size() != 1) {
+    civil_abort("`locale` must have size 1.");
+  }
+
+  std::string string_locale(locale[0]);
+  std::locale cpp_locale = civil_load_locale(string_locale);
+
+  civil_writable_field days(c_size);
+  civil_writable_field time_of_day(c_size);
+
+  civil_writable_rcrd out = new_days_time_of_day_list(days, time_of_day);
+
+  bool recycle_x = civil_is_scalar(x);
+  bool recycle_dst_nonexistent = civil_is_scalar(dst_nonexistent);
+  bool recycle_dst_ambiguous = civil_is_scalar(dst_ambiguous);
+
   enum dst_nonexistent c_dst_nonexistent;
   if (recycle_dst_nonexistent) {
-    c_dst_nonexistent = parse_dst_nonexistent_one(CHAR(p_dst_nonexistent[0]));
+    c_dst_nonexistent = parse_dst_nonexistent_one(dst_nonexistent[0]);
   }
 
-  const SEXP* p_dst_ambiguous = STRING_PTR_RO(dst_ambiguous);
-  bool recycle_dst_ambiguous = r_is_scalar(dst_ambiguous);
   enum dst_ambiguous c_dst_ambiguous;
   if (recycle_dst_ambiguous) {
-    c_dst_ambiguous = parse_dst_ambiguous_one(CHAR(p_dst_ambiguous[0]));
+    c_dst_ambiguous = parse_dst_ambiguous_one(dst_ambiguous[0]);
   }
 
-  const SEXP* p_x = STRING_PTR_RO(x);
-
-  std::istringstream elt_stream;
-  elt_stream.imbue(cpp_locale);
+  std::istringstream stream;
+  stream.imbue(cpp_locale);
 
   for (r_ssize i = 0; i < c_size; ++i) {
-    SEXP elt_x = p_x[i];
+    cpp11::r_string elt_x = recycle_x ? x[0] : x[i];
 
     if (elt_x == NA_STRING) {
-      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      days[i] = r_int_na;
+      time_of_day[i] = r_int_na;
       continue;
     }
 
-    const char* elt_x_char = Rf_translateCharUTF8(elt_x);
-    elt_stream.clear();
-    elt_stream.str(elt_x_char);
+    std::string elt_x_string(elt_x);
+    stream.clear();
+    stream.str(elt_x_string);
 
     date::year_month_day elt_ymd;
     date::hh_mm_ss<std::chrono::seconds> elt_tod;
     std::string elt_zone;
     std::chrono::minutes elt_offset{0};
 
-    from_stream(elt_stream, c_format, elt_ymd, elt_tod, &elt_zone, &elt_offset);
+    from_stream(stream, c_format, elt_ymd, elt_tod, &elt_zone, &elt_offset);
 
-    if (elt_stream.fail()) {
-      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+    if (stream.fail()) {
+      days[i] = r_int_na;
+      time_of_day[i] = r_int_na;
       continue;
     }
 
@@ -136,12 +145,12 @@ SEXP parse_zoned_datetime_cpp(SEXP x,
     const enum dst_nonexistent elt_dst_nonexistent =
       recycle_dst_nonexistent ?
       c_dst_nonexistent :
-      parse_dst_nonexistent_one(CHAR(p_dst_nonexistent[i]));
+      parse_dst_nonexistent_one(dst_nonexistent[i]);
 
     const enum dst_ambiguous elt_dst_ambiguous =
       recycle_dst_ambiguous ?
       c_dst_ambiguous :
-      parse_dst_ambiguous_one(CHAR(p_dst_ambiguous[i]));
+      parse_dst_ambiguous_one(dst_ambiguous[i]);
 
     date::local_days elt_lday{elt_ymd};
     date::local_seconds elt_lsec_floor{elt_lday};
@@ -155,9 +164,12 @@ SEXP parse_zoned_datetime_cpp(SEXP x,
     date::sys_seconds out_ssec;
 
     if (elt_offset != std::chrono::minutes{0}) {
+      // If an offset is present, treat as offset from UTC and return sys seconds
       date::sys_seconds elt_ssec{elt_lsec.time_since_epoch()};
       out_ssec = elt_ssec - elt_offset;
     } else {
+      // If no offset is present, treat as a local time and convert to the
+      // zone either implicit in the string or supplied as `zone`.
       bool na = false;
 
       out_ssec = convert_local_to_sys(
@@ -170,7 +182,8 @@ SEXP parse_zoned_datetime_cpp(SEXP x,
       );
 
       if (na) {
-        civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+        days[i] = r_int_na;
+        time_of_day[i] = r_int_na;
         continue;
       }
     }
@@ -180,68 +193,64 @@ SEXP parse_zoned_datetime_cpp(SEXP x,
 
     std::chrono::seconds out_tod{out_ssec - out_ssec_floor};
 
-    p_days[i] = out_sday.time_since_epoch().count();
-    p_time_of_day[i] = out_tod.count();
+    days[i] = out_sday.time_since_epoch().count();
+    time_of_day[i] = out_tod.count();
   }
 
-  UNPROTECT(4);
   return out;
 }
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-SEXP parse_local_datetime_cpp(SEXP x,
-                              SEXP format,
-                              SEXP locale) {
-  r_ssize c_size = r_length(x);
+civil_writable_rcrd parse_local_datetime_cpp(const cpp11::strings& x,
+                                             const cpp11::strings& format,
+                                             const cpp11::strings& locale) {
+  r_ssize c_size = x.size();
 
-  const char* c_format = CHAR(r_chr_get(format, 0));
-
-  const char* c_locale = CHAR(r_chr_get(locale, 0));
-  std::locale cpp_locale;
-
-  try {
-    cpp_locale = std::locale{c_locale};
-  }
-  catch (const std::runtime_error& error) {
-    civil_abort("Failed to load locale.");
+  if (format.size() != 1) {
+    civil_abort("`format` must have size 1.");
   }
 
-  SEXP days = PROTECT(r_new_integer(c_size));
-  int* p_days = r_int_deref(days);
+  std::string string_format(format[0]);
+  const char* c_format = string_format.c_str();
 
-  SEXP time_of_day = PROTECT(r_new_integer(c_size));
-  int* p_time_of_day = r_int_deref(time_of_day);
+  if (locale.size() != 1) {
+    civil_abort("`locale` must have size 1.");
+  }
 
-  int* p_nanos_of_second = NULL;
+  std::string string_locale(locale[0]);
+  std::locale cpp_locale = civil_load_locale(string_locale);
 
-  SEXP out = PROTECT(new_days_time_of_day_list(days, time_of_day));
+  civil_writable_field days(c_size);
+  civil_writable_field time_of_day(c_size);
 
-  const SEXP* p_x = STRING_PTR_RO(x);
+  civil_writable_rcrd out = new_days_time_of_day_list(days, time_of_day);
 
-  std::istringstream elt_stream;
-  elt_stream.imbue(cpp_locale);
+  std::istringstream stream;
+  stream.imbue(cpp_locale);
 
   for (r_ssize i = 0; i < c_size; ++i) {
-    SEXP elt_x = p_x[i];
+    cpp11::r_string elt_x = x[i];
 
     if (elt_x == NA_STRING) {
-      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      days[i] = r_int_na;
+      time_of_day[i] = r_int_na;
       continue;
     }
 
-    const char* elt_x_char = Rf_translateCharUTF8(elt_x);
-    elt_stream.clear();
-    elt_stream.str(elt_x_char);
+    std::string elt_x_string(elt_x);
+    stream.clear();
+    stream.str(elt_x_string);
 
     date::year_month_day elt_ymd;
     date::hh_mm_ss<std::chrono::seconds> elt_tod;
 
-    from_stream(elt_stream, c_format, elt_ymd, elt_tod);
+    from_stream(stream, c_format, elt_ymd, elt_tod);
 
-    if (elt_stream.fail()) {
-      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+    if (stream.fail()) {
+      days[i] = r_int_na;
+      time_of_day[i] = r_int_na;
       continue;
     }
 
@@ -259,10 +268,9 @@ SEXP parse_local_datetime_cpp(SEXP x,
 
     std::chrono::seconds out_tod{out_lsec - out_lsec_floor};
 
-    p_days[i] = out_lday.time_since_epoch().count();
-    p_time_of_day[i] = out_tod.count();
+    days[i] = out_lday.time_since_epoch().count();
+    time_of_day[i] = out_tod.count();
   }
 
-  UNPROTECT(3);
   return out;
 }

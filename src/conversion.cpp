@@ -44,7 +44,7 @@ static inline date::sys_seconds info_nonexistent_na(bool& na) {
   return date::sys_seconds::max();
 }
 
-static inline date::sys_seconds info_nonexistent_error(r_ssize i) {
+static inline date::sys_seconds info_nonexistent_error(const r_ssize& i) {
   civil_abort("Nonexistent time due to daylight savings at location %i.", (int) i + 1);
 }
 
@@ -76,7 +76,7 @@ static inline date::sys_seconds info_ambiguous_na(bool& na) {
   return date::sys_seconds::max();
 }
 
-static inline date::sys_seconds info_ambiguous_error(r_ssize i) {
+static inline date::sys_seconds info_ambiguous_error(const r_ssize& i) {
   civil_abort("Ambiguous time due to daylight savings at location %i.", (int) i + 1);
 }
 
@@ -88,7 +88,7 @@ static inline date::sys_seconds info_ambiguous_error(r_ssize i) {
 // [[ include("conversion.h") ]]
 date::sys_seconds convert_local_to_sys(const date::local_seconds& lsec,
                                        const date::time_zone* p_zone,
-                                       r_ssize i,
+                                       const r_ssize& i,
                                        const enum dst_nonexistent& dst_nonexistent,
                                        const enum dst_ambiguous& dst_ambiguous,
                                        bool& na) {
@@ -154,7 +154,7 @@ date::sys_seconds convert_local_to_sys(const date::local_seconds& lsec,
 // [[ include("conversion.h") ]]
 date::sys_seconds convert_local_to_sys(const date::local_seconds& lsec,
                                        const date::time_zone* p_zone,
-                                       r_ssize i,
+                                       const r_ssize& i,
                                        const enum dst_nonexistent& dst_nonexistent,
                                        const enum dst_ambiguous& dst_ambiguous,
                                        bool& na,

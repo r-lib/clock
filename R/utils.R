@@ -64,10 +64,10 @@ from_posixct_to_posixct <- function(x) {
 # ------------------------------------------------------------------------------
 
 ones_along <- function(x) {
-  vec_rep(1L, times = vec_size(x))
+  rep(1L, times = vec_size(x))
 }
 zeros_along <- function(x) {
-  vec_rep(0L, times = vec_size(x))
+  vector("integer", length = vec_size(x))
 }
 
 # ------------------------------------------------------------------------------
@@ -194,7 +194,7 @@ unstructure <- function(x) {
 }
 
 get_tzone <- function(x) {
-  attr(x, "tzone", exact = TRUE)
+  attr(x, "tzone", exact = TRUE) %||% ""
 }
 
 # ------------------------------------------------------------------------------

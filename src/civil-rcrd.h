@@ -2,56 +2,38 @@
 #define CIVIL_CIVIL_RCRD_H
 
 #include "civil.h"
+#include "utils.h"
 
-static inline SEXP civil_rcrd_recycle(SEXP x, r_ssize size) {
-  x = PROTECT(r_maybe_clone(x));
-
-  r_ssize n = r_length(x);
-
-  for (r_ssize i = 0; i < n; ++i) {
-    r_list_poke(x, i, r_int_recycle(r_list_get(x, i), size));
-  }
-
-  UNPROTECT(1);
-  return x;
-}
-
-static inline SEXP civil_rcrd_maybe_clone(SEXP x) {
-  x = PROTECT(r_maybe_clone(x));
-
-  r_ssize n = r_length(x);
+static inline void civil_rcrd_recycle_fields(civil_writable_rcrd& x,
+                                             const r_ssize& size) {
+  r_ssize n = x.size();
 
   for (r_ssize i = 0; i < n; ++i) {
-    r_list_poke(x, i, r_maybe_clone(r_list_get(x, i)));
+    x[i] = civil_int_recycle(x[i], size);
   }
-
-  UNPROTECT(1);
-  return x;
 }
 
-static inline SEXP civil_rcrd_days(SEXP x) {
-  return r_list_get(x, 0);
+static inline int* civil_rcrd_days_deref(civil_writable_rcrd& x) {
+  return r_int_deref(x[0].data());
 }
-static inline SEXP civil_rcrd_time_of_day(SEXP x) {
-  return r_length(x) < 2 ? NULL : r_list_get(x, 1);
+static inline int* civil_rcrd_time_of_day_deref(civil_writable_rcrd& x) {
+  return x.size() < 2 ? NULL : r_int_deref(x[1].data());
 }
-static inline SEXP civil_rcrd_nanos_of_second(SEXP x) {
-  return r_length(x) < 3 ? NULL : r_list_get(x, 2);
-}
-
-static inline int* civil_rcrd_days_deref(SEXP x) {
-  return r_int_deref(civil_rcrd_days(x));
-}
-static inline int* civil_rcrd_time_of_day_deref(SEXP x) {
-  SEXP time_of_day = civil_rcrd_time_of_day(x);
-  return time_of_day == NULL ? NULL : r_int_deref(time_of_day);
-}
-static inline int* civil_rcrd_nanos_of_second_deref(SEXP x) {
-  SEXP nanos_of_second = civil_rcrd_nanos_of_second(x);
-  return nanos_of_second == NULL ? NULL : r_int_deref(nanos_of_second);
+static inline int* civil_rcrd_nanos_of_second_deref(civil_writable_rcrd& x) {
+  return x.size() < 3 ? NULL : r_int_deref(x[2].data());
 }
 
-static inline void civil_rcrd_assign_missing(r_ssize i,
+static inline const int* civil_rcrd_days_deref_const(civil_rcrd& x) {
+  return r_int_deref_const(x[0].data());
+}
+static inline const int* civil_rcrd_time_of_day_deref_const(civil_rcrd& x) {
+  return x.size() < 2 ? NULL : r_int_deref_const(x[1].data());
+}
+static inline const int* civil_rcrd_nanos_of_second_deref_const(civil_rcrd& x) {
+  return x.size() < 3 ? NULL : r_int_deref_const(x[2].data());
+}
+
+static inline void civil_rcrd_assign_missing(const r_ssize& i,
                                              int* p_days,
                                              int* p_time_of_day,
                                              int* p_nanos_of_second) {
@@ -68,50 +50,24 @@ static inline void civil_rcrd_assign_missing(r_ssize i,
 
 // -----------------------------------------------------------------------------
 
-static inline SEXP new_days_list(SEXP days) {
-  SEXP out = PROTECT(r_new_list(1));
-  r_list_poke(out, 0, days);
-
-  SEXP names = PROTECT(r_new_character(1));
-  r_chr_poke(names, 0, r_new_string("days"));
-
-  r_poke_names(out, names);
-
-  UNPROTECT(2);
+static inline civil_writable_rcrd new_days_list(const civil_writable_field& days) {
+  civil_writable_rcrd out({days});
+  out.names() = "days";
   return out;
 }
 
-static inline SEXP new_days_time_of_day_list(SEXP days, SEXP time_of_day) {
-  SEXP out = PROTECT(r_new_list(2));
-  r_list_poke(out, 0, days);
-  r_list_poke(out, 1, time_of_day);
-
-  SEXP names = PROTECT(r_new_character(2));
-  r_chr_poke(names, 0, r_new_string("days"));
-  r_chr_poke(names, 1, r_new_string("time_of_day"));
-
-  r_poke_names(out, names);
-
-  UNPROTECT(2);
+static inline civil_writable_rcrd new_days_time_of_day_list(const civil_writable_field& days,
+                                                            const civil_writable_field& time_of_day) {
+  civil_writable_rcrd out({days, time_of_day});
+  out.names() = {"days", "time_of_day"};
   return out;
 }
 
-static inline SEXP new_days_time_of_day_nanos_of_second_list(SEXP days,
-                                                             SEXP time_of_day,
-                                                             SEXP nanos_of_second) {
-  SEXP out = PROTECT(r_new_list(3));
-  r_list_poke(out, 0, days);
-  r_list_poke(out, 1, time_of_day);
-  r_list_poke(out, 2, nanos_of_second);
-
-  SEXP names = PROTECT(r_new_character(3));
-  r_chr_poke(names, 0, r_new_string("days"));
-  r_chr_poke(names, 1, r_new_string("time_of_day"));
-  r_chr_poke(names, 2, r_new_string("nanos_of_second"));
-
-  r_poke_names(out, names);
-
-  UNPROTECT(2);
+static inline civil_writable_rcrd new_days_time_of_day_nanos_of_second_list(const civil_writable_field& days,
+                                                                            const civil_writable_field& time_of_day,
+                                                                            const civil_writable_field& nanos_of_second) {
+  civil_writable_rcrd out({days, time_of_day, nanos_of_second});
+  out.names() = {"days", "time_of_day", "nanos_of_second"};
   return out;
 }
 

@@ -15,9 +15,9 @@ static inline void resolve_day_nonexistent_last_day(date::year_month_day& ymd);
 static inline void resolve_day_nonexistent_last_time(std::chrono::seconds& tod);
 static inline void resolve_day_nonexistent_last_time_nanos(std::chrono::nanoseconds& nanos_of_second);
 static inline void resolve_day_nonexistent_na(bool& na);
-static inline void resolve_day_nonexistent_error(r_ssize i);
+static inline void resolve_day_nonexistent_error(const r_ssize& i);
 
-static inline void resolve_day_nonexistent_ymd(r_ssize i,
+static inline void resolve_day_nonexistent_ymd(const r_ssize& i,
                                                const enum day_nonexistent& day_nonexistent,
                                                date::year_month_day& ymd,
                                                bool& na) {
@@ -103,7 +103,7 @@ static inline void resolve_day_nonexistent_na(bool& na) {
   na = true;
 }
 
-static inline void resolve_day_nonexistent_error(r_ssize i) {
+static inline void resolve_day_nonexistent_error(const r_ssize& i) {
   civil_abort("Nonexistent day found at location %i.", (int) i + 1);
 }
 

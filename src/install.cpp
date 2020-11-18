@@ -9,13 +9,12 @@
  * always run.
  */
 [[cpp11::register]]
-void civil_set_install(SEXP path) {
-  if (!r_is_string(path)) {
+void civil_set_install(const cpp11::strings& path) {
+  if (path.size() != 1) {
     civil_abort("Internal error: Time zone database installation path should have size 1.");
   }
 
-  const char* c_path = CHAR(STRING_PTR(path)[0]);
-  std::string string_path(c_path);
+  std::string string_path(path[0]);
 
 #if !USE_OS_TZDB
   date::set_install(string_path);

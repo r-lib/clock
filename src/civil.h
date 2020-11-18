@@ -8,6 +8,9 @@
 // Include cpp11 next to avoid <Rinternals.h> being included before cpp11
 #include <cpp11.hpp>
 
+// Custom cpp11 typedefs for civil
+#include "civil_types.h"
+
 // Then include common utility headers
 #include "r.h"
 #include "utils-rlib.h"

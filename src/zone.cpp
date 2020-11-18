@@ -26,63 +26,44 @@
  */
 // [[ include("zone.h") ]]
 [[cpp11::register]]
-SEXP zone_standardize(SEXP zone) {
-  if (r_is_null(zone)) {
-    return r_new_scalar_character_from_c_string("");
+cpp11::writable::strings zone_standardize(const cpp11::strings& zone) {
+  if (zone.size() == 0) {
+    civil_abort("`zone` size must be at least 1.");
   }
 
-  if (r_typeof(zone) != r_type_character) {
-    civil_abort("`zone` must be a character vector or `NULL`.");
-  }
+  cpp11::writable::strings out(zone[0]);
 
-  r_ssize size = r_length(zone);
-
-  // Assume `character()` tzone is also local time
-  if (size == 0) {
-    return r_new_scalar_character_from_c_string("");
-  }
-
-  SEXP out = STRING_ELT(zone, 0);
-
-  return r_new_scalar_character(out);
-}
-
-/*
- * Assumes it has been standardized
- */
-// [[ include("zone.h") ]]
-std::string zone_unwrap(SEXP zone) {
-  return CHAR(STRING_ELT(zone, 0));
+  return out;
 }
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-SEXP zone_is_valid(SEXP zone) {
-  zone = PROTECT(zone_standardize(zone));
-  std::string zone_name = zone_unwrap(zone);
-  UNPROTECT(1);
+cpp11::writable::logicals zone_is_valid(const cpp11::strings& zone) {
+  cpp11::writable::strings zone_standard = zone_standardize(zone);
+  cpp11::r_string zone_name_r(zone_standard[0]);
+  std::string zone_name(zone_name_r);
 
   // Local time
   if (zone_name.size() == 0) {
-    return r_new_scalar_logical(true);
+    return cpp11::writable::logicals({cpp11::r_bool(true)});
   }
 
   try {
     date::locate_zone(zone_name);
-    return r_new_scalar_logical(true);
+    return cpp11::writable::logicals({cpp11::r_bool(true)});
   } catch (const std::runtime_error& error) {
-    return r_new_scalar_logical(false);
+    return cpp11::writable::logicals({cpp11::r_bool(false)});
   };
 }
 
 // -----------------------------------------------------------------------------
 
-const char* zone_name_current();
+static std::string zone_name_current();
 
 [[cpp11::register]]
-SEXP zone_current() {
-  return r_new_scalar_character_from_c_string(zone_name_current());
+cpp11::writable::strings zone_current() {
+  return cpp11::writable::strings({zone_name_current()});
 }
 
 // -----------------------------------------------------------------------------
@@ -111,9 +92,9 @@ const date::time_zone* zone_name_load_try(const std::string& zone_name) {
   };
 }
 
-const char* zone_name_system();
+static std::string zone_name_system();
 
-const char* zone_name_current() {
+static std::string zone_name_current() {
   const char* tz_env = std::getenv("TZ");
 
   if (tz_env == NULL) {
@@ -124,51 +105,47 @@ const char* zone_name_current() {
   if (strlen(tz_env) == 0) {
     // If set but empty, R behaves in a system specific way and there is no way
     // to infer local time zone.
-    Rf_warningcall(r_null, "Environment variable `TZ` is set to \"\". Using system time zone.");
+    cpp11::warning("Environment variable `TZ` is set to \"\". Using system time zone.");
     return zone_name_system();
   }
 
-  return tz_env;
+  std::string out(tz_env);
+
+  return out;
 }
 
-static const char* zone_name_system_get();
+static std::string zone_name_system_get();
 
-const char* zone_name_system() {
+static std::string zone_name_system() {
   // Once per session
-  static const char* ZONE_NAME_SYSTEM = NULL;
-
-  if (ZONE_NAME_SYSTEM == NULL) {
-    ZONE_NAME_SYSTEM = strdup(zone_name_system_get());
-  }
-
+  static std::string ZONE_NAME_SYSTEM = zone_name_system_get();
   return ZONE_NAME_SYSTEM;
 }
 
-static const char* zone_name_system_get() {
-  SEXP fn = Rf_findFun(Rf_install("Sys.timezone"), R_BaseEnv);
-  SEXP call = PROTECT(Rf_lang1(fn));
-  SEXP timezone = PROTECT(Rf_eval(call, R_GlobalEnv));
+static std::string zone_name_system_get() {
+  auto sys_timezone = cpp11::package("base")["Sys.timezone"];
+  cpp11::sexp result = sys_timezone();
 
-  if (!r_is_string(timezone)) {
-    Rf_warningcall(r_null, "Unexpected result from `Sys.timezone()`, returning 'UTC'.");
-    UNPROTECT(2);
+  if (!civil_is_string(result)) {
+    cpp11::warning("Unexpected result from `Sys.timezone()`, returning 'UTC'.");
     return "UTC";
   }
 
-  SEXP tz = STRING_ELT(timezone, 0);
+  cpp11::strings timezone = cpp11::as_cpp<cpp11::strings>(result);
+  cpp11::r_string tz = timezone[0];
+  SEXP tz_char(tz);
 
-  if (tz == NA_STRING || strlen(CHAR(tz)) == 0) {
-    Rf_warningcall(
-      r_null,
+  if (tz_char == NA_STRING || strlen(CHAR(tz_char)) == 0) {
+    cpp11::warning(
       "System timezone name is unknown. "
       "Please set the environment variable `TZ`. "
       "Defaulting to 'UTC'."
     );
 
-    UNPROTECT(2);
     return "UTC";
   }
 
-  UNPROTECT(2);
-  return CHAR(tz);
+  std::string out(tz);
+
+  return out;
 }

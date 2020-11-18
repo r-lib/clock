@@ -3,8 +3,7 @@
 
 #include "civil.h"
 
-SEXP zone_standardize(SEXP zone);
-std::string zone_unwrap(SEXP zone);
+cpp11::writable::strings zone_standardize(const cpp11::strings& zone);
 
 /*
  * Load a time zone name, or throw an R error if it can't be loaded

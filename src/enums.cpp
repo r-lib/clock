@@ -6,113 +6,113 @@
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum day_nonexistent parse_day_nonexistent(SEXP x) {
-  if (!r_is_string(x)) {
+enum day_nonexistent parse_day_nonexistent(const cpp11::strings& x) {
+  if (x.size() != 1) {
     civil_abort("`day_nonexistent` must be a string with length 1.");
   }
 
-  const char* string = CHAR(STRING_ELT(x, 0));
+  std::string string = x[0];
 
-  if (!strcmp(string, "last-time")) return day_nonexistent::last_time;
-  if (!strcmp(string, "first-time")) return day_nonexistent::first_time;
-  if (!strcmp(string, "last-day")) return day_nonexistent::last_day;
-  if (!strcmp(string, "first-day")) return day_nonexistent::first_day;
-  if (!strcmp(string, "NA")) return day_nonexistent::na;
-  if (!strcmp(string, "error")) return day_nonexistent::error;
+  if (string == "last-time") return day_nonexistent::last_time;
+  if (string == "first-time") return day_nonexistent::first_time;
+  if (string == "last-day") return day_nonexistent::last_day;
+  if (string == "first-day") return day_nonexistent::first_day;
+  if (string == "NA") return day_nonexistent::na;
+  if (string == "error") return day_nonexistent::error;
 
-  civil_abort("'%s' is not a recognized `day_nonexistent` option.", string);
+  civil_abort("'%s' is not a recognized `day_nonexistent` option.", string.c_str());
 }
 
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum dst_nonexistent parse_dst_nonexistent(SEXP x) {
-  if (!r_is_string(x)) {
+enum dst_nonexistent parse_dst_nonexistent(const cpp11::strings& x) {
+  if (x.size() != 1) {
     civil_abort("`dst_nonexistent` must be a string with length 1.");
   }
 
-  const char* string = CHAR(STRING_ELT(x, 0));
-
-  return parse_dst_nonexistent_one(string);
+  return parse_dst_nonexistent_one(x[0]);
 }
 
 // [[ include("enums.h") ]]
-enum dst_nonexistent parse_dst_nonexistent_one(const char* x) {
-  if (!strcmp(x, "roll-forward")) return dst_nonexistent::roll_forward;
-  if (!strcmp(x, "roll-backward")) return dst_nonexistent::roll_backward;
-  if (!strcmp(x, "shift-forward")) return dst_nonexistent::shift_forward;
-  if (!strcmp(x, "shift-backward")) return dst_nonexistent::shift_backward;
-  if (!strcmp(x, "NA")) return dst_nonexistent::na;
-  if (!strcmp(x, "error")) return dst_nonexistent::error;
+enum dst_nonexistent parse_dst_nonexistent_one(const cpp11::r_string& x) {
+  std::string string(x);
 
-  civil_abort("'%s' is not a recognized `dst_nonexistent` option.", x);
+  if (string == "roll-forward") return dst_nonexistent::roll_forward;
+  if (string == "roll-backward") return dst_nonexistent::roll_backward;
+  if (string == "shift-forward") return dst_nonexistent::shift_forward;
+  if (string == "shift-backward") return dst_nonexistent::shift_backward;
+  if (string == "NA") return dst_nonexistent::na;
+  if (string == "error") return dst_nonexistent::error;
+
+  civil_abort("'%s' is not a recognized `dst_nonexistent` option.", string.c_str());
 }
 
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum dst_ambiguous parse_dst_ambiguous(SEXP x) {
-  if (!r_is_string(x)) {
+enum dst_ambiguous parse_dst_ambiguous(const cpp11::strings& x) {
+  if (x.size() != 1) {
     civil_abort("`dst_ambiguous` must be a string with length 1.");
   }
 
-  const char* string = CHAR(STRING_ELT(x, 0));
-
-  return parse_dst_ambiguous_one(string);
+  return parse_dst_ambiguous_one(x[0]);
 }
 
 // [[ include("enums.h") ]]
-enum dst_ambiguous parse_dst_ambiguous_one(const char* x) {
-  if (!strcmp(x, "earliest")) return dst_ambiguous::earliest;
-  if (!strcmp(x, "latest")) return dst_ambiguous::latest;
-  if (!strcmp(x, "NA")) return dst_ambiguous::na;
-  if (!strcmp(x, "error")) return dst_ambiguous::error;
+enum dst_ambiguous parse_dst_ambiguous_one(const cpp11::r_string& x) {
+  std::string string(x);
 
-  civil_abort("'%s' is not a recognized `dst_ambiguous` option.", x);
+  if (string == "earliest") return dst_ambiguous::earliest;
+  if (string == "latest") return dst_ambiguous::latest;
+  if (string == "NA") return dst_ambiguous::na;
+  if (string == "error") return dst_ambiguous::error;
+
+  civil_abort("'%s' is not a recognized `dst_ambiguous` option.", string.c_str());
 }
 
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum unit parse_unit(SEXP x) {
-  if (!r_is_string(x)) {
+enum unit parse_unit(const cpp11::strings& x) {
+  if (x.size() != 1) {
     civil_abort("`unit` must be a string with length 1.");
   }
 
-  const char* string = CHAR(STRING_ELT(x, 0));
+  std::string string = x[0];
 
-  if (!strcmp(string, "year")) return unit::year;
-  if (!strcmp(string, "month")) return unit::month;
-  if (!strcmp(string, "week")) return unit::week;
-  if (!strcmp(string, "day")) return unit::day;
-  if (!strcmp(string, "hour")) return unit::hour;
-  if (!strcmp(string, "minute")) return unit::minute;
-  if (!strcmp(string, "second")) return unit::second;
-  if (!strcmp(string, "millisecond")) return unit::millisecond;
-  if (!strcmp(string, "microsecond")) return unit::microsecond;
-  if (!strcmp(string, "nanosecond")) return unit::nanosecond;
+  if (string == "year") return unit::year;
+  if (string == "month") return unit::month;
+  if (string == "week") return unit::week;
+  if (string == "day") return unit::day;
+  if (string == "hour") return unit::hour;
+  if (string == "minute") return unit::minute;
+  if (string == "second") return unit::second;
+  if (string == "millisecond") return unit::millisecond;
+  if (string == "microsecond") return unit::microsecond;
+  if (string == "nanosecond") return unit::nanosecond;
 
-  civil_abort("'%s' is not a recognized `unit` option.", string);
+  civil_abort("'%s' is not a recognized `unit` option.", string.c_str());
 }
 
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum adjuster parse_adjuster(SEXP x) {
-  if (!r_is_string(x)) {
+enum adjuster parse_adjuster(const cpp11::strings& x) {
+  if (x.size() != 1) {
     civil_abort("`adjuster` must be a string with length 1.");
   }
 
-  const char* string = CHAR(STRING_ELT(x, 0));
+  std::string string = x[0];
 
-  if (!strcmp(string, "year")) return adjuster::year;
-  if (!strcmp(string, "month")) return adjuster::month;
-  if (!strcmp(string, "day")) return adjuster::day;
-  if (!strcmp(string, "hour")) return adjuster::hour;
-  if (!strcmp(string, "minute")) return adjuster::minute;
-  if (!strcmp(string, "second")) return adjuster::second;
-  if (!strcmp(string, "nanosecond")) return adjuster::nanosecond;
-  if (!strcmp(string, "last_day_of_month")) return adjuster::last_day_of_month;
+  if (string == "year") return adjuster::year;
+  if (string == "month") return adjuster::month;
+  if (string == "day") return adjuster::day;
+  if (string == "hour") return adjuster::hour;
+  if (string == "minute") return adjuster::minute;
+  if (string == "second") return adjuster::second;
+  if (string == "nanosecond") return adjuster::nanosecond;
+  if (string == "last_day_of_month") return adjuster::last_day_of_month;
 
-  civil_abort("'%s' is not a recognized `adjuster` option.", string);
+  civil_abort("'%s' is not a recognized `adjuster` option.", string.c_str());
 }

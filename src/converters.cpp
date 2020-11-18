@@ -10,35 +10,33 @@
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-SEXP convert_seconds_to_days_and_time_of_day_cpp(SEXP seconds, SEXP zone) {
-  r_ssize size = r_length(seconds);
+civil_writable_rcrd convert_seconds_to_days_and_time_of_day_cpp(const cpp11::doubles& seconds,
+                                                                const cpp11::strings& zone) {
+  r_ssize size = seconds.size();
 
-  SEXP days = PROTECT(r_new_integer(size));
-  int* p_days = r_int_deref(days);
+  civil_writable_field days(size);
+  civil_writable_field time_of_day(size);
 
-  SEXP time_of_day = PROTECT(r_new_integer(size));
-  int* p_time_of_day = r_int_deref(time_of_day);
+  civil_writable_rcrd out = new_days_time_of_day_list(days, time_of_day);
 
-  SEXP out = PROTECT(new_days_time_of_day_list(days, time_of_day));
-
-  zone = PROTECT(zone_standardize(zone));
-  std::string zone_name = zone_unwrap(zone);
-  const date::time_zone* p_zone = zone_name_load(zone_name);
-
-  const double* p_seconds = r_dbl_deref_const(seconds);
+  cpp11::writable::strings zone_standard = zone_standardize(zone);
+  cpp11::r_string zone_name_r(zone_standard[0]);
+  std::string zone_name(zone_name_r);
+  const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
   for (r_ssize i = 0; i < size; ++i) {
-    double elt_seconds = p_seconds[i];
+    double elt_seconds = seconds[i];
     int64_t elt = as_int64(elt_seconds);
 
     if (elt == r_int64_na) {
-      p_days[i] = p_time_of_day[i] = r_int_na;
+      days[i] = r_int_na;
+      time_of_day[i] = r_int_na;
       continue;
     }
 
     std::chrono::seconds elt_sec{elt};
     date::sys_seconds elt_ssec{elt_sec};
-    date::zoned_seconds elt_zsec = date::make_zoned(p_zone, elt_ssec);
+    date::zoned_seconds elt_zsec = date::make_zoned(p_time_zone, elt_ssec);
     date::local_seconds elt_lsec = elt_zsec.get_local_time();
 
     date::local_days elt_lday = date::floor<date::days>(elt_lsec);
@@ -46,73 +44,60 @@ SEXP convert_seconds_to_days_and_time_of_day_cpp(SEXP seconds, SEXP zone) {
 
     std::chrono::seconds elt_tod_sec{elt_lsec - elt_lsec_floor};
 
-    p_days[i] = elt_lday.time_since_epoch().count();
-    p_time_of_day[i] = elt_tod_sec.count();
+    days[i] = elt_lday.time_since_epoch().count();
+    time_of_day[i] = elt_tod_sec.count();
   }
 
-  UNPROTECT(4);
   return out;
 }
 
 [[cpp11::register]]
-SEXP convert_local_days_and_time_of_day_to_sys_seconds_cpp(SEXP days,
-                                                           SEXP time_of_day,
-                                                           SEXP zone,
-                                                           SEXP dst_nonexistent,
-                                                           SEXP dst_ambiguous,
-                                                           SEXP size) {
-  r_ssize c_size = r_int_get(size, 0);
+cpp11::writable::doubles convert_local_days_and_time_of_day_to_sys_seconds_cpp(const civil_field& days,
+                                                                               const civil_field& time_of_day,
+                                                                               const cpp11::strings& zone,
+                                                                               const cpp11::strings& dst_nonexistent,
+                                                                               const cpp11::strings& dst_ambiguous,
+                                                                               const cpp11::integers& size) {
+  r_ssize c_size = size[0];
 
-  SEXP out = PROTECT(r_new_double(c_size));
-  double* p_out = r_dbl_deref(out);
+  cpp11::writable::doubles out(c_size);
 
-  zone = PROTECT(zone_standardize(zone));
-  std::string zone_name = zone_unwrap(zone);
+  cpp11::writable::strings zone_standard = zone_standardize(zone);
+  cpp11::r_string zone_name_r(zone_standard[0]);
+  std::string zone_name(zone_name_r);
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
-  const int* p_days = r_int_deref_const(days);
-  bool recycle_days = r_is_scalar(days);
+  bool recycle_days = civil_is_scalar(days);
+  bool recycle_time_of_day = civil_is_scalar(time_of_day);
+  bool recycle_dst_nonexistent = civil_is_scalar(dst_nonexistent);
+  bool recycle_dst_ambiguous = civil_is_scalar(dst_ambiguous);
 
-  const int* p_time_of_day = r_int_deref_const(time_of_day);
-  bool recycle_time_of_day = r_is_scalar(time_of_day);
-
-  const SEXP* p_dst_nonexistent = STRING_PTR_RO(dst_nonexistent);
-  bool recycle_dst_nonexistent = r_is_scalar(dst_nonexistent);
   enum dst_nonexistent c_dst_nonexistent;
   if (recycle_dst_nonexistent) {
-    c_dst_nonexistent = parse_dst_nonexistent_one(CHAR(p_dst_nonexistent[0]));
+    c_dst_nonexistent = parse_dst_nonexistent_one(dst_nonexistent[0]);
   }
 
-  const SEXP* p_dst_ambiguous = STRING_PTR_RO(dst_ambiguous);
-  bool recycle_dst_ambiguous = r_is_scalar(dst_ambiguous);
   enum dst_ambiguous c_dst_ambiguous;
   if (recycle_dst_ambiguous) {
-    c_dst_ambiguous = parse_dst_ambiguous_one(CHAR(p_dst_ambiguous[0]));
+    c_dst_ambiguous = parse_dst_ambiguous_one(dst_ambiguous[0]);
   }
 
   for (r_ssize i = 0; i < c_size; ++i) {
-    const int elt_days =
-      recycle_days ?
-      p_days[0] :
-      p_days[i];
-
-    const int elt_time_of_day =
-      recycle_time_of_day ?
-      p_time_of_day[0] :
-      p_time_of_day[i];
+    const int elt_days = recycle_days ? days[0] : days[i];
+    const int elt_time_of_day = recycle_time_of_day ? time_of_day[0] : time_of_day[i];
 
     const enum dst_nonexistent elt_dst_nonexistent =
       recycle_dst_nonexistent ?
       c_dst_nonexistent :
-      parse_dst_nonexistent_one(CHAR(p_dst_nonexistent[i]));
+      parse_dst_nonexistent_one(dst_nonexistent[i]);
 
     const enum dst_ambiguous elt_dst_ambiguous =
       recycle_dst_ambiguous ?
       c_dst_ambiguous :
-      parse_dst_ambiguous_one(CHAR(p_dst_ambiguous[i]));
+      parse_dst_ambiguous_one(dst_ambiguous[i]);
 
     if (elt_days == r_int_na || elt_time_of_day == r_int_na) {
-      p_out[i] = r_dbl_na;
+      out[i] = r_dbl_na;
       continue;
     }
 
@@ -135,45 +120,39 @@ SEXP convert_local_days_and_time_of_day_to_sys_seconds_cpp(SEXP days,
     );
 
     if (na) {
-      p_out[i] = r_dbl_na;
+      out[i] = r_dbl_na;
     } else {
-      p_out[i] = out_ssec.time_since_epoch().count();
+      out[i] = out_ssec.time_since_epoch().count();
     }
   }
 
-  UNPROTECT(2);
   return out;
 }
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-SEXP convert_year_month_day_to_fields_cpp(SEXP year,
-                                          SEXP month,
-                                          SEXP day,
-                                          SEXP day_nonexistent) {
+civil_writable_rcrd convert_year_month_day_to_fields_cpp(const cpp11::integers& year,
+                                                         const cpp11::integers& month,
+                                                         const cpp11::integers& day,
+                                                         const cpp11::strings& day_nonexistent) {
   enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
 
-  r_ssize size = r_length(year);
+  r_ssize size = year.size();
 
-  SEXP days = PROTECT(r_new_integer(size));
-  int* p_days = r_int_deref(days);
+  civil_writable_field days(size);
 
-  SEXP out = PROTECT(new_days_list(days));
-
-  const int* p_year = r_int_deref_const(year);
-  const int* p_month = r_int_deref_const(month);
-  const int* p_day = r_int_deref_const(day);
+  civil_writable_rcrd out = new_days_list(days);
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_year = p_year[i];
-    int elt_month = p_month[i];
-    int elt_day = p_day[i];
+    int elt_year = year[i];
+    int elt_month = month[i];
+    int elt_day = day[i];
 
     if (elt_year == r_int_na ||
         elt_month == r_int_na ||
         elt_day == r_int_na) {
-      p_days[i] = r_int_na;
+      days[i] = r_int_na;
       continue;
     }
 
@@ -193,54 +172,43 @@ SEXP convert_year_month_day_to_fields_cpp(SEXP year,
       resolve_day_nonexistent_ymd(i, c_day_nonexistent, out_ymd, na);
 
       if (na) {
-        p_days[i] = r_int_na;
+        days[i] = r_int_na;
         continue;
       }
     }
 
     date::local_days out_lday{out_ymd};
 
-    p_days[i] = out_lday.time_since_epoch().count();
+    days[i] = out_lday.time_since_epoch().count();
   }
 
-  UNPROTECT(2);
   return out;
 }
 
 [[cpp11::register]]
-SEXP convert_year_month_day_hour_minute_second_to_fields_cpp(SEXP year,
-                                                             SEXP month,
-                                                             SEXP day,
-                                                             SEXP hour,
-                                                             SEXP minute,
-                                                             SEXP second,
-                                                             SEXP day_nonexistent) {
+civil_writable_rcrd convert_year_month_day_hour_minute_second_to_fields_cpp(const cpp11::integers& year,
+                                                                            const cpp11::integers& month,
+                                                                            const cpp11::integers& day,
+                                                                            const cpp11::integers& hour,
+                                                                            const cpp11::integers& minute,
+                                                                            const cpp11::integers& second,
+                                                                            const cpp11::strings& day_nonexistent) {
   enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
 
-  r_ssize size = r_length(year);
+  r_ssize size = year.size();
 
-  SEXP days = PROTECT(r_new_integer(size));
-  int* p_days = r_int_deref(days);
+  civil_writable_field days(size);
+  civil_writable_field time_of_day(size);
 
-  SEXP time_of_day = PROTECT(r_new_integer(size));
-  int* p_time_of_day = r_int_deref(time_of_day);
-
-  SEXP out = PROTECT(new_days_time_of_day_list(days, time_of_day));
-
-  const int* p_year = r_int_deref_const(year);
-  const int* p_month = r_int_deref_const(month);
-  const int* p_day = r_int_deref_const(day);
-  const int* p_hour = r_int_deref_const(hour);
-  const int* p_minute = r_int_deref_const(minute);
-  const int* p_second = r_int_deref_const(second);
+  civil_writable_rcrd out = new_days_time_of_day_list(days, time_of_day);
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_year = p_year[i];
-    int elt_month = p_month[i];
-    int elt_day = p_day[i];
-    int elt_hour = p_hour[i];
-    int elt_minute = p_minute[i];
-    int elt_second = p_second[i];
+    int elt_year = year[i];
+    int elt_month = month[i];
+    int elt_day = day[i];
+    int elt_hour = hour[i];
+    int elt_minute = minute[i];
+    int elt_second = second[i];
 
     if (elt_year == r_int_na ||
         elt_month == r_int_na ||
@@ -248,8 +216,8 @@ SEXP convert_year_month_day_hour_minute_second_to_fields_cpp(SEXP year,
         elt_hour == r_int_na ||
         elt_minute == r_int_na ||
         elt_second == r_int_na) {
-      p_days[i] = r_int_na;
-      p_time_of_day[i] = r_int_na;
+      days[i] = r_int_na;
+      time_of_day[i] = r_int_na;
       continue;
     }
 
@@ -278,62 +246,48 @@ SEXP convert_year_month_day_hour_minute_second_to_fields_cpp(SEXP year,
       resolve_day_nonexistent_tod(c_day_nonexistent, out_tod);
 
       if (na) {
-        p_days[i] = r_int_na;
-        p_time_of_day[i] = r_int_na;
+        days[i] = r_int_na;
+        time_of_day[i] = r_int_na;
         continue;
       }
     }
 
     date::local_days out_lday{out_ymd};
 
-    p_days[i] = out_lday.time_since_epoch().count();
-    p_time_of_day[i] = out_tod.count();
+    days[i] = out_lday.time_since_epoch().count();
+    time_of_day[i] = out_tod.count();
   }
 
-  UNPROTECT(3);
   return out;
 }
 
 [[cpp11::register]]
-SEXP convert_year_month_day_hour_minute_second_nanos_to_fields_cpp(SEXP year,
-                                                                   SEXP month,
-                                                                   SEXP day,
-                                                                   SEXP hour,
-                                                                   SEXP minute,
-                                                                   SEXP second,
-                                                                   SEXP nanos,
-                                                                   SEXP day_nonexistent) {
+civil_writable_rcrd convert_year_month_day_hour_minute_second_nanos_to_fields_cpp(const cpp11::integers& year,
+                                                                                  const cpp11::integers& month,
+                                                                                  const cpp11::integers& day,
+                                                                                  const cpp11::integers& hour,
+                                                                                  const cpp11::integers& minute,
+                                                                                  const cpp11::integers& second,
+                                                                                  const cpp11::integers& nanos,
+                                                                                  const cpp11::strings& day_nonexistent) {
   enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
 
-  r_ssize size = r_length(year);
+  r_ssize size = year.size();
 
-  SEXP days = PROTECT(r_new_integer(size));
-  int* p_days = r_int_deref(days);
+  civil_writable_field days(size);
+  civil_writable_field time_of_day(size);
+  civil_writable_field nanos_of_second(size);
 
-  SEXP time_of_day = PROTECT(r_new_integer(size));
-  int* p_time_of_day = r_int_deref(time_of_day);
-
-  SEXP nanos_of_second = PROTECT(r_new_integer(size));
-  int* p_nanos_of_second = r_int_deref(nanos_of_second);
-
-  SEXP out = PROTECT(new_days_time_of_day_nanos_of_second_list(days, time_of_day, nanos_of_second));
-
-  const int* p_year = r_int_deref_const(year);
-  const int* p_month = r_int_deref_const(month);
-  const int* p_day = r_int_deref_const(day);
-  const int* p_hour = r_int_deref_const(hour);
-  const int* p_minute = r_int_deref_const(minute);
-  const int* p_second = r_int_deref_const(second);
-  const int* p_nanos = r_int_deref_const(nanos);
+  civil_writable_rcrd out = new_days_time_of_day_nanos_of_second_list(days, time_of_day, nanos_of_second);
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_year = p_year[i];
-    int elt_month = p_month[i];
-    int elt_day = p_day[i];
-    int elt_hour = p_hour[i];
-    int elt_minute = p_minute[i];
-    int elt_second = p_second[i];
-    int elt_nanos = p_nanos[i];
+    int elt_year = year[i];
+    int elt_month = month[i];
+    int elt_day = day[i];
+    int elt_hour = hour[i];
+    int elt_minute = minute[i];
+    int elt_second = second[i];
+    int elt_nanos = nanos[i];
 
     if (elt_year == r_int_na ||
         elt_month == r_int_na ||
@@ -342,9 +296,9 @@ SEXP convert_year_month_day_hour_minute_second_nanos_to_fields_cpp(SEXP year,
         elt_minute == r_int_na ||
         elt_second == r_int_na ||
         elt_nanos == r_int_na) {
-      p_days[i] = r_int_na;
-      p_time_of_day[i] = r_int_na;
-      p_nanos_of_second[i] = r_int_na;
+      days[i] = r_int_na;
+      time_of_day[i] = r_int_na;
+      nanos_of_second[i] = r_int_na;
       continue;
     }
 
@@ -377,139 +331,75 @@ SEXP convert_year_month_day_hour_minute_second_nanos_to_fields_cpp(SEXP year,
       resolve_day_nonexistent_nanos_of_second(c_day_nonexistent, out_nanos_of_second);
 
       if (na) {
-        p_days[i] = r_int_na;
-        p_time_of_day[i] = r_int_na;
-        p_nanos_of_second[i] = r_int_na;
+        days[i] = r_int_na;
+        time_of_day[i] = r_int_na;
+        nanos_of_second[i] = r_int_na;
         continue;
       }
     }
 
     date::local_days out_lday{out_ymd};
 
-    p_days[i] = out_lday.time_since_epoch().count();
-    p_time_of_day[i] = out_tod.count();
-    p_nanos_of_second[i] = out_nanos_of_second.count();
+    days[i] = out_lday.time_since_epoch().count();
+    time_of_day[i] = out_tod.count();
+    nanos_of_second[i] = out_nanos_of_second.count();
   }
 
-  UNPROTECT(4);
   return out;
 }
 
 // -----------------------------------------------------------------------------
 
-static SEXP new_ymd(r_ssize size) {
-  SEXP out = PROTECT(r_new_list(3));
-
-  r_list_poke(out, 0, r_new_integer(size));
-  r_list_poke(out, 1, r_new_integer(size));
-  r_list_poke(out, 2, r_new_integer(size));
-
-  SEXP names = PROTECT(r_new_character(3));
-  r_chr_poke(names, 0, r_new_string("year"));
-  r_chr_poke(names, 1, r_new_string("month"));
-  r_chr_poke(names, 2, r_new_string("day"));
-
-  r_poke_names(out, names);
-
-  UNPROTECT(2);
-  return out;
-}
-
-static inline SEXP ymd_year(SEXP x) {
-  return r_list_get(x, 0);
-}
-static inline SEXP ymd_month(SEXP x) {
-  return r_list_get(x, 1);
-}
-static inline SEXP ymd_day(SEXP x) {
-  return r_list_get(x, 2);
-}
-
-static SEXP new_hms(r_ssize size) {
-  SEXP out = PROTECT(r_new_list(3));
-
-  r_list_poke(out, 0, r_new_integer(size));
-  r_list_poke(out, 1, r_new_integer(size));
-  r_list_poke(out, 2, r_new_integer(size));
-
-  SEXP names = PROTECT(r_new_character(3));
-  r_chr_poke(names, 0, r_new_string("hour"));
-  r_chr_poke(names, 1, r_new_string("minute"));
-  r_chr_poke(names, 2, r_new_string("second"));
-
-  r_poke_names(out, names);
-
-  UNPROTECT(2);
-  return out;
-}
-
-static inline SEXP hms_hour(SEXP x) {
-  return r_list_get(x, 0);
-}
-static inline SEXP hms_minute(SEXP x) {
-  return r_list_get(x, 1);
-}
-static inline SEXP hms_second(SEXP x) {
-  return r_list_get(x, 2);
-}
-
 [[cpp11::register]]
-SEXP convert_days_to_year_month_day_cpp(SEXP days) {
-  r_ssize size = r_length(days);
+civil_writable_list_of_integers convert_days_to_year_month_day_cpp(const civil_field& days) {
+  r_ssize size = days.size();
 
-  SEXP out = PROTECT(new_ymd(size));
+  cpp11::writable::integers year(size);
+  cpp11::writable::integers month(size);
+  cpp11::writable::integers day(size);
 
-  SEXP year = ymd_year(out);
-  SEXP month = ymd_month(out);
-  SEXP day = ymd_day(out);
-
-  int* p_year = r_int_deref(year);
-  int* p_month = r_int_deref(month);
-  int* p_day = r_int_deref(day);
-
-  const int* p_days = r_int_deref_const(days);
+  civil_writable_list_of_integers out({year, month, day});
+  out.names() = {"year", "month", "day"};
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_days = p_days[i];
+    int elt_days = days[i];
 
     if (elt_days == r_int_na) {
-      p_year[i] = p_month[i] = p_day[i] = r_int_na;
+      year[i] = r_int_na;
+      month[i] = r_int_na;
+      day[i] = r_int_na;
       continue;
     }
 
     date::local_days elt_lday{date::days{elt_days}};
     date::year_month_day elt_ymd{elt_lday};
 
-    p_year[i] = static_cast<int>(elt_ymd.year());
-    p_month[i] = static_cast<unsigned int>(elt_ymd.month());
-    p_day[i] = static_cast<unsigned int>(elt_ymd.day());
+    year[i] = static_cast<int>(elt_ymd.year());
+    month[i] = static_cast<unsigned int>(elt_ymd.month());
+    day[i] = static_cast<unsigned int>(elt_ymd.day());
   }
 
-  UNPROTECT(1);
   return out;
 }
 
 [[cpp11::register]]
-SEXP convert_time_of_day_to_hour_minute_second_cpp(SEXP time_of_day) {
-  r_ssize size = r_length(time_of_day);
+civil_writable_list_of_integers convert_time_of_day_to_hour_minute_second_cpp(const civil_field& time_of_day) {
+  r_ssize size = time_of_day.size();
 
-  SEXP out = PROTECT(new_hms(size));
+  cpp11::writable::integers hour(size);
+  cpp11::writable::integers minute(size);
+  cpp11::writable::integers second(size);
 
-  SEXP hour = hms_hour(out);
-  SEXP minute = hms_minute(out);
-  SEXP second = hms_second(out);
-
-  int* p_hour = r_int_deref(hour);
-  int* p_minute = r_int_deref(minute);
-  int* p_second = r_int_deref(second);
-
-  const int* p_time_of_day = r_int_deref_const(time_of_day);
+  civil_writable_list_of_integers out({hour, minute, second});
+  out.names() = {"hour", "minute", "second"};
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_time_of_day = p_time_of_day[i];
+    int elt_time_of_day = time_of_day[i];
 
     if (elt_time_of_day == r_int_na) {
-      p_hour[i] = p_minute[i] = p_second[i] = r_int_na;
+      hour[i] = r_int_na;
+      minute[i] = r_int_na;
+      second[i] = r_int_na;
       continue;
     }
 
@@ -517,71 +407,67 @@ SEXP convert_time_of_day_to_hour_minute_second_cpp(SEXP time_of_day) {
 
     date::hh_mm_ss<std::chrono::seconds> elt_hms = date::make_time(elt_tod_sec);
 
-    p_hour[i] = elt_hms.hours().count();
-    p_minute[i] = elt_hms.minutes().count();
-    p_second[i] = elt_hms.seconds().count();
+    hour[i] = elt_hms.hours().count();
+    minute[i] = elt_hms.minutes().count();
+    second[i] = elt_hms.seconds().count();
   }
 
-  UNPROTECT(1);
   return out;
 }
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-SEXP convert_datetime_fields_from_local_to_zoned_cpp(SEXP days,
-                                                     SEXP time_of_day,
-                                                     SEXP zone,
-                                                     SEXP dst_nonexistent,
-                                                     SEXP dst_ambiguous,
-                                                     SEXP size) {
-  r_ssize c_size = r_int_get(size, 0);
+civil_writable_rcrd convert_datetime_fields_from_local_to_zoned_cpp(const civil_field& days,
+                                                                    const civil_field& time_of_day,
+                                                                    const cpp11::strings& zone,
+                                                                    const cpp11::strings& dst_nonexistent,
+                                                                    const cpp11::strings& dst_ambiguous,
+                                                                    const cpp11::integers& size) {
+  r_ssize c_size = size[0];
 
-  days = PROTECT(r_maybe_clone(days));
-  days = PROTECT(r_int_recycle(days, c_size));
-  int* p_days = r_int_deref(days);
+  civil_writable_field out_days(c_size);
+  civil_writable_field out_time_of_day(c_size);
 
-  time_of_day = PROTECT(r_maybe_clone(time_of_day));
-  time_of_day = PROTECT(r_int_recycle(time_of_day, c_size));
-  int* p_time_of_day = r_int_deref(time_of_day);
+  civil_writable_rcrd out = new_days_time_of_day_list(out_days, out_time_of_day);
 
-  int* p_nanos_of_second = NULL;
+  bool recycle_days = civil_is_scalar(days);
+  bool recycle_time_of_day = civil_is_scalar(time_of_day);
+  bool recycle_dst_nonexistent = civil_is_scalar(dst_nonexistent);
+  bool recycle_dst_ambiguous = civil_is_scalar(dst_ambiguous);
 
-  SEXP out = PROTECT(new_days_time_of_day_list(days, time_of_day));
-
-  const SEXP* p_dst_nonexistent = STRING_PTR_RO(dst_nonexistent);
-  bool recycle_dst_nonexistent = r_is_scalar(dst_nonexistent);
   enum dst_nonexistent c_dst_nonexistent;
   if (recycle_dst_nonexistent) {
-    c_dst_nonexistent = parse_dst_nonexistent_one(CHAR(p_dst_nonexistent[0]));
+    c_dst_nonexistent = parse_dst_nonexistent_one(dst_nonexistent[0]);
   }
 
-  const SEXP* p_dst_ambiguous = STRING_PTR_RO(dst_ambiguous);
-  bool recycle_dst_ambiguous = r_is_scalar(dst_ambiguous);
   enum dst_ambiguous c_dst_ambiguous;
   if (recycle_dst_ambiguous) {
-    c_dst_ambiguous = parse_dst_ambiguous_one(CHAR(p_dst_ambiguous[0]));
+    c_dst_ambiguous = parse_dst_ambiguous_one(dst_ambiguous[0]);
   }
 
-  zone = PROTECT(zone_standardize(zone));
-  std::string zone_name = zone_unwrap(zone);
+  cpp11::writable::strings zone_standard = zone_standardize(zone);
+  cpp11::r_string zone_name_r(zone_standard[0]);
+  std::string zone_name(zone_name_r);
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
   for (r_ssize i = 0; i < c_size; ++i) {
-    int elt_days = p_days[i];
-    int elt_time_of_day = p_time_of_day[i];
+    int elt_days = recycle_days ? days[0] : days[i];
+    int elt_time_of_day = recycle_time_of_day ? time_of_day[0] : time_of_day[i];
 
     const enum dst_nonexistent elt_dst_nonexistent =
       recycle_dst_nonexistent ?
       c_dst_nonexistent :
-      parse_dst_nonexistent_one(CHAR(p_dst_nonexistent[i]));
+      parse_dst_nonexistent_one(dst_nonexistent[i]);
 
     const enum dst_ambiguous elt_dst_ambiguous =
       recycle_dst_ambiguous ?
       c_dst_ambiguous :
-      parse_dst_ambiguous_one(CHAR(p_dst_ambiguous[i]));
+      parse_dst_ambiguous_one(dst_ambiguous[i]);
 
     if (elt_days == r_int_na) {
+      out_days[i] = r_int_na;
+      out_time_of_day[i] = r_int_na;
       continue;
     }
 
@@ -603,7 +489,8 @@ SEXP convert_datetime_fields_from_local_to_zoned_cpp(SEXP days,
     );
 
     if (na) {
-      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      out_days[i] = r_int_na;
+      out_time_of_day[i] = r_int_na;
       continue;
     }
 
@@ -612,74 +499,75 @@ SEXP convert_datetime_fields_from_local_to_zoned_cpp(SEXP days,
 
     std::chrono::seconds out_tod{out_ssec - out_ssec_floor};
 
-    p_days[i] = out_sday.time_since_epoch().count();
-    p_time_of_day[i] = out_tod.count();
+    out_days[i] = out_sday.time_since_epoch().count();
+    out_time_of_day[i] = out_tod.count();
   }
 
-  UNPROTECT(6);
   return out;
 }
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-SEXP convert_nano_datetime_fields_from_local_to_zoned_cpp(SEXP days,
-                                                          SEXP time_of_day,
-                                                          SEXP nanos_of_second,
-                                                          SEXP zone,
-                                                          SEXP dst_nonexistent,
-                                                          SEXP dst_ambiguous,
-                                                          SEXP size) {
-  r_ssize c_size = r_int_get(size, 0);
+civil_writable_rcrd convert_nano_datetime_fields_from_local_to_zoned_cpp(const civil_field& days,
+                                                                         const civil_field& time_of_day,
+                                                                         const civil_field& nanos_of_second,
+                                                                         const cpp11::strings& zone,
+                                                                         const cpp11::strings& dst_nonexistent,
+                                                                         const cpp11::strings& dst_ambiguous,
+                                                                         const cpp11::integers& size) {
+  r_ssize c_size = size[0];
 
-  days = PROTECT(r_maybe_clone(days));
-  days = PROTECT(r_int_recycle(days, c_size));
-  int* p_days = r_int_deref(days);
+  civil_writable_field out_days(c_size);
+  civil_writable_field out_time_of_day(c_size);
+  civil_writable_field out_nanos_of_second(c_size);
 
-  time_of_day = PROTECT(r_maybe_clone(time_of_day));
-  time_of_day = PROTECT(r_int_recycle(time_of_day, c_size));
-  int* p_time_of_day = r_int_deref(time_of_day);
+  civil_writable_rcrd out = new_days_time_of_day_nanos_of_second_list(
+    out_days,
+    out_time_of_day,
+    out_nanos_of_second
+  );
 
-  nanos_of_second = PROTECT(r_maybe_clone(nanos_of_second));
-  nanos_of_second = PROTECT(r_int_recycle(nanos_of_second, c_size));
-  int* p_nanos_of_second = r_int_deref(nanos_of_second);
+  bool recycle_days = civil_is_scalar(days);
+  bool recycle_time_of_day = civil_is_scalar(time_of_day);
+  bool recycle_nanos_of_second = civil_is_scalar(nanos_of_second);
+  bool recycle_dst_nonexistent = civil_is_scalar(dst_nonexistent);
+  bool recycle_dst_ambiguous = civil_is_scalar(dst_ambiguous);
 
-  SEXP out = PROTECT(new_days_time_of_day_nanos_of_second_list(days, time_of_day, nanos_of_second));
-
-  const SEXP* p_dst_nonexistent = STRING_PTR_RO(dst_nonexistent);
-  bool recycle_dst_nonexistent = r_is_scalar(dst_nonexistent);
   enum dst_nonexistent c_dst_nonexistent;
   if (recycle_dst_nonexistent) {
-    c_dst_nonexistent = parse_dst_nonexistent_one(CHAR(p_dst_nonexistent[0]));
+    c_dst_nonexistent = parse_dst_nonexistent_one(dst_nonexistent[0]);
   }
 
-  const SEXP* p_dst_ambiguous = STRING_PTR_RO(dst_ambiguous);
-  bool recycle_dst_ambiguous = r_is_scalar(dst_ambiguous);
   enum dst_ambiguous c_dst_ambiguous;
   if (recycle_dst_ambiguous) {
-    c_dst_ambiguous = parse_dst_ambiguous_one(CHAR(p_dst_ambiguous[0]));
+    c_dst_ambiguous = parse_dst_ambiguous_one(dst_ambiguous[0]);
   }
 
-  zone = PROTECT(zone_standardize(zone));
-  std::string zone_name = zone_unwrap(zone);
+  cpp11::writable::strings zone_standard = zone_standardize(zone);
+  cpp11::r_string zone_name_r(zone_standard[0]);
+  std::string zone_name(zone_name_r);
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
   for (r_ssize i = 0; i < c_size; ++i) {
-    int elt_days = p_days[i];
-    int elt_time_of_day = p_time_of_day[i];
-    int elt_nanos_of_second = p_nanos_of_second[i];
+    int elt_days = recycle_days ? days[0] : days[i];
+    int elt_time_of_day = recycle_time_of_day ? time_of_day[0] : time_of_day[i];
+    int elt_nanos_of_second = recycle_nanos_of_second ? nanos_of_second[0] : nanos_of_second[i];
 
     const enum dst_nonexistent elt_dst_nonexistent =
       recycle_dst_nonexistent ?
       c_dst_nonexistent :
-      parse_dst_nonexistent_one(CHAR(p_dst_nonexistent[i]));
+      parse_dst_nonexistent_one(dst_nonexistent[i]);
 
     const enum dst_ambiguous elt_dst_ambiguous =
       recycle_dst_ambiguous ?
       c_dst_ambiguous :
-      parse_dst_ambiguous_one(CHAR(p_dst_ambiguous[i]));
+      parse_dst_ambiguous_one(dst_ambiguous[i]);
 
     if (elt_days == r_int_na) {
+      out_days[i] = r_int_na;
+      out_time_of_day[i] = r_int_na;
+      out_nanos_of_second[i] = r_int_na;
       continue;
     }
 
@@ -703,7 +591,9 @@ SEXP convert_nano_datetime_fields_from_local_to_zoned_cpp(SEXP days,
     );
 
     if (na) {
-      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      out_days[i] = r_int_na;
+      out_time_of_day[i] = r_int_na;
+      out_nanos_of_second[i] = r_int_na;
       continue;
     }
 
@@ -714,12 +604,11 @@ SEXP convert_nano_datetime_fields_from_local_to_zoned_cpp(SEXP days,
 
     std::chrono::nanoseconds out_nanos{elt_nanos};
 
-    p_days[i] = out_sday.time_since_epoch().count();
-    p_time_of_day[i] = out_tod.count();
-    p_nanos_of_second[i] = out_nanos.count();
+    out_days[i] = out_sday.time_since_epoch().count();
+    out_time_of_day[i] = out_tod.count();
+    out_nanos_of_second[i] = out_nanos.count();
   }
 
-  UNPROTECT(8);
   return out;
 }
 
@@ -730,28 +619,31 @@ SEXP convert_nano_datetime_fields_from_local_to_zoned_cpp(SEXP days,
  * going from zoned->local. They are "beneath" time zone changes.
  */
 [[cpp11::register]]
-SEXP convert_datetime_fields_from_zoned_to_local_cpp(SEXP days,
-                                                     SEXP time_of_day,
-                                                     SEXP zone) {
-  r_ssize size = r_length(days);
+civil_writable_rcrd convert_datetime_fields_from_zoned_to_local_cpp(const civil_field& days,
+                                                                    const civil_field& time_of_day,
+                                                                    const cpp11::strings& zone) {
+  r_ssize size = days.size();
 
-  days = PROTECT(r_maybe_clone(days));
-  int* p_days = r_int_deref(days);
+  civil_writable_field out_days(size);
+  civil_writable_field out_time_of_day(size);
 
-  time_of_day = PROTECT(r_maybe_clone(time_of_day));
-  int* p_time_of_day = r_int_deref(time_of_day);
+  civil_writable_rcrd out = new_days_time_of_day_list(
+    out_days,
+    out_time_of_day
+  );
 
-  SEXP out = PROTECT(new_days_time_of_day_list(days, time_of_day));
-
-  zone = PROTECT(zone_standardize(zone));
-  std::string zone_name = zone_unwrap(zone);
+  cpp11::writable::strings zone_standard = zone_standardize(zone);
+  cpp11::r_string zone_name_r(zone_standard[0]);
+  std::string zone_name(zone_name_r);
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_days = p_days[i];
-    int elt_time_of_day = p_time_of_day[i];
+    int elt_days = days[i];
+    int elt_time_of_day = time_of_day[i];
 
     if (elt_days == r_int_na) {
+      out_days[i] = r_int_na;
+      out_time_of_day[i] = r_int_na;
       continue;
     }
 
@@ -769,36 +661,34 @@ SEXP convert_datetime_fields_from_zoned_to_local_cpp(SEXP days,
 
     std::chrono::seconds out_tod{out_lsec - out_lsec_floor};
 
-    p_days[i] = out_lday.time_since_epoch().count();
-    p_time_of_day[i] = out_tod.count();
+    out_days[i] = out_lday.time_since_epoch().count();
+    out_time_of_day[i] = out_tod.count();
   }
 
-  UNPROTECT(4);
   return out;
 }
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-SEXP convert_sys_seconds_to_sys_days_and_time_of_day_cpp(SEXP seconds) {
-  r_ssize size = r_length(seconds);
+civil_writable_rcrd convert_sys_seconds_to_sys_days_and_time_of_day_cpp(const cpp11::doubles& seconds) {
+  r_ssize size = seconds.size();
 
-  SEXP days = PROTECT(r_new_integer(size));
-  int* p_days = r_int_deref(days);
+  civil_writable_field out_days(size);
+  civil_writable_field out_time_of_day(size);
 
-  SEXP time_of_day = PROTECT(r_new_integer(size));
-  int* p_time_of_day = r_int_deref(time_of_day);
-
-  SEXP out = PROTECT(new_days_time_of_day_list(days, time_of_day));
-
-  const double* p_seconds = r_dbl_deref_const(seconds);
+  civil_writable_rcrd out = new_days_time_of_day_list(
+    out_days,
+    out_time_of_day
+  );
 
   for (r_ssize i = 0; i < size; ++i) {
-    double elt_seconds = p_seconds[i];
+    double elt_seconds = seconds[i];
     int64_t elt = as_int64(elt_seconds);
 
     if (elt == r_int64_na) {
-      p_days[i] = p_time_of_day[i] = r_int_na;
+      out_days[i] = r_int_na;
+      out_time_of_day[i] = r_int_na;
       continue;
     }
 
@@ -810,10 +700,9 @@ SEXP convert_sys_seconds_to_sys_days_and_time_of_day_cpp(SEXP seconds) {
 
     std::chrono::seconds elt_tod{elt_ssec - elt_ssec_floor};
 
-    p_days[i] = elt_sday.time_since_epoch().count();
-    p_time_of_day[i] = elt_tod.count();
+    out_days[i] = elt_sday.time_since_epoch().count();
+    out_time_of_day[i] = elt_tod.count();
   }
 
-  UNPROTECT(3);
   return out;
 }
