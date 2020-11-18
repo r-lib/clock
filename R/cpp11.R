@@ -76,10 +76,6 @@ floor_days_to_year_month_cpp <- function(days) {
   .Call("_civil_floor_days_to_year_month_cpp", days, PACKAGE = "civil")
 }
 
-civil_init <- function() {
-  .Call("_civil_civil_init", PACKAGE = "civil")
-}
-
 civil_set_install <- function(path) {
   invisible(.Call("_civil_civil_set_install", path, PACKAGE = "civil"))
 }

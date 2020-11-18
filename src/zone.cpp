@@ -135,7 +135,7 @@ static std::string zone_name_system_get() {
   cpp11::r_string tz = timezone[0];
   SEXP tz_char(tz);
 
-  if (tz_char == NA_STRING || strlen(CHAR(tz_char)) == 0) {
+  if (tz_char == r_chr_na || strlen(CHAR(tz_char)) == 0) {
     cpp11::warning(
       "System timezone name is unknown. "
       "Please set the environment variable `TZ`. "

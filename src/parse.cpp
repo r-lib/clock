@@ -107,7 +107,7 @@ civil_writable_rcrd parse_zoned_datetime_cpp(const cpp11::strings& x,
   for (r_ssize i = 0; i < c_size; ++i) {
     cpp11::r_string elt_x = recycle_x ? x[0] : x[i];
 
-    if (elt_x == NA_STRING) {
+    if (elt_x == r_chr_na) {
       days[i] = r_int_na;
       time_of_day[i] = r_int_na;
       continue;
@@ -233,7 +233,7 @@ civil_writable_rcrd parse_local_datetime_cpp(const cpp11::strings& x,
   for (r_ssize i = 0; i < c_size; ++i) {
     cpp11::r_string elt_x = x[i];
 
-    if (elt_x == NA_STRING) {
+    if (elt_x == r_chr_na) {
       days[i] = r_int_na;
       time_of_day[i] = r_int_na;
       continue;

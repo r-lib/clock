@@ -44,23 +44,23 @@ static inline void civil_rcrd_recycle(civil_writable_rcrd& x,
 }
 
 static inline int* civil_rcrd_days_deref(civil_writable_rcrd& x) {
-  return r_int_deref(x[0].data());
+  return civil_int_deref(x[0].data());
 }
 static inline int* civil_rcrd_time_of_day_deref(civil_writable_rcrd& x) {
-  return x.size() < 2 ? NULL : r_int_deref(x[1].data());
+  return x.size() < 2 ? NULL : civil_int_deref(x[1].data());
 }
 static inline int* civil_rcrd_nanos_of_second_deref(civil_writable_rcrd& x) {
-  return x.size() < 3 ? NULL : r_int_deref(x[2].data());
+  return x.size() < 3 ? NULL : civil_int_deref(x[2].data());
 }
 
 static inline const int* civil_rcrd_days_deref_const(civil_rcrd& x) {
-  return r_int_deref_const(x[0].data());
+  return civil_int_deref_const(x[0].data());
 }
 static inline const int* civil_rcrd_time_of_day_deref_const(civil_rcrd& x) {
-  return x.size() < 2 ? NULL : r_int_deref_const(x[1].data());
+  return x.size() < 2 ? NULL : civil_int_deref_const(x[1].data());
 }
 static inline const int* civil_rcrd_nanos_of_second_deref_const(civil_rcrd& x) {
-  return x.size() < 3 ? NULL : r_int_deref_const(x[2].data());
+  return x.size() < 3 ? NULL : civil_int_deref_const(x[2].data());
 }
 
 static inline void civil_rcrd_assign_missing(const r_ssize& i,

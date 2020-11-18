@@ -137,13 +137,6 @@ extern "C" SEXP _civil_floor_days_to_year_month_cpp(SEXP days) {
     return cpp11::as_sexp(floor_days_to_year_month_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(days)));
   END_CPP11
 }
-// initialize.cpp
-cpp11::sexp civil_init();
-extern "C" SEXP _civil_civil_init() {
-  BEGIN_CPP11
-    return cpp11::as_sexp(civil_init());
-  END_CPP11
-}
 // install.cpp
 void civil_set_install(const cpp11::strings& path);
 extern "C" SEXP _civil_civil_set_install(SEXP path) {
@@ -197,7 +190,6 @@ extern SEXP _civil_add_years_or_months_local_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_local_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_local_nanos_of_second_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_local_time_of_day_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _civil_civil_init();
 extern SEXP _civil_civil_set_install(SEXP);
 extern SEXP _civil_convert_datetime_fields_from_local_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_datetime_fields_from_zoned_to_local_cpp(SEXP, SEXP, SEXP);
@@ -225,7 +217,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_adjust_local_days_cpp",                                         (DL_FUNC) &_civil_adjust_local_days_cpp,                                         5},
     {"_civil_adjust_local_nanos_of_second_cpp",                              (DL_FUNC) &_civil_adjust_local_nanos_of_second_cpp,                              4},
     {"_civil_adjust_local_time_of_day_cpp",                                  (DL_FUNC) &_civil_adjust_local_time_of_day_cpp,                                  4},
-    {"_civil_civil_init",                                                    (DL_FUNC) &_civil_civil_init,                                                    0},
     {"_civil_civil_set_install",                                             (DL_FUNC) &_civil_civil_set_install,                                             1},
     {"_civil_convert_datetime_fields_from_local_to_zoned_cpp",               (DL_FUNC) &_civil_convert_datetime_fields_from_local_to_zoned_cpp,               6},
     {"_civil_convert_datetime_fields_from_zoned_to_local_cpp",               (DL_FUNC) &_civil_convert_datetime_fields_from_zoned_to_local_cpp,               3},

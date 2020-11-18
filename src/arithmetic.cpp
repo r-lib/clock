@@ -65,7 +65,7 @@ civil_writable_rcrd add_years_or_months_local_cpp(const civil_rcrd& x,
                                                   const cpp11::integers& size) {
   enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
   enum unit c_unit = parse_unit(unit);
-  r_ssize c_size = r_int_get(size, 0);
+  r_ssize c_size = size[0];
 
   return add_years_or_months_local(x, n, c_day_nonexistent, c_unit, c_size);
 }
@@ -115,7 +115,7 @@ civil_writable_rcrd add_weeks_or_days_local_cpp(const civil_rcrd& x,
                                                 const cpp11::strings& unit,
                                                 const cpp11::integers& size) {
   enum unit c_unit = parse_unit(unit);
-  r_ssize c_size = r_int_get(size, 0);
+  r_ssize c_size = size[0];
 
   return add_weeks_or_days_local(x, n, c_unit, c_size);
 }
@@ -185,7 +185,7 @@ civil_writable_rcrd add_hours_or_minutes_or_seconds_cpp(const civil_rcrd& x,
                                                         const cpp11::strings& unit,
                                                         const cpp11::integers& size) {
   enum unit c_unit = parse_unit(unit);
-  r_ssize c_size = r_int_get(size, 0);
+  r_ssize c_size = size[0];
 
   return add_hours_or_minutes_or_seconds(x, n, c_unit, c_size);
 }
@@ -305,7 +305,7 @@ civil_writable_rcrd add_milliseconds_or_microseconds_or_nanoseconds_cpp(const ci
                                                                         const cpp11::strings& unit,
                                                                         const cpp11::integers& size) {
   enum unit c_unit = parse_unit(unit);
-  r_ssize c_size = r_int_get(size, 0);
+  r_ssize c_size = size[0];
 
   return add_milliseconds_or_microseconds_or_nanoseconds(x, n, c_unit, c_size);
 }
