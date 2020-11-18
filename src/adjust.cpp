@@ -40,8 +40,8 @@ static civil_writable_rcrd adjust_local_days(const civil_rcrd& x,
                                              const enum day_nonexistent& day_nonexistent,
                                              const r_ssize& size,
                                              const enum adjuster& adjuster) {
-  civil_writable_rcrd out(x);
-  civil_rcrd_recycle_fields(out, size);
+  civil_writable_rcrd out = civil_rcrd_clone(x);
+  civil_rcrd_recycle(out, size);
 
   int* p_days = civil_rcrd_days_deref(out);
   int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
@@ -171,8 +171,8 @@ static civil_writable_rcrd adjust_local_time_of_day(const civil_rcrd& x,
                                                     const cpp11::integers& value,
                                                     const r_ssize& size,
                                                     const enum adjuster& adjuster) {
-  civil_writable_rcrd out(x);
-  civil_rcrd_recycle_fields(out, size);
+  civil_writable_rcrd out = civil_rcrd_clone(x);
+  civil_rcrd_recycle(out, size);
 
   int* p_days = civil_rcrd_days_deref(out);
   int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
@@ -284,8 +284,8 @@ static civil_writable_rcrd adjust_local_nanos_of_second(const civil_rcrd& x,
                                                         const cpp11::integers& value,
                                                         const r_ssize& size,
                                                         const enum adjuster& adjuster) {
-  civil_writable_rcrd out(x);
-  civil_rcrd_recycle_fields(out, size);
+  civil_writable_rcrd out = civil_rcrd_clone(x);
+  civil_rcrd_recycle(out, size);
 
   int* p_days = civil_rcrd_days_deref(out);
   int* p_time_of_day = civil_rcrd_time_of_day_deref(out);

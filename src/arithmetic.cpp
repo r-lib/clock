@@ -12,8 +12,8 @@ static civil_writable_rcrd add_years_or_months_local(const civil_rcrd& x,
                                                      const enum day_nonexistent& day_nonexistent,
                                                      const enum unit& unit,
                                                      const r_ssize& size) {
-  civil_writable_rcrd out(x);
-  civil_rcrd_recycle_fields(out, size);
+  civil_writable_rcrd out = civil_rcrd_clone(x);
+  civil_rcrd_recycle(out, size);
 
   int* p_days = civil_rcrd_days_deref(out);
   int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
@@ -76,8 +76,8 @@ static civil_writable_rcrd add_weeks_or_days_local(const civil_rcrd& x,
                                                    const cpp11::integers& n,
                                                    const enum unit& unit,
                                                    const r_ssize& size) {
-  civil_writable_rcrd out(x);
-  civil_rcrd_recycle_fields(out, size);
+  civil_writable_rcrd out = civil_rcrd_clone(x);
+  civil_rcrd_recycle(out, size);
 
   int* p_days = civil_rcrd_days_deref(out);
   int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
@@ -126,8 +126,8 @@ static civil_writable_rcrd add_hours_or_minutes_or_seconds(const civil_rcrd& x,
                                                            const cpp11::integers& n,
                                                            const enum unit& unit,
                                                            const r_ssize& size) {
-  civil_writable_rcrd out(x);
-  civil_rcrd_recycle_fields(out, size);
+  civil_writable_rcrd out = civil_rcrd_clone(x);
+  civil_rcrd_recycle(out, size);
 
   int* p_days = civil_rcrd_days_deref(out);
   int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
@@ -251,8 +251,8 @@ static civil_writable_rcrd add_milliseconds_or_microseconds_or_nanoseconds(const
                                                                            const cpp11::integers& n,
                                                                            const enum unit& unit,
                                                                            const r_ssize& size) {
-  civil_writable_rcrd out(x);
-  civil_rcrd_recycle_fields(out, size);
+  civil_writable_rcrd out = civil_rcrd_clone(x);
+  civil_rcrd_recycle(out, size);
 
   int* p_days = civil_rcrd_days_deref(out);
   int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
