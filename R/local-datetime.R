@@ -22,7 +22,7 @@ local_datetime <- function(year,
   args <- vec_recycle_common(!!!args, .size = size)
   args <- vec_cast_common(!!!args, .to = integer())
 
-  fields <- convert_year_month_day_hour_minute_second_to_fields(
+  fields <- convert_year_month_day_hour_minute_second_to_local_fields(
     args$year,
     args$month,
     args$day,
@@ -93,8 +93,8 @@ format.civil_local_datetime <- function(x, ...) {
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
 
-  ymd <- convert_days_to_year_month_day(days)
-  hms <- convert_time_of_day_to_hour_minute_second(time_of_day)
+  ymd <- convert_local_days_to_year_month_day(days)
+  hms <- convert_local_time_of_day_to_hour_minute_second(time_of_day)
 
   year <- ymd$year
   month <- ymd$month

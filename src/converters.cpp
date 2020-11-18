@@ -10,8 +10,8 @@
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd convert_seconds_to_days_and_time_of_day_cpp(const cpp11::doubles& seconds,
-                                                                const cpp11::strings& zone) {
+civil_writable_rcrd convert_sys_seconds_to_local_days_and_time_of_day(const cpp11::doubles& seconds,
+                                                                      const cpp11::strings& zone) {
   r_ssize size = seconds.size();
 
   civil_writable_field days(size);
@@ -132,10 +132,10 @@ cpp11::writable::doubles convert_local_days_and_time_of_day_to_sys_seconds_cpp(c
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd convert_year_month_day_to_fields_cpp(const cpp11::integers& year,
-                                                         const cpp11::integers& month,
-                                                         const cpp11::integers& day,
-                                                         const cpp11::strings& day_nonexistent) {
+civil_writable_rcrd convert_year_month_day_to_local_fields(const cpp11::integers& year,
+                                                           const cpp11::integers& month,
+                                                           const cpp11::integers& day,
+                                                           const cpp11::strings& day_nonexistent) {
   enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
 
   r_ssize size = year.size();
@@ -186,13 +186,13 @@ civil_writable_rcrd convert_year_month_day_to_fields_cpp(const cpp11::integers& 
 }
 
 [[cpp11::register]]
-civil_writable_rcrd convert_year_month_day_hour_minute_second_to_fields_cpp(const cpp11::integers& year,
-                                                                            const cpp11::integers& month,
-                                                                            const cpp11::integers& day,
-                                                                            const cpp11::integers& hour,
-                                                                            const cpp11::integers& minute,
-                                                                            const cpp11::integers& second,
-                                                                            const cpp11::strings& day_nonexistent) {
+civil_writable_rcrd convert_year_month_day_hour_minute_second_to_local_fields_cpp(const cpp11::integers& year,
+                                                                                  const cpp11::integers& month,
+                                                                                  const cpp11::integers& day,
+                                                                                  const cpp11::integers& hour,
+                                                                                  const cpp11::integers& minute,
+                                                                                  const cpp11::integers& second,
+                                                                                  const cpp11::strings& day_nonexistent) {
   enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
 
   r_ssize size = year.size();
@@ -262,14 +262,14 @@ civil_writable_rcrd convert_year_month_day_hour_minute_second_to_fields_cpp(cons
 }
 
 [[cpp11::register]]
-civil_writable_rcrd convert_year_month_day_hour_minute_second_nanos_to_fields_cpp(const cpp11::integers& year,
-                                                                                  const cpp11::integers& month,
-                                                                                  const cpp11::integers& day,
-                                                                                  const cpp11::integers& hour,
-                                                                                  const cpp11::integers& minute,
-                                                                                  const cpp11::integers& second,
-                                                                                  const cpp11::integers& nanos,
-                                                                                  const cpp11::strings& day_nonexistent) {
+civil_writable_rcrd convert_year_month_day_hour_minute_second_nanos_to_local_fields_cpp(const cpp11::integers& year,
+                                                                                        const cpp11::integers& month,
+                                                                                        const cpp11::integers& day,
+                                                                                        const cpp11::integers& hour,
+                                                                                        const cpp11::integers& minute,
+                                                                                        const cpp11::integers& second,
+                                                                                        const cpp11::integers& nanos,
+                                                                                        const cpp11::strings& day_nonexistent) {
   enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
 
   r_ssize size = year.size();
@@ -351,7 +351,7 @@ civil_writable_rcrd convert_year_month_day_hour_minute_second_nanos_to_fields_cp
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_list_of_integers convert_days_to_year_month_day_cpp(const civil_field& days) {
+civil_writable_list_of_integers convert_local_days_to_year_month_day_cpp(const civil_field& days) {
   r_ssize size = days.size();
 
   cpp11::writable::integers year(size);
@@ -383,7 +383,7 @@ civil_writable_list_of_integers convert_days_to_year_month_day_cpp(const civil_f
 }
 
 [[cpp11::register]]
-civil_writable_list_of_integers convert_time_of_day_to_hour_minute_second_cpp(const civil_field& time_of_day) {
+civil_writable_list_of_integers convert_local_time_of_day_to_hour_minute_second_cpp(const civil_field& time_of_day) {
   r_ssize size = time_of_day.size();
 
   cpp11::writable::integers hour(size);

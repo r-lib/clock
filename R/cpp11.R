@@ -28,32 +28,32 @@ add_milliseconds_or_microseconds_or_nanoseconds_cpp <- function(x, n, unit, size
   .Call("_civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp", x, n, unit, size, PACKAGE = "civil")
 }
 
-convert_seconds_to_days_and_time_of_day_cpp <- function(seconds, zone) {
-  .Call("_civil_convert_seconds_to_days_and_time_of_day_cpp", seconds, zone, PACKAGE = "civil")
+convert_sys_seconds_to_local_days_and_time_of_day <- function(seconds, zone) {
+  .Call("_civil_convert_sys_seconds_to_local_days_and_time_of_day", seconds, zone, PACKAGE = "civil")
 }
 
 convert_local_days_and_time_of_day_to_sys_seconds_cpp <- function(days, time_of_day, zone, dst_nonexistent, dst_ambiguous, size) {
   .Call("_civil_convert_local_days_and_time_of_day_to_sys_seconds_cpp", days, time_of_day, zone, dst_nonexistent, dst_ambiguous, size, PACKAGE = "civil")
 }
 
-convert_year_month_day_to_fields_cpp <- function(year, month, day, day_nonexistent) {
-  .Call("_civil_convert_year_month_day_to_fields_cpp", year, month, day, day_nonexistent, PACKAGE = "civil")
+convert_year_month_day_to_local_fields <- function(year, month, day, day_nonexistent) {
+  .Call("_civil_convert_year_month_day_to_local_fields", year, month, day, day_nonexistent, PACKAGE = "civil")
 }
 
-convert_year_month_day_hour_minute_second_to_fields_cpp <- function(year, month, day, hour, minute, second, day_nonexistent) {
-  .Call("_civil_convert_year_month_day_hour_minute_second_to_fields_cpp", year, month, day, hour, minute, second, day_nonexistent, PACKAGE = "civil")
+convert_year_month_day_hour_minute_second_to_local_fields_cpp <- function(year, month, day, hour, minute, second, day_nonexistent) {
+  .Call("_civil_convert_year_month_day_hour_minute_second_to_local_fields_cpp", year, month, day, hour, minute, second, day_nonexistent, PACKAGE = "civil")
 }
 
-convert_year_month_day_hour_minute_second_nanos_to_fields_cpp <- function(year, month, day, hour, minute, second, nanos, day_nonexistent) {
-  .Call("_civil_convert_year_month_day_hour_minute_second_nanos_to_fields_cpp", year, month, day, hour, minute, second, nanos, day_nonexistent, PACKAGE = "civil")
+convert_year_month_day_hour_minute_second_nanos_to_local_fields_cpp <- function(year, month, day, hour, minute, second, nanos, day_nonexistent) {
+  .Call("_civil_convert_year_month_day_hour_minute_second_nanos_to_local_fields_cpp", year, month, day, hour, minute, second, nanos, day_nonexistent, PACKAGE = "civil")
 }
 
-convert_days_to_year_month_day_cpp <- function(days) {
-  .Call("_civil_convert_days_to_year_month_day_cpp", days, PACKAGE = "civil")
+convert_local_days_to_year_month_day_cpp <- function(days) {
+  .Call("_civil_convert_local_days_to_year_month_day_cpp", days, PACKAGE = "civil")
 }
 
-convert_time_of_day_to_hour_minute_second_cpp <- function(time_of_day) {
-  .Call("_civil_convert_time_of_day_to_hour_minute_second_cpp", time_of_day, PACKAGE = "civil")
+convert_local_time_of_day_to_hour_minute_second_cpp <- function(time_of_day) {
+  .Call("_civil_convert_local_time_of_day_to_hour_minute_second_cpp", time_of_day, PACKAGE = "civil")
 }
 
 convert_datetime_fields_from_local_to_zoned_cpp <- function(days, time_of_day, zone, dst_nonexistent, dst_ambiguous, size) {

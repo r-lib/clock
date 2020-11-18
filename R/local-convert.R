@@ -179,7 +179,7 @@ as_local_datetime.POSIXt <- function(x) {
   seconds <- unstructure(x)
   zone <- get_zone(x)
 
-  fields <- convert_seconds_to_days_and_time_of_day(seconds, zone)
+  fields <- convert_sys_seconds_to_local_days_and_time_of_day(seconds, zone)
 
   new_local_datetime_from_fields(fields, names)
 }

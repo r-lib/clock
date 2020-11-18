@@ -11,7 +11,7 @@ local_date <- function(year,
   args <- vec_recycle_common(!!!args, .size = size)
   args <- vec_cast_common(!!!args, .to = integer())
 
-  fields <- convert_year_month_day_to_fields(
+  fields <- convert_year_month_day_to_local_fields(
     args$year,
     args$month,
     args$day,
@@ -68,7 +68,7 @@ vec_proxy_equal.civil_local_date <- function(x, ...) {
 format.civil_local_date <- function(x, ...) {
   days <- field(x, "days")
 
-  fields <- convert_days_to_year_month_day(days)
+  fields <- convert_local_days_to_year_month_day(days)
 
   year <- fields$year
   month <- fields$month
