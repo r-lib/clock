@@ -110,6 +110,10 @@ static inline void never_reached [[noreturn]] (const char* fn) {
 
 // -----------------------------------------------------------------------------
 
+/*
+ * TODO: How best to write these in C++ to avoid copies when returning?
+ */
+
 static inline cpp11::writable::integers civil_int_recycle(const cpp11::writable::integers& x,
                                                           const r_ssize& size) {
   r_ssize x_size = x.size();
