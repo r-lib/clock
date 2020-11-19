@@ -25,5 +25,7 @@ Imports:
 Suggests: 
     knitr,
     rmarkdown,
-    magrittr
+    magrittr,
+    testthat
 VignetteBuilder: knitr
+Config/testthat/edition: 3
