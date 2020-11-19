@@ -76,6 +76,10 @@ floor_days_to_year_month_cpp <- function(days) {
   .Call("_civil_floor_days_to_year_month_cpp", days, PACKAGE = "civil")
 }
 
+get_offset_cpp <- function(days, time_of_day, zone) {
+  .Call("_civil_get_offset_cpp", days, time_of_day, zone, PACKAGE = "civil")
+}
+
 civil_set_install <- function(path) {
   invisible(.Call("_civil_civil_set_install", path, PACKAGE = "civil"))
 }

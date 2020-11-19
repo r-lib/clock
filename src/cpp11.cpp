@@ -137,6 +137,13 @@ extern "C" SEXP _civil_floor_days_to_year_month_cpp(SEXP days) {
     return cpp11::as_sexp(floor_days_to_year_month_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(days)));
   END_CPP11
 }
+// getters.cpp
+cpp11::writable::integers get_offset_cpp(const civil_field& days, const civil_field& time_of_day, const cpp11::strings& zone);
+extern "C" SEXP _civil_get_offset_cpp(SEXP days, SEXP time_of_day, SEXP zone) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(get_offset_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(days), cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(time_of_day), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone)));
+  END_CPP11
+}
 // install.cpp
 void civil_set_install(const cpp11::strings& path);
 extern "C" SEXP _civil_civil_set_install(SEXP path) {
@@ -203,6 +210,7 @@ extern SEXP _civil_convert_year_month_day_hour_minute_second_nanos_to_local_fiel
 extern SEXP _civil_convert_year_month_day_hour_minute_second_to_local_fields_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_year_month_day_to_local_fields(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_floor_days_to_year_month_cpp(SEXP);
+extern SEXP _civil_get_offset_cpp(SEXP, SEXP, SEXP);
 extern SEXP _civil_parse_local_datetime_cpp(SEXP, SEXP, SEXP);
 extern SEXP _civil_parse_zoned_datetime_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_zone_current();
@@ -230,6 +238,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_convert_year_month_day_hour_minute_second_to_local_fields_cpp",       (DL_FUNC) &_civil_convert_year_month_day_hour_minute_second_to_local_fields_cpp,       7},
     {"_civil_convert_year_month_day_to_local_fields",                              (DL_FUNC) &_civil_convert_year_month_day_to_local_fields,                              4},
     {"_civil_floor_days_to_year_month_cpp",                                        (DL_FUNC) &_civil_floor_days_to_year_month_cpp,                                        1},
+    {"_civil_get_offset_cpp",                                                      (DL_FUNC) &_civil_get_offset_cpp,                                                      3},
     {"_civil_parse_local_datetime_cpp",                                            (DL_FUNC) &_civil_parse_local_datetime_cpp,                                            3},
     {"_civil_parse_zoned_datetime_cpp",                                            (DL_FUNC) &_civil_parse_zoned_datetime_cpp,                                            7},
     {"_civil_zone_current",                                                        (DL_FUNC) &_civil_zone_current,                                                        0},
