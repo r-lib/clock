@@ -10,40 +10,23 @@ zoned_datetime <- function(year,
                            day_nonexistent = "last-time",
                            dst_nonexistent = "roll-forward",
                            dst_ambiguous = "earliest") {
-  check_dots_empty()
-
-  args <- list(
+  out <- local_datetime(
     year = year,
     month = month,
     day = day,
     hour = hour,
     minute = minute,
-    second = second
+    second = second,
+    ...,
+    day_nonexistent = day_nonexistent
   )
 
-  size <- vec_size_common(!!!args)
-  args <- vec_recycle_common(!!!args, .size = size)
-  args <- vec_cast_common(!!!args, .to = integer())
-
-  fields <- convert_year_month_day_hour_minute_second_to_local_fields(
-    args$year,
-    args$month,
-    args$day,
-    args$hour,
-    args$minute,
-    args$second,
-    day_nonexistent
+  as_zoned_datetime(
+    x = out,
+    zone = zone,
+    dst_nonexistent = dst_nonexistent,
+    dst_ambiguous = dst_ambiguous
   )
-
-  fields <- convert_datetime_fields_from_local_to_zoned(
-    fields$days,
-    fields$time_of_day,
-    zone,
-    dst_nonexistent,
-    dst_ambiguous
-  )
-
-  new_zoned_datetime_from_fields(fields, zone)
 }
 
 new_zoned_datetime <- function(days = integer(),
