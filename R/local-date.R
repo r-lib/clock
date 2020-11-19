@@ -70,25 +70,13 @@ format.civil_local_date <- function(x, ...) {
 
   fields <- convert_local_days_to_year_month_day(days)
 
-  year <- fields$year
-  month <- fields$month
-  day <- fields$day
-
-  year <- format_year(year)
-  month <- format_month(month)
-  day <- format_day(day)
-
-  out <- glue(
-    "<",
-    year, "-", month, "-", day,
-    ">"
+  body <- format_local_body(
+    year = fields$year,
+    month = fields$month,
+    day = fields$day
   )
 
-  out[is.na(x)] <- NA_character_
-
-  names(out) <- names(x)
-
-  out
+  format_finalize(body, x)
 }
 
 #' @export

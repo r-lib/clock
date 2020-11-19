@@ -80,6 +80,18 @@ validate_names <- function(names, size) {
 
 # ------------------------------------------------------------------------------
 
+# - Each subclass implements a `format()` method
+# - Unlike vctrs, don't use `print(quote = FALSE)` since we want to match base R
+
+#' @export
+obj_print_data.civil_rcrd <- function(x, ...) {
+  out <- format(x)
+  print(out)
+  invisible(x)
+}
+
+# ------------------------------------------------------------------------------
+
 proxy_civil_rcrd <- function(x) {
   out <- unclass(x)
   out[["civil_rcrd:::names"]] <- names(x)

@@ -87,45 +87,38 @@ vec_proxy_equal.civil_zoned_datetime <- function(x, ...) {
 }
 
 #' @export
-format.civil_zoned_datetime <- function(x, ...) {
-  zone <- zoned_zone(x)
+format.civil_zoned_datetime <- function(x, ..., zone = FALSE) {
+  if (!is_bool(zone)) {
+    abort("`zone` must be a single `TRUE` or `FALSE`.")
+  }
+
+  x_zone <- zoned_zone(x)
 
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
-  fields <- convert_datetime_fields_from_zoned_to_local(days, time_of_day, zone)
+  fields <- convert_datetime_fields_from_zoned_to_local(days, time_of_day, x_zone)
   days <- fields$days
   time_of_day <- fields$time_of_day
 
   ymd <- convert_local_days_to_year_month_day(days)
   hms <- convert_local_time_of_day_to_hour_minute_second(time_of_day)
 
-  year <- ymd$year
-  month <- ymd$month
-  day <- ymd$day
-  hour <- hms$hour
-  minute <- hms$minute
-  second <- hms$second
-
-  year <- format_year(year)
-  month <- format_month(month)
-  day <- format_day(day)
-  hour <- format_hour(hour)
-  minute <- format_minute(minute)
-  second <- format_second(second)
-
-  out <- glue(
-    "<",
-    year, "-", month, "-", day,
-    " ",
-    hour, ":", minute, ":", second,
-    ">"
+  body <- format_local_body(
+    year = ymd$year,
+    month = ymd$month,
+    day = ymd$day,
+    hour = hms$hour,
+    minute = hms$minute,
+    second = hms$second
   )
 
-  out[is.na(x)] <- NA_character_
+  body <- format_zoned_body_offset(body, x)
 
-  names(out) <- names(x)
+  if (zone) {
+    body <- format_zoned_body_zone(body, x)
+  }
 
-  out
+  format_finalize(body, x)
 }
 
 #' @export

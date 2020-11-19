@@ -96,33 +96,16 @@ format.civil_local_datetime <- function(x, ...) {
   ymd <- convert_local_days_to_year_month_day(days)
   hms <- convert_local_time_of_day_to_hour_minute_second(time_of_day)
 
-  year <- ymd$year
-  month <- ymd$month
-  day <- ymd$day
-  hour <- hms$hour
-  minute <- hms$minute
-  second <- hms$second
-
-  year <- format_year(year)
-  month <- format_month(month)
-  day <- format_day(day)
-  hour <- format_hour(hour)
-  minute <- format_minute(minute)
-  second <- format_second(second)
-
-  out <- glue(
-    "<",
-    year, "-", month, "-", day,
-    " ",
-    hour, ":", minute, ":", second,
-    ">"
+  body <- format_local_body(
+    year = ymd$year,
+    month = ymd$month,
+    day = ymd$day,
+    hour = hms$hour,
+    minute = hms$minute,
+    second = hms$second
   )
 
-  out[is.na(x)] <- NA_character_
-
-  names(out) <- names(x)
-
-  out
+  format_finalize(body, x)
 }
 
 #' @export

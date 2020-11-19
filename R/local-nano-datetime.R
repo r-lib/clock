@@ -101,41 +101,22 @@ vec_proxy_equal.civil_local_nano_datetime <- function(x, ...) {
 format.civil_local_nano_datetime <- function(x, ...) {
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
-  nanos_of_second <- field(x, "nanos_of_second")
+  nanos <- field(x, "nanos_of_second")
 
   ymd <- convert_local_days_to_year_month_day(days)
   hms <- convert_local_time_of_day_to_hour_minute_second(time_of_day)
 
-  year <- ymd$year
-  month <- ymd$month
-  day <- ymd$day
-  hour <- hms$hour
-  minute <- hms$minute
-  second <- hms$second
-
-  year <- format_year(year)
-  month <- format_month(month)
-  day <- format_day(day)
-  hour <- format_hour(hour)
-  minute <- format_minute(minute)
-  second <- format_second(second)
-  nanos <- format_nanos(nanos_of_second)
-
-  out <- glue(
-    "<",
-    year, "-", month, "-", day,
-    " ",
-    hour, ":", minute, ":", second,
-    ".",
-    nanos,
-    ">"
+  body <- format_local_body(
+    year = ymd$year,
+    month = ymd$month,
+    day = ymd$day,
+    hour = hms$hour,
+    minute = hms$minute,
+    second = hms$second,
+    nanos = nanos
   )
 
-  out[is.na(x)] <- NA_character_
-
-  names(out) <- names(x)
-
-  out
+  format_finalize(body, x)
 }
 
 #' @export

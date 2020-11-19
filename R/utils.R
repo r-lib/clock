@@ -94,6 +94,31 @@ format_nanos <- function(x) {
   sprintf("%09i", x)
 }
 
+format_offset <- function(x) {
+  sign <- if_else(x >= 0, "+", "-")
+  x <- abs(x)
+  hours <- x %/% seconds_in_hour()
+  minutes <- (x - hours * seconds_in_hour()) / seconds_in_minute()
+  hours <- format_hour(hours)
+  minutes <- format_minute(minutes)
+  glue(sign, hours, ":", minutes)
+}
+
+format_finalize <- function(body, x) {
+  out <- body
+
+  na <- is.na(x)
+
+  # NA's don't propagate through sprintf, so replace manually once at the end
+  if (any(na)) {
+    out[na] <- NA_character_
+  }
+
+  names(out) <- names(x)
+
+  out
+}
+
 # ------------------------------------------------------------------------------
 
 is_Date <- function(x) {
