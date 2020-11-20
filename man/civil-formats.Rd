@@ -57,9 +57,9 @@ fmt_local_datetime()
 
 fmt_local_nano_datetime()
 
-fmt_zoned_datetime(..., colon = TRUE, extended = FALSE)
+fmt_zoned_datetime(..., colon = TRUE, extended = TRUE)
 
-fmt_zoned_nano_datetime(..., colon = TRUE, extended = FALSE)
+fmt_zoned_nano_datetime(..., colon = TRUE, extended = TRUE)
 }
 \arguments{
 \item{...}{These dots are for future extensions and must be empty.}

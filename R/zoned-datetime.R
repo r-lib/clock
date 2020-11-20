@@ -114,6 +114,15 @@ format.civil_zoned_datetime <- function(x,
 }
 
 #' @export
+obj_print_data.civil_zoned_datetime <- function(x, ...) {
+  # Default format() for zoned datetimes uses the extended format.
+  # While this is good for a purely textual representation, it is
+  # repetitive here since the `obj_print_header()` data has the time zone name.
+  format <- fmt_zoned_datetime(extended = FALSE)
+  obj_print_data_civil_rcrd(x, format)
+}
+
+#' @export
 vec_ptype_full.civil_zoned_datetime <- function(x, ...) {
   zone <- zoned_zone(x)
   zone <- pretty_zone(zone)

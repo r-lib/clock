@@ -8,9 +8,9 @@ test_that("printing zoned-nano-datetime - ambiguous time", {
   expect_snapshot_output(zoned_nano_datetime(1970, 10, 25, 01, 30, nanos = 5, zone = "America/New_York", dst_ambiguous = c("earliest", "latest")))
 })
 
-test_that("printing zoned-nano-datetime - extended format", {
+test_that("format for zoned-nano-datetime is extended by default", {
   x <- zoned_nano_datetime(1970, 10, 25, 01, 30, nanos = 5000, zone = "America/New_York")
   expect_snapshot_output(format(x))
-  expect_snapshot_output(format(x, format = fmt_zoned_nano_datetime(extended = TRUE)))
-  expect_snapshot_output(format(x, format = fmt_zoned_nano_datetime(extended = TRUE), abbreviate_zone = TRUE))
+  expect_snapshot_output(format(x, abbreviate_zone = TRUE))
+  expect_snapshot_output(format(x, format = fmt_zoned_nano_datetime(extended = FALSE)))
 })

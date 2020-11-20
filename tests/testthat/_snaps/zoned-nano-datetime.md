@@ -19,15 +19,15 @@
     <civil_nano_datetime<America/New_York>[2]>
     [1] "1970-10-25T01:30:00.000000005-04:00" "1970-10-25T01:30:00.000000005-05:00"
 
-# printing zoned-nano-datetime - extended format
-
-    [1] "1970-10-25T01:30:00.000005000-04:00"
-
----
+# format for zoned-nano-datetime is extended by default
 
     [1] "1970-10-25T01:30:00.000005000-04:00[America/New_York]"
 
 ---
 
     [1] "1970-10-25T01:30:00.000005000-04:00[EDT]"
+
+---
+
+    [1] "1970-10-25T01:30:00.000005000-04:00"
 

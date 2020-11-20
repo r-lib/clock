@@ -552,13 +552,13 @@ fmt_local_nano_datetime <- function() {
 
 #' @rdname civil-formats
 #' @export
-fmt_zoned_datetime <- function(..., colon = TRUE, extended = FALSE) {
+fmt_zoned_datetime <- function(..., colon = TRUE, extended = TRUE) {
   fmt_iso_datetime(..., colon = colon, extended = extended)
 }
 
 #' @rdname civil-formats
 #' @export
-fmt_zoned_nano_datetime <- function(..., colon = TRUE, extended = FALSE) {
+fmt_zoned_nano_datetime <- function(..., colon = TRUE, extended = TRUE) {
   fmt_iso_datetime(..., colon = colon, extended = extended)
 }
 
