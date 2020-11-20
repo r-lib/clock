@@ -4,6 +4,8 @@
 #include "civil.h"
 #include <cstdint>
 #include <cmath>
+#include <cstdarg> // For `va_start()` and `va_end()`
+#include <cstdio> // For `vsnprintf()`
 
 // -----------------------------------------------------------------------------
 // "Safe" variants on rlib functions
@@ -79,9 +81,9 @@ static inline int64_t as_int64(double x) {
 #define BUFSIZE 8192
 
 static inline void fill_buffer(char* buf, const char* fmt, ...) {
-  va_list dots;
+  std::va_list dots;
   va_start(dots, fmt);
-  vsnprintf(buf, BUFSIZE, fmt, dots);
+  std::vsnprintf(buf, BUFSIZE, fmt, dots);
   va_end(dots);
 
   buf[BUFSIZE - 1] = '\0';
