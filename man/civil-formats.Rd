@@ -149,4 +149,7 @@ format(as.POSIXct(x), usetz = TRUE)
 # The only way to fully capture the date-time information is to use the
 # extended format that prints out both the UTC offset and the time zone name.
 format(x, format = fmt_iso_datetime(extended = TRUE))
+
+# The default format method for zoned datetimes uses this extended format
+format(x)
 }
