@@ -18,10 +18,10 @@ static inline void resolve_day_nonexistent_na(bool& na);
 static inline void resolve_day_nonexistent_error(const r_ssize& i);
 
 static inline void resolve_day_nonexistent_ymd(const r_ssize& i,
-                                               const enum day_nonexistent& day_nonexistent,
+                                               const enum day_nonexistent& day_nonexistent_val,
                                                date::year_month_day& ymd,
                                                bool& na) {
-  switch (day_nonexistent) {
+  switch (day_nonexistent_val) {
   case day_nonexistent::first_day: {
     return resolve_day_nonexistent_first_day(ymd);
   }
@@ -43,9 +43,9 @@ static inline void resolve_day_nonexistent_ymd(const r_ssize& i,
   }
 }
 
-static inline void resolve_day_nonexistent_tod(const enum day_nonexistent& day_nonexistent,
+static inline void resolve_day_nonexistent_tod(const enum day_nonexistent& day_nonexistent_val,
                                                std::chrono::seconds& tod) {
-  switch (day_nonexistent) {
+  switch (day_nonexistent_val) {
   case day_nonexistent::first_time: {
     return resolve_day_nonexistent_first_time(tod);
   }
@@ -61,9 +61,9 @@ static inline void resolve_day_nonexistent_tod(const enum day_nonexistent& day_n
   }
 }
 
-static inline void resolve_day_nonexistent_nanos_of_second(const enum day_nonexistent& day_nonexistent,
+static inline void resolve_day_nonexistent_nanos_of_second(const enum day_nonexistent& day_nonexistent_val,
                                                            std::chrono::nanoseconds& nanos_of_second) {
-  switch (day_nonexistent) {
+  switch (day_nonexistent_val) {
   case day_nonexistent::first_time: {
     return resolve_day_nonexistent_first_time_nanos(nanos_of_second);
   }

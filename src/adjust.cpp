@@ -118,8 +118,8 @@ static inline
 date::year_month_day
 adjust_local_days_switch(const date::year_month_day& ymd,
                          const int& value,
-                         const enum adjuster& adjuster) {
-  switch (adjuster) {
+                         const enum adjuster& adjuster_val) {
+  switch (adjuster_val) {
   case adjuster::year: {
     return adjust_local_days_year(ymd, value);
   }
@@ -133,7 +133,7 @@ adjust_local_days_switch(const date::year_month_day& ymd,
     return adjust_local_days_last_day_of_month(ymd);
   }
   default: {
-    civil_abort("Internal error: Unknown `adjuster` in `adjust_local_date_switch()`.");
+    civil_abort("Internal error: Unknown `adjuster_val` in `adjust_local_date_switch()`.");
   }
   }
 }
@@ -234,8 +234,8 @@ static inline
 std::chrono::seconds
 adjust_local_time_of_day_switch(const date::hh_mm_ss<std::chrono::seconds>& hms,
                                 const int& value,
-                                const enum adjuster& adjuster) {
-  switch (adjuster) {
+                                const enum adjuster& adjuster_val) {
+  switch (adjuster_val) {
   case adjuster::hour: {
     return adjust_local_time_of_day_hour(hms, value);
   }
@@ -246,7 +246,7 @@ adjust_local_time_of_day_switch(const date::hh_mm_ss<std::chrono::seconds>& hms,
     return adjust_local_time_of_day_second(hms, value);
   }
   default: {
-    civil_abort("Internal error: Unknown `adjuster` in `adjust_local_time_of_day_switch()`.");
+    civil_abort("Internal error: Unknown `adjuster_val` in `adjust_local_time_of_day_switch()`.");
   }
   }
 }
@@ -332,13 +332,13 @@ static inline
 std::chrono::nanoseconds
 adjust_local_nanos_of_second_switch(const std::chrono::nanoseconds& nanos,
                                     const int& value,
-                                    const enum adjuster& adjuster) {
-  switch (adjuster) {
+                                    const enum adjuster& adjuster_val) {
+  switch (adjuster_val) {
   case adjuster::nanosecond: {
     return adjust_local_nanos_of_second_nanosecond(nanos, value);
   }
   default: {
-    civil_abort("Internal error: Unknown `adjuster` in `adjust_local_time_of_day_switch()`.");
+    civil_abort("Internal error: Unknown `adjuster_val` in `adjust_local_time_of_day_switch()`.");
   }
   }
 }

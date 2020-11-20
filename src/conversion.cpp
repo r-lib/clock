@@ -89,8 +89,8 @@ static inline date::sys_seconds info_ambiguous_error(const r_ssize& i) {
 date::sys_seconds convert_local_to_sys(const date::local_seconds& lsec,
                                        const date::time_zone* p_zone,
                                        const r_ssize& i,
-                                       const enum dst_nonexistent& dst_nonexistent,
-                                       const enum dst_ambiguous& dst_ambiguous,
+                                       const enum dst_nonexistent& dst_nonexistent_val,
+                                       const enum dst_ambiguous& dst_ambiguous_val,
                                        bool& na) {
   date::local_info info = p_zone->get_info(lsec);
 
@@ -99,7 +99,7 @@ date::sys_seconds convert_local_to_sys(const date::local_seconds& lsec,
   }
 
   if (info.result == date::local_info::nonexistent) {
-    switch (dst_nonexistent) {
+    switch (dst_nonexistent_val) {
     case dst_nonexistent::roll_forward: {
       return info_nonexistent_roll_forward(info);
     }
@@ -122,7 +122,7 @@ date::sys_seconds convert_local_to_sys(const date::local_seconds& lsec,
   }
 
   if (info.result == date::local_info::ambiguous) {
-    switch (dst_ambiguous) {
+    switch (dst_ambiguous_val) {
     case dst_ambiguous::latest: {
       return info_ambiguous_latest(info, lsec);
     }
@@ -155,8 +155,8 @@ date::sys_seconds convert_local_to_sys(const date::local_seconds& lsec,
 date::sys_seconds convert_local_to_sys(const date::local_seconds& lsec,
                                        const date::time_zone* p_zone,
                                        const r_ssize& i,
-                                       const enum dst_nonexistent& dst_nonexistent,
-                                       const enum dst_ambiguous& dst_ambiguous,
+                                       const enum dst_nonexistent& dst_nonexistent_val,
+                                       const enum dst_ambiguous& dst_ambiguous_val,
                                        bool& na,
                                        std::chrono::nanoseconds& nanos) {
   date::local_info info = p_zone->get_info(lsec);
@@ -166,7 +166,7 @@ date::sys_seconds convert_local_to_sys(const date::local_seconds& lsec,
   }
 
   if (info.result == date::local_info::nonexistent) {
-    switch (dst_nonexistent) {
+    switch (dst_nonexistent_val) {
     case dst_nonexistent::roll_forward: {
       info_nonexistent_roll_forward_nanos(nanos);
       return info_nonexistent_roll_forward(info);
@@ -191,7 +191,7 @@ date::sys_seconds convert_local_to_sys(const date::local_seconds& lsec,
   }
 
   if (info.result == date::local_info::ambiguous) {
-    switch (dst_ambiguous) {
+    switch (dst_ambiguous_val) {
     case dst_ambiguous::latest: {
       return info_ambiguous_latest(info, lsec);
     }
