@@ -85,6 +85,10 @@ validate_names <- function(names, size) {
 
 #' @export
 obj_print_data.civil_rcrd <- function(x, ...) {
+  if (vec_size(x) == 0L) {
+    return(invisible(x))
+  }
+
   out <- format(x)
   print(out)
   invisible(x)
