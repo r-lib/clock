@@ -43,6 +43,22 @@ test_that("validates names", {
   expect_snapshot_error(new_civil_rcrd(list(x = 1:2), names = c(NA, "x")))
 })
 
+test_that("`[` keeps names", {
+  x <- new_civil_rcrd(list(x = 1L), names = "foo")
+  expect_named(x[1], "foo")
+  expect_named(x["foo"], "foo")
+})
+
+test_that("`[` allows missing `i`", {
+  x <- new_civil_rcrd(list(x = 1:2))
+  expect_identical(x[], x)
+})
+
+test_that("`[` doesn't allow 2nd dimension subsetting", {
+  x <- new_civil_rcrd(list(x = 1:3, y = 1:3))
+  expect_error(x[1, 1])
+})
+
 test_that("`[[` drops names", {
   x <- new_civil_rcrd(list(x = 1L), names = "foo")
   expect_named(x[[1]], NULL)

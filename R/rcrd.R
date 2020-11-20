@@ -80,8 +80,18 @@ validate_names <- function(names, size) {
 
 # ------------------------------------------------------------------------------
 
+# - `[.vctrs_rcrd` accidentally allows subsetting fields through `...`
+#   https://github.com/r-lib/vctrs/issues/1295
+
+#' @export
+`[.civil_rcrd` <- function(x, i) {
+  i <- maybe_missing(i, default = TRUE)
+  vec_slice(x, i)
+}
+
 # - `[[.vctrs_rcrd` doesn't drop names because names aren't supported for rcrds
-# - `[[.vctrs_rcrd` allows selections of size >1 https://github.com/r-lib/vctrs/issues/1294
+# - `[[.vctrs_rcrd` allows selections of size >1
+#   https://github.com/r-lib/vctrs/issues/1294
 
 #' @export
 `[[.civil_rcrd` <- function(x, i) {
