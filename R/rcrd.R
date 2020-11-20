@@ -80,6 +80,24 @@ validate_names <- function(names, size) {
 
 # ------------------------------------------------------------------------------
 
+# - `[[.vctrs_rcrd` doesn't drop names because names aren't supported for rcrds
+# - `[[.vctrs_rcrd` allows selections of size >1 https://github.com/r-lib/vctrs/issues/1294
+
+#' @export
+`[[.civil_rcrd` <- function(x, i) {
+  size <- vec_size(x)
+  names <- names(x)
+
+  i <- vec_as_location2(i, n = size, names = names, arg = "i")
+
+  # Unname - `[[` never returns input with names
+  x <- unname(x)
+
+  vec_slice(x, i)
+}
+
+# ------------------------------------------------------------------------------
+
 # - Each subclass implements a `format()` method
 # - Unlike vctrs, don't use `print(quote = FALSE)` since we want to match base R
 

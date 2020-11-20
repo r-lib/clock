@@ -42,3 +42,16 @@ test_that("validates names", {
   expect_snapshot_error(new_civil_rcrd(list(x = 1:2), names = 1))
   expect_snapshot_error(new_civil_rcrd(list(x = 1:2), names = c(NA, "x")))
 })
+
+test_that("`[[` drops names", {
+  x <- new_civil_rcrd(list(x = 1L), names = "foo")
+  expect_named(x[[1]], NULL)
+  expect_named(x[["foo"]], NULL)
+})
+
+test_that("`[[` only selects 1 element", {
+  x <- new_civil_rcrd(list(x = 1:2))
+  expect_snapshot_error(x[[c(1, 2)]])
+  expect_snapshot_error(x[[-1]])
+  expect_snapshot_error(x[["a"]])
+})
