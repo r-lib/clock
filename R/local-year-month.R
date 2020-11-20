@@ -62,17 +62,12 @@ vec_proxy_equal.civil_local_year_month <- function(x, ...) {
 }
 
 #' @export
-format.civil_local_year_month <- function(x, ...) {
-  days <- field(x, "days")
-
-  fields <- convert_local_days_to_year_month_day(days)
-
-  body <- format_local_body(
-    year = fields$year,
-    month = fields$month
-  )
-
-  format_finalize(body, x)
+format.civil_local_year_month <- function(x,
+                                          ...,
+                                          format = fmt_local_year_month(),
+                                          locale = "en_US.UTF-8") {
+  x <- as_local_datetime(x)
+  format(x, ..., format = format, locale = locale)
 }
 
 #' @export

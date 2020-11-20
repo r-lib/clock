@@ -89,23 +89,25 @@ vec_proxy_equal.civil_local_datetime <- function(x, ...) {
 }
 
 #' @export
-format.civil_local_datetime <- function(x, ...) {
+format.civil_local_datetime <- function(x,
+                                        ...,
+                                        format = fmt_local_datetime(),
+                                        locale = "en_US.UTF-8") {
+  check_dots_empty()
+
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
 
-  ymd <- convert_local_days_to_year_month_day(days)
-  hms <- convert_local_time_of_day_to_hour_minute_second(time_of_day)
-
-  body <- format_local_body(
-    year = ymd$year,
-    month = ymd$month,
-    day = ymd$day,
-    hour = hms$hour,
-    minute = hms$minute,
-    second = hms$second
+  out <- format_local_datetime(
+    days = days,
+    time_of_day = time_of_day,
+    format = format,
+    locale = locale
   )
 
-  format_finalize(body, x)
+  names(out) <- names(x)
+
+  out
 }
 
 #' @export

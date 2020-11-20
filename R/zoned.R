@@ -25,16 +25,6 @@ zoned_set_zone <- function(x, zone) {
   x
 }
 
-zoned_zone_unambiguous <- function(x) {
-  zone <- zoned_zone(x)
-
-  if (identical(zone, "")) {
-    zone_current()
-  } else {
-    zone
-  }
-}
-
 pretty_zone <- function(zone) {
   if (identical(zone, "")) {
     zone <- zone_current()
@@ -42,15 +32,4 @@ pretty_zone <- function(zone) {
   }
 
   zone
-}
-
-format_zoned_body_offset <- function(body, x) {
-  offset <- get_offset(x)
-  offset <- format_offset(offset)
-  glue(body, offset)
-}
-
-format_zoned_body_zone <- function(body, x) {
-  zone <- zoned_zone_unambiguous(x)
-  glue(body, "[", zone, "]")
 }

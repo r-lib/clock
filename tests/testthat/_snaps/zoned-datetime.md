@@ -19,11 +19,15 @@
     <civil_datetime<America/New_York>[2]>
     [1] "1970-10-25T01:30:00-04:00" "1970-10-25T01:30:00-05:00"
 
-# printing zoned-datetime - unambiguous format
+# printing zoned-datetime - extended format
 
     [1] "1970-10-25T01:30:00-04:00"
 
 ---
 
     [1] "1970-10-25T01:30:00-04:00[America/New_York]"
+
+---
+
+    [1] "1970-10-25T01:30:00-04:00[EDT]"
 

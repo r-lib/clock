@@ -87,38 +87,30 @@ vec_proxy_equal.civil_zoned_datetime <- function(x, ...) {
 }
 
 #' @export
-format.civil_zoned_datetime <- function(x, ..., zone = FALSE) {
-  if (!is_bool(zone)) {
-    abort("`zone` must be a single `TRUE` or `FALSE`.")
-  }
-
-  x_zone <- zoned_zone(x)
+format.civil_zoned_datetime <- function(x,
+                                        ...,
+                                        format = fmt_zoned_datetime(),
+                                        locale = "en_US.UTF-8",
+                                        abbreviate_zone = FALSE) {
+  check_dots_empty()
 
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
-  fields <- convert_datetime_fields_from_zoned_to_local(days, time_of_day, x_zone)
-  days <- fields$days
-  time_of_day <- fields$time_of_day
 
-  ymd <- convert_local_days_to_year_month_day(days)
-  hms <- convert_local_time_of_day_to_hour_minute_second(time_of_day)
+  zone <- zoned_zone(x)
 
-  body <- format_local_body(
-    year = ymd$year,
-    month = ymd$month,
-    day = ymd$day,
-    hour = hms$hour,
-    minute = hms$minute,
-    second = hms$second
+  out <- format_zoned_datetime(
+    days = days,
+    time_of_day = time_of_day,
+    zone = zone,
+    format = format,
+    locale = locale,
+    abbreviate_zone = abbreviate_zone
   )
 
-  body <- format_zoned_body_offset(body, x)
+  names(out) <- names(x)
 
-  if (zone) {
-    body <- format_zoned_body_zone(body, x)
-  }
-
-  format_finalize(body, x)
+  out
 }
 
 #' @export

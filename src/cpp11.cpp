@@ -137,6 +137,13 @@ extern "C" SEXP _civil_floor_days_to_year_month_cpp(SEXP days) {
     return cpp11::as_sexp(floor_days_to_year_month_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(days)));
   END_CPP11
 }
+// format.cpp
+cpp11::writable::strings format_civil_rcrd_cpp(const civil_field& days, const civil_field& time_of_day, const civil_field& nanos_of_second, const cpp11::strings& zone, const cpp11::strings& format, const cpp11::strings& locale, const bool& local, const bool& nano, const bool& abbreviate_zone);
+extern "C" SEXP _civil_format_civil_rcrd_cpp(SEXP days, SEXP time_of_day, SEXP nanos_of_second, SEXP zone, SEXP format, SEXP locale, SEXP local, SEXP nano, SEXP abbreviate_zone) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(format_civil_rcrd_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(days), cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(time_of_day), cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(nanos_of_second), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(locale), cpp11::as_cpp<cpp11::decay_t<const bool&>>(local), cpp11::as_cpp<cpp11::decay_t<const bool&>>(nano), cpp11::as_cpp<cpp11::decay_t<const bool&>>(abbreviate_zone)));
+  END_CPP11
+}
 // getters.cpp
 cpp11::writable::integers get_offset_cpp(const civil_field& days, const civil_field& time_of_day, const cpp11::strings& zone);
 extern "C" SEXP _civil_get_offset_cpp(SEXP days, SEXP time_of_day, SEXP zone) {
@@ -210,6 +217,7 @@ extern SEXP _civil_convert_year_month_day_hour_minute_second_nanos_to_local_fiel
 extern SEXP _civil_convert_year_month_day_hour_minute_second_to_local_fields_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_year_month_day_to_local_fields(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_floor_days_to_year_month_cpp(SEXP);
+extern SEXP _civil_format_civil_rcrd_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_get_offset_cpp(SEXP, SEXP, SEXP);
 extern SEXP _civil_parse_local_datetime_cpp(SEXP, SEXP, SEXP);
 extern SEXP _civil_parse_zoned_datetime_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -238,6 +246,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_convert_year_month_day_hour_minute_second_to_local_fields_cpp",       (DL_FUNC) &_civil_convert_year_month_day_hour_minute_second_to_local_fields_cpp,       7},
     {"_civil_convert_year_month_day_to_local_fields",                              (DL_FUNC) &_civil_convert_year_month_day_to_local_fields,                              4},
     {"_civil_floor_days_to_year_month_cpp",                                        (DL_FUNC) &_civil_floor_days_to_year_month_cpp,                                        1},
+    {"_civil_format_civil_rcrd_cpp",                                               (DL_FUNC) &_civil_format_civil_rcrd_cpp,                                               9},
     {"_civil_get_offset_cpp",                                                      (DL_FUNC) &_civil_get_offset_cpp,                                                      3},
     {"_civil_parse_local_datetime_cpp",                                            (DL_FUNC) &_civil_parse_local_datetime_cpp,                                            3},
     {"_civil_parse_zoned_datetime_cpp",                                            (DL_FUNC) &_civil_parse_zoned_datetime_cpp,                                            7},
