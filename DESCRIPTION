@@ -1,13 +1,18 @@
 Package: civil
-Title: What the Package Does (One Line, Title Case)
+Title: Local and Zoned Dates
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    c(person(given = "Davis",
+             family = "Vaughan",
+             role = c("aut", "cre"),
+             email = "davis@rstudio.com"),
+      person(given = "RStudio",
+             role = "cph"))
+Description: Provides comprehensive support for local and zoned
+    dates and times. A local date does not assume any particular time zone.
+    A zoned date is a local date with a time zone attached. Precision up
+    to nanoseconds is supported, and partial date types representing
+    coarser periods such as months or weeks are also implemented.
 License: MIT + file LICENSE
 URL: https://github.com/DavisVaughan/civil
 BugReports: https://github.com/DavisVaughan/civil/issues
