@@ -6,6 +6,7 @@
 #include "civil-rcrd.h"
 #include "check.h"
 #include "zone.h"
+#include "locale.h"
 #include <sstream>
 
 // -----------------------------------------------------------------------------
@@ -38,17 +39,6 @@ from_stream(std::basic_istream<CharT, Traits>& is,
     tod = fds.tod;
   }
   return is;
-}
-
-// -----------------------------------------------------------------------------
-
-static inline std::locale civil_load_locale(const std::string& locale) {
-  try {
-    return std::locale{locale};
-  }
-  catch (const std::runtime_error& error) {
-    civil_abort("Failed to load locale.");
-  }
 }
 
 // -----------------------------------------------------------------------------
