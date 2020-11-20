@@ -59,8 +59,6 @@ cpp11::writable::logicals zone_is_valid(const cpp11::strings& zone) {
 
 // -----------------------------------------------------------------------------
 
-static std::string zone_name_current();
-
 [[cpp11::register]]
 cpp11::writable::strings zone_current() {
   return cpp11::writable::strings({zone_name_current()});
@@ -94,7 +92,8 @@ const date::time_zone* zone_name_load_try(const std::string& zone_name) {
 
 static std::string zone_name_system();
 
-static std::string zone_name_current() {
+// [[ include("zone.h") ]]
+std::string zone_name_current() {
   const char* tz_env = std::getenv("TZ");
 
   if (tz_env == NULL) {
