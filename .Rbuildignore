@@ -3,3 +3,5 @@
 ^LICENSE\.md$
 ^tools$
 ^README\.Rmd$
+^codecov\.yml$
+^\.github$

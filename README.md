@@ -4,6 +4,10 @@
 # civil
 
 <!-- badges: start -->
+
+[![Codecov test
+coverage](https://codecov.io/gh/DavisVaughan/civil/branch/master/graph/badge.svg)](https://codecov.io/gh/DavisVaughan/civil?branch=master)
+[![R-CMD-check](https://github.com/DavisVaughan/civil/workflows/R-CMD-check/badge.svg)](https://github.com/DavisVaughan/civil/actions)
 <!-- badges: end -->
 
 The goal of civil is to provide new types for working with *local* and
