@@ -9,7 +9,7 @@
 # These are required to turn off code that links against libcurl.
 # We embed our own time zone database directly so we don't need any of this.
 
-# -DUSE_OS_TZDB=0
+# -DUSE_BINARY_TZDB=0
 #
 # Using the time zone data base that comes with the OS can be MUCH faster
 # because it is pre-compiled. However, there are a few issues.
@@ -31,4 +31,4 @@ PKG_CXXFLAGS = \
 	-DINSTALL=dummy \
 	-DAUTO_DOWNLOAD=0 \
 	-DHAS_REMOTE_API=0 \
-	-DUSE_OS_TZDB=0
+	-DUSE_BINARY_TZDB=0
