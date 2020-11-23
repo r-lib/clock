@@ -4,9 +4,13 @@
 \name{civil-package}
 \alias{civil}
 \alias{civil-package}
-\title{civil: What the Package Does (One Line, Title Case)}
+\title{civil: Local and Zoned Dates}
 \description{
-What the package does (one paragraph).
+Provides comprehensive support for local and zoned
+    dates and times. A local date does not assume any particular time zone.
+    A zoned date is a local date with a time zone attached. Precision up
+    to nanoseconds is supported, and partial date types representing
+    coarser periods such as months or weeks are also implemented.
 }
 \seealso{
 Useful links:
@@ -17,7 +21,12 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Davis Vaughan \email{davis@rstudio.com}
+
+Other contributors:
+\itemize{
+  \item RStudio [copyright holder]
+}
 
 }
 \keyword{internal}
