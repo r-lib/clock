@@ -159,6 +159,14 @@ extern "C" SEXP _civil_civil_set_install(SEXP path) {
     return R_NilValue;
   END_CPP11
 }
+// install.cpp
+void civil_set_tz_dir(const cpp11::strings& path);
+extern "C" SEXP _civil_civil_set_tz_dir(SEXP path) {
+  BEGIN_CPP11
+    civil_set_tz_dir(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(path));
+    return R_NilValue;
+  END_CPP11
+}
 // parse.cpp
 civil_writable_rcrd parse_zoned_datetime_cpp(const cpp11::strings& x, const cpp11::strings& format, const cpp11::strings& zone, const cpp11::strings& locale, const cpp11::strings& dst_nonexistent, const cpp11::strings& dst_ambiguous, const cpp11::integers& size);
 extern "C" SEXP _civil_parse_zoned_datetime_cpp(SEXP x, SEXP format, SEXP zone, SEXP locale, SEXP dst_nonexistent, SEXP dst_ambiguous, SEXP size) {
@@ -205,6 +213,7 @@ extern SEXP _civil_adjust_local_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_local_nanos_of_second_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_local_time_of_day_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_set_install(SEXP);
+extern SEXP _civil_civil_set_tz_dir(SEXP);
 extern SEXP _civil_convert_datetime_fields_from_local_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_datetime_fields_from_zoned_to_local_cpp(SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_local_days_and_time_of_day_to_sys_seconds_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -234,6 +243,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_adjust_local_nanos_of_second_cpp",                                    (DL_FUNC) &_civil_adjust_local_nanos_of_second_cpp,                                    4},
     {"_civil_adjust_local_time_of_day_cpp",                                        (DL_FUNC) &_civil_adjust_local_time_of_day_cpp,                                        4},
     {"_civil_civil_set_install",                                                   (DL_FUNC) &_civil_civil_set_install,                                                   1},
+    {"_civil_civil_set_tz_dir",                                                    (DL_FUNC) &_civil_civil_set_tz_dir,                                                    1},
     {"_civil_convert_datetime_fields_from_local_to_zoned_cpp",                     (DL_FUNC) &_civil_convert_datetime_fields_from_local_to_zoned_cpp,                     6},
     {"_civil_convert_datetime_fields_from_zoned_to_local_cpp",                     (DL_FUNC) &_civil_convert_datetime_fields_from_zoned_to_local_cpp,                     3},
     {"_civil_convert_local_days_and_time_of_day_to_sys_seconds_cpp",               (DL_FUNC) &_civil_convert_local_days_and_time_of_day_to_sys_seconds_cpp,               6},
