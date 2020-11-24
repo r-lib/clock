@@ -26,7 +26,8 @@ Suggests:
     magrittr,
     rmarkdown,
     testthat,
-    pillar
+    pillar,
+    withr
 LinkingTo: 
     cpp11
 VignetteBuilder: 

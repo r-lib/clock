@@ -68,7 +68,7 @@ vec_proxy_equal.civil_local_date <- function(x, ...) {
 format.civil_local_date <- function(x,
                                     ...,
                                     format = fmt_local_date(),
-                                    locale = "en_US.UTF-8") {
+                                    locale = Sys.getlocale(category = "LC_TIME")) {
   x <- as_local_datetime(x)
   format(x, ..., format = format, locale = locale)
 }
