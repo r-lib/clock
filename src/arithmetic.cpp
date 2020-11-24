@@ -9,8 +9,8 @@
 
 static civil_writable_rcrd add_years_or_months_local(const civil_rcrd& x,
                                                      const cpp11::integers& n,
-                                                     const enum day_nonexistent& day_nonexistent,
-                                                     const enum unit& unit,
+                                                     const enum day_nonexistent& day_nonexistent_val,
+                                                     const enum unit& unit_val,
                                                      const r_ssize& size) {
   civil_writable_rcrd out = civil_rcrd_clone(x);
   civil_rcrd_recycle(out, size);
@@ -38,7 +38,7 @@ static civil_writable_rcrd add_years_or_months_local(const civil_rcrd& x,
 
     date::year_month_day out_ymd;
 
-    if (unit == unit::year) {
+    if (unit_val == unit::year) {
       out_ymd = elt_ymd + date::years{elt_n};
     } else {
       out_ymd = elt_ymd + date::months{elt_n};
@@ -46,7 +46,7 @@ static civil_writable_rcrd add_years_or_months_local(const civil_rcrd& x,
 
     convert_year_month_day_to_days_one(
       i,
-      day_nonexistent,
+      day_nonexistent_val,
       out_ymd,
       p_days,
       p_time_of_day,
@@ -63,18 +63,18 @@ civil_writable_rcrd add_years_or_months_local_cpp(const civil_rcrd& x,
                                                   const cpp11::strings& day_nonexistent,
                                                   const cpp11::strings& unit,
                                                   const cpp11::integers& size) {
-  enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
-  enum unit c_unit = parse_unit(unit);
+  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
+  enum unit unit_val = parse_unit(unit);
   r_ssize c_size = size[0];
 
-  return add_years_or_months_local(x, n, c_day_nonexistent, c_unit, c_size);
+  return add_years_or_months_local(x, n, day_nonexistent_val, unit_val, c_size);
 }
 
 // -----------------------------------------------------------------------------
 
 static civil_writable_rcrd add_weeks_or_days_local(const civil_rcrd& x,
                                                    const cpp11::integers& n,
-                                                   const enum unit& unit,
+                                                   const enum unit& unit_val,
                                                    const r_ssize& size) {
   civil_writable_rcrd out = civil_rcrd_clone(x);
   civil_rcrd_recycle(out, size);
@@ -98,7 +98,7 @@ static civil_writable_rcrd add_weeks_or_days_local(const civil_rcrd& x,
     }
 
     // Handle weeks as a period of 7 days
-    elt_n = (unit == unit::week) ? elt_n * 7 : elt_n;
+    elt_n = (unit_val == unit::week) ? elt_n * 7 : elt_n;
 
     date::local_days elt_lday{date::days{elt_days}};
     date::local_days out_lday = elt_lday + date::days{elt_n};
@@ -114,17 +114,17 @@ civil_writable_rcrd add_weeks_or_days_local_cpp(const civil_rcrd& x,
                                                 const cpp11::integers& n,
                                                 const cpp11::strings& unit,
                                                 const cpp11::integers& size) {
-  enum unit c_unit = parse_unit(unit);
+  enum unit unit_val = parse_unit(unit);
   r_ssize c_size = size[0];
 
-  return add_weeks_or_days_local(x, n, c_unit, c_size);
+  return add_weeks_or_days_local(x, n, unit_val, c_size);
 }
 
 // -----------------------------------------------------------------------------
 
 static civil_writable_rcrd add_hours_or_minutes_or_seconds(const civil_rcrd& x,
                                                            const cpp11::integers& n,
-                                                           const enum unit& unit,
+                                                           const enum unit& unit_val,
                                                            const r_ssize& size) {
   civil_writable_rcrd out = civil_rcrd_clone(x);
   civil_rcrd_recycle(out, size);
@@ -157,11 +157,11 @@ static civil_writable_rcrd add_hours_or_minutes_or_seconds(const civil_rcrd& x,
 
     std::chrono::seconds elt_chrono_n;
 
-    if (unit == unit::hour) {
+    if (unit_val == unit::hour) {
       elt_chrono_n = std::chrono::hours{elt_n};
-    } else if (unit == unit::minute) {
+    } else if (unit_val == unit::minute) {
       elt_chrono_n = std::chrono::minutes{elt_n};
-    } else if (unit == unit::second) {
+    } else if (unit_val == unit::second) {
       elt_chrono_n = std::chrono::seconds{elt_n};
     }
 
@@ -184,10 +184,10 @@ civil_writable_rcrd add_hours_or_minutes_or_seconds_cpp(const civil_rcrd& x,
                                                         const cpp11::integers& n,
                                                         const cpp11::strings& unit,
                                                         const cpp11::integers& size) {
-  enum unit c_unit = parse_unit(unit);
+  enum unit unit_val = parse_unit(unit);
   r_ssize c_size = size[0];
 
-  return add_hours_or_minutes_or_seconds(x, n, c_unit, c_size);
+  return add_hours_or_minutes_or_seconds(x, n, unit_val, c_size);
 }
 
 // -----------------------------------------------------------------------------
@@ -249,7 +249,7 @@ fields_nano_datetime plus_nanos_of_second(const date::days& days,
 
 static civil_writable_rcrd add_milliseconds_or_microseconds_or_nanoseconds(const civil_rcrd& x,
                                                                            const cpp11::integers& n,
-                                                                           const enum unit& unit,
+                                                                           const enum unit& unit_val,
                                                                            const r_ssize& size) {
   civil_writable_rcrd out = civil_rcrd_clone(x);
   civil_rcrd_recycle(out, size);
@@ -276,11 +276,11 @@ static civil_writable_rcrd add_milliseconds_or_microseconds_or_nanoseconds(const
 
     std::chrono::nanoseconds elt_chrono_n;
 
-    if (unit == unit::millisecond) {
+    if (unit_val == unit::millisecond) {
       elt_chrono_n = std::chrono::milliseconds{elt_n};
-    } else if (unit == unit::microsecond) {
+    } else if (unit_val == unit::microsecond) {
       elt_chrono_n = std::chrono::microseconds{elt_n};
-    } else if (unit == unit::nanosecond) {
+    } else if (unit_val == unit::nanosecond) {
       elt_chrono_n = std::chrono::nanoseconds{elt_n};
     }
 
@@ -304,9 +304,9 @@ civil_writable_rcrd add_milliseconds_or_microseconds_or_nanoseconds_cpp(const ci
                                                                         const cpp11::integers& n,
                                                                         const cpp11::strings& unit,
                                                                         const cpp11::integers& size) {
-  enum unit c_unit = parse_unit(unit);
+  enum unit unit_val = parse_unit(unit);
   r_ssize c_size = size[0];
 
-  return add_milliseconds_or_microseconds_or_nanoseconds(x, n, c_unit, c_size);
+  return add_milliseconds_or_microseconds_or_nanoseconds(x, n, unit_val, c_size);
 }
 

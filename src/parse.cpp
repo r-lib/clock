@@ -81,14 +81,14 @@ civil_writable_rcrd parse_zoned_datetime_cpp(const cpp11::strings& x,
   bool recycle_dst_nonexistent = civil_is_scalar(dst_nonexistent);
   bool recycle_dst_ambiguous = civil_is_scalar(dst_ambiguous);
 
-  enum dst_nonexistent c_dst_nonexistent;
+  enum dst_nonexistent dst_nonexistent_val;
   if (recycle_dst_nonexistent) {
-    c_dst_nonexistent = parse_dst_nonexistent_one(dst_nonexistent[0]);
+    dst_nonexistent_val = parse_dst_nonexistent_one(dst_nonexistent[0]);
   }
 
-  enum dst_ambiguous c_dst_ambiguous;
+  enum dst_ambiguous dst_ambiguous_val;
   if (recycle_dst_ambiguous) {
-    c_dst_ambiguous = parse_dst_ambiguous_one(dst_ambiguous[0]);
+    dst_ambiguous_val = parse_dst_ambiguous_one(dst_ambiguous[0]);
   }
 
   std::istringstream stream;
@@ -132,14 +132,14 @@ civil_writable_rcrd parse_zoned_datetime_cpp(const cpp11::strings& x,
       };
     }
 
-    const enum dst_nonexistent elt_dst_nonexistent =
+    const enum dst_nonexistent elt_dst_nonexistent_val =
       recycle_dst_nonexistent ?
-      c_dst_nonexistent :
+      dst_nonexistent_val :
       parse_dst_nonexistent_one(dst_nonexistent[i]);
 
-    const enum dst_ambiguous elt_dst_ambiguous =
+    const enum dst_ambiguous elt_dst_ambiguous_val =
       recycle_dst_ambiguous ?
-      c_dst_ambiguous :
+      dst_ambiguous_val :
       parse_dst_ambiguous_one(dst_ambiguous[i]);
 
     date::local_days elt_lday{elt_ymd};
@@ -166,8 +166,8 @@ civil_writable_rcrd parse_zoned_datetime_cpp(const cpp11::strings& x,
         elt_lsec,
         p_elt_time_zone,
         i,
-        elt_dst_nonexistent,
-        elt_dst_ambiguous,
+        elt_dst_nonexistent_val,
+        elt_dst_ambiguous_val,
         na
       );
 

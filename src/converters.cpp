@@ -72,28 +72,28 @@ cpp11::writable::doubles convert_local_days_and_time_of_day_to_sys_seconds_cpp(c
   bool recycle_dst_nonexistent = civil_is_scalar(dst_nonexistent);
   bool recycle_dst_ambiguous = civil_is_scalar(dst_ambiguous);
 
-  enum dst_nonexistent c_dst_nonexistent;
+  enum dst_nonexistent dst_nonexistent_val;
   if (recycle_dst_nonexistent) {
-    c_dst_nonexistent = parse_dst_nonexistent_one(dst_nonexistent[0]);
+    dst_nonexistent_val = parse_dst_nonexistent_one(dst_nonexistent[0]);
   }
 
-  enum dst_ambiguous c_dst_ambiguous;
+  enum dst_ambiguous dst_ambiguous_val;
   if (recycle_dst_ambiguous) {
-    c_dst_ambiguous = parse_dst_ambiguous_one(dst_ambiguous[0]);
+    dst_ambiguous_val = parse_dst_ambiguous_one(dst_ambiguous[0]);
   }
 
   for (r_ssize i = 0; i < c_size; ++i) {
     const int elt_days = recycle_days ? days[0] : days[i];
     const int elt_time_of_day = recycle_time_of_day ? time_of_day[0] : time_of_day[i];
 
-    const enum dst_nonexistent elt_dst_nonexistent =
+    const enum dst_nonexistent elt_dst_nonexistent_val =
       recycle_dst_nonexistent ?
-      c_dst_nonexistent :
+      dst_nonexistent_val :
       parse_dst_nonexistent_one(dst_nonexistent[i]);
 
-    const enum dst_ambiguous elt_dst_ambiguous =
+    const enum dst_ambiguous elt_dst_ambiguous_val =
       recycle_dst_ambiguous ?
-      c_dst_ambiguous :
+      dst_ambiguous_val :
       parse_dst_ambiguous_one(dst_ambiguous[i]);
 
     if (elt_days == r_int_na || elt_time_of_day == r_int_na) {
@@ -114,8 +114,8 @@ cpp11::writable::doubles convert_local_days_and_time_of_day_to_sys_seconds_cpp(c
       elt_lsec,
       p_time_zone,
       i,
-      elt_dst_nonexistent,
-      elt_dst_ambiguous,
+      elt_dst_nonexistent_val,
+      elt_dst_ambiguous_val,
       na
     );
 
@@ -136,7 +136,7 @@ civil_writable_rcrd convert_year_month_day_to_local_fields(const cpp11::integers
                                                            const cpp11::integers& month,
                                                            const cpp11::integers& day,
                                                            const cpp11::strings& day_nonexistent) {
-  enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
+  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
 
   r_ssize size = year.size();
 
@@ -169,7 +169,7 @@ civil_writable_rcrd convert_year_month_day_to_local_fields(const cpp11::integers
 
     if (!out_ymd.ok()) {
       bool na = false;
-      resolve_day_nonexistent_ymd(i, c_day_nonexistent, out_ymd, na);
+      resolve_day_nonexistent_ymd(i, day_nonexistent_val, out_ymd, na);
 
       if (na) {
         days[i] = r_int_na;
@@ -193,7 +193,7 @@ civil_writable_rcrd convert_year_month_day_hour_minute_second_to_local_fields_cp
                                                                                   const cpp11::integers& minute,
                                                                                   const cpp11::integers& second,
                                                                                   const cpp11::strings& day_nonexistent) {
-  enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
+  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
 
   r_ssize size = year.size();
 
@@ -242,8 +242,8 @@ civil_writable_rcrd convert_year_month_day_hour_minute_second_to_local_fields_cp
 
     if (!out_ymd.ok()) {
       bool na = false;
-      resolve_day_nonexistent_ymd(i, c_day_nonexistent, out_ymd, na);
-      resolve_day_nonexistent_tod(c_day_nonexistent, out_tod);
+      resolve_day_nonexistent_ymd(i, day_nonexistent_val, out_ymd, na);
+      resolve_day_nonexistent_tod(day_nonexistent_val, out_tod);
 
       if (na) {
         days[i] = r_int_na;
@@ -270,7 +270,7 @@ civil_writable_rcrd convert_year_month_day_hour_minute_second_nanos_to_local_fie
                                                                                         const cpp11::integers& second,
                                                                                         const cpp11::integers& nanos,
                                                                                         const cpp11::strings& day_nonexistent) {
-  enum day_nonexistent c_day_nonexistent = parse_day_nonexistent(day_nonexistent);
+  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
 
   r_ssize size = year.size();
 
@@ -326,9 +326,9 @@ civil_writable_rcrd convert_year_month_day_hour_minute_second_nanos_to_local_fie
 
     if (!out_ymd.ok()) {
       bool na = false;
-      resolve_day_nonexistent_ymd(i, c_day_nonexistent, out_ymd, na);
-      resolve_day_nonexistent_tod(c_day_nonexistent, out_tod);
-      resolve_day_nonexistent_nanos_of_second(c_day_nonexistent, out_nanos_of_second);
+      resolve_day_nonexistent_ymd(i, day_nonexistent_val, out_ymd, na);
+      resolve_day_nonexistent_tod(day_nonexistent_val, out_tod);
+      resolve_day_nonexistent_nanos_of_second(day_nonexistent_val, out_nanos_of_second);
 
       if (na) {
         days[i] = r_int_na;
@@ -436,14 +436,14 @@ civil_writable_rcrd convert_datetime_fields_from_local_to_zoned_cpp(const civil_
   bool recycle_dst_nonexistent = civil_is_scalar(dst_nonexistent);
   bool recycle_dst_ambiguous = civil_is_scalar(dst_ambiguous);
 
-  enum dst_nonexistent c_dst_nonexistent;
+  enum dst_nonexistent dst_nonexistent_val;
   if (recycle_dst_nonexistent) {
-    c_dst_nonexistent = parse_dst_nonexistent_one(dst_nonexistent[0]);
+    dst_nonexistent_val = parse_dst_nonexistent_one(dst_nonexistent[0]);
   }
 
-  enum dst_ambiguous c_dst_ambiguous;
+  enum dst_ambiguous dst_ambiguous_val;
   if (recycle_dst_ambiguous) {
-    c_dst_ambiguous = parse_dst_ambiguous_one(dst_ambiguous[0]);
+    dst_ambiguous_val = parse_dst_ambiguous_one(dst_ambiguous[0]);
   }
 
   cpp11::writable::strings zone_standard = zone_standardize(zone);
@@ -455,14 +455,14 @@ civil_writable_rcrd convert_datetime_fields_from_local_to_zoned_cpp(const civil_
     int elt_days = recycle_days ? days[0] : days[i];
     int elt_time_of_day = recycle_time_of_day ? time_of_day[0] : time_of_day[i];
 
-    const enum dst_nonexistent elt_dst_nonexistent =
+    const enum dst_nonexistent elt_dst_nonexistent_val =
       recycle_dst_nonexistent ?
-      c_dst_nonexistent :
+      dst_nonexistent_val :
       parse_dst_nonexistent_one(dst_nonexistent[i]);
 
-    const enum dst_ambiguous elt_dst_ambiguous =
+    const enum dst_ambiguous elt_dst_ambiguous_val =
       recycle_dst_ambiguous ?
-      c_dst_ambiguous :
+      dst_ambiguous_val :
       parse_dst_ambiguous_one(dst_ambiguous[i]);
 
     if (elt_days == r_int_na) {
@@ -483,8 +483,8 @@ civil_writable_rcrd convert_datetime_fields_from_local_to_zoned_cpp(const civil_
       elt_lsec,
       p_time_zone,
       i,
-      elt_dst_nonexistent,
-      elt_dst_ambiguous,
+      elt_dst_nonexistent_val,
+      elt_dst_ambiguous_val,
       na
     );
 
@@ -534,14 +534,14 @@ civil_writable_rcrd convert_nano_datetime_fields_from_local_to_zoned_cpp(const c
   bool recycle_dst_nonexistent = civil_is_scalar(dst_nonexistent);
   bool recycle_dst_ambiguous = civil_is_scalar(dst_ambiguous);
 
-  enum dst_nonexistent c_dst_nonexistent;
+  enum dst_nonexistent dst_nonexistent_val;
   if (recycle_dst_nonexistent) {
-    c_dst_nonexistent = parse_dst_nonexistent_one(dst_nonexistent[0]);
+    dst_nonexistent_val = parse_dst_nonexistent_one(dst_nonexistent[0]);
   }
 
-  enum dst_ambiguous c_dst_ambiguous;
+  enum dst_ambiguous dst_ambiguous_val;
   if (recycle_dst_ambiguous) {
-    c_dst_ambiguous = parse_dst_ambiguous_one(dst_ambiguous[0]);
+    dst_ambiguous_val = parse_dst_ambiguous_one(dst_ambiguous[0]);
   }
 
   cpp11::writable::strings zone_standard = zone_standardize(zone);
@@ -554,14 +554,14 @@ civil_writable_rcrd convert_nano_datetime_fields_from_local_to_zoned_cpp(const c
     int elt_time_of_day = recycle_time_of_day ? time_of_day[0] : time_of_day[i];
     int elt_nanos_of_second = recycle_nanos_of_second ? nanos_of_second[0] : nanos_of_second[i];
 
-    const enum dst_nonexistent elt_dst_nonexistent =
+    const enum dst_nonexistent elt_dst_nonexistent_val =
       recycle_dst_nonexistent ?
-      c_dst_nonexistent :
+      dst_nonexistent_val :
       parse_dst_nonexistent_one(dst_nonexistent[i]);
 
-    const enum dst_ambiguous elt_dst_ambiguous =
+    const enum dst_ambiguous elt_dst_ambiguous_val =
       recycle_dst_ambiguous ?
-      c_dst_ambiguous :
+      dst_ambiguous_val :
       parse_dst_ambiguous_one(dst_ambiguous[i]);
 
     if (elt_days == r_int_na) {
@@ -584,8 +584,8 @@ civil_writable_rcrd convert_nano_datetime_fields_from_local_to_zoned_cpp(const c
       elt_lsec,
       p_time_zone,
       i,
-      elt_dst_nonexistent,
-      elt_dst_ambiguous,
+      elt_dst_nonexistent_val,
+      elt_dst_ambiguous_val,
       na,
       elt_nanos
     );

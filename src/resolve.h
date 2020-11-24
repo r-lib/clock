@@ -110,7 +110,7 @@ static inline void resolve_day_nonexistent_error(const r_ssize& i) {
 // -----------------------------------------------------------------------------
 
 static inline void convert_year_month_day_to_days_one(const r_ssize& i,
-                                                      const enum day_nonexistent& day_nonexistent,
+                                                      const enum day_nonexistent& day_nonexistent_val,
                                                       date::year_month_day& ymd,
                                                       int* p_days,
                                                       int* p_time_of_day,
@@ -123,7 +123,7 @@ static inline void convert_year_month_day_to_days_one(const r_ssize& i,
   }
 
   bool na = false;
-  resolve_day_nonexistent_ymd(i, day_nonexistent, ymd, na);
+  resolve_day_nonexistent_ymd(i, day_nonexistent_val, ymd, na);
 
   if (na) {
     civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
@@ -132,13 +132,13 @@ static inline void convert_year_month_day_to_days_one(const r_ssize& i,
 
   if (p_time_of_day != NULL) {
     std::chrono::seconds elt_tod{p_time_of_day[i]};
-    resolve_day_nonexistent_tod(day_nonexistent, elt_tod);
+    resolve_day_nonexistent_tod(day_nonexistent_val, elt_tod);
     p_time_of_day[i] = elt_tod.count();
   }
 
   if (p_nanos_of_second != NULL) {
     std::chrono::nanoseconds elt_nanos_of_second{p_nanos_of_second[i]};
-    resolve_day_nonexistent_nanos_of_second(day_nonexistent, elt_nanos_of_second);
+    resolve_day_nonexistent_nanos_of_second(day_nonexistent_val, elt_nanos_of_second);
     p_nanos_of_second[i] = elt_nanos_of_second.count();
   }
 

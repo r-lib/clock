@@ -10,9 +10,9 @@
 
 static civil_writable_rcrd adjust_local_days(const civil_rcrd& x,
                                              const cpp11::integers& value,
-                                             const enum day_nonexistent& day_nonexistent,
+                                             const enum day_nonexistent& day_nonexistent_val,
                                              const r_ssize& size,
-                                             const enum adjuster& adjuster);
+                                             const enum adjuster& adjuster_val);
 
 [[cpp11::register]]
 civil_writable_rcrd adjust_local_days_cpp(const civil_rcrd& x,
@@ -33,13 +33,13 @@ static inline
 date::year_month_day
 adjust_local_days_switch(const date::year_month_day& ymd,
                          const int& value,
-                         const enum adjuster& adjuster);
+                         const enum adjuster& adjuster_val);
 
 static civil_writable_rcrd adjust_local_days(const civil_rcrd& x,
                                              const cpp11::integers& value,
-                                             const enum day_nonexistent& day_nonexistent,
+                                             const enum day_nonexistent& day_nonexistent_val,
                                              const r_ssize& size,
-                                             const enum adjuster& adjuster) {
+                                             const enum adjuster& adjuster_val) {
   civil_writable_rcrd out = civil_rcrd_clone(x);
   civil_rcrd_recycle(out, size);
 
@@ -67,12 +67,12 @@ static civil_writable_rcrd adjust_local_days(const civil_rcrd& x,
     date::year_month_day out_ymd = adjust_local_days_switch(
       elt_ymd,
       elt_value,
-      adjuster
+      adjuster_val
     );
 
     convert_year_month_day_to_days_one(
       i,
-      day_nonexistent,
+      day_nonexistent_val,
       out_ymd,
       p_days,
       p_time_of_day,
@@ -143,7 +143,7 @@ adjust_local_days_switch(const date::year_month_day& ymd,
 static civil_writable_rcrd adjust_local_time_of_day(const civil_rcrd& x,
                                                     const cpp11::integers& value,
                                                     const r_ssize& size,
-                                                    const enum adjuster& adjuster);
+                                                    const enum adjuster& adjuster_val);
 
 [[cpp11::register]]
 civil_writable_rcrd adjust_local_time_of_day_cpp(const civil_rcrd& x,
@@ -151,13 +151,13 @@ civil_writable_rcrd adjust_local_time_of_day_cpp(const civil_rcrd& x,
                                                  const cpp11::integers& size,
                                                  const cpp11::strings& adjuster) {
   r_ssize c_size = size[0];
-  enum adjuster c_adjuster = parse_adjuster(adjuster);
+  enum adjuster adjuster_val = parse_adjuster(adjuster);
 
   return adjust_local_time_of_day(
     x,
     value,
     c_size,
-    c_adjuster
+    adjuster_val
   );
 }
 
@@ -165,12 +165,12 @@ static inline
 std::chrono::seconds
 adjust_local_time_of_day_switch(const date::hh_mm_ss<std::chrono::seconds>& hms,
                                 const int& value,
-                                const enum adjuster& adjuster);
+                                const enum adjuster& adjuster_val);
 
 static civil_writable_rcrd adjust_local_time_of_day(const civil_rcrd& x,
                                                     const cpp11::integers& value,
                                                     const r_ssize& size,
-                                                    const enum adjuster& adjuster) {
+                                                    const enum adjuster& adjuster_val) {
   civil_writable_rcrd out = civil_rcrd_clone(x);
   civil_rcrd_recycle(out, size);
 
@@ -198,7 +198,7 @@ static civil_writable_rcrd adjust_local_time_of_day(const civil_rcrd& x,
     std::chrono::seconds out_tod = adjust_local_time_of_day_switch(
       elt_hms,
       elt_value,
-      adjuster
+      adjuster_val
     );
 
     p_time_of_day[i] = out_tod.count();
@@ -256,7 +256,7 @@ adjust_local_time_of_day_switch(const date::hh_mm_ss<std::chrono::seconds>& hms,
 static civil_writable_rcrd adjust_local_nanos_of_second(const civil_rcrd& x,
                                                         const cpp11::integers& value,
                                                         const r_ssize& size,
-                                                        const enum adjuster& adjuster);
+                                                        const enum adjuster& adjuster_val);
 
 [[cpp11::register]]
 civil_writable_rcrd adjust_local_nanos_of_second_cpp(const civil_rcrd& x,
@@ -264,13 +264,13 @@ civil_writable_rcrd adjust_local_nanos_of_second_cpp(const civil_rcrd& x,
                                                      const cpp11::integers& size,
                                                      const cpp11::strings& adjuster) {
   r_ssize c_size = size[0];
-  enum adjuster c_adjuster = parse_adjuster(adjuster);
+  enum adjuster adjuster_val = parse_adjuster(adjuster);
 
   return adjust_local_nanos_of_second(
     x,
     value,
     c_size,
-    c_adjuster
+    adjuster_val
   );
 }
 
@@ -278,12 +278,12 @@ static inline
 std::chrono::nanoseconds
 adjust_local_nanos_of_second_switch(const std::chrono::nanoseconds& x,
                                     const int& value,
-                                    const enum adjuster& adjuster);
+                                    const enum adjuster& adjuster_val);
 
 static civil_writable_rcrd adjust_local_nanos_of_second(const civil_rcrd& x,
                                                         const cpp11::integers& value,
                                                         const r_ssize& size,
-                                                        const enum adjuster& adjuster) {
+                                                        const enum adjuster& adjuster_val) {
   civil_writable_rcrd out = civil_rcrd_clone(x);
   civil_rcrd_recycle(out, size);
 
@@ -310,7 +310,7 @@ static civil_writable_rcrd adjust_local_nanos_of_second(const civil_rcrd& x,
     std::chrono::nanoseconds out_nanos = adjust_local_nanos_of_second_switch(
       elt_nanos,
       elt_value,
-      adjuster
+      adjuster_val
     );
 
     p_nanos_of_second[i] = out_nanos.count();
