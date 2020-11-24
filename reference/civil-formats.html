@@ -151,7 +151,16 @@ in <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code> for ci
   sep <span class='op'>=</span> <span class='st'>":"</span>
 <span class='op'>)</span>
 
-<span class='fu'>fmt_ymd_hms</span><span class='op'>(</span><span class='va'>...</span>, ymd <span class='op'>=</span> <span class='fu'>fmt_ymd</span><span class='op'>(</span><span class='op'>)</span>, hms <span class='op'>=</span> <span class='fu'>fmt_hms</span><span class='op'>(</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>"T"</span><span class='op'>)</span>
+<span class='fu'>fmt_ymd_hms</span><span class='op'>(</span><span class='va'>...</span>, ymd <span class='op'>=</span> <span class='fu'>fmt_ymd</span><span class='op'>(</span><span class='op'>)</span>, hms <span class='op'>=</span> <span class='fu'>fmt_hms</span><span class='op'>(</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>" "</span><span class='op'>)</span>
+
+<span class='fu'>fmt_ymd_hms_zoned</span><span class='op'>(</span>
+  <span class='va'>...</span>,
+  ymd <span class='op'>=</span> <span class='fu'>fmt_ymd</span><span class='op'>(</span><span class='op'>)</span>,
+  hms <span class='op'>=</span> <span class='fu'>fmt_hms</span><span class='op'>(</span><span class='op'>)</span>,
+  sep <span class='op'>=</span> <span class='st'>" "</span>,
+  colon <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  zone_name <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
 <span class='fu'>fmt_week_date</span><span class='op'>(</span><span class='op'>)</span>
 
@@ -161,7 +170,7 @@ in <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code> for ci
 
 <span class='fu'>fmt_iso_date</span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='fu'>fmt_iso_datetime</span><span class='op'>(</span><span class='va'>...</span>, colon <span class='op'>=</span> <span class='cn'>TRUE</span>, extended <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'>fmt_iso_datetime</span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='fu'>fmt_local_year_month</span><span class='op'>(</span><span class='op'>)</span>
 
@@ -171,9 +180,9 @@ in <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code> for ci
 
 <span class='fu'>fmt_local_nano_datetime</span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='fu'>fmt_zoned_datetime</span><span class='op'>(</span><span class='va'>...</span>, colon <span class='op'>=</span> <span class='cn'>TRUE</span>, extended <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'>fmt_zoned_datetime</span><span class='op'>(</span><span class='va'>...</span>, zone_name <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-<span class='fu'>fmt_zoned_nano_datetime</span><span class='op'>(</span><span class='va'>...</span>, colon <span class='op'>=</span> <span class='cn'>TRUE</span>, extended <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+<span class='fu'>fmt_zoned_nano_datetime</span><span class='op'>(</span><span class='va'>...</span>, zone_name <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -234,13 +243,13 @@ in <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code> for ci
 zone offset.</p></td>
     </tr>
     <tr>
-      <th>extended</th>
+      <th>zone_name</th>
       <td><p><code>[logical(1)]</code></p>
 <p>If <code>TRUE</code>, an extension to the ISO-8601 standard datetime format is used.
 This extension adds the time zone name or abbreviation to the end of the
 standard format as <code>[%Z]</code>.</p>
 <p>This is most useful with the <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code> method for civil's zoned datetimes,
-as it will generate a textual representation of a zoned datetime that can
+as it can generate a textual representation of a zoned datetime that can
 be unambiguously parsed back into the original object.</p></td>
     </tr>
     </table>
@@ -248,7 +257,7 @@ be unambiguously parsed back into the original object.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>fmt_ymd_hms</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "%Y-%m-%dT%H:%M:%S"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "%Y-%m-%d %H:%M:%S"</div><div class='input'>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2018-12-31"</span><span class='op'>)</span>
 
 <span class='co'># ISO weeks are counted differently from normal weeks!</span>
@@ -263,11 +272,11 @@ be unambiguously parsed back into the original object.</p></td>
 <span class='op'>)</span>
 <span class='va'>x</span>
 </div><div class='output co'>#&gt; &lt;civil_datetime&lt;America/New_York&gt;[2]&gt;
-#&gt; [1] "1970-10-25T01:30:00-04:00" "1970-10-25T01:30:00-05:00"</div><div class='input'>
+#&gt; [1] "1970-10-25 01:30:00-04:00" "1970-10-25 01:30:00-05:00"</div><div class='input'>
 <span class='co'># The default ISO datetime format is incomplete because we don't know which</span>
 <span class='co'># time zone we came from</span>
 <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='fu'>fmt_iso_datetime</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "1970-10-25T01:30:00-04:00" "1970-10-25T01:30:00-05:00"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "1970-10-25T01:30:00-0400" "1970-10-25T01:30:00-0500"</div><div class='input'>
 <span class='co'># The default print method for POSIXct isn't much better, because the</span>
 <span class='co'># time zone abbreviation of "EST" is used by multiple different time zones,</span>
 <span class='co'># not just "America/New_York".</span>
@@ -276,12 +285,11 @@ be unambiguously parsed back into the original object.</p></td>
 <span class='co'># The only way to fully capture the date-time information is to use the</span>
 <span class='co'># extended format that prints out both the UTC offset and the time zone name.</span>
 <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='fu'>fmt_iso_datetime</span><span class='op'>(</span>extended <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "1970-10-25T01:30:00-04:00[America/New_York]"
-#&gt; [2] "1970-10-25T01:30:00-05:00[America/New_York]"</div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in fmt_iso_datetime(extended = TRUE): unused argument (extended = TRUE)</span></div><div class='input'>
 <span class='co'># The default format method for zoned datetimes uses this extended format</span>
 <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "1970-10-25T01:30:00-04:00[America/New_York]"
-#&gt; [2] "1970-10-25T01:30:00-05:00[America/New_York]"</div></pre>
+</div><div class='output co'>#&gt; [1] "1970-10-25 01:30:00-04:00[America/New_York]"
+#&gt; [2] "1970-10-25 01:30:00-05:00[America/New_York]"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
