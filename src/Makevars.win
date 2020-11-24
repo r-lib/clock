@@ -1,5 +1,11 @@
 CXX_STD = CXX11
 
+# https://howardhinnant.github.io/date/tz.html
+# "mingw users: -lpthread and -lole32 are required."
+PKG_LIBS = \
+	-lpthread \
+	-lole32
+
 PKG_CXXFLAGS = \
 	-I../inst/include \
 	-DINSTALL=dummy \
