@@ -1,3 +1,38 @@
+#' @export
+adjust_zone <- function(x,
+                        zone,
+                        ...,
+                        dst_nonexistent = "roll-forward",
+                        dst_ambiguous = "earliest") {
+  restrict_zoned_or_base(x)
+  UseMethod("adjust_zone")
+}
+
+#' @export
+adjust_zone.Date <- function(x,
+                             zone,
+                             ...,
+                             dst_nonexistent = "roll-forward",
+                             dst_ambiguous = "earliest") {
+  x <- as_local(x)
+  as.POSIXct(x, tz = zone, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
+
+#' @export
+adjust_zone.POSIXt <- adjust_zone.Date
+
+#' @export
+adjust_zone.civil_zoned <- function(x,
+                                    zone,
+                                    ...,
+                                    dst_nonexistent = "roll-forward",
+                                    dst_ambiguous = "earliest") {
+  x <- as_local(x)
+  as_zoned(x, zone = zone, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Adjust the year
 #'
 #' `adjust_year()` adjusts the year of `x` to `value`.

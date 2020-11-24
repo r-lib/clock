@@ -56,8 +56,7 @@ as.Date.civil_local <- function(x, ...) {
 
 #' @export
 as.Date.civil_zoned <- function(x, ...) {
-  # Retain instant, like `as.Date(<POSIXct>)`. This is like:
-  # adjust_zone_retain_instant(x, "UTC")
+  # Retain instant, like `as.Date(<POSIXct>)`. This is like `in_zone(x, "UTC")`
   days <- field(x, "days")
   days_to_date(days, names(x))
 }
