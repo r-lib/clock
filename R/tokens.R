@@ -404,14 +404,14 @@ tkn_percent <- function() {
 #'
 #'   The separator to use between tokens.
 #'
-#' @param extended `[logical(1)]`
+#' @param zone_name `[logical(1)]`
 #'
 #'   If `TRUE`, an extension to the ISO-8601 standard datetime format is used.
 #'   This extension adds the time zone name or abbreviation to the end of the
 #'   standard format as `[%Z]`.
 #'
 #'   This is most useful with the `format()` method for civil's zoned datetimes,
-#'   as it will generate a textual representation of a zoned datetime that can
+#'   as it can generate a textual representation of a zoned datetime that can
 #'   be unambiguously parsed back into the original object.
 #'
 #' @name civil-formats
@@ -486,9 +486,29 @@ fmt_hms <- function(...,
 fmt_ymd_hms <- function(...,
                         ymd = fmt_ymd(),
                         hms = fmt_hms(),
-                        sep = "T") {
+                        sep = " ") {
   check_dots_empty()
   tkns(ymd, sep, hms)
+}
+
+#' @rdname civil-formats
+#' @export
+fmt_ymd_hms_zoned <- function(...,
+                              ymd = fmt_ymd(),
+                              hms = fmt_hms(),
+                              sep = " ",
+                              colon = TRUE,
+                              zone_name = TRUE) {
+  check_dots_empty()
+
+  out <- tkns(ymd, sep, hms)
+  out <- tkns(out, tkn_offset(colon = colon))
+
+  if (zone_name) {
+    out <- tkns(out, "[", tkn_zone(), "]")
+  }
+
+  out
 }
 
 #' @rdname civil-formats
@@ -517,16 +537,8 @@ fmt_iso_date <- function() {
 
 #' @rdname civil-formats
 #' @export
-fmt_iso_datetime <- function(..., colon = TRUE, extended = FALSE) {
-  check_dots_empty()
-
-  out <- tkns(fmt_ymd_hms(), tkn_offset(colon = colon))
-
-  if (extended) {
-    out <- tkns(out, "[", tkn_zone(), "]")
-  }
-
-  out
+fmt_iso_datetime <- function() {
+  fmt_ymd_hms_zoned(sep = "T", colon = FALSE, zone_name = FALSE)
 }
 
 #' @rdname civil-formats
@@ -555,13 +567,15 @@ fmt_local_nano_datetime <- function() {
 
 #' @rdname civil-formats
 #' @export
-fmt_zoned_datetime <- function(..., colon = TRUE, extended = TRUE) {
-  fmt_iso_datetime(..., colon = colon, extended = extended)
+fmt_zoned_datetime <- function(..., zone_name = TRUE) {
+  check_dots_empty()
+  fmt_ymd_hms_zoned(zone_name = zone_name)
 }
 
 #' @rdname civil-formats
 #' @export
-fmt_zoned_nano_datetime <- function(..., colon = TRUE, extended = TRUE) {
-  fmt_iso_datetime(..., colon = colon, extended = extended)
+fmt_zoned_nano_datetime <- function(..., zone_name = TRUE) {
+  check_dots_empty()
+  fmt_ymd_hms_zoned(zone_name = zone_name)
 }
 

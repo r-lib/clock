@@ -123,17 +123,17 @@ format.civil_zoned_nano_datetime <- function(x,
 
 #' @export
 obj_print_data.civil_zoned_nano_datetime <- function(x, ...) {
-  # Default format() for zoned datetimes uses the extended format.
+  # Default format() for zoned datetimes uses the zone name format.
   # While this is good for a purely textual representation, it is
   # repetitive here since the `obj_print_header()` data has the time zone name.
-  format <- fmt_zoned_nano_datetime(extended = FALSE)
+  format <- fmt_zoned_nano_datetime(zone_name = FALSE)
   obj_print_data_civil_rcrd(x, format)
 }
 
 # @export - lazy in .onLoad()
 pillar_shaft.civil_zoned_nano_datetime <- function(x, ...) {
   # Tibble header will already contain the time zone name
-  format <- fmt_zoned_nano_datetime(extended = FALSE)
+  format <- fmt_zoned_nano_datetime(zone_name = FALSE)
   x <- format(x, format = format)
   pillar::new_pillar_shaft_simple(x)
 }

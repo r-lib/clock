@@ -8,19 +8,19 @@ test_that("printing zoned-datetime - ambiguous time", {
   expect_snapshot_output(zoned_datetime(1970, 10, 25, 01, 30, zone = "America/New_York", dst_ambiguous = c("earliest", "latest")))
 })
 
-test_that("format for zoned-datetime is extended by default", {
+test_that("format for zoned-datetime has the zone name by default", {
   x <- zoned_datetime(1970, 10, 25, 01, 30, zone = "America/New_York")
   expect_snapshot_output(format(x))
   expect_snapshot_output(format(x, abbreviate_zone = TRUE))
-  expect_snapshot_output(format(x, format = fmt_zoned_datetime(extended = FALSE)))
+  expect_snapshot_output(format(x, format = fmt_zoned_datetime(zone_name = FALSE)))
 })
 
-test_that("printing in data frames uses extended format", {
+test_that("printing in data frames uses zone name", {
   x <- zoned_datetime(1970, 10, 25, 01, 30, zone = "America/New_York")
   expect_snapshot_output(data.frame(x = x))
 })
 
-test_that("printing in tibble columns is nice and doesn't use extended format", {
+test_that("printing in tibble columns is nice and doesn't use zone name", {
   skip_if_not_installed("pillar")
 
   x <- zoned_datetime(c(2019, NA), zone = "America/New_York")

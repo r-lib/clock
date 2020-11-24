@@ -6,6 +6,7 @@
 \alias{fmt_ymd}
 \alias{fmt_hms}
 \alias{fmt_ymd_hms}
+\alias{fmt_ymd_hms_zoned}
 \alias{fmt_week_date}
 \alias{fmt_ordinal_date}
 \alias{fmt_iso_week_date}
@@ -37,7 +38,16 @@ fmt_hms(
   sep = ":"
 )
 
-fmt_ymd_hms(..., ymd = fmt_ymd(), hms = fmt_hms(), sep = "T")
+fmt_ymd_hms(..., ymd = fmt_ymd(), hms = fmt_hms(), sep = " ")
+
+fmt_ymd_hms_zoned(
+  ...,
+  ymd = fmt_ymd(),
+  hms = fmt_hms(),
+  sep = " ",
+  colon = TRUE,
+  zone_name = TRUE
+)
 
 fmt_week_date()
 
@@ -47,7 +57,7 @@ fmt_iso_week_date()
 
 fmt_iso_date()
 
-fmt_iso_datetime(..., colon = TRUE, extended = FALSE)
+fmt_iso_datetime()
 
 fmt_local_year_month()
 
@@ -57,9 +67,9 @@ fmt_local_datetime()
 
 fmt_local_nano_datetime()
 
-fmt_zoned_datetime(..., colon = TRUE, extended = TRUE)
+fmt_zoned_datetime(..., zone_name = TRUE)
 
-fmt_zoned_nano_datetime(..., colon = TRUE, extended = TRUE)
+fmt_zoned_nano_datetime(..., zone_name = TRUE)
 }
 \arguments{
 \item{...}{These dots are for future extensions and must be empty.}
@@ -105,14 +115,14 @@ The format to use to represent the hour, minute, and second.}
 If \code{TRUE}, a \code{":"} will be added between the hours and minutes of the
 zone offset.}
 
-\item{extended}{\verb{[logical(1)]}
+\item{zone_name}{\verb{[logical(1)]}
 
 If \code{TRUE}, an extension to the ISO-8601 standard datetime format is used.
 This extension adds the time zone name or abbreviation to the end of the
 standard format as \verb{[\%Z]}.
 
 This is most useful with the \code{format()} method for civil's zoned datetimes,
-as it will generate a textual representation of a zoned datetime that can
+as it can generate a textual representation of a zoned datetime that can
 be unambiguously parsed back into the original object.}
 }
 \description{
