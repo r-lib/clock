@@ -102,8 +102,6 @@ format.civil_local_nano_datetime <- function(x,
                                              ...,
                                              format = fmt_local_nano_datetime(),
                                              locale = "en_US.UTF-8") {
-  check_dots_empty()
-
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
   nanos_of_second <- field(x, "nanos_of_second")

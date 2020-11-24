@@ -92,8 +92,6 @@ format.civil_zoned_datetime <- function(x,
                                         format = fmt_zoned_datetime(),
                                         locale = "en_US.UTF-8",
                                         abbreviate_zone = FALSE) {
-  check_dots_empty()
-
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
 

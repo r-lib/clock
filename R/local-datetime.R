@@ -93,8 +93,6 @@ format.civil_local_datetime <- function(x,
                                         ...,
                                         format = fmt_local_datetime(),
                                         locale = "en_US.UTF-8") {
-  check_dots_empty()
-
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
 

@@ -14,3 +14,8 @@ test_that("format for zoned-nano-datetime is extended by default", {
   expect_snapshot_output(format(x, abbreviate_zone = TRUE))
   expect_snapshot_output(format(x, format = fmt_zoned_nano_datetime(extended = FALSE)))
 })
+
+test_that("printing in data frames uses extended format", {
+  x <- zoned_nano_datetime(1970, 10, 25, 01, 30, nanos = 5000, zone = "America/New_York")
+  expect_snapshot_output(data.frame(x = x))
+})

@@ -31,3 +31,8 @@
 
     [1] "1970-10-25T01:30:00-04:00"
 
+# printing in data frames uses extended format
+
+                                                x
+    1 1970-10-25T01:30:00-04:00[America/New_York]
+
