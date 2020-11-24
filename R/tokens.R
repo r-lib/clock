@@ -432,7 +432,7 @@ tkn_percent <- function() {
 #' )
 #' x
 #'
-#' # The default ISO datetime format is incomplete because we don't know which
+#' # The ISO datetime format is incomplete because we don't know which
 #' # time zone we came from
 #' format(x, format = fmt_iso_datetime())
 #'
@@ -442,8 +442,8 @@ tkn_percent <- function() {
 #' format(as.POSIXct(x), usetz = TRUE)
 #'
 #' # The only way to fully capture the date-time information is to use the
-#' # extended format that prints out both the UTC offset and the time zone name.
-#' format(x, format = fmt_iso_datetime(extended = TRUE))
+#' # zoned date-time format that prints both the offset and the zone name.
+#' format(x, format = fmt_ymd_hms_zoned())
 #'
 #' # The default format method for zoned datetimes uses this extended format
 #' format(x)
