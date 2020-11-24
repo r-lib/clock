@@ -25,7 +25,8 @@ Suggests:
     knitr,
     magrittr,
     rmarkdown,
-    testthat
+    testthat,
+    pillar
 LinkingTo: 
     cpp11
 VignetteBuilder: 

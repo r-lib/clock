@@ -131,6 +131,11 @@ obj_print_data_civil_rcrd <- function(x, format = NULL) {
   invisible(x)
 }
 
+# @export - lazy in .onLoad()
+pillar_shaft.civil_rcrd <- function(x, ...) {
+  pillar::new_pillar_shaft_simple(format(x), align = "left")
+}
+
 # ------------------------------------------------------------------------------
 
 proxy_civil_rcrd <- function(x) {

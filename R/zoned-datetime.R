@@ -120,6 +120,14 @@ obj_print_data.civil_zoned_datetime <- function(x, ...) {
   obj_print_data_civil_rcrd(x, format)
 }
 
+# @export - lazy in .onLoad()
+pillar_shaft.civil_zoned_datetime <- function(x, ...) {
+  # Tibble header will already contain the time zone name
+  format <- fmt_zoned_datetime(extended = FALSE)
+  x <- format(x, format = format)
+  pillar::new_pillar_shaft_simple(x)
+}
+
 #' @export
 vec_ptype_full.civil_zoned_datetime <- function(x, ...) {
   zone <- zoned_zone(x)

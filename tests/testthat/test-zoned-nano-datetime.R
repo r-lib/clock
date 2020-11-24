@@ -19,3 +19,12 @@ test_that("printing in data frames uses extended format", {
   x <- zoned_nano_datetime(1970, 10, 25, 01, 30, nanos = 5000, zone = "America/New_York")
   expect_snapshot_output(data.frame(x = x))
 })
+
+test_that("printing in tibble columns is nice and doesn't use extended format", {
+  skip_if_not_installed("pillar")
+
+  x <- zoned_nano_datetime(c(2019, NA), zone = "America/New_York")
+  x <- list(x = x)
+
+  expect_snapshot_output(pillar::colonnade(x))
+})

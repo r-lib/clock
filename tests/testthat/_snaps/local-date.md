@@ -12,3 +12,10 @@
 
     <civil_date[0]>
 
+# printing in tibble columns is nice
+
+      x         
+      <cvl_date>
+    1 2019-01-01
+    2 NA        
+
