@@ -273,7 +273,7 @@ be unambiguously parsed back into the original object.</p></td>
 <span class='va'>x</span>
 </div><div class='output co'>#&gt; &lt;civil_datetime&lt;America/New_York&gt;[2]&gt;
 #&gt; [1] "1970-10-25 01:30:00-04:00" "1970-10-25 01:30:00-05:00"</div><div class='input'>
-<span class='co'># The default ISO datetime format is incomplete because we don't know which</span>
+<span class='co'># The ISO datetime format is incomplete because we don't know which</span>
 <span class='co'># time zone we came from</span>
 <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='fu'>fmt_iso_datetime</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "1970-10-25T01:30:00-0400" "1970-10-25T01:30:00-0500"</div><div class='input'>
@@ -283,9 +283,10 @@ be unambiguously parsed back into the original object.</p></td>
 <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, usetz <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "1970-10-25 01:30:00 EDT" "1970-10-25 01:30:00 EST"</div><div class='input'>
 <span class='co'># The only way to fully capture the date-time information is to use the</span>
-<span class='co'># extended format that prints out both the UTC offset and the time zone name.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='fu'>fmt_iso_datetime</span><span class='op'>(</span>extended <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in fmt_iso_datetime(extended = TRUE): unused argument (extended = TRUE)</span></div><div class='input'>
+<span class='co'># zoned date-time format that prints both the offset and the zone name.</span>
+<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='fu'>fmt_ymd_hms_zoned</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "1970-10-25 01:30:00-04:00[America/New_York]"
+#&gt; [2] "1970-10-25 01:30:00-05:00[America/New_York]"</div><div class='input'>
 <span class='co'># The default format method for zoned datetimes uses this extended format</span>
 <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "1970-10-25 01:30:00-04:00[America/New_York]"
