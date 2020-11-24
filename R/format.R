@@ -1,7 +1,6 @@
 format_local_datetime <- function(days,
                                   time_of_day,
-                                  format,
-                                  locale) {
+                                  format) {
   zone <- "UTC"
   nanos_of_second <- integer()
 
@@ -15,7 +14,6 @@ format_local_datetime <- function(days,
     nanos_of_second = nanos_of_second,
     zone = zone,
     format = format,
-    locale = locale,
     local = local,
     nano = nano,
     abbreviate_zone = abbreviate_zone
@@ -26,7 +24,6 @@ format_zoned_datetime <- function(days,
                                   time_of_day,
                                   zone,
                                   format,
-                                  locale,
                                   abbreviate_zone) {
   nanos_of_second <- integer()
 
@@ -39,7 +36,6 @@ format_zoned_datetime <- function(days,
     nanos_of_second = nanos_of_second,
     zone = zone,
     format = format,
-    locale = locale,
     local = local,
     nano = nano,
     abbreviate_zone = abbreviate_zone
@@ -51,7 +47,6 @@ format_zoned_nano_datetime <- function(days,
                                        nanos_of_second,
                                        zone,
                                        format,
-                                       locale,
                                        abbreviate_zone) {
   local <- FALSE
   nano <- TRUE
@@ -62,7 +57,6 @@ format_zoned_nano_datetime <- function(days,
     nanos_of_second = nanos_of_second,
     zone = zone,
     format = format,
-    locale = locale,
     local = local,
     nano = nano,
     abbreviate_zone = abbreviate_zone
@@ -73,8 +67,7 @@ format_local_nano_datetime <- function(days,
                                        time_of_day,
                                        nanos_of_second,
                                        zone,
-                                       format,
-                                       locale) {
+                                       format) {
   zone <- "UTC"
 
   local <- TRUE
@@ -87,7 +80,6 @@ format_local_nano_datetime <- function(days,
     nanos_of_second = nanos_of_second,
     zone = zone,
     format = format,
-    locale = locale,
     local = local,
     nano = nano,
     abbreviate_zone = abbreviate_zone

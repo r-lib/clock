@@ -6,8 +6,8 @@
 #include "civil-rcrd.h"
 #include "check.h"
 #include "zone.h"
-#include "locale.h"
 #include <sstream>
+#include <locale>
 
 /*
  * Reference for format tokens
@@ -44,7 +44,6 @@ cpp11::writable::strings format_civil_rcrd_cpp(const civil_field& days,
                                                const civil_field& nanos_of_second,
                                                const cpp11::strings& zone,
                                                const cpp11::strings& format,
-                                               const cpp11::strings& locale,
                                                const bool& local,
                                                const bool& nano,
                                                const bool& abbreviate_zone) {
@@ -63,15 +62,8 @@ cpp11::writable::strings format_civil_rcrd_cpp(const civil_field& days,
   std::string string_format(format[0]);
   const char* c_format = string_format.c_str();
 
-  if (locale.size() != 1) {
-    civil_abort("`locale` must have size 1.");
-  }
-
-  std::string string_locale(locale[0]);
-  std::locale cpp_locale = civil_load_locale(string_locale);
-
   std::basic_ostringstream<char> stream;
-  stream.imbue(cpp_locale);
+  stream.imbue(std::locale::classic());
 
   std::string zone_name_print;
   std::string* p_zone_name_print = nullptr;

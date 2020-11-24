@@ -91,16 +91,14 @@ vec_proxy_equal.civil_local_datetime <- function(x, ...) {
 #' @export
 format.civil_local_datetime <- function(x,
                                         ...,
-                                        format = fmt_local_datetime(),
-                                        locale = Sys.getlocale(category = "LC_TIME")) {
+                                        format = fmt_local_datetime()) {
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
 
   out <- format_local_datetime(
     days = days,
     time_of_day = time_of_day,
-    format = format,
-    locale = locale
+    format = format
   )
 
   names(out) <- names(x)

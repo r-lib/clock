@@ -6,8 +6,8 @@
 #include "civil-rcrd.h"
 #include "check.h"
 #include "zone.h"
-#include "locale.h"
 #include <sstream>
+#include <locale>
 
 // -----------------------------------------------------------------------------
 
@@ -47,7 +47,6 @@ from_stream(std::basic_istream<CharT, Traits>& is,
 civil_writable_rcrd parse_zoned_datetime_cpp(const cpp11::strings& x,
                                              const cpp11::strings& format,
                                              const cpp11::strings& zone,
-                                             const cpp11::strings& locale,
                                              const cpp11::strings& dst_nonexistent,
                                              const cpp11::strings& dst_ambiguous,
                                              const cpp11::integers& size) {
@@ -64,13 +63,6 @@ civil_writable_rcrd parse_zoned_datetime_cpp(const cpp11::strings& x,
 
   std::string string_format(format[0]);
   const char* c_format = string_format.c_str();
-
-  if (locale.size() != 1) {
-    civil_abort("`locale` must have size 1.");
-  }
-
-  std::string string_locale(locale[0]);
-  std::locale cpp_locale = civil_load_locale(string_locale);
 
   civil_writable_field days(c_size);
   civil_writable_field time_of_day(c_size);
@@ -92,7 +84,7 @@ civil_writable_rcrd parse_zoned_datetime_cpp(const cpp11::strings& x,
   }
 
   std::istringstream stream;
-  stream.imbue(cpp_locale);
+  stream.imbue(std::locale::classic());
 
   for (r_ssize i = 0; i < c_size; ++i) {
     cpp11::r_string elt_x = recycle_x ? x[0] : x[i];
@@ -194,8 +186,7 @@ civil_writable_rcrd parse_zoned_datetime_cpp(const cpp11::strings& x,
 
 [[cpp11::register]]
 civil_writable_rcrd parse_local_datetime_cpp(const cpp11::strings& x,
-                                             const cpp11::strings& format,
-                                             const cpp11::strings& locale) {
+                                             const cpp11::strings& format) {
   r_ssize c_size = x.size();
 
   if (format.size() != 1) {
@@ -205,20 +196,13 @@ civil_writable_rcrd parse_local_datetime_cpp(const cpp11::strings& x,
   std::string string_format(format[0]);
   const char* c_format = string_format.c_str();
 
-  if (locale.size() != 1) {
-    civil_abort("`locale` must have size 1.");
-  }
-
-  std::string string_locale(locale[0]);
-  std::locale cpp_locale = civil_load_locale(string_locale);
-
   civil_writable_field days(c_size);
   civil_writable_field time_of_day(c_size);
 
   civil_writable_rcrd out = new_days_time_of_day_list(days, time_of_day);
 
   std::istringstream stream;
-  stream.imbue(cpp_locale);
+  stream.imbue(std::locale::classic());
 
   for (r_ssize i = 0; i < c_size; ++i) {
     cpp11::r_string elt_x = x[i];

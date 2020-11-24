@@ -76,8 +76,8 @@ floor_days_to_year_month_cpp <- function(days) {
   .Call("_civil_floor_days_to_year_month_cpp", days, PACKAGE = "civil")
 }
 
-format_civil_rcrd_cpp <- function(days, time_of_day, nanos_of_second, zone, format, locale, local, nano, abbreviate_zone) {
-  .Call("_civil_format_civil_rcrd_cpp", days, time_of_day, nanos_of_second, zone, format, locale, local, nano, abbreviate_zone, PACKAGE = "civil")
+format_civil_rcrd_cpp <- function(days, time_of_day, nanos_of_second, zone, format, local, nano, abbreviate_zone) {
+  .Call("_civil_format_civil_rcrd_cpp", days, time_of_day, nanos_of_second, zone, format, local, nano, abbreviate_zone, PACKAGE = "civil")
 }
 
 get_offset_cpp <- function(days, time_of_day, zone) {
@@ -88,12 +88,12 @@ civil_set_install <- function(path) {
   invisible(.Call("_civil_civil_set_install", path, PACKAGE = "civil"))
 }
 
-parse_zoned_datetime_cpp <- function(x, format, zone, locale, dst_nonexistent, dst_ambiguous, size) {
-  .Call("_civil_parse_zoned_datetime_cpp", x, format, zone, locale, dst_nonexistent, dst_ambiguous, size, PACKAGE = "civil")
+parse_zoned_datetime_cpp <- function(x, format, zone, dst_nonexistent, dst_ambiguous, size) {
+  .Call("_civil_parse_zoned_datetime_cpp", x, format, zone, dst_nonexistent, dst_ambiguous, size, PACKAGE = "civil")
 }
 
-parse_local_datetime_cpp <- function(x, format, locale) {
-  .Call("_civil_parse_local_datetime_cpp", x, format, locale, PACKAGE = "civil")
+parse_local_datetime_cpp <- function(x, format) {
+  .Call("_civil_parse_local_datetime_cpp", x, format, PACKAGE = "civil")
 }
 
 zone_standardize <- function(zone) {

@@ -2,7 +2,6 @@ parse_zoned_datetime <- function(x,
                                  ...,
                                  format = "%Y-%m-%d %H:%M:%S",
                                  zone = "UTC",
-                                 locale = Sys.getlocale(category = "LC_TIME"),
                                  dst_nonexistent = "roll-forward",
                                  dst_ambiguous = "earliest") {
   check_dots_empty()
@@ -19,7 +18,6 @@ parse_zoned_datetime <- function(x,
     x = x,
     format = format,
     zone = zone,
-    locale = locale,
     dst_nonexistent = dst_nonexistent,
     dst_ambiguous = dst_ambiguous,
     size = size
@@ -30,14 +28,12 @@ parse_zoned_datetime <- function(x,
 
 parse_local_datetime <- function(x,
                                  ...,
-                                 format = "%Y-%m-%d %H:%M:%S",
-                                 locale = Sys.getlocale(category = "LC_TIME")) {
+                                 format = "%Y-%m-%d %H:%M:%S") {
   check_dots_empty()
 
   fields <- parse_local_datetime_cpp(
     x = x,
-    format = format,
-    locale = locale
+    format = format
   )
 
   new_local_datetime_from_fields(fields)

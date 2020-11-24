@@ -64,10 +64,9 @@ vec_proxy_equal.civil_local_year_month <- function(x, ...) {
 #' @export
 format.civil_local_year_month <- function(x,
                                           ...,
-                                          format = fmt_local_year_month(),
-                                          locale = Sys.getlocale(category = "LC_TIME")) {
+                                          format = fmt_local_year_month()) {
   x <- as_local_datetime(x)
-  format(x, ..., format = format, locale = locale)
+  format(x, ..., format = format)
 }
 
 #' @export

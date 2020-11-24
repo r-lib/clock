@@ -98,7 +98,6 @@ vec_proxy_equal.civil_zoned_nano_datetime <- function(x, ...) {
 format.civil_zoned_nano_datetime <- function(x,
                                              ...,
                                              format = fmt_zoned_nano_datetime(),
-                                             locale = Sys.getlocale(category = "LC_TIME"),
                                              abbreviate_zone = FALSE) {
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
@@ -112,7 +111,6 @@ format.civil_zoned_nano_datetime <- function(x,
     nanos_of_second = nanos_of_second,
     zone = zone,
     format = format,
-    locale = locale,
     abbreviate_zone = abbreviate_zone
   )
 

@@ -100,8 +100,7 @@ vec_proxy_equal.civil_local_nano_datetime <- function(x, ...) {
 #' @export
 format.civil_local_nano_datetime <- function(x,
                                              ...,
-                                             format = fmt_local_nano_datetime(),
-                                             locale = Sys.getlocale(category = "LC_TIME")) {
+                                             format = fmt_local_nano_datetime()) {
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
   nanos_of_second <- field(x, "nanos_of_second")
@@ -110,8 +109,7 @@ format.civil_local_nano_datetime <- function(x,
     days = days,
     time_of_day = time_of_day,
     nanos_of_second = nanos_of_second,
-    format = format,
-    locale = locale
+    format = format
   )
 
   names(out) <- names(x)
