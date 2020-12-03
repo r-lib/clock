@@ -87,7 +87,10 @@
 <a href="#civil" class="anchor"></a>civil</h1></div>
 <!-- badges: start -->
 
-<p>The goal of civil is to provide new types for working with <em>local</em> and <em>zoned</em> date-times. Additionally, all functionality works with Date and POSIXct, with the goal of expanding on the groundwork laid by lubridate to make working around issues of daylight savings and leap years a little more intuitive.</p>
+<p>The goal of civil is to provide new types for working with <em>naive</em> and <em>zoned</em> date-times. A <em>naive</em> date-time is completely unaware of any time zone. A <em>zoned</em> date-time can be thought of as a naive date-time plus a time zone.</p>
+<p>The standard Gregorian calendar is supported through naive classes like <code>year_month_day()</code> and <code>naive_datetime()</code> and zoned classes like <code>zoned_datetime()</code>. Additionally, there is support for other calendars, such as a fiscal quarterly calendar, through classes like <code>year_quarter_day()</code>. <em>Partial</em> calendars, which have a precision that is coarser than a single day, are also supported through classes like <code>year_month()</code> and <code>year_quarter()</code>.</p>
+<p>Nanotime precision is supported for both naive and zoned types through <code>naive_nano_datetime()</code> and <code>zoned_nano_datetime()</code>.</p>
+<p>Additionally, all functionality works with Date and POSIXct, with the goal of expanding on the groundwork laid by lubridate to make working around issues of daylight savings and leap years a little more intuitive.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>

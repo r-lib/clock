@@ -42,7 +42,7 @@
 <meta property="og:title" content="Tokens for date-time formatting — civil-tokens" />
 <meta property="og:description" content="This page contains a number of tokens that can be used for date-time
 formatting through format(format = ). All tokens are supported for
-formatting a civil class (such as local_date() or zoned_datetime()).
+formatting a civil class (such as year_month_day() or zoned_datetime()).
 Most tokens are supported for formatting a POSIXct or Date, but some may
 be specific to the formatting implementation used by civil.
 Calling any of these functions simply returns the corresponding string
@@ -138,7 +138,7 @@ which can often be more readable." />
     <div class="ref-description">
     <p>This page contains a number of tokens that can be used for date-time
 formatting through <code><a href='https://rdrr.io/r/base/format.html'>format(format = )</a></code>. All tokens are supported for
-formatting a civil class (such as <code>local_date()</code> or <code>zoned_datetime()</code>).
+formatting a civil class (such as <code>year_month_day()</code> or <code>zoned_datetime()</code>).
 Most tokens are supported for formatting a POSIXct or Date, but some may
 be specific to the formatting implementation used by civil.</p>
 <p>Calling any of these functions simply returns the corresponding string
@@ -262,9 +262,9 @@ zone offset.</p></td>
 
 <span class='co'># Formats created by tokens can be used in the format method of civil</span>
 <span class='co'># classes and base R date-time classes</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>local_datetime</span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>01</span>, <span class='fl'>01</span>, <span class='fl'>14</span>, <span class='fl'>30</span>, <span class='fl'>59</span><span class='op'>)</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>naive_datetime</span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>01</span>, <span class='fl'>01</span>, <span class='fl'>14</span>, <span class='fl'>30</span>, <span class='fl'>59</span><span class='op'>)</span>
 <span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;civil_datetime[1]&gt;
+</div><div class='output co'>#&gt; &lt;naive_datetime[1]&gt;
 #&gt; [1] "2019-01-01 14:30:59"</div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='va'>hms</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "14:30:59"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='fu'>tkn_time</span><span class='op'>(</span>twelve <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>

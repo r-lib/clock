@@ -44,10 +44,10 @@
 that has a time zone attached. This means that all of the complexities of
 daylight savings time and nonexistent days have to be handled after each
 individual arithmetic operation. The alternative is
-local arithmetic, which only deals with the
+naive arithmetic, which only deals with the
 complexities of time zones once after all arithmetic has been performed.
 Zoned arithmetic is usually fine for additions of singular units of time.
-If you want to add multiple periods, consider switching to local arithmetic.
+If you want to add multiple periods, consider switching to naive arithmetic.
 The following add periods of time. Periods are units of time that do
 not have a fixed constant duration (i.e. a &quot;month&quot; may be 30 or 31 days).
 add_years()
@@ -154,10 +154,10 @@ consulted to resolve any issues." />
 that has a time zone attached. This means that all of the complexities of
 daylight savings time and nonexistent days have to be handled after each
 individual arithmetic operation. The alternative is
-<a href='civil-local-arithmetic.html'>local arithmetic</a>, which only deals with the
+<a href='civil-naive-arithmetic.html'>naive arithmetic</a>, which only deals with the
 complexities of time zones once after all arithmetic has been performed.</p>
 <p>Zoned arithmetic is usually fine for additions of singular units of time.
-If you want to add multiple periods, consider switching to local arithmetic.</p>
+If you want to add multiple periods, consider switching to naive arithmetic.</p>
 <p>The following add <em>periods</em> of time. Periods are units of time that do
 not have a fixed constant duration (i.e. a "month" may be 30 or 31 days).</p><ul>
 <li><p><code><a href='civil-arithmetic.html'>add_years()</a></code></p></li>

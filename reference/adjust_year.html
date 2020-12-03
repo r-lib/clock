@@ -154,7 +154,10 @@
   dst_ambiguous <span class='op'>=</span> <span class='st'>"earliest"</span>
 <span class='op'>)</span>
 
-<span class='co'># S3 method for civil_local</span>
+<span class='co'># S3 method for civil_naive_gregorian</span>
+<span class='fu'>adjust_year</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>value</span>, <span class='va'>...</span>, day_nonexistent <span class='op'>=</span> <span class='st'>"last-time"</span><span class='op'>)</span>
+
+<span class='co'># S3 method for civil_naive_fiscal</span>
 <span class='fu'>adjust_year</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>value</span>, <span class='va'>...</span>, day_nonexistent <span class='op'>=</span> <span class='st'>"last-time"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -162,7 +165,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><code>[Date / POSIXct / POSIXlt / local_datetime]</code></p>
+      <td><p><code>[Date / POSIXct / POSIXlt / civil]</code></p>
 <p>A date-time vector.</p></td>
     </tr>
     <tr>

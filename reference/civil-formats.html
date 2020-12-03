@@ -172,13 +172,13 @@ in <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code> for ci
 
 <span class='fu'>fmt_iso_datetime</span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='fu'>fmt_local_year_month</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>fmt_year_month</span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='fu'>fmt_local_date</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>fmt_year_month_day</span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='fu'>fmt_local_datetime</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>fmt_naive_datetime</span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='fu'>fmt_local_nano_datetime</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>fmt_naive_nano_datetime</span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='fu'>fmt_zoned_datetime</span><span class='op'>(</span><span class='va'>...</span>, zone_name <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
@@ -271,7 +271,7 @@ be unambiguously parsed back into the original object.</p></td>
   dst_ambiguous <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"earliest"</span>, <span class='st'>"latest"</span><span class='op'>)</span>
 <span class='op'>)</span>
 <span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;civil_datetime&lt;America/New_York&gt;[2]&gt;
+</div><div class='output co'>#&gt; &lt;zoned_datetime&lt;America/New_York&gt;[2]&gt;
 #&gt; [1] "1970-10-25 01:30:00-04:00" "1970-10-25 01:30:00-05:00"</div><div class='input'>
 <span class='co'># The ISO datetime format is incomplete because we don't know which</span>
 <span class='co'># time zone we came from</span>

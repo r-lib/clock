@@ -40,13 +40,12 @@
 
 
 <meta property="og:title" content="Date-time arithmetic — civil-arithmetic" />
-<meta property="og:description" content="Date-time arithmetic in civil is broken down into two types: zoned and local.
+<meta property="og:description" content="Date-time arithmetic in civil is broken down into two types: zoned and naive.
 Each type is documented on its own help page.
 Zoned dates have a time zone attached. The two
 base R classes, POSIXct and Date, implement zoned dates (Date is assumed to
 implicitly have a time zone of UTC).
-Local dates are independent of a time zone. The
-two civil objects, local_date and local_datetime, implement local dates." />
+Naive dates are independent of a time zone." />
 
 
 
@@ -132,18 +131,21 @@ two civil objects, local_date and local_datetime, implement local dates." />
     </div>
 
     <div class="ref-description">
-    <p>Date-time arithmetic in civil is broken down into two types: zoned and local.
+    <p>Date-time arithmetic in civil is broken down into two types: zoned and naive.
 Each type is documented on its own help page.</p>
 <p><a href='civil-zoned-arithmetic.html'>Zoned</a> dates have a time zone attached. The two
 base R classes, POSIXct and Date, implement zoned dates (Date is assumed to
 implicitly have a time zone of UTC).</p>
-<p><a href='civil-local-arithmetic.html'>Local</a> dates are independent of a time zone. The
-two civil objects, local_date and local_datetime, implement local dates.</p>
+<p><a href='civil-naive-arithmetic.html'>Naive</a> dates are independent of a time zone.</p>
     </div>
 
     <pre class="usage"><span class='fu'>add_years</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='fu'>subtract_years</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>add_quarters</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>subtract_quarters</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='fu'>add_months</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
 
@@ -190,8 +192,8 @@ two civil objects, local_date and local_datetime, implement local dates.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><code>[Date / POSIXct / POSIXlt / local_date / local_datetime]</code></p>
-<p>A zoned or local date-time vector.</p></td>
+      <td><p><code>[Date / POSIXct / POSIXlt]</code></p>
+<p>A zoned or naive date-time vector.</p></td>
     </tr>
     <tr>
       <th>n</th>
