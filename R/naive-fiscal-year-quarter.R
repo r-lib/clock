@@ -73,7 +73,7 @@ format.civil_naive_fiscal_year_quarter <- function(x, ...) {
   days <- field(x, "days")
   fiscal_start <- get_fiscal_start(x)
 
-  fields <- convert_local_days_to_fiscal_year_quarter_day(days, fiscal_start)
+  fields <- convert_naive_days_to_fiscal_year_quarter_day(days, fiscal_start)
   year <- fields$year
   quarter <- fields$quarter
 

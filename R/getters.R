@@ -62,7 +62,7 @@ get_year.POSIXt <- function(x) {
 #' @export
 get_year.civil_naive_gregorian <- function(x) {
   days <- field(x, "days")
-  ymd <- convert_local_days_to_year_month_day(days)
+  ymd <- convert_naive_days_to_year_month_day(days)
   ymd$year
 }
 
@@ -70,7 +70,7 @@ get_year.civil_naive_gregorian <- function(x) {
 get_year.civil_naive_fiscal <- function(x) {
   days <- field(x, "days")
   fiscal_start <- get_fiscal_start(x)
-  yqd <- convert_local_days_to_fiscal_year_quarter_day(days, fiscal_start)
+  yqd <- convert_naive_days_to_fiscal_year_quarter_day(days, fiscal_start)
   yqd$year
 }
 
@@ -98,7 +98,7 @@ get_quarter.civil_rcrd <- function(x, ..., fiscal_start = 1L) {
 get_quarter.civil_naive_fiscal <- function(x, ...) {
   days <- field(x, "days")
   fiscal_start <- get_fiscal_start(x)
-  fiscal <- convert_local_days_to_fiscal_year_quarter_day(days, fiscal_start)
+  fiscal <- convert_naive_days_to_fiscal_year_quarter_day(days, fiscal_start)
   fiscal$quarter
 }
 

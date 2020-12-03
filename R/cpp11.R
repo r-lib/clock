@@ -36,56 +36,56 @@ add_years_or_quarters_fiscal_cpp <- function(x, n, fiscal_start, day_nonexistent
   .Call("_civil_add_years_or_quarters_fiscal_cpp", x, n, fiscal_start, day_nonexistent, unit, size, PACKAGE = "civil")
 }
 
-convert_sys_seconds_to_local_days_and_time_of_day <- function(seconds, zone) {
-  .Call("_civil_convert_sys_seconds_to_local_days_and_time_of_day", seconds, zone, PACKAGE = "civil")
+convert_sys_seconds_to_naive_days_and_time_of_day <- function(seconds, zone) {
+  .Call("_civil_convert_sys_seconds_to_naive_days_and_time_of_day", seconds, zone, PACKAGE = "civil")
 }
 
-convert_local_days_and_time_of_day_to_sys_seconds_cpp <- function(days, time_of_day, zone, dst_nonexistent, dst_ambiguous, size) {
-  .Call("_civil_convert_local_days_and_time_of_day_to_sys_seconds_cpp", days, time_of_day, zone, dst_nonexistent, dst_ambiguous, size, PACKAGE = "civil")
+convert_naive_days_and_time_of_day_to_sys_seconds_cpp <- function(days, time_of_day, zone, dst_nonexistent, dst_ambiguous, size) {
+  .Call("_civil_convert_naive_days_and_time_of_day_to_sys_seconds_cpp", days, time_of_day, zone, dst_nonexistent, dst_ambiguous, size, PACKAGE = "civil")
 }
 
-convert_year_month_day_to_local_fields <- function(year, month, day, day_nonexistent) {
-  .Call("_civil_convert_year_month_day_to_local_fields", year, month, day, day_nonexistent, PACKAGE = "civil")
+convert_year_month_day_to_naive_fields <- function(year, month, day, day_nonexistent) {
+  .Call("_civil_convert_year_month_day_to_naive_fields", year, month, day, day_nonexistent, PACKAGE = "civil")
 }
 
-convert_year_month_day_hour_minute_second_to_local_fields_cpp <- function(year, month, day, hour, minute, second, day_nonexistent) {
-  .Call("_civil_convert_year_month_day_hour_minute_second_to_local_fields_cpp", year, month, day, hour, minute, second, day_nonexistent, PACKAGE = "civil")
+convert_year_month_day_hour_minute_second_to_naive_fields_cpp <- function(year, month, day, hour, minute, second, day_nonexistent) {
+  .Call("_civil_convert_year_month_day_hour_minute_second_to_naive_fields_cpp", year, month, day, hour, minute, second, day_nonexistent, PACKAGE = "civil")
 }
 
-convert_year_month_day_hour_minute_second_nanos_to_local_fields_cpp <- function(year, month, day, hour, minute, second, nanos, day_nonexistent) {
-  .Call("_civil_convert_year_month_day_hour_minute_second_nanos_to_local_fields_cpp", year, month, day, hour, minute, second, nanos, day_nonexistent, PACKAGE = "civil")
+convert_year_month_day_hour_minute_second_nanos_to_naive_fields_cpp <- function(year, month, day, hour, minute, second, nanos, day_nonexistent) {
+  .Call("_civil_convert_year_month_day_hour_minute_second_nanos_to_naive_fields_cpp", year, month, day, hour, minute, second, nanos, day_nonexistent, PACKAGE = "civil")
 }
 
-convert_local_days_to_year_month_day_cpp <- function(days) {
-  .Call("_civil_convert_local_days_to_year_month_day_cpp", days, PACKAGE = "civil")
+convert_naive_days_to_year_month_day_cpp <- function(days) {
+  .Call("_civil_convert_naive_days_to_year_month_day_cpp", days, PACKAGE = "civil")
 }
 
-convert_local_time_of_day_to_hour_minute_second_cpp <- function(time_of_day) {
-  .Call("_civil_convert_local_time_of_day_to_hour_minute_second_cpp", time_of_day, PACKAGE = "civil")
+convert_naive_time_of_day_to_hour_minute_second_cpp <- function(time_of_day) {
+  .Call("_civil_convert_naive_time_of_day_to_hour_minute_second_cpp", time_of_day, PACKAGE = "civil")
 }
 
-convert_datetime_fields_from_local_to_zoned_cpp <- function(days, time_of_day, zone, dst_nonexistent, dst_ambiguous, size) {
-  .Call("_civil_convert_datetime_fields_from_local_to_zoned_cpp", days, time_of_day, zone, dst_nonexistent, dst_ambiguous, size, PACKAGE = "civil")
+convert_datetime_fields_from_naive_to_zoned_cpp <- function(days, time_of_day, zone, dst_nonexistent, dst_ambiguous, size) {
+  .Call("_civil_convert_datetime_fields_from_naive_to_zoned_cpp", days, time_of_day, zone, dst_nonexistent, dst_ambiguous, size, PACKAGE = "civil")
 }
 
-convert_nano_datetime_fields_from_local_to_zoned_cpp <- function(days, time_of_day, nanos_of_second, zone, dst_nonexistent, dst_ambiguous, size) {
-  .Call("_civil_convert_nano_datetime_fields_from_local_to_zoned_cpp", days, time_of_day, nanos_of_second, zone, dst_nonexistent, dst_ambiguous, size, PACKAGE = "civil")
+convert_nano_datetime_fields_from_naive_to_zoned_cpp <- function(days, time_of_day, nanos_of_second, zone, dst_nonexistent, dst_ambiguous, size) {
+  .Call("_civil_convert_nano_datetime_fields_from_naive_to_zoned_cpp", days, time_of_day, nanos_of_second, zone, dst_nonexistent, dst_ambiguous, size, PACKAGE = "civil")
 }
 
-convert_datetime_fields_from_zoned_to_local_cpp <- function(days, time_of_day, zone) {
-  .Call("_civil_convert_datetime_fields_from_zoned_to_local_cpp", days, time_of_day, zone, PACKAGE = "civil")
+convert_datetime_fields_from_zoned_to_naive_cpp <- function(days, time_of_day, zone) {
+  .Call("_civil_convert_datetime_fields_from_zoned_to_naive_cpp", days, time_of_day, zone, PACKAGE = "civil")
 }
 
 convert_sys_seconds_to_sys_days_and_time_of_day_cpp <- function(seconds) {
   .Call("_civil_convert_sys_seconds_to_sys_days_and_time_of_day_cpp", seconds, PACKAGE = "civil")
 }
 
-convert_fiscal_year_quarter_day_to_local_days_cpp <- function(year, quarter, day, fiscal_start, day_nonexistent) {
-  .Call("_civil_convert_fiscal_year_quarter_day_to_local_days_cpp", year, quarter, day, fiscal_start, day_nonexistent, PACKAGE = "civil")
+convert_fiscal_year_quarter_day_to_naive_days_cpp <- function(year, quarter, day, fiscal_start, day_nonexistent) {
+  .Call("_civil_convert_fiscal_year_quarter_day_to_naive_days_cpp", year, quarter, day, fiscal_start, day_nonexistent, PACKAGE = "civil")
 }
 
-convert_local_days_to_fiscal_year_quarter_day_cpp <- function(days, fiscal_start) {
-  .Call("_civil_convert_local_days_to_fiscal_year_quarter_day_cpp", days, fiscal_start, PACKAGE = "civil")
+convert_naive_days_to_fiscal_year_quarter_day_cpp <- function(days, fiscal_start) {
+  .Call("_civil_convert_naive_days_to_fiscal_year_quarter_day_cpp", days, fiscal_start, PACKAGE = "civil")
 }
 
 floor_days_to_year_month_precision_cpp <- function(days) {

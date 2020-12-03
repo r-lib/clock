@@ -22,7 +22,7 @@ naive_datetime <- function(year,
   args <- vec_recycle_common(!!!args, .size = size)
   args <- vec_cast_common(!!!args, .to = integer())
 
-  fields <- convert_year_month_day_hour_minute_second_to_local_fields(
+  fields <- convert_year_month_day_hour_minute_second_to_naive_fields(
     args$year,
     args$month,
     args$day,

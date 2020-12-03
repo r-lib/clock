@@ -8,7 +8,7 @@ year_month <- function(year, month = 1L) {
   day <- ones_along(args$year)
   day_nonexistent <- "last-time"
 
-  fields <- convert_year_month_day_to_local_fields(
+  fields <- convert_year_month_day_to_naive_fields(
     args$year,
     args$month,
     day,

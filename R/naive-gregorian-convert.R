@@ -122,7 +122,7 @@ as_naive_datetime.POSIXt <- function(x) {
   seconds <- unstructure(x)
   zone <- get_zone(x)
 
-  fields <- convert_sys_seconds_to_local_days_and_time_of_day(seconds, zone)
+  fields <- convert_sys_seconds_to_naive_days_and_time_of_day(seconds, zone)
 
   new_naive_datetime_from_fields(fields, names)
 }
@@ -134,7 +134,7 @@ as_naive_datetime.civil_zoned_gregorian_datetime <- function(x) {
 
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
-  fields <- convert_datetime_fields_from_zoned_to_local(days, time_of_day, zone)
+  fields <- convert_datetime_fields_from_zoned_to_naive(days, time_of_day, zone)
   days <- fields$day
   time_of_day <- fields$time_of_day
 
@@ -219,7 +219,7 @@ as_naive_nano_datetime.civil_zoned_gregorian_nano_datetime <- function(x) {
 
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
-  fields <- convert_datetime_fields_from_zoned_to_local(days, time_of_day, zone)
+  fields <- convert_datetime_fields_from_zoned_to_naive(days, time_of_day, zone)
   days <- fields$day
   time_of_day <- fields$time_of_day
 

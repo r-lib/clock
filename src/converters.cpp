@@ -10,7 +10,7 @@
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd convert_sys_seconds_to_local_days_and_time_of_day(const cpp11::doubles& seconds,
+civil_writable_rcrd convert_sys_seconds_to_naive_days_and_time_of_day(const cpp11::doubles& seconds,
                                                                       const cpp11::strings& zone) {
   r_ssize size = seconds.size();
 
@@ -52,7 +52,7 @@ civil_writable_rcrd convert_sys_seconds_to_local_days_and_time_of_day(const cpp1
 }
 
 [[cpp11::register]]
-cpp11::writable::doubles convert_local_days_and_time_of_day_to_sys_seconds_cpp(const civil_field& days,
+cpp11::writable::doubles convert_naive_days_and_time_of_day_to_sys_seconds_cpp(const civil_field& days,
                                                                                const civil_field& time_of_day,
                                                                                const cpp11::strings& zone,
                                                                                const cpp11::strings& dst_nonexistent,
@@ -132,7 +132,7 @@ cpp11::writable::doubles convert_local_days_and_time_of_day_to_sys_seconds_cpp(c
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd convert_year_month_day_to_local_fields(const cpp11::integers& year,
+civil_writable_rcrd convert_year_month_day_to_naive_fields(const cpp11::integers& year,
                                                            const cpp11::integers& month,
                                                            const cpp11::integers& day,
                                                            const cpp11::strings& day_nonexistent) {
@@ -186,7 +186,7 @@ civil_writable_rcrd convert_year_month_day_to_local_fields(const cpp11::integers
 }
 
 [[cpp11::register]]
-civil_writable_rcrd convert_year_month_day_hour_minute_second_to_local_fields_cpp(const cpp11::integers& year,
+civil_writable_rcrd convert_year_month_day_hour_minute_second_to_naive_fields_cpp(const cpp11::integers& year,
                                                                                   const cpp11::integers& month,
                                                                                   const cpp11::integers& day,
                                                                                   const cpp11::integers& hour,
@@ -262,7 +262,7 @@ civil_writable_rcrd convert_year_month_day_hour_minute_second_to_local_fields_cp
 }
 
 [[cpp11::register]]
-civil_writable_rcrd convert_year_month_day_hour_minute_second_nanos_to_local_fields_cpp(const cpp11::integers& year,
+civil_writable_rcrd convert_year_month_day_hour_minute_second_nanos_to_naive_fields_cpp(const cpp11::integers& year,
                                                                                         const cpp11::integers& month,
                                                                                         const cpp11::integers& day,
                                                                                         const cpp11::integers& hour,
@@ -351,7 +351,7 @@ civil_writable_rcrd convert_year_month_day_hour_minute_second_nanos_to_local_fie
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_list_of_integers convert_local_days_to_year_month_day_cpp(const civil_field& days) {
+civil_writable_list_of_integers convert_naive_days_to_year_month_day_cpp(const civil_field& days) {
   r_ssize size = days.size();
 
   cpp11::writable::integers year(size);
@@ -383,7 +383,7 @@ civil_writable_list_of_integers convert_local_days_to_year_month_day_cpp(const c
 }
 
 [[cpp11::register]]
-civil_writable_list_of_integers convert_local_time_of_day_to_hour_minute_second_cpp(const civil_field& time_of_day) {
+civil_writable_list_of_integers convert_naive_time_of_day_to_hour_minute_second_cpp(const civil_field& time_of_day) {
   r_ssize size = time_of_day.size();
 
   cpp11::writable::integers hour(size);
@@ -418,7 +418,7 @@ civil_writable_list_of_integers convert_local_time_of_day_to_hour_minute_second_
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd convert_datetime_fields_from_local_to_zoned_cpp(const civil_field& days,
+civil_writable_rcrd convert_datetime_fields_from_naive_to_zoned_cpp(const civil_field& days,
                                                                     const civil_field& time_of_day,
                                                                     const cpp11::strings& zone,
                                                                     const cpp11::strings& dst_nonexistent,
@@ -509,7 +509,7 @@ civil_writable_rcrd convert_datetime_fields_from_local_to_zoned_cpp(const civil_
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd convert_nano_datetime_fields_from_local_to_zoned_cpp(const civil_field& days,
+civil_writable_rcrd convert_nano_datetime_fields_from_naive_to_zoned_cpp(const civil_field& days,
                                                                          const civil_field& time_of_day,
                                                                          const civil_field& nanos_of_second,
                                                                          const cpp11::strings& zone,
@@ -616,10 +616,10 @@ civil_writable_rcrd convert_nano_datetime_fields_from_local_to_zoned_cpp(const c
 
 /*
  * Same for datetime and nano_datetime, since nanoseconds wont change when
- * going from zoned->local. They are "beneath" time zone changes.
+ * going from zoned->naive. They are "beneath" time zone changes.
  */
 [[cpp11::register]]
-civil_writable_rcrd convert_datetime_fields_from_zoned_to_local_cpp(const civil_field& days,
+civil_writable_rcrd convert_datetime_fields_from_zoned_to_naive_cpp(const civil_field& days,
                                                                     const civil_field& time_of_day,
                                                                     const cpp11::strings& zone) {
   r_ssize size = days.size();
@@ -710,7 +710,7 @@ civil_writable_rcrd convert_sys_seconds_to_sys_days_and_time_of_day_cpp(const cp
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_field convert_fiscal_year_quarter_day_to_local_days_cpp(const cpp11::integers& year,
+civil_writable_field convert_fiscal_year_quarter_day_to_naive_days_cpp(const cpp11::integers& year,
                                                                        const cpp11::integers& quarter,
                                                                        const cpp11::integers& day,
                                                                        int fiscal_start,
@@ -765,7 +765,7 @@ civil_writable_field convert_fiscal_year_quarter_day_to_local_days_cpp(const cpp
 
 [[cpp11::register]]
 cpp11::writable::list_of<cpp11::writable::integers>
-convert_local_days_to_fiscal_year_quarter_day_cpp(const civil_field& days, int fiscal_start) {
+convert_naive_days_to_fiscal_year_quarter_day_cpp(const civil_field& days, int fiscal_start) {
   r_ssize size = days.size();
 
   cpp11::writable::integers out_year(size);
