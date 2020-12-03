@@ -121,7 +121,7 @@ zone offset.}
 \description{
 This page contains a number of tokens that can be used for date-time
 formatting through \code{format(format = )}. All tokens are supported for
-formatting a civil class (such as \code{\link[=local_date]{local_date()}} or \code{\link[=zoned_datetime]{zoned_datetime()}}).
+formatting a civil class (such as \code{\link[=year_month_day]{year_month_day()}} or \code{\link[=zoned_datetime]{zoned_datetime()}}).
 Most tokens are supported for formatting a POSIXct or Date, but some may
 be specific to the formatting implementation used by civil.
 
@@ -143,7 +143,7 @@ hms <- tkns(tkn_hour(), tkn_minute(), tkn_second(), sep = ":")
 
 # Formats created by tokens can be used in the format method of civil
 # classes and base R date-time classes
-x <- local_datetime(2019, 01, 01, 14, 30, 59)
+x <- naive_datetime(2019, 01, 01, 14, 30, 59)
 x
 
 format(x, format = hms)

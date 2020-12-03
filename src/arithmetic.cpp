@@ -7,11 +7,11 @@
 
 // -----------------------------------------------------------------------------
 
-static civil_writable_rcrd add_years_or_months_local(const civil_rcrd& x,
-                                                     const cpp11::integers& n,
-                                                     const enum day_nonexistent& day_nonexistent_val,
-                                                     const enum unit& unit_val,
-                                                     const r_ssize& size) {
+static civil_writable_rcrd add_years_or_months_gregorian(const civil_rcrd& x,
+                                                         const cpp11::integers& n,
+                                                         const enum day_nonexistent& day_nonexistent_val,
+                                                         const enum unit& unit_val,
+                                                         const r_ssize& size) {
   civil_writable_rcrd out = civil_rcrd_clone(x);
   civil_rcrd_recycle(out, size);
 
@@ -58,24 +58,24 @@ static civil_writable_rcrd add_years_or_months_local(const civil_rcrd& x,
 }
 
 [[cpp11::register]]
-civil_writable_rcrd add_years_or_months_local_cpp(const civil_rcrd& x,
-                                                  const cpp11::integers& n,
-                                                  const cpp11::strings& day_nonexistent,
-                                                  const cpp11::strings& unit,
-                                                  const cpp11::integers& size) {
+civil_writable_rcrd add_years_or_months_gregorian_cpp(const civil_rcrd& x,
+                                                      const cpp11::integers& n,
+                                                      const cpp11::strings& day_nonexistent,
+                                                      const cpp11::strings& unit,
+                                                      const cpp11::integers& size) {
   enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
   enum unit unit_val = parse_unit(unit);
   r_ssize c_size = size[0];
 
-  return add_years_or_months_local(x, n, day_nonexistent_val, unit_val, c_size);
+  return add_years_or_months_gregorian(x, n, day_nonexistent_val, unit_val, c_size);
 }
 
 // -----------------------------------------------------------------------------
 
-static civil_writable_rcrd add_weeks_or_days_local(const civil_rcrd& x,
-                                                   const cpp11::integers& n,
-                                                   const enum unit& unit_val,
-                                                   const r_ssize& size) {
+static civil_writable_rcrd add_weeks_or_days(const civil_rcrd& x,
+                                             const cpp11::integers& n,
+                                             const enum unit& unit_val,
+                                             const r_ssize& size) {
   civil_writable_rcrd out = civil_rcrd_clone(x);
   civil_rcrd_recycle(out, size);
 
@@ -110,14 +110,14 @@ static civil_writable_rcrd add_weeks_or_days_local(const civil_rcrd& x,
 }
 
 [[cpp11::register]]
-civil_writable_rcrd add_weeks_or_days_local_cpp(const civil_rcrd& x,
-                                                const cpp11::integers& n,
-                                                const cpp11::strings& unit,
-                                                const cpp11::integers& size) {
+civil_writable_rcrd add_weeks_or_days_cpp(const civil_rcrd& x,
+                                          const cpp11::integers& n,
+                                          const cpp11::strings& unit,
+                                          const cpp11::integers& size) {
   enum unit unit_val = parse_unit(unit);
   r_ssize c_size = size[0];
 
-  return add_weeks_or_days_local(x, n, unit_val, c_size);
+  return add_weeks_or_days(x, n, unit_val, c_size);
 }
 
 // -----------------------------------------------------------------------------
@@ -310,3 +310,71 @@ civil_writable_rcrd add_milliseconds_or_microseconds_or_nanoseconds_cpp(const ci
   return add_milliseconds_or_microseconds_or_nanoseconds(x, n, unit_val, c_size);
 }
 
+// -----------------------------------------------------------------------------
+
+static civil_writable_rcrd add_years_or_quarters_fiscal(const civil_rcrd& x,
+                                                        const cpp11::integers& n,
+                                                        const int& fiscal_start,
+                                                        const enum day_nonexistent& day_nonexistent_val,
+                                                        const enum unit& unit_val,
+                                                        const r_ssize& size) {
+  civil_writable_rcrd out = civil_rcrd_clone(x);
+  civil_rcrd_recycle(out, size);
+
+  const fiscal_year::fiscal_start fs{static_cast<unsigned>(fiscal_start)};
+
+  int* p_days = civil_rcrd_days_deref(out);
+  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
+  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
+
+  const bool recycle_n = civil_is_scalar(n);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    int elt_days = p_days[i];
+    int elt_n = recycle_n ? n[0] : n[i];
+
+    if (elt_days == r_int_na) {
+      continue;
+    }
+    if (elt_n == r_int_na) {
+      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      continue;
+    }
+
+    date::local_days elt_lday{date::days{elt_days}};
+    fiscal_year::year_quarter_day elt_yqd{elt_lday, fs};
+
+    fiscal_year::year_quarter_day out_yqd;
+
+    if (unit_val == unit::year) {
+      out_yqd = elt_yqd + fiscal_year::years{elt_n};
+    } else {
+      out_yqd = elt_yqd + fiscal_year::quarters{elt_n};
+    }
+
+    convert_year_quarter_day_to_days_one(
+      i,
+      day_nonexistent_val,
+      out_yqd,
+      p_days,
+      p_time_of_day,
+      p_nanos_of_second
+    );
+  }
+
+  return out;
+}
+
+[[cpp11::register]]
+civil_writable_rcrd add_years_or_quarters_fiscal_cpp(const civil_rcrd& x,
+                                                     const cpp11::integers& n,
+                                                     const int& fiscal_start,
+                                                     const cpp11::strings& day_nonexistent,
+                                                     const cpp11::strings& unit,
+                                                     const cpp11::integers& size) {
+  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
+  enum unit unit_val = parse_unit(unit);
+  r_ssize c_size = size[0];
+
+  return add_years_or_quarters_fiscal(x, n, fiscal_start, day_nonexistent_val, unit_val, c_size);
+}

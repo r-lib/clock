@@ -45,6 +45,7 @@ enum dst_ambiguous parse_dst_ambiguous_one(const cpp11::r_string& x);
 
 enum class unit {
   year,
+  quarter,
   month,
   week,
   day,
@@ -62,12 +63,14 @@ enum unit parse_unit(const cpp11::strings& x);
 
 enum class adjuster {
   year,
+  quarter,
   month,
   day,
   hour,
   minute,
   second,
   nanosecond,
+  last_day_of_quarter,
   last_day_of_month
 };
 

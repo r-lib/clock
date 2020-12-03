@@ -14,7 +14,7 @@ adjust_zone.Date <- function(x,
                              ...,
                              dst_nonexistent = "roll-forward",
                              dst_ambiguous = "earliest") {
-  x <- as_local(x)
+  x <- as_naive(x)
   as.POSIXct(x, tz = zone, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
@@ -27,7 +27,7 @@ adjust_zone.civil_zoned <- function(x,
                                     ...,
                                     dst_nonexistent = "roll-forward",
                                     dst_ambiguous = "earliest") {
-  x <- as_local(x)
+  x <- as_naive(x)
   as_zoned(x, zone = zone, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
@@ -37,7 +37,7 @@ adjust_zone.civil_zoned <- function(x,
 #'
 #' `adjust_year()` adjusts the year of `x` to `value`.
 #'
-#' @param x `[Date / POSIXct / POSIXlt / local_datetime]`
+#' @param x `[Date / POSIXct / POSIXlt / civil]`
 #'
 #'   A date-time vector.
 #'
@@ -101,7 +101,7 @@ adjust_year <- function(x, value, ...) {
 #' @rdname adjust_year
 #' @export
 adjust_year.Date <- function(x, value, ..., day_nonexistent = "last-time") {
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_year(x, value, ..., day_nonexistent = day_nonexistent)
   as.Date(out)
 }
@@ -115,7 +115,7 @@ adjust_year.POSIXt <- function(x,
                                dst_nonexistent = "roll-forward",
                                dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_year(x, value, ..., day_nonexistent = day_nonexistent)
   as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
@@ -129,15 +129,47 @@ adjust_year.civil_zoned <- function(x,
                                     dst_nonexistent = "roll-forward",
                                     dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_year(x, value, ..., day_nonexistent = day_nonexistent)
   as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @rdname adjust_year
 #' @export
-adjust_year.civil_local <- function(x, value, ..., day_nonexistent = "last-time") {
-  adjust_year_impl(x, value, ..., day_nonexistent = day_nonexistent)
+adjust_year.civil_naive_gregorian <- function(x, value, ..., day_nonexistent = "last-time") {
+  adjust_year_gregorian_impl(x, value, ..., day_nonexistent = day_nonexistent)
+}
+
+#' @rdname adjust_year
+#' @export
+adjust_year.civil_naive_fiscal <- function(x, value, ..., day_nonexistent = "last-time") {
+  adjust_year_fiscal_impl(x, value, ..., day_nonexistent = day_nonexistent)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+adjust_quarter <- function(x, value, ...) {
+  restrict_civil_supported(x)
+  UseMethod("adjust_quarter")
+}
+
+#' @export
+adjust_quarter.civil_naive_fiscal <- function(x, value, ..., day_nonexistent = "last-time") {
+  adjust_quarter_fiscal_impl(x, value, ..., day_nonexistent = day_nonexistent)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+adjust_last_day_of_quarter <- function(x, ...) {
+  restrict_civil_supported(x)
+  UseMethod("adjust_last_day_of_quarter")
+}
+
+#' @export
+adjust_last_day_of_quarter.civil_naive_fiscal <- function(x, ...) {
+  adjust_last_day_of_quarter_fiscal_impl(x, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -150,7 +182,7 @@ adjust_month <- function(x, value, ...) {
 
 #' @export
 adjust_month.Date <- function(x, value, ..., day_nonexistent = "last-time") {
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_month(x, value, ..., day_nonexistent = day_nonexistent)
   as.Date(out)
 }
@@ -163,7 +195,7 @@ adjust_month.POSIXt <- function(x,
                                 dst_nonexistent = "roll-forward",
                                 dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_month(x, value, ..., day_nonexistent = day_nonexistent)
   as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
@@ -176,14 +208,14 @@ adjust_month.civil_zoned <- function(x,
                                      dst_nonexistent = "roll-forward",
                                      dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_month(x, value, ..., day_nonexistent = day_nonexistent)
   as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @export
-adjust_month.civil_local <- function(x, value, ..., day_nonexistent = "last-time") {
-  adjust_month_impl(x, value, ..., day_nonexistent = day_nonexistent)
+adjust_month.civil_naive_gregorian <- function(x, value, ..., day_nonexistent = "last-time") {
+  adjust_month_gregorian_impl(x, value, ..., day_nonexistent = day_nonexistent)
 }
 
 # ------------------------------------------------------------------------------
@@ -196,7 +228,7 @@ adjust_day <- function(x, value, ...) {
 
 #' @export
 adjust_day.Date <- function(x, value, ..., day_nonexistent = "last-time") {
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_day(x, value, ..., day_nonexistent = day_nonexistent)
   as.Date(out)
 }
@@ -209,7 +241,7 @@ adjust_day.POSIXt <- function(x,
                               dst_nonexistent = "roll-forward",
                               dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_day(x, value, ..., day_nonexistent = day_nonexistent)
   as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
@@ -222,14 +254,19 @@ adjust_day.civil_zoned <- function(x,
                                    dst_nonexistent = "roll-forward",
                                    dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_day(x, value, ..., day_nonexistent = day_nonexistent)
   as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @export
-adjust_day.civil_local <- function(x, value, ..., day_nonexistent = "last-time") {
-  adjust_day_impl(x, value, ..., day_nonexistent = day_nonexistent)
+adjust_day.civil_naive_gregorian <- function(x, value, ..., day_nonexistent = "last-time") {
+  adjust_day_gregorian_impl(x, value, ..., day_nonexistent = day_nonexistent)
+}
+
+#' @export
+adjust_day.civil_naive_fiscal <- function(x, value, ..., day_nonexistent = "last-time") {
+  adjust_day_fiscal_impl(x, value, ..., day_nonexistent = day_nonexistent)
 }
 
 # ------------------------------------------------------------------------------
@@ -242,7 +279,7 @@ adjust_last_day_of_month <- function(x, ...) {
 
 #' @export
 adjust_last_day_of_month.Date <- function(x, ...) {
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_last_day_of_month(x, ...)
   as.Date(out)
 }
@@ -253,7 +290,7 @@ adjust_last_day_of_month.POSIXt <- function(x,
                                             dst_nonexistent = "roll-forward",
                                             dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_last_day_of_month(x, ...)
   as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
@@ -264,14 +301,14 @@ adjust_last_day_of_month.civil_zoned <- function(x,
                                                  dst_nonexistent = "roll-forward",
                                                  dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_last_day_of_month(x, ...)
   as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @export
-adjust_last_day_of_month.civil_local <- function(x, ...) {
-  adjust_last_day_of_month_impl(x, ...)
+adjust_last_day_of_month.civil_naive_gregorian <- function(x, ...) {
+  adjust_last_day_of_month_gregorian_impl(x, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -285,7 +322,7 @@ adjust_hour <- function(x, value, ...) {
 #' @export
 adjust_hour.Date <- function(x, value, ...) {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_hour(x, value, ...)
   as.POSIXct(out, tz = zone)
 }
@@ -297,7 +334,7 @@ adjust_hour.POSIXt <- function(x,
                                dst_nonexistent = "roll-forward",
                                dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_hour(x, value, ...)
   as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
@@ -309,14 +346,14 @@ adjust_hour.civil_zoned <- function(x,
                                     dst_nonexistent = "roll-forward",
                                     dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_hour(x, value, ...)
   as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @export
-adjust_hour.civil_local <- function(x, value, ...) {
-  adjust_hour_impl(x, value, ...)
+adjust_hour.civil_naive_gregorian <- function(x, value, ...) {
+  adjust_hour_gregorian_impl(x, value, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -330,7 +367,7 @@ adjust_minute <- function(x, value, ...) {
 #' @export
 adjust_minute.Date <- function(x, value, ...) {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_minute(x, value, ...)
   as.POSIXct(out, tz = zone)
 }
@@ -342,7 +379,7 @@ adjust_minute.POSIXt <- function(x,
                                  dst_nonexistent = "roll-forward",
                                  dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_minute(x, value, ...)
   as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
@@ -354,14 +391,14 @@ adjust_minute.civil_zoned <- function(x,
                                       dst_nonexistent = "roll-forward",
                                       dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_minute(x, value, ...)
   as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @export
-adjust_minute.civil_local <- function(x, value, ...) {
-  adjust_minute_impl(x, value, ...)
+adjust_minute.civil_naive_gregorian <- function(x, value, ...) {
+  adjust_minute_gregorian_impl(x, value, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -375,7 +412,7 @@ adjust_second <- function(x, value, ...) {
 #' @export
 adjust_second.Date <- function(x, value, ...) {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_second(x, value, ...)
   as.POSIXct(out, tz = zone)
 }
@@ -387,7 +424,7 @@ adjust_second.POSIXt <- function(x,
                                  dst_nonexistent = "roll-forward",
                                  dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_second(x, value, ...)
   as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
@@ -399,14 +436,14 @@ adjust_second.civil_zoned <- function(x,
                                       dst_nonexistent = "roll-forward",
                                       dst_ambiguous = "earliest") {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_second(x, value, ...)
   as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 #' @export
-adjust_second.civil_local <- function(x, value, ...) {
-  adjust_second_impl(x, value, ...)
+adjust_second.civil_naive_gregorian <- function(x, value, ...) {
+  adjust_second_gregorian_impl(x, value, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -420,7 +457,7 @@ adjust_nanosecond <- function(x, value, ...) {
 #' @export
 adjust_nanosecond.Date <- function(x, value, ...) {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- adjust_nanosecond(x, value, ...)
   as_zoned(out, zone = zone)
 }
@@ -432,74 +469,103 @@ adjust_nanosecond.POSIXt <- adjust_nanosecond.Date
 adjust_nanosecond.civil_zoned <- adjust_nanosecond.Date
 
 #' @export
-adjust_nanosecond.civil_local <- function(x, value, ...) {
-  adjust_nanosecond_impl(x, value, ...)
+adjust_nanosecond.civil_naive_gregorian <- function(x, value, ...) {
+  adjust_nanosecond_gregorian_impl(x, value, ...)
 }
 
 # ------------------------------------------------------------------------------
 
-adjust_year_impl <- function(x, value, ..., day_nonexistent) {
-  x <- promote_at_least_local_year(x)
-  adjust_local_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "year")
+adjust_year_gregorian_impl <- function(x, value, ..., day_nonexistent) {
+  x <- promote_at_least_year(x)
+  adjust_naive_gregorian_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "year")
 }
-adjust_month_impl <- function(x, value, ..., day_nonexistent) {
-  x <- promote_at_least_local_year_month(x)
-  adjust_local_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "month")
+adjust_month_gregorian_impl <- function(x, value, ..., day_nonexistent) {
+  x <- promote_at_least_year_month(x)
+  adjust_naive_gregorian_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "month")
 }
-adjust_day_impl <- function(x, value, ..., day_nonexistent) {
-  x <- promote_at_least_local_date(x)
-  adjust_local_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "day")
+adjust_day_gregorian_impl <- function(x, value, ..., day_nonexistent) {
+  x <- promote_at_least_year_month_day(x)
+  adjust_naive_gregorian_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "day")
 }
-adjust_last_day_of_month_impl <- function(x, ...) {
-  x <- promote_at_least_local_date(x)
-  adjust_local_days(x, -1L, ..., day_nonexistent = "last-time", adjuster = "last_day_of_month")
+adjust_last_day_of_month_gregorian_impl <- function(x, ...) {
+  x <- promote_at_least_year_month_day(x)
+  adjust_naive_gregorian_days(x, -1L, ..., day_nonexistent = "last-time", adjuster = "last_day_of_month")
 }
 
-adjust_local_days <- function(x, value, ..., day_nonexistent, adjuster) {
+adjust_naive_gregorian_days <- function(x, value, ..., day_nonexistent, adjuster) {
   check_dots_empty()
 
   value <- vec_cast(value, integer(), x_arg = "value")
   size <- vec_size_common(x = x, value = value)
 
-  adjust_local_days_cpp(x, value, day_nonexistent, size, adjuster)
+  adjust_naive_gregorian_days_cpp(x, value, day_nonexistent, size, adjuster)
 }
 
 # ------------------------------------------------------------------------------
 
-adjust_hour_impl <- function(x, value, ...) {
-  adjust_local_time_of_day(x, value, ..., adjuster = "hour")
+adjust_hour_gregorian_impl <- function(x, value, ...) {
+  adjust_naive_gregorian_time_of_day(x, value, ..., adjuster = "hour")
 }
-adjust_minute_impl <- function(x, value, ...) {
-  adjust_local_time_of_day(x, value, ..., adjuster = "minute")
+adjust_minute_gregorian_impl <- function(x, value, ...) {
+  adjust_naive_gregorian_time_of_day(x, value, ..., adjuster = "minute")
 }
-adjust_second_impl <- function(x, value, ...) {
-  adjust_local_time_of_day(x, value, ..., adjuster = "second")
+adjust_second_gregorian_impl <- function(x, value, ...) {
+  adjust_naive_gregorian_time_of_day(x, value, ..., adjuster = "second")
 }
 
-adjust_local_time_of_day <- function(x, value, ..., adjuster) {
+adjust_naive_gregorian_time_of_day <- function(x, value, ..., adjuster) {
   check_dots_empty()
 
   value <- vec_cast(value, integer(), x_arg = "value")
   size <- vec_size_common(x = x, value = value)
 
-  x <- promote_at_least_local_datetime(x)
+  x <- promote_at_least_naive_datetime(x)
 
-  adjust_local_time_of_day_cpp(x, value, size, adjuster)
+  adjust_naive_gregorian_time_of_day_cpp(x, value, size, adjuster)
 }
 
 # ------------------------------------------------------------------------------
 
-adjust_nanosecond_impl <- function(x, value, ...) {
-  adjust_local_nanos_of_second(x, value, ..., adjuster = "nanosecond")
+adjust_nanosecond_gregorian_impl <- function(x, value, ...) {
+  adjust_naive_gregorian_nanos_of_second(x, value, ..., adjuster = "nanosecond")
 }
 
-adjust_local_nanos_of_second <- function(x, value, ..., adjuster) {
+adjust_naive_gregorian_nanos_of_second <- function(x, value, ..., adjuster) {
   check_dots_empty()
 
   value <- vec_cast(value, integer(), x_arg = "value")
   size <- vec_size_common(x = x, value = value)
 
-  x <- promote_at_least_local_nano_datetime(x)
+  x <- promote_at_least_naive_nano_datetime(x)
 
-  adjust_local_nanos_of_second_cpp(x, value, size, adjuster)
+  adjust_naive_gregorian_nanos_of_second_cpp(x, value, size, adjuster)
+}
+
+# ------------------------------------------------------------------------------
+
+adjust_year_fiscal_impl <- function(x, value, ..., day_nonexistent) {
+  x <- promote_at_least_fiscal_year(x)
+  adjust_naive_fiscal_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "year")
+}
+adjust_quarter_fiscal_impl <- function(x, value, ..., day_nonexistent) {
+  x <- promote_at_least_fiscal_year_quarter(x)
+  adjust_naive_fiscal_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "quarter")
+}
+adjust_day_fiscal_impl <- function(x, value, ..., day_nonexistent) {
+  x <- promote_at_least_fiscal_year_quarter_day(x)
+  adjust_naive_fiscal_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "day")
+}
+adjust_last_day_of_quarter_fiscal_impl <- function(x, ...) {
+  x <- promote_at_least_fiscal_year_quarter_day(x)
+  adjust_naive_fiscal_days(x, -1L, ..., day_nonexistent = "last-time", adjuster = "last_day_of_quarter")
+}
+
+adjust_naive_fiscal_days <- function(x, value, ..., day_nonexistent, adjuster) {
+  check_dots_empty()
+
+  value <- vec_cast(value, integer(), x_arg = "value")
+  size <- vec_size_common(x = x, value = value)
+  fiscal_start <- get_fiscal_start(x)
+
+  adjust_naive_fiscal_days_cpp(x, value, fiscal_start, day_nonexistent, size, adjuster)
 }

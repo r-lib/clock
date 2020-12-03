@@ -26,15 +26,15 @@ parse_zoned_datetime <- function(x,
   new_zoned_datetime_from_fields(fields, zone)
 }
 
-parse_local_datetime <- function(x,
+parse_naive_datetime <- function(x,
                                  ...,
                                  format = "%Y-%m-%d %H:%M:%S") {
   check_dots_empty()
 
-  fields <- parse_local_datetime_cpp(
+  fields <- parse_naive_datetime_cpp(
     x = x,
     format = format
   )
 
-  new_local_datetime_from_fields(fields)
+  new_naive_datetime_from_fields(fields)
 }

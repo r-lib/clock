@@ -8,12 +8,14 @@
 
 // -----------------------------------------------------------------------------
 
-static inline void resolve_day_nonexistent_first_day(date::year_month_day& ymd);
-static inline void resolve_day_nonexistent_first_time(std::chrono::seconds& tod);
-static inline void resolve_day_nonexistent_first_time_nanos(std::chrono::nanoseconds& nanos_of_second);
-static inline void resolve_day_nonexistent_last_day(date::year_month_day& ymd);
-static inline void resolve_day_nonexistent_last_time(std::chrono::seconds& tod);
-static inline void resolve_day_nonexistent_last_time_nanos(std::chrono::nanoseconds& nanos_of_second);
+static inline void resolve_day_nonexistent_ymd_first_day(date::year_month_day& ymd);
+static inline void resolve_day_nonexistent_yqd_first_day(fiscal_year::year_quarter_day& yqd);
+static inline void resolve_day_nonexistent_tod_first_time(std::chrono::seconds& tod);
+static inline void resolve_day_nonexistent_nanos_first_time(std::chrono::nanoseconds& nanos_of_second);
+static inline void resolve_day_nonexistent_ymd_last_day(date::year_month_day& ymd);
+static inline void resolve_day_nonexistent_yqd_last_day(fiscal_year::year_quarter_day& yqd);
+static inline void resolve_day_nonexistent_tod_last_time(std::chrono::seconds& tod);
+static inline void resolve_day_nonexistent_nanos_last_time(std::chrono::nanoseconds& nanos_of_second);
 static inline void resolve_day_nonexistent_na(bool& na);
 static inline void resolve_day_nonexistent_error(const r_ssize& i);
 
@@ -23,16 +25,42 @@ static inline void resolve_day_nonexistent_ymd(const r_ssize& i,
                                                bool& na) {
   switch (day_nonexistent_val) {
   case day_nonexistent::first_day: {
-    return resolve_day_nonexistent_first_day(ymd);
+    return resolve_day_nonexistent_ymd_first_day(ymd);
   }
   case day_nonexistent::first_time: {
-    return resolve_day_nonexistent_first_day(ymd);
+    return resolve_day_nonexistent_ymd_first_day(ymd);
   }
   case day_nonexistent::last_day: {
-    return resolve_day_nonexistent_last_day(ymd);
+    return resolve_day_nonexistent_ymd_last_day(ymd);
   }
   case day_nonexistent::last_time: {
-    return resolve_day_nonexistent_last_day(ymd);
+    return resolve_day_nonexistent_ymd_last_day(ymd);
+  }
+  case day_nonexistent::na: {
+    return resolve_day_nonexistent_na(na);
+  }
+  case day_nonexistent::error: {
+    resolve_day_nonexistent_error(i);
+  }
+  }
+}
+
+static inline void resolve_day_nonexistent_yqd(const r_ssize& i,
+                                               const enum day_nonexistent& day_nonexistent_val,
+                                               fiscal_year::year_quarter_day& yqd,
+                                               bool& na) {
+  switch (day_nonexistent_val) {
+  case day_nonexistent::first_day: {
+    return resolve_day_nonexistent_yqd_first_day(yqd);
+  }
+  case day_nonexistent::first_time: {
+    return resolve_day_nonexistent_yqd_first_day(yqd);
+  }
+  case day_nonexistent::last_day: {
+    return resolve_day_nonexistent_yqd_last_day(yqd);
+  }
+  case day_nonexistent::last_time: {
+    return resolve_day_nonexistent_yqd_last_day(yqd);
   }
   case day_nonexistent::na: {
     return resolve_day_nonexistent_na(na);
@@ -47,10 +75,10 @@ static inline void resolve_day_nonexistent_tod(const enum day_nonexistent& day_n
                                                std::chrono::seconds& tod) {
   switch (day_nonexistent_val) {
   case day_nonexistent::first_time: {
-    return resolve_day_nonexistent_first_time(tod);
+    return resolve_day_nonexistent_tod_first_time(tod);
   }
   case day_nonexistent::last_time: {
-    return resolve_day_nonexistent_last_time(tod);
+    return resolve_day_nonexistent_tod_last_time(tod);
   }
   case day_nonexistent::first_day:
   case day_nonexistent::last_day:
@@ -65,10 +93,10 @@ static inline void resolve_day_nonexistent_nanos_of_second(const enum day_nonexi
                                                            std::chrono::nanoseconds& nanos_of_second) {
   switch (day_nonexistent_val) {
   case day_nonexistent::first_time: {
-    return resolve_day_nonexistent_first_time_nanos(nanos_of_second);
+    return resolve_day_nonexistent_nanos_first_time(nanos_of_second);
   }
   case day_nonexistent::last_time: {
-    return resolve_day_nonexistent_last_time_nanos(nanos_of_second);
+    return resolve_day_nonexistent_nanos_last_time(nanos_of_second);
   }
   case day_nonexistent::first_day:
   case day_nonexistent::last_day:
@@ -79,23 +107,29 @@ static inline void resolve_day_nonexistent_nanos_of_second(const enum day_nonexi
   }
 }
 
-static inline void resolve_day_nonexistent_first_day(date::year_month_day& ymd) {
+static inline void resolve_day_nonexistent_ymd_first_day(date::year_month_day& ymd) {
   ymd = ymd.year() / (ymd.month() + date::months(1)) / date::day(1);
 }
-static inline void resolve_day_nonexistent_first_time(std::chrono::seconds& tod) {
+static inline void resolve_day_nonexistent_yqd_first_day(fiscal_year::year_quarter_day& yqd) {
+  yqd = {yqd.year(), (yqd.quarter() + fiscal_year::quarters(1)), fiscal_year::day(1u), yqd.fiscal_start()};
+}
+static inline void resolve_day_nonexistent_tod_first_time(std::chrono::seconds& tod) {
   tod = std::chrono::seconds{0};
 }
-static inline void resolve_day_nonexistent_first_time_nanos(std::chrono::nanoseconds& nanos_of_second) {
+static inline void resolve_day_nonexistent_nanos_first_time(std::chrono::nanoseconds& nanos_of_second) {
   nanos_of_second = std::chrono::nanoseconds{0};
 }
 
-static inline void resolve_day_nonexistent_last_day(date::year_month_day& ymd) {
+static inline void resolve_day_nonexistent_ymd_last_day(date::year_month_day& ymd) {
   ymd = ymd.year() / ymd.month() / date::last;
 }
-static inline void resolve_day_nonexistent_last_time(std::chrono::seconds& tod) {
+static inline void resolve_day_nonexistent_yqd_last_day(fiscal_year::year_quarter_day& yqd) {
+  yqd = fiscal_year::year_quarter_day_last{yqd.year(), yqd.quarter(), yqd.fiscal_start()};
+}
+static inline void resolve_day_nonexistent_tod_last_time(std::chrono::seconds& tod) {
   tod = std::chrono::seconds{86400 - 1};
 }
-static inline void resolve_day_nonexistent_last_time_nanos(std::chrono::nanoseconds& nanos_of_second) {
+static inline void resolve_day_nonexistent_nanos_last_time(std::chrono::nanoseconds& nanos_of_second) {
   nanos_of_second = std::chrono::nanoseconds{999999999};
 }
 
@@ -143,6 +177,45 @@ static inline void convert_year_month_day_to_days_one(const r_ssize& i,
   }
 
   date::local_days out_lday{ymd};
+  p_days[i] = out_lday.time_since_epoch().count();
+}
+
+// -----------------------------------------------------------------------------
+
+static inline void convert_year_quarter_day_to_days_one(const r_ssize& i,
+                                                        const enum day_nonexistent& day_nonexistent_val,
+                                                        fiscal_year::year_quarter_day& yqd,
+                                                        int* p_days,
+                                                        int* p_time_of_day,
+                                                        int* p_nanos_of_second) {
+  // Simple case - convert to local_days, no changes to time-of-day
+  if (yqd.ok()) {
+    date::local_days out_lday{yqd};
+    p_days[i] = out_lday.time_since_epoch().count();
+    return;
+  }
+
+  bool na = false;
+  resolve_day_nonexistent_yqd(i, day_nonexistent_val, yqd, na);
+
+  if (na) {
+    civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+    return;
+  }
+
+  if (p_time_of_day != NULL) {
+    std::chrono::seconds elt_tod{p_time_of_day[i]};
+    resolve_day_nonexistent_tod(day_nonexistent_val, elt_tod);
+    p_time_of_day[i] = elt_tod.count();
+  }
+
+  if (p_nanos_of_second != NULL) {
+    std::chrono::nanoseconds elt_nanos_of_second{p_nanos_of_second[i]};
+    resolve_day_nonexistent_nanos_of_second(day_nonexistent_val, elt_nanos_of_second);
+    p_nanos_of_second[i] = elt_nanos_of_second.count();
+  }
+
+  date::local_days out_lday{yqd};
   p_days[i] = out_lday.time_since_epoch().count();
 }
 

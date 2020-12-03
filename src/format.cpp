@@ -44,7 +44,7 @@ cpp11::writable::strings format_civil_rcrd_cpp(const civil_field& days,
                                                const civil_field& nanos_of_second,
                                                const cpp11::strings& zone,
                                                const cpp11::strings& format,
-                                               const bool& local,
+                                               const bool& naive,
                                                const bool& nano,
                                                const bool& abbreviate_zone) {
   r_ssize size = days.size();
@@ -68,7 +68,7 @@ cpp11::writable::strings format_civil_rcrd_cpp(const civil_field& days,
   std::string zone_name_print;
   std::string* p_zone_name_print = nullptr;
 
-  if (!local) {
+  if (!naive) {
     // If zoned, default printable zone name to full provided zone name
     zone_name_print = (zone_name.size() == 0) ? zone_name_current() : zone_name;
     p_zone_name_print = &zone_name_print;
@@ -90,7 +90,7 @@ cpp11::writable::strings format_civil_rcrd_cpp(const civil_field& days,
     date::local_days elt_lday;
     std::chrono::seconds elt_ltod;
 
-    if (local) {
+    if (naive) {
       elt_lday = date::local_days{date::days{elt_days}};
       elt_ltod = std::chrono::seconds{elt_time_of_day};
     } else {

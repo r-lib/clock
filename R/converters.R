@@ -143,3 +143,17 @@ convert_nano_datetime_fields_from_local_to_zoned <- function(days,
     size = size
   )
 }
+
+# ------------------------------------------------------------------------------
+
+convert_fiscal_year_quarter_day_to_local_days <- function(year,
+                                                          quarter,
+                                                          day,
+                                                          fiscal_start,
+                                                          day_nonexistent) {
+  convert_fiscal_year_quarter_day_to_local_days_cpp(year, quarter, day, fiscal_start, day_nonexistent)
+}
+
+convert_local_days_to_fiscal_year_quarter_day <- function(days, fiscal_start) {
+  convert_local_days_to_fiscal_year_quarter_day_cpp(days, fiscal_start)
+}

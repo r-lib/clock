@@ -10,7 +10,7 @@ zoned_datetime <- function(year,
                            day_nonexistent = "last-time",
                            dst_nonexistent = "roll-forward",
                            dst_ambiguous = "earliest") {
-  out <- local_datetime(
+  out <- naive_datetime(
     year = year,
     month = month,
     day = day,
@@ -50,12 +50,12 @@ new_zoned_datetime <- function(days = integer(),
     time_of_day = time_of_day
   )
 
-  new_zoned(
+  new_zoned_gregorian(
     fields,
     zone = zone,
     ...,
     names = names,
-    class = "civil_zoned_datetime"
+    class = "civil_zoned_gregorian_datetime"
   )
 }
 
@@ -69,12 +69,12 @@ new_zoned_datetime_from_fields <- function(fields, zone, names = NULL) {
 }
 
 #' @export
-vec_proxy.civil_zoned_datetime <- function(x, ...) {
+vec_proxy.civil_zoned_gregorian_datetime <- function(x, ...) {
   proxy_civil_rcrd(x)
 }
 
 #' @export
-vec_restore.civil_zoned_datetime <- function(x, to, ...) {
+vec_restore.civil_zoned_gregorian_datetime <- function(x, to, ...) {
   fields <- restore_civil_rcrd_fields(x)
   names <- restore_civil_rcrd_names(x)
   zone <- zoned_zone(to)
@@ -82,15 +82,15 @@ vec_restore.civil_zoned_datetime <- function(x, to, ...) {
 }
 
 #' @export
-vec_proxy_equal.civil_zoned_datetime <- function(x, ...) {
+vec_proxy_equal.civil_zoned_gregorian_datetime <- function(x, ...) {
   proxy_equal_civil_rcrd(x)
 }
 
 #' @export
-format.civil_zoned_datetime <- function(x,
-                                        ...,
-                                        format = fmt_zoned_datetime(),
-                                        abbreviate_zone = FALSE) {
+format.civil_zoned_gregorian_datetime <- function(x,
+                                                  ...,
+                                                  format = fmt_zoned_datetime(),
+                                                  abbreviate_zone = FALSE) {
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
 
@@ -110,7 +110,7 @@ format.civil_zoned_datetime <- function(x,
 }
 
 #' @export
-obj_print_data.civil_zoned_datetime <- function(x, ...) {
+obj_print_data.civil_zoned_gregorian_datetime <- function(x, ...) {
   # Default format() for zoned datetimes uses the zone name.
   # While this is good for a purely textual representation, it is
   # repetitive here since the `obj_print_header()` data has the time zone name.
@@ -119,7 +119,7 @@ obj_print_data.civil_zoned_datetime <- function(x, ...) {
 }
 
 # @export - lazy in .onLoad()
-pillar_shaft.civil_zoned_datetime <- function(x, ...) {
+pillar_shaft.civil_zoned_gregorian_datetime <- function(x, ...) {
   # Tibble header will already contain the time zone name
   format <- fmt_zoned_datetime(zone_name = FALSE)
   x <- format(x, format = format)
@@ -127,19 +127,19 @@ pillar_shaft.civil_zoned_datetime <- function(x, ...) {
 }
 
 #' @export
-vec_ptype_full.civil_zoned_datetime <- function(x, ...) {
+vec_ptype_full.civil_zoned_gregorian_datetime <- function(x, ...) {
   zone <- zoned_zone(x)
   zone <- pretty_zone(zone)
-  paste0("civil_datetime<", zone, ">")
+  paste0("zoned_datetime<", zone, ">")
 }
 
 #' @export
-vec_ptype_abbr.civil_zoned_datetime <- function(x, ...) {
+vec_ptype_abbr.civil_zoned_gregorian_datetime <- function(x, ...) {
   zone <- zoned_zone(x)
   zone <- pretty_zone(zone)
-  paste0("cvl_dttm<", zone, ">")
+  paste0("zoned_dttm<", zone, ">")
 }
 
 is_zoned_datetime <- function(x) {
-  inherits(x, "civil_zoned_datetime")
+  inherits(x, "civil_zoned_gregorian_datetime")
 }

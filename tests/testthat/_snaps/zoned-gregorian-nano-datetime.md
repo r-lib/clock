@@ -1,22 +1,22 @@
 # printing zoned-nano-datetime
 
-    <civil_nano_datetime<UTC>[1]>
+    <zoned_nano_datetime<UTC>[1]>
     [1] "2019-05-01 00:00:00.000000005+00:00"
 
 ---
 
-    <civil_nano_datetime<America/New_York>[1]>
+    <zoned_nano_datetime<America/New_York>[1]>
     [1] "2019-05-01 00:00:00.000000005-04:00"
 
 ---
 
-    <civil_nano_datetime<UTC>[3]>
+    <zoned_nano_datetime<UTC>[3]>
     [1] "2019-05-01 00:00:03.000000005+00:00" "2020-05-01 00:00:04.000000006+00:00"
     [3] NA                                   
 
 # printing zoned-nano-datetime - ambiguous time
 
-    <civil_nano_datetime<America/New_York>[2]>
+    <zoned_nano_datetime<America/New_York>[2]>
     [1] "1970-10-25 01:30:00.000000005-04:00" "1970-10-25 01:30:00.000000005-05:00"
 
 # format for zoned-nano-datetime has the zone name by default
@@ -39,7 +39,7 @@
 # printing in tibble columns is nice and doesn't use zone name
 
       x                                  
-      <cvl_nano_dttm<America/New_York>>  
+      <zoned_nano_dttm<America/New_York>>
     1 2019-01-01 00:00:00.000000000-05:00
     2 NA                                 
 

@@ -185,7 +185,7 @@ civil_writable_rcrd parse_zoned_datetime_cpp(const cpp11::strings& x,
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd parse_local_datetime_cpp(const cpp11::strings& x,
+civil_writable_rcrd parse_naive_datetime_cpp(const cpp11::strings& x,
                                              const cpp11::strings& format) {
   r_ssize c_size = x.size();
 

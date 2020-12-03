@@ -1,6 +1,8 @@
 #include "civil.h"
 #include "zone.h"
 
+// -----------------------------------------------------------------------------
+
 [[cpp11::register]]
 cpp11::writable::integers get_offset_cpp(const civil_field& days,
                                          const civil_field& time_of_day,

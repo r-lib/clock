@@ -361,11 +361,11 @@ Zoned arithmetic involves adding or subtracting units of time from a datetime
 that has a time zone attached. This means that all of the complexities of
 daylight savings time and nonexistent days have to be handled after each
 individual arithmetic operation. The alternative is
-\link[=civil-local-arithmetic]{local arithmetic}, which only deals with the
+\link[=civil-naive-arithmetic]{naive arithmetic}, which only deals with the
 complexities of time zones once after all arithmetic has been performed.
 
 Zoned arithmetic is usually fine for additions of singular units of time.
-If you want to add multiple periods, consider switching to local arithmetic.
+If you want to add multiple periods, consider switching to naive arithmetic.
 
 The following add \emph{periods} of time. Periods are units of time that do
 not have a fixed constant duration (i.e. a "month" may be 30 or 31 days).

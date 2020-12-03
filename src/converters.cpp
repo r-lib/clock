@@ -706,3 +706,95 @@ civil_writable_rcrd convert_sys_seconds_to_sys_days_and_time_of_day_cpp(const cp
 
   return out;
 }
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+civil_writable_field convert_fiscal_year_quarter_day_to_local_days_cpp(const cpp11::integers& year,
+                                                                       const cpp11::integers& quarter,
+                                                                       const cpp11::integers& day,
+                                                                       int fiscal_start,
+                                                                       const cpp11::strings& day_nonexistent) {
+  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
+
+  r_ssize size = year.size();
+
+  cpp11::writable::integers out(size);
+
+  check_range_fiscal_start(fiscal_start, "fiscal_start");
+  fiscal_year::fiscal_start start{static_cast<unsigned int>(fiscal_start)};
+
+  for (r_ssize i = 0; i < size; ++i) {
+    int elt_year = year[i];
+    int elt_quarter = quarter[i];
+    int elt_day = day[i];
+
+    if (elt_year == r_int_na || elt_quarter == r_int_na || elt_day == r_int_na) {
+      out[i] = r_int_na;
+      continue;
+    }
+
+    check_range_year(elt_year, "year");
+    check_range_quarter(elt_quarter, "quarter");
+    check_range_quarter_day(elt_day, "day");
+
+    fiscal_year::year_quarter_day elt_yqd{
+      fiscal_year::year{elt_year},
+      fiscal_year::quarter{static_cast<unsigned>(elt_quarter)},
+      fiscal_year::day{static_cast<unsigned>(elt_day)},
+      start
+    };
+
+    if (!elt_yqd.ok()) {
+      bool na = false;
+      resolve_day_nonexistent_yqd(i, day_nonexistent_val, elt_yqd, na);
+
+      if (na) {
+        out[i] = r_int_na;
+        continue;
+      }
+    }
+
+    date::local_days elt_lday{elt_yqd};
+
+    out[i] = elt_lday.time_since_epoch().count();
+  }
+
+  return out;
+}
+
+[[cpp11::register]]
+cpp11::writable::list_of<cpp11::writable::integers>
+convert_local_days_to_fiscal_year_quarter_day_cpp(const civil_field& days, int fiscal_start) {
+  r_ssize size = days.size();
+
+  cpp11::writable::integers out_year(size);
+  cpp11::writable::integers out_quarter(size);
+  cpp11::writable::integers out_day(size);
+
+  cpp11::writable::list out{out_year, out_quarter, out_day};
+  out.names() = {"year", "quarter", "day"};
+
+  check_range_fiscal_start(fiscal_start, "fiscal_start");
+  fiscal_year::fiscal_start fs{static_cast<unsigned int>(fiscal_start)};
+
+  for (r_ssize i = 0; i < size; ++i) {
+    int elt_days = days[i];
+
+    if (elt_days == r_int_na) {
+      out_year[i] = r_int_na;
+      out_quarter[i] = r_int_na;
+      out_day[i] = r_int_na;
+      continue;
+    }
+
+    date::local_days elt_lday{date::days{elt_days}};
+    fiscal_year::year_quarter_day elt_yqd(elt_lday, fs);
+
+    out_year[i] = static_cast<int>(elt_yqd.year());
+    out_quarter[i] = static_cast<unsigned int>(elt_yqd.quarter());
+    out_day[i] = static_cast<unsigned int>(elt_yqd.day());
+  }
+
+  return out;
+}

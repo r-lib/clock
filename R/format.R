@@ -1,10 +1,10 @@
-format_local_datetime <- function(days,
+format_naive_datetime <- function(days,
                                   time_of_day,
                                   format) {
   zone <- "UTC"
   nanos_of_second <- integer()
 
-  local <- TRUE
+  naive <- TRUE
   nano <- FALSE
   abbreviate_zone <- FALSE
 
@@ -14,7 +14,7 @@ format_local_datetime <- function(days,
     nanos_of_second = nanos_of_second,
     zone = zone,
     format = format,
-    local = local,
+    naive = naive,
     nano = nano,
     abbreviate_zone = abbreviate_zone
   )
@@ -27,7 +27,7 @@ format_zoned_datetime <- function(days,
                                   abbreviate_zone) {
   nanos_of_second <- integer()
 
-  local <- FALSE
+  naive <- FALSE
   nano <- FALSE
 
   format_civil_rcrd_cpp(
@@ -36,7 +36,7 @@ format_zoned_datetime <- function(days,
     nanos_of_second = nanos_of_second,
     zone = zone,
     format = format,
-    local = local,
+    naive = naive,
     nano = nano,
     abbreviate_zone = abbreviate_zone
   )
@@ -48,7 +48,7 @@ format_zoned_nano_datetime <- function(days,
                                        zone,
                                        format,
                                        abbreviate_zone) {
-  local <- FALSE
+  naive <- FALSE
   nano <- TRUE
 
   format_civil_rcrd_cpp(
@@ -57,20 +57,20 @@ format_zoned_nano_datetime <- function(days,
     nanos_of_second = nanos_of_second,
     zone = zone,
     format = format,
-    local = local,
+    naive = naive,
     nano = nano,
     abbreviate_zone = abbreviate_zone
   )
 }
 
-format_local_nano_datetime <- function(days,
+format_naive_nano_datetime <- function(days,
                                        time_of_day,
                                        nanos_of_second,
                                        zone,
                                        format) {
   zone <- "UTC"
 
-  local <- TRUE
+  naive <- TRUE
   nano <- TRUE
   abbreviate_zone <- FALSE
 
@@ -80,7 +80,7 @@ format_local_nano_datetime <- function(days,
     nanos_of_second = nanos_of_second,
     zone = zone,
     format = format,
-    local = local,
+    naive = naive,
     nano = nano,
     abbreviate_zone = abbreviate_zone
   )

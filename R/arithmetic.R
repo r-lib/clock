@@ -1,25 +1,25 @@
-#' Local date-time arithmetic
+#' Naive date-time arithmetic
 #'
 #' @description
-#' Local arithmetic involves adding or subtracting units of time from a datetime
+#' Naive arithmetic involves adding or subtracting units of time from a datetime
 #' that is independent of any time zone. This means that daylight savings time
-#' is never an issue while working with a local datetime. Usually, you will
-#' convert to a local datetime with [as_local()], perform multiple arithmetic
+#' is never an issue while working with a naive datetime. Usually, you will
+#' convert to a naive datetime with [as_naive()], perform multiple arithmetic
 #' operations or adjustments with it, then convert it back to a zoned datetime
 #' with [as_zoned()].
 #'
-#' Local arithmetic is usually appropriate when performing multiple arithmetic
+#' Naive arithmetic is usually appropriate when performing multiple arithmetic
 #' operations in a row (like adding a set of years, months, and days). The
 #' alternative is [zoned arithmetic][civil-zoned-arithmetic], which is simpler
 #' and more straightforward when you just need to perform a single operation
 #' (like just adding 3 months).
 #'
 #' @section Nonexistent Days:
-#' Local datetimes are unique because they are allowed to land on _nonexistent
+#' Naive datetimes are unique because they are allowed to land on _nonexistent
 #' days_. These might occur from adding 1 month to `"1971-01-29"`, which
 #' theoretically lands on `"1971-02-29"`, a nonexistent day. With zoned
 #' arithmetic, you are immediately forced to make a decision on how to handle
-#' this nonexistent day. With local arithmetic, that decision is delayed,
+#' this nonexistent day. With naive arithmetic, that decision is delayed,
 #' allowing you precise control over how to handle this case. As an example, you
 #' might choose to add 1 year to this nonexistent date, resulting in
 #' `"1972-02-29"`, which does exist due to it being a leap year. Or you might
@@ -36,11 +36,11 @@
 #'
 #' @inheritParams add_years.Date
 #'
-#' @param x `[local_date / local_datetime]`
+#' @param x `[civil_naive]`
 #'
-#'   A local date-time vector.
+#'   A naive date-time vector.
 #'
-#' @name civil-local-arithmetic
+#' @name civil-naive-arithmetic
 NULL
 
 #' Zoned date-time arithmetic
@@ -50,11 +50,11 @@ NULL
 #' that has a time zone attached. This means that all of the complexities of
 #' daylight savings time and nonexistent days have to be handled after each
 #' individual arithmetic operation. The alternative is
-#' [local arithmetic][civil-local-arithmetic], which only deals with the
+#' [naive arithmetic][civil-naive-arithmetic], which only deals with the
 #' complexities of time zones once after all arithmetic has been performed.
 #'
 #' Zoned arithmetic is usually fine for additions of singular units of time.
-#' If you want to add multiple periods, consider switching to local arithmetic.
+#' If you want to add multiple periods, consider switching to naive arithmetic.
 #'
 #' The following add _periods_ of time. Periods are units of time that do
 #' not have a fixed constant duration (i.e. a "month" may be 30 or 31 days).
@@ -192,19 +192,18 @@ NULL
 #' Date-time arithmetic
 #'
 #' @description
-#' Date-time arithmetic in civil is broken down into two types: zoned and local.
+#' Date-time arithmetic in civil is broken down into two types: zoned and naive.
 #' Each type is documented on its own help page.
 #'
 #' [Zoned][civil-zoned-arithmetic] dates have a time zone attached. The two
 #' base R classes, POSIXct and Date, implement zoned dates (Date is assumed to
 #' implicitly have a time zone of UTC).
 #'
-#' [Local][civil-local-arithmetic] dates are independent of a time zone. The
-#' two civil objects, local_date and local_datetime, implement local dates.
+#' [Naive][civil-naive-arithmetic] dates are independent of a time zone.
 #'
-#' @param x `[Date / POSIXct / POSIXlt / local_date / local_datetime]`
+#' @param x `[Date / POSIXct / POSIXlt]`
 #'
-#'   A zoned or local date-time vector.
+#'   A zoned or naive date-time vector.
 #'
 #' @param n `[integer]`
 #'
@@ -231,7 +230,7 @@ add_years.Date <- function(x,
                            n,
                            ...,
                            day_nonexistent = "last-time") {
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- add_years(x, n, ..., day_nonexistent = day_nonexistent)
   as.Date(out)
 }
@@ -245,7 +244,7 @@ add_years.POSIXt <- function(x,
                              dst_nonexistent = NULL,
                              dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- add_years(x, n, ..., day_nonexistent = day_nonexistent)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
@@ -261,17 +260,23 @@ add_years.civil_zoned <- function(x,
                                   dst_nonexistent = NULL,
                                   dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- add_years(x, n, ..., day_nonexistent = day_nonexistent)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
   as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-add_years.civil_local <- function(x, n, ..., day_nonexistent = "last-time") {
-  add_years_local_impl(x, n, ..., day_nonexistent = day_nonexistent)
+add_years.civil_naive_gregorian <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_years_gregorian_impl(x, n, ..., day_nonexistent = day_nonexistent)
+}
+
+#' @rdname civil-naive-arithmetic
+#' @export
+add_years.civil_naive_fiscal <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_years_fiscal_impl(x, n, ..., day_nonexistent = day_nonexistent)
 }
 
 # ------------------------------------------------------------------------------
@@ -307,10 +312,40 @@ subtract_years.POSIXt <- function(x,
 #' @export
 subtract_years.civil_zoned <- subtract_years.POSIXt
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-subtract_years.civil_local <- function(x, n, ..., day_nonexistent = "last-time") {
+subtract_years.civil_naive <- function(x, n, ..., day_nonexistent = "last-time") {
   add_years(x, -n, ..., day_nonexistent = day_nonexistent)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @rdname civil-arithmetic
+#' @export
+add_quarters <- function(x, n, ...) {
+  restrict_civil_supported(x)
+  UseMethod("add_quarters")
+}
+
+#' @rdname civil-naive-arithmetic
+#' @export
+add_quarters.civil_naive_fiscal <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_quarters_fiscal_impl(x, n, ..., day_nonexistent = day_nonexistent)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @rdname civil-arithmetic
+#' @export
+subtract_quarters <- function(x, n, ...) {
+  restrict_civil_supported(x)
+  UseMethod("subtract_quarters")
+}
+
+#' @rdname civil-naive-arithmetic
+#' @export
+subtract_quarters.civil_naive <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_quarters(x, -n, ..., day_nonexistent = day_nonexistent)
 }
 
 # ------------------------------------------------------------------------------
@@ -328,7 +363,7 @@ add_months.Date <- function(x,
                             n,
                             ...,
                             day_nonexistent = "last-time") {
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- add_months(x, n, ..., day_nonexistent = day_nonexistent)
   as.Date(out)
 }
@@ -342,7 +377,7 @@ add_months.POSIXt <- function(x,
                               dst_nonexistent = NULL,
                               dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- add_months(x, n, ..., day_nonexistent = day_nonexistent)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
@@ -358,17 +393,17 @@ add_months.civil_zoned <- function(x,
                                    dst_nonexistent = NULL,
                                    dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- add_months(x, n, ..., day_nonexistent = day_nonexistent)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
   as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-add_months.civil_local <- function(x, n, ..., day_nonexistent = "last-time") {
-  add_months_local_impl(x, n, ..., day_nonexistent = day_nonexistent)
+add_months.civil_naive_gregorian <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_months_gregorian_impl(x, n, ..., day_nonexistent = day_nonexistent)
 }
 
 # ------------------------------------------------------------------------------
@@ -404,9 +439,9 @@ subtract_months.POSIXt <- function(x,
 #' @export
 subtract_months.civil_zoned <- subtract_months.POSIXt
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-subtract_months.civil_local <- function(x, n, ..., day_nonexistent = "last-time") {
+subtract_months.civil_naive <- function(x, n, ..., day_nonexistent = "last-time") {
   add_months(x, -n, ..., day_nonexistent = day_nonexistent)
 }
 
@@ -447,9 +482,9 @@ add_years_and_months.POSIXt <- function(x,
 #' @export
 add_years_and_months.civil_zoned <- add_years_and_months.POSIXt
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-add_years_and_months.civil_local <- function(x, years, months, ..., day_nonexistent = "last-time") {
+add_years_and_months.civil_naive_gregorian <- function(x, years, months, ..., day_nonexistent = "last-time") {
   n <- convert_years_and_months_to_n(years, months)
   add_months(x, n, ..., day_nonexistent = day_nonexistent)
 }
@@ -506,9 +541,9 @@ subtract_years_and_months.POSIXt <- function(x,
 #' @export
 subtract_years_and_months.civil_zoned <- subtract_years_and_months.POSIXt
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-subtract_years_and_months.civil_local <- function(x, years, months, ..., day_nonexistent = "last-time") {
+subtract_years_and_months.civil_naive <- function(x, years, months, ..., day_nonexistent = "last-time") {
   add_years_and_months(x, -years, -months, ..., day_nonexistent = day_nonexistent)
 }
 
@@ -524,7 +559,7 @@ add_weeks <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_weeks.Date <- function(x, n, ...) {
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- add_weeks(x = x, n = n, ...)
   as.Date(out)
 }
@@ -537,7 +572,7 @@ add_weeks.POSIXt <- function(x,
                              dst_nonexistent = NULL,
                              dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- add_weeks(x, n, ...)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
@@ -552,17 +587,23 @@ add_weeks.civil_zoned <- function(x,
                                   dst_nonexistent = NULL,
                                   dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- add_weeks(x, n, ...)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
   as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-add_weeks.civil_local <- function(x, n, ...) {
-  add_weeks_local_impl(x, n, ...)
+add_weeks.civil_naive_gregorian <- function(x, n, ...) {
+  add_weeks_gregorian_impl(x, n, ...)
+}
+
+#' @rdname civil-naive-arithmetic
+#' @export
+add_weeks.civil_naive_fiscal <- function(x, n, ...) {
+  add_weeks_fiscal_impl(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -594,9 +635,9 @@ subtract_weeks.POSIXt <- function(x,
 #' @export
 subtract_weeks.civil_zoned <- subtract_weeks.POSIXt
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-subtract_weeks.civil_local <- function(x, n, ...) {
+subtract_weeks.civil_naive <- function(x, n, ...) {
   add_weeks(x, -n, ...)
 }
 
@@ -612,7 +653,7 @@ add_days <- function(x, n, ...) {
 #' @rdname civil-zoned-arithmetic
 #' @export
 add_days.Date <- function(x, n, ...) {
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- add_days(x = x, n = n, ...)
   as.Date(out)
 }
@@ -625,7 +666,7 @@ add_days.POSIXt <- function(x,
                             dst_nonexistent = NULL,
                             dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- add_days(x, n, ...)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
@@ -640,17 +681,23 @@ add_days.civil_zoned <- function(x,
                                  dst_nonexistent = NULL,
                                  dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- as_local(x)
+  x <- as_naive(x)
   out <- add_days(x, n, ...)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
   as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-add_days.civil_local <- function(x, n, ...) {
-  add_days_local_impl(x, n, ...)
+add_days.civil_naive_gregorian <- function(x, n, ...) {
+  add_days_gregorian_impl(x, n, ...)
+}
+
+#' @rdname civil-naive-arithmetic
+#' @export
+add_days.civil_naive_fiscal <- function(x, n, ...) {
+  add_days_fiscal_impl(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -682,9 +729,9 @@ subtract_days.POSIXt <- function(x,
 #' @export
 subtract_days.civil_zoned <- subtract_days.POSIXt
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-subtract_days.civil_local <- function(x, n, ...) {
+subtract_days.civil_naive <- function(x, n, ...) {
   add_days(x, -n, ...)
 }
 
@@ -713,10 +760,10 @@ add_hours.civil_zoned <- function(x, n, ...) {
   add_hours_zoned_impl(x, n, ...)
 }
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-add_hours.civil_local <- function(x, n, ...) {
-  add_hours_local_impl(x, n, ...)
+add_hours.civil_naive_gregorian <- function(x, n, ...) {
+  add_hours_gregorian_impl(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -742,9 +789,9 @@ subtract_hours.POSIXt <- subtract_hours.Date
 #' @export
 subtract_hours.civil_zoned <- subtract_hours.Date
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-subtract_hours.civil_local <- subtract_hours.Date
+subtract_hours.civil_naive <- subtract_hours.Date
 
 # ------------------------------------------------------------------------------
 
@@ -771,10 +818,10 @@ add_minutes.civil_zoned <- function(x, n, ...) {
   add_minutes_zoned_impl(x, n, ...)
 }
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-add_minutes.civil_local <- function(x, n, ...) {
-  add_minutes_local_impl(x, n, ...)
+add_minutes.civil_naive_gregorian <- function(x, n, ...) {
+  add_minutes_gregorian_impl(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -800,9 +847,9 @@ subtract_minutes.POSIXt <- subtract_minutes.Date
 #' @export
 subtract_minutes.civil_zoned <- subtract_minutes.Date
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-subtract_minutes.civil_local <- subtract_minutes.Date
+subtract_minutes.civil_naive <- subtract_minutes.Date
 
 # ------------------------------------------------------------------------------
 
@@ -829,10 +876,10 @@ add_seconds.civil_zoned <- function(x, n, ...) {
   add_seconds_zoned_impl(x, n, ...)
 }
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-add_seconds.civil_local <- function(x, n, ...) {
-  add_seconds_local_impl(x, n, ...)
+add_seconds.civil_naive_gregorian <- function(x, n, ...) {
+  add_seconds_gregorian_impl(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -858,9 +905,9 @@ subtract_seconds.POSIXt <- subtract_seconds.Date
 #' @export
 subtract_seconds.civil_zoned <- subtract_seconds.Date
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-subtract_seconds.civil_local <- subtract_seconds.Date
+subtract_seconds.civil_naive <- subtract_seconds.Date
 
 # ------------------------------------------------------------------------------
 
@@ -885,10 +932,10 @@ add_milliseconds.POSIXt <- add_milliseconds.Date
 #' @export
 add_milliseconds.civil_zoned <- add_milliseconds.Date
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-add_milliseconds.civil_local <- function(x, n, ...) {
-  add_milliseconds_local_impl(x, n, ...)
+add_milliseconds.civil_naive_gregorian <- function(x, n, ...) {
+  add_milliseconds_gregorian_impl(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -914,9 +961,9 @@ subtract_milliseconds.POSIXt <- subtract_milliseconds.Date
 #' @export
 subtract_milliseconds.civil_zoned <- subtract_milliseconds.Date
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-subtract_milliseconds.civil_local <- subtract_milliseconds.Date
+subtract_milliseconds.civil_naive <- subtract_milliseconds.Date
 
 # ------------------------------------------------------------------------------
 
@@ -941,10 +988,10 @@ add_microseconds.POSIXt <- add_microseconds.Date
 #' @export
 add_microseconds.civil_zoned <- add_microseconds.Date
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-add_microseconds.civil_local <- function(x, n, ...) {
-  add_microseconds_local_impl(x, n, ...)
+add_microseconds.civil_naive_gregorian <- function(x, n, ...) {
+  add_microseconds_gregorian_impl(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -970,9 +1017,9 @@ subtract_microseconds.POSIXt <- subtract_microseconds.Date
 #' @export
 subtract_microseconds.civil_zoned <- subtract_microseconds.Date
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-subtract_microseconds.civil_local <- subtract_microseconds.Date
+subtract_microseconds.civil_naive <- subtract_microseconds.Date
 
 # ------------------------------------------------------------------------------
 
@@ -997,10 +1044,10 @@ add_nanoseconds.POSIXt <- add_nanoseconds.Date
 #' @export
 add_nanoseconds.civil_zoned <- add_nanoseconds.Date
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-add_nanoseconds.civil_local <- function(x, n, ...) {
-  add_nanoseconds_local_impl(x, n, ...)
+add_nanoseconds.civil_naive_gregorian <- function(x, n, ...) {
+  add_nanoseconds_gregorian_impl(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -1026,48 +1073,49 @@ subtract_nanoseconds.POSIXt <- subtract_nanoseconds.Date
 #' @export
 subtract_nanoseconds.civil_zoned <- subtract_nanoseconds.Date
 
-#' @rdname civil-local-arithmetic
+#' @rdname civil-naive-arithmetic
 #' @export
-subtract_nanoseconds.civil_local <- subtract_nanoseconds.Date
+subtract_nanoseconds.civil_naive <- subtract_nanoseconds.Date
 
 # ------------------------------------------------------------------------------
 
-add_years_local_impl <- function(x, n, ..., day_nonexistent, unit) {
-  x <- promote_at_least_local_year(x)
-  add_years_or_months_local(x, n, ..., day_nonexistent = day_nonexistent, unit = "year")
+add_years_gregorian_impl <- function(x, n, ..., day_nonexistent, unit) {
+  x <- promote_at_least_year(x)
+  add_years_or_months_gregorian(x, n, ..., day_nonexistent = day_nonexistent, unit = "year")
 }
-add_months_local_impl <- function(x, n, ..., day_nonexistent, unit) {
-  x <- promote_at_least_local_year_month(x)
-  add_years_or_months_local(x, n, ..., day_nonexistent = day_nonexistent, unit = "month")
+add_months_gregorian_impl <- function(x, n, ..., day_nonexistent, unit) {
+  x <- promote_at_least_year_month(x)
+  add_years_or_months_gregorian(x, n, ..., day_nonexistent = day_nonexistent, unit = "month")
 }
 
-add_years_or_months_local <- function(x, n, ..., day_nonexistent, unit) {
+add_years_or_months_gregorian <- function(x, n, ..., day_nonexistent, unit) {
   check_dots_empty()
 
   n <- vec_cast(n, integer(), x_arg = "n")
   size <- vec_size_common(x = x, n = n)
 
-  add_years_or_months_local_cpp(x, n, day_nonexistent, unit, size)
+  add_years_or_months_gregorian_cpp(x, n, day_nonexistent, unit, size)
 }
 
 # ------------------------------------------------------------------------------
 
-add_weeks_local_impl <- function(x, n, ...) {
-  x <- promote_at_least_local_year_week(x)
-  add_weeks_or_days_local(x, n, ..., unit = "week")
+add_weeks_gregorian_impl <- function(x, n, ...) {
+  x <- promote_at_least_year_month_day(x)
+  add_weeks_or_days_gregorian(x, n, ..., unit = "week")
 }
-add_days_local_impl <- function(x, n, ...) {
-  x <- promote_at_least_local_date(x)
-  add_weeks_or_days_local(x, n, ..., unit = "day")
+add_days_gregorian_impl <- function(x, n, ...) {
+  x <- promote_at_least_year_month_day(x)
+  add_weeks_or_days_gregorian(x, n, ..., unit = "day")
 }
 
-add_weeks_or_days_local <- function(x, n, ..., unit) {
+add_weeks_or_days_gregorian <- function(x, n, ..., unit) {
   check_dots_empty()
 
   n <- vec_cast(n, integer(), x_arg = "n")
   size <- vec_size_common(x = x, n = n)
 
-  add_weeks_or_days_local_cpp(x, n, unit, size)
+  # Adding weeks/days is the same at the C++ level for fiscal/gregorian
+  add_weeks_or_days_cpp(x, n, unit, size)
 }
 
 # ------------------------------------------------------------------------------
@@ -1086,7 +1134,7 @@ add_hours_or_minutes_or_seconds_posixct <- function(x, n, ..., unit) {
   check_dots_empty()
 
   n <- vec_cast(n, integer(), x_arg = "n")
-  x <- promote_at_least_zoned_posixct(x)
+  x <- promote_at_least_posixct(x)
 
   # Check tidyverse recyclability
   vec_size_common(x = x, n = n)
@@ -1124,31 +1172,31 @@ add_hours_or_minutes_or_seconds_zoned <- function(x, n, ..., unit) {
 
   size <- vec_size_common(x = x, n = n)
 
-  # Zoned and Local sub-daily arithmetic are equivalent at the C++ level
+  # Zoned and Naive sub-daily arithmetic are equivalent at the C++ level
   add_hours_or_minutes_or_seconds_cpp(x, n, unit, size)
 }
 
 # ------------------------------------------------------------------------------
 
-add_hours_local_impl <- function(x, n, ...) {
-  add_hours_or_minutes_or_seconds_local(x, n, ..., unit = "hour")
+add_hours_gregorian_impl <- function(x, n, ...) {
+  add_hours_or_minutes_or_seconds_gregorian(x, n, ..., unit = "hour")
 }
-add_minutes_local_impl <- function(x, n, ...) {
-  add_hours_or_minutes_or_seconds_local(x, n, ..., unit = "minute")
+add_minutes_gregorian_impl <- function(x, n, ...) {
+  add_hours_or_minutes_or_seconds_gregorian(x, n, ..., unit = "minute")
 }
-add_seconds_local_impl <- function(x, n, ...) {
-  add_hours_or_minutes_or_seconds_local(x, n, ..., unit = "second")
+add_seconds_gregorian_impl <- function(x, n, ...) {
+  add_hours_or_minutes_or_seconds_gregorian(x, n, ..., unit = "second")
 }
 
-add_hours_or_minutes_or_seconds_local <- function(x, n, ..., unit) {
+add_hours_or_minutes_or_seconds_gregorian <- function(x, n, ..., unit) {
   check_dots_empty()
 
   n <- vec_cast(n, integer(), x_arg = "n")
   size <- vec_size_common(x = x, n = n)
 
-  x <- promote_at_least_local_datetime(x)
+  x <- promote_at_least_naive_datetime(x)
 
-  # Zoned and Local sub-daily arithmetic are equivalent at the C++ level
+  # Zoned and Naive sub-daily arithmetic are equivalent at the C++ level
   add_hours_or_minutes_or_seconds_cpp(x, n, unit, size)
 }
 
@@ -1172,32 +1220,74 @@ add_milliseconds_or_microseconds_or_nanoseconds_zoned <- function(x, n, ..., uni
 
   x <- promote_at_least_zoned_nano_datetime(x)
 
-  # Zoned and Local sub-daily arithmetic are equivalent at the C++ level
+  # Zoned and Naive sub-daily arithmetic are equivalent at the C++ level
   add_milliseconds_or_microseconds_or_nanoseconds_cpp(x, n, unit, size)
 }
 
 # ------------------------------------------------------------------------------
 
-add_milliseconds_local_impl <- function(x, n, ...) {
-  add_milliseconds_or_microseconds_or_nanoseconds_local(x, n, ..., unit = "millisecond")
+add_milliseconds_gregorian_impl <- function(x, n, ...) {
+  add_milliseconds_or_microseconds_or_nanoseconds_gregorian(x, n, ..., unit = "millisecond")
 }
-add_microseconds_local_impl <- function(x, n, ...) {
-  add_milliseconds_or_microseconds_or_nanoseconds_local(x, n, ..., unit = "microsecond")
+add_microseconds_gregorian_impl <- function(x, n, ...) {
+  add_milliseconds_or_microseconds_or_nanoseconds_gregorian(x, n, ..., unit = "microsecond")
 }
-add_nanoseconds_local_impl <- function(x, n, ...) {
-  add_milliseconds_or_microseconds_or_nanoseconds_local(x, n, ..., unit = "nanosecond")
+add_nanoseconds_gregorian_impl <- function(x, n, ...) {
+  add_milliseconds_or_microseconds_or_nanoseconds_gregorian(x, n, ..., unit = "nanosecond")
 }
 
-add_milliseconds_or_microseconds_or_nanoseconds_local <- function(x, n, ..., unit) {
+add_milliseconds_or_microseconds_or_nanoseconds_gregorian <- function(x, n, ..., unit) {
   check_dots_empty()
 
   n <- vec_cast(n, integer(), x_arg = "n")
   size <- vec_size_common(x = x, n = n)
 
-  x <- promote_at_least_local_nano_datetime(x)
+  x <- promote_at_least_naive_nano_datetime(x)
 
-  # Zoned and Local sub-daily arithmetic are equivalent at the C++ level
+  # Zoned and Naive sub-daily arithmetic are equivalent at the C++ level
   add_milliseconds_or_microseconds_or_nanoseconds_cpp(x, n, unit, size)
+}
+
+# ------------------------------------------------------------------------------
+
+add_years_fiscal_impl <- function(x, n, ..., day_nonexistent, unit) {
+  x <- promote_at_least_fiscal_year(x)
+  add_years_or_quarters_fiscal(x, n, ..., day_nonexistent = day_nonexistent, unit = "year")
+}
+add_quarters_fiscal_impl <- function(x, n, ..., day_nonexistent, unit) {
+  x <- promote_at_least_fiscal_year_quarter(x)
+  add_years_or_quarters_fiscal(x, n, ..., day_nonexistent = day_nonexistent, unit = "quarter")
+}
+
+add_years_or_quarters_fiscal <- function(x, n, ..., day_nonexistent, unit) {
+  check_dots_empty()
+
+  n <- vec_cast(n, integer(), x_arg = "n")
+  size <- vec_size_common(x = x, n = n)
+  fiscal_start <- get_fiscal_start(x)
+
+  add_years_or_quarters_fiscal_cpp(x, n, fiscal_start, day_nonexistent, unit, size)
+}
+
+# ------------------------------------------------------------------------------
+
+add_weeks_fiscal_impl <- function(x, n, ...) {
+  x <- promote_at_least_fiscal_year_quarter_day(x)
+  add_weeks_or_days_fiscal(x, n, ..., unit = "week")
+}
+add_days_fiscal_impl <- function(x, n, ...) {
+  x <- promote_at_least_fiscal_year_quarter_day(x)
+  add_weeks_or_days_fiscal(x, n, ..., unit = "day")
+}
+
+add_weeks_or_days_fiscal <- function(x, n, ..., unit) {
+  check_dots_empty()
+
+  n <- vec_cast(n, integer(), x_arg = "n")
+  size <- vec_size_common(x = x, n = n)
+
+  # Adding weeks/days is the same at the C++ level for fiscal/gregorian
+  add_weeks_or_days_cpp(x, n, unit, size)
 }
 
 # ------------------------------------------------------------------------------

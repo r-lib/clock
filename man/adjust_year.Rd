@@ -5,7 +5,8 @@
 \alias{adjust_year.Date}
 \alias{adjust_year.POSIXt}
 \alias{adjust_year.civil_zoned}
-\alias{adjust_year.civil_local}
+\alias{adjust_year.civil_naive_gregorian}
+\alias{adjust_year.civil_naive_fiscal}
 \title{Adjust the year}
 \usage{
 adjust_year(x, value, ...)
@@ -30,10 +31,12 @@ adjust_year(x, value, ...)
   dst_ambiguous = "earliest"
 )
 
-\method{adjust_year}{civil_local}(x, value, ..., day_nonexistent = "last-time")
+\method{adjust_year}{civil_naive_gregorian}(x, value, ..., day_nonexistent = "last-time")
+
+\method{adjust_year}{civil_naive_fiscal}(x, value, ..., day_nonexistent = "last-time")
 }
 \arguments{
-\item{x}{\verb{[Date / POSIXct / POSIXlt / local_datetime]}
+\item{x}{\verb{[Date / POSIXct / POSIXlt / civil]}
 
 A date-time vector.}
 

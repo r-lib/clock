@@ -1,5 +1,5 @@
 #' @export
-local_datetime <- function(year,
+naive_datetime <- function(year,
                            month = 1L,
                            day = 1L,
                            hour = 0L,
@@ -32,10 +32,10 @@ local_datetime <- function(year,
     day_nonexistent
   )
 
-  new_local_datetime_from_fields(fields)
+  new_naive_datetime_from_fields(fields)
 }
 
-new_local_datetime <- function(days = integer(),
+new_naive_datetime <- function(days = integer(),
                                time_of_day = integer(),
                                ...,
                                names = NULL) {
@@ -47,7 +47,7 @@ new_local_datetime <- function(days = integer(),
   }
 
   if (length(days) != length(time_of_day)) {
-    abort("All elements to `new_local_datetime()` must have the same length.")
+    abort("All elements to `new_naive_datetime()` must have the same length.")
   }
 
   fields <- list(
@@ -55,16 +55,16 @@ new_local_datetime <- function(days = integer(),
     time_of_day = time_of_day
   )
 
-  new_local(
+  new_naive_gregorian(
     fields,
     ...,
     names = names,
-    class = "civil_local_datetime"
+    class = "civil_naive_gregorian_datetime"
   )
 }
 
-new_local_datetime_from_fields <- function(fields, names = NULL) {
-  new_local_datetime(
+new_naive_datetime_from_fields <- function(fields, names = NULL) {
+  new_naive_datetime(
     days = fields$days,
     time_of_day = fields$time_of_day,
     names = names
@@ -72,30 +72,30 @@ new_local_datetime_from_fields <- function(fields, names = NULL) {
 }
 
 #' @export
-vec_proxy.civil_local_datetime <- function(x, ...) {
+vec_proxy.civil_naive_gregorian_datetime <- function(x, ...) {
   proxy_civil_rcrd(x)
 }
 
 #' @export
-vec_restore.civil_local_datetime <- function(x, to, ...) {
+vec_restore.civil_naive_gregorian_datetime <- function(x, to, ...) {
   fields <- restore_civil_rcrd_fields(x)
   names <- restore_civil_rcrd_names(x)
-  new_local_datetime_from_fields(fields, names)
+  new_naive_datetime_from_fields(fields, names)
 }
 
 #' @export
-vec_proxy_equal.civil_local_datetime <- function(x, ...) {
+vec_proxy_equal.civil_naive_gregorian_datetime <- function(x, ...) {
   proxy_equal_civil_rcrd(x)
 }
 
 #' @export
-format.civil_local_datetime <- function(x,
-                                        ...,
-                                        format = fmt_local_datetime()) {
+format.civil_naive_gregorian_datetime <- function(x,
+                                                  ...,
+                                                  format = fmt_naive_datetime()) {
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
 
-  out <- format_local_datetime(
+  out <- format_naive_datetime(
     days = days,
     time_of_day = time_of_day,
     format = format
@@ -107,15 +107,15 @@ format.civil_local_datetime <- function(x,
 }
 
 #' @export
-vec_ptype_full.civil_local_datetime <- function(x, ...) {
-  "civil_datetime"
+vec_ptype_full.civil_naive_gregorian_datetime <- function(x, ...) {
+  "naive_datetime"
 }
 
 #' @export
-vec_ptype_abbr.civil_local_datetime <- function(x, ...) {
-  "cvl_dttm"
+vec_ptype_abbr.civil_naive_gregorian_datetime <- function(x, ...) {
+  "naive_dttm"
 }
 
-is_local_datetime <- function(x) {
-  inherits(x, "civil_local_datetime")
+is_naive_datetime <- function(x) {
+  inherits(x, "civil_naive_gregorian_datetime")
 }

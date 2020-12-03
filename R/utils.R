@@ -108,7 +108,7 @@ days_to_date <- function(x, names = NULL) {
 # ------------------------------------------------------------------------------
 
 restrict_civil_supported <- function(x) {
-  if (is_local(x) || is_zoned_or_base(x)) {
+  if (is_naive(x) || is_zoned_or_base(x)) {
     invisible(x)
   } else {
     stop_civil_unsupported_class(x)
@@ -131,8 +131,8 @@ restrict_zoned <- function(x) {
   }
 }
 
-restrict_local <- function(x) {
-  if (is_local(x)) {
+restrict_naive <- function(x) {
+  if (is_naive(x)) {
     invisible(x)
   } else {
     stop_civil_unsupported_class(x)
@@ -196,6 +196,18 @@ paste_class <- function(x) {
 }
 
 # ------------------------------------------------------------------------------
+
+is_number <- function(x) {
+  if (length(x) != 1L) {
+    FALSE
+  } else if (typeof(x) != "integer") {
+    FALSE
+  } else if (is.na(x)) {
+    FALSE
+  } else {
+    TRUE
+  }
+}
 
 if_else <- function(condition, true, false, na = NULL) {
   vec_assert(condition, logical())

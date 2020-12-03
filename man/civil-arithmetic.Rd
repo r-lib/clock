@@ -4,6 +4,8 @@
 \alias{civil-arithmetic}
 \alias{add_years}
 \alias{subtract_years}
+\alias{add_quarters}
+\alias{subtract_quarters}
 \alias{add_months}
 \alias{subtract_months}
 \alias{add_years_and_months}
@@ -29,6 +31,10 @@
 add_years(x, n, ...)
 
 subtract_years(x, n, ...)
+
+add_quarters(x, n, ...)
+
+subtract_quarters(x, n, ...)
 
 add_months(x, n, ...)
 
@@ -71,9 +77,9 @@ add_nanoseconds(x, n, ...)
 subtract_nanoseconds(x, n, ...)
 }
 \arguments{
-\item{x}{\verb{[Date / POSIXct / POSIXlt / local_date / local_datetime]}
+\item{x}{\verb{[Date / POSIXct / POSIXlt]}
 
-A zoned or local date-time vector.}
+A zoned or naive date-time vector.}
 
 \item{n}{\verb{[integer]}
 
@@ -83,13 +89,12 @@ subtract from \code{x}.}
 \item{...}{These dots are for future extensions and must be empty.}
 }
 \description{
-Date-time arithmetic in civil is broken down into two types: zoned and local.
+Date-time arithmetic in civil is broken down into two types: zoned and naive.
 Each type is documented on its own help page.
 
 \link[=civil-zoned-arithmetic]{Zoned} dates have a time zone attached. The two
 base R classes, POSIXct and Date, implement zoned dates (Date is assumed to
 implicitly have a time zone of UTC).
 
-\link[=civil-local-arithmetic]{Local} dates are independent of a time zone. The
-two civil objects, local_date and local_datetime, implement local dates.
+\link[=civil-naive-arithmetic]{Naive} dates are independent of a time zone.
 }

@@ -12,10 +12,10 @@
 \alias{fmt_iso_week_date}
 \alias{fmt_iso_date}
 \alias{fmt_iso_datetime}
-\alias{fmt_local_year_month}
-\alias{fmt_local_date}
-\alias{fmt_local_datetime}
-\alias{fmt_local_nano_datetime}
+\alias{fmt_year_month}
+\alias{fmt_year_month_day}
+\alias{fmt_naive_datetime}
+\alias{fmt_naive_nano_datetime}
 \alias{fmt_zoned_datetime}
 \alias{fmt_zoned_nano_datetime}
 \title{Common date-time formats}
@@ -59,13 +59,13 @@ fmt_iso_date()
 
 fmt_iso_datetime()
 
-fmt_local_year_month()
+fmt_year_month()
 
-fmt_local_date()
+fmt_year_month_day()
 
-fmt_local_datetime()
+fmt_naive_datetime()
 
-fmt_local_nano_datetime()
+fmt_naive_nano_datetime()
 
 fmt_zoned_datetime(..., zone_name = TRUE)
 

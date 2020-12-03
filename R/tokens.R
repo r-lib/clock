@@ -20,7 +20,7 @@ tkns <- function(..., sep = "") {
 #' @description
 #' This page contains a number of tokens that can be used for date-time
 #' formatting through `format(format = )`. All tokens are supported for
-#' formatting a civil class (such as [local_date()] or [zoned_datetime()]).
+#' formatting a civil class (such as [year_month_day()] or [zoned_datetime()]).
 #' Most tokens are supported for formatting a POSIXct or Date, but some may
 #' be specific to the formatting implementation used by civil.
 #'
@@ -88,7 +88,7 @@ tkns <- function(..., sep = "") {
 #'
 #' # Formats created by tokens can be used in the format method of civil
 #' # classes and base R date-time classes
-#' x <- local_datetime(2019, 01, 01, 14, 30, 59)
+#' x <- naive_datetime(2019, 01, 01, 14, 30, 59)
 #' x
 #'
 #' format(x, format = hms)
@@ -543,25 +543,25 @@ fmt_iso_datetime <- function() {
 
 #' @rdname civil-formats
 #' @export
-fmt_local_year_month <- function() {
+fmt_year_month <- function() {
   fmt_ym()
 }
 
 #' @rdname civil-formats
 #' @export
-fmt_local_date <- function() {
+fmt_year_month_day <- function() {
   fmt_ymd()
 }
 
 #' @rdname civil-formats
 #' @export
-fmt_local_datetime <- function() {
+fmt_naive_datetime <- function() {
   fmt_ymd_hms()
 }
 
 #' @rdname civil-formats
 #' @export
-fmt_local_nano_datetime <- function() {
+fmt_naive_nano_datetime <- function() {
   fmt_ymd_hms()
 }
 

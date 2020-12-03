@@ -82,6 +82,7 @@ enum unit parse_unit(const cpp11::strings& x) {
   std::string string = x[0];
 
   if (string == "year") return unit::year;
+  if (string == "quarter") return unit::quarter;
   if (string == "month") return unit::month;
   if (string == "week") return unit::week;
   if (string == "day") return unit::day;
@@ -106,12 +107,14 @@ enum adjuster parse_adjuster(const cpp11::strings& x) {
   std::string string = x[0];
 
   if (string == "year") return adjuster::year;
+  if (string == "quarter") return adjuster::quarter;
   if (string == "month") return adjuster::month;
   if (string == "day") return adjuster::day;
   if (string == "hour") return adjuster::hour;
   if (string == "minute") return adjuster::minute;
   if (string == "second") return adjuster::second;
   if (string == "nanosecond") return adjuster::nanosecond;
+  if (string == "last_day_of_quarter") return adjuster::last_day_of_quarter;
   if (string == "last_day_of_month") return adjuster::last_day_of_month;
 
   civil_abort("'%s' is not a recognized `adjuster` option.", string.c_str());

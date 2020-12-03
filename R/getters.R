@@ -38,3 +38,72 @@ get_offset.civil_zoned <- function(x) {
 
   get_offset_cpp(days, time_of_day, zone)
 }
+
+# ------------------------------------------------------------------------------
+
+#' @export
+get_year <- function(x) {
+  restrict_civil_supported(x)
+  UseMethod("get_year")
+}
+
+#' @export
+get_year.Date <- function(x) {
+  x <- as_year_month_day(x)
+  get_year(x)
+}
+
+#' @export
+get_year.POSIXt <- function(x) {
+  x <- as_zoned_datetime(x)
+  get_year(x)
+}
+
+#' @export
+get_year.civil_naive_gregorian <- function(x) {
+  days <- field(x, "days")
+  ymd <- convert_local_days_to_year_month_day(days)
+  ymd$year
+}
+
+#' @export
+get_year.civil_naive_fiscal <- function(x) {
+  days <- field(x, "days")
+  fiscal_start <- get_fiscal_start(x)
+  yqd <- convert_local_days_to_fiscal_year_quarter_day(days, fiscal_start)
+  yqd$year
+}
+
+#' @export
+get_year.civil_zoned_gregorian <- function(x) {
+  x <- as_naive(x)
+  get_year(x)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+get_quarter <- function(x, ...) {
+  restrict_civil_supported(x)
+  UseMethod("get_quarter")
+}
+
+#' @export
+get_quarter.civil_rcrd <- function(x, ..., fiscal_start = 1L) {
+  x <- as_fiscal_year_quarter(x, fiscal_start = fiscal_start)
+  get_quarter(x, ...)
+}
+
+#' @export
+get_quarter.civil_naive_fiscal <- function(x, ...) {
+  days <- field(x, "days")
+  fiscal_start <- get_fiscal_start(x)
+  fiscal <- convert_local_days_to_fiscal_year_quarter_day(days, fiscal_start)
+  fiscal$quarter
+}
+
+#' @export
+get_quarter.Date <- get_quarter.civil_rcrd
+
+#' @export
+get_quarter.POSIXt <- get_quarter.civil_rcrd
