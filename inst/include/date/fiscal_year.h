@@ -1513,9 +1513,19 @@ year_quarter_day_last::day() const NOEXCEPT
 
     const fiscal_year::year_quarter yq{y_, q_, fs_};
     const date::year_month ym{yq};
+
+    date::year year = ym.year();
     const unsigned m = static_cast<unsigned>(ym.month()) - 1;
 
-    return ym.year().is_leap() ? q_day_leap[m] : q_day[m];
+    // Catch quarter containing months [12, 1, 2]
+    // In this case, the quarter start year isn't the one we want to check
+    // to see if it is a leap year, the next year is.
+    // This can happen with fs == {3, 6, 9, 12}
+    if (m == 11) {
+        ++year;
+    }
+
+    return year.is_leap() ? q_day_leap[m] : q_day[m];
 }
 
 CONSTCD11
