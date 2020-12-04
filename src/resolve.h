@@ -11,11 +11,13 @@
 static inline void resolve_day_nonexistent_ymd_first_day(date::year_month_day& ymd);
 template <fiscal_year::start S>
 static inline void resolve_day_nonexistent_yqd_first_day(fiscal_year::year_quarter_day<S>& yqd);
+static inline void resolve_day_nonexistent_yww_first_day(iso_week::year_weeknum_weekday& yww);
 static inline void resolve_day_nonexistent_tod_first_time(std::chrono::seconds& tod);
 static inline void resolve_day_nonexistent_nanos_first_time(std::chrono::nanoseconds& nanos_of_second);
 static inline void resolve_day_nonexistent_ymd_last_day(date::year_month_day& ymd);
 template <fiscal_year::start S>
 static inline void resolve_day_nonexistent_yqd_last_day(fiscal_year::year_quarter_day<S>& yqd);
+static inline void resolve_day_nonexistent_yww_last_day(iso_week::year_weeknum_weekday& yww);
 static inline void resolve_day_nonexistent_tod_last_time(std::chrono::seconds& tod);
 static inline void resolve_day_nonexistent_nanos_last_time(std::chrono::nanoseconds& nanos_of_second);
 static inline void resolve_day_nonexistent_na(bool& na);
@@ -74,6 +76,32 @@ static inline void resolve_day_nonexistent_yqd(const r_ssize& i,
   }
 }
 
+static inline void resolve_day_nonexistent_yww(const r_ssize& i,
+                                               const enum day_nonexistent& day_nonexistent_val,
+                                               iso_week::year_weeknum_weekday& yww,
+                                               bool& na) {
+  switch (day_nonexistent_val) {
+  case day_nonexistent::first_day: {
+    return resolve_day_nonexistent_yww_first_day(yww);
+  }
+  case day_nonexistent::first_time: {
+    return resolve_day_nonexistent_yww_first_day(yww);
+  }
+  case day_nonexistent::last_day: {
+    return resolve_day_nonexistent_yww_last_day(yww);
+  }
+  case day_nonexistent::last_time: {
+    return resolve_day_nonexistent_yww_last_day(yww);
+  }
+  case day_nonexistent::na: {
+    return resolve_day_nonexistent_na(na);
+  }
+  case day_nonexistent::error: {
+    resolve_day_nonexistent_error(i);
+  }
+  }
+}
+
 static inline void resolve_day_nonexistent_tod(const enum day_nonexistent& day_nonexistent_val,
                                                std::chrono::seconds& tod) {
   switch (day_nonexistent_val) {
@@ -111,11 +139,14 @@ static inline void resolve_day_nonexistent_nanos_of_second(const enum day_nonexi
 }
 
 static inline void resolve_day_nonexistent_ymd_first_day(date::year_month_day& ymd) {
-  ymd = ymd.year() / (ymd.month() + date::months(1)) / date::day(1);
+  ymd = ((ymd.year() / ymd.month()) + date::months(1)) / date::day(1);
 }
 template <fiscal_year::start S>
 static inline void resolve_day_nonexistent_yqd_first_day(fiscal_year::year_quarter_day<S>& yqd) {
   yqd = ((yqd.year() / yqd.quarter()) + fiscal_year::quarters(1)) / fiscal_year::day{1u};
+}
+static inline void resolve_day_nonexistent_yww_first_day(iso_week::year_weeknum_weekday& yww) {
+  yww = (yww.year() + iso_week::years{1}) / iso_week::weeknum{1} / iso_week::mon;
 }
 static inline void resolve_day_nonexistent_tod_first_time(std::chrono::seconds& tod) {
   tod = std::chrono::seconds{0};
@@ -130,6 +161,9 @@ static inline void resolve_day_nonexistent_ymd_last_day(date::year_month_day& ym
 template <fiscal_year::start S>
 static inline void resolve_day_nonexistent_yqd_last_day(fiscal_year::year_quarter_day<S>& yqd) {
   yqd = yqd.year() / yqd.quarter() / fiscal_year::last;
+}
+static inline void resolve_day_nonexistent_yww_last_day(iso_week::year_weeknum_weekday& yww) {
+  yww = yww.year() / iso_week::last / iso_week::sun;
 }
 static inline void resolve_day_nonexistent_tod_last_time(std::chrono::seconds& tod) {
   tod = std::chrono::seconds{86400 - 1};

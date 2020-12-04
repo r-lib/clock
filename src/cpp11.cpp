@@ -158,6 +158,13 @@ extern "C" SEXP _civil_convert_naive_days_to_fiscal_year_quarter_day_cpp(SEXP da
     return cpp11::as_sexp(convert_naive_days_to_fiscal_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(days), cpp11::as_cpp<cpp11::decay_t<int>>(fiscal_start)));
   END_CPP11
 }
+// converters.cpp
+civil_writable_field convert_iso_year_weeknum_weekday_to_naive_days(const cpp11::integers& year, const cpp11::integers& weeknum, const cpp11::integers& weekday, const cpp11::strings& day_nonexistent);
+extern "C" SEXP _civil_convert_iso_year_weeknum_weekday_to_naive_days(SEXP year, SEXP weeknum, SEXP weekday, SEXP day_nonexistent) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(convert_iso_year_weeknum_weekday_to_naive_days(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(weeknum), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(weekday), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent)));
+  END_CPP11
+}
 // floor.cpp
 civil_writable_field floor_days_to_year_month_precision_cpp(const civil_field& days);
 extern "C" SEXP _civil_floor_days_to_year_month_precision_cpp(SEXP days) {
@@ -238,6 +245,7 @@ extern SEXP _civil_civil_set_install(SEXP);
 extern SEXP _civil_convert_datetime_fields_from_naive_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_datetime_fields_from_zoned_to_naive_cpp(SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_fiscal_year_quarter_day_to_naive_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_convert_iso_year_weeknum_weekday_to_naive_days(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_naive_days_and_time_of_day_to_sys_seconds_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_naive_days_to_fiscal_year_quarter_day_cpp(SEXP, SEXP);
 extern SEXP _civil_convert_naive_days_to_year_month_day_cpp(SEXP);
@@ -271,6 +279,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_convert_datetime_fields_from_naive_to_zoned_cpp",                     (DL_FUNC) &_civil_convert_datetime_fields_from_naive_to_zoned_cpp,                     6},
     {"_civil_convert_datetime_fields_from_zoned_to_naive_cpp",                     (DL_FUNC) &_civil_convert_datetime_fields_from_zoned_to_naive_cpp,                     3},
     {"_civil_convert_fiscal_year_quarter_day_to_naive_days_cpp",                   (DL_FUNC) &_civil_convert_fiscal_year_quarter_day_to_naive_days_cpp,                   5},
+    {"_civil_convert_iso_year_weeknum_weekday_to_naive_days",                      (DL_FUNC) &_civil_convert_iso_year_weeknum_weekday_to_naive_days,                      4},
     {"_civil_convert_naive_days_and_time_of_day_to_sys_seconds_cpp",               (DL_FUNC) &_civil_convert_naive_days_and_time_of_day_to_sys_seconds_cpp,               6},
     {"_civil_convert_naive_days_to_fiscal_year_quarter_day_cpp",                   (DL_FUNC) &_civil_convert_naive_days_to_fiscal_year_quarter_day_cpp,                   2},
     {"_civil_convert_naive_days_to_year_month_day_cpp",                            (DL_FUNC) &_civil_convert_naive_days_to_year_month_day_cpp,                            1},

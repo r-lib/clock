@@ -88,6 +88,10 @@ convert_naive_days_to_fiscal_year_quarter_day_cpp <- function(days, fiscal_start
   .Call("_civil_convert_naive_days_to_fiscal_year_quarter_day_cpp", days, fiscal_start, PACKAGE = "civil")
 }
 
+convert_iso_year_weeknum_weekday_to_naive_days <- function(year, weeknum, weekday, day_nonexistent) {
+  .Call("_civil_convert_iso_year_weeknum_weekday_to_naive_days", year, weeknum, weekday, day_nonexistent, PACKAGE = "civil")
+}
+
 floor_days_to_year_month_precision_cpp <- function(days) {
   .Call("_civil_floor_days_to_year_month_precision_cpp", days, PACKAGE = "civil")
 }

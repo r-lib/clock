@@ -4,6 +4,7 @@
 // Include <date/> first to avoid hitting R's `length()` macro
 #include <date/date.h>
 #include <date/fiscal_year.h>
+#include <date/iso_week.h>
 #include <date/tz.h>
 
 // Include cpp11 next to avoid <Rinternals.h> being included before cpp11
