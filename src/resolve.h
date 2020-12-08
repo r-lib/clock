@@ -115,7 +115,7 @@ static inline void resolve_day_nonexistent_ymd_first_day(date::year_month_day& y
 }
 template <fiscal_year::start S>
 static inline void resolve_day_nonexistent_yqd_first_day(fiscal_year::year_quarter_day<S>& yqd) {
-  yqd = {yqd.year(), (yqd.quarter() + fiscal_year::quarters(1)), fiscal_year::day(1u)};
+  yqd = ((yqd.year() / yqd.quarter()) + fiscal_year::quarters(1)) / fiscal_year::day{1u};
 }
 static inline void resolve_day_nonexistent_tod_first_time(std::chrono::seconds& tod) {
   tod = std::chrono::seconds{0};
@@ -129,7 +129,7 @@ static inline void resolve_day_nonexistent_ymd_last_day(date::year_month_day& ym
 }
 template <fiscal_year::start S>
 static inline void resolve_day_nonexistent_yqd_last_day(fiscal_year::year_quarter_day<S>& yqd) {
-  yqd = fiscal_year::year_quarter_day_last<S>{yqd.year(), yqd.quarter()};
+  yqd = yqd.year() / yqd.quarter() / fiscal_year::last;
 }
 static inline void resolve_day_nonexistent_tod_last_time(std::chrono::seconds& tod) {
   tod = std::chrono::seconds{86400 - 1};
