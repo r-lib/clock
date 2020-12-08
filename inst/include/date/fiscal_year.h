@@ -267,6 +267,9 @@ CONSTCD11 year_quarter<S> operator+(const years& dy, const year_quarter<S>& yq) 
 template <start S>
 CONSTCD11 year_quarter<S> operator-(const year_quarter<S>& yq, const years& dy) NOEXCEPT;
 
+template <start S>
+CONSTCD11 quarters operator-(const year_quarter<S>& x, const year_quarter<S>& y) NOEXCEPT;
+
 template<class CharT, class Traits, start S>
 std::basic_ostream<CharT, Traits>&
 operator<<(std::basic_ostream<CharT, Traits>& os, const year_quarter<S>& yq);
@@ -1257,6 +1260,15 @@ year_quarter<S>
 operator-(const year_quarter<S>& yq, const years& dy) NOEXCEPT
 {
     return yq + -dy;
+}
+
+template <start S>
+CONSTCD11
+inline
+quarters
+operator-(const year_quarter<S>& x, const year_quarter<S>& y) NOEXCEPT
+{
+    return (x.year() - y.year()) + (x.quarter() - y.quarter());
 }
 
 template<class CharT, class Traits, start S>
