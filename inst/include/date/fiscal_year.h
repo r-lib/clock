@@ -1149,7 +1149,7 @@ CONSTCD14
 inline
 year_quarter<S>::operator date::year_month() const NOEXCEPT
 {
-    const unsigned char s = static_cast<unsigned char>(S) - 1;
+    CONSTDATA unsigned char s = static_cast<unsigned char>(S) - 1;
     const unsigned quarter = static_cast<unsigned>(q_) - 1;
     const unsigned fiscal_month = 3 * quarter;
 
@@ -1171,7 +1171,7 @@ inline
 year_quarter<S>
 year_quarter<S>::from_year_month(const date::year_month& ym) NOEXCEPT
 {
-    const unsigned char s = static_cast<unsigned char>(S) - 1;
+    CONSTDATA unsigned char s = static_cast<unsigned char>(S) - 1;
     const unsigned civil_month = static_cast<unsigned>(ym.month()) - 1;
 
     int year = static_cast<int>(ym.year());
