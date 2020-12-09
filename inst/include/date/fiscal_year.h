@@ -198,7 +198,6 @@ template <start S>
 class year
 {
     short y_;
-    static const start s_ = S;
 
 public:
     year<S>() = default;
@@ -938,7 +937,7 @@ inline
 fiscal_year::start
 year<S>::start() const NOEXCEPT
 {
-    return s_;
+    return S;
 }
 
 template <start S>
