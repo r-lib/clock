@@ -1547,7 +1547,12 @@ year_quarter_day_last<S>::day() const NOEXCEPT
         key -= 12;
     }
 
-    if (key <= 2 && y_.is_leap()) {
+    if (!q_.ok()) {
+        // If `!q_.ok()`, don't index into `days[]` to avoid OOB error.
+        // Instead, return the minimum of the possible "last day of quarter"
+        // days, as `year_month_day_last::day()` does.
+        return days[2];
+    } else if (key <= 2 && y_.is_leap()) {
         return days[key] + fiscal_year::days{1u};
     } else {
         return days[key];
