@@ -217,7 +217,7 @@ public:
 
     CONSTCD11 fiscal_year::start start() const NOEXCEPT;
 
-    CONSTCD14 bool is_leap() const NOEXCEPT;
+    CONSTCD11 bool is_leap() const NOEXCEPT;
 
     CONSTCD11 year<S> min() const NOEXCEPT;
     CONSTCD11 year<S> max() const NOEXCEPT;
@@ -947,13 +947,21 @@ year<S>::start() const NOEXCEPT
 }
 
 template <start S>
-CONSTCD14
+CONSTCD11
 inline
 bool
 year<S>::is_leap() const NOEXCEPT
 {
-    date::year year{s_ == start::february ? y_ - 1 : y_};
-    return year.is_leap();
+    return date::year{y_}.is_leap();
+}
+
+template <>
+CONSTCD11
+inline
+bool
+year<start::february>::is_leap() const NOEXCEPT
+{
+    return date::year{y_ - 1}.is_leap();
 }
 
 template <start S>
