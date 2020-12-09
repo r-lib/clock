@@ -1185,7 +1185,7 @@ year_quarter<S>::from_year_month(const date::year_month& ym) NOEXCEPT
 
     const unsigned quarter = static_cast<unsigned>(fiscal_month) / 3;
 
-    return {fiscal_year::year<S>{year}, fiscal_year::quarter{quarter + 1}};
+    return fiscal_year::year<S>{year} / fiscal_year::quarter{quarter + 1};
 }
 
 template <start S>
