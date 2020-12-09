@@ -261,7 +261,6 @@ public:
     year_quarter<S>() = default;
     CONSTCD11 year_quarter<S>(const fiscal_year::year<S>& y,
                               const fiscal_year::quarter& q) NOEXCEPT;
-    CONSTCD14 year_quarter<S>(const date::year_month& ym) NOEXCEPT;
 
     CONSTCD11 fiscal_year::year<S> year()    const NOEXCEPT;
     CONSTCD11 fiscal_year::quarter quarter() const NOEXCEPT;
@@ -272,11 +271,6 @@ public:
     CONSTCD14 year_quarter<S>& operator-=(const years& dy) NOEXCEPT;
 
     CONSTCD11 bool ok() const NOEXCEPT;
-
-    CONSTCD14 operator date::year_month() const NOEXCEPT;
-
-private:
-    static CONSTCD14 year_quarter<S> from_year_month(const date::year_month& ym) NOEXCEPT;
 };
 
 template <start S>
@@ -463,6 +457,7 @@ public:
     CONSTCD14 bool ok() const NOEXCEPT;
 
 private:
+    CONSTCD14 days to_days() const NOEXCEPT;
     static CONSTCD14 year_quarter_day<S> from_days(const days& dd) NOEXCEPT;
 };
 
@@ -1079,13 +1074,6 @@ year_quarter<S>::year_quarter(const fiscal_year::year<S>& y,
     {}
 
 template <start S>
-CONSTCD14
-inline
-year_quarter<S>::year_quarter(const date::year_month& ym) NOEXCEPT
-    : year_quarter<S>(from_year_month(ym))
-    {}
-
-template <start S>
 CONSTCD11
 inline
 bool
@@ -1150,50 +1138,6 @@ year_quarter<S>::operator-=(const years& dy) NOEXCEPT
 {
     *this = *this - dy;
     return *this;
-}
-
-template <start S>
-CONSTCD14
-inline
-year_quarter<S>::operator date::year_month() const NOEXCEPT
-{
-    CONSTDATA unsigned char s = static_cast<unsigned char>(S) - 1;
-    const unsigned quarter = static_cast<unsigned>(q_) - 1;
-    const unsigned fiscal_month = 3 * quarter;
-
-    int year = static_cast<int>(y_);
-    unsigned civil_month = s + fiscal_month;
-
-    if (civil_month > 11) {
-        civil_month -= 12;
-    } else if (s != 0) {
-        --year;
-    }
-
-    return date::year{year} / date::month{civil_month + 1};
-}
-
-template <start S>
-CONSTCD14
-inline
-year_quarter<S>
-year_quarter<S>::from_year_month(const date::year_month& ym) NOEXCEPT
-{
-    CONSTDATA unsigned char s = static_cast<unsigned char>(S) - 1;
-    const unsigned civil_month = static_cast<unsigned>(ym.month()) - 1;
-
-    int year = static_cast<int>(ym.year());
-    int fiscal_month = static_cast<int>(civil_month) - static_cast<int>(s);
-
-    if (fiscal_month < 0) {
-        fiscal_month += 12;
-    } else if (s != 0) {
-        ++year;
-    }
-
-    const unsigned quarter = static_cast<unsigned>(fiscal_month) / 3;
-
-    return fiscal_year::year<S>{year} / fiscal_year::quarter{quarter + 1};
 }
 
 template <start S>
@@ -1872,10 +1816,7 @@ CONSTCD14
 inline
 year_quarter_day<S>::operator sys_days() const NOEXCEPT
 {
-    const fiscal_year::year_quarter<S> yq{y_, q_};
-    const date::year_month ym_start{yq};
-    const date::year_month_day ymd_start{ym_start / date::day{1}};
-    return date::sys_days{ymd_start} + date::days{static_cast<unsigned>(d_) - 1};
+    return date::sys_days{to_days()};
 }
 
 template <start S>
@@ -1883,10 +1824,7 @@ CONSTCD14
 inline
 year_quarter_day<S>::operator local_days() const NOEXCEPT
 {
-    const fiscal_year::year_quarter<S> yq{y_, q_};
-    const date::year_month ym_start{yq};
-    const date::year_month_day ymd_start{ym_start / date::day{1}};
-    return date::local_days{ymd_start} + date::days{static_cast<unsigned>(d_) - 1};
+    return date::local_days{to_days()};
 }
 
 template <start S>
@@ -1901,21 +1839,68 @@ year_quarter_day<S>::ok() const NOEXCEPT
 template <start S>
 CONSTCD14
 inline
+days
+year_quarter_day<S>::to_days() const NOEXCEPT
+{
+    CONSTDATA unsigned char s = static_cast<unsigned char>(S) - 1;
+    const unsigned quarter = static_cast<unsigned>(q_) - 1;
+    const unsigned fiscal_month = 3 * quarter;
+
+    int year = static_cast<int>(y_);
+    unsigned civil_month = s + fiscal_month;
+
+    if (civil_month > 11) {
+        civil_month -= 12;
+    } else if (s != 0) {
+        --year;
+    }
+
+    const unsigned day = static_cast<unsigned>(d_) - 1;
+
+    const date::year_month_day quarter_start{
+        date::year{year} / date::month{civil_month + 1} / date::day{1}
+    };
+
+    const date::sys_days quarter_days{
+        date::sys_days{quarter_start} + date::days{day}
+    };
+
+    return days{quarter_days.time_since_epoch()};
+}
+
+template <start S>
+CONSTCD14
+inline
 year_quarter_day<S>
 year_quarter_day<S>::from_days(const days& dd) NOEXCEPT
 {
+    CONSTDATA unsigned char s = static_cast<unsigned char>(S) - 1;
+
     const date::sys_days dp{dd};
     const date::year_month_day ymd{dp};
 
-    const date::year_month ym{ymd.year() / ymd.month()};
-    const year_quarter<S> yq{ym};
+    const unsigned civil_month = static_cast<unsigned>(ymd.month()) - 1;
+
+    int year = static_cast<int>(ymd.year());
+    int fiscal_month = static_cast<int>(civil_month) - static_cast<int>(s);
+
+    if (fiscal_month < 0) {
+        fiscal_month += 12;
+    } else if (s != 0) {
+        ++year;
+    }
+
+    const unsigned quarter = static_cast<unsigned>(fiscal_month) / 3;
+
+    const fiscal_year::year_quarter_day<S> quarter_start{
+        fiscal_year::year<S>{year} / fiscal_year::quarter{quarter + 1} / fiscal_year::day{1u}
+    };
 
     // Find day of quarter as number of days from start of quarter
-    const fiscal_year::year_quarter_day<S> yqd_start{yq, fiscal_year::day{1u}};
-    const days dd_quarter = dp - sys_days{yqd_start};
-    const fiscal_year::day d{static_cast<unsigned>(dd_quarter.count()) + 1};
+    const days days = dp - sys_days{quarter_start};
+    const fiscal_year::day day{static_cast<unsigned>(days.count()) + 1};
 
-    return {yq, d};
+    return quarter_start.year() / quarter_start.quarter() / day;
 }
 
 template <start S>
