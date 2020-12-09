@@ -1581,34 +1581,34 @@ inline
 day
 year_quarter_day_last<S>::day() const NOEXCEPT
 {
-    CONSTDATA fiscal_year::day q_day[] = {
-        fiscal_year::day(90u), fiscal_year::day(89u), fiscal_year::day(92u),
-        fiscal_year::day(91u), fiscal_year::day(92u), fiscal_year::day(92u),
-        fiscal_year::day(92u), fiscal_year::day(92u), fiscal_year::day(91u),
-        fiscal_year::day(92u), fiscal_year::day(92u), fiscal_year::day(90u)
+    CONSTDATA unsigned s = static_cast<unsigned>(S) - 1;
+
+    CONSTDATA fiscal_year::day days[] = {
+        // [12, 1, 2]          [1, 2, 3]              [2, 3, 4]
+        fiscal_year::day(90u), fiscal_year::day(90u), fiscal_year::day(89u),
+        // [3, 4, 5]           [4, 5, 6]              [5, 6, 7]
+        fiscal_year::day(92u), fiscal_year::day(91u), fiscal_year::day(92u),
+        // [6, 7, 8]           [7, 8, 9]              [8, 9, 10]
+        fiscal_year::day(92u), fiscal_year::day(92u), fiscal_year::day(92u),
+        // [9, 10, 11]         [10, 11, 12]           [11, 12, 1]
+        fiscal_year::day(91u), fiscal_year::day(92u), fiscal_year::day(92u)
     };
-    CONSTDATA fiscal_year::day q_day_leap[] = {
-        fiscal_year::day(91u), fiscal_year::day(90u), fiscal_year::day(92u),
-        fiscal_year::day(91u), fiscal_year::day(92u), fiscal_year::day(92u),
-        fiscal_year::day(92u), fiscal_year::day(92u), fiscal_year::day(91u),
-        fiscal_year::day(92u), fiscal_year::day(92u), fiscal_year::day(91u)
-    };
 
-    const fiscal_year::year_quarter<S> yq{y_, q_};
-    const date::year_month ym{yq};
+    const unsigned quarter = static_cast<unsigned>(q_) - 1;
 
-    date::year year = ym.year();
-    const unsigned m = static_cast<unsigned>(ym.month()) - 1;
+    // Remap [Jan -> Dec] to [Dec -> Jan] to group quarters with February
+    unsigned key = (s == 12) ? 0 : s + 1;
 
-    // Catch quarter containing months [12, 1, 2]
-    // In this case, the quarter start year isn't the one we want to check
-    // to see if it is a leap year, the next year is.
-    // This can happen with fs == {3, 6, 9, 12}
-    if (m == 11) {
-        ++year;
+    key = key + 3 * quarter;
+    if (key > 11) {
+        key -= 12;
     }
 
-    return year.is_leap() ? q_day_leap[m] : q_day[m];
+    if (key <= 2 && y_.is_leap()) {
+        return days[key] + fiscal_year::days{1u};
+    } else {
+        return days[key];
+    }
 }
 
 template <start S>
