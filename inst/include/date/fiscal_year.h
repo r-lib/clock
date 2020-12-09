@@ -1869,7 +1869,7 @@ year_quarter_day<S>::to_days() const NOEXCEPT
         date::sys_days{quarter_start} + date::days{day}
     };
 
-    return days{quarter_days.time_since_epoch()};
+    return quarter_days.time_since_epoch();
 }
 
 template <start S>
