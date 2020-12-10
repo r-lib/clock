@@ -67,7 +67,7 @@ vec_proxy_equal.civil_naive_iso_year_weeknum_weekday <- function(x, ...) {
 #' @export
 format.civil_naive_iso_year_weeknum_weekday <- function(x,
                                                         ...,
-                                                        format = fmt_iso_week_date()) {
+                                                        format = fmt_iso_year_weeknum_weekday()) {
   x <- as_naive_datetime(x)
   format(x, ..., format = format)
 }
