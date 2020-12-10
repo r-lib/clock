@@ -9,11 +9,13 @@
 // -----------------------------------------------------------------------------
 
 static inline void resolve_day_nonexistent_ymd_first_day(date::year_month_day& ymd);
-static inline void resolve_day_nonexistent_yqd_first_day(fiscal_year::year_quarter_day& yqd);
+template <fiscal_year::start S>
+static inline void resolve_day_nonexistent_yqd_first_day(fiscal_year::year_quarter_day<S>& yqd);
 static inline void resolve_day_nonexistent_tod_first_time(std::chrono::seconds& tod);
 static inline void resolve_day_nonexistent_nanos_first_time(std::chrono::nanoseconds& nanos_of_second);
 static inline void resolve_day_nonexistent_ymd_last_day(date::year_month_day& ymd);
-static inline void resolve_day_nonexistent_yqd_last_day(fiscal_year::year_quarter_day& yqd);
+template <fiscal_year::start S>
+static inline void resolve_day_nonexistent_yqd_last_day(fiscal_year::year_quarter_day<S>& yqd);
 static inline void resolve_day_nonexistent_tod_last_time(std::chrono::seconds& tod);
 static inline void resolve_day_nonexistent_nanos_last_time(std::chrono::nanoseconds& nanos_of_second);
 static inline void resolve_day_nonexistent_na(bool& na);
@@ -45,9 +47,10 @@ static inline void resolve_day_nonexistent_ymd(const r_ssize& i,
   }
 }
 
+template <fiscal_year::start S>
 static inline void resolve_day_nonexistent_yqd(const r_ssize& i,
                                                const enum day_nonexistent& day_nonexistent_val,
-                                               fiscal_year::year_quarter_day& yqd,
+                                               fiscal_year::year_quarter_day<S>& yqd,
                                                bool& na) {
   switch (day_nonexistent_val) {
   case day_nonexistent::first_day: {
@@ -110,8 +113,9 @@ static inline void resolve_day_nonexistent_nanos_of_second(const enum day_nonexi
 static inline void resolve_day_nonexistent_ymd_first_day(date::year_month_day& ymd) {
   ymd = ymd.year() / (ymd.month() + date::months(1)) / date::day(1);
 }
-static inline void resolve_day_nonexistent_yqd_first_day(fiscal_year::year_quarter_day& yqd) {
-  yqd = {yqd.year(), (yqd.quarter() + fiscal_year::quarters(1)), fiscal_year::day(1u), yqd.fiscal_start()};
+template <fiscal_year::start S>
+static inline void resolve_day_nonexistent_yqd_first_day(fiscal_year::year_quarter_day<S>& yqd) {
+  yqd = ((yqd.year() / yqd.quarter()) + fiscal_year::quarters(1)) / fiscal_year::day{1u};
 }
 static inline void resolve_day_nonexistent_tod_first_time(std::chrono::seconds& tod) {
   tod = std::chrono::seconds{0};
@@ -123,8 +127,9 @@ static inline void resolve_day_nonexistent_nanos_first_time(std::chrono::nanosec
 static inline void resolve_day_nonexistent_ymd_last_day(date::year_month_day& ymd) {
   ymd = ymd.year() / ymd.month() / date::last;
 }
-static inline void resolve_day_nonexistent_yqd_last_day(fiscal_year::year_quarter_day& yqd) {
-  yqd = fiscal_year::year_quarter_day_last{yqd.year(), yqd.quarter(), yqd.fiscal_start()};
+template <fiscal_year::start S>
+static inline void resolve_day_nonexistent_yqd_last_day(fiscal_year::year_quarter_day<S>& yqd) {
+  yqd = yqd.year() / yqd.quarter() / fiscal_year::last;
 }
 static inline void resolve_day_nonexistent_tod_last_time(std::chrono::seconds& tod) {
   tod = std::chrono::seconds{86400 - 1};
@@ -182,9 +187,10 @@ static inline void convert_year_month_day_to_days_one(const r_ssize& i,
 
 // -----------------------------------------------------------------------------
 
+template <fiscal_year::start S>
 static inline void convert_year_quarter_day_to_days_one(const r_ssize& i,
                                                         const enum day_nonexistent& day_nonexistent_val,
-                                                        fiscal_year::year_quarter_day& yqd,
+                                                        fiscal_year::year_quarter_day<S>& yqd,
                                                         int* p_days,
                                                         int* p_time_of_day,
                                                         int* p_nanos_of_second) {

@@ -165,13 +165,6 @@ extern "C" SEXP _civil_floor_days_to_year_month_precision_cpp(SEXP days) {
     return cpp11::as_sexp(floor_days_to_year_month_precision_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(days)));
   END_CPP11
 }
-// floor.cpp
-civil_writable_field floor_days_to_year_quarter_precision_cpp(const civil_field& days, int fiscal_start);
-extern "C" SEXP _civil_floor_days_to_year_quarter_precision_cpp(SEXP days, SEXP fiscal_start) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(floor_days_to_year_quarter_precision_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(days), cpp11::as_cpp<cpp11::decay_t<int>>(fiscal_start)));
-  END_CPP11
-}
 // format.cpp
 cpp11::writable::strings format_civil_rcrd_cpp(const civil_field& days, const civil_field& time_of_day, const civil_field& nanos_of_second, const cpp11::strings& zone, const cpp11::strings& format, const bool& naive, const bool& nano, const bool& abbreviate_zone);
 extern "C" SEXP _civil_format_civil_rcrd_cpp(SEXP days, SEXP time_of_day, SEXP nanos_of_second, SEXP zone, SEXP format, SEXP naive, SEXP nano, SEXP abbreviate_zone) {
@@ -256,7 +249,6 @@ extern SEXP _civil_convert_year_month_day_hour_minute_second_nanos_to_naive_fiel
 extern SEXP _civil_convert_year_month_day_hour_minute_second_to_naive_fields_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_year_month_day_to_naive_fields(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_floor_days_to_year_month_precision_cpp(SEXP);
-extern SEXP _civil_floor_days_to_year_quarter_precision_cpp(SEXP, SEXP);
 extern SEXP _civil_format_civil_rcrd_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_get_offset_cpp(SEXP, SEXP, SEXP);
 extern SEXP _civil_parse_naive_datetime_cpp(SEXP, SEXP);
@@ -290,7 +282,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_convert_year_month_day_hour_minute_second_to_naive_fields_cpp",       (DL_FUNC) &_civil_convert_year_month_day_hour_minute_second_to_naive_fields_cpp,       7},
     {"_civil_convert_year_month_day_to_naive_fields",                              (DL_FUNC) &_civil_convert_year_month_day_to_naive_fields,                              4},
     {"_civil_floor_days_to_year_month_precision_cpp",                              (DL_FUNC) &_civil_floor_days_to_year_month_precision_cpp,                              1},
-    {"_civil_floor_days_to_year_quarter_precision_cpp",                            (DL_FUNC) &_civil_floor_days_to_year_quarter_precision_cpp,                            2},
     {"_civil_format_civil_rcrd_cpp",                                               (DL_FUNC) &_civil_format_civil_rcrd_cpp,                                               8},
     {"_civil_get_offset_cpp",                                                      (DL_FUNC) &_civil_get_offset_cpp,                                                      3},
     {"_civil_parse_naive_datetime_cpp",                                            (DL_FUNC) &_civil_parse_naive_datetime_cpp,                                            2},

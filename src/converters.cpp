@@ -709,20 +709,16 @@ civil_writable_rcrd convert_sys_seconds_to_sys_days_and_time_of_day_cpp(const cp
 
 // -----------------------------------------------------------------------------
 
-[[cpp11::register]]
-civil_writable_field convert_fiscal_year_quarter_day_to_naive_days_cpp(const cpp11::integers& year,
-                                                                       const cpp11::integers& quarter,
-                                                                       const cpp11::integers& day,
-                                                                       int fiscal_start,
-                                                                       const cpp11::strings& day_nonexistent) {
+template <fiscal_year::start S>
+static civil_writable_field convert_fiscal_year_quarter_day_to_naive_days(const cpp11::integers& year,
+                                                                          const cpp11::integers& quarter,
+                                                                          const cpp11::integers& day,
+                                                                          const cpp11::strings& day_nonexistent) {
   enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
 
   r_ssize size = year.size();
 
   cpp11::writable::integers out(size);
-
-  check_range_fiscal_start(fiscal_start, "fiscal_start");
-  fiscal_year::fiscal_start start{static_cast<unsigned int>(fiscal_start)};
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_year = year[i];
@@ -738,11 +734,10 @@ civil_writable_field convert_fiscal_year_quarter_day_to_naive_days_cpp(const cpp
     check_range_quarter(elt_quarter, "quarter");
     check_range_quarter_day(elt_day, "day");
 
-    fiscal_year::year_quarter_day elt_yqd{
-      fiscal_year::year{elt_year},
+    fiscal_year::year_quarter_day<S> elt_yqd{
+      fiscal_year::year<S>{elt_year},
       fiscal_year::quarter{static_cast<unsigned>(elt_quarter)},
-      fiscal_year::day{static_cast<unsigned>(elt_day)},
-      start
+      fiscal_year::day{static_cast<unsigned>(elt_day)}
     };
 
     if (!elt_yqd.ok()) {
@@ -764,8 +759,44 @@ civil_writable_field convert_fiscal_year_quarter_day_to_naive_days_cpp(const cpp
 }
 
 [[cpp11::register]]
+civil_writable_field convert_fiscal_year_quarter_day_to_naive_days_cpp(const cpp11::integers& year,
+                                                                       const cpp11::integers& quarter,
+                                                                       const cpp11::integers& day,
+                                                                       int fiscal_start,
+                                                                       const cpp11::strings& day_nonexistent) {
+  if (fiscal_start == 1) {
+    return convert_fiscal_year_quarter_day_to_naive_days<fiscal_year::start::january>(year, quarter, day, day_nonexistent);
+  } else if (fiscal_start == 2) {
+    return convert_fiscal_year_quarter_day_to_naive_days<fiscal_year::start::february>(year, quarter, day, day_nonexistent);
+  } else if (fiscal_start == 3) {
+    return convert_fiscal_year_quarter_day_to_naive_days<fiscal_year::start::march>(year, quarter, day, day_nonexistent);
+  } else if (fiscal_start == 4) {
+    return convert_fiscal_year_quarter_day_to_naive_days<fiscal_year::start::april>(year, quarter, day, day_nonexistent);
+  } else if (fiscal_start == 5) {
+    return convert_fiscal_year_quarter_day_to_naive_days<fiscal_year::start::may>(year, quarter, day, day_nonexistent);
+  } else if (fiscal_start == 6) {
+    return convert_fiscal_year_quarter_day_to_naive_days<fiscal_year::start::june>(year, quarter, day, day_nonexistent);
+  } else if (fiscal_start == 7) {
+    return convert_fiscal_year_quarter_day_to_naive_days<fiscal_year::start::july>(year, quarter, day, day_nonexistent);
+  } else if (fiscal_start == 8) {
+    return convert_fiscal_year_quarter_day_to_naive_days<fiscal_year::start::august>(year, quarter, day, day_nonexistent);
+  } else if (fiscal_start == 9) {
+    return convert_fiscal_year_quarter_day_to_naive_days<fiscal_year::start::september>(year, quarter, day, day_nonexistent);
+  } else if (fiscal_start == 10) {
+    return convert_fiscal_year_quarter_day_to_naive_days<fiscal_year::start::october>(year, quarter, day, day_nonexistent);
+  } else if (fiscal_start == 11) {
+    return convert_fiscal_year_quarter_day_to_naive_days<fiscal_year::start::november>(year, quarter, day, day_nonexistent);
+  } else if (fiscal_start == 12) {
+    return convert_fiscal_year_quarter_day_to_naive_days<fiscal_year::start::december>(year, quarter, day, day_nonexistent);
+  }
+
+  never_reached("convert_fiscal_year_quarter_day_to_naive_days_cpp");
+}
+
+template <fiscal_year::start S>
+static
 cpp11::writable::list_of<cpp11::writable::integers>
-convert_naive_days_to_fiscal_year_quarter_day_cpp(const civil_field& days, int fiscal_start) {
+convert_naive_days_to_fiscal_year_quarter_day(const civil_field& days) {
   r_ssize size = days.size();
 
   cpp11::writable::integers out_year(size);
@@ -774,9 +805,6 @@ convert_naive_days_to_fiscal_year_quarter_day_cpp(const civil_field& days, int f
 
   cpp11::writable::list out{out_year, out_quarter, out_day};
   out.names() = {"year", "quarter", "day"};
-
-  check_range_fiscal_start(fiscal_start, "fiscal_start");
-  fiscal_year::fiscal_start fs{static_cast<unsigned int>(fiscal_start)};
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_days = days[i];
@@ -789,7 +817,7 @@ convert_naive_days_to_fiscal_year_quarter_day_cpp(const civil_field& days, int f
     }
 
     date::local_days elt_lday{date::days{elt_days}};
-    fiscal_year::year_quarter_day elt_yqd(elt_lday, fs);
+    fiscal_year::year_quarter_day<S> elt_yqd(elt_lday);
 
     out_year[i] = static_cast<int>(elt_yqd.year());
     out_quarter[i] = static_cast<unsigned int>(elt_yqd.quarter());
@@ -797,4 +825,36 @@ convert_naive_days_to_fiscal_year_quarter_day_cpp(const civil_field& days, int f
   }
 
   return out;
+}
+
+[[cpp11::register]]
+cpp11::writable::list_of<cpp11::writable::integers>
+convert_naive_days_to_fiscal_year_quarter_day_cpp(const civil_field& days, int fiscal_start) {
+  if (fiscal_start == 1) {
+    return convert_naive_days_to_fiscal_year_quarter_day<fiscal_year::start::january>(days);
+  } else if (fiscal_start == 2) {
+    return convert_naive_days_to_fiscal_year_quarter_day<fiscal_year::start::february>(days);
+  } else if (fiscal_start == 3) {
+    return convert_naive_days_to_fiscal_year_quarter_day<fiscal_year::start::march>(days);
+  } else if (fiscal_start == 4) {
+    return convert_naive_days_to_fiscal_year_quarter_day<fiscal_year::start::april>(days);
+  } else if (fiscal_start == 5) {
+    return convert_naive_days_to_fiscal_year_quarter_day<fiscal_year::start::may>(days);
+  } else if (fiscal_start == 6) {
+    return convert_naive_days_to_fiscal_year_quarter_day<fiscal_year::start::june>(days);
+  } else if (fiscal_start == 7) {
+    return convert_naive_days_to_fiscal_year_quarter_day<fiscal_year::start::july>(days);
+  } else if (fiscal_start == 8) {
+    return convert_naive_days_to_fiscal_year_quarter_day<fiscal_year::start::august>(days);
+  } else if (fiscal_start == 9) {
+    return convert_naive_days_to_fiscal_year_quarter_day<fiscal_year::start::september>(days);
+  } else if (fiscal_start == 10) {
+    return convert_naive_days_to_fiscal_year_quarter_day<fiscal_year::start::october>(days);
+  } else if (fiscal_start == 11) {
+    return convert_naive_days_to_fiscal_year_quarter_day<fiscal_year::start::november>(days);
+  } else if (fiscal_start == 12) {
+    return convert_naive_days_to_fiscal_year_quarter_day<fiscal_year::start::december>(days);
+  }
+
+  never_reached("convert_naive_days_to_fiscal_year_quarter_day_cpp");
 }
