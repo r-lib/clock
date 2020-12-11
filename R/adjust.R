@@ -247,7 +247,7 @@ adjust_last_weeknum_of_year <- function(x, ...) {
 
 #' @export
 adjust_last_weeknum_of_year.civil_naive_iso <- function(x, ...) {
-  adjust_last_weeknum_of_year_iso_impl(x, value, ...)
+  adjust_last_weeknum_of_year_iso_impl(x, ...)
 }
 
 # ------------------------------------------------------------------------------
