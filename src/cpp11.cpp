@@ -32,6 +32,13 @@ extern "C" SEXP _civil_adjust_naive_fiscal_days_cpp(SEXP x, SEXP value, SEXP fis
     return cpp11::as_sexp(adjust_naive_fiscal_days_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(value), cpp11::as_cpp<cpp11::decay_t<const int&>>(fiscal_start), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(adjuster)));
   END_CPP11
 }
+// adjust.cpp
+civil_writable_rcrd adjust_naive_iso_days_cpp(const civil_rcrd& x, const cpp11::integers& value, const cpp11::strings& day_nonexistent, const cpp11::integers& size, const cpp11::strings& adjuster);
+extern "C" SEXP _civil_adjust_naive_iso_days_cpp(SEXP x, SEXP value, SEXP day_nonexistent, SEXP size, SEXP adjuster) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(adjust_naive_iso_days_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(value), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(adjuster)));
+  END_CPP11
+}
 // arithmetic.cpp
 civil_writable_rcrd add_years_or_months_gregorian_cpp(const civil_rcrd& x, const cpp11::integers& n, const cpp11::strings& day_nonexistent, const cpp11::strings& unit, const cpp11::integers& size);
 extern "C" SEXP _civil_add_years_or_months_gregorian_cpp(SEXP x, SEXP n, SEXP day_nonexistent, SEXP unit, SEXP size) {
@@ -65,6 +72,13 @@ civil_writable_rcrd add_years_or_quarters_fiscal_cpp(const civil_rcrd& x, const 
 extern "C" SEXP _civil_add_years_or_quarters_fiscal_cpp(SEXP x, SEXP n, SEXP fiscal_start, SEXP day_nonexistent, SEXP unit, SEXP size) {
   BEGIN_CPP11
     return cpp11::as_sexp(add_years_or_quarters_fiscal_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const int&>>(fiscal_start), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(unit), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size)));
+  END_CPP11
+}
+// arithmetic.cpp
+civil_writable_rcrd add_years_iso_cpp(const civil_rcrd& x, const cpp11::integers& n, const cpp11::strings& day_nonexistent, const cpp11::integers& size);
+extern "C" SEXP _civil_add_years_iso_cpp(SEXP x, SEXP n, SEXP day_nonexistent, SEXP size) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(add_years_iso_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size)));
   END_CPP11
 }
 // converters.cpp
@@ -158,11 +172,39 @@ extern "C" SEXP _civil_convert_naive_days_to_fiscal_year_quarter_day_cpp(SEXP da
     return cpp11::as_sexp(convert_naive_days_to_fiscal_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(days), cpp11::as_cpp<cpp11::decay_t<int>>(fiscal_start)));
   END_CPP11
 }
+// converters.cpp
+civil_writable_field convert_iso_year_weeknum_weekday_to_naive_days(const cpp11::integers& year, const cpp11::integers& weeknum, const cpp11::integers& weekday, const cpp11::strings& day_nonexistent);
+extern "C" SEXP _civil_convert_iso_year_weeknum_weekday_to_naive_days(SEXP year, SEXP weeknum, SEXP weekday, SEXP day_nonexistent) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(convert_iso_year_weeknum_weekday_to_naive_days(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(weeknum), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(weekday), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent)));
+  END_CPP11
+}
+// converters.cpp
+cpp11::writable::list_of<cpp11::writable::integers> convert_naive_days_to_iso_year_weeknum_weekday(const civil_field& days);
+extern "C" SEXP _civil_convert_naive_days_to_iso_year_weeknum_weekday(SEXP days) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(convert_naive_days_to_iso_year_weeknum_weekday(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(days)));
+  END_CPP11
+}
 // floor.cpp
 civil_writable_field floor_days_to_year_month_precision_cpp(const civil_field& days);
 extern "C" SEXP _civil_floor_days_to_year_month_precision_cpp(SEXP days) {
   BEGIN_CPP11
     return cpp11::as_sexp(floor_days_to_year_month_precision_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(days)));
+  END_CPP11
+}
+// floor.cpp
+civil_writable_field floor_days_to_year_quarter_precision_cpp(const civil_field& days, int fiscal_start);
+extern "C" SEXP _civil_floor_days_to_year_quarter_precision_cpp(SEXP days, SEXP fiscal_start) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(floor_days_to_year_quarter_precision_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(days), cpp11::as_cpp<cpp11::decay_t<int>>(fiscal_start)));
+  END_CPP11
+}
+// floor.cpp
+civil_writable_field floor_days_to_iso_year_weeknum_precision_cpp(const civil_field& days);
+extern "C" SEXP _civil_floor_days_to_iso_year_weeknum_precision_cpp(SEXP days) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(floor_days_to_iso_year_weeknum_precision_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(days)));
   END_CPP11
 }
 // format.cpp
@@ -228,18 +270,22 @@ extern "C" {
 extern SEXP _civil_add_hours_or_minutes_or_seconds_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_weeks_or_days_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_add_years_iso_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_years_or_months_gregorian_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_years_or_quarters_fiscal_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_naive_fiscal_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_naive_gregorian_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_naive_gregorian_nanos_of_second_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_naive_gregorian_time_of_day_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_adjust_naive_iso_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_set_install(SEXP);
 extern SEXP _civil_convert_datetime_fields_from_naive_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_datetime_fields_from_zoned_to_naive_cpp(SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_fiscal_year_quarter_day_to_naive_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_convert_iso_year_weeknum_weekday_to_naive_days(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_naive_days_and_time_of_day_to_sys_seconds_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_naive_days_to_fiscal_year_quarter_day_cpp(SEXP, SEXP);
+extern SEXP _civil_convert_naive_days_to_iso_year_weeknum_weekday(SEXP);
 extern SEXP _civil_convert_naive_days_to_year_month_day_cpp(SEXP);
 extern SEXP _civil_convert_naive_time_of_day_to_hour_minute_second_cpp(SEXP);
 extern SEXP _civil_convert_nano_datetime_fields_from_naive_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -248,7 +294,9 @@ extern SEXP _civil_convert_sys_seconds_to_sys_days_and_time_of_day_cpp(SEXP);
 extern SEXP _civil_convert_year_month_day_hour_minute_second_nanos_to_naive_fields_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_year_month_day_hour_minute_second_to_naive_fields_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_year_month_day_to_naive_fields(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_floor_days_to_iso_year_weeknum_precision_cpp(SEXP);
 extern SEXP _civil_floor_days_to_year_month_precision_cpp(SEXP);
+extern SEXP _civil_floor_days_to_year_quarter_precision_cpp(SEXP, SEXP);
 extern SEXP _civil_format_civil_rcrd_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_get_offset_cpp(SEXP, SEXP, SEXP);
 extern SEXP _civil_parse_naive_datetime_cpp(SEXP, SEXP);
@@ -261,18 +309,22 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_add_hours_or_minutes_or_seconds_cpp",                                 (DL_FUNC) &_civil_add_hours_or_minutes_or_seconds_cpp,                                 4},
     {"_civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp",                 (DL_FUNC) &_civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp,                 4},
     {"_civil_add_weeks_or_days_cpp",                                               (DL_FUNC) &_civil_add_weeks_or_days_cpp,                                               4},
+    {"_civil_add_years_iso_cpp",                                                   (DL_FUNC) &_civil_add_years_iso_cpp,                                                   4},
     {"_civil_add_years_or_months_gregorian_cpp",                                   (DL_FUNC) &_civil_add_years_or_months_gregorian_cpp,                                   5},
     {"_civil_add_years_or_quarters_fiscal_cpp",                                    (DL_FUNC) &_civil_add_years_or_quarters_fiscal_cpp,                                    6},
     {"_civil_adjust_naive_fiscal_days_cpp",                                        (DL_FUNC) &_civil_adjust_naive_fiscal_days_cpp,                                        6},
     {"_civil_adjust_naive_gregorian_days_cpp",                                     (DL_FUNC) &_civil_adjust_naive_gregorian_days_cpp,                                     5},
     {"_civil_adjust_naive_gregorian_nanos_of_second_cpp",                          (DL_FUNC) &_civil_adjust_naive_gregorian_nanos_of_second_cpp,                          4},
     {"_civil_adjust_naive_gregorian_time_of_day_cpp",                              (DL_FUNC) &_civil_adjust_naive_gregorian_time_of_day_cpp,                              4},
+    {"_civil_adjust_naive_iso_days_cpp",                                           (DL_FUNC) &_civil_adjust_naive_iso_days_cpp,                                           5},
     {"_civil_civil_set_install",                                                   (DL_FUNC) &_civil_civil_set_install,                                                   1},
     {"_civil_convert_datetime_fields_from_naive_to_zoned_cpp",                     (DL_FUNC) &_civil_convert_datetime_fields_from_naive_to_zoned_cpp,                     6},
     {"_civil_convert_datetime_fields_from_zoned_to_naive_cpp",                     (DL_FUNC) &_civil_convert_datetime_fields_from_zoned_to_naive_cpp,                     3},
     {"_civil_convert_fiscal_year_quarter_day_to_naive_days_cpp",                   (DL_FUNC) &_civil_convert_fiscal_year_quarter_day_to_naive_days_cpp,                   5},
+    {"_civil_convert_iso_year_weeknum_weekday_to_naive_days",                      (DL_FUNC) &_civil_convert_iso_year_weeknum_weekday_to_naive_days,                      4},
     {"_civil_convert_naive_days_and_time_of_day_to_sys_seconds_cpp",               (DL_FUNC) &_civil_convert_naive_days_and_time_of_day_to_sys_seconds_cpp,               6},
     {"_civil_convert_naive_days_to_fiscal_year_quarter_day_cpp",                   (DL_FUNC) &_civil_convert_naive_days_to_fiscal_year_quarter_day_cpp,                   2},
+    {"_civil_convert_naive_days_to_iso_year_weeknum_weekday",                      (DL_FUNC) &_civil_convert_naive_days_to_iso_year_weeknum_weekday,                      1},
     {"_civil_convert_naive_days_to_year_month_day_cpp",                            (DL_FUNC) &_civil_convert_naive_days_to_year_month_day_cpp,                            1},
     {"_civil_convert_naive_time_of_day_to_hour_minute_second_cpp",                 (DL_FUNC) &_civil_convert_naive_time_of_day_to_hour_minute_second_cpp,                 1},
     {"_civil_convert_nano_datetime_fields_from_naive_to_zoned_cpp",                (DL_FUNC) &_civil_convert_nano_datetime_fields_from_naive_to_zoned_cpp,                7},
@@ -281,7 +333,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_convert_year_month_day_hour_minute_second_nanos_to_naive_fields_cpp", (DL_FUNC) &_civil_convert_year_month_day_hour_minute_second_nanos_to_naive_fields_cpp, 8},
     {"_civil_convert_year_month_day_hour_minute_second_to_naive_fields_cpp",       (DL_FUNC) &_civil_convert_year_month_day_hour_minute_second_to_naive_fields_cpp,       7},
     {"_civil_convert_year_month_day_to_naive_fields",                              (DL_FUNC) &_civil_convert_year_month_day_to_naive_fields,                              4},
+    {"_civil_floor_days_to_iso_year_weeknum_precision_cpp",                        (DL_FUNC) &_civil_floor_days_to_iso_year_weeknum_precision_cpp,                        1},
     {"_civil_floor_days_to_year_month_precision_cpp",                              (DL_FUNC) &_civil_floor_days_to_year_month_precision_cpp,                              1},
+    {"_civil_floor_days_to_year_quarter_precision_cpp",                            (DL_FUNC) &_civil_floor_days_to_year_quarter_precision_cpp,                            2},
     {"_civil_format_civil_rcrd_cpp",                                               (DL_FUNC) &_civil_format_civil_rcrd_cpp,                                               8},
     {"_civil_get_offset_cpp",                                                      (DL_FUNC) &_civil_get_offset_cpp,                                                      3},
     {"_civil_parse_naive_datetime_cpp",                                            (DL_FUNC) &_civil_parse_naive_datetime_cpp,                                            2},

@@ -402,3 +402,59 @@ civil_writable_rcrd add_years_or_quarters_fiscal_cpp(const civil_rcrd& x,
 
   never_reached("add_years_or_quarters_fiscal_cpp");
 }
+
+// -----------------------------------------------------------------------------
+
+static civil_writable_rcrd add_years_iso(const civil_rcrd& x,
+                                         const cpp11::integers& n,
+                                         const enum day_nonexistent& day_nonexistent_val,
+                                         const r_ssize& size) {
+  civil_writable_rcrd out = civil_rcrd_clone(x);
+  civil_rcrd_recycle(out, size);
+
+  int* p_days = civil_rcrd_days_deref(out);
+  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
+  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
+
+  const bool recycle_n = civil_is_scalar(n);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    int elt_days = p_days[i];
+    int elt_n = recycle_n ? n[0] : n[i];
+
+    if (elt_days == r_int_na) {
+      continue;
+    }
+    if (elt_n == r_int_na) {
+      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      continue;
+    }
+
+    date::local_days elt_lday{date::days{elt_days}};
+    iso_week::year_weeknum_weekday elt_yww{elt_lday};
+
+    iso_week::year_weeknum_weekday out_yww = elt_yww + iso_week::years{elt_n};
+
+    convert_year_weeknum_weekday_to_days_one(
+      i,
+      day_nonexistent_val,
+      out_yww,
+      p_days,
+      p_time_of_day,
+      p_nanos_of_second
+    );
+  }
+
+  return out;
+}
+
+[[cpp11::register]]
+civil_writable_rcrd add_years_iso_cpp(const civil_rcrd& x,
+                                      const cpp11::integers& n,
+                                      const cpp11::strings& day_nonexistent,
+                                      const cpp11::integers& size) {
+  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
+  r_ssize c_size = size[0];
+
+  return add_years_iso(x, n, day_nonexistent_val, c_size);
+}

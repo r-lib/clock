@@ -16,6 +16,10 @@ adjust_naive_fiscal_days_cpp <- function(x, value, fiscal_start, day_nonexistent
   .Call("_civil_adjust_naive_fiscal_days_cpp", x, value, fiscal_start, day_nonexistent, size, adjuster, PACKAGE = "civil")
 }
 
+adjust_naive_iso_days_cpp <- function(x, value, day_nonexistent, size, adjuster) {
+  .Call("_civil_adjust_naive_iso_days_cpp", x, value, day_nonexistent, size, adjuster, PACKAGE = "civil")
+}
+
 add_years_or_months_gregorian_cpp <- function(x, n, day_nonexistent, unit, size) {
   .Call("_civil_add_years_or_months_gregorian_cpp", x, n, day_nonexistent, unit, size, PACKAGE = "civil")
 }
@@ -34,6 +38,10 @@ add_milliseconds_or_microseconds_or_nanoseconds_cpp <- function(x, n, unit, size
 
 add_years_or_quarters_fiscal_cpp <- function(x, n, fiscal_start, day_nonexistent, unit, size) {
   .Call("_civil_add_years_or_quarters_fiscal_cpp", x, n, fiscal_start, day_nonexistent, unit, size, PACKAGE = "civil")
+}
+
+add_years_iso_cpp <- function(x, n, day_nonexistent, size) {
+  .Call("_civil_add_years_iso_cpp", x, n, day_nonexistent, size, PACKAGE = "civil")
 }
 
 convert_sys_seconds_to_naive_days_and_time_of_day <- function(seconds, zone) {
@@ -88,8 +96,24 @@ convert_naive_days_to_fiscal_year_quarter_day_cpp <- function(days, fiscal_start
   .Call("_civil_convert_naive_days_to_fiscal_year_quarter_day_cpp", days, fiscal_start, PACKAGE = "civil")
 }
 
+convert_iso_year_weeknum_weekday_to_naive_days <- function(year, weeknum, weekday, day_nonexistent) {
+  .Call("_civil_convert_iso_year_weeknum_weekday_to_naive_days", year, weeknum, weekday, day_nonexistent, PACKAGE = "civil")
+}
+
+convert_naive_days_to_iso_year_weeknum_weekday <- function(days) {
+  .Call("_civil_convert_naive_days_to_iso_year_weeknum_weekday", days, PACKAGE = "civil")
+}
+
 floor_days_to_year_month_precision_cpp <- function(days) {
   .Call("_civil_floor_days_to_year_month_precision_cpp", days, PACKAGE = "civil")
+}
+
+floor_days_to_year_quarter_precision_cpp <- function(days, fiscal_start) {
+  .Call("_civil_floor_days_to_year_quarter_precision_cpp", days, fiscal_start, PACKAGE = "civil")
+}
+
+floor_days_to_iso_year_weeknum_precision_cpp <- function(days) {
+  .Call("_civil_floor_days_to_iso_year_weeknum_precision_cpp", days, PACKAGE = "civil")
 }
 
 format_civil_rcrd_cpp <- function(days, time_of_day, nanos_of_second, zone, format, naive, nano, abbreviate_zone) {

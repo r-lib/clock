@@ -95,21 +95,19 @@ as_zoned_datetime.default <- function(x, ...) {
 }
 
 #' @export
+as_zoned_datetime.civil_zoned_gregorian_datetime <- function(x, ...) {
+  check_dots_empty()
+  x
+}
+
+#' @export
 as_zoned_datetime.civil_naive <- function(x,
                                           zone,
                                           ...,
                                           dst_nonexistent = "roll-forward",
                                           dst_ambiguous = "earliest") {
   x <- as_naive_datetime(x)
-  as_zoned_datetime(x, zone, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
-}
 
-#' @export
-as_zoned_datetime.civil_naive_gregorian_datetime <- function(x,
-                                                             zone,
-                                                             ...,
-                                                             dst_nonexistent = "roll-forward",
-                                                             dst_ambiguous = "earliest") {
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
 
@@ -126,6 +124,26 @@ as_zoned_datetime.civil_naive_gregorian_datetime <- function(x,
   names <- names(x)
 
   new_zoned_datetime_from_fields(fields, zone, names)
+}
+
+#' @export
+as_zoned_datetime.civil_zoned <- function(x, ...) {
+  check_dots_empty()
+
+  days <- field(x, "days")
+
+  if (has_field(x, "time_of_day")) {
+    time_of_day <- field(x, "time_of_day")
+  } else {
+    time_of_day <- zeros_along(x)
+  }
+
+  new_zoned_datetime(
+    days = days,
+    time_of_day = time_of_day,
+    zone = zoned_zone(x),
+    names = names(x)
+  )
 }
 
 #' @export
@@ -157,24 +175,6 @@ as_zoned_datetime.POSIXt <- function(x, ...) {
   )
 }
 
-#' @export
-as_zoned_datetime.civil_zoned_gregorian_datetime <- function(x, ...) {
-  check_dots_empty()
-  x
-}
-
-#' @export
-as_zoned_datetime.civil_zoned_gregorian_nano_datetime <- function(x, ...) {
-  check_dots_empty()
-
-  new_zoned_datetime(
-    days = field(x, "days"),
-    time_of_day = field(x, "time_of_day"),
-    zone = zoned_zone(x),
-    names = names(x)
-  )
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export
@@ -188,21 +188,19 @@ as_zoned_nano_datetime.default <- function(x, ...) {
 }
 
 #' @export
+as_zoned_nano_datetime.civil_zoned_gregorian_nano_datetime <- function(x, ...) {
+  check_dots_empty()
+  x
+}
+
+#' @export
 as_zoned_nano_datetime.civil_naive <- function(x,
                                                zone,
                                                ...,
                                                dst_nonexistent = "roll-forward",
                                                dst_ambiguous = "earliest") {
   x <- as_naive_nano_datetime(x)
-  as_zoned_nano_datetime(x, zone, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
-}
 
-#' @export
-as_zoned_nano_datetime.civil_naive_gregorian_nano_datetime <- function(x,
-                                                                       zone,
-                                                                       ...,
-                                                                       dst_nonexistent = "roll-forward",
-                                                                       dst_ambiguous = "earliest") {
   days <- field(x, "days")
   time_of_day <- field(x, "time_of_day")
   nanos_of_second <- field(x, "nanos_of_second")
@@ -224,32 +222,37 @@ as_zoned_nano_datetime.civil_naive_gregorian_nano_datetime <- function(x,
 }
 
 #' @export
-as_zoned_nano_datetime.Date <- function(x, ...) {
-  x <- as_zoned_datetime(x, ...)
-  as_zoned_nano_datetime(x)
-}
-
-#' @export
-as_zoned_nano_datetime.POSIXt <- function(x, ...) {
-  x <- as_zoned_datetime(x, ...)
-  as_zoned_nano_datetime(x)
-}
-
-#' @export
-as_zoned_nano_datetime.civil_zoned_gregorian_datetime <- function(x, ...) {
+as_zoned_nano_datetime.civil_zoned <- function(x, ...) {
   check_dots_empty()
 
+  days <- field(x, "days")
+
+  if (has_field(x, "time_of_day")) {
+    time_of_day <- field(x, "time_of_day")
+  } else {
+    time_of_day <- zeros_along(x)
+  }
+
+  if (has_field(x, "nanos_of_second")) {
+    nanos_of_second <- field(x, "nanos_of_second")
+  } else {
+    nanos_of_second <- zeros_along(x)
+  }
+
   new_zoned_nano_datetime(
-    days = field(x, "days"),
-    time_of_day = field(x, "time_of_day"),
-    nanos_of_second = zeros_along(x),
+    days = days,
+    time_of_day = time_of_day,
+    nanos_of_second = nanos_of_second,
     zone = zoned_zone(x),
     names = names(x)
   )
 }
 
 #' @export
-as_zoned_nano_datetime.civil_zoned_gregorian_nano_datetime <- function(x, ...) {
-  check_dots_empty()
-  x
+as_zoned_nano_datetime.Date <- function(x, ...) {
+  x <- as_zoned_datetime(x, ...)
+  as_zoned_nano_datetime(x)
 }
+
+#' @export
+as_zoned_nano_datetime.POSIXt <- as_zoned_nano_datetime.Date

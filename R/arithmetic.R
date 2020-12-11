@@ -279,6 +279,12 @@ add_years.civil_naive_fiscal <- function(x, n, ..., day_nonexistent = "last-time
   add_years_fiscal_impl(x, n, ..., day_nonexistent = day_nonexistent)
 }
 
+#' @rdname civil-naive-arithmetic
+#' @export
+add_years.civil_naive_iso <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_years_iso_impl(x, n, ..., day_nonexistent = day_nonexistent)
+}
+
 # ------------------------------------------------------------------------------
 
 #' @rdname civil-arithmetic
@@ -606,6 +612,12 @@ add_weeks.civil_naive_fiscal <- function(x, n, ...) {
   add_weeks_fiscal_impl(x, n, ...)
 }
 
+#' @rdname civil-naive-arithmetic
+#' @export
+add_weeks.civil_naive_iso <- function(x, n, ...) {
+  add_weeks_iso_impl(x, n, ...)
+}
+
 # ------------------------------------------------------------------------------
 
 #' @rdname civil-arithmetic
@@ -698,6 +710,12 @@ add_days.civil_naive_gregorian <- function(x, n, ...) {
 #' @export
 add_days.civil_naive_fiscal <- function(x, n, ...) {
   add_days_fiscal_impl(x, n, ...)
+}
+
+#' @rdname civil-naive-arithmetic
+#' @export
+add_days.civil_naive_iso <- function(x, n, ...) {
+  add_days_iso_impl(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -1079,11 +1097,11 @@ subtract_nanoseconds.civil_naive <- subtract_nanoseconds.Date
 
 # ------------------------------------------------------------------------------
 
-add_years_gregorian_impl <- function(x, n, ..., day_nonexistent, unit) {
+add_years_gregorian_impl <- function(x, n, ..., day_nonexistent) {
   x <- promote_at_least_year(x)
   add_years_or_months_gregorian(x, n, ..., day_nonexistent = day_nonexistent, unit = "year")
 }
-add_months_gregorian_impl <- function(x, n, ..., day_nonexistent, unit) {
+add_months_gregorian_impl <- function(x, n, ..., day_nonexistent) {
   x <- promote_at_least_year_month(x)
   add_years_or_months_gregorian(x, n, ..., day_nonexistent = day_nonexistent, unit = "month")
 }
@@ -1250,11 +1268,11 @@ add_milliseconds_or_microseconds_or_nanoseconds_gregorian <- function(x, n, ...,
 
 # ------------------------------------------------------------------------------
 
-add_years_fiscal_impl <- function(x, n, ..., day_nonexistent, unit) {
+add_years_fiscal_impl <- function(x, n, ..., day_nonexistent) {
   x <- promote_at_least_fiscal_year(x)
   add_years_or_quarters_fiscal(x, n, ..., day_nonexistent = day_nonexistent, unit = "year")
 }
-add_quarters_fiscal_impl <- function(x, n, ..., day_nonexistent, unit) {
+add_quarters_fiscal_impl <- function(x, n, ..., day_nonexistent) {
   x <- promote_at_least_fiscal_year_quarter(x)
   add_years_or_quarters_fiscal(x, n, ..., day_nonexistent = day_nonexistent, unit = "quarter")
 }
@@ -1287,6 +1305,43 @@ add_weeks_or_days_fiscal <- function(x, n, ..., unit) {
   size <- vec_size_common(x = x, n = n)
 
   # Adding weeks/days is the same at the C++ level for fiscal/gregorian
+  add_weeks_or_days_cpp(x, n, unit, size)
+}
+
+# ------------------------------------------------------------------------------
+
+add_years_iso_impl <- function(x, n, ..., day_nonexistent) {
+  x <- promote_at_least_iso_year(x)
+  add_years_iso(x, n, ..., day_nonexistent = day_nonexistent)
+}
+
+add_years_iso <- function(x, n, ..., day_nonexistent) {
+  check_dots_empty()
+
+  n <- vec_cast(n, integer(), x_arg = "n")
+  size <- vec_size_common(x = x, n = n)
+
+  add_years_iso_cpp(x, n, day_nonexistent, size)
+}
+
+# ------------------------------------------------------------------------------
+
+add_weeks_iso_impl <- function(x, n, ...) {
+  x <- promote_at_least_iso_year_weeknum(x)
+  add_weeks_or_days_iso(x, n, ..., unit = "week")
+}
+add_days_iso_impl <- function(x, n, ...) {
+  x <- promote_at_least_iso_year_weeknum_weekday(x)
+  add_weeks_or_days_iso(x, n, ..., unit = "day")
+}
+
+add_weeks_or_days_iso <- function(x, n, ..., unit) {
+  check_dots_empty()
+
+  n <- vec_cast(n, integer(), x_arg = "n")
+  size <- vec_size_common(x = x, n = n)
+
+  # Adding weeks/days is the same at the C++ level for iso/gregorian
   add_weeks_or_days_cpp(x, n, unit, size)
 }
 

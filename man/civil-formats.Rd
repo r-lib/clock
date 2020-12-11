@@ -12,6 +12,8 @@
 \alias{fmt_iso_week_date}
 \alias{fmt_iso_date}
 \alias{fmt_iso_datetime}
+\alias{fmt_iso_year_weeknum_weekday}
+\alias{fmt_iso_year_weeknum}
 \alias{fmt_year_month}
 \alias{fmt_year_month_day}
 \alias{fmt_naive_datetime}
@@ -58,6 +60,10 @@ fmt_iso_week_date()
 fmt_iso_date()
 
 fmt_iso_datetime()
+
+fmt_iso_year_weeknum_weekday()
+
+fmt_iso_year_weeknum()
 
 fmt_year_month()
 

@@ -75,7 +75,14 @@ get_year.civil_naive_fiscal <- function(x) {
 }
 
 #' @export
-get_year.civil_zoned_gregorian <- function(x) {
+get_year.civil_naive_iso <- function(x) {
+  days <- field(x, "days")
+  yww <- convert_naive_days_to_iso_year_weeknum_weekday(days)
+  yww$year
+}
+
+#' @export
+get_year.civil_zoned <- function(x) {
   x <- as_naive(x)
   get_year(x)
 }

@@ -543,6 +543,18 @@ fmt_iso_datetime <- function() {
 
 #' @rdname civil-formats
 #' @export
+fmt_iso_year_weeknum_weekday <- function() {
+  tkns(tkn_iso_year(), "-", "W", tkn_iso_weeknum(), "-", tkn_iso_weekday())
+}
+
+#' @rdname civil-formats
+#' @export
+fmt_iso_year_weeknum <- function() {
+  tkns(tkn_iso_year(), "-", "W", tkn_iso_weeknum())
+}
+
+#' @rdname civil-formats
+#' @export
 fmt_year_month <- function() {
   fmt_ym()
 }

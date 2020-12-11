@@ -61,6 +61,7 @@ civil_writable_field floor_days_to_year_quarter_precision(const civil_field& day
   return out_days;
 }
 
+[[cpp11::register]]
 civil_writable_field floor_days_to_year_quarter_precision_cpp(const civil_field& days,
                                                               int fiscal_start) {
   if (fiscal_start == 1) {
@@ -90,4 +91,33 @@ civil_writable_field floor_days_to_year_quarter_precision_cpp(const civil_field&
   }
 
   never_reached("floor_days_to_year_quarter_precision_cpp");
+}
+
+[[cpp11::register]]
+civil_writable_field floor_days_to_iso_year_weeknum_precision_cpp(const civil_field& days) {
+  r_ssize size = days.size();
+
+  civil_writable_field out_days(size);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    int elt_days = days[i];
+
+    if (elt_days == r_int_na) {
+      out_days[i] = r_int_na;
+      continue;
+    }
+
+    date::local_days elt_lday{date::days{elt_days}};
+    iso_week::year_weeknum_weekday elt_yww{elt_lday};
+
+    iso_week::year_weeknum_weekday out_yww{
+      elt_yww.year() / elt_yww.weeknum() / iso_week::weekday{1u}
+    };
+
+    date::local_days out_lday{out_yww};
+
+    out_days[i] = out_lday.time_since_epoch().count();
+  }
+
+  return out_days;
 }
