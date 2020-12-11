@@ -1851,10 +1851,10 @@ year_quarternum_quarterday<S>::to_days() const NOEXCEPT
 {
     CONSTDATA unsigned char s = static_cast<unsigned char>(S) - 1;
     const unsigned quarternum = static_cast<unsigned>(qn_) - 1;
-    const unsigned fiscal_month = 3 * quarternum;
+    const unsigned quarterly_month = 3 * quarternum;
 
     int year = static_cast<int>(y_);
-    unsigned civil_month = s + fiscal_month;
+    unsigned civil_month = s + quarterly_month;
 
     if (civil_month > 11) {
         civil_month -= 12;
@@ -1889,15 +1889,15 @@ year_quarternum_quarterday<S>::from_days(const days& dd) NOEXCEPT
     const unsigned civil_month = static_cast<unsigned>(ymd.month()) - 1;
 
     int year = static_cast<int>(ymd.year());
-    int fiscal_month = static_cast<int>(civil_month) - static_cast<int>(s);
+    int quarterly_month = static_cast<int>(civil_month) - static_cast<int>(s);
 
-    if (fiscal_month < 0) {
-        fiscal_month += 12;
+    if (quarterly_month < 0) {
+        quarterly_month += 12;
     } else if (s != 0) {
         ++year;
     }
 
-    const unsigned quarternum = static_cast<unsigned>(fiscal_month) / 3;
+    const unsigned quarternum = static_cast<unsigned>(quarterly_month) / 3;
 
     const quarterly::year_quarternum_quarterday<S> quarter_start{
         quarterly::year<S>{year} / quarterly::quarternum{quarternum + 1} / quarterly::quarterday{1u}
