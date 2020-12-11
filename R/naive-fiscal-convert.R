@@ -33,16 +33,16 @@ as_fiscal_year_quarter.civil_naive_gregorian <- function(x, ..., fiscal_start = 
 }
 
 #' @export
-as_fiscal_year_quarter.Date <- function(x, ..., fiscal_start = 1L) {
+as_fiscal_year_quarter.civil_zoned <- function(x, ..., fiscal_start = 1L) {
   x <- as_year_month_day(x)
   as_fiscal_year_quarter(x, ..., fiscal_start = fiscal_start)
 }
 
 #' @export
-as_fiscal_year_quarter.POSIXt <- as_fiscal_year_quarter.Date
+as_fiscal_year_quarter.Date <- as_fiscal_year_quarter.civil_zoned
 
 #' @export
-as_fiscal_year_quarter.civil_zoned <- as_fiscal_year_quarter.Date
+as_fiscal_year_quarter.POSIXt <- as_fiscal_year_quarter.civil_zoned
 
 # ------------------------------------------------------------------------------
 
@@ -79,13 +79,13 @@ as_fiscal_year_quarter_day.civil_naive_gregorian <- function(x, ..., fiscal_star
 }
 
 #' @export
-as_fiscal_year_quarter_day.Date <- function(x, ..., fiscal_start = 1L) {
+as_fiscal_year_quarter_day.civil_zoned <- function(x, ..., fiscal_start = 1L) {
   x <- as_year_month_day(x)
   as_fiscal_year_quarter_day(x, ..., fiscal_start = fiscal_start)
 }
 
 #' @export
-as_fiscal_year_quarter_day.POSIXt <- as_fiscal_year_quarter_day.Date
+as_fiscal_year_quarter_day.Date <- as_fiscal_year_quarter_day.civil_zoned
 
 #' @export
-as_fiscal_year_quarter_day.civil_zoned <- as_fiscal_year_quarter_day.Date
+as_fiscal_year_quarter_day.POSIXt <- as_fiscal_year_quarter_day.civil_zoned
