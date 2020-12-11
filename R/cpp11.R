@@ -12,8 +12,8 @@ adjust_naive_gregorian_nanos_of_second_cpp <- function(x, value, size, adjuster)
   .Call("_civil_adjust_naive_gregorian_nanos_of_second_cpp", x, value, size, adjuster, PACKAGE = "civil")
 }
 
-adjust_naive_fiscal_days_cpp <- function(x, value, fiscal_start, day_nonexistent, size, adjuster) {
-  .Call("_civil_adjust_naive_fiscal_days_cpp", x, value, fiscal_start, day_nonexistent, size, adjuster, PACKAGE = "civil")
+adjust_naive_quarterly_days_cpp <- function(x, value, start, day_nonexistent, size, adjuster) {
+  .Call("_civil_adjust_naive_quarterly_days_cpp", x, value, start, day_nonexistent, size, adjuster, PACKAGE = "civil")
 }
 
 adjust_naive_iso_days_cpp <- function(x, value, day_nonexistent, size, adjuster) {
@@ -36,8 +36,8 @@ add_milliseconds_or_microseconds_or_nanoseconds_cpp <- function(x, n, unit, size
   .Call("_civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp", x, n, unit, size, PACKAGE = "civil")
 }
 
-add_years_or_quarters_fiscal_cpp <- function(x, n, fiscal_start, day_nonexistent, unit, size) {
-  .Call("_civil_add_years_or_quarters_fiscal_cpp", x, n, fiscal_start, day_nonexistent, unit, size, PACKAGE = "civil")
+add_years_or_quarters_quarterly_cpp <- function(x, n, start, day_nonexistent, unit, size) {
+  .Call("_civil_add_years_or_quarters_quarterly_cpp", x, n, start, day_nonexistent, unit, size, PACKAGE = "civil")
 }
 
 add_years_iso_cpp <- function(x, n, day_nonexistent, size) {
@@ -88,12 +88,12 @@ convert_sys_seconds_to_sys_days_and_time_of_day_cpp <- function(seconds) {
   .Call("_civil_convert_sys_seconds_to_sys_days_and_time_of_day_cpp", seconds, PACKAGE = "civil")
 }
 
-convert_fiscal_year_quarternum_quarterday_to_naive_days_cpp <- function(year, quarternum, quarterday, fiscal_start, day_nonexistent) {
-  .Call("_civil_convert_fiscal_year_quarternum_quarterday_to_naive_days_cpp", year, quarternum, quarterday, fiscal_start, day_nonexistent, PACKAGE = "civil")
+convert_quarterly_year_quarternum_quarterday_to_naive_days_cpp <- function(year, quarternum, quarterday, start, day_nonexistent) {
+  .Call("_civil_convert_quarterly_year_quarternum_quarterday_to_naive_days_cpp", year, quarternum, quarterday, start, day_nonexistent, PACKAGE = "civil")
 }
 
-convert_naive_days_to_fiscal_year_quarternum_quarterday_cpp <- function(days, fiscal_start) {
-  .Call("_civil_convert_naive_days_to_fiscal_year_quarternum_quarterday_cpp", days, fiscal_start, PACKAGE = "civil")
+convert_naive_days_to_quarterly_year_quarternum_quarterday_cpp <- function(days, start) {
+  .Call("_civil_convert_naive_days_to_quarterly_year_quarternum_quarterday_cpp", days, start, PACKAGE = "civil")
 }
 
 convert_iso_year_weeknum_weekday_to_naive_days <- function(year, weeknum, weekday, day_nonexistent) {
@@ -108,8 +108,8 @@ floor_days_to_year_month_precision_cpp <- function(days) {
   .Call("_civil_floor_days_to_year_month_precision_cpp", days, PACKAGE = "civil")
 }
 
-floor_days_to_year_quarternum_precision_cpp <- function(days, fiscal_start) {
-  .Call("_civil_floor_days_to_year_quarternum_precision_cpp", days, fiscal_start, PACKAGE = "civil")
+floor_days_to_year_quarternum_precision_cpp <- function(days, start) {
+  .Call("_civil_floor_days_to_year_quarternum_precision_cpp", days, start, PACKAGE = "civil")
 }
 
 floor_days_to_iso_year_weeknum_precision_cpp <- function(days) {

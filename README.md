@@ -18,10 +18,10 @@ plus a time zone.
 The standard Gregorian calendar is supported through naive classes like
 `year_month_day()` and `naive_datetime()` and zoned classes like
 `zoned_datetime()`. Additionally, there is support for other calendars,
-such as a fiscal quarterly calendar, through classes like
-`year_quarter_day()`. *Partial* calendars, which have a precision that
-is coarser than a single day, are also supported through classes like
-`year_month()` and `year_quarter()`.
+such as a quarterly calendar, through classes like `year_quarter_day()`.
+*Partial* calendars, which have a precision that is coarser than a
+single day, are also supported through classes like `year_month()` and
+`year_quarter()`.
 
 Nanotime precision is supported for both naive and zoned types through
 `naive_nano_datetime()` and `zoned_nano_datetime()`.

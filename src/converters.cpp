@@ -710,10 +710,10 @@ civil_writable_rcrd convert_sys_seconds_to_sys_days_and_time_of_day_cpp(const cp
 // -----------------------------------------------------------------------------
 
 template <quarterly::start S>
-static civil_writable_field convert_fiscal_year_quarternum_quarterday_to_naive_days(const cpp11::integers& year,
-                                                                                    const cpp11::integers& quarternum,
-                                                                                    const cpp11::integers& quarterday,
-                                                                                    const cpp11::strings& day_nonexistent) {
+static civil_writable_field convert_quarterly_year_quarternum_quarterday_to_naive_days(const cpp11::integers& year,
+                                                                                       const cpp11::integers& quarternum,
+                                                                                       const cpp11::integers& quarterday,
+                                                                                       const cpp11::strings& day_nonexistent) {
   enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
 
   r_ssize size = year.size();
@@ -759,44 +759,44 @@ static civil_writable_field convert_fiscal_year_quarternum_quarterday_to_naive_d
 }
 
 [[cpp11::register]]
-civil_writable_field convert_fiscal_year_quarternum_quarterday_to_naive_days_cpp(const cpp11::integers& year,
-                                                                                 const cpp11::integers& quarternum,
-                                                                                 const cpp11::integers& quarterday,
-                                                                                 int fiscal_start,
-                                                                                 const cpp11::strings& day_nonexistent) {
-  if (fiscal_start == 1) {
-    return convert_fiscal_year_quarternum_quarterday_to_naive_days<quarterly::start::january>(year, quarternum, quarterday, day_nonexistent);
-  } else if (fiscal_start == 2) {
-    return convert_fiscal_year_quarternum_quarterday_to_naive_days<quarterly::start::february>(year, quarternum, quarterday, day_nonexistent);
-  } else if (fiscal_start == 3) {
-    return convert_fiscal_year_quarternum_quarterday_to_naive_days<quarterly::start::march>(year, quarternum, quarterday, day_nonexistent);
-  } else if (fiscal_start == 4) {
-    return convert_fiscal_year_quarternum_quarterday_to_naive_days<quarterly::start::april>(year, quarternum, quarterday, day_nonexistent);
-  } else if (fiscal_start == 5) {
-    return convert_fiscal_year_quarternum_quarterday_to_naive_days<quarterly::start::may>(year, quarternum, quarterday, day_nonexistent);
-  } else if (fiscal_start == 6) {
-    return convert_fiscal_year_quarternum_quarterday_to_naive_days<quarterly::start::june>(year, quarternum, quarterday, day_nonexistent);
-  } else if (fiscal_start == 7) {
-    return convert_fiscal_year_quarternum_quarterday_to_naive_days<quarterly::start::july>(year, quarternum, quarterday, day_nonexistent);
-  } else if (fiscal_start == 8) {
-    return convert_fiscal_year_quarternum_quarterday_to_naive_days<quarterly::start::august>(year, quarternum, quarterday, day_nonexistent);
-  } else if (fiscal_start == 9) {
-    return convert_fiscal_year_quarternum_quarterday_to_naive_days<quarterly::start::september>(year, quarternum, quarterday, day_nonexistent);
-  } else if (fiscal_start == 10) {
-    return convert_fiscal_year_quarternum_quarterday_to_naive_days<quarterly::start::october>(year, quarternum, quarterday, day_nonexistent);
-  } else if (fiscal_start == 11) {
-    return convert_fiscal_year_quarternum_quarterday_to_naive_days<quarterly::start::november>(year, quarternum, quarterday, day_nonexistent);
-  } else if (fiscal_start == 12) {
-    return convert_fiscal_year_quarternum_quarterday_to_naive_days<quarterly::start::december>(year, quarternum, quarterday, day_nonexistent);
+civil_writable_field convert_quarterly_year_quarternum_quarterday_to_naive_days_cpp(const cpp11::integers& year,
+                                                                                    const cpp11::integers& quarternum,
+                                                                                    const cpp11::integers& quarterday,
+                                                                                    int start,
+                                                                                    const cpp11::strings& day_nonexistent) {
+  if (start == 1) {
+    return convert_quarterly_year_quarternum_quarterday_to_naive_days<quarterly::start::january>(year, quarternum, quarterday, day_nonexistent);
+  } else if (start == 2) {
+    return convert_quarterly_year_quarternum_quarterday_to_naive_days<quarterly::start::february>(year, quarternum, quarterday, day_nonexistent);
+  } else if (start == 3) {
+    return convert_quarterly_year_quarternum_quarterday_to_naive_days<quarterly::start::march>(year, quarternum, quarterday, day_nonexistent);
+  } else if (start == 4) {
+    return convert_quarterly_year_quarternum_quarterday_to_naive_days<quarterly::start::april>(year, quarternum, quarterday, day_nonexistent);
+  } else if (start == 5) {
+    return convert_quarterly_year_quarternum_quarterday_to_naive_days<quarterly::start::may>(year, quarternum, quarterday, day_nonexistent);
+  } else if (start == 6) {
+    return convert_quarterly_year_quarternum_quarterday_to_naive_days<quarterly::start::june>(year, quarternum, quarterday, day_nonexistent);
+  } else if (start == 7) {
+    return convert_quarterly_year_quarternum_quarterday_to_naive_days<quarterly::start::july>(year, quarternum, quarterday, day_nonexistent);
+  } else if (start == 8) {
+    return convert_quarterly_year_quarternum_quarterday_to_naive_days<quarterly::start::august>(year, quarternum, quarterday, day_nonexistent);
+  } else if (start == 9) {
+    return convert_quarterly_year_quarternum_quarterday_to_naive_days<quarterly::start::september>(year, quarternum, quarterday, day_nonexistent);
+  } else if (start == 10) {
+    return convert_quarterly_year_quarternum_quarterday_to_naive_days<quarterly::start::october>(year, quarternum, quarterday, day_nonexistent);
+  } else if (start == 11) {
+    return convert_quarterly_year_quarternum_quarterday_to_naive_days<quarterly::start::november>(year, quarternum, quarterday, day_nonexistent);
+  } else if (start == 12) {
+    return convert_quarterly_year_quarternum_quarterday_to_naive_days<quarterly::start::december>(year, quarternum, quarterday, day_nonexistent);
   }
 
-  never_reached("convert_fiscal_year_quarternum_quarterday_to_naive_days_cpp");
+  never_reached("convert_quarterly_year_quarternum_quarterday_to_naive_days_cpp");
 }
 
 template <quarterly::start S>
 static
 cpp11::writable::list_of<cpp11::writable::integers>
-convert_naive_days_to_fiscal_year_quarternum_quarterday(const civil_field& days) {
+convert_naive_days_to_quarterly_year_quarternum_quarterday(const civil_field& days) {
   r_ssize size = days.size();
 
   cpp11::writable::integers out_year(size);
@@ -829,34 +829,34 @@ convert_naive_days_to_fiscal_year_quarternum_quarterday(const civil_field& days)
 
 [[cpp11::register]]
 cpp11::writable::list_of<cpp11::writable::integers>
-convert_naive_days_to_fiscal_year_quarternum_quarterday_cpp(const civil_field& days, int fiscal_start) {
-  if (fiscal_start == 1) {
-    return convert_naive_days_to_fiscal_year_quarternum_quarterday<quarterly::start::january>(days);
-  } else if (fiscal_start == 2) {
-    return convert_naive_days_to_fiscal_year_quarternum_quarterday<quarterly::start::february>(days);
-  } else if (fiscal_start == 3) {
-    return convert_naive_days_to_fiscal_year_quarternum_quarterday<quarterly::start::march>(days);
-  } else if (fiscal_start == 4) {
-    return convert_naive_days_to_fiscal_year_quarternum_quarterday<quarterly::start::april>(days);
-  } else if (fiscal_start == 5) {
-    return convert_naive_days_to_fiscal_year_quarternum_quarterday<quarterly::start::may>(days);
-  } else if (fiscal_start == 6) {
-    return convert_naive_days_to_fiscal_year_quarternum_quarterday<quarterly::start::june>(days);
-  } else if (fiscal_start == 7) {
-    return convert_naive_days_to_fiscal_year_quarternum_quarterday<quarterly::start::july>(days);
-  } else if (fiscal_start == 8) {
-    return convert_naive_days_to_fiscal_year_quarternum_quarterday<quarterly::start::august>(days);
-  } else if (fiscal_start == 9) {
-    return convert_naive_days_to_fiscal_year_quarternum_quarterday<quarterly::start::september>(days);
-  } else if (fiscal_start == 10) {
-    return convert_naive_days_to_fiscal_year_quarternum_quarterday<quarterly::start::october>(days);
-  } else if (fiscal_start == 11) {
-    return convert_naive_days_to_fiscal_year_quarternum_quarterday<quarterly::start::november>(days);
-  } else if (fiscal_start == 12) {
-    return convert_naive_days_to_fiscal_year_quarternum_quarterday<quarterly::start::december>(days);
+convert_naive_days_to_quarterly_year_quarternum_quarterday_cpp(const civil_field& days, int start) {
+  if (start == 1) {
+    return convert_naive_days_to_quarterly_year_quarternum_quarterday<quarterly::start::january>(days);
+  } else if (start == 2) {
+    return convert_naive_days_to_quarterly_year_quarternum_quarterday<quarterly::start::february>(days);
+  } else if (start == 3) {
+    return convert_naive_days_to_quarterly_year_quarternum_quarterday<quarterly::start::march>(days);
+  } else if (start == 4) {
+    return convert_naive_days_to_quarterly_year_quarternum_quarterday<quarterly::start::april>(days);
+  } else if (start == 5) {
+    return convert_naive_days_to_quarterly_year_quarternum_quarterday<quarterly::start::may>(days);
+  } else if (start == 6) {
+    return convert_naive_days_to_quarterly_year_quarternum_quarterday<quarterly::start::june>(days);
+  } else if (start == 7) {
+    return convert_naive_days_to_quarterly_year_quarternum_quarterday<quarterly::start::july>(days);
+  } else if (start == 8) {
+    return convert_naive_days_to_quarterly_year_quarternum_quarterday<quarterly::start::august>(days);
+  } else if (start == 9) {
+    return convert_naive_days_to_quarterly_year_quarternum_quarterday<quarterly::start::september>(days);
+  } else if (start == 10) {
+    return convert_naive_days_to_quarterly_year_quarternum_quarterday<quarterly::start::october>(days);
+  } else if (start == 11) {
+    return convert_naive_days_to_quarterly_year_quarternum_quarterday<quarterly::start::november>(days);
+  } else if (start == 12) {
+    return convert_naive_days_to_quarterly_year_quarternum_quarterday<quarterly::start::december>(days);
   }
 
-  never_reached("convert_naive_days_to_fiscal_year_quarternum_quarterday_cpp");
+  never_reached("convert_naive_days_to_quarterly_year_quarternum_quarterday_cpp");
 }
 
 // -----------------------------------------------------------------------------

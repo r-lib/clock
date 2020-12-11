@@ -67,10 +67,10 @@ get_year.civil_naive_gregorian <- function(x) {
 }
 
 #' @export
-get_year.civil_naive_fiscal <- function(x) {
+get_year.civil_naive_quarterly <- function(x) {
   days <- field(x, "days")
-  fiscal_start <- get_fiscal_start(x)
-  yqnqd <- convert_naive_days_to_fiscal_year_quarternum_quarterday(days, fiscal_start)
+  start <- get_quarterly_start(x)
+  yqnqd <- convert_naive_days_to_quarterly_year_quarternum_quarterday(days, start)
   yqnqd$year
 }
 
@@ -96,9 +96,9 @@ get_quarternum <- function(x, ...) {
 }
 
 #' @export
-get_quarternum.civil_naive_fiscal <- function(x, ...) {
+get_quarternum.civil_naive_quarterly <- function(x, ...) {
   days <- field(x, "days")
-  fiscal_start <- get_fiscal_start(x)
-  yqnqd <- convert_naive_days_to_fiscal_year_quarternum_quarterday(days, fiscal_start)
+  start <- get_quarterly_start(x)
+  yqnqd <- convert_naive_days_to_quarterly_year_quarternum_quarterday(days, start)
   yqnqd$quarternum
 }

@@ -6,7 +6,7 @@
 \alias{adjust_year.POSIXt}
 \alias{adjust_year.civil_zoned}
 \alias{adjust_year.civil_naive_gregorian}
-\alias{adjust_year.civil_naive_fiscal}
+\alias{adjust_year.civil_naive_quarterly}
 \alias{adjust_year.civil_naive_iso}
 \title{Adjust the year}
 \usage{
@@ -34,7 +34,7 @@ adjust_year(x, value, ...)
 
 \method{adjust_year}{civil_naive_gregorian}(x, value, ..., day_nonexistent = "last-time")
 
-\method{adjust_year}{civil_naive_fiscal}(x, value, ..., day_nonexistent = "last-time")
+\method{adjust_year}{civil_naive_quarterly}(x, value, ..., day_nonexistent = "last-time")
 
 \method{adjust_year}{civil_naive_iso}(x, value, ..., day_nonexistent = "last-time")
 }
