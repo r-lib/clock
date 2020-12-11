@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 
 The goal of civil is to provide new types for working with _naive_ and _zoned_ date-times. A _naive_ date-time is completely unaware of any time zone. A _zoned_ date-time can be thought of as a naive date-time plus a time zone.
 
-The standard Gregorian calendar is supported through naive classes like `year_month_day()` and `naive_datetime()` and zoned classes like `zoned_datetime()`. Additionally, there is support for other calendars, such as a fiscal quarterly calendar, through classes like `year_quarter_day()`. _Partial_ calendars, which have a precision that is coarser than a single day, are also supported through classes like `year_month()` and `year_quarter()`.
+The standard Gregorian calendar is supported through naive classes like `year_month_day()` and `naive_datetime()` and zoned classes like `zoned_datetime()`. Additionally, there is support for other calendars, such as a quarterly calendar, through classes like `year_quarter_day()`. _Partial_ calendars, which have a precision that is coarser than a single day, are also supported through classes like `year_month()` and `year_quarter()`.
 
 Nanotime precision is supported for both naive and zoned types through `naive_nano_datetime()` and `zoned_nano_datetime()`.
 

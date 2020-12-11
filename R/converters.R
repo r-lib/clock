@@ -146,14 +146,14 @@ convert_nano_datetime_fields_from_naive_to_zoned <- function(days,
 
 # ------------------------------------------------------------------------------
 
-convert_fiscal_year_quarternum_quarterday_to_naive_days <- function(year,
-                                                                    quarternum,
-                                                                    quarterday,
-                                                                    fiscal_start,
-                                                                    day_nonexistent) {
-  convert_fiscal_year_quarternum_quarterday_to_naive_days_cpp(year, quarternum, quarterday, fiscal_start, day_nonexistent)
+convert_quarterly_year_quarternum_quarterday_to_naive_days <- function(year,
+                                                                       quarternum,
+                                                                       quarterday,
+                                                                       start,
+                                                                       day_nonexistent) {
+  convert_quarterly_year_quarternum_quarterday_to_naive_days_cpp(year, quarternum, quarterday, start, day_nonexistent)
 }
 
-convert_naive_days_to_fiscal_year_quarternum_quarterday <- function(days, fiscal_start) {
-  convert_naive_days_to_fiscal_year_quarternum_quarterday_cpp(days, fiscal_start)
+convert_naive_days_to_quarterly_year_quarternum_quarterday <- function(days, start) {
+  convert_naive_days_to_quarterly_year_quarternum_quarterday_cpp(days, start)
 }

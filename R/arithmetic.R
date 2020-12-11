@@ -275,8 +275,8 @@ add_years.civil_naive_gregorian <- function(x, n, ..., day_nonexistent = "last-t
 
 #' @rdname civil-naive-arithmetic
 #' @export
-add_years.civil_naive_fiscal <- function(x, n, ..., day_nonexistent = "last-time") {
-  add_years_fiscal_impl(x, n, ..., day_nonexistent = day_nonexistent)
+add_years.civil_naive_quarterly <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_years_quarterly_impl(x, n, ..., day_nonexistent = day_nonexistent)
 }
 
 #' @rdname civil-naive-arithmetic
@@ -335,8 +335,8 @@ add_quarters <- function(x, n, ...) {
 
 #' @rdname civil-naive-arithmetic
 #' @export
-add_quarters.civil_naive_fiscal <- function(x, n, ..., day_nonexistent = "last-time") {
-  add_quarters_fiscal_impl(x, n, ..., day_nonexistent = day_nonexistent)
+add_quarters.civil_naive_quarterly <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_quarters_quarterly_impl(x, n, ..., day_nonexistent = day_nonexistent)
 }
 
 # ------------------------------------------------------------------------------
@@ -608,8 +608,8 @@ add_weeks.civil_naive_gregorian <- function(x, n, ...) {
 
 #' @rdname civil-naive-arithmetic
 #' @export
-add_weeks.civil_naive_fiscal <- function(x, n, ...) {
-  add_weeks_fiscal_impl(x, n, ...)
+add_weeks.civil_naive_quarterly <- function(x, n, ...) {
+  add_weeks_quarterly_impl(x, n, ...)
 }
 
 #' @rdname civil-naive-arithmetic
@@ -708,8 +708,8 @@ add_days.civil_naive_gregorian <- function(x, n, ...) {
 
 #' @rdname civil-naive-arithmetic
 #' @export
-add_days.civil_naive_fiscal <- function(x, n, ...) {
-  add_days_fiscal_impl(x, n, ...)
+add_days.civil_naive_quarterly <- function(x, n, ...) {
+  add_days_quarterly_impl(x, n, ...)
 }
 
 #' @rdname civil-naive-arithmetic
@@ -1132,7 +1132,7 @@ add_weeks_or_days_gregorian <- function(x, n, ..., unit) {
   n <- vec_cast(n, integer(), x_arg = "n")
   size <- vec_size_common(x = x, n = n)
 
-  # Adding weeks/days is the same at the C++ level for fiscal/gregorian
+  # Adding weeks/days is the same at the C++ level for quarterly/gregorian
   add_weeks_or_days_cpp(x, n, unit, size)
 }
 
@@ -1268,43 +1268,43 @@ add_milliseconds_or_microseconds_or_nanoseconds_gregorian <- function(x, n, ...,
 
 # ------------------------------------------------------------------------------
 
-add_years_fiscal_impl <- function(x, n, ..., day_nonexistent) {
-  x <- promote_at_least_fiscal_year(x)
-  add_years_or_quarters_fiscal(x, n, ..., day_nonexistent = day_nonexistent, unit = "year")
+add_years_quarterly_impl <- function(x, n, ..., day_nonexistent) {
+  x <- promote_at_least_quarterly_year(x)
+  add_years_or_quarters_quarterly(x, n, ..., day_nonexistent = day_nonexistent, unit = "year")
 }
-add_quarters_fiscal_impl <- function(x, n, ..., day_nonexistent) {
-  x <- promote_at_least_fiscal_year_quarternum(x)
-  add_years_or_quarters_fiscal(x, n, ..., day_nonexistent = day_nonexistent, unit = "quarter")
+add_quarters_quarterly_impl <- function(x, n, ..., day_nonexistent) {
+  x <- promote_at_least_quarterly_year_quarternum(x)
+  add_years_or_quarters_quarterly(x, n, ..., day_nonexistent = day_nonexistent, unit = "quarter")
 }
 
-add_years_or_quarters_fiscal <- function(x, n, ..., day_nonexistent, unit) {
+add_years_or_quarters_quarterly <- function(x, n, ..., day_nonexistent, unit) {
   check_dots_empty()
 
   n <- vec_cast(n, integer(), x_arg = "n")
   size <- vec_size_common(x = x, n = n)
-  fiscal_start <- get_fiscal_start(x)
+  start <- get_quarterly_start(x)
 
-  add_years_or_quarters_fiscal_cpp(x, n, fiscal_start, day_nonexistent, unit, size)
+  add_years_or_quarters_quarterly_cpp(x, n, start, day_nonexistent, unit, size)
 }
 
 # ------------------------------------------------------------------------------
 
-add_weeks_fiscal_impl <- function(x, n, ...) {
-  x <- promote_at_least_fiscal_year_quarternum_quarterday(x)
-  add_weeks_or_days_fiscal(x, n, ..., unit = "week")
+add_weeks_quarterly_impl <- function(x, n, ...) {
+  x <- promote_at_least_quarterly_year_quarternum_quarterday(x)
+  add_weeks_or_days_quarterly(x, n, ..., unit = "week")
 }
-add_days_fiscal_impl <- function(x, n, ...) {
-  x <- promote_at_least_fiscal_year_quarternum_quarterday(x)
-  add_weeks_or_days_fiscal(x, n, ..., unit = "day")
+add_days_quarterly_impl <- function(x, n, ...) {
+  x <- promote_at_least_quarterly_year_quarternum_quarterday(x)
+  add_weeks_or_days_quarterly(x, n, ..., unit = "day")
 }
 
-add_weeks_or_days_fiscal <- function(x, n, ..., unit) {
+add_weeks_or_days_quarterly <- function(x, n, ..., unit) {
   check_dots_empty()
 
   n <- vec_cast(n, integer(), x_arg = "n")
   size <- vec_size_common(x = x, n = n)
 
-  # Adding weeks/days is the same at the C++ level for fiscal/gregorian
+  # Adding weeks/days is the same at the C++ level for quarterly/gregorian
   add_weeks_or_days_cpp(x, n, unit, size)
 }
 

@@ -3,7 +3,7 @@
 
 // Include <date/> first to avoid hitting R's `length()` macro
 #include <date/date.h>
-#include <date/fiscal_year.h>
+#include <date/quarterly.h>
 #include <date/iso_week.h>
 #include <date/tz.h>
 

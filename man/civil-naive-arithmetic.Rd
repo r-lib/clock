@@ -3,21 +3,21 @@
 \name{civil-naive-arithmetic}
 \alias{civil-naive-arithmetic}
 \alias{add_years.civil_naive_gregorian}
-\alias{add_years.civil_naive_fiscal}
+\alias{add_years.civil_naive_quarterly}
 \alias{add_years.civil_naive_iso}
 \alias{subtract_years.civil_naive}
-\alias{add_quarters.civil_naive_fiscal}
+\alias{add_quarters.civil_naive_quarterly}
 \alias{subtract_quarters.civil_naive}
 \alias{add_months.civil_naive_gregorian}
 \alias{subtract_months.civil_naive}
 \alias{add_years_and_months.civil_naive_gregorian}
 \alias{subtract_years_and_months.civil_naive}
 \alias{add_weeks.civil_naive_gregorian}
-\alias{add_weeks.civil_naive_fiscal}
+\alias{add_weeks.civil_naive_quarterly}
 \alias{add_weeks.civil_naive_iso}
 \alias{subtract_weeks.civil_naive}
 \alias{add_days.civil_naive_gregorian}
-\alias{add_days.civil_naive_fiscal}
+\alias{add_days.civil_naive_quarterly}
 \alias{add_days.civil_naive_iso}
 \alias{subtract_days.civil_naive}
 \alias{add_hours.civil_naive_gregorian}
@@ -36,13 +36,13 @@
 \usage{
 \method{add_years}{civil_naive_gregorian}(x, n, ..., day_nonexistent = "last-time")
 
-\method{add_years}{civil_naive_fiscal}(x, n, ..., day_nonexistent = "last-time")
+\method{add_years}{civil_naive_quarterly}(x, n, ..., day_nonexistent = "last-time")
 
 \method{add_years}{civil_naive_iso}(x, n, ..., day_nonexistent = "last-time")
 
 \method{subtract_years}{civil_naive}(x, n, ..., day_nonexistent = "last-time")
 
-\method{add_quarters}{civil_naive_fiscal}(x, n, ..., day_nonexistent = "last-time")
+\method{add_quarters}{civil_naive_quarterly}(x, n, ..., day_nonexistent = "last-time")
 
 \method{subtract_quarters}{civil_naive}(x, n, ..., day_nonexistent = "last-time")
 
@@ -56,7 +56,7 @@
 
 \method{add_weeks}{civil_naive_gregorian}(x, n, ...)
 
-\method{add_weeks}{civil_naive_fiscal}(x, n, ...)
+\method{add_weeks}{civil_naive_quarterly}(x, n, ...)
 
 \method{add_weeks}{civil_naive_iso}(x, n, ...)
 
@@ -64,7 +64,7 @@
 
 \method{add_days}{civil_naive_gregorian}(x, n, ...)
 
-\method{add_days}{civil_naive_fiscal}(x, n, ...)
+\method{add_days}{civil_naive_quarterly}(x, n, ...)
 
 \method{add_days}{civil_naive_iso}(x, n, ...)
 

@@ -30,7 +30,7 @@ civil_writable_field floor_days_to_year_month_precision_cpp(const civil_field& d
   return out_days;
 }
 
-template <fiscal_year::start S>
+template <quarterly::start S>
 civil_writable_field floor_days_to_year_quarternum_precision(const civil_field& days) {
   r_ssize size = days.size();
 
@@ -45,12 +45,12 @@ civil_writable_field floor_days_to_year_quarternum_precision(const civil_field& 
     }
 
     date::local_days elt_lday{date::days{elt_days}};
-    fiscal_year::year_quarternum_quarterday<S> elt_yqnqd(elt_lday);
+    quarterly::year_quarternum_quarterday<S> elt_yqnqd(elt_lday);
 
-    fiscal_year::year_quarternum_quarterday<S> out_yqnqd(
+    quarterly::year_quarternum_quarterday<S> out_yqnqd(
         elt_yqnqd.year(),
         elt_yqnqd.quarternum(),
-        fiscal_year::quarterday{1u}
+        quarterly::quarterday{1u}
     );
 
     date::local_days out_lday{out_yqnqd};
@@ -63,31 +63,31 @@ civil_writable_field floor_days_to_year_quarternum_precision(const civil_field& 
 
 [[cpp11::register]]
 civil_writable_field floor_days_to_year_quarternum_precision_cpp(const civil_field& days,
-                                                                 int fiscal_start) {
-  if (fiscal_start == 1) {
-    return floor_days_to_year_quarternum_precision<fiscal_year::start::january>(days);
-  } else if (fiscal_start == 2) {
-    return floor_days_to_year_quarternum_precision<fiscal_year::start::february>(days);
-  } else if (fiscal_start == 3) {
-    return floor_days_to_year_quarternum_precision<fiscal_year::start::march>(days);
-  } else if (fiscal_start == 4) {
-    return floor_days_to_year_quarternum_precision<fiscal_year::start::april>(days);
-  } else if (fiscal_start == 5) {
-    return floor_days_to_year_quarternum_precision<fiscal_year::start::may>(days);
-  } else if (fiscal_start == 6) {
-    return floor_days_to_year_quarternum_precision<fiscal_year::start::june>(days);
-  } else if (fiscal_start == 7) {
-    return floor_days_to_year_quarternum_precision<fiscal_year::start::july>(days);
-  } else if (fiscal_start == 8) {
-    return floor_days_to_year_quarternum_precision<fiscal_year::start::august>(days);
-  } else if (fiscal_start == 9) {
-    return floor_days_to_year_quarternum_precision<fiscal_year::start::september>(days);
-  } else if (fiscal_start == 10) {
-    return floor_days_to_year_quarternum_precision<fiscal_year::start::october>(days);
-  } else if (fiscal_start == 11) {
-    return floor_days_to_year_quarternum_precision<fiscal_year::start::november>(days);
-  } else if (fiscal_start == 12) {
-    return floor_days_to_year_quarternum_precision<fiscal_year::start::december>(days);
+                                                                 int start) {
+  if (start == 1) {
+    return floor_days_to_year_quarternum_precision<quarterly::start::january>(days);
+  } else if (start == 2) {
+    return floor_days_to_year_quarternum_precision<quarterly::start::february>(days);
+  } else if (start == 3) {
+    return floor_days_to_year_quarternum_precision<quarterly::start::march>(days);
+  } else if (start == 4) {
+    return floor_days_to_year_quarternum_precision<quarterly::start::april>(days);
+  } else if (start == 5) {
+    return floor_days_to_year_quarternum_precision<quarterly::start::may>(days);
+  } else if (start == 6) {
+    return floor_days_to_year_quarternum_precision<quarterly::start::june>(days);
+  } else if (start == 7) {
+    return floor_days_to_year_quarternum_precision<quarterly::start::july>(days);
+  } else if (start == 8) {
+    return floor_days_to_year_quarternum_precision<quarterly::start::august>(days);
+  } else if (start == 9) {
+    return floor_days_to_year_quarternum_precision<quarterly::start::september>(days);
+  } else if (start == 10) {
+    return floor_days_to_year_quarternum_precision<quarterly::start::october>(days);
+  } else if (start == 11) {
+    return floor_days_to_year_quarternum_precision<quarterly::start::november>(days);
+  } else if (start == 12) {
+    return floor_days_to_year_quarternum_precision<quarterly::start::december>(days);
   }
 
   never_reached("floor_days_to_year_quarternum_precision_cpp");

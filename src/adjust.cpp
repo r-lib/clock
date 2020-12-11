@@ -345,67 +345,67 @@ adjust_naive_gregorian_nanos_of_second_switch(const std::chrono::nanoseconds& na
 
 // -----------------------------------------------------------------------------
 
-template <fiscal_year::start S>
-static civil_writable_rcrd adjust_naive_fiscal_days(const civil_rcrd& x,
-                                                    const cpp11::integers& value,
-                                                    const enum day_nonexistent& day_nonexistent_val,
-                                                    const r_ssize& size,
-                                                    const enum adjuster& adjuster_val);
+template <quarterly::start S>
+static civil_writable_rcrd adjust_naive_quarterly_days(const civil_rcrd& x,
+                                                       const cpp11::integers& value,
+                                                       const enum day_nonexistent& day_nonexistent_val,
+                                                       const r_ssize& size,
+                                                       const enum adjuster& adjuster_val);
 
 [[cpp11::register]]
-civil_writable_rcrd adjust_naive_fiscal_days_cpp(const civil_rcrd& x,
-                                                 const cpp11::integers& value,
-                                                 const int& fiscal_start,
-                                                 const cpp11::strings& day_nonexistent,
-                                                 const cpp11::integers& size,
-                                                 const cpp11::strings& adjuster) {
+civil_writable_rcrd adjust_naive_quarterly_days_cpp(const civil_rcrd& x,
+                                                    const cpp11::integers& value,
+                                                    const int& start,
+                                                    const cpp11::strings& day_nonexistent,
+                                                    const cpp11::integers& size,
+                                                    const cpp11::strings& adjuster) {
   r_ssize c_size = size[0];
   const enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
   const enum adjuster adjuster_val = parse_adjuster(adjuster);
 
-  if (fiscal_start == 1) {
-    return adjust_naive_fiscal_days<fiscal_year::start::january>(x, value, day_nonexistent_val, c_size, adjuster_val);
-  } else if (fiscal_start == 2) {
-    return adjust_naive_fiscal_days<fiscal_year::start::february>(x, value, day_nonexistent_val, c_size, adjuster_val);
-  } else if (fiscal_start == 3) {
-    return adjust_naive_fiscal_days<fiscal_year::start::march>(x, value, day_nonexistent_val, c_size, adjuster_val);
-  } else if (fiscal_start == 4) {
-    return adjust_naive_fiscal_days<fiscal_year::start::april>(x, value, day_nonexistent_val, c_size, adjuster_val);
-  } else if (fiscal_start == 5) {
-    return adjust_naive_fiscal_days<fiscal_year::start::may>(x, value, day_nonexistent_val, c_size, adjuster_val);
-  } else if (fiscal_start == 6) {
-    return adjust_naive_fiscal_days<fiscal_year::start::june>(x, value, day_nonexistent_val, c_size, adjuster_val);
-  } else if (fiscal_start == 7) {
-    return adjust_naive_fiscal_days<fiscal_year::start::july>(x, value, day_nonexistent_val, c_size, adjuster_val);
-  } else if (fiscal_start == 8) {
-    return adjust_naive_fiscal_days<fiscal_year::start::august>(x, value, day_nonexistent_val, c_size, adjuster_val);
-  } else if (fiscal_start == 9) {
-    return adjust_naive_fiscal_days<fiscal_year::start::september>(x, value, day_nonexistent_val, c_size, adjuster_val);
-  } else if (fiscal_start == 10) {
-    return adjust_naive_fiscal_days<fiscal_year::start::october>(x, value, day_nonexistent_val, c_size, adjuster_val);
-  } else if (fiscal_start == 11) {
-    return adjust_naive_fiscal_days<fiscal_year::start::november>(x, value, day_nonexistent_val, c_size, adjuster_val);
-  } else if (fiscal_start == 12) {
-    return adjust_naive_fiscal_days<fiscal_year::start::december>(x, value, day_nonexistent_val, c_size, adjuster_val);
+  if (start == 1) {
+    return adjust_naive_quarterly_days<quarterly::start::january>(x, value, day_nonexistent_val, c_size, adjuster_val);
+  } else if (start == 2) {
+    return adjust_naive_quarterly_days<quarterly::start::february>(x, value, day_nonexistent_val, c_size, adjuster_val);
+  } else if (start == 3) {
+    return adjust_naive_quarterly_days<quarterly::start::march>(x, value, day_nonexistent_val, c_size, adjuster_val);
+  } else if (start == 4) {
+    return adjust_naive_quarterly_days<quarterly::start::april>(x, value, day_nonexistent_val, c_size, adjuster_val);
+  } else if (start == 5) {
+    return adjust_naive_quarterly_days<quarterly::start::may>(x, value, day_nonexistent_val, c_size, adjuster_val);
+  } else if (start == 6) {
+    return adjust_naive_quarterly_days<quarterly::start::june>(x, value, day_nonexistent_val, c_size, adjuster_val);
+  } else if (start == 7) {
+    return adjust_naive_quarterly_days<quarterly::start::july>(x, value, day_nonexistent_val, c_size, adjuster_val);
+  } else if (start == 8) {
+    return adjust_naive_quarterly_days<quarterly::start::august>(x, value, day_nonexistent_val, c_size, adjuster_val);
+  } else if (start == 9) {
+    return adjust_naive_quarterly_days<quarterly::start::september>(x, value, day_nonexistent_val, c_size, adjuster_val);
+  } else if (start == 10) {
+    return adjust_naive_quarterly_days<quarterly::start::october>(x, value, day_nonexistent_val, c_size, adjuster_val);
+  } else if (start == 11) {
+    return adjust_naive_quarterly_days<quarterly::start::november>(x, value, day_nonexistent_val, c_size, adjuster_val);
+  } else if (start == 12) {
+    return adjust_naive_quarterly_days<quarterly::start::december>(x, value, day_nonexistent_val, c_size, adjuster_val);
   }
 
-  never_reached("adjust_naive_fiscal_days_cpp");
+  never_reached("adjust_naive_quarterly_days_cpp");
 }
 
-template <fiscal_year::start S>
+template <quarterly::start S>
 static
 inline
-fiscal_year::year_quarternum_quarterday<S>
-adjust_naive_fiscal_switch(const fiscal_year::year_quarternum_quarterday<S>& yqnqd,
-                           const int& value,
-                           const enum adjuster& adjuster_val);
+quarterly::year_quarternum_quarterday<S>
+adjust_naive_quarterly_switch(const quarterly::year_quarternum_quarterday<S>& yqnqd,
+                              const int& value,
+                              const enum adjuster& adjuster_val);
 
-template <fiscal_year::start S>
-static civil_writable_rcrd adjust_naive_fiscal_days(const civil_rcrd& x,
-                                                    const cpp11::integers& value,
-                                                    const enum day_nonexistent& day_nonexistent_val,
-                                                    const r_ssize& size,
-                                                    const enum adjuster& adjuster_val) {
+template <quarterly::start S>
+static civil_writable_rcrd adjust_naive_quarterly_days(const civil_rcrd& x,
+                                                       const cpp11::integers& value,
+                                                       const enum day_nonexistent& day_nonexistent_val,
+                                                       const r_ssize& size,
+                                                       const enum adjuster& adjuster_val) {
   civil_writable_rcrd out = civil_rcrd_clone(x);
   civil_rcrd_recycle(out, size);
 
@@ -428,9 +428,9 @@ static civil_writable_rcrd adjust_naive_fiscal_days(const civil_rcrd& x,
     }
 
     date::local_days elt_lday{date::days{elt_days}};
-    fiscal_year::year_quarternum_quarterday<S> elt_yqnqd{elt_lday};
+    quarterly::year_quarternum_quarterday<S> elt_yqnqd{elt_lday};
 
-    fiscal_year::year_quarternum_quarterday<S> out_yqnqd = adjust_naive_fiscal_switch(
+    quarterly::year_quarternum_quarterday<S> out_yqnqd = adjust_naive_quarterly_switch(
       elt_yqnqd,
       elt_value,
       adjuster_val
@@ -451,60 +451,60 @@ static civil_writable_rcrd adjust_naive_fiscal_days(const civil_rcrd& x,
 
 // -----------------------------------------------------------------------------
 
-template <fiscal_year::start S>
+template <quarterly::start S>
 static inline
-fiscal_year::year_quarternum_quarterday<S>
-adjust_naive_fiscal_year(const fiscal_year::year_quarternum_quarterday<S>& yqnqd, const int& value) {
+quarterly::year_quarternum_quarterday<S>
+adjust_naive_quarterly_year(const quarterly::year_quarternum_quarterday<S>& yqnqd, const int& value) {
   check_range_year(value, "value");
-  return {fiscal_year::year<S>{value}, yqnqd.quarternum(), yqnqd.quarterday()};
+  return {quarterly::year<S>{value}, yqnqd.quarternum(), yqnqd.quarterday()};
 }
 
-template <fiscal_year::start S>
+template <quarterly::start S>
 static inline
-fiscal_year::year_quarternum_quarterday<S>
-adjust_naive_fiscal_quarternum(const fiscal_year::year_quarternum_quarterday<S>& yqnqd, const int& value) {
+quarterly::year_quarternum_quarterday<S>
+adjust_naive_quarterly_quarternum(const quarterly::year_quarternum_quarterday<S>& yqnqd, const int& value) {
   check_range_quarternum(value, "value");
   unsigned int quarternum = static_cast<unsigned int>(value);
-  return {yqnqd.year(), fiscal_year::quarternum{quarternum}, yqnqd.quarterday()};
+  return {yqnqd.year(), quarterly::quarternum{quarternum}, yqnqd.quarterday()};
 }
 
-template <fiscal_year::start S>
+template <quarterly::start S>
 static inline
-fiscal_year::year_quarternum_quarterday<S>
-adjust_naive_fiscal_quarterday(const fiscal_year::year_quarternum_quarterday<S>& yqnqd, const int& value) {
+quarterly::year_quarternum_quarterday<S>
+adjust_naive_quarterly_quarterday(const quarterly::year_quarternum_quarterday<S>& yqnqd, const int& value) {
   check_range_quarterday(value, "value");
   unsigned int quarterday = static_cast<unsigned int>(value);
-  return {yqnqd.year(), yqnqd.quarternum(), fiscal_year::quarterday{quarterday}};
+  return {yqnqd.year(), yqnqd.quarternum(), quarterly::quarterday{quarterday}};
 }
 
-template <fiscal_year::start S>
+template <quarterly::start S>
 static inline
-fiscal_year::year_quarternum_quarterday<S>
-adjust_naive_fiscal_last_day_of_quarter(const fiscal_year::year_quarternum_quarterday<S>& yqnqd) {
-  return fiscal_year::year_quarternum_quarterday_last<S>{yqnqd.year(), yqnqd.quarternum()};
+quarterly::year_quarternum_quarterday<S>
+adjust_naive_quarterly_last_day_of_quarter(const quarterly::year_quarternum_quarterday<S>& yqnqd) {
+  return quarterly::year_quarternum_quarterday_last<S>{yqnqd.year(), yqnqd.quarternum()};
 }
 
-template <fiscal_year::start S>
+template <quarterly::start S>
 static inline
-fiscal_year::year_quarternum_quarterday<S>
-adjust_naive_fiscal_switch(const fiscal_year::year_quarternum_quarterday<S>& yqnqd,
-                           const int& value,
-                           const enum adjuster& adjuster_val) {
+quarterly::year_quarternum_quarterday<S>
+adjust_naive_quarterly_switch(const quarterly::year_quarternum_quarterday<S>& yqnqd,
+                              const int& value,
+                              const enum adjuster& adjuster_val) {
   switch (adjuster_val) {
   case adjuster::year: {
-    return adjust_naive_fiscal_year(yqnqd, value);
+    return adjust_naive_quarterly_year(yqnqd, value);
   }
   case adjuster::quarternum: {
-    return adjust_naive_fiscal_quarternum(yqnqd, value);
+    return adjust_naive_quarterly_quarternum(yqnqd, value);
   }
   case adjuster::quarterday: {
-    return adjust_naive_fiscal_quarterday(yqnqd, value);
+    return adjust_naive_quarterly_quarterday(yqnqd, value);
   }
   case adjuster::last_day_of_quarter: {
-    return adjust_naive_fiscal_last_day_of_quarter(yqnqd);
+    return adjust_naive_quarterly_last_day_of_quarter(yqnqd);
   }
   default: {
-    civil_abort("Internal error: Unknown `adjuster_val` in `adjust_naive_fiscal_switch()`.");
+    civil_abort("Internal error: Unknown `adjuster_val` in `adjust_naive_quarterly_switch()`.");
   }
   }
 }
