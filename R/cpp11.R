@@ -40,6 +40,10 @@ add_years_or_quarters_fiscal_cpp <- function(x, n, fiscal_start, day_nonexistent
   .Call("_civil_add_years_or_quarters_fiscal_cpp", x, n, fiscal_start, day_nonexistent, unit, size, PACKAGE = "civil")
 }
 
+add_years_iso_cpp <- function(x, n, day_nonexistent, size) {
+  .Call("_civil_add_years_iso_cpp", x, n, day_nonexistent, size, PACKAGE = "civil")
+}
+
 convert_sys_seconds_to_naive_days_and_time_of_day <- function(seconds, zone) {
   .Call("_civil_convert_sys_seconds_to_naive_days_and_time_of_day", seconds, zone, PACKAGE = "civil")
 }

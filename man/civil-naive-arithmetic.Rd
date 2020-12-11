@@ -4,6 +4,7 @@
 \alias{civil-naive-arithmetic}
 \alias{add_years.civil_naive_gregorian}
 \alias{add_years.civil_naive_fiscal}
+\alias{add_years.civil_naive_iso}
 \alias{subtract_years.civil_naive}
 \alias{add_quarters.civil_naive_fiscal}
 \alias{subtract_quarters.civil_naive}
@@ -13,9 +14,11 @@
 \alias{subtract_years_and_months.civil_naive}
 \alias{add_weeks.civil_naive_gregorian}
 \alias{add_weeks.civil_naive_fiscal}
+\alias{add_weeks.civil_naive_iso}
 \alias{subtract_weeks.civil_naive}
 \alias{add_days.civil_naive_gregorian}
 \alias{add_days.civil_naive_fiscal}
+\alias{add_days.civil_naive_iso}
 \alias{subtract_days.civil_naive}
 \alias{add_hours.civil_naive_gregorian}
 \alias{subtract_hours.civil_naive}
@@ -35,6 +38,8 @@
 
 \method{add_years}{civil_naive_fiscal}(x, n, ..., day_nonexistent = "last-time")
 
+\method{add_years}{civil_naive_iso}(x, n, ..., day_nonexistent = "last-time")
+
 \method{subtract_years}{civil_naive}(x, n, ..., day_nonexistent = "last-time")
 
 \method{add_quarters}{civil_naive_fiscal}(x, n, ..., day_nonexistent = "last-time")
@@ -53,11 +58,15 @@
 
 \method{add_weeks}{civil_naive_fiscal}(x, n, ...)
 
+\method{add_weeks}{civil_naive_iso}(x, n, ...)
+
 \method{subtract_weeks}{civil_naive}(x, n, ...)
 
 \method{add_days}{civil_naive_gregorian}(x, n, ...)
 
 \method{add_days}{civil_naive_fiscal}(x, n, ...)
+
+\method{add_days}{civil_naive_iso}(x, n, ...)
 
 \method{subtract_days}{civil_naive}(x, n, ...)
 

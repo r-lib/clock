@@ -74,6 +74,13 @@ extern "C" SEXP _civil_add_years_or_quarters_fiscal_cpp(SEXP x, SEXP n, SEXP fis
     return cpp11::as_sexp(add_years_or_quarters_fiscal_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const int&>>(fiscal_start), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(unit), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size)));
   END_CPP11
 }
+// arithmetic.cpp
+civil_writable_rcrd add_years_iso_cpp(const civil_rcrd& x, const cpp11::integers& n, const cpp11::strings& day_nonexistent, const cpp11::integers& size);
+extern "C" SEXP _civil_add_years_iso_cpp(SEXP x, SEXP n, SEXP day_nonexistent, SEXP size) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(add_years_iso_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size)));
+  END_CPP11
+}
 // converters.cpp
 civil_writable_rcrd convert_sys_seconds_to_naive_days_and_time_of_day(const cpp11::doubles& seconds, const cpp11::strings& zone);
 extern "C" SEXP _civil_convert_sys_seconds_to_naive_days_and_time_of_day(SEXP seconds, SEXP zone) {
@@ -263,6 +270,7 @@ extern "C" {
 extern SEXP _civil_add_hours_or_minutes_or_seconds_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_weeks_or_days_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_add_years_iso_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_years_or_months_gregorian_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_years_or_quarters_fiscal_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_naive_fiscal_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -301,6 +309,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_add_hours_or_minutes_or_seconds_cpp",                                 (DL_FUNC) &_civil_add_hours_or_minutes_or_seconds_cpp,                                 4},
     {"_civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp",                 (DL_FUNC) &_civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp,                 4},
     {"_civil_add_weeks_or_days_cpp",                                               (DL_FUNC) &_civil_add_weeks_or_days_cpp,                                               4},
+    {"_civil_add_years_iso_cpp",                                                   (DL_FUNC) &_civil_add_years_iso_cpp,                                                   4},
     {"_civil_add_years_or_months_gregorian_cpp",                                   (DL_FUNC) &_civil_add_years_or_months_gregorian_cpp,                                   5},
     {"_civil_add_years_or_quarters_fiscal_cpp",                                    (DL_FUNC) &_civil_add_years_or_quarters_fiscal_cpp,                                    6},
     {"_civil_adjust_naive_fiscal_days_cpp",                                        (DL_FUNC) &_civil_adjust_naive_fiscal_days_cpp,                                        6},
