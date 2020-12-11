@@ -96,6 +96,10 @@ convert_iso_year_weeknum_weekday_to_naive_days <- function(year, weeknum, weekda
   .Call("_civil_convert_iso_year_weeknum_weekday_to_naive_days", year, weeknum, weekday, day_nonexistent, PACKAGE = "civil")
 }
 
+convert_naive_days_to_iso_year_weeknum_weekday <- function(days) {
+  .Call("_civil_convert_naive_days_to_iso_year_weeknum_weekday", days, PACKAGE = "civil")
+}
+
 floor_days_to_year_month_precision_cpp <- function(days) {
   .Call("_civil_floor_days_to_year_month_precision_cpp", days, PACKAGE = "civil")
 }
