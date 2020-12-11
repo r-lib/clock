@@ -146,6 +146,12 @@ adjust_year.civil_naive_fiscal <- function(x, value, ..., day_nonexistent = "las
   adjust_year_fiscal_impl(x, value, ..., day_nonexistent = day_nonexistent)
 }
 
+#' @rdname adjust_year
+#' @export
+adjust_year.civil_naive_iso <- function(x, value, ..., day_nonexistent = "last-time") {
+  adjust_year_iso_impl(x, value, ..., day_nonexistent = day_nonexistent)
+}
+
 # ------------------------------------------------------------------------------
 
 #' @export
@@ -216,6 +222,45 @@ adjust_month.civil_zoned <- function(x,
 #' @export
 adjust_month.civil_naive_gregorian <- function(x, value, ..., day_nonexistent = "last-time") {
   adjust_month_gregorian_impl(x, value, ..., day_nonexistent = day_nonexistent)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+adjust_weeknum <- function(x, value, ...) {
+  restrict_civil_supported(x)
+  UseMethod("adjust_weeknum")
+}
+
+#' @export
+adjust_weeknum.civil_naive_iso <- function(x, value, ..., day_nonexistent = "last-time") {
+  adjust_weeknum_iso_impl(x, value, ..., day_nonexistent = day_nonexistent)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+adjust_last_weeknum_of_year <- function(x, ...) {
+  restrict_civil_supported(x)
+  UseMethod("adjust_last_weeknum_of_year")
+}
+
+#' @export
+adjust_last_weeknum_of_year.civil_naive_iso <- function(x, ...) {
+  adjust_last_weeknum_of_year_iso_impl(x, value, ...)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+adjust_weekday <- function(x, value, ...) {
+  restrict_civil_supported(x)
+  UseMethod("adjust_weekday")
+}
+
+#' @export
+adjust_weekday.civil_naive_iso <- function(x, value, ...) {
+  adjust_weekday_iso_impl(x, value, ...)
 }
 
 # ------------------------------------------------------------------------------
@@ -568,4 +613,36 @@ adjust_naive_fiscal_days <- function(x, value, ..., day_nonexistent, adjuster) {
   fiscal_start <- get_fiscal_start(x)
 
   adjust_naive_fiscal_days_cpp(x, value, fiscal_start, day_nonexistent, size, adjuster)
+}
+
+# ------------------------------------------------------------------------------
+
+adjust_year_iso_impl <- function(x, value, ..., day_nonexistent) {
+  # TODO:
+  #x <- promote_at_least_iso_year(x)
+  adjust_naive_iso_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "year")
+}
+adjust_weeknum_iso_impl <- function(x, value, ..., day_nonexistent) {
+  # TODO:
+  #x <- promote_at_least_iso_year_weeknum(x)
+  adjust_naive_iso_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "weeknum")
+}
+adjust_weekday_iso_impl <- function(x, value, ...) {
+  # TODO:
+  #x <- promote_at_least_iso_year_weeknum_weekday(x)
+  adjust_naive_iso_days(x, value, ..., day_nonexistent = "last-time", adjuster = "weekday")
+}
+adjust_last_weeknum_of_year_iso_impl <- function(x, ...) {
+  # TODO:
+  #x <- promote_at_least_iso_year_weeknum(x)
+  adjust_naive_iso_days(x, -1L, ..., day_nonexistent = "last-time", adjuster = "last_weeknum_of_year")
+}
+
+adjust_naive_iso_days <- function(x, value, ..., day_nonexistent, adjuster) {
+  check_dots_empty()
+
+  value <- vec_cast(value, integer(), x_arg = "value")
+  size <- vec_size_common(x = x, value = value)
+
+  adjust_naive_iso_days_cpp(x, value, day_nonexistent, size, adjuster)
 }

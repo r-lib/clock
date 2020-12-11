@@ -65,11 +65,14 @@ enum class adjuster {
   year,
   quarter,
   month,
+  weeknum,
+  weekday,
   day,
   hour,
   minute,
   second,
   nanosecond,
+  last_weeknum_of_year,
   last_day_of_quarter,
   last_day_of_month
 };

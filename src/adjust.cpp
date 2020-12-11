@@ -508,3 +508,139 @@ adjust_naive_fiscal_switch(const fiscal_year::year_quarter_day<S>& yqd,
   }
   }
 }
+
+// -----------------------------------------------------------------------------
+
+static civil_writable_rcrd adjust_naive_iso_days(const civil_rcrd& x,
+                                                 const cpp11::integers& value,
+                                                 const enum day_nonexistent& day_nonexistent_val,
+                                                 const r_ssize& size,
+                                                 const enum adjuster& adjuster_val);
+
+[[cpp11::register]]
+civil_writable_rcrd adjust_naive_iso_days_cpp(const civil_rcrd& x,
+                                              const cpp11::integers& value,
+                                              const cpp11::strings& day_nonexistent,
+                                              const cpp11::integers& size,
+                                              const cpp11::strings& adjuster) {
+  const enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
+  const r_ssize size_val = size[0];
+  const enum adjuster adjuster_val = parse_adjuster(adjuster);
+
+  return adjust_naive_iso_days(
+    x,
+    value,
+    day_nonexistent_val,
+    size_val,
+    adjuster_val
+  );
+}
+
+static inline
+iso_week::year_weeknum_weekday
+adjust_naive_iso_switch(const iso_week::year_weeknum_weekday& yww,
+                        const int& value,
+                        const enum adjuster& adjuster_val);
+
+static civil_writable_rcrd adjust_naive_iso_days(const civil_rcrd& x,
+                                                 const cpp11::integers& value,
+                                                 const enum day_nonexistent& day_nonexistent_val,
+                                                 const r_ssize& size,
+                                                 const enum adjuster& adjuster_val) {
+  civil_writable_rcrd out = civil_rcrd_clone(x);
+  civil_rcrd_recycle(out, size);
+
+  int* p_days = civil_rcrd_days_deref(out);
+  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
+  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
+
+  const bool recycle_value = civil_is_scalar(value);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    int elt_days = p_days[i];
+    int elt_value = recycle_value ? value[0] : value[i];
+
+    if (elt_days == r_int_na) {
+      continue;
+    }
+    if (elt_value == r_int_na) {
+      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      continue;
+    }
+
+    date::local_days elt_lday{date::days{elt_days}};
+    iso_week::year_weeknum_weekday elt_yww{elt_lday};
+
+    iso_week::year_weeknum_weekday out_yww = adjust_naive_iso_switch(
+      elt_yww,
+      elt_value,
+      adjuster_val
+    );
+
+    convert_year_weeknum_weekday_to_days_one(
+      i,
+      day_nonexistent_val,
+      out_yww,
+      p_days,
+      p_time_of_day,
+      p_nanos_of_second
+    );
+  }
+
+  return out;
+}
+
+// -----------------------------------------------------------------------------
+
+static inline
+iso_week::year_weeknum_weekday
+adjust_naive_iso_year(const iso_week::year_weeknum_weekday& yww, const int& value) {
+  check_range_year(value, "value");
+  return iso_week::year{value} / yww.weeknum() / yww.weekday();
+}
+
+static inline
+iso_week::year_weeknum_weekday
+adjust_naive_iso_weeknum(const iso_week::year_weeknum_weekday& yww, const int& value) {
+  check_range_iso_weeknum(value, "value");
+  unsigned int weeknum = static_cast<unsigned int>(value);
+  return yww.year() / iso_week::weeknum{weeknum} / yww.weekday();
+}
+
+static inline
+iso_week::year_weeknum_weekday
+adjust_naive_iso_weekday(const iso_week::year_weeknum_weekday& yww, const int& value) {
+  check_range_iso_weekday(value, "value");
+  unsigned int weekday = static_cast<unsigned int>(value);
+  return yww.year() / yww.weeknum() / iso_week::weekday{weekday};
+}
+
+static inline
+iso_week::year_weeknum_weekday
+adjust_naive_iso_last_weeknum_of_year(const iso_week::year_weeknum_weekday& yww) {
+  return yww.year() / iso_week::last / yww.weekday();
+}
+
+static inline
+iso_week::year_weeknum_weekday
+adjust_naive_iso_switch(const iso_week::year_weeknum_weekday& yww,
+                        const int& value,
+                        const enum adjuster& adjuster_val) {
+  switch (adjuster_val) {
+  case adjuster::year: {
+    return adjust_naive_iso_year(yww, value);
+  }
+  case adjuster::weeknum: {
+    return adjust_naive_iso_weeknum(yww, value);
+  }
+  case adjuster::weekday: {
+    return adjust_naive_iso_weekday(yww, value);
+  }
+  case adjuster::last_weeknum_of_year: {
+    return adjust_naive_iso_last_weeknum_of_year(yww);
+  }
+  default: {
+    civil_abort("Internal error: Unknown `adjuster_val` in `adjust_naive_iso_switch()`.");
+  }
+  }
+}

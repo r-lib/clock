@@ -16,6 +16,10 @@ adjust_naive_fiscal_days_cpp <- function(x, value, fiscal_start, day_nonexistent
   .Call("_civil_adjust_naive_fiscal_days_cpp", x, value, fiscal_start, day_nonexistent, size, adjuster, PACKAGE = "civil")
 }
 
+adjust_naive_iso_days_cpp <- function(x, value, day_nonexistent, size, adjuster) {
+  .Call("_civil_adjust_naive_iso_days_cpp", x, value, day_nonexistent, size, adjuster, PACKAGE = "civil")
+}
+
 add_years_or_months_gregorian_cpp <- function(x, n, day_nonexistent, unit, size) {
   .Call("_civil_add_years_or_months_gregorian_cpp", x, n, day_nonexistent, unit, size, PACKAGE = "civil")
 }

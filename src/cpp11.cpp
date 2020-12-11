@@ -32,6 +32,13 @@ extern "C" SEXP _civil_adjust_naive_fiscal_days_cpp(SEXP x, SEXP value, SEXP fis
     return cpp11::as_sexp(adjust_naive_fiscal_days_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(value), cpp11::as_cpp<cpp11::decay_t<const int&>>(fiscal_start), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(adjuster)));
   END_CPP11
 }
+// adjust.cpp
+civil_writable_rcrd adjust_naive_iso_days_cpp(const civil_rcrd& x, const cpp11::integers& value, const cpp11::strings& day_nonexistent, const cpp11::integers& size, const cpp11::strings& adjuster);
+extern "C" SEXP _civil_adjust_naive_iso_days_cpp(SEXP x, SEXP value, SEXP day_nonexistent, SEXP size, SEXP adjuster) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(adjust_naive_iso_days_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(value), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(adjuster)));
+  END_CPP11
+}
 // arithmetic.cpp
 civil_writable_rcrd add_years_or_months_gregorian_cpp(const civil_rcrd& x, const cpp11::integers& n, const cpp11::strings& day_nonexistent, const cpp11::strings& unit, const cpp11::integers& size);
 extern "C" SEXP _civil_add_years_or_months_gregorian_cpp(SEXP x, SEXP n, SEXP day_nonexistent, SEXP unit, SEXP size) {
@@ -241,6 +248,7 @@ extern SEXP _civil_adjust_naive_fiscal_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SE
 extern SEXP _civil_adjust_naive_gregorian_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_naive_gregorian_nanos_of_second_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_naive_gregorian_time_of_day_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_adjust_naive_iso_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_set_install(SEXP);
 extern SEXP _civil_convert_datetime_fields_from_naive_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_datetime_fields_from_zoned_to_naive_cpp(SEXP, SEXP, SEXP);
@@ -275,6 +283,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_adjust_naive_gregorian_days_cpp",                                     (DL_FUNC) &_civil_adjust_naive_gregorian_days_cpp,                                     5},
     {"_civil_adjust_naive_gregorian_nanos_of_second_cpp",                          (DL_FUNC) &_civil_adjust_naive_gregorian_nanos_of_second_cpp,                          4},
     {"_civil_adjust_naive_gregorian_time_of_day_cpp",                              (DL_FUNC) &_civil_adjust_naive_gregorian_time_of_day_cpp,                              4},
+    {"_civil_adjust_naive_iso_days_cpp",                                           (DL_FUNC) &_civil_adjust_naive_iso_days_cpp,                                           5},
     {"_civil_civil_set_install",                                                   (DL_FUNC) &_civil_civil_set_install,                                                   1},
     {"_civil_convert_datetime_fields_from_naive_to_zoned_cpp",                     (DL_FUNC) &_civil_convert_datetime_fields_from_naive_to_zoned_cpp,                     6},
     {"_civil_convert_datetime_fields_from_zoned_to_naive_cpp",                     (DL_FUNC) &_civil_convert_datetime_fields_from_zoned_to_naive_cpp,                     3},
