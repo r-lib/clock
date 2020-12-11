@@ -66,20 +66,20 @@ enum class start: unsigned char {
     december = 12u
 };
 
-class day;
+class quarterday;
 class quarternum;
 template <start S>
 class year;
 
 template <start S>
 class year_quarternum;
-class quarternum_day;
-class quarternum_day_last;
+class quarternum_quarterday;
+class quarternum_quarterday_last;
 
 template <start S>
-class year_quarternum_day;
+class year_quarternum_quarterday;
 template <start S>
-class year_quarternum_day_last;
+class year_quarternum_quarterday_last;
 
 // date composition operators
 
@@ -88,70 +88,70 @@ CONSTCD11 year_quarternum<S> operator/(const year<S>& y, const quarternum& qn) N
 template <start S>
 CONSTCD11 year_quarternum<S> operator/(const year<S>& y, int               qn) NOEXCEPT;
 
-CONSTCD11 quarternum_day operator/(const quarternum& qn, const day& d) NOEXCEPT;
-CONSTCD11 quarternum_day operator/(const quarternum& qn, int        d) NOEXCEPT;
-CONSTCD11 quarternum_day operator/(int               qn, const day& d) NOEXCEPT;
-CONSTCD11 quarternum_day operator/(const day& d, const quarternum& qn) NOEXCEPT;
-CONSTCD11 quarternum_day operator/(const day& d, int               qn) NOEXCEPT;
+CONSTCD11 quarternum_quarterday operator/(const quarternum& qn, const quarterday& qd) NOEXCEPT;
+CONSTCD11 quarternum_quarterday operator/(const quarternum& qn, int               qd) NOEXCEPT;
+CONSTCD11 quarternum_quarterday operator/(int               qn, const quarterday& qd) NOEXCEPT;
+CONSTCD11 quarternum_quarterday operator/(const quarterday& qd, const quarternum& qn) NOEXCEPT;
+CONSTCD11 quarternum_quarterday operator/(const quarterday& qd, int               qn) NOEXCEPT;
 
-CONSTCD11 quarternum_day_last operator/(const quarternum& qn, last_spec) NOEXCEPT;
-CONSTCD11 quarternum_day_last operator/(int               qn, last_spec) NOEXCEPT;
-CONSTCD11 quarternum_day_last operator/(last_spec, const quarternum& qn) NOEXCEPT;
-CONSTCD11 quarternum_day_last operator/(last_spec, int               qn) NOEXCEPT;
-
-template <start S>
-CONSTCD11 year_quarternum_day<S> operator/(const year_quarternum<S>& yqn, const day& d) NOEXCEPT;
-template <start S>
-CONSTCD11 year_quarternum_day<S> operator/(const year_quarternum<S>& yqn, int        d) NOEXCEPT;
-template <start S>
-CONSTCD11 year_quarternum_day<S> operator/(const year<S>& y, const quarternum_day& qnd) NOEXCEPT;
-template <start S>
-CONSTCD11 year_quarternum_day<S> operator/(const quarternum_day& qnd, const year<S>& y) NOEXCEPT;
+CONSTCD11 quarternum_quarterday_last operator/(const quarternum& qn, last_spec) NOEXCEPT;
+CONSTCD11 quarternum_quarterday_last operator/(int               qn, last_spec) NOEXCEPT;
+CONSTCD11 quarternum_quarterday_last operator/(last_spec, const quarternum& qn) NOEXCEPT;
+CONSTCD11 quarternum_quarterday_last operator/(last_spec, int               qn) NOEXCEPT;
 
 template <start S>
-CONSTCD11 year_quarternum_day_last<S> operator/(const year_quarternum<S>& yqn, last_spec) NOEXCEPT;
+CONSTCD11 year_quarternum_quarterday<S> operator/(const year_quarternum<S>& yqn, const quarterday& qd) NOEXCEPT;
 template <start S>
-CONSTCD11 year_quarternum_day_last<S> operator/(const year<S>& y, const quarternum_day_last& qndl) NOEXCEPT;
+CONSTCD11 year_quarternum_quarterday<S> operator/(const year_quarternum<S>& yqn, int               qd) NOEXCEPT;
 template <start S>
-CONSTCD11 year_quarternum_day_last<S> operator/(const quarternum_day_last& qndl, const year<S>& y) NOEXCEPT;
+CONSTCD11 year_quarternum_quarterday<S> operator/(const year<S>& y, const quarternum_quarterday& qnqd) NOEXCEPT;
+template <start S>
+CONSTCD11 year_quarternum_quarterday<S> operator/(const quarternum_quarterday& qnqd, const year<S>& y) NOEXCEPT;
 
-// day
+template <start S>
+CONSTCD11 year_quarternum_quarterday_last<S> operator/(const year_quarternum<S>& yqn, last_spec) NOEXCEPT;
+template <start S>
+CONSTCD11 year_quarternum_quarterday_last<S> operator/(const year<S>& y, const quarternum_quarterday_last& qnqdl) NOEXCEPT;
+template <start S>
+CONSTCD11 year_quarternum_quarterday_last<S> operator/(const quarternum_quarterday_last& qnqdl, const year<S>& y) NOEXCEPT;
 
-class day
+// quarterday
+
+class quarterday
 {
-    unsigned char d_;
+    unsigned char qd_;
 public:
-    day() = default;
-    explicit CONSTCD11 day(unsigned d) NOEXCEPT;
-    explicit day(int) = delete;
+    quarterday() = default;
+    explicit CONSTCD11 quarterday(unsigned qd) NOEXCEPT;
+    explicit quarterday(int) = delete;
 
-    CONSTCD14 day& operator++()    NOEXCEPT;
-    CONSTCD14 day  operator++(int) NOEXCEPT;
-    CONSTCD14 day& operator--()    NOEXCEPT;
-    CONSTCD14 day  operator--(int) NOEXCEPT;
+    CONSTCD14 quarterday& operator++()    NOEXCEPT;
+    CONSTCD14 quarterday  operator++(int) NOEXCEPT;
+    CONSTCD14 quarterday& operator--()    NOEXCEPT;
+    CONSTCD14 quarterday  operator--(int) NOEXCEPT;
 
-    CONSTCD14 day& operator+=(const days& dd) NOEXCEPT;
-    CONSTCD14 day& operator-=(const days& dd) NOEXCEPT;
+    CONSTCD14 quarterday& operator+=(const days& dd) NOEXCEPT;
+    CONSTCD14 quarterday& operator-=(const days& dd) NOEXCEPT;
 
     CONSTCD11 explicit operator unsigned() const NOEXCEPT;
     CONSTCD11 bool ok() const NOEXCEPT;
 };
 
-CONSTCD11 bool operator==(const day& x, const day& y) NOEXCEPT;
-CONSTCD11 bool operator!=(const day& x, const day& y) NOEXCEPT;
-CONSTCD11 bool operator< (const day& x, const day& y) NOEXCEPT;
-CONSTCD11 bool operator> (const day& x, const day& y) NOEXCEPT;
-CONSTCD11 bool operator<=(const day& x, const day& y) NOEXCEPT;
-CONSTCD11 bool operator>=(const day& x, const day& y) NOEXCEPT;
+CONSTCD11 bool operator==(const quarterday& x, const quarterday& y) NOEXCEPT;
+CONSTCD11 bool operator!=(const quarterday& x, const quarterday& y) NOEXCEPT;
+CONSTCD11 bool operator< (const quarterday& x, const quarterday& y) NOEXCEPT;
+CONSTCD11 bool operator> (const quarterday& x, const quarterday& y) NOEXCEPT;
+CONSTCD11 bool operator<=(const quarterday& x, const quarterday& y) NOEXCEPT;
+CONSTCD11 bool operator>=(const quarterday& x, const quarterday& y) NOEXCEPT;
 
-CONSTCD11 day  operator+(const day&  x, const days& y) NOEXCEPT;
-CONSTCD11 day  operator+(const days& x, const day&  y) NOEXCEPT;
-CONSTCD11 day  operator-(const day&  x, const days& y) NOEXCEPT;
-CONSTCD11 days operator-(const day&  x, const day&  y) NOEXCEPT;
+CONSTCD11 quarterday  operator+(const quarterday& x, const days& y)       NOEXCEPT;
+CONSTCD11 quarterday  operator+(const days& x,       const quarterday& y) NOEXCEPT;
+CONSTCD11 quarterday  operator-(const quarterday& x, const days& y)       NOEXCEPT;
+CONSTCD11 days        operator-(const quarterday& x, const quarterday& y) NOEXCEPT;
 
 template<class CharT, class Traits>
 std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, const day& d);
+operator<<(std::basic_ostream<CharT, Traits>& os, const quarterday& qd);
 
 // quarternum
 
@@ -306,84 +306,84 @@ template<class CharT, class Traits, start S>
 std::basic_ostream<CharT, Traits>&
 operator<<(std::basic_ostream<CharT, Traits>& os, const year_quarternum<S>& yqn);
 
-// quarternum_day
+// quarternum_quarterday
 
-class quarternum_day
+class quarternum_quarterday
 {
     fiscal_year::quarternum qn_;
-    fiscal_year::day d_;
+    fiscal_year::quarterday qd_;
 
 public:
-    quarternum_day() = default;
-    CONSTCD11 quarternum_day(const fiscal_year::quarternum& qn,
-                             const fiscal_year::day& d) NOEXCEPT;
+    quarternum_quarterday() = default;
+    CONSTCD11 quarternum_quarterday(const fiscal_year::quarternum& qn,
+                                    const fiscal_year::quarterday& qd) NOEXCEPT;
 
     CONSTCD11 fiscal_year::quarternum quarternum() const NOEXCEPT;
-    CONSTCD11 fiscal_year::day day() const NOEXCEPT;
+    CONSTCD11 fiscal_year::quarterday quarterday() const NOEXCEPT;
 
     CONSTCD14 bool ok() const NOEXCEPT;
 };
 
-CONSTCD11 bool operator==(const quarternum_day& x, const quarternum_day& y) NOEXCEPT;
-CONSTCD11 bool operator!=(const quarternum_day& x, const quarternum_day& y) NOEXCEPT;
-CONSTCD11 bool operator< (const quarternum_day& x, const quarternum_day& y) NOEXCEPT;
-CONSTCD11 bool operator> (const quarternum_day& x, const quarternum_day& y) NOEXCEPT;
-CONSTCD11 bool operator<=(const quarternum_day& x, const quarternum_day& y) NOEXCEPT;
-CONSTCD11 bool operator>=(const quarternum_day& x, const quarternum_day& y) NOEXCEPT;
+CONSTCD11 bool operator==(const quarternum_quarterday& x, const quarternum_quarterday& y) NOEXCEPT;
+CONSTCD11 bool operator!=(const quarternum_quarterday& x, const quarternum_quarterday& y) NOEXCEPT;
+CONSTCD11 bool operator< (const quarternum_quarterday& x, const quarternum_quarterday& y) NOEXCEPT;
+CONSTCD11 bool operator> (const quarternum_quarterday& x, const quarternum_quarterday& y) NOEXCEPT;
+CONSTCD11 bool operator<=(const quarternum_quarterday& x, const quarternum_quarterday& y) NOEXCEPT;
+CONSTCD11 bool operator>=(const quarternum_quarterday& x, const quarternum_quarterday& y) NOEXCEPT;
 
 template<class CharT, class Traits>
 std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, const quarternum_day& qnd);
+operator<<(std::basic_ostream<CharT, Traits>& os, const quarternum_quarterday& qnqd);
 
-// quarternum_day_last
+// quarternum_quarterday_last
 
-class quarternum_day_last
+class quarternum_quarterday_last
 {
     fiscal_year::quarternum qn_;
 
 public:
-    quarternum_day_last() = default;
-    CONSTCD11 explicit quarternum_day_last(const fiscal_year::quarternum& qn) NOEXCEPT;
+    quarternum_quarterday_last() = default;
+    CONSTCD11 explicit quarternum_quarterday_last(const fiscal_year::quarternum& qn) NOEXCEPT;
 
     CONSTCD11 fiscal_year::quarternum quarternum() const NOEXCEPT;
 
     CONSTCD14 bool ok() const NOEXCEPT;
 };
 
-CONSTCD11 bool operator==(const quarternum_day_last& x, const quarternum_day_last& y) NOEXCEPT;
-CONSTCD11 bool operator!=(const quarternum_day_last& x, const quarternum_day_last& y) NOEXCEPT;
-CONSTCD11 bool operator< (const quarternum_day_last& x, const quarternum_day_last& y) NOEXCEPT;
-CONSTCD11 bool operator> (const quarternum_day_last& x, const quarternum_day_last& y) NOEXCEPT;
-CONSTCD11 bool operator<=(const quarternum_day_last& x, const quarternum_day_last& y) NOEXCEPT;
-CONSTCD11 bool operator>=(const quarternum_day_last& x, const quarternum_day_last& y) NOEXCEPT;
+CONSTCD11 bool operator==(const quarternum_quarterday_last& x, const quarternum_quarterday_last& y) NOEXCEPT;
+CONSTCD11 bool operator!=(const quarternum_quarterday_last& x, const quarternum_quarterday_last& y) NOEXCEPT;
+CONSTCD11 bool operator< (const quarternum_quarterday_last& x, const quarternum_quarterday_last& y) NOEXCEPT;
+CONSTCD11 bool operator> (const quarternum_quarterday_last& x, const quarternum_quarterday_last& y) NOEXCEPT;
+CONSTCD11 bool operator<=(const quarternum_quarterday_last& x, const quarternum_quarterday_last& y) NOEXCEPT;
+CONSTCD11 bool operator>=(const quarternum_quarterday_last& x, const quarternum_quarterday_last& y) NOEXCEPT;
 
 template<class CharT, class Traits>
 std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, const quarternum_day_last& qndl);
+operator<<(std::basic_ostream<CharT, Traits>& os, const quarternum_quarterday_last& qnqdl);
 
-// year_quarternum_day_last
+// year_quarternum_quarterday_last
 
 template <start S>
-class year_quarternum_day_last
+class year_quarternum_quarterday_last
 {
     fiscal_year::year<S> y_;
     fiscal_year::quarternum qn_;
 
 public:
-    year_quarternum_day_last<S>() = default;
-    CONSTCD11 year_quarternum_day_last<S>(const fiscal_year::year<S>& y,
-                                          const fiscal_year::quarternum& qn) NOEXCEPT;
-    CONSTCD11 year_quarternum_day_last<S>(const fiscal_year::year_quarternum<S>& yqn) NOEXCEPT;
+    year_quarternum_quarterday_last<S>() = default;
+    CONSTCD11 year_quarternum_quarterday_last<S>(const fiscal_year::year<S>& y,
+                                                 const fiscal_year::quarternum& qn) NOEXCEPT;
+    CONSTCD11 year_quarternum_quarterday_last<S>(const fiscal_year::year_quarternum<S>& yqn) NOEXCEPT;
 
-    CONSTCD14 year_quarternum_day_last<S>& operator+=(const quarters& dq) NOEXCEPT;
-    CONSTCD14 year_quarternum_day_last<S>& operator-=(const quarters& dq) NOEXCEPT;
+    CONSTCD14 year_quarternum_quarterday_last<S>& operator+=(const quarters& dq) NOEXCEPT;
+    CONSTCD14 year_quarternum_quarterday_last<S>& operator-=(const quarters& dq) NOEXCEPT;
 
-    CONSTCD14 year_quarternum_day_last<S>& operator+=(const years& dy) NOEXCEPT;
-    CONSTCD14 year_quarternum_day_last<S>& operator-=(const years& dy) NOEXCEPT;
+    CONSTCD14 year_quarternum_quarterday_last<S>& operator+=(const years& dy) NOEXCEPT;
+    CONSTCD14 year_quarternum_quarterday_last<S>& operator-=(const years& dy) NOEXCEPT;
 
     CONSTCD11 fiscal_year::year<S> year() const NOEXCEPT;
     CONSTCD11 fiscal_year::quarternum quarternum() const NOEXCEPT;
-    CONSTCD14 fiscal_year::day day() const NOEXCEPT;
+    CONSTCD14 fiscal_year::quarterday quarterday() const NOEXCEPT;
 
     CONSTCD14 operator sys_days() const NOEXCEPT;
     CONSTCD14 explicit operator local_days() const NOEXCEPT;
@@ -391,65 +391,65 @@ public:
 };
 
 template <start S>
-CONSTCD11 bool operator==(const year_quarternum_day_last<S>& x, const year_quarternum_day_last<S>& y) NOEXCEPT;
+CONSTCD11 bool operator==(const year_quarternum_quarterday_last<S>& x, const year_quarternum_quarterday_last<S>& y) NOEXCEPT;
 template <start S>
-CONSTCD11 bool operator!=(const year_quarternum_day_last<S>& x, const year_quarternum_day_last<S>& y) NOEXCEPT;
+CONSTCD11 bool operator!=(const year_quarternum_quarterday_last<S>& x, const year_quarternum_quarterday_last<S>& y) NOEXCEPT;
 template <start S>
-CONSTCD11 bool operator< (const year_quarternum_day_last<S>& x, const year_quarternum_day_last<S>& y) NOEXCEPT;
+CONSTCD11 bool operator< (const year_quarternum_quarterday_last<S>& x, const year_quarternum_quarterday_last<S>& y) NOEXCEPT;
 template <start S>
-CONSTCD11 bool operator> (const year_quarternum_day_last<S>& x, const year_quarternum_day_last<S>& y) NOEXCEPT;
+CONSTCD11 bool operator> (const year_quarternum_quarterday_last<S>& x, const year_quarternum_quarterday_last<S>& y) NOEXCEPT;
 template <start S>
-CONSTCD11 bool operator<=(const year_quarternum_day_last<S>& x, const year_quarternum_day_last<S>& y) NOEXCEPT;
+CONSTCD11 bool operator<=(const year_quarternum_quarterday_last<S>& x, const year_quarternum_quarterday_last<S>& y) NOEXCEPT;
 template <start S>
-CONSTCD11 bool operator>=(const year_quarternum_day_last<S>& x, const year_quarternum_day_last<S>& y) NOEXCEPT;
+CONSTCD11 bool operator>=(const year_quarternum_quarterday_last<S>& x, const year_quarternum_quarterday_last<S>& y) NOEXCEPT;
 
 template <start S>
-CONSTCD14 year_quarternum_day_last<S> operator+(const year_quarternum_day_last<S>& yqndl, const quarters& dq) NOEXCEPT;
+CONSTCD14 year_quarternum_quarterday_last<S> operator+(const year_quarternum_quarterday_last<S>& yqnqdl, const quarters& dq) NOEXCEPT;
 template <start S>
-CONSTCD14 year_quarternum_day_last<S> operator+(const quarters& dq, const year_quarternum_day_last<S>& yqndl) NOEXCEPT;
+CONSTCD14 year_quarternum_quarterday_last<S> operator+(const quarters& dq, const year_quarternum_quarterday_last<S>& yqnqdl) NOEXCEPT;
 template <start S>
-CONSTCD14 year_quarternum_day_last<S> operator-(const year_quarternum_day_last<S>& yqndl, const quarters& dq) NOEXCEPT;
+CONSTCD14 year_quarternum_quarterday_last<S> operator-(const year_quarternum_quarterday_last<S>& yqnqdl, const quarters& dq) NOEXCEPT;
 
 template <start S>
-CONSTCD11 year_quarternum_day_last<S> operator+(const year_quarternum_day_last<S>& yqndl, const years& dy) NOEXCEPT;
+CONSTCD11 year_quarternum_quarterday_last<S> operator+(const year_quarternum_quarterday_last<S>& yqnqdl, const years& dy) NOEXCEPT;
 template <start S>
-CONSTCD11 year_quarternum_day_last<S> operator+(const years& dy, const year_quarternum_day_last<S>& yqndl) NOEXCEPT;
+CONSTCD11 year_quarternum_quarterday_last<S> operator+(const years& dy, const year_quarternum_quarterday_last<S>& yqnqdl) NOEXCEPT;
 template <start S>
-CONSTCD11 year_quarternum_day_last<S> operator-(const year_quarternum_day_last<S>& yqndl, const years& dy) NOEXCEPT;
+CONSTCD11 year_quarternum_quarterday_last<S> operator-(const year_quarternum_quarterday_last<S>& yqnqdl, const years& dy) NOEXCEPT;
 
 template<class CharT, class Traits, start S>
 std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, const year_quarternum_day_last<S>& yqndl);
+operator<<(std::basic_ostream<CharT, Traits>& os, const year_quarternum_quarterday_last<S>& yqnqdl);
 
-// year_quarternum_day
+// year_quarternum_quarterday
 
 template <start S>
-class year_quarternum_day
+class year_quarternum_quarterday
 {
     fiscal_year::year<S> y_;
     fiscal_year::quarternum qn_;
-    fiscal_year::day d_;
+    fiscal_year::quarterday qd_;
 
 public:
-    year_quarternum_day<S>() = default;
-    CONSTCD11 year_quarternum_day<S>(const fiscal_year::year<S>& y,
-                                     const fiscal_year::quarternum& qn,
-                                     const fiscal_year::day& d) NOEXCEPT;
-    CONSTCD11 year_quarternum_day<S>(const fiscal_year::year_quarternum<S>& yqn,
-                                     const fiscal_year::day& d) NOEXCEPT;
-    CONSTCD14 year_quarternum_day<S>(const year_quarternum_day_last<S>& yqndl) NOEXCEPT;
-    CONSTCD14 year_quarternum_day<S>(const sys_days& dp) NOEXCEPT;
-    CONSTCD14 year_quarternum_day<S>(const local_days& dp) NOEXCEPT;
+    year_quarternum_quarterday<S>() = default;
+    CONSTCD11 year_quarternum_quarterday<S>(const fiscal_year::year<S>& y,
+                                            const fiscal_year::quarternum& qn,
+                                            const fiscal_year::quarterday& qd) NOEXCEPT;
+    CONSTCD11 year_quarternum_quarterday<S>(const fiscal_year::year_quarternum<S>& yqn,
+                                            const fiscal_year::quarterday& qd) NOEXCEPT;
+    CONSTCD14 year_quarternum_quarterday<S>(const year_quarternum_quarterday_last<S>& yqnqdl) NOEXCEPT;
+    CONSTCD14 year_quarternum_quarterday<S>(const sys_days& dp) NOEXCEPT;
+    CONSTCD14 year_quarternum_quarterday<S>(const local_days& dp) NOEXCEPT;
 
-    CONSTCD14 year_quarternum_day<S>& operator+=(const quarters& dq) NOEXCEPT;
-    CONSTCD14 year_quarternum_day<S>& operator-=(const quarters& dq) NOEXCEPT;
+    CONSTCD14 year_quarternum_quarterday<S>& operator+=(const quarters& dq) NOEXCEPT;
+    CONSTCD14 year_quarternum_quarterday<S>& operator-=(const quarters& dq) NOEXCEPT;
 
-    CONSTCD14 year_quarternum_day<S>& operator+=(const years& dy) NOEXCEPT;
-    CONSTCD14 year_quarternum_day<S>& operator-=(const years& dy) NOEXCEPT;
+    CONSTCD14 year_quarternum_quarterday<S>& operator+=(const years& dy) NOEXCEPT;
+    CONSTCD14 year_quarternum_quarterday<S>& operator-=(const years& dy) NOEXCEPT;
 
     CONSTCD11 fiscal_year::year<S> year() const NOEXCEPT;
     CONSTCD11 fiscal_year::quarternum quarternum() const NOEXCEPT;
-    CONSTCD11 fiscal_year::day day() const NOEXCEPT;
+    CONSTCD11 fiscal_year::quarterday quarterday() const NOEXCEPT;
 
     CONSTCD14 operator sys_days() const NOEXCEPT;
     CONSTCD14 explicit operator local_days() const NOEXCEPT;
@@ -457,65 +457,65 @@ public:
 
 private:
     CONSTCD14 days to_days() const NOEXCEPT;
-    static CONSTCD14 year_quarternum_day<S> from_days(const days& dd) NOEXCEPT;
+    static CONSTCD14 year_quarternum_quarterday<S> from_days(const days& dd) NOEXCEPT;
 };
 
 template <start S>
-CONSTCD11 bool operator==(const year_quarternum_day<S>& x, const year_quarternum_day<S>& y) NOEXCEPT;
+CONSTCD11 bool operator==(const year_quarternum_quarterday<S>& x, const year_quarternum_quarterday<S>& y) NOEXCEPT;
 template <start S>
-CONSTCD11 bool operator!=(const year_quarternum_day<S>& x, const year_quarternum_day<S>& y) NOEXCEPT;
+CONSTCD11 bool operator!=(const year_quarternum_quarterday<S>& x, const year_quarternum_quarterday<S>& y) NOEXCEPT;
 template <start S>
-CONSTCD11 bool operator< (const year_quarternum_day<S>& x, const year_quarternum_day<S>& y) NOEXCEPT;
+CONSTCD11 bool operator< (const year_quarternum_quarterday<S>& x, const year_quarternum_quarterday<S>& y) NOEXCEPT;
 template <start S>
-CONSTCD11 bool operator> (const year_quarternum_day<S>& x, const year_quarternum_day<S>& y) NOEXCEPT;
+CONSTCD11 bool operator> (const year_quarternum_quarterday<S>& x, const year_quarternum_quarterday<S>& y) NOEXCEPT;
 template <start S>
-CONSTCD11 bool operator<=(const year_quarternum_day<S>& x, const year_quarternum_day<S>& y) NOEXCEPT;
+CONSTCD11 bool operator<=(const year_quarternum_quarterday<S>& x, const year_quarternum_quarterday<S>& y) NOEXCEPT;
 template <start S>
-CONSTCD11 bool operator>=(const year_quarternum_day<S>& x, const year_quarternum_day<S>& y) NOEXCEPT;
+CONSTCD11 bool operator>=(const year_quarternum_quarterday<S>& x, const year_quarternum_quarterday<S>& y) NOEXCEPT;
 
 template <start S>
-CONSTCD14 year_quarternum_day<S> operator+(const year_quarternum_day<S>& yqnd, const quarters& dq) NOEXCEPT;
+CONSTCD14 year_quarternum_quarterday<S> operator+(const year_quarternum_quarterday<S>& yqnqd, const quarters& dq) NOEXCEPT;
 template <start S>
-CONSTCD14 year_quarternum_day<S> operator+(const quarters& dq, const year_quarternum_day<S>& yqnd) NOEXCEPT;
+CONSTCD14 year_quarternum_quarterday<S> operator+(const quarters& dq, const year_quarternum_quarterday<S>& yqnqd) NOEXCEPT;
 template <start S>
-CONSTCD14 year_quarternum_day<S> operator-(const year_quarternum_day<S>& yqnd, const quarters& dq) NOEXCEPT;
+CONSTCD14 year_quarternum_quarterday<S> operator-(const year_quarternum_quarterday<S>& yqnqd, const quarters& dq) NOEXCEPT;
 
 template <start S>
-CONSTCD11 year_quarternum_day<S> operator+(const year_quarternum_day<S>& yqnd, const years& dy) NOEXCEPT;
+CONSTCD11 year_quarternum_quarterday<S> operator+(const year_quarternum_quarterday<S>& yqnqd, const years& dy) NOEXCEPT;
 template <start S>
-CONSTCD11 year_quarternum_day<S> operator+(const years& dy, const year_quarternum_day<S>& yqnd) NOEXCEPT;
+CONSTCD11 year_quarternum_quarterday<S> operator+(const years& dy, const year_quarternum_quarterday<S>& yqnqd) NOEXCEPT;
 template <start S>
-CONSTCD11 year_quarternum_day<S> operator-(const year_quarternum_day<S>& yqnd, const years& dy) NOEXCEPT;
+CONSTCD11 year_quarternum_quarterday<S> operator-(const year_quarternum_quarterday<S>& yqnqd, const years& dy) NOEXCEPT;
 
 template<class CharT, class Traits, start S>
 std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, const year_quarternum_day<S>& yqnd);
+operator<<(std::basic_ostream<CharT, Traits>& os, const year_quarternum_quarterday<S>& yqnqd);
 
 //----------------+
 // Implementation |
 //----------------+
 
-// day
+// quarterday
 
 CONSTCD11
 inline
-day::day(unsigned d) NOEXCEPT
-    : d_(static_cast<decltype(d_)>(d))
+quarterday::quarterday(unsigned qd) NOEXCEPT
+    : qd_(static_cast<decltype(qd_)>(qd))
     {}
 
 CONSTCD14
 inline
-day&
-day::operator++() NOEXCEPT
+quarterday&
+quarterday::operator++() NOEXCEPT
 {
-    ++d_;
+    ++qd_;
     return *this;
 }
 
 CONSTCD14
 inline
-day
-day::operator++(int) NOEXCEPT
+quarterday
+quarterday::operator++(int) NOEXCEPT
 {
     auto tmp(*this);
     ++(*this);
@@ -524,17 +524,17 @@ day::operator++(int) NOEXCEPT
 
 CONSTCD14
 inline
-day&
-day::operator--() NOEXCEPT
+quarterday&
+quarterday::operator--() NOEXCEPT
 {
-    --d_;
+    --qd_;
     return *this;
 }
 
 CONSTCD14
 inline
-day
-day::operator--(int) NOEXCEPT
+quarterday
+quarterday::operator--(int) NOEXCEPT
 {
     auto tmp(*this);
     --(*this);
@@ -543,8 +543,8 @@ day::operator--(int) NOEXCEPT
 
 CONSTCD14
 inline
-day&
-day::operator+=(const days& dd) NOEXCEPT
+quarterday&
+quarterday::operator+=(const days& dd) NOEXCEPT
 {
     *this = *this + dd;
     return *this;
@@ -552,8 +552,8 @@ day::operator+=(const days& dd) NOEXCEPT
 
 CONSTCD14
 inline
-day&
-day::operator-=(const days& dd) NOEXCEPT
+quarterday&
+quarterday::operator-=(const days& dd) NOEXCEPT
 {
     *this = *this - dd;
     return *this;
@@ -561,24 +561,24 @@ day::operator-=(const days& dd) NOEXCEPT
 
 CONSTCD11
 inline
-day::operator unsigned() const NOEXCEPT
+quarterday::operator unsigned() const NOEXCEPT
 {
-    return d_;
+    return qd_;
 }
 
 CONSTCD11
 inline
 bool
-day::ok() const NOEXCEPT
+quarterday::ok() const NOEXCEPT
 {
     // 92 from a quarter triplet with [31, 31, 30] days
-    return 1 <= d_ && d_ <= 92;
+    return 1 <= qd_ && qd_ <= 92;
 }
 
 CONSTCD11
 inline
 bool
-operator==(const day& x, const day& y) NOEXCEPT
+operator==(const quarterday& x, const quarterday& y) NOEXCEPT
 {
     return static_cast<unsigned>(x) == static_cast<unsigned>(y);
 }
@@ -586,7 +586,7 @@ operator==(const day& x, const day& y) NOEXCEPT
 CONSTCD11
 inline
 bool
-operator!=(const day& x, const day& y) NOEXCEPT
+operator!=(const quarterday& x, const quarterday& y) NOEXCEPT
 {
     return !(x == y);
 }
@@ -594,7 +594,7 @@ operator!=(const day& x, const day& y) NOEXCEPT
 CONSTCD11
 inline
 bool
-operator<(const day& x, const day& y) NOEXCEPT
+operator<(const quarterday& x, const quarterday& y) NOEXCEPT
 {
     return static_cast<unsigned>(x) < static_cast<unsigned>(y);
 }
@@ -602,7 +602,7 @@ operator<(const day& x, const day& y) NOEXCEPT
 CONSTCD11
 inline
 bool
-operator>(const day& x, const day& y) NOEXCEPT
+operator>(const quarterday& x, const quarterday& y) NOEXCEPT
 {
     return y < x;
 }
@@ -610,7 +610,7 @@ operator>(const day& x, const day& y) NOEXCEPT
 CONSTCD11
 inline
 bool
-operator<=(const day& x, const day& y) NOEXCEPT
+operator<=(const quarterday& x, const quarterday& y) NOEXCEPT
 {
     return !(y < x);
 }
@@ -618,7 +618,7 @@ operator<=(const day& x, const day& y) NOEXCEPT
 CONSTCD11
 inline
 bool
-operator>=(const day& x, const day& y) NOEXCEPT
+operator>=(const quarterday& x, const quarterday& y) NOEXCEPT
 {
     return !(x < y);
 }
@@ -626,31 +626,31 @@ operator>=(const day& x, const day& y) NOEXCEPT
 CONSTCD11
 inline
 days
-operator-(const day& x, const day& y) NOEXCEPT
+operator-(const quarterday& x, const quarterday& y) NOEXCEPT
 {
     return days{static_cast<days::rep>(static_cast<unsigned>(x) - static_cast<unsigned>(y))};
 }
 
 CONSTCD11
 inline
-day
-operator+(const day& x, const days& y) NOEXCEPT
+quarterday
+operator+(const quarterday& x, const days& y) NOEXCEPT
 {
-    return day{static_cast<unsigned>(x) + static_cast<unsigned>(y.count())};
+    return quarterday{static_cast<unsigned>(x) + static_cast<unsigned>(y.count())};
 }
 
 CONSTCD11
 inline
-day
-operator+(const days& x, const day& y) NOEXCEPT
+quarterday
+operator+(const days& x, const quarterday& y) NOEXCEPT
 {
     return y + x;
 }
 
 CONSTCD11
 inline
-day
-operator-(const day& x, const days& y) NOEXCEPT
+quarterday
+operator-(const quarterday& x, const days& y) NOEXCEPT
 {
     return x + -y;
 }
@@ -658,14 +658,14 @@ operator-(const day& x, const days& y) NOEXCEPT
 template<class CharT, class Traits>
 inline
 std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, const day& d)
+operator<<(std::basic_ostream<CharT, Traits>& os, const quarterday& qd)
 {
     date::detail::save_ostream<CharT, Traits> _(os);
     os.fill('0');
     os.flags(std::ios::dec | std::ios::right);
     os.width(2);
-    os << static_cast<unsigned>(d);
-    if (!d.ok())
+    os << static_cast<unsigned>(qd);
+    if (!qd.ok())
         os << " is not a valid day of the quarter";
     return os;
 }
@@ -1269,52 +1269,52 @@ operator<<(std::basic_ostream<CharT, Traits>& os, const year_quarternum<S>& yqn)
     return os << yqn.year() << '-' << yqn.quarternum();
 }
 
-// quarternum_day
+// quarternum_quarterday
 
 CONSTCD11
 inline
-quarternum_day::quarternum_day(const fiscal_year::quarternum& qn,
-                               const fiscal_year::day& d) NOEXCEPT
+quarternum_quarterday::quarternum_quarterday(const fiscal_year::quarternum& qn,
+                                             const fiscal_year::quarterday& qd) NOEXCEPT
     : qn_(qn)
-    , d_(d)
+    , qd_(qd)
     {}
 
 CONSTCD11
 inline
 quarternum
-quarternum_day::quarternum() const NOEXCEPT
+quarternum_quarterday::quarternum() const NOEXCEPT
 {
     return qn_;
 }
 
 CONSTCD11
 inline
-day
-quarternum_day::day() const NOEXCEPT
+quarterday
+quarternum_quarterday::quarterday() const NOEXCEPT
 {
-    return d_;
+    return qd_;
 }
 
 CONSTCD14
 inline
 bool
-quarternum_day::ok() const NOEXCEPT
+quarternum_quarterday::ok() const NOEXCEPT
 {
-    return qn_.ok() && d_.ok();
+    return qn_.ok() && qd_.ok();
 }
 
 CONSTCD11
 inline
 bool
-operator==(const quarternum_day& x, const quarternum_day& y) NOEXCEPT
+operator==(const quarternum_quarterday& x, const quarternum_quarterday& y) NOEXCEPT
 {
-    return x.quarternum() == y.quarternum() && x.day() == y.day();
+    return x.quarternum() == y.quarternum() && x.quarterday() == y.quarterday();
 }
 
 CONSTCD11
 inline
 bool
-operator!=(const quarternum_day& x, const quarternum_day& y) NOEXCEPT
+operator!=(const quarternum_quarterday& x, const quarternum_quarterday& y) NOEXCEPT
 {
     return !(x == y);
 }
@@ -1322,17 +1322,17 @@ operator!=(const quarternum_day& x, const quarternum_day& y) NOEXCEPT
 CONSTCD11
 inline
 bool
-operator<(const quarternum_day& x, const quarternum_day& y) NOEXCEPT
+operator<(const quarternum_quarterday& x, const quarternum_quarterday& y) NOEXCEPT
 {
     return x.quarternum() < y.quarternum() ? true
         : (x.quarternum() > y.quarternum() ? false
-        : (static_cast<unsigned>(x.day()) < static_cast<unsigned>(y.day())));
+        : (static_cast<unsigned>(x.quarterday()) < static_cast<unsigned>(y.quarterday())));
 }
 
 CONSTCD11
 inline
 bool
-operator>(const quarternum_day& x, const quarternum_day& y) NOEXCEPT
+operator>(const quarternum_quarterday& x, const quarternum_quarterday& y) NOEXCEPT
 {
     return y < x;
 }
@@ -1340,7 +1340,7 @@ operator>(const quarternum_day& x, const quarternum_day& y) NOEXCEPT
 CONSTCD11
 inline
 bool
-operator<=(const quarternum_day& x, const quarternum_day& y) NOEXCEPT
+operator<=(const quarternum_quarterday& x, const quarternum_quarterday& y) NOEXCEPT
 {
     return !(y < x);
 }
@@ -1348,7 +1348,7 @@ operator<=(const quarternum_day& x, const quarternum_day& y) NOEXCEPT
 CONSTCD11
 inline
 bool
-operator>=(const quarternum_day& x, const quarternum_day& y) NOEXCEPT
+operator>=(const quarternum_quarterday& x, const quarternum_quarterday& y) NOEXCEPT
 {
     return !(x < y);
 }
@@ -1356,23 +1356,23 @@ operator>=(const quarternum_day& x, const quarternum_day& y) NOEXCEPT
 template<class CharT, class Traits>
 inline
 std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, const quarternum_day& qnd)
+operator<<(std::basic_ostream<CharT, Traits>& os, const quarternum_quarterday& qnqd)
 {
-    return os << qnd.quarternum() << '-' << qnd.day();
+    return os << qnqd.quarternum() << '-' << qnqd.quarterday();
 }
 
-// quarternum_day_last
+// quarternum_quarterday_last
 
 CONSTCD11
 inline
-quarternum_day_last::quarternum_day_last(const fiscal_year::quarternum& qn) NOEXCEPT
+quarternum_quarterday_last::quarternum_quarterday_last(const fiscal_year::quarternum& qn) NOEXCEPT
     : qn_(qn)
     {}
 
 CONSTCD11
 inline
 quarternum
-quarternum_day_last::quarternum() const NOEXCEPT
+quarternum_quarterday_last::quarternum() const NOEXCEPT
 {
     return qn_;
 }
@@ -1380,7 +1380,7 @@ quarternum_day_last::quarternum() const NOEXCEPT
 CONSTCD14
 inline
 bool
-quarternum_day_last::ok() const NOEXCEPT
+quarternum_quarterday_last::ok() const NOEXCEPT
 {
     return qn_.ok();
 }
@@ -1388,7 +1388,7 @@ quarternum_day_last::ok() const NOEXCEPT
 CONSTCD11
 inline
 bool
-operator==(const quarternum_day_last& x, const quarternum_day_last& y) NOEXCEPT
+operator==(const quarternum_quarterday_last& x, const quarternum_quarterday_last& y) NOEXCEPT
 {
     return x.quarternum() == y.quarternum();
 }
@@ -1396,7 +1396,7 @@ operator==(const quarternum_day_last& x, const quarternum_day_last& y) NOEXCEPT
 CONSTCD11
 inline
 bool
-operator!=(const quarternum_day_last& x, const quarternum_day_last& y) NOEXCEPT
+operator!=(const quarternum_quarterday_last& x, const quarternum_quarterday_last& y) NOEXCEPT
 {
     return !(x == y);
 }
@@ -1404,7 +1404,7 @@ operator!=(const quarternum_day_last& x, const quarternum_day_last& y) NOEXCEPT
 CONSTCD11
 inline
 bool
-operator<(const quarternum_day_last& x, const quarternum_day_last& y) NOEXCEPT
+operator<(const quarternum_quarterday_last& x, const quarternum_quarterday_last& y) NOEXCEPT
 {
     return static_cast<unsigned>(x.quarternum()) < static_cast<unsigned>(y.quarternum());
 }
@@ -1412,7 +1412,7 @@ operator<(const quarternum_day_last& x, const quarternum_day_last& y) NOEXCEPT
 CONSTCD11
 inline
 bool
-operator>(const quarternum_day_last& x, const quarternum_day_last& y) NOEXCEPT
+operator>(const quarternum_quarterday_last& x, const quarternum_quarterday_last& y) NOEXCEPT
 {
     return y < x;
 }
@@ -1420,7 +1420,7 @@ operator>(const quarternum_day_last& x, const quarternum_day_last& y) NOEXCEPT
 CONSTCD11
 inline
 bool
-operator<=(const quarternum_day_last& x, const quarternum_day_last& y) NOEXCEPT
+operator<=(const quarternum_quarterday_last& x, const quarternum_quarterday_last& y) NOEXCEPT
 {
     return !(y < x);
 }
@@ -1428,7 +1428,7 @@ operator<=(const quarternum_day_last& x, const quarternum_day_last& y) NOEXCEPT
 CONSTCD11
 inline
 bool
-operator>=(const quarternum_day_last& x, const quarternum_day_last& y) NOEXCEPT
+operator>=(const quarternum_quarterday_last& x, const quarternum_quarterday_last& y) NOEXCEPT
 {
     return !(x < y);
 }
@@ -1436,18 +1436,18 @@ operator>=(const quarternum_day_last& x, const quarternum_day_last& y) NOEXCEPT
 template<class CharT, class Traits>
 inline
 std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, const quarternum_day_last& qnd)
+operator<<(std::basic_ostream<CharT, Traits>& os, const quarternum_quarterday_last& qnqd)
 {
-    return os << qnd.quarternum() << "-last";
+    return os << qnqd.quarternum() << "-last";
 }
 
-// year_quarternum_day_last
+// year_quarternum_quarterday_last
 
 template <start S>
 CONSTCD11
 inline
-year_quarternum_day_last<S>::year_quarternum_day_last(const fiscal_year::year<S>& y,
-                                                      const fiscal_year::quarternum& qn) NOEXCEPT
+year_quarternum_quarterday_last<S>::year_quarternum_quarterday_last(const fiscal_year::year<S>& y,
+                                                                    const fiscal_year::quarternum& qn) NOEXCEPT
     : y_(y)
     , qn_(qn)
     {}
@@ -1455,7 +1455,7 @@ year_quarternum_day_last<S>::year_quarternum_day_last(const fiscal_year::year<S>
 template <start S>
 CONSTCD11
 inline
-year_quarternum_day_last<S>::year_quarternum_day_last(const fiscal_year::year_quarternum<S>& yqn) NOEXCEPT
+year_quarternum_quarterday_last<S>::year_quarternum_quarterday_last(const fiscal_year::year_quarternum<S>& yqn) NOEXCEPT
     : y_(yqn.year())
     , qn_(yqn.quarternum())
     {}
@@ -1463,8 +1463,8 @@ year_quarternum_day_last<S>::year_quarternum_day_last(const fiscal_year::year_qu
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day_last<S>&
-year_quarternum_day_last<S>::operator+=(const quarters& dq) NOEXCEPT
+year_quarternum_quarterday_last<S>&
+year_quarternum_quarterday_last<S>::operator+=(const quarters& dq) NOEXCEPT
 {
     *this = *this + dq;
     return *this;
@@ -1473,8 +1473,8 @@ year_quarternum_day_last<S>::operator+=(const quarters& dq) NOEXCEPT
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day_last<S>&
-year_quarternum_day_last<S>::operator-=(const quarters& dq) NOEXCEPT
+year_quarternum_quarterday_last<S>&
+year_quarternum_quarterday_last<S>::operator-=(const quarters& dq) NOEXCEPT
 {
     *this = *this - dq;
     return *this;
@@ -1483,8 +1483,8 @@ year_quarternum_day_last<S>::operator-=(const quarters& dq) NOEXCEPT
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day_last<S>&
-year_quarternum_day_last<S>::operator+=(const years& dy) NOEXCEPT
+year_quarternum_quarterday_last<S>&
+year_quarternum_quarterday_last<S>::operator+=(const years& dy) NOEXCEPT
 {
     *this = *this + dy;
     return *this;
@@ -1493,8 +1493,8 @@ year_quarternum_day_last<S>::operator+=(const years& dy) NOEXCEPT
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day_last<S>&
-year_quarternum_day_last<S>::operator-=(const years& dy) NOEXCEPT
+year_quarternum_quarterday_last<S>&
+year_quarternum_quarterday_last<S>::operator-=(const years& dy) NOEXCEPT
 {
     *this = *this - dy;
     return *this;
@@ -1504,7 +1504,7 @@ template <start S>
 CONSTCD11
 inline
 year<S>
-year_quarternum_day_last<S>::year() const NOEXCEPT
+year_quarternum_quarterday_last<S>::year() const NOEXCEPT
 {
     return y_;
 }
@@ -1513,7 +1513,7 @@ template <start S>
 CONSTCD11
 inline
 quarternum
-year_quarternum_day_last<S>::quarternum() const NOEXCEPT
+year_quarternum_quarterday_last<S>::quarternum() const NOEXCEPT
 {
     return qn_;
 }
@@ -1521,20 +1521,20 @@ year_quarternum_day_last<S>::quarternum() const NOEXCEPT
 template <start S>
 CONSTCD14
 inline
-day
-year_quarternum_day_last<S>::day() const NOEXCEPT
+quarterday
+year_quarternum_quarterday_last<S>::quarterday() const NOEXCEPT
 {
     CONSTDATA unsigned s = static_cast<unsigned>(S) - 1;
 
-    CONSTDATA fiscal_year::day days[] = {
-        // [12, 1, 2]          [1, 2, 3]              [2, 3, 4]
-        fiscal_year::day(90u), fiscal_year::day(90u), fiscal_year::day(89u),
-        // [3, 4, 5]           [4, 5, 6]              [5, 6, 7]
-        fiscal_year::day(92u), fiscal_year::day(91u), fiscal_year::day(92u),
-        // [6, 7, 8]           [7, 8, 9]              [8, 9, 10]
-        fiscal_year::day(92u), fiscal_year::day(92u), fiscal_year::day(92u),
-        // [9, 10, 11]         [10, 11, 12]           [11, 12, 1]
-        fiscal_year::day(91u), fiscal_year::day(92u), fiscal_year::day(92u)
+    CONSTDATA fiscal_year::quarterday quarterdays[] = {
+        // [12, 1, 2]                 [1, 2, 3]                     [2, 3, 4]
+        fiscal_year::quarterday(90u), fiscal_year::quarterday(90u), fiscal_year::quarterday(89u),
+        // [3, 4, 5]                  [4, 5, 6]                     [5, 6, 7]
+        fiscal_year::quarterday(92u), fiscal_year::quarterday(91u), fiscal_year::quarterday(92u),
+        // [6, 7, 8]                  [7, 8, 9]                     [8, 9, 10]
+        fiscal_year::quarterday(92u), fiscal_year::quarterday(92u), fiscal_year::quarterday(92u),
+        // [9, 10, 11]                [10, 11, 12]                  [11, 12, 1]
+        fiscal_year::quarterday(91u), fiscal_year::quarterday(92u), fiscal_year::quarterday(92u)
     };
 
     const unsigned quarternum = static_cast<unsigned>(qn_) - 1;
@@ -1548,38 +1548,38 @@ year_quarternum_day_last<S>::day() const NOEXCEPT
     }
 
     if (!qn_.ok()) {
-        // If `!qn_.ok()`, don't index into `days[]` to avoid OOB error.
+        // If `!qn_.ok()`, don't index into `quarterdays[]` to avoid OOB error.
         // Instead, return the minimum of the possible "last day of quarter"
         // days, as `year_month_day_last::day()` does.
-        return days[2];
+        return quarterdays[2];
     } else if (key <= 2 && y_.is_leap()) {
-        return days[key] + fiscal_year::days{1u};
+        return quarterdays[key] + fiscal_year::days{1u};
     } else {
-        return days[key];
+        return quarterdays[key];
     }
 }
 
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day_last<S>::operator sys_days() const NOEXCEPT
+year_quarternum_quarterday_last<S>::operator sys_days() const NOEXCEPT
 {
-    return sys_days(year_quarternum_day<S>{year(), quarternum(), day()});
+    return sys_days(year_quarternum_quarterday<S>{year(), quarternum(), quarterday()});
 }
 
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day_last<S>::operator local_days() const NOEXCEPT
+year_quarternum_quarterday_last<S>::operator local_days() const NOEXCEPT
 {
-    return local_days(year_quarternum_day<S>{year(), quarternum(), day()});
+    return local_days(year_quarternum_quarterday<S>{year(), quarternum(), quarterday()});
 }
 
 template <start S>
 CONSTCD11
 inline
 bool
-year_quarternum_day_last<S>::ok() const NOEXCEPT
+year_quarternum_quarterday_last<S>::ok() const NOEXCEPT
 {
     return y_.ok() && qn_.ok();
 }
@@ -1588,7 +1588,7 @@ template <start S>
 CONSTCD11
 inline
 bool
-operator==(const year_quarternum_day_last<S>& x, const year_quarternum_day_last<S>& y) NOEXCEPT
+operator==(const year_quarternum_quarterday_last<S>& x, const year_quarternum_quarterday_last<S>& y) NOEXCEPT
 {
     return x.year() == y.year() && x.quarternum() == y.quarternum();
 }
@@ -1597,7 +1597,7 @@ template <start S>
 CONSTCD11
 inline
 bool
-operator!=(const year_quarternum_day_last<S>& x, const year_quarternum_day_last<S>& y) NOEXCEPT
+operator!=(const year_quarternum_quarterday_last<S>& x, const year_quarternum_quarterday_last<S>& y) NOEXCEPT
 {
     return !(x == y);
 }
@@ -1606,7 +1606,7 @@ template <start S>
 CONSTCD11
 inline
 bool
-operator<(const year_quarternum_day_last<S>& x, const year_quarternum_day_last<S>& y) NOEXCEPT
+operator<(const year_quarternum_quarterday_last<S>& x, const year_quarternum_quarterday_last<S>& y) NOEXCEPT
 {
     return x.year() < y.year() ? true
         : (x.year() > y.year() ? false
@@ -1617,7 +1617,7 @@ template <start S>
 CONSTCD11
 inline
 bool
-operator>(const year_quarternum_day_last<S>& x, const year_quarternum_day_last<S>& y) NOEXCEPT
+operator>(const year_quarternum_quarterday_last<S>& x, const year_quarternum_quarterday_last<S>& y) NOEXCEPT
 {
     return y < x;
 }
@@ -1626,7 +1626,7 @@ template <start S>
 CONSTCD11
 inline
 bool
-operator<=(const year_quarternum_day_last<S>& x, const year_quarternum_day_last<S>& y) NOEXCEPT
+operator<=(const year_quarternum_quarterday_last<S>& x, const year_quarternum_quarterday_last<S>& y) NOEXCEPT
 {
     return !(y < x);
 }
@@ -1635,7 +1635,7 @@ template <start S>
 CONSTCD11
 inline
 bool
-operator>=(const year_quarternum_day_last<S>& x, const year_quarternum_day_last<S>& y) NOEXCEPT
+operator>=(const year_quarternum_quarterday_last<S>& x, const year_quarternum_quarterday_last<S>& y) NOEXCEPT
 {
     return !(x < y);
 }
@@ -1643,116 +1643,116 @@ operator>=(const year_quarternum_day_last<S>& x, const year_quarternum_day_last<
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day_last<S>
-operator+(const year_quarternum_day_last<S>& yqndl, const quarters& dq) NOEXCEPT
+year_quarternum_quarterday_last<S>
+operator+(const year_quarternum_quarterday_last<S>& yqnqdl, const quarters& dq) NOEXCEPT
 {
-    return {year_quarternum<S>{yqndl.year(), yqndl.quarternum()} + dq};
+    return {year_quarternum<S>{yqnqdl.year(), yqnqdl.quarternum()} + dq};
 }
 
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day_last<S>
-operator+(const quarters& dq, const year_quarternum_day_last<S>& yqndl)  NOEXCEPT
+year_quarternum_quarterday_last<S>
+operator+(const quarters& dq, const year_quarternum_quarterday_last<S>& yqnqdl)  NOEXCEPT
 {
-    return yqndl + dq;
+    return yqnqdl + dq;
 }
 
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day_last<S>
-operator-(const year_quarternum_day_last<S>& yqndl, const quarters& dq)  NOEXCEPT
+year_quarternum_quarterday_last<S>
+operator-(const year_quarternum_quarterday_last<S>& yqnqdl, const quarters& dq)  NOEXCEPT
 {
-    return yqndl + -dq;
+    return yqnqdl + -dq;
 }
 
 template <start S>
 CONSTCD11
 inline
-year_quarternum_day_last<S>
-operator+(const year_quarternum_day_last<S>& yqndl, const years& dy)  NOEXCEPT
+year_quarternum_quarterday_last<S>
+operator+(const year_quarternum_quarterday_last<S>& yqnqdl, const years& dy)  NOEXCEPT
 {
-    return {yqndl.year() + dy, yqndl.quarternum()};
+    return {yqnqdl.year() + dy, yqnqdl.quarternum()};
 }
 
 template <start S>
 CONSTCD11
 inline
-year_quarternum_day_last<S>
-operator+(const years& dy, const year_quarternum_day_last<S>& yqndl)  NOEXCEPT
+year_quarternum_quarterday_last<S>
+operator+(const years& dy, const year_quarternum_quarterday_last<S>& yqnqdl)  NOEXCEPT
 {
-    return yqndl + dy;
+    return yqnqdl + dy;
 }
 
 template <start S>
 CONSTCD11
 inline
-year_quarternum_day_last<S>
-operator-(const year_quarternum_day_last<S>& yqndl, const years& dy)  NOEXCEPT
+year_quarternum_quarterday_last<S>
+operator-(const year_quarternum_quarterday_last<S>& yqnqdl, const years& dy)  NOEXCEPT
 {
-    return yqndl + -dy;
+    return yqnqdl + -dy;
 }
 
 template<class CharT, class Traits, start S>
 inline
 std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, const year_quarternum_day_last<S>& yqndl)
+operator<<(std::basic_ostream<CharT, Traits>& os, const year_quarternum_quarterday_last<S>& yqnqdl)
 {
-    return os << yqndl.year() << "-" << yqndl.quarternum() << "-last";
+    return os << yqnqdl.year() << "-" << yqnqdl.quarternum() << "-last";
 }
 
-// year_quarternum_day
+// year_quarternum_quarterday
 
 template <start S>
 CONSTCD11
 inline
-year_quarternum_day<S>::year_quarternum_day(const fiscal_year::year<S>& y,
-                                            const fiscal_year::quarternum& qn,
-                                            const fiscal_year::day& d) NOEXCEPT
+year_quarternum_quarterday<S>::year_quarternum_quarterday(const fiscal_year::year<S>& y,
+                                                          const fiscal_year::quarternum& qn,
+                                                          const fiscal_year::quarterday& qd) NOEXCEPT
     : y_(y)
     , qn_(qn)
-    , d_(d)
+    , qd_(qd)
     {}
 
 template <start S>
 CONSTCD11
 inline
-year_quarternum_day<S>::year_quarternum_day(const fiscal_year::year_quarternum<S>& yqn,
-                                            const fiscal_year::day& d) NOEXCEPT
+year_quarternum_quarterday<S>::year_quarternum_quarterday(const fiscal_year::year_quarternum<S>& yqn,
+                                                          const fiscal_year::quarterday& qd) NOEXCEPT
     : y_(yqn.year())
     , qn_(yqn.quarternum())
-    , d_(d)
+    , qd_(qd)
     {}
 
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day<S>::year_quarternum_day(const year_quarternum_day_last<S>& yqndl) NOEXCEPT
-    : y_(yqndl.year())
-    , qn_(yqndl.quarternum())
-    , d_(yqndl.day())
+year_quarternum_quarterday<S>::year_quarternum_quarterday(const year_quarternum_quarterday_last<S>& yqnqdl) NOEXCEPT
+    : y_(yqnqdl.year())
+    , qn_(yqnqdl.quarternum())
+    , qd_(yqnqdl.quarterday())
     {}
 
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day<S>::year_quarternum_day(const sys_days& dp) NOEXCEPT
-    : year_quarternum_day<S>(from_days(dp.time_since_epoch()))
+year_quarternum_quarterday<S>::year_quarternum_quarterday(const sys_days& dp) NOEXCEPT
+    : year_quarternum_quarterday<S>(from_days(dp.time_since_epoch()))
     {}
 
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day<S>::year_quarternum_day(const local_days& dp) NOEXCEPT
-    : year_quarternum_day<S>(from_days(dp.time_since_epoch()))
+year_quarternum_quarterday<S>::year_quarternum_quarterday(const local_days& dp) NOEXCEPT
+    : year_quarternum_quarterday<S>(from_days(dp.time_since_epoch()))
     {}
 
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day<S>&
-year_quarternum_day<S>::operator+=(const quarters& dq) NOEXCEPT
+year_quarternum_quarterday<S>&
+year_quarternum_quarterday<S>::operator+=(const quarters& dq) NOEXCEPT
 {
     *this = *this + dq;
     return *this;
@@ -1761,8 +1761,8 @@ year_quarternum_day<S>::operator+=(const quarters& dq) NOEXCEPT
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day<S>&
-year_quarternum_day<S>::operator-=(const quarters& dq) NOEXCEPT
+year_quarternum_quarterday<S>&
+year_quarternum_quarterday<S>::operator-=(const quarters& dq) NOEXCEPT
 {
     *this = *this - dq;
     return *this;
@@ -1771,8 +1771,8 @@ year_quarternum_day<S>::operator-=(const quarters& dq) NOEXCEPT
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day<S>&
-year_quarternum_day<S>::operator+=(const years& dy) NOEXCEPT
+year_quarternum_quarterday<S>&
+year_quarternum_quarterday<S>::operator+=(const years& dy) NOEXCEPT
 {
     *this = *this + dy;
     return *this;
@@ -1781,8 +1781,8 @@ year_quarternum_day<S>::operator+=(const years& dy) NOEXCEPT
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day<S>&
-year_quarternum_day<S>::operator-=(const years& dy) NOEXCEPT
+year_quarternum_quarterday<S>&
+year_quarternum_quarterday<S>::operator-=(const years& dy) NOEXCEPT
 {
     *this = *this - dy;
     return *this;
@@ -1792,7 +1792,7 @@ template <start S>
 CONSTCD11
 inline
 year<S>
-year_quarternum_day<S>::year() const NOEXCEPT
+year_quarternum_quarterday<S>::year() const NOEXCEPT
 {
     return y_;
 }
@@ -1801,7 +1801,7 @@ template <start S>
 CONSTCD11
 inline
 quarternum
-year_quarternum_day<S>::quarternum() const NOEXCEPT
+year_quarternum_quarterday<S>::quarternum() const NOEXCEPT
 {
     return qn_;
 }
@@ -1809,16 +1809,16 @@ year_quarternum_day<S>::quarternum() const NOEXCEPT
 template <start S>
 CONSTCD11
 inline
-day
-year_quarternum_day<S>::day() const NOEXCEPT
+quarterday
+year_quarternum_quarterday<S>::quarterday() const NOEXCEPT
 {
-    return d_;
+    return qd_;
 }
 
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day<S>::operator sys_days() const NOEXCEPT
+year_quarternum_quarterday<S>::operator sys_days() const NOEXCEPT
 {
     return date::sys_days{to_days()};
 }
@@ -1826,7 +1826,7 @@ year_quarternum_day<S>::operator sys_days() const NOEXCEPT
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day<S>::operator local_days() const NOEXCEPT
+year_quarternum_quarterday<S>::operator local_days() const NOEXCEPT
 {
     return date::local_days{to_days()};
 }
@@ -1835,16 +1835,19 @@ template <start S>
 CONSTCD14
 inline
 bool
-year_quarternum_day<S>::ok() const NOEXCEPT
+year_quarternum_quarterday<S>::ok() const NOEXCEPT
 {
-    return y_.ok() && d_.ok() && fiscal_year::day{1u} <= d_ && d_ <= year_quarternum_day_last<S>{y_, qn_}.day();
+    return y_.ok() &&
+        qd_.ok() &&
+        fiscal_year::quarterday{1u} <= qd_ &&
+        qd_ <= year_quarternum_quarterday_last<S>{y_, qn_}.quarterday();
 }
 
 template <start S>
 CONSTCD14
 inline
 days
-year_quarternum_day<S>::to_days() const NOEXCEPT
+year_quarternum_quarterday<S>::to_days() const NOEXCEPT
 {
     CONSTDATA unsigned char s = static_cast<unsigned char>(S) - 1;
     const unsigned quarternum = static_cast<unsigned>(qn_) - 1;
@@ -1859,14 +1862,14 @@ year_quarternum_day<S>::to_days() const NOEXCEPT
         --year;
     }
 
-    const unsigned day = static_cast<unsigned>(d_) - 1;
+    const unsigned quarterday = static_cast<unsigned>(qd_) - 1;
 
     const date::year_month_day quarter_start{
         date::year{year} / date::month{civil_month + 1} / date::day{1}
     };
 
     const date::sys_days quarter_days{
-        date::sys_days{quarter_start} + date::days{day}
+        date::sys_days{quarter_start} + date::days{quarterday}
     };
 
     return quarter_days.time_since_epoch();
@@ -1875,8 +1878,8 @@ year_quarternum_day<S>::to_days() const NOEXCEPT
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day<S>
-year_quarternum_day<S>::from_days(const days& dd) NOEXCEPT
+year_quarternum_quarterday<S>
+year_quarternum_quarterday<S>::from_days(const days& dd) NOEXCEPT
 {
     CONSTDATA unsigned char s = static_cast<unsigned char>(S) - 1;
 
@@ -1896,33 +1899,33 @@ year_quarternum_day<S>::from_days(const days& dd) NOEXCEPT
 
     const unsigned quarternum = static_cast<unsigned>(fiscal_month) / 3;
 
-    const fiscal_year::year_quarternum_day<S> quarter_start{
-        fiscal_year::year<S>{year} / fiscal_year::quarternum{quarternum + 1} / fiscal_year::day{1u}
+    const fiscal_year::year_quarternum_quarterday<S> quarter_start{
+        fiscal_year::year<S>{year} / fiscal_year::quarternum{quarternum + 1} / fiscal_year::quarterday{1u}
     };
 
     // Find day of quarter as number of days from start of quarter
     const days days = dp - sys_days{quarter_start};
-    const fiscal_year::day day{static_cast<unsigned>(days.count()) + 1};
+    const fiscal_year::quarterday quarterday{static_cast<unsigned>(days.count()) + 1};
 
-    return quarter_start.year() / quarter_start.quarternum() / day;
+    return quarter_start.year() / quarter_start.quarternum() / quarterday;
 }
 
 template <start S>
 CONSTCD11
 inline
 bool
-operator==(const year_quarternum_day<S>& x, const year_quarternum_day<S>& y) NOEXCEPT
+operator==(const year_quarternum_quarterday<S>& x, const year_quarternum_quarterday<S>& y) NOEXCEPT
 {
     return x.year() == y.year() &&
         x.quarternum() == y.quarternum() &&
-        x.day() == y.day();
+        x.quarterday() == y.quarterday();
 }
 
 template <start S>
 CONSTCD11
 inline
 bool
-operator!=(const year_quarternum_day<S>& x, const year_quarternum_day<S>& y) NOEXCEPT
+operator!=(const year_quarternum_quarterday<S>& x, const year_quarternum_quarterday<S>& y) NOEXCEPT
 {
     return !(x == y);
 }
@@ -1931,20 +1934,20 @@ template <start S>
 CONSTCD11
 inline
 bool
-operator<(const year_quarternum_day<S>& x, const year_quarternum_day<S>& y) NOEXCEPT
+operator<(const year_quarternum_quarterday<S>& x, const year_quarternum_quarterday<S>& y) NOEXCEPT
 {
     return x.year() < y.year() ? true
         : (x.year() > y.year() ? false
         : (x.quarternum() < y.quarternum() ? true
         : (x.quarternum() > y.quarternum() ? false
-        : (x.day() < y.day()))));
+        : (x.quarterday() < y.quarterday()))));
 }
 
 template <start S>
 CONSTCD11
 inline
 bool
-operator>(const year_quarternum_day<S>& x, const year_quarternum_day<S>& y) NOEXCEPT
+operator>(const year_quarternum_quarterday<S>& x, const year_quarternum_quarterday<S>& y) NOEXCEPT
 {
     return y < x;
 }
@@ -1953,7 +1956,7 @@ template <start S>
 CONSTCD11
 inline
 bool
-operator<=(const year_quarternum_day<S>& x, const year_quarternum_day<S>& y) NOEXCEPT
+operator<=(const year_quarternum_quarterday<S>& x, const year_quarternum_quarterday<S>& y) NOEXCEPT
 {
     return !(y < x);
 }
@@ -1962,7 +1965,7 @@ template <start S>
 CONSTCD11
 inline
 bool
-operator>=(const year_quarternum_day<S>& x, const year_quarternum_day<S>& y) NOEXCEPT
+operator>=(const year_quarternum_quarterday<S>& x, const year_quarternum_quarterday<S>& y) NOEXCEPT
 {
     return !(x < y);
 }
@@ -1970,63 +1973,63 @@ operator>=(const year_quarternum_day<S>& x, const year_quarternum_day<S>& y) NOE
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day<S>
-operator+(const year_quarternum_day<S>& yqnd, const quarters& dq)  NOEXCEPT
+year_quarternum_quarterday<S>
+operator+(const year_quarternum_quarterday<S>& yqnqd, const quarters& dq)  NOEXCEPT
 {
-    return {year_quarternum<S>{yqnd.year(), yqnd.quarternum()} + dq, yqnd.day()};
+    return {year_quarternum<S>{yqnqd.year(), yqnqd.quarternum()} + dq, yqnqd.quarterday()};
 }
 
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day<S>
-operator+(const quarters& dq, const year_quarternum_day<S>& yqnd)  NOEXCEPT
+year_quarternum_quarterday<S>
+operator+(const quarters& dq, const year_quarternum_quarterday<S>& yqnqd)  NOEXCEPT
 {
-    return yqnd + dq;
+    return yqnqd + dq;
 }
 
 template <start S>
 CONSTCD14
 inline
-year_quarternum_day<S>
-operator-(const year_quarternum_day<S>& yqnd, const quarters& dq)  NOEXCEPT
+year_quarternum_quarterday<S>
+operator-(const year_quarternum_quarterday<S>& yqnqd, const quarters& dq)  NOEXCEPT
 {
-    return yqnd + -dq;
+    return yqnqd + -dq;
 }
 
 template <start S>
 CONSTCD11
 inline
-year_quarternum_day<S>
-operator+(const year_quarternum_day<S>& yqnd, const years& dy)  NOEXCEPT
+year_quarternum_quarterday<S>
+operator+(const year_quarternum_quarterday<S>& yqnqd, const years& dy)  NOEXCEPT
 {
-    return {yqnd.year() + dy, yqnd.quarternum(), yqnd.day()};
+    return {yqnqd.year() + dy, yqnqd.quarternum(), yqnqd.quarterday()};
 }
 
 template <start S>
 CONSTCD11
 inline
-year_quarternum_day<S>
-operator+(const years& dy, const year_quarternum_day<S>& yqnd)  NOEXCEPT
+year_quarternum_quarterday<S>
+operator+(const years& dy, const year_quarternum_quarterday<S>& yqnqd)  NOEXCEPT
 {
-    return yqnd + dy;
+    return yqnqd + dy;
 }
 
 template <start S>
 CONSTCD11
 inline
-year_quarternum_day<S>
-operator-(const year_quarternum_day<S>& yqnd, const years& dy)  NOEXCEPT
+year_quarternum_quarterday<S>
+operator-(const year_quarternum_quarterday<S>& yqnqd, const years& dy)  NOEXCEPT
 {
-    return yqnd + -dy;
+    return yqnqd + -dy;
 }
 
 template<class CharT, class Traits, start S>
 inline
 std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, const year_quarternum_day<S>& yqnd)
+operator<<(std::basic_ostream<CharT, Traits>& os, const year_quarternum_quarterday<S>& yqnqd)
 {
-    return os << yqnd.year() << '-' << yqnd.quarternum() << '-' << yqnd.day();
+    return os << yqnqd.year() << '-' << yqnqd.quarternum() << '-' << yqnqd.quarterday();
 }
 
 // literals
@@ -2060,61 +2063,61 @@ year_quarternum<S> operator/(const year<S>& y, int qn) NOEXCEPT
     return y / quarternum(static_cast<unsigned>(qn));
 }
 
-// quarternum_day from operator/()
+// quarternum_quarterday from operator/()
 
 CONSTCD11
 inline
-quarternum_day
-operator/(const quarternum& qn, const day& d) NOEXCEPT
+quarternum_quarterday
+operator/(const quarternum& qn, const quarterday& qd) NOEXCEPT
 {
-    return {qn, d};
+    return {qn, qd};
 }
 
 CONSTCD11
 inline
-quarternum_day
-operator/(const quarternum& qn, int d) NOEXCEPT
+quarternum_quarterday
+operator/(const quarternum& qn, int qd) NOEXCEPT
 {
-    return qn / day(static_cast<unsigned>(d));
+    return qn / quarterday(static_cast<unsigned>(qd));
 }
 
 CONSTCD11
 inline
-quarternum_day
-operator/(int qn, const day& d) NOEXCEPT
+quarternum_quarterday
+operator/(int qn, const quarterday& qd) NOEXCEPT
 {
-    return quarternum(static_cast<unsigned>(qn)) / d;
+    return quarternum(static_cast<unsigned>(qn)) / qd;
 }
 
 CONSTCD11
 inline
-quarternum_day
-operator/(const day& d, const quarternum& qn) NOEXCEPT
+quarternum_quarterday
+operator/(const quarterday& qd, const quarternum& qn) NOEXCEPT
 {
-    return qn / d;
+    return qn / qd;
 }
 
 CONSTCD11
 inline
-quarternum_day
-operator/(const day& d, int qn) NOEXCEPT
+quarternum_quarterday
+operator/(const quarterday& qd, int qn) NOEXCEPT
 {
-    return qn / d;
+    return qn / qd;
 }
 
-// quarternum_day_last from operator/()
+// quarternum_quarterday_last from operator/()
 
 CONSTCD11
 inline
-quarternum_day_last
+quarternum_quarterday_last
 operator/(const quarternum& qn, last_spec) NOEXCEPT
 {
-    return quarternum_day_last{qn};
+    return quarternum_quarterday_last{qn};
 }
 
 CONSTCD11
 inline
-quarternum_day_last
+quarternum_quarterday_last
 operator/(int qn, last_spec) NOEXCEPT
 {
     return quarternum(static_cast<unsigned>(qn))/last;
@@ -2122,7 +2125,7 @@ operator/(int qn, last_spec) NOEXCEPT
 
 CONSTCD11
 inline
-quarternum_day_last
+quarternum_quarterday_last
 operator/(last_spec, const quarternum& qn) NOEXCEPT
 {
     return qn / last;
@@ -2130,77 +2133,77 @@ operator/(last_spec, const quarternum& qn) NOEXCEPT
 
 CONSTCD11
 inline
-quarternum_day_last
+quarternum_quarterday_last
 operator/(last_spec, int qn) NOEXCEPT
 {
     return qn / last;
 }
 
-// year_quarternum_day from operator/()
+// year_quarternum_quarterday from operator/()
 
 template <start S>
 CONSTCD11
 inline
-year_quarternum_day<S>
-operator/(const year_quarternum<S>& yqn, const day& d) NOEXCEPT
+year_quarternum_quarterday<S>
+operator/(const year_quarternum<S>& yqn, const quarterday& qd) NOEXCEPT
 {
-    return {yqn, d};
+    return {yqn, qd};
 }
 
 template <start S>
 CONSTCD11
 inline
-year_quarternum_day<S>
-operator/(const year_quarternum<S>& yqn, int d) NOEXCEPT
+year_quarternum_quarterday<S>
+operator/(const year_quarternum<S>& yqn, int qd) NOEXCEPT
 {
-    return yqn / day(static_cast<unsigned>(d));
+    return yqn / quarterday(static_cast<unsigned>(qd));
 }
 
 template <start S>
 CONSTCD11
 inline
-year_quarternum_day<S>
-operator/(const year<S>& y, const quarternum_day& qnd) NOEXCEPT
+year_quarternum_quarterday<S>
+operator/(const year<S>& y, const quarternum_quarterday& qnqd) NOEXCEPT
 {
-    return y / qnd.quarternum() / qnd.day();
+    return y / qnqd.quarternum() / qnqd.quarterday();
 }
 
 template <start S>
 CONSTCD11
 inline
-year_quarternum_day<S>
-operator/(const quarternum_day& qnd, const year<S>& y) NOEXCEPT
+year_quarternum_quarterday<S>
+operator/(const quarternum_quarterday& qnqd, const year<S>& y) NOEXCEPT
 {
-    return y / qnd;
+    return y / qnqd;
 }
 
-// year_quarternum_day_last from operator/()
+// year_quarternum_quarterday_last from operator/()
 
 template <start S>
 CONSTCD11
 inline
-year_quarternum_day_last<S>
+year_quarternum_quarterday_last<S>
 operator/(const year_quarternum<S>& ynq, last_spec) NOEXCEPT
 {
-    return year_quarternum_day_last<S>{ynq};
+    return year_quarternum_quarterday_last<S>{ynq};
 }
 
 template <start S>
 CONSTCD11
 inline
-year_quarternum_day_last<S>
-operator/(const year<S>& y, const quarternum_day_last& qndl) NOEXCEPT
+year_quarternum_quarterday_last<S>
+operator/(const year<S>& y, const quarternum_quarterday_last& qnqdl) NOEXCEPT
 {
-    return {y, qndl};
+    return {y, qnqdl};
 }
 
 template <start S>
 CONSTCD11
 inline
-year_quarternum_day_last<S>
-operator/(const quarternum_day_last& qndl, const year<S>& y) NOEXCEPT
+year_quarternum_quarterday_last<S>
+operator/(const quarternum_quarterday_last& qnqdl, const year<S>& y) NOEXCEPT
 {
-    return y / qndl;
+    return y / qnqdl;
 }
 
 }  // namespace fiscal_year
