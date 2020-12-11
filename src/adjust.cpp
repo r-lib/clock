@@ -395,8 +395,8 @@ civil_writable_rcrd adjust_naive_fiscal_days_cpp(const civil_rcrd& x,
 template <fiscal_year::start S>
 static
 inline
-fiscal_year::year_quarter_day<S>
-adjust_naive_fiscal_switch(const fiscal_year::year_quarter_day<S>& yqd,
+fiscal_year::year_quarternum_quarterday<S>
+adjust_naive_fiscal_switch(const fiscal_year::year_quarternum_quarterday<S>& yqnqd,
                            const int& value,
                            const enum adjuster& adjuster_val);
 
@@ -428,18 +428,18 @@ static civil_writable_rcrd adjust_naive_fiscal_days(const civil_rcrd& x,
     }
 
     date::local_days elt_lday{date::days{elt_days}};
-    fiscal_year::year_quarter_day<S> elt_yqd{elt_lday};
+    fiscal_year::year_quarternum_quarterday<S> elt_yqnqd{elt_lday};
 
-    fiscal_year::year_quarter_day<S> out_yqd = adjust_naive_fiscal_switch(
-      elt_yqd,
+    fiscal_year::year_quarternum_quarterday<S> out_yqnqd = adjust_naive_fiscal_switch(
+      elt_yqnqd,
       elt_value,
       adjuster_val
     );
 
-    convert_year_quarter_day_to_days_one(
+    convert_year_quarternum_quarterday_to_days_one(
       i,
       day_nonexistent_val,
-      out_yqd,
+      out_yqnqd,
       p_days,
       p_time_of_day,
       p_nanos_of_second
@@ -453,55 +453,55 @@ static civil_writable_rcrd adjust_naive_fiscal_days(const civil_rcrd& x,
 
 template <fiscal_year::start S>
 static inline
-fiscal_year::year_quarter_day<S>
-adjust_naive_fiscal_year(const fiscal_year::year_quarter_day<S>& yqd, const int& value) {
+fiscal_year::year_quarternum_quarterday<S>
+adjust_naive_fiscal_year(const fiscal_year::year_quarternum_quarterday<S>& yqnqd, const int& value) {
   check_range_year(value, "value");
-  return {fiscal_year::year<S>{value}, yqd.quarter(), yqd.day()};
+  return {fiscal_year::year<S>{value}, yqnqd.quarternum(), yqnqd.quarterday()};
 }
 
 template <fiscal_year::start S>
 static inline
-fiscal_year::year_quarter_day<S>
-adjust_naive_fiscal_quarter(const fiscal_year::year_quarter_day<S>& yqd, const int& value) {
-  check_range_quarter(value, "value");
-  unsigned int quarter = static_cast<unsigned int>(value);
-  return {yqd.year(), fiscal_year::quarter{quarter}, yqd.day()};
+fiscal_year::year_quarternum_quarterday<S>
+adjust_naive_fiscal_quarternum(const fiscal_year::year_quarternum_quarterday<S>& yqnqd, const int& value) {
+  check_range_quarternum(value, "value");
+  unsigned int quarternum = static_cast<unsigned int>(value);
+  return {yqnqd.year(), fiscal_year::quarternum{quarternum}, yqnqd.quarterday()};
 }
 
 template <fiscal_year::start S>
 static inline
-fiscal_year::year_quarter_day<S>
-adjust_naive_fiscal_day(const fiscal_year::year_quarter_day<S>& yqd, const int& value) {
-  check_range_quarter_day(value, "value");
-  unsigned int day = static_cast<unsigned int>(value);
-  return {yqd.year(), yqd.quarter(), fiscal_year::day{day}};
+fiscal_year::year_quarternum_quarterday<S>
+adjust_naive_fiscal_quarterday(const fiscal_year::year_quarternum_quarterday<S>& yqnqd, const int& value) {
+  check_range_quarterday(value, "value");
+  unsigned int quarterday = static_cast<unsigned int>(value);
+  return {yqnqd.year(), yqnqd.quarternum(), fiscal_year::quarterday{quarterday}};
 }
 
 template <fiscal_year::start S>
 static inline
-fiscal_year::year_quarter_day<S>
-adjust_naive_fiscal_last_day_of_quarter(const fiscal_year::year_quarter_day<S>& yqd) {
-  return fiscal_year::year_quarter_day_last<S>{yqd.year(), yqd.quarter()};
+fiscal_year::year_quarternum_quarterday<S>
+adjust_naive_fiscal_last_day_of_quarter(const fiscal_year::year_quarternum_quarterday<S>& yqnqd) {
+  return fiscal_year::year_quarternum_quarterday_last<S>{yqnqd.year(), yqnqd.quarternum()};
 }
 
 template <fiscal_year::start S>
 static inline
-fiscal_year::year_quarter_day<S>
-adjust_naive_fiscal_switch(const fiscal_year::year_quarter_day<S>& yqd,
+fiscal_year::year_quarternum_quarterday<S>
+adjust_naive_fiscal_switch(const fiscal_year::year_quarternum_quarterday<S>& yqnqd,
                            const int& value,
                            const enum adjuster& adjuster_val) {
   switch (adjuster_val) {
   case adjuster::year: {
-    return adjust_naive_fiscal_year(yqd, value);
+    return adjust_naive_fiscal_year(yqnqd, value);
   }
-  case adjuster::quarter: {
-    return adjust_naive_fiscal_quarter(yqd, value);
+  case adjuster::quarternum: {
+    return adjust_naive_fiscal_quarternum(yqnqd, value);
   }
-  case adjuster::day: {
-    return adjust_naive_fiscal_day(yqd, value);
+  case adjuster::quarterday: {
+    return adjust_naive_fiscal_quarterday(yqnqd, value);
   }
   case adjuster::last_day_of_quarter: {
-    return adjust_naive_fiscal_last_day_of_quarter(yqd);
+    return adjust_naive_fiscal_last_day_of_quarter(yqnqd);
   }
   default: {
     civil_abort("Internal error: Unknown `adjuster_val` in `adjust_naive_fiscal_switch()`.");

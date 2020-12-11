@@ -1273,7 +1273,7 @@ add_years_fiscal_impl <- function(x, n, ..., day_nonexistent) {
   add_years_or_quarters_fiscal(x, n, ..., day_nonexistent = day_nonexistent, unit = "year")
 }
 add_quarters_fiscal_impl <- function(x, n, ..., day_nonexistent) {
-  x <- promote_at_least_fiscal_year_quarter(x)
+  x <- promote_at_least_fiscal_year_quarternum(x)
   add_years_or_quarters_fiscal(x, n, ..., day_nonexistent = day_nonexistent, unit = "quarter")
 }
 
@@ -1290,11 +1290,11 @@ add_years_or_quarters_fiscal <- function(x, n, ..., day_nonexistent, unit) {
 # ------------------------------------------------------------------------------
 
 add_weeks_fiscal_impl <- function(x, n, ...) {
-  x <- promote_at_least_fiscal_year_quarter_day(x)
+  x <- promote_at_least_fiscal_year_quarternum_quarterday(x)
   add_weeks_or_days_fiscal(x, n, ..., unit = "week")
 }
 add_days_fiscal_impl <- function(x, n, ...) {
-  x <- promote_at_least_fiscal_year_quarter_day(x)
+  x <- promote_at_least_fiscal_year_quarternum_quarterday(x)
   add_weeks_or_days_fiscal(x, n, ..., unit = "day")
 }
 

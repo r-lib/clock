@@ -159,17 +159,17 @@ extern "C" SEXP _civil_convert_sys_seconds_to_sys_days_and_time_of_day_cpp(SEXP 
   END_CPP11
 }
 // converters.cpp
-civil_writable_field convert_fiscal_year_quarter_day_to_naive_days_cpp(const cpp11::integers& year, const cpp11::integers& quarter, const cpp11::integers& day, int fiscal_start, const cpp11::strings& day_nonexistent);
-extern "C" SEXP _civil_convert_fiscal_year_quarter_day_to_naive_days_cpp(SEXP year, SEXP quarter, SEXP day, SEXP fiscal_start, SEXP day_nonexistent) {
+civil_writable_field convert_fiscal_year_quarternum_quarterday_to_naive_days_cpp(const cpp11::integers& year, const cpp11::integers& quarternum, const cpp11::integers& quarterday, int fiscal_start, const cpp11::strings& day_nonexistent);
+extern "C" SEXP _civil_convert_fiscal_year_quarternum_quarterday_to_naive_days_cpp(SEXP year, SEXP quarternum, SEXP quarterday, SEXP fiscal_start, SEXP day_nonexistent) {
   BEGIN_CPP11
-    return cpp11::as_sexp(convert_fiscal_year_quarter_day_to_naive_days_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(quarter), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(day), cpp11::as_cpp<cpp11::decay_t<int>>(fiscal_start), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent)));
+    return cpp11::as_sexp(convert_fiscal_year_quarternum_quarterday_to_naive_days_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(quarternum), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(quarterday), cpp11::as_cpp<cpp11::decay_t<int>>(fiscal_start), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent)));
   END_CPP11
 }
 // converters.cpp
-cpp11::writable::list_of<cpp11::writable::integers> convert_naive_days_to_fiscal_year_quarter_day_cpp(const civil_field& days, int fiscal_start);
-extern "C" SEXP _civil_convert_naive_days_to_fiscal_year_quarter_day_cpp(SEXP days, SEXP fiscal_start) {
+cpp11::writable::list_of<cpp11::writable::integers> convert_naive_days_to_fiscal_year_quarternum_quarterday_cpp(const civil_field& days, int fiscal_start);
+extern "C" SEXP _civil_convert_naive_days_to_fiscal_year_quarternum_quarterday_cpp(SEXP days, SEXP fiscal_start) {
   BEGIN_CPP11
-    return cpp11::as_sexp(convert_naive_days_to_fiscal_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(days), cpp11::as_cpp<cpp11::decay_t<int>>(fiscal_start)));
+    return cpp11::as_sexp(convert_naive_days_to_fiscal_year_quarternum_quarterday_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(days), cpp11::as_cpp<cpp11::decay_t<int>>(fiscal_start)));
   END_CPP11
 }
 // converters.cpp
@@ -194,10 +194,10 @@ extern "C" SEXP _civil_floor_days_to_year_month_precision_cpp(SEXP days) {
   END_CPP11
 }
 // floor.cpp
-civil_writable_field floor_days_to_year_quarter_precision_cpp(const civil_field& days, int fiscal_start);
-extern "C" SEXP _civil_floor_days_to_year_quarter_precision_cpp(SEXP days, SEXP fiscal_start) {
+civil_writable_field floor_days_to_year_quarternum_precision_cpp(const civil_field& days, int fiscal_start);
+extern "C" SEXP _civil_floor_days_to_year_quarternum_precision_cpp(SEXP days, SEXP fiscal_start) {
   BEGIN_CPP11
-    return cpp11::as_sexp(floor_days_to_year_quarter_precision_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(days), cpp11::as_cpp<cpp11::decay_t<int>>(fiscal_start)));
+    return cpp11::as_sexp(floor_days_to_year_quarternum_precision_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(days), cpp11::as_cpp<cpp11::decay_t<int>>(fiscal_start)));
   END_CPP11
 }
 // floor.cpp
@@ -281,10 +281,10 @@ extern SEXP _civil_adjust_naive_iso_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_set_install(SEXP);
 extern SEXP _civil_convert_datetime_fields_from_naive_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_datetime_fields_from_zoned_to_naive_cpp(SEXP, SEXP, SEXP);
-extern SEXP _civil_convert_fiscal_year_quarter_day_to_naive_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_convert_fiscal_year_quarternum_quarterday_to_naive_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_iso_year_weeknum_weekday_to_naive_days(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_naive_days_and_time_of_day_to_sys_seconds_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _civil_convert_naive_days_to_fiscal_year_quarter_day_cpp(SEXP, SEXP);
+extern SEXP _civil_convert_naive_days_to_fiscal_year_quarternum_quarterday_cpp(SEXP, SEXP);
 extern SEXP _civil_convert_naive_days_to_iso_year_weeknum_weekday(SEXP);
 extern SEXP _civil_convert_naive_days_to_year_month_day_cpp(SEXP);
 extern SEXP _civil_convert_naive_time_of_day_to_hour_minute_second_cpp(SEXP);
@@ -296,7 +296,7 @@ extern SEXP _civil_convert_year_month_day_hour_minute_second_to_naive_fields_cpp
 extern SEXP _civil_convert_year_month_day_to_naive_fields(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_floor_days_to_iso_year_weeknum_precision_cpp(SEXP);
 extern SEXP _civil_floor_days_to_year_month_precision_cpp(SEXP);
-extern SEXP _civil_floor_days_to_year_quarter_precision_cpp(SEXP, SEXP);
+extern SEXP _civil_floor_days_to_year_quarternum_precision_cpp(SEXP, SEXP);
 extern SEXP _civil_format_civil_rcrd_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_get_offset_cpp(SEXP, SEXP, SEXP);
 extern SEXP _civil_parse_naive_datetime_cpp(SEXP, SEXP);
@@ -320,10 +320,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_civil_set_install",                                                   (DL_FUNC) &_civil_civil_set_install,                                                   1},
     {"_civil_convert_datetime_fields_from_naive_to_zoned_cpp",                     (DL_FUNC) &_civil_convert_datetime_fields_from_naive_to_zoned_cpp,                     6},
     {"_civil_convert_datetime_fields_from_zoned_to_naive_cpp",                     (DL_FUNC) &_civil_convert_datetime_fields_from_zoned_to_naive_cpp,                     3},
-    {"_civil_convert_fiscal_year_quarter_day_to_naive_days_cpp",                   (DL_FUNC) &_civil_convert_fiscal_year_quarter_day_to_naive_days_cpp,                   5},
+    {"_civil_convert_fiscal_year_quarternum_quarterday_to_naive_days_cpp",         (DL_FUNC) &_civil_convert_fiscal_year_quarternum_quarterday_to_naive_days_cpp,         5},
     {"_civil_convert_iso_year_weeknum_weekday_to_naive_days",                      (DL_FUNC) &_civil_convert_iso_year_weeknum_weekday_to_naive_days,                      4},
     {"_civil_convert_naive_days_and_time_of_day_to_sys_seconds_cpp",               (DL_FUNC) &_civil_convert_naive_days_and_time_of_day_to_sys_seconds_cpp,               6},
-    {"_civil_convert_naive_days_to_fiscal_year_quarter_day_cpp",                   (DL_FUNC) &_civil_convert_naive_days_to_fiscal_year_quarter_day_cpp,                   2},
+    {"_civil_convert_naive_days_to_fiscal_year_quarternum_quarterday_cpp",         (DL_FUNC) &_civil_convert_naive_days_to_fiscal_year_quarternum_quarterday_cpp,         2},
     {"_civil_convert_naive_days_to_iso_year_weeknum_weekday",                      (DL_FUNC) &_civil_convert_naive_days_to_iso_year_weeknum_weekday,                      1},
     {"_civil_convert_naive_days_to_year_month_day_cpp",                            (DL_FUNC) &_civil_convert_naive_days_to_year_month_day_cpp,                            1},
     {"_civil_convert_naive_time_of_day_to_hour_minute_second_cpp",                 (DL_FUNC) &_civil_convert_naive_time_of_day_to_hour_minute_second_cpp,                 1},
@@ -335,7 +335,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_convert_year_month_day_to_naive_fields",                              (DL_FUNC) &_civil_convert_year_month_day_to_naive_fields,                              4},
     {"_civil_floor_days_to_iso_year_weeknum_precision_cpp",                        (DL_FUNC) &_civil_floor_days_to_iso_year_weeknum_precision_cpp,                        1},
     {"_civil_floor_days_to_year_month_precision_cpp",                              (DL_FUNC) &_civil_floor_days_to_year_month_precision_cpp,                              1},
-    {"_civil_floor_days_to_year_quarter_precision_cpp",                            (DL_FUNC) &_civil_floor_days_to_year_quarter_precision_cpp,                            2},
+    {"_civil_floor_days_to_year_quarternum_precision_cpp",                         (DL_FUNC) &_civil_floor_days_to_year_quarternum_precision_cpp,                         2},
     {"_civil_format_civil_rcrd_cpp",                                               (DL_FUNC) &_civil_format_civil_rcrd_cpp,                                               8},
     {"_civil_get_offset_cpp",                                                      (DL_FUNC) &_civil_get_offset_cpp,                                                      3},
     {"_civil_parse_naive_datetime_cpp",                                            (DL_FUNC) &_civil_parse_naive_datetime_cpp,                                            2},

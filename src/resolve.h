@@ -10,13 +10,13 @@
 
 static inline void resolve_day_nonexistent_ymd_first_day(date::year_month_day& ymd);
 template <fiscal_year::start S>
-static inline void resolve_day_nonexistent_yqd_first_day(fiscal_year::year_quarter_day<S>& yqd);
+static inline void resolve_day_nonexistent_yqnqd_first_day(fiscal_year::year_quarternum_quarterday<S>& yqnqd);
 static inline void resolve_day_nonexistent_yww_first_day(iso_week::year_weeknum_weekday& yww);
 static inline void resolve_day_nonexistent_tod_first_time(std::chrono::seconds& tod);
 static inline void resolve_day_nonexistent_nanos_first_time(std::chrono::nanoseconds& nanos_of_second);
 static inline void resolve_day_nonexistent_ymd_last_day(date::year_month_day& ymd);
 template <fiscal_year::start S>
-static inline void resolve_day_nonexistent_yqd_last_day(fiscal_year::year_quarter_day<S>& yqd);
+static inline void resolve_day_nonexistent_yqnqd_last_day(fiscal_year::year_quarternum_quarterday<S>& yqnqd);
 static inline void resolve_day_nonexistent_yww_last_day(iso_week::year_weeknum_weekday& yww);
 static inline void resolve_day_nonexistent_tod_last_time(std::chrono::seconds& tod);
 static inline void resolve_day_nonexistent_nanos_last_time(std::chrono::nanoseconds& nanos_of_second);
@@ -50,22 +50,22 @@ static inline void resolve_day_nonexistent_ymd(const r_ssize& i,
 }
 
 template <fiscal_year::start S>
-static inline void resolve_day_nonexistent_yqd(const r_ssize& i,
-                                               const enum day_nonexistent& day_nonexistent_val,
-                                               fiscal_year::year_quarter_day<S>& yqd,
-                                               bool& na) {
+static inline void resolve_day_nonexistent_yqnqd(const r_ssize& i,
+                                                 const enum day_nonexistent& day_nonexistent_val,
+                                                 fiscal_year::year_quarternum_quarterday<S>& yqnqd,
+                                                 bool& na) {
   switch (day_nonexistent_val) {
   case day_nonexistent::first_day: {
-    return resolve_day_nonexistent_yqd_first_day(yqd);
+    return resolve_day_nonexistent_yqnqd_first_day(yqnqd);
   }
   case day_nonexistent::first_time: {
-    return resolve_day_nonexistent_yqd_first_day(yqd);
+    return resolve_day_nonexistent_yqnqd_first_day(yqnqd);
   }
   case day_nonexistent::last_day: {
-    return resolve_day_nonexistent_yqd_last_day(yqd);
+    return resolve_day_nonexistent_yqnqd_last_day(yqnqd);
   }
   case day_nonexistent::last_time: {
-    return resolve_day_nonexistent_yqd_last_day(yqd);
+    return resolve_day_nonexistent_yqnqd_last_day(yqnqd);
   }
   case day_nonexistent::na: {
     return resolve_day_nonexistent_na(na);
@@ -142,8 +142,8 @@ static inline void resolve_day_nonexistent_ymd_first_day(date::year_month_day& y
   ymd = ((ymd.year() / ymd.month()) + date::months(1)) / date::day(1);
 }
 template <fiscal_year::start S>
-static inline void resolve_day_nonexistent_yqd_first_day(fiscal_year::year_quarter_day<S>& yqd) {
-  yqd = ((yqd.year() / yqd.quarter()) + fiscal_year::quarters(1)) / fiscal_year::day{1u};
+static inline void resolve_day_nonexistent_yqnqd_first_day(fiscal_year::year_quarternum_quarterday<S>& yqnqd) {
+  yqnqd = ((yqnqd.year() / yqnqd.quarternum()) + fiscal_year::quarters(1)) / fiscal_year::quarterday{1u};
 }
 static inline void resolve_day_nonexistent_yww_first_day(iso_week::year_weeknum_weekday& yww) {
   yww = (yww.year() + iso_week::years{1}) / iso_week::weeknum{1} / iso_week::mon;
@@ -159,8 +159,8 @@ static inline void resolve_day_nonexistent_ymd_last_day(date::year_month_day& ym
   ymd = ymd.year() / ymd.month() / date::last;
 }
 template <fiscal_year::start S>
-static inline void resolve_day_nonexistent_yqd_last_day(fiscal_year::year_quarter_day<S>& yqd) {
-  yqd = yqd.year() / yqd.quarter() / fiscal_year::last;
+static inline void resolve_day_nonexistent_yqnqd_last_day(fiscal_year::year_quarternum_quarterday<S>& yqnqd) {
+  yqnqd = yqnqd.year() / yqnqd.quarternum() / fiscal_year::last;
 }
 static inline void resolve_day_nonexistent_yww_last_day(iso_week::year_weeknum_weekday& yww) {
   yww = yww.year() / iso_week::last / iso_week::sun;
@@ -222,21 +222,21 @@ static inline void convert_year_month_day_to_days_one(const r_ssize& i,
 // -----------------------------------------------------------------------------
 
 template <fiscal_year::start S>
-static inline void convert_year_quarter_day_to_days_one(const r_ssize& i,
-                                                        const enum day_nonexistent& day_nonexistent_val,
-                                                        fiscal_year::year_quarter_day<S>& yqd,
-                                                        int* p_days,
-                                                        int* p_time_of_day,
-                                                        int* p_nanos_of_second) {
+static inline void convert_year_quarternum_quarterday_to_days_one(const r_ssize& i,
+                                                                  const enum day_nonexistent& day_nonexistent_val,
+                                                                  fiscal_year::year_quarternum_quarterday<S>& yqnqd,
+                                                                  int* p_days,
+                                                                  int* p_time_of_day,
+                                                                  int* p_nanos_of_second) {
   // Simple case - convert to local_days, no changes to time-of-day
-  if (yqd.ok()) {
-    date::local_days out_lday{yqd};
+  if (yqnqd.ok()) {
+    date::local_days out_lday{yqnqd};
     p_days[i] = out_lday.time_since_epoch().count();
     return;
   }
 
   bool na = false;
-  resolve_day_nonexistent_yqd(i, day_nonexistent_val, yqd, na);
+  resolve_day_nonexistent_yqnqd(i, day_nonexistent_val, yqnqd, na);
 
   if (na) {
     civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
@@ -255,7 +255,7 @@ static inline void convert_year_quarter_day_to_days_one(const r_ssize& i,
     p_nanos_of_second[i] = elt_nanos_of_second.count();
   }
 
-  date::local_days out_lday{yqd};
+  date::local_days out_lday{yqnqd};
   p_days[i] = out_lday.time_since_epoch().count();
 }
 

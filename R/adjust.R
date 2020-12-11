@@ -155,14 +155,27 @@ adjust_year.civil_naive_iso <- function(x, value, ..., day_nonexistent = "last-t
 # ------------------------------------------------------------------------------
 
 #' @export
-adjust_quarter <- function(x, value, ...) {
+adjust_quarternum <- function(x, value, ...) {
   restrict_civil_supported(x)
-  UseMethod("adjust_quarter")
+  UseMethod("adjust_quarternum")
 }
 
 #' @export
-adjust_quarter.civil_naive_fiscal <- function(x, value, ..., day_nonexistent = "last-time") {
-  adjust_quarter_fiscal_impl(x, value, ..., day_nonexistent = day_nonexistent)
+adjust_quarternum.civil_naive_fiscal <- function(x, value, ..., day_nonexistent = "last-time") {
+  adjust_quarternum_fiscal_impl(x, value, ..., day_nonexistent = day_nonexistent)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+adjust_quarterday <- function(x, value, ...) {
+  restrict_civil_supported(x)
+  UseMethod("adjust_quarterday")
+}
+
+#' @export
+adjust_quarterday.civil_naive_fiscal <- function(x, value, ..., day_nonexistent = "last-time") {
+  adjust_quarterday_fiscal_impl(x, value, ..., day_nonexistent = day_nonexistent)
 }
 
 # ------------------------------------------------------------------------------
@@ -307,11 +320,6 @@ adjust_day.civil_zoned <- function(x,
 #' @export
 adjust_day.civil_naive_gregorian <- function(x, value, ..., day_nonexistent = "last-time") {
   adjust_day_gregorian_impl(x, value, ..., day_nonexistent = day_nonexistent)
-}
-
-#' @export
-adjust_day.civil_naive_fiscal <- function(x, value, ..., day_nonexistent = "last-time") {
-  adjust_day_fiscal_impl(x, value, ..., day_nonexistent = day_nonexistent)
 }
 
 # ------------------------------------------------------------------------------
@@ -592,16 +600,16 @@ adjust_year_fiscal_impl <- function(x, value, ..., day_nonexistent) {
   x <- promote_at_least_fiscal_year(x)
   adjust_naive_fiscal_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "year")
 }
-adjust_quarter_fiscal_impl <- function(x, value, ..., day_nonexistent) {
-  x <- promote_at_least_fiscal_year_quarter(x)
-  adjust_naive_fiscal_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "quarter")
+adjust_quarternum_fiscal_impl <- function(x, value, ..., day_nonexistent) {
+  x <- promote_at_least_fiscal_year_quarternum(x)
+  adjust_naive_fiscal_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "quarternum")
 }
-adjust_day_fiscal_impl <- function(x, value, ..., day_nonexistent) {
-  x <- promote_at_least_fiscal_year_quarter_day(x)
-  adjust_naive_fiscal_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "day")
+adjust_quarterday_fiscal_impl <- function(x, value, ..., day_nonexistent) {
+  x <- promote_at_least_fiscal_year_quarternum_quarterday(x)
+  adjust_naive_fiscal_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "quarterday")
 }
 adjust_last_day_of_quarter_fiscal_impl <- function(x, ...) {
-  x <- promote_at_least_fiscal_year_quarter_day(x)
+  x <- promote_at_least_fiscal_year_quarternum_quarterday(x)
   adjust_naive_fiscal_days(x, -1L, ..., day_nonexistent = "last-time", adjuster = "last_day_of_quarter")
 }
 
