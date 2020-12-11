@@ -63,15 +63,16 @@ enum unit parse_unit(const cpp11::strings& x);
 
 enum class adjuster {
   year,
-  quarter,
   month,
-  weeknum,
-  weekday,
   day,
   hour,
   minute,
   second,
   nanosecond,
+  weeknum,
+  weekday,
+  quarternum,
+  quarterday,
   last_weeknum_of_year,
   last_day_of_quarter,
   last_day_of_month

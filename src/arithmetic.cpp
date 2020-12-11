@@ -340,20 +340,20 @@ static civil_writable_rcrd add_years_or_quarters_fiscal(const civil_rcrd& x,
     }
 
     date::local_days elt_lday{date::days{elt_days}};
-    fiscal_year::year_quarter_day<S> elt_yqd{elt_lday};
+    fiscal_year::year_quarternum_quarterday<S> elt_yqnqd{elt_lday};
 
-    fiscal_year::year_quarter_day<S> out_yqd;
+    fiscal_year::year_quarternum_quarterday<S> out_yqnqd;
 
     if (unit_val == unit::year) {
-      out_yqd = elt_yqd + fiscal_year::years{elt_n};
+      out_yqnqd = elt_yqnqd + fiscal_year::years{elt_n};
     } else {
-      out_yqd = elt_yqd + fiscal_year::quarters{elt_n};
+      out_yqnqd = elt_yqnqd + fiscal_year::quarters{elt_n};
     }
 
-    convert_year_quarter_day_to_days_one(
+    convert_year_quarternum_quarterday_to_days_one(
       i,
       day_nonexistent_val,
-      out_yqd,
+      out_yqnqd,
       p_days,
       p_time_of_day,
       p_nanos_of_second
