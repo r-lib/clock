@@ -312,7 +312,7 @@ civil_writable_rcrd add_milliseconds_or_microseconds_or_nanoseconds_cpp(const ci
 
 // -----------------------------------------------------------------------------
 
-template <fiscal_year::start S>
+template <quarterly::start S>
 static civil_writable_rcrd add_years_or_quarters_fiscal(const civil_rcrd& x,
                                                         const cpp11::integers& n,
                                                         const enum day_nonexistent& day_nonexistent_val,
@@ -340,14 +340,14 @@ static civil_writable_rcrd add_years_or_quarters_fiscal(const civil_rcrd& x,
     }
 
     date::local_days elt_lday{date::days{elt_days}};
-    fiscal_year::year_quarternum_quarterday<S> elt_yqnqd{elt_lday};
+    quarterly::year_quarternum_quarterday<S> elt_yqnqd{elt_lday};
 
-    fiscal_year::year_quarternum_quarterday<S> out_yqnqd;
+    quarterly::year_quarternum_quarterday<S> out_yqnqd;
 
     if (unit_val == unit::year) {
-      out_yqnqd = elt_yqnqd + fiscal_year::years{elt_n};
+      out_yqnqd = elt_yqnqd + quarterly::years{elt_n};
     } else {
-      out_yqnqd = elt_yqnqd + fiscal_year::quarters{elt_n};
+      out_yqnqd = elt_yqnqd + quarterly::quarters{elt_n};
     }
 
     convert_year_quarternum_quarterday_to_days_one(
@@ -375,29 +375,29 @@ civil_writable_rcrd add_years_or_quarters_fiscal_cpp(const civil_rcrd& x,
   r_ssize c_size = size[0];
 
   if (fiscal_start == 1) {
-    return add_years_or_quarters_fiscal<fiscal_year::start::january>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_years_or_quarters_fiscal<quarterly::start::january>(x, n, day_nonexistent_val, unit_val, c_size);
   } else if (fiscal_start == 2) {
-    return add_years_or_quarters_fiscal<fiscal_year::start::february>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_years_or_quarters_fiscal<quarterly::start::february>(x, n, day_nonexistent_val, unit_val, c_size);
   } else if (fiscal_start == 3) {
-    return add_years_or_quarters_fiscal<fiscal_year::start::march>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_years_or_quarters_fiscal<quarterly::start::march>(x, n, day_nonexistent_val, unit_val, c_size);
   } else if (fiscal_start == 4) {
-    return add_years_or_quarters_fiscal<fiscal_year::start::april>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_years_or_quarters_fiscal<quarterly::start::april>(x, n, day_nonexistent_val, unit_val, c_size);
   } else if (fiscal_start == 5) {
-    return add_years_or_quarters_fiscal<fiscal_year::start::may>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_years_or_quarters_fiscal<quarterly::start::may>(x, n, day_nonexistent_val, unit_val, c_size);
   } else if (fiscal_start == 6) {
-    return add_years_or_quarters_fiscal<fiscal_year::start::june>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_years_or_quarters_fiscal<quarterly::start::june>(x, n, day_nonexistent_val, unit_val, c_size);
   } else if (fiscal_start == 7) {
-    return add_years_or_quarters_fiscal<fiscal_year::start::july>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_years_or_quarters_fiscal<quarterly::start::july>(x, n, day_nonexistent_val, unit_val, c_size);
   } else if (fiscal_start == 8) {
-    return add_years_or_quarters_fiscal<fiscal_year::start::august>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_years_or_quarters_fiscal<quarterly::start::august>(x, n, day_nonexistent_val, unit_val, c_size);
   } else if (fiscal_start == 9) {
-    return add_years_or_quarters_fiscal<fiscal_year::start::september>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_years_or_quarters_fiscal<quarterly::start::september>(x, n, day_nonexistent_val, unit_val, c_size);
   } else if (fiscal_start == 10) {
-    return add_years_or_quarters_fiscal<fiscal_year::start::october>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_years_or_quarters_fiscal<quarterly::start::october>(x, n, day_nonexistent_val, unit_val, c_size);
   } else if (fiscal_start == 11) {
-    return add_years_or_quarters_fiscal<fiscal_year::start::november>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_years_or_quarters_fiscal<quarterly::start::november>(x, n, day_nonexistent_val, unit_val, c_size);
   } else if (fiscal_start == 12) {
-    return add_years_or_quarters_fiscal<fiscal_year::start::december>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_years_or_quarters_fiscal<quarterly::start::december>(x, n, day_nonexistent_val, unit_val, c_size);
   }
 
   never_reached("add_years_or_quarters_fiscal_cpp");
