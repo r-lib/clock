@@ -61,6 +61,7 @@ civil_writable_field floor_days_to_year_quarter_precision(const civil_field& day
   return out_days;
 }
 
+[[cpp11::register]]
 civil_writable_field floor_days_to_year_quarter_precision_cpp(const civil_field& days,
                                                               int fiscal_start) {
   if (fiscal_start == 1) {
