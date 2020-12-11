@@ -1,8 +1,8 @@
 #' @export
-quarterly_year_quarternum <- function(year, quarternum = 1L, ..., start = 1L) {
+year_quarternum <- function(year, quarternum = 1L, ..., start = 1L) {
   quarterday <- ones_along(year)
 
-  yqnqd <- quarterly_year_quarternum_quarterday(
+  yqnqd <- year_quarternum_quarterday(
     year = year,
     quarternum = quarternum,
     quarterday = quarterday,
@@ -13,13 +13,13 @@ quarterly_year_quarternum <- function(year, quarternum = 1L, ..., start = 1L) {
   days <- field(yqnqd, "days")
   start <- get_quarterly_start(yqnqd)
 
-  new_quarterly_year_quarternum(days, start)
+  new_year_quarternum(days, start)
 }
 
-new_quarterly_year_quarternum <- function(days = integer(),
-                                          start = 1L,
-                                          ...,
-                                          names = NULL) {
+new_year_quarternum <- function(days = integer(),
+                                start = 1L,
+                                ...,
+                                names = NULL) {
   if (!is_integer(days)) {
     abort("`days` must be an integer.")
   }
@@ -40,8 +40,8 @@ new_quarterly_year_quarternum <- function(days = integer(),
   )
 }
 
-new_quarterly_year_quarternum_from_fields <- function(fields, start, names = NULL) {
-  new_quarterly_year_quarternum(
+new_year_quarternum_from_fields <- function(fields, start, names = NULL) {
+  new_year_quarternum(
     days = fields$days,
     start = start,
     names = names
@@ -58,7 +58,7 @@ vec_restore.civil_naive_quarterly_year_quarternum <- function(x, to, ...) {
   fields <- restore_civil_rcrd_fields(x)
   names <- restore_civil_rcrd_names(x)
   start <- get_quarterly_start(to)
-  new_quarterly_year_quarternum_from_fields(fields, start, names)
+  new_year_quarternum_from_fields(fields, start, names)
 }
 
 #' @export
@@ -92,16 +92,16 @@ format.civil_naive_quarterly_year_quarternum <- function(x, ...) {
 vec_ptype_full.civil_naive_quarterly_year_quarternum <- function(x, ...) {
   start <- get_quarterly_start(x)
   start <- pretty_quarterly_start(start)
-  paste0("quarterly_year_quarternum<", start, ">")
+  paste0("year_quarternum<", start, ">")
 }
 
 #' @export
 vec_ptype_abbr.civil_naive_quarterly_year_quarternum <- function(x, ...) {
   start <- get_quarterly_start(x)
   start <- pretty_quarterly_start(start, abbreviate = TRUE)
-  paste0("quarterly_yq<", start, ">")
+  paste0("yq<", start, ">")
 }
 
-is_quarterly_year_quarternum <- function(x) {
+is_year_quarternum <- function(x) {
   inherits(x, "civil_naive_quarterly_year_quarternum")
 }

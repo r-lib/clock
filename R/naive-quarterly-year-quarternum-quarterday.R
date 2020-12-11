@@ -1,10 +1,10 @@
 #' @export
-quarterly_year_quarternum_quarterday <- function(year,
-                                                 quarternum = 1L,
-                                                 quarterday = 1L,
-                                                 ...,
-                                                 start = 1L,
-                                                 day_nonexistent = "last-time") {
+year_quarternum_quarterday <- function(year,
+                                       quarternum = 1L,
+                                       quarterday = 1L,
+                                       ...,
+                                       start = 1L,
+                                       day_nonexistent = "last-time") {
   check_dots_empty()
 
   args <- list(year = year, quarternum = quarternum, quarterday = quarterday)
@@ -22,13 +22,13 @@ quarterly_year_quarternum_quarterday <- function(year,
     day_nonexistent = day_nonexistent
   )
 
-  new_quarterly_year_quarternum_quarterday(days, start)
+  new_year_quarternum_quarterday(days, start)
 }
 
-new_quarterly_year_quarternum_quarterday <- function(days = integer(),
-                                                     start = 1L,
-                                                     ...,
-                                                     names = NULL) {
+new_year_quarternum_quarterday <- function(days = integer(),
+                                           start = 1L,
+                                           ...,
+                                           names = NULL) {
   if (!is_integer(days)) {
     abort("`days` must be an integer.")
   }
@@ -49,8 +49,8 @@ new_quarterly_year_quarternum_quarterday <- function(days = integer(),
   )
 }
 
-new_quarterly_year_quarternum_quarterday_from_fields <- function(fields, start, names = NULL) {
-  new_quarterly_year_quarternum_quarterday(
+new_year_quarternum_quarterday_from_fields <- function(fields, start, names = NULL) {
+  new_year_quarternum_quarterday(
     days = fields$days,
     start = start,
     names = names
@@ -67,7 +67,7 @@ vec_restore.civil_naive_quarterly_year_quarternum_quarterday <- function(x, to, 
   fields <- restore_civil_rcrd_fields(x)
   names <- restore_civil_rcrd_names(x)
   start <- get_quarterly_start(to)
-  new_quarterly_year_quarternum_quarterday_from_fields(fields, start, names)
+  new_year_quarternum_quarterday_from_fields(fields, start, names)
 }
 
 #' @export
@@ -77,7 +77,7 @@ vec_proxy_equal.civil_naive_quarterly_year_quarternum_quarterday <- function(x, 
 
 #' @export
 format.civil_naive_quarterly_year_quarternum_quarterday <- function(x, ...) {
-  # TODO: Support format = fmt_quarterly_year_quarternum_quarterday() and the "%q" token and
+  # TODO: Support format = fmt_year_quarternum_quarterday() and the "%q" token and
   # pass directly to a formatter
   days <- field(x, "days")
   start <- get_quarterly_start(x)
@@ -103,16 +103,16 @@ format.civil_naive_quarterly_year_quarternum_quarterday <- function(x, ...) {
 vec_ptype_full.civil_naive_quarterly_year_quarternum_quarterday <- function(x, ...) {
   start <- get_quarterly_start(x)
   start <- pretty_quarterly_start(start)
-  paste0("quarterly_year_quarternum_quarterday<", start, ">")
+  paste0("year_quarternum_quarterday<", start, ">")
 }
 
 #' @export
 vec_ptype_abbr.civil_naive_quarterly_year_quarternum_quarterday <- function(x, ...) {
   start <- get_quarterly_start(x)
   start <- pretty_quarterly_start(start, abbreviate = TRUE)
-  paste0("quarterly_yqd<", start, ">")
+  paste0("yqq<", start, ">")
 }
 
-is_quarterly_year_quarternum_quarterday <- function(x) {
+is_year_quarternum_quarterday <- function(x) {
   inherits(x, "civil_naive_quarterly_year_quarternum_quarterday")
 }
