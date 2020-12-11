@@ -24,7 +24,7 @@ as_fiscal_year_quarter.civil_naive_fiscal <- function(x, ...) {
 }
 
 #' @export
-as_fiscal_year_quarter.civil_naive_gregorian <- function(x, ..., fiscal_start = 1L) {
+as_fiscal_year_quarter.civil_naive <- function(x, ..., fiscal_start = 1L) {
   check_dots_empty()
   days <- field(x, "days")
   fiscal_start <- cast_fiscal_start(fiscal_start)
@@ -71,7 +71,7 @@ as_fiscal_year_quarter_day.civil_naive_fiscal <- function(x, ...) {
 }
 
 #' @export
-as_fiscal_year_quarter_day.civil_naive_gregorian <- function(x, ..., fiscal_start = 1L) {
+as_fiscal_year_quarter_day.civil_naive <- function(x, ..., fiscal_start = 1L) {
   check_dots_empty()
   days <- field(x, "days")
   fiscal_start <- cast_fiscal_start(fiscal_start)
