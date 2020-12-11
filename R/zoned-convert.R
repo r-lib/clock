@@ -33,7 +33,7 @@ as_zoned.civil_naive_fiscal <- function(x,
                                         dst_nonexistent = "roll-forward",
                                         dst_ambiguous = "earliest") {
   # Leaving room for potential `civil_zoned_fiscal` types,
-  # such as a `civil_zoned_fiscal_year_quarter_day_time`. We would automatically
+  # such as a `civil_zoned_fiscal_year_quarternum_quarterday_time`. We would automatically
   # convert to those through `as_zoned()` rather than to the gregorian zoned-datetime.
   message <- paste0(
     "Can't automatically convert directly from naive fiscal calendar to zoned gregarian calendar. ",

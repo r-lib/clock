@@ -1,13 +1,13 @@
 
 LEVEL_NAIVE_FISCAL_YEAR = 0L
-LEVEL_NAIVE_FISCAL_YEAR_QUARTER = 1L
-LEVEL_NAIVE_FISCAL_YEAR_QUARTER_DAY = 2L
+LEVEL_NAIVE_FISCAL_YEAR_QUARTERNUM = 1L
+LEVEL_NAIVE_FISCAL_YEAR_QUARTERNUM_QUARTERDAY = 2L
 
 naive_fiscal_level <- function(x) {
-  if (is_fiscal_year_quarter(x)) {
-    LEVEL_NAIVE_FISCAL_YEAR_QUARTER
-  } else if (is_fiscal_year_quarter_day(x)) {
-    LEVEL_NAIVE_FISCAL_YEAR_QUARTER_DAY
+  if (is_fiscal_year_quarternum(x)) {
+    LEVEL_NAIVE_FISCAL_YEAR_QUARTERNUM
+  } else if (is_fiscal_year_quarternum_quarterday(x)) {
+    LEVEL_NAIVE_FISCAL_YEAR_QUARTERNUM_QUARTERDAY
   } else {
     stop_civil_unsupported_class(x)
   }
@@ -29,28 +29,28 @@ is_at_least_fiscal_year <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-promote_at_least_fiscal_year_quarter <- function(x) {
-  if (is_at_least_fiscal_year_quarter(x)) {
+promote_at_least_fiscal_year_quarternum <- function(x) {
+  if (is_at_least_fiscal_year_quarternum(x)) {
     x
   } else {
-    as_fiscal_year_quarter(x)
+    as_fiscal_year_quarternum(x)
   }
 }
 
-is_at_least_fiscal_year_quarter <- function(x) {
-  naive_fiscal_level(x) >= LEVEL_NAIVE_FISCAL_YEAR_QUARTER
+is_at_least_fiscal_year_quarternum <- function(x) {
+  naive_fiscal_level(x) >= LEVEL_NAIVE_FISCAL_YEAR_QUARTERNUM
 }
 
 # ------------------------------------------------------------------------------
 
-promote_at_least_fiscal_year_quarter_day <- function(x) {
-  if (is_at_least_fiscal_year_quarter_day(x)) {
+promote_at_least_fiscal_year_quarternum_quarterday <- function(x) {
+  if (is_at_least_fiscal_year_quarternum_quarterday(x)) {
     x
   } else {
-    as_fiscal_year_quarter_day(x)
+    as_fiscal_year_quarternum_quarterday(x)
   }
 }
 
-is_at_least_fiscal_year_quarter_day <- function(x) {
-  naive_fiscal_level(x) >= LEVEL_NAIVE_FISCAL_YEAR_QUARTER_DAY
+is_at_least_fiscal_year_quarternum_quarterday <- function(x) {
+  naive_fiscal_level(x) >= LEVEL_NAIVE_FISCAL_YEAR_QUARTERNUM_QUARTERDAY
 }
