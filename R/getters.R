@@ -82,7 +82,7 @@ get_year.civil_naive_iso <- function(x) {
 }
 
 #' @export
-get_year.civil_zoned_gregorian <- function(x) {
+get_year.civil_zoned <- function(x) {
   x <- as_naive(x)
   get_year(x)
 }
