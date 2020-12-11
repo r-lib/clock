@@ -100,6 +100,10 @@ floor_days_to_year_month_precision_cpp <- function(days) {
   .Call("_civil_floor_days_to_year_month_precision_cpp", days, PACKAGE = "civil")
 }
 
+floor_days_to_iso_year_weeknum_precision_cpp <- function(days) {
+  .Call("_civil_floor_days_to_iso_year_weeknum_precision_cpp", days, PACKAGE = "civil")
+}
+
 format_civil_rcrd_cpp <- function(days, time_of_day, nanos_of_second, zone, format, naive, nano, abbreviate_zone) {
   .Call("_civil_format_civil_rcrd_cpp", days, time_of_day, nanos_of_second, zone, format, naive, nano, abbreviate_zone, PACKAGE = "civil")
 }

@@ -618,23 +618,19 @@ adjust_naive_fiscal_days <- function(x, value, ..., day_nonexistent, adjuster) {
 # ------------------------------------------------------------------------------
 
 adjust_year_iso_impl <- function(x, value, ..., day_nonexistent) {
-  # TODO:
-  #x <- promote_at_least_iso_year(x)
+  x <- promote_at_least_iso_year(x)
   adjust_naive_iso_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "year")
 }
 adjust_weeknum_iso_impl <- function(x, value, ..., day_nonexistent) {
-  # TODO:
-  #x <- promote_at_least_iso_year_weeknum(x)
+  x <- promote_at_least_iso_year_weeknum(x)
   adjust_naive_iso_days(x, value, ..., day_nonexistent = day_nonexistent, adjuster = "weeknum")
 }
 adjust_weekday_iso_impl <- function(x, value, ...) {
-  # TODO:
-  #x <- promote_at_least_iso_year_weeknum_weekday(x)
+  x <- promote_at_least_iso_year_weeknum_weekday(x)
   adjust_naive_iso_days(x, value, ..., day_nonexistent = "last-time", adjuster = "weekday")
 }
 adjust_last_weeknum_of_year_iso_impl <- function(x, ...) {
-  # TODO:
-  #x <- promote_at_least_iso_year_weeknum(x)
+  x <- promote_at_least_iso_year_weeknum(x)
   adjust_naive_iso_days(x, -1L, ..., day_nonexistent = "last-time", adjuster = "last_weeknum_of_year")
 }
 
