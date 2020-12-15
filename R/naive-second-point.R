@@ -1,4 +1,46 @@
 #' @export
+naive_date_time <- function(year,
+                            month = 1L,
+                            day = 1L,
+                            hour = 0L,
+                            minute = 0L,
+                            second = 0L,
+                            ...,
+                            day_nonexistent = "last-time") {
+  check_dots_empty()
+
+  args <- list(
+    year = year,
+    month = month,
+    day = day,
+    hour = hour,
+    minute = minute,
+    second = second
+  )
+
+  size <- vec_size_common(!!!args)
+  args <- vec_recycle_common(!!!args, .size = size)
+  args <- vec_cast_common(!!!args, .to = integer())
+
+  fields <- convert_year_month_day_hour_minute_second_to_naive_fields(
+    args$year,
+    args$month,
+    args$day,
+    args$hour,
+    args$minute,
+    args$second,
+    day_nonexistent
+  )
+
+  days <- fields$days
+  seconds_of_day <- fields$seconds_of_day
+
+  calendar <- new_year_month_day(days)
+
+  new_naive_second_point(calendar, seconds_of_day)
+}
+
+#' @export
 naive_second_point <- function(calendar, hour = 0L, minute = 0L, second = 0L) {
   args <- list(
     hour = hour,

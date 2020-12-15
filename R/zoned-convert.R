@@ -34,31 +34,13 @@ as_zoned.clock_naive_subsecond_point <- function(x,
 }
 
 #' @export
-as_zoned.clock_naive_date_time <- function(x,
-                                           zone,
-                                           ...,
-                                           dst_nonexistent = "roll-forward",
-                                           dst_ambiguous = "earliest") {
-  as_zoned_date_time(x, zone, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
-}
-
-#' @export
-as_zoned.clock_naive_date_nanotime <- function(x,
-                                               zone,
-                                               ...,
-                                               dst_nonexistent = "roll-forward",
-                                               dst_ambiguous = "earliest") {
-  as_zoned_date_nanotime(x, zone, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
-}
-
-#' @export
 as_zoned.Date <- function(x, ...) {
   check_dots_empty()
-  as_zoned_datetime(x)
+  as_zoned_second_point(x)
 }
 
 #' @export
 as_zoned.POSIXt <- function(x, ...) {
   check_dots_empty()
-  as_zoned_datetime(x)
+  as_zoned_second_point(x)
 }

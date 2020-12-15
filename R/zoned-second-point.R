@@ -1,4 +1,35 @@
 #' @export
+zoned_date_time <- function(year,
+                            month = 1L,
+                            day = 1L,
+                            hour = 0L,
+                            minute = 0L,
+                            second = 0L,
+                            ...,
+                            zone = "UTC",
+                            day_nonexistent = "last-time",
+                            dst_nonexistent = "roll-forward",
+                            dst_ambiguous = "earliest") {
+  out <- naive_date_time(
+    year = year,
+    month = month,
+    day = day,
+    hour = hour,
+    minute = minute,
+    second = second,
+    ...,
+    day_nonexistent = day_nonexistent
+  )
+
+  as_zoned_second_point(
+    x = out,
+    zone = zone,
+    dst_nonexistent = dst_nonexistent,
+    dst_ambiguous = dst_ambiguous
+  )
+}
+
+#' @export
 zoned_second_point <- function(calendar,
                                hour = 0L,
                                minute = 0L,
