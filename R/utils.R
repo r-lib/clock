@@ -123,7 +123,7 @@ restrict_zoned_or_base <- function(x) {
 }
 
 restrict_zoned <- function(x) {
-  if (is_zoned(x)) {
+  if (is_zoned_time_point(x)) {
     invisible(x)
   } else {
     stop_clock_unsupported_class(x)
@@ -131,7 +131,7 @@ restrict_zoned <- function(x) {
 }
 
 restrict_naive <- function(x) {
-  if (is_naive(x)) {
+  if (is_naive_time_point(x)) {
     invisible(x)
   } else {
     stop_clock_unsupported_class(x)
@@ -192,12 +192,6 @@ stop_clock_unsupported_conversion <- function(x, to_arg) {
 paste_class <- function(x) {
   out <- paste0(class(x), collapse = "/")
   paste0("<", out, ">")
-}
-
-# ------------------------------------------------------------------------------
-
-has_field <- function(x, field) {
-  field %in% fields(x)
 }
 
 # ------------------------------------------------------------------------------
