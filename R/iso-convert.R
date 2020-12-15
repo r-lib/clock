@@ -5,7 +5,7 @@ as_iso_year_weeknum <- function(x)  {
 
 #' @export
 as_iso_year_weeknum.default <- function(x) {
-  stop_civil_unsupported_conversion(x, "clock_iso_year_weeknum")
+  stop_clock_unsupported_conversion(x, "clock_iso_year_weeknum")
 }
 
 #' @export
@@ -43,7 +43,7 @@ as_iso_year_weeknum_weekday <- function(x)  {
 
 #' @export
 as_iso_year_weeknum_weekday.default <- function(x) {
-  stop_civil_unsupported_conversion(x, "clock_iso_year_weeknum_weekday")
+  stop_clock_unsupported_conversion(x, "clock_iso_year_weeknum_weekday")
 }
 
 #' @export

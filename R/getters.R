@@ -7,7 +7,7 @@ get_zone <- function(x) {
   } else if (is_zoned_time_point(x)) {
     zoned_time_point_zone(x)
   } else {
-    stop_civil_unsupported_class(x)
+    stop_clock_unsupported_class(x)
   }
 }
 

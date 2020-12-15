@@ -5,7 +5,7 @@ as_year_month <- function(x)  {
 
 #' @export
 as_year_month.default <- function(x) {
-  stop_civil_unsupported_conversion(x, "clock_year_month")
+  stop_clock_unsupported_conversion(x, "clock_year_month")
 }
 
 #' @export
@@ -43,7 +43,7 @@ as_year_month_day <- function(x)  {
 
 #' @export
 as_year_month_day.default <- function(x) {
-  stop_civil_unsupported_conversion(x, "clock_year_month_day")
+  stop_clock_unsupported_conversion(x, "clock_year_month_day")
 }
 
 #' @export

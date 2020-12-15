@@ -7,7 +7,7 @@ as_naive_second_point <- function(x) {
 
 #' @export
 as_naive_second_point.default <- function(x) {
-  stop_civil_unsupported_conversion(x, "clock_naive_second_point")
+  stop_clock_unsupported_conversion(x, "clock_naive_second_point")
 }
 
 #' @export
@@ -82,7 +82,7 @@ as_naive_subsecond_point <- function(x, ...) {
 
 #' @export
 as_naive_subsecond_point.default <- function(x, ...) {
-  stop_civil_unsupported_conversion(x, "civil_naive_subsecond_point")
+  stop_clock_unsupported_conversion(x, "civil_naive_subsecond_point")
 }
 
 #' @export

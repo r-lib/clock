@@ -5,7 +5,7 @@ as_year_quarternum <- function(x, ...)  {
 
 #' @export
 as_year_quarternum.default <- function(x, ...) {
-  stop_civil_unsupported_conversion(x, "clock_year_quarternum")
+  stop_clock_unsupported_conversion(x, "clock_year_quarternum")
 }
 
 #' @export
@@ -54,7 +54,7 @@ as_year_quarternum_quarterday <- function(x, ...)  {
 
 #' @export
 as_year_quarternum_quarterday.default <- function(x, ...) {
-  stop_civil_unsupported_conversion(x, "clock_year_quarternum_quarterday")
+  stop_clock_unsupported_conversion(x, "clock_year_quarternum_quarterday")
 }
 
 #' @export

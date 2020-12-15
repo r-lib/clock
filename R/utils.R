@@ -6,7 +6,7 @@ to_posixct <- function(x) {
   } else if (is_POSIXlt(x)) {
     to_posixct_from_posixlt(x)
   } else {
-    stop_civil_unsupported_class(x)
+    stop_clock_unsupported_class(x)
   }
 }
 
@@ -110,7 +110,7 @@ restrict_civil_supported <- function(x) {
   if (is_calendar(x) || is_naive_time_point(x) || is_zoned_or_base(x)) {
     invisible(x)
   } else {
-    stop_civil_unsupported_class(x)
+    stop_clock_unsupported_class(x)
   }
 }
 
@@ -118,7 +118,7 @@ restrict_zoned_or_base <- function(x) {
   if (is_zoned_or_base(x)) {
     invisible(x)
   } else {
-    stop_civil_unsupported_class(x)
+    stop_clock_unsupported_class(x)
   }
 }
 
@@ -126,7 +126,7 @@ restrict_zoned <- function(x) {
   if (is_zoned(x)) {
     invisible(x)
   } else {
-    stop_civil_unsupported_class(x)
+    stop_clock_unsupported_class(x)
   }
 }
 
@@ -134,7 +134,7 @@ restrict_naive <- function(x) {
   if (is_naive(x)) {
     invisible(x)
   } else {
-    stop_civil_unsupported_class(x)
+    stop_clock_unsupported_class(x)
   }
 }
 
@@ -174,19 +174,19 @@ get_tzone <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-stop_civil <- function(message, class = character()) {
-  rlang::abort(message, class = c(class, "civil_error"))
+stop_clock <- function(message, class = character()) {
+  rlang::abort(message, class = c(class, "clock_error"))
 }
 
-stop_civil_unsupported_class <- function(x) {
+stop_clock_unsupported_class <- function(x) {
   message <- paste0("Unsupported class ", paste_class(x))
-  stop_civil(message, class = "civil_error_unsupported_class")
+  stop_clock(message, class = "clock_error_unsupported_class")
 }
 
-stop_civil_unsupported_conversion <- function(x, to_arg) {
+stop_clock_unsupported_conversion <- function(x, to_arg) {
   to_arg <- paste0("<", to_arg, ">")
   message <- paste0("Can't convert ", paste_class(x), " to ", to_arg, ".")
-  stop_civil(message, "civil_error_unsupported_conversion")
+  stop_clock(message, "clock_error_unsupported_conversion")
 }
 
 paste_class <- function(x) {
