@@ -1,9 +1,14 @@
-new_naive_quarterly <- function(fields, start, ..., names = NULL, class = NULL) {
-  new_naive(fields, start = start, ..., names = names, class = c(class, "civil_naive_quarterly"))
+new_quarterly <- function(days = integer(), start = 1L, ..., class = NULL) {
+  if (!is_number(start)) {
+    abort("`start` must be a single number.")
+  }
+
+  new_calendar(days, start = start, ..., class = c(class, "clock_quarterly"))
 }
 
-is_naive_quarterly <- function(x) {
-  inherits(x, "civil_naive_quarterly")
+#' @export
+is_quarterly <- function(x) {
+  inherits(x, "clock_quarterly")
 }
 
 get_quarterly_start <- function(x) {

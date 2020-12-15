@@ -123,3 +123,21 @@ enum adjuster parse_adjuster(const cpp11::strings& x) {
 
   civil_abort("'%s' is not a recognized `adjuster` option.", string.c_str());
 }
+
+// -----------------------------------------------------------------------------
+
+// [[ include("enums.h") ]]
+enum precision parse_precision(const cpp11::strings& x) {
+  if (x.size() != 1) {
+    civil_abort("`precision` must be a string with length 1.");
+  }
+
+  std::string string = x[0];
+
+  if (string == "second") return precision::second;
+  if (string == "millisecond") return precision::millisecond;
+  if (string == "microsecond") return precision::microsecond;
+  if (string == "nanosecond") return precision::nanosecond;
+
+  civil_abort("'%s' is not a recognized `precision` option.", string.c_str());
+}

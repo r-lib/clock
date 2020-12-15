@@ -5,7 +5,7 @@ get_zone <- function(x) {
   } else if (is_POSIXct(x) || is_POSIXlt(x)) {
     zone_standardize(get_tzone(x))
   } else if (is_zoned(x)) {
-    zoned_zone(x)
+    zoned_time_point_zone(x)
   } else {
     stop_civil_unsupported_class(x)
   }
@@ -101,4 +101,46 @@ get_quarternum.civil_naive_quarterly <- function(x, ...) {
   start <- get_quarterly_start(x)
   yqnqd <- convert_naive_days_to_quarterly_year_quarternum_quarterday(days, start)
   yqnqd$quarternum
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+get_precision <- function(x) {
+  UseMethod("get_precision")
+}
+
+#' @export
+get_precision.clock_year_month <- function(x) {
+  "month"
+}
+
+#' @export
+get_precision.clock_year_month_day <- function(x) {
+  "day"
+}
+
+#' @export
+get_precision.clock_iso_year_weeknum <- function(x) {
+  "week"
+}
+
+#' @export
+get_precision.clock_iso_year_weeknum_weekday <- function(x) {
+  "day"
+}
+
+#' @export
+get_precision.clock_year_quarternum <- function(x) {
+  "quarter"
+}
+
+#' @export
+get_precision.clock_year_quarternum_quarterday <- function(x) {
+  "day"
+}
+
+#' @export
+get_precision.clock_time_point <- function(x) {
+  attr(x, "precision", exact = TRUE)
 }

@@ -90,11 +90,10 @@ is_zoned_or_base <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-# Purposefully drop names and all attributes, as this is the structure
-# we end up storing in the rcrd object
 date_to_days <- function(x) {
   days <- unstructure(x)
-  days <- as.integer(days)
+  days <- as.integer(x)
+  names(days) <- names(x)
   days
 }
 

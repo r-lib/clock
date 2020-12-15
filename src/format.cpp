@@ -146,3 +146,135 @@ cpp11::writable::strings format_civil_rcrd_cpp(const civil_field& days,
   return out;
 }
 
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+cpp11::writable::strings format_time_point(const civil_field& calendar,
+                                           const civil_field& seconds_of_day,
+                                           const civil_field& nanoseconds_of_second,
+                                           const cpp11::strings& zone,
+                                           const cpp11::strings& format,
+                                           const cpp11::strings& precision,
+                                           const bool& naive,
+                                           const bool& abbreviate_zone) {
+  r_ssize size = calendar.size();
+
+  cpp11::writable::strings out(size);
+
+  cpp11::writable::strings zone_standard = zone_standardize(zone);
+  std::string zone_name = cpp11::r_string(zone_standard[0]);
+  const date::time_zone* p_time_zone = zone_name_load(zone_name);
+
+  if (format.size() != 1) {
+    civil_abort("`format` must have size 1.");
+  }
+
+  std::string string_format(format[0]);
+  const char* c_format = string_format.c_str();
+
+  enum precision precision_val = parse_precision(precision);
+
+  std::basic_ostringstream<char> stream;
+  stream.imbue(std::locale::classic());
+
+  std::string zone_name_print;
+  std::string* p_zone_name_print = nullptr;
+
+  if (!naive) {
+    // If zoned, default printable zone name to full provided zone name
+    zone_name_print = (zone_name.size() == 0) ? zone_name_current() : zone_name;
+    p_zone_name_print = &zone_name_print;
+  }
+
+  // Default to no offset, which might change if formatting a zoned datetime
+  std::chrono::seconds offset;
+  std::chrono::seconds* p_offset = nullptr;
+
+  for (r_ssize i = 0; i < size; ++i) {
+    int elt_calendar = calendar[i];
+    int elt_seconds_of_day = seconds_of_day[i];
+
+    if (elt_calendar == r_int_na) {
+      out[i] = r_chr_na;
+      continue;
+    }
+
+    date::local_days elt_lday;
+    std::chrono::seconds elt_ltod;
+
+    if (naive) {
+      elt_lday = date::local_days{date::days{elt_calendar}};
+      elt_ltod = std::chrono::seconds{elt_seconds_of_day};
+    } else {
+      date::sys_days elt_sday{date::days{elt_calendar}};
+      std::chrono::seconds elt_stod{elt_seconds_of_day};
+
+      date::sys_seconds elt_ssec_floor{elt_sday};
+      date::sys_seconds elt_ssec{elt_ssec_floor + elt_stod};
+
+      date::sys_info info = p_time_zone->get_info(elt_ssec);
+
+      offset = info.offset;
+      p_offset = &offset;
+
+      if (abbreviate_zone) {
+        zone_name_print = info.abbrev;
+        p_zone_name_print = &zone_name_print;
+      }
+
+      date::local_seconds elt_lsec{(elt_ssec + info.offset).time_since_epoch()};
+
+      elt_lday = date::floor<date::days>(elt_lsec);
+      date::local_seconds elt_lsec_floor{elt_lday};
+
+      elt_ltod = elt_lsec - elt_lsec_floor;
+    }
+
+    // Reset stream
+    stream.str(std::string());
+    // Reset flags
+    stream.clear();
+
+    date::year_month_day elt_ymd{elt_lday};
+
+    switch (precision_val) {
+    case precision::second: {
+      date::hh_mm_ss<std::chrono::seconds> elt_hms{elt_ltod};
+      to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset);
+      break;
+    }
+    case precision::millisecond: {
+      int elt_nanoseconds_of_second = nanoseconds_of_second[i];
+      std::chrono::nanoseconds elt_nanos{elt_nanoseconds_of_second};
+      std::chrono::milliseconds elt_millis = std::chrono::duration_cast<std::chrono::milliseconds>(elt_nanos);
+      date::hh_mm_ss<std::chrono::milliseconds> elt_hms{elt_ltod + elt_millis};
+      to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset);
+      break;
+    }
+    case precision::microsecond: {
+      int elt_nanoseconds_of_second = nanoseconds_of_second[i];
+      std::chrono::nanoseconds elt_nanos{elt_nanoseconds_of_second};
+      std::chrono::microseconds elt_micros = std::chrono::duration_cast<std::chrono::microseconds>(elt_nanos);
+      date::hh_mm_ss<std::chrono::microseconds> elt_hms{elt_ltod + elt_micros};
+      to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset);
+      break;
+    }
+    case precision::nanosecond: {
+      int elt_nanoseconds_of_second = nanoseconds_of_second[i];
+      std::chrono::nanoseconds elt_nanos{elt_nanoseconds_of_second};
+      date::hh_mm_ss<std::chrono::nanoseconds> elt_hms{elt_ltod + elt_nanos};
+      to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset);
+      break;
+    }
+    }
+
+    if (stream.fail()) {
+      out[i] = r_chr_na;
+      continue;
+    }
+
+    out[i] = stream.str();
+  }
+
+  return out;
+}

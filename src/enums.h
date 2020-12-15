@@ -81,4 +81,15 @@ enum class adjuster {
 enum adjuster parse_adjuster(const cpp11::strings& x);
 
 // -----------------------------------------------------------------------------
+
+enum class precision {
+  second,
+  millisecond,
+  microsecond,
+  nanosecond
+};
+
+enum precision parse_precision(const cpp11::strings& x);
+
+// -----------------------------------------------------------------------------
 #endif
