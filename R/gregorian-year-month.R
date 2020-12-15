@@ -20,9 +20,7 @@ new_year_month <- function(days = integer(), ..., class = NULL) {
 
 #' @export
 format.clock_year_month <- function(x, ..., format = "%Y-%m") {
-  # TODO: Formalize this
-  seconds_of_day <- zeros_along(x)
-  format_naive_second_point(x, seconds_of_day, format)
+  format_calendar_days(x, format)
 }
 
 #' @export

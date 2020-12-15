@@ -133,67 +133,13 @@ cpp11::writable::doubles convert_naive_second_point_fields_to_zoned_seconds_cpp(
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd convert_year_month_day_to_naive_fields(const cpp11::integers& year,
-                                                           const cpp11::integers& month,
-                                                           const cpp11::integers& day,
-                                                           const cpp11::strings& day_nonexistent) {
-  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
-
-  r_ssize size = year.size();
-
-  civil_writable_field days(size);
-
-  civil_writable_rcrd out = new_days_list(days);
-
-  for (r_ssize i = 0; i < size; ++i) {
-    int elt_year = year[i];
-    int elt_month = month[i];
-    int elt_day = day[i];
-
-    if (elt_year == r_int_na ||
-        elt_month == r_int_na ||
-        elt_day == r_int_na) {
-      days[i] = r_int_na;
-      continue;
-    }
-
-    check_range_year(elt_year, "year");
-    check_range_month(elt_month, "month");
-    check_range_day(elt_day, "day");
-
-    unsigned int elt_date_month = static_cast<unsigned int>(elt_month);
-    unsigned int elt_date_day = static_cast<unsigned int>(elt_day);
-
-    date::year_month_day out_ymd{
-      date::year{elt_year} / date::month{elt_date_month} / date::day{elt_date_day}
-    };
-
-    if (!out_ymd.ok()) {
-      bool na = false;
-      resolve_day_nonexistent_ymd(i, day_nonexistent_val, out_ymd, na);
-
-      if (na) {
-        days[i] = r_int_na;
-        continue;
-      }
-    }
-
-    date::local_days out_lday{out_ymd};
-
-    days[i] = out_lday.time_since_epoch().count();
-  }
-
-  return out;
-}
-
-[[cpp11::register]]
-civil_writable_rcrd convert_year_month_day_hour_minute_second_to_naive_fields_cpp(const cpp11::integers& year,
-                                                                                  const cpp11::integers& month,
-                                                                                  const cpp11::integers& day,
-                                                                                  const cpp11::integers& hour,
-                                                                                  const cpp11::integers& minute,
-                                                                                  const cpp11::integers& second,
-                                                                                  const cpp11::strings& day_nonexistent) {
+civil_writable_rcrd convert_year_month_day_hour_minute_second_to_naive_second_point_fields(const cpp11::integers& year,
+                                                                                           const cpp11::integers& month,
+                                                                                           const cpp11::integers& day,
+                                                                                           const cpp11::integers& hour,
+                                                                                           const cpp11::integers& minute,
+                                                                                           const cpp11::integers& second,
+                                                                                           const cpp11::strings& day_nonexistent) {
   enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
 
   r_ssize size = year.size();
@@ -264,14 +210,14 @@ civil_writable_rcrd convert_year_month_day_hour_minute_second_to_naive_fields_cp
 }
 
 [[cpp11::register]]
-civil_writable_rcrd convert_year_month_day_hour_minute_second_nanosecond_to_naive_fields(const cpp11::integers& year,
-                                                                                         const cpp11::integers& month,
-                                                                                         const cpp11::integers& day,
-                                                                                         const cpp11::integers& hour,
-                                                                                         const cpp11::integers& minute,
-                                                                                         const cpp11::integers& second,
-                                                                                         const cpp11::integers& nanosecond,
-                                                                                         const cpp11::strings& day_nonexistent) {
+civil_writable_rcrd convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields(const cpp11::integers& year,
+                                                                                                         const cpp11::integers& month,
+                                                                                                         const cpp11::integers& day,
+                                                                                                         const cpp11::integers& hour,
+                                                                                                         const cpp11::integers& minute,
+                                                                                                         const cpp11::integers& second,
+                                                                                                         const cpp11::integers& nanosecond,
+                                                                                                         const cpp11::strings& day_nonexistent) {
   enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
 
   r_ssize size = year.size();
@@ -354,8 +300,8 @@ civil_writable_rcrd convert_year_month_day_hour_minute_second_nanosecond_to_naiv
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_list_of_integers convert_naive_days_to_year_month_day_cpp(const civil_field& days) {
-  r_ssize size = days.size();
+civil_writable_list_of_integers convert_calendar_days_to_year_month_day(const civil_field& calendar) {
+  r_ssize size = calendar.size();
 
   cpp11::writable::integers year(size);
   cpp11::writable::integers month(size);
@@ -365,251 +311,21 @@ civil_writable_list_of_integers convert_naive_days_to_year_month_day_cpp(const c
   out.names() = {"year", "month", "day"};
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_days = days[i];
+    int elt_calendar = calendar[i];
 
-    if (elt_days == r_int_na) {
+    if (elt_calendar == r_int_na) {
       year[i] = r_int_na;
       month[i] = r_int_na;
       day[i] = r_int_na;
       continue;
     }
 
-    date::local_days elt_lday{date::days{elt_days}};
+    date::local_days elt_lday{date::days{elt_calendar}};
     date::year_month_day elt_ymd{elt_lday};
 
     year[i] = static_cast<int>(elt_ymd.year());
     month[i] = static_cast<unsigned int>(elt_ymd.month());
     day[i] = static_cast<unsigned int>(elt_ymd.day());
-  }
-
-  return out;
-}
-
-[[cpp11::register]]
-civil_writable_list_of_integers convert_naive_time_of_day_to_hour_minute_second_cpp(const civil_field& time_of_day) {
-  r_ssize size = time_of_day.size();
-
-  cpp11::writable::integers hour(size);
-  cpp11::writable::integers minute(size);
-  cpp11::writable::integers second(size);
-
-  civil_writable_list_of_integers out({hour, minute, second});
-  out.names() = {"hour", "minute", "second"};
-
-  for (r_ssize i = 0; i < size; ++i) {
-    int elt_time_of_day = time_of_day[i];
-
-    if (elt_time_of_day == r_int_na) {
-      hour[i] = r_int_na;
-      minute[i] = r_int_na;
-      second[i] = r_int_na;
-      continue;
-    }
-
-    std::chrono::seconds elt_tod_sec{elt_time_of_day};
-
-    date::hh_mm_ss<std::chrono::seconds> elt_hms = date::make_time(elt_tod_sec);
-
-    hour[i] = elt_hms.hours().count();
-    minute[i] = elt_hms.minutes().count();
-    second[i] = elt_hms.seconds().count();
-  }
-
-  return out;
-}
-
-// -----------------------------------------------------------------------------
-
-[[cpp11::register]]
-civil_writable_rcrd convert_datetime_fields_from_naive_to_zoned_cpp(const civil_field& days,
-                                                                    const civil_field& time_of_day,
-                                                                    const cpp11::strings& zone,
-                                                                    const cpp11::strings& dst_nonexistent,
-                                                                    const cpp11::strings& dst_ambiguous,
-                                                                    const cpp11::integers& size) {
-  r_ssize c_size = size[0];
-
-  civil_writable_field out_days(c_size);
-  civil_writable_field out_time_of_day(c_size);
-
-  civil_writable_rcrd out = new_days_time_of_day_list(out_days, out_time_of_day);
-
-  bool recycle_days = civil_is_scalar(days);
-  bool recycle_time_of_day = civil_is_scalar(time_of_day);
-  bool recycle_dst_nonexistent = civil_is_scalar(dst_nonexistent);
-  bool recycle_dst_ambiguous = civil_is_scalar(dst_ambiguous);
-
-  enum dst_nonexistent dst_nonexistent_val;
-  if (recycle_dst_nonexistent) {
-    dst_nonexistent_val = parse_dst_nonexistent_one(dst_nonexistent[0]);
-  }
-
-  enum dst_ambiguous dst_ambiguous_val;
-  if (recycle_dst_ambiguous) {
-    dst_ambiguous_val = parse_dst_ambiguous_one(dst_ambiguous[0]);
-  }
-
-  cpp11::writable::strings zone_standard = zone_standardize(zone);
-  cpp11::r_string zone_name_r(zone_standard[0]);
-  std::string zone_name(zone_name_r);
-  const date::time_zone* p_time_zone = zone_name_load(zone_name);
-
-  for (r_ssize i = 0; i < c_size; ++i) {
-    int elt_days = recycle_days ? days[0] : days[i];
-    int elt_time_of_day = recycle_time_of_day ? time_of_day[0] : time_of_day[i];
-
-    const enum dst_nonexistent elt_dst_nonexistent_val =
-      recycle_dst_nonexistent ?
-      dst_nonexistent_val :
-      parse_dst_nonexistent_one(dst_nonexistent[i]);
-
-    const enum dst_ambiguous elt_dst_ambiguous_val =
-      recycle_dst_ambiguous ?
-      dst_ambiguous_val :
-      parse_dst_ambiguous_one(dst_ambiguous[i]);
-
-    if (elt_days == r_int_na) {
-      out_days[i] = r_int_na;
-      out_time_of_day[i] = r_int_na;
-      continue;
-    }
-
-    date::local_days elt_lday{date::days{elt_days}};
-    std::chrono::seconds elt_tod{elt_time_of_day};
-
-    date::local_seconds elt_lsec_floor{elt_lday};
-    date::local_seconds elt_lsec = elt_lsec_floor + elt_tod;
-
-    bool na = false;
-
-    date::sys_seconds out_ssec = convert_local_to_sys(
-      elt_lsec,
-      p_time_zone,
-      i,
-      elt_dst_nonexistent_val,
-      elt_dst_ambiguous_val,
-      na
-    );
-
-    if (na) {
-      out_days[i] = r_int_na;
-      out_time_of_day[i] = r_int_na;
-      continue;
-    }
-
-    date::sys_days out_sday = date::floor<date::days>(out_ssec);
-    date::sys_seconds out_ssec_floor{out_sday};
-
-    std::chrono::seconds out_tod{out_ssec - out_ssec_floor};
-
-    out_days[i] = out_sday.time_since_epoch().count();
-    out_time_of_day[i] = out_tod.count();
-  }
-
-  return out;
-}
-
-// -----------------------------------------------------------------------------
-
-[[cpp11::register]]
-civil_writable_rcrd convert_nano_datetime_fields_from_naive_to_zoned_cpp(const civil_field& days,
-                                                                         const civil_field& time_of_day,
-                                                                         const civil_field& nanos_of_second,
-                                                                         const cpp11::strings& zone,
-                                                                         const cpp11::strings& dst_nonexistent,
-                                                                         const cpp11::strings& dst_ambiguous,
-                                                                         const cpp11::integers& size) {
-  r_ssize c_size = size[0];
-
-  civil_writable_field out_days(c_size);
-  civil_writable_field out_time_of_day(c_size);
-  civil_writable_field out_nanos_of_second(c_size);
-
-  civil_writable_rcrd out = new_days_time_of_day_nanos_of_second_list(
-    out_days,
-    out_time_of_day,
-    out_nanos_of_second
-  );
-
-  bool recycle_days = civil_is_scalar(days);
-  bool recycle_time_of_day = civil_is_scalar(time_of_day);
-  bool recycle_nanos_of_second = civil_is_scalar(nanos_of_second);
-  bool recycle_dst_nonexistent = civil_is_scalar(dst_nonexistent);
-  bool recycle_dst_ambiguous = civil_is_scalar(dst_ambiguous);
-
-  enum dst_nonexistent dst_nonexistent_val;
-  if (recycle_dst_nonexistent) {
-    dst_nonexistent_val = parse_dst_nonexistent_one(dst_nonexistent[0]);
-  }
-
-  enum dst_ambiguous dst_ambiguous_val;
-  if (recycle_dst_ambiguous) {
-    dst_ambiguous_val = parse_dst_ambiguous_one(dst_ambiguous[0]);
-  }
-
-  cpp11::writable::strings zone_standard = zone_standardize(zone);
-  cpp11::r_string zone_name_r(zone_standard[0]);
-  std::string zone_name(zone_name_r);
-  const date::time_zone* p_time_zone = zone_name_load(zone_name);
-
-  for (r_ssize i = 0; i < c_size; ++i) {
-    int elt_days = recycle_days ? days[0] : days[i];
-    int elt_time_of_day = recycle_time_of_day ? time_of_day[0] : time_of_day[i];
-    int elt_nanos_of_second = recycle_nanos_of_second ? nanos_of_second[0] : nanos_of_second[i];
-
-    const enum dst_nonexistent elt_dst_nonexistent_val =
-      recycle_dst_nonexistent ?
-      dst_nonexistent_val :
-      parse_dst_nonexistent_one(dst_nonexistent[i]);
-
-    const enum dst_ambiguous elt_dst_ambiguous_val =
-      recycle_dst_ambiguous ?
-      dst_ambiguous_val :
-      parse_dst_ambiguous_one(dst_ambiguous[i]);
-
-    if (elt_days == r_int_na) {
-      out_days[i] = r_int_na;
-      out_time_of_day[i] = r_int_na;
-      out_nanos_of_second[i] = r_int_na;
-      continue;
-    }
-
-    date::local_days elt_lday{date::days{elt_days}};
-    std::chrono::seconds elt_tod{elt_time_of_day};
-    std::chrono::nanoseconds elt_nanos{elt_nanos_of_second};
-
-    date::local_seconds elt_lsec_floor{elt_lday};
-    date::local_seconds elt_lsec = elt_lsec_floor + elt_tod;
-
-    bool na = false;
-
-    date::sys_seconds out_ssec = convert_local_to_sys(
-      elt_lsec,
-      p_time_zone,
-      i,
-      elt_dst_nonexistent_val,
-      elt_dst_ambiguous_val,
-      na,
-      elt_nanos
-    );
-
-    if (na) {
-      out_days[i] = r_int_na;
-      out_time_of_day[i] = r_int_na;
-      out_nanos_of_second[i] = r_int_na;
-      continue;
-    }
-
-    date::sys_days out_sday = date::floor<date::days>(out_ssec);
-    date::sys_seconds out_ssec_floor{out_sday};
-
-    std::chrono::seconds out_tod{out_ssec - out_ssec_floor};
-
-    std::chrono::nanoseconds out_nanos{elt_nanos};
-
-    out_days[i] = out_sday.time_since_epoch().count();
-    out_time_of_day[i] = out_tod.count();
-    out_nanos_of_second[i] = out_nanos.count();
   }
 
   return out;
@@ -795,8 +511,8 @@ civil_writable_field convert_year_quarternum_quarterday_to_calendar_days(const c
 template <quarterly::start S>
 static
 cpp11::writable::list_of<cpp11::writable::integers>
-convert_calendar_days_to_year_quarternum_quarterday_impl(const civil_field& days) {
-  r_ssize size = days.size();
+convert_calendar_days_to_year_quarternum_quarterday_impl(const civil_field& calendar) {
+  r_ssize size = calendar.size();
 
   cpp11::writable::integers out_year(size);
   cpp11::writable::integers out_quarternum(size);
@@ -806,16 +522,16 @@ convert_calendar_days_to_year_quarternum_quarterday_impl(const civil_field& days
   out.names() = {"year", "quarternum", "quarterday"};
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_days = days[i];
+    int elt_calendar = calendar[i];
 
-    if (elt_days == r_int_na) {
+    if (elt_calendar == r_int_na) {
       out_year[i] = r_int_na;
       out_quarternum[i] = r_int_na;
       out_quarterday[i] = r_int_na;
       continue;
     }
 
-    date::local_days elt_lday{date::days{elt_days}};
+    date::local_days elt_lday{date::days{elt_calendar}};
     quarterly::year_quarternum_quarterday<S> elt_yqnqd(elt_lday);
 
     out_year[i] = static_cast<int>(elt_yqnqd.year());
@@ -828,31 +544,31 @@ convert_calendar_days_to_year_quarternum_quarterday_impl(const civil_field& days
 
 [[cpp11::register]]
 cpp11::writable::list_of<cpp11::writable::integers>
-convert_calendar_days_to_year_quarternum_quarterday(const civil_field& days, int start) {
+convert_calendar_days_to_year_quarternum_quarterday(const civil_field& calendar, int start) {
   if (start == 1) {
-    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::january>(days);
+    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::january>(calendar);
   } else if (start == 2) {
-    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::february>(days);
+    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::february>(calendar);
   } else if (start == 3) {
-    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::march>(days);
+    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::march>(calendar);
   } else if (start == 4) {
-    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::april>(days);
+    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::april>(calendar);
   } else if (start == 5) {
-    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::may>(days);
+    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::may>(calendar);
   } else if (start == 6) {
-    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::june>(days);
+    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::june>(calendar);
   } else if (start == 7) {
-    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::july>(days);
+    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::july>(calendar);
   } else if (start == 8) {
-    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::august>(days);
+    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::august>(calendar);
   } else if (start == 9) {
-    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::september>(days);
+    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::september>(calendar);
   } else if (start == 10) {
-    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::october>(days);
+    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::october>(calendar);
   } else if (start == 11) {
-    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::november>(days);
+    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::november>(calendar);
   } else if (start == 12) {
-    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::december>(days);
+    return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::december>(calendar);
   }
 
   never_reached("convert_calendar_days_to_year_quarternum_quarterday");
@@ -912,8 +628,8 @@ civil_writable_field convert_iso_year_weeknum_weekday_to_calendar_days(const cpp
 
 [[cpp11::register]]
 cpp11::writable::list_of<cpp11::writable::integers>
-convert_naive_days_to_iso_year_weeknum_weekday(const civil_field& days) {
-  r_ssize size = days.size();
+convert_calendar_days_to_iso_year_weeknum_weekday(const civil_field& calendar) {
+  r_ssize size = calendar.size();
 
   cpp11::writable::integers out_year(size);
   cpp11::writable::integers out_weeknum(size);
@@ -923,16 +639,16 @@ convert_naive_days_to_iso_year_weeknum_weekday(const civil_field& days) {
   out.names() = {"year", "weeknum", "weekday"};
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_days = days[i];
+    int elt_calendar = calendar[i];
 
-    if (elt_days == r_int_na) {
+    if (elt_calendar == r_int_na) {
       out_year[i] = r_int_na;
       out_weeknum[i] = r_int_na;
       out_weekday[i] = r_int_na;
       continue;
     }
 
-    date::local_days elt_lday{date::days{elt_days}};
+    date::local_days elt_lday{date::days{elt_calendar}};
     iso_week::year_weeknum_weekday elt_yww{elt_lday};
 
     out_year[i] = static_cast<int>(elt_yww.year());
@@ -1001,10 +717,10 @@ civil_writable_field convert_year_month_day_to_calendar_days(const cpp11::intege
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd convert_calendar_days_hour_minute_second_to_naive_fields(const civil_field& calendar,
-                                                                             const cpp11::integers& hour,
-                                                                             const cpp11::integers& minute,
-                                                                             const cpp11::integers& second) {
+civil_writable_rcrd convert_calendar_days_hour_minute_second_to_naive_second_point_fields(const civil_field& calendar,
+                                                                                          const cpp11::integers& hour,
+                                                                                          const cpp11::integers& minute,
+                                                                                          const cpp11::integers& second) {
   r_ssize size = calendar.size();
 
   civil_writable_field out_calendar{calendar};
@@ -1047,12 +763,12 @@ civil_writable_rcrd convert_calendar_days_hour_minute_second_to_naive_fields(con
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd convert_calendar_days_hour_minute_second_subsecond_to_naive_fields(const civil_field& calendar,
-                                                                                       const cpp11::integers& hour,
-                                                                                       const cpp11::integers& minute,
-                                                                                       const cpp11::integers& second,
-                                                                                       const cpp11::integers& subsecond,
-                                                                                       const cpp11::strings& precision) {
+civil_writable_rcrd convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields(const civil_field& calendar,
+                                                                                                       const cpp11::integers& hour,
+                                                                                                       const cpp11::integers& minute,
+                                                                                                       const cpp11::integers& second,
+                                                                                                       const cpp11::integers& subsecond,
+                                                                                                       const cpp11::strings& precision) {
   enum precision precision_val = parse_precision(precision);
 
   r_ssize size = calendar.size();

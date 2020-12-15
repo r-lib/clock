@@ -22,7 +22,7 @@ naive_date_time <- function(year,
   args <- vec_recycle_common(!!!args, .size = size)
   args <- vec_cast_common(!!!args, .to = integer())
 
-  fields <- convert_year_month_day_hour_minute_second_to_naive_fields(
+  fields <- convert_year_month_day_hour_minute_second_to_naive_second_point_fields(
     args$year,
     args$month,
     args$day,
@@ -53,7 +53,7 @@ naive_second_point <- function(calendar, hour = 0L, minute = 0L, second = 0L) {
   args <- vec_cast_common(!!!args, .to = integer())
   args <- vec_recycle_common(calendar = calendar, !!!args)
 
-  fields <- convert_calendar_days_hour_minute_second_to_naive_fields(
+  fields <- convert_calendar_days_hour_minute_second_to_naive_second_point_fields(
     calendar = args$calendar,
     hour = args$hour,
     minute = args$minute,

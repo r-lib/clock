@@ -4,7 +4,7 @@ get_zone <- function(x) {
     "UTC"
   } else if (is_POSIXct(x) || is_POSIXlt(x)) {
     zone_standardize(get_tzone(x))
-  } else if (is_zoned(x)) {
+  } else if (is_zoned_time_point(x)) {
     zoned_time_point_zone(x)
   } else {
     stop_civil_unsupported_class(x)
@@ -26,17 +26,19 @@ get_offset.Date <- function(x) {
 
 #' @export
 get_offset.POSIXt <- function(x) {
-  x <- as_zoned_datetime(x)
+  x <- as_zoned_second_point(x)
   get_offset(x)
 }
 
 #' @export
-get_offset.civil_zoned <- function(x) {
-  days <- field(x, "days")
-  time_of_day <- field(x, "time_of_day")
-  zone <- zoned_zone(x)
+get_offset.clock_zoned_time_point <- function(x) {
+  x <- as_zoned_second_point(x)
 
-  get_offset_cpp(days, time_of_day, zone)
+  calendar <- field_calendar(x)
+  seconds_of_day <- field_seconds_of_day(x)
+  zone <- get_zone(x)
+
+  get_offset_cpp(calendar, seconds_of_day, zone)
 }
 
 # ------------------------------------------------------------------------------
@@ -55,34 +57,37 @@ get_year.Date <- function(x) {
 
 #' @export
 get_year.POSIXt <- function(x) {
-  x <- as_zoned_datetime(x)
+  x <- as_zoned_second_point(x)
   get_year(x)
 }
 
 #' @export
-get_year.civil_naive_gregorian <- function(x) {
-  days <- field(x, "days")
-  ymd <- convert_naive_days_to_year_month_day(days)
+get_year.clock_gregorian <- function(x) {
+  ymd <- convert_calendar_days_to_year_month_day(x)
   ymd$year
 }
 
 #' @export
-get_year.civil_naive_quarterly <- function(x) {
-  days <- field(x, "days")
+get_year.clock_quarterly <- function(x) {
   start <- get_quarterly_start(x)
-  yqnqd <- convert_naive_days_to_quarterly_year_quarternum_quarterday(days, start)
+  yqnqd <- convert_calendar_days_to_year_quarternum_quarterday(x, start)
   yqnqd$year
 }
 
 #' @export
-get_year.civil_naive_iso <- function(x) {
-  days <- field(x, "days")
-  yww <- convert_naive_days_to_iso_year_weeknum_weekday(days)
+get_year.clock_iso <- function(x) {
+  yww <- convert_calendar_days_to_iso_year_weeknum_weekday(x)
   yww$year
 }
 
 #' @export
-get_year.civil_zoned <- function(x) {
+get_year.clock_naive_time_point <- function(x) {
+  calendar <- field_calendar(x)
+  get_year(calendar)
+}
+
+#' @export
+get_year.clock_zoned_time_point <- function(x) {
   x <- as_naive(x)
   get_year(x)
 }
@@ -96,10 +101,9 @@ get_quarternum <- function(x, ...) {
 }
 
 #' @export
-get_quarternum.civil_naive_quarterly <- function(x, ...) {
-  days <- field(x, "days")
+get_quarternum.clock_quarterly <- function(x, ...) {
   start <- get_quarterly_start(x)
-  yqnqd <- convert_naive_days_to_quarterly_year_quarternum_quarterday(days, start)
+  yqnqd <- convert_calendar_days_to_year_quarternum_quarterday(x, start)
   yqnqd$quarternum
 }
 

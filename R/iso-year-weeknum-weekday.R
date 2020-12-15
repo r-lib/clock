@@ -28,9 +28,7 @@ new_iso_year_weeknum_weekday <- function(days = integer(), ..., class = NULL) {
 
 #' @export
 format.clock_iso_year_weeknum_weekday <- function(x, ..., format = "%G-W%V-%u") {
-  # TODO: Formalize this
-  seconds_of_day <- zeros_along(x)
-  format_naive_second_point(x, seconds_of_day, format)
+  format_calendar_days(x, format)
 }
 
 #' @export

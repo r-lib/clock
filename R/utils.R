@@ -85,7 +85,7 @@ is_POSIXlt <- function(x) {
 }
 
 is_zoned_or_base <- function(x) {
-  is_zoned(x) || is_Date(x) || is_POSIXct(x) || is_POSIXlt(x)
+  is_zoned_time_point(x) || is_Date(x) || is_POSIXct(x) || is_POSIXlt(x)
 }
 
 # ------------------------------------------------------------------------------
@@ -107,7 +107,7 @@ days_to_date <- function(x, names = NULL) {
 # ------------------------------------------------------------------------------
 
 restrict_civil_supported <- function(x) {
-  if (is_naive(x) || is_zoned_or_base(x)) {
+  if (is_calendar(x) || is_naive_time_point(x) || is_zoned_or_base(x)) {
     invisible(x)
   } else {
     stop_civil_unsupported_class(x)

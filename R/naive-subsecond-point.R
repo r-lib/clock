@@ -24,7 +24,7 @@ naive_date_nanotime <- function(year,
   args <- vec_recycle_common(!!!args, .size = size)
   args <- vec_cast_common(!!!args, .to = integer())
 
-  fields <- convert_year_month_day_hour_minute_second_nanosecond_to_naive_fields(
+  fields <- convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields(
     args$year,
     args$month,
     args$day,
@@ -70,7 +70,7 @@ naive_subsecond_point <- function(calendar, hour, minute, second, subsecond, pre
   args <- vec_cast_common(!!!args, .to = integer())
   args <- vec_recycle_common(calendar = calendar, !!!args)
 
-  fields <- convert_calendar_days_hour_minute_second_subsecond_to_naive_fields(
+  fields <- convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields(
     calendar = args$calendar,
     hour = args$hour,
     minute = args$minute,

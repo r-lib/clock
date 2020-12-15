@@ -52,32 +52,16 @@ convert_naive_second_point_fields_to_zoned_seconds_cpp <- function(calendar, sec
   .Call("_civil_convert_naive_second_point_fields_to_zoned_seconds_cpp", calendar, seconds_of_day, zone, dst_nonexistent, dst_ambiguous, size, PACKAGE = "civil")
 }
 
-convert_year_month_day_to_naive_fields <- function(year, month, day, day_nonexistent) {
-  .Call("_civil_convert_year_month_day_to_naive_fields", year, month, day, day_nonexistent, PACKAGE = "civil")
+convert_year_month_day_hour_minute_second_to_naive_second_point_fields <- function(year, month, day, hour, minute, second, day_nonexistent) {
+  .Call("_civil_convert_year_month_day_hour_minute_second_to_naive_second_point_fields", year, month, day, hour, minute, second, day_nonexistent, PACKAGE = "civil")
 }
 
-convert_year_month_day_hour_minute_second_to_naive_fields_cpp <- function(year, month, day, hour, minute, second, day_nonexistent) {
-  .Call("_civil_convert_year_month_day_hour_minute_second_to_naive_fields_cpp", year, month, day, hour, minute, second, day_nonexistent, PACKAGE = "civil")
+convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields <- function(year, month, day, hour, minute, second, nanosecond, day_nonexistent) {
+  .Call("_civil_convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields", year, month, day, hour, minute, second, nanosecond, day_nonexistent, PACKAGE = "civil")
 }
 
-convert_year_month_day_hour_minute_second_nanosecond_to_naive_fields <- function(year, month, day, hour, minute, second, nanosecond, day_nonexistent) {
-  .Call("_civil_convert_year_month_day_hour_minute_second_nanosecond_to_naive_fields", year, month, day, hour, minute, second, nanosecond, day_nonexistent, PACKAGE = "civil")
-}
-
-convert_naive_days_to_year_month_day_cpp <- function(days) {
-  .Call("_civil_convert_naive_days_to_year_month_day_cpp", days, PACKAGE = "civil")
-}
-
-convert_naive_time_of_day_to_hour_minute_second_cpp <- function(time_of_day) {
-  .Call("_civil_convert_naive_time_of_day_to_hour_minute_second_cpp", time_of_day, PACKAGE = "civil")
-}
-
-convert_datetime_fields_from_naive_to_zoned_cpp <- function(days, time_of_day, zone, dst_nonexistent, dst_ambiguous, size) {
-  .Call("_civil_convert_datetime_fields_from_naive_to_zoned_cpp", days, time_of_day, zone, dst_nonexistent, dst_ambiguous, size, PACKAGE = "civil")
-}
-
-convert_nano_datetime_fields_from_naive_to_zoned_cpp <- function(days, time_of_day, nanos_of_second, zone, dst_nonexistent, dst_ambiguous, size) {
-  .Call("_civil_convert_nano_datetime_fields_from_naive_to_zoned_cpp", days, time_of_day, nanos_of_second, zone, dst_nonexistent, dst_ambiguous, size, PACKAGE = "civil")
+convert_calendar_days_to_year_month_day <- function(calendar) {
+  .Call("_civil_convert_calendar_days_to_year_month_day", calendar, PACKAGE = "civil")
 }
 
 convert_second_point_fields_from_zoned_to_naive <- function(calendar, seconds_of_day, zone) {
@@ -92,28 +76,28 @@ convert_year_quarternum_quarterday_to_calendar_days <- function(year, quarternum
   .Call("_civil_convert_year_quarternum_quarterday_to_calendar_days", year, quarternum, quarterday, start, day_nonexistent, PACKAGE = "civil")
 }
 
-convert_calendar_days_to_year_quarternum_quarterday <- function(days, start) {
-  .Call("_civil_convert_calendar_days_to_year_quarternum_quarterday", days, start, PACKAGE = "civil")
+convert_calendar_days_to_year_quarternum_quarterday <- function(calendar, start) {
+  .Call("_civil_convert_calendar_days_to_year_quarternum_quarterday", calendar, start, PACKAGE = "civil")
 }
 
 convert_iso_year_weeknum_weekday_to_calendar_days <- function(year, weeknum, weekday, day_nonexistent) {
   .Call("_civil_convert_iso_year_weeknum_weekday_to_calendar_days", year, weeknum, weekday, day_nonexistent, PACKAGE = "civil")
 }
 
-convert_naive_days_to_iso_year_weeknum_weekday <- function(days) {
-  .Call("_civil_convert_naive_days_to_iso_year_weeknum_weekday", days, PACKAGE = "civil")
+convert_calendar_days_to_iso_year_weeknum_weekday <- function(calendar) {
+  .Call("_civil_convert_calendar_days_to_iso_year_weeknum_weekday", calendar, PACKAGE = "civil")
 }
 
 convert_year_month_day_to_calendar_days <- function(year, month, day, day_nonexistent) {
   .Call("_civil_convert_year_month_day_to_calendar_days", year, month, day, day_nonexistent, PACKAGE = "civil")
 }
 
-convert_calendar_days_hour_minute_second_to_naive_fields <- function(calendar, hour, minute, second) {
-  .Call("_civil_convert_calendar_days_hour_minute_second_to_naive_fields", calendar, hour, minute, second, PACKAGE = "civil")
+convert_calendar_days_hour_minute_second_to_naive_second_point_fields <- function(calendar, hour, minute, second) {
+  .Call("_civil_convert_calendar_days_hour_minute_second_to_naive_second_point_fields", calendar, hour, minute, second, PACKAGE = "civil")
 }
 
-convert_calendar_days_hour_minute_second_subsecond_to_naive_fields <- function(calendar, hour, minute, second, subsecond, precision) {
-  .Call("_civil_convert_calendar_days_hour_minute_second_subsecond_to_naive_fields", calendar, hour, minute, second, subsecond, precision, PACKAGE = "civil")
+convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields <- function(calendar, hour, minute, second, subsecond, precision) {
+  .Call("_civil_convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields", calendar, hour, minute, second, subsecond, precision, PACKAGE = "civil")
 }
 
 convert_second_point_fields_from_naive_to_zoned_cpp <- function(calendar, seconds_of_day, zone, dst_nonexistent, dst_ambiguous, size) {
@@ -136,16 +120,12 @@ floor_calendar_days_to_iso_year_weeknum_precision <- function(calendar) {
   .Call("_civil_floor_calendar_days_to_iso_year_weeknum_precision", calendar, PACKAGE = "civil")
 }
 
-format_civil_rcrd_cpp <- function(days, time_of_day, nanos_of_second, zone, format, naive, nano, abbreviate_zone) {
-  .Call("_civil_format_civil_rcrd_cpp", days, time_of_day, nanos_of_second, zone, format, naive, nano, abbreviate_zone, PACKAGE = "civil")
-}
-
 format_time_point <- function(calendar, seconds_of_day, nanoseconds_of_second, zone, format, precision, naive, abbreviate_zone) {
   .Call("_civil_format_time_point", calendar, seconds_of_day, nanoseconds_of_second, zone, format, precision, naive, abbreviate_zone, PACKAGE = "civil")
 }
 
-get_offset_cpp <- function(days, time_of_day, zone) {
-  .Call("_civil_get_offset_cpp", days, time_of_day, zone, PACKAGE = "civil")
+get_offset_cpp <- function(calendar, seconds_of_day, zone) {
+  .Call("_civil_get_offset_cpp", calendar, seconds_of_day, zone, PACKAGE = "civil")
 }
 
 civil_set_install <- function(path) {
