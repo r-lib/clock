@@ -45,7 +45,6 @@ new_time_point <- function(calendar = new_year_month_day(),
   )
 }
 
-#' @export
 is_time_point <- function(x) {
   inherits(x, "clock_time_point")
 }

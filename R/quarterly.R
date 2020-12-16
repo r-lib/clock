@@ -6,7 +6,6 @@ new_quarterly <- function(days = integer(), start = 1L, ..., class = NULL) {
   new_calendar(days, start = start, ..., class = c(class, "clock_quarterly"))
 }
 
-#' @export
 is_quarterly <- function(x) {
   inherits(x, "clock_quarterly")
 }
