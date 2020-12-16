@@ -39,8 +39,8 @@ static inline void civil_rcrd_recycle(civil_writable_rcrd& x,
   // Ensure names get recycled
   // TODO: https://github.com/r-lib/cpp11/issues/132
   // Should be able to go straight into a `cpp11::sexp`
-  SEXP names = x.attr("civil_rcrd:::names");
-  x.attr("civil_rcrd:::names") = civil_names_recycle(names, size);
+  SEXP names = x.attr("clock_time_point:::names");
+  x.attr("clock_time_point:::names") = civil_names_recycle(names, size);
 }
 
 static inline int* civil_rcrd_days_deref(civil_writable_rcrd& x) {

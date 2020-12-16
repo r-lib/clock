@@ -19,6 +19,16 @@ new_time_point <- function(calendar, precision, ..., fields = NULL, names = NULL
   calendar <- list(calendar = calendar)
   fields <- c(calendar, fields)
 
+  new_time_point0(
+    fields = fields,
+    precision = precision,
+    ...,
+    names = names,
+    class = class
+  )
+}
+
+new_time_point0 <- function(fields, precision, ..., names = NULL, class) {
   new_rcrd(
     fields = fields,
     precision = precision,

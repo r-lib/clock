@@ -5,10 +5,17 @@
 #include "cpp11/declarations.hpp"
 
 // adjust.cpp
-civil_writable_rcrd adjust_naive_gregorian_days_cpp(const civil_rcrd& x, const cpp11::integers& value, const cpp11::strings& day_nonexistent, const cpp11::integers& size, const cpp11::strings& adjuster);
-extern "C" SEXP _civil_adjust_naive_gregorian_days_cpp(SEXP x, SEXP value, SEXP day_nonexistent, SEXP size, SEXP adjuster) {
+civil_writable_field adjust_naive_gregorian_days_calendar(const civil_field& calendar, const cpp11::integers& value, const cpp11::strings& day_nonexistent, const cpp11::strings& adjuster);
+extern "C" SEXP _civil_adjust_naive_gregorian_days_calendar(SEXP calendar, SEXP value, SEXP day_nonexistent, SEXP adjuster) {
   BEGIN_CPP11
-    return cpp11::as_sexp(adjust_naive_gregorian_days_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(value), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(adjuster)));
+    return cpp11::as_sexp(adjust_naive_gregorian_days_calendar(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(value), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(adjuster)));
+  END_CPP11
+}
+// adjust.cpp
+civil_writable_rcrd adjust_naive_gregorian_days_time_point(const civil_rcrd& x, const cpp11::integers& value, const cpp11::strings& day_nonexistent, const cpp11::strings& adjuster);
+extern "C" SEXP _civil_adjust_naive_gregorian_days_time_point(SEXP x, SEXP value, SEXP day_nonexistent, SEXP adjuster) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(adjust_naive_gregorian_days_time_point(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(value), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(adjuster)));
   END_CPP11
 }
 // adjust.cpp
@@ -26,10 +33,17 @@ extern "C" SEXP _civil_adjust_naive_gregorian_nanos_of_second_cpp(SEXP x, SEXP v
   END_CPP11
 }
 // adjust.cpp
-civil_writable_rcrd adjust_naive_quarterly_days_cpp(const civil_rcrd& x, const cpp11::integers& value, const int& start, const cpp11::strings& day_nonexistent, const cpp11::integers& size, const cpp11::strings& adjuster);
-extern "C" SEXP _civil_adjust_naive_quarterly_days_cpp(SEXP x, SEXP value, SEXP start, SEXP day_nonexistent, SEXP size, SEXP adjuster) {
+civil_writable_field adjust_naive_quarterly_days_calendar(const civil_field& calendar, const cpp11::integers& value, const cpp11::integers& start, const cpp11::strings& day_nonexistent, const cpp11::strings& adjuster);
+extern "C" SEXP _civil_adjust_naive_quarterly_days_calendar(SEXP calendar, SEXP value, SEXP start, SEXP day_nonexistent, SEXP adjuster) {
   BEGIN_CPP11
-    return cpp11::as_sexp(adjust_naive_quarterly_days_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(value), cpp11::as_cpp<cpp11::decay_t<const int&>>(start), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(adjuster)));
+    return cpp11::as_sexp(adjust_naive_quarterly_days_calendar(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(value), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(adjuster)));
+  END_CPP11
+}
+// adjust.cpp
+civil_writable_rcrd adjust_naive_quarterly_days_time_point(const civil_rcrd& x, const cpp11::integers& value, const cpp11::integers& start, const cpp11::strings& day_nonexistent, const cpp11::strings& adjuster);
+extern "C" SEXP _civil_adjust_naive_quarterly_days_time_point(SEXP x, SEXP value, SEXP start, SEXP day_nonexistent, SEXP adjuster) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(adjust_naive_quarterly_days_time_point(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(value), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(adjuster)));
   END_CPP11
 }
 // adjust.cpp
@@ -280,11 +294,13 @@ extern SEXP _civil_add_weeks_or_days_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_years_iso_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_years_or_months_gregorian_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_years_or_quarters_quarterly_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _civil_adjust_naive_gregorian_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_adjust_naive_gregorian_days_calendar(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_adjust_naive_gregorian_days_time_point(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_naive_gregorian_nanos_of_second_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_naive_gregorian_time_of_day_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_naive_iso_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _civil_adjust_naive_quarterly_days_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_adjust_naive_quarterly_days_calendar(SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_adjust_naive_quarterly_days_time_point(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_civil_set_install(SEXP);
 extern SEXP _civil_convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_calendar_days_hour_minute_second_to_naive_second_point_fields(SEXP, SEXP, SEXP, SEXP);
@@ -320,11 +336,13 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_add_years_iso_cpp",                                                                    (DL_FUNC) &_civil_add_years_iso_cpp,                                                                    4},
     {"_civil_add_years_or_months_gregorian_cpp",                                                    (DL_FUNC) &_civil_add_years_or_months_gregorian_cpp,                                                    5},
     {"_civil_add_years_or_quarters_quarterly_cpp",                                                  (DL_FUNC) &_civil_add_years_or_quarters_quarterly_cpp,                                                  6},
-    {"_civil_adjust_naive_gregorian_days_cpp",                                                      (DL_FUNC) &_civil_adjust_naive_gregorian_days_cpp,                                                      5},
+    {"_civil_adjust_naive_gregorian_days_calendar",                                                 (DL_FUNC) &_civil_adjust_naive_gregorian_days_calendar,                                                 4},
+    {"_civil_adjust_naive_gregorian_days_time_point",                                               (DL_FUNC) &_civil_adjust_naive_gregorian_days_time_point,                                               4},
     {"_civil_adjust_naive_gregorian_nanos_of_second_cpp",                                           (DL_FUNC) &_civil_adjust_naive_gregorian_nanos_of_second_cpp,                                           4},
     {"_civil_adjust_naive_gregorian_time_of_day_cpp",                                               (DL_FUNC) &_civil_adjust_naive_gregorian_time_of_day_cpp,                                               4},
     {"_civil_adjust_naive_iso_days_cpp",                                                            (DL_FUNC) &_civil_adjust_naive_iso_days_cpp,                                                            5},
-    {"_civil_adjust_naive_quarterly_days_cpp",                                                      (DL_FUNC) &_civil_adjust_naive_quarterly_days_cpp,                                                      6},
+    {"_civil_adjust_naive_quarterly_days_calendar",                                                 (DL_FUNC) &_civil_adjust_naive_quarterly_days_calendar,                                                 5},
+    {"_civil_adjust_naive_quarterly_days_time_point",                                               (DL_FUNC) &_civil_adjust_naive_quarterly_days_time_point,                                               5},
     {"_civil_civil_set_install",                                                                    (DL_FUNC) &_civil_civil_set_install,                                                                    1},
     {"_civil_convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields",   (DL_FUNC) &_civil_convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields,   6},
     {"_civil_convert_calendar_days_hour_minute_second_to_naive_second_point_fields",                (DL_FUNC) &_civil_convert_calendar_days_hour_minute_second_to_naive_second_point_fields,                4},

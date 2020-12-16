@@ -4,10 +4,9 @@
 \alias{adjust_year}
 \alias{adjust_year.Date}
 \alias{adjust_year.POSIXt}
-\alias{adjust_year.civil_zoned}
-\alias{adjust_year.civil_naive_gregorian}
-\alias{adjust_year.civil_naive_quarterly}
-\alias{adjust_year.civil_naive_iso}
+\alias{adjust_year.clock_zoned_time_point}
+\alias{adjust_year.clock_naive_time_point}
+\alias{adjust_year.clock_calendar}
 \title{Adjust the year}
 \usage{
 adjust_year(x, value, ...)
@@ -23,7 +22,7 @@ adjust_year(x, value, ...)
   dst_ambiguous = "earliest"
 )
 
-\method{adjust_year}{civil_zoned}(
+\method{adjust_year}{clock_zoned_time_point}(
   x,
   value,
   ...,
@@ -32,11 +31,9 @@ adjust_year(x, value, ...)
   dst_ambiguous = "earliest"
 )
 
-\method{adjust_year}{civil_naive_gregorian}(x, value, ..., day_nonexistent = "last-time")
+\method{adjust_year}{clock_naive_time_point}(x, value, ..., day_nonexistent = "last-time")
 
-\method{adjust_year}{civil_naive_quarterly}(x, value, ..., day_nonexistent = "last-time")
-
-\method{adjust_year}{civil_naive_iso}(x, value, ..., day_nonexistent = "last-time")
+\method{adjust_year}{clock_calendar}(x, value, ..., day_nonexistent = "last-time")
 }
 \arguments{
 \item{x}{\verb{[Date / POSIXct / POSIXlt / civil]}

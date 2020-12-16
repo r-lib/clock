@@ -105,7 +105,7 @@ vec_proxy.clock_naive_second_point <- function(x, ...) {
 vec_restore.clock_naive_second_point <- function(x, to, ...) {
   fields <- restore_time_point_fields(x)
   names <- restore_time_point_names(x)
-  new_naive_seconds_from_fields(fields, names)
+  new_naive_second_point_from_fields(fields, names)
 }
 
 #' @export

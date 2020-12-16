@@ -53,7 +53,7 @@ naive_microsecond_point <- function(calendar, hour = 0L, minute = 0L, second = 0
   naive_subsecond_point(calendar, hour, minute, second, microsecond, "microsecond")
 }
 #' @export
-naive_nanoseconds <- function(calendar, hour = 0L, minute = 0L, second = 0L, nanosecond = 0L) {
+naive_nanosecond_point <- function(calendar, hour = 0L, minute = 0L, second = 0L, nanosecond = 0L) {
   naive_subsecond_point(calendar, hour, minute, second, nanosecond, "nanosecond")
 }
 

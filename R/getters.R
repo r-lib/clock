@@ -95,16 +95,33 @@ get_year.clock_zoned_time_point <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-get_quarternum <- function(x, ...) {
+get_quarternum <- function(x) {
   restrict_civil_supported(x)
   UseMethod("get_quarternum")
 }
 
 #' @export
-get_quarternum.clock_quarterly <- function(x, ...) {
+get_quarternum.clock_quarterly <- function(x) {
   start <- get_quarterly_start(x)
   yqnqd <- convert_calendar_days_to_year_quarternum_quarterday(x, start)
   yqnqd$quarternum
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+get_start <- function(x) {
+  UseMethod("get_start")
+}
+
+#' @export
+get_start.clock_quarterly <- function(x) {
+  get_quarterly_start(x)
+}
+
+#' @export
+get_start.clock_time_point <- function(x) {
+  get_start(field_calendar(x))
 }
 
 # ------------------------------------------------------------------------------

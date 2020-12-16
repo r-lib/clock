@@ -177,7 +177,8 @@ vec_restore.clock_zoned_subsecond_point <- function(x, to, ...) {
   fields <- restore_time_point_fields(x)
   names <- restore_time_point_names(x)
   zone <- zoned_time_point_zone(to)
-  new_zoned_second_point_from_fields(fields, zone, names)
+  precision <- get_precision(to)
+  new_zoned_subsecond_point_from_fields(fields, precision, zone, names)
 }
 
 #' @export
