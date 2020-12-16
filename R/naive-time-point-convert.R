@@ -20,7 +20,7 @@ as_naive_second_point.clock_calendar <- function(x) {
   x <- promote_precision_day(x)
   names <- names(x)
   x <- unname(x)
-  seconds_of_day <- zeros_along(x)
+  seconds_of_day <- seconds_of_day_init(x)
   new_naive_second_point(x, seconds_of_day, names = names)
 }
 
@@ -102,7 +102,7 @@ as_naive_subsecond_point.clock_naive_second_point <- function(x, ..., precision 
   check_dots_empty()
   calendar <- field_calendar(x)
   seconds_of_day <- field_seconds_of_day(x)
-  nanoseconds_of_second <- zeros_along(calendar)
+  nanoseconds_of_second <- nanoseconds_of_day_init(calendar)
   new_naive_subsecond_point(calendar, seconds_of_day, nanoseconds_of_second, precision, names = names(x))
 }
 

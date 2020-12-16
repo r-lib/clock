@@ -70,6 +70,29 @@ zeros_along <- function(x) {
   vector("integer", length = vec_size(x))
 }
 
+# Zeros along + NA propagation
+seconds_of_day_init <- function(x) {
+  out <- zeros_along(x)
+
+  na <- vec_equal_na(x)
+  if (any(na)) {
+    out[na] <- NA_integer_
+  }
+
+  out
+}
+
+nanoseconds_of_day_init <- function(x) {
+  out <- zeros_along(x)
+
+  na <- vec_equal_na(x)
+  if (any(na)) {
+    out[na] <- NA_integer_
+  }
+
+  out
+}
+
 # ------------------------------------------------------------------------------
 
 is_Date <- function(x) {
@@ -192,6 +215,22 @@ stop_clock_unsupported_conversion <- function(x, to_arg) {
 paste_class <- function(x) {
   out <- paste0(class(x), collapse = "/")
   paste0("<", out, ">")
+}
+
+# ------------------------------------------------------------------------------
+
+set_field <- function(x, i, value) {
+  field(x, i) <- value
+  x
+}
+set_calendar <- function(x, value) {
+  set_field(x, "calendar", value)
+}
+set_seconds_of_day <- function(x, value) {
+  set_field(x, "seconds_of_day", value)
+}
+set_nanoseconds_of_second <- function(x, value) {
+  set_field(x, "nanoseconds_of_second", value)
 }
 
 # ------------------------------------------------------------------------------

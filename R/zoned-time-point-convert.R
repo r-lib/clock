@@ -147,7 +147,7 @@ as_zoned_subsecond_point.clock_zoned_second_point <- function(x, ..., precision 
   check_dots_empty()
   calendar <- field_calendar(x)
   seconds_of_day <- field_seconds_of_day(x)
-  nanoseconds_of_second <- zeros_along(calendar)
+  nanoseconds_of_second <- nanoseconds_of_day_init(calendar)
   zone <- zoned_time_point_zone(x)
   new_zoned_subsecond_point(calendar, seconds_of_day, nanoseconds_of_second, precision, zone, names = names(x))
 }

@@ -1,5 +1,5 @@
 format_calendar_days <- function(calendar, format) {
-  seconds_of_day <- zeros_along(calendar)
+  seconds_of_day <- seconds_of_day_init(calendar)
   format_naive_second_point(calendar, seconds_of_day, format)
 }
 

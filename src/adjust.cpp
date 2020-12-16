@@ -8,82 +8,43 @@
 
 // -----------------------------------------------------------------------------
 
-static void adjust_naive_gregorian_days(int* p_calendar,
-                                        int* p_seconds_of_day,
-                                        int* p_nanoseconds_of_second,
-                                        const cpp11::integers& value,
-                                        const enum day_nonexistent& day_nonexistent_val,
-                                        const enum adjuster& adjuster_val);
-
-[[cpp11::register]]
-civil_writable_field adjust_naive_gregorian_days_calendar(const civil_field& calendar,
-                                                          const cpp11::integers& value,
-                                                          const cpp11::strings& day_nonexistent,
-                                                          const cpp11::strings& adjuster) {
-  civil_writable_field out{calendar};
-
-  int* p_calendar = civil_int_deref(out);
-  int* p_seconds_of_day = NULL;
-  int* p_nanoseconds_of_second = NULL;
-
-  adjust_naive_gregorian_days(
-    p_calendar,
-    p_seconds_of_day,
-    p_nanoseconds_of_second,
-    value,
-    parse_day_nonexistent(day_nonexistent),
-    parse_adjuster(adjuster)
-  );
-
-  return out;
-}
-
-[[cpp11::register]]
-civil_writable_rcrd adjust_naive_gregorian_days_time_point(const civil_rcrd& x,
-                                                           const cpp11::integers& value,
-                                                           const cpp11::strings& day_nonexistent,
-                                                           const cpp11::strings& adjuster) {
-  civil_writable_rcrd out = civil_rcrd_clone(x);
-
-  int* p_calendar = civil_rcrd_days_deref(out);
-  int* p_seconds_of_day = civil_rcrd_time_of_day_deref(out);
-  int* p_nanoseconds_of_second = civil_rcrd_nanos_of_second_deref(out);
-
-  adjust_naive_gregorian_days(
-    p_calendar,
-    p_seconds_of_day,
-    p_nanoseconds_of_second,
-    value,
-    parse_day_nonexistent(day_nonexistent),
-    parse_adjuster(adjuster)
-  );
-
-  return out;
-}
-
 static inline
 date::year_month_day
 adjust_naive_gregorian_switch(const date::year_month_day& ymd,
                               const int& value,
                               const enum adjuster& adjuster_val);
 
-static void adjust_naive_gregorian_days(int* p_calendar,
-                                        int* p_seconds_of_day,
-                                        int* p_nanoseconds_of_second,
-                                        const cpp11::integers& value,
-                                        const enum day_nonexistent& day_nonexistent_val,
-                                        const enum adjuster& adjuster_val) {
-  const r_ssize& size = value.size();
+[[cpp11::register]]
+cpp11::writable::list adjust_gregorian_calendar(const civil_field& calendar,
+                                                const cpp11::integers& value,
+                                                const cpp11::strings& day_nonexistent,
+                                                const cpp11::strings& adjuster) {
+  const r_ssize& size = calendar.size();
+
+  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
+  enum adjuster adjuster_val = parse_adjuster(adjuster);
+
+  civil_writable_field out_calendar{calendar};
+  cpp11::writable::logicals ok(size);
+  cpp11::writable::logicals any(1);
+  any[0] = false;
+
+  cpp11::writable::list out({out_calendar, ok, any});
+  out.names() = {"calendar", "ok", "any"};
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_calendar = p_calendar[i];
+    ok[i] = true;
+
+    int elt_calendar = calendar[i];
     int elt_value = value[i];
 
     if (elt_calendar == r_int_na) {
       continue;
     }
     if (elt_value == r_int_na) {
-      civil_rcrd_assign_missing(i, p_calendar, p_seconds_of_day, p_nanoseconds_of_second);
+      ok[i] = r_lgl_na;
+      any[0] = true;
+      out_calendar[i] = r_int_na;
       continue;
     }
 
@@ -96,15 +57,10 @@ static void adjust_naive_gregorian_days(int* p_calendar,
       adjuster_val
     );
 
-    convert_year_month_day_to_days_one(
-      i,
-      day_nonexistent_val,
-      out_ymd,
-      p_calendar,
-      p_seconds_of_day,
-      p_nanoseconds_of_second
-    );
+    convert_ymd_to_calendar_one(i, day_nonexistent_val, out_ymd, out_calendar, ok, any);
   }
+
+  return out;
 }
 
 // -----------------------------------------------------------------------------
@@ -370,100 +326,47 @@ adjust_naive_gregorian_nanos_of_second_switch(const std::chrono::nanoseconds& na
 // -----------------------------------------------------------------------------
 
 template <quarterly::start S>
-static void adjust_naive_quarterly_days(int* p_calendar,
-                                        int* p_seconds_of_day,
-                                        int* p_nanoseconds_of_second,
-                                        const cpp11::integers& value,
-                                        const enum day_nonexistent& day_nonexistent_val,
-                                        const enum adjuster& adjuster_val);
+static cpp11::writable::list adjust_quarterly_calendar_impl(const civil_field& calendar,
+                                                            const cpp11::integers& value,
+                                                            const enum day_nonexistent& day_nonexistent_val,
+                                                            const enum adjuster& adjuster_val);
 
-static void adjust_naive_quarterly_days_impl(int* p_calendar,
-                                             int* p_seconds_of_day,
-                                             int* p_nanoseconds_of_second,
-                                             const cpp11::integers& value,
-                                             const int& start,
-                                             const cpp11::strings& day_nonexistent,
-                                             const cpp11::strings& adjuster) {
+[[cpp11::register]]
+cpp11::writable::list adjust_quarterly_calendar(const civil_field& calendar,
+                                                const cpp11::integers& value,
+                                                const int& start,
+                                                const cpp11::strings& day_nonexistent,
+                                                const cpp11::strings& adjuster) {
   const enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
   const enum adjuster adjuster_val = parse_adjuster(adjuster);
 
   if (start == 1) {
-    return adjust_naive_quarterly_days<quarterly::start::january>(p_calendar, p_seconds_of_day, p_nanoseconds_of_second, value, day_nonexistent_val, adjuster_val);
+    return adjust_quarterly_calendar_impl<quarterly::start::january>(calendar, value, day_nonexistent_val, adjuster_val);
   } else if (start == 2) {
-    return adjust_naive_quarterly_days<quarterly::start::february>(p_calendar, p_seconds_of_day, p_nanoseconds_of_second, value, day_nonexistent_val, adjuster_val);
+    return adjust_quarterly_calendar_impl<quarterly::start::february>(calendar, value, day_nonexistent_val, adjuster_val);
   } else if (start == 3) {
-    return adjust_naive_quarterly_days<quarterly::start::march>(p_calendar, p_seconds_of_day, p_nanoseconds_of_second, value, day_nonexistent_val, adjuster_val);
+    return adjust_quarterly_calendar_impl<quarterly::start::march>(calendar, value, day_nonexistent_val, adjuster_val);
   } else if (start == 4) {
-    return adjust_naive_quarterly_days<quarterly::start::april>(p_calendar, p_seconds_of_day, p_nanoseconds_of_second, value, day_nonexistent_val, adjuster_val);
+    return adjust_quarterly_calendar_impl<quarterly::start::april>(calendar, value, day_nonexistent_val, adjuster_val);
   } else if (start == 5) {
-    return adjust_naive_quarterly_days<quarterly::start::may>(p_calendar, p_seconds_of_day, p_nanoseconds_of_second, value, day_nonexistent_val, adjuster_val);
+    return adjust_quarterly_calendar_impl<quarterly::start::may>(calendar, value, day_nonexistent_val, adjuster_val);
   } else if (start == 6) {
-    return adjust_naive_quarterly_days<quarterly::start::june>(p_calendar, p_seconds_of_day, p_nanoseconds_of_second, value, day_nonexistent_val, adjuster_val);
+    return adjust_quarterly_calendar_impl<quarterly::start::june>(calendar, value, day_nonexistent_val, adjuster_val);
   } else if (start == 7) {
-    return adjust_naive_quarterly_days<quarterly::start::july>(p_calendar, p_seconds_of_day, p_nanoseconds_of_second, value, day_nonexistent_val, adjuster_val);
+    return adjust_quarterly_calendar_impl<quarterly::start::july>(calendar, value, day_nonexistent_val, adjuster_val);
   } else if (start == 8) {
-    return adjust_naive_quarterly_days<quarterly::start::august>(p_calendar, p_seconds_of_day, p_nanoseconds_of_second, value, day_nonexistent_val, adjuster_val);
+    return adjust_quarterly_calendar_impl<quarterly::start::august>(calendar, value, day_nonexistent_val, adjuster_val);
   } else if (start == 9) {
-    return adjust_naive_quarterly_days<quarterly::start::september>(p_calendar, p_seconds_of_day, p_nanoseconds_of_second, value, day_nonexistent_val, adjuster_val);
+    return adjust_quarterly_calendar_impl<quarterly::start::september>(calendar, value, day_nonexistent_val, adjuster_val);
   } else if (start == 10) {
-    return adjust_naive_quarterly_days<quarterly::start::october>(p_calendar, p_seconds_of_day, p_nanoseconds_of_second, value, day_nonexistent_val, adjuster_val);
+    return adjust_quarterly_calendar_impl<quarterly::start::october>(calendar, value, day_nonexistent_val, adjuster_val);
   } else if (start == 11) {
-    return adjust_naive_quarterly_days<quarterly::start::november>(p_calendar, p_seconds_of_day, p_nanoseconds_of_second, value, day_nonexistent_val, adjuster_val);
+    return adjust_quarterly_calendar_impl<quarterly::start::november>(calendar, value, day_nonexistent_val, adjuster_val);
   } else if (start == 12) {
-    return adjust_naive_quarterly_days<quarterly::start::december>(p_calendar, p_seconds_of_day, p_nanoseconds_of_second, value, day_nonexistent_val, adjuster_val);
+    return adjust_quarterly_calendar_impl<quarterly::start::december>(calendar, value, day_nonexistent_val, adjuster_val);
   }
 
-  never_reached("adjust_naive_quarterly_days_impl");
-}
-
-[[cpp11::register]]
-civil_writable_field adjust_naive_quarterly_days_calendar(const civil_field& calendar,
-                                                          const cpp11::integers& value,
-                                                          const cpp11::integers& start,
-                                                          const cpp11::strings& day_nonexistent,
-                                                          const cpp11::strings& adjuster) {
-  civil_writable_field out{calendar};
-
-  int* p_calendar = civil_int_deref(out);
-  int* p_seconds_of_day = NULL;
-  int* p_nanoseconds_of_second = NULL;
-
-  adjust_naive_quarterly_days_impl(
-    p_calendar,
-    p_seconds_of_day,
-    p_nanoseconds_of_second,
-    value,
-    start[0],
-    day_nonexistent,
-    adjuster
-  );
-
-  return out;
-}
-
-[[cpp11::register]]
-civil_writable_rcrd adjust_naive_quarterly_days_time_point(const civil_rcrd& x,
-                                                           const cpp11::integers& value,
-                                                           const cpp11::integers& start,
-                                                           const cpp11::strings& day_nonexistent,
-                                                           const cpp11::strings& adjuster) {
-  civil_writable_rcrd out = civil_rcrd_clone(x);
-
-  int* p_calendar = civil_rcrd_days_deref(out);
-  int* p_seconds_of_day = civil_rcrd_time_of_day_deref(out);
-  int* p_nanoseconds_of_second = civil_rcrd_nanos_of_second_deref(out);
-
-  adjust_naive_quarterly_days_impl(
-    p_calendar,
-    p_seconds_of_day,
-    p_nanoseconds_of_second,
-    value,
-    start[0],
-    day_nonexistent,
-    adjuster
-  );
-
-  return out;
+  never_reached("adjust_quarterly_calendar");
 }
 
 template <quarterly::start S>
@@ -475,23 +378,33 @@ adjust_naive_quarterly_switch(const quarterly::year_quarternum_quarterday<S>& yq
                               const enum adjuster& adjuster_val);
 
 template <quarterly::start S>
-static void adjust_naive_quarterly_days(int* p_calendar,
-                                        int* p_seconds_of_day,
-                                        int* p_nanoseconds_of_second,
-                                        const cpp11::integers& value,
-                                        const enum day_nonexistent& day_nonexistent_val,
-                                        const enum adjuster& adjuster_val) {
+static cpp11::writable::list adjust_quarterly_calendar_impl(const civil_field& calendar,
+                                                            const cpp11::integers& value,
+                                                            const enum day_nonexistent& day_nonexistent_val,
+                                                            const enum adjuster& adjuster_val) {
   const r_ssize size = value.size();
 
+  civil_writable_field out_calendar{calendar};
+  cpp11::writable::logicals ok(size);
+  cpp11::writable::logicals any(1);
+  any[0] = false;
+
+  cpp11::writable::list out({out_calendar, ok, any});
+  out.names() = {"calendar", "ok", "any"};
+
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_calendar = p_calendar[i];
+    ok[i] = true;
+
+    int elt_calendar = calendar[i];
     int elt_value = value[i];
 
     if (elt_calendar == r_int_na) {
       continue;
     }
     if (elt_value == r_int_na) {
-      civil_rcrd_assign_missing(i, p_calendar, p_seconds_of_day, p_nanoseconds_of_second);
+      ok[i] = false;
+      any[0] = true;
+      out_calendar[i] = r_int_na;
       continue;
     }
 
@@ -504,15 +417,17 @@ static void adjust_naive_quarterly_days(int* p_calendar,
       adjuster_val
     );
 
-    convert_year_quarternum_quarterday_to_days_one(
+    convert_yqnqd_to_calendar_one(
       i,
       day_nonexistent_val,
       out_yqnqd,
-      p_calendar,
-      p_seconds_of_day,
-      p_nanoseconds_of_second
+      out_calendar,
+      ok,
+      any
     );
   }
+
+  return out;
 }
 
 // -----------------------------------------------------------------------------
@@ -577,64 +492,47 @@ adjust_naive_quarterly_switch(const quarterly::year_quarternum_quarterday<S>& yq
 
 // -----------------------------------------------------------------------------
 
-static civil_writable_rcrd adjust_naive_iso_days(const civil_rcrd& x,
-                                                 const cpp11::integers& value,
-                                                 const enum day_nonexistent& day_nonexistent_val,
-                                                 const r_ssize& size,
-                                                 const enum adjuster& adjuster_val);
-
-[[cpp11::register]]
-civil_writable_rcrd adjust_naive_iso_days_cpp(const civil_rcrd& x,
-                                              const cpp11::integers& value,
-                                              const cpp11::strings& day_nonexistent,
-                                              const cpp11::integers& size,
-                                              const cpp11::strings& adjuster) {
-  const enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
-  const r_ssize size_val = size[0];
-  const enum adjuster adjuster_val = parse_adjuster(adjuster);
-
-  return adjust_naive_iso_days(
-    x,
-    value,
-    day_nonexistent_val,
-    size_val,
-    adjuster_val
-  );
-}
-
 static inline
 iso_week::year_weeknum_weekday
 adjust_naive_iso_switch(const iso_week::year_weeknum_weekday& yww,
                         const int& value,
                         const enum adjuster& adjuster_val);
 
-static civil_writable_rcrd adjust_naive_iso_days(const civil_rcrd& x,
-                                                 const cpp11::integers& value,
-                                                 const enum day_nonexistent& day_nonexistent_val,
-                                                 const r_ssize& size,
-                                                 const enum adjuster& adjuster_val) {
-  civil_writable_rcrd out = civil_rcrd_clone(x);
-  civil_rcrd_recycle(out, size);
+[[cpp11::register]]
+cpp11::writable::list adjust_iso_calendar(const civil_field& calendar,
+                                          const cpp11::integers& value,
+                                          const cpp11::strings& day_nonexistent,
+                                          const cpp11::strings& adjuster) {
+  const r_ssize& size = calendar.size();
 
-  int* p_days = civil_rcrd_days_deref(out);
-  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
-  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
+  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
+  enum adjuster adjuster_val = parse_adjuster(adjuster);
 
-  const bool recycle_value = civil_is_scalar(value);
+  civil_writable_field out_calendar{calendar};
+  cpp11::writable::logicals ok(size);
+  cpp11::writable::logicals any(1);
+  any[0] = false;
+
+  cpp11::writable::list out({out_calendar, ok, any});
+  out.names() = {"calendar", "ok", "any"};
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_days = p_days[i];
-    int elt_value = recycle_value ? value[0] : value[i];
+    ok[i] = true;
 
-    if (elt_days == r_int_na) {
+    int elt_calendar = calendar[i];
+    int elt_value = value[i];
+
+    if (elt_calendar == r_int_na) {
       continue;
     }
     if (elt_value == r_int_na) {
-      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      ok[i] = r_lgl_na;
+      any[0] = true;
+      out_calendar[i] = r_int_na;
       continue;
     }
 
-    date::local_days elt_lday{date::days{elt_days}};
+    date::local_days elt_lday{date::days{elt_calendar}};
     iso_week::year_weeknum_weekday elt_yww{elt_lday};
 
     iso_week::year_weeknum_weekday out_yww = adjust_naive_iso_switch(
@@ -643,13 +541,13 @@ static civil_writable_rcrd adjust_naive_iso_days(const civil_rcrd& x,
       adjuster_val
     );
 
-    convert_year_weeknum_weekday_to_days_one(
+    convert_iso_yww_to_calendar_one(
       i,
       day_nonexistent_val,
       out_yww,
-      p_days,
-      p_time_of_day,
-      p_nanos_of_second
+      out_calendar,
+      ok,
+      any
     );
   }
 

@@ -182,6 +182,95 @@ static inline void resolve_day_nonexistent_error(const r_ssize& i) {
 
 // -----------------------------------------------------------------------------
 
+static inline void convert_ymd_to_calendar_one(const r_ssize& i,
+                                               const enum day_nonexistent& day_nonexistent_val,
+                                               date::year_month_day& ymd,
+                                               civil_writable_field& calendar,
+                                               cpp11::writable::logicals& ok,
+                                               cpp11::writable::logicals& any) {
+  if (ymd.ok()) {
+    date::local_days out_lday{ymd};
+    calendar[i] = out_lday.time_since_epoch().count();
+    return;
+  }
+
+  any[0] = true;
+  ok[i] = false;
+
+  bool na = false;
+  resolve_day_nonexistent_ymd(i, day_nonexistent_val, ymd, na);
+
+  if (na) {
+    calendar[i] = r_int_na;
+    return;
+  }
+
+  date::local_days out_lday{ymd};
+  calendar[i] = out_lday.time_since_epoch().count();
+}
+
+// -----------------------------------------------------------------------------
+
+template <quarterly::start S>
+static inline void convert_yqnqd_to_calendar_one(const r_ssize& i,
+                                                 const enum day_nonexistent& day_nonexistent_val,
+                                                 quarterly::year_quarternum_quarterday<S>& yqnqd,
+                                                 civil_writable_field& calendar,
+                                                 cpp11::writable::logicals& ok,
+                                                 cpp11::writable::logicals& any) {
+  if (yqnqd.ok()) {
+    date::local_days out_lday{yqnqd};
+    calendar[i] = out_lday.time_since_epoch().count();
+    return;
+  }
+
+  any[0] = true;
+  ok[i] = false;
+
+  bool na = false;
+  resolve_day_nonexistent_yqnqd(i, day_nonexistent_val, yqnqd, na);
+
+  if (na) {
+    calendar[i] = r_int_na;
+    return;
+  }
+
+  date::local_days out_lday{yqnqd};
+  calendar[i] = out_lday.time_since_epoch().count();
+}
+
+// -----------------------------------------------------------------------------
+
+static inline void convert_iso_yww_to_calendar_one(const r_ssize& i,
+                                                   const enum day_nonexistent& day_nonexistent_val,
+                                                   iso_week::year_weeknum_weekday& yww,
+                                                   civil_writable_field& calendar,
+                                                   cpp11::writable::logicals& ok,
+                                                   cpp11::writable::logicals& any) {
+  if (yww.ok()) {
+    date::local_days out_lday{yww};
+    calendar[i] = out_lday.time_since_epoch().count();
+    return;
+  }
+
+  any[0] = true;
+  ok[i] = false;
+
+  bool na = false;
+  resolve_day_nonexistent_yww(i, day_nonexistent_val, yww, na);
+
+  if (na) {
+    calendar[i] = r_int_na;
+    return;
+  }
+
+  date::local_days out_lday{yww};
+  calendar[i] = out_lday.time_since_epoch().count();
+}
+
+
+// -----------------------------------------------------------------------------
+
 static inline void convert_year_month_day_to_days_one(const r_ssize& i,
                                                       const enum day_nonexistent& day_nonexistent_val,
                                                       date::year_month_day& ymd,
