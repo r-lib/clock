@@ -356,10 +356,81 @@ add_quarters <- function(x, n, ...) {
   UseMethod("add_quarters")
 }
 
-#' @rdname clock-naive-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_quarters.civil_naive_quarterly <- function(x, n, ..., day_nonexistent = "last-time") {
-  add_quarters_quarterly_impl(x, n, ..., day_nonexistent = day_nonexistent)
+add_quarters.Date <- function(x,
+                              n,
+                              ...,
+                              day_nonexistent = "last-time") {
+  x <- as_naive_time_point(x)
+  out <- add_quarters(x, n, ..., day_nonexistent = day_nonexistent)
+  as.Date(out)
+}
+
+#' @rdname clock-zoned-arithmetic
+#' @export
+add_quarters.POSIXt <- function(x,
+                                n,
+                                ...,
+                                day_nonexistent = "last-time",
+                                dst_nonexistent = NULL,
+                                dst_ambiguous = NULL) {
+  zone <- get_zone(x)
+  x <- as_naive_time_point(x)
+  out <- add_quarters(x, n, ..., day_nonexistent = day_nonexistent)
+  dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
+  dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
+  as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
+
+#' @rdname clock-zoned-arithmetic
+#' @export
+add_quarters.clock_zoned_time_point <- function(x,
+                                                n,
+                                                ...,
+                                                day_nonexistent = "last-time",
+                                                dst_nonexistent = NULL,
+                                                dst_ambiguous = NULL) {
+  zone <- get_zone(x)
+  x <- as_naive_time_point(x)
+  out <- add_quarters(x, n, ..., day_nonexistent = day_nonexistent)
+  dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
+  dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
+  as_zoned_time_point(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
+
+#' @rdname clock-zoned-arithmetic
+#' @export
+add_quarters.clock_naive_time_point <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_naive_time_point_calendar(x, n, ..., day_nonexistent = day_nonexistent, dispatcher = add_quarters_calendar)
+}
+
+#' @rdname clock-zoned-arithmetic
+#' @export
+add_quarters.clock_calendar <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_calendar(x, n, ..., day_nonexistent = day_nonexistent, dispatcher = add_quarters_calendar)
+}
+
+add_quarters_calendar <- function(x, n, ..., day_nonexistent) {
+  UseMethod("add_quarters_calendar")
+}
+
+#' @export
+add_quarters_calendar.clock_calendar <- function(x, n, ..., day_nonexistent) {
+  stop_clock_unsupported_calendar_op("add_quarters")
+}
+
+#' @export
+add_quarters_calendar.clock_gregorian <- function(x, n, ..., day_nonexistent) {
+  x <- promote_precision_month(x)
+  add_gregorian_calendar_years_or_months(x, n * 3L, day_nonexistent, "month")
+}
+
+#' @export
+add_quarters_calendar.clock_quarterly <- function(x, n, ..., day_nonexistent) {
+  x <- promote_precision_quarter(x)
+  start <- get_start(x)
+  add_quarterly_calendar_years_or_quarters(x, n, start, day_nonexistent, "quarter")
 }
 
 # ------------------------------------------------------------------------------

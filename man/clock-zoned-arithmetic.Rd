@@ -10,6 +10,11 @@
 \alias{subtract_years.Date}
 \alias{subtract_years.POSIXt}
 \alias{subtract_years.clock_zoned_time_point}
+\alias{add_quarters.Date}
+\alias{add_quarters.POSIXt}
+\alias{add_quarters.clock_zoned_time_point}
+\alias{add_quarters.clock_naive_time_point}
+\alias{add_quarters.clock_calendar}
 \alias{add_months.Date}
 \alias{add_months.POSIXt}
 \alias{add_months.civil_zoned}
@@ -115,6 +120,30 @@
   dst_nonexistent = NULL,
   dst_ambiguous = NULL
 )
+
+\method{add_quarters}{Date}(x, n, ..., day_nonexistent = "last-time")
+
+\method{add_quarters}{POSIXt}(
+  x,
+  n,
+  ...,
+  day_nonexistent = "last-time",
+  dst_nonexistent = NULL,
+  dst_ambiguous = NULL
+)
+
+\method{add_quarters}{clock_zoned_time_point}(
+  x,
+  n,
+  ...,
+  day_nonexistent = "last-time",
+  dst_nonexistent = NULL,
+  dst_ambiguous = NULL
+)
+
+\method{add_quarters}{clock_naive_time_point}(x, n, ..., day_nonexistent = "last-time")
+
+\method{add_quarters}{clock_calendar}(x, n, ..., day_nonexistent = "last-time")
 
 \method{add_months}{Date}(x, n, ..., day_nonexistent = "last-time")
 

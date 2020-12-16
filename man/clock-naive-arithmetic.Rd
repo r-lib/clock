@@ -4,7 +4,6 @@
 \alias{clock-naive-arithmetic}
 \alias{subtract_years.clock_naive_time_point}
 \alias{subtract_years.clock_calendar}
-\alias{add_quarters.civil_naive_quarterly}
 \alias{subtract_quarters.civil_naive}
 \alias{add_months.civil_naive_gregorian}
 \alias{subtract_months.civil_naive}
@@ -35,8 +34,6 @@
 \method{subtract_years}{clock_naive_time_point}(x, n, ..., day_nonexistent = "last-time")
 
 \method{subtract_years}{clock_calendar}(x, n, ..., day_nonexistent = "last-time")
-
-\method{add_quarters}{civil_naive_quarterly}(x, n, ..., day_nonexistent = "last-time")
 
 \method{subtract_quarters}{civil_naive}(x, n, ..., day_nonexistent = "last-time")
 
