@@ -5,8 +5,7 @@
 \alias{adjust_year.Date}
 \alias{adjust_year.POSIXt}
 \alias{adjust_year.clock_zoned_time_point}
-\alias{adjust_year.clock_naive_second_point}
-\alias{adjust_year.clock_naive_subsecond_point}
+\alias{adjust_year.clock_naive_time_point}
 \alias{adjust_year.clock_calendar}
 \title{Adjust the year}
 \usage{
@@ -32,9 +31,7 @@ adjust_year(x, value, ...)
   dst_ambiguous = "earliest"
 )
 
-\method{adjust_year}{clock_naive_second_point}(x, value, ..., day_nonexistent = "last-time")
-
-\method{adjust_year}{clock_naive_subsecond_point}(x, value, ..., day_nonexistent = "last-time")
+\method{adjust_year}{clock_naive_time_point}(x, value, ..., day_nonexistent = "last-time")
 
 \method{adjust_year}{clock_calendar}(x, value, ..., day_nonexistent = "last-time")
 }

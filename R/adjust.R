@@ -136,14 +136,8 @@ adjust_year.clock_zoned_time_point <- function(x,
 
 #' @rdname adjust_year
 #' @export
-adjust_year.clock_naive_second_point <- function(x, value, ..., day_nonexistent = "last-time") {
-  adjust_naive_time_point(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_year_dispatch, subsecond = FALSE)
-}
-
-#' @rdname adjust_year
-#' @export
-adjust_year.clock_naive_subsecond_point <- function(x, value, ..., day_nonexistent = "last-time") {
-  adjust_naive_time_point(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_year_dispatch, subsecond = TRUE)
+adjust_year.clock_naive_time_point <- function(x, value, ..., day_nonexistent = "last-time") {
+  adjust_naive_time_point(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_year_dispatch)
 }
 
 #' @rdname adjust_year
@@ -590,7 +584,7 @@ adjust_naive_iso_days <- function(x, value, ..., day_nonexistent, adjuster) {
 
 # ------------------------------------------------------------------------------
 
-adjust_naive_time_point <- function(x, value, ..., day_nonexistent, dispatcher, subsecond) {
+adjust_naive_time_point <- function(x, value, ..., day_nonexistent, dispatcher) {
   value <- vec_cast(value, integer(), x_arg = "value")
 
   args <- vec_recycle_common(x = x, value = value)
@@ -609,7 +603,7 @@ adjust_naive_time_point <- function(x, value, ..., day_nonexistent, dispatcher, 
     seconds_of_day <- resolve_seconds_of_day(seconds_of_day, ok, day_nonexistent)
     x <- set_seconds_of_day(x, seconds_of_day)
 
-    if (subsecond) {
+    if (is_subsecond_time_point(x)) {
       precision <- get_precision(x)
       nanoseconds_of_second <- field_nanoseconds_of_second(x)
       nanoseconds_of_second <- resolve_nanoseconds_of_second(nanoseconds_of_second, ok, day_nonexistent, precision)
