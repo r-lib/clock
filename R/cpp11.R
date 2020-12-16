@@ -4,12 +4,12 @@ adjust_gregorian_calendar <- function(calendar, value, day_nonexistent, adjuster
   .Call("_civil_adjust_gregorian_calendar", calendar, value, day_nonexistent, adjuster, PACKAGE = "civil")
 }
 
-adjust_naive_gregorian_time_of_day_cpp <- function(x, value, size, adjuster) {
-  .Call("_civil_adjust_naive_gregorian_time_of_day_cpp", x, value, size, adjuster, PACKAGE = "civil")
+adjust_naive_time_point_seconds_of_day_cpp <- function(x, value, adjuster) {
+  .Call("_civil_adjust_naive_time_point_seconds_of_day_cpp", x, value, adjuster, PACKAGE = "civil")
 }
 
-adjust_naive_gregorian_nanos_of_second_cpp <- function(x, value, size, adjuster) {
-  .Call("_civil_adjust_naive_gregorian_nanos_of_second_cpp", x, value, size, adjuster, PACKAGE = "civil")
+adjust_naive_time_point_nanoseconds_of_second_cpp <- function(x, value, adjuster) {
+  .Call("_civil_adjust_naive_time_point_nanoseconds_of_second_cpp", x, value, adjuster, PACKAGE = "civil")
 }
 
 adjust_quarterly_calendar <- function(calendar, value, start, day_nonexistent, adjuster) {
@@ -18,6 +18,10 @@ adjust_quarterly_calendar <- function(calendar, value, start, day_nonexistent, a
 
 adjust_iso_calendar <- function(calendar, value, day_nonexistent, adjuster) {
   .Call("_civil_adjust_iso_calendar", calendar, value, day_nonexistent, adjuster, PACKAGE = "civil")
+}
+
+downcast_nanoseconds_of_second_precision <- function(nanoseconds_of_second, precision) {
+  .Call("_civil_downcast_nanoseconds_of_second_precision", nanoseconds_of_second, precision, PACKAGE = "civil")
 }
 
 add_years_or_months_gregorian_cpp <- function(x, n, day_nonexistent, unit, size) {

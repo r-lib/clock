@@ -1,7 +1,7 @@
 PRECISION_YEAR = 0L
 PRECISION_QUARTER = 1L
 PRECISION_MONTH = 2L
-PRECISION_ISO_WEEK = 3L
+PRECISION_WEEK = 3L
 PRECISION_DAY = 4L
 PRECISION_SECOND = 5L
 PRECISION_MILLISECOND = 6L
@@ -11,12 +11,16 @@ PRECISION_NANOSECOND = 8L
 # ------------------------------------------------------------------------------
 
 get_precision_value <- function(x) {
+  precision_value(get_precision(x))
+}
+
+precision_value <- function(precision) {
   switch(
-    get_precision(x),
+    precision,
     year = PRECISION_YEAR,
     quarter = PRECISION_QUARTER,
     month = PRECISION_MONTH,
-    week = PRECISION_ISO_WEEK,
+    week = PRECISION_WEEK,
     day = PRECISION_DAY,
     second = PRECISION_SECOND,
     millisecond = PRECISION_MILLISECOND,
@@ -106,13 +110,13 @@ promote_precision_month.clock_time_point <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-promote_precision_iso_week <- function(x) {
-  UseMethod("promote_precision_iso_week")
+promote_precision_week <- function(x) {
+  UseMethod("promote_precision_week")
 }
 
 #' @export
-promote_precision_iso_week.clock_iso <- function(x) {
-  if (get_precision_value(x) >= PRECISION_ISO_WEEK) {
+promote_precision_week.clock_iso <- function(x) {
+  if (get_precision_value(x) >= PRECISION_WEEK) {
     x
   } else {
     as_iso_year_weeknum(x)
@@ -120,7 +124,7 @@ promote_precision_iso_week.clock_iso <- function(x) {
 }
 
 #' @export
-promote_precision_iso_week.clock_time_point <- function(x) {
+promote_precision_week.clock_time_point <- function(x) {
   x
 }
 
@@ -160,4 +164,84 @@ promote_precision_day.clock_quarterly <- function(x) {
 #' @export
 promote_precision_day.clock_time_point <- function(x) {
   x
+}
+
+# ------------------------------------------------------------------------------
+
+promote_precision_second <- function(x) {
+  UseMethod("promote_precision_second")
+}
+
+#' @export
+promote_precision_second.clock_calendar <- function(x) {
+  as_naive_time_point(x, precision = "second")
+}
+
+#' @export
+promote_precision_second.clock_time_point <- function(x) {
+  if (get_precision_value(x) >= PRECISION_SECOND) {
+    x
+  } else {
+    adjust_precision(x, "second")
+  }
+}
+
+# ------------------------------------------------------------------------------
+
+promote_precision_millisecond <- function(x) {
+  UseMethod("promote_precision_millisecond")
+}
+
+#' @export
+promote_precision_millisecond.clock_calendar <- function(x) {
+  as_naive_time_point(x, precision = "millisecond")
+}
+
+#' @export
+promote_precision_millisecond.clock_time_point <- function(x) {
+  if (get_precision_value(x) >= PRECISION_MILLISECOND) {
+    x
+  } else {
+    adjust_precision(x, "millisecond")
+  }
+}
+
+# ------------------------------------------------------------------------------
+
+promote_precision_microsecond <- function(x) {
+  UseMethod("promote_precision_microsecond")
+}
+
+#' @export
+promote_precision_microsecond.clock_calendar <- function(x) {
+  as_naive_time_point(x, precision = "microsecond")
+}
+
+#' @export
+promote_precision_microsecond.clock_time_point <- function(x) {
+  if (get_precision_value(x) >= PRECISION_MICROSECOND) {
+    x
+  } else {
+    adjust_precision(x, "microsecond")
+  }
+}
+
+# ------------------------------------------------------------------------------
+
+promote_precision_nanosecond <- function(x) {
+  UseMethod("promote_precision_nanosecond")
+}
+
+#' @export
+promote_precision_nanosecond.clock_calendar <- function(x) {
+  as_naive_time_point(x, precision = "nanosecond")
+}
+
+#' @export
+promote_precision_nanosecond.clock_time_point <- function(x) {
+  if (get_precision_value(x) >= PRECISION_NANOSECOND) {
+    x
+  } else {
+    adjust_precision(x, "nanosecond")
+  }
 }

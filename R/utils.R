@@ -212,6 +212,11 @@ stop_clock_unsupported_conversion <- function(x, to_arg) {
   stop_clock(message, "clock_error_unsupported_conversion")
 }
 
+stop_clock_unsupported_calendar_op <- function(op) {
+  message <- paste0("This calendar doesn't support `", op, "()`.")
+  stop_clock(message, "clock_error_unsupported_calendar_op")
+}
+
 paste_class <- function(x) {
   out <- paste0(class(x), collapse = "/")
   paste0("<", out, ">")

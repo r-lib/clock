@@ -112,6 +112,8 @@ enum adjuster parse_adjuster(const cpp11::strings& x) {
   if (string == "hour") return adjuster::hour;
   if (string == "minute") return adjuster::minute;
   if (string == "second") return adjuster::second;
+  if (string == "millisecond") return adjuster::millisecond;
+  if (string == "microsecond") return adjuster::microsecond;
   if (string == "nanosecond") return adjuster::nanosecond;
   if (string == "weeknum") return adjuster::weeknum;
   if (string == "weekday") return adjuster::weekday;

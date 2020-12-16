@@ -68,6 +68,8 @@ enum class adjuster {
   hour,
   minute,
   second,
+  millisecond,
+  microsecond,
   nanosecond,
   weeknum,
   weekday,

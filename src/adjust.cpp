@@ -120,68 +120,48 @@ adjust_naive_gregorian_switch(const date::year_month_day& ymd,
 
 // -----------------------------------------------------------------------------
 
-static civil_writable_rcrd adjust_naive_gregorian_time_of_day(const civil_rcrd& x,
-                                                              const cpp11::integers& value,
-                                                              const r_ssize& size,
-                                                              const enum adjuster& adjuster_val);
-
-[[cpp11::register]]
-civil_writable_rcrd adjust_naive_gregorian_time_of_day_cpp(const civil_rcrd& x,
-                                                           const cpp11::integers& value,
-                                                           const cpp11::integers& size,
-                                                           const cpp11::strings& adjuster) {
-  r_ssize c_size = size[0];
-  enum adjuster adjuster_val = parse_adjuster(adjuster);
-
-  return adjust_naive_gregorian_time_of_day(
-    x,
-    value,
-    c_size,
-    adjuster_val
-  );
-}
-
 static inline
 std::chrono::seconds
-adjust_naive_gregorian_time_of_day_switch(const date::hh_mm_ss<std::chrono::seconds>& hms,
-                                          const int& value,
-                                          const enum adjuster& adjuster_val);
+adjust_naive_time_point_seconds_of_day_switch(const date::hh_mm_ss<std::chrono::seconds>& hms,
+                                              const int& value,
+                                              const enum adjuster& adjuster_val);
 
-static civil_writable_rcrd adjust_naive_gregorian_time_of_day(const civil_rcrd& x,
-                                                              const cpp11::integers& value,
-                                                              const r_ssize& size,
-                                                              const enum adjuster& adjuster_val) {
+[[cpp11::register]]
+civil_writable_rcrd adjust_naive_time_point_seconds_of_day_cpp(const civil_rcrd& x,
+                                                               const cpp11::integers& value,
+                                                               const cpp11::strings& adjuster) {
+  const enum adjuster adjuster_val = parse_adjuster(adjuster);
+
   civil_writable_rcrd out = civil_rcrd_clone(x);
-  civil_rcrd_recycle(out, size);
 
-  int* p_days = civil_rcrd_days_deref(out);
-  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
-  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
+  int* p_calendar = civil_rcrd_days_deref(out);
+  int* p_seconds_of_day = civil_rcrd_time_of_day_deref(out);
+  int* p_nanoseconds_of_second = civil_rcrd_nanos_of_second_deref(out);
 
-  const bool recycle_value = civil_is_scalar(value);
+  const r_ssize size = value.size();
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_time_of_day = p_time_of_day[i];
-    int elt_value = recycle_value ? value[0] : value[i];
+    int elt_seconds_of_day = p_seconds_of_day[i];
+    int elt_value = value[i];
 
-    if (elt_time_of_day == r_int_na) {
+    if (elt_seconds_of_day == r_int_na) {
       continue;
     }
     if (elt_value == r_int_na) {
-      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      civil_rcrd_assign_missing(i, p_calendar, p_seconds_of_day, p_nanoseconds_of_second);
       continue;
     }
 
-    std::chrono::seconds elt_tod{elt_time_of_day};
+    std::chrono::seconds elt_tod{elt_seconds_of_day};
     date::hh_mm_ss<std::chrono::seconds> elt_hms{elt_tod};
 
-    std::chrono::seconds out_tod = adjust_naive_gregorian_time_of_day_switch(
+    std::chrono::seconds out_tod = adjust_naive_time_point_seconds_of_day_switch(
       elt_hms,
       elt_value,
       adjuster_val
     );
 
-    p_time_of_day[i] = out_tod.count();
+    p_seconds_of_day[i] = out_tod.count();
   }
 
   return out;
@@ -191,109 +171,88 @@ static civil_writable_rcrd adjust_naive_gregorian_time_of_day(const civil_rcrd& 
 
 static inline
 std::chrono::seconds
-adjust_naive_gregorian_time_of_day_hour(const date::hh_mm_ss<std::chrono::seconds>& hms, const int& value) {
+adjust_naive_time_point_seconds_of_day_hour(const date::hh_mm_ss<std::chrono::seconds>& hms, const int& value) {
   check_range_hour(value, "value");
   return std::chrono::hours{value} + hms.minutes() + hms.seconds();
 }
 
 static inline
 std::chrono::seconds
-adjust_naive_gregorian_time_of_day_minute(const date::hh_mm_ss<std::chrono::seconds>& hms, const int& value) {
+adjust_naive_time_point_seconds_of_day_minute(const date::hh_mm_ss<std::chrono::seconds>& hms, const int& value) {
   check_range_minute(value, "value");
   return hms.hours() + std::chrono::minutes{value} + hms.seconds();
 }
 
 static inline
 std::chrono::seconds
-adjust_naive_gregorian_time_of_day_second(const date::hh_mm_ss<std::chrono::seconds>& hms, const int& value) {
+adjust_naive_time_point_seconds_of_day_second(const date::hh_mm_ss<std::chrono::seconds>& hms, const int& value) {
   check_range_second(value, "value");
   return hms.hours() + hms.minutes() + std::chrono::seconds{value};
 }
 
 static inline
 std::chrono::seconds
-adjust_naive_gregorian_time_of_day_switch(const date::hh_mm_ss<std::chrono::seconds>& hms,
-                                          const int& value,
-                                          const enum adjuster& adjuster_val) {
+adjust_naive_time_point_seconds_of_day_switch(const date::hh_mm_ss<std::chrono::seconds>& hms,
+                                              const int& value,
+                                              const enum adjuster& adjuster_val) {
   switch (adjuster_val) {
   case adjuster::hour: {
-    return adjust_naive_gregorian_time_of_day_hour(hms, value);
+    return adjust_naive_time_point_seconds_of_day_hour(hms, value);
   }
   case adjuster::minute: {
-    return adjust_naive_gregorian_time_of_day_minute(hms, value);
+    return adjust_naive_time_point_seconds_of_day_minute(hms, value);
   }
   case adjuster::second: {
-    return adjust_naive_gregorian_time_of_day_second(hms, value);
+    return adjust_naive_time_point_seconds_of_day_second(hms, value);
   }
   default: {
-    civil_abort("Internal error: Unknown `adjuster_val` in `adjust_naive_gregorian_time_of_day_switch()`.");
+    civil_abort("Internal error: Unknown `adjuster_val` in `adjust_naive_time_point_seconds_of_day_switch()`.");
   }
   }
 }
 
 // -----------------------------------------------------------------------------
 
-static civil_writable_rcrd adjust_naive_gregorian_nanos_of_second(const civil_rcrd& x,
-                                                                  const cpp11::integers& value,
-                                                                  const r_ssize& size,
-                                                                  const enum adjuster& adjuster_val);
-
-[[cpp11::register]]
-civil_writable_rcrd adjust_naive_gregorian_nanos_of_second_cpp(const civil_rcrd& x,
-                                                               const cpp11::integers& value,
-                                                               const cpp11::integers& size,
-                                                               const cpp11::strings& adjuster) {
-  r_ssize c_size = size[0];
-  enum adjuster adjuster_val = parse_adjuster(adjuster);
-
-  return adjust_naive_gregorian_nanos_of_second(
-    x,
-    value,
-    c_size,
-    adjuster_val
-  );
-}
-
 static inline
 std::chrono::nanoseconds
-adjust_naive_gregorian_nanos_of_second_switch(const std::chrono::nanoseconds& x,
+adjust_naive_time_point_nanoseconds_of_second_switch(const std::chrono::nanoseconds& x,
                                               const int& value,
                                               const enum adjuster& adjuster_val);
 
-static civil_writable_rcrd adjust_naive_gregorian_nanos_of_second(const civil_rcrd& x,
-                                                                  const cpp11::integers& value,
-                                                                  const r_ssize& size,
-                                                                  const enum adjuster& adjuster_val) {
+[[cpp11::register]]
+civil_writable_rcrd adjust_naive_time_point_nanoseconds_of_second_cpp(const civil_rcrd& x,
+                                                                      const cpp11::integers& value,
+                                                                      const cpp11::strings& adjuster) {
+  const enum adjuster adjuster_val = parse_adjuster(adjuster);
+  const r_ssize size = value.size();
+
   civil_writable_rcrd out = civil_rcrd_clone(x);
-  civil_rcrd_recycle(out, size);
 
-  int* p_days = civil_rcrd_days_deref(out);
-  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
-  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
-
-  const bool recycle_value = civil_is_scalar(value);
+  int* p_calendar = civil_rcrd_days_deref(out);
+  int* p_seconds_of_day = civil_rcrd_time_of_day_deref(out);
+  int* p_nanoseconds_of_second = civil_rcrd_nanos_of_second_deref(out);
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_nanos_of_second = p_nanos_of_second[i];
-    int elt_value = recycle_value ? value[0] : value[i];
+    int elt_nanoseconds_of_second = p_nanoseconds_of_second[i];
+    int elt_value = value[i];
 
-    if (elt_nanos_of_second == r_int_na) {
+    if (elt_nanoseconds_of_second == r_int_na) {
       continue;
     }
     if (elt_value == r_int_na) {
-      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      civil_rcrd_assign_missing(i, p_calendar, p_seconds_of_day, p_nanoseconds_of_second);
       continue;
     }
 
-    std::chrono::nanoseconds elt_nanos{elt_nanos_of_second};
+    std::chrono::nanoseconds elt_nanos{elt_nanoseconds_of_second};
 
-    std::chrono::nanoseconds out_nanos = adjust_naive_gregorian_nanos_of_second_switch(
+    std::chrono::nanoseconds out_nanos = adjust_naive_time_point_nanoseconds_of_second_switch(
       elt_nanos,
       elt_value,
       adjuster_val
     );
 
-    p_nanos_of_second[i] = out_nanos.count();
+    p_nanoseconds_of_second[i] = out_nanos.count();
   }
 
   return out;
@@ -303,22 +262,42 @@ static civil_writable_rcrd adjust_naive_gregorian_nanos_of_second(const civil_rc
 
 static inline
 std::chrono::nanoseconds
-adjust_naive_gregorian_nanos_of_second_nanosecond(const std::chrono::nanoseconds& nanos, const int& value) {
-  check_range_nanos(value, "value");
+adjust_naive_time_point_nanoseconds_of_second_millisecond(const std::chrono::nanoseconds& nanos, const int& value) {
+  check_range_millisecond(value, "value");
+  return std::chrono::milliseconds{value};
+}
+
+static inline
+std::chrono::nanoseconds
+adjust_naive_time_point_nanoseconds_of_second_microsecond(const std::chrono::nanoseconds& nanos, const int& value) {
+  check_range_microsecond(value, "value");
+  return std::chrono::microseconds{value};
+}
+
+static inline
+std::chrono::nanoseconds
+adjust_naive_time_point_nanoseconds_of_second_nanosecond(const std::chrono::nanoseconds& nanos, const int& value) {
+  check_range_nanosecond(value, "value");
   return std::chrono::nanoseconds{value};
 }
 
 static inline
 std::chrono::nanoseconds
-adjust_naive_gregorian_nanos_of_second_switch(const std::chrono::nanoseconds& nanos,
-                                              const int& value,
-                                              const enum adjuster& adjuster_val) {
+adjust_naive_time_point_nanoseconds_of_second_switch(const std::chrono::nanoseconds& nanos,
+                                                     const int& value,
+                                                     const enum adjuster& adjuster_val) {
   switch (adjuster_val) {
+  case adjuster::millisecond: {
+    return adjust_naive_time_point_nanoseconds_of_second_millisecond(nanos, value);
+  }
+  case adjuster::microsecond: {
+    return adjust_naive_time_point_nanoseconds_of_second_microsecond(nanos, value);
+  }
   case adjuster::nanosecond: {
-    return adjust_naive_gregorian_nanos_of_second_nanosecond(nanos, value);
+    return adjust_naive_time_point_nanoseconds_of_second_nanosecond(nanos, value);
   }
   default: {
-    civil_abort("Internal error: Unknown `adjuster_val` in `adjust_naive_gregorian_nanos_of_second_switch()`.");
+    civil_abort("Internal error: Unknown `adjuster_val` in `adjust_naive_time_point_nanoseconds_of_second_switch()`.");
   }
   }
 }
@@ -608,3 +587,49 @@ adjust_naive_iso_switch(const iso_week::year_weeknum_weekday& yww,
   }
   }
 }
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+civil_writable_field downcast_nanoseconds_of_second_precision(const civil_field& nanoseconds_of_second,
+                                                              const cpp11::strings& precision) {
+  const enum precision precision_val = parse_precision(precision);
+  const r_ssize size = nanoseconds_of_second.size();
+
+  civil_writable_field out(size);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    int elt_nanoseconds_of_second = nanoseconds_of_second[i];
+
+    if (elt_nanoseconds_of_second == r_int_na) {
+      out[i] = r_int_na;
+      continue;
+    }
+
+    std::chrono::nanoseconds elt_nanos{elt_nanoseconds_of_second};
+    std::chrono::nanoseconds out_nanos;
+
+    switch (precision_val) {
+    case precision::nanosecond: {
+      out_nanos = elt_nanos;
+      break;
+    }
+    case precision::microsecond: {
+      out_nanos = std::chrono::duration_cast<std::chrono::microseconds>(elt_nanos);
+      break;
+    }
+    case precision::millisecond: {
+      out_nanos = std::chrono::duration_cast<std::chrono::milliseconds>(elt_nanos);
+      break;
+    }
+    case precision::second: {
+      civil_abort("Internal error: Should never be called.");
+    }
+    }
+
+    out[i] = out_nanos.count();
+  }
+
+  return out;
+}
+
