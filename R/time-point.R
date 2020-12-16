@@ -1,7 +1,13 @@
 # Note: `class` is required as we consider this an abstract type that should
 # never exist on its own in the wild.
 
-new_time_point <- function(calendar, precision, ..., fields = NULL, names = NULL, class) {
+new_time_point <- function(calendar = new_year_month_day(),
+                           seconds_of_day = integer(),
+                           nanoseconds_of_second = NULL,
+                           precision = "second",
+                           ...,
+                           names = NULL,
+                           class = NULL) {
   if (!is_calendar(calendar)) {
     abort("`calendar` must be a calendar.")
   }
@@ -9,26 +15,27 @@ new_time_point <- function(calendar, precision, ..., fields = NULL, names = NULL
     abort("`calendar` must have a precision of 'day'.")
   }
 
-  if (!is_string(precision)) {
-    abort("`precision` must be a string.")
+  if (!is_integer(seconds_of_day)) {
+    abort("`seconds_of_day` must be an integer vector.")
+  }
+
+  validate_precision(precision)
+
+  fields <- list(calendar = calendar, seconds_of_day = seconds_of_day)
+
+  # Only include nanoseconds if subsecond precision
+  if (!identical(precision, "second")) {
+    if (!is_integer(nanoseconds_of_second)) {
+      abort("`nanoseconds_of_second` must be an integer vector when using subsecond precision.")
+    }
+
+    nanos <- list(nanoseconds_of_second = nanoseconds_of_second)
+    fields <- c(fields, nanos)
   }
 
   size <- vec_size(calendar)
   validate_names(names, size)
 
-  calendar <- list(calendar = calendar)
-  fields <- c(calendar, fields)
-
-  new_time_point0(
-    fields = fields,
-    precision = precision,
-    ...,
-    names = names,
-    class = class
-  )
-}
-
-new_time_point0 <- function(fields, precision, ..., names = NULL, class) {
   new_rcrd(
     fields = fields,
     precision = precision,
@@ -41,6 +48,29 @@ new_time_point0 <- function(fields, precision, ..., names = NULL, class) {
 #' @export
 is_time_point <- function(x) {
   inherits(x, "clock_time_point")
+}
+
+# ------------------------------------------------------------------------------
+
+is_subsecond_precision <- function(x) {
+  x %in% c("millisecond", "microsecond", "nanosecond")
+}
+is_subsecond_time_point <- function(x) {
+  is_subsecond_precision(get_precision(x))
+}
+
+validate_precision <- function(precision) {
+  if (!is_string(precision)) {
+    abort("`precision` must be a string.")
+  }
+  if (is_false(precision %in% precisions())) {
+    abort("`precision` must be one of 'second', 'millisecond', 'microsecond', or 'nanosecond'.")
+  }
+  invisible(precision)
+}
+
+precisions <- function() {
+  c("second", "millisecond", "microsecond", "nanosecond")
 }
 
 # ------------------------------------------------------------------------------

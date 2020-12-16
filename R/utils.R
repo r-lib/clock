@@ -82,7 +82,7 @@ seconds_of_day_init <- function(x) {
   out
 }
 
-nanoseconds_of_day_init <- function(x) {
+nanoseconds_of_second_init <- function(x) {
   out <- zeros_along(x)
 
   na <- vec_equal_na(x)

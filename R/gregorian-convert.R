@@ -65,7 +65,7 @@ as_year_month_day.clock_naive_time_point <- function(x) {
 
 #' @export
 as_year_month_day.clock_zoned_time_point <- function(x) {
-  x <- as_naive_second_point(x)
+  x <- as_naive_time_point(x)
   as_year_month_day(x)
 }
 

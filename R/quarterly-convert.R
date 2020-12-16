@@ -85,7 +85,7 @@ as_year_quarternum_quarterday.clock_naive_time_point <- function(x, ..., start =
 
 #' @export
 as_year_quarternum_quarterday.clock_zoned_time_point <- function(x, ..., start = 1L) {
-  x <- as_naive_second_point(x)
+  x <- as_naive_time_point(x)
   as_year_quarternum_quarterday(x, ..., start = start)
 }
 

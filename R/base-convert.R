@@ -28,7 +28,7 @@ as.POSIXct.clock_calendar <- function(x,
                                       ...,
                                       dst_nonexistent = "roll-forward",
                                       dst_ambiguous = "earliest") {
-  x <- as_naive_second_point(x)
+  x <- as_naive_time_point(x)
   as.POSIXct(x, tz = tz, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
@@ -38,8 +38,6 @@ as.POSIXct.clock_naive_time_point <- function(x,
                                               ...,
                                               dst_nonexistent = "roll-forward",
                                               dst_ambiguous = "earliest") {
-  x <- as_naive_second_point(x)
-
   # Using `tz = ""` to be compatible with the generic of `as.POSIXct()`
   zone <- zone_standardize(tz)
 
@@ -61,8 +59,6 @@ as.POSIXct.clock_naive_time_point <- function(x,
 
 #' @export
 as.POSIXct.clock_zoned_time_point <- function(x, ...) {
-  x <- as_zoned_second_point(x)
-
   # Keeps zone of `x`.
   # Should use `adjust_zone()` first if that is required.
   zone <- zoned_time_point_zone(x)

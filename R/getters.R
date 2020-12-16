@@ -26,18 +26,15 @@ get_offset.Date <- function(x) {
 
 #' @export
 get_offset.POSIXt <- function(x) {
-  x <- as_zoned_second_point(x)
+  x <- as_zoned_time_point(x)
   get_offset(x)
 }
 
 #' @export
 get_offset.clock_zoned_time_point <- function(x) {
-  x <- as_zoned_second_point(x)
-
   calendar <- field_calendar(x)
   seconds_of_day <- field_seconds_of_day(x)
   zone <- get_zone(x)
-
   get_offset_cpp(calendar, seconds_of_day, zone)
 }
 
@@ -57,7 +54,7 @@ get_year.Date <- function(x) {
 
 #' @export
 get_year.POSIXt <- function(x) {
-  x <- as_zoned_second_point(x)
+  x <- as_zoned_time_point(x)
   get_year(x)
 }
 
@@ -88,7 +85,7 @@ get_year.clock_naive_time_point <- function(x) {
 
 #' @export
 get_year.clock_zoned_time_point <- function(x) {
-  x <- as_naive(x)
+  x <- as_naive_time_point(x)
   get_year(x)
 }
 
@@ -102,9 +99,21 @@ get_quarternum <- function(x) {
 
 #' @export
 get_quarternum.clock_quarterly <- function(x) {
-  start <- get_quarterly_start(x)
+  start <- get_start(x)
   yqnqd <- convert_calendar_days_to_year_quarternum_quarterday(x, start)
   yqnqd$quarternum
+}
+
+#' @export
+get_quarternum.clock_naive_time_point <- function(x) {
+  calendar <- field_calendar(x)
+  get_quarternum(calendar)
+}
+
+#' @export
+get_quarternum.clock_zoned_time_point <- function(x) {
+  x <- as_naive_time_point(x)
+  get_quarternum(x)
 }
 
 # ------------------------------------------------------------------------------

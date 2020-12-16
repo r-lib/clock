@@ -65,7 +65,7 @@ as_iso_year_weeknum_weekday.clock_naive_time_point <- function(x) {
 
 #' @export
 as_iso_year_weeknum_weekday.clock_zoned_time_point <- function(x) {
-  x <- as_naive_second_point(x)
+  x <- as_naive_time_point(x)
   as_iso_year_weeknum_weekday(x)
 }
 
