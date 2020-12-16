@@ -30,6 +30,7 @@ format_naive_time_point_subdaily <- function(x) {
 }
 
 format_calendar_days <- function(calendar, format) {
+  calendar <- promote_precision_day(calendar)
   seconds_of_day <- seconds_of_day_init(calendar)
   tp <- new_naive_time_point(calendar, seconds_of_day)
   format_naive_time_point(tp, format)
