@@ -934,11 +934,14 @@ civil_writable_rcrd convert_second_point_fields_from_naive_to_zoned_cpp(const ci
 civil_writable_rcrd convert_subsecond_point_fields_from_naive_to_zoned_cpp(const civil_field& calendar,
                                                                            const civil_field& seconds_of_day,
                                                                            const civil_field& nanoseconds_of_second,
+                                                                           const cpp11::strings& precision,
                                                                            const cpp11::strings& zone,
                                                                            const cpp11::strings& dst_nonexistent,
                                                                            const cpp11::strings& dst_ambiguous,
                                                                            const cpp11::integers& size) {
   r_ssize c_size = size[0];
+
+  const enum precision precision_val = parse_precision(precision);
 
   civil_writable_field out_calendar{calendar};
   civil_writable_field out_seconds_of_day{seconds_of_day};
@@ -1004,6 +1007,7 @@ civil_writable_rcrd convert_subsecond_point_fields_from_naive_to_zoned_cpp(const
       i,
       elt_dst_nonexistent_val,
       elt_dst_ambiguous_val,
+      precision_val,
       na,
       elt_nanos
     );

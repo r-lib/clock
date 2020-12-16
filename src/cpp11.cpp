@@ -47,10 +47,10 @@ extern "C" SEXP _civil_downcast_nanoseconds_of_second_precision(SEXP nanoseconds
   END_CPP11
 }
 // arithmetic.cpp
-civil_writable_rcrd add_years_or_months_gregorian_cpp(const civil_rcrd& x, const cpp11::integers& n, const cpp11::strings& day_nonexistent, const cpp11::strings& unit, const cpp11::integers& size);
-extern "C" SEXP _civil_add_years_or_months_gregorian_cpp(SEXP x, SEXP n, SEXP day_nonexistent, SEXP unit, SEXP size) {
+cpp11::writable::list add_gregorian_calendar_years_or_months(const civil_field& calendar, const cpp11::integers& n, const cpp11::strings& day_nonexistent, const cpp11::strings& unit);
+extern "C" SEXP _civil_add_gregorian_calendar_years_or_months(SEXP calendar, SEXP n, SEXP day_nonexistent, SEXP unit) {
   BEGIN_CPP11
-    return cpp11::as_sexp(add_years_or_months_gregorian_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(unit), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size)));
+    return cpp11::as_sexp(add_gregorian_calendar_years_or_months(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(unit)));
   END_CPP11
 }
 // arithmetic.cpp
@@ -75,17 +75,17 @@ extern "C" SEXP _civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp(SEXP 
   END_CPP11
 }
 // arithmetic.cpp
-civil_writable_rcrd add_years_or_quarters_quarterly_cpp(const civil_rcrd& x, const cpp11::integers& n, const int& start, const cpp11::strings& day_nonexistent, const cpp11::strings& unit, const cpp11::integers& size);
-extern "C" SEXP _civil_add_years_or_quarters_quarterly_cpp(SEXP x, SEXP n, SEXP start, SEXP day_nonexistent, SEXP unit, SEXP size) {
+cpp11::writable::list add_quarterly_calendar_years_or_quarters(const civil_field& calendar, const cpp11::integers& n, const int& start, const cpp11::strings& day_nonexistent, const cpp11::strings& unit);
+extern "C" SEXP _civil_add_quarterly_calendar_years_or_quarters(SEXP calendar, SEXP n, SEXP start, SEXP day_nonexistent, SEXP unit) {
   BEGIN_CPP11
-    return cpp11::as_sexp(add_years_or_quarters_quarterly_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const int&>>(start), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(unit), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size)));
+    return cpp11::as_sexp(add_quarterly_calendar_years_or_quarters(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const int&>>(start), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(unit)));
   END_CPP11
 }
 // arithmetic.cpp
-civil_writable_rcrd add_years_iso_cpp(const civil_rcrd& x, const cpp11::integers& n, const cpp11::strings& day_nonexistent, const cpp11::integers& size);
-extern "C" SEXP _civil_add_years_iso_cpp(SEXP x, SEXP n, SEXP day_nonexistent, SEXP size) {
+cpp11::writable::list add_iso_calendar_years(const civil_field& calendar, const cpp11::integers& n, const cpp11::strings& day_nonexistent);
+extern "C" SEXP _civil_add_iso_calendar_years(SEXP calendar, SEXP n, SEXP day_nonexistent) {
   BEGIN_CPP11
-    return cpp11::as_sexp(add_years_iso_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size)));
+    return cpp11::as_sexp(add_iso_calendar_years(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent)));
   END_CPP11
 }
 // converters.cpp
@@ -194,10 +194,10 @@ extern "C" SEXP _civil_convert_second_point_fields_from_naive_to_zoned_cpp(SEXP 
   END_CPP11
 }
 // converters.cpp
-civil_writable_rcrd convert_subsecond_point_fields_from_naive_to_zoned_cpp(const civil_field& calendar, const civil_field& seconds_of_day, const civil_field& nanoseconds_of_second, const cpp11::strings& zone, const cpp11::strings& dst_nonexistent, const cpp11::strings& dst_ambiguous, const cpp11::integers& size);
-extern "C" SEXP _civil_convert_subsecond_point_fields_from_naive_to_zoned_cpp(SEXP calendar, SEXP seconds_of_day, SEXP nanoseconds_of_second, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous, SEXP size) {
+civil_writable_rcrd convert_subsecond_point_fields_from_naive_to_zoned_cpp(const civil_field& calendar, const civil_field& seconds_of_day, const civil_field& nanoseconds_of_second, const cpp11::strings& precision, const cpp11::strings& zone, const cpp11::strings& dst_nonexistent, const cpp11::strings& dst_ambiguous, const cpp11::integers& size);
+extern "C" SEXP _civil_convert_subsecond_point_fields_from_naive_to_zoned_cpp(SEXP calendar, SEXP seconds_of_day, SEXP nanoseconds_of_second, SEXP precision, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous, SEXP size) {
   BEGIN_CPP11
-    return cpp11::as_sexp(convert_subsecond_point_fields_from_naive_to_zoned_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(seconds_of_day), cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(nanoseconds_of_second), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(dst_ambiguous), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size)));
+    return cpp11::as_sexp(convert_subsecond_point_fields_from_naive_to_zoned_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(seconds_of_day), cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(nanoseconds_of_second), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(dst_ambiguous), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size)));
   END_CPP11
 }
 // floor.cpp
@@ -295,12 +295,12 @@ extern "C" SEXP _civil_zone_current() {
 
 extern "C" {
 /* .Call calls */
+extern SEXP _civil_add_gregorian_calendar_years_or_months(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_hours_or_minutes_or_seconds_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_add_iso_calendar_years(SEXP, SEXP, SEXP);
 extern SEXP _civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_add_quarterly_calendar_years_or_quarters(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_weeks_or_days_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _civil_add_years_iso_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _civil_add_years_or_months_gregorian_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _civil_add_years_or_quarters_quarterly_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_gregorian_calendar(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_iso_calendar(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_naive_time_point_nanoseconds_of_second_cpp(SEXP, SEXP, SEXP);
@@ -316,7 +316,7 @@ extern SEXP _civil_convert_iso_year_weeknum_weekday_to_calendar_days(SEXP, SEXP,
 extern SEXP _civil_convert_naive_second_point_fields_to_zoned_seconds_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_second_point_fields_from_naive_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_second_point_fields_from_zoned_to_naive(SEXP, SEXP, SEXP);
-extern SEXP _civil_convert_subsecond_point_fields_from_naive_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_convert_subsecond_point_fields_from_naive_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_year_month_day_hour_minute_second_to_naive_second_point_fields(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_year_month_day_to_calendar_days(SEXP, SEXP, SEXP, SEXP);
@@ -338,12 +338,12 @@ extern SEXP _civil_zone_is_valid(SEXP);
 extern SEXP _civil_zone_standardize(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_civil_add_gregorian_calendar_years_or_months",                                               (DL_FUNC) &_civil_add_gregorian_calendar_years_or_months,                                               4},
     {"_civil_add_hours_or_minutes_or_seconds_cpp",                                                  (DL_FUNC) &_civil_add_hours_or_minutes_or_seconds_cpp,                                                  4},
+    {"_civil_add_iso_calendar_years",                                                               (DL_FUNC) &_civil_add_iso_calendar_years,                                                               3},
     {"_civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp",                                  (DL_FUNC) &_civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp,                                  4},
+    {"_civil_add_quarterly_calendar_years_or_quarters",                                             (DL_FUNC) &_civil_add_quarterly_calendar_years_or_quarters,                                             5},
     {"_civil_add_weeks_or_days_cpp",                                                                (DL_FUNC) &_civil_add_weeks_or_days_cpp,                                                                4},
-    {"_civil_add_years_iso_cpp",                                                                    (DL_FUNC) &_civil_add_years_iso_cpp,                                                                    4},
-    {"_civil_add_years_or_months_gregorian_cpp",                                                    (DL_FUNC) &_civil_add_years_or_months_gregorian_cpp,                                                    5},
-    {"_civil_add_years_or_quarters_quarterly_cpp",                                                  (DL_FUNC) &_civil_add_years_or_quarters_quarterly_cpp,                                                  6},
     {"_civil_adjust_gregorian_calendar",                                                            (DL_FUNC) &_civil_adjust_gregorian_calendar,                                                            4},
     {"_civil_adjust_iso_calendar",                                                                  (DL_FUNC) &_civil_adjust_iso_calendar,                                                                  4},
     {"_civil_adjust_naive_time_point_nanoseconds_of_second_cpp",                                    (DL_FUNC) &_civil_adjust_naive_time_point_nanoseconds_of_second_cpp,                                    3},
@@ -359,7 +359,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_convert_naive_second_point_fields_to_zoned_seconds_cpp",                               (DL_FUNC) &_civil_convert_naive_second_point_fields_to_zoned_seconds_cpp,                               6},
     {"_civil_convert_second_point_fields_from_naive_to_zoned_cpp",                                  (DL_FUNC) &_civil_convert_second_point_fields_from_naive_to_zoned_cpp,                                  6},
     {"_civil_convert_second_point_fields_from_zoned_to_naive",                                      (DL_FUNC) &_civil_convert_second_point_fields_from_zoned_to_naive,                                      3},
-    {"_civil_convert_subsecond_point_fields_from_naive_to_zoned_cpp",                               (DL_FUNC) &_civil_convert_subsecond_point_fields_from_naive_to_zoned_cpp,                               7},
+    {"_civil_convert_subsecond_point_fields_from_naive_to_zoned_cpp",                               (DL_FUNC) &_civil_convert_subsecond_point_fields_from_naive_to_zoned_cpp,                               8},
     {"_civil_convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields", (DL_FUNC) &_civil_convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields, 8},
     {"_civil_convert_year_month_day_hour_minute_second_to_naive_second_point_fields",               (DL_FUNC) &_civil_convert_year_month_day_hour_minute_second_to_naive_second_point_fields,               7},
     {"_civil_convert_year_month_day_to_calendar_days",                                              (DL_FUNC) &_civil_convert_year_month_day_to_calendar_days,                                              4},

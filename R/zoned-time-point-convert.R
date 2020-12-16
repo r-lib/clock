@@ -37,11 +37,11 @@ as_zoned_time_point.clock_naive_time_point <- function(x,
   zone <- zone_standardize(zone)
 
   if (is_subsecond_precision(precision)) {
-    # TODO: Should this take precision? To round nanoseconds_of_second correctly?
     fields <- convert_subsecond_point_fields_from_naive_to_zoned(
       calendar = field_calendar(x),
       seconds_of_day = field_seconds_of_day(x),
       nanoseconds_of_second = field_nanoseconds_of_second(x),
+      precision = precision,
       zone = zone,
       dst_nonexistent = dst_nonexistent,
       dst_ambiguous = dst_ambiguous

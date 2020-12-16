@@ -7,33 +7,41 @@
 
 // -----------------------------------------------------------------------------
 
-static civil_writable_rcrd add_years_or_months_gregorian(const civil_rcrd& x,
-                                                         const cpp11::integers& n,
-                                                         const enum day_nonexistent& day_nonexistent_val,
-                                                         const enum unit& unit_val,
-                                                         const r_ssize& size) {
-  civil_writable_rcrd out = civil_rcrd_clone(x);
-  civil_rcrd_recycle(out, size);
+[[cpp11::register]]
+cpp11::writable::list add_gregorian_calendar_years_or_months(const civil_field& calendar,
+                                                             const cpp11::integers& n,
+                                                             const cpp11::strings& day_nonexistent,
+                                                             const cpp11::strings& unit) {
+  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
+  enum unit unit_val = parse_unit(unit);
 
-  int* p_days = civil_rcrd_days_deref(out);
-  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
-  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
+  const r_ssize size = calendar.size();
 
-  const bool recycle_n = civil_is_scalar(n);
+  civil_writable_field out_calendar{calendar};
+  cpp11::writable::logicals ok(size);
+  cpp11::writable::logicals any(1);
+  any[0] = false;
+
+  cpp11::writable::list out({out_calendar, ok, any});
+  out.names() = {"calendar", "ok", "any"};
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_days = p_days[i];
-    int elt_n = recycle_n ? n[0] : n[i];
+    ok[i] = true;
 
-    if (elt_days == r_int_na) {
+    int elt_calendar = calendar[i];
+    int elt_n = n[i];
+
+    if (elt_calendar == r_int_na) {
       continue;
     }
     if (elt_n == r_int_na) {
-      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      ok[i] = r_lgl_na;
+      any[0] = true;
+      out_calendar[i] = r_int_na;
       continue;
     }
 
-    date::local_days elt_lday{date::days{elt_days}};
+    date::local_days elt_lday{date::days{elt_calendar}};
     date::year_month_day elt_ymd{elt_lday};
 
     date::year_month_day out_ymd;
@@ -44,30 +52,10 @@ static civil_writable_rcrd add_years_or_months_gregorian(const civil_rcrd& x,
       out_ymd = elt_ymd + date::months{elt_n};
     }
 
-    convert_year_month_day_to_days_one(
-      i,
-      day_nonexistent_val,
-      out_ymd,
-      p_days,
-      p_time_of_day,
-      p_nanos_of_second
-    );
+    convert_ymd_to_calendar_one(i, day_nonexistent_val, out_ymd, out_calendar, ok, any);
   }
 
   return out;
-}
-
-[[cpp11::register]]
-civil_writable_rcrd add_years_or_months_gregorian_cpp(const civil_rcrd& x,
-                                                      const cpp11::integers& n,
-                                                      const cpp11::strings& day_nonexistent,
-                                                      const cpp11::strings& unit,
-                                                      const cpp11::integers& size) {
-  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
-  enum unit unit_val = parse_unit(unit);
-  r_ssize c_size = size[0];
-
-  return add_years_or_months_gregorian(x, n, day_nonexistent_val, unit_val, c_size);
 }
 
 // -----------------------------------------------------------------------------
@@ -313,33 +301,40 @@ civil_writable_rcrd add_milliseconds_or_microseconds_or_nanoseconds_cpp(const ci
 // -----------------------------------------------------------------------------
 
 template <quarterly::start S>
-static civil_writable_rcrd add_years_or_quarters_quarterly(const civil_rcrd& x,
-                                                           const cpp11::integers& n,
-                                                           const enum day_nonexistent& day_nonexistent_val,
-                                                           const enum unit& unit_val,
-                                                           const r_ssize& size) {
-  civil_writable_rcrd out = civil_rcrd_clone(x);
-  civil_rcrd_recycle(out, size);
+static cpp11::writable::list add_quarterly_calendar_years_or_quarters_impl(const civil_field& calendar,
+                                                                           const cpp11::integers& n,
+                                                                           const cpp11::strings& day_nonexistent,
+                                                                           const cpp11::strings& unit) {
+  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
+  enum unit unit_val = parse_unit(unit);
 
-  int* p_days = civil_rcrd_days_deref(out);
-  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
-  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
+  const r_ssize size = calendar.size();
 
-  const bool recycle_n = civil_is_scalar(n);
+  civil_writable_field out_calendar{calendar};
+  cpp11::writable::logicals ok(size);
+  cpp11::writable::logicals any(1);
+  any[0] = false;
+
+  cpp11::writable::list out({out_calendar, ok, any});
+  out.names() = {"calendar", "ok", "any"};
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_days = p_days[i];
-    int elt_n = recycle_n ? n[0] : n[i];
+    ok[i] = true;
 
-    if (elt_days == r_int_na) {
+    int elt_calendar = calendar[i];
+    int elt_n = n[i];
+
+    if (elt_calendar == r_int_na) {
       continue;
     }
     if (elt_n == r_int_na) {
-      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      ok[i] = r_lgl_na;
+      any[0] = true;
+      out_calendar[i] = r_int_na;
       continue;
     }
 
-    date::local_days elt_lday{date::days{elt_days}};
+    date::local_days elt_lday{date::days{elt_calendar}};
     quarterly::year_quarternum_quarterday<S> elt_yqnqd{elt_lday};
 
     quarterly::year_quarternum_quarterday<S> out_yqnqd;
@@ -350,111 +345,103 @@ static civil_writable_rcrd add_years_or_quarters_quarterly(const civil_rcrd& x,
       out_yqnqd = elt_yqnqd + quarterly::quarters{elt_n};
     }
 
-    convert_year_quarternum_quarterday_to_days_one(
+    convert_yqnqd_to_calendar_one(
       i,
       day_nonexistent_val,
       out_yqnqd,
-      p_days,
-      p_time_of_day,
-      p_nanos_of_second
+      out_calendar,
+      ok,
+      any
     );
   }
 
   return out;
 }
 
-[[cpp11::register]]
-civil_writable_rcrd add_years_or_quarters_quarterly_cpp(const civil_rcrd& x,
-                                                        const cpp11::integers& n,
-                                                        const int& start,
-                                                        const cpp11::strings& day_nonexistent,
-                                                        const cpp11::strings& unit,
-                                                        const cpp11::integers& size) {
-  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
-  enum unit unit_val = parse_unit(unit);
-  r_ssize c_size = size[0];
 
+[[cpp11::register]]
+cpp11::writable::list add_quarterly_calendar_years_or_quarters(const civil_field& calendar,
+                                                               const cpp11::integers& n,
+                                                               const int& start,
+                                                               const cpp11::strings& day_nonexistent,
+                                                               const cpp11::strings& unit) {
   if (start == 1) {
-    return add_years_or_quarters_quarterly<quarterly::start::january>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_quarterly_calendar_years_or_quarters_impl<quarterly::start::january>(calendar, n, day_nonexistent, unit);
   } else if (start == 2) {
-    return add_years_or_quarters_quarterly<quarterly::start::february>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_quarterly_calendar_years_or_quarters_impl<quarterly::start::february>(calendar, n, day_nonexistent, unit);
   } else if (start == 3) {
-    return add_years_or_quarters_quarterly<quarterly::start::march>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_quarterly_calendar_years_or_quarters_impl<quarterly::start::march>(calendar, n, day_nonexistent, unit);
   } else if (start == 4) {
-    return add_years_or_quarters_quarterly<quarterly::start::april>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_quarterly_calendar_years_or_quarters_impl<quarterly::start::april>(calendar, n, day_nonexistent, unit);
   } else if (start == 5) {
-    return add_years_or_quarters_quarterly<quarterly::start::may>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_quarterly_calendar_years_or_quarters_impl<quarterly::start::may>(calendar, n, day_nonexistent, unit);
   } else if (start == 6) {
-    return add_years_or_quarters_quarterly<quarterly::start::june>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_quarterly_calendar_years_or_quarters_impl<quarterly::start::june>(calendar, n, day_nonexistent, unit);
   } else if (start == 7) {
-    return add_years_or_quarters_quarterly<quarterly::start::july>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_quarterly_calendar_years_or_quarters_impl<quarterly::start::july>(calendar, n, day_nonexistent, unit);
   } else if (start == 8) {
-    return add_years_or_quarters_quarterly<quarterly::start::august>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_quarterly_calendar_years_or_quarters_impl<quarterly::start::august>(calendar, n, day_nonexistent, unit);
   } else if (start == 9) {
-    return add_years_or_quarters_quarterly<quarterly::start::september>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_quarterly_calendar_years_or_quarters_impl<quarterly::start::september>(calendar, n, day_nonexistent, unit);
   } else if (start == 10) {
-    return add_years_or_quarters_quarterly<quarterly::start::october>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_quarterly_calendar_years_or_quarters_impl<quarterly::start::october>(calendar, n, day_nonexistent, unit);
   } else if (start == 11) {
-    return add_years_or_quarters_quarterly<quarterly::start::november>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_quarterly_calendar_years_or_quarters_impl<quarterly::start::november>(calendar, n, day_nonexistent, unit);
   } else if (start == 12) {
-    return add_years_or_quarters_quarterly<quarterly::start::december>(x, n, day_nonexistent_val, unit_val, c_size);
+    return add_quarterly_calendar_years_or_quarters_impl<quarterly::start::december>(calendar, n, day_nonexistent, unit);
   }
 
-  never_reached("add_years_or_quarters_quarterly_cpp");
+  never_reached("add_quarterly_calendar_years_or_quarters");
 }
 
 // -----------------------------------------------------------------------------
 
-static civil_writable_rcrd add_years_iso(const civil_rcrd& x,
-                                         const cpp11::integers& n,
-                                         const enum day_nonexistent& day_nonexistent_val,
-                                         const r_ssize& size) {
-  civil_writable_rcrd out = civil_rcrd_clone(x);
-  civil_rcrd_recycle(out, size);
+[[cpp11::register]]
+cpp11::writable::list add_iso_calendar_years(const civil_field& calendar,
+                                             const cpp11::integers& n,
+                                             const cpp11::strings& day_nonexistent) {
+  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
 
-  int* p_days = civil_rcrd_days_deref(out);
-  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
-  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
+  const r_ssize size = calendar.size();
 
-  const bool recycle_n = civil_is_scalar(n);
+  civil_writable_field out_calendar{calendar};
+  cpp11::writable::logicals ok(size);
+  cpp11::writable::logicals any(1);
+  any[0] = false;
+
+  cpp11::writable::list out({out_calendar, ok, any});
+  out.names() = {"calendar", "ok", "any"};
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_days = p_days[i];
-    int elt_n = recycle_n ? n[0] : n[i];
+    ok[i] = true;
 
-    if (elt_days == r_int_na) {
+    int elt_calendar = calendar[i];
+    int elt_n = n[i];
+
+    if (elt_calendar == r_int_na) {
       continue;
     }
     if (elt_n == r_int_na) {
-      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      ok[i] = r_lgl_na;
+      any[0] = true;
+      out_calendar[i] = r_int_na;
       continue;
     }
 
-    date::local_days elt_lday{date::days{elt_days}};
+    date::local_days elt_lday{date::days{elt_calendar}};
     iso_week::year_weeknum_weekday elt_yww{elt_lday};
 
     iso_week::year_weeknum_weekday out_yww = elt_yww + iso_week::years{elt_n};
 
-    convert_year_weeknum_weekday_to_days_one(
+    convert_iso_yww_to_calendar_one(
       i,
       day_nonexistent_val,
       out_yww,
-      p_days,
-      p_time_of_day,
-      p_nanos_of_second
+      out_calendar,
+      ok,
+      any
     );
   }
 
   return out;
-}
-
-[[cpp11::register]]
-civil_writable_rcrd add_years_iso_cpp(const civil_rcrd& x,
-                                      const cpp11::integers& n,
-                                      const cpp11::strings& day_nonexistent,
-                                      const cpp11::integers& size) {
-  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
-  r_ssize c_size = size[0];
-
-  return add_years_iso(x, n, day_nonexistent_val, c_size);
 }
