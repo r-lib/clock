@@ -178,7 +178,9 @@ format.clock_zoned_time_point <- function(x,
                                           abbreviate_zone = FALSE) {
   # TODO: Better format method that completely uses native code?
   if (is_null(format)) {
-    calendar <- field_calendar(x)
+    # Calendar must come from naive version to account for time zone offset
+    naive <- as_naive_time_point(x)
+    calendar <- field_calendar(naive)
     ymd <- format(calendar)
 
     # Collect internal option
