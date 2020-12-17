@@ -61,7 +61,7 @@ as_zoned_time_point.clock_naive_time_point <- function(x,
 
 #' @export
 as_zoned_time_point.Date <- function(x, ..., precision = "second") {
-  x <- as_year_month_day(x)
+  x <- to_posixct(x)
   as_zoned_time_point(x, ..., precision = precision)
 }
 
