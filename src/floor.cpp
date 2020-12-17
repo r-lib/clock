@@ -1,11 +1,11 @@
-#include "civil.h"
+#include "clock.h"
 #include "utils.h"
 
 [[cpp11::register]]
-civil_writable_field floor_calendar_days_to_year_month_precision(const civil_field& calendar) {
+clock_writable_field floor_calendar_days_to_year_month_precision(const clock_field& calendar) {
   r_ssize size = calendar.size();
 
-  civil_writable_field out_calendar{calendar};
+  clock_writable_field out_calendar{calendar};
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_calendar = calendar[i];
@@ -31,10 +31,10 @@ civil_writable_field floor_calendar_days_to_year_month_precision(const civil_fie
 }
 
 template <quarterly::start S>
-civil_writable_field floor_days_to_year_quarternum_precision_impl(const civil_field& calendar) {
+clock_writable_field floor_days_to_year_quarternum_precision_impl(const clock_field& calendar) {
   r_ssize size = calendar.size();
 
-  civil_writable_field out_calendar{calendar};
+  clock_writable_field out_calendar{calendar};
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_calendar = calendar[i];
@@ -62,7 +62,7 @@ civil_writable_field floor_days_to_year_quarternum_precision_impl(const civil_fi
 }
 
 [[cpp11::register]]
-civil_writable_field floor_calendar_days_to_year_quarternum_precision(const civil_field& calendar,
+clock_writable_field floor_calendar_days_to_year_quarternum_precision(const clock_field& calendar,
                                                                       int start) {
   if (start == 1) {
     return floor_days_to_year_quarternum_precision_impl<quarterly::start::january>(calendar);
@@ -94,10 +94,10 @@ civil_writable_field floor_calendar_days_to_year_quarternum_precision(const civi
 }
 
 [[cpp11::register]]
-civil_writable_field floor_calendar_days_to_iso_year_weeknum_precision(const civil_field& calendar) {
+clock_writable_field floor_calendar_days_to_iso_year_weeknum_precision(const clock_field& calendar) {
   r_ssize size = calendar.size();
 
-  civil_writable_field out_calendar{calendar};
+  clock_writable_field out_calendar{calendar};
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_calendar = calendar[i];

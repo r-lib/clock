@@ -1,7 +1,7 @@
-#ifndef CIVIL_CONVERSION_H
-#define CIVIL_CONVERSION_H
+#ifndef CLOCK_CONVERSION_H
+#define CLOCK_CONVERSION_H
 
-#include "civil.h"
+#include "clock.h"
 #include "enums.h"
 
 date::sys_seconds convert_local_to_sys(const date::local_seconds& lsec,

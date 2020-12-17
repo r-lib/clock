@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(civil)
+library(clock)
 library(magrittr)
 ```
 
@@ -34,9 +34,9 @@ Date time arithmetic is often complicated. Dealing with leap years, daylight sav
 
 The important thing is that there is no _right_ answer, but often one is more common than the others. Here, I think most people would agree that that means mapping to the end of February and returning `"2019-02-28"`.
 
-With doing arithmetic with civil, the goal is to be _flexible_, providing many options for you to choose from, but also _predictable_, providing defaults that align with the most common results.
+With doing arithmetic with clock, the goal is to be _flexible_, providing many options for you to choose from, but also _predictable_, providing defaults that align with the most common results.
 
-The goal of this vignette is to walk through the three main issues that may arise in date-time arithmetic, explaining the defaults and options that civil exposes to you. These three issues are:
+The goal of this vignette is to walk through the three main issues that may arise in date-time arithmetic, explaining the defaults and options that clock exposes to you. These three issues are:
 
 - Nonexistent dates due to period arithmetic
 
@@ -71,7 +71,7 @@ As mentioned before, there are a number of options to resolve this. The full set
 
 - Error because this date doesn't exist.
 
-In civil, the default behavior is the first option, the last possible time in the current month will be returned.
+In clock, the default behavior is the first option, the last possible time in the current month will be returned.
 
 ```{r}
 x
@@ -124,7 +124,7 @@ There are multiple options here to resolve this nonexistent day:
 
 - Return an error.
 
-Rather than forcing one of these options on you, civil exposes them all through the `dst_nonexistent` argument, but tries to default to the most common case. Here, that means adjusting to the next instant after the gap.
+Rather than forcing one of these options on you, clock exposes them all through the `dst_nonexistent` argument, but tries to default to the most common case. Here, that means adjusting to the next instant after the gap.
 
 ```{r}
 add_days(x, 1)
@@ -214,7 +214,7 @@ There are a few options here:
 
 - Return an error.
 
-Again, civil exposes all of these options to you through the `dst_ambiguous` option, but tries to choose the most intuitive one. Here, that means choosing the earliest of the two ambiguous times since you are adding months and are approaching it from before the fallback happened.
+Again, clock exposes all of these options to you through the `dst_ambiguous` option, but tries to choose the most intuitive one. Here, that means choosing the earliest of the two ambiguous times since you are adding months and are approaching it from before the fallback happened.
 
 ```{r}
 add_months(x, 1)
@@ -295,7 +295,7 @@ stops <- index + months(n)
 
 It is often a requirement that `index` is an increasing series here, and similarly it is expected that `starts` and `stops` are also increasing. If the relative ordering is lost then you can't ensure that this holds.
 
-The defaults in civil will always preserve relative ordering. For `day_nonexistent`, it is always safe to use `"last-time"` and `"first-time"`. This is why `"last-time"` pins the time of day to the last possible second in the day.
+The defaults in clock will always preserve relative ordering. For `day_nonexistent`, it is always safe to use `"last-time"` and `"first-time"`. This is why `"last-time"` pins the time of day to the last possible second in the day.
 
 ```{r}
 z <- add_months(x, 1, day_nonexistent = "last-time")

@@ -1,4 +1,4 @@
-Package: civil
+Package: clock
 Title: Local and Zoned Dates
 Version: 0.0.0.9000
 Authors@R: 
@@ -14,8 +14,8 @@ Description: Provides comprehensive support for local and zoned
     to nanoseconds is supported, and partial date types representing
     coarser periods such as months or weeks are also implemented.
 License: MIT + file LICENSE
-URL: https://github.com/DavisVaughan/civil
-BugReports: https://github.com/DavisVaughan/civil/issues
+URL: https://github.com/DavisVaughan/clock
+BugReports: https://github.com/DavisVaughan/clock/issues
 Imports: 
     ellipsis,
     rlang,

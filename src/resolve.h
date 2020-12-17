@@ -1,10 +1,10 @@
-#ifndef CIVIL_RESOLVE_H
-#define CIVIL_RESOLVE_H
+#ifndef CLOCK_RESOLVE_H
+#define CLOCK_RESOLVE_H
 
-#include "civil.h"
+#include "clock.h"
 #include "utils.h"
 #include "enums.h"
-#include "civil-rcrd.h"
+#include "clock-rcrd.h"
 
 // -----------------------------------------------------------------------------
 
@@ -177,7 +177,7 @@ static inline void resolve_day_nonexistent_na(bool& na) {
 }
 
 static inline void resolve_day_nonexistent_error(const r_ssize& i) {
-  civil_abort("Nonexistent day found at location %i.", (int) i + 1);
+  clock_abort("Nonexistent day found at location %i.", (int) i + 1);
 }
 
 // -----------------------------------------------------------------------------
@@ -185,7 +185,7 @@ static inline void resolve_day_nonexistent_error(const r_ssize& i) {
 static inline void convert_ymd_to_calendar_one(const r_ssize& i,
                                                const enum day_nonexistent& day_nonexistent_val,
                                                date::year_month_day& ymd,
-                                               civil_writable_field& calendar,
+                                               clock_writable_field& calendar,
                                                cpp11::writable::logicals& ok,
                                                cpp11::writable::logicals& any) {
   if (ymd.ok()) {
@@ -215,7 +215,7 @@ template <quarterly::start S>
 static inline void convert_yqnqd_to_calendar_one(const r_ssize& i,
                                                  const enum day_nonexistent& day_nonexistent_val,
                                                  quarterly::year_quarternum_quarterday<S>& yqnqd,
-                                                 civil_writable_field& calendar,
+                                                 clock_writable_field& calendar,
                                                  cpp11::writable::logicals& ok,
                                                  cpp11::writable::logicals& any) {
   if (yqnqd.ok()) {
@@ -244,7 +244,7 @@ static inline void convert_yqnqd_to_calendar_one(const r_ssize& i,
 static inline void convert_iso_yww_to_calendar_one(const r_ssize& i,
                                                    const enum day_nonexistent& day_nonexistent_val,
                                                    iso_week::year_weeknum_weekday& yww,
-                                                   civil_writable_field& calendar,
+                                                   clock_writable_field& calendar,
                                                    cpp11::writable::logicals& ok,
                                                    cpp11::writable::logicals& any) {
   if (yww.ok()) {

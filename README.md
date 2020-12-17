@@ -1,16 +1,16 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# civil
+# clock
 
 <!-- badges: start -->
 
 [![Codecov test
-coverage](https://codecov.io/gh/DavisVaughan/civil/branch/master/graph/badge.svg)](https://codecov.io/gh/DavisVaughan/civil?branch=master)
-[![R-CMD-check](https://github.com/DavisVaughan/civil/workflows/R-CMD-check/badge.svg)](https://github.com/DavisVaughan/civil/actions)
+coverage](https://codecov.io/gh/DavisVaughan/clock/branch/master/graph/badge.svg)](https://codecov.io/gh/DavisVaughan/clock?branch=master)
+[![R-CMD-check](https://github.com/DavisVaughan/clock/workflows/R-CMD-check/badge.svg)](https://github.com/DavisVaughan/clock/actions)
 <!-- badges: end -->
 
-The goal of civil is to provide new types for working with *naive* and
+The goal of clock is to provide new types for working with *naive* and
 *zoned* date-times. A *naive* date-time is completely unaware of any
 time zone. A *zoned* date-time can be thought of as a naive date-time
 plus a time zone.
@@ -33,9 +33,9 @@ intuitive.
 
 ## Installation
 
-You can install the development version of civil with:
+You can install the development version of clock with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("DavisVaughan/civil")
+remotes::install_github("DavisVaughan/clock")
 ```

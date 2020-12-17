@@ -8,7 +8,7 @@
 // [[ include("enums.h") ]]
 enum day_nonexistent parse_day_nonexistent(const cpp11::strings& x) {
   if (x.size() != 1) {
-    civil_abort("`day_nonexistent` must be a string with length 1.");
+    clock_abort("`day_nonexistent` must be a string with length 1.");
   }
 
   std::string string = x[0];
@@ -20,7 +20,7 @@ enum day_nonexistent parse_day_nonexistent(const cpp11::strings& x) {
   if (string == "NA") return day_nonexistent::na;
   if (string == "error") return day_nonexistent::error;
 
-  civil_abort("'%s' is not a recognized `day_nonexistent` option.", string.c_str());
+  clock_abort("'%s' is not a recognized `day_nonexistent` option.", string.c_str());
 }
 
 // -----------------------------------------------------------------------------
@@ -28,7 +28,7 @@ enum day_nonexistent parse_day_nonexistent(const cpp11::strings& x) {
 // [[ include("enums.h") ]]
 enum dst_nonexistent parse_dst_nonexistent(const cpp11::strings& x) {
   if (x.size() != 1) {
-    civil_abort("`dst_nonexistent` must be a string with length 1.");
+    clock_abort("`dst_nonexistent` must be a string with length 1.");
   }
 
   return parse_dst_nonexistent_one(x[0]);
@@ -45,7 +45,7 @@ enum dst_nonexistent parse_dst_nonexistent_one(const cpp11::r_string& x) {
   if (string == "NA") return dst_nonexistent::na;
   if (string == "error") return dst_nonexistent::error;
 
-  civil_abort("'%s' is not a recognized `dst_nonexistent` option.", string.c_str());
+  clock_abort("'%s' is not a recognized `dst_nonexistent` option.", string.c_str());
 }
 
 // -----------------------------------------------------------------------------
@@ -53,7 +53,7 @@ enum dst_nonexistent parse_dst_nonexistent_one(const cpp11::r_string& x) {
 // [[ include("enums.h") ]]
 enum dst_ambiguous parse_dst_ambiguous(const cpp11::strings& x) {
   if (x.size() != 1) {
-    civil_abort("`dst_ambiguous` must be a string with length 1.");
+    clock_abort("`dst_ambiguous` must be a string with length 1.");
   }
 
   return parse_dst_ambiguous_one(x[0]);
@@ -68,7 +68,7 @@ enum dst_ambiguous parse_dst_ambiguous_one(const cpp11::r_string& x) {
   if (string == "NA") return dst_ambiguous::na;
   if (string == "error") return dst_ambiguous::error;
 
-  civil_abort("'%s' is not a recognized `dst_ambiguous` option.", string.c_str());
+  clock_abort("'%s' is not a recognized `dst_ambiguous` option.", string.c_str());
 }
 
 // -----------------------------------------------------------------------------
@@ -76,7 +76,7 @@ enum dst_ambiguous parse_dst_ambiguous_one(const cpp11::r_string& x) {
 // [[ include("enums.h") ]]
 enum unit parse_unit(const cpp11::strings& x) {
   if (x.size() != 1) {
-    civil_abort("`unit` must be a string with length 1.");
+    clock_abort("`unit` must be a string with length 1.");
   }
 
   std::string string = x[0];
@@ -93,7 +93,7 @@ enum unit parse_unit(const cpp11::strings& x) {
   if (string == "microsecond") return unit::microsecond;
   if (string == "nanosecond") return unit::nanosecond;
 
-  civil_abort("'%s' is not a recognized `unit` option.", string.c_str());
+  clock_abort("'%s' is not a recognized `unit` option.", string.c_str());
 }
 
 // -----------------------------------------------------------------------------
@@ -101,7 +101,7 @@ enum unit parse_unit(const cpp11::strings& x) {
 // [[ include("enums.h") ]]
 enum adjuster parse_adjuster(const cpp11::strings& x) {
   if (x.size() != 1) {
-    civil_abort("`adjuster` must be a string with length 1.");
+    clock_abort("`adjuster` must be a string with length 1.");
   }
 
   std::string string = x[0];
@@ -123,7 +123,7 @@ enum adjuster parse_adjuster(const cpp11::strings& x) {
   if (string == "last_day_of_quarter") return adjuster::last_day_of_quarter;
   if (string == "last_day_of_month") return adjuster::last_day_of_month;
 
-  civil_abort("'%s' is not a recognized `adjuster` option.", string.c_str());
+  clock_abort("'%s' is not a recognized `adjuster` option.", string.c_str());
 }
 
 // -----------------------------------------------------------------------------
@@ -131,7 +131,7 @@ enum adjuster parse_adjuster(const cpp11::strings& x) {
 // [[ include("enums.h") ]]
 enum precision parse_precision(const cpp11::strings& x) {
   if (x.size() != 1) {
-    civil_abort("`precision` must be a string with length 1.");
+    clock_abort("`precision` must be a string with length 1.");
   }
 
   std::string string = x[0];
@@ -141,5 +141,5 @@ enum precision parse_precision(const cpp11::strings& x) {
   if (string == "microsecond") return precision::microsecond;
   if (string == "nanosecond") return precision::nanosecond;
 
-  civil_abort("'%s' is not a recognized `precision` option.", string.c_str());
+  clock_abort("'%s' is not a recognized `precision` option.", string.c_str());
 }

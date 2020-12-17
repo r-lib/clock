@@ -1,7 +1,7 @@
-#ifndef CIVIL_ENUMS_H
-#define CIVIL_ENUMS_H
+#ifndef CLOCK_ENUMS_H
+#define CLOCK_ENUMS_H
 
-#include "civil.h"
+#include "clock.h"
 // -----------------------------------------------------------------------------
 
 enum class day_nonexistent {

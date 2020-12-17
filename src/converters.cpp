@@ -1,6 +1,6 @@
-#include "civil.h"
+#include "clock.h"
 #include "utils.h"
-#include "civil-rcrd.h"
+#include "clock-rcrd.h"
 #include "zone.h"
 #include "enums.h"
 #include "conversion.h"
@@ -10,14 +10,14 @@
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd convert_zoned_seconds_to_naive_second_point_fields(const cpp11::doubles& seconds,
+clock_writable_rcrd convert_zoned_seconds_to_naive_second_point_fields(const cpp11::doubles& seconds,
                                                                        const cpp11::strings& zone) {
   r_ssize size = seconds.size();
 
-  civil_writable_field days(size);
-  civil_writable_field seconds_of_day(size);
+  clock_writable_field days(size);
+  clock_writable_field seconds_of_day(size);
 
-  civil_writable_rcrd out({days, seconds_of_day});
+  clock_writable_rcrd out({days, seconds_of_day});
   out.names() = {"days", "seconds_of_day"};
 
   cpp11::writable::strings zone_standard = zone_standardize(zone);
@@ -53,8 +53,8 @@ civil_writable_rcrd convert_zoned_seconds_to_naive_second_point_fields(const cpp
 }
 
 [[cpp11::register]]
-cpp11::writable::doubles convert_naive_second_point_fields_to_zoned_seconds_cpp(const civil_field& calendar,
-                                                                                const civil_field& seconds_of_day,
+cpp11::writable::doubles convert_naive_second_point_fields_to_zoned_seconds_cpp(const clock_field& calendar,
+                                                                                const clock_field& seconds_of_day,
                                                                                 const cpp11::strings& zone,
                                                                                 const cpp11::strings& dst_nonexistent,
                                                                                 const cpp11::strings& dst_ambiguous,
@@ -68,10 +68,10 @@ cpp11::writable::doubles convert_naive_second_point_fields_to_zoned_seconds_cpp(
   std::string zone_name(zone_name_r);
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
-  bool recycle_calendar = civil_is_scalar(calendar);
-  bool recycle_seconds_of_day = civil_is_scalar(seconds_of_day);
-  bool recycle_dst_nonexistent = civil_is_scalar(dst_nonexistent);
-  bool recycle_dst_ambiguous = civil_is_scalar(dst_ambiguous);
+  bool recycle_calendar = clock_is_scalar(calendar);
+  bool recycle_seconds_of_day = clock_is_scalar(seconds_of_day);
+  bool recycle_dst_nonexistent = clock_is_scalar(dst_nonexistent);
+  bool recycle_dst_ambiguous = clock_is_scalar(dst_ambiguous);
 
   enum dst_nonexistent dst_nonexistent_val;
   if (recycle_dst_nonexistent) {
@@ -133,7 +133,7 @@ cpp11::writable::doubles convert_naive_second_point_fields_to_zoned_seconds_cpp(
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd convert_year_month_day_hour_minute_second_to_naive_second_point_fields(const cpp11::integers& year,
+clock_writable_rcrd convert_year_month_day_hour_minute_second_to_naive_second_point_fields(const cpp11::integers& year,
                                                                                            const cpp11::integers& month,
                                                                                            const cpp11::integers& day,
                                                                                            const cpp11::integers& hour,
@@ -144,10 +144,10 @@ civil_writable_rcrd convert_year_month_day_hour_minute_second_to_naive_second_po
 
   r_ssize size = year.size();
 
-  civil_writable_field days(size);
-  civil_writable_field seconds_of_day(size);
+  clock_writable_field days(size);
+  clock_writable_field seconds_of_day(size);
 
-  civil_writable_rcrd out({days, seconds_of_day});
+  clock_writable_rcrd out({days, seconds_of_day});
   out.names() = {"days", "seconds_of_day"};
 
   for (r_ssize i = 0; i < size; ++i) {
@@ -210,7 +210,7 @@ civil_writable_rcrd convert_year_month_day_hour_minute_second_to_naive_second_po
 }
 
 [[cpp11::register]]
-civil_writable_rcrd convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields(const cpp11::integers& year,
+clock_writable_rcrd convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields(const cpp11::integers& year,
                                                                                                          const cpp11::integers& month,
                                                                                                          const cpp11::integers& day,
                                                                                                          const cpp11::integers& hour,
@@ -222,11 +222,11 @@ civil_writable_rcrd convert_year_month_day_hour_minute_second_nanosecond_to_naiv
 
   r_ssize size = year.size();
 
-  civil_writable_field days(size);
-  civil_writable_field seconds_of_day(size);
-  civil_writable_field nanoseconds_of_second(size);
+  clock_writable_field days(size);
+  clock_writable_field seconds_of_day(size);
+  clock_writable_field nanoseconds_of_second(size);
 
-  civil_writable_rcrd out({days, seconds_of_day, nanoseconds_of_second});
+  clock_writable_rcrd out({days, seconds_of_day, nanoseconds_of_second});
   out.names() = {"days", "seconds_of_day", "nanoseconds_of_second"};
 
   for (r_ssize i = 0; i < size; ++i) {
@@ -300,14 +300,14 @@ civil_writable_rcrd convert_year_month_day_hour_minute_second_nanosecond_to_naiv
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_list_of_integers convert_calendar_days_to_year_month_day(const civil_field& calendar) {
+clock_writable_list_of_integers convert_calendar_days_to_year_month_day(const clock_field& calendar) {
   r_ssize size = calendar.size();
 
   cpp11::writable::integers year(size);
   cpp11::writable::integers month(size);
   cpp11::writable::integers day(size);
 
-  civil_writable_list_of_integers out({year, month, day});
+  clock_writable_list_of_integers out({year, month, day});
   out.names() = {"year", "month", "day"};
 
   for (r_ssize i = 0; i < size; ++i) {
@@ -338,15 +338,15 @@ civil_writable_list_of_integers convert_calendar_days_to_year_month_day(const ci
  * going from zoned->naive. They are "beneath" time zone changes.
  */
 [[cpp11::register]]
-civil_writable_rcrd convert_second_point_fields_from_zoned_to_naive(const civil_field& calendar,
-                                                                    const civil_field& seconds_of_day,
+clock_writable_rcrd convert_second_point_fields_from_zoned_to_naive(const clock_field& calendar,
+                                                                    const clock_field& seconds_of_day,
                                                                     const cpp11::strings& zone) {
   r_ssize size = calendar.size();
 
-  civil_writable_field out_calendar{calendar};
-  civil_writable_field out_seconds_of_day{seconds_of_day};
+  clock_writable_field out_calendar{calendar};
+  clock_writable_field out_seconds_of_day{seconds_of_day};
 
-  civil_writable_rcrd out({out_calendar, out_seconds_of_day});
+  clock_writable_rcrd out({out_calendar, out_seconds_of_day});
   out.names() = {"calendar", "seconds_of_day"};
 
   cpp11::writable::strings zone_standard = zone_standardize(zone);
@@ -388,13 +388,13 @@ civil_writable_rcrd convert_second_point_fields_from_zoned_to_naive(const civil_
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd convert_zoned_seconds_to_zoned_second_point_fields(const cpp11::doubles& seconds) {
+clock_writable_rcrd convert_zoned_seconds_to_zoned_second_point_fields(const cpp11::doubles& seconds) {
   r_ssize size = seconds.size();
 
-  civil_writable_field out_days(size);
-  civil_writable_field out_seconds_of_day(size);
+  clock_writable_field out_days(size);
+  clock_writable_field out_seconds_of_day(size);
 
-  civil_writable_rcrd out({out_days, out_seconds_of_day});
+  clock_writable_rcrd out({out_days, out_seconds_of_day});
   out.names() = {"days", "seconds_of_day"};
 
   for (r_ssize i = 0; i < size; ++i) {
@@ -425,7 +425,7 @@ civil_writable_rcrd convert_zoned_seconds_to_zoned_second_point_fields(const cpp
 // -----------------------------------------------------------------------------
 
 template <quarterly::start S>
-static civil_writable_field convert_year_quarternum_quarterday_to_calendar_days_impl(const cpp11::integers& year,
+static clock_writable_field convert_year_quarternum_quarterday_to_calendar_days_impl(const cpp11::integers& year,
                                                                                      const cpp11::integers& quarternum,
                                                                                      const cpp11::integers& quarterday,
                                                                                      const cpp11::strings& day_nonexistent) {
@@ -474,7 +474,7 @@ static civil_writable_field convert_year_quarternum_quarterday_to_calendar_days_
 }
 
 [[cpp11::register]]
-civil_writable_field convert_year_quarternum_quarterday_to_calendar_days(const cpp11::integers& year,
+clock_writable_field convert_year_quarternum_quarterday_to_calendar_days(const cpp11::integers& year,
                                                                          const cpp11::integers& quarternum,
                                                                          const cpp11::integers& quarterday,
                                                                          int start,
@@ -511,7 +511,7 @@ civil_writable_field convert_year_quarternum_quarterday_to_calendar_days(const c
 template <quarterly::start S>
 static
 cpp11::writable::list_of<cpp11::writable::integers>
-convert_calendar_days_to_year_quarternum_quarterday_impl(const civil_field& calendar) {
+convert_calendar_days_to_year_quarternum_quarterday_impl(const clock_field& calendar) {
   r_ssize size = calendar.size();
 
   cpp11::writable::integers out_year(size);
@@ -544,7 +544,7 @@ convert_calendar_days_to_year_quarternum_quarterday_impl(const civil_field& cale
 
 [[cpp11::register]]
 cpp11::writable::list_of<cpp11::writable::integers>
-convert_calendar_days_to_year_quarternum_quarterday(const civil_field& calendar, int start) {
+convert_calendar_days_to_year_quarternum_quarterday(const clock_field& calendar, int start) {
   if (start == 1) {
     return convert_calendar_days_to_year_quarternum_quarterday_impl<quarterly::start::january>(calendar);
   } else if (start == 2) {
@@ -577,7 +577,7 @@ convert_calendar_days_to_year_quarternum_quarterday(const civil_field& calendar,
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_field convert_iso_year_weeknum_weekday_to_calendar_days(const cpp11::integers& year,
+clock_writable_field convert_iso_year_weeknum_weekday_to_calendar_days(const cpp11::integers& year,
                                                                        const cpp11::integers& weeknum,
                                                                        const cpp11::integers& weekday,
                                                                        const cpp11::strings& day_nonexistent) {
@@ -628,7 +628,7 @@ civil_writable_field convert_iso_year_weeknum_weekday_to_calendar_days(const cpp
 
 [[cpp11::register]]
 cpp11::writable::list_of<cpp11::writable::integers>
-convert_calendar_days_to_iso_year_weeknum_weekday(const civil_field& calendar) {
+convert_calendar_days_to_iso_year_weeknum_weekday(const clock_field& calendar) {
   r_ssize size = calendar.size();
 
   cpp11::writable::integers out_year(size);
@@ -663,7 +663,7 @@ convert_calendar_days_to_iso_year_weeknum_weekday(const civil_field& calendar) {
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_field convert_year_month_day_to_calendar_days(const cpp11::integers& year,
+clock_writable_field convert_year_month_day_to_calendar_days(const cpp11::integers& year,
                                                              const cpp11::integers& month,
                                                              const cpp11::integers& day,
                                                              const cpp11::strings& day_nonexistent) {
@@ -671,7 +671,7 @@ civil_writable_field convert_year_month_day_to_calendar_days(const cpp11::intege
 
   r_ssize size = year.size();
 
-  civil_writable_field days(size);
+  clock_writable_field days(size);
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_year = year[i];
@@ -717,16 +717,16 @@ civil_writable_field convert_year_month_day_to_calendar_days(const cpp11::intege
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd convert_calendar_days_hour_minute_second_to_naive_second_point_fields(const civil_field& calendar,
+clock_writable_rcrd convert_calendar_days_hour_minute_second_to_naive_second_point_fields(const clock_field& calendar,
                                                                                           const cpp11::integers& hour,
                                                                                           const cpp11::integers& minute,
                                                                                           const cpp11::integers& second) {
   r_ssize size = calendar.size();
 
-  civil_writable_field out_calendar{calendar};
-  civil_writable_field out_seconds_of_day(size);
+  clock_writable_field out_calendar{calendar};
+  clock_writable_field out_seconds_of_day(size);
 
-  civil_writable_rcrd out({out_calendar, out_seconds_of_day});
+  clock_writable_rcrd out({out_calendar, out_seconds_of_day});
   out.names() = {"calendar", "seconds_of_day"};
 
   for (r_ssize i = 0; i < size; ++i) {
@@ -763,7 +763,7 @@ civil_writable_rcrd convert_calendar_days_hour_minute_second_to_naive_second_poi
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields(const civil_field& calendar,
+clock_writable_rcrd convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields(const clock_field& calendar,
                                                                                                        const cpp11::integers& hour,
                                                                                                        const cpp11::integers& minute,
                                                                                                        const cpp11::integers& second,
@@ -773,11 +773,11 @@ civil_writable_rcrd convert_calendar_days_hour_minute_second_subsecond_to_naive_
 
   r_ssize size = calendar.size();
 
-  civil_writable_field out_calendar{calendar};
-  civil_writable_field out_seconds_of_day(size);
-  civil_writable_field out_nanoseconds_of_second(size);
+  clock_writable_field out_calendar{calendar};
+  clock_writable_field out_seconds_of_day(size);
+  clock_writable_field out_nanoseconds_of_second(size);
 
-  civil_writable_rcrd out({out_calendar, out_seconds_of_day, out_nanoseconds_of_second});
+  clock_writable_rcrd out({out_calendar, out_seconds_of_day, out_nanoseconds_of_second});
   out.names() = {"calendar", "seconds_of_day", "nanoseconds_of_second"};
 
   for (r_ssize i = 0; i < size; ++i) {
@@ -821,7 +821,7 @@ civil_writable_rcrd convert_calendar_days_hour_minute_second_subsecond_to_naive_
       break;
     }
     case precision::second: {
-      civil_abort("Internal error: Unexpected precision.");
+      clock_abort("Internal error: Unexpected precision.");
     }
     }
 
@@ -841,21 +841,21 @@ civil_writable_rcrd convert_calendar_days_hour_minute_second_subsecond_to_naive_
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd convert_second_point_fields_from_naive_to_zoned_cpp(const civil_field& calendar,
-                                                                        const civil_field& seconds_of_day,
+clock_writable_rcrd convert_second_point_fields_from_naive_to_zoned_cpp(const clock_field& calendar,
+                                                                        const clock_field& seconds_of_day,
                                                                         const cpp11::strings& zone,
                                                                         const cpp11::strings& dst_nonexistent,
                                                                         const cpp11::strings& dst_ambiguous) {
   const r_ssize size = calendar.size();
 
-  civil_writable_field out_calendar{calendar};
-  civil_writable_field out_seconds_of_day{seconds_of_day};
+  clock_writable_field out_calendar{calendar};
+  clock_writable_field out_seconds_of_day{seconds_of_day};
 
-  civil_writable_rcrd out({out_calendar, out_seconds_of_day});
+  clock_writable_rcrd out({out_calendar, out_seconds_of_day});
   out.names() = {"calendar", "seconds_of_day"};
 
-  bool recycle_dst_nonexistent = civil_is_scalar(dst_nonexistent);
-  bool recycle_dst_ambiguous = civil_is_scalar(dst_ambiguous);
+  bool recycle_dst_nonexistent = clock_is_scalar(dst_nonexistent);
+  bool recycle_dst_ambiguous = clock_is_scalar(dst_ambiguous);
 
   enum dst_nonexistent dst_nonexistent_val;
   if (recycle_dst_nonexistent) {
@@ -928,9 +928,9 @@ civil_writable_rcrd convert_second_point_fields_from_naive_to_zoned_cpp(const ci
 }
 
 [[cpp11::register]]
-civil_writable_rcrd convert_subsecond_point_fields_from_naive_to_zoned_cpp(const civil_field& calendar,
-                                                                           const civil_field& seconds_of_day,
-                                                                           const civil_field& nanoseconds_of_second,
+clock_writable_rcrd convert_subsecond_point_fields_from_naive_to_zoned_cpp(const clock_field& calendar,
+                                                                           const clock_field& seconds_of_day,
+                                                                           const clock_field& nanoseconds_of_second,
                                                                            const cpp11::strings& precision,
                                                                            const cpp11::strings& zone,
                                                                            const cpp11::strings& dst_nonexistent,
@@ -939,15 +939,15 @@ civil_writable_rcrd convert_subsecond_point_fields_from_naive_to_zoned_cpp(const
 
   const enum precision precision_val = parse_precision(precision);
 
-  civil_writable_field out_calendar{calendar};
-  civil_writable_field out_seconds_of_day{seconds_of_day};
-  civil_writable_field out_nanoseconds_of_second{nanoseconds_of_second};
+  clock_writable_field out_calendar{calendar};
+  clock_writable_field out_seconds_of_day{seconds_of_day};
+  clock_writable_field out_nanoseconds_of_second{nanoseconds_of_second};
 
-  civil_writable_rcrd out({out_calendar, out_seconds_of_day, out_nanoseconds_of_second});
+  clock_writable_rcrd out({out_calendar, out_seconds_of_day, out_nanoseconds_of_second});
   out.names() = {"calendar", "seconds_of_day", "nanoseconds_of_second"};
 
-  bool recycle_dst_nonexistent = civil_is_scalar(dst_nonexistent);
-  bool recycle_dst_ambiguous = civil_is_scalar(dst_ambiguous);
+  bool recycle_dst_nonexistent = clock_is_scalar(dst_nonexistent);
+  bool recycle_dst_ambiguous = clock_is_scalar(dst_ambiguous);
 
   enum dst_nonexistent dst_nonexistent_val;
   if (recycle_dst_nonexistent) {

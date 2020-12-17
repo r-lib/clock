@@ -1,9 +1,9 @@
-#include "civil.h"
+#include "clock.h"
 #include "utils.h"
 #include "enums.h"
 #include "conversion.h"
 #include "resolve.h"
-#include "civil-rcrd.h"
+#include "clock-rcrd.h"
 #include "check.h"
 
 // -----------------------------------------------------------------------------
@@ -15,7 +15,7 @@ adjust_naive_gregorian_switch(const date::year_month_day& ymd,
                               const enum adjuster& adjuster_val);
 
 [[cpp11::register]]
-cpp11::writable::list adjust_gregorian_calendar(const civil_field& calendar,
+cpp11::writable::list adjust_gregorian_calendar(const clock_field& calendar,
                                                 const cpp11::integers& value,
                                                 const cpp11::strings& day_nonexistent,
                                                 const cpp11::strings& adjuster) {
@@ -24,7 +24,7 @@ cpp11::writable::list adjust_gregorian_calendar(const civil_field& calendar,
   enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
   enum adjuster adjuster_val = parse_adjuster(adjuster);
 
-  civil_writable_field out_calendar{calendar};
+  clock_writable_field out_calendar{calendar};
   cpp11::writable::logicals ok(size);
   cpp11::writable::logicals any(1);
   any[0] = false;
@@ -113,7 +113,7 @@ adjust_naive_gregorian_switch(const date::year_month_day& ymd,
     return adjust_naive_gregorian_last_day_of_month(ymd);
   }
   default: {
-    civil_abort("Internal error: Unknown `adjuster_val` in `adjust_naive_gregorian_switch()`.");
+    clock_abort("Internal error: Unknown `adjuster_val` in `adjust_naive_gregorian_switch()`.");
   }
   }
 }
@@ -127,16 +127,16 @@ adjust_naive_time_point_seconds_of_day_switch(const date::hh_mm_ss<std::chrono::
                                               const enum adjuster& adjuster_val);
 
 [[cpp11::register]]
-civil_writable_rcrd adjust_naive_time_point_seconds_of_day_cpp(const civil_rcrd& x,
+clock_writable_rcrd adjust_naive_time_point_seconds_of_day_cpp(const clock_rcrd& x,
                                                                const cpp11::integers& value,
                                                                const cpp11::strings& adjuster) {
   const enum adjuster adjuster_val = parse_adjuster(adjuster);
 
-  civil_writable_rcrd out = civil_rcrd_clone(x);
+  clock_writable_rcrd out = clock_rcrd_clone(x);
 
-  int* p_calendar = civil_rcrd_days_deref(out);
-  int* p_seconds_of_day = civil_rcrd_time_of_day_deref(out);
-  int* p_nanoseconds_of_second = civil_rcrd_nanos_of_second_deref(out);
+  int* p_calendar = clock_rcrd_days_deref(out);
+  int* p_seconds_of_day = clock_rcrd_time_of_day_deref(out);
+  int* p_nanoseconds_of_second = clock_rcrd_nanos_of_second_deref(out);
 
   const r_ssize size = value.size();
 
@@ -148,7 +148,7 @@ civil_writable_rcrd adjust_naive_time_point_seconds_of_day_cpp(const civil_rcrd&
       continue;
     }
     if (elt_value == r_int_na) {
-      civil_rcrd_assign_missing(i, p_calendar, p_seconds_of_day, p_nanoseconds_of_second);
+      clock_rcrd_assign_missing(i, p_calendar, p_seconds_of_day, p_nanoseconds_of_second);
       continue;
     }
 
@@ -206,7 +206,7 @@ adjust_naive_time_point_seconds_of_day_switch(const date::hh_mm_ss<std::chrono::
     return adjust_naive_time_point_seconds_of_day_second(hms, value);
   }
   default: {
-    civil_abort("Internal error: Unknown `adjuster_val` in `adjust_naive_time_point_seconds_of_day_switch()`.");
+    clock_abort("Internal error: Unknown `adjuster_val` in `adjust_naive_time_point_seconds_of_day_switch()`.");
   }
   }
 }
@@ -220,17 +220,17 @@ adjust_naive_time_point_nanoseconds_of_second_switch(const std::chrono::nanoseco
                                               const enum adjuster& adjuster_val);
 
 [[cpp11::register]]
-civil_writable_rcrd adjust_naive_time_point_nanoseconds_of_second_cpp(const civil_rcrd& x,
+clock_writable_rcrd adjust_naive_time_point_nanoseconds_of_second_cpp(const clock_rcrd& x,
                                                                       const cpp11::integers& value,
                                                                       const cpp11::strings& adjuster) {
   const enum adjuster adjuster_val = parse_adjuster(adjuster);
   const r_ssize size = value.size();
 
-  civil_writable_rcrd out = civil_rcrd_clone(x);
+  clock_writable_rcrd out = clock_rcrd_clone(x);
 
-  int* p_calendar = civil_rcrd_days_deref(out);
-  int* p_seconds_of_day = civil_rcrd_time_of_day_deref(out);
-  int* p_nanoseconds_of_second = civil_rcrd_nanos_of_second_deref(out);
+  int* p_calendar = clock_rcrd_days_deref(out);
+  int* p_seconds_of_day = clock_rcrd_time_of_day_deref(out);
+  int* p_nanoseconds_of_second = clock_rcrd_nanos_of_second_deref(out);
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_nanoseconds_of_second = p_nanoseconds_of_second[i];
@@ -240,7 +240,7 @@ civil_writable_rcrd adjust_naive_time_point_nanoseconds_of_second_cpp(const civi
       continue;
     }
     if (elt_value == r_int_na) {
-      civil_rcrd_assign_missing(i, p_calendar, p_seconds_of_day, p_nanoseconds_of_second);
+      clock_rcrd_assign_missing(i, p_calendar, p_seconds_of_day, p_nanoseconds_of_second);
       continue;
     }
 
@@ -297,7 +297,7 @@ adjust_naive_time_point_nanoseconds_of_second_switch(const std::chrono::nanoseco
     return adjust_naive_time_point_nanoseconds_of_second_nanosecond(nanos, value);
   }
   default: {
-    civil_abort("Internal error: Unknown `adjuster_val` in `adjust_naive_time_point_nanoseconds_of_second_switch()`.");
+    clock_abort("Internal error: Unknown `adjuster_val` in `adjust_naive_time_point_nanoseconds_of_second_switch()`.");
   }
   }
 }
@@ -305,13 +305,13 @@ adjust_naive_time_point_nanoseconds_of_second_switch(const std::chrono::nanoseco
 // -----------------------------------------------------------------------------
 
 template <quarterly::start S>
-static cpp11::writable::list adjust_quarterly_calendar_impl(const civil_field& calendar,
+static cpp11::writable::list adjust_quarterly_calendar_impl(const clock_field& calendar,
                                                             const cpp11::integers& value,
                                                             const enum day_nonexistent& day_nonexistent_val,
                                                             const enum adjuster& adjuster_val);
 
 [[cpp11::register]]
-cpp11::writable::list adjust_quarterly_calendar(const civil_field& calendar,
+cpp11::writable::list adjust_quarterly_calendar(const clock_field& calendar,
                                                 const cpp11::integers& value,
                                                 const int& start,
                                                 const cpp11::strings& day_nonexistent,
@@ -357,13 +357,13 @@ adjust_naive_quarterly_switch(const quarterly::year_quarternum_quarterday<S>& yq
                               const enum adjuster& adjuster_val);
 
 template <quarterly::start S>
-static cpp11::writable::list adjust_quarterly_calendar_impl(const civil_field& calendar,
+static cpp11::writable::list adjust_quarterly_calendar_impl(const clock_field& calendar,
                                                             const cpp11::integers& value,
                                                             const enum day_nonexistent& day_nonexistent_val,
                                                             const enum adjuster& adjuster_val) {
   const r_ssize size = value.size();
 
-  civil_writable_field out_calendar{calendar};
+  clock_writable_field out_calendar{calendar};
   cpp11::writable::logicals ok(size);
   cpp11::writable::logicals any(1);
   any[0] = false;
@@ -464,7 +464,7 @@ adjust_naive_quarterly_switch(const quarterly::year_quarternum_quarterday<S>& yq
     return adjust_naive_quarterly_last_day_of_quarter(yqnqd);
   }
   default: {
-    civil_abort("Internal error: Unknown `adjuster_val` in `adjust_naive_quarterly_switch()`.");
+    clock_abort("Internal error: Unknown `adjuster_val` in `adjust_naive_quarterly_switch()`.");
   }
   }
 }
@@ -478,7 +478,7 @@ adjust_naive_iso_switch(const iso_week::year_weeknum_weekday& yww,
                         const enum adjuster& adjuster_val);
 
 [[cpp11::register]]
-cpp11::writable::list adjust_iso_calendar(const civil_field& calendar,
+cpp11::writable::list adjust_iso_calendar(const clock_field& calendar,
                                           const cpp11::integers& value,
                                           const cpp11::strings& day_nonexistent,
                                           const cpp11::strings& adjuster) {
@@ -487,7 +487,7 @@ cpp11::writable::list adjust_iso_calendar(const civil_field& calendar,
   enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
   enum adjuster adjuster_val = parse_adjuster(adjuster);
 
-  civil_writable_field out_calendar{calendar};
+  clock_writable_field out_calendar{calendar};
   cpp11::writable::logicals ok(size);
   cpp11::writable::logicals any(1);
   any[0] = false;
@@ -583,7 +583,7 @@ adjust_naive_iso_switch(const iso_week::year_weeknum_weekday& yww,
     return adjust_naive_iso_last_weeknum_of_year(yww);
   }
   default: {
-    civil_abort("Internal error: Unknown `adjuster_val` in `adjust_naive_iso_switch()`.");
+    clock_abort("Internal error: Unknown `adjuster_val` in `adjust_naive_iso_switch()`.");
   }
   }
 }
@@ -591,12 +591,12 @@ adjust_naive_iso_switch(const iso_week::year_weeknum_weekday& yww,
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_field downcast_nanoseconds_of_second_precision(const civil_field& nanoseconds_of_second,
+clock_writable_field downcast_nanoseconds_of_second_precision(const clock_field& nanoseconds_of_second,
                                                               const cpp11::strings& precision) {
   const enum precision precision_val = parse_precision(precision);
   const r_ssize size = nanoseconds_of_second.size();
 
-  civil_writable_field out(size);
+  clock_writable_field out(size);
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_nanoseconds_of_second = nanoseconds_of_second[i];
@@ -623,7 +623,7 @@ civil_writable_field downcast_nanoseconds_of_second_precision(const civil_field&
       break;
     }
     case precision::second: {
-      civil_abort("Internal error: Should never be called.");
+      clock_abort("Internal error: Should never be called.");
     }
     }
 

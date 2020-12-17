@@ -1,14 +1,14 @@
-#include "civil.h"
+#include "clock.h"
 #include "zone.h"
 #include "enums.h"
 #include "conversion.h"
 #include "resolve.h"
-#include "civil-rcrd.h"
+#include "clock-rcrd.h"
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-cpp11::writable::list add_gregorian_calendar_years_or_months(const civil_field& calendar,
+cpp11::writable::list add_gregorian_calendar_years_or_months(const clock_field& calendar,
                                                              const cpp11::integers& n,
                                                              const cpp11::strings& day_nonexistent,
                                                              const cpp11::strings& unit) {
@@ -17,7 +17,7 @@ cpp11::writable::list add_gregorian_calendar_years_or_months(const civil_field& 
 
   const r_ssize size = calendar.size();
 
-  civil_writable_field out_calendar{calendar};
+  clock_writable_field out_calendar{calendar};
   cpp11::writable::logicals ok(size);
   cpp11::writable::logicals any(1);
   any[0] = false;
@@ -61,14 +61,14 @@ cpp11::writable::list add_gregorian_calendar_years_or_months(const civil_field& 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-cpp11::writable::list add_calendar_weeks_or_days(const civil_field& calendar,
+cpp11::writable::list add_calendar_weeks_or_days(const clock_field& calendar,
                                                  const cpp11::integers& n,
                                                  const cpp11::strings& unit) {
   enum unit unit_val = parse_unit(unit);
 
   const r_ssize size = calendar.size();
 
-  civil_writable_field out_calendar{calendar};
+  clock_writable_field out_calendar{calendar};
   cpp11::writable::logicals ok(size);
   cpp11::writable::logicals any(1);
   any[0] = false;
@@ -105,17 +105,17 @@ cpp11::writable::list add_calendar_weeks_or_days(const civil_field& calendar,
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd add_time_point_seconds_of_day_cpp(const civil_rcrd& x,
+clock_writable_rcrd add_time_point_seconds_of_day_cpp(const clock_rcrd& x,
                                                       const cpp11::integers& n,
                                                       const cpp11::strings& unit) {
   const enum unit unit_val = parse_unit(unit);
   const r_ssize size = n.size();
 
-  civil_writable_rcrd out = civil_rcrd_clone(x);
+  clock_writable_rcrd out = clock_rcrd_clone(x);
 
-  int* p_days = civil_rcrd_days_deref(out);
-  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
-  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
+  int* p_days = clock_rcrd_days_deref(out);
+  int* p_time_of_day = clock_rcrd_time_of_day_deref(out);
+  int* p_nanos_of_second = clock_rcrd_nanos_of_second_deref(out);
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_days = p_days[i];
@@ -126,7 +126,7 @@ civil_writable_rcrd add_time_point_seconds_of_day_cpp(const civil_rcrd& x,
       continue;
     }
     if (elt_n == r_int_na) {
-      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      clock_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
       continue;
     }
 
@@ -219,17 +219,17 @@ fields_nano_datetime plus_nanos_of_second(const date::days& days,
 }
 
 [[cpp11::register]]
-civil_writable_rcrd add_time_point_nanoseconds_of_second_cpp(const civil_rcrd& x,
+clock_writable_rcrd add_time_point_nanoseconds_of_second_cpp(const clock_rcrd& x,
                                                              const cpp11::integers& n,
                                                              const cpp11::strings& unit) {
   const enum unit unit_val = parse_unit(unit);
   const r_ssize size = n.size();
 
-  civil_writable_rcrd out = civil_rcrd_clone(x);
+  clock_writable_rcrd out = clock_rcrd_clone(x);
 
-  int* p_days = civil_rcrd_days_deref(out);
-  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
-  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
+  int* p_days = clock_rcrd_days_deref(out);
+  int* p_time_of_day = clock_rcrd_time_of_day_deref(out);
+  int* p_nanos_of_second = clock_rcrd_nanos_of_second_deref(out);
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_days = p_days[i];
@@ -241,7 +241,7 @@ civil_writable_rcrd add_time_point_nanoseconds_of_second_cpp(const civil_rcrd& x
       continue;
     }
     if (elt_n == r_int_na) {
-      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      clock_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
       continue;
     }
 
@@ -273,7 +273,7 @@ civil_writable_rcrd add_time_point_nanoseconds_of_second_cpp(const civil_rcrd& x
 // -----------------------------------------------------------------------------
 
 template <quarterly::start S>
-static cpp11::writable::list add_quarterly_calendar_years_or_quarters_impl(const civil_field& calendar,
+static cpp11::writable::list add_quarterly_calendar_years_or_quarters_impl(const clock_field& calendar,
                                                                            const cpp11::integers& n,
                                                                            const cpp11::strings& day_nonexistent,
                                                                            const cpp11::strings& unit) {
@@ -282,7 +282,7 @@ static cpp11::writable::list add_quarterly_calendar_years_or_quarters_impl(const
 
   const r_ssize size = calendar.size();
 
-  civil_writable_field out_calendar{calendar};
+  clock_writable_field out_calendar{calendar};
   cpp11::writable::logicals ok(size);
   cpp11::writable::logicals any(1);
   any[0] = false;
@@ -332,7 +332,7 @@ static cpp11::writable::list add_quarterly_calendar_years_or_quarters_impl(const
 
 
 [[cpp11::register]]
-cpp11::writable::list add_quarterly_calendar_years_or_quarters(const civil_field& calendar,
+cpp11::writable::list add_quarterly_calendar_years_or_quarters(const clock_field& calendar,
                                                                const cpp11::integers& n,
                                                                const int& start,
                                                                const cpp11::strings& day_nonexistent,
@@ -369,14 +369,14 @@ cpp11::writable::list add_quarterly_calendar_years_or_quarters(const civil_field
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-cpp11::writable::list add_iso_calendar_years(const civil_field& calendar,
+cpp11::writable::list add_iso_calendar_years(const clock_field& calendar,
                                              const cpp11::integers& n,
                                              const cpp11::strings& day_nonexistent) {
   enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
 
   const r_ssize size = calendar.size();
 
-  civil_writable_field out_calendar{calendar};
+  clock_writable_field out_calendar{calendar};
   cpp11::writable::logicals ok(size);
   cpp11::writable::logicals any(1);
   any[0] = false;

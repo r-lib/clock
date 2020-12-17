@@ -1,4 +1,4 @@
 library(testthat)
-library(civil)
+library(clock)
 
-test_check("civil")
+test_check("clock")

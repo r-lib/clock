@@ -1,13 +1,13 @@
-#include "civil.h"
+#include "clock.h"
 #include "resolve.h"
 
 [[cpp11::register]]
-civil_writable_field resolve_seconds_of_day(const civil_field& seconds_of_day,
+clock_writable_field resolve_seconds_of_day(const clock_field& seconds_of_day,
                                             const cpp11::logicals& ok,
                                             const cpp11::strings& day_nonexistent) {
   const r_ssize size = seconds_of_day.size();
   enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
-  civil_writable_field out(size);
+  clock_writable_field out(size);
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_ok = ok[i];
@@ -41,7 +41,7 @@ civil_writable_field resolve_seconds_of_day(const civil_field& seconds_of_day,
       break;
     }
     case day_nonexistent::error: {
-      civil_abort("Internal error: Should never get here.");
+      clock_abort("Internal error: Should never get here.");
     }
     }
   }
@@ -50,14 +50,14 @@ civil_writable_field resolve_seconds_of_day(const civil_field& seconds_of_day,
 }
 
 [[cpp11::register]]
-civil_writable_field resolve_nanoseconds_of_second(const civil_field& nanoseconds_of_second,
+clock_writable_field resolve_nanoseconds_of_second(const clock_field& nanoseconds_of_second,
                                                    const cpp11::logicals& ok,
                                                    const cpp11::strings& day_nonexistent,
                                                    const cpp11::strings& precision) {
   const r_ssize size = nanoseconds_of_second.size();
   enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
   enum precision precision_val = parse_precision(precision);
-  civil_writable_field out(size);
+  clock_writable_field out(size);
 
   for (r_ssize i = 0; i < size; ++i) {
     int elt_ok = ok[i];
@@ -82,7 +82,7 @@ civil_writable_field resolve_nanoseconds_of_second(const civil_field& nanosecond
       case precision::millisecond: out[i] = 999000000; break;
       case precision::microsecond: out[i] = 999999000; break;
       case precision::nanosecond:  out[i] = 999999999; break;
-      default: civil_abort("Internal error: Should never get here.");
+      default: clock_abort("Internal error: Should never get here.");
       }
       break;
     }
@@ -96,7 +96,7 @@ civil_writable_field resolve_nanoseconds_of_second(const civil_field& nanosecond
       break;
     }
     case day_nonexistent::error: {
-      civil_abort("Internal error: Should never get here.");
+      clock_abort("Internal error: Should never get here.");
     }
     }
   }

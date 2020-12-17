@@ -1,4 +1,4 @@
-#include "civil.h"
+#include "clock.h"
 #include "utils.h"
 
 /*
@@ -11,7 +11,7 @@
 [[cpp11::register]]
 void clock_set_install(const cpp11::strings& path) {
   if (path.size() != 1) {
-    civil_abort("Internal error: Time zone database installation path should have size 1.");
+    clock_abort("Internal error: Time zone database installation path should have size 1.");
   }
 
   std::string string_path(path[0]);

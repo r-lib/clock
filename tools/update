@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-Updating `civil` dependencies
+Updating `clock` dependencies
 
 1. Update the version in `update-database.R`.
 

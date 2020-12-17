@@ -1,9 +1,9 @@
-#include "civil.h"
+#include "clock.h"
 #include "utils.h"
 #include "enums.h"
 #include "conversion.h"
 #include "resolve.h"
-#include "civil-rcrd.h"
+#include "clock-rcrd.h"
 #include "check.h"
 #include "zone.h"
 #include <sstream>
@@ -44,7 +44,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd parse_zoned_datetime_cpp(const cpp11::strings& x,
+clock_writable_rcrd parse_zoned_datetime_cpp(const cpp11::strings& x,
                                              const cpp11::strings& format,
                                              const cpp11::strings& zone,
                                              const cpp11::strings& dst_nonexistent,
@@ -58,21 +58,21 @@ civil_writable_rcrd parse_zoned_datetime_cpp(const cpp11::strings& x,
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
   if (format.size() != 1) {
-    civil_abort("`format` must have size 1.");
+    clock_abort("`format` must have size 1.");
   }
 
   std::string string_format(format[0]);
   const char* c_format = string_format.c_str();
 
-  civil_writable_field days(c_size);
-  civil_writable_field time_of_day(c_size);
+  clock_writable_field days(c_size);
+  clock_writable_field time_of_day(c_size);
 
-  civil_writable_rcrd out({days, time_of_day});
+  clock_writable_rcrd out({days, time_of_day});
   out.names() = {"days", "time_of_day"};
 
-  bool recycle_x = civil_is_scalar(x);
-  bool recycle_dst_nonexistent = civil_is_scalar(dst_nonexistent);
-  bool recycle_dst_ambiguous = civil_is_scalar(dst_ambiguous);
+  bool recycle_x = clock_is_scalar(x);
+  bool recycle_dst_nonexistent = clock_is_scalar(dst_nonexistent);
+  bool recycle_dst_ambiguous = clock_is_scalar(dst_ambiguous);
 
   enum dst_nonexistent dst_nonexistent_val;
   if (recycle_dst_nonexistent) {
@@ -186,21 +186,21 @@ civil_writable_rcrd parse_zoned_datetime_cpp(const cpp11::strings& x,
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-civil_writable_rcrd parse_naive_datetime_cpp(const cpp11::strings& x,
+clock_writable_rcrd parse_naive_datetime_cpp(const cpp11::strings& x,
                                              const cpp11::strings& format) {
   r_ssize c_size = x.size();
 
   if (format.size() != 1) {
-    civil_abort("`format` must have size 1.");
+    clock_abort("`format` must have size 1.");
   }
 
   std::string string_format(format[0]);
   const char* c_format = string_format.c_str();
 
-  civil_writable_field days(c_size);
-  civil_writable_field time_of_day(c_size);
+  clock_writable_field days(c_size);
+  clock_writable_field time_of_day(c_size);
 
-  civil_writable_rcrd out({days, time_of_day});
+  clock_writable_rcrd out({days, time_of_day});
   out.names() = {"days", "time_of_day"};
 
   std::istringstream stream;

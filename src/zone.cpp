@@ -28,7 +28,7 @@
 [[cpp11::register]]
 cpp11::writable::strings zone_standardize(const cpp11::strings& zone) {
   if (zone.size() == 0) {
-    civil_abort("`zone` size must be at least 1.");
+    clock_abort("`zone` size must be at least 1.");
   }
 
   cpp11::writable::strings out(zone[0]);
@@ -86,7 +86,7 @@ const date::time_zone* zone_name_load_try(const std::string& zone_name) {
   try {
     return date::locate_zone(zone_name);
   } catch (const std::runtime_error& error) {
-    civil_abort("'%s' not found in the timezone database.", zone_name.c_str());
+    clock_abort("'%s' not found in the timezone database.", zone_name.c_str());
   };
 }
 
@@ -125,7 +125,7 @@ static std::string zone_name_system_get() {
   auto sys_timezone = cpp11::package("base")["Sys.timezone"];
   cpp11::sexp result = sys_timezone();
 
-  if (!civil_is_string(result)) {
+  if (!clock_is_string(result)) {
     cpp11::warning("Unexpected result from `Sys.timezone()`, returning 'UTC'.");
     return "UTC";
   }

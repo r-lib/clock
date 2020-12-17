@@ -1,7 +1,7 @@
-#ifndef CIVIL_ZONE_H
-#define CIVIL_ZONE_H
+#ifndef CLOCK_ZONE_H
+#define CLOCK_ZONE_H
 
-#include "civil.h"
+#include "clock.h"
 
 cpp11::writable::strings zone_standardize(const cpp11::strings& zone);
 

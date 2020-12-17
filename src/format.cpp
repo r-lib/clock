@@ -1,9 +1,9 @@
-#include "civil.h"
+#include "clock.h"
 #include "utils.h"
 #include "enums.h"
 #include "conversion.h"
 #include "resolve.h"
-#include "civil-rcrd.h"
+#include "clock-rcrd.h"
 #include "check.h"
 #include "zone.h"
 #include <sstream>
@@ -40,9 +40,9 @@ to_stream(std::basic_ostream<CharT, Traits>& os,
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-cpp11::writable::strings format_time_point(const civil_field& calendar,
-                                           const civil_field& seconds_of_day,
-                                           const civil_field& nanoseconds_of_second,
+cpp11::writable::strings format_time_point(const clock_field& calendar,
+                                           const clock_field& seconds_of_day,
+                                           const clock_field& nanoseconds_of_second,
                                            const cpp11::strings& zone,
                                            const cpp11::strings& format,
                                            const cpp11::strings& precision,
@@ -57,7 +57,7 @@ cpp11::writable::strings format_time_point(const civil_field& calendar,
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
   if (format.size() != 1) {
-    civil_abort("`format` must have size 1.");
+    clock_abort("`format` must have size 1.");
   }
 
   std::string string_format(format[0]);

@@ -1153,10 +1153,10 @@ detail::Rule::Rule(const std::string& s)
     }
     catch (...)
     {
-        // civil-edit-start
+        // clock-edit-start
         // std::cerr << s << '\n';
         // std::cerr << *this << '\n';
-        // civil-edit-stop
+        // clock-edit-stop
         throw;
     }
 }
@@ -1293,10 +1293,10 @@ detail::Rule::overlaps(const Rule& x, const Rule& y)
     // assume x.starting_year_ <= y.starting_year_;
     if (!(x.starting_year_ <= y.starting_year_))
     {
-        // civil-edit-start
+        // clock-edit-start
         // std::cerr << x << '\n';
         // std::cerr << y << '\n';
-        // civil-edit-stop
+        // clock-edit-stop
         assert(x.starting_year_ <= y.starting_year_);
     }
     if (y.starting_year_ > x.ending_year_)
@@ -2246,10 +2246,10 @@ time_zone::time_zone(const std::string& s, detail::undocumented)
     }
     catch (...)
     {
-        // civil-edit-start
+        // clock-edit-start
         // std::cerr << s << '\n';
         // std::cerr << *this << '\n';
-        // civil-edit-stop
+        // clock-edit-stop
         zonelets_.pop_back();
         throw;
     }
@@ -2299,10 +2299,10 @@ time_zone::add(const std::string& s)
     }
     catch (...)
     {
-        // civil-edit-start
+        // clock-edit-start
         // std::cerr << s << '\n';
         // std::cerr << *this << '\n';
-        // civil-edit-stop
+        // clock-edit-stop
         zonelets_.pop_back();
         throw;
     }
@@ -2377,9 +2377,9 @@ time_zone::adjust_infos(const std::vector<Rule>& rules)
                 }
                 catch (...)
                 {
-                    // civil-edit-start
+                    // clock-edit-start
                     // std::cerr << name_ << " : " << z.u.rule_ << '\n';
-                    // civil-edit-stop
+                    // clock-edit-stop
                     throw;
                 }
             }
@@ -2694,9 +2694,9 @@ find_read_and_leap_seconds()
                 }
                 else
                 {
-                    // civil-edit-start
+                    // clock-edit-start
                     // std::cerr << line << '\n';
-                    // civil-edit-stop
+                    // clock-edit-stop
                 }
             }
         }
@@ -3545,9 +3545,9 @@ init_tzdb()
                 }
                 else
                 {
-                    // civil-edit-start
+                    // clock-edit-start
                     // std::cerr << line << '\n';
-                    // civil-edit-stop
+                    // clock-edit-stop
                 }
             }
         }

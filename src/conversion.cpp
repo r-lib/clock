@@ -45,7 +45,7 @@ static inline date::sys_seconds info_nonexistent_na(bool& na) {
 }
 
 static inline date::sys_seconds info_nonexistent_error(const r_ssize& i) {
-  civil_abort("Nonexistent time due to daylight savings at location %i.", (int) i + 1);
+  clock_abort("Nonexistent time due to daylight savings at location %i.", (int) i + 1);
 }
 
 // -----------------------------------------------------------------------------
@@ -68,7 +68,7 @@ static inline void info_nonexistent_roll_backward_nanos(std::chrono::nanoseconds
     break;
   }
   case precision::second: {
-    civil_abort("Internal error: Should never happen.");
+    clock_abort("Internal error: Should never happen.");
   }
   }
 }
@@ -93,7 +93,7 @@ static inline date::sys_seconds info_ambiguous_na(bool& na) {
 }
 
 static inline date::sys_seconds info_ambiguous_error(const r_ssize& i) {
-  civil_abort("Ambiguous time due to daylight savings at location %i.", (int) i + 1);
+  clock_abort("Ambiguous time due to daylight savings at location %i.", (int) i + 1);
 }
 
 // -----------------------------------------------------------------------------

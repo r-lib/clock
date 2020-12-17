@@ -1,11 +1,11 @@
-#include "civil.h"
+#include "clock.h"
 #include "zone.h"
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-cpp11::writable::integers get_offset_cpp(const civil_field& calendar,
-                                         const civil_field& seconds_of_day,
+cpp11::writable::integers get_offset_cpp(const clock_field& calendar,
+                                         const clock_field& seconds_of_day,
                                          const cpp11::strings& zone) {
   r_ssize size = calendar.size();
 
