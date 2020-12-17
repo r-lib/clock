@@ -23,7 +23,13 @@ parse_zoned_datetime <- function(x,
     size = size
   )
 
-  new_zoned_datetime_from_fields(fields, zone)
+  days <- fields$days
+  time_of_day <- fields$time_of_day
+
+  calendar <- new_year_month_day(days)
+  seconds_of_day <- time_of_day
+
+  new_zoned_time_point(calendar, seconds_of_day, precision = "second", zone = zone)
 }
 
 parse_naive_datetime <- function(x,
@@ -36,5 +42,11 @@ parse_naive_datetime <- function(x,
     format = format
   )
 
-  new_naive_datetime_from_fields(fields)
+  days <- fields$days
+  time_of_day <- fields$time_of_day
+
+  calendar <- new_year_month_day(days)
+  seconds_of_day <- time_of_day
+
+  new_naive_time_point(calendar, seconds_of_day, precision = "second")
 }
