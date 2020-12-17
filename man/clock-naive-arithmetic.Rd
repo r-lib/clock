@@ -140,9 +140,9 @@ maintained.}
 Naive arithmetic involves adding or subtracting units of time from a datetime
 that is independent of any time zone. This means that daylight savings time
 is never an issue while working with a naive datetime. Usually, you will
-convert to a naive datetime with \code{\link[=as_naive]{as_naive()}}, perform multiple arithmetic
-operations or adjustments with it, then convert it back to a zoned datetime
-with \code{\link[=as_zoned]{as_zoned()}}.
+convert to a naive datetime with \code{\link[=as_naive_time_point]{as_naive_time_point()}}, perform multiple
+arithmetic operations or adjustments with it, then convert it back to a
+zoned datetime with \code{\link[=as_zoned_time_point]{as_zoned_time_point()}}.
 
 Naive arithmetic is usually appropriate when performing multiple arithmetic
 operations in a row (like adding a set of years, months, and days). The
@@ -160,8 +160,8 @@ this nonexistent day. With naive arithmetic, that decision is delayed,
 allowing you precise control over how to handle this case. As an example, you
 might choose to add 1 year to this nonexistent date, resulting in
 \code{"1972-02-29"}, which does exist due to it being a leap year. Or you might
-convert it back to a zoned date with \code{\link[=as_zoned]{as_zoned()}}, which forces you
-to deal with the nonexistent date using the \code{day_nonexistent} argument.
+convert it back to a zoned date with \code{\link[=as_zoned_time_point]{as_zoned_time_point()}}, which forces
+you to deal with the nonexistent date using the \code{day_nonexistent} argument.
 The default would choose the last real day in February of that year,
 resulting in \code{"1971-02-28"}.
 

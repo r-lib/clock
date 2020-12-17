@@ -14,7 +14,7 @@ adjust_zone.Date <- function(x,
                              ...,
                              dst_nonexistent = "roll-forward",
                              dst_ambiguous = "earliest") {
-  x <- as_naive(x)
+  x <- as_naive_time_point(x)
   as.POSIXct(x, tz = zone, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
@@ -27,8 +27,8 @@ adjust_zone.clock_zoned_time_point <- function(x,
                                                ...,
                                                dst_nonexistent = "roll-forward",
                                                dst_ambiguous = "earliest") {
-  x <- as_naive(x)
-  as_zoned(x, zone = zone, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+  x <- as_naive_time_point(x)
+  as_zoned_time_point(x, zone = zone, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
 # ------------------------------------------------------------------------------

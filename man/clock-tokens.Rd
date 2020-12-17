@@ -121,7 +121,7 @@ zone offset.}
 \description{
 This page contains a number of tokens that can be used for date-time
 formatting through \code{format(format = )}. All tokens are supported for
-formatting a clock class (such as \code{\link[=year_month_day]{year_month_day()}} or \code{\link[=zoned_datetime]{zoned_datetime()}}).
+formatting a clock class (such as \code{\link[=year_month_day]{year_month_day()}} or \code{\link[=zoned_date_time]{zoned_date_time()}}).
 Most tokens are supported for formatting a POSIXct or Date, but some may
 be specific to the formatting implementation used by clock.
 
