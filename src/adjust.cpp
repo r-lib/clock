@@ -545,7 +545,7 @@ adjust_naive_iso_year(const iso_week::year_weeknum_weekday& yww, const int& valu
 static inline
 iso_week::year_weeknum_weekday
 adjust_naive_iso_weeknum(const iso_week::year_weeknum_weekday& yww, const int& value) {
-  check_range_iso_weeknum(value, "value");
+  check_range_weeknum(value, "value");
   unsigned int weeknum = static_cast<unsigned int>(value);
   return yww.year() / iso_week::weeknum{weeknum} / yww.weekday();
 }
@@ -553,7 +553,7 @@ adjust_naive_iso_weeknum(const iso_week::year_weeknum_weekday& yww, const int& v
 static inline
 iso_week::year_weeknum_weekday
 adjust_naive_iso_weekday(const iso_week::year_weeknum_weekday& yww, const int& value) {
-  check_range_iso_weekday(value, "value");
+  check_range_weekday(value, "value");
   unsigned int weekday = static_cast<unsigned int>(value);
   return yww.year() / yww.weeknum() / iso_week::weekday{weekday};
 }

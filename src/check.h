@@ -61,12 +61,12 @@ static inline void check_range_quarterday(const int& value, const char* arg) {
   }
 }
 
-static inline void check_range_iso_weeknum(const int& value, const char* arg) {
+static inline void check_range_weeknum(const int& value, const char* arg) {
   if (value > 53 || value < 1) {
     clock_abort("`%s` must be within the range of [1, 53], not %i.", arg, value);
   }
 }
-static inline void check_range_iso_weekday(const int& value, const char* arg) {
+static inline void check_range_weekday(const int& value, const char* arg) {
   if (value > 7 || value < 1) {
     clock_abort("`%s` must be within the range of [1, 7], not %i.", arg, value);
   }

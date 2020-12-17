@@ -632,8 +632,8 @@ clock_writable_field convert_iso_year_weeknum_weekday_to_calendar_days(const cpp
     }
 
     check_range_year(elt_year, "year");
-    check_range_iso_weeknum(elt_weeknum, "weeknum");
-    check_range_iso_weekday(elt_weekday, "weekday");
+    check_range_weeknum(elt_weeknum, "weeknum");
+    check_range_weekday(elt_weekday, "weekday");
 
     iso_week::year_weeknum_weekday elt_yww{
       iso_week::year{elt_year},
