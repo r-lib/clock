@@ -66,31 +66,28 @@ from_posixct_to_posixct <- function(x) {
 ones_along <- function(x) {
   rep(1L, times = vec_size(x))
 }
-zeros_along <- function(x) {
-  vector("integer", length = vec_size(x))
+zeros_along <- function(x, na_propagate = FALSE) {
+  out <- vector("integer", length = vec_size(x))
+
+  if (!na_propagate) {
+    return(out)
+  }
+
+  na <- vec_equal_na(x)
+  if (any(na)) {
+    out[na] <- NA_integer_
+  }
+
+  out
 }
 
 # Zeros along + NA propagation
 seconds_of_day_init <- function(x) {
-  out <- zeros_along(x)
-
-  na <- vec_equal_na(x)
-  if (any(na)) {
-    out[na] <- NA_integer_
-  }
-
-  out
+  zeros_along(x, na_propagate = TRUE)
 }
 
 nanoseconds_of_second_init <- function(x) {
-  out <- zeros_along(x)
-
-  na <- vec_equal_na(x)
-  if (any(na)) {
-    out[na] <- NA_integer_
-  }
-
-  out
+  zeros_along(x, na_propagate = TRUE)
 }
 
 # ------------------------------------------------------------------------------

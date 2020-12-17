@@ -333,6 +333,40 @@ clock_writable_list_of_integers convert_calendar_days_to_year_month_day(const cl
 
 // -----------------------------------------------------------------------------
 
+[[cpp11::register]]
+clock_writable_list_of_integers convert_seconds_of_day_to_hour_minute_second(const clock_field& seconds_of_day) {
+  r_ssize size = seconds_of_day.size();
+
+  cpp11::writable::integers hour(size);
+  cpp11::writable::integers minute(size);
+  cpp11::writable::integers second(size);
+
+  clock_writable_list_of_integers out({hour, minute, second});
+  out.names() = {"hour", "minute", "second"};
+
+  for (r_ssize i = 0; i < size; ++i) {
+    int elt_seconds_of_day = seconds_of_day[i];
+
+    if (elt_seconds_of_day == r_int_na) {
+      hour[i] = r_int_na;
+      minute[i] = r_int_na;
+      second[i] = r_int_na;
+      continue;
+    }
+
+    std::chrono::seconds elt_secs{elt_seconds_of_day};
+    date::hh_mm_ss<std::chrono::seconds> elt_hms = date::make_time(elt_secs);
+
+    hour[i] = elt_hms.hours().count();
+    minute[i] = elt_hms.minutes().count();
+    second[i] = elt_hms.seconds().count();
+  }
+
+  return out;
+}
+
+// -----------------------------------------------------------------------------
+
 /*
  * Same for datetime and nano_datetime, since nanoseconds wont change when
  * going from zoned->naive. They are "beneath" time zone changes.

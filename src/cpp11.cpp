@@ -124,6 +124,13 @@ extern "C" SEXP _clock_convert_calendar_days_to_year_month_day(SEXP calendar) {
   END_CPP11
 }
 // converters.cpp
+clock_writable_list_of_integers convert_seconds_of_day_to_hour_minute_second(const clock_field& seconds_of_day);
+extern "C" SEXP _clock_convert_seconds_of_day_to_hour_minute_second(SEXP seconds_of_day) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(convert_seconds_of_day_to_hour_minute_second(cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(seconds_of_day)));
+  END_CPP11
+}
+// converters.cpp
 clock_writable_rcrd convert_second_point_fields_from_zoned_to_naive(const clock_field& calendar, const clock_field& seconds_of_day, const cpp11::strings& zone);
 extern "C" SEXP _clock_convert_second_point_fields_from_zoned_to_naive(SEXP calendar, SEXP seconds_of_day, SEXP zone) {
   BEGIN_CPP11
@@ -316,6 +323,7 @@ extern SEXP _clock_convert_iso_year_weeknum_weekday_to_calendar_days(SEXP, SEXP,
 extern SEXP _clock_convert_naive_second_point_fields_to_zoned_seconds_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_convert_second_point_fields_from_naive_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_convert_second_point_fields_from_zoned_to_naive(SEXP, SEXP, SEXP);
+extern SEXP _clock_convert_seconds_of_day_to_hour_minute_second(SEXP);
 extern SEXP _clock_convert_subsecond_point_fields_from_naive_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_convert_year_month_day_hour_minute_second_to_naive_second_point_fields(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -359,6 +367,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_convert_naive_second_point_fields_to_zoned_seconds_cpp",                               (DL_FUNC) &_clock_convert_naive_second_point_fields_to_zoned_seconds_cpp,                               6},
     {"_clock_convert_second_point_fields_from_naive_to_zoned_cpp",                                  (DL_FUNC) &_clock_convert_second_point_fields_from_naive_to_zoned_cpp,                                  5},
     {"_clock_convert_second_point_fields_from_zoned_to_naive",                                      (DL_FUNC) &_clock_convert_second_point_fields_from_zoned_to_naive,                                      3},
+    {"_clock_convert_seconds_of_day_to_hour_minute_second",                                         (DL_FUNC) &_clock_convert_seconds_of_day_to_hour_minute_second,                                         1},
     {"_clock_convert_subsecond_point_fields_from_naive_to_zoned_cpp",                               (DL_FUNC) &_clock_convert_subsecond_point_fields_from_naive_to_zoned_cpp,                               7},
     {"_clock_convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields", (DL_FUNC) &_clock_convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields, 8},
     {"_clock_convert_year_month_day_hour_minute_second_to_naive_second_point_fields",               (DL_FUNC) &_clock_convert_year_month_day_hour_minute_second_to_naive_second_point_fields,               7},

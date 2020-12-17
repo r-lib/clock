@@ -68,6 +68,10 @@ convert_calendar_days_to_year_month_day <- function(calendar) {
   .Call("_clock_convert_calendar_days_to_year_month_day", calendar, PACKAGE = "clock")
 }
 
+convert_seconds_of_day_to_hour_minute_second <- function(seconds_of_day) {
+  .Call("_clock_convert_seconds_of_day_to_hour_minute_second", seconds_of_day, PACKAGE = "clock")
+}
+
 convert_second_point_fields_from_zoned_to_naive <- function(calendar, seconds_of_day, zone) {
   .Call("_clock_convert_second_point_fields_from_zoned_to_naive", calendar, seconds_of_day, zone, PACKAGE = "clock")
 }
