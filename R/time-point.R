@@ -1,6 +1,3 @@
-# Note: `class` is required as we consider this an abstract type that should
-# never exist on its own in the wild.
-
 new_time_point <- function(calendar = new_year_month_day(),
                            seconds_of_day = integer(),
                            nanoseconds_of_second = NULL,
