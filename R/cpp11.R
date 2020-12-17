@@ -132,8 +132,8 @@ get_offset_cpp <- function(calendar, seconds_of_day, zone) {
   .Call("_civil_get_offset_cpp", calendar, seconds_of_day, zone, PACKAGE = "civil")
 }
 
-civil_set_install <- function(path) {
-  invisible(.Call("_civil_civil_set_install", path, PACKAGE = "civil"))
+clock_set_install <- function(path) {
+  invisible(.Call("_civil_clock_set_install", path, PACKAGE = "civil"))
 }
 
 parse_zoned_datetime_cpp <- function(x, format, zone, dst_nonexistent, dst_ambiguous, size) {

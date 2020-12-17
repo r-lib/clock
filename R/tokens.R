@@ -20,9 +20,9 @@ tkns <- function(..., sep = "") {
 #' @description
 #' This page contains a number of tokens that can be used for date-time
 #' formatting through `format(format = )`. All tokens are supported for
-#' formatting a civil class (such as [year_month_day()] or [zoned_datetime()]).
+#' formatting a clock class (such as [year_month_day()] or [zoned_datetime()]).
 #' Most tokens are supported for formatting a POSIXct or Date, but some may
-#' be specific to the formatting implementation used by civil.
+#' be specific to the formatting implementation used by clock.
 #'
 #' Calling any of these functions simply returns the corresponding string
 #' for that token.
@@ -76,7 +76,7 @@ tkns <- function(..., sep = "") {
 #'  If `TRUE`, a `":"` will be added between the hours and minutes of the
 #'  zone offset.
 #'
-#' @name civil-tokens
+#' @name clock-tokens
 #'
 #' @examples
 #' # Tokens are just strings that start with a `%`.
@@ -86,7 +86,7 @@ tkns <- function(..., sep = "") {
 #' # Multiple tokens can be combined with `tkns()` to create custom formats
 #' hms <- tkns(tkn_hour(), tkn_minute(), tkn_second(), sep = ":")
 #'
-#' # Formats created by tokens can be used in the format method of civil
+#' # Formats created by tokens can be used in the format method of clock
 #' # classes and base R date-time classes
 #' x <- naive_datetime(2019, 01, 01, 14, 30, 59)
 #' x
@@ -99,7 +99,7 @@ tkns <- function(..., sep = "") {
 #' format(x_ct, format = hms)
 NULL
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_weekday_name <- function(..., abbreviate = FALSE) {
   check_dots_empty()
@@ -111,7 +111,7 @@ tkn_weekday_name <- function(..., abbreviate = FALSE) {
   }
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_month_name <- function(..., abbreviate = FALSE) {
   check_dots_empty()
@@ -123,7 +123,7 @@ tkn_month_name <- function(..., abbreviate = FALSE) {
   }
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_date_and_time <- function(..., locale_era = FALSE) {
   check_dots_empty()
@@ -135,7 +135,7 @@ tkn_date_and_time <- function(..., locale_era = FALSE) {
   }
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_century <- function(..., locale_era = FALSE) {
   check_dots_empty()
@@ -147,7 +147,7 @@ tkn_century <- function(..., locale_era = FALSE) {
   }
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_day <- function(..., pad = "zero", locale_num = FALSE) {
   check_dots_empty()
@@ -167,7 +167,7 @@ tkn_day <- function(..., pad = "zero", locale_num = FALSE) {
   }
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_iso_year <- function(..., short = FALSE) {
   check_dots_empty()
@@ -179,7 +179,7 @@ tkn_iso_year <- function(..., short = FALSE) {
   }
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_hour <- function(..., twelve = FALSE, locale_num = FALSE) {
   check_dots_empty()
@@ -199,13 +199,13 @@ tkn_hour <- function(..., twelve = FALSE, locale_num = FALSE) {
   }
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_day_of_year <- function() {
   "%j"
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_month <- function(..., locale_num = FALSE) {
   check_dots_empty()
@@ -217,25 +217,25 @@ tkn_month <- function(..., locale_num = FALSE) {
   }
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_minute <- function() {
   "%M"
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_newline <- function() {
   "%n"
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_am_pm <- function() {
   "%p"
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_time <- function(..., twelve = FALSE) {
   check_dots_empty()
@@ -247,7 +247,7 @@ tkn_time <- function(..., twelve = FALSE) {
   }
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_second <- function(..., locale_num = FALSE) {
   check_dots_empty()
@@ -259,13 +259,13 @@ tkn_second <- function(..., locale_num = FALSE) {
   }
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_tab <- function() {
   "%t"
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_iso_weekday <- function(..., locale_num = FALSE) {
   check_dots_empty()
@@ -277,7 +277,7 @@ tkn_iso_weekday <- function(..., locale_num = FALSE) {
   }
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_weeknum <- function(..., locale_num = FALSE, week_start_sunday = TRUE) {
   check_dots_empty()
@@ -297,7 +297,7 @@ tkn_weeknum <- function(..., locale_num = FALSE, week_start_sunday = TRUE) {
   }
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_iso_weeknum <- function(..., locale_num = FALSE) {
   check_dots_empty()
@@ -309,7 +309,7 @@ tkn_iso_weeknum <- function(..., locale_num = FALSE) {
   }
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_weekday <- function(..., locale_num = FALSE) {
   check_dots_empty()
@@ -321,7 +321,7 @@ tkn_weekday <- function(..., locale_num = FALSE) {
   }
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_year <- function(..., short = FALSE) {
   check_dots_empty()
@@ -333,7 +333,7 @@ tkn_year <- function(..., short = FALSE) {
   }
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_offset <- function(..., colon = TRUE) {
   check_dots_empty()
@@ -345,13 +345,13 @@ tkn_offset <- function(..., colon = TRUE) {
   }
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_zone <- function() {
   "%Z"
 }
 
-#' @rdname civil-tokens
+#' @rdname clock-tokens
 #' @export
 tkn_percent <- function() {
   "%%"
@@ -362,8 +362,8 @@ tkn_percent <- function() {
 #' Common date-time formats
 #'
 #' These functions are pre-generated formats created from combining multiple
-#' [tokens][civil-tokens] with [tkns()]. You can use them directly as `format`s
-#' in `format()` for civil classes or Date and POSIXct objects.
+#' [tokens][clock-tokens] with [tkns()]. You can use them directly as `format`s
+#' in `format()` for clock classes or Date and POSIXct objects.
 #'
 #' @inheritParams ellipsis::dots_empty
 #' @inheritParams tkn_offset
@@ -410,11 +410,11 @@ tkn_percent <- function() {
 #'   This extension adds the time zone name or abbreviation to the end of the
 #'   standard format as `[%Z]`.
 #'
-#'   This is most useful with the `format()` method for civil's zoned datetimes,
+#'   This is most useful with the `format()` method for clock's zoned datetimes,
 #'   as it can generate a textual representation of a zoned datetime that can
 #'   be unambiguously parsed back into the original object.
 #'
-#' @name civil-formats
+#' @name clock-formats
 #' @examples
 #' fmt_ymd_hms()
 #'
@@ -449,7 +449,7 @@ tkn_percent <- function() {
 #' format(x)
 NULL
 
-#' @rdname civil-formats
+#' @rdname clock-formats
 #' @export
 fmt_ym <- function(...,
                    year = tkn_year(),
@@ -459,7 +459,7 @@ fmt_ym <- function(...,
   tkns(year, month, sep = sep)
 }
 
-#' @rdname civil-formats
+#' @rdname clock-formats
 #' @export
 fmt_ymd <- function(...,
                     year = tkn_year(),
@@ -470,7 +470,7 @@ fmt_ymd <- function(...,
   tkns(year, month, day, sep = sep)
 }
 
-#' @rdname civil-formats
+#' @rdname clock-formats
 #' @export
 fmt_hms <- function(...,
                     hour = tkn_hour(),
@@ -481,7 +481,7 @@ fmt_hms <- function(...,
   tkns(hour, minute, second, sep = sep)
 }
 
-#' @rdname civil-formats
+#' @rdname clock-formats
 #' @export
 fmt_ymd_hms <- function(...,
                         ymd = fmt_ymd(),
@@ -491,7 +491,7 @@ fmt_ymd_hms <- function(...,
   tkns(ymd, sep, hms)
 }
 
-#' @rdname civil-formats
+#' @rdname clock-formats
 #' @export
 fmt_ymd_hms_zoned <- function(...,
                               ymd = fmt_ymd(),
@@ -511,80 +511,80 @@ fmt_ymd_hms_zoned <- function(...,
   out
 }
 
-#' @rdname civil-formats
+#' @rdname clock-formats
 #' @export
 fmt_week_date <- function() {
   tkns(tkn_year(), "-", "W", tkn_weeknum(), "-", tkn_weekday())
 }
 
-#' @rdname civil-formats
+#' @rdname clock-formats
 #' @export
 fmt_ordinal_date <- function() {
   tkns(tkn_year(), "-", tkn_day_of_year())
 }
 
-#' @rdname civil-formats
+#' @rdname clock-formats
 #' @export
 fmt_iso_week_date <- function() {
   tkns(tkn_iso_year(), "-", "W", tkn_iso_weeknum(), "-", tkn_iso_weekday())
 }
 
-#' @rdname civil-formats
+#' @rdname clock-formats
 #' @export
 fmt_iso_date <- function() {
   fmt_ymd()
 }
 
-#' @rdname civil-formats
+#' @rdname clock-formats
 #' @export
 fmt_iso_datetime <- function() {
   fmt_ymd_hms_zoned(sep = "T", colon = FALSE, zone_name = FALSE)
 }
 
-#' @rdname civil-formats
+#' @rdname clock-formats
 #' @export
 fmt_iso_year_weeknum_weekday <- function() {
   tkns(tkn_iso_year(), "-", "W", tkn_iso_weeknum(), "-", tkn_iso_weekday())
 }
 
-#' @rdname civil-formats
+#' @rdname clock-formats
 #' @export
 fmt_iso_year_weeknum <- function() {
   tkns(tkn_iso_year(), "-", "W", tkn_iso_weeknum())
 }
 
-#' @rdname civil-formats
+#' @rdname clock-formats
 #' @export
 fmt_year_month <- function() {
   fmt_ym()
 }
 
-#' @rdname civil-formats
+#' @rdname clock-formats
 #' @export
 fmt_year_month_day <- function() {
   fmt_ymd()
 }
 
-#' @rdname civil-formats
+#' @rdname clock-formats
 #' @export
 fmt_naive_datetime <- function() {
   fmt_ymd_hms()
 }
 
-#' @rdname civil-formats
+#' @rdname clock-formats
 #' @export
 fmt_naive_nano_datetime <- function() {
   fmt_ymd_hms()
 }
 
-#' @rdname civil-formats
+#' @rdname clock-formats
 #' @export
 fmt_zoned_datetime <- function(..., zone_name = TRUE) {
   check_dots_empty()
   fmt_ymd_hms_zoned(zone_name = zone_name)
 }
 
-#' @rdname civil-formats
+#' @rdname clock-formats
 #' @export
 fmt_zoned_nano_datetime <- function(..., zone_name = TRUE) {
   check_dots_empty()

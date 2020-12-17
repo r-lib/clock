@@ -91,7 +91,7 @@ as.POSIXlt.clock_calendar <- function(x,
 as.POSIXlt.clock_naive_time_point <- as.POSIXlt.clock_calendar
 
 #' @export
-as.POSIXlt.civil_zoned_time_point <- function(x, ...) {
+as.POSIXlt.clock_zoned_time_point <- function(x, ...) {
   x <- as.POSIXct(x, ...)
   as.POSIXlt(x)
 }

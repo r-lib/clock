@@ -36,7 +36,7 @@ adjust_year(x, value, ...)
 \method{adjust_year}{clock_calendar}(x, value, ..., day_nonexistent = "last-time")
 }
 \arguments{
-\item{x}{\verb{[Date / POSIXct / POSIXlt / civil]}
+\item{x}{\verb{[Date / POSIXct / POSIXlt]}
 
 A date-time vector.}
 

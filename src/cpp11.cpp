@@ -236,10 +236,10 @@ extern "C" SEXP _civil_get_offset_cpp(SEXP calendar, SEXP seconds_of_day, SEXP z
   END_CPP11
 }
 // install.cpp
-void civil_set_install(const cpp11::strings& path);
-extern "C" SEXP _civil_civil_set_install(SEXP path) {
+void clock_set_install(const cpp11::strings& path);
+extern "C" SEXP _civil_clock_set_install(SEXP path) {
   BEGIN_CPP11
-    civil_set_install(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(path));
+    clock_set_install(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(path));
     return R_NilValue;
   END_CPP11
 }
@@ -306,7 +306,7 @@ extern SEXP _civil_adjust_iso_calendar(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_naive_time_point_nanoseconds_of_second_cpp(SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_naive_time_point_seconds_of_day_cpp(SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_quarterly_calendar(SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _civil_civil_set_install(SEXP);
+extern SEXP _civil_clock_set_install(SEXP);
 extern SEXP _civil_convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_calendar_days_hour_minute_second_to_naive_second_point_fields(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_calendar_days_to_iso_year_weeknum_weekday(SEXP);
@@ -349,7 +349,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_adjust_naive_time_point_nanoseconds_of_second_cpp",                                    (DL_FUNC) &_civil_adjust_naive_time_point_nanoseconds_of_second_cpp,                                    3},
     {"_civil_adjust_naive_time_point_seconds_of_day_cpp",                                           (DL_FUNC) &_civil_adjust_naive_time_point_seconds_of_day_cpp,                                           3},
     {"_civil_adjust_quarterly_calendar",                                                            (DL_FUNC) &_civil_adjust_quarterly_calendar,                                                            5},
-    {"_civil_civil_set_install",                                                                    (DL_FUNC) &_civil_civil_set_install,                                                                    1},
+    {"_civil_clock_set_install",                                                                    (DL_FUNC) &_civil_clock_set_install,                                                                    1},
     {"_civil_convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields",   (DL_FUNC) &_civil_convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields,   6},
     {"_civil_convert_calendar_days_hour_minute_second_to_naive_second_point_fields",                (DL_FUNC) &_civil_convert_calendar_days_hour_minute_second_to_naive_second_point_fields,                4},
     {"_civil_convert_calendar_days_to_iso_year_weeknum_weekday",                                    (DL_FUNC) &_civil_convert_calendar_days_to_iso_year_weeknum_weekday,                                    1},

@@ -97,7 +97,7 @@ adjust_nanoseconds_of_second_precision <- function(x, precision) {
 #'
 #' `adjust_year()` adjusts the year of `x` to `value`.
 #'
-#' @param x `[Date / POSIXct / POSIXlt / civil]`
+#' @param x `[Date / POSIXct / POSIXlt]`
 #'
 #'   A date-time vector.
 #'

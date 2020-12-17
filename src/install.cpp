@@ -9,7 +9,7 @@
  * always run.
  */
 [[cpp11::register]]
-void civil_set_install(const cpp11::strings& path) {
+void clock_set_install(const cpp11::strings& path) {
   if (path.size() != 1) {
     civil_abort("Internal error: Time zone database installation path should have size 1.");
   }
