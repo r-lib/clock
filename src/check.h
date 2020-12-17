@@ -34,7 +34,17 @@ static inline void check_range_second(const int& value, const char* arg) {
     civil_abort("`%s` must be within the range of [0, 59], not %i.", arg, value);
   }
 }
-static inline void check_range_nanos(const int& value, const char* arg) {
+static inline void check_range_millisecond(const int& value, const char* arg) {
+  if (value > 999 || value < 0) {
+    civil_abort("`%s` must be within the range of [0, 999], not %i.", arg, value);
+  }
+}
+static inline void check_range_microsecond(const int& value, const char* arg) {
+  if (value > 999999 || value < 0) {
+    civil_abort("`%s` must be within the range of [0, 999999], not %i.", arg, value);
+  }
+}
+static inline void check_range_nanosecond(const int& value, const char* arg) {
   if (value > 999999999 || value < 0) {
     civil_abort("`%s` must be within the range of [0, 999999999], not %i.", arg, value);
   }

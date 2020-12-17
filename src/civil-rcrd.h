@@ -19,30 +19,6 @@ static inline void civil_writable_rcrd_set(civil_writable_rcrd& x,
 
 // -----------------------------------------------------------------------------
 
-static inline void civil_rcrd_recycle(civil_writable_rcrd& x,
-                                      const r_ssize& size) {
-  r_ssize x_size = x[0].size();
-
-  // Avoiding a copy from `civil_int_recycle()` that happens even when the
-  // sizes are the same.
-  // TODO: Is there a better way to structure `civil_int_recycle()`?
-  if (x_size == size) {
-    return;
-  }
-
-  r_ssize n = x.size();
-
-  for (r_ssize i = 0; i < n; ++i) {
-    civil_writable_rcrd_set(x, i, civil_int_recycle(x[i], size));
-  }
-
-  // Ensure names get recycled
-  // TODO: https://github.com/r-lib/cpp11/issues/132
-  // Should be able to go straight into a `cpp11::sexp`
-  SEXP names = x.attr("civil_rcrd:::names");
-  x.attr("civil_rcrd:::names") = civil_names_recycle(names, size);
-}
-
 static inline int* civil_rcrd_days_deref(civil_writable_rcrd& x) {
   return civil_int_deref(x[0].data());
 }
@@ -51,16 +27,6 @@ static inline int* civil_rcrd_time_of_day_deref(civil_writable_rcrd& x) {
 }
 static inline int* civil_rcrd_nanos_of_second_deref(civil_writable_rcrd& x) {
   return x.size() < 3 ? NULL : civil_int_deref(x[2].data());
-}
-
-static inline const int* civil_rcrd_days_deref_const(civil_rcrd& x) {
-  return civil_int_deref_const(x[0].data());
-}
-static inline const int* civil_rcrd_time_of_day_deref_const(civil_rcrd& x) {
-  return x.size() < 2 ? NULL : civil_int_deref_const(x[1].data());
-}
-static inline const int* civil_rcrd_nanos_of_second_deref_const(civil_rcrd& x) {
-  return x.size() < 3 ? NULL : civil_int_deref_const(x[2].data());
 }
 
 static inline void civil_rcrd_assign_missing(const r_ssize& i,
@@ -99,26 +65,5 @@ static inline civil_writable_rcrd civil_rcrd_clone(const civil_rcrd& x) {
 }
 
 // -----------------------------------------------------------------------------
-
-static inline civil_writable_rcrd new_days_list(const civil_writable_field& days) {
-  civil_writable_rcrd out({days});
-  out.names() = "days";
-  return out;
-}
-
-static inline civil_writable_rcrd new_days_time_of_day_list(const civil_writable_field& days,
-                                                            const civil_writable_field& time_of_day) {
-  civil_writable_rcrd out({days, time_of_day});
-  out.names() = {"days", "time_of_day"};
-  return out;
-}
-
-static inline civil_writable_rcrd new_days_time_of_day_nanos_of_second_list(const civil_writable_field& days,
-                                                                            const civil_writable_field& time_of_day,
-                                                                            const civil_writable_field& nanos_of_second) {
-  civil_writable_rcrd out({days, time_of_day, nanos_of_second});
-  out.names() = {"days", "time_of_day", "nanos_of_second"};
-  return out;
-}
 
 #endif

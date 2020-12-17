@@ -6,7 +6,7 @@ to_posixct <- function(x) {
   } else if (is_POSIXlt(x)) {
     to_posixct_from_posixlt(x)
   } else {
-    stop_civil_unsupported_class(x)
+    stop_clock_unsupported_class(x)
   }
 }
 
@@ -70,6 +70,29 @@ zeros_along <- function(x) {
   vector("integer", length = vec_size(x))
 }
 
+# Zeros along + NA propagation
+seconds_of_day_init <- function(x) {
+  out <- zeros_along(x)
+
+  na <- vec_equal_na(x)
+  if (any(na)) {
+    out[na] <- NA_integer_
+  }
+
+  out
+}
+
+nanoseconds_of_second_init <- function(x) {
+  out <- zeros_along(x)
+
+  na <- vec_equal_na(x)
+  if (any(na)) {
+    out[na] <- NA_integer_
+  }
+
+  out
+}
+
 # ------------------------------------------------------------------------------
 
 is_Date <- function(x) {
@@ -85,16 +108,15 @@ is_POSIXlt <- function(x) {
 }
 
 is_zoned_or_base <- function(x) {
-  is_zoned(x) || is_Date(x) || is_POSIXct(x) || is_POSIXlt(x)
+  is_zoned_time_point(x) || is_Date(x) || is_POSIXct(x) || is_POSIXlt(x)
 }
 
 # ------------------------------------------------------------------------------
 
-# Purposefully drop names and all attributes, as this is the structure
-# we end up storing in the rcrd object
 date_to_days <- function(x) {
   days <- unstructure(x)
-  days <- as.integer(days)
+  days <- as.integer(x)
+  names(days) <- names(x)
   days
 }
 
@@ -107,11 +129,11 @@ days_to_date <- function(x, names = NULL) {
 
 # ------------------------------------------------------------------------------
 
-restrict_civil_supported <- function(x) {
-  if (is_naive(x) || is_zoned_or_base(x)) {
+restrict_clock_supported <- function(x) {
+  if (is_calendar(x) || is_naive_time_point(x) || is_zoned_or_base(x)) {
     invisible(x)
   } else {
-    stop_civil_unsupported_class(x)
+    stop_clock_unsupported_class(x)
   }
 }
 
@@ -119,23 +141,23 @@ restrict_zoned_or_base <- function(x) {
   if (is_zoned_or_base(x)) {
     invisible(x)
   } else {
-    stop_civil_unsupported_class(x)
+    stop_clock_unsupported_class(x)
   }
 }
 
 restrict_zoned <- function(x) {
-  if (is_zoned(x)) {
+  if (is_zoned_time_point(x)) {
     invisible(x)
   } else {
-    stop_civil_unsupported_class(x)
+    stop_clock_unsupported_class(x)
   }
 }
 
 restrict_naive <- function(x) {
-  if (is_naive(x)) {
+  if (is_naive_time_point(x)) {
     invisible(x)
   } else {
-    stop_civil_unsupported_class(x)
+    stop_clock_unsupported_class(x)
   }
 }
 
@@ -175,19 +197,24 @@ get_tzone <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-stop_civil <- function(message, class = character()) {
-  rlang::abort(message, class = c(class, "civil_error"))
+stop_clock <- function(message, class = character()) {
+  rlang::abort(message, class = c(class, "clock_error"))
 }
 
-stop_civil_unsupported_class <- function(x) {
+stop_clock_unsupported_class <- function(x) {
   message <- paste0("Unsupported class ", paste_class(x))
-  stop_civil(message, class = "civil_error_unsupported_class")
+  stop_clock(message, class = "clock_error_unsupported_class")
 }
 
-stop_civil_unsupported_conversion <- function(x, to_arg) {
+stop_clock_unsupported_conversion <- function(x, to_arg) {
   to_arg <- paste0("<", to_arg, ">")
   message <- paste0("Can't convert ", paste_class(x), " to ", to_arg, ".")
-  stop_civil(message, "civil_error_unsupported_conversion")
+  stop_clock(message, "clock_error_unsupported_conversion")
+}
+
+stop_clock_unsupported_calendar_op <- function(op) {
+  message <- paste0("This calendar doesn't support `", op, "()`.")
+  stop_clock(message, "clock_error_unsupported_calendar_op")
 }
 
 paste_class <- function(x) {
@@ -197,8 +224,18 @@ paste_class <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-has_field <- function(x, field) {
-  field %in% fields(x)
+set_field <- function(x, i, value) {
+  field(x, i) <- value
+  x
+}
+set_calendar <- function(x, value) {
+  set_field(x, "calendar", value)
+}
+set_seconds_of_day <- function(x, value) {
+  set_field(x, "seconds_of_day", value)
+}
+set_nanoseconds_of_second <- function(x, value) {
+  set_field(x, "nanoseconds_of_second", value)
 }
 
 # ------------------------------------------------------------------------------

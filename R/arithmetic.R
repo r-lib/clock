@@ -4,13 +4,13 @@
 #' Naive arithmetic involves adding or subtracting units of time from a datetime
 #' that is independent of any time zone. This means that daylight savings time
 #' is never an issue while working with a naive datetime. Usually, you will
-#' convert to a naive datetime with [as_naive()], perform multiple arithmetic
-#' operations or adjustments with it, then convert it back to a zoned datetime
-#' with [as_zoned()].
+#' convert to a naive datetime with [as_naive_time_point()], perform multiple
+#' arithmetic operations or adjustments with it, then convert it back to a
+#' zoned datetime with [as_zoned_time_point()].
 #'
 #' Naive arithmetic is usually appropriate when performing multiple arithmetic
 #' operations in a row (like adding a set of years, months, and days). The
-#' alternative is [zoned arithmetic][civil-zoned-arithmetic], which is simpler
+#' alternative is [zoned arithmetic][clock-zoned-arithmetic], which is simpler
 #' and more straightforward when you just need to perform a single operation
 #' (like just adding 3 months).
 #'
@@ -23,8 +23,8 @@
 #' allowing you precise control over how to handle this case. As an example, you
 #' might choose to add 1 year to this nonexistent date, resulting in
 #' `"1972-02-29"`, which does exist due to it being a leap year. Or you might
-#' convert it back to a zoned date with [as_zoned()], which forces you
-#' to deal with the nonexistent date using the `day_nonexistent` argument.
+#' convert it back to a zoned date with [as_zoned_time_point()], which forces
+#' you to deal with the nonexistent date using the `day_nonexistent` argument.
 #' The default would choose the last real day in February of that year,
 #' resulting in `"1971-02-28"`.
 #'
@@ -36,11 +36,11 @@
 #'
 #' @inheritParams add_years.Date
 #'
-#' @param x `[civil_naive]`
+#' @param x `[clock_naive]`
 #'
 #'   A naive date-time vector.
 #'
-#' @name civil-naive-arithmetic
+#' @name clock-naive-arithmetic
 NULL
 
 #' Zoned date-time arithmetic
@@ -50,7 +50,7 @@ NULL
 #' that has a time zone attached. This means that all of the complexities of
 #' daylight savings time and nonexistent days have to be handled after each
 #' individual arithmetic operation. The alternative is
-#' [naive arithmetic][civil-naive-arithmetic], which only deals with the
+#' [naive arithmetic][clock-naive-arithmetic], which only deals with the
 #' complexities of time zones once after all arithmetic has been performed.
 #'
 #' Zoned arithmetic is usually fine for additions of singular units of time.
@@ -151,7 +151,7 @@ NULL
 #'
 #' @param ... These dots are for future extensions and must be empty.
 #'
-#' @name civil-zoned-arithmetic
+#' @name clock-zoned-arithmetic
 #'
 #' @examples
 #' x <- as.Date("2019-01-31")
@@ -192,14 +192,14 @@ NULL
 #' Date-time arithmetic
 #'
 #' @description
-#' Date-time arithmetic in civil is broken down into two types: zoned and naive.
+#' Date-time arithmetic in clock is broken down into two types: zoned and naive.
 #' Each type is documented on its own help page.
 #'
-#' [Zoned][civil-zoned-arithmetic] dates have a time zone attached. The two
+#' [Zoned][clock-zoned-arithmetic] dates have a time zone attached. The two
 #' base R classes, POSIXct and Date, implement zoned dates (Date is assumed to
 #' implicitly have a time zone of UTC).
 #'
-#' [Naive][civil-naive-arithmetic] dates are independent of a time zone.
+#' [Naive][clock-naive-arithmetic] dates are independent of a time zone.
 #'
 #' @param x `[Date / POSIXct / POSIXlt]`
 #'
@@ -212,30 +212,30 @@ NULL
 #'
 #' @param ... These dots are for future extensions and must be empty.
 #'
-#' @name civil-arithmetic
+#' @name clock-arithmetic
 NULL
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 add_years <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_years")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 add_years.Date <- function(x,
                            n,
                            ...,
                            day_nonexistent = "last-time") {
-  x <- as_naive(x)
+  x <- as_year_month_day(x)
   out <- add_years(x, n, ..., day_nonexistent = day_nonexistent)
   as.Date(out)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 add_years.POSIXt <- function(x,
                              n,
@@ -244,66 +244,85 @@ add_years.POSIXt <- function(x,
                              dst_nonexistent = NULL,
                              dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- as_naive(x)
+  x <- as_naive_time_point(x)
   out <- add_years(x, n, ..., day_nonexistent = day_nonexistent)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
   as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_years.civil_zoned <- function(x,
-                                  n,
-                                  ...,
-                                  day_nonexistent = "last-time",
-                                  dst_nonexistent = NULL,
-                                  dst_ambiguous = NULL) {
+add_years.clock_zoned_time_point <- function(x,
+                                             n,
+                                             ...,
+                                             day_nonexistent = "last-time",
+                                             dst_nonexistent = NULL,
+                                             dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- as_naive(x)
+  x <- as_naive_time_point(x)
   out <- add_years(x, n, ..., day_nonexistent = day_nonexistent)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
-  as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+  as_zoned_time_point(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_years.civil_naive_gregorian <- function(x, n, ..., day_nonexistent = "last-time") {
-  add_years_gregorian_impl(x, n, ..., day_nonexistent = day_nonexistent)
+add_years.clock_naive_time_point <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_naive_time_point_calendar(x, n, ..., day_nonexistent = day_nonexistent, dispatcher = add_years_calendar)
 }
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_years.civil_naive_quarterly <- function(x, n, ..., day_nonexistent = "last-time") {
-  add_years_quarterly_impl(x, n, ..., day_nonexistent = day_nonexistent)
+add_years.clock_calendar <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_calendar(x, n, ..., day_nonexistent = day_nonexistent, dispatcher = add_years_calendar)
 }
 
-#' @rdname civil-naive-arithmetic
+add_years_calendar <- function(x, n, day_nonexistent) {
+  UseMethod("add_years_calendar")
+}
+
 #' @export
-add_years.civil_naive_iso <- function(x, n, ..., day_nonexistent = "last-time") {
-  add_years_iso_impl(x, n, ..., day_nonexistent = day_nonexistent)
+add_years_calendar.clock_calendar <- function(x, n, day_nonexistent) {
+  stop_clock_unsupported_calendar_op("add_years")
+}
+
+#' @export
+add_years_calendar.clock_gregorian <- function(x, n, day_nonexistent) {
+  x <- promote_precision_year(x)
+  add_gregorian_calendar_years_or_months(x, n, day_nonexistent, "year")
+}
+
+#' @export
+add_years_calendar.clock_quarterly <- function(x, n, day_nonexistent) {
+  x <- promote_precision_year(x)
+  start <- get_start(x)
+  add_quarterly_calendar_years_or_quarters(x, n, start, day_nonexistent, "year")
+}
+
+#' @export
+add_years_calendar.clock_iso <- function(x, n, day_nonexistent) {
+  x <- promote_precision_year(x)
+  add_iso_calendar_years(x, n, day_nonexistent)
 }
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 subtract_years <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_years")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-subtract_years.Date <- function(x,
-                                n,
-                                ...,
-                                day_nonexistent = "last-time") {
+subtract_years.Date <- function(x, n, ..., day_nonexistent = "last-time") {
   add_years(x, -n, ..., day_nonexistent = day_nonexistent)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 subtract_years.POSIXt <- function(x,
                                   n,
@@ -314,67 +333,167 @@ subtract_years.POSIXt <- function(x,
   add_years(x, -n, ..., day_nonexistent = day_nonexistent, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-subtract_years.civil_zoned <- subtract_years.POSIXt
+subtract_years.clock_zoned_time_point <- subtract_years.POSIXt
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-naive-arithmetic
 #' @export
-subtract_years.civil_naive <- function(x, n, ..., day_nonexistent = "last-time") {
+subtract_years.clock_naive_time_point <- function(x, n, ..., day_nonexistent = "last-time") {
   add_years(x, -n, ..., day_nonexistent = day_nonexistent)
 }
 
+#' @rdname clock-naive-arithmetic
+#' @export
+subtract_years.clock_calendar <- subtract_years.clock_naive_time_point
+
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 add_quarters <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_quarters")
 }
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_quarters.civil_naive_quarterly <- function(x, n, ..., day_nonexistent = "last-time") {
-  add_quarters_quarterly_impl(x, n, ..., day_nonexistent = day_nonexistent)
+add_quarters.Date <- function(x,
+                              n,
+                              ...,
+                              day_nonexistent = "last-time") {
+  x <- as_year_month_day(x)
+  out <- add_quarters(x, n, ..., day_nonexistent = day_nonexistent)
+  as.Date(out)
+}
+
+#' @rdname clock-zoned-arithmetic
+#' @export
+add_quarters.POSIXt <- function(x,
+                                n,
+                                ...,
+                                day_nonexistent = "last-time",
+                                dst_nonexistent = NULL,
+                                dst_ambiguous = NULL) {
+  zone <- get_zone(x)
+  x <- as_naive_time_point(x)
+  out <- add_quarters(x, n, ..., day_nonexistent = day_nonexistent)
+  dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
+  dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
+  as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
+
+#' @rdname clock-zoned-arithmetic
+#' @export
+add_quarters.clock_zoned_time_point <- function(x,
+                                                n,
+                                                ...,
+                                                day_nonexistent = "last-time",
+                                                dst_nonexistent = NULL,
+                                                dst_ambiguous = NULL) {
+  zone <- get_zone(x)
+  x <- as_naive_time_point(x)
+  out <- add_quarters(x, n, ..., day_nonexistent = day_nonexistent)
+  dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
+  dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
+  as_zoned_time_point(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
+
+#' @rdname clock-zoned-arithmetic
+#' @export
+add_quarters.clock_naive_time_point <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_naive_time_point_calendar(x, n, ..., day_nonexistent = day_nonexistent, dispatcher = add_quarters_calendar)
+}
+
+#' @rdname clock-zoned-arithmetic
+#' @export
+add_quarters.clock_calendar <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_calendar(x, n, ..., day_nonexistent = day_nonexistent, dispatcher = add_quarters_calendar)
+}
+
+add_quarters_calendar <- function(x, n, day_nonexistent) {
+  UseMethod("add_quarters_calendar")
+}
+
+#' @export
+add_quarters_calendar.clock_calendar <- function(x, n, day_nonexistent) {
+  stop_clock_unsupported_calendar_op("add_quarters")
+}
+
+#' @export
+add_quarters_calendar.clock_gregorian <- function(x, n, day_nonexistent) {
+  x <- promote_precision_month(x)
+  add_gregorian_calendar_years_or_months(x, n * 3L, day_nonexistent, "month")
+}
+
+#' @export
+add_quarters_calendar.clock_quarterly <- function(x, n, day_nonexistent) {
+  x <- promote_precision_quarter(x)
+  start <- get_start(x)
+  add_quarterly_calendar_years_or_quarters(x, n, start, day_nonexistent, "quarter")
 }
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 subtract_quarters <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_quarters")
 }
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-subtract_quarters.civil_naive <- function(x, n, ..., day_nonexistent = "last-time") {
+subtract_quarters.Date <- function(x, n, ..., day_nonexistent = "last-time") {
   add_quarters(x, -n, ..., day_nonexistent = day_nonexistent)
 }
 
+#' @rdname clock-zoned-arithmetic
+#' @export
+subtract_quarters.POSIXt <- function(x,
+                                     n,
+                                     ...,
+                                     day_nonexistent = "last-time",
+                                     dst_nonexistent = NULL,
+                                     dst_ambiguous = NULL) {
+  add_quarters(x, -n, ..., day_nonexistent = day_nonexistent, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
+
+#' @rdname clock-zoned-arithmetic
+#' @export
+subtract_quarters.clock_zoned_time_point <- subtract_quarters.POSIXt
+
+#' @rdname clock-naive-arithmetic
+#' @export
+subtract_quarters.clock_naive_time_point <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_quarters(x, -n, ..., day_nonexistent = day_nonexistent)
+}
+
+#' @rdname clock-naive-arithmetic
+#' @export
+subtract_quarters.clock_calendar <- subtract_quarters.clock_naive_time_point
+
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 add_months <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_months")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 add_months.Date <- function(x,
                             n,
                             ...,
                             day_nonexistent = "last-time") {
-  x <- as_naive(x)
+  x <- as_year_month_day(x)
   out <- add_months(x, n, ..., day_nonexistent = day_nonexistent)
   as.Date(out)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 add_months.POSIXt <- function(x,
                               n,
@@ -383,54 +502,72 @@ add_months.POSIXt <- function(x,
                               dst_nonexistent = NULL,
                               dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- as_naive(x)
+  x <- as_naive_time_point(x)
   out <- add_months(x, n, ..., day_nonexistent = day_nonexistent)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
   as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_months.civil_zoned <- function(x,
-                                   n,
-                                   ...,
-                                   day_nonexistent = "last-time",
-                                   dst_nonexistent = NULL,
-                                   dst_ambiguous = NULL) {
+add_months.clock_zoned_time_point <- function(x,
+                                              n,
+                                              ...,
+                                              day_nonexistent = "last-time",
+                                              dst_nonexistent = NULL,
+                                              dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- as_naive(x)
+  x <- as_naive_time_point(x)
   out <- add_months(x, n, ..., day_nonexistent = day_nonexistent)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
-  as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+  as_zoned_time_point(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_months.civil_naive_gregorian <- function(x, n, ..., day_nonexistent = "last-time") {
-  add_months_gregorian_impl(x, n, ..., day_nonexistent = day_nonexistent)
+add_months.clock_naive_time_point <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_naive_time_point_calendar(x, n, ..., day_nonexistent = day_nonexistent, dispatcher = add_months_calendar)
+}
+
+#' @rdname clock-zoned-arithmetic
+#' @export
+add_months.clock_calendar <- function(x, n, ..., day_nonexistent = "last-time") {
+  add_calendar(x, n, ..., day_nonexistent = day_nonexistent, dispatcher = add_months_calendar)
+}
+
+add_months_calendar <- function(x, n, day_nonexistent) {
+  UseMethod("add_months_calendar")
+}
+
+#' @export
+add_months_calendar.clock_calendar <- function(x, n, day_nonexistent) {
+  stop_clock_unsupported_calendar_op("add_months")
+}
+
+#' @export
+add_months_calendar.clock_gregorian <- function(x, n, day_nonexistent) {
+  x <- promote_precision_month(x)
+  add_gregorian_calendar_years_or_months(x, n, day_nonexistent, "month")
 }
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 subtract_months <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_months")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-subtract_months.Date <- function(x,
-                                 n,
-                                 ...,
-                                 day_nonexistent = "last-time") {
+subtract_months.Date <- function(x, n, ..., day_nonexistent = "last-time") {
   add_months(x, -n, ..., day_nonexistent = day_nonexistent)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 subtract_months.POSIXt <- function(x,
                                    n,
@@ -441,136 +578,38 @@ subtract_months.POSIXt <- function(x,
   add_months(x, -n, ..., day_nonexistent = day_nonexistent, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-subtract_months.civil_zoned <- subtract_months.POSIXt
+subtract_months.clock_zoned_time_point <- subtract_months.POSIXt
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-naive-arithmetic
 #' @export
-subtract_months.civil_naive <- function(x, n, ..., day_nonexistent = "last-time") {
+subtract_months.clock_naive_time_point <- function(x, n, ..., day_nonexistent = "last-time") {
   add_months(x, -n, ..., day_nonexistent = day_nonexistent)
 }
 
-# ------------------------------------------------------------------------------
-
-#' @rdname civil-arithmetic
+#' @rdname clock-naive-arithmetic
 #' @export
-add_years_and_months <- function(x, years, months, ...) {
-  restrict_civil_supported(x)
-  UseMethod("add_years_and_months")
-}
-
-#' @rdname civil-zoned-arithmetic
-#' @export
-add_years_and_months.Date <- function(x,
-                                      years,
-                                      months,
-                                      ...,
-                                      day_nonexistent = "last-time") {
-  n <- convert_years_and_months_to_n(years, months)
-  add_months(x, n, ..., day_nonexistent = day_nonexistent)
-}
-
-#' @rdname civil-zoned-arithmetic
-#' @export
-add_years_and_months.POSIXt <- function(x,
-                                        years,
-                                        months,
-                                        ...,
-                                        day_nonexistent = "last-time",
-                                        dst_nonexistent = NULL,
-                                        dst_ambiguous = NULL) {
-  n <- convert_years_and_months_to_n(years, months)
-  add_months(x, n, ..., day_nonexistent = day_nonexistent, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
-}
-
-#' @rdname civil-zoned-arithmetic
-#' @export
-add_years_and_months.civil_zoned <- add_years_and_months.POSIXt
-
-#' @rdname civil-naive-arithmetic
-#' @export
-add_years_and_months.civil_naive_gregorian <- function(x, years, months, ..., day_nonexistent = "last-time") {
-  n <- convert_years_and_months_to_n(years, months)
-  add_months(x, n, ..., day_nonexistent = day_nonexistent)
-}
-
-convert_years_and_months_to_n <- function(years, months) {
-  # Assert common size
-  vec_size_common(years = years, months = months)
-
-  years <- vec_cast(years, integer(), x_arg = "years")
-  months <- vec_cast(months, integer(), x_arg = "months")
-
-  # Check offset signs
-  not_ok <- ((years > 0L) & (months < 0L)) | ((years < 0L) & (months > 0L))
-
-  if (any(not_ok, na.rm = TRUE)) {
-    abort("`years` and `months` must have the same sign.")
-  }
-
-  years * 12L + months
-}
+subtract_months.clock_calendar <- subtract_months.clock_naive_time_point
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
-#' @export
-subtract_years_and_months <- function(x, years, months, ...) {
-  restrict_civil_supported(x)
-  UseMethod("subtract_years_and_months")
-}
-
-#' @rdname civil-zoned-arithmetic
-#' @export
-subtract_years_and_months.Date <- function(x,
-                                           years,
-                                           months,
-                                           ...,
-                                           day_nonexistent = "last-time") {
-  add_years_and_months(x, -years, -months, ..., day_nonexistent = day_nonexistent)
-}
-
-#' @rdname civil-zoned-arithmetic
-#' @export
-subtract_years_and_months.POSIXt <- function(x,
-                                             years,
-                                             months,
-                                             ...,
-                                             day_nonexistent = "last-time",
-                                             dst_nonexistent = NULL,
-                                             dst_ambiguous = NULL) {
-  add_years_and_months(x, -years, -months, ..., day_nonexistent = day_nonexistent, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
-}
-
-#' @rdname civil-zoned-arithmetic
-#' @export
-subtract_years_and_months.civil_zoned <- subtract_years_and_months.POSIXt
-
-#' @rdname civil-naive-arithmetic
-#' @export
-subtract_years_and_months.civil_naive <- function(x, years, months, ..., day_nonexistent = "last-time") {
-  add_years_and_months(x, -years, -months, ..., day_nonexistent = day_nonexistent)
-}
-
-# ------------------------------------------------------------------------------
-
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 add_weeks <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_weeks")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 add_weeks.Date <- function(x, n, ...) {
-  x <- as_naive(x)
-  out <- add_weeks(x = x, n = n, ...)
+  x <- as_year_month_day(x)
+  out <- add_weeks(x, n, ...)
   as.Date(out)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 add_weeks.POSIXt <- function(x,
                              n,
@@ -578,62 +617,77 @@ add_weeks.POSIXt <- function(x,
                              dst_nonexistent = NULL,
                              dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- as_naive(x)
+  x <- as_naive_time_point(x)
   out <- add_weeks(x, n, ...)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
   as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_weeks.civil_zoned <- function(x,
-                                  n,
-                                  ...,
-                                  dst_nonexistent = NULL,
-                                  dst_ambiguous = NULL) {
+add_weeks.clock_zoned_time_point <- function(x,
+                                             n,
+                                             ...,
+                                             dst_nonexistent = NULL,
+                                             dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- as_naive(x)
+  x <- as_naive_time_point(x)
   out <- add_weeks(x, n, ...)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
-  as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+  as_zoned_time_point(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_weeks.civil_naive_gregorian <- function(x, n, ...) {
-  add_weeks_gregorian_impl(x, n, ...)
+add_weeks.clock_naive_time_point <- function(x, n, ...) {
+  add_naive_time_point_calendar_no_day_nonexistent(x, n, ..., dispatcher = add_weeks_calendar)
 }
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_weeks.civil_naive_quarterly <- function(x, n, ...) {
-  add_weeks_quarterly_impl(x, n, ...)
+add_weeks.clock_calendar <- function(x, n, ...) {
+  add_calendar_no_day_nonexistent(x, n, ..., dispatcher = add_weeks_calendar)
 }
 
-#' @rdname civil-naive-arithmetic
-#' @export
-add_weeks.civil_naive_iso <- function(x, n, ...) {
-  add_weeks_iso_impl(x, n, ...)
+add_weeks_calendar <- function(x, n) {
+  UseMethod("add_weeks_calendar")
 }
+
+#' @export
+add_weeks_calendar.clock_calendar <- function(x, n) {
+  stop_clock_unsupported_calendar_op("add_weeks")
+}
+
+#' @export
+add_weeks_calendar.clock_gregorian <- function(x, n) {
+  x <- promote_precision_day(x)
+  add_calendar_weeks_or_days(x, n, "week")
+}
+
+#' @export
+add_weeks_calendar.clock_quarterly <- add_weeks_calendar.clock_gregorian
+
+#' @export
+add_weeks_calendar.clock_iso <- add_weeks_calendar.clock_gregorian
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 subtract_weeks <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_weeks")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 subtract_weeks.Date <- function(x, n, ...) {
   add_weeks(x, -n, ...)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 subtract_weeks.POSIXt <- function(x,
                                   n,
@@ -643,34 +697,36 @@ subtract_weeks.POSIXt <- function(x,
   add_weeks(x, -n, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-subtract_weeks.civil_zoned <- subtract_weeks.POSIXt
+subtract_weeks.clock_zoned_time_point <- subtract_weeks.POSIXt
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-naive-arithmetic
 #' @export
-subtract_weeks.civil_naive <- function(x, n, ...) {
-  add_weeks(x, -n, ...)
-}
+subtract_weeks.clock_naive_time_point <- subtract_weeks.Date
+
+#' @rdname clock-naive-arithmetic
+#' @export
+subtract_weeks.clock_calendar <- subtract_weeks.Date
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 add_days <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_days")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 add_days.Date <- function(x, n, ...) {
-  x <- as_naive(x)
-  out <- add_days(x = x, n = n, ...)
+  x <- as_year_month_day(x)
+  out <- add_days(x, n, ...)
   as.Date(out)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 add_days.POSIXt <- function(x,
                             n,
@@ -678,62 +734,77 @@ add_days.POSIXt <- function(x,
                             dst_nonexistent = NULL,
                             dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- as_naive(x)
+  x <- as_naive_time_point(x)
   out <- add_days(x, n, ...)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
   as.POSIXct(out, tz = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_days.civil_zoned <- function(x,
-                                 n,
-                                 ...,
-                                 dst_nonexistent = NULL,
-                                 dst_ambiguous = NULL) {
+add_days.clock_zoned_time_point <- function(x,
+                                            n,
+                                            ...,
+                                            dst_nonexistent = NULL,
+                                            dst_ambiguous = NULL) {
   zone <- get_zone(x)
-  x <- as_naive(x)
+  x <- as_naive_time_point(x)
   out <- add_days(x, n, ...)
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
-  as_zoned(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+  as_zoned_time_point(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_days.civil_naive_gregorian <- function(x, n, ...) {
-  add_days_gregorian_impl(x, n, ...)
+add_days.clock_naive_time_point <- function(x, n, ...) {
+  add_naive_time_point_calendar_no_day_nonexistent(x, n, ..., dispatcher = add_days_calendar)
 }
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_days.civil_naive_quarterly <- function(x, n, ...) {
-  add_days_quarterly_impl(x, n, ...)
+add_days.clock_calendar <- function(x, n, ...) {
+  add_calendar_no_day_nonexistent(x, n, ..., dispatcher = add_days_calendar)
 }
 
-#' @rdname civil-naive-arithmetic
-#' @export
-add_days.civil_naive_iso <- function(x, n, ...) {
-  add_days_iso_impl(x, n, ...)
+add_days_calendar <- function(x, n) {
+  UseMethod("add_days_calendar")
 }
+
+#' @export
+add_days_calendar.clock_calendar <- function(x, n) {
+  stop_clock_unsupported_calendar_op("add_days")
+}
+
+#' @export
+add_days_calendar.clock_gregorian <- function(x, n) {
+  x <- promote_precision_day(x)
+  add_calendar_weeks_or_days(x, n, "day")
+}
+
+#' @export
+add_days_calendar.clock_quarterly <- add_days_calendar.clock_gregorian
+
+#' @export
+add_days_calendar.clock_iso <- add_days_calendar.clock_gregorian
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 subtract_days <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_days")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 subtract_days.Date <- function(x, n, ...) {
   add_days(x, -n, ...)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 subtract_days.POSIXt <- function(x,
                                  n,
@@ -743,416 +814,442 @@ subtract_days.POSIXt <- function(x,
   add_days(x, -n, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-subtract_days.civil_zoned <- subtract_days.POSIXt
+subtract_days.clock_zoned_time_point <- subtract_days.POSIXt
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-naive-arithmetic
 #' @export
-subtract_days.civil_naive <- function(x, n, ...) {
-  add_days(x, -n, ...)
-}
+subtract_days.clock_naive_time_point <- subtract_days.Date
+
+#' @rdname clock-naive-arithmetic
+#' @export
+subtract_days.clock_calendar <- subtract_days.Date
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 add_hours <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_hours")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 add_hours.Date <- function(x, n, ...) {
-  add_hours_posixct_impl(x, n, ...)
+  x <- to_posixct(x)
+  add_hours(x, n, ...)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_hours.POSIXt <- add_hours.Date
-
-#' @rdname civil-zoned-arithmetic
-#' @export
-add_hours.civil_zoned <- function(x, n, ...) {
-  add_hours_zoned_impl(x, n, ...)
+add_hours.POSIXt <- function(x, n, ...) {
+  add_sys_seconds_hours_or_minutes_or_seconds(x, n, ..., unit = "hour")
 }
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_hours.civil_naive_gregorian <- function(x, n, ...) {
-  add_hours_gregorian_impl(x, n, ...)
+add_hours.clock_zoned_time_point <- function(x, n, ...) {
+  add_time_point_seconds_of_day(x, n, ..., unit = "hour")
+}
+
+#' @rdname clock-naive-arithmetic
+#' @export
+add_hours.clock_naive_time_point <- add_hours.clock_zoned_time_point
+
+#' @rdname clock-naive-arithmetic
+#' @export
+add_hours.clock_calendar <- function(x, n, ...) {
+  x <- as_naive_time_point(x)
+  add_hours(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 subtract_hours <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_hours")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 subtract_hours.Date <- function(x, n, ...) {
   add_hours(x, -n, ...)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 subtract_hours.POSIXt <- subtract_hours.Date
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-subtract_hours.civil_zoned <- subtract_hours.Date
+subtract_hours.clock_zoned_time_point <- subtract_hours.Date
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-naive-arithmetic
 #' @export
-subtract_hours.civil_naive <- subtract_hours.Date
+subtract_hours.clock_naive_time_point <- subtract_hours.Date
+
+#' @rdname clock-naive-arithmetic
+#' @export
+subtract_hours.clock_calendar <- subtract_hours.Date
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 add_minutes <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_minutes")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 add_minutes.Date <- function(x, n, ...) {
-  add_minutes_posixct_impl(x, n, ...)
+  x <- to_posixct(x)
+  add_minutes(x, n, ...)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_minutes.POSIXt <- add_minutes.Date
-
-#' @rdname civil-zoned-arithmetic
-#' @export
-add_minutes.civil_zoned <- function(x, n, ...) {
-  add_minutes_zoned_impl(x, n, ...)
+add_minutes.POSIXt <- function(x, n, ...) {
+  add_sys_seconds_hours_or_minutes_or_seconds(x, n, ..., unit = "minute")
 }
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_minutes.civil_naive_gregorian <- function(x, n, ...) {
-  add_minutes_gregorian_impl(x, n, ...)
+add_minutes.clock_zoned_time_point <- function(x, n, ...) {
+  add_time_point_seconds_of_day(x, n, ..., unit = "minute")
+}
+
+#' @rdname clock-naive-arithmetic
+#' @export
+add_minutes.clock_naive_time_point <- add_minutes.clock_zoned_time_point
+
+#' @rdname clock-naive-arithmetic
+#' @export
+add_minutes.clock_calendar <- function(x, n, ...) {
+  x <- as_naive_time_point(x)
+  add_minutes(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 subtract_minutes <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_minutes")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 subtract_minutes.Date <- function(x, n, ...) {
   add_minutes(x, -n, ...)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 subtract_minutes.POSIXt <- subtract_minutes.Date
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-subtract_minutes.civil_zoned <- subtract_minutes.Date
+subtract_minutes.clock_zoned_time_point <- subtract_minutes.Date
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-naive-arithmetic
 #' @export
-subtract_minutes.civil_naive <- subtract_minutes.Date
+subtract_minutes.clock_naive_time_point <- subtract_minutes.Date
+
+#' @rdname clock-naive-arithmetic
+#' @export
+subtract_minutes.clock_calendar <- subtract_minutes.Date
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 add_seconds <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_seconds")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 add_seconds.Date <- function(x, n, ...) {
-  add_seconds_posixct_impl(x, n, ...)
+  x <- to_posixct(x)
+  add_seconds(x, n, ...)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_seconds.POSIXt <- add_seconds.Date
-
-#' @rdname civil-zoned-arithmetic
-#' @export
-add_seconds.civil_zoned <- function(x, n, ...) {
-  add_seconds_zoned_impl(x, n, ...)
+add_seconds.POSIXt <- function(x, n, ...) {
+  add_sys_seconds_hours_or_minutes_or_seconds(x, n, ..., unit = "second")
 }
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_seconds.civil_naive_gregorian <- function(x, n, ...) {
-  add_seconds_gregorian_impl(x, n, ...)
+add_seconds.clock_zoned_time_point <- function(x, n, ...) {
+  add_time_point_seconds_of_day(x, n, ..., unit = "second")
+}
+
+#' @rdname clock-naive-arithmetic
+#' @export
+add_seconds.clock_naive_time_point <- add_seconds.clock_zoned_time_point
+
+#' @rdname clock-naive-arithmetic
+#' @export
+add_seconds.clock_calendar <- function(x, n, ...) {
+  x <- as_naive_time_point(x)
+  add_seconds(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 subtract_seconds <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_seconds")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 subtract_seconds.Date <- function(x, n, ...) {
   add_seconds(x, -n, ...)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 subtract_seconds.POSIXt <- subtract_seconds.Date
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-subtract_seconds.civil_zoned <- subtract_seconds.Date
+subtract_seconds.clock_zoned_time_point <- subtract_seconds.Date
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-naive-arithmetic
 #' @export
-subtract_seconds.civil_naive <- subtract_seconds.Date
+subtract_seconds.clock_naive_time_point <- subtract_seconds.Date
+
+#' @rdname clock-naive-arithmetic
+#' @export
+subtract_seconds.clock_calendar <- subtract_seconds.Date
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 add_milliseconds <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_milliseconds")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 add_milliseconds.Date <- function(x, n, ...) {
-  add_milliseconds_zoned_impl(x, n, ...)
+  x <- as_zoned_time_point(x)
+  add_milliseconds(x, n, ...)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 add_milliseconds.POSIXt <- add_milliseconds.Date
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_milliseconds.civil_zoned <- add_milliseconds.Date
+add_milliseconds.clock_zoned_time_point <- function(x, n, ...) {
+  x <- promote_precision_millisecond(x)
+  add_time_point_nanoseconds_of_second(x, n, ..., unit = "millisecond")
+}
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-naive-arithmetic
 #' @export
-add_milliseconds.civil_naive_gregorian <- function(x, n, ...) {
-  add_milliseconds_gregorian_impl(x, n, ...)
+add_milliseconds.clock_naive_time_point <- add_milliseconds.clock_zoned_time_point
+
+#' @rdname clock-naive-arithmetic
+#' @export
+add_milliseconds.clock_calendar <- function(x, n, ...) {
+  x <- as_naive_time_point(x)
+  add_milliseconds(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 subtract_milliseconds <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_milliseconds")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 subtract_milliseconds.Date <- function(x, n, ...) {
   add_milliseconds(x, -n, ...)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 subtract_milliseconds.POSIXt <- subtract_milliseconds.Date
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-subtract_milliseconds.civil_zoned <- subtract_milliseconds.Date
+subtract_milliseconds.clock_zoned_time_point <- subtract_milliseconds.Date
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-naive-arithmetic
 #' @export
-subtract_milliseconds.civil_naive <- subtract_milliseconds.Date
+subtract_milliseconds.clock_naive_time_point <- subtract_milliseconds.Date
+
+#' @rdname clock-naive-arithmetic
+#' @export
+subtract_milliseconds.clock_calendar <- subtract_milliseconds.Date
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 add_microseconds <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_microseconds")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 add_microseconds.Date <- function(x, n, ...) {
-  add_microseconds_zoned_impl(x, n, ...)
+  x <- as_zoned_time_point(x)
+  add_microseconds(x, n, ...)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 add_microseconds.POSIXt <- add_microseconds.Date
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_microseconds.civil_zoned <- add_microseconds.Date
+add_microseconds.clock_zoned_time_point <- function(x, n, ...) {
+  x <- promote_precision_microsecond(x)
+  add_time_point_nanoseconds_of_second(x, n, ..., unit = "microsecond")
+}
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-naive-arithmetic
 #' @export
-add_microseconds.civil_naive_gregorian <- function(x, n, ...) {
-  add_microseconds_gregorian_impl(x, n, ...)
+add_microseconds.clock_naive_time_point <- add_microseconds.clock_zoned_time_point
+
+#' @rdname clock-naive-arithmetic
+#' @export
+add_microseconds.clock_calendar <- function(x, n, ...) {
+  x <- as_naive_time_point(x)
+  add_microseconds(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 subtract_microseconds <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_microseconds")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 subtract_microseconds.Date <- function(x, n, ...) {
   add_microseconds(x, -n, ...)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 subtract_microseconds.POSIXt <- subtract_microseconds.Date
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-subtract_microseconds.civil_zoned <- subtract_microseconds.Date
+subtract_microseconds.clock_zoned_time_point <- subtract_microseconds.Date
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-naive-arithmetic
 #' @export
-subtract_microseconds.civil_naive <- subtract_microseconds.Date
+subtract_microseconds.clock_naive_time_point <- subtract_microseconds.Date
+
+#' @rdname clock-naive-arithmetic
+#' @export
+subtract_microseconds.clock_calendar <- subtract_microseconds.Date
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 add_nanoseconds <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_nanoseconds")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 add_nanoseconds.Date <- function(x, n, ...) {
-  add_nanoseconds_zoned_impl(x, n, ...)
+  x <- as_zoned_time_point(x)
+  add_nanoseconds(x, n, ...)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 add_nanoseconds.POSIXt <- add_nanoseconds.Date
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-add_nanoseconds.civil_zoned <- add_nanoseconds.Date
+add_nanoseconds.clock_zoned_time_point <- function(x, n, ...) {
+  x <- promote_precision_nanosecond(x)
+  add_time_point_nanoseconds_of_second(x, n, ..., unit = "nanosecond")
+}
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-naive-arithmetic
 #' @export
-add_nanoseconds.civil_naive_gregorian <- function(x, n, ...) {
-  add_nanoseconds_gregorian_impl(x, n, ...)
+add_nanoseconds.clock_naive_time_point <- add_nanoseconds.clock_zoned_time_point
+
+#' @rdname clock-naive-arithmetic
+#' @export
+add_nanoseconds.clock_calendar <- function(x, n, ...) {
+  x <- as_naive_time_point(x)
+  add_nanoseconds(x, n, ...)
 }
 
 # ------------------------------------------------------------------------------
 
-#' @rdname civil-arithmetic
+#' @rdname clock-arithmetic
 #' @export
 subtract_nanoseconds <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_nanoseconds")
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 subtract_nanoseconds.Date <- function(x, n, ...) {
   add_nanoseconds(x, -n, ...)
 }
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
 subtract_nanoseconds.POSIXt <- subtract_nanoseconds.Date
 
-#' @rdname civil-zoned-arithmetic
+#' @rdname clock-zoned-arithmetic
 #' @export
-subtract_nanoseconds.civil_zoned <- subtract_nanoseconds.Date
+subtract_nanoseconds.clock_zoned_time_point <- subtract_nanoseconds.Date
 
-#' @rdname civil-naive-arithmetic
+#' @rdname clock-naive-arithmetic
 #' @export
-subtract_nanoseconds.civil_naive <- subtract_nanoseconds.Date
+subtract_nanoseconds.clock_naive_time_point <- subtract_nanoseconds.Date
+
+#' @rdname clock-naive-arithmetic
+#' @export
+subtract_nanoseconds.clock_calendar <- subtract_nanoseconds.Date
 
 # ------------------------------------------------------------------------------
 
-add_years_gregorian_impl <- function(x, n, ..., day_nonexistent) {
-  x <- promote_at_least_year(x)
-  add_years_or_months_gregorian(x, n, ..., day_nonexistent = day_nonexistent, unit = "year")
-}
-add_months_gregorian_impl <- function(x, n, ..., day_nonexistent) {
-  x <- promote_at_least_year_month(x)
-  add_years_or_months_gregorian(x, n, ..., day_nonexistent = day_nonexistent, unit = "month")
-}
-
-add_years_or_months_gregorian <- function(x, n, ..., day_nonexistent, unit) {
+add_sys_seconds_hours_or_minutes_or_seconds <- function(x, n, ..., unit) {
   check_dots_empty()
 
   n <- vec_cast(n, integer(), x_arg = "n")
-  size <- vec_size_common(x = x, n = n)
-
-  add_years_or_months_gregorian_cpp(x, n, day_nonexistent, unit, size)
-}
-
-# ------------------------------------------------------------------------------
-
-add_weeks_gregorian_impl <- function(x, n, ...) {
-  x <- promote_at_least_year_month_day(x)
-  add_weeks_or_days_gregorian(x, n, ..., unit = "week")
-}
-add_days_gregorian_impl <- function(x, n, ...) {
-  x <- promote_at_least_year_month_day(x)
-  add_weeks_or_days_gregorian(x, n, ..., unit = "day")
-}
-
-add_weeks_or_days_gregorian <- function(x, n, ..., unit) {
-  check_dots_empty()
-
-  n <- vec_cast(n, integer(), x_arg = "n")
-  size <- vec_size_common(x = x, n = n)
-
-  # Adding weeks/days is the same at the C++ level for quarterly/gregorian
-  add_weeks_or_days_cpp(x, n, unit, size)
-}
-
-# ------------------------------------------------------------------------------
-
-add_hours_posixct_impl <- function(x, n, ...) {
-  add_hours_or_minutes_or_seconds_posixct(x, n, ..., unit = "hour")
-}
-add_minutes_posixct_impl <- function(x, n, ...) {
-  add_hours_or_minutes_or_seconds_posixct(x, n, ..., unit = "minute")
-}
-add_seconds_posixct_impl <- function(x, n, ...) {
-  add_hours_or_minutes_or_seconds_posixct(x, n, ..., unit = "second")
-}
-
-add_hours_or_minutes_or_seconds_posixct <- function(x, n, ..., unit) {
-  check_dots_empty()
-
-  n <- vec_cast(n, integer(), x_arg = "n")
-  x <- promote_at_least_posixct(x)
+  x <- to_posixct(x)
 
   # Check tidyverse recyclability
   vec_size_common(x = x, n = n)
@@ -1172,177 +1269,126 @@ add_hours_or_minutes_or_seconds_posixct <- function(x, n, ..., unit) {
 
 # ------------------------------------------------------------------------------
 
-add_hours_zoned_impl <- function(x, n, ...) {
-  add_hours_or_minutes_or_seconds_zoned(x, n, ..., unit = "hour")
-}
-add_minutes_zoned_impl <- function(x, n, ...) {
-  add_hours_or_minutes_or_seconds_zoned(x, n, ..., unit = "minute")
-}
-add_seconds_zoned_impl <- function(x, n, ...) {
-  add_hours_or_minutes_or_seconds_zoned(x, n, ..., unit = "second")
-}
-
-add_hours_or_minutes_or_seconds_zoned <- function(x, n, ..., unit) {
+add_time_point_seconds_of_day <- function(x, n, ..., unit) {
   check_dots_empty()
 
+  x <- promote_precision_second(x)
+
   n <- vec_cast(n, integer(), x_arg = "n")
-  x <- promote_at_least_zoned_datetime(x)
 
-  size <- vec_size_common(x = x, n = n)
+  args <- vec_recycle_common(x = x, n = n)
+  x <- args$x
+  n <- args$n
 
-  # Zoned and Naive sub-daily arithmetic are equivalent at the C++ level
-  add_hours_or_minutes_or_seconds_cpp(x, n, unit, size)
+  add_time_point_seconds_of_day_cpp(x, n, unit)
 }
 
 # ------------------------------------------------------------------------------
 
-add_hours_gregorian_impl <- function(x, n, ...) {
-  add_hours_or_minutes_or_seconds_gregorian(x, n, ..., unit = "hour")
-}
-add_minutes_gregorian_impl <- function(x, n, ...) {
-  add_hours_or_minutes_or_seconds_gregorian(x, n, ..., unit = "minute")
-}
-add_seconds_gregorian_impl <- function(x, n, ...) {
-  add_hours_or_minutes_or_seconds_gregorian(x, n, ..., unit = "second")
-}
-
-add_hours_or_minutes_or_seconds_gregorian <- function(x, n, ..., unit) {
+add_time_point_nanoseconds_of_second <- function(x, n, ..., unit) {
   check_dots_empty()
 
   n <- vec_cast(n, integer(), x_arg = "n")
-  size <- vec_size_common(x = x, n = n)
 
-  x <- promote_at_least_naive_datetime(x)
+  args <- vec_recycle_common(x = x, n = n)
+  x <- args$x
+  n <- args$n
 
-  # Zoned and Naive sub-daily arithmetic are equivalent at the C++ level
-  add_hours_or_minutes_or_seconds_cpp(x, n, unit, size)
+  add_time_point_nanoseconds_of_second_cpp(x, n, unit)
 }
 
 # ------------------------------------------------------------------------------
 
-add_milliseconds_zoned_impl <- function(x, n, ...) {
-  add_milliseconds_or_microseconds_or_nanoseconds_zoned(x, n, ..., unit = "millisecond")
-}
-add_microseconds_zoned_impl <- function(x, n, ...) {
-  add_milliseconds_or_microseconds_or_nanoseconds_zoned(x, n, ..., unit = "microsecond")
-}
-add_nanoseconds_zoned_impl <- function(x, n, ...) {
-  add_milliseconds_or_microseconds_or_nanoseconds_zoned(x, n, ..., unit = "nanosecond")
-}
-
-add_milliseconds_or_microseconds_or_nanoseconds_zoned <- function(x, n, ..., unit) {
+add_naive_time_point_calendar <- function(x, n, ..., day_nonexistent, dispatcher) {
   check_dots_empty()
 
   n <- vec_cast(n, integer(), x_arg = "n")
-  size <- vec_size_common(x = x, n = n)
 
-  x <- promote_at_least_zoned_nano_datetime(x)
+  args <- vec_recycle_common(x = x, n = n)
+  x <- args$x
+  n <- args$n
 
-  # Zoned and Naive sub-daily arithmetic are equivalent at the C++ level
-  add_milliseconds_or_microseconds_or_nanoseconds_cpp(x, n, unit, size)
+  calendar <- field_calendar(x)
+  result <- dispatcher(calendar, n, day_nonexistent)
+  calendar <- result$calendar
+  x <- set_calendar(x, calendar)
+
+  x <- resolve_subdaily(x, result, day_nonexistent)
+
+  x
+}
+
+add_naive_time_point_calendar_no_day_nonexistent <- function(x, n, ..., dispatcher) {
+  check_dots_empty()
+
+  n <- vec_cast(n, integer(), x_arg = "n")
+
+  args <- vec_recycle_common(x = x, n = n)
+  x <- args$x
+  n <- args$n
+
+  calendar <- field_calendar(x)
+  result <- dispatcher(calendar, n)
+  calendar <- result$calendar
+  x <- set_calendar(x, calendar)
+
+  # unused `day_nonexistent` since all days exist
+  day_nonexistent <- "last-time"
+
+  x <- resolve_subdaily(x, result, day_nonexistent)
+
+  x
+}
+
+resolve_subdaily <- function(x, result, day_nonexistent) {
+  if (!result$any) {
+    return(x)
+  }
+
+  ok <- result$ok
+
+  seconds_of_day <- field_seconds_of_day(x)
+  seconds_of_day <- resolve_seconds_of_day(seconds_of_day, ok, day_nonexistent)
+  x <- set_seconds_of_day(x, seconds_of_day)
+
+  if (is_subsecond_time_point(x)) {
+    precision <- get_precision(x)
+    nanoseconds_of_second <- field_nanoseconds_of_second(x)
+    nanoseconds_of_second <- resolve_nanoseconds_of_second(nanoseconds_of_second, ok, day_nonexistent, precision)
+    x <- set_nanoseconds_of_second(x, nanoseconds_of_second)
+  }
+
+  x
 }
 
 # ------------------------------------------------------------------------------
 
-add_milliseconds_gregorian_impl <- function(x, n, ...) {
-  add_milliseconds_or_microseconds_or_nanoseconds_gregorian(x, n, ..., unit = "millisecond")
-}
-add_microseconds_gregorian_impl <- function(x, n, ...) {
-  add_milliseconds_or_microseconds_or_nanoseconds_gregorian(x, n, ..., unit = "microsecond")
-}
-add_nanoseconds_gregorian_impl <- function(x, n, ...) {
-  add_milliseconds_or_microseconds_or_nanoseconds_gregorian(x, n, ..., unit = "nanosecond")
-}
-
-add_milliseconds_or_microseconds_or_nanoseconds_gregorian <- function(x, n, ..., unit) {
+add_calendar <- function(x, n, ..., day_nonexistent, dispatcher) {
   check_dots_empty()
 
   n <- vec_cast(n, integer(), x_arg = "n")
-  size <- vec_size_common(x = x, n = n)
 
-  x <- promote_at_least_naive_nano_datetime(x)
+  args <- vec_recycle_common(x = x, n = n)
+  x <- args$x
+  n <- args$n
 
-  # Zoned and Naive sub-daily arithmetic are equivalent at the C++ level
-  add_milliseconds_or_microseconds_or_nanoseconds_cpp(x, n, unit, size)
+  result <- dispatcher(x, n, day_nonexistent)
+
+  result$calendar
 }
 
-# ------------------------------------------------------------------------------
-
-add_years_quarterly_impl <- function(x, n, ..., day_nonexistent) {
-  x <- promote_at_least_quarterly_year(x)
-  add_years_or_quarters_quarterly(x, n, ..., day_nonexistent = day_nonexistent, unit = "year")
-}
-add_quarters_quarterly_impl <- function(x, n, ..., day_nonexistent) {
-  x <- promote_at_least_quarterly_year_quarternum(x)
-  add_years_or_quarters_quarterly(x, n, ..., day_nonexistent = day_nonexistent, unit = "quarter")
-}
-
-add_years_or_quarters_quarterly <- function(x, n, ..., day_nonexistent, unit) {
+add_calendar_no_day_nonexistent <- function(x, n, ..., dispatcher) {
   check_dots_empty()
 
   n <- vec_cast(n, integer(), x_arg = "n")
-  size <- vec_size_common(x = x, n = n)
-  start <- get_quarterly_start(x)
 
-  add_years_or_quarters_quarterly_cpp(x, n, start, day_nonexistent, unit, size)
-}
+  args <- vec_recycle_common(x = x, n = n)
+  x <- args$x
+  n <- args$n
 
-# ------------------------------------------------------------------------------
+  result <- dispatcher(x, n)
 
-add_weeks_quarterly_impl <- function(x, n, ...) {
-  x <- promote_at_least_quarterly_year_quarternum_quarterday(x)
-  add_weeks_or_days_quarterly(x, n, ..., unit = "week")
-}
-add_days_quarterly_impl <- function(x, n, ...) {
-  x <- promote_at_least_quarterly_year_quarternum_quarterday(x)
-  add_weeks_or_days_quarterly(x, n, ..., unit = "day")
-}
-
-add_weeks_or_days_quarterly <- function(x, n, ..., unit) {
-  check_dots_empty()
-
-  n <- vec_cast(n, integer(), x_arg = "n")
-  size <- vec_size_common(x = x, n = n)
-
-  # Adding weeks/days is the same at the C++ level for quarterly/gregorian
-  add_weeks_or_days_cpp(x, n, unit, size)
-}
-
-# ------------------------------------------------------------------------------
-
-add_years_iso_impl <- function(x, n, ..., day_nonexistent) {
-  x <- promote_at_least_iso_year(x)
-  add_years_iso(x, n, ..., day_nonexistent = day_nonexistent)
-}
-
-add_years_iso <- function(x, n, ..., day_nonexistent) {
-  check_dots_empty()
-
-  n <- vec_cast(n, integer(), x_arg = "n")
-  size <- vec_size_common(x = x, n = n)
-
-  add_years_iso_cpp(x, n, day_nonexistent, size)
-}
-
-# ------------------------------------------------------------------------------
-
-add_weeks_iso_impl <- function(x, n, ...) {
-  x <- promote_at_least_iso_year_weeknum(x)
-  add_weeks_or_days_iso(x, n, ..., unit = "week")
-}
-add_days_iso_impl <- function(x, n, ...) {
-  x <- promote_at_least_iso_year_weeknum_weekday(x)
-  add_weeks_or_days_iso(x, n, ..., unit = "day")
-}
-
-add_weeks_or_days_iso <- function(x, n, ..., unit) {
-  check_dots_empty()
-
-  n <- vec_cast(n, integer(), x_arg = "n")
-  size <- vec_size_common(x = x, n = n)
-
-  # Adding weeks/days is the same at the C++ level for iso/gregorian
-  add_weeks_or_days_cpp(x, n, unit, size)
+  result$calendar
 }
 
 # ------------------------------------------------------------------------------

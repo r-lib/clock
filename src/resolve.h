@@ -182,120 +182,90 @@ static inline void resolve_day_nonexistent_error(const r_ssize& i) {
 
 // -----------------------------------------------------------------------------
 
-static inline void convert_year_month_day_to_days_one(const r_ssize& i,
-                                                      const enum day_nonexistent& day_nonexistent_val,
-                                                      date::year_month_day& ymd,
-                                                      int* p_days,
-                                                      int* p_time_of_day,
-                                                      int* p_nanos_of_second) {
-  // Simple case - convert to local_days, no changes to time-of-day
+static inline void convert_ymd_to_calendar_one(const r_ssize& i,
+                                               const enum day_nonexistent& day_nonexistent_val,
+                                               date::year_month_day& ymd,
+                                               civil_writable_field& calendar,
+                                               cpp11::writable::logicals& ok,
+                                               cpp11::writable::logicals& any) {
   if (ymd.ok()) {
     date::local_days out_lday{ymd};
-    p_days[i] = out_lday.time_since_epoch().count();
+    calendar[i] = out_lday.time_since_epoch().count();
     return;
   }
+
+  any[0] = true;
+  ok[i] = false;
 
   bool na = false;
   resolve_day_nonexistent_ymd(i, day_nonexistent_val, ymd, na);
 
   if (na) {
-    civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+    calendar[i] = r_int_na;
     return;
   }
 
-  if (p_time_of_day != NULL) {
-    std::chrono::seconds elt_tod{p_time_of_day[i]};
-    resolve_day_nonexistent_tod(day_nonexistent_val, elt_tod);
-    p_time_of_day[i] = elt_tod.count();
-  }
-
-  if (p_nanos_of_second != NULL) {
-    std::chrono::nanoseconds elt_nanos_of_second{p_nanos_of_second[i]};
-    resolve_day_nonexistent_nanos_of_second(day_nonexistent_val, elt_nanos_of_second);
-    p_nanos_of_second[i] = elt_nanos_of_second.count();
-  }
-
   date::local_days out_lday{ymd};
-  p_days[i] = out_lday.time_since_epoch().count();
+  calendar[i] = out_lday.time_since_epoch().count();
 }
 
 // -----------------------------------------------------------------------------
 
 template <quarterly::start S>
-static inline void convert_year_quarternum_quarterday_to_days_one(const r_ssize& i,
-                                                                  const enum day_nonexistent& day_nonexistent_val,
-                                                                  quarterly::year_quarternum_quarterday<S>& yqnqd,
-                                                                  int* p_days,
-                                                                  int* p_time_of_day,
-                                                                  int* p_nanos_of_second) {
-  // Simple case - convert to local_days, no changes to time-of-day
+static inline void convert_yqnqd_to_calendar_one(const r_ssize& i,
+                                                 const enum day_nonexistent& day_nonexistent_val,
+                                                 quarterly::year_quarternum_quarterday<S>& yqnqd,
+                                                 civil_writable_field& calendar,
+                                                 cpp11::writable::logicals& ok,
+                                                 cpp11::writable::logicals& any) {
   if (yqnqd.ok()) {
     date::local_days out_lday{yqnqd};
-    p_days[i] = out_lday.time_since_epoch().count();
+    calendar[i] = out_lday.time_since_epoch().count();
     return;
   }
+
+  any[0] = true;
+  ok[i] = false;
 
   bool na = false;
   resolve_day_nonexistent_yqnqd(i, day_nonexistent_val, yqnqd, na);
 
   if (na) {
-    civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+    calendar[i] = r_int_na;
     return;
   }
 
-  if (p_time_of_day != NULL) {
-    std::chrono::seconds elt_tod{p_time_of_day[i]};
-    resolve_day_nonexistent_tod(day_nonexistent_val, elt_tod);
-    p_time_of_day[i] = elt_tod.count();
-  }
-
-  if (p_nanos_of_second != NULL) {
-    std::chrono::nanoseconds elt_nanos_of_second{p_nanos_of_second[i]};
-    resolve_day_nonexistent_nanos_of_second(day_nonexistent_val, elt_nanos_of_second);
-    p_nanos_of_second[i] = elt_nanos_of_second.count();
-  }
-
   date::local_days out_lday{yqnqd};
-  p_days[i] = out_lday.time_since_epoch().count();
+  calendar[i] = out_lday.time_since_epoch().count();
 }
 
 // -----------------------------------------------------------------------------
 
-static inline void convert_year_weeknum_weekday_to_days_one(const r_ssize& i,
-                                                            const enum day_nonexistent& day_nonexistent_val,
-                                                            iso_week::year_weeknum_weekday& yww,
-                                                            int* p_days,
-                                                            int* p_time_of_day,
-                                                            int* p_nanos_of_second) {
-  // Simple case - convert to local_days, no changes to time-of-day
+static inline void convert_iso_yww_to_calendar_one(const r_ssize& i,
+                                                   const enum day_nonexistent& day_nonexistent_val,
+                                                   iso_week::year_weeknum_weekday& yww,
+                                                   civil_writable_field& calendar,
+                                                   cpp11::writable::logicals& ok,
+                                                   cpp11::writable::logicals& any) {
   if (yww.ok()) {
     date::local_days out_lday{yww};
-    p_days[i] = out_lday.time_since_epoch().count();
+    calendar[i] = out_lday.time_since_epoch().count();
     return;
   }
+
+  any[0] = true;
+  ok[i] = false;
 
   bool na = false;
   resolve_day_nonexistent_yww(i, day_nonexistent_val, yww, na);
 
   if (na) {
-    civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+    calendar[i] = r_int_na;
     return;
   }
 
-  if (p_time_of_day != NULL) {
-    std::chrono::seconds elt_tod{p_time_of_day[i]};
-    resolve_day_nonexistent_tod(day_nonexistent_val, elt_tod);
-    p_time_of_day[i] = elt_tod.count();
-  }
-
-  if (p_nanos_of_second != NULL) {
-    std::chrono::nanoseconds elt_nanos_of_second{p_nanos_of_second[i]};
-    resolve_day_nonexistent_nanos_of_second(day_nonexistent_val, elt_nanos_of_second);
-    p_nanos_of_second[i] = elt_nanos_of_second.count();
-  }
-
   date::local_days out_lday{yww};
-  p_days[i] = out_lday.time_since_epoch().count();
+  calendar[i] = out_lday.time_since_epoch().count();
 }
 
 // -----------------------------------------------------------------------------

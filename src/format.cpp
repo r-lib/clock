@@ -36,18 +36,19 @@ to_stream(std::basic_ostream<CharT, Traits>& os,
   return to_stream(os, fmt, fds, abbrev, offset_sec);
 }
 
+
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-cpp11::writable::strings format_civil_rcrd_cpp(const civil_field& days,
-                                               const civil_field& time_of_day,
-                                               const civil_field& nanos_of_second,
-                                               const cpp11::strings& zone,
-                                               const cpp11::strings& format,
-                                               const bool& naive,
-                                               const bool& nano,
-                                               const bool& abbreviate_zone) {
-  r_ssize size = days.size();
+cpp11::writable::strings format_time_point(const civil_field& calendar,
+                                           const civil_field& seconds_of_day,
+                                           const civil_field& nanoseconds_of_second,
+                                           const cpp11::strings& zone,
+                                           const cpp11::strings& format,
+                                           const cpp11::strings& precision,
+                                           const bool& naive,
+                                           const bool& abbreviate_zone) {
+  r_ssize size = calendar.size();
 
   cpp11::writable::strings out(size);
 
@@ -61,6 +62,8 @@ cpp11::writable::strings format_civil_rcrd_cpp(const civil_field& days,
 
   std::string string_format(format[0]);
   const char* c_format = string_format.c_str();
+
+  enum precision precision_val = parse_precision(precision);
 
   std::basic_ostringstream<char> stream;
   stream.imbue(std::locale::classic());
@@ -79,10 +82,10 @@ cpp11::writable::strings format_civil_rcrd_cpp(const civil_field& days,
   std::chrono::seconds* p_offset = nullptr;
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_days = days[i];
-    int elt_time_of_day = time_of_day[i];
+    int elt_calendar = calendar[i];
+    int elt_seconds_of_day = seconds_of_day[i];
 
-    if (elt_days == r_int_na) {
+    if (elt_calendar == r_int_na) {
       out[i] = r_chr_na;
       continue;
     }
@@ -91,11 +94,11 @@ cpp11::writable::strings format_civil_rcrd_cpp(const civil_field& days,
     std::chrono::seconds elt_ltod;
 
     if (naive) {
-      elt_lday = date::local_days{date::days{elt_days}};
-      elt_ltod = std::chrono::seconds{elt_time_of_day};
+      elt_lday = date::local_days{date::days{elt_calendar}};
+      elt_ltod = std::chrono::seconds{elt_seconds_of_day};
     } else {
-      date::sys_days elt_sday{date::days{elt_days}};
-      std::chrono::seconds elt_stod{elt_time_of_day};
+      date::sys_days elt_sday{date::days{elt_calendar}};
+      std::chrono::seconds elt_stod{elt_seconds_of_day};
 
       date::sys_seconds elt_ssec_floor{elt_sday};
       date::sys_seconds elt_ssec{elt_ssec_floor + elt_stod};
@@ -125,14 +128,35 @@ cpp11::writable::strings format_civil_rcrd_cpp(const civil_field& days,
 
     date::year_month_day elt_ymd{elt_lday};
 
-    if (nano) {
-      int elt_nanos_of_second = nanos_of_second[i];
-      std::chrono::nanoseconds elt_nanos{elt_nanos_of_second};
-      date::hh_mm_ss<std::chrono::nanoseconds> elt_hms{elt_ltod + elt_nanos};
-      to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset);
-    } else {
+    switch (precision_val) {
+    case precision::second: {
       date::hh_mm_ss<std::chrono::seconds> elt_hms{elt_ltod};
       to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset);
+      break;
+    }
+    case precision::millisecond: {
+      int elt_nanoseconds_of_second = nanoseconds_of_second[i];
+      std::chrono::nanoseconds elt_nanos{elt_nanoseconds_of_second};
+      std::chrono::milliseconds elt_millis = std::chrono::duration_cast<std::chrono::milliseconds>(elt_nanos);
+      date::hh_mm_ss<std::chrono::milliseconds> elt_hms{elt_ltod + elt_millis};
+      to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset);
+      break;
+    }
+    case precision::microsecond: {
+      int elt_nanoseconds_of_second = nanoseconds_of_second[i];
+      std::chrono::nanoseconds elt_nanos{elt_nanoseconds_of_second};
+      std::chrono::microseconds elt_micros = std::chrono::duration_cast<std::chrono::microseconds>(elt_nanos);
+      date::hh_mm_ss<std::chrono::microseconds> elt_hms{elt_ltod + elt_micros};
+      to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset);
+      break;
+    }
+    case precision::nanosecond: {
+      int elt_nanoseconds_of_second = nanoseconds_of_second[i];
+      std::chrono::nanoseconds elt_nanos{elt_nanoseconds_of_second};
+      date::hh_mm_ss<std::chrono::nanoseconds> elt_hms{elt_ltod + elt_nanos};
+      to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset);
+      break;
+    }
     }
 
     if (stream.fail()) {
@@ -145,4 +169,3 @@ cpp11::writable::strings format_civil_rcrd_cpp(const civil_field& days,
 
   return out;
 }
-

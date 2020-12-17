@@ -112,6 +112,8 @@ enum adjuster parse_adjuster(const cpp11::strings& x) {
   if (string == "hour") return adjuster::hour;
   if (string == "minute") return adjuster::minute;
   if (string == "second") return adjuster::second;
+  if (string == "millisecond") return adjuster::millisecond;
+  if (string == "microsecond") return adjuster::microsecond;
   if (string == "nanosecond") return adjuster::nanosecond;
   if (string == "weeknum") return adjuster::weeknum;
   if (string == "weekday") return adjuster::weekday;
@@ -122,4 +124,22 @@ enum adjuster parse_adjuster(const cpp11::strings& x) {
   if (string == "last_day_of_month") return adjuster::last_day_of_month;
 
   civil_abort("'%s' is not a recognized `adjuster` option.", string.c_str());
+}
+
+// -----------------------------------------------------------------------------
+
+// [[ include("enums.h") ]]
+enum precision parse_precision(const cpp11::strings& x) {
+  if (x.size() != 1) {
+    civil_abort("`precision` must be a string with length 1.");
+  }
+
+  std::string string = x[0];
+
+  if (string == "second") return precision::second;
+  if (string == "millisecond") return precision::millisecond;
+  if (string == "microsecond") return precision::microsecond;
+  if (string == "nanosecond") return precision::nanosecond;
+
+  civil_abort("'%s' is not a recognized `precision` option.", string.c_str());
 }

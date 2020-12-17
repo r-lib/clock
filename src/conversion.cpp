@@ -53,8 +53,24 @@ static inline date::sys_seconds info_nonexistent_error(const r_ssize& i) {
 static inline void info_nonexistent_roll_forward_nanos(std::chrono::nanoseconds& nanos) {
   nanos = std::chrono::nanoseconds{0};
 }
-static inline void info_nonexistent_roll_backward_nanos(std::chrono::nanoseconds& nanos) {
-  nanos = std::chrono::nanoseconds{999999999};
+static inline void info_nonexistent_roll_backward_nanos(std::chrono::nanoseconds& nanos, const enum precision& precision_val) {
+  switch (precision_val) {
+  case precision::millisecond: {
+    nanos = std::chrono::milliseconds{999};
+    break;
+  }
+  case precision::microsecond: {
+    nanos = std::chrono::microseconds{999999};
+    break;
+  }
+  case precision::nanosecond: {
+    nanos = std::chrono::nanoseconds{999999999};
+    break;
+  }
+  case precision::second: {
+    civil_abort("Internal error: Should never happen.");
+  }
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -157,6 +173,7 @@ date::sys_seconds convert_local_to_sys(const date::local_seconds& lsec,
                                        const r_ssize& i,
                                        const enum dst_nonexistent& dst_nonexistent_val,
                                        const enum dst_ambiguous& dst_ambiguous_val,
+                                       const enum precision& precision_val,
                                        bool& na,
                                        std::chrono::nanoseconds& nanos) {
   date::local_info info = p_zone->get_info(lsec);
@@ -172,7 +189,7 @@ date::sys_seconds convert_local_to_sys(const date::local_seconds& lsec,
       return info_nonexistent_roll_forward(info);
     }
     case dst_nonexistent::roll_backward: {
-      info_nonexistent_roll_backward_nanos(nanos);
+      info_nonexistent_roll_backward_nanos(nanos, precision_val);
       return info_nonexistent_roll_backward(info);
     }
     case dst_nonexistent::shift_forward: {
