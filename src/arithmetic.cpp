@@ -60,73 +60,67 @@ cpp11::writable::list add_gregorian_calendar_years_or_months(const civil_field& 
 
 // -----------------------------------------------------------------------------
 
-static civil_writable_rcrd add_weeks_or_days(const civil_rcrd& x,
-                                             const cpp11::integers& n,
-                                             const enum unit& unit_val,
-                                             const r_ssize& size) {
-  civil_writable_rcrd out = civil_rcrd_clone(x);
-  civil_rcrd_recycle(out, size);
+[[cpp11::register]]
+cpp11::writable::list add_calendar_weeks_or_days(const civil_field& calendar,
+                                                 const cpp11::integers& n,
+                                                 const cpp11::strings& unit) {
+  enum unit unit_val = parse_unit(unit);
 
-  int* p_days = civil_rcrd_days_deref(out);
-  int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
-  int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
+  const r_ssize size = calendar.size();
 
-  const bool recycle_n = civil_is_scalar(n);
+  civil_writable_field out_calendar{calendar};
+  cpp11::writable::logicals ok(size);
+  cpp11::writable::logicals any(1);
+  any[0] = false;
+
+  cpp11::writable::list out({out_calendar, ok, any});
+  out.names() = {"calendar", "ok", "any"};
 
   for (r_ssize i = 0; i < size; ++i) {
-    int elt_days = p_days[i];
-    int elt_n = recycle_n ? n[0] : n[i];
+    int elt_calendar = calendar[i];
+    int elt_n = n[i];
 
-    if (elt_days == r_int_na) {
+    if (elt_calendar == r_int_na) {
       continue;
     }
     if (elt_n == r_int_na) {
-      civil_rcrd_assign_missing(i, p_days, p_time_of_day, p_nanos_of_second);
+      ok[i] = r_lgl_na;
+      any[0] = true;
+      out_calendar[i] = r_int_na;
       continue;
     }
 
     // Handle weeks as a period of 7 days
     elt_n = (unit_val == unit::week) ? elt_n * 7 : elt_n;
 
-    date::local_days elt_lday{date::days{elt_days}};
+    date::local_days elt_lday{date::days{elt_calendar}};
     date::local_days out_lday = elt_lday + date::days{elt_n};
 
-    p_days[i] = out_lday.time_since_epoch().count();
+    out_calendar[i] = out_lday.time_since_epoch().count();
   }
 
   return out;
 }
 
-[[cpp11::register]]
-civil_writable_rcrd add_weeks_or_days_cpp(const civil_rcrd& x,
-                                          const cpp11::integers& n,
-                                          const cpp11::strings& unit,
-                                          const cpp11::integers& size) {
-  enum unit unit_val = parse_unit(unit);
-  r_ssize c_size = size[0];
-
-  return add_weeks_or_days(x, n, unit_val, c_size);
-}
-
 // -----------------------------------------------------------------------------
 
-static civil_writable_rcrd add_hours_or_minutes_or_seconds(const civil_rcrd& x,
-                                                           const cpp11::integers& n,
-                                                           const enum unit& unit_val,
-                                                           const r_ssize& size) {
+[[cpp11::register]]
+civil_writable_rcrd add_time_point_seconds_of_day_cpp(const civil_rcrd& x,
+                                                      const cpp11::integers& n,
+                                                      const cpp11::strings& unit) {
+  const enum unit unit_val = parse_unit(unit);
+  const r_ssize size = n.size();
+
   civil_writable_rcrd out = civil_rcrd_clone(x);
-  civil_rcrd_recycle(out, size);
 
   int* p_days = civil_rcrd_days_deref(out);
   int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
   int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
 
-  const bool recycle_n = civil_is_scalar(n);
-
   for (r_ssize i = 0; i < size; ++i) {
     int elt_days = p_days[i];
     int elt_time_of_day = p_time_of_day[i];
-    int elt_n = recycle_n ? n[0] : n[i];
+    int elt_n = n[i];
 
     if (elt_days == r_int_na) {
       continue;
@@ -165,17 +159,6 @@ static civil_writable_rcrd add_hours_or_minutes_or_seconds(const civil_rcrd& x,
   }
 
   return out;
-}
-
-[[cpp11::register]]
-civil_writable_rcrd add_hours_or_minutes_or_seconds_cpp(const civil_rcrd& x,
-                                                        const cpp11::integers& n,
-                                                        const cpp11::strings& unit,
-                                                        const cpp11::integers& size) {
-  enum unit unit_val = parse_unit(unit);
-  r_ssize c_size = size[0];
-
-  return add_hours_or_minutes_or_seconds(x, n, unit_val, c_size);
 }
 
 // -----------------------------------------------------------------------------
@@ -235,24 +218,24 @@ fields_nano_datetime plus_nanos_of_second(const date::days& days,
   return {fdt.days, fdt.time_of_day, out_nanos_of_second};
 }
 
-static civil_writable_rcrd add_milliseconds_or_microseconds_or_nanoseconds(const civil_rcrd& x,
-                                                                           const cpp11::integers& n,
-                                                                           const enum unit& unit_val,
-                                                                           const r_ssize& size) {
+[[cpp11::register]]
+civil_writable_rcrd add_time_point_nanoseconds_of_second_cpp(const civil_rcrd& x,
+                                                             const cpp11::integers& n,
+                                                             const cpp11::strings& unit) {
+  const enum unit unit_val = parse_unit(unit);
+  const r_ssize size = n.size();
+
   civil_writable_rcrd out = civil_rcrd_clone(x);
-  civil_rcrd_recycle(out, size);
 
   int* p_days = civil_rcrd_days_deref(out);
   int* p_time_of_day = civil_rcrd_time_of_day_deref(out);
   int* p_nanos_of_second = civil_rcrd_nanos_of_second_deref(out);
 
-  const bool recycle_n = civil_is_scalar(n);
-
   for (r_ssize i = 0; i < size; ++i) {
     int elt_days = p_days[i];
     int elt_time_of_day = p_time_of_day[i];
     int elt_nanos_of_second = p_nanos_of_second[i];
-    int elt_n = recycle_n ? n[0] : n[i];
+    int elt_n = n[i];
 
     if (elt_days == r_int_na) {
       continue;
@@ -285,17 +268,6 @@ static civil_writable_rcrd add_milliseconds_or_microseconds_or_nanoseconds(const
   }
 
   return out;
-}
-
-[[cpp11::register]]
-civil_writable_rcrd add_milliseconds_or_microseconds_or_nanoseconds_cpp(const civil_rcrd& x,
-                                                                        const cpp11::integers& n,
-                                                                        const cpp11::strings& unit,
-                                                                        const cpp11::integers& size) {
-  enum unit unit_val = parse_unit(unit);
-  r_ssize c_size = size[0];
-
-  return add_milliseconds_or_microseconds_or_nanoseconds(x, n, unit_val, c_size);
 }
 
 // -----------------------------------------------------------------------------

@@ -54,24 +54,24 @@ extern "C" SEXP _civil_add_gregorian_calendar_years_or_months(SEXP calendar, SEX
   END_CPP11
 }
 // arithmetic.cpp
-civil_writable_rcrd add_weeks_or_days_cpp(const civil_rcrd& x, const cpp11::integers& n, const cpp11::strings& unit, const cpp11::integers& size);
-extern "C" SEXP _civil_add_weeks_or_days_cpp(SEXP x, SEXP n, SEXP unit, SEXP size) {
+cpp11::writable::list add_calendar_weeks_or_days(const civil_field& calendar, const cpp11::integers& n, const cpp11::strings& unit);
+extern "C" SEXP _civil_add_calendar_weeks_or_days(SEXP calendar, SEXP n, SEXP unit) {
   BEGIN_CPP11
-    return cpp11::as_sexp(add_weeks_or_days_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(unit), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size)));
+    return cpp11::as_sexp(add_calendar_weeks_or_days(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(unit)));
   END_CPP11
 }
 // arithmetic.cpp
-civil_writable_rcrd add_hours_or_minutes_or_seconds_cpp(const civil_rcrd& x, const cpp11::integers& n, const cpp11::strings& unit, const cpp11::integers& size);
-extern "C" SEXP _civil_add_hours_or_minutes_or_seconds_cpp(SEXP x, SEXP n, SEXP unit, SEXP size) {
+civil_writable_rcrd add_time_point_seconds_of_day_cpp(const civil_rcrd& x, const cpp11::integers& n, const cpp11::strings& unit);
+extern "C" SEXP _civil_add_time_point_seconds_of_day_cpp(SEXP x, SEXP n, SEXP unit) {
   BEGIN_CPP11
-    return cpp11::as_sexp(add_hours_or_minutes_or_seconds_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(unit), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size)));
+    return cpp11::as_sexp(add_time_point_seconds_of_day_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(unit)));
   END_CPP11
 }
 // arithmetic.cpp
-civil_writable_rcrd add_milliseconds_or_microseconds_or_nanoseconds_cpp(const civil_rcrd& x, const cpp11::integers& n, const cpp11::strings& unit, const cpp11::integers& size);
-extern "C" SEXP _civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp(SEXP x, SEXP n, SEXP unit, SEXP size) {
+civil_writable_rcrd add_time_point_nanoseconds_of_second_cpp(const civil_rcrd& x, const cpp11::integers& n, const cpp11::strings& unit);
+extern "C" SEXP _civil_add_time_point_nanoseconds_of_second_cpp(SEXP x, SEXP n, SEXP unit) {
   BEGIN_CPP11
-    return cpp11::as_sexp(add_milliseconds_or_microseconds_or_nanoseconds_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(unit), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size)));
+    return cpp11::as_sexp(add_time_point_nanoseconds_of_second_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(unit)));
   END_CPP11
 }
 // arithmetic.cpp
@@ -295,12 +295,12 @@ extern "C" SEXP _civil_zone_current() {
 
 extern "C" {
 /* .Call calls */
+extern SEXP _civil_add_calendar_weeks_or_days(SEXP, SEXP, SEXP);
 extern SEXP _civil_add_gregorian_calendar_years_or_months(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _civil_add_hours_or_minutes_or_seconds_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_iso_calendar_years(SEXP, SEXP, SEXP);
-extern SEXP _civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_add_quarterly_calendar_years_or_quarters(SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _civil_add_weeks_or_days_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_add_time_point_nanoseconds_of_second_cpp(SEXP, SEXP, SEXP);
+extern SEXP _civil_add_time_point_seconds_of_day_cpp(SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_gregorian_calendar(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_iso_calendar(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_adjust_naive_time_point_nanoseconds_of_second_cpp(SEXP, SEXP, SEXP);
@@ -338,12 +338,12 @@ extern SEXP _civil_zone_is_valid(SEXP);
 extern SEXP _civil_zone_standardize(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_civil_add_calendar_weeks_or_days",                                                           (DL_FUNC) &_civil_add_calendar_weeks_or_days,                                                           3},
     {"_civil_add_gregorian_calendar_years_or_months",                                               (DL_FUNC) &_civil_add_gregorian_calendar_years_or_months,                                               4},
-    {"_civil_add_hours_or_minutes_or_seconds_cpp",                                                  (DL_FUNC) &_civil_add_hours_or_minutes_or_seconds_cpp,                                                  4},
     {"_civil_add_iso_calendar_years",                                                               (DL_FUNC) &_civil_add_iso_calendar_years,                                                               3},
-    {"_civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp",                                  (DL_FUNC) &_civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp,                                  4},
     {"_civil_add_quarterly_calendar_years_or_quarters",                                             (DL_FUNC) &_civil_add_quarterly_calendar_years_or_quarters,                                             5},
-    {"_civil_add_weeks_or_days_cpp",                                                                (DL_FUNC) &_civil_add_weeks_or_days_cpp,                                                                4},
+    {"_civil_add_time_point_nanoseconds_of_second_cpp",                                             (DL_FUNC) &_civil_add_time_point_nanoseconds_of_second_cpp,                                             3},
+    {"_civil_add_time_point_seconds_of_day_cpp",                                                    (DL_FUNC) &_civil_add_time_point_seconds_of_day_cpp,                                                    3},
     {"_civil_adjust_gregorian_calendar",                                                            (DL_FUNC) &_civil_adjust_gregorian_calendar,                                                            4},
     {"_civil_adjust_iso_calendar",                                                                  (DL_FUNC) &_civil_adjust_iso_calendar,                                                                  4},
     {"_civil_adjust_naive_time_point_nanoseconds_of_second_cpp",                                    (DL_FUNC) &_civil_adjust_naive_time_point_nanoseconds_of_second_cpp,                                    3},

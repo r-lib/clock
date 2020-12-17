@@ -4,86 +4,107 @@
 \alias{clock-naive-arithmetic}
 \alias{subtract_years.clock_naive_time_point}
 \alias{subtract_years.clock_calendar}
-\alias{subtract_quarters.civil_naive}
-\alias{add_months.civil_naive_gregorian}
-\alias{subtract_months.civil_naive}
-\alias{add_years_and_months.civil_naive_gregorian}
-\alias{subtract_years_and_months.civil_naive}
-\alias{add_weeks.civil_naive_gregorian}
-\alias{add_weeks.civil_naive_quarterly}
-\alias{add_weeks.civil_naive_iso}
-\alias{subtract_weeks.civil_naive}
-\alias{add_days.civil_naive_gregorian}
-\alias{add_days.civil_naive_quarterly}
-\alias{add_days.civil_naive_iso}
-\alias{subtract_days.civil_naive}
-\alias{add_hours.civil_naive_gregorian}
-\alias{subtract_hours.civil_naive}
-\alias{add_minutes.civil_naive_gregorian}
-\alias{subtract_minutes.civil_naive}
-\alias{add_seconds.civil_naive_gregorian}
-\alias{subtract_seconds.civil_naive}
-\alias{add_milliseconds.civil_naive_gregorian}
-\alias{subtract_milliseconds.civil_naive}
-\alias{add_microseconds.civil_naive_gregorian}
-\alias{subtract_microseconds.civil_naive}
-\alias{add_nanoseconds.civil_naive_gregorian}
-\alias{subtract_nanoseconds.civil_naive}
+\alias{subtract_quarters.clock_naive_time_point}
+\alias{subtract_quarters.clock_calendar}
+\alias{subtract_months.clock_naive_time_point}
+\alias{subtract_months.clock_calendar}
+\alias{subtract_weeks.clock_naive_time_point}
+\alias{subtract_weeks.clock_calendar}
+\alias{subtract_days.clock_naive_time_point}
+\alias{subtract_days.clock_calendar}
+\alias{add_hours.clock_naive_time_point}
+\alias{add_hours.clock_calendar}
+\alias{subtract_hours.clock_naive_time_point}
+\alias{subtract_hours.clock_calendar}
+\alias{add_minutes.clock_naive_time_point}
+\alias{add_minutes.clock_calendar}
+\alias{subtract_minutes.clock_naive_time_point}
+\alias{subtract_minutes.clock_calendar}
+\alias{add_seconds.clock_naive_time_point}
+\alias{add_seconds.clock_calendar}
+\alias{subtract_seconds.clock_naive_time_point}
+\alias{subtract_seconds.clock_calendar}
+\alias{add_milliseconds.clock_naive_time_point}
+\alias{add_milliseconds.clock_calendar}
+\alias{subtract_milliseconds.clock_naive_time_point}
+\alias{subtract_milliseconds.clock_calendar}
+\alias{add_microseconds.clock_naive_time_point}
+\alias{add_microseconds.clock_calendar}
+\alias{subtract_microseconds.clock_naive_time_point}
+\alias{subtract_microseconds.clock_calendar}
+\alias{add_nanoseconds.clock_naive_time_point}
+\alias{add_nanoseconds.clock_calendar}
+\alias{subtract_nanoseconds.clock_naive_time_point}
+\alias{subtract_nanoseconds.clock_calendar}
 \title{Naive date-time arithmetic}
 \usage{
 \method{subtract_years}{clock_naive_time_point}(x, n, ..., day_nonexistent = "last-time")
 
 \method{subtract_years}{clock_calendar}(x, n, ..., day_nonexistent = "last-time")
 
-\method{subtract_quarters}{civil_naive}(x, n, ..., day_nonexistent = "last-time")
+\method{subtract_quarters}{clock_naive_time_point}(x, n, ..., day_nonexistent = "last-time")
 
-\method{add_months}{civil_naive_gregorian}(x, n, ..., day_nonexistent = "last-time")
+\method{subtract_quarters}{clock_calendar}(x, n, ..., day_nonexistent = "last-time")
 
-\method{subtract_months}{civil_naive}(x, n, ..., day_nonexistent = "last-time")
+\method{subtract_months}{clock_naive_time_point}(x, n, ..., day_nonexistent = "last-time")
 
-\method{add_years_and_months}{civil_naive_gregorian}(x, years, months, ..., day_nonexistent = "last-time")
+\method{subtract_months}{clock_calendar}(x, n, ..., day_nonexistent = "last-time")
 
-\method{subtract_years_and_months}{civil_naive}(x, years, months, ..., day_nonexistent = "last-time")
+\method{subtract_weeks}{clock_naive_time_point}(x, n, ...)
 
-\method{add_weeks}{civil_naive_gregorian}(x, n, ...)
+\method{subtract_weeks}{clock_calendar}(x, n, ...)
 
-\method{add_weeks}{civil_naive_quarterly}(x, n, ...)
+\method{subtract_days}{clock_naive_time_point}(x, n, ...)
 
-\method{add_weeks}{civil_naive_iso}(x, n, ...)
+\method{subtract_days}{clock_calendar}(x, n, ...)
 
-\method{subtract_weeks}{civil_naive}(x, n, ...)
+\method{add_hours}{clock_naive_time_point}(x, n, ...)
 
-\method{add_days}{civil_naive_gregorian}(x, n, ...)
+\method{add_hours}{clock_calendar}(x, n, ...)
 
-\method{add_days}{civil_naive_quarterly}(x, n, ...)
+\method{subtract_hours}{clock_naive_time_point}(x, n, ...)
 
-\method{add_days}{civil_naive_iso}(x, n, ...)
+\method{subtract_hours}{clock_calendar}(x, n, ...)
 
-\method{subtract_days}{civil_naive}(x, n, ...)
+\method{add_minutes}{clock_naive_time_point}(x, n, ...)
 
-\method{add_hours}{civil_naive_gregorian}(x, n, ...)
+\method{add_minutes}{clock_calendar}(x, n, ...)
 
-\method{subtract_hours}{civil_naive}(x, n, ...)
+\method{subtract_minutes}{clock_naive_time_point}(x, n, ...)
 
-\method{add_minutes}{civil_naive_gregorian}(x, n, ...)
+\method{subtract_minutes}{clock_calendar}(x, n, ...)
 
-\method{subtract_minutes}{civil_naive}(x, n, ...)
+\method{add_seconds}{clock_naive_time_point}(x, n, ...)
 
-\method{add_seconds}{civil_naive_gregorian}(x, n, ...)
+\method{add_seconds}{clock_calendar}(x, n, ...)
 
-\method{subtract_seconds}{civil_naive}(x, n, ...)
+\method{subtract_seconds}{clock_naive_time_point}(x, n, ...)
 
-\method{add_milliseconds}{civil_naive_gregorian}(x, n, ...)
+\method{subtract_seconds}{clock_calendar}(x, n, ...)
 
-\method{subtract_milliseconds}{civil_naive}(x, n, ...)
+\method{add_milliseconds}{clock_naive_time_point}(x, n, ...)
 
-\method{add_microseconds}{civil_naive_gregorian}(x, n, ...)
+\method{add_milliseconds}{clock_calendar}(x, n, ...)
 
-\method{subtract_microseconds}{civil_naive}(x, n, ...)
+\method{subtract_milliseconds}{clock_naive_time_point}(x, n, ...)
 
-\method{add_nanoseconds}{civil_naive_gregorian}(x, n, ...)
+\method{subtract_milliseconds}{clock_calendar}(x, n, ...)
 
-\method{subtract_nanoseconds}{civil_naive}(x, n, ...)
+\method{add_microseconds}{clock_naive_time_point}(x, n, ...)
+
+\method{add_microseconds}{clock_calendar}(x, n, ...)
+
+\method{subtract_microseconds}{clock_naive_time_point}(x, n, ...)
+
+\method{subtract_microseconds}{clock_calendar}(x, n, ...)
+
+\method{add_nanoseconds}{clock_naive_time_point}(x, n, ...)
+
+\method{add_nanoseconds}{clock_calendar}(x, n, ...)
+
+\method{subtract_nanoseconds}{clock_naive_time_point}(x, n, ...)
+
+\method{subtract_nanoseconds}{clock_calendar}(x, n, ...)
 }
 \arguments{
 \item{x}{\verb{[clock_naive]}

@@ -15,66 +15,69 @@
 \alias{add_quarters.clock_zoned_time_point}
 \alias{add_quarters.clock_naive_time_point}
 \alias{add_quarters.clock_calendar}
+\alias{subtract_quarters.Date}
+\alias{subtract_quarters.POSIXt}
+\alias{subtract_quarters.clock_zoned_time_point}
 \alias{add_months.Date}
 \alias{add_months.POSIXt}
-\alias{add_months.civil_zoned}
+\alias{add_months.clock_zoned_time_point}
+\alias{add_months.clock_naive_time_point}
+\alias{add_months.clock_calendar}
 \alias{subtract_months.Date}
 \alias{subtract_months.POSIXt}
-\alias{subtract_months.civil_zoned}
-\alias{add_years_and_months.Date}
-\alias{add_years_and_months.POSIXt}
-\alias{add_years_and_months.civil_zoned}
-\alias{subtract_years_and_months.Date}
-\alias{subtract_years_and_months.POSIXt}
-\alias{subtract_years_and_months.civil_zoned}
+\alias{subtract_months.clock_zoned_time_point}
 \alias{add_weeks.Date}
 \alias{add_weeks.POSIXt}
-\alias{add_weeks.civil_zoned}
+\alias{add_weeks.clock_zoned_time_point}
+\alias{add_weeks.clock_naive_time_point}
+\alias{add_weeks.clock_calendar}
 \alias{subtract_weeks.Date}
 \alias{subtract_weeks.POSIXt}
-\alias{subtract_weeks.civil_zoned}
+\alias{subtract_weeks.clock_zoned_time_point}
 \alias{add_days.Date}
 \alias{add_days.POSIXt}
-\alias{add_days.civil_zoned}
+\alias{add_days.clock_zoned_time_point}
+\alias{add_days.clock_naive_time_point}
+\alias{add_days.clock_calendar}
 \alias{subtract_days.Date}
 \alias{subtract_days.POSIXt}
-\alias{subtract_days.civil_zoned}
+\alias{subtract_days.clock_zoned_time_point}
 \alias{add_hours.Date}
 \alias{add_hours.POSIXt}
-\alias{add_hours.civil_zoned}
+\alias{add_hours.clock_zoned_time_point}
 \alias{subtract_hours.Date}
 \alias{subtract_hours.POSIXt}
-\alias{subtract_hours.civil_zoned}
+\alias{subtract_hours.clock_zoned_time_point}
 \alias{add_minutes.Date}
 \alias{add_minutes.POSIXt}
-\alias{add_minutes.civil_zoned}
+\alias{add_minutes.clock_zoned_time_point}
 \alias{subtract_minutes.Date}
 \alias{subtract_minutes.POSIXt}
-\alias{subtract_minutes.civil_zoned}
+\alias{subtract_minutes.clock_zoned_time_point}
 \alias{add_seconds.Date}
 \alias{add_seconds.POSIXt}
-\alias{add_seconds.civil_zoned}
+\alias{add_seconds.clock_zoned_time_point}
 \alias{subtract_seconds.Date}
 \alias{subtract_seconds.POSIXt}
-\alias{subtract_seconds.civil_zoned}
+\alias{subtract_seconds.clock_zoned_time_point}
 \alias{add_milliseconds.Date}
 \alias{add_milliseconds.POSIXt}
-\alias{add_milliseconds.civil_zoned}
+\alias{add_milliseconds.clock_zoned_time_point}
 \alias{subtract_milliseconds.Date}
 \alias{subtract_milliseconds.POSIXt}
-\alias{subtract_milliseconds.civil_zoned}
+\alias{subtract_milliseconds.clock_zoned_time_point}
 \alias{add_microseconds.Date}
 \alias{add_microseconds.POSIXt}
-\alias{add_microseconds.civil_zoned}
+\alias{add_microseconds.clock_zoned_time_point}
 \alias{subtract_microseconds.Date}
 \alias{subtract_microseconds.POSIXt}
-\alias{subtract_microseconds.civil_zoned}
+\alias{subtract_microseconds.clock_zoned_time_point}
 \alias{add_nanoseconds.Date}
 \alias{add_nanoseconds.POSIXt}
-\alias{add_nanoseconds.civil_zoned}
+\alias{add_nanoseconds.clock_zoned_time_point}
 \alias{subtract_nanoseconds.Date}
 \alias{subtract_nanoseconds.POSIXt}
-\alias{subtract_nanoseconds.civil_zoned}
+\alias{subtract_nanoseconds.clock_zoned_time_point}
 \title{Zoned date-time arithmetic}
 \usage{
 \method{add_years}{Date}(x, n, ..., day_nonexistent = "last-time")
@@ -145,6 +148,26 @@
 
 \method{add_quarters}{clock_calendar}(x, n, ..., day_nonexistent = "last-time")
 
+\method{subtract_quarters}{Date}(x, n, ..., day_nonexistent = "last-time")
+
+\method{subtract_quarters}{POSIXt}(
+  x,
+  n,
+  ...,
+  day_nonexistent = "last-time",
+  dst_nonexistent = NULL,
+  dst_ambiguous = NULL
+)
+
+\method{subtract_quarters}{clock_zoned_time_point}(
+  x,
+  n,
+  ...,
+  day_nonexistent = "last-time",
+  dst_nonexistent = NULL,
+  dst_ambiguous = NULL
+)
+
 \method{add_months}{Date}(x, n, ..., day_nonexistent = "last-time")
 
 \method{add_months}{POSIXt}(
@@ -156,7 +179,7 @@
   dst_ambiguous = NULL
 )
 
-\method{add_months}{civil_zoned}(
+\method{add_months}{clock_zoned_time_point}(
   x,
   n,
   ...,
@@ -164,6 +187,10 @@
   dst_nonexistent = NULL,
   dst_ambiguous = NULL
 )
+
+\method{add_months}{clock_naive_time_point}(x, n, ..., day_nonexistent = "last-time")
+
+\method{add_months}{clock_calendar}(x, n, ..., day_nonexistent = "last-time")
 
 \method{subtract_months}{Date}(x, n, ..., day_nonexistent = "last-time")
 
@@ -176,53 +203,9 @@
   dst_ambiguous = NULL
 )
 
-\method{subtract_months}{civil_zoned}(
+\method{subtract_months}{clock_zoned_time_point}(
   x,
   n,
-  ...,
-  day_nonexistent = "last-time",
-  dst_nonexistent = NULL,
-  dst_ambiguous = NULL
-)
-
-\method{add_years_and_months}{Date}(x, years, months, ..., day_nonexistent = "last-time")
-
-\method{add_years_and_months}{POSIXt}(
-  x,
-  years,
-  months,
-  ...,
-  day_nonexistent = "last-time",
-  dst_nonexistent = NULL,
-  dst_ambiguous = NULL
-)
-
-\method{add_years_and_months}{civil_zoned}(
-  x,
-  years,
-  months,
-  ...,
-  day_nonexistent = "last-time",
-  dst_nonexistent = NULL,
-  dst_ambiguous = NULL
-)
-
-\method{subtract_years_and_months}{Date}(x, years, months, ..., day_nonexistent = "last-time")
-
-\method{subtract_years_and_months}{POSIXt}(
-  x,
-  years,
-  months,
-  ...,
-  day_nonexistent = "last-time",
-  dst_nonexistent = NULL,
-  dst_ambiguous = NULL
-)
-
-\method{subtract_years_and_months}{civil_zoned}(
-  x,
-  years,
-  months,
   ...,
   day_nonexistent = "last-time",
   dst_nonexistent = NULL,
@@ -233,97 +216,105 @@
 
 \method{add_weeks}{POSIXt}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
 
-\method{add_weeks}{civil_zoned}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
+\method{add_weeks}{clock_zoned_time_point}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
+
+\method{add_weeks}{clock_naive_time_point}(x, n, ...)
+
+\method{add_weeks}{clock_calendar}(x, n, ...)
 
 \method{subtract_weeks}{Date}(x, n, ...)
 
 \method{subtract_weeks}{POSIXt}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
 
-\method{subtract_weeks}{civil_zoned}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
+\method{subtract_weeks}{clock_zoned_time_point}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
 
 \method{add_days}{Date}(x, n, ...)
 
 \method{add_days}{POSIXt}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
 
-\method{add_days}{civil_zoned}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
+\method{add_days}{clock_zoned_time_point}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
+
+\method{add_days}{clock_naive_time_point}(x, n, ...)
+
+\method{add_days}{clock_calendar}(x, n, ...)
 
 \method{subtract_days}{Date}(x, n, ...)
 
 \method{subtract_days}{POSIXt}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
 
-\method{subtract_days}{civil_zoned}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
+\method{subtract_days}{clock_zoned_time_point}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
 
 \method{add_hours}{Date}(x, n, ...)
 
 \method{add_hours}{POSIXt}(x, n, ...)
 
-\method{add_hours}{civil_zoned}(x, n, ...)
+\method{add_hours}{clock_zoned_time_point}(x, n, ...)
 
 \method{subtract_hours}{Date}(x, n, ...)
 
 \method{subtract_hours}{POSIXt}(x, n, ...)
 
-\method{subtract_hours}{civil_zoned}(x, n, ...)
+\method{subtract_hours}{clock_zoned_time_point}(x, n, ...)
 
 \method{add_minutes}{Date}(x, n, ...)
 
 \method{add_minutes}{POSIXt}(x, n, ...)
 
-\method{add_minutes}{civil_zoned}(x, n, ...)
+\method{add_minutes}{clock_zoned_time_point}(x, n, ...)
 
 \method{subtract_minutes}{Date}(x, n, ...)
 
 \method{subtract_minutes}{POSIXt}(x, n, ...)
 
-\method{subtract_minutes}{civil_zoned}(x, n, ...)
+\method{subtract_minutes}{clock_zoned_time_point}(x, n, ...)
 
 \method{add_seconds}{Date}(x, n, ...)
 
 \method{add_seconds}{POSIXt}(x, n, ...)
 
-\method{add_seconds}{civil_zoned}(x, n, ...)
+\method{add_seconds}{clock_zoned_time_point}(x, n, ...)
 
 \method{subtract_seconds}{Date}(x, n, ...)
 
 \method{subtract_seconds}{POSIXt}(x, n, ...)
 
-\method{subtract_seconds}{civil_zoned}(x, n, ...)
+\method{subtract_seconds}{clock_zoned_time_point}(x, n, ...)
 
 \method{add_milliseconds}{Date}(x, n, ...)
 
 \method{add_milliseconds}{POSIXt}(x, n, ...)
 
-\method{add_milliseconds}{civil_zoned}(x, n, ...)
+\method{add_milliseconds}{clock_zoned_time_point}(x, n, ...)
 
 \method{subtract_milliseconds}{Date}(x, n, ...)
 
 \method{subtract_milliseconds}{POSIXt}(x, n, ...)
 
-\method{subtract_milliseconds}{civil_zoned}(x, n, ...)
+\method{subtract_milliseconds}{clock_zoned_time_point}(x, n, ...)
 
 \method{add_microseconds}{Date}(x, n, ...)
 
 \method{add_microseconds}{POSIXt}(x, n, ...)
 
-\method{add_microseconds}{civil_zoned}(x, n, ...)
+\method{add_microseconds}{clock_zoned_time_point}(x, n, ...)
 
 \method{subtract_microseconds}{Date}(x, n, ...)
 
 \method{subtract_microseconds}{POSIXt}(x, n, ...)
 
-\method{subtract_microseconds}{civil_zoned}(x, n, ...)
+\method{subtract_microseconds}{clock_zoned_time_point}(x, n, ...)
 
 \method{add_nanoseconds}{Date}(x, n, ...)
 
 \method{add_nanoseconds}{POSIXt}(x, n, ...)
 
-\method{add_nanoseconds}{civil_zoned}(x, n, ...)
+\method{add_nanoseconds}{clock_zoned_time_point}(x, n, ...)
 
 \method{subtract_nanoseconds}{Date}(x, n, ...)
 
 \method{subtract_nanoseconds}{POSIXt}(x, n, ...)
 
-\method{subtract_nanoseconds}{civil_zoned}(x, n, ...)
+\method{subtract_nanoseconds}{clock_zoned_time_point}(x, n, ...)
 }
 \arguments{
 \item{x}{\verb{[Date / POSIXct / POSIXlt]}

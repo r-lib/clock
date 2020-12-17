@@ -28,16 +28,16 @@ add_gregorian_calendar_years_or_months <- function(calendar, n, day_nonexistent,
   .Call("_civil_add_gregorian_calendar_years_or_months", calendar, n, day_nonexistent, unit, PACKAGE = "civil")
 }
 
-add_weeks_or_days_cpp <- function(x, n, unit, size) {
-  .Call("_civil_add_weeks_or_days_cpp", x, n, unit, size, PACKAGE = "civil")
+add_calendar_weeks_or_days <- function(calendar, n, unit) {
+  .Call("_civil_add_calendar_weeks_or_days", calendar, n, unit, PACKAGE = "civil")
 }
 
-add_hours_or_minutes_or_seconds_cpp <- function(x, n, unit, size) {
-  .Call("_civil_add_hours_or_minutes_or_seconds_cpp", x, n, unit, size, PACKAGE = "civil")
+add_time_point_seconds_of_day_cpp <- function(x, n, unit) {
+  .Call("_civil_add_time_point_seconds_of_day_cpp", x, n, unit, PACKAGE = "civil")
 }
 
-add_milliseconds_or_microseconds_or_nanoseconds_cpp <- function(x, n, unit, size) {
-  .Call("_civil_add_milliseconds_or_microseconds_or_nanoseconds_cpp", x, n, unit, size, PACKAGE = "civil")
+add_time_point_nanoseconds_of_second_cpp <- function(x, n, unit) {
+  .Call("_civil_add_time_point_nanoseconds_of_second_cpp", x, n, unit, PACKAGE = "civil")
 }
 
 add_quarterly_calendar_years_or_quarters <- function(calendar, n, start, day_nonexistent, unit) {
