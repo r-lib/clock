@@ -34,13 +34,15 @@ convert_second_point_fields_from_naive_to_zoned <- function(calendar,
     dst_ambiguous = dst_ambiguous
   )
 
+  calendar <- vec_recycle(calendar, size)
+  seconds_of_day <- vec_recycle(seconds_of_day, size)
+
   convert_second_point_fields_from_naive_to_zoned_cpp(
     calendar = calendar,
     seconds_of_day = seconds_of_day,
     zone = zone,
     dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous,
-    size = size
+    dst_ambiguous = dst_ambiguous
   )
 }
 
@@ -59,6 +61,10 @@ convert_subsecond_point_fields_from_naive_to_zoned <- function(calendar,
     dst_ambiguous = dst_ambiguous
   )
 
+  calendar <- vec_recycle(calendar, size)
+  seconds_of_day <- vec_recycle(seconds_of_day, size)
+  nanoseconds_of_second <- vec_recycle(nanoseconds_of_second, size)
+
   convert_subsecond_point_fields_from_naive_to_zoned_cpp(
     calendar = calendar,
     seconds_of_day = seconds_of_day,
@@ -66,7 +72,6 @@ convert_subsecond_point_fields_from_naive_to_zoned <- function(calendar,
     precision = precision,
     zone = zone,
     dst_nonexistent = dst_nonexistent,
-    dst_ambiguous = dst_ambiguous,
-    size = size
+    dst_ambiguous = dst_ambiguous
   )
 }

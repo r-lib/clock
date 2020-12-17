@@ -845,9 +845,8 @@ civil_writable_rcrd convert_second_point_fields_from_naive_to_zoned_cpp(const ci
                                                                         const civil_field& seconds_of_day,
                                                                         const cpp11::strings& zone,
                                                                         const cpp11::strings& dst_nonexistent,
-                                                                        const cpp11::strings& dst_ambiguous,
-                                                                        const cpp11::integers& size) {
-  r_ssize c_size = size[0];
+                                                                        const cpp11::strings& dst_ambiguous) {
+  const r_ssize size = calendar.size();
 
   civil_writable_field out_calendar{calendar};
   civil_writable_field out_seconds_of_day{seconds_of_day};
@@ -855,8 +854,6 @@ civil_writable_rcrd convert_second_point_fields_from_naive_to_zoned_cpp(const ci
   civil_writable_rcrd out({out_calendar, out_seconds_of_day});
   out.names() = {"calendar", "seconds_of_day"};
 
-  bool recycle_calendar = civil_is_scalar(calendar);
-  bool recycle_seconds_of_day = civil_is_scalar(seconds_of_day);
   bool recycle_dst_nonexistent = civil_is_scalar(dst_nonexistent);
   bool recycle_dst_ambiguous = civil_is_scalar(dst_ambiguous);
 
@@ -875,9 +872,9 @@ civil_writable_rcrd convert_second_point_fields_from_naive_to_zoned_cpp(const ci
   std::string zone_name(zone_name_r);
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
-  for (r_ssize i = 0; i < c_size; ++i) {
-    int elt_calendar = recycle_calendar ? calendar[0] : calendar[i];
-    int elt_seconds_of_day = recycle_seconds_of_day ? seconds_of_day[0] : seconds_of_day[i];
+  for (r_ssize i = 0; i < size; ++i) {
+    int elt_calendar = calendar[i];
+    int elt_seconds_of_day = seconds_of_day[i];
 
     const enum dst_nonexistent elt_dst_nonexistent_val =
       recycle_dst_nonexistent ?
@@ -937,9 +934,8 @@ civil_writable_rcrd convert_subsecond_point_fields_from_naive_to_zoned_cpp(const
                                                                            const cpp11::strings& precision,
                                                                            const cpp11::strings& zone,
                                                                            const cpp11::strings& dst_nonexistent,
-                                                                           const cpp11::strings& dst_ambiguous,
-                                                                           const cpp11::integers& size) {
-  r_ssize c_size = size[0];
+                                                                           const cpp11::strings& dst_ambiguous) {
+  const r_ssize size = calendar.size();
 
   const enum precision precision_val = parse_precision(precision);
 
@@ -950,9 +946,6 @@ civil_writable_rcrd convert_subsecond_point_fields_from_naive_to_zoned_cpp(const
   civil_writable_rcrd out({out_calendar, out_seconds_of_day, out_nanoseconds_of_second});
   out.names() = {"calendar", "seconds_of_day", "nanoseconds_of_second"};
 
-  bool recycle_calendar = civil_is_scalar(calendar);
-  bool recycle_seconds_of_day = civil_is_scalar(seconds_of_day);
-  bool recycle_nanoseconds_of_second = civil_is_scalar(nanoseconds_of_second);
   bool recycle_dst_nonexistent = civil_is_scalar(dst_nonexistent);
   bool recycle_dst_ambiguous = civil_is_scalar(dst_ambiguous);
 
@@ -971,10 +964,10 @@ civil_writable_rcrd convert_subsecond_point_fields_from_naive_to_zoned_cpp(const
   std::string zone_name(zone_name_r);
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
-  for (r_ssize i = 0; i < c_size; ++i) {
-    int elt_calendar = recycle_calendar ? calendar[0] : calendar[i];
-    int elt_seconds_of_day = recycle_seconds_of_day ? seconds_of_day[0] : seconds_of_day[i];
-    int elt_nanoseconds_of_second = recycle_nanoseconds_of_second ? nanoseconds_of_second[0] : nanoseconds_of_second[i];
+  for (r_ssize i = 0; i < size; ++i) {
+    int elt_calendar = calendar[i];
+    int elt_seconds_of_day = seconds_of_day[i];
+    int elt_nanoseconds_of_second = nanoseconds_of_second[i];
 
     const enum dst_nonexistent elt_dst_nonexistent_val =
       recycle_dst_nonexistent ?

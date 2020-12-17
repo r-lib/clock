@@ -104,12 +104,12 @@ convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fiel
   .Call("_civil_convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields", calendar, hour, minute, second, subsecond, precision, PACKAGE = "civil")
 }
 
-convert_second_point_fields_from_naive_to_zoned_cpp <- function(calendar, seconds_of_day, zone, dst_nonexistent, dst_ambiguous, size) {
-  .Call("_civil_convert_second_point_fields_from_naive_to_zoned_cpp", calendar, seconds_of_day, zone, dst_nonexistent, dst_ambiguous, size, PACKAGE = "civil")
+convert_second_point_fields_from_naive_to_zoned_cpp <- function(calendar, seconds_of_day, zone, dst_nonexistent, dst_ambiguous) {
+  .Call("_civil_convert_second_point_fields_from_naive_to_zoned_cpp", calendar, seconds_of_day, zone, dst_nonexistent, dst_ambiguous, PACKAGE = "civil")
 }
 
-convert_subsecond_point_fields_from_naive_to_zoned_cpp <- function(calendar, seconds_of_day, nanoseconds_of_second, precision, zone, dst_nonexistent, dst_ambiguous, size) {
-  .Call("_civil_convert_subsecond_point_fields_from_naive_to_zoned_cpp", calendar, seconds_of_day, nanoseconds_of_second, precision, zone, dst_nonexistent, dst_ambiguous, size, PACKAGE = "civil")
+convert_subsecond_point_fields_from_naive_to_zoned_cpp <- function(calendar, seconds_of_day, nanoseconds_of_second, precision, zone, dst_nonexistent, dst_ambiguous) {
+  .Call("_civil_convert_subsecond_point_fields_from_naive_to_zoned_cpp", calendar, seconds_of_day, nanoseconds_of_second, precision, zone, dst_nonexistent, dst_ambiguous, PACKAGE = "civil")
 }
 
 floor_calendar_days_to_year_month_precision <- function(calendar) {

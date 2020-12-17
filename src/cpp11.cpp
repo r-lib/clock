@@ -187,17 +187,17 @@ extern "C" SEXP _civil_convert_calendar_days_hour_minute_second_subsecond_to_nai
   END_CPP11
 }
 // converters.cpp
-civil_writable_rcrd convert_second_point_fields_from_naive_to_zoned_cpp(const civil_field& calendar, const civil_field& seconds_of_day, const cpp11::strings& zone, const cpp11::strings& dst_nonexistent, const cpp11::strings& dst_ambiguous, const cpp11::integers& size);
-extern "C" SEXP _civil_convert_second_point_fields_from_naive_to_zoned_cpp(SEXP calendar, SEXP seconds_of_day, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous, SEXP size) {
+civil_writable_rcrd convert_second_point_fields_from_naive_to_zoned_cpp(const civil_field& calendar, const civil_field& seconds_of_day, const cpp11::strings& zone, const cpp11::strings& dst_nonexistent, const cpp11::strings& dst_ambiguous);
+extern "C" SEXP _civil_convert_second_point_fields_from_naive_to_zoned_cpp(SEXP calendar, SEXP seconds_of_day, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous) {
   BEGIN_CPP11
-    return cpp11::as_sexp(convert_second_point_fields_from_naive_to_zoned_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(seconds_of_day), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(dst_ambiguous), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size)));
+    return cpp11::as_sexp(convert_second_point_fields_from_naive_to_zoned_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(seconds_of_day), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(dst_ambiguous)));
   END_CPP11
 }
 // converters.cpp
-civil_writable_rcrd convert_subsecond_point_fields_from_naive_to_zoned_cpp(const civil_field& calendar, const civil_field& seconds_of_day, const civil_field& nanoseconds_of_second, const cpp11::strings& precision, const cpp11::strings& zone, const cpp11::strings& dst_nonexistent, const cpp11::strings& dst_ambiguous, const cpp11::integers& size);
-extern "C" SEXP _civil_convert_subsecond_point_fields_from_naive_to_zoned_cpp(SEXP calendar, SEXP seconds_of_day, SEXP nanoseconds_of_second, SEXP precision, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous, SEXP size) {
+civil_writable_rcrd convert_subsecond_point_fields_from_naive_to_zoned_cpp(const civil_field& calendar, const civil_field& seconds_of_day, const civil_field& nanoseconds_of_second, const cpp11::strings& precision, const cpp11::strings& zone, const cpp11::strings& dst_nonexistent, const cpp11::strings& dst_ambiguous);
+extern "C" SEXP _civil_convert_subsecond_point_fields_from_naive_to_zoned_cpp(SEXP calendar, SEXP seconds_of_day, SEXP nanoseconds_of_second, SEXP precision, SEXP zone, SEXP dst_nonexistent, SEXP dst_ambiguous) {
   BEGIN_CPP11
-    return cpp11::as_sexp(convert_subsecond_point_fields_from_naive_to_zoned_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(seconds_of_day), cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(nanoseconds_of_second), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(dst_ambiguous), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(size)));
+    return cpp11::as_sexp(convert_subsecond_point_fields_from_naive_to_zoned_cpp(cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(seconds_of_day), cpp11::as_cpp<cpp11::decay_t<const civil_field&>>(nanoseconds_of_second), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(dst_ambiguous)));
   END_CPP11
 }
 // floor.cpp
@@ -314,9 +314,9 @@ extern SEXP _civil_convert_calendar_days_to_year_month_day(SEXP);
 extern SEXP _civil_convert_calendar_days_to_year_quarternum_quarterday(SEXP, SEXP);
 extern SEXP _civil_convert_iso_year_weeknum_weekday_to_calendar_days(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_naive_second_point_fields_to_zoned_seconds_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _civil_convert_second_point_fields_from_naive_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_convert_second_point_fields_from_naive_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_second_point_fields_from_zoned_to_naive(SEXP, SEXP, SEXP);
-extern SEXP _civil_convert_subsecond_point_fields_from_naive_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _civil_convert_subsecond_point_fields_from_naive_to_zoned_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_year_month_day_hour_minute_second_to_naive_second_point_fields(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _civil_convert_year_month_day_to_calendar_days(SEXP, SEXP, SEXP, SEXP);
@@ -357,9 +357,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_civil_convert_calendar_days_to_year_quarternum_quarterday",                                  (DL_FUNC) &_civil_convert_calendar_days_to_year_quarternum_quarterday,                                  2},
     {"_civil_convert_iso_year_weeknum_weekday_to_calendar_days",                                    (DL_FUNC) &_civil_convert_iso_year_weeknum_weekday_to_calendar_days,                                    4},
     {"_civil_convert_naive_second_point_fields_to_zoned_seconds_cpp",                               (DL_FUNC) &_civil_convert_naive_second_point_fields_to_zoned_seconds_cpp,                               6},
-    {"_civil_convert_second_point_fields_from_naive_to_zoned_cpp",                                  (DL_FUNC) &_civil_convert_second_point_fields_from_naive_to_zoned_cpp,                                  6},
+    {"_civil_convert_second_point_fields_from_naive_to_zoned_cpp",                                  (DL_FUNC) &_civil_convert_second_point_fields_from_naive_to_zoned_cpp,                                  5},
     {"_civil_convert_second_point_fields_from_zoned_to_naive",                                      (DL_FUNC) &_civil_convert_second_point_fields_from_zoned_to_naive,                                      3},
-    {"_civil_convert_subsecond_point_fields_from_naive_to_zoned_cpp",                               (DL_FUNC) &_civil_convert_subsecond_point_fields_from_naive_to_zoned_cpp,                               8},
+    {"_civil_convert_subsecond_point_fields_from_naive_to_zoned_cpp",                               (DL_FUNC) &_civil_convert_subsecond_point_fields_from_naive_to_zoned_cpp,                               7},
     {"_civil_convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields", (DL_FUNC) &_civil_convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields, 8},
     {"_civil_convert_year_month_day_hour_minute_second_to_naive_second_point_fields",               (DL_FUNC) &_civil_convert_year_month_day_hour_minute_second_to_naive_second_point_fields,               7},
     {"_civil_convert_year_month_day_to_calendar_days",                                              (DL_FUNC) &_civil_convert_year_month_day_to_calendar_days,                                              4},
