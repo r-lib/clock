@@ -257,7 +257,7 @@ civil_writable_rcrd convert_year_month_day_hour_minute_second_nanosecond_to_naiv
     check_range_hour(elt_hour, "hour");
     check_range_minute(elt_minute, "minute");
     check_range_second(elt_second, "second");
-    check_range_nanos(elt_nanosecond, "nanosecond");
+    check_range_nanosecond(elt_nanosecond, "nanosecond");
 
     std::chrono::nanoseconds out_nanos_of_second{elt_nanosecond};
 
