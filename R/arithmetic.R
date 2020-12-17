@@ -220,7 +220,7 @@ NULL
 #' @rdname clock-arithmetic
 #' @export
 add_years <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_years")
 }
 
@@ -312,7 +312,7 @@ add_years_calendar.clock_iso <- function(x, n, day_nonexistent) {
 #' @rdname clock-arithmetic
 #' @export
 subtract_years <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_years")
 }
 
@@ -352,7 +352,7 @@ subtract_years.clock_calendar <- subtract_years.clock_naive_time_point
 #' @rdname clock-arithmetic
 #' @export
 add_quarters <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_quarters")
 }
 
@@ -438,7 +438,7 @@ add_quarters_calendar.clock_quarterly <- function(x, n, day_nonexistent) {
 #' @rdname clock-arithmetic
 #' @export
 subtract_quarters <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_quarters")
 }
 
@@ -478,7 +478,7 @@ subtract_quarters.clock_calendar <- subtract_quarters.clock_naive_time_point
 #' @rdname clock-arithmetic
 #' @export
 add_months <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_months")
 }
 
@@ -557,7 +557,7 @@ add_months_calendar.clock_gregorian <- function(x, n, day_nonexistent) {
 #' @rdname clock-arithmetic
 #' @export
 subtract_months <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_months")
 }
 
@@ -597,7 +597,7 @@ subtract_months.clock_calendar <- subtract_months.clock_naive_time_point
 #' @rdname clock-arithmetic
 #' @export
 add_weeks <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_weeks")
 }
 
@@ -677,7 +677,7 @@ add_weeks_calendar.clock_iso <- add_weeks_calendar.clock_gregorian
 #' @rdname clock-arithmetic
 #' @export
 subtract_weeks <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_weeks")
 }
 
@@ -714,7 +714,7 @@ subtract_weeks.clock_calendar <- subtract_weeks.Date
 #' @rdname clock-arithmetic
 #' @export
 add_days <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_days")
 }
 
@@ -794,7 +794,7 @@ add_days_calendar.clock_iso <- add_days_calendar.clock_gregorian
 #' @rdname clock-arithmetic
 #' @export
 subtract_days <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_days")
 }
 
@@ -831,7 +831,7 @@ subtract_days.clock_calendar <- subtract_days.Date
 #' @rdname clock-arithmetic
 #' @export
 add_hours <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_hours")
 }
 
@@ -870,7 +870,7 @@ add_hours.clock_calendar <- function(x, n, ...) {
 #' @rdname clock-arithmetic
 #' @export
 subtract_hours <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_hours")
 }
 
@@ -901,7 +901,7 @@ subtract_hours.clock_calendar <- subtract_hours.Date
 #' @rdname clock-arithmetic
 #' @export
 add_minutes <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_minutes")
 }
 
@@ -940,7 +940,7 @@ add_minutes.clock_calendar <- function(x, n, ...) {
 #' @rdname clock-arithmetic
 #' @export
 subtract_minutes <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_minutes")
 }
 
@@ -971,7 +971,7 @@ subtract_minutes.clock_calendar <- subtract_minutes.Date
 #' @rdname clock-arithmetic
 #' @export
 add_seconds <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_seconds")
 }
 
@@ -1010,7 +1010,7 @@ add_seconds.clock_calendar <- function(x, n, ...) {
 #' @rdname clock-arithmetic
 #' @export
 subtract_seconds <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_seconds")
 }
 
@@ -1041,7 +1041,7 @@ subtract_seconds.clock_calendar <- subtract_seconds.Date
 #' @rdname clock-arithmetic
 #' @export
 add_milliseconds <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_milliseconds")
 }
 
@@ -1079,7 +1079,7 @@ add_milliseconds.clock_calendar <- function(x, n, ...) {
 #' @rdname clock-arithmetic
 #' @export
 subtract_milliseconds <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_milliseconds")
 }
 
@@ -1110,7 +1110,7 @@ subtract_milliseconds.clock_calendar <- subtract_milliseconds.Date
 #' @rdname clock-arithmetic
 #' @export
 add_microseconds <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_microseconds")
 }
 
@@ -1148,7 +1148,7 @@ add_microseconds.clock_calendar <- function(x, n, ...) {
 #' @rdname clock-arithmetic
 #' @export
 subtract_microseconds <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_microseconds")
 }
 
@@ -1179,7 +1179,7 @@ subtract_microseconds.clock_calendar <- subtract_microseconds.Date
 #' @rdname clock-arithmetic
 #' @export
 add_nanoseconds <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("add_nanoseconds")
 }
 
@@ -1217,7 +1217,7 @@ add_nanoseconds.clock_calendar <- function(x, n, ...) {
 #' @rdname clock-arithmetic
 #' @export
 subtract_nanoseconds <- function(x, n, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("subtract_nanoseconds")
 }
 

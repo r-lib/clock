@@ -42,7 +42,7 @@ get_offset.clock_zoned_time_point <- function(x) {
 
 #' @export
 get_year <- function(x) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("get_year")
 }
 
@@ -93,7 +93,7 @@ get_year.clock_zoned_time_point <- function(x) {
 
 #' @export
 get_quarternum <- function(x) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("get_quarternum")
 }
 

@@ -154,7 +154,7 @@ adjust_nanoseconds_of_second_precision <- function(x, precision) {
 #' adjust_year(x, 2011, dst_nonexistent = "roll-backward")
 #' adjust_year(x, 2011, dst_nonexistent = "shift-forward")
 adjust_year <- function(x, value, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("adjust_year")
 }
 
@@ -239,7 +239,7 @@ adjust_year_calendar.clock_iso <- function(x, value, ..., day_nonexistent) {
 
 #' @export
 adjust_quarternum <- function(x, value, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("adjust_quarternum")
 }
 
@@ -287,7 +287,7 @@ adjust_quarternum_calendar.clock_quarterly <- function(x, value, ..., day_nonexi
 
 #' @export
 adjust_quarterday <- function(x, value, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("adjust_quarterday")
 }
 
@@ -366,7 +366,7 @@ adjust_quarterday_last_calendar.clock_quarterly <- function(x, value, ..., day_n
 
 #' @export
 adjust_month <- function(x, value, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("adjust_month")
 }
 
@@ -433,7 +433,7 @@ adjust_month_calendar.clock_gregorian <- function(x, value, ..., day_nonexistent
 
 #' @export
 adjust_weeknum <- function(x, value, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("adjust_weeknum")
 }
 
@@ -510,7 +510,7 @@ adjust_weeknum_last_calendar.clock_iso <- function(x, value, ..., day_nonexisten
 
 #' @export
 adjust_weekday <- function(x, value, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("adjust_weekday")
 }
 
@@ -557,7 +557,7 @@ adjust_weekday_calendar.clock_iso <- function(x, value, ..., day_nonexistent) {
 
 #' @export
 adjust_day <- function(x, value, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("adjust_day")
 }
 
@@ -654,7 +654,7 @@ adjust_day_last_calendar.clock_gregorian <- function(x, value, ..., day_nonexist
 
 #' @export
 adjust_hour <- function(x, value, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("adjust_hour")
 }
 
@@ -705,7 +705,7 @@ adjust_hour.clock_calendar <- function(x, value, ...) {
 
 #' @export
 adjust_minute <- function(x, value, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("adjust_minute")
 }
 
@@ -756,7 +756,7 @@ adjust_minute.clock_calendar <- function(x, value, ...) {
 
 #' @export
 adjust_second <- function(x, value, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("adjust_second")
 }
 
@@ -807,7 +807,7 @@ adjust_second.clock_calendar <- function(x, value, ...) {
 
 #' @export
 adjust_millisecond <- function(x, value, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("adjust_millisecond")
 }
 
@@ -841,7 +841,7 @@ adjust_millisecond.clock_calendar <- function(x, value, ...) {
 
 #' @export
 adjust_microsecond <- function(x, value, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("adjust_microsecond")
 }
 
@@ -875,7 +875,7 @@ adjust_microsecond.clock_calendar <- function(x, value, ...) {
 
 #' @export
 adjust_nanosecond <- function(x, value, ...) {
-  restrict_civil_supported(x)
+  restrict_clock_supported(x)
   UseMethod("adjust_nanosecond")
 }
 
