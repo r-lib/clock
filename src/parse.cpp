@@ -67,7 +67,8 @@ civil_writable_rcrd parse_zoned_datetime_cpp(const cpp11::strings& x,
   civil_writable_field days(c_size);
   civil_writable_field time_of_day(c_size);
 
-  civil_writable_rcrd out = new_days_time_of_day_list(days, time_of_day);
+  civil_writable_rcrd out({days, time_of_day});
+  out.names() = {"days", "time_of_day"};
 
   bool recycle_x = civil_is_scalar(x);
   bool recycle_dst_nonexistent = civil_is_scalar(dst_nonexistent);
@@ -199,7 +200,8 @@ civil_writable_rcrd parse_naive_datetime_cpp(const cpp11::strings& x,
   civil_writable_field days(c_size);
   civil_writable_field time_of_day(c_size);
 
-  civil_writable_rcrd out = new_days_time_of_day_list(days, time_of_day);
+  civil_writable_rcrd out({days, time_of_day});
+  out.names() = {"days", "time_of_day"};
 
   std::istringstream stream;
   stream.imbue(std::locale::classic());
