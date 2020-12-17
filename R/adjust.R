@@ -72,13 +72,14 @@ adjust_precision.clock_zoned_time_point <- function(x, precision) {
 adjust_nanoseconds_of_second_precision <- function(x, precision) {
   x_precision <- get_precision(x)
 
-  # No nanoseconds to begin with
+  # Requesting 'second' precision nukes `nanoseconds_of_second`
+  if (!is_subsecond_precision(precision)) {
+    return(NULL)
+  }
+
+  # No nanoseconds to begin with, but we need them
   if (!is_subsecond_precision(x_precision)) {
-    if (is_subsecond_precision(precision)) {
-      return(nanoseconds_of_second_init(x))
-    } else {
-      return(NULL)
-    }
+    return(nanoseconds_of_second_init(x))
   }
 
   nanoseconds_of_second <- field_nanoseconds_of_second(x)
