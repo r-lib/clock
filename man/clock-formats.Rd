@@ -146,7 +146,7 @@ format(x, fmt_week_date())
 format(x, fmt_iso_week_date())
 
 # Date that is "ambiguous" without more information about the DST offset
-x <- zoned_datetime(
+x <- zoned_date_nanotime(
   1970, 10, 25, 01, 30,
   zone = "America/New_York",
   dst_ambiguous = c("earliest", "latest")

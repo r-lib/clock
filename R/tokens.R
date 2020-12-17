@@ -88,7 +88,7 @@ tkns <- function(..., sep = "") {
 #'
 #' # Formats created by tokens can be used in the format method of clock
 #' # classes and base R date-time classes
-#' x <- naive_datetime(2019, 01, 01, 14, 30, 59)
+#' x <- naive_date_time(2019, 01, 01, 14, 30, 59)
 #' x
 #'
 #' format(x, format = hms)
@@ -425,7 +425,7 @@ tkn_percent <- function() {
 #' format(x, fmt_iso_week_date())
 #'
 #' # Date that is "ambiguous" without more information about the DST offset
-#' x <- zoned_datetime(
+#' x <- zoned_date_nanotime(
 #'   1970, 10, 25, 01, 30,
 #'   zone = "America/New_York",
 #'   dst_ambiguous = c("earliest", "latest")

@@ -143,7 +143,7 @@ hms <- tkns(tkn_hour(), tkn_minute(), tkn_second(), sep = ":")
 
 # Formats created by tokens can be used in the format method of clock
 # classes and base R date-time classes
-x <- naive_datetime(2019, 01, 01, 14, 30, 59)
+x <- naive_date_time(2019, 01, 01, 14, 30, 59)
 x
 
 format(x, format = hms)
