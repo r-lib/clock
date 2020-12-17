@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Local and Zoned Dates • civil</title>
+<title>Local and Zoned Dates • clock</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -34,7 +34,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">civil</a>
+        <a class="navbar-link" href="index.html">clock</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
       </span>
     </div>
@@ -58,14 +58,14 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/civil-arithmetic.html">Date-time arithmetic</a>
+      <a href="articles/clock-arithmetic.html">Date-time arithmetic</a>
     </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/DavisVaughan/civil/">
+  <a href="https://github.com/DavisVaughan/clock/">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -82,22 +82,22 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="civil" class="section level1">
+<div id="clock" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#civil" class="anchor"></a>civil</h1></div>
+<a href="#clock" class="anchor"></a>clock</h1></div>
 <!-- badges: start -->
 
-<p>The goal of civil is to provide new types for working with <em>naive</em> and <em>zoned</em> date-times. A <em>naive</em> date-time is completely unaware of any time zone. A <em>zoned</em> date-time can be thought of as a naive date-time plus a time zone.</p>
+<p>The goal of clock is to provide new types for working with <em>naive</em> and <em>zoned</em> date-times. A <em>naive</em> date-time is completely unaware of any time zone. A <em>zoned</em> date-time can be thought of as a naive date-time plus a time zone.</p>
 <p>The standard Gregorian calendar is supported through naive classes like <code>year_month_day()</code> and <code>naive_datetime()</code> and zoned classes like <code>zoned_datetime()</code>. Additionally, there is support for other calendars, such as a quarterly calendar, through classes like <code>year_quarter_day()</code>. <em>Partial</em> calendars, which have a precision that is coarser than a single day, are also supported through classes like <code>year_month()</code> and <code>year_quarter()</code>.</p>
 <p>Nanotime precision is supported for both naive and zoned types through <code>naive_nano_datetime()</code> and <code>zoned_nano_datetime()</code>.</p>
 <p>Additionally, all functionality works with Date and POSIXct, with the goal of expanding on the groundwork laid by lubridate to make working around issues of daylight savings and leap years a little more intuitive.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the development version of civil with:</p>
+<p>You can install the development version of clock with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"DavisVaughan/civil"</span><span class="op">)</span></code></pre></div>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"DavisVaughan/clock"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>
@@ -106,9 +106,9 @@
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/DavisVaughan/civil/">https://​github.com/​DavisVaughan/​civil/​</a>
+<li>Browse source code at <br><a href="https://github.com/DavisVaughan/clock/">https://​github.com/​DavisVaughan/​clock/​</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/DavisVaughan/civil/issues">https://​github.com/​DavisVaughan/​civil/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/DavisVaughan/clock/issues">https://​github.com/​DavisVaughan/​clock/​issues</a>
 </li>
 </ul>
 </div>
@@ -130,8 +130,8 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://codecov.io/gh/DavisVaughan/civil?branch=master"><img src="https://codecov.io/gh/DavisVaughan/civil/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://github.com/DavisVaughan/civil/actions"><img src="https://github.com/DavisVaughan/civil/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://codecov.io/gh/DavisVaughan/clock?branch=master"><img src="https://codecov.io/gh/DavisVaughan/clock/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/DavisVaughan/clock/actions"><img src="https://github.com/DavisVaughan/clock/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
 </div>
