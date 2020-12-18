@@ -186,7 +186,15 @@ get_weekday <- function(x) {
 }
 
 #' @export
+get_weekday.clock_gregorian <- function(x) {
+  # [Sunday, Saturday] -> [1, 7]
+  ymwi <- convert_calendar_days_to_year_month_weekday_index(x)
+  ymwi$weekday
+}
+
+#' @export
 get_weekday.clock_iso <- function(x) {
+  # [Monday, Sunday] -> [1, 7]
   ywnwd <- convert_calendar_days_to_iso_year_weeknum_weekday(x)
   ywnwd$weekday
 }
@@ -201,6 +209,32 @@ get_weekday.clock_naive_time_point <- function(x) {
 get_weekday.clock_zoned_time_point <- function(x) {
   x <- as_naive_time_point(x)
   get_weekday(x)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+get_weekday_index <- function(x) {
+  restrict_clock_supported(x)
+  UseMethod("get_weekday_index")
+}
+
+#' @export
+get_weekday_index.clock_gregorian <- function(x) {
+  ymwi <- convert_calendar_days_to_year_month_weekday_index(x)
+  ymwi$index
+}
+
+#' @export
+get_weekday_index.clock_naive_time_point <- function(x) {
+  calendar <- field_calendar(x)
+  get_weekday_index(calendar)
+}
+
+#' @export
+get_weekday_index.clock_zoned_time_point <- function(x) {
+  x <- as_naive_time_point(x)
+  get_weekday_index(x)
 }
 
 # ------------------------------------------------------------------------------
@@ -499,6 +533,11 @@ get_precision.clock_year_month <- function(x) {
 
 #' @export
 get_precision.clock_year_month_day <- function(x) {
+  "day"
+}
+
+#' @export
+get_precision.clock_year_month_weekday <- function(x) {
   "day"
 }
 
