@@ -295,6 +295,11 @@ add_years_calendar.clock_gregorian <- function(x, n, day_nonexistent) {
 }
 
 #' @export
+add_years_calendar.clock_year_month_weekday <- function(x, n, day_nonexistent) {
+  add_gregorian_weekday_calendar_years_or_months(x, n, day_nonexistent, "year")
+}
+
+#' @export
 add_years_calendar.clock_quarterly <- function(x, n, day_nonexistent) {
   x <- promote_precision_year(x)
   start <- get_start(x)
@@ -427,6 +432,11 @@ add_quarters_calendar.clock_gregorian <- function(x, n, day_nonexistent) {
 }
 
 #' @export
+add_quarters_calendar.clock_year_month_weekday <- function(x, n, day_nonexistent) {
+  add_gregorian_weekday_calendar_years_or_months(x, n * 3L, day_nonexistent, "month")
+}
+
+#' @export
 add_quarters_calendar.clock_quarterly <- function(x, n, day_nonexistent) {
   x <- promote_precision_quarter(x)
   start <- get_start(x)
@@ -550,6 +560,11 @@ add_months_calendar.clock_calendar <- function(x, n, day_nonexistent) {
 add_months_calendar.clock_gregorian <- function(x, n, day_nonexistent) {
   x <- promote_precision_month(x)
   add_gregorian_calendar_years_or_months(x, n, day_nonexistent, "month")
+}
+
+#' @export
+add_months_calendar.clock_year_month_weekday <- function(x, n, day_nonexistent) {
+  add_gregorian_weekday_calendar_years_or_months(x, n, day_nonexistent, "month")
 }
 
 # ------------------------------------------------------------------------------

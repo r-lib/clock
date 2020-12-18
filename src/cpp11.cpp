@@ -61,6 +61,13 @@ extern "C" SEXP _clock_add_gregorian_calendar_years_or_months(SEXP calendar, SEX
   END_CPP11
 }
 // arithmetic.cpp
+cpp11::writable::list add_gregorian_weekday_calendar_years_or_months(const clock_field& calendar, const cpp11::integers& n, const cpp11::strings& day_nonexistent, const cpp11::strings& unit);
+extern "C" SEXP _clock_add_gregorian_weekday_calendar_years_or_months(SEXP calendar, SEXP n, SEXP day_nonexistent, SEXP unit) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(add_gregorian_weekday_calendar_years_or_months(cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(unit)));
+  END_CPP11
+}
+// arithmetic.cpp
 cpp11::writable::list add_calendar_weeks_or_days(const clock_field& calendar, const cpp11::integers& n, const cpp11::strings& unit);
 extern "C" SEXP _clock_add_calendar_weeks_or_days(SEXP calendar, SEXP n, SEXP unit) {
   BEGIN_CPP11
@@ -325,6 +332,7 @@ extern "C" {
 /* .Call calls */
 extern SEXP _clock_add_calendar_weeks_or_days(SEXP, SEXP, SEXP);
 extern SEXP _clock_add_gregorian_calendar_years_or_months(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_add_gregorian_weekday_calendar_years_or_months(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_add_iso_calendar_years(SEXP, SEXP, SEXP);
 extern SEXP _clock_add_quarterly_calendar_years_or_quarters(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_add_time_point_nanoseconds_of_second_cpp(SEXP, SEXP, SEXP);
@@ -372,6 +380,7 @@ extern SEXP _clock_zone_standardize(SEXP);
 static const R_CallMethodDef CallEntries[] = {
     {"_clock_add_calendar_weeks_or_days",                                                           (DL_FUNC) &_clock_add_calendar_weeks_or_days,                                                           3},
     {"_clock_add_gregorian_calendar_years_or_months",                                               (DL_FUNC) &_clock_add_gregorian_calendar_years_or_months,                                               4},
+    {"_clock_add_gregorian_weekday_calendar_years_or_months",                                       (DL_FUNC) &_clock_add_gregorian_weekday_calendar_years_or_months,                                       4},
     {"_clock_add_iso_calendar_years",                                                               (DL_FUNC) &_clock_add_iso_calendar_years,                                                               3},
     {"_clock_add_quarterly_calendar_years_or_quarters",                                             (DL_FUNC) &_clock_add_quarterly_calendar_years_or_quarters,                                             5},
     {"_clock_add_time_point_nanoseconds_of_second_cpp",                                             (DL_FUNC) &_clock_add_time_point_nanoseconds_of_second_cpp,                                             3},

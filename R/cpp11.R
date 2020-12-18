@@ -32,6 +32,10 @@ add_gregorian_calendar_years_or_months <- function(calendar, n, day_nonexistent,
   .Call("_clock_add_gregorian_calendar_years_or_months", calendar, n, day_nonexistent, unit, PACKAGE = "clock")
 }
 
+add_gregorian_weekday_calendar_years_or_months <- function(calendar, n, day_nonexistent, unit) {
+  .Call("_clock_add_gregorian_weekday_calendar_years_or_months", calendar, n, day_nonexistent, unit, PACKAGE = "clock")
+}
+
 add_calendar_weeks_or_days <- function(calendar, n, unit) {
   .Call("_clock_add_calendar_weeks_or_days", calendar, n, unit, PACKAGE = "clock")
 }
