@@ -139,6 +139,8 @@ promote_precision_day.clock_gregorian <- function(x) {
   if (get_precision_value(x) >= PRECISION_DAY) {
     x
   } else {
+    # We prefer promoting things like year-month to year-month-day as opposed
+    # to year-month-weekday, as this is probably what the user wanted
     as_year_month_day(x)
   }
 }
