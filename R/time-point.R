@@ -77,8 +77,25 @@ field_calendar <- function(x) {
 field_seconds_of_day <- function(x) {
   field(x, "seconds_of_day")
 }
-field_nanoseconds_of_second <- function(x) {
-  field(x, "nanoseconds_of_second")
+field_nanoseconds_of_second <- function(x, strict = TRUE) {
+  if (strict) {
+    # Error if doesn't have the field
+    out <- field(x, "nanoseconds_of_second")
+    return(out)
+  }
+
+  if (has_nanoseconds_of_second(x)) {
+    field(x, "nanoseconds_of_second")
+  } else {
+    NULL
+  }
+}
+
+has_field <- function(x, field) {
+  field %in% fields(x)
+}
+has_nanoseconds_of_second <- function(x) {
+  has_field(x, "nanoseconds_of_second")
 }
 
 # ------------------------------------------------------------------------------
