@@ -632,8 +632,8 @@ clock_writable_field convert_iso_year_weeknum_weekday_to_calendar_days(const cpp
     }
 
     check_range_year(elt_year, "year");
-    check_range_iso_weeknum(elt_weeknum, "weeknum");
-    check_range_iso_weekday(elt_weekday, "weekday");
+    check_range_weeknum(elt_weeknum, "weeknum");
+    check_range_weekday(elt_weekday, "weekday");
 
     iso_week::year_weeknum_weekday elt_yww{
       iso_week::year{elt_year},
@@ -1057,4 +1057,98 @@ clock_writable_rcrd convert_subsecond_point_fields_from_naive_to_zoned_cpp(const
   }
 
   return out;
+}
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+clock_writable_list_of_integers convert_calendar_days_to_year_month_weekday_index(const clock_field& calendar) {
+  r_ssize size = calendar.size();
+
+  cpp11::writable::integers year(size);
+  cpp11::writable::integers month(size);
+  cpp11::writable::integers weekday(size);
+  cpp11::writable::integers index(size);
+
+  clock_writable_list_of_integers out({year, month, weekday, index});
+  out.names() = {"year", "month", "weekday", "index"};
+
+  for (r_ssize i = 0; i < size; ++i) {
+    int elt_calendar = calendar[i];
+
+    if (elt_calendar == r_int_na) {
+      year[i] = r_int_na;
+      month[i] = r_int_na;
+      weekday[i] = r_int_na;
+      index[i] = r_int_na;
+      continue;
+    }
+
+    date::local_days elt_lday{date::days{elt_calendar}};
+    date::year_month_weekday elt_ymw{elt_lday};
+
+    year[i] = static_cast<int>(elt_ymw.year());
+    month[i] = static_cast<unsigned int>(elt_ymw.month());
+    weekday[i] = elt_ymw.weekday().c_encoding() + 1;
+    index[i] = elt_ymw.index();
+  }
+
+  return out;
+}
+
+[[cpp11::register]]
+clock_writable_field convert_year_month_weekday_index_to_calendar_days(const cpp11::integers& year,
+                                                                       const cpp11::integers& month,
+                                                                       const cpp11::integers& weekday,
+                                                                       const cpp11::integers& index,
+                                                                       const cpp11::strings& day_nonexistent) {
+  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
+
+  r_ssize size = year.size();
+
+  clock_writable_field days(size);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    int elt_year = year[i];
+    int elt_month = month[i];
+    int elt_weekday = weekday[i];
+    int elt_index = index[i];
+
+    if (elt_year == r_int_na ||
+        elt_month == r_int_na ||
+        elt_weekday == r_int_na ||
+        elt_index == r_int_na) {
+      days[i] = r_int_na;
+      continue;
+    }
+
+    check_range_year(elt_year, "year");
+    check_range_month(elt_month, "month");
+    check_range_weekday(elt_weekday, "weekday");
+    check_range_index(elt_index, "index");
+
+    unsigned elt_date_month = static_cast<unsigned>(elt_month);
+    unsigned elt_date_weekday = static_cast<unsigned>(elt_weekday - 1);
+    unsigned elt_date_index = static_cast<unsigned>(elt_index);
+
+    date::year_month_weekday out_ymw{
+      date::year{elt_year} / date::month{elt_date_month} / date::weekday{elt_date_weekday}[elt_date_index]
+    };
+
+    if (!out_ymw.ok()) {
+      bool na = false;
+      resolve_day_nonexistent_ymw(i, day_nonexistent_val, out_ymw, na);
+
+      if (na) {
+        days[i] = r_int_na;
+        continue;
+      }
+    }
+
+    date::local_days out_lday{out_ymw};
+
+    days[i] = out_lday.time_since_epoch().count();
+  }
+
+  return days;
 }

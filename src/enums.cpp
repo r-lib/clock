@@ -117,8 +117,10 @@ enum adjuster parse_adjuster(const cpp11::strings& x) {
   if (string == "nanosecond") return adjuster::nanosecond;
   if (string == "weeknum") return adjuster::weeknum;
   if (string == "weekday") return adjuster::weekday;
+  if (string == "weekday_index") return adjuster::weekday_index;
   if (string == "quarternum") return adjuster::quarternum;
   if (string == "quarterday") return adjuster::quarterday;
+  if (string == "last_weekday_index_of_month") return adjuster::last_weekday_index_of_month;
   if (string == "last_weeknum_of_year") return adjuster::last_weeknum_of_year;
   if (string == "last_day_of_quarter") return adjuster::last_day_of_quarter;
   if (string == "last_day_of_month") return adjuster::last_day_of_month;

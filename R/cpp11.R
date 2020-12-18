@@ -4,6 +4,10 @@ adjust_gregorian_calendar <- function(calendar, value, day_nonexistent, adjuster
   .Call("_clock_adjust_gregorian_calendar", calendar, value, day_nonexistent, adjuster, PACKAGE = "clock")
 }
 
+adjust_gregorian_weekday_calendar <- function(calendar, value, day_nonexistent, adjuster) {
+  .Call("_clock_adjust_gregorian_weekday_calendar", calendar, value, day_nonexistent, adjuster, PACKAGE = "clock")
+}
+
 adjust_naive_time_point_seconds_of_day_cpp <- function(x, value, adjuster) {
   .Call("_clock_adjust_naive_time_point_seconds_of_day_cpp", x, value, adjuster, PACKAGE = "clock")
 }
@@ -26,6 +30,10 @@ downcast_nanoseconds_of_second_precision <- function(nanoseconds_of_second, prec
 
 add_gregorian_calendar_years_or_months <- function(calendar, n, day_nonexistent, unit) {
   .Call("_clock_add_gregorian_calendar_years_or_months", calendar, n, day_nonexistent, unit, PACKAGE = "clock")
+}
+
+add_gregorian_weekday_calendar_years_or_months <- function(calendar, n, day_nonexistent, unit) {
+  .Call("_clock_add_gregorian_weekday_calendar_years_or_months", calendar, n, day_nonexistent, unit, PACKAGE = "clock")
 }
 
 add_calendar_weeks_or_days <- function(calendar, n, unit) {
@@ -114,6 +122,14 @@ convert_second_point_fields_from_naive_to_zoned_cpp <- function(calendar, second
 
 convert_subsecond_point_fields_from_naive_to_zoned_cpp <- function(calendar, seconds_of_day, nanoseconds_of_second, precision, zone, dst_nonexistent, dst_ambiguous) {
   .Call("_clock_convert_subsecond_point_fields_from_naive_to_zoned_cpp", calendar, seconds_of_day, nanoseconds_of_second, precision, zone, dst_nonexistent, dst_ambiguous, PACKAGE = "clock")
+}
+
+convert_calendar_days_to_year_month_weekday_index <- function(calendar) {
+  .Call("_clock_convert_calendar_days_to_year_month_weekday_index", calendar, PACKAGE = "clock")
+}
+
+convert_year_month_weekday_index_to_calendar_days <- function(year, month, weekday, index, day_nonexistent) {
+  .Call("_clock_convert_year_month_weekday_index_to_calendar_days", year, month, weekday, index, day_nonexistent, PACKAGE = "clock")
 }
 
 floor_calendar_days_to_year_month_precision <- function(calendar) {

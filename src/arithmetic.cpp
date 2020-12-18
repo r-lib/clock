@@ -61,6 +61,59 @@ cpp11::writable::list add_gregorian_calendar_years_or_months(const clock_field& 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
+cpp11::writable::list add_gregorian_weekday_calendar_years_or_months(const clock_field& calendar,
+                                                                     const cpp11::integers& n,
+                                                                     const cpp11::strings& day_nonexistent,
+                                                                     const cpp11::strings& unit) {
+  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
+  enum unit unit_val = parse_unit(unit);
+
+  const r_ssize size = calendar.size();
+
+  clock_writable_field out_calendar{calendar};
+  cpp11::writable::logicals ok(size);
+  cpp11::writable::logicals any(1);
+  any[0] = false;
+
+  cpp11::writable::list out({out_calendar, ok, any});
+  out.names() = {"calendar", "ok", "any"};
+
+  for (r_ssize i = 0; i < size; ++i) {
+    ok[i] = true;
+
+    int elt_calendar = calendar[i];
+    int elt_n = n[i];
+
+    if (elt_calendar == r_int_na) {
+      continue;
+    }
+    if (elt_n == r_int_na) {
+      ok[i] = r_lgl_na;
+      any[0] = true;
+      out_calendar[i] = r_int_na;
+      continue;
+    }
+
+    date::local_days elt_lday{date::days{elt_calendar}};
+    date::year_month_weekday elt_ymw{elt_lday};
+
+    date::year_month_weekday out_ymw;
+
+    if (unit_val == unit::year) {
+      out_ymw = elt_ymw + date::years{elt_n};
+    } else {
+      out_ymw = elt_ymw + date::months{elt_n};
+    }
+
+    convert_ymw_to_calendar_one(i, day_nonexistent_val, out_ymw, out_calendar, ok, any);
+  }
+
+  return out;
+}
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
 cpp11::writable::list add_calendar_weeks_or_days(const clock_field& calendar,
                                                  const cpp11::integers& n,
                                                  const cpp11::strings& unit) {
