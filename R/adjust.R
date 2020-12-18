@@ -197,13 +197,13 @@ adjust_year.clock_zoned_time_point <- function(x,
 #' @rdname adjust_year
 #' @export
 adjust_year.clock_naive_time_point <- function(x, value, ..., day_nonexistent = "last-time") {
-  adjust_naive_time_point_calendar(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_year_calendar)
+  adjust_naive_time_point_calendar_impl(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_year_calendar)
 }
 
 #' @rdname adjust_year
 #' @export
 adjust_year.clock_calendar <- function(x, value, ..., day_nonexistent = "last-time") {
-  adjust_calendar(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_year_calendar)
+  adjust_calendar_impl(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_year_calendar)
 }
 
 adjust_year_calendar <- function(x, value, ..., day_nonexistent) {
@@ -263,12 +263,12 @@ adjust_quarternum.clock_zoned_time_point <- function(x,
 
 #' @export
 adjust_quarternum.clock_naive_time_point <- function(x, value, ..., day_nonexistent = "last-time") {
-  adjust_naive_time_point_calendar(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_quarternum_calendar)
+  adjust_naive_time_point_calendar_impl(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_quarternum_calendar)
 }
 
 #' @export
 adjust_quarternum.clock_calendar <- function(x, value, ..., day_nonexistent = "last-time") {
-  adjust_calendar(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_quarternum_calendar)
+  adjust_calendar_impl(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_quarternum_calendar)
 }
 
 adjust_quarternum_calendar <- function(x, value, ..., day_nonexistent) {
@@ -318,7 +318,7 @@ adjust_quarterday.clock_naive_time_point <- function(x, value, ..., day_nonexist
     dispatcher <- adjust_quarterday_calendar
   }
 
-  adjust_naive_time_point_calendar(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = dispatcher)
+  adjust_naive_time_point_calendar_impl(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = dispatcher)
 }
 
 #' @export
@@ -330,7 +330,7 @@ adjust_quarterday.clock_calendar <- function(x, value, ..., day_nonexistent = "l
     dispatcher <- adjust_quarterday_calendar
   }
 
-  adjust_calendar(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = dispatcher)
+  adjust_calendar_impl(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = dispatcher)
 }
 
 adjust_quarterday_calendar <- function(x, value, ..., day_nonexistent) {
@@ -410,12 +410,12 @@ adjust_month.clock_zoned_time_point <- function(x,
 
 #' @export
 adjust_month.clock_naive_time_point <- function(x, value, ..., day_nonexistent = "last-time") {
-  adjust_naive_time_point_calendar(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_month_calendar)
+  adjust_naive_time_point_calendar_impl(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_month_calendar)
 }
 
 #' @export
 adjust_month.clock_calendar <- function(x, value, ..., day_nonexistent = "last-time") {
-  adjust_calendar(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_month_calendar)
+  adjust_calendar_impl(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_month_calendar)
 }
 
 adjust_month_calendar <- function(x, value, ..., day_nonexistent) {
@@ -469,7 +469,7 @@ adjust_weeknum.clock_naive_time_point <- function(x, value, ..., day_nonexistent
     dispatcher <- adjust_weeknum_calendar
   }
 
-  adjust_naive_time_point_calendar(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = dispatcher)
+  adjust_naive_time_point_calendar_impl(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = dispatcher)
 }
 
 #' @export
@@ -481,7 +481,7 @@ adjust_weeknum.clock_calendar <- function(x, value, ..., day_nonexistent = "last
     dispatcher <- adjust_weeknum_calendar
   }
 
-  adjust_calendar(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = dispatcher)
+  adjust_calendar_impl(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = dispatcher)
 }
 
 adjust_weeknum_calendar <- function(x, value, ..., day_nonexistent) {
@@ -539,12 +539,12 @@ adjust_weekday.clock_zoned_time_point <- function(x,
 
 #' @export
 adjust_weekday.clock_naive_time_point <- function(x, value, ..., day_nonexistent = "last-time") {
-  adjust_naive_time_point_calendar(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_weekday_calendar)
+  adjust_naive_time_point_calendar_impl(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_weekday_calendar)
 }
 
 #' @export
 adjust_weekday.clock_calendar <- function(x, value, ..., day_nonexistent = "last-time") {
-  adjust_calendar(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_weekday_calendar)
+  adjust_calendar_impl(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = adjust_weekday_calendar)
 }
 
 adjust_weekday_calendar <- function(x, value, ..., day_nonexistent) {
@@ -601,7 +601,7 @@ adjust_weekday_index.clock_naive_time_point <- function(x, value, ..., day_nonex
     dispatcher <- adjust_weekday_index_calendar
   }
 
-  adjust_naive_time_point_calendar(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = dispatcher)
+  adjust_naive_time_point_calendar_impl(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = dispatcher)
 }
 
 #' @export
@@ -613,7 +613,7 @@ adjust_weekday_index.clock_calendar <- function(x, value, ..., day_nonexistent =
     dispatcher <- adjust_weekday_index_calendar
   }
 
-  adjust_calendar(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = dispatcher)
+  adjust_calendar_impl(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = dispatcher)
 }
 
 adjust_weekday_index_calendar <- function(x, value, ..., day_nonexistent) {
@@ -698,7 +698,7 @@ adjust_day.clock_naive_time_point <- function(x, value, ..., day_nonexistent = "
     dispatcher <- adjust_day_calendar
   }
 
-  adjust_naive_time_point_calendar(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = dispatcher)
+  adjust_naive_time_point_calendar_impl(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = dispatcher)
 }
 
 #' @export
@@ -710,7 +710,7 @@ adjust_day.clock_calendar <- function(x, value, ..., day_nonexistent = "last-tim
     dispatcher <- adjust_day_calendar
   }
 
-  adjust_calendar(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = dispatcher)
+  adjust_calendar_impl(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = dispatcher)
 }
 
 adjust_day_calendar <- function(x, value, ..., day_nonexistent) {
@@ -787,7 +787,7 @@ adjust_hour.clock_zoned_time_point <- function(x,
 
 #' @export
 adjust_hour.clock_naive_time_point <- function(x, value, ...) {
-  adjust_naive_time_point_seconds_of_day(x, value, ..., adjuster = "hour")
+  adjust_naive_time_point_seconds_of_day_impl(x, value, ..., adjuster = "hour")
 }
 
 #' @export
@@ -838,7 +838,7 @@ adjust_minute.clock_zoned_time_point <- function(x,
 
 #' @export
 adjust_minute.clock_naive_time_point <- function(x, value, ...) {
-  adjust_naive_time_point_seconds_of_day(x, value, ..., adjuster = "minute")
+  adjust_naive_time_point_seconds_of_day_impl(x, value, ..., adjuster = "minute")
 }
 
 #' @export
@@ -889,7 +889,7 @@ adjust_second.clock_zoned_time_point <- function(x,
 
 #' @export
 adjust_second.clock_naive_time_point <- function(x, value, ...) {
-  adjust_naive_time_point_seconds_of_day(x, value, ..., adjuster = "second")
+  adjust_naive_time_point_seconds_of_day_impl(x, value, ..., adjuster = "second")
 }
 
 #' @export
@@ -923,7 +923,7 @@ adjust_millisecond.clock_zoned_time_point <- adjust_millisecond.Date
 #' @export
 adjust_millisecond.clock_naive_time_point <- function(x, value, ...) {
   x <- promote_precision_millisecond(x)
-  adjust_naive_time_point_nanoseconds_of_second(x, value, ..., adjuster = "millisecond")
+  adjust_naive_time_point_nanoseconds_of_second_impl(x, value, ..., adjuster = "millisecond")
 }
 
 #' @export
@@ -957,7 +957,7 @@ adjust_microsecond.clock_zoned_time_point <- adjust_microsecond.Date
 #' @export
 adjust_microsecond.clock_naive_time_point <- function(x, value, ...) {
   x <- promote_precision_microsecond(x)
-  adjust_naive_time_point_nanoseconds_of_second(x, value, ..., adjuster = "microsecond")
+  adjust_naive_time_point_nanoseconds_of_second_impl(x, value, ..., adjuster = "microsecond")
 }
 
 #' @export
@@ -991,7 +991,7 @@ adjust_nanosecond.clock_zoned_time_point <- adjust_nanosecond.Date
 #' @export
 adjust_nanosecond.clock_naive_time_point <- function(x, value, ...) {
   x <- promote_precision_nanosecond(x)
-  adjust_naive_time_point_nanoseconds_of_second(x, value, ..., adjuster = "nanosecond")
+  adjust_naive_time_point_nanoseconds_of_second_impl(x, value, ..., adjuster = "nanosecond")
 }
 
 #' @export
@@ -1002,7 +1002,7 @@ adjust_nanosecond.clock_calendar <- function(x, value, ...) {
 
 # ------------------------------------------------------------------------------
 
-adjust_naive_time_point_nanoseconds_of_second <- function(x, value, ..., adjuster) {
+adjust_naive_time_point_nanoseconds_of_second_impl <- function(x, value, ..., adjuster) {
   check_dots_empty()
 
   value <- vec_cast(value, integer(), x_arg = "value")
@@ -1016,7 +1016,7 @@ adjust_naive_time_point_nanoseconds_of_second <- function(x, value, ..., adjuste
 
 # ------------------------------------------------------------------------------
 
-adjust_naive_time_point_seconds_of_day <- function(x, value, ..., adjuster) {
+adjust_naive_time_point_seconds_of_day_impl <- function(x, value, ..., adjuster) {
   check_dots_empty()
 
   x <- promote_precision_second(x)
@@ -1032,7 +1032,7 @@ adjust_naive_time_point_seconds_of_day <- function(x, value, ..., adjuster) {
 
 # ------------------------------------------------------------------------------
 
-adjust_naive_time_point_calendar <- function(x, value, ..., day_nonexistent, dispatcher) {
+adjust_naive_time_point_calendar_impl <- function(x, value, ..., day_nonexistent, dispatcher) {
   value <- vec_cast(value, integer(), x_arg = "value")
 
   args <- vec_recycle_common(x = x, value = value)
@@ -1064,7 +1064,7 @@ adjust_naive_time_point_calendar <- function(x, value, ..., day_nonexistent, dis
 
 # ------------------------------------------------------------------------------
 
-adjust_calendar <- function(x, value, ..., day_nonexistent, dispatcher) {
+adjust_calendar_impl <- function(x, value, ..., day_nonexistent, dispatcher) {
   value <- vec_cast(value, integer(), x_arg = "value")
 
   args <- vec_recycle_common(x = x, value = value)
