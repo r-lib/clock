@@ -9,12 +9,14 @@
 // -----------------------------------------------------------------------------
 
 static inline void resolve_day_nonexistent_ymd_first_day(date::year_month_day& ymd);
+static inline void resolve_day_nonexistent_ymw_first_day(date::year_month_weekday& ymw);
 template <quarterly::start S>
 static inline void resolve_day_nonexistent_yqnqd_first_day(quarterly::year_quarternum_quarterday<S>& yqnqd);
 static inline void resolve_day_nonexistent_yww_first_day(iso_week::year_weeknum_weekday& yww);
 static inline void resolve_day_nonexistent_tod_first_time(std::chrono::seconds& tod);
 static inline void resolve_day_nonexistent_nanos_first_time(std::chrono::nanoseconds& nanos_of_second);
 static inline void resolve_day_nonexistent_ymd_last_day(date::year_month_day& ymd);
+static inline void resolve_day_nonexistent_ymw_last_day(date::year_month_weekday& ymw);
 template <quarterly::start S>
 static inline void resolve_day_nonexistent_yqnqd_last_day(quarterly::year_quarternum_quarterday<S>& yqnqd);
 static inline void resolve_day_nonexistent_yww_last_day(iso_week::year_weeknum_weekday& yww);
@@ -39,6 +41,32 @@ static inline void resolve_day_nonexistent_ymd(const r_ssize& i,
   }
   case day_nonexistent::last_time: {
     return resolve_day_nonexistent_ymd_last_day(ymd);
+  }
+  case day_nonexistent::na: {
+    return resolve_day_nonexistent_na(na);
+  }
+  case day_nonexistent::error: {
+    resolve_day_nonexistent_error(i);
+  }
+  }
+}
+
+static inline void resolve_day_nonexistent_ymw(const r_ssize& i,
+                                               const enum day_nonexistent& day_nonexistent_val,
+                                               date::year_month_weekday& ymw,
+                                               bool& na) {
+  switch (day_nonexistent_val) {
+  case day_nonexistent::first_day: {
+    return resolve_day_nonexistent_ymw_first_day(ymw);
+  }
+  case day_nonexistent::first_time: {
+    return resolve_day_nonexistent_ymw_first_day(ymw);
+  }
+  case day_nonexistent::last_day: {
+    return resolve_day_nonexistent_ymw_last_day(ymw);
+  }
+  case day_nonexistent::last_time: {
+    return resolve_day_nonexistent_ymw_last_day(ymw);
   }
   case day_nonexistent::na: {
     return resolve_day_nonexistent_na(na);
@@ -141,6 +169,9 @@ static inline void resolve_day_nonexistent_nanos_of_second(const enum day_nonexi
 static inline void resolve_day_nonexistent_ymd_first_day(date::year_month_day& ymd) {
   ymd = ((ymd.year() / ymd.month()) + date::months(1)) / date::day(1);
 }
+static inline void resolve_day_nonexistent_ymw_first_day(date::year_month_weekday& ymw) {
+  ymw = date::year_month_weekday{((ymw.year() / ymw.month()) + date::months(1)) / date::day(1)};
+}
 template <quarterly::start S>
 static inline void resolve_day_nonexistent_yqnqd_first_day(quarterly::year_quarternum_quarterday<S>& yqnqd) {
   yqnqd = ((yqnqd.year() / yqnqd.quarternum()) + quarterly::quarters(1)) / quarterly::quarterday{1u};
@@ -157,6 +188,9 @@ static inline void resolve_day_nonexistent_nanos_first_time(std::chrono::nanosec
 
 static inline void resolve_day_nonexistent_ymd_last_day(date::year_month_day& ymd) {
   ymd = ymd.year() / ymd.month() / date::last;
+}
+static inline void resolve_day_nonexistent_ymw_last_day(date::year_month_weekday& ymw) {
+  ymw = date::year_month_weekday{ymw.year() / ymw.month() / date::last};
 }
 template <quarterly::start S>
 static inline void resolve_day_nonexistent_yqnqd_last_day(quarterly::year_quarternum_quarterday<S>& yqnqd) {

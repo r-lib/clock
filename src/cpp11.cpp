@@ -207,6 +207,20 @@ extern "C" SEXP _clock_convert_subsecond_point_fields_from_naive_to_zoned_cpp(SE
     return cpp11::as_sexp(convert_subsecond_point_fields_from_naive_to_zoned_cpp(cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(seconds_of_day), cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(nanoseconds_of_second), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(dst_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(dst_ambiguous)));
   END_CPP11
 }
+// converters.cpp
+clock_writable_list_of_integers convert_calendar_days_to_year_month_weekday_index(const clock_field& calendar);
+extern "C" SEXP _clock_convert_calendar_days_to_year_month_weekday_index(SEXP calendar) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(convert_calendar_days_to_year_month_weekday_index(cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(calendar)));
+  END_CPP11
+}
+// converters.cpp
+clock_writable_field convert_year_month_weekday_index_to_calendar_days(const cpp11::integers& year, const cpp11::integers& month, const cpp11::integers& weekday, const cpp11::integers& index, const cpp11::strings& day_nonexistent);
+extern "C" SEXP _clock_convert_year_month_weekday_index_to_calendar_days(SEXP year, SEXP month, SEXP weekday, SEXP index, SEXP day_nonexistent) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(convert_year_month_weekday_index_to_calendar_days(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(month), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(weekday), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(index), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent)));
+  END_CPP11
+}
 // floor.cpp
 clock_writable_field floor_calendar_days_to_year_month_precision(const clock_field& calendar);
 extern "C" SEXP _clock_floor_calendar_days_to_year_month_precision(SEXP calendar) {
@@ -318,6 +332,7 @@ extern SEXP _clock_convert_calendar_days_hour_minute_second_subsecond_to_naive_s
 extern SEXP _clock_convert_calendar_days_hour_minute_second_to_naive_second_point_fields(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_convert_calendar_days_to_iso_year_weeknum_weekday(SEXP);
 extern SEXP _clock_convert_calendar_days_to_year_month_day(SEXP);
+extern SEXP _clock_convert_calendar_days_to_year_month_weekday_index(SEXP);
 extern SEXP _clock_convert_calendar_days_to_year_quarternum_quarterday(SEXP, SEXP);
 extern SEXP _clock_convert_iso_year_weeknum_weekday_to_calendar_days(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_convert_naive_second_point_fields_to_zoned_seconds_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -328,6 +343,7 @@ extern SEXP _clock_convert_subsecond_point_fields_from_naive_to_zoned_cpp(SEXP, 
 extern SEXP _clock_convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_convert_year_month_day_hour_minute_second_to_naive_second_point_fields(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_convert_year_month_day_to_calendar_days(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_convert_year_month_weekday_index_to_calendar_days(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_convert_year_quarternum_quarterday_to_calendar_days(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_convert_zoned_seconds_to_naive_second_point_fields(SEXP, SEXP);
 extern SEXP _clock_convert_zoned_seconds_to_zoned_second_point_fields(SEXP);
@@ -362,6 +378,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_convert_calendar_days_hour_minute_second_to_naive_second_point_fields",                (DL_FUNC) &_clock_convert_calendar_days_hour_minute_second_to_naive_second_point_fields,                4},
     {"_clock_convert_calendar_days_to_iso_year_weeknum_weekday",                                    (DL_FUNC) &_clock_convert_calendar_days_to_iso_year_weeknum_weekday,                                    1},
     {"_clock_convert_calendar_days_to_year_month_day",                                              (DL_FUNC) &_clock_convert_calendar_days_to_year_month_day,                                              1},
+    {"_clock_convert_calendar_days_to_year_month_weekday_index",                                    (DL_FUNC) &_clock_convert_calendar_days_to_year_month_weekday_index,                                    1},
     {"_clock_convert_calendar_days_to_year_quarternum_quarterday",                                  (DL_FUNC) &_clock_convert_calendar_days_to_year_quarternum_quarterday,                                  2},
     {"_clock_convert_iso_year_weeknum_weekday_to_calendar_days",                                    (DL_FUNC) &_clock_convert_iso_year_weeknum_weekday_to_calendar_days,                                    4},
     {"_clock_convert_naive_second_point_fields_to_zoned_seconds_cpp",                               (DL_FUNC) &_clock_convert_naive_second_point_fields_to_zoned_seconds_cpp,                               6},
@@ -372,6 +389,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields", (DL_FUNC) &_clock_convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields, 8},
     {"_clock_convert_year_month_day_hour_minute_second_to_naive_second_point_fields",               (DL_FUNC) &_clock_convert_year_month_day_hour_minute_second_to_naive_second_point_fields,               7},
     {"_clock_convert_year_month_day_to_calendar_days",                                              (DL_FUNC) &_clock_convert_year_month_day_to_calendar_days,                                              4},
+    {"_clock_convert_year_month_weekday_index_to_calendar_days",                                    (DL_FUNC) &_clock_convert_year_month_weekday_index_to_calendar_days,                                    5},
     {"_clock_convert_year_quarternum_quarterday_to_calendar_days",                                  (DL_FUNC) &_clock_convert_year_quarternum_quarterday_to_calendar_days,                                  5},
     {"_clock_convert_zoned_seconds_to_naive_second_point_fields",                                   (DL_FUNC) &_clock_convert_zoned_seconds_to_naive_second_point_fields,                                   2},
     {"_clock_convert_zoned_seconds_to_zoned_second_point_fields",                                   (DL_FUNC) &_clock_convert_zoned_seconds_to_zoned_second_point_fields,                                   1},

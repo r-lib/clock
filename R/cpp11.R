@@ -116,6 +116,14 @@ convert_subsecond_point_fields_from_naive_to_zoned_cpp <- function(calendar, sec
   .Call("_clock_convert_subsecond_point_fields_from_naive_to_zoned_cpp", calendar, seconds_of_day, nanoseconds_of_second, precision, zone, dst_nonexistent, dst_ambiguous, PACKAGE = "clock")
 }
 
+convert_calendar_days_to_year_month_weekday_index <- function(calendar) {
+  .Call("_clock_convert_calendar_days_to_year_month_weekday_index", calendar, PACKAGE = "clock")
+}
+
+convert_year_month_weekday_index_to_calendar_days <- function(year, month, weekday, index, day_nonexistent) {
+  .Call("_clock_convert_year_month_weekday_index_to_calendar_days", year, month, weekday, index, day_nonexistent, PACKAGE = "clock")
+}
+
 floor_calendar_days_to_year_month_precision <- function(calendar) {
   .Call("_clock_floor_calendar_days_to_year_month_precision", calendar, PACKAGE = "clock")
 }

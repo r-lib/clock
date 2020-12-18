@@ -71,5 +71,10 @@ static inline void check_range_weekday(const int& value, const char* arg) {
     clock_abort("`%s` must be within the range of [1, 7], not %i.", arg, value);
   }
 }
+static inline void check_range_index(const int& value, const char* arg) {
+  if (value > 5 || value < 1) {
+    clock_abort("`%s` must be within the range of [1, 5], not %i.", arg, value);
+  }
+}
 
 #endif
