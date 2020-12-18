@@ -223,6 +223,11 @@ adjust_year_calendar.clock_gregorian <- function(x, value, ..., day_nonexistent)
 }
 
 #' @export
+adjust_year_calendar.clock_year_month_weekday <- function(x, value, ..., day_nonexistent) {
+  adjust_gregorian_weekday_calendar(x, value, day_nonexistent, "year")
+}
+
+#' @export
 adjust_year_calendar.clock_quarterly <- function(x, value, ..., day_nonexistent) {
   x <- promote_precision_year(x)
   start <- get_start(x)
@@ -429,6 +434,11 @@ adjust_month_calendar.clock_gregorian <- function(x, value, ..., day_nonexistent
   adjust_gregorian_calendar(x, value, day_nonexistent, "month")
 }
 
+#' @export
+adjust_month_calendar.clock_year_month_weekday <- function(x, value, ..., day_nonexistent) {
+  adjust_gregorian_weekday_calendar(x, value, day_nonexistent, "month")
+}
+
 # ------------------------------------------------------------------------------
 
 #' @export
@@ -549,8 +559,93 @@ adjust_weekday_calendar.clock_calendar <- function(x, value, ..., day_nonexisten
 
 #' @export
 adjust_weekday_calendar.clock_iso <- function(x, value, ..., day_nonexistent) {
+  # value [1, 7] -> [Monday, Sunday]
   x <- promote_precision_day(x)
   adjust_iso_calendar(x, value, day_nonexistent, "weekday")
+}
+
+#' @export
+adjust_weekday_calendar.clock_gregorian <- function(x, value, ..., day_nonexistent) {
+  # value [1, 7] -> [Sunday, Saturday]
+  x <- promote_precision_day(x)
+  adjust_gregorian_weekday_calendar(x, value, day_nonexistent, "weekday")
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+adjust_weekday_index <- function(x, value, ...) {
+  restrict_clock_supported(x)
+  UseMethod("adjust_weekday_index")
+}
+
+#' @export
+adjust_weekday_index.clock_zoned_time_point <- function(x,
+                                                        value,
+                                                        ...,
+                                                        day_nonexistent = "last-time",
+                                                        dst_nonexistent = "roll-forward",
+                                                        dst_ambiguous = "earliest") {
+  zone <- get_zone(x)
+  x <- as_naive_time_point(x)
+  out <- adjust_weekday_index(x, value, ..., day_nonexistent = day_nonexistent)
+  as_zoned_time_point(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
+}
+
+#' @export
+adjust_weekday_index.clock_naive_time_point <- function(x, value, ..., day_nonexistent = "last-time") {
+  if (identical(value, "last")) {
+    value <- -1L
+    dispatcher <- adjust_weekday_index_last_calendar
+  } else {
+    dispatcher <- adjust_weekday_index_calendar
+  }
+
+  adjust_naive_time_point_calendar(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = dispatcher)
+}
+
+#' @export
+adjust_weekday_index.clock_calendar <- function(x, value, ..., day_nonexistent = "last-time") {
+  if (identical(value, "last")) {
+    value <- -1L
+    dispatcher <- adjust_weekday_index_last_calendar
+  } else {
+    dispatcher <- adjust_weekday_index_calendar
+  }
+
+  adjust_calendar(x, value, ..., day_nonexistent = day_nonexistent, dispatcher = dispatcher)
+}
+
+adjust_weekday_index_calendar <- function(x, value, ..., day_nonexistent) {
+  check_dots_empty()
+  UseMethod("adjust_weekday_index_calendar")
+}
+
+#' @export
+adjust_weekday_index_calendar.clock_calendar <- function(x, value, ..., day_nonexistent) {
+  stop_clock_unsupported_calendar_op("adjust_weekday_index")
+}
+
+#' @export
+adjust_weekday_index_calendar.clock_gregorian <- function(x, value, ..., day_nonexistent) {
+  x <- promote_precision_day(x)
+  adjust_gregorian_weekday_calendar(x, value, day_nonexistent, "weekday_index")
+}
+
+adjust_weekday_index_last_calendar <- function(x, value, ..., day_nonexistent) {
+  check_dots_empty()
+  UseMethod("adjust_weekday_index_last_calendar")
+}
+
+#' @export
+adjust_weekday_index_last_calendar.clock_calendar <- function(x, value, ..., day_nonexistent) {
+  stop_clock_unsupported_calendar_op("adjust_weekday_index")
+}
+
+#' @export
+adjust_weekday_index_last_calendar.clock_gregorian <- function(x, value, ..., day_nonexistent) {
+  x <- promote_precision_day(x)
+  adjust_gregorian_weekday_calendar(x, value, day_nonexistent, "last_weekday_index_of_month")
 }
 
 # ------------------------------------------------------------------------------

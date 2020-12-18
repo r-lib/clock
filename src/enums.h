@@ -73,8 +73,10 @@ enum class adjuster {
   nanosecond,
   weeknum,
   weekday,
+  weekday_index,
   quarternum,
   quarterday,
+  last_weekday_index_of_month,
   last_weeknum_of_year,
   last_day_of_quarter,
   last_day_of_month

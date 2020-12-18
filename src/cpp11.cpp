@@ -12,6 +12,13 @@ extern "C" SEXP _clock_adjust_gregorian_calendar(SEXP calendar, SEXP value, SEXP
   END_CPP11
 }
 // adjust.cpp
+cpp11::writable::list adjust_gregorian_weekday_calendar(const clock_field& calendar, const cpp11::integers& value, const cpp11::strings& day_nonexistent, const cpp11::strings& adjuster);
+extern "C" SEXP _clock_adjust_gregorian_weekday_calendar(SEXP calendar, SEXP value, SEXP day_nonexistent, SEXP adjuster) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(adjust_gregorian_weekday_calendar(cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(value), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(adjuster)));
+  END_CPP11
+}
+// adjust.cpp
 clock_writable_rcrd adjust_naive_time_point_seconds_of_day_cpp(const clock_rcrd& x, const cpp11::integers& value, const cpp11::strings& adjuster);
 extern "C" SEXP _clock_adjust_naive_time_point_seconds_of_day_cpp(SEXP x, SEXP value, SEXP adjuster) {
   BEGIN_CPP11
@@ -323,6 +330,7 @@ extern SEXP _clock_add_quarterly_calendar_years_or_quarters(SEXP, SEXP, SEXP, SE
 extern SEXP _clock_add_time_point_nanoseconds_of_second_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_add_time_point_seconds_of_day_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_adjust_gregorian_calendar(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_adjust_gregorian_weekday_calendar(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_adjust_iso_calendar(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_adjust_naive_time_point_nanoseconds_of_second_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_adjust_naive_time_point_seconds_of_day_cpp(SEXP, SEXP, SEXP);
@@ -369,6 +377,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_add_time_point_nanoseconds_of_second_cpp",                                             (DL_FUNC) &_clock_add_time_point_nanoseconds_of_second_cpp,                                             3},
     {"_clock_add_time_point_seconds_of_day_cpp",                                                    (DL_FUNC) &_clock_add_time_point_seconds_of_day_cpp,                                                    3},
     {"_clock_adjust_gregorian_calendar",                                                            (DL_FUNC) &_clock_adjust_gregorian_calendar,                                                            4},
+    {"_clock_adjust_gregorian_weekday_calendar",                                                    (DL_FUNC) &_clock_adjust_gregorian_weekday_calendar,                                                    4},
     {"_clock_adjust_iso_calendar",                                                                  (DL_FUNC) &_clock_adjust_iso_calendar,                                                                  4},
     {"_clock_adjust_naive_time_point_nanoseconds_of_second_cpp",                                    (DL_FUNC) &_clock_adjust_naive_time_point_nanoseconds_of_second_cpp,                                    3},
     {"_clock_adjust_naive_time_point_seconds_of_day_cpp",                                           (DL_FUNC) &_clock_adjust_naive_time_point_seconds_of_day_cpp,                                           3},

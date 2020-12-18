@@ -245,6 +245,35 @@ static inline void convert_ymd_to_calendar_one(const r_ssize& i,
 
 // -----------------------------------------------------------------------------
 
+static inline void convert_ymw_to_calendar_one(const r_ssize& i,
+                                               const enum day_nonexistent& day_nonexistent_val,
+                                               date::year_month_weekday& ymw,
+                                               clock_writable_field& calendar,
+                                               cpp11::writable::logicals& ok,
+                                               cpp11::writable::logicals& any) {
+  if (ymw.ok()) {
+    date::local_days out_lday{ymw};
+    calendar[i] = out_lday.time_since_epoch().count();
+    return;
+  }
+
+  any[0] = true;
+  ok[i] = false;
+
+  bool na = false;
+  resolve_day_nonexistent_ymw(i, day_nonexistent_val, ymw, na);
+
+  if (na) {
+    calendar[i] = r_int_na;
+    return;
+  }
+
+  date::local_days out_lday{ymw};
+  calendar[i] = out_lday.time_since_epoch().count();
+}
+
+// -----------------------------------------------------------------------------
+
 template <quarterly::start S>
 static inline void convert_yqnqd_to_calendar_one(const r_ssize& i,
                                                  const enum day_nonexistent& day_nonexistent_val,

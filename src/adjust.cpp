@@ -121,6 +121,129 @@ adjust_naive_gregorian_switch(const date::year_month_day& ymd,
 // -----------------------------------------------------------------------------
 
 static inline
+date::year_month_weekday
+adjust_gregorian_weekday_switch(const date::year_month_weekday& ymw,
+                                const int& value,
+                                const enum adjuster& adjuster_val);
+
+[[cpp11::register]]
+cpp11::writable::list adjust_gregorian_weekday_calendar(const clock_field& calendar,
+                                                        const cpp11::integers& value,
+                                                        const cpp11::strings& day_nonexistent,
+                                                        const cpp11::strings& adjuster) {
+  const r_ssize& size = calendar.size();
+
+  enum day_nonexistent day_nonexistent_val = parse_day_nonexistent(day_nonexistent);
+  enum adjuster adjuster_val = parse_adjuster(adjuster);
+
+  clock_writable_field out_calendar{calendar};
+  cpp11::writable::logicals ok(size);
+  cpp11::writable::logicals any(1);
+  any[0] = false;
+
+  cpp11::writable::list out({out_calendar, ok, any});
+  out.names() = {"calendar", "ok", "any"};
+
+  for (r_ssize i = 0; i < size; ++i) {
+    ok[i] = true;
+
+    int elt_calendar = calendar[i];
+    int elt_value = value[i];
+
+    if (elt_calendar == r_int_na) {
+      continue;
+    }
+    if (elt_value == r_int_na) {
+      ok[i] = r_lgl_na;
+      any[0] = true;
+      out_calendar[i] = r_int_na;
+      continue;
+    }
+
+    date::local_days elt_lday{date::days{elt_calendar}};
+    date::year_month_weekday elt_ymw{elt_lday};
+
+    date::year_month_weekday out_ymw = adjust_gregorian_weekday_switch(
+      elt_ymw,
+      elt_value,
+      adjuster_val
+    );
+
+    convert_ymw_to_calendar_one(i, day_nonexistent_val, out_ymw, out_calendar, ok, any);
+  }
+
+  return out;
+}
+
+// -----------------------------------------------------------------------------
+
+static inline
+date::year_month_weekday
+adjust_gregorian_weekday_year(const date::year_month_weekday& ymw, const int& value) {
+  check_range_year(value, "value");
+  return date::year{value} / ymw.month() / ymw.weekday_indexed();
+}
+
+static inline
+date::year_month_weekday
+adjust_gregorian_weekday_month(const date::year_month_weekday& ymw, const int& value) {
+  check_range_month(value, "value");
+  unsigned int month = static_cast<unsigned int>(value);
+  return ymw.year() / date::month{month} / ymw.weekday_indexed();
+}
+
+static inline
+date::year_month_weekday
+adjust_gregorian_weekday_weekday(const date::year_month_weekday& ymw, const int& value) {
+  check_range_weekday(value, "value");
+  unsigned int weekday = static_cast<unsigned int>(value - 1);
+  return ymw.year() / ymw.month() / date::weekday{weekday}[ymw.index()];
+}
+
+static inline
+date::year_month_weekday
+adjust_gregorian_weekday_weekday_index(const date::year_month_weekday& ymw, const int& value) {
+  check_range_index(value, "value");
+  unsigned int index = static_cast<unsigned int>(value);
+  return ymw.year() / ymw.month() / ymw.weekday()[index];
+}
+
+static inline
+date::year_month_weekday
+adjust_gregorian_weekday_last_weekday_index_of_month(const date::year_month_weekday& ymw) {
+  return date::year_month_weekday{ymw.year() / ymw.month() / date::weekday_last{ymw.weekday()}};
+}
+
+static inline
+date::year_month_weekday
+adjust_gregorian_weekday_switch(const date::year_month_weekday& ymw,
+                                const int& value,
+                                const enum adjuster& adjuster_val) {
+  switch (adjuster_val) {
+  case adjuster::year: {
+    return adjust_gregorian_weekday_year(ymw, value);
+  }
+  case adjuster::month: {
+    return adjust_gregorian_weekday_month(ymw, value);
+  }
+  case adjuster::weekday: {
+    return adjust_gregorian_weekday_weekday(ymw, value);
+  }
+  case adjuster::weekday_index: {
+    return adjust_gregorian_weekday_weekday_index(ymw, value);
+  }
+  case adjuster::last_weekday_index_of_month: {
+    return adjust_gregorian_weekday_last_weekday_index_of_month(ymw);
+  }
+  default: {
+    clock_abort("Internal error: Unknown `adjuster_val` in `adjust_gregorian_weekday_switch()`.");
+  }
+  }
+}
+
+// -----------------------------------------------------------------------------
+
+static inline
 std::chrono::seconds
 adjust_naive_time_point_seconds_of_day_switch(const date::hh_mm_ss<std::chrono::seconds>& hms,
                                               const int& value,

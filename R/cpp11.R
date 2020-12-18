@@ -4,6 +4,10 @@ adjust_gregorian_calendar <- function(calendar, value, day_nonexistent, adjuster
   .Call("_clock_adjust_gregorian_calendar", calendar, value, day_nonexistent, adjuster, PACKAGE = "clock")
 }
 
+adjust_gregorian_weekday_calendar <- function(calendar, value, day_nonexistent, adjuster) {
+  .Call("_clock_adjust_gregorian_weekday_calendar", calendar, value, day_nonexistent, adjuster, PACKAGE = "clock")
+}
+
 adjust_naive_time_point_seconds_of_day_cpp <- function(x, value, adjuster) {
   .Call("_clock_adjust_naive_time_point_seconds_of_day_cpp", x, value, adjuster, PACKAGE = "clock")
 }
