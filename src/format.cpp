@@ -16,6 +16,887 @@
 
 // -----------------------------------------------------------------------------
 
+template <class CharT, class Traits, class Duration>
+std::basic_ostream<CharT, Traits>&
+clock_to_stream(std::basic_ostream<CharT, Traits>& os,
+                const CharT* fmt,
+                const date::fields<Duration>& fds,
+                const std::string* abbrev,
+                const std::chrono::seconds* offset_sec)
+{
+    using date::detail::weekday_names;
+    using date::detail::month_names;
+    using date::detail::ampm_names;
+    using date::detail::save_ostream;
+    using date::detail::get_units;
+    using date::detail::extract_weekday;
+    using date::detail::extract_month;
+    using std::ios;
+    using std::chrono::duration_cast;
+    using std::chrono::seconds;
+    using std::chrono::minutes;
+    using std::chrono::hours;
+    date::detail::save_ostream<CharT, Traits> ss(os);
+    os.fill(' ');
+    os.flags(std::ios::skipws | std::ios::dec);
+    os.width(0);
+    tm tm{};
+    bool insert_negative = fds.has_tod && fds.tod.to_duration() < Duration::zero();
+    const CharT* command = nullptr;
+    CharT modified = CharT{};
+    for (; *fmt; ++fmt)
+    {
+        switch (*fmt)
+        {
+        case 'a':
+        case 'A':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    tm.tm_wday = static_cast<int>(extract_weekday(os, fds));
+                    if (os.fail())
+                        return os;
+                    os << weekday_names().first[tm.tm_wday+7*(*fmt == 'a')];
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'b':
+        case 'B':
+        case 'h':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    tm.tm_mon = static_cast<int>(extract_month(os, fds)) - 1;
+                    os << month_names().first[tm.tm_mon+12*(*fmt != 'B')];
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'c':
+        case 'x':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.ymd.ok())
+                        os.setstate(std::ios::failbit);
+                    if (*fmt == 'c' && !fds.has_tod)
+                        os.setstate(std::ios::failbit);
+                    if (*fmt == 'c')
+                    {
+                        auto wd = static_cast<int>(extract_weekday(os, fds));
+                        os << weekday_names().first[static_cast<unsigned>(wd)+7]
+                           << ' ';
+                        os << month_names().first[extract_month(os, fds)-1+12] << ' ';
+                        auto d = static_cast<int>(static_cast<unsigned>(fds.ymd.day()));
+                        if (d < 10)
+                            os << ' ';
+                        os << d << ' '
+                           << date::make_time(duration_cast<seconds>(fds.tod.to_duration()))
+                           << ' ' << fds.ymd.year();
+
+                    }
+                    else  // *fmt == 'x'
+                    {
+                        auto const& ymd = fds.ymd;
+                        save_ostream<CharT, Traits> _(os);
+                        os.fill('0');
+                        os.flags(std::ios::dec | std::ios::right);
+                        os.width(2);
+                        os << static_cast<unsigned>(ymd.month()) << CharT{'/'};
+                        os.width(2);
+                        os << static_cast<unsigned>(ymd.day()) << CharT{'/'};
+                        os.width(2);
+                        os << static_cast<int>(ymd.year()) % 100;
+                    }
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'C':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.ymd.year().ok())
+                        os.setstate(std::ios::failbit);
+                    auto y = static_cast<int>(fds.ymd.year());
+                    save_ostream<CharT, Traits> _(os);
+                    os.fill('0');
+                    os.flags(std::ios::dec | std::ios::right);
+                    if (y >= 0)
+                    {
+                      os.width(2);
+                      os << y/100;
+                    }
+                    else
+                    {
+                      os << CharT{'-'};
+                      os.width(2);
+                      os << -(y-99)/100;
+                    }
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'd':
+        case 'e':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.ymd.day().ok())
+                      os.setstate(std::ios::failbit);
+                    auto d = static_cast<int>(static_cast<unsigned>(fds.ymd.day()));
+                    save_ostream<CharT, Traits> _(os);
+                    if (*fmt == CharT{'d'})
+                      os.fill('0');
+                    else
+                      os.fill(' ');
+                    os.flags(std::ios::dec | std::ios::right);
+                    os.width(2);
+                    os << d;
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'D':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.ymd.ok())
+                        os.setstate(std::ios::failbit);
+                    auto const& ymd = fds.ymd;
+                    save_ostream<CharT, Traits> _(os);
+                    os.fill('0');
+                    os.flags(std::ios::dec | std::ios::right);
+                    os.width(2);
+                    os << static_cast<unsigned>(ymd.month()) << CharT{'/'};
+                    os.width(2);
+                    os << static_cast<unsigned>(ymd.day()) << CharT{'/'};
+                    os.width(2);
+                    os << static_cast<int>(ymd.year()) % 100;
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'F':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.ymd.ok())
+                        os.setstate(std::ios::failbit);
+                    auto const& ymd = fds.ymd;
+                    save_ostream<CharT, Traits> _(os);
+                    os.imbue(std::locale::classic());
+                    os.fill('0');
+                    os.flags(std::ios::dec | std::ios::right);
+                    os.width(4);
+                    os << static_cast<int>(ymd.year()) << CharT{'-'};
+                    os.width(2);
+                    os << static_cast<unsigned>(ymd.month()) << CharT{'-'};
+                    os.width(2);
+                    os << static_cast<unsigned>(ymd.day());
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'g':
+        case 'G':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.ymd.ok())
+                        os.setstate(std::ios::failbit);
+                    auto ld = date::local_days(fds.ymd);
+                    auto y = date::year_month_day{ld + date::days{3}}.year();
+                    auto start = date::local_days((y-date::years{1})/date::December/date::Thursday[date::last]) +
+                                 (date::Monday-date::Thursday);
+                    if (ld < start)
+                        --y;
+                    if (*fmt == CharT{'G'})
+                        os << y;
+                    else
+                    {
+                        save_ostream<CharT, Traits> _(os);
+                        os.fill('0');
+                        os.flags(std::ios::dec | std::ios::right);
+                        os.width(2);
+                        os << std::abs(static_cast<int>(y)) % 100;
+                    }
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'H':
+        case 'I':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.has_tod)
+                        os.setstate(std::ios::failbit);
+                    if (insert_negative)
+                    {
+                        os << '-';
+                        insert_negative = false;
+                    }
+                    auto hms = fds.tod;
+                    auto h = *fmt == CharT{'I'} ? date::make12(hms.hours()) : hms.hours();
+                    if (h < hours{10})
+                      os << CharT{'0'};
+                    os << h.count();
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'j':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (fds.ymd.ok() || fds.has_tod)
+                    {
+                        date::days doy;
+                        if (fds.ymd.ok())
+                        {
+                            auto ld = date::local_days(fds.ymd);
+                            auto y = fds.ymd.year();
+                            doy = ld - date::local_days(y/date::January/1) + date::days{1};
+                        }
+                        else
+                        {
+                            doy = duration_cast<date::days>(fds.tod.to_duration());
+                        }
+                        save_ostream<CharT, Traits> _(os);
+                        os.fill('0');
+                        os.flags(std::ios::dec | std::ios::right);
+                        os.width(3);
+                        os << doy.count();
+                    }
+                    else
+                    {
+                        os.setstate(std::ios::failbit);
+                    }
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'm':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.ymd.month().ok())
+                        os.setstate(std::ios::failbit);
+                    auto m = static_cast<unsigned>(fds.ymd.month());
+                    if (m < 10)
+                      os << CharT{'0'};
+                    os << m;
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'M':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.has_tod)
+                        os.setstate(std::ios::failbit);
+                    if (insert_negative)
+                    {
+                        os << '-';
+                        insert_negative = false;
+                    }
+                    if (fds.tod.minutes() < minutes{10})
+                      os << CharT{'0'};
+                    os << fds.tod.minutes().count();
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'n':
+            if (command)
+            {
+                if (modified == CharT{})
+                    os << CharT{'\n'};
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'p':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.has_tod)
+                        os.setstate(std::ios::failbit);
+                    if (date::is_am(fds.tod.hours()))
+                      os << ampm_names().first[0];
+                    else
+                      os << ampm_names().first[1];
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                }
+                modified = CharT{};
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'Q':
+        case 'q':
+            // TODO: These seem to be duration format values. Replace with quarter formatters?
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.has_tod)
+                        os.setstate(std::ios::failbit);
+                    auto d = fds.tod.to_duration();
+                    if (*fmt == 'q')
+                        os << get_units<CharT>(typename decltype(d)::period::type{});
+                    else
+                        os << d.count();
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                }
+                modified = CharT{};
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'r':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.has_tod)
+                        os.setstate(std::ios::failbit);
+                    date::hh_mm_ss<seconds> tod(duration_cast<seconds>(fds.tod.to_duration()));
+                    save_ostream<CharT, Traits> _(os);
+                    os.fill('0');
+                    os.width(2);
+                    os << date::make12(tod.hours()).count() << CharT{':'};
+                    os.width(2);
+                    os << tod.minutes().count() << CharT{':'};
+                    os.width(2);
+                    os << tod.seconds().count() << CharT{' '};
+                    if (date::is_am(tod.hours()))
+                      os << ampm_names().first[0];
+                    else
+                      os << ampm_names().first[1];
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                }
+                modified = CharT{};
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'R':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.has_tod)
+                        os.setstate(std::ios::failbit);
+                    if (fds.tod.hours() < hours{10})
+                        os << CharT{'0'};
+                    os << fds.tod.hours().count() << CharT{':'};
+                    if (fds.tod.minutes() < minutes{10})
+                        os << CharT{'0'};
+                    os << fds.tod.minutes().count();
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'S':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.has_tod)
+                        os.setstate(std::ios::failbit);
+                    if (insert_negative)
+                    {
+                        os << '-';
+                        insert_negative = false;
+                    }
+                    // TODO: Allow decimal_mark argument when constructing date names
+                    // and use that here when printing fractional seconds
+                    // TODO: This is a hack to get the private `s_` out from `fds.tod`. Anything better?
+                    date::detail::decimal_format_seconds<Duration> s_{fds.tod.seconds() + fds.tod.subseconds()};
+                    os << s_;
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 't':
+            if (command)
+            {
+                if (modified == CharT{})
+                    os << CharT{'\t'};
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'T':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.has_tod)
+                        os.setstate(std::ios::failbit);
+                    // TODO: Allow decimal_mark argument when constructing date names
+                    // and use that here when printing fractional seconds
+                    os << fds.tod;
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'u':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    auto wd = extract_weekday(os, fds);
+                    os << (wd != 0 ? wd : 7u);
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'U':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    auto const& ymd = fds.ymd;
+                    if (!ymd.ok())
+                        os.setstate(std::ios::failbit);
+                    auto ld = date::local_days(ymd);
+                    auto st = date::local_days(date::Sunday[1]/date::January/ymd.year());
+                    if (ld < st)
+                      os << CharT{'0'} << CharT{'0'};
+                    else
+                    {
+                      auto wn = duration_cast<date::weeks>(ld - st).count() + 1;
+                      if (wn < 10)
+                        os << CharT{'0'};
+                      os << wn;
+                    }
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'V':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.ymd.ok())
+                        os.setstate(std::ios::failbit);
+                    auto ld = date::local_days(fds.ymd);
+                    auto y = date::year_month_day{ld + date::days{3}}.year();
+                    auto st = date::local_days((y-date::years{1})/12/date::Thursday[date::last]) +
+                      (date::Monday-date::Thursday);
+                    if (ld < st)
+                    {
+                      --y;
+                      st = date::local_days((y - date::years{1})/12/date::Thursday[date::last]) +
+                      (date::Monday-date::Thursday);
+                    }
+                    auto wn = duration_cast<date::weeks>(ld - st).count() + 1;
+                    if (wn < 10)
+                      os << CharT{'0'};
+                    os << wn;
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'w':
+            if (command)
+            {
+                auto wd = extract_weekday(os, fds);
+                if (os.fail())
+                    return os;
+                if (modified == CharT{})
+                {
+                    os << wd;
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'W':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    auto const& ymd = fds.ymd;
+                    if (!ymd.ok())
+                        os.setstate(std::ios::failbit);
+                    auto ld = date::local_days(ymd);
+                    auto st = date::local_days(date::Monday[1]/date::January/ymd.year());
+                    if (ld < st)
+                      os << CharT{'0'} << CharT{'0'};
+                    else
+                    {
+                      auto wn = duration_cast<date::weeks>(ld - st).count() + 1;
+                      if (wn < 10)
+                        os << CharT{'0'};
+                      os << wn;
+                    }
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'X':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.has_tod)
+                        os.setstate(std::ios::failbit);
+                    os << fds.tod;
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'y':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.ymd.year().ok())
+                      os.setstate(std::ios::failbit);
+                    auto y = static_cast<int>(fds.ymd.year());
+                    y = std::abs(y) % 100;
+                    if (y < 10)
+                        os << CharT{'0'};
+                    os << y;
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'Y':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (!fds.ymd.year().ok())
+                        os.setstate(std::ios::failbit);
+                    auto y = fds.ymd.year();
+                    save_ostream<CharT, Traits> _(os);
+                    os.imbue(std::locale::classic());
+                    os << y;
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'z':
+            if (command)
+            {
+                if (offset_sec == nullptr)
+                {
+                    // Can not format %z with unknown offset
+                    os.setstate(ios::failbit);
+                    return os;
+                }
+                auto m = duration_cast<minutes>(*offset_sec);
+                auto neg = m < minutes{0};
+                m = date::abs(m);
+                auto h = duration_cast<hours>(m);
+                m -= h;
+                if (neg)
+                    os << CharT{'-'};
+                else
+                    os << CharT{'+'};
+                if (h < hours{10})
+                    os << CharT{'0'};
+                os << h.count();
+                if (modified != CharT{})
+                    os << CharT{':'};
+                if (m < minutes{10})
+                    os << CharT{'0'};
+                os << m.count();
+                command = nullptr;
+                modified = CharT{};
+            }
+            else
+                os << *fmt;
+            break;
+        case 'Z':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    if (abbrev == nullptr)
+                    {
+                        // Can not format %Z with unknown time_zone
+                        os.setstate(ios::failbit);
+                        return os;
+                    }
+                    for (auto c : *abbrev)
+                        os << CharT(c);
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    modified = CharT{};
+                }
+                command = nullptr;
+            }
+            else
+                os << *fmt;
+            break;
+        case 'E':
+        case 'O':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    modified = *fmt;
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << *fmt;
+                    command = nullptr;
+                    modified = CharT{};
+                }
+            }
+            else
+                os << *fmt;
+            break;
+        case '%':
+            if (command)
+            {
+                if (modified == CharT{})
+                {
+                    os << CharT{'%'};
+                    command = nullptr;
+                }
+                else
+                {
+                    os << CharT{'%'} << modified << CharT{'%'};
+                    command = nullptr;
+                    modified = CharT{};
+                }
+            }
+            else
+                command = fmt;
+            break;
+        default:
+            if (command)
+            {
+                os << CharT{'%'};
+                command = nullptr;
+            }
+            if (modified != CharT{})
+            {
+                os << modified;
+                modified = CharT{};
+            }
+            os << *fmt;
+            break;
+        }
+    }
+    if (command)
+        os << CharT{'%'};
+    if (modified != CharT{})
+        os << modified;
+    return os;
+}
+
+// -----------------------------------------------------------------------------
+
 /*
  * Adding another template variation of `to_stream()` that parses from a ymd
  * and tod directly. This way we keep the precision when parsing large dates
@@ -25,17 +906,16 @@
 template <class CharT, class Traits, class Duration>
 inline
 std::basic_ostream<CharT, Traits>&
-to_stream(std::basic_ostream<CharT, Traits>& os,
-          const CharT* fmt,
-          const date::year_month_day& ymd,
-          const date::hh_mm_ss<Duration>& hms,
-          const std::string* abbrev = nullptr,
-          const std::chrono::seconds* offset_sec = nullptr)
+clock_to_stream(std::basic_ostream<CharT, Traits>& os,
+                const CharT* fmt,
+                const date::year_month_day& ymd,
+                const date::hh_mm_ss<Duration>& hms,
+                const std::string* abbrev = nullptr,
+                const std::chrono::seconds* offset_sec = nullptr)
 {
   date::fields<Duration> fds{ymd, hms};
-  return to_stream(os, fmt, fds, abbrev, offset_sec);
+  return clock_to_stream(os, fmt, fds, abbrev, offset_sec);
 }
-
 
 // -----------------------------------------------------------------------------
 
@@ -131,7 +1011,7 @@ cpp11::writable::strings format_time_point(const clock_field& calendar,
     switch (precision_val) {
     case precision::second: {
       date::hh_mm_ss<std::chrono::seconds> elt_hms{elt_ltod};
-      to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset);
+      clock_to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset);
       break;
     }
     case precision::millisecond: {
@@ -139,7 +1019,7 @@ cpp11::writable::strings format_time_point(const clock_field& calendar,
       std::chrono::nanoseconds elt_nanos{elt_nanoseconds_of_second};
       std::chrono::milliseconds elt_millis = std::chrono::duration_cast<std::chrono::milliseconds>(elt_nanos);
       date::hh_mm_ss<std::chrono::milliseconds> elt_hms{elt_ltod + elt_millis};
-      to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset);
+      clock_to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset);
       break;
     }
     case precision::microsecond: {
@@ -147,14 +1027,14 @@ cpp11::writable::strings format_time_point(const clock_field& calendar,
       std::chrono::nanoseconds elt_nanos{elt_nanoseconds_of_second};
       std::chrono::microseconds elt_micros = std::chrono::duration_cast<std::chrono::microseconds>(elt_nanos);
       date::hh_mm_ss<std::chrono::microseconds> elt_hms{elt_ltod + elt_micros};
-      to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset);
+      clock_to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset);
       break;
     }
     case precision::nanosecond: {
       int elt_nanoseconds_of_second = nanoseconds_of_second[i];
       std::chrono::nanoseconds elt_nanos{elt_nanoseconds_of_second};
       date::hh_mm_ss<std::chrono::nanoseconds> elt_hms{elt_ltod + elt_nanos};
-      to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset);
+      clock_to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset);
       break;
     }
     }
