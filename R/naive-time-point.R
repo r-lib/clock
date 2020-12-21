@@ -194,16 +194,15 @@ vec_proxy_equal.clock_naive_time_point <- function(x, ...) {
 }
 
 #' @export
-format.clock_naive_time_point <- function(x, ..., format = NULL) {
-  # TODO: Better format method that completely uses native code?
+format.clock_naive_time_point <- function(x, ..., format = NULL, locale = default_date_locale()) {
   if (is_null(format)) {
     calendar <- field_calendar(x)
-    ymd <- format(calendar)
-    hms <- format_naive_time_point_subdaily(x)
+    ymd <- format(calendar, locale = locale)
+    hms <- format_naive_time_point_subdaily(x, locale)
     out <- paste0(ymd, " ", hms)
     out[is.na(x)] <- NA_character_
   } else {
-    out <- format_naive_time_point(x, format)
+    out <- format_naive_time_point(x, format, locale)
   }
 
   names(out) <- names(x)

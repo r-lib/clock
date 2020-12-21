@@ -29,16 +29,19 @@ new_year_month_weekday <- function(days = integer(), ..., class = NULL) {
 }
 
 #' @export
-format.clock_year_month_weekday <- function(x, ...) {
-  fields <- convert_calendar_days_to_year_month_weekday_index(x)
+format.clock_year_month_weekday <- function(x, ..., format = NULL, locale = default_date_locale()) {
+  if (!is.null(format)) {
+    out <- format_calendar_days(x, format, locale)
+    return(out)
+  }
 
-  year <- sprintf("%04s", fields$year)
-  month <- sprintf("%02s", fields$month)
-  # TODO: Locale support
-  weekday <- weekday_map[fields$weekday]
+  format <- "%Y-%m-%A"
+  out <- format_calendar_days(x, format, locale)
+
+  fields <- convert_calendar_days_to_year_month_weekday_index(x)
   index <- fields$index
 
-  out <- paste0(year, "-", month, "-", weekday, "[", index, "]")
+  out <- paste0(out, "[", index, "]")
 
   out[is.na(x)] <- NA_character_
   names(out) <- names(x)

@@ -21,8 +21,12 @@ new_year_quarternum <- function(days = integer(), start = 1L, ...) {
 }
 
 #' @export
-format.clock_year_quarternum <- function(x, ...) {
-  # TODO: Proper format argument
+format.clock_year_quarternum <- function(x, ..., format = NULL, locale = default_date_locale()) {
+  if (!is.null(format)) {
+    out <- format_calendar_days(x, format, locale)
+    return(out)
+  }
+
   start <- get_quarterly_start(x)
 
   yqq <- convert_calendar_days_to_year_quarternum_quarterday(x, start)

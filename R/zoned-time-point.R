@@ -175,22 +175,22 @@ vec_proxy_equal.clock_zoned_time_point <- function(x, ...) {
 format.clock_zoned_time_point <- function(x,
                                           ...,
                                           format = NULL,
+                                          locale = default_date_locale(),
                                           abbreviate_zone = FALSE) {
-  # TODO: Better format method that completely uses native code?
   if (is_null(format)) {
     # Calendar must come from naive version to account for time zone offset
     naive <- as_naive_time_point(x)
     calendar <- field_calendar(naive)
-    ymd <- format(calendar)
+    ymd <- format(calendar, locale = locale)
 
     # Collect internal option
     print_zone_name <- zoned_print_zone_name(...)
-    hms <- format_zoned_time_point_subdaily(x, abbreviate_zone, print_zone_name)
+    hms <- format_zoned_time_point_subdaily(x, abbreviate_zone, locale, print_zone_name)
 
     out <- paste0(ymd, " ", hms)
     out[is.na(x)] <- NA_character_
   } else {
-    out <- format_zoned_time_point(x, format, abbreviate_zone)
+    out <- format_zoned_time_point(x, format, abbreviate_zone, locale)
   }
 
   names(out) <- names(x)

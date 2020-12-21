@@ -144,8 +144,8 @@ floor_calendar_days_to_iso_year_weeknum_precision <- function(calendar) {
   .Call("_clock_floor_calendar_days_to_iso_year_weeknum_precision", calendar, PACKAGE = "clock")
 }
 
-format_time_point <- function(calendar, seconds_of_day, nanoseconds_of_second, zone, format, precision, naive, abbreviate_zone) {
-  .Call("_clock_format_time_point", calendar, seconds_of_day, nanoseconds_of_second, zone, format, precision, naive, abbreviate_zone, PACKAGE = "clock")
+format_time_point_cpp <- function(calendar, seconds_of_day, nanoseconds_of_second, zone, format, precision, naive, abbreviate_zone, mon, mon_ab, day, day_ab, am_pm, decimal_mark) {
+  .Call("_clock_format_time_point_cpp", calendar, seconds_of_day, nanoseconds_of_second, zone, format, precision, naive, abbreviate_zone, mon, mon_ab, day, day_ab, am_pm, decimal_mark, PACKAGE = "clock")
 }
 
 get_offset_cpp <- function(calendar, seconds_of_day, zone) {
