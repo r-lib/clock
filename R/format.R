@@ -13,7 +13,7 @@ format_naive_time_point <- function(x, format, locale) {
   naive <- TRUE
   abbreviate_zone <- FALSE
 
-  format_time_point(
+  out <- format_time_point(
     calendar = calendar,
     seconds_of_day = seconds_of_day,
     nanoseconds_of_second = nanoseconds_of_second,
@@ -24,6 +24,10 @@ format_naive_time_point <- function(x, format, locale) {
     abbreviate_zone = abbreviate_zone,
     locale = locale
   )
+
+  names(out) <- names(x)
+
+  out
 }
 
 format_naive_time_point_subdaily <- function(x, locale) {
@@ -33,7 +37,7 @@ format_naive_time_point_subdaily <- function(x, locale) {
 format_calendar_days <- function(calendar, format, locale) {
   calendar <- promote_precision_day(calendar)
   seconds_of_day <- seconds_of_day_init(calendar)
-  tp <- new_naive_time_point(calendar, seconds_of_day)
+  tp <- new_naive_time_point(calendar, seconds_of_day, names = names(calendar))
   format_naive_time_point(tp, format, locale)
 }
 
@@ -51,7 +55,7 @@ format_zoned_time_point <- function(x, format, abbreviate_zone, locale) {
   zone <- get_zone(x)
   naive <- FALSE
 
-  format_time_point(
+  out <- format_time_point(
     calendar = calendar,
     seconds_of_day = seconds_of_day,
     nanoseconds_of_second = nanoseconds_of_second,
@@ -62,6 +66,10 @@ format_zoned_time_point <- function(x, format, abbreviate_zone, locale) {
     abbreviate_zone = abbreviate_zone,
     locale = locale
   )
+
+  names(out) <- names(x)
+
+  out
 }
 
 format_zoned_time_point_subdaily <- function(x, abbreviate_zone, locale, print_zone_name) {
