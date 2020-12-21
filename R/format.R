@@ -13,6 +13,9 @@ format_naive_time_point <- function(x, format) {
   naive <- TRUE
   abbreviate_zone <- FALSE
 
+  # TODO: Parameterize
+  date_locale <- date_locale()
+
   format_time_point(
     calendar = calendar,
     seconds_of_day = seconds_of_day,
@@ -21,7 +24,8 @@ format_naive_time_point <- function(x, format) {
     format = format,
     precision = precision,
     naive = naive,
-    abbreviate_zone = abbreviate_zone
+    abbreviate_zone = abbreviate_zone,
+    date_locale = date_locale
   )
 }
 
@@ -50,6 +54,9 @@ format_zoned_time_point <- function(x, format, abbreviate_zone) {
   zone <- get_zone(x)
   naive <- FALSE
 
+  # TODO: Parameterize
+  date_locale <- date_locale()
+
   format_time_point(
     calendar = calendar,
     seconds_of_day = seconds_of_day,
@@ -58,7 +65,8 @@ format_zoned_time_point <- function(x, format, abbreviate_zone) {
     format = format,
     precision = precision,
     naive = naive,
-    abbreviate_zone = abbreviate_zone
+    abbreviate_zone = abbreviate_zone,
+    date_locale = date_locale
   )
 }
 
@@ -70,4 +78,32 @@ format_zoned_time_point_subdaily <- function(x, abbreviate_zone, print_zone_name
   }
 
   format_zoned_time_point(x, format, abbreviate_zone)
+}
+
+format_time_point <- function(calendar,
+                              seconds_of_day,
+                              nanoseconds_of_second,
+                              zone,
+                              format,
+                              precision,
+                              naive,
+                              abbreviate_zone,
+                              date_locale) {
+  date_names <- date_locale$date_names
+
+  format_time_point_cpp(
+    calendar = calendar,
+    seconds_of_day = seconds_of_day,
+    nanoseconds_of_second = nanoseconds_of_second,
+    zon = zone,
+    format = format,
+    precision = precision,
+    naive = naive,
+    abbreviate_zone = abbreviate_zone,
+    mon = date_names$mon,
+    mon_ab = date_names$mon_ab,
+    day = date_names$day,
+    day_ab = date_names$day_ab,
+    am_pm = date_names$am_pm
+  )
 }

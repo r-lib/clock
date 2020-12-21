@@ -16,6 +16,8 @@ Description: Provides comprehensive support for local and zoned
 License: MIT + file LICENSE
 URL: https://github.com/DavisVaughan/clock
 BugReports: https://github.com/DavisVaughan/clock/issues
+Depends: 
+    R (>= 2.10)
 Imports: 
     ellipsis,
     rlang,

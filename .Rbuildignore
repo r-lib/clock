@@ -5,3 +5,4 @@
 ^README\.Rmd$
 ^codecov\.yml$
 ^\.github$
+^data-raw$

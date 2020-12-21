@@ -257,10 +257,10 @@ extern "C" SEXP _clock_floor_calendar_days_to_iso_year_weeknum_precision(SEXP ca
   END_CPP11
 }
 // format.cpp
-cpp11::writable::strings format_time_point(const clock_field& calendar, const clock_field& seconds_of_day, const clock_field& nanoseconds_of_second, const cpp11::strings& zone, const cpp11::strings& format, const cpp11::strings& precision, const bool& naive, const bool& abbreviate_zone);
-extern "C" SEXP _clock_format_time_point(SEXP calendar, SEXP seconds_of_day, SEXP nanoseconds_of_second, SEXP zone, SEXP format, SEXP precision, SEXP naive, SEXP abbreviate_zone) {
+cpp11::writable::strings format_time_point_cpp(const clock_field& calendar, const clock_field& seconds_of_day, const clock_field& nanoseconds_of_second, const cpp11::strings& zone, const cpp11::strings& format, const cpp11::strings& precision, const bool& naive, const bool& abbreviate_zone, const cpp11::strings& mon, const cpp11::strings& mon_ab, const cpp11::strings& day, const cpp11::strings& day_ab, const cpp11::strings& am_pm);
+extern "C" SEXP _clock_format_time_point_cpp(SEXP calendar, SEXP seconds_of_day, SEXP nanoseconds_of_second, SEXP zone, SEXP format, SEXP precision, SEXP naive, SEXP abbreviate_zone, SEXP mon, SEXP mon_ab, SEXP day, SEXP day_ab, SEXP am_pm) {
   BEGIN_CPP11
-    return cpp11::as_sexp(format_time_point(cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(seconds_of_day), cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(nanoseconds_of_second), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision), cpp11::as_cpp<cpp11::decay_t<const bool&>>(naive), cpp11::as_cpp<cpp11::decay_t<const bool&>>(abbreviate_zone)));
+    return cpp11::as_sexp(format_time_point_cpp(cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(seconds_of_day), cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(nanoseconds_of_second), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision), cpp11::as_cpp<cpp11::decay_t<const bool&>>(naive), cpp11::as_cpp<cpp11::decay_t<const bool&>>(abbreviate_zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mon), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mon_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(am_pm)));
   END_CPP11
 }
 // getters.cpp
@@ -367,7 +367,7 @@ extern SEXP _clock_downcast_nanoseconds_of_second_precision(SEXP, SEXP);
 extern SEXP _clock_floor_calendar_days_to_iso_year_weeknum_precision(SEXP);
 extern SEXP _clock_floor_calendar_days_to_year_month_precision(SEXP);
 extern SEXP _clock_floor_calendar_days_to_year_quarternum_precision(SEXP, SEXP);
-extern SEXP _clock_format_time_point(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_format_time_point_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_get_offset_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_parse_naive_datetime_cpp(SEXP, SEXP);
 extern SEXP _clock_parse_zoned_datetime_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -378,52 +378,52 @@ extern SEXP _clock_zone_is_valid(SEXP);
 extern SEXP _clock_zone_standardize(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_clock_add_calendar_weeks_or_days",                                                           (DL_FUNC) &_clock_add_calendar_weeks_or_days,                                                           3},
-    {"_clock_add_gregorian_calendar_years_or_months",                                               (DL_FUNC) &_clock_add_gregorian_calendar_years_or_months,                                               4},
-    {"_clock_add_gregorian_weekday_calendar_years_or_months",                                       (DL_FUNC) &_clock_add_gregorian_weekday_calendar_years_or_months,                                       4},
-    {"_clock_add_iso_calendar_years",                                                               (DL_FUNC) &_clock_add_iso_calendar_years,                                                               3},
-    {"_clock_add_quarterly_calendar_years_or_quarters",                                             (DL_FUNC) &_clock_add_quarterly_calendar_years_or_quarters,                                             5},
-    {"_clock_add_time_point_nanoseconds_of_second_cpp",                                             (DL_FUNC) &_clock_add_time_point_nanoseconds_of_second_cpp,                                             3},
-    {"_clock_add_time_point_seconds_of_day_cpp",                                                    (DL_FUNC) &_clock_add_time_point_seconds_of_day_cpp,                                                    3},
-    {"_clock_adjust_gregorian_calendar",                                                            (DL_FUNC) &_clock_adjust_gregorian_calendar,                                                            4},
-    {"_clock_adjust_gregorian_weekday_calendar",                                                    (DL_FUNC) &_clock_adjust_gregorian_weekday_calendar,                                                    4},
-    {"_clock_adjust_iso_calendar",                                                                  (DL_FUNC) &_clock_adjust_iso_calendar,                                                                  4},
-    {"_clock_adjust_naive_time_point_nanoseconds_of_second_cpp",                                    (DL_FUNC) &_clock_adjust_naive_time_point_nanoseconds_of_second_cpp,                                    3},
-    {"_clock_adjust_naive_time_point_seconds_of_day_cpp",                                           (DL_FUNC) &_clock_adjust_naive_time_point_seconds_of_day_cpp,                                           3},
-    {"_clock_adjust_quarterly_calendar",                                                            (DL_FUNC) &_clock_adjust_quarterly_calendar,                                                            5},
-    {"_clock_clock_set_install",                                                                    (DL_FUNC) &_clock_clock_set_install,                                                                    1},
-    {"_clock_convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields",   (DL_FUNC) &_clock_convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields,   6},
-    {"_clock_convert_calendar_days_hour_minute_second_to_naive_second_point_fields",                (DL_FUNC) &_clock_convert_calendar_days_hour_minute_second_to_naive_second_point_fields,                4},
-    {"_clock_convert_calendar_days_to_iso_year_weeknum_weekday",                                    (DL_FUNC) &_clock_convert_calendar_days_to_iso_year_weeknum_weekday,                                    1},
-    {"_clock_convert_calendar_days_to_year_month_day",                                              (DL_FUNC) &_clock_convert_calendar_days_to_year_month_day,                                              1},
-    {"_clock_convert_calendar_days_to_year_month_weekday_index",                                    (DL_FUNC) &_clock_convert_calendar_days_to_year_month_weekday_index,                                    1},
-    {"_clock_convert_calendar_days_to_year_quarternum_quarterday",                                  (DL_FUNC) &_clock_convert_calendar_days_to_year_quarternum_quarterday,                                  2},
-    {"_clock_convert_iso_year_weeknum_weekday_to_calendar_days",                                    (DL_FUNC) &_clock_convert_iso_year_weeknum_weekday_to_calendar_days,                                    4},
-    {"_clock_convert_naive_second_point_fields_to_zoned_seconds_cpp",                               (DL_FUNC) &_clock_convert_naive_second_point_fields_to_zoned_seconds_cpp,                               6},
-    {"_clock_convert_second_point_fields_from_naive_to_zoned_cpp",                                  (DL_FUNC) &_clock_convert_second_point_fields_from_naive_to_zoned_cpp,                                  5},
-    {"_clock_convert_second_point_fields_from_zoned_to_naive",                                      (DL_FUNC) &_clock_convert_second_point_fields_from_zoned_to_naive,                                      3},
-    {"_clock_convert_seconds_of_day_to_hour_minute_second",                                         (DL_FUNC) &_clock_convert_seconds_of_day_to_hour_minute_second,                                         1},
-    {"_clock_convert_subsecond_point_fields_from_naive_to_zoned_cpp",                               (DL_FUNC) &_clock_convert_subsecond_point_fields_from_naive_to_zoned_cpp,                               7},
-    {"_clock_convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields", (DL_FUNC) &_clock_convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields, 8},
-    {"_clock_convert_year_month_day_hour_minute_second_to_naive_second_point_fields",               (DL_FUNC) &_clock_convert_year_month_day_hour_minute_second_to_naive_second_point_fields,               7},
-    {"_clock_convert_year_month_day_to_calendar_days",                                              (DL_FUNC) &_clock_convert_year_month_day_to_calendar_days,                                              4},
-    {"_clock_convert_year_month_weekday_index_to_calendar_days",                                    (DL_FUNC) &_clock_convert_year_month_weekday_index_to_calendar_days,                                    5},
-    {"_clock_convert_year_quarternum_quarterday_to_calendar_days",                                  (DL_FUNC) &_clock_convert_year_quarternum_quarterday_to_calendar_days,                                  5},
-    {"_clock_convert_zoned_seconds_to_naive_second_point_fields",                                   (DL_FUNC) &_clock_convert_zoned_seconds_to_naive_second_point_fields,                                   2},
-    {"_clock_convert_zoned_seconds_to_zoned_second_point_fields",                                   (DL_FUNC) &_clock_convert_zoned_seconds_to_zoned_second_point_fields,                                   1},
-    {"_clock_downcast_nanoseconds_of_second_precision",                                             (DL_FUNC) &_clock_downcast_nanoseconds_of_second_precision,                                             2},
-    {"_clock_floor_calendar_days_to_iso_year_weeknum_precision",                                    (DL_FUNC) &_clock_floor_calendar_days_to_iso_year_weeknum_precision,                                    1},
-    {"_clock_floor_calendar_days_to_year_month_precision",                                          (DL_FUNC) &_clock_floor_calendar_days_to_year_month_precision,                                          1},
-    {"_clock_floor_calendar_days_to_year_quarternum_precision",                                     (DL_FUNC) &_clock_floor_calendar_days_to_year_quarternum_precision,                                     2},
-    {"_clock_format_time_point",                                                                    (DL_FUNC) &_clock_format_time_point,                                                                    8},
-    {"_clock_get_offset_cpp",                                                                       (DL_FUNC) &_clock_get_offset_cpp,                                                                       3},
-    {"_clock_parse_naive_datetime_cpp",                                                             (DL_FUNC) &_clock_parse_naive_datetime_cpp,                                                             2},
-    {"_clock_parse_zoned_datetime_cpp",                                                             (DL_FUNC) &_clock_parse_zoned_datetime_cpp,                                                             6},
-    {"_clock_resolve_nanoseconds_of_second",                                                        (DL_FUNC) &_clock_resolve_nanoseconds_of_second,                                                        4},
-    {"_clock_resolve_seconds_of_day",                                                               (DL_FUNC) &_clock_resolve_seconds_of_day,                                                               3},
-    {"_clock_zone_current",                                                                         (DL_FUNC) &_clock_zone_current,                                                                         0},
-    {"_clock_zone_is_valid",                                                                        (DL_FUNC) &_clock_zone_is_valid,                                                                        1},
-    {"_clock_zone_standardize",                                                                     (DL_FUNC) &_clock_zone_standardize,                                                                     1},
+    {"_clock_add_calendar_weeks_or_days",                                                           (DL_FUNC) &_clock_add_calendar_weeks_or_days,                                                            3},
+    {"_clock_add_gregorian_calendar_years_or_months",                                               (DL_FUNC) &_clock_add_gregorian_calendar_years_or_months,                                                4},
+    {"_clock_add_gregorian_weekday_calendar_years_or_months",                                       (DL_FUNC) &_clock_add_gregorian_weekday_calendar_years_or_months,                                        4},
+    {"_clock_add_iso_calendar_years",                                                               (DL_FUNC) &_clock_add_iso_calendar_years,                                                                3},
+    {"_clock_add_quarterly_calendar_years_or_quarters",                                             (DL_FUNC) &_clock_add_quarterly_calendar_years_or_quarters,                                              5},
+    {"_clock_add_time_point_nanoseconds_of_second_cpp",                                             (DL_FUNC) &_clock_add_time_point_nanoseconds_of_second_cpp,                                              3},
+    {"_clock_add_time_point_seconds_of_day_cpp",                                                    (DL_FUNC) &_clock_add_time_point_seconds_of_day_cpp,                                                     3},
+    {"_clock_adjust_gregorian_calendar",                                                            (DL_FUNC) &_clock_adjust_gregorian_calendar,                                                             4},
+    {"_clock_adjust_gregorian_weekday_calendar",                                                    (DL_FUNC) &_clock_adjust_gregorian_weekday_calendar,                                                     4},
+    {"_clock_adjust_iso_calendar",                                                                  (DL_FUNC) &_clock_adjust_iso_calendar,                                                                   4},
+    {"_clock_adjust_naive_time_point_nanoseconds_of_second_cpp",                                    (DL_FUNC) &_clock_adjust_naive_time_point_nanoseconds_of_second_cpp,                                     3},
+    {"_clock_adjust_naive_time_point_seconds_of_day_cpp",                                           (DL_FUNC) &_clock_adjust_naive_time_point_seconds_of_day_cpp,                                            3},
+    {"_clock_adjust_quarterly_calendar",                                                            (DL_FUNC) &_clock_adjust_quarterly_calendar,                                                             5},
+    {"_clock_clock_set_install",                                                                    (DL_FUNC) &_clock_clock_set_install,                                                                     1},
+    {"_clock_convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields",   (DL_FUNC) &_clock_convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields,    6},
+    {"_clock_convert_calendar_days_hour_minute_second_to_naive_second_point_fields",                (DL_FUNC) &_clock_convert_calendar_days_hour_minute_second_to_naive_second_point_fields,                 4},
+    {"_clock_convert_calendar_days_to_iso_year_weeknum_weekday",                                    (DL_FUNC) &_clock_convert_calendar_days_to_iso_year_weeknum_weekday,                                     1},
+    {"_clock_convert_calendar_days_to_year_month_day",                                              (DL_FUNC) &_clock_convert_calendar_days_to_year_month_day,                                               1},
+    {"_clock_convert_calendar_days_to_year_month_weekday_index",                                    (DL_FUNC) &_clock_convert_calendar_days_to_year_month_weekday_index,                                     1},
+    {"_clock_convert_calendar_days_to_year_quarternum_quarterday",                                  (DL_FUNC) &_clock_convert_calendar_days_to_year_quarternum_quarterday,                                   2},
+    {"_clock_convert_iso_year_weeknum_weekday_to_calendar_days",                                    (DL_FUNC) &_clock_convert_iso_year_weeknum_weekday_to_calendar_days,                                     4},
+    {"_clock_convert_naive_second_point_fields_to_zoned_seconds_cpp",                               (DL_FUNC) &_clock_convert_naive_second_point_fields_to_zoned_seconds_cpp,                                6},
+    {"_clock_convert_second_point_fields_from_naive_to_zoned_cpp",                                  (DL_FUNC) &_clock_convert_second_point_fields_from_naive_to_zoned_cpp,                                   5},
+    {"_clock_convert_second_point_fields_from_zoned_to_naive",                                      (DL_FUNC) &_clock_convert_second_point_fields_from_zoned_to_naive,                                       3},
+    {"_clock_convert_seconds_of_day_to_hour_minute_second",                                         (DL_FUNC) &_clock_convert_seconds_of_day_to_hour_minute_second,                                          1},
+    {"_clock_convert_subsecond_point_fields_from_naive_to_zoned_cpp",                               (DL_FUNC) &_clock_convert_subsecond_point_fields_from_naive_to_zoned_cpp,                                7},
+    {"_clock_convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields", (DL_FUNC) &_clock_convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields,  8},
+    {"_clock_convert_year_month_day_hour_minute_second_to_naive_second_point_fields",               (DL_FUNC) &_clock_convert_year_month_day_hour_minute_second_to_naive_second_point_fields,                7},
+    {"_clock_convert_year_month_day_to_calendar_days",                                              (DL_FUNC) &_clock_convert_year_month_day_to_calendar_days,                                               4},
+    {"_clock_convert_year_month_weekday_index_to_calendar_days",                                    (DL_FUNC) &_clock_convert_year_month_weekday_index_to_calendar_days,                                     5},
+    {"_clock_convert_year_quarternum_quarterday_to_calendar_days",                                  (DL_FUNC) &_clock_convert_year_quarternum_quarterday_to_calendar_days,                                   5},
+    {"_clock_convert_zoned_seconds_to_naive_second_point_fields",                                   (DL_FUNC) &_clock_convert_zoned_seconds_to_naive_second_point_fields,                                    2},
+    {"_clock_convert_zoned_seconds_to_zoned_second_point_fields",                                   (DL_FUNC) &_clock_convert_zoned_seconds_to_zoned_second_point_fields,                                    1},
+    {"_clock_downcast_nanoseconds_of_second_precision",                                             (DL_FUNC) &_clock_downcast_nanoseconds_of_second_precision,                                              2},
+    {"_clock_floor_calendar_days_to_iso_year_weeknum_precision",                                    (DL_FUNC) &_clock_floor_calendar_days_to_iso_year_weeknum_precision,                                     1},
+    {"_clock_floor_calendar_days_to_year_month_precision",                                          (DL_FUNC) &_clock_floor_calendar_days_to_year_month_precision,                                           1},
+    {"_clock_floor_calendar_days_to_year_quarternum_precision",                                     (DL_FUNC) &_clock_floor_calendar_days_to_year_quarternum_precision,                                      2},
+    {"_clock_format_time_point_cpp",                                                                (DL_FUNC) &_clock_format_time_point_cpp,                                                                13},
+    {"_clock_get_offset_cpp",                                                                       (DL_FUNC) &_clock_get_offset_cpp,                                                                        3},
+    {"_clock_parse_naive_datetime_cpp",                                                             (DL_FUNC) &_clock_parse_naive_datetime_cpp,                                                              2},
+    {"_clock_parse_zoned_datetime_cpp",                                                             (DL_FUNC) &_clock_parse_zoned_datetime_cpp,                                                              6},
+    {"_clock_resolve_nanoseconds_of_second",                                                        (DL_FUNC) &_clock_resolve_nanoseconds_of_second,                                                         4},
+    {"_clock_resolve_seconds_of_day",                                                               (DL_FUNC) &_clock_resolve_seconds_of_day,                                                                3},
+    {"_clock_zone_current",                                                                         (DL_FUNC) &_clock_zone_current,                                                                          0},
+    {"_clock_zone_is_valid",                                                                        (DL_FUNC) &_clock_zone_is_valid,                                                                         1},
+    {"_clock_zone_standardize",                                                                     (DL_FUNC) &_clock_zone_standardize,                                                                      1},
     {NULL, NULL, 0}
 };
 }
