@@ -1176,7 +1176,10 @@ cpp11::writable::strings format_time_point_cpp(const clock_field& calendar,
       continue;
     }
 
-    out[i] = stream.str();
+    // cpp11 seems very slow when inserting strings, so we bypass that here
+    //out[i] = stream.str();
+    std::string str = stream.str();
+    SET_STRING_ELT(out, i, Rf_mkCharLenCE(str.c_str(), str.size(), CE_UTF8));
   }
 
   return out;
