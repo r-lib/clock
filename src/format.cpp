@@ -1098,7 +1098,9 @@ cpp11::writable::strings format_time_point_cpp(const clock_field& calendar,
     int elt_seconds_of_day = seconds_of_day[i];
 
     if (elt_calendar == r_int_na) {
-      out[i] = r_chr_na;
+      // https://github.com/r-lib/cpp11/issues/137
+      SET_STRING_ELT(out, i, r_chr_na);
+      //out[i] = r_chr_na;
       continue;
     }
 
@@ -1172,11 +1174,14 @@ cpp11::writable::strings format_time_point_cpp(const clock_field& calendar,
     }
 
     if (stream.fail()) {
-      out[i] = r_chr_na;
+      // https://github.com/r-lib/cpp11/issues/137
+      SET_STRING_ELT(out, i, r_chr_na);
+      //out[i] = r_chr_na;
       continue;
     }
 
     // cpp11 seems very slow when inserting strings, so we bypass that here
+    // https://github.com/r-lib/cpp11/issues/137
     //out[i] = stream.str();
     std::string str = stream.str();
     SET_STRING_ELT(out, i, Rf_mkCharLenCE(str.c_str(), str.size(), CE_UTF8));
