@@ -19,6 +19,7 @@ date_names <- function(mon, mon_ab = mon, day, day_ab = day,
   stopifnot(is.character(mon_ab), length(mon_ab) == 12)
   stopifnot(is.character(day), length(day) == 7)
   stopifnot(is.character(day_ab), length(day_ab) == 7)
+  stopifnot(is.character(am_pm), length(am_pm) == 2)
 
   structure(
     list(
