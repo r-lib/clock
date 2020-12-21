@@ -27,8 +27,12 @@ new_year_month_day <- function(days = integer(), ..., class = NULL) {
 }
 
 #' @export
-format.clock_year_month_day <- function(x, ..., format = "%Y-%m-%d") {
-  format_calendar_days(x, format)
+format.clock_year_month_day <- function(x, ..., format = NULL, locale = default_date_locale()) {
+  if (is.null(format)) {
+    format <- "%Y-%m-%d"
+  }
+
+  format_calendar_days(x, format, locale)
 }
 
 #' @export

@@ -24,8 +24,12 @@ new_iso_year_weeknum <- function(days = integer(), ..., class = NULL) {
 }
 
 #' @export
-format.clock_iso_year_weeknum <- function(x, ..., format = "%G-W%V") {
-  format_calendar_days(x, format)
+format.clock_iso_year_weeknum <- function(x, ..., format = NULL, locale = default_date_locale()) {
+  if (is_null(format)) {
+    format <- "%G-W%V"
+  }
+
+  format_calendar_days(x, format, locale)
 }
 
 #' @export
