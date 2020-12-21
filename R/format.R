@@ -84,6 +84,7 @@ format_time_point <- function(calendar,
                               abbreviate_zone,
                               locale) {
   date_names <- locale$date_names
+  decimal_mark <- locale$decimal_mark
 
   format_time_point_cpp(
     calendar = calendar,
@@ -98,6 +99,7 @@ format_time_point <- function(calendar,
     mon_ab = date_names$mon_ab,
     day = date_names$day,
     day_ab = date_names$day_ab,
-    am_pm = date_names$am_pm
+    am_pm = date_names$am_pm,
+    decimal_mark = decimal_mark
   )
 }

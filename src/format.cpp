@@ -61,6 +61,65 @@ fill_ampm_names(const cpp11::strings& am_pm, std::string (&ampm_names)[2]) {
 
 // -----------------------------------------------------------------------------
 
+/*
+ * Custom seconds formatter to be able to use user-supplied decimal mark.
+ * Essentially copies the `decimal_format_seconds` `<<` operator.
+ * Requires a bit of a roundabout hack to construct a `decimal_format_seconds`
+ * object, as you can't just extract it from `tod`.
+ */
+template <class CharT, class Traits, class Duration>
+static
+inline
+std::basic_ostream<CharT, Traits>&
+stream_seconds(std::basic_ostream<CharT, Traits>& os,
+               const date::hh_mm_ss<Duration>& tod,
+               const CharT* decimal_mark)
+{
+  using date::detail::save_ostream;
+  // NOTE: Custom formatting here to use user-supplied `decimal_mark`
+  save_ostream<CharT, Traits> _(os);
+  os.fill('0');
+  os.width(2);
+  os.flags(std::ios::dec | std::ios::right);
+  // TODO: This is a hack to get the private `s_` out from `tod`. Anything better?
+  date::detail::decimal_format_seconds<Duration> s_{tod.seconds() + tod.subseconds()};
+  os << s_.seconds().count();
+  if (s_.width > 0)
+  {
+    os << decimal_mark;
+    save_ostream<CharT, Traits> _s(os);
+    os.imbue(std::locale::classic());
+    os.width(s_.width);
+    os << s_.subseconds().count();
+  }
+  return os;
+}
+
+/*
+ * Copying the `hh_mm_ss` `<<` operator to be able to use a user-supplied
+ * `decimal_mark`.
+ */
+template <class CharT, class Traits, class Duration>
+static
+inline
+std::basic_ostream<CharT, Traits>&
+stream_tod(std::basic_ostream<CharT, Traits>& os,
+           const date::hh_mm_ss<Duration>& tod,
+           const CharT* decimal_mark)
+{
+  if (tod.is_negative())
+    os << '-';
+  if (tod.hours() < std::chrono::hours{10})
+    os << '0';
+  os << tod.hours().count() << ':';
+  if (tod.minutes() < std::chrono::minutes{10})
+    os << '0';
+  os << tod.minutes().count() << ':';
+  return stream_seconds(os, tod, decimal_mark);
+}
+
+// -----------------------------------------------------------------------------
+
 template <class CharT, class Traits, class Duration>
 std::basic_ostream<CharT, Traits>&
 clock_to_stream(std::basic_ostream<CharT, Traits>& os,
@@ -70,7 +129,8 @@ clock_to_stream(std::basic_ostream<CharT, Traits>& os,
                 const std::chrono::seconds* offset_sec,
                 const std::pair<const std::string*, const std::string*>& month_names_pair,
                 const std::pair<const std::string*, const std::string*>& weekday_names_pair,
-                const std::pair<const std::string*, const std::string*>& ampm_names_pair)
+                const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+                const CharT* decimal_mark)
 {
     using date::detail::save_ostream;
     using date::detail::get_units;
@@ -580,11 +640,7 @@ clock_to_stream(std::basic_ostream<CharT, Traits>& os,
                         os << '-';
                         insert_negative = false;
                     }
-                    // TODO: Allow decimal_mark argument when constructing date names
-                    // and use that here when printing fractional seconds
-                    // TODO: This is a hack to get the private `s_` out from `fds.tod`. Anything better?
-                    date::detail::decimal_format_seconds<Duration> s_{fds.tod.seconds() + fds.tod.subseconds()};
-                    os << s_;
+                    stream_seconds(os, fds.tod, decimal_mark);
                 }
                 else
                 {
@@ -618,9 +674,7 @@ clock_to_stream(std::basic_ostream<CharT, Traits>& os,
                 {
                     if (!fds.has_tod)
                         os.setstate(std::ios::failbit);
-                    // TODO: Allow decimal_mark argument when constructing date names
-                    // and use that here when printing fractional seconds
-                    os << fds.tod;
+                    stream_tod(os, fds.tod, decimal_mark);
                 }
                 else
                 {
@@ -769,7 +823,7 @@ clock_to_stream(std::basic_ostream<CharT, Traits>& os,
                 {
                     if (!fds.has_tod)
                         os.setstate(std::ios::failbit);
-                    os << fds.tod;
+                    stream_tod(os, fds.tod, decimal_mark);
                 }
                 else
                 {
@@ -959,10 +1013,11 @@ clock_to_stream(std::basic_ostream<CharT, Traits>& os,
                 const std::chrono::seconds* offset_sec,
                 const std::pair<const std::string*, const std::string*>& month_names_pair,
                 const std::pair<const std::string*, const std::string*>& weekday_names_pair,
-                const std::pair<const std::string*, const std::string*>& ampm_names_pair)
+                const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+                const CharT* decimal_mark)
 {
   date::fields<Duration> fds{ymd, hms};
-  return clock_to_stream(os, fmt, fds, abbrev, offset_sec, month_names_pair, weekday_names_pair, ampm_names_pair);
+  return clock_to_stream(os, fmt, fds, abbrev, offset_sec, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark);
 }
 
 // -----------------------------------------------------------------------------
@@ -980,7 +1035,8 @@ cpp11::writable::strings format_time_point_cpp(const clock_field& calendar,
                                                const cpp11::strings& mon_ab,
                                                const cpp11::strings& day,
                                                const cpp11::strings& day_ab,
-                                               const cpp11::strings& am_pm) {
+                                               const cpp11::strings& am_pm,
+                                               const cpp11::strings& decimal_mark) {
   r_ssize size = calendar.size();
 
   cpp11::writable::strings out(size);
@@ -1029,6 +1085,9 @@ cpp11::writable::strings format_time_point_cpp(const clock_field& calendar,
     am_pm,
     ampm_names
   );
+
+  std::string decimal_mark_string = decimal_mark[0];
+  const char* decimal_mark_char = decimal_mark_string.c_str();
 
   // Default to no offset, which might change if formatting a zoned datetime
   std::chrono::seconds offset;
@@ -1084,7 +1143,7 @@ cpp11::writable::strings format_time_point_cpp(const clock_field& calendar,
     switch (precision_val) {
     case precision::second: {
       date::hh_mm_ss<std::chrono::seconds> elt_hms{elt_ltod};
-      clock_to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset, month_names_pair, weekday_names_pair, ampm_names_pair);
+      clock_to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark_char);
       break;
     }
     case precision::millisecond: {
@@ -1092,7 +1151,7 @@ cpp11::writable::strings format_time_point_cpp(const clock_field& calendar,
       std::chrono::nanoseconds elt_nanos{elt_nanoseconds_of_second};
       std::chrono::milliseconds elt_millis = std::chrono::duration_cast<std::chrono::milliseconds>(elt_nanos);
       date::hh_mm_ss<std::chrono::milliseconds> elt_hms{elt_ltod + elt_millis};
-      clock_to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset, month_names_pair, weekday_names_pair, ampm_names_pair);
+      clock_to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark_char);
       break;
     }
     case precision::microsecond: {
@@ -1100,14 +1159,14 @@ cpp11::writable::strings format_time_point_cpp(const clock_field& calendar,
       std::chrono::nanoseconds elt_nanos{elt_nanoseconds_of_second};
       std::chrono::microseconds elt_micros = std::chrono::duration_cast<std::chrono::microseconds>(elt_nanos);
       date::hh_mm_ss<std::chrono::microseconds> elt_hms{elt_ltod + elt_micros};
-      clock_to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset, month_names_pair, weekday_names_pair, ampm_names_pair);
+      clock_to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark_char);
       break;
     }
     case precision::nanosecond: {
       int elt_nanoseconds_of_second = nanoseconds_of_second[i];
       std::chrono::nanoseconds elt_nanos{elt_nanoseconds_of_second};
       date::hh_mm_ss<std::chrono::nanoseconds> elt_hms{elt_ltod + elt_nanos};
-      clock_to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset, month_names_pair, weekday_names_pair, ampm_names_pair);
+      clock_to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark_char);
       break;
     }
     }
