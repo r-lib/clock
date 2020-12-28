@@ -74,15 +74,16 @@ format.clock_year_month_weekday <- function(x, ..., locale = default_date_locale
   weekday <- field_weekday(x)
   index <- field_index(x)
 
-  year <- sprintf("%04i", year)
-  month <- sprintf("%02i", month)
+  day <- locale$date_names$day
 
-  # Localize
-  weekday <- locale$date_names$day[weekday]
+  out <- format_year_month_weekday(
+    year,
+    month,
+    weekday,
+    index,
+    day
+  )
 
-  out <- paste0(year, "-", month, "-", weekday, "[", index, "]")
-
-  out[is.na(x)] <- NA_character_
   names(out) <- names(x)
 
   out
