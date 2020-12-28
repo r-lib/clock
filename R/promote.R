@@ -1,33 +1,7 @@
-PRECISION_YEAR = 0L
-PRECISION_QUARTER = 1L
-PRECISION_MONTH = 2L
-PRECISION_WEEK = 3L
-PRECISION_DAY = 4L
-PRECISION_SECOND = 5L
-PRECISION_MILLISECOND = 6L
-PRECISION_MICROSECOND = 7L
-PRECISION_NANOSECOND = 8L
-
 # ------------------------------------------------------------------------------
 
 get_precision_value <- function(x) {
   precision_value(get_precision(x))
-}
-
-precision_value <- function(precision) {
-  switch(
-    precision,
-    year = PRECISION_YEAR,
-    quarter = PRECISION_QUARTER,
-    month = PRECISION_MONTH,
-    week = PRECISION_WEEK,
-    day = PRECISION_DAY,
-    second = PRECISION_SECOND,
-    millisecond = PRECISION_MILLISECOND,
-    microsecond = PRECISION_MICROSECOND,
-    nanosecond = PRECISION_NANOSECOND,
-    abort("Unknown precision.")
-  )
 }
 
 # ------------------------------------------------------------------------------

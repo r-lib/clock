@@ -4,6 +4,19 @@
 #include "clock.h"
 // -----------------------------------------------------------------------------
 
+enum class invalid {
+  last_time,
+  first_time,
+  last_day,
+  first_day,
+  na,
+  error
+};
+
+enum invalid parse_invalid(const cpp11::strings& x);
+
+// -----------------------------------------------------------------------------
+
 enum class day_nonexistent {
   last_time,
   first_time,
@@ -94,6 +107,24 @@ enum class precision {
 };
 
 enum precision parse_precision(const cpp11::strings& x);
+
+// -----------------------------------------------------------------------------
+
+enum class precision2 {
+  year,
+  quarter,
+  month,
+  week,
+  day,
+  hour,
+  minute,
+  second,
+  millisecond,
+  microsecond,
+  nanosecond
+};
+
+enum precision2 parse_precision2(const cpp11::strings& x);
 
 // -----------------------------------------------------------------------------
 #endif

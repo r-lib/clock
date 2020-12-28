@@ -1,5 +1,6 @@
 #include "clock.h"
 #include "utils.h"
+#include "duration.h"
 #include "enums.h"
 #include "conversion.h"
 #include "resolve.h"
@@ -125,12 +126,12 @@ std::basic_ostream<CharT, Traits>&
 clock_to_stream(std::basic_ostream<CharT, Traits>& os,
                 const CharT* fmt,
                 const date::fields<Duration>& fds,
-                const std::string* abbrev,
-                const std::chrono::seconds* offset_sec,
                 const std::pair<const std::string*, const std::string*>& month_names_pair,
                 const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                 const std::pair<const std::string*, const std::string*>& ampm_names_pair,
-                const CharT* decimal_mark)
+                const CharT* decimal_mark,
+                const std::string* abbrev = nullptr,
+                const std::chrono::seconds* offset_sec = nullptr)
 {
     using date::detail::save_ostream;
     using date::detail::get_units;
@@ -1009,15 +1010,34 @@ clock_to_stream(std::basic_ostream<CharT, Traits>& os,
                 const CharT* fmt,
                 const date::year_month_day& ymd,
                 const date::hh_mm_ss<Duration>& hms,
-                const std::string* abbrev,
-                const std::chrono::seconds* offset_sec,
                 const std::pair<const std::string*, const std::string*>& month_names_pair,
                 const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                 const std::pair<const std::string*, const std::string*>& ampm_names_pair,
-                const CharT* decimal_mark)
+                const CharT* decimal_mark,
+                const std::string* abbrev = nullptr,
+                const std::chrono::seconds* offset_sec = nullptr)
 {
   date::fields<Duration> fds{ymd, hms};
-  return clock_to_stream(os, fmt, fds, abbrev, offset_sec, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark);
+  return clock_to_stream(os, fmt, fds, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, abbrev, offset_sec);
+}
+
+template <class CharT, class Traits, class Duration>
+inline
+std::basic_ostream<CharT, Traits>&
+clock_to_stream(std::basic_ostream<CharT, Traits>& os,
+                const CharT* fmt,
+                const date::local_time<Duration>& tp,
+                const std::pair<const std::string*, const std::string*>& month_names_pair,
+                const std::pair<const std::string*, const std::string*>& weekday_names_pair,
+                const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+                const CharT* decimal_mark,
+                const std::string* abbrev = nullptr,
+                const std::chrono::seconds* offset_sec = nullptr)
+{
+  using CT = typename std::common_type<Duration, std::chrono::seconds>::type;
+  auto ld = date::floor<date::days>(tp);
+  date::fields<CT> fds{date::year_month_day{ld}, date::hh_mm_ss<CT>{tp-date::local_seconds{ld}}};
+  return clock_to_stream(os, fmt, fds, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, abbrev, offset_sec);
 }
 
 // -----------------------------------------------------------------------------
@@ -1145,7 +1165,7 @@ cpp11::writable::strings format_time_point_cpp(const clock_field& calendar,
     switch (precision_val) {
     case precision::second: {
       date::hh_mm_ss<std::chrono::seconds> elt_hms{elt_ltod};
-      clock_to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark_char);
+      clock_to_stream(stream, c_format, elt_ymd, elt_hms, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark_char, p_zone_name_print, p_offset);
       break;
     }
     case precision::millisecond: {
@@ -1153,7 +1173,7 @@ cpp11::writable::strings format_time_point_cpp(const clock_field& calendar,
       std::chrono::nanoseconds elt_nanos{elt_nanoseconds_of_second};
       std::chrono::milliseconds elt_millis = std::chrono::duration_cast<std::chrono::milliseconds>(elt_nanos);
       date::hh_mm_ss<std::chrono::milliseconds> elt_hms{elt_ltod + elt_millis};
-      clock_to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark_char);
+      clock_to_stream(stream, c_format, elt_ymd, elt_hms, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark_char, p_zone_name_print, p_offset);
       break;
     }
     case precision::microsecond: {
@@ -1161,14 +1181,14 @@ cpp11::writable::strings format_time_point_cpp(const clock_field& calendar,
       std::chrono::nanoseconds elt_nanos{elt_nanoseconds_of_second};
       std::chrono::microseconds elt_micros = std::chrono::duration_cast<std::chrono::microseconds>(elt_nanos);
       date::hh_mm_ss<std::chrono::microseconds> elt_hms{elt_ltod + elt_micros};
-      clock_to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark_char);
+      clock_to_stream(stream, c_format, elt_ymd, elt_hms, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark_char, p_zone_name_print, p_offset);
       break;
     }
     case precision::nanosecond: {
       int elt_nanoseconds_of_second = nanoseconds_of_second[i];
       std::chrono::nanoseconds elt_nanos{elt_nanoseconds_of_second};
       date::hh_mm_ss<std::chrono::nanoseconds> elt_hms{elt_ltod + elt_nanos};
-      clock_to_stream(stream, c_format, elt_ymd, elt_hms, p_zone_name_print, p_offset, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark_char);
+      clock_to_stream(stream, c_format, elt_ymd, elt_hms, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark_char, p_zone_name_print, p_offset);
       break;
     }
     }
@@ -1188,4 +1208,114 @@ cpp11::writable::strings format_time_point_cpp(const clock_field& calendar,
   }
 
   return out;
+}
+
+// -----------------------------------------------------------------------------
+
+template <typename Duration>
+cpp11::writable::strings format_naive_time_impl(const rclock::duration<Duration>& cd,
+                                                const cpp11::strings& format,
+                                                const cpp11::strings& mon,
+                                                const cpp11::strings& mon_ab,
+                                                const cpp11::strings& day,
+                                                const cpp11::strings& day_ab,
+                                                const cpp11::strings& am_pm,
+                                                const cpp11::strings& decimal_mark) {
+  r_ssize size = cd.size();
+
+  cpp11::writable::strings out(size);
+
+  if (format.size() != 1) {
+    clock_abort("`format` must have size 1.");
+  }
+  std::string string_format(format[0]);
+  const char* c_format = string_format.c_str();
+
+  std::ostringstream stream;
+  stream.imbue(std::locale::classic());
+
+  std::string month_names[24];
+  const std::pair<const std::string*, const std::string*>& month_names_pair = fill_month_names(
+    mon,
+    mon_ab,
+    month_names
+  );
+
+  std::string weekday_names[14];
+  const std::pair<const std::string*, const std::string*>& weekday_names_pair = fill_weekday_names(
+    day,
+    day_ab,
+    weekday_names
+  );
+
+  std::string ampm_names[2];
+  const std::pair<const std::string*, const std::string*>& ampm_names_pair = fill_ampm_names(
+    am_pm,
+    ampm_names
+  );
+
+  std::string decimal_mark_string = decimal_mark[0];
+  const char* decimal_mark_char = decimal_mark_string.c_str();
+
+  for (r_ssize i = 0; i < size; ++i) {
+    if (cd.is_na(i)) {
+      SET_STRING_ELT(out, i, r_chr_na);
+      continue;
+    }
+
+    Duration duration = cd[i];
+    date::local_time<Duration> tp{duration};
+
+    stream.str(std::string());
+    stream.clear();
+
+    clock_to_stream(
+      stream,
+      c_format,
+      tp,
+      month_names_pair,
+      weekday_names_pair,
+      ampm_names_pair,
+      decimal_mark_char
+    );
+
+    if (stream.fail()) {
+      // https://github.com/r-lib/cpp11/issues/137
+      SET_STRING_ELT(out, i, r_chr_na);
+      //out[i] = r_chr_na;
+      continue;
+    }
+
+    // cpp11 seems very slow when inserting strings, so we bypass that here
+    // https://github.com/r-lib/cpp11/issues/137
+    //out[i] = stream.str();
+    std::string str = stream.str();
+    SET_STRING_ELT(out, i, Rf_mkCharLenCE(str.c_str(), str.size(), CE_UTF8));
+  }
+
+  return out;
+}
+
+[[cpp11::register]]
+cpp11::writable::strings format_naive_time_cpp(const cpp11::integers& ticks,
+                                               const cpp11::integers& ticks_of_day,
+                                               const cpp11::integers& ticks_of_second,
+                                               const cpp11::strings& format,
+                                               const cpp11::strings& precision,
+                                               const cpp11::strings& mon,
+                                               const cpp11::strings& mon_ab,
+                                               const cpp11::strings& day,
+                                               const cpp11::strings& day_ab,
+                                               const cpp11::strings& am_pm,
+                                               const cpp11::strings& decimal_mark) {
+  switch (parse_precision2(precision)) {
+  case precision2::day: return format_naive_time_impl(rclock::duration<date::days>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::hour: return format_naive_time_impl(rclock::duration<std::chrono::hours>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::minute: return format_naive_time_impl(rclock::duration<std::chrono::minutes>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::second: return format_naive_time_impl(rclock::duration<std::chrono::seconds>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::millisecond: return format_naive_time_impl(rclock::duration<std::chrono::milliseconds>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::microsecond: return format_naive_time_impl(rclock::duration<std::chrono::microseconds>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::nanosecond: return format_naive_time_impl(rclock::duration<std::chrono::nanoseconds>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  default: clock_abort("Internal error: Unexpected precision.");
+  }
 }

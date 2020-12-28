@@ -132,6 +132,26 @@ convert_year_month_weekday_index_to_calendar_days <- function(year, month, weekd
   .Call("_clock_convert_year_month_weekday_index_to_calendar_days", year, month, weekday, index, day_nonexistent, PACKAGE = "clock")
 }
 
+collect_year_month_day_fields <- function(year, month, day, last) {
+  .Call("_clock_collect_year_month_day_fields", year, month, day, last, PACKAGE = "clock")
+}
+
+collect_year_month_weekday_fields <- function(year, month, weekday, index, last) {
+  .Call("_clock_collect_year_month_weekday_fields", year, month, weekday, index, last, PACKAGE = "clock")
+}
+
+format_duration_cpp <- function(ticks, ticks_of_day, ticks_of_second, precision) {
+  .Call("_clock_format_duration_cpp", ticks, ticks_of_day, ticks_of_second, precision, PACKAGE = "clock")
+}
+
+duration_helper_cpp <- function(n, precision) {
+  .Call("_clock_duration_helper_cpp", n, precision, PACKAGE = "clock")
+}
+
+duration_cast_cpp <- function(ticks, ticks_of_day, ticks_of_second, precision_from, precision_to) {
+  .Call("_clock_duration_cast_cpp", ticks, ticks_of_day, ticks_of_second, precision_from, precision_to, PACKAGE = "clock")
+}
+
 floor_calendar_days_to_year_month_precision <- function(calendar) {
   .Call("_clock_floor_calendar_days_to_year_month_precision", calendar, PACKAGE = "clock")
 }
@@ -146,6 +166,10 @@ floor_calendar_days_to_iso_year_weeknum_precision <- function(calendar) {
 
 format_time_point_cpp <- function(calendar, seconds_of_day, nanoseconds_of_second, zone, format, precision, naive, abbreviate_zone, mon, mon_ab, day, day_ab, am_pm, decimal_mark) {
   .Call("_clock_format_time_point_cpp", calendar, seconds_of_day, nanoseconds_of_second, zone, format, precision, naive, abbreviate_zone, mon, mon_ab, day, day_ab, am_pm, decimal_mark, PACKAGE = "clock")
+}
+
+format_naive_time_cpp <- function(ticks, ticks_of_day, ticks_of_second, format, precision, mon, mon_ab, day, day_ab, am_pm, decimal_mark) {
+  .Call("_clock_format_naive_time_cpp", ticks, ticks_of_day, ticks_of_second, format, precision, mon, mon_ab, day, day_ab, am_pm, decimal_mark, PACKAGE = "clock")
 }
 
 get_offset_cpp <- function(calendar, seconds_of_day, zone) {
@@ -170,6 +194,46 @@ resolve_seconds_of_day <- function(seconds_of_day, ok, day_nonexistent) {
 
 resolve_nanoseconds_of_second <- function(nanoseconds_of_second, ok, day_nonexistent, precision) {
   .Call("_clock_resolve_nanoseconds_of_second", nanoseconds_of_second, ok, day_nonexistent, precision, PACKAGE = "clock")
+}
+
+format_year_month_day <- function(year, month, day) {
+  .Call("_clock_format_year_month_day", year, month, day, PACKAGE = "clock")
+}
+
+invalid_detect_year_month_day <- function(year, month, day) {
+  .Call("_clock_invalid_detect_year_month_day", year, month, day, PACKAGE = "clock")
+}
+
+invalid_count_year_month_day <- function(year, month, day) {
+  .Call("_clock_invalid_count_year_month_day", year, month, day, PACKAGE = "clock")
+}
+
+invalid_any_year_month_day <- function(year, month, day) {
+  .Call("_clock_invalid_any_year_month_day", year, month, day, PACKAGE = "clock")
+}
+
+invalid_resolve_year_month_day <- function(year, month, day, invalid) {
+  .Call("_clock_invalid_resolve_year_month_day", year, month, day, invalid, PACKAGE = "clock")
+}
+
+format_year_month_weekday <- function(year, month, weekday, index, day) {
+  .Call("_clock_format_year_month_weekday", year, month, weekday, index, day, PACKAGE = "clock")
+}
+
+invalid_detect_year_month_weekday <- function(year, month, weekday, index) {
+  .Call("_clock_invalid_detect_year_month_weekday", year, month, weekday, index, PACKAGE = "clock")
+}
+
+invalid_count_year_month_weekday <- function(year, month, weekday, index) {
+  .Call("_clock_invalid_count_year_month_weekday", year, month, weekday, index, PACKAGE = "clock")
+}
+
+invalid_any_year_month_weekday <- function(year, month, weekday, index) {
+  .Call("_clock_invalid_any_year_month_weekday", year, month, weekday, index, PACKAGE = "clock")
+}
+
+invalid_resolve_year_month_weekday <- function(year, month, weekday, index, invalid) {
+  .Call("_clock_invalid_resolve_year_month_weekday", year, month, weekday, index, invalid, PACKAGE = "clock")
 }
 
 zone_standardize <- function(zone) {

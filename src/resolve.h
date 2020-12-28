@@ -25,6 +25,62 @@ static inline void resolve_day_nonexistent_nanos_last_time(std::chrono::nanoseco
 static inline void resolve_day_nonexistent_na(bool& na);
 static inline void resolve_day_nonexistent_error(const r_ssize& i);
 
+// -----------------------------------------------------------------------------
+
+static inline void resolve_invalid_ymd(const r_ssize& i,
+                                       const enum invalid& invalid_val,
+                                       date::year_month_day& ymd,
+                                       bool& na) {
+  switch (invalid_val) {
+  case invalid::first_day: {
+    return resolve_day_nonexistent_ymd_first_day(ymd);
+  }
+  case invalid::first_time: {
+    return resolve_day_nonexistent_ymd_first_day(ymd);
+  }
+  case invalid::last_day: {
+    return resolve_day_nonexistent_ymd_last_day(ymd);
+  }
+  case invalid::last_time: {
+    return resolve_day_nonexistent_ymd_last_day(ymd);
+  }
+  case invalid::na: {
+    return resolve_day_nonexistent_na(na);
+  }
+  case invalid::error: {
+    resolve_day_nonexistent_error(i);
+  }
+  }
+}
+
+static inline void resolve_invalid_ymw(const r_ssize& i,
+                                       const enum invalid& invalid_val,
+                                       date::year_month_weekday& ymw,
+                                       bool& na) {
+  switch (invalid_val) {
+  case invalid::first_day: {
+    return resolve_day_nonexistent_ymw_first_day(ymw);
+  }
+  case invalid::first_time: {
+    return resolve_day_nonexistent_ymw_first_day(ymw);
+  }
+  case invalid::last_day: {
+    return resolve_day_nonexistent_ymw_last_day(ymw);
+  }
+  case invalid::last_time: {
+    return resolve_day_nonexistent_ymw_last_day(ymw);
+  }
+  case invalid::na: {
+    return resolve_day_nonexistent_na(na);
+  }
+  case invalid::error: {
+    resolve_day_nonexistent_error(i);
+  }
+  }
+}
+
+// -----------------------------------------------------------------------------
+
 static inline void resolve_day_nonexistent_ymd(const r_ssize& i,
                                                const enum day_nonexistent& day_nonexistent_val,
                                                date::year_month_day& ymd,

@@ -249,6 +249,10 @@ is_number <- function(x) {
   }
 }
 
+is_last <- function(x) {
+  identical(x, "last")
+}
+
 if_else <- function(condition, true, false, na = NULL) {
   vec_assert(condition, logical())
 
