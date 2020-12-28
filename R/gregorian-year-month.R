@@ -39,12 +39,7 @@ format.clock_year_month <- function(x, ...) {
   year <- field_year(x)
   month <- field_month(x)
 
-  year <- sprintf("%04i", year)
-  month <- sprintf("%02i", month)
-
-  out <- paste0(year, "-", month)
-
-  out[is.na(x)] <- NA_character_
+  out <- format_year_month(year, month)
   names(out) <- names(x)
 
   out
@@ -66,6 +61,26 @@ is_year_month <- function(x) {
 }
 
 #' @export
+calendar_is_complete.clock_year_month <- function(x) {
+  FALSE
+}
+
+#' @export
 invalid_detect.clock_year_month <- function(x) {
-  zeros_along(x, na_propagate = FALSE)
+  false_along(x)
+}
+
+#' @export
+invalid_any.clock_year_month <- function(x) {
+  FALSE
+}
+
+#' @export
+invalid_count.clock_year_month <- function(x) {
+  0L
+}
+
+#' @export
+invalid_resolve.clock_year_month <- function(x, invalid = "last-day") {
+  x
 }

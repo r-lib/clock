@@ -418,6 +418,13 @@ extern "C" SEXP _clock_invalid_resolve_year_month_weekday(SEXP year, SEXP month,
     return cpp11::as_sexp(invalid_resolve_year_month_weekday(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(month), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(weekday), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(index), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(invalid)));
   END_CPP11
 }
+// year-month.cpp
+cpp11::writable::strings format_year_month(const cpp11::integers& year, const cpp11::integers& month);
+extern "C" SEXP _clock_format_year_month(SEXP year, SEXP month) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(format_year_month(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(month)));
+  END_CPP11
+}
 // zone.cpp
 cpp11::writable::strings zone_standardize(const cpp11::strings& zone);
 extern "C" SEXP _clock_zone_standardize(SEXP zone) {
@@ -486,6 +493,7 @@ extern SEXP _clock_floor_calendar_days_to_year_quarternum_precision(SEXP, SEXP);
 extern SEXP _clock_format_duration_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_format_naive_time_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_format_time_point_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_format_year_month(SEXP, SEXP);
 extern SEXP _clock_format_year_month_day(SEXP, SEXP, SEXP);
 extern SEXP _clock_format_year_month_weekday(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_get_offset_cpp(SEXP, SEXP, SEXP);
@@ -550,6 +558,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_format_duration_cpp",                                                                  (DL_FUNC) &_clock_format_duration_cpp,                                                                   4},
     {"_clock_format_naive_time_cpp",                                                                (DL_FUNC) &_clock_format_naive_time_cpp,                                                                11},
     {"_clock_format_time_point_cpp",                                                                (DL_FUNC) &_clock_format_time_point_cpp,                                                                14},
+    {"_clock_format_year_month",                                                                    (DL_FUNC) &_clock_format_year_month,                                                                     2},
     {"_clock_format_year_month_day",                                                                (DL_FUNC) &_clock_format_year_month_day,                                                                 3},
     {"_clock_format_year_month_weekday",                                                            (DL_FUNC) &_clock_format_year_month_weekday,                                                             5},
     {"_clock_get_offset_cpp",                                                                       (DL_FUNC) &_clock_get_offset_cpp,                                                                        3},

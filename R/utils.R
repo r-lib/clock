@@ -63,6 +63,9 @@ from_posixct_to_posixct <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+false_along <- function(x) {
+  vector("logical", length = vec_size(x))
+}
 ones_along <- function(x) {
   rep(1L, times = vec_size(x))
 }

@@ -236,6 +236,10 @@ invalid_resolve_year_month_weekday <- function(year, month, weekday, index, inva
   .Call("_clock_invalid_resolve_year_month_weekday", year, month, weekday, index, invalid, PACKAGE = "clock")
 }
 
+format_year_month <- function(year, month) {
+  .Call("_clock_format_year_month", year, month, PACKAGE = "clock")
+}
+
 zone_standardize <- function(zone) {
   .Call("_clock_zone_standardize", zone, PACKAGE = "clock")
 }
