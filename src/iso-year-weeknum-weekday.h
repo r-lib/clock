@@ -1,5 +1,5 @@
-#ifndef CLOCK_ISO_iso_year_weeknum_weekday_H
-#define CLOCK_ISO_iso_year_weeknum_weekday_H
+#ifndef CLOCK_ISO_YEAR_WEEKNUM_WEEKDAY_H
+#define CLOCK_ISO_YEAR_WEEKNUM_WEEKDAY_H
 
 #include "clock.h"
 
