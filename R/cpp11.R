@@ -180,6 +180,30 @@ clock_set_install <- function(path) {
   invisible(.Call("_clock_clock_set_install", path, PACKAGE = "clock"))
 }
 
+format_iso_year_weeknum_weekday <- function(year, weeknum, weekday) {
+  .Call("_clock_format_iso_year_weeknum_weekday", year, weeknum, weekday, PACKAGE = "clock")
+}
+
+invalid_detect_iso_year_weeknum_weekday <- function(year, weeknum, weekday) {
+  .Call("_clock_invalid_detect_iso_year_weeknum_weekday", year, weeknum, weekday, PACKAGE = "clock")
+}
+
+invalid_count_iso_year_weeknum_weekday <- function(year, weeknum, weekday) {
+  .Call("_clock_invalid_count_iso_year_weeknum_weekday", year, weeknum, weekday, PACKAGE = "clock")
+}
+
+invalid_any_iso_year_weeknum_weekday <- function(year, weeknum, weekday) {
+  .Call("_clock_invalid_any_iso_year_weeknum_weekday", year, weeknum, weekday, PACKAGE = "clock")
+}
+
+invalid_resolve_iso_year_weeknum_weekday <- function(year, weeknum, weekday, invalid) {
+  .Call("_clock_invalid_resolve_iso_year_weeknum_weekday", year, weeknum, weekday, invalid, PACKAGE = "clock")
+}
+
+collect_iso_year_weeknum_weekday_fields <- function(year, weeknum, weekday, last) {
+  .Call("_clock_collect_iso_year_weeknum_weekday_fields", year, weeknum, weekday, last, PACKAGE = "clock")
+}
+
 parse_zoned_datetime_cpp <- function(x, format, zone, dst_nonexistent, dst_ambiguous, size) {
   .Call("_clock_parse_zoned_datetime_cpp", x, format, zone, dst_nonexistent, dst_ambiguous, size, PACKAGE = "clock")
 }
