@@ -105,8 +105,8 @@ invalid_resolve.clock_iso_year_weeknum_weekday <- function(x, invalid = "last-da
 
   fields <- invalid_resolve_iso_year_weeknum_weekday(
     field_year(x),
-    field_month(x),
-    field_day(x),
+    field_weeknum(x),
+    field_weekday(x),
     invalid
   )
 
