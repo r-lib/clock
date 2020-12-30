@@ -308,6 +308,10 @@ collect_year_quarternum_quarterday_fields <- function(year, quarternum, quarterd
   .Call("_clock_collect_year_quarternum_quarterday_fields", year, quarternum, quarterday, start, last, PACKAGE = "clock")
 }
 
+format_year_quarternum <- function(year, quarternum) {
+  .Call("_clock_format_year_quarternum", year, quarternum, PACKAGE = "clock")
+}
+
 zone_standardize <- function(zone) {
   .Call("_clock_zone_standardize", zone, PACKAGE = "clock")
 }

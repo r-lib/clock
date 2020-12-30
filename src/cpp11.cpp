@@ -544,6 +544,13 @@ extern "C" SEXP _clock_collect_year_quarternum_quarterday_fields(SEXP year, SEXP
     return cpp11::as_sexp(collect_year_quarternum_quarterday_fields(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(quarternum), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(quarterday), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start), cpp11::as_cpp<cpp11::decay_t<const bool&>>(last)));
   END_CPP11
 }
+// year-quarternum.cpp
+cpp11::writable::strings format_year_quarternum(const cpp11::integers& year, const cpp11::integers& quarternum);
+extern "C" SEXP _clock_format_year_quarternum(SEXP year, SEXP quarternum) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(format_year_quarternum(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(quarternum)));
+  END_CPP11
+}
 // zone.cpp
 cpp11::writable::strings zone_standardize(const cpp11::strings& zone);
 extern "C" SEXP _clock_zone_standardize(SEXP zone) {
@@ -619,6 +626,7 @@ extern SEXP _clock_format_time_point_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEX
 extern SEXP _clock_format_year_month(SEXP, SEXP);
 extern SEXP _clock_format_year_month_day(SEXP, SEXP, SEXP);
 extern SEXP _clock_format_year_month_weekday(SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_format_year_quarternum(SEXP, SEXP);
 extern SEXP _clock_format_year_quarternum_quarterday(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_get_offset_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_invalid_any_iso_year_weeknum(SEXP, SEXP);
@@ -701,6 +709,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_format_year_month",                                                                    (DL_FUNC) &_clock_format_year_month,                                                                     2},
     {"_clock_format_year_month_day",                                                                (DL_FUNC) &_clock_format_year_month_day,                                                                 3},
     {"_clock_format_year_month_weekday",                                                            (DL_FUNC) &_clock_format_year_month_weekday,                                                             5},
+    {"_clock_format_year_quarternum",                                                               (DL_FUNC) &_clock_format_year_quarternum,                                                                2},
     {"_clock_format_year_quarternum_quarterday",                                                    (DL_FUNC) &_clock_format_year_quarternum_quarterday,                                                     4},
     {"_clock_get_offset_cpp",                                                                       (DL_FUNC) &_clock_get_offset_cpp,                                                                        3},
     {"_clock_invalid_any_iso_year_weeknum",                                                         (DL_FUNC) &_clock_invalid_any_iso_year_weeknum,                                                          2},
