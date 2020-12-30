@@ -57,6 +57,7 @@ new_year_quarternum_quarterday <- function(year = integer(),
 
   new_quarterly(
     fields = fields,
+    start = start,
     ...,
     names = names,
     class = c(class, "clock_year_quarternum_quarterday")
