@@ -21,7 +21,8 @@ calendar_ptype_full <- function(x, class) {
 }
 
 calendar_ptype_abbr <- function(x, abbr) {
-  calendar_ptype_full(x, abbr)
+  count <- invalid_count(x)
+  paste0(abbr, "[i=", count, "]")
 }
 
 # - Each subclass implements a `format()` method
