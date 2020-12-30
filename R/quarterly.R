@@ -15,11 +15,12 @@ get_quarterly_start <- function(x) {
 }
 
 pretty_quarterly_start <- function(start, abbreviate = FALSE) {
-  # TODO: Locale aware?
+  locale <- default_date_locale()
+
   if (abbreviate) {
-    month.abb[start]
+    locale$date_names$mon_ab[start]
   } else {
-    month.name[start]
+    locale$date_names$mon[start]
   }
 }
 
