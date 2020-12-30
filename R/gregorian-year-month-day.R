@@ -70,14 +70,12 @@ format.clock_year_month_day <- function(x, ...) {
 
 #' @export
 vec_ptype_full.clock_year_month_day <- function(x, ...) {
-  count <- invalid_count(x)
-  paste0("year_month_day[invalid=", count, "]")
+  calendar_ptype_full(x, "year_month_day")
 }
 
 #' @export
 vec_ptype_abbr.clock_year_month_day <- function(x, ...) {
-  count <- invalid_count(x)
-  paste0("ymd[i=", count, "]")
+  calendar_ptype_abbr(x, "ymd")
 }
 
 #' @export

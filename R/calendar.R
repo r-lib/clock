@@ -15,6 +15,15 @@ calendar_is_complete.clock_calendar <- function(x) {
   abort("This calendar type has not yet implemented `calendar_is_complete()`.")
 }
 
+calendar_ptype_full <- function(x, class) {
+  count <- invalid_count(x)
+  paste0(class, "[invalid=", count, "]")
+}
+
+calendar_ptype_abbr <- function(x, abbr) {
+  calendar_ptype_full(x, abbr)
+}
+
 # - Each subclass implements a `format()` method
 # - Unlike vctrs, don't use `print(quote = FALSE)` since we want to match base R
 #' @export
