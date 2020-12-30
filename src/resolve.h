@@ -235,6 +235,9 @@ static inline void resolve_day_nonexistent_yqnqd_first_day(quarterly::year_quart
 static inline void resolve_day_nonexistent_yww_first_day(iso_week::year_weeknum_weekday& yww) {
   yww = (yww.year() + iso_week::years{1}) / iso_week::weeknum{1} / iso_week::mon;
 }
+static inline void resolve_day_nonexistent_yw_first_day(iso_week::year_weeknum& yw) {
+  yw = (yw.year() + iso_week::years{1}) / iso_week::weeknum{1};
+}
 static inline void resolve_day_nonexistent_tod_first_time(std::chrono::seconds& tod) {
   tod = std::chrono::seconds{0};
 }
@@ -254,6 +257,10 @@ static inline void resolve_day_nonexistent_yqnqd_last_day(quarterly::year_quarte
 }
 static inline void resolve_day_nonexistent_yww_last_day(iso_week::year_weeknum_weekday& yww) {
   yww = yww.year() / iso_week::last / iso_week::sun;
+}
+static inline void resolve_day_nonexistent_yw_last_day(iso_week::year_weeknum& yw) {
+  const iso_week::year_lastweek ylw{yw.year()};
+  yw = iso_week::year_weeknum{ylw.year(), ylw.weeknum()};
 }
 static inline void resolve_day_nonexistent_tod_last_time(std::chrono::seconds& tod) {
   tod = std::chrono::seconds{86400 - 1};

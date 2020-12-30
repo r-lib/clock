@@ -204,6 +204,26 @@ collect_iso_year_weeknum_weekday_fields <- function(year, weeknum, weekday, last
   .Call("_clock_collect_iso_year_weeknum_weekday_fields", year, weeknum, weekday, last, PACKAGE = "clock")
 }
 
+format_iso_year_weeknum <- function(year, weeknum) {
+  .Call("_clock_format_iso_year_weeknum", year, weeknum, PACKAGE = "clock")
+}
+
+invalid_detect_iso_year_weeknum <- function(year, weeknum) {
+  .Call("_clock_invalid_detect_iso_year_weeknum", year, weeknum, PACKAGE = "clock")
+}
+
+invalid_count_iso_year_weeknum <- function(year, weeknum) {
+  .Call("_clock_invalid_count_iso_year_weeknum", year, weeknum, PACKAGE = "clock")
+}
+
+invalid_any_iso_year_weeknum <- function(year, weeknum) {
+  .Call("_clock_invalid_any_iso_year_weeknum", year, weeknum, PACKAGE = "clock")
+}
+
+invalid_resolve_iso_year_weeknum <- function(year, weeknum, invalid) {
+  .Call("_clock_invalid_resolve_iso_year_weeknum", year, weeknum, invalid, PACKAGE = "clock")
+}
+
 parse_zoned_datetime_cpp <- function(x, format, zone, dst_nonexistent, dst_ambiguous, size) {
   .Call("_clock_parse_zoned_datetime_cpp", x, format, zone, dst_nonexistent, dst_ambiguous, size, PACKAGE = "clock")
 }
@@ -262,6 +282,30 @@ invalid_resolve_year_month_weekday <- function(year, month, weekday, index, inva
 
 format_year_month <- function(year, month) {
   .Call("_clock_format_year_month", year, month, PACKAGE = "clock")
+}
+
+format_year_quarternum_quarterday <- function(year, quarternum, quarterday, start) {
+  .Call("_clock_format_year_quarternum_quarterday", year, quarternum, quarterday, start, PACKAGE = "clock")
+}
+
+invalid_detect_year_quarternum_quarterday <- function(year, quarternum, quarterday, start) {
+  .Call("_clock_invalid_detect_year_quarternum_quarterday", year, quarternum, quarterday, start, PACKAGE = "clock")
+}
+
+invalid_count_year_quarternum_quarterday <- function(year, quarternum, quarterday, start) {
+  .Call("_clock_invalid_count_year_quarternum_quarterday", year, quarternum, quarterday, start, PACKAGE = "clock")
+}
+
+invalid_any_year_quarternum_quarterday <- function(year, quarternum, quarterday, start) {
+  .Call("_clock_invalid_any_year_quarternum_quarterday", year, quarternum, quarterday, start, PACKAGE = "clock")
+}
+
+invalid_resolve_year_quarternum_quarterday <- function(year, quarternum, quarterday, start, invalid) {
+  .Call("_clock_invalid_resolve_year_quarternum_quarterday", year, quarternum, quarterday, start, invalid, PACKAGE = "clock")
+}
+
+collect_year_quarternum_quarterday_fields <- function(year, quarternum, quarterday, start, last) {
+  .Call("_clock_collect_year_quarternum_quarterday_fields", year, quarternum, quarterday, start, last, PACKAGE = "clock")
 }
 
 zone_standardize <- function(zone) {
