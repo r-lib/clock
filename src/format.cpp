@@ -1351,3 +1351,129 @@ cpp11::writable::strings format_time_point_cpp(const cpp11::integers& ticks,
   default: clock_abort("Internal error: Unexpected clock.");
   }
 }
+
+// -----------------------------------------------------------------------------
+
+template <typename Duration>
+cpp11::writable::strings format_zoned_time_impl(const rclock::duration<Duration>& cd,
+                                                const cpp11::strings& zone,
+                                                const bool& abbreviate_zone,
+                                                const cpp11::strings& format,
+                                                const cpp11::strings& mon,
+                                                const cpp11::strings& mon_ab,
+                                                const cpp11::strings& day,
+                                                const cpp11::strings& day_ab,
+                                                const cpp11::strings& am_pm,
+                                                const cpp11::strings& decimal_mark) {
+  const r_ssize size = cd.size();
+
+  cpp11::writable::strings out(size);
+
+  if (format.size() != 1) {
+    clock_abort("`format` must have size 1.");
+  }
+  const std::string string_format(format[0]);
+  const char* c_format = string_format.c_str();
+
+  const cpp11::writable::strings zone_standard = zone_standardize(zone);
+  const std::string zone_name = cpp11::r_string(zone_standard[0]);
+  const date::time_zone* p_time_zone = zone_name_load(zone_name);
+
+  // Default printable zone name to full provided zone name
+  std::string zone_name_print =
+    (zone_name.size() == 0) ? zone_name_current() : zone_name;
+
+  std::ostringstream stream;
+  stream.imbue(std::locale::classic());
+
+  std::string month_names[24];
+  const std::pair<const std::string*, const std::string*>& month_names_pair = fill_month_names(
+    mon,
+    mon_ab,
+    month_names
+  );
+
+  std::string weekday_names[14];
+  const std::pair<const std::string*, const std::string*>& weekday_names_pair = fill_weekday_names(
+    day,
+    day_ab,
+    weekday_names
+  );
+
+  std::string ampm_names[2];
+  const std::pair<const std::string*, const std::string*>& ampm_names_pair = fill_ampm_names(
+    am_pm,
+    ampm_names
+  );
+
+  const std::string decimal_mark_string = decimal_mark[0];
+  const char* decimal_mark_char = decimal_mark_string.c_str();
+
+  for (r_ssize i = 0; i < size; ++i) {
+    if (cd.is_na(i)) {
+      SET_STRING_ELT(out, i, r_chr_na);
+      continue;
+    }
+
+    const Duration duration = cd[i];
+    const date::sys_time<Duration> stp{duration};
+
+    const date::sys_info info = p_time_zone->get_info(stp);
+
+    const std::chrono::seconds offset = info.offset;
+
+    if (abbreviate_zone) {
+      zone_name_print = info.abbrev;
+    }
+
+    date::local_time<Duration> ltp{stp.time_since_epoch() + info.offset};
+
+    stream.str(std::string());
+    stream.clear();
+
+    clock_to_stream(
+      stream,
+      c_format,
+      ltp,
+      month_names_pair,
+      weekday_names_pair,
+      ampm_names_pair,
+      decimal_mark_char,
+      &zone_name_print,
+      &offset
+    );
+
+    if (stream.fail()) {
+      SET_STRING_ELT(out, i, r_chr_na);
+      continue;
+    }
+
+    std::string str = stream.str();
+    SET_STRING_ELT(out, i, Rf_mkCharLenCE(str.c_str(), str.size(), CE_UTF8));
+  }
+
+  return out;
+}
+
+[[cpp11::register]]
+cpp11::writable::strings format_zoned_time_cpp(const cpp11::integers& ticks,
+                                               const cpp11::integers& ticks_of_day,
+                                               const cpp11::integers& ticks_of_second,
+                                               const cpp11::strings& zone,
+                                               const bool& abbreviate_zone,
+                                               const cpp11::strings& format,
+                                               const cpp11::strings& precision,
+                                               const cpp11::strings& mon,
+                                               const cpp11::strings& mon_ab,
+                                               const cpp11::strings& day,
+                                               const cpp11::strings& day_ab,
+                                               const cpp11::strings& am_pm,
+                                               const cpp11::strings& decimal_mark) {
+  switch (parse_precision2(precision)) {
+  case precision2::second: return format_zoned_time_impl(rclock::duration<std::chrono::seconds>(ticks, ticks_of_day, ticks_of_second), zone, abbreviate_zone, format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::millisecond: return format_zoned_time_impl(rclock::duration<std::chrono::milliseconds>(ticks, ticks_of_day, ticks_of_second), zone, abbreviate_zone, format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::microsecond: return format_zoned_time_impl(rclock::duration<std::chrono::microseconds>(ticks, ticks_of_day, ticks_of_second), zone, abbreviate_zone, format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::nanosecond: return format_zoned_time_impl(rclock::duration<std::chrono::nanoseconds>(ticks, ticks_of_day, ticks_of_second), zone, abbreviate_zone, format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  default: clock_abort("Internal error: Unexpected precision.");
+  }
+}

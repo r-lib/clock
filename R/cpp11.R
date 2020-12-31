@@ -172,6 +172,10 @@ format_time_point_cpp <- function(ticks, ticks_of_day, ticks_of_second, clock, f
   .Call("_clock_format_time_point_cpp", ticks, ticks_of_day, ticks_of_second, clock, format, precision, mon, mon_ab, day, day_ab, am_pm, decimal_mark, PACKAGE = "clock")
 }
 
+format_zoned_time_cpp <- function(ticks, ticks_of_day, ticks_of_second, zone, abbreviate_zone, format, precision, mon, mon_ab, day, day_ab, am_pm, decimal_mark) {
+  .Call("_clock_format_zoned_time_cpp", ticks, ticks_of_day, ticks_of_second, zone, abbreviate_zone, format, precision, mon, mon_ab, day, day_ab, am_pm, decimal_mark, PACKAGE = "clock")
+}
+
 get_offset_cpp <- function(calendar, seconds_of_day, zone) {
   .Call("_clock_get_offset_cpp", calendar, seconds_of_day, zone, PACKAGE = "clock")
 }

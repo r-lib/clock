@@ -3,4 +3,5 @@
   clock_set_install(tzdata)
 
   vctrs::s3_register("pillar::pillar_shaft", "clock_rcrd", pillar_shaft.clock_rcrd)
+  vctrs::s3_register("pillar::pillar_shaft", "clock_zoned_time", pillar_shaft.clock_zoned_time)
 }

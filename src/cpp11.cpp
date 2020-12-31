@@ -305,6 +305,13 @@ extern "C" SEXP _clock_format_time_point_cpp(SEXP ticks, SEXP ticks_of_day, SEXP
     return cpp11::as_sexp(format_time_point_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(ticks), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(ticks_of_day), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(ticks_of_second), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(clock), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mon), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mon_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(am_pm), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(decimal_mark)));
   END_CPP11
 }
+// format.cpp
+cpp11::writable::strings format_zoned_time_cpp(const cpp11::integers& ticks, const cpp11::integers& ticks_of_day, const cpp11::integers& ticks_of_second, const cpp11::strings& zone, const bool& abbreviate_zone, const cpp11::strings& format, const cpp11::strings& precision, const cpp11::strings& mon, const cpp11::strings& mon_ab, const cpp11::strings& day, const cpp11::strings& day_ab, const cpp11::strings& am_pm, const cpp11::strings& decimal_mark);
+extern "C" SEXP _clock_format_zoned_time_cpp(SEXP ticks, SEXP ticks_of_day, SEXP ticks_of_second, SEXP zone, SEXP abbreviate_zone, SEXP format, SEXP precision, SEXP mon, SEXP mon_ab, SEXP day, SEXP day_ab, SEXP am_pm, SEXP decimal_mark) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(format_zoned_time_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(ticks), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(ticks_of_day), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(ticks_of_second), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const bool&>>(abbreviate_zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mon), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mon_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(am_pm), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(decimal_mark)));
+  END_CPP11
+}
 // getters.cpp
 cpp11::writable::integers get_offset_cpp(const clock_field& calendar, const clock_field& seconds_of_day, const cpp11::strings& zone);
 extern "C" SEXP _clock_get_offset_cpp(SEXP calendar, SEXP seconds_of_day, SEXP zone) {
@@ -628,6 +635,7 @@ extern SEXP _clock_format_year_month_day(SEXP, SEXP, SEXP);
 extern SEXP _clock_format_year_month_weekday(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_format_year_quarternum(SEXP, SEXP);
 extern SEXP _clock_format_year_quarternum_quarterday(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_format_zoned_time_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_get_offset_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_invalid_any_iso_year_weeknum(SEXP, SEXP);
 extern SEXP _clock_invalid_any_iso_year_weeknum_weekday(SEXP, SEXP, SEXP);
@@ -711,6 +719,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_format_year_month_weekday",                                                            (DL_FUNC) &_clock_format_year_month_weekday,                                                             5},
     {"_clock_format_year_quarternum",                                                               (DL_FUNC) &_clock_format_year_quarternum,                                                                2},
     {"_clock_format_year_quarternum_quarterday",                                                    (DL_FUNC) &_clock_format_year_quarternum_quarterday,                                                     4},
+    {"_clock_format_zoned_time_cpp",                                                                (DL_FUNC) &_clock_format_zoned_time_cpp,                                                                13},
     {"_clock_get_offset_cpp",                                                                       (DL_FUNC) &_clock_get_offset_cpp,                                                                        3},
     {"_clock_invalid_any_iso_year_weeknum",                                                         (DL_FUNC) &_clock_invalid_any_iso_year_weeknum,                                                          2},
     {"_clock_invalid_any_iso_year_weeknum_weekday",                                                 (DL_FUNC) &_clock_invalid_any_iso_year_weeknum_weekday,                                                  3},
