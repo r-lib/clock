@@ -187,3 +187,19 @@ enum precision2 parse_precision2(const cpp11::strings& x) {
 
   clock_abort("'%s' is not a recognized `precision` option.", string.c_str());
 }
+
+// -----------------------------------------------------------------------------
+
+// [[ include("enums.h") ]]
+enum clock parse_clock(const cpp11::strings& x) {
+  if (x.size() != 1) {
+    clock_abort("`clock` must be a string with length 1.");
+  }
+
+  std::string string = x[0];
+
+  if (string == "sys") return clock::sys;
+  if (string == "naive") return clock::naive;
+
+  clock_abort("'%s' is not a recognized `clock` option.", string.c_str());
+}

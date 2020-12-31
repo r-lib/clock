@@ -1,231 +1,239 @@
-new_time_point <- function(calendar = new_year_month_day(),
-                           seconds_of_day = integer(),
-                           nanoseconds_of_second = NULL,
-                           precision = "second",
+new_sys_time <- function(duration = duration_days()) {
+  new_time_point(duration, clock = "sys")
+}
+sys_days <- function(n = integer()) {
+  duration <- duration_days(n)
+  new_sys_time(duration)
+}
+sys_seconds <- function(n = integer()) {
+  duration <- duration_seconds(n)
+  new_sys_time(duration)
+}
+
+is_sys_time <- function(x) {
+  is_time_point(x) && time_point_clock(x) == "sys"
+}
+
+# ------------------------------------------------------------------------------
+
+new_naive_time <- function(duration = duration_days()) {
+  new_time_point(duration, clock = "naive")
+}
+naive_days <- function(n = integer()) {
+  duration <- duration_days(n)
+  new_naive_time(duration)
+}
+naive_seconds <- function(n = integer()) {
+  duration <- duration_seconds(n)
+  new_naive_time(duration)
+}
+
+is_naive_time <- function(x) {
+  is_time_point(x) && time_point_clock(x) == "naive"
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+new_time_point <- function(duration = duration_days(),
+                           clock = "sys",
                            ...,
                            names = NULL,
                            class = NULL) {
-  if (!is_calendar(calendar)) {
-    abort("`calendar` must be a calendar.")
-  }
-  if (!identical(get_precision(calendar), "day")) {
-    abort("`calendar` must have a precision of 'day'.")
+  if (!is_duration(duration)) {
+    abort("`duration` must be a duration.")
   }
 
-  if (!is_integer(seconds_of_day)) {
-    abort("`seconds_of_day` must be an integer vector.")
+  precision <- duration_precision(duration)
+  if (precision_value(precision) < PRECISION_DAY) {
+    abort("`duration` must be at least daily precision.")
   }
 
-  validate_precision(precision)
+  fields <- list(duration = duration)
 
-  fields <- list(calendar = calendar, seconds_of_day = seconds_of_day)
+  clock_validate(clock)
 
-  # Only include nanoseconds if subsecond precision
-  if (!identical(precision, "second")) {
-    if (!is_integer(nanoseconds_of_second)) {
-      abort("`nanoseconds_of_second` must be an integer vector when using subsecond precision.")
-    }
-
-    nanos <- list(nanoseconds_of_second = nanoseconds_of_second)
-    fields <- c(fields, nanos)
-  }
-
-  size <- vec_size(calendar)
-  validate_names(names, size)
-
-  new_rcrd(
+  new_clock_rcrd(
     fields = fields,
-    precision = precision,
+    clock = clock,
     ...,
-    `clock_time_point:::names` = names,
+    names = names,
     class = c(class, "clock_time_point")
   )
 }
 
+#' @export
 is_time_point <- function(x) {
   inherits(x, "clock_time_point")
 }
 
 # ------------------------------------------------------------------------------
 
-is_subsecond_precision <- function(x) {
-  x %in% c("millisecond", "microsecond", "nanosecond")
+time_point_clock <- function(x) {
+  attr(x, "clock", exact = TRUE)
 }
-is_subsecond_time_point <- function(x) {
-  is_subsecond_precision(get_precision(x))
+time_point_duration <- function(x) {
+  field_duration(x)
 }
-
-validate_precision <- function(precision) {
-  if (!is_string(precision)) {
-    abort("`precision` must be a string.")
-  }
-  if (is_false(precision %in% precisions())) {
-    abort("`precision` must be one of 'second', 'millisecond', 'microsecond', or 'nanosecond'.")
-  }
-  invisible(precision)
+time_point_precision <- function(x) {
+  duration_precision(time_point_duration(x))
 }
 
-precisions <- function() {
-  c("second", "millisecond", "microsecond", "nanosecond")
-}
-
-# ------------------------------------------------------------------------------
-
-field_calendar <- function(x) {
-  field(x, "calendar")
-}
-field_seconds_of_day <- function(x) {
-  field(x, "seconds_of_day")
-}
-field_nanoseconds_of_second <- function(x, strict = TRUE) {
-  if (strict) {
-    # Error if doesn't have the field
-    out <- field(x, "nanoseconds_of_second")
-    return(out)
-  }
-
-  if (has_nanoseconds_of_second(x)) {
-    field(x, "nanoseconds_of_second")
-  } else {
-    NULL
-  }
-}
-
-has_field <- function(x, field) {
-  field %in% fields(x)
-}
-has_nanoseconds_of_second <- function(x) {
-  has_field(x, "nanoseconds_of_second")
-}
-
-# ------------------------------------------------------------------------------
-
-get_precision_abbr <- function(x) {
-  precision <- get_precision(x)
-
-  if (identical(precision, "second")) {
-    "sec"
-  } else if (identical(precision, "millisecond")) {
-    "milli"
-  } else if (identical(precision, "microsecond")) {
-    "micro"
-  } else if (identical(precision, "nanosecond")) {
-    "nano"
-  } else {
-    abort("Internal error: Unknown precision to get an abbreviation for.")
-  }
+field_duration <- function(x) {
+  field(x, "duration")
 }
 
 # ------------------------------------------------------------------------------
 
 #' @export
-names.clock_time_point <- function(x) {
-  attr(x, "clock_time_point:::names", exact = TRUE)
+format.clock_time_point <- function(x,
+                                    ...,
+                                    format = NULL,
+                                    locale = default_date_locale()) {
+  if (!is_date_locale(locale)) {
+    abort("`locale` must be a date locale object.")
+  }
+
+  duration <- time_point_duration(x)
+  clock <- time_point_clock(x)
+
+  precision <- duration_precision(duration)
+
+  if (is_null(format)) {
+    format <- time_point_precision_format(precision)
+  }
+
+  ticks <- field_ticks(duration)
+  ticks_of_day <- field_ticks_of_day(duration, strict = FALSE)
+  ticks_of_second <- field_ticks_of_second(duration, strict = FALSE)
+
+  date_names <- locale$date_names
+  decimal_mark <- locale$decimal_mark
+
+  out <- format_time_point_cpp(
+    ticks = ticks,
+    ticks_of_day = ticks_of_day,
+    ticks_of_second = ticks_of_second,
+    clock = clock,
+    format = format,
+    precision = precision,
+    mon = date_names$mon,
+    mon_ab = date_names$mon_ab,
+    day = date_names$day,
+    day_ab = date_names$day_ab,
+    am_pm = date_names$am_pm,
+    decimal_mark = decimal_mark
+  )
+
+  names(out) <- names(x)
+
+  out
+}
+
+
+time_point_precision_format <- function(precision) {
+  switch(
+    precision,
+    day = "%Y-%m-%d",
+    hour = "%Y-%m-%d %H",
+    minute = "%Y-%m-%d %H:%M",
+    second = "%Y-%m-%d %H:%M:%S",
+    millisecond = "%Y-%m-%d %H:%M:%S",
+    microsecond = "%Y-%m-%d %H:%M:%S",
+    nanosecond = "%Y-%m-%d %H:%M:%S",
+    abort("Unknown precision.")
+  )
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+vec_ptype_full.clock_time_point <- function(x, ...) {
+  clock <- time_point_clock(x)
+  duration <- time_point_duration(x)
+  precision <- duration_precision(duration)
+  paste0("time_point<", clock, "><", precision, ">")
 }
 
 #' @export
-`names<-.clock_time_point` <- function(x, value) {
-  attrib <- attributes(x)
+vec_ptype_abbr.clock_time_point <- function(x, ...) {
+  clock <- time_point_clock(x)
+  duration <- time_point_duration(x)
+  precision <- duration_precision(duration)
+  precision <- precision_abbr(precision)
+  paste0("tp<", clock, "><", precision, ">")
+}
 
-  # Remove names
-  if (is.null(value)) {
-    attrib[["clock_time_point:::names"]] <- NULL
-    attributes(x) <- attrib
+# ------------------------------------------------------------------------------
 
+#' @export
+vec_ptype2.clock_time_point.clock_time_point <- function(x, y, ...) {
+  x_clock <- time_point_clock(x)
+  y_clock <- time_point_clock(y)
+
+  if (x_clock != y_clock) {
+    stop_incompatible_type(x, y, ..., details = "Clocks can't differ.")
+  }
+
+  x_precision <- time_point_precision(x)
+  y_precision <- time_point_precision(y)
+
+  if (x_precision == y_precision) {
     return(x)
   }
 
-  size <- vec_size(x)
-  value <- as_names(value, size)
+  x_precision_value <- precision_value(x_precision)
+  y_precision_value <- precision_value(y_precision)
 
-  attrib[["clock_time_point:::names"]] <- value
-  attributes(x) <- attrib
-
-  x
+  if (x_precision_value > y_precision_value) {
+    x
+  } else {
+    y
+  }
 }
 
-# ------------------------------------------------------------------------------
-
-# - `[.vctrs_rcrd` accidentally allows subsetting fields through `...`
-#   https://github.com/r-lib/vctrs/issues/1295
-
 #' @export
-`[.clock_time_point` <- function(x, i) {
-  i <- maybe_missing(i, default = TRUE)
-  vec_slice(x, i)
-}
+vec_cast.clock_time_point.clock_time_point <- function(x, to, ...) {
+  x_clock <- time_point_clock(x)
+  to_clock <- time_point_clock(to)
 
-# - `[[.vctrs_rcrd` doesn't drop names because names aren't supported for rcrds
-# - `[[.vctrs_rcrd` allows selections of size >1
-#   https://github.com/r-lib/vctrs/issues/1294
-
-#' @export
-`[[.clock_time_point` <- function(x, i) {
-  size <- vec_size(x)
-  names <- names(x)
-
-  i <- vec_as_location2(i, n = size, names = names, arg = "i")
-
-  # Unname - `[[` never returns input with names
-  x <- unname(x)
-
-  vec_slice(x, i)
-}
-
-# ------------------------------------------------------------------------------
-
-# - Each subclass implements a `format()` method
-# - Unlike vctrs, don't use `print(quote = FALSE)` since we want to match base R
-# - We also pass a hidden option, `print_zone_name = FALSE` to not print the
-#   zone name when printing and when in tibbles. We generally do want this
-#   to print when `format()` is called on its own, as this makes a reproducible
-#   time point string.
-
-#' @export
-obj_print_data.clock_time_point <- function(x, ...) {
-  if (vec_size(x) == 0L) {
-    return(invisible(x))
+  if (x_clock != to_clock) {
+    stop_incompatible_cast(x, to, ..., details = "Clocks can't differ.")
   }
 
-  out <- format(x, print_zone_name = FALSE)
+  x_duration <- field_duration(x)
+  to_duration <- field_duration(to)
 
-  print(out)
-  invisible(x)
-}
+  x_precision <- duration_precision(x_duration)
+  to_precision <- duration_precision(to_duration)
 
-# @export - lazy in .onLoad()
-pillar_shaft.clock_time_point <- function(x, ...) {
-  out <- format(x, print_zone_name = FALSE)
-  pillar::new_pillar_shaft_simple(out, align = "left")
+  if (x_precision == to_precision) {
+    return(x)
+  }
+
+  x_precision_value <- precision_value(x_precision)
+  to_precision_value <- precision_value(to_precision)
+
+  if (x_precision_value > to_precision_value) {
+    stop_incompatible_cast(x, to, ..., details = "Precision would be lost.")
+  }
+
+  duration <- duration_cast(x_duration, to_precision)
+
+  new_time_point(
+    duration = duration,
+    clock = x_clock,
+    ...,
+    names = names(x)
+  )
 }
 
 # ------------------------------------------------------------------------------
 
-proxy_time_point <- function(x) {
-  out <- unclass(x)
-  out[["clock_time_point:::names"]] <- names(x)
-  out <- new_data_frame(out)
-  out
+clock_validate <- function(clock) {
+  is_string(clock) && clock %in% clocks()
 }
 
-proxy_equal_time_point <- function(x) {
-  out <- unclass(x)
-  out <- new_data_frame(out)
-  out
+clocks <- function() {
+  c("sys", "naive")
 }
-
-restore_time_point_fields <- function(x) {
-  x[["clock_time_point:::names"]] <- NULL
-  names <- names(x)
-  x <- unstructure(x)
-  names(x) <- names
-  x
-}
-
-restore_time_point_names <- function(x) {
-  names <- x[["clock_time_point:::names"]]
-  names <- repair_na_names(names)
-  names
-}
-
-

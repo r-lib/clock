@@ -127,4 +127,13 @@ enum class precision2 {
 enum precision2 parse_precision2(const cpp11::strings& x);
 
 // -----------------------------------------------------------------------------
+
+enum class clock {
+  sys,
+  naive
+};
+
+enum clock parse_clock(const cpp11::strings& x);
+
+// -----------------------------------------------------------------------------
 #endif
