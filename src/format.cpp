@@ -1231,8 +1231,8 @@ cpp11::writable::strings format_time_point_old_cpp(const clock_field& calendar,
 
 // -----------------------------------------------------------------------------
 
-template <class Clock, typename Duration>
-cpp11::writable::strings format_time_point_impl(const rclock::duration<Duration>& cd,
+template <class Clock, class ClockDuration>
+cpp11::writable::strings format_time_point_impl(const ClockDuration& cd,
                                                 const cpp11::strings& format,
                                                 const cpp11::strings& mon,
                                                 const cpp11::strings& mon_ab,
@@ -1240,6 +1240,8 @@ cpp11::writable::strings format_time_point_impl(const rclock::duration<Duration>
                                                 const cpp11::strings& day_ab,
                                                 const cpp11::strings& am_pm,
                                                 const cpp11::strings& decimal_mark) {
+  using Duration = typename ClockDuration::duration;
+
   r_ssize size = cd.size();
 
   cpp11::writable::strings out(size);
@@ -1311,9 +1313,7 @@ cpp11::writable::strings format_time_point_impl(const rclock::duration<Duration>
 }
 
 [[cpp11::register]]
-cpp11::writable::strings format_time_point_cpp(const cpp11::integers& ticks,
-                                               const cpp11::integers& ticks_of_day,
-                                               const cpp11::integers& ticks_of_second,
+cpp11::writable::strings format_time_point_cpp(cpp11::list_of<cpp11::integers> fields,
                                                const cpp11::strings& clock,
                                                const cpp11::strings& format,
                                                const cpp11::strings& precision,
@@ -1326,25 +1326,25 @@ cpp11::writable::strings format_time_point_cpp(const cpp11::integers& ticks,
   switch (parse_clock(clock)) {
   case clock::sys: {
   switch (parse_precision2(precision)) {
-  case precision2::day: return format_time_point_impl<std::chrono::system_clock>(rclock::duration<date::days>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
-  case precision2::hour: return format_time_point_impl<std::chrono::system_clock>(rclock::duration<std::chrono::hours>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
-  case precision2::minute: return format_time_point_impl<std::chrono::system_clock>(rclock::duration<std::chrono::minutes>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
-  case precision2::second: return format_time_point_impl<std::chrono::system_clock>(rclock::duration<std::chrono::seconds>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
-  case precision2::millisecond: return format_time_point_impl<std::chrono::system_clock>(rclock::duration<std::chrono::milliseconds>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
-  case precision2::microsecond: return format_time_point_impl<std::chrono::system_clock>(rclock::duration<std::chrono::microseconds>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
-  case precision2::nanosecond: return format_time_point_impl<std::chrono::system_clock>(rclock::duration<std::chrono::nanoseconds>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::day: return format_time_point_impl<std::chrono::system_clock>(rclock::duration::duration1<date::days>(fields[0]), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::hour: return format_time_point_impl<std::chrono::system_clock>(rclock::duration::duration2<std::chrono::hours>(fields[0], fields[1]), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::minute: return format_time_point_impl<std::chrono::system_clock>(rclock::duration::duration2<std::chrono::minutes>(fields[0], fields[1]), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::second: return format_time_point_impl<std::chrono::system_clock>(rclock::duration::duration2<std::chrono::seconds>(fields[0], fields[1]), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::millisecond: return format_time_point_impl<std::chrono::system_clock>(rclock::duration::duration3<std::chrono::milliseconds>(fields[0], fields[1], fields[2]), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::microsecond: return format_time_point_impl<std::chrono::system_clock>(rclock::duration::duration3<std::chrono::microseconds>(fields[0], fields[1], fields[2]), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::nanosecond: return format_time_point_impl<std::chrono::system_clock>(rclock::duration::duration3<std::chrono::nanoseconds>(fields[0], fields[1], fields[2]), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
   default: clock_abort("Internal error: Unexpected precision.");
   }
   }
   case clock::naive: {
   switch (parse_precision2(precision)) {
-  case precision2::day: return format_time_point_impl<date::local_t>(rclock::duration<date::days>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
-  case precision2::hour: return format_time_point_impl<date::local_t>(rclock::duration<std::chrono::hours>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
-  case precision2::minute: return format_time_point_impl<date::local_t>(rclock::duration<std::chrono::minutes>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
-  case precision2::second: return format_time_point_impl<date::local_t>(rclock::duration<std::chrono::seconds>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
-  case precision2::millisecond: return format_time_point_impl<date::local_t>(rclock::duration<std::chrono::milliseconds>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
-  case precision2::microsecond: return format_time_point_impl<date::local_t>(rclock::duration<std::chrono::microseconds>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
-  case precision2::nanosecond: return format_time_point_impl<date::local_t>(rclock::duration<std::chrono::nanoseconds>(ticks, ticks_of_day, ticks_of_second), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::day: return format_time_point_impl<date::local_t>(rclock::duration::duration1<date::days>(fields[0]), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::hour: return format_time_point_impl<date::local_t>(rclock::duration::duration2<std::chrono::hours>(fields[0], fields[1]), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::minute: return format_time_point_impl<date::local_t>(rclock::duration::duration2<std::chrono::minutes>(fields[0], fields[1]), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::second: return format_time_point_impl<date::local_t>(rclock::duration::duration2<std::chrono::seconds>(fields[0], fields[1]), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::millisecond: return format_time_point_impl<date::local_t>(rclock::duration::duration3<std::chrono::milliseconds>(fields[0], fields[1], fields[2]), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::microsecond: return format_time_point_impl<date::local_t>(rclock::duration::duration3<std::chrono::microseconds>(fields[0], fields[1], fields[2]), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::nanosecond: return format_time_point_impl<date::local_t>(rclock::duration::duration3<std::chrono::nanoseconds>(fields[0], fields[1], fields[2]), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
   default: clock_abort("Internal error: Unexpected precision.");
   }
   }
@@ -1354,8 +1354,8 @@ cpp11::writable::strings format_time_point_cpp(const cpp11::integers& ticks,
 
 // -----------------------------------------------------------------------------
 
-template <typename Duration>
-cpp11::writable::strings format_zoned_time_impl(const rclock::duration<Duration>& cd,
+template <class ClockDuration>
+cpp11::writable::strings format_zoned_time_impl(const ClockDuration& cd,
                                                 const cpp11::strings& zone,
                                                 const bool& abbreviate_zone,
                                                 const cpp11::strings& format,
@@ -1365,6 +1365,8 @@ cpp11::writable::strings format_zoned_time_impl(const rclock::duration<Duration>
                                                 const cpp11::strings& day_ab,
                                                 const cpp11::strings& am_pm,
                                                 const cpp11::strings& decimal_mark) {
+  using Duration = typename ClockDuration::duration;
+
   const r_ssize size = cd.size();
 
   cpp11::writable::strings out(size);
@@ -1456,9 +1458,7 @@ cpp11::writable::strings format_zoned_time_impl(const rclock::duration<Duration>
 }
 
 [[cpp11::register]]
-cpp11::writable::strings format_zoned_time_cpp(const cpp11::integers& ticks,
-                                               const cpp11::integers& ticks_of_day,
-                                               const cpp11::integers& ticks_of_second,
+cpp11::writable::strings format_zoned_time_cpp(cpp11::list_of<cpp11::integers> fields,
                                                const cpp11::strings& zone,
                                                const bool& abbreviate_zone,
                                                const cpp11::strings& format,
@@ -1470,10 +1470,10 @@ cpp11::writable::strings format_zoned_time_cpp(const cpp11::integers& ticks,
                                                const cpp11::strings& am_pm,
                                                const cpp11::strings& decimal_mark) {
   switch (parse_precision2(precision)) {
-  case precision2::second: return format_zoned_time_impl(rclock::duration<std::chrono::seconds>(ticks, ticks_of_day, ticks_of_second), zone, abbreviate_zone, format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
-  case precision2::millisecond: return format_zoned_time_impl(rclock::duration<std::chrono::milliseconds>(ticks, ticks_of_day, ticks_of_second), zone, abbreviate_zone, format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
-  case precision2::microsecond: return format_zoned_time_impl(rclock::duration<std::chrono::microseconds>(ticks, ticks_of_day, ticks_of_second), zone, abbreviate_zone, format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
-  case precision2::nanosecond: return format_zoned_time_impl(rclock::duration<std::chrono::nanoseconds>(ticks, ticks_of_day, ticks_of_second), zone, abbreviate_zone, format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::second: return format_zoned_time_impl(rclock::duration::duration2<std::chrono::seconds>(fields[0], fields[1]), zone, abbreviate_zone, format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::millisecond: return format_zoned_time_impl(rclock::duration::duration3<std::chrono::milliseconds>(fields[0], fields[1], fields[2]), zone, abbreviate_zone, format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::microsecond: return format_zoned_time_impl(rclock::duration::duration3<std::chrono::microseconds>(fields[0], fields[1], fields[2]), zone, abbreviate_zone, format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
+  case precision2::nanosecond: return format_zoned_time_impl(rclock::duration::duration3<std::chrono::nanoseconds>(fields[0], fields[1], fields[2]), zone, abbreviate_zone, format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
   default: clock_abort("Internal error: Unexpected precision.");
   }
 }

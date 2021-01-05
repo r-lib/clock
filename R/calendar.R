@@ -6,6 +6,31 @@ is_calendar <- function(x) {
   inherits(x, "clock_calendar")
 }
 
+# ------------------------------------------------------------------------------
+
+# - Each subclass implements a `format()` method
+# - Unlike vctrs, don't use `print(quote = FALSE)` since we want to match base R
+#' @export
+obj_print_data.clock_calendar <- function(x, ...) {
+  if (vec_size(x) == 0L) {
+    return(invisible(x))
+  }
+
+  out <- format(x)
+  print(out)
+
+  invisible(x)
+}
+
+# Align left to match pillar_shaft.Date
+# @export - lazy in .onLoad()
+pillar_shaft.clock_calendar <- function(x, ...) {
+  out <- format(x)
+  pillar::new_pillar_shaft_simple(out, align = "left")
+}
+
+# ------------------------------------------------------------------------------
+
 calendar_precision <- function(x) {
   attr(x, "precision", exact = TRUE)
 }
@@ -43,6 +68,8 @@ calendar_require_any_of_precisions <- function(x, precisions, fn) {
 calendar_has_precision <- function(x, precision) {
   calendar_precision(x) == precision
 }
+
+# ------------------------------------------------------------------------------
 
 calendar_ptype_full <- function(x, class) {
   count <- invalid_count(x)

@@ -85,8 +85,30 @@ new_year_month_day_from_fields <- function(fields, precision, names = NULL) {
 # ------------------------------------------------------------------------------
 
 #' @export
+vec_proxy.clock_year_month_day <- function(x, ...) {
+  proxy_rcrd(x)
+}
+
+#' @export
+vec_restore.clock_year_month_day <- function(x, to, ...) {
+  fields <- restore_rcrd_fields(x)
+  names <- restore_rcrd_names(x)
+  precision <- calendar_precision(to)
+  new_year_month_day_from_fields(fields, precision, names)
+}
+
+#' @export
+vec_proxy_equal.clock_year_month_day <- function(x, ...) {
+  proxy_equal_rcrd(x)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 format.clock_year_month_day <- function(x, ...) {
-  format_year_month_day_cpp(x, calendar_precision(x))
+  out <- format_year_month_day_cpp(x, calendar_precision(x))
+  names(out) <- names(x)
+  out
 }
 
 #' @export

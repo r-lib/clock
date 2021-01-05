@@ -16,6 +16,7 @@ class integers
 public:
   CONSTCD11 integers() NOEXCEPT;
   CONSTCD11 integers(const cpp11::integers& x) NOEXCEPT;
+  integers(r_ssize size);
 
   bool is_na(r_ssize i) const NOEXCEPT;
   CONSTCD11 r_ssize size() const NOEXCEPT;
@@ -44,6 +45,13 @@ inline
 integers::integers(const cpp11::integers& x) NOEXCEPT
   : read_(x),
     writable_(false)
+  {}
+
+inline
+integers::integers(r_ssize size)
+  : read_(clock_empty_integers),
+    write_(cpp11::integers(size)),
+    writable_(true)
   {}
 
 inline

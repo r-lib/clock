@@ -147,6 +147,29 @@ time_point_precision_format <- function(precision) {
 
 # ------------------------------------------------------------------------------
 
+# - Each subclass implements a `format()` method
+# - Unlike vctrs, don't use `print(quote = FALSE)` since we want to match base R
+#' @export
+obj_print_data.clock_time_point <- function(x, ...) {
+  if (vec_size(x) == 0L) {
+    return(invisible(x))
+  }
+
+  out <- format(x)
+  print(out)
+
+  invisible(x)
+}
+
+# Align left to match pillar_shaft.Date
+# @export - lazy in .onLoad()
+pillar_shaft.clock_time_point <- function(x, ...) {
+  out <- format(x)
+  pillar::new_pillar_shaft_simple(out, align = "left")
+}
+
+# ------------------------------------------------------------------------------
+
 #' @export
 vec_ptype_full.clock_time_point <- function(x, ...) {
   clock <- time_point_clock(x)

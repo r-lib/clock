@@ -136,16 +136,28 @@ collect_year_month_weekday_fields <- function(year, month, weekday, index, last)
   .Call("_clock_collect_year_month_weekday_fields", year, month, weekday, index, last, PACKAGE = "clock")
 }
 
-format_duration_cpp <- function(ticks, ticks_of_day, ticks_of_second, precision) {
-  .Call("_clock_format_duration_cpp", ticks, ticks_of_day, ticks_of_second, precision, PACKAGE = "clock")
+format_duration_cpp <- function(fields, precision) {
+  .Call("_clock_format_duration_cpp", fields, precision, PACKAGE = "clock")
 }
 
 duration_helper_cpp <- function(n, precision) {
   .Call("_clock_duration_helper_cpp", n, precision, PACKAGE = "clock")
 }
 
-duration_cast_cpp <- function(ticks, ticks_of_day, ticks_of_second, precision_from, precision_to) {
-  .Call("_clock_duration_cast_cpp", ticks, ticks_of_day, ticks_of_second, precision_from, precision_to, PACKAGE = "clock")
+duration_cast_cpp <- function(fields, precision_from, precision_to) {
+  .Call("_clock_duration_cast_cpp", fields, precision_from, precision_to, PACKAGE = "clock")
+}
+
+duration_floor_cpp <- function(fields, precision_from, precision_to) {
+  .Call("_clock_duration_floor_cpp", fields, precision_from, precision_to, PACKAGE = "clock")
+}
+
+duration_ceil_cpp <- function(fields, precision_from, precision_to) {
+  .Call("_clock_duration_ceil_cpp", fields, precision_from, precision_to, PACKAGE = "clock")
+}
+
+duration_round_cpp <- function(fields, precision_from, precision_to) {
+  .Call("_clock_duration_round_cpp", fields, precision_from, precision_to, PACKAGE = "clock")
 }
 
 floor_calendar_days_to_year_month_precision <- function(calendar) {
@@ -164,12 +176,12 @@ format_time_point_old_cpp <- function(calendar, seconds_of_day, nanoseconds_of_s
   .Call("_clock_format_time_point_old_cpp", calendar, seconds_of_day, nanoseconds_of_second, zone, format, precision, naive, abbreviate_zone, mon, mon_ab, day, day_ab, am_pm, decimal_mark, PACKAGE = "clock")
 }
 
-format_time_point_cpp <- function(ticks, ticks_of_day, ticks_of_second, clock, format, precision, mon, mon_ab, day, day_ab, am_pm, decimal_mark) {
-  .Call("_clock_format_time_point_cpp", ticks, ticks_of_day, ticks_of_second, clock, format, precision, mon, mon_ab, day, day_ab, am_pm, decimal_mark, PACKAGE = "clock")
+format_time_point_cpp <- function(fields, clock, format, precision, mon, mon_ab, day, day_ab, am_pm, decimal_mark) {
+  .Call("_clock_format_time_point_cpp", fields, clock, format, precision, mon, mon_ab, day, day_ab, am_pm, decimal_mark, PACKAGE = "clock")
 }
 
-format_zoned_time_cpp <- function(ticks, ticks_of_day, ticks_of_second, zone, abbreviate_zone, format, precision, mon, mon_ab, day, day_ab, am_pm, decimal_mark) {
-  .Call("_clock_format_zoned_time_cpp", ticks, ticks_of_day, ticks_of_second, zone, abbreviate_zone, format, precision, mon, mon_ab, day, day_ab, am_pm, decimal_mark, PACKAGE = "clock")
+format_zoned_time_cpp <- function(fields, zone, abbreviate_zone, format, precision, mon, mon_ab, day, day_ab, am_pm, decimal_mark) {
+  .Call("_clock_format_zoned_time_cpp", fields, zone, abbreviate_zone, format, precision, mon, mon_ab, day, day_ab, am_pm, decimal_mark, PACKAGE = "clock")
 }
 
 get_offset_cpp <- function(calendar, seconds_of_day, zone) {
