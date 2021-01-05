@@ -28,6 +28,24 @@ precision_value <- function(precision) {
   )
 }
 
+precision_field <- function(precision) {
+  switch(
+    precision,
+    year = precision,
+    quarter = precision,
+    month = precision,
+    week = precision,
+    day = precision,
+    hour = precision,
+    minute = precision,
+    second = precision,
+    millisecond = "subsecond",
+    microsecond = "subsecond",
+    nanosecond = "subsecond",
+    abort("Internal error: Unknown precision.")
+  )
+}
+
 # ------------------------------------------------------------------------------
 
 precision_names <- function() {
@@ -58,4 +76,24 @@ precision_abbr <- function(precision) {
 
 is_valid_precision <- function(precision) {
   is_string(precision) && is_true(precision %in% precision_names())
+}
+
+is_valid_calendar_precision <- function(precision, calendrical_precisions) {
+  if (!is_valid_precision(precision)) {
+    return(FALSE)
+  }
+
+  if (precision_value(precision) >= PRECISION_DAY) {
+    return(TRUE)
+  }
+
+  precision %in% calendrical_precisions
+}
+
+precision_common2 <- function(x, y) {
+  if (precision_value(x) >= precision_value(y)) {
+    x
+  } else {
+    y
+  }
 }

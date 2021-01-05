@@ -1,5 +1,5 @@
-new_gregorian <- function(fields, ..., names = NULL, class = NULL) {
-  new_calendar(fields, ..., names = names, class = c(class, "clock_gregorian"))
+new_gregorian <- function(fields, precision, ..., names = NULL, class = NULL) {
+  new_calendar(fields, precision, ..., names = names, class = c(class, "clock_gregorian"))
 }
 
 is_gregorian <- function(x) {
@@ -21,6 +21,19 @@ field_weekday <- function(x) {
 field_index <- function(x) {
   field(x, "index")
 }
+field_hour <- function(x) {
+  field(x, "hour")
+}
+field_minute <- function(x) {
+  field(x, "minute")
+}
+field_second <- function(x) {
+  field(x, "second")
+}
+field_subsecond <- function(x) {
+  field(x, "subsecond")
+}
+
 
 cal <- list(
   sunday = 1L,

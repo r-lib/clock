@@ -1,0 +1,44 @@
+#' @export
+set_year <- function(x, value, ...) {
+  UseMethod("set_year")
+}
+
+#' @export
+set_month <- function(x, value, ...) {
+  UseMethod("set_month")
+}
+
+#' @export
+set_day <- function(x, value, ...) {
+  UseMethod("set_day")
+}
+
+#' @export
+set_hour <- function(x, value, ...) {
+  UseMethod("set_hour")
+}
+
+#' @export
+set_minute <- function(x, value, ...) {
+  UseMethod("set_minute")
+}
+
+#' @export
+set_second <- function(x, value, ...) {
+  UseMethod("set_second")
+}
+
+#' @export
+set_millisecond <- function(x, value, ...) {
+  UseMethod("set_millisecond")
+}
+
+#' @export
+set_microsecond <- function(x, value, ...) {
+  UseMethod("set_microsecond")
+}
+
+#' @export
+set_nanosecond <- function(x, value, ...) {
+  UseMethod("set_nanosecond")
+}

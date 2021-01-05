@@ -6,7 +6,6 @@
 #include "conversion.h"
 #include "resolve.h"
 #include "check.h"
-#include "year-month-day.h"
 #include "year-month-weekday.h"
 
 // -----------------------------------------------------------------------------
@@ -1153,49 +1152,6 @@ clock_writable_field convert_year_month_weekday_index_to_calendar_days(const cpp
   }
 
   return days;
-}
-
-// -----------------------------------------------------------------------------
-
-[[cpp11::register]]
-cpp11::writable::list_of<cpp11::writable::integers>
-collect_year_month_day_fields(const cpp11::integers& year,
-                              const cpp11::integers& month,
-                              const cpp11::integers& day,
-                              const bool& last) {
-  r_ssize size = year.size();
-  rclock::writable::year_month_day out(size);
-
-  for (r_ssize i = 0; i < size; ++i) {
-    int elt_year = year[i];
-    int elt_month = month[i];
-    int elt_day = day[i];
-
-    if (elt_year == r_int_na ||
-        elt_month == r_int_na ||
-        elt_day == r_int_na) {
-      out.assign_na(i);
-      continue;
-    }
-
-    check_range_year(elt_year, "year");
-    check_range_month(elt_month, "month");
-    unsigned elt_date_month = static_cast<unsigned>(elt_month);
-
-    date::year_month ym = date::year{elt_year} / elt_date_month;
-
-    if (last) {
-      out.assign(ym / date::last, i);
-      continue;
-    }
-
-    check_range_day(elt_day, "day");
-    unsigned elt_date_day = static_cast<unsigned>(elt_day);
-
-    out.assign(ym / elt_date_day, i);
-  }
-
-  return out.to_list();
 }
 
 // -----------------------------------------------------------------------------

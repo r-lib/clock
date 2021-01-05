@@ -55,12 +55,6 @@ get_year <- function(x) {
 }
 
 #' @export
-get_year.clock_gregorian <- function(x) {
-  ymd <- convert_calendar_days_to_year_month_day(x)
-  ymd$year
-}
-
-#' @export
 get_year.clock_quarterly <- function(x) {
   start <- get_quarterly_start(x)
   yqnqd <- convert_calendar_days_to_year_quarternum_quarterday(x, start)
@@ -246,12 +240,6 @@ get_month <- function(x) {
 }
 
 #' @export
-get_month.clock_gregorian <- function(x) {
-  ymd <- convert_calendar_days_to_year_month_day(x)
-  ymd$month
-}
-
-#' @export
 get_month.clock_naive_time_point <- function(x) {
   calendar <- field_calendar(x)
   get_month(calendar)
@@ -281,12 +269,6 @@ get_month.POSIXt <- function(x) {
 get_day <- function(x) {
   restrict_clock_supported(x)
   UseMethod("get_day")
-}
-
-#' @export
-get_day.clock_gregorian <- function(x) {
-  ymd <- convert_calendar_days_to_year_month_day(x)
-  ymd$day
 }
 
 #' @export

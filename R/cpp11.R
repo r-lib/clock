@@ -132,10 +132,6 @@ convert_year_month_weekday_index_to_calendar_days <- function(year, month, weekd
   .Call("_clock_convert_year_month_weekday_index_to_calendar_days", year, month, weekday, index, day_nonexistent, PACKAGE = "clock")
 }
 
-collect_year_month_day_fields <- function(year, month, day, last) {
-  .Call("_clock_collect_year_month_day_fields", year, month, day, last, PACKAGE = "clock")
-}
-
 collect_year_month_weekday_fields <- function(year, month, weekday, index, last) {
   .Call("_clock_collect_year_month_weekday_fields", year, month, weekday, index, last, PACKAGE = "clock")
 }
@@ -178,6 +174,42 @@ format_zoned_time_cpp <- function(ticks, ticks_of_day, ticks_of_second, zone, ab
 
 get_offset_cpp <- function(calendar, seconds_of_day, zone) {
   .Call("_clock_get_offset_cpp", calendar, seconds_of_day, zone, PACKAGE = "clock")
+}
+
+collect_year_month_day_fields <- function(fields, last) {
+  .Call("_clock_collect_year_month_day_fields", fields, last, PACKAGE = "clock")
+}
+
+format_year_month_day_cpp <- function(fields, precision) {
+  .Call("_clock_format_year_month_day_cpp", fields, precision, PACKAGE = "clock")
+}
+
+invalid_detect_year_month_day_cpp <- function(fields, precision) {
+  .Call("_clock_invalid_detect_year_month_day_cpp", fields, precision, PACKAGE = "clock")
+}
+
+invalid_any_year_month_day_cpp <- function(fields, precision) {
+  .Call("_clock_invalid_any_year_month_day_cpp", fields, precision, PACKAGE = "clock")
+}
+
+invalid_count_year_month_day_cpp <- function(fields, precision) {
+  .Call("_clock_invalid_count_year_month_day_cpp", fields, precision, PACKAGE = "clock")
+}
+
+invalid_resolve_year_month_day_cpp <- function(fields, precision, invalid) {
+  .Call("_clock_invalid_resolve_year_month_day_cpp", fields, precision, invalid, PACKAGE = "clock")
+}
+
+set_field_year_month_day_cpp <- function(fields, value, precision_fields, precision_value) {
+  .Call("_clock_set_field_year_month_day_cpp", fields, value, precision_fields, precision_value, PACKAGE = "clock")
+}
+
+set_field_year_month_day_last_cpp <- function(fields, precision_fields) {
+  .Call("_clock_set_field_year_month_day_last_cpp", fields, precision_fields, PACKAGE = "clock")
+}
+
+add_field_year_month_day_cpp <- function(fields, n, precision_fields, precision_n) {
+  .Call("_clock_add_field_year_month_day_cpp", fields, n, precision_fields, precision_n, PACKAGE = "clock")
 }
 
 clock_set_install <- function(path) {
@@ -242,26 +274,6 @@ resolve_seconds_of_day <- function(seconds_of_day, ok, day_nonexistent) {
 
 resolve_nanoseconds_of_second <- function(nanoseconds_of_second, ok, day_nonexistent, precision) {
   .Call("_clock_resolve_nanoseconds_of_second", nanoseconds_of_second, ok, day_nonexistent, precision, PACKAGE = "clock")
-}
-
-format_year_month_day <- function(year, month, day) {
-  .Call("_clock_format_year_month_day", year, month, day, PACKAGE = "clock")
-}
-
-invalid_detect_year_month_day <- function(year, month, day) {
-  .Call("_clock_invalid_detect_year_month_day", year, month, day, PACKAGE = "clock")
-}
-
-invalid_count_year_month_day <- function(year, month, day) {
-  .Call("_clock_invalid_count_year_month_day", year, month, day, PACKAGE = "clock")
-}
-
-invalid_any_year_month_day <- function(year, month, day) {
-  .Call("_clock_invalid_any_year_month_day", year, month, day, PACKAGE = "clock")
-}
-
-invalid_resolve_year_month_day <- function(year, month, day, invalid) {
-  .Call("_clock_invalid_resolve_year_month_day", year, month, day, invalid, PACKAGE = "clock")
 }
 
 format_year_month_weekday <- function(year, month, weekday, index, day) {

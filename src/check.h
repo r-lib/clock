@@ -77,4 +77,47 @@ static inline void check_range_index(const int& value, const char* arg) {
   }
 }
 
+// -----------------------------------------------------------------------------
+
+template <typename Duration>
+inline void check_range(const int& value, const char* arg) {
+  clock_abort("Unimplemented range check");
+}
+template <>
+inline void check_range<date::year>(const int& value, const char* arg) {
+  check_range_year(value, arg);
+}
+template <>
+inline void check_range<date::month>(const int& value, const char* arg) {
+  check_range_month(value, arg);
+}
+template <>
+inline void check_range<date::day>(const int& value, const char* arg) {
+  check_range_day(value, arg);
+}
+template <>
+inline void check_range<std::chrono::hours>(const int& value, const char* arg) {
+  check_range_hour(value, arg);
+}
+template <>
+inline void check_range<std::chrono::minutes>(const int& value, const char* arg) {
+  check_range_minute(value, arg);
+}
+template <>
+inline void check_range<std::chrono::seconds>(const int& value, const char* arg) {
+  check_range_second(value, arg);
+}
+template <>
+inline void check_range<std::chrono::milliseconds>(const int& value, const char* arg) {
+  check_range_millisecond(value, arg);
+}
+template <>
+inline void check_range<std::chrono::microseconds>(const int& value, const char* arg) {
+  check_range_microsecond(value, arg);
+}
+template <>
+inline void check_range<std::chrono::nanoseconds>(const int& value, const char* arg) {
+  check_range_nanosecond(value, arg);
+}
+
 #endif
