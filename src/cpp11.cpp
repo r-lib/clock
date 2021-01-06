@@ -418,10 +418,10 @@ extern "C" SEXP _clock_set_field_year_month_day_last_cpp(SEXP fields, SEXP preci
   END_CPP11
 }
 // gregorian-year-month-day.cpp
-cpp11::writable::list add_field_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& n, const cpp11::strings& precision_fields, const cpp11::strings& precision_n);
-extern "C" SEXP _clock_add_field_year_month_day_cpp(SEXP fields, SEXP n, SEXP precision_fields, SEXP precision_n) {
+cpp11::writable::list add_field_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields, cpp11::list_of<cpp11::integers> fields_n, const cpp11::strings& precision_fields, const cpp11::strings& precision_n);
+extern "C" SEXP _clock_add_field_year_month_day_cpp(SEXP fields, SEXP fields_n, SEXP precision_fields, SEXP precision_n) {
   BEGIN_CPP11
-    return cpp11::as_sexp(add_field_year_month_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_n)));
+    return cpp11::as_sexp(add_field_year_month_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields_n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_n)));
   END_CPP11
 }
 // install.cpp

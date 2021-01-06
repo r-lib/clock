@@ -1,4 +1,10 @@
 #' @export
+gregorian_year <- function(year) {
+  ymd <- year_month_day(year)
+  new_year_month_day(field_year(ymd), precision = "year")
+}
+
+#' @export
 year_month <- function(year, month = 1L) {
   ymd <- year_month_day(year, month)
   new_year_month_day(field_year(ymd), field_month(ymd), precision = "month")
@@ -300,6 +306,68 @@ set_field_year_month_day_last <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' @method vec_arith clock_year_month_day
+#' @export
+vec_arith.clock_year_month_day <- function(op, x, y, ...) {
+  UseMethod("vec_arith.clock_year_month_day", y)
+}
+
+#' @method vec_arith.clock_year_month_day MISSING
+#' @export
+vec_arith.clock_year_month_day.MISSING <- function(op, x, y, ...) {
+  switch (
+    op,
+    "+" = x,
+    stop_incompatible_op(op, x, y, ...)
+  )
+}
+
+#' @method vec_arith.clock_year_month_day clock_duration
+#' @export
+vec_arith.clock_year_month_day.clock_duration <- function(op, x, y, ...) {
+  switch (
+    op,
+    "+" = add_duration(x, y),
+    "-" = add_duration(x, -y),
+    stop_incompatible_op(op, x, y, ...)
+  )
+}
+
+#' @method vec_arith.clock_duration clock_year_month_day
+#' @export
+vec_arith.clock_duration.clock_year_month_day <- function(op, x, y, ...) {
+  switch (
+    op,
+    "+" = add_duration(y, x),
+    "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a calendar from a duration.", ...),
+    stop_incompatible_op(op, x, y, ...)
+  )
+}
+
+#' @method vec_arith.clock_year_month_day numeric
+#' @export
+vec_arith.clock_year_month_day.numeric <- function(op, x, y, ...) {
+  switch (
+    op,
+    "+" = add_duration(x, duration_helper(y, calendar_precision(x))),
+    "-" = add_duration(x, duration_helper(-y, calendar_precision(x))),
+    stop_incompatible_op(op, x, y, ...)
+  )
+}
+
+#' @method vec_arith.numeric clock_year_month_day
+#' @export
+vec_arith.numeric.clock_year_month_day <- function(op, x, y, ...) {
+  switch (
+    op,
+    "+" = add_duration(y, duration_helper(x, calendar_precision(y))),
+    "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a calendar from a duration.", ...),
+    stop_incompatible_op(op, x, y, ...)
+  )
+}
+
+# ------------------------------------------------------------------------------
+
 #' @export
 add_years.clock_year_month_day <- function(x, n, ...) {
   add_field_year_month_day(x, n, "year")
@@ -314,7 +382,7 @@ add_months.clock_year_month_day <- function(x, n, ...) {
 add_field_year_month_day <- function(x, n, precision_n) {
   precision_fields <- calendar_precision(x)
 
-  n <- vec_cast(n, integer(), x_arg = "n")
+  n <- duration_collect_n(n, precision_n)
   args <- vec_recycle_common(x = x, n = n)
   x <- args$x
   n <- args$n

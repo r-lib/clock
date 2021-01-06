@@ -236,8 +236,8 @@ set_field_year_month_day_last_cpp <- function(fields, precision_fields) {
   .Call("_clock_set_field_year_month_day_last_cpp", fields, precision_fields, PACKAGE = "clock")
 }
 
-add_field_year_month_day_cpp <- function(fields, n, precision_fields, precision_n) {
-  .Call("_clock_add_field_year_month_day_cpp", fields, n, precision_fields, precision_n, PACKAGE = "clock")
+add_field_year_month_day_cpp <- function(fields, fields_n, precision_fields, precision_n) {
+  .Call("_clock_add_field_year_month_day_cpp", fields, fields_n, precision_fields, precision_n, PACKAGE = "clock")
 }
 
 clock_set_install <- function(path) {

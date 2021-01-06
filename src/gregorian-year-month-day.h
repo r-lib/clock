@@ -358,6 +358,14 @@ y::add(const date::years& x, r_ssize i) NOEXCEPT
   assign_year(to_year(i) + x, i);
 }
 
+template <>
+inline
+void
+y::add(const date::months& x, r_ssize i) NOEXCEPT
+{
+  clock_abort("Internal error: Required method for templating, but should never be called.");
+}
+
 inline
 void
 y::assign_year(const date::year& x, r_ssize i) NOEXCEPT
