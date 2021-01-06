@@ -102,7 +102,7 @@
 
 \method{add_years}{clock_naive_time_point}(x, n, ..., day_nonexistent = "last-time")
 
-\method{add_years}{clock_calendar}(x, n, ..., day_nonexistent = "last-time")
+\method{add_years}{clock_calendar}(x, n, ...)
 
 \method{subtract_years}{Date}(x, n, ..., day_nonexistent = "last-time")
 
@@ -146,7 +146,7 @@
 
 \method{add_quarters}{clock_naive_time_point}(x, n, ..., day_nonexistent = "last-time")
 
-\method{add_quarters}{clock_calendar}(x, n, ..., day_nonexistent = "last-time")
+\method{add_quarters}{clock_calendar}(x, n, ...)
 
 \method{subtract_quarters}{Date}(x, n, ..., day_nonexistent = "last-time")
 
@@ -190,7 +190,7 @@
 
 \method{add_months}{clock_naive_time_point}(x, n, ..., day_nonexistent = "last-time")
 
-\method{add_months}{clock_calendar}(x, n, ..., day_nonexistent = "last-time")
+\method{add_months}{clock_calendar}(x, n, ...)
 
 \method{subtract_months}{Date}(x, n, ..., day_nonexistent = "last-time")
 
