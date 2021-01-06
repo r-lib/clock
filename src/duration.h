@@ -280,4 +280,48 @@ duration3<Duration>::to_list() const
 
 } // namespace rclock
 
+/*
+ * `std::common_type()` specializations for `rclock::duration` types.
+ */
+namespace std {
+  template<class Duration1, class Duration2>
+  struct common_type<rclock::duration::duration1<Duration1>, rclock::duration::duration1<Duration2>> {
+    using type = rclock::duration::duration1<typename std::common_type<Duration1, Duration2>::type>;
+  };
+  template<class Duration1, class Duration2>
+  struct common_type<rclock::duration::duration1<Duration1>, rclock::duration::duration2<Duration2>> {
+    using type = rclock::duration::duration2<typename std::common_type<Duration1, Duration2>::type>;
+  };
+  template<class Duration1, class Duration2>
+  struct common_type<rclock::duration::duration1<Duration1>, rclock::duration::duration3<Duration2>> {
+    using type = rclock::duration::duration3<typename std::common_type<Duration1, Duration2>::type>;
+  };
+
+  template<class Duration1, class Duration2>
+  struct common_type<rclock::duration::duration2<Duration1>, rclock::duration::duration1<Duration2>> {
+    using type = rclock::duration::duration2<typename std::common_type<Duration1, Duration2>::type>;
+  };
+  template<class Duration1, class Duration2>
+  struct common_type<rclock::duration::duration2<Duration1>, rclock::duration::duration2<Duration2>> {
+    using type = rclock::duration::duration2<typename std::common_type<Duration1, Duration2>::type>;
+  };
+  template<class Duration1, class Duration2>
+  struct common_type<rclock::duration::duration2<Duration1>, rclock::duration::duration3<Duration2>> {
+    using type = rclock::duration::duration3<typename std::common_type<Duration1, Duration2>::type>;
+  };
+
+  template<class Duration1, class Duration2>
+  struct common_type<rclock::duration::duration3<Duration1>, rclock::duration::duration1<Duration2>> {
+    using type = rclock::duration::duration3<typename std::common_type<Duration1, Duration2>::type>;
+  };
+  template<class Duration1, class Duration2>
+  struct common_type<rclock::duration::duration3<Duration1>, rclock::duration::duration2<Duration2>> {
+    using type = rclock::duration::duration3<typename std::common_type<Duration1, Duration2>::type>;
+  };
+  template<class Duration1, class Duration2>
+  struct common_type<rclock::duration::duration3<Duration1>, rclock::duration::duration3<Duration2>> {
+    using type = rclock::duration::duration3<typename std::common_type<Duration1, Duration2>::type>;
+  };
+}
+
 #endif

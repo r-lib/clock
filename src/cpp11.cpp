@@ -264,6 +264,27 @@ extern "C" SEXP _clock_duration_cast_cpp(SEXP fields, SEXP precision_from, SEXP 
   END_CPP11
 }
 // duration.cpp
+cpp11::writable::list duration_plus_cpp(cpp11::list_of<cpp11::integers> x, cpp11::list_of<cpp11::integers> y, const cpp11::strings& precision_x, const cpp11::strings& precision_y);
+extern "C" SEXP _clock_duration_plus_cpp(SEXP x, SEXP y, SEXP precision_x, SEXP precision_y) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(duration_plus_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(y), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_y)));
+  END_CPP11
+}
+// duration.cpp
+cpp11::writable::strings duration_common_precision_cpp(const cpp11::strings& x_precision, const cpp11::strings& y_precision);
+extern "C" SEXP _clock_duration_common_precision_cpp(SEXP x_precision, SEXP y_precision) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(duration_common_precision_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x_precision), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(y_precision)));
+  END_CPP11
+}
+// duration.cpp
+bool duration_has_common_precision_cpp(const cpp11::strings& x_precision, const cpp11::strings& y_precision);
+extern "C" SEXP _clock_duration_has_common_precision_cpp(SEXP x_precision, SEXP y_precision) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(duration_has_common_precision_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x_precision), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(y_precision)));
+  END_CPP11
+}
+// duration.cpp
 cpp11::writable::list duration_floor_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_from, const cpp11::strings& precision_to);
 extern "C" SEXP _clock_duration_floor_cpp(SEXP fields, SEXP precision_from, SEXP precision_to) {
   BEGIN_CPP11
@@ -282,6 +303,13 @@ cpp11::writable::list duration_round_cpp(cpp11::list_of<cpp11::integers> fields,
 extern "C" SEXP _clock_duration_round_cpp(SEXP fields, SEXP precision_from, SEXP precision_to) {
   BEGIN_CPP11
     return cpp11::as_sexp(duration_round_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_from), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_to)));
+  END_CPP11
+}
+// duration.cpp
+cpp11::writable::list duration_unary_minus_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision);
+extern "C" SEXP _clock_duration_unary_minus_cpp(SEXP fields, SEXP precision) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(duration_unary_minus_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision)));
   END_CPP11
 }
 // floor.cpp
@@ -665,9 +693,13 @@ extern SEXP _clock_convert_zoned_seconds_to_zoned_second_point_fields(SEXP);
 extern SEXP _clock_downcast_nanoseconds_of_second_precision(SEXP, SEXP);
 extern SEXP _clock_duration_cast_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_ceil_cpp(SEXP, SEXP, SEXP);
+extern SEXP _clock_duration_common_precision_cpp(SEXP, SEXP);
 extern SEXP _clock_duration_floor_cpp(SEXP, SEXP, SEXP);
+extern SEXP _clock_duration_has_common_precision_cpp(SEXP, SEXP);
 extern SEXP _clock_duration_helper_cpp(SEXP, SEXP);
+extern SEXP _clock_duration_plus_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_round_cpp(SEXP, SEXP, SEXP);
+extern SEXP _clock_duration_unary_minus_cpp(SEXP, SEXP);
 extern SEXP _clock_floor_calendar_days_to_iso_year_weeknum_precision(SEXP);
 extern SEXP _clock_floor_calendar_days_to_year_month_precision(SEXP);
 extern SEXP _clock_floor_calendar_days_to_year_quarternum_precision(SEXP, SEXP);
@@ -755,9 +787,13 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_downcast_nanoseconds_of_second_precision",                                             (DL_FUNC) &_clock_downcast_nanoseconds_of_second_precision,                                              2},
     {"_clock_duration_cast_cpp",                                                                    (DL_FUNC) &_clock_duration_cast_cpp,                                                                     3},
     {"_clock_duration_ceil_cpp",                                                                    (DL_FUNC) &_clock_duration_ceil_cpp,                                                                     3},
+    {"_clock_duration_common_precision_cpp",                                                        (DL_FUNC) &_clock_duration_common_precision_cpp,                                                         2},
     {"_clock_duration_floor_cpp",                                                                   (DL_FUNC) &_clock_duration_floor_cpp,                                                                    3},
+    {"_clock_duration_has_common_precision_cpp",                                                    (DL_FUNC) &_clock_duration_has_common_precision_cpp,                                                     2},
     {"_clock_duration_helper_cpp",                                                                  (DL_FUNC) &_clock_duration_helper_cpp,                                                                   2},
+    {"_clock_duration_plus_cpp",                                                                    (DL_FUNC) &_clock_duration_plus_cpp,                                                                     4},
     {"_clock_duration_round_cpp",                                                                   (DL_FUNC) &_clock_duration_round_cpp,                                                                    3},
+    {"_clock_duration_unary_minus_cpp",                                                             (DL_FUNC) &_clock_duration_unary_minus_cpp,                                                              2},
     {"_clock_floor_calendar_days_to_iso_year_weeknum_precision",                                    (DL_FUNC) &_clock_floor_calendar_days_to_iso_year_weeknum_precision,                                     1},
     {"_clock_floor_calendar_days_to_year_month_precision",                                          (DL_FUNC) &_clock_floor_calendar_days_to_year_month_precision,                                           1},
     {"_clock_floor_calendar_days_to_year_quarternum_precision",                                     (DL_FUNC) &_clock_floor_calendar_days_to_year_quarternum_precision,                                      2},

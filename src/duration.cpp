@@ -198,6 +198,232 @@ duration_cast_cpp(cpp11::list_of<cpp11::integers> fields,
 
 // -----------------------------------------------------------------------------
 
+template <class ClockDuration1, class ClockDuration2>
+cpp11::writable::list
+duration_plus_impl(const ClockDuration1& x, const ClockDuration2& y) {
+  using ClockDuration = typename std::common_type<ClockDuration1, ClockDuration2>::type;
+
+  r_ssize size = x.size();
+  ClockDuration out(size);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    if (x.is_na(i) || y.is_na(i)) {
+      out.assign_na(i);
+      continue;
+    }
+
+    out.assign(x[i] + y[i], i);
+  }
+
+  return out.to_list();
+}
+
+template <class ClockDuration1>
+inline
+cpp11::writable::list
+duration_plus_switch2(const ClockDuration1& x,
+                      cpp11::list_of<cpp11::integers>& y,
+                      const enum precision2& precision_y_val) {
+  using namespace rclock;
+
+  switch (precision_y_val) {
+  case precision2::year: return duration_plus_impl(x, duration::years(y[0]));
+  case precision2::quarter: return duration_plus_impl(x, duration::quarters(y[0]));
+  case precision2::month: return duration_plus_impl(x, duration::months(y[0]));
+  case precision2::week: return duration_plus_impl(x, duration::weeks(y[0]));
+  case precision2::day: return duration_plus_impl(x, duration::days(y[0]));
+  case precision2::hour: return duration_plus_impl(x, duration::hours(y[0], y[1]));
+  case precision2::minute: return duration_plus_impl(x, duration::minutes(y[0], y[1]));
+  case precision2::second: return duration_plus_impl(x, duration::seconds(y[0], y[1]));
+  case precision2::millisecond: return duration_plus_impl(x, duration::milliseconds(y[0], y[1], y[2]));
+  case precision2::microsecond: return duration_plus_impl(x, duration::microseconds(y[0], y[1], y[2]));
+  case precision2::nanosecond: return duration_plus_impl(x, duration::nanoseconds(y[0], y[1], y[2]));
+  }
+}
+
+inline
+cpp11::writable::list
+duration_plus_switch(cpp11::list_of<cpp11::integers>& x,
+                     cpp11::list_of<cpp11::integers>& y,
+                     const enum precision2& precision_x_val,
+                     const enum precision2& precision_y_val) {
+  using namespace rclock;
+
+  switch (precision_x_val) {
+  case precision2::year: return duration_plus_switch2(duration::years(x[0]), y, precision_y_val);
+  case precision2::quarter: return duration_plus_switch2(duration::quarters(x[0]), y, precision_y_val);
+  case precision2::month: return duration_plus_switch2(duration::months(x[0]), y, precision_y_val);
+  case precision2::week: return duration_plus_switch2(duration::weeks(x[0]), y, precision_y_val);
+  case precision2::day: return duration_plus_switch2(duration::days(x[0]), y, precision_y_val);
+  case precision2::hour: return duration_plus_switch2(duration::hours(x[0], x[1]), y, precision_y_val);
+  case precision2::minute: return duration_plus_switch2(duration::minutes(x[0], x[1]), y, precision_y_val);
+  case precision2::second: return duration_plus_switch2(duration::seconds(x[0], x[1]), y, precision_y_val);
+  case precision2::millisecond: return duration_plus_switch2(duration::milliseconds(x[0], x[1], x[2]), y, precision_y_val);
+  case precision2::microsecond: return duration_plus_switch2(duration::microseconds(x[0], x[1], x[2]), y, precision_y_val);
+  case precision2::nanosecond: return duration_plus_switch2(duration::nanoseconds(x[0], x[1], x[2]), y, precision_y_val);
+  }
+}
+
+static inline enum precision2 duration_common_precision(const enum precision2 x_precision, const enum precision2 y_precision);
+
+[[cpp11::register]]
+cpp11::writable::list
+duration_plus_cpp(cpp11::list_of<cpp11::integers> x,
+                  cpp11::list_of<cpp11::integers> y,
+                  const cpp11::strings& precision_x,
+                  const cpp11::strings& precision_y) {
+  const enum precision2 precision_x_val = parse_precision2(precision_x);
+  const enum precision2 precision_y_val = parse_precision2(precision_y);
+
+  // Common precision detection will error if no valid common precision
+  enum precision2 precision = duration_common_precision(precision_x_val, precision_y_val);
+  std::string precision_string = precision_to_string(precision);
+  cpp11::writable::strings out_precision({precision_string});
+
+  cpp11::writable::list out_fields = duration_plus_switch(
+    x,
+    y,
+    precision_x_val,
+    precision_y_val
+  );
+
+  cpp11::writable::list out({out_fields, out_precision});
+  out.names() = {"fields", "precision"};
+
+  return out;
+}
+
+// -----------------------------------------------------------------------------
+
+/*
+ * Restricts normal result returned by `std::common_type()` to only allow
+ * common durations that result in a named duration type (year, month, ...).
+ * For example, duration_common("year", "month") is allowed because month is
+ * defined as 1/12 of a year. duration_common("year", "second") is allowed
+ * because years are defined in terms of seconds. But
+ * duration_common("year", "day") is not allowed because the greatest common
+ * divisor between their ratios is 216, which would create an unnamed duration.
+ */
+template <typename Duration1, typename Duration2>
+inline
+std::pair<enum precision2, bool>
+duration_common_precision_impl() {
+  using CT = typename std::common_type<Duration1, Duration2>::type;
+
+  if (std::is_same<CT, date::years>::value) {
+    return std::make_pair(precision2::year, true);
+  } else if (std::is_same<CT, quarterly::quarters>::value) {
+    return std::make_pair(precision2::quarter, true);
+  } else if (std::is_same<CT, date::months>::value) {
+    return std::make_pair(precision2::month, true);
+  } else if (std::is_same<CT, date::weeks>::value) {
+    return std::make_pair(precision2::week, true);
+  } else if (std::is_same<CT, date::days>::value) {
+    return std::make_pair(precision2::day, true);
+  } else if (std::is_same<CT, std::chrono::hours>::value) {
+    return std::make_pair(precision2::hour, true);
+  } else if (std::is_same<CT, std::chrono::minutes>::value) {
+    return std::make_pair(precision2::minute, true);
+  } else if (std::is_same<CT, std::chrono::seconds>::value) {
+    return std::make_pair(precision2::second, true);
+  } else if (std::is_same<CT, std::chrono::milliseconds>::value) {
+    return std::make_pair(precision2::millisecond, true);
+  } else if (std::is_same<CT, std::chrono::microseconds>::value) {
+    return std::make_pair(precision2::microsecond, true);
+  } else if (std::is_same<CT, std::chrono::nanoseconds>::value) {
+    return std::make_pair(precision2::nanosecond, true);
+  } else {
+    return std::make_pair(precision2::year, false);
+  }
+}
+
+template <typename Duration1>
+static
+inline
+std::pair<enum precision2, bool>
+duration_common_precision_switch2(const enum precision2& y_precision) {
+  switch (y_precision) {
+  case precision2::year: return duration_common_precision_impl<Duration1, date::years>();
+  case precision2::quarter: return duration_common_precision_impl<Duration1, quarterly::quarters>();
+  case precision2::month: return duration_common_precision_impl<Duration1, date::months>();
+  case precision2::week: return duration_common_precision_impl<Duration1, date::weeks>();
+  case precision2::day: return duration_common_precision_impl<Duration1, date::days>();
+  case precision2::hour: return duration_common_precision_impl<Duration1, std::chrono::hours>();
+  case precision2::minute: return duration_common_precision_impl<Duration1, std::chrono::minutes>();
+  case precision2::second: return duration_common_precision_impl<Duration1, std::chrono::seconds>();
+  case precision2::millisecond: return duration_common_precision_impl<Duration1, std::chrono::milliseconds>();
+  case precision2::microsecond: return duration_common_precision_impl<Duration1, std::chrono::microseconds>();
+  case precision2::nanosecond: return duration_common_precision_impl<Duration1, std::chrono::nanoseconds>();
+  }
+}
+
+static
+inline
+std::pair<enum precision2, bool>
+duration_common_precision_pair(const enum precision2& x_precision,
+                               const enum precision2& y_precision) {
+  switch (x_precision) {
+  case precision2::year: return duration_common_precision_switch2<date::years>(y_precision);
+  case precision2::quarter: return duration_common_precision_switch2<quarterly::quarters>(y_precision);
+  case precision2::month: return duration_common_precision_switch2<date::months>(y_precision);
+  case precision2::week: return duration_common_precision_switch2<date::weeks>(y_precision);
+  case precision2::day: return duration_common_precision_switch2<date::days>(y_precision);
+  case precision2::hour: return duration_common_precision_switch2<std::chrono::hours>(y_precision);
+  case precision2::minute: return duration_common_precision_switch2<std::chrono::minutes>(y_precision);
+  case precision2::second: return duration_common_precision_switch2<std::chrono::seconds>(y_precision);
+  case precision2::millisecond: return duration_common_precision_switch2<std::chrono::milliseconds>(y_precision);
+  case precision2::microsecond: return duration_common_precision_switch2<std::chrono::microseconds>(y_precision);
+  case precision2::nanosecond: return duration_common_precision_switch2<std::chrono::nanoseconds>(y_precision);
+  }
+}
+
+static
+inline
+enum precision2
+duration_common_precision(const enum precision2 x_precision,
+                          const enum precision2 y_precision) {
+  std::pair<enum precision2, bool> pair = duration_common_precision_pair(x_precision, y_precision);
+
+  if (!pair.second) {
+    std::string x_precision_str = precision_to_string(x_precision);
+    std::string y_precision_str = precision_to_string(y_precision);
+    std::string message = "No common precision between '" + x_precision_str + "' and '" + y_precision_str + "'.";
+    clock_abort(message.c_str());
+  }
+
+  return pair.first;
+}
+
+[[cpp11::register]]
+cpp11::writable::strings
+duration_common_precision_cpp(const cpp11::strings& x_precision,
+                              const cpp11::strings& y_precision) {
+  const enum precision2 x_precision_val = parse_precision2(x_precision);
+  const enum precision2 y_precision_val = parse_precision2(y_precision);
+  const enum precision2 common = duration_common_precision(x_precision_val, y_precision_val);
+  std::string string = precision_to_string(common);
+  return cpp11::writable::strings({string});
+}
+
+static
+inline
+bool
+duration_has_common_precision(const enum precision2& x_precision,
+                              const enum precision2& y_precision) {
+  return duration_common_precision_pair(x_precision, y_precision).second;
+}
+
+[[cpp11::register]]
+bool
+duration_has_common_precision_cpp(const cpp11::strings& x_precision,
+                                  const cpp11::strings& y_precision) {
+  const enum precision2 x_precision_val = parse_precision2(x_precision);
+  const enum precision2 y_precision_val = parse_precision2(y_precision);
+  return duration_has_common_precision(x_precision_val, y_precision_val);
+}
+
+// -----------------------------------------------------------------------------
+
 enum class rounding {
   round,
   floor,
@@ -415,3 +641,46 @@ duration_round_cpp(cpp11::list_of<cpp11::integers> fields,
     rounding::round
   );
 }
+
+// -----------------------------------------------------------------------------
+
+template <class ClockDuration>
+static
+inline
+cpp11::writable::list
+duration_unary_minus_impl(const ClockDuration& x) {
+  const r_ssize size = x.size();
+  ClockDuration out(size);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    if (x.is_na(i)) {
+      out.assign_na(i);
+      continue;
+    }
+    out.assign(-x[i], i);
+  }
+
+  return out.to_list();
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+duration_unary_minus_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision) {
+  using namespace rclock;
+
+  switch (parse_precision2(precision)) {
+  case precision2::year: return duration_unary_minus_impl(duration::years(fields[0]));
+  case precision2::quarter: return duration_unary_minus_impl(duration::quarters(fields[0]));
+  case precision2::month: return duration_unary_minus_impl(duration::months(fields[0]));
+  case precision2::week: return duration_unary_minus_impl(duration::weeks(fields[0]));
+  case precision2::day: return duration_unary_minus_impl(duration::days(fields[0]));
+  case precision2::hour: return duration_unary_minus_impl(duration::hours(fields[0], fields[1]));
+  case precision2::minute: return duration_unary_minus_impl(duration::minutes(fields[0], fields[1]));
+  case precision2::second: return duration_unary_minus_impl(duration::seconds(fields[0], fields[1]));
+  case precision2::millisecond: return duration_unary_minus_impl(duration::milliseconds(fields[0], fields[1], fields[2]));
+  case precision2::microsecond: return duration_unary_minus_impl(duration::microseconds(fields[0], fields[1], fields[2]));
+  case precision2::nanosecond: return duration_unary_minus_impl(duration::nanoseconds(fields[0], fields[1], fields[2]));
+  }
+}
+
+

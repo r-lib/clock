@@ -130,7 +130,7 @@ days_to_date <- function(x, names = NULL) {
 # ------------------------------------------------------------------------------
 
 restrict_clock_supported <- function(x) {
-  if (is_calendar(x) || is_naive_time_point(x) || is_zoned_or_base(x)) {
+  if (is_calendar(x) || is_naive_time_point(x) || is_zoned_or_base(x) || is_duration(x)) {
     invisible(x)
   } else {
     stop_clock_unsupported_class(x)

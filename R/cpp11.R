@@ -148,6 +148,18 @@ duration_cast_cpp <- function(fields, precision_from, precision_to) {
   .Call("_clock_duration_cast_cpp", fields, precision_from, precision_to, PACKAGE = "clock")
 }
 
+duration_plus_cpp <- function(x, y, precision_x, precision_y) {
+  .Call("_clock_duration_plus_cpp", x, y, precision_x, precision_y, PACKAGE = "clock")
+}
+
+duration_common_precision_cpp <- function(x_precision, y_precision) {
+  .Call("_clock_duration_common_precision_cpp", x_precision, y_precision, PACKAGE = "clock")
+}
+
+duration_has_common_precision_cpp <- function(x_precision, y_precision) {
+  .Call("_clock_duration_has_common_precision_cpp", x_precision, y_precision, PACKAGE = "clock")
+}
+
 duration_floor_cpp <- function(fields, precision_from, precision_to) {
   .Call("_clock_duration_floor_cpp", fields, precision_from, precision_to, PACKAGE = "clock")
 }
@@ -158,6 +170,10 @@ duration_ceil_cpp <- function(fields, precision_from, precision_to) {
 
 duration_round_cpp <- function(fields, precision_from, precision_to) {
   .Call("_clock_duration_round_cpp", fields, precision_from, precision_to, PACKAGE = "clock")
+}
+
+duration_unary_minus_cpp <- function(fields, precision) {
+  .Call("_clock_duration_unary_minus_cpp", fields, precision, PACKAGE = "clock")
 }
 
 floor_calendar_days_to_year_month_precision <- function(calendar) {

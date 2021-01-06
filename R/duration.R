@@ -155,16 +155,13 @@ vec_proxy_equal.clock_duration <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
-# Don't allow automatic promotion of duration precisions.
-# Promoting year -> day can actually lose precision because a year is a fractional
-# number of days and our storage is always integer based.
+# Don't allow automatic promotion of duration precisions. There is no common
+# duration type between, say, <year> and <day> because the common
+# ratio is <216> and doesn't result in a named duration class.
 
 #' @export
 vec_ptype2.clock_duration.clock_duration <- function(x, y, ...) {
-  x_precision <- duration_precision(x)
-  y_precision <- duration_precision(y)
-
-  if (x_precision == y_precision) {
+  if (duration_precision(x) == duration_precision(y)) {
     x
   } else {
     stop_incompatible_type(x, y, ...)
@@ -173,10 +170,7 @@ vec_ptype2.clock_duration.clock_duration <- function(x, y, ...) {
 
 #' @export
 vec_cast.clock_duration.clock_duration <- function(x, to, ...) {
-  x_precision <- duration_precision(x)
-  to_precision <- duration_precision(to)
-
-  if (x_precision == to_precision) {
+  if (duration_precision(x) == duration_precision(to)) {
     x
   } else {
     stop_incompatible_cast(x, to, ...)
@@ -247,9 +241,203 @@ duration_rounder <- function(x, precision, rounder, verb) {
 # ------------------------------------------------------------------------------
 
 #' @export
+#' @method vec_arith clock_duration
+vec_arith.clock_duration <- function(op, x, y, ...) {
+  UseMethod("vec_arith.clock_duration", y)
+}
+
+#' @export
+#' @method vec_arith.clock_duration MISSING
+vec_arith.clock_duration.MISSING <- function(op, x, y, ...) {
+  switch(
+    op,
+    "+" = x,
+    "-" = duration_unary_minus(x),
+  )
+}
+
+#' @export
+#' @method vec_arith.clock_duration clock_duration
+vec_arith.clock_duration.clock_duration <- function(op, x, y, ...) {
+  switch(
+    op,
+    "+" = duration_plus(x, y),
+    "-" = duration_plus(x, -y),
+    stop_incompatible_op(op, x, y)
+  )
+}
+
+#' @export
+#' @method vec_arith.clock_duration numeric
+vec_arith.clock_duration.numeric <- function(op, x, y, ...) {
+  switch(
+    op,
+    "+" = duration_plus(x, duration_helper(y, duration_precision(x))),
+    "-" = duration_plus(x, duration_helper(-y, duration_precision(x))),
+    stop_incompatible_op(op, x, y)
+  )
+}
+
+#' @export
+#' @method vec_arith.numeric clock_duration
+vec_arith.numeric.clock_duration <- function(op, x, y, ...) {
+  switch(
+    op,
+    "+" = duration_plus(duration_helper(x, duration_precision(y)), y),
+    "-" = stop_incompatible_op(op, x, y, details = "Cannot subtract a duration from a numeric."),
+    stop_incompatible_op(op, x, y)
+  )
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+add_years.clock_duration <- function(x, n, ...) {
+  n <- duration_collect_n(n, "year")
+  duration_plus(x, n)
+}
+#' @export
+add_quarters.clock_duration <- function(x, n, ...) {
+  n <- duration_collect_n(n, "quarter")
+  duration_plus(x, n)
+}
+#' @export
+add_months.clock_duration <- function(x, n, ...) {
+  n <- duration_collect_n(n, "month")
+  duration_plus(x, n)
+}
+#' @export
+add_weeks.clock_duration <- function(x, n, ...) {
+  n <- duration_collect_n(n, "week")
+  duration_plus(x, n)
+}
+#' @export
+add_days.clock_duration <- function(x, n, ...) {
+  n <- duration_collect_n(n, "day")
+  duration_plus(x, n)
+}
+#' @export
+add_hours.clock_duration <- function(x, n, ...) {
+  n <- duration_collect_n(n, "hour")
+  duration_plus(x, n)
+}
+#' @export
+add_minutes.clock_duration <- function(x, n, ...) {
+  n <- duration_collect_n(n, "minute")
+  duration_plus(x, n)
+}
+#' @export
+add_seconds.clock_duration <- function(x, n, ...) {
+  n <- duration_collect_n(n, "second")
+  duration_plus(x, n)
+}
+#' @export
+add_milliseconds.clock_duration <- function(x, n, ...) {
+  n <- duration_collect_n(n, "millisecond")
+  duration_plus(x, n)
+}
+#' @export
+add_microseconds.clock_duration <- function(x, n, ...) {
+  n <- duration_collect_n(n, "microsecond")
+  duration_plus(x, n)
+}
+#' @export
+add_nanoseconds.clock_duration <- function(x, n, ...) {
+  n <- duration_collect_n(n, "nanosecond")
+  duration_plus(x, n)
+}
+
+duration_collect_n <- function(n, precision) {
+  if (is_duration_with_precision(n, precision)) {
+    return(n)
+  }
+
+  if (is_duration(n)) {
+    abort(paste0("`n` must have '", precision, "' precision."))
+  }
+
+  n <- vec_cast(n, integer(), x_arg = "n")
+  duration_helper(n, precision)
+}
+
+# ------------------------------------------------------------------------------
+
+duration_plus <- function(x, y) {
+  if (!is_duration(x) || !is_duration(y)) {
+    abort("`x` and `y` must both be 'duration' objects.")
+  }
+
+  x_precision <- duration_precision(x)
+  y_precision <- duration_precision(y)
+
+  args <- vec_recycle_common(x = x, y = y)
+  x <- args$x
+  y <- args$y
+
+  names <- names(x)
+  if (is_null(names)) {
+    names <- names(y)
+  }
+
+  result <- duration_plus_cpp(x, y, x_precision, y_precision)
+
+  new_duration_from_fields(
+    fields = result$fields,
+    precision = result$precision,
+    names = names
+  )
+}
+
+duration_unary_minus <- function(x) {
+  precision <- duration_precision(x)
+  fields <- duration_unary_minus_cpp(x, precision)
+  new_duration_from_fields(fields, precision, names(x))
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 is_duration <- function(x) {
   inherits(x, "clock_duration")
 }
+
+is_years <- function(x) {
+  is_duration_with_precision("year")
+}
+is_quarters <- function(x) {
+  is_duration_with_precision("quarter")
+}
+is_months <- function(x) {
+  is_duration_with_precision("month")
+}
+is_weeks <- function(x) {
+  is_duration_with_precision("week")
+}
+is_days <- function(x) {
+  is_duration_with_precision("day")
+}
+is_hours <- function(x) {
+  is_duration_with_precision("hour")
+}
+is_minutes <- function(x) {
+  is_duration_with_precision("minute")
+}
+is_seconds <- function(x) {
+  is_duration_with_precision("second")
+}
+is_milliseconds <- function(x) {
+  is_duration_with_precision("millisecond")
+}
+is_microseconds <- function(x) {
+  is_duration_with_precision("microsecond")
+}
+is_nanoseconds <- function(x) {
+  is_duration_with_precision("nanoseconds")
+}
+is_duration_with_precision <- function(x, precision) {
+  is_duration(x) && duration_precision(x) == precision
+}
+
 
 # ------------------------------------------------------------------------------
 
