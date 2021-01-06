@@ -5,7 +5,7 @@ invalid_detect <- function(x) {
 
 #' @export
 invalid_detect.clock_calendar <- function(x) {
-  abort("Can't detect invalid dates for this calendar type.")
+  stop_clock_unsupported_calendar_op("invalid_detect")
 }
 
 # ------------------------------------------------------------------------------
@@ -17,7 +17,7 @@ invalid_any <- function(x) {
 
 #' @export
 invalid_any.clock_calendar <- function(x) {
-  abort("Can't any invalid dates for this calendar type.")
+  stop_clock_unsupported_calendar_op("invalid_any")
 }
 
 # ------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ invalid_count <- function(x) {
 
 #' @export
 invalid_count.clock_calendar <- function(x) {
-  abort("Can't count invalid dates for this calendar type.")
+  stop_clock_unsupported_calendar_op("invalid_count")
 }
 
 # ------------------------------------------------------------------------------
@@ -41,5 +41,5 @@ invalid_resolve <- function(x, invalid = "last-day") {
 
 #' @export
 invalid_resolve.clock_calendar <- function(x, invalid = "last-day") {
-  abort("Can't resolve invalid dates for this calendar type.")
+  stop_clock_unsupported_calendar_op("invalid_resolve")
 }
