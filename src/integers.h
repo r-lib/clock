@@ -50,7 +50,7 @@ integers::integers(const cpp11::integers& x) NOEXCEPT
 inline
 integers::integers(r_ssize size)
   : read_(clock_empty_integers),
-    write_(cpp11::integers(size)),
+    write_(cpp11::writable::integers(size)),
     writable_(true)
   {}
 
