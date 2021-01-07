@@ -103,17 +103,11 @@ format.clock_time_point <- function(x,
     format <- time_point_precision_format(precision)
   }
 
-  ticks <- field_ticks(duration)
-  ticks_of_day <- field_ticks_of_day(duration, strict = FALSE)
-  ticks_of_second <- field_ticks_of_second(duration, strict = FALSE)
-
   date_names <- locale$date_names
   decimal_mark <- locale$decimal_mark
 
   out <- format_time_point_cpp(
-    ticks = ticks,
-    ticks_of_day = ticks_of_day,
-    ticks_of_second = ticks_of_second,
+    fields = duration,
     clock = clock,
     format = format,
     precision = precision,

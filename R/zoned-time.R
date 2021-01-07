@@ -63,17 +63,11 @@ format.clock_zoned_time <- function(x,
     format <- zoned_time_format(print_zone_name)
   }
 
-  ticks <- field_ticks(duration)
-  ticks_of_day <- field_ticks_of_day(duration, strict = FALSE)
-  ticks_of_second <- field_ticks_of_second(duration, strict = FALSE)
-
   date_names <- locale$date_names
   decimal_mark <- locale$decimal_mark
 
   out <- format_zoned_time_cpp(
-    ticks = ticks,
-    ticks_of_day = ticks_of_day,
-    ticks_of_second = ticks_of_second,
+    fields = duration,
     zone = zone,
     abbreviate_zone = abbreviate_zone,
     format = format,
