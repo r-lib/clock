@@ -354,7 +354,7 @@ time_point_arith_duration <- function(x, n, precision_n, names, duration_fn) {
 }
 
 time_point_minus_time_point <- function(x, y, names) {
-  args <- vec_recycle_common(!!!args, names = names)
+  args <- vec_recycle_common(x = x, y = y, names = names)
   x <- args$x
   y <- args$y
   names <- args$names
@@ -373,6 +373,63 @@ as_year_month_day.clock_time_point <- function(x) {
   precision <- time_point_precision(x)
   fields <- as_year_month_day_from_time_point_cpp(duration, precision)
   new_year_month_day_from_fields(fields, precision, names = names(x))
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+time_point_cast <- function(x, precision) {
+  if (!is_time_point(x)) {
+    abort("`x` must be a 'time_point'.")
+  }
+
+  if (!is_valid_time_point_precision(precision)) {
+    abort("`precision` must be a valid precision string, and must be at least 'day' precision.")
+  }
+
+  duration <- time_point_duration(x)
+  duration <- duration_cast(duration, precision)
+
+  new_time_point(duration, clock = time_point_clock(x), names = names(x))
+}
+
+#' @export
+time_point_floor <- function(x, precision) {
+  time_point_rounder(x, precision, duration_floor)
+}
+
+#' @export
+time_point_ceil <- function(x, precision) {
+  time_point_rounder(x, precision, duration_ceil)
+}
+
+#' @export
+time_point_round <- function(x, precision) {
+  time_point_rounder(x, precision, duration_round)
+}
+
+time_point_rounder <- function(x, precision, duration_rounder) {
+  if (!is_time_point(x)) {
+    abort("`x` must be a 'time_point'.")
+  }
+
+  if (!is_valid_time_point_precision(precision)) {
+    abort("`precision` must be a valid precision string, and must be at least 'day' precision.")
+  }
+
+  duration <- time_point_duration(x)
+  duration <- duration_rounder(duration, precision)
+
+  new_time_point(duration, clock = time_point_clock(x), names = names(x))
+}
+
+# ------------------------------------------------------------------------------
+
+is_valid_time_point_precision <- function(precision) {
+  if (!is_valid_precision(precision)) {
+    return(FALSE)
+  }
+  precision_value(precision) >= PRECISION_DAY
 }
 
 # ------------------------------------------------------------------------------
