@@ -46,7 +46,7 @@ new_time_point <- function(duration = duration_days(),
 
   precision <- duration_precision(duration)
   if (precision_value(precision) < PRECISION_DAY) {
-    abort("`duration` must be at least daily precision.")
+    abort("`duration` must have at least daily precision.")
   }
 
   fields <- list(duration = duration)
@@ -160,6 +160,27 @@ obj_print_data.clock_time_point <- function(x, ...) {
 pillar_shaft.clock_time_point <- function(x, ...) {
   out <- format(x)
   pillar::new_pillar_shaft_simple(out, align = "left")
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+vec_proxy.clock_time_point <- function(x, ...) {
+  proxy_rcrd(x)
+}
+
+#' @export
+vec_restore.clock_time_point <- function(x, to, ...) {
+  fields <- restore_rcrd_fields(x)
+  names <- restore_rcrd_names(x)
+  clock <- time_point_clock(to)
+  duration <- fields$duration
+  new_time_point(duration, clock, names = names)
+}
+
+#' @export
+vec_proxy_equal.clock_time_point <- function(x, ...) {
+  proxy_equal_rcrd(x)
 }
 
 # ------------------------------------------------------------------------------
