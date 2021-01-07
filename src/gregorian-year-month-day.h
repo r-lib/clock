@@ -150,6 +150,7 @@ protected:
   rclock::integers year_;
 
 public:
+  y(r_ssize size);
   y(const cpp11::integers& year);
 
   bool is_na(r_ssize i) const NOEXCEPT;
@@ -177,6 +178,7 @@ protected:
   rclock::integers month_;
 
 public:
+  ym(r_ssize size);
   ym(const cpp11::integers& year,
      const cpp11::integers& month);
 
@@ -203,6 +205,7 @@ protected:
   rclock::integers day_;
 
 public:
+  ymd(r_ssize size);
   ymd(const cpp11::integers& year,
       const cpp11::integers& month,
       const cpp11::integers& day);
@@ -213,6 +216,7 @@ public:
 
   void assign_day(const date::day& x, r_ssize i) NOEXCEPT;
   void assign_year_month_day(const date::year_month_day& x, r_ssize i) NOEXCEPT;
+  void assign_sys_time(const date::sys_time<date::days>& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
   void resolve(r_ssize i, const enum invalid type);
@@ -228,6 +232,7 @@ protected:
   rclock::integers hour_;
 
 public:
+  ymdh(r_ssize size);
   ymdh(const cpp11::integers& year,
        const cpp11::integers& month,
        const cpp11::integers& day,
@@ -236,6 +241,7 @@ public:
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
 
   void assign_hour(const std::chrono::hours& x, r_ssize i) NOEXCEPT;
+  void assign_sys_time(const date::sys_time<std::chrono::hours>& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
   void resolve(r_ssize i, const enum invalid type);
@@ -250,6 +256,7 @@ protected:
   rclock::integers minute_;
 
 public:
+  ymdhm(r_ssize size);
   ymdhm(const cpp11::integers& year,
         const cpp11::integers& month,
         const cpp11::integers& day,
@@ -259,6 +266,7 @@ public:
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
 
   void assign_minute(const std::chrono::minutes& x, r_ssize i) NOEXCEPT;
+  void assign_sys_time(const date::sys_time<std::chrono::minutes>& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
   void resolve(r_ssize i, const enum invalid type);
@@ -273,6 +281,7 @@ protected:
   rclock::integers second_;
 
 public:
+  ymdhms(r_ssize size);
   ymdhms(const cpp11::integers& year,
          const cpp11::integers& month,
          const cpp11::integers& day,
@@ -283,6 +292,7 @@ public:
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
 
   void assign_second(const std::chrono::seconds& x, r_ssize i) NOEXCEPT;
+  void assign_sys_time(const date::sys_time<std::chrono::seconds>& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
   void resolve(r_ssize i, const enum invalid type);
@@ -298,6 +308,7 @@ protected:
   rclock::integers subsecond_;
 
 public:
+  ymdhmss(r_ssize size);
   ymdhmss(const cpp11::integers& year,
           const cpp11::integers& month,
           const cpp11::integers& day,
@@ -309,6 +320,7 @@ public:
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
 
   void assign_subsecond(const Duration& x, r_ssize i) NOEXCEPT;
+  void assign_sys_time(const date::sys_time<Duration>& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
   void resolve(r_ssize i, const enum invalid type);
@@ -321,7 +333,13 @@ public:
 
 // y
 
-inline y::y(const cpp11::integers& year)
+inline
+y::y(r_ssize size)
+  : year_(size)
+  {}
+
+inline
+y::y(const cpp11::integers& year)
   : year_(rclock::integers(year))
   {}
 
@@ -401,6 +419,13 @@ y::to_list() const
 }
 
 // ym
+
+inline
+ym::ym(r_ssize size)
+  : y(size),
+    month_(size)
+  {}
+
 
 inline
 ym::ym(const cpp11::integers& year,
@@ -491,12 +516,18 @@ ym::to_list() const
 // ymd
 
 inline
+ymd::ymd(r_ssize size)
+  : ym(size),
+    day_(size)
+  {}
+
+inline
 ymd::ymd(const cpp11::integers& year,
          const cpp11::integers& month,
          const cpp11::integers& day)
   : ym(year, month),
     day_(day)
-{}
+  {}
 
 inline
 std::ostringstream&
@@ -531,6 +562,14 @@ ymd::assign_year_month_day(const date::year_month_day& x, r_ssize i) NOEXCEPT
   assign_year(x.year(), i);
   assign_month(x.month(), i);
   assign_day(x.day(), i);
+}
+
+inline
+void
+ymd::assign_sys_time(const date::sys_time<date::days>& x, r_ssize i) NOEXCEPT
+{
+  date::year_month_day ymd{x};
+  assign_year_month_day(x, i);
 }
 
 inline
@@ -599,6 +638,12 @@ ymd::to_list() const
 // ymdh
 
 inline
+ymdh::ymdh(r_ssize size)
+  : ymd(size),
+    hour_(size)
+  {}
+
+inline
 ymdh::ymdh(const cpp11::integers& year,
            const cpp11::integers& month,
            const cpp11::integers& day,
@@ -626,6 +671,16 @@ void
 ymdh::assign_hour(const std::chrono::hours& x, r_ssize i) NOEXCEPT
 {
   hour_.assign(x.count(), i);
+}
+
+inline
+void
+ymdh::assign_sys_time(const date::sys_time<std::chrono::hours>& x, r_ssize i) NOEXCEPT
+{
+  const date::sys_time<date::days> day_point = date::floor<date::days>(x);
+  const std::chrono::hours hours = x - day_point;
+  ymd::assign_sys_time(day_point, i);
+  assign_hour(hours, i);
 }
 
 inline
@@ -690,6 +745,12 @@ ymdh::to_list() const
 // ymdhm
 
 inline
+ymdhm::ymdhm(r_ssize size)
+  : ymdh(size),
+    minute_(size)
+  {}
+
+inline
 ymdhm::ymdhm(const cpp11::integers& year,
              const cpp11::integers& month,
              const cpp11::integers& day,
@@ -720,6 +781,16 @@ void
 ymdhm::assign_minute(const std::chrono::minutes& x, r_ssize i) NOEXCEPT
 {
   minute_.assign(x.count(), i);
+}
+
+inline
+void
+ymdhm::assign_sys_time(const date::sys_time<std::chrono::minutes>& x, r_ssize i) NOEXCEPT
+{
+  const date::sys_time<std::chrono::hours> hour_point = date::floor<std::chrono::hours>(x);
+  const std::chrono::minutes minutes = x - hour_point;
+  ymdh::assign_sys_time(hour_point, i);
+  assign_minute(minutes, i);
 }
 
 inline
@@ -787,6 +858,12 @@ ymdhm::to_list() const
 // ymdhms
 
 inline
+ymdhms::ymdhms(r_ssize size)
+  : ymdhm(size),
+    second_(size)
+  {}
+
+inline
 ymdhms::ymdhms(const cpp11::integers& year,
                const cpp11::integers& month,
                const cpp11::integers& day,
@@ -820,6 +897,16 @@ void
 ymdhms::assign_second(const std::chrono::seconds& x, r_ssize i) NOEXCEPT
 {
   second_.assign(x.count(), i);
+}
+
+inline
+void
+ymdhms::assign_sys_time(const date::sys_time<std::chrono::seconds>& x, r_ssize i) NOEXCEPT
+{
+  const date::sys_time<std::chrono::minutes> minute_point = date::floor<std::chrono::minutes>(x);
+  const std::chrono::seconds seconds = x - minute_point;
+  ymdhm::assign_sys_time(minute_point, i);
+  assign_second(seconds, i);
 }
 
 inline
@@ -891,6 +978,13 @@ ymdhms::to_list() const
 
 template <typename Duration>
 inline
+ymdhmss<Duration>::ymdhmss(r_ssize size)
+  : ymdhms(size),
+    subsecond_(size)
+  {}
+
+template <typename Duration>
+inline
 ymdhmss<Duration>::ymdhmss(const cpp11::integers& year,
                            const cpp11::integers& month,
                            const cpp11::integers& day,
@@ -900,7 +994,7 @@ ymdhmss<Duration>::ymdhmss(const cpp11::integers& year,
                            const cpp11::integers& subsecond)
   : ymdhms(year, month, day, hour, minute, second),
     subsecond_(subsecond)
-{}
+  {}
 
 template <typename Duration>
 inline
@@ -927,6 +1021,17 @@ void
 ymdhmss<Duration>::assign_subsecond(const Duration& x, r_ssize i) NOEXCEPT
 {
   subsecond_.assign(x.count(), i);
+}
+
+template <typename Duration>
+inline
+void
+ymdhmss<Duration>::assign_sys_time(const date::sys_time<Duration>& x, r_ssize i) NOEXCEPT
+{
+  const date::sys_time<std::chrono::seconds> second_point = date::floor<std::chrono::seconds>(x);
+  const Duration subseconds = x - second_point;
+  ymdhms::assign_sys_time(second_point, i);
+  assign_subsecond(subseconds, i);
 }
 
 template <typename Duration>

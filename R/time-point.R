@@ -388,6 +388,16 @@ time_point_minus_time_point <- function(x, y, names) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+as_year_month_day.clock_time_point <- function(x) {
+  duration <- time_point_duration(x)
+  precision <- time_point_precision(x)
+  fields <- as_year_month_day_from_time_point_cpp(duration, precision)
+  new_year_month_day_from_fields(fields, precision, names = names(x))
+}
+
+# ------------------------------------------------------------------------------
+
 clock_validate <- function(clock) {
   is_string(clock) && clock %in% clocks()
 }

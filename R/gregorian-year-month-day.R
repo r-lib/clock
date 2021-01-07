@@ -396,6 +396,28 @@ add_field_year_month_day <- function(x, n, precision_n) {
 # ------------------------------------------------------------------------------
 
 #' @export
+as_year_month_day <- function(x)  {
+  UseMethod("as_year_month_day")
+}
+
+#' @export
+as_year_month_day.default <- function(x) {
+  stop_clock_unsupported_conversion(x, "clock_year_month_day")
+}
+
+#' @export
+as_year_month_day.clock_year_month_day <- function(x) {
+  x
+}
+
+#' @export
+as_year_month_day.clock_calendar <- function(x) {
+  as_year_month_day(as_sys_time(x))
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 as_sys_time.clock_year_month_day <- function(x) {
   if (invalid_any(x)) {
     message <- paste0(

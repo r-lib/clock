@@ -438,6 +438,13 @@ extern "C" SEXP _clock_as_sys_time_year_month_day_cpp(SEXP fields, SEXP precisio
     return cpp11::as_sexp(as_sys_time_year_month_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision)));
   END_CPP11
 }
+// gregorian-year-month-day.cpp
+cpp11::writable::list as_year_month_day_from_time_point_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision);
+extern "C" SEXP _clock_as_year_month_day_from_time_point_cpp(SEXP fields, SEXP precision) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(as_year_month_day_from_time_point_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision)));
+  END_CPP11
+}
 // install.cpp
 void clock_set_install(const cpp11::strings& path);
 extern "C" SEXP _clock_clock_set_install(SEXP path) {
@@ -688,6 +695,7 @@ extern SEXP _clock_adjust_naive_time_point_nanoseconds_of_second_cpp(SEXP, SEXP,
 extern SEXP _clock_adjust_naive_time_point_seconds_of_day_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_adjust_quarterly_calendar(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_as_sys_time_year_month_day_cpp(SEXP, SEXP);
+extern SEXP _clock_as_year_month_day_from_time_point_cpp(SEXP, SEXP);
 extern SEXP _clock_clock_set_install(SEXP);
 extern SEXP _clock_collect_iso_year_weeknum_weekday_fields(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_collect_year_month_day_fields(SEXP, SEXP);
@@ -785,6 +793,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_adjust_naive_time_point_seconds_of_day_cpp",                                           (DL_FUNC) &_clock_adjust_naive_time_point_seconds_of_day_cpp,                                            3},
     {"_clock_adjust_quarterly_calendar",                                                            (DL_FUNC) &_clock_adjust_quarterly_calendar,                                                             5},
     {"_clock_as_sys_time_year_month_day_cpp",                                                       (DL_FUNC) &_clock_as_sys_time_year_month_day_cpp,                                                        2},
+    {"_clock_as_year_month_day_from_time_point_cpp",                                                (DL_FUNC) &_clock_as_year_month_day_from_time_point_cpp,                                                 2},
     {"_clock_clock_set_install",                                                                    (DL_FUNC) &_clock_clock_set_install,                                                                     1},
     {"_clock_collect_iso_year_weeknum_weekday_fields",                                              (DL_FUNC) &_clock_collect_iso_year_weeknum_weekday_fields,                                               4},
     {"_clock_collect_year_month_day_fields",                                                        (DL_FUNC) &_clock_collect_year_month_day_fields,                                                         2},

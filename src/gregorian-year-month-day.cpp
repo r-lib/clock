@@ -722,3 +722,55 @@ as_sys_time_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   }
   }
 }
+
+// -----------------------------------------------------------------------------
+
+template <class Calendar, class ClockDuration>
+cpp11::writable::list
+as_year_month_day_from_time_point_impl(const ClockDuration& x) {
+  const r_ssize size = x.size();
+  Calendar out(size);
+  using Duration = typename ClockDuration::duration;
+
+  for (r_ssize i = 0; i < size; ++i) {
+    if (x.is_na(i)) {
+      out.assign_na(i);
+    } else {
+      Duration elt = x[i];
+      date::sys_time<Duration> elt_st{elt};
+      out.assign_sys_time(elt_st, i);
+    }
+  }
+
+  return out.to_list();
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+as_year_month_day_from_time_point_cpp(cpp11::list_of<cpp11::integers> fields,
+                               const cpp11::strings& precision) {
+  using namespace rclock;
+
+  cpp11::integers ticks = get_ticks(fields);
+  cpp11::integers ticks_of_day = get_ticks_of_day(fields);
+  cpp11::integers ticks_of_second = get_ticks_of_second(fields);
+
+  duration::days dd{ticks};
+  duration::hours dh{ticks, ticks_of_day};
+  duration::minutes dmin{ticks, ticks_of_day};
+  duration::seconds ds{ticks, ticks_of_day};
+  duration::milliseconds dmilli{ticks, ticks_of_day, ticks_of_second};
+  duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
+  duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
+
+  switch (parse_precision2(precision)) {
+  case precision2::day: return as_year_month_day_from_time_point_impl<gregorian::ymd>(dd);
+  case precision2::hour: return as_year_month_day_from_time_point_impl<gregorian::ymdh>(dh);
+  case precision2::minute: return as_year_month_day_from_time_point_impl<gregorian::ymdhm>(dmin);
+  case precision2::second: return as_year_month_day_from_time_point_impl<gregorian::ymdhms>(ds);
+  case precision2::millisecond: return as_year_month_day_from_time_point_impl<gregorian::ymdhmss<std::chrono::milliseconds>>(dmilli);
+  case precision2::microsecond: return as_year_month_day_from_time_point_impl<gregorian::ymdhmss<std::chrono::microseconds>>(dmicro);
+  case precision2::nanosecond: return as_year_month_day_from_time_point_impl<gregorian::ymdhmss<std::chrono::nanoseconds>>(dnano);
+  default: clock_abort("Internal error: Invalid precision.");
+  }
+}
