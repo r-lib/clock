@@ -47,8 +47,13 @@ as_naive_time.clock_sys_time <- function(x) {
 #' @export
 as_zoned_time.clock_sys_time <- function(x, zone, ...) {
   zone <- zone_validate(zone)
+
+  # Promote to at least seconds precision for `zoned_time`
+  x <- vec_cast(x, vec_ptype2(x, sys_seconds()))
+
   names <- names(x)
   sys_time <- unname(x)
+
   new_zoned_time(sys_time, zone, names = names)
 }
 
