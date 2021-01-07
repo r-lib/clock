@@ -93,50 +93,6 @@ adjust_nanoseconds_of_second_precision <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
-#' @export
-adjust_calendar <- function(x, calendar) {
-  UseMethod("adjust_calendar")
-}
-
-#' @export
-adjust_calendar.clock_naive_time_point <- function(x, calendar) {
-  if (!is_calendar(calendar)) {
-    abort("`calendar` must be a calendar type.")
-  }
-  if (!identical(get_precision(calendar), "day")) {
-    abort("`calendar` must have a precision of 'day'.")
-  }
-
-  new_naive_time_point(
-    calendar = vec_cast(field_calendar(x), calendar),
-    seconds_of_day = field_seconds_of_day(x),
-    nanoseconds_of_second = field_nanoseconds_of_second(x, strict = FALSE),
-    precision = get_precision(x),
-    names = names(x)
-  )
-}
-
-#' @export
-adjust_calendar.clock_zoned_time_point <- function(x, calendar) {
-  if (!is_calendar(calendar)) {
-    abort("`calendar` must be a calendar type.")
-  }
-  if (!identical(get_precision(calendar), "day")) {
-    abort("`calendar` must have a precision of 'day'.")
-  }
-
-  new_zoned_time_point(
-    calendar = vec_cast(field_calendar(x), calendar),
-    seconds_of_day = field_seconds_of_day(x),
-    nanoseconds_of_second = field_nanoseconds_of_second(x, strict = FALSE),
-    precision = get_precision(x),
-    zone = get_zone(x),
-    names = names(x)
-  )
-}
-
-# ------------------------------------------------------------------------------
-
 #' Adjust the year
 #'
 #' `adjust_year()` adjusts the year of `x` to `value`.
