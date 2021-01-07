@@ -244,6 +244,10 @@ add_field_year_month_day_cpp <- function(fields, fields_n, precision_fields, pre
   .Call("_clock_add_field_year_month_day_cpp", fields, fields_n, precision_fields, precision_n, PACKAGE = "clock")
 }
 
+as_sys_time_year_month_day_cpp <- function(fields, precision) {
+  .Call("_clock_as_sys_time_year_month_day_cpp", fields, precision, PACKAGE = "clock")
+}
+
 clock_set_install <- function(path) {
   invisible(.Call("_clock_clock_set_install", path, PACKAGE = "clock"))
 }

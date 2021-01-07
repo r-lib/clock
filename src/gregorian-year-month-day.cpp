@@ -662,3 +662,63 @@ add_field_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   default: clock_abort("Internal error: Invalid precision.");
   }
 }
+
+// -----------------------------------------------------------------------------
+
+template <class ClockDuration, class Calendar>
+cpp11::writable::list
+as_sys_time_year_month_day_impl(const Calendar& x) {
+  const r_ssize size = x.size();
+  ClockDuration out(size);
+  using Duration = typename ClockDuration::duration;
+
+  for (r_ssize i = 0; i < size; ++i) {
+    if (x.is_na(i)) {
+      out.assign_na(i);
+    } else {
+      date::sys_time<Duration> elt_st = x.to_sys_time(i);
+      Duration elt = elt_st.time_since_epoch();
+      out.assign(elt, i);
+    }
+  }
+
+  return out.to_list();
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+as_sys_time_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
+                               const cpp11::strings& precision) {
+  using namespace rclock;
+
+  cpp11::integers year = get_year(fields);
+  cpp11::integers month = get_month(fields);
+  cpp11::integers day = get_day(fields);
+  cpp11::integers hour = get_hour(fields);
+  cpp11::integers minute = get_minute(fields);
+  cpp11::integers second = get_second(fields);
+  cpp11::integers subsecond = get_subsecond(fields);
+
+  gregorian::ymd ymd{year, month, day};
+  gregorian::ymdh ymdh{year, month, day, hour};
+  gregorian::ymdhm ymdhm{year, month, day, hour, minute};
+  gregorian::ymdhms ymdhms{year, month, day, hour, minute, second};
+  gregorian::ymdhmss<std::chrono::milliseconds> ymdhmss1{year, month, day, hour, minute, second, subsecond};
+  gregorian::ymdhmss<std::chrono::microseconds> ymdhmss2{year, month, day, hour, minute, second, subsecond};
+  gregorian::ymdhmss<std::chrono::nanoseconds> ymdhmss3{year, month, day, hour, minute, second, subsecond};
+
+  switch (parse_precision2(precision)) {
+  case precision2::day: return as_sys_time_year_month_day_impl<duration::days>(ymd);
+  case precision2::hour: return as_sys_time_year_month_day_impl<duration::hours>(ymdh);
+  case precision2::minute: return as_sys_time_year_month_day_impl<duration::minutes>(ymdhm);
+  case precision2::second: return as_sys_time_year_month_day_impl<duration::seconds>(ymdhms);
+  case precision2::millisecond: return as_sys_time_year_month_day_impl<duration::milliseconds>(ymdhmss1);
+  case precision2::microsecond: return as_sys_time_year_month_day_impl<duration::microseconds>(ymdhmss2);
+  case precision2::nanosecond: return as_sys_time_year_month_day_impl<duration::nanoseconds>(ymdhmss3);
+  default: {
+    std::string precision_string = precision[0];
+    std::string message = "Can't convert to a time point from a calendar with '" + precision_string + "' precision.";
+    clock_abort(message.c_str());
+  }
+  }
+}

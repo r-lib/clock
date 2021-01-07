@@ -156,7 +156,8 @@ invalid_count.clock_year_month_day <- function(x) {
 }
 
 #' @export
-invalid_resolve.clock_year_month_day <- function(x, invalid = "error") {
+invalid_resolve.clock_year_month_day <- function(x, ..., invalid = "error") {
+  check_dots_empty()
   precision <- calendar_precision(x)
   fields <- invalid_resolve_year_month_day_cpp(x, precision, invalid)
   new_year_month_day_from_fields(fields, precision, names = names(x))
@@ -390,6 +391,29 @@ add_field_year_month_day <- function(x, n, precision_n) {
   fields <- add_field_year_month_day_cpp(x, n, precision_fields, precision_n)
 
   new_year_month_day_from_fields(fields, precision_fields, names = names(x))
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+as_sys_time.clock_year_month_day <- function(x) {
+  if (invalid_any(x)) {
+    message <- paste0(
+      "Can't convert to a time point when there are invalid dates. ",
+      "Resolve them before converting by calling `invalid_resolve()`."
+    )
+    abort(message)
+  }
+
+  precision <- calendar_precision(x)
+  fields <- as_sys_time_year_month_day_cpp(x, precision)
+  duration <- new_duration_from_fields(fields, precision)
+  new_sys_time(duration, names = names(x))
+}
+
+#' @export
+as_naive_time.clock_year_month_day <- function(x) {
+  as_naive_time(as_sys_time(x))
 }
 
 # ------------------------------------------------------------------------------

@@ -217,6 +217,7 @@ public:
 
   void resolve(r_ssize i, const enum invalid type);
 
+  date::sys_time<date::days> to_sys_time(r_ssize i) const NOEXCEPT;
   date::year_month_day to_year_month_day(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
 };
@@ -239,6 +240,7 @@ public:
 
   void resolve(r_ssize i, const enum invalid type);
 
+  date::sys_time<std::chrono::hours> to_sys_time(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
 };
 
@@ -261,6 +263,7 @@ public:
 
   void resolve(r_ssize i, const enum invalid type);
 
+  date::sys_time<std::chrono::minutes> to_sys_time(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
 };
 
@@ -284,6 +287,7 @@ public:
 
   void resolve(r_ssize i, const enum invalid type);
 
+  date::sys_time<std::chrono::seconds> to_sys_time(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
 };
 
@@ -309,6 +313,7 @@ public:
 
   void resolve(r_ssize i, const enum invalid type);
 
+  date::sys_time<Duration> to_sys_time(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
 };
 
@@ -569,6 +574,13 @@ ymd::resolve(r_ssize i, const enum invalid type)
 }
 
 inline
+date::sys_time<date::days>
+ymd::to_sys_time(r_ssize i) const NOEXCEPT
+{
+  return date::sys_time<date::days>{to_year_month_day(i)};
+}
+
+inline
 date::year_month_day
 ymd::to_year_month_day(r_ssize i) const NOEXCEPT
 {
@@ -660,6 +672,13 @@ ymdh::resolve(r_ssize i, const enum invalid type)
 }
 
 inline
+date::sys_time<std::chrono::hours>
+ymdh::to_sys_time(r_ssize i) const NOEXCEPT
+{
+  return ymd::to_sys_time(i) + std::chrono::hours{hour_[i]};
+}
+
+inline
 cpp11::writable::list
 ymdh::to_list() const
 {
@@ -747,6 +766,13 @@ ymdhm::resolve(r_ssize i, const enum invalid type)
     detail::resolve_error(i);
   }
   }
+}
+
+inline
+date::sys_time<std::chrono::minutes>
+ymdhm::to_sys_time(r_ssize i) const NOEXCEPT
+{
+  return ymdh::to_sys_time(i) + std::chrono::minutes{minute_[i]};
 }
 
 inline
@@ -843,6 +869,13 @@ ymdhms::resolve(r_ssize i, const enum invalid type)
     detail::resolve_error(i);
   }
   }
+}
+
+inline
+date::sys_time<std::chrono::seconds>
+ymdhms::to_sys_time(r_ssize i) const NOEXCEPT
+{
+  return ymdhm::to_sys_time(i) + std::chrono::seconds{second_[i]};
 }
 
 inline
@@ -948,6 +981,14 @@ ymdhmss<Duration>::resolve(r_ssize i, const enum invalid type)
     detail::resolve_error(i);
   }
   }
+}
+
+template <typename Duration>
+inline
+date::sys_time<Duration>
+ymdhmss<Duration>::to_sys_time(r_ssize i) const NOEXCEPT
+{
+  return ymdhms::to_sys_time(i) + Duration{subsecond_[i]};
 }
 
 template <typename Duration>

@@ -267,3 +267,19 @@ get_naive_time <- function(x) {
 
   new_naive_time(duration)
 }
+
+# ------------------------------------------------------------------------------
+
+#' @export
+as_sys_time.clock_zoned_time <- function(x) {
+  out <- get_sys_time(x)
+  names(out) <- names(x)
+  out
+}
+
+#' @export
+as_naive_time.clock_zoned_time <- function(x) {
+  out <- get_naive_time(x)
+  names(out) <- names(x)
+  out
+}

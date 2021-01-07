@@ -35,11 +35,11 @@ invalid_count.clock_calendar <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-invalid_resolve <- function(x, invalid = "last-day") {
+invalid_resolve <- function(x, ..., invalid = "error") {
   UseMethod("invalid_resolve")
 }
 
 #' @export
-invalid_resolve.clock_calendar <- function(x, invalid = "last-day") {
+invalid_resolve.clock_calendar <- function(x, ..., invalid = "error") {
   stop_clock_unsupported_calendar_op("invalid_resolve")
 }
