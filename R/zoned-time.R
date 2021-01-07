@@ -271,6 +271,23 @@ get_naive_time <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
+as_zoned_time <- function(x, ...) {
+  UseMethod("as_zoned_time")
+}
+
+#' @export
+as_zoned_time.default <- function(x, ...) {
+  stop_clock_unsupported_conversion(x, "clock_zoned_time")
+}
+
+#' @export
+as_zoned_time.clock_zoned_time <- function(x, ...) {
+  x
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 as_sys_time.clock_zoned_time <- function(x) {
   out <- get_sys_time(x)
   names(out) <- names(x)

@@ -396,6 +396,14 @@ as_year_month_day.clock_time_point <- function(x) {
   new_year_month_day_from_fields(fields, precision, names = names(x))
 }
 
+#' @export
+as_zoned_time.clock_time_point <- function(x, ..., nonexistent = "roll-forward", ambiguous = "earliest") {
+  # TODO: Subclass clock_sys_time and clock_naive_time?
+  # sys_time -> zoned_time will never use dst arguments
+
+  # TODO: Implementation
+}
+
 # ------------------------------------------------------------------------------
 
 clock_validate <- function(clock) {
