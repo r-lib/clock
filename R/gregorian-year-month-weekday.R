@@ -51,7 +51,7 @@ new_year_month_weekday <- function(year = integer(),
     index = index
   )
 
-  new_gregorian(
+  new_calendar(
     fields = fields,
     ...,
     names = names,
@@ -141,4 +141,13 @@ invalid_resolve.clock_year_month_weekday <- function(x, invalid = "last-day") {
   )
 
   new_year_month_weekday_from_fields(fields, names = names(x))
+}
+
+# ------------------------------------------------------------------------------
+
+field_weekday <- function(x) {
+  field(x, "weekday")
+}
+field_index <- function(x) {
+  field(x, "index")
 }

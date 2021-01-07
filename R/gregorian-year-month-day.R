@@ -65,7 +65,7 @@ new_year_month_day <- function(year = integer(),
 
   mapply(int_assert, fields, names(fields))
 
-  new_gregorian(
+  new_calendar(
     fields = fields,
     precision = precision,
     ...,
@@ -390,4 +390,28 @@ add_field_year_month_day <- function(x, n, precision_n) {
   fields <- add_field_year_month_day_cpp(x, n, precision_fields, precision_n)
 
   new_year_month_day_from_fields(fields, precision_fields, names = names(x))
+}
+
+# ------------------------------------------------------------------------------
+
+field_year <- function(x) {
+  field(x, "year")
+}
+field_month <- function(x) {
+  field(x, "month")
+}
+field_day <- function(x) {
+  field(x, "day")
+}
+field_hour <- function(x) {
+  field(x, "hour")
+}
+field_minute <- function(x) {
+  field(x, "minute")
+}
+field_second <- function(x) {
+  field(x, "second")
+}
+field_subsecond <- function(x) {
+  field(x, "subsecond")
 }
