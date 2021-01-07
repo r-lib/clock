@@ -284,13 +284,23 @@ vec_arith.clock_time_point.MISSING <- function(op, x, y, ...) {
   )
 }
 
+#' @method vec_arith.clock_time_point clock_time_point
+#' @export
+vec_arith.clock_time_point.clock_time_point <- function(op, x, y, ...) {
+  switch (
+    op,
+    "-" = time_point_minus_time_point(x, y, names_common(x, y)),
+    stop_incompatible_op(op, x, y, ...)
+  )
+}
+
 #' @method vec_arith.clock_time_point clock_duration
 #' @export
 vec_arith.clock_time_point.clock_duration <- function(op, x, y, ...) {
   switch (
     op,
-    "+" = time_point_plus(x, y, duration_precision(y), names_common(x, y)),
-    "-" = time_point_minus(x, y, duration_precision(y), names_common(x, y)),
+    "+" = time_point_plus_duration(x, y, duration_precision(y), names_common(x, y)),
+    "-" = time_point_minus_duration(x, y, duration_precision(y), names_common(x, y)),
     stop_incompatible_op(op, x, y, ...)
   )
 }
@@ -300,7 +310,7 @@ vec_arith.clock_time_point.clock_duration <- function(op, x, y, ...) {
 vec_arith.clock_duration.clock_time_point <- function(op, x, y, ...) {
   switch (
     op,
-    "+" = time_point_plus(y, x, duration_precision(x), names_common(x, y)),
+    "+" = time_point_plus_duration(y, x, duration_precision(x), names_common(x, y)),
     "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a time point from a duration.", ...),
     stop_incompatible_op(op, x, y, ...)
   )
@@ -313,8 +323,8 @@ vec_arith.clock_time_point.numeric <- function(op, x, y, ...) {
 
   switch (
     op,
-    "+" = time_point_plus(x, y, precision, names_common(x, y)),
-    "-" = time_point_minus(x, y, precision, names_common(x, y)),
+    "+" = time_point_plus_duration(x, y, precision, names_common(x, y)),
+    "-" = time_point_minus_duration(x, y, precision, names_common(x, y)),
     stop_incompatible_op(op, x, y, ...)
   )
 }
@@ -326,7 +336,7 @@ vec_arith.numeric.clock_time_point <- function(op, x, y, ...) {
 
   switch (
     op,
-    "+" = time_point_plus(y, x, precision, names_common(x, y)),
+    "+" = time_point_plus_duration(y, x, precision, names_common(x, y)),
     "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a time point from a duration.", ...),
     stop_incompatible_op(op, x, y, ...)
   )
@@ -336,52 +346,52 @@ vec_arith.numeric.clock_time_point <- function(op, x, y, ...) {
 
 #' @export
 add_weeks.clock_time_point <- function(x, n, ...) {
-  time_point_plus(x, n, "week", names_common(x, n))
+  time_point_plus_duration(x, n, "week", names_common(x, n))
 }
 
 #' @export
 add_days.clock_time_point <- function(x, n, ...) {
-  time_point_plus(x, n, "day", names_common(x, n))
+  time_point_plus_duration(x, n, "day", names_common(x, n))
 }
 
 #' @export
 add_hours.clock_time_point <- function(x, n, ...) {
-  time_point_plus(x, n, "hour", names_common(x, n))
+  time_point_plus_duration(x, n, "hour", names_common(x, n))
 }
 
 #' @export
 add_minutes.clock_time_point <- function(x, n, ...) {
-  time_point_plus(x, n, "minute", names_common(x, n))
+  time_point_plus_duration(x, n, "minute", names_common(x, n))
 }
 
 #' @export
 add_seconds.clock_time_point <- function(x, n, ...) {
-  time_point_plus(x, n, "second", names_common(x, n))
+  time_point_plus_duration(x, n, "second", names_common(x, n))
 }
 
 #' @export
 add_milliseconds.clock_time_point <- function(x, n, ...) {
-  time_point_plus(x, n, "millisecond", names_common(x, n))
+  time_point_plus_duration(x, n, "millisecond", names_common(x, n))
 }
 
 #' @export
 add_microseconds.clock_time_point <- function(x, n, ...) {
-  time_point_plus(x, n, "microsecond", names_common(x, n))
+  time_point_plus_duration(x, n, "microsecond", names_common(x, n))
 }
 
 #' @export
 add_nanoseconds.clock_time_point <- function(x, n, ...) {
-  time_point_plus(x, n, "nanosecond", names_common(x, n))
+  time_point_plus_duration(x, n, "nanosecond", names_common(x, n))
 }
 
-time_point_plus <- function(x, n, precision_n, names) {
-  time_point_arith(x, n, precision_n, names, duration_plus)
+time_point_plus_duration <- function(x, n, precision_n, names) {
+  time_point_arith_duration(x, n, precision_n, names, duration_plus)
 }
-time_point_minus <- function(x, n, precision_n, names) {
-  time_point_arith(x, n, precision_n, names, duration_minus)
+time_point_minus_duration <- function(x, n, precision_n, names) {
+  time_point_arith_duration(x, n, precision_n, names, duration_minus)
 }
 
-time_point_arith <- function(x, n, precision_n, names, duration_fn) {
+time_point_arith_duration <- function(x, n, precision_n, names, duration_fn) {
   clock <- time_point_clock(x)
   duration <- time_point_duration(x)
 
@@ -395,6 +405,21 @@ time_point_arith <- function(x, n, precision_n, names, duration_fn) {
   duration <- duration_fn(x = duration, y = n, names = NULL)
 
   new_time_point(duration, clock, names = names)
+}
+
+time_point_minus_time_point <- function(x, y, names) {
+  # Enforces same clock and duration precision
+  args <- vec_cast_common(x = x, y = y)
+
+  args <- vec_recycle_common(!!!args, names = names)
+  x <- args$x
+  y <- args$y
+  names <- args$names
+
+  x_duration <- time_point_duration(x)
+  y_duration <- time_point_duration(y)
+
+  duration_minus(x = x_duration, y = y_duration, names = names)
 }
 
 # ------------------------------------------------------------------------------
