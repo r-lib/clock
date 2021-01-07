@@ -5,7 +5,7 @@
 \alias{add_years.Date}
 \alias{add_years.POSIXt}
 \alias{add_years.clock_zoned_time_point}
-\alias{add_years.clock_naive_time_point}
+\alias{add_years.clock_time_point}
 \alias{add_years.clock_calendar}
 \alias{subtract_years.Date}
 \alias{subtract_years.POSIXt}
@@ -13,7 +13,7 @@
 \alias{add_quarters.Date}
 \alias{add_quarters.POSIXt}
 \alias{add_quarters.clock_zoned_time_point}
-\alias{add_quarters.clock_naive_time_point}
+\alias{add_quarters.clock_time_point}
 \alias{add_quarters.clock_calendar}
 \alias{subtract_quarters.Date}
 \alias{subtract_quarters.POSIXt}
@@ -21,7 +21,7 @@
 \alias{add_months.Date}
 \alias{add_months.POSIXt}
 \alias{add_months.clock_zoned_time_point}
-\alias{add_months.clock_naive_time_point}
+\alias{add_months.clock_time_point}
 \alias{add_months.clock_calendar}
 \alias{subtract_months.Date}
 \alias{subtract_months.POSIXt}
@@ -29,7 +29,6 @@
 \alias{add_weeks.Date}
 \alias{add_weeks.POSIXt}
 \alias{add_weeks.clock_zoned_time_point}
-\alias{add_weeks.clock_naive_time_point}
 \alias{add_weeks.clock_calendar}
 \alias{subtract_weeks.Date}
 \alias{subtract_weeks.POSIXt}
@@ -37,7 +36,6 @@
 \alias{add_days.Date}
 \alias{add_days.POSIXt}
 \alias{add_days.clock_zoned_time_point}
-\alias{add_days.clock_naive_time_point}
 \alias{add_days.clock_calendar}
 \alias{subtract_days.Date}
 \alias{subtract_days.POSIXt}
@@ -100,7 +98,7 @@
   dst_ambiguous = NULL
 )
 
-\method{add_years}{clock_naive_time_point}(x, n, ..., day_nonexistent = "last-time")
+\method{add_years}{clock_time_point}(x, n, ...)
 
 \method{add_years}{clock_calendar}(x, n, ...)
 
@@ -144,7 +142,7 @@
   dst_ambiguous = NULL
 )
 
-\method{add_quarters}{clock_naive_time_point}(x, n, ..., day_nonexistent = "last-time")
+\method{add_quarters}{clock_time_point}(x, n, ...)
 
 \method{add_quarters}{clock_calendar}(x, n, ...)
 
@@ -188,7 +186,7 @@
   dst_ambiguous = NULL
 )
 
-\method{add_months}{clock_naive_time_point}(x, n, ..., day_nonexistent = "last-time")
+\method{add_months}{clock_time_point}(x, n, ...)
 
 \method{add_months}{clock_calendar}(x, n, ...)
 
@@ -218,8 +216,6 @@
 
 \method{add_weeks}{clock_zoned_time_point}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
 
-\method{add_weeks}{clock_naive_time_point}(x, n, ...)
-
 \method{add_weeks}{clock_calendar}(x, n, ...)
 
 \method{subtract_weeks}{Date}(x, n, ...)
@@ -233,8 +229,6 @@
 \method{add_days}{POSIXt}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
 
 \method{add_days}{clock_zoned_time_point}(x, n, ..., dst_nonexistent = NULL, dst_ambiguous = NULL)
-
-\method{add_days}{clock_naive_time_point}(x, n, ...)
 
 \method{add_days}{clock_calendar}(x, n, ...)
 

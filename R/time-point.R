@@ -268,6 +268,125 @@ vec_cast.clock_time_point.clock_time_point <- function(x, to, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' @method vec_arith clock_time_point
+#' @export
+vec_arith.clock_time_point <- function(op, x, y, ...) {
+  UseMethod("vec_arith.clock_time_point", y)
+}
+
+#' @method vec_arith.clock_time_point MISSING
+#' @export
+vec_arith.clock_time_point.MISSING <- function(op, x, y, ...) {
+  switch (
+    op,
+    "+" = x,
+    stop_incompatible_op(op, x, y, ...)
+  )
+}
+
+#' @method vec_arith.clock_time_point clock_duration
+#' @export
+vec_arith.clock_time_point.clock_duration <- function(op, x, y, ...) {
+  switch (
+    op,
+    "+" = add_duration(x, y),
+    "-" = add_duration(x, -y),
+    stop_incompatible_op(op, x, y, ...)
+  )
+}
+
+#' @method vec_arith.clock_duration clock_time_point
+#' @export
+vec_arith.clock_duration.clock_time_point <- function(op, x, y, ...) {
+  switch (
+    op,
+    "+" = add_duration(y, x),
+    "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a time point from a duration.", ...),
+    stop_incompatible_op(op, x, y, ...)
+  )
+}
+
+#' @method vec_arith.clock_time_point numeric
+#' @export
+vec_arith.clock_time_point.numeric <- function(op, x, y, ...) {
+  switch (
+    op,
+    "+" = add_duration(x, duration_helper(y, time_point_precision(x))),
+    "-" = add_duration(x, duration_helper(-y, time_point_precision(x))),
+    stop_incompatible_op(op, x, y, ...)
+  )
+}
+
+#' @method vec_arith.numeric clock_time_point
+#' @export
+vec_arith.numeric.clock_time_point <- function(op, x, y, ...) {
+  switch (
+    op,
+    "+" = add_duration(y, duration_helper(x, time_point_precision(y))),
+    "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a time point from a duration.", ...),
+    stop_incompatible_op(op, x, y, ...)
+  )
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+add_weeks.clock_time_point <- function(x, n, ...) {
+  add_time_point(x, n, "week")
+}
+
+#' @export
+add_days.clock_time_point <- function(x, n, ...) {
+  add_time_point(x, n, "day")
+}
+
+#' @export
+add_hours.clock_time_point <- function(x, n, ...) {
+  add_time_point(x, n, "hour")
+}
+
+#' @export
+add_minutes.clock_time_point <- function(x, n, ...) {
+  add_time_point(x, n, "minute")
+}
+
+#' @export
+add_seconds.clock_time_point <- function(x, n, ...) {
+  add_time_point(x, n, "second")
+}
+
+#' @export
+add_milliseconds.clock_time_point <- function(x, n, ...) {
+  add_time_point(x, n, "millisecond")
+}
+
+#' @export
+add_microseconds.clock_time_point <- function(x, n, ...) {
+  add_time_point(x, n, "microsecond")
+}
+
+#' @export
+add_nanoseconds.clock_time_point <- function(x, n, ...) {
+  add_time_point(x, n, "nanosecond")
+}
+
+add_time_point <- function(x, n, precision_n) {
+  clock <- time_point_clock(x)
+  duration <- time_point_duration(x)
+
+  n <- duration_collect_n(n, precision_n)
+
+  args <- vec_recycle_common(x = x, n = n)
+  x <- args$x
+  n <- args$n
+
+  duration <- duration_plus(duration, n)
+
+  new_time_point(duration, clock, names = names(x))
+}
+
+# ------------------------------------------------------------------------------
+
 clock_validate <- function(clock) {
   is_string(clock) && clock %in% clocks()
 }

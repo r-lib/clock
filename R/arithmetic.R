@@ -286,8 +286,8 @@ add_years.clock_zoned_time_point <- function(x,
 
 #' @rdname clock-zoned-arithmetic
 #' @export
-add_years.clock_naive_time_point <- function(x, n, ..., day_nonexistent = "last-time") {
-  add_naive_time_point_calendar(x, n, ..., day_nonexistent = day_nonexistent, dispatcher = add_years_calendar)
+add_years.clock_time_point <- function(x, n, ...) {
+  stop_clock_unsupported_time_point_op("add_years")
 }
 
 #' @rdname clock-zoned-arithmetic
@@ -361,13 +361,13 @@ subtract_years.clock_zoned_time_point <- subtract_years.POSIXt
 
 #' @rdname clock-naive-arithmetic
 #' @export
-subtract_years.clock_naive_time_point <- function(x, n, ..., day_nonexistent = "last-time") {
-  add_years(x, -n, ..., day_nonexistent = day_nonexistent)
+subtract_years.clock_time_point <- function(x, n, ...) {
+  add_years(x, -n, ...)
 }
 
 #' @rdname clock-naive-arithmetic
 #' @export
-subtract_years.clock_calendar <- subtract_years.clock_naive_time_point
+subtract_years.clock_calendar <- subtract_years.clock_time_point
 
 # ------------------------------------------------------------------------------
 
@@ -423,8 +423,8 @@ add_quarters.clock_zoned_time_point <- function(x,
 
 #' @rdname clock-zoned-arithmetic
 #' @export
-add_quarters.clock_naive_time_point <- function(x, n, ..., day_nonexistent = "last-time") {
-  add_naive_time_point_calendar(x, n, ..., day_nonexistent = day_nonexistent, dispatcher = add_quarters_calendar)
+add_quarters.clock_time_point <- function(x, n, ...) {
+  stop_clock_unsupported_time_point_op("add_quarters")
 }
 
 #' @rdname clock-zoned-arithmetic
@@ -492,13 +492,13 @@ subtract_quarters.clock_zoned_time_point <- subtract_quarters.POSIXt
 
 #' @rdname clock-naive-arithmetic
 #' @export
-subtract_quarters.clock_naive_time_point <- function(x, n, ..., day_nonexistent = "last-time") {
-  add_quarters(x, -n, ..., day_nonexistent = day_nonexistent)
+subtract_quarters.clock_time_point <- function(x, n, ...) {
+  add_quarters(x, -n, ...)
 }
 
 #' @rdname clock-naive-arithmetic
 #' @export
-subtract_quarters.clock_calendar <- subtract_quarters.clock_naive_time_point
+subtract_quarters.clock_calendar <- subtract_quarters.clock_time_point
 
 # ------------------------------------------------------------------------------
 
@@ -554,8 +554,8 @@ add_months.clock_zoned_time_point <- function(x,
 
 #' @rdname clock-zoned-arithmetic
 #' @export
-add_months.clock_naive_time_point <- function(x, n, ..., day_nonexistent = "last-time") {
-  add_naive_time_point_calendar(x, n, ..., day_nonexistent = day_nonexistent, dispatcher = add_months_calendar)
+add_months.clock_time_point <- function(x, n, ...) {
+  stop_clock_unsupported_time_point_op("add_months")
 }
 
 #' @rdname clock-zoned-arithmetic
@@ -616,13 +616,13 @@ subtract_months.clock_zoned_time_point <- subtract_months.POSIXt
 
 #' @rdname clock-naive-arithmetic
 #' @export
-subtract_months.clock_naive_time_point <- function(x, n, ..., day_nonexistent = "last-time") {
-  add_months(x, -n, ..., day_nonexistent = day_nonexistent)
+subtract_months.clock_time_point <- function(x, n, ...) {
+  add_months(x, -n, ...)
 }
 
 #' @rdname clock-naive-arithmetic
 #' @export
-subtract_months.clock_calendar <- subtract_months.clock_naive_time_point
+subtract_months.clock_calendar <- subtract_months.clock_time_point
 
 # ------------------------------------------------------------------------------
 
@@ -669,12 +669,6 @@ add_weeks.clock_zoned_time_point <- function(x,
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
   as_zoned_time_point(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
-}
-
-#' @rdname clock-zoned-arithmetic
-#' @export
-add_weeks.clock_naive_time_point <- function(x, n, ...) {
-  add_naive_time_point_calendar_no_day_nonexistent(x, n, ..., dispatcher = add_weeks_calendar)
 }
 
 #' @rdname clock-zoned-arithmetic
@@ -735,10 +729,6 @@ subtract_weeks.clock_zoned_time_point <- subtract_weeks.POSIXt
 
 #' @rdname clock-naive-arithmetic
 #' @export
-subtract_weeks.clock_naive_time_point <- subtract_weeks.Date
-
-#' @rdname clock-naive-arithmetic
-#' @export
 subtract_weeks.clock_calendar <- subtract_weeks.Date
 
 # ------------------------------------------------------------------------------
@@ -786,12 +776,6 @@ add_days.clock_zoned_time_point <- function(x,
   dst_nonexistent <- dst_nonexistent_standardize(dst_nonexistent, n)
   dst_ambiguous <- dst_ambiguous_standardize(dst_ambiguous, n)
   as_zoned_time_point(out, zone = zone, dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
-}
-
-#' @rdname clock-zoned-arithmetic
-#' @export
-add_days.clock_naive_time_point <- function(x, n, ...) {
-  add_naive_time_point_calendar_no_day_nonexistent(x, n, ..., dispatcher = add_days_calendar)
 }
 
 #' @rdname clock-zoned-arithmetic
@@ -852,10 +836,6 @@ subtract_days.clock_zoned_time_point <- subtract_days.POSIXt
 
 #' @rdname clock-naive-arithmetic
 #' @export
-subtract_days.clock_naive_time_point <- subtract_days.Date
-
-#' @rdname clock-naive-arithmetic
-#' @export
 subtract_days.clock_calendar <- subtract_days.Date
 
 # ------------------------------------------------------------------------------
@@ -888,10 +868,6 @@ add_hours.clock_zoned_time_point <- function(x, n, ...) {
 
 #' @rdname clock-naive-arithmetic
 #' @export
-add_hours.clock_naive_time_point <- add_hours.clock_zoned_time_point
-
-#' @rdname clock-naive-arithmetic
-#' @export
 add_hours.clock_calendar <- function(x, n, ...) {
   stop_clock_unsupported_calendar_op("add_hours")
 }
@@ -918,10 +894,6 @@ subtract_hours.POSIXt <- subtract_hours.Date
 #' @rdname clock-zoned-arithmetic
 #' @export
 subtract_hours.clock_zoned_time_point <- subtract_hours.Date
-
-#' @rdname clock-naive-arithmetic
-#' @export
-subtract_hours.clock_naive_time_point <- subtract_hours.Date
 
 #' @rdname clock-naive-arithmetic
 #' @export
@@ -957,10 +929,6 @@ add_minutes.clock_zoned_time_point <- function(x, n, ...) {
 
 #' @rdname clock-naive-arithmetic
 #' @export
-add_minutes.clock_naive_time_point <- add_minutes.clock_zoned_time_point
-
-#' @rdname clock-naive-arithmetic
-#' @export
 add_minutes.clock_calendar <- function(x, n, ...) {
   stop_clock_unsupported_calendar_op("add_minutes")
 }
@@ -987,10 +955,6 @@ subtract_minutes.POSIXt <- subtract_minutes.Date
 #' @rdname clock-zoned-arithmetic
 #' @export
 subtract_minutes.clock_zoned_time_point <- subtract_minutes.Date
-
-#' @rdname clock-naive-arithmetic
-#' @export
-subtract_minutes.clock_naive_time_point <- subtract_minutes.Date
 
 #' @rdname clock-naive-arithmetic
 #' @export
@@ -1026,10 +990,6 @@ add_seconds.clock_zoned_time_point <- function(x, n, ...) {
 
 #' @rdname clock-naive-arithmetic
 #' @export
-add_seconds.clock_naive_time_point <- add_seconds.clock_zoned_time_point
-
-#' @rdname clock-naive-arithmetic
-#' @export
 add_seconds.clock_calendar <- function(x, n, ...) {
   stop_clock_unsupported_calendar_op("add_seconds")
 }
@@ -1056,10 +1016,6 @@ subtract_seconds.POSIXt <- subtract_seconds.Date
 #' @rdname clock-zoned-arithmetic
 #' @export
 subtract_seconds.clock_zoned_time_point <- subtract_seconds.Date
-
-#' @rdname clock-naive-arithmetic
-#' @export
-subtract_seconds.clock_naive_time_point <- subtract_seconds.Date
 
 #' @rdname clock-naive-arithmetic
 #' @export
@@ -1094,10 +1050,6 @@ add_milliseconds.clock_zoned_time_point <- function(x, n, ...) {
 
 #' @rdname clock-naive-arithmetic
 #' @export
-add_milliseconds.clock_naive_time_point <- add_milliseconds.clock_zoned_time_point
-
-#' @rdname clock-naive-arithmetic
-#' @export
 add_milliseconds.clock_calendar <- function(x, n, ...) {
   stop_clock_unsupported_calendar_op("add_milliseconds")
 }
@@ -1124,10 +1076,6 @@ subtract_milliseconds.POSIXt <- subtract_milliseconds.Date
 #' @rdname clock-zoned-arithmetic
 #' @export
 subtract_milliseconds.clock_zoned_time_point <- subtract_milliseconds.Date
-
-#' @rdname clock-naive-arithmetic
-#' @export
-subtract_milliseconds.clock_naive_time_point <- subtract_milliseconds.Date
 
 #' @rdname clock-naive-arithmetic
 #' @export
@@ -1162,10 +1110,6 @@ add_microseconds.clock_zoned_time_point <- function(x, n, ...) {
 
 #' @rdname clock-naive-arithmetic
 #' @export
-add_microseconds.clock_naive_time_point <- add_microseconds.clock_zoned_time_point
-
-#' @rdname clock-naive-arithmetic
-#' @export
 add_microseconds.clock_calendar <- function(x, n, ...) {
   stop_clock_unsupported_calendar_op("add_microseconds")
 }
@@ -1192,10 +1136,6 @@ subtract_microseconds.POSIXt <- subtract_microseconds.Date
 #' @rdname clock-zoned-arithmetic
 #' @export
 subtract_microseconds.clock_zoned_time_point <- subtract_microseconds.Date
-
-#' @rdname clock-naive-arithmetic
-#' @export
-subtract_microseconds.clock_naive_time_point <- subtract_microseconds.Date
 
 #' @rdname clock-naive-arithmetic
 #' @export
@@ -1230,10 +1170,6 @@ add_nanoseconds.clock_zoned_time_point <- function(x, n, ...) {
 
 #' @rdname clock-naive-arithmetic
 #' @export
-add_nanoseconds.clock_naive_time_point <- add_nanoseconds.clock_zoned_time_point
-
-#' @rdname clock-naive-arithmetic
-#' @export
 add_nanoseconds.clock_calendar <- function(x, n, ...) {
   stop_clock_unsupported_calendar_op("add_nanoseconds")
 }
@@ -1260,10 +1196,6 @@ subtract_nanoseconds.POSIXt <- subtract_nanoseconds.Date
 #' @rdname clock-zoned-arithmetic
 #' @export
 subtract_nanoseconds.clock_zoned_time_point <- subtract_nanoseconds.Date
-
-#' @rdname clock-naive-arithmetic
-#' @export
-subtract_nanoseconds.clock_naive_time_point <- subtract_nanoseconds.Date
 
 #' @rdname clock-naive-arithmetic
 #' @export

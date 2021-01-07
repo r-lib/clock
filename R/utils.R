@@ -130,7 +130,7 @@ days_to_date <- function(x, names = NULL) {
 # ------------------------------------------------------------------------------
 
 restrict_clock_supported <- function(x) {
-  if (is_calendar(x) || is_naive_time_point(x) || is_zoned_or_base(x) || is_duration(x)) {
+  if (is_calendar(x) || is_time_point(x) || is_zoned_or_base(x) || is_duration(x)) {
     invisible(x)
   } else {
     stop_clock_unsupported_class(x)
@@ -215,6 +215,11 @@ stop_clock_unsupported_conversion <- function(x, to_arg) {
 stop_clock_unsupported_calendar_op <- function(op) {
   message <- paste0("This calendar doesn't support `", op, "()`.")
   stop_clock(message, "clock_error_unsupported_calendar_op")
+}
+
+stop_clock_unsupported_time_point_op <- function(op) {
+  message <- paste0("Time points don't support `", op, "()`.")
+  stop_clock(message, "clock_error_unsupported_time_point_op")
 }
 
 paste_class <- function(x) {
