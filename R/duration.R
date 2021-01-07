@@ -44,6 +44,7 @@ duration_nanoseconds <- function(n = integer()) {
 }
 
 duration_helper <- function(n, precision) {
+  names <- names(n)
   n <- vec_cast(n, integer(), x_arg = "n")
   fields <- duration_helper_cpp(n, precision)
 
@@ -51,7 +52,8 @@ duration_helper <- function(n, precision) {
     ticks = fields$ticks,
     ticks_of_day = fields$ticks_of_day,
     ticks_of_second = fields$ticks_of_second,
-    precision = precision
+    precision = precision,
+    names = names
   )
 }
 
@@ -261,8 +263,8 @@ vec_arith.clock_duration.MISSING <- function(op, x, y, ...) {
 vec_arith.clock_duration.clock_duration <- function(op, x, y, ...) {
   switch(
     op,
-    "+" = duration_plus(x, y),
-    "-" = duration_plus(x, -y),
+    "+" = duration_plus(x, y, names_common(x, y)),
+    "-" = duration_minus(x, y, names_common(x, y)),
     stop_incompatible_op(op, x, y)
   )
 }
@@ -272,8 +274,8 @@ vec_arith.clock_duration.clock_duration <- function(op, x, y, ...) {
 vec_arith.clock_duration.numeric <- function(op, x, y, ...) {
   switch(
     op,
-    "+" = duration_plus(x, duration_helper(y, duration_precision(x))),
-    "-" = duration_plus(x, duration_helper(-y, duration_precision(x))),
+    "+" = duration_plus(x, duration_helper(y, duration_precision(x)), names_common(x, y)),
+    "-" = duration_minus(x, duration_helper(y, duration_precision(x)), names_common(x, y)),
     stop_incompatible_op(op, x, y)
   )
 }
@@ -283,7 +285,7 @@ vec_arith.clock_duration.numeric <- function(op, x, y, ...) {
 vec_arith.numeric.clock_duration <- function(op, x, y, ...) {
   switch(
     op,
-    "+" = duration_plus(duration_helper(x, duration_precision(y)), y),
+    "+" = duration_plus(duration_helper(x, duration_precision(y)), y, names_common(x, y)),
     "-" = stop_incompatible_op(op, x, y, details = "Cannot subtract a duration from a numeric."),
     stop_incompatible_op(op, x, y)
   )
@@ -294,57 +296,57 @@ vec_arith.numeric.clock_duration <- function(op, x, y, ...) {
 #' @export
 add_years.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, "year")
-  duration_plus(x, n)
+  duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_quarters.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, "quarter")
-  duration_plus(x, n)
+  duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_months.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, "month")
-  duration_plus(x, n)
+  duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_weeks.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, "week")
-  duration_plus(x, n)
+  duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_days.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, "day")
-  duration_plus(x, n)
+  duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_hours.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, "hour")
-  duration_plus(x, n)
+  duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_minutes.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, "minute")
-  duration_plus(x, n)
+  duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_seconds.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, "second")
-  duration_plus(x, n)
+  duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_milliseconds.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, "millisecond")
-  duration_plus(x, n)
+  duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_microseconds.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, "microsecond")
-  duration_plus(x, n)
+  duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_nanoseconds.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, "nanosecond")
-  duration_plus(x, n)
+  duration_plus(x, n, names_common(x, n))
 }
 
 duration_collect_n <- function(n, precision) {
@@ -356,13 +358,19 @@ duration_collect_n <- function(n, precision) {
     abort(paste0("`n` must have '", precision, "' precision."))
   }
 
-  n <- vec_cast(n, integer(), x_arg = "n")
   duration_helper(n, precision)
 }
 
 # ------------------------------------------------------------------------------
 
-duration_plus <- function(x, y) {
+duration_plus <- function(x, y, names) {
+  duration_arith(x, y, names, duration_plus_cpp)
+}
+duration_minus <- function(x, y, names) {
+  duration_arith(x, y, names, duration_minus_cpp)
+}
+
+duration_arith <- function(x, y, names, fn) {
   if (!is_duration(x) || !is_duration(y)) {
     abort("`x` and `y` must both be 'duration' objects.")
   }
@@ -370,22 +378,26 @@ duration_plus <- function(x, y) {
   x_precision <- duration_precision(x)
   y_precision <- duration_precision(y)
 
-  args <- vec_recycle_common(x = x, y = y)
+  args <- vec_recycle_common(x = x, y = y, names = names)
   x <- args$x
   y <- args$y
+  names <- args$names
 
-  names <- names(x)
-  if (is_null(names)) {
-    names <- names(y)
-  }
-
-  result <- duration_plus_cpp(x, y, x_precision, y_precision)
+  result <- fn(x, y, x_precision, y_precision)
 
   new_duration_from_fields(
     fields = result$fields,
     precision = result$precision,
     names = names
   )
+}
+
+names_common <- function(x, y) {
+  names <- names(x)
+  if (is_null(names)) {
+    names <- names(y)
+  }
+  names
 }
 
 duration_unary_minus <- function(x) {

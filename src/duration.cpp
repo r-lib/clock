@@ -239,32 +239,55 @@ duration_cast_cpp(cpp11::list_of<cpp11::integers> fields,
 
 // -----------------------------------------------------------------------------
 
+enum class arith_op {
+  plus,
+  minus
+};
+
 template <class ClockDuration1, class ClockDuration2>
+static
+inline
 cpp11::writable::list
-duration_plus_impl(const ClockDuration1& x, const ClockDuration2& y) {
+duration_arith_impl(const ClockDuration1& x, const ClockDuration2& y, const enum arith_op& op) {
   using ClockDuration = typename std::common_type<ClockDuration1, ClockDuration2>::type;
 
   r_ssize size = x.size();
   ClockDuration out(size);
 
-  for (r_ssize i = 0; i < size; ++i) {
-    if (x.is_na(i) || y.is_na(i)) {
-      out.assign_na(i);
-      continue;
+  switch (op) {
+  case arith_op::plus: {
+    for (r_ssize i = 0; i < size; ++i) {
+      if (x.is_na(i) || y.is_na(i)) {
+        out.assign_na(i);
+        continue;
+      }
+      out.assign(x[i] + y[i], i);
     }
-
-    out.assign(x[i] + y[i], i);
+    break;
+  }
+  case arith_op::minus: {
+    for (r_ssize i = 0; i < size; ++i) {
+      if (x.is_na(i) || y.is_na(i)) {
+        out.assign_na(i);
+        continue;
+      }
+      out.assign(x[i] - y[i], i);
+    }
+    break;
+  }
   }
 
   return out.to_list();
 }
 
 template <class ClockDuration1>
+static
 inline
 cpp11::writable::list
-duration_plus_switch2(const ClockDuration1& x,
-                      cpp11::list_of<cpp11::integers>& y,
-                      const enum precision2& precision_y_val) {
+duration_arith_switch2(const ClockDuration1& x,
+                       cpp11::list_of<cpp11::integers>& y,
+                       const enum precision2& precision_y_val,
+                       const enum arith_op& op) {
   using namespace rclock;
 
   cpp11::integers ticks = get_ticks(y);
@@ -284,26 +307,28 @@ duration_plus_switch2(const ClockDuration1& x,
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
   switch (precision_y_val) {
-  case precision2::year: return duration_plus_impl(x, dy);
-  case precision2::quarter: return duration_plus_impl(x, dq);
-  case precision2::month: return duration_plus_impl(x, dm);
-  case precision2::week: return duration_plus_impl(x, dw);
-  case precision2::day: return duration_plus_impl(x, dd);
-  case precision2::hour: return duration_plus_impl(x, dh);
-  case precision2::minute: return duration_plus_impl(x, dmin);
-  case precision2::second: return duration_plus_impl(x, ds);
-  case precision2::millisecond: return duration_plus_impl(x, dmilli);
-  case precision2::microsecond: return duration_plus_impl(x, dmicro);
-  case precision2::nanosecond: return duration_plus_impl(x, dnano);
+  case precision2::year: return duration_arith_impl(x, dy, op);
+  case precision2::quarter: return duration_arith_impl(x, dq, op);
+  case precision2::month: return duration_arith_impl(x, dm, op);
+  case precision2::week: return duration_arith_impl(x, dw, op);
+  case precision2::day: return duration_arith_impl(x, dd, op);
+  case precision2::hour: return duration_arith_impl(x, dh, op);
+  case precision2::minute: return duration_arith_impl(x, dmin, op);
+  case precision2::second: return duration_arith_impl(x, ds, op);
+  case precision2::millisecond: return duration_arith_impl(x, dmilli, op);
+  case precision2::microsecond: return duration_arith_impl(x, dmicro, op);
+  case precision2::nanosecond: return duration_arith_impl(x, dnano, op);
   }
 }
 
+static
 inline
 cpp11::writable::list
-duration_plus_switch(cpp11::list_of<cpp11::integers>& x,
-                     cpp11::list_of<cpp11::integers>& y,
-                     const enum precision2& precision_x_val,
-                     const enum precision2& precision_y_val) {
+duration_arith_switch(cpp11::list_of<cpp11::integers>& x,
+                      cpp11::list_of<cpp11::integers>& y,
+                      const enum precision2& precision_x_val,
+                      const enum precision2& precision_y_val,
+                      const enum arith_op& op) {
   using namespace rclock;
 
   cpp11::integers ticks = get_ticks(x);
@@ -323,28 +348,30 @@ duration_plus_switch(cpp11::list_of<cpp11::integers>& x,
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
   switch (precision_x_val) {
-  case precision2::year: return duration_plus_switch2(dy, y, precision_y_val);
-  case precision2::quarter: return duration_plus_switch2(dq, y, precision_y_val);
-  case precision2::month: return duration_plus_switch2(dm, y, precision_y_val);
-  case precision2::week: return duration_plus_switch2(dw, y, precision_y_val);
-  case precision2::day: return duration_plus_switch2(dd, y, precision_y_val);
-  case precision2::hour: return duration_plus_switch2(dh, y, precision_y_val);
-  case precision2::minute: return duration_plus_switch2(dmin, y, precision_y_val);
-  case precision2::second: return duration_plus_switch2(ds, y, precision_y_val);
-  case precision2::millisecond: return duration_plus_switch2(dmilli, y, precision_y_val);
-  case precision2::microsecond: return duration_plus_switch2(dmicro, y, precision_y_val);
-  case precision2::nanosecond: return duration_plus_switch2(dnano, y, precision_y_val);
+  case precision2::year: return duration_arith_switch2(dy, y, precision_y_val, op);
+  case precision2::quarter: return duration_arith_switch2(dq, y, precision_y_val, op);
+  case precision2::month: return duration_arith_switch2(dm, y, precision_y_val, op);
+  case precision2::week: return duration_arith_switch2(dw, y, precision_y_val, op);
+  case precision2::day: return duration_arith_switch2(dd, y, precision_y_val, op);
+  case precision2::hour: return duration_arith_switch2(dh, y, precision_y_val, op);
+  case precision2::minute: return duration_arith_switch2(dmin, y, precision_y_val, op);
+  case precision2::second: return duration_arith_switch2(ds, y, precision_y_val, op);
+  case precision2::millisecond: return duration_arith_switch2(dmilli, y, precision_y_val, op);
+  case precision2::microsecond: return duration_arith_switch2(dmicro, y, precision_y_val, op);
+  case precision2::nanosecond: return duration_arith_switch2(dnano, y, precision_y_val, op);
   }
 }
 
 static inline enum precision2 duration_common_precision(const enum precision2 x_precision, const enum precision2 y_precision);
 
-[[cpp11::register]]
+static
+inline
 cpp11::writable::list
-duration_plus_cpp(cpp11::list_of<cpp11::integers> x,
-                  cpp11::list_of<cpp11::integers> y,
-                  const cpp11::strings& precision_x,
-                  const cpp11::strings& precision_y) {
+duration_arith(cpp11::list_of<cpp11::integers>& x,
+               cpp11::list_of<cpp11::integers>& y,
+               const cpp11::strings& precision_x,
+               const cpp11::strings& precision_y,
+               const enum arith_op& op) {
   const enum precision2 precision_x_val = parse_precision2(precision_x);
   const enum precision2 precision_y_val = parse_precision2(precision_y);
 
@@ -353,17 +380,36 @@ duration_plus_cpp(cpp11::list_of<cpp11::integers> x,
   std::string precision_string = precision_to_string(precision);
   cpp11::writable::strings out_precision({precision_string});
 
-  cpp11::writable::list out_fields = duration_plus_switch(
+  cpp11::writable::list out_fields = duration_arith_switch(
     x,
     y,
     precision_x_val,
-    precision_y_val
+    precision_y_val,
+    op
   );
 
   cpp11::writable::list out({out_fields, out_precision});
   out.names() = {"fields", "precision"};
 
   return out;
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+duration_plus_cpp(cpp11::list_of<cpp11::integers> x,
+                  cpp11::list_of<cpp11::integers> y,
+                  const cpp11::strings& precision_x,
+                  const cpp11::strings& precision_y) {
+  return duration_arith(x, y, precision_x, precision_y, arith_op::plus);
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+duration_minus_cpp(cpp11::list_of<cpp11::integers> x,
+                   cpp11::list_of<cpp11::integers> y,
+                   const cpp11::strings& precision_x,
+                   const cpp11::strings& precision_y) {
+  return duration_arith(x, y, precision_x, precision_y, arith_op::minus);
 }
 
 // -----------------------------------------------------------------------------
