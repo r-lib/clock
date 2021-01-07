@@ -4,40 +4,85 @@
 #include "enums.h"
 #include "get.h"
 
-[[cpp11::register]]
-cpp11::writable::list
-collect_year_month_day_fields(cpp11::list_of<cpp11::integers> fields, bool last) {
-  const cpp11::integers& year = fields["year"];
-  const cpp11::integers& month = fields["month"];
-  const cpp11::integers& day = fields["day"];
-
-  rclock::gregorian::ymd x(year, month, day);
+template <typename Duration, class Calendar>
+void
+collect_field(Calendar& x, const cpp11::integers& field, const char* arg) {
   r_ssize size = x.size();
 
   for (r_ssize i = 0; i < size; ++i) {
-    const int elt_year = year[i];
-    const int elt_month = month[i];
-    const int elt_day = day[i];
+    const int elt = field[i];
 
-    if (elt_year == r_int_na ||
-        elt_month == r_int_na ||
-        elt_day == r_int_na) {
+    if (elt == r_int_na) {
       x.assign_na(i);
       continue;
     }
 
-    check_range_year(elt_year, "year");
-    check_range_month(elt_month, "month");
-
-    if (last) {
-      date::year_month_day_last ymdl = x.to_year_month(i) / date::last;
-      x.assign_day(ymdl.day(), i);
-    } else {
-      check_range_day(elt_day, "day");
-    }
+    check_range<Duration>(elt, arg);
   }
+}
 
-  return x.to_list();
+[[cpp11::register]]
+cpp11::writable::list
+collect_year_month_day_fields(cpp11::list_of<cpp11::integers> fields,
+                              const cpp11::strings& precision) {
+  using namespace rclock;
+
+  cpp11::integers year = get_year(fields);
+  cpp11::integers month = get_month(fields);
+  cpp11::integers day = get_day(fields);
+  cpp11::integers hour = get_hour(fields);
+  cpp11::integers minute = get_minute(fields);
+  cpp11::integers second = get_second(fields);
+
+  gregorian::y y{year};
+  gregorian::ym ym{year, month};
+  gregorian::ymd ymd{year, month, day};
+  gregorian::ymdh ymdh{year, month, day, hour};
+  gregorian::ymdhm ymdhm{year, month, day, hour, minute};
+  gregorian::ymdhms ymdhms{year, month, day, hour, minute, second};
+
+  switch (parse_precision2(precision)) {
+  case precision2::year: {
+    collect_field<date::years>(y, year, "year");
+    return y.to_list();
+  }
+  case precision2::month: {
+    collect_field<date::years>(ym, year, "year");
+    collect_field<date::months>(ym, month, "month");
+    return ym.to_list();
+  }
+  case precision2::day: {
+    collect_field<date::years>(ymd, year, "year");
+    collect_field<date::months>(ymd, month, "month");
+    collect_field<date::days>(ymd, day, "day");
+    return ymd.to_list();
+  }
+  case precision2::hour: {
+    collect_field<date::years>(ymdh, year, "year");
+    collect_field<date::months>(ymdh, month, "month");
+    collect_field<date::days>(ymdh, day, "day");
+    collect_field<std::chrono::hours>(ymdh, hour, "hour");
+    return ymdh.to_list();
+  }
+  case precision2::minute: {
+    collect_field<date::years>(ymdhm, year, "year");
+    collect_field<date::months>(ymdhm, month, "month");
+    collect_field<date::days>(ymdhm, day, "day");
+    collect_field<std::chrono::hours>(ymdhm, hour, "hour");
+    collect_field<std::chrono::minutes>(ymdhm, minute, "minute");
+    return ymdhm.to_list();
+  }
+  case precision2::second: {
+    collect_field<date::years>(ymdhms, year, "year");
+    collect_field<date::months>(ymdhms, month, "month");
+    collect_field<date::days>(ymdhms, day, "day");
+    collect_field<std::chrono::hours>(ymdhms, hour, "hour");
+    collect_field<std::chrono::minutes>(ymdhms, minute, "minute");
+    collect_field<std::chrono::seconds>(ymdhms, second, "second");
+    return ymdhms.to_list();
+  }
+  default: clock_abort("Internal error: Invalid precision.");
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -395,33 +440,33 @@ set_field_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   switch (parse_precision2(precision_fields)) {
   case precision2::year: {
     switch (parse_precision2(precision_value)) {
-    case precision2::year: return set_field_calendar<date::year>(y, value2);
-    case precision2::month: return set_field_calendar<date::month>(y, value2);
+    case precision2::year: return set_field_calendar<date::years>(y, value2);
+    case precision2::month: return set_field_calendar<date::months>(y, value2);
     default: clock_abort("Internal error: Invalid precision.");
     }
   }
   case precision2::month: {
     switch (parse_precision2(precision_value)) {
-    case precision2::year: return set_field_calendar<date::year>(ym, value2);
-    case precision2::month: return set_field_calendar<date::month>(ym, value2);
-    case precision2::day: return set_field_calendar<date::day>(ym, value2);
+    case precision2::year: return set_field_calendar<date::years>(ym, value2);
+    case precision2::month: return set_field_calendar<date::months>(ym, value2);
+    case precision2::day: return set_field_calendar<date::days>(ym, value2);
     default: clock_abort("Internal error: Invalid precision.");
     }
   }
   case precision2::day: {
     switch (parse_precision2(precision_value)) {
-    case precision2::year: return set_field_calendar<date::year>(ymd, value2);
-    case precision2::month: return set_field_calendar<date::month>(ymd, value2);
-    case precision2::day: return set_field_calendar<date::day>(ymd, value2);
+    case precision2::year: return set_field_calendar<date::years>(ymd, value2);
+    case precision2::month: return set_field_calendar<date::months>(ymd, value2);
+    case precision2::day: return set_field_calendar<date::days>(ymd, value2);
     case precision2::hour: return set_field_calendar<std::chrono::hours>(ymd, value2);
     default: clock_abort("Internal error: Invalid precision.");
     }
   }
   case precision2::hour: {
     switch (parse_precision2(precision_value)) {
-    case precision2::year: return set_field_calendar<date::year>(ymdh, value2);
-    case precision2::month: return set_field_calendar<date::month>(ymdh, value2);
-    case precision2::day: return set_field_calendar<date::day>(ymdh, value2);
+    case precision2::year: return set_field_calendar<date::years>(ymdh, value2);
+    case precision2::month: return set_field_calendar<date::months>(ymdh, value2);
+    case precision2::day: return set_field_calendar<date::days>(ymdh, value2);
     case precision2::hour: return set_field_calendar<std::chrono::hours>(ymdh, value2);
     case precision2::minute: return set_field_calendar<std::chrono::minutes>(ymdh, value2);
     default: clock_abort("Internal error: Invalid precision.");
@@ -429,9 +474,9 @@ set_field_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   }
   case precision2::minute: {
     switch (parse_precision2(precision_value)) {
-    case precision2::year: return set_field_calendar<date::year>(ymdhm, value2);
-    case precision2::month: return set_field_calendar<date::month>(ymdhm, value2);
-    case precision2::day: return set_field_calendar<date::day>(ymdhm, value2);
+    case precision2::year: return set_field_calendar<date::years>(ymdhm, value2);
+    case precision2::month: return set_field_calendar<date::months>(ymdhm, value2);
+    case precision2::day: return set_field_calendar<date::days>(ymdhm, value2);
     case precision2::hour: return set_field_calendar<std::chrono::hours>(ymdhm, value2);
     case precision2::minute: return set_field_calendar<std::chrono::minutes>(ymdhm, value2);
     case precision2::second: return set_field_calendar<std::chrono::seconds>(ymdhm, value2);
@@ -440,9 +485,9 @@ set_field_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   }
   case precision2::second: {
     switch (parse_precision2(precision_value)) {
-    case precision2::year: return set_field_calendar<date::year>(ymdhms, value2);
-    case precision2::month: return set_field_calendar<date::month>(ymdhms, value2);
-    case precision2::day: return set_field_calendar<date::day>(ymdhms, value2);
+    case precision2::year: return set_field_calendar<date::years>(ymdhms, value2);
+    case precision2::month: return set_field_calendar<date::months>(ymdhms, value2);
+    case precision2::day: return set_field_calendar<date::days>(ymdhms, value2);
     case precision2::hour: return set_field_calendar<std::chrono::hours>(ymdhms, value2);
     case precision2::minute: return set_field_calendar<std::chrono::minutes>(ymdhms, value2);
     case precision2::second: return set_field_calendar<std::chrono::seconds>(ymdhms, value2);
@@ -454,9 +499,9 @@ set_field_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   }
   case precision2::millisecond: {
     switch (parse_precision2(precision_value)) {
-    case precision2::year: return set_field_calendar<date::year>(ymdhmss1, value2);
-    case precision2::month: return set_field_calendar<date::month>(ymdhmss1, value2);
-    case precision2::day: return set_field_calendar<date::day>(ymdhmss1, value2);
+    case precision2::year: return set_field_calendar<date::years>(ymdhmss1, value2);
+    case precision2::month: return set_field_calendar<date::months>(ymdhmss1, value2);
+    case precision2::day: return set_field_calendar<date::days>(ymdhmss1, value2);
     case precision2::hour: return set_field_calendar<std::chrono::hours>(ymdhmss1, value2);
     case precision2::minute: return set_field_calendar<std::chrono::minutes>(ymdhmss1, value2);
     case precision2::second: return set_field_calendar<std::chrono::seconds>(ymdhmss1, value2);
@@ -466,9 +511,9 @@ set_field_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   }
   case precision2::microsecond: {
     switch (parse_precision2(precision_value)) {
-    case precision2::year: return set_field_calendar<date::year>(ymdhmss2, value2);
-    case precision2::month: return set_field_calendar<date::month>(ymdhmss2, value2);
-    case precision2::day: return set_field_calendar<date::day>(ymdhmss2, value2);
+    case precision2::year: return set_field_calendar<date::years>(ymdhmss2, value2);
+    case precision2::month: return set_field_calendar<date::months>(ymdhmss2, value2);
+    case precision2::day: return set_field_calendar<date::days>(ymdhmss2, value2);
     case precision2::hour: return set_field_calendar<std::chrono::hours>(ymdhmss2, value2);
     case precision2::minute: return set_field_calendar<std::chrono::minutes>(ymdhmss2, value2);
     case precision2::second: return set_field_calendar<std::chrono::seconds>(ymdhmss2, value2);
@@ -478,9 +523,9 @@ set_field_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   }
   case precision2::nanosecond: {
     switch (parse_precision2(precision_value)) {
-    case precision2::year: return set_field_calendar<date::year>(ymdhmss3, value2);
-    case precision2::month: return set_field_calendar<date::month>(ymdhmss3, value2);
-    case precision2::day: return set_field_calendar<date::day>(ymdhmss3, value2);
+    case precision2::year: return set_field_calendar<date::years>(ymdhmss3, value2);
+    case precision2::month: return set_field_calendar<date::months>(ymdhmss3, value2);
+    case precision2::day: return set_field_calendar<date::days>(ymdhmss3, value2);
     case precision2::hour: return set_field_calendar<std::chrono::hours>(ymdhmss3, value2);
     case precision2::minute: return set_field_calendar<std::chrono::minutes>(ymdhmss3, value2);
     case precision2::second: return set_field_calendar<std::chrono::seconds>(ymdhmss3, value2);

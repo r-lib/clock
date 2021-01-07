@@ -208,8 +208,8 @@ get_offset_cpp <- function(calendar, seconds_of_day, zone) {
   .Call("_clock_get_offset_cpp", calendar, seconds_of_day, zone, PACKAGE = "clock")
 }
 
-collect_year_month_day_fields <- function(fields, last) {
-  .Call("_clock_collect_year_month_day_fields", fields, last, PACKAGE = "clock")
+collect_year_month_day_fields <- function(fields, precision) {
+  .Call("_clock_collect_year_month_day_fields", fields, precision, PACKAGE = "clock")
 }
 
 format_year_month_day_cpp <- function(fields, precision) {

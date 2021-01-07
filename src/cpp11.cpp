@@ -369,10 +369,10 @@ extern "C" SEXP _clock_get_offset_cpp(SEXP calendar, SEXP seconds_of_day, SEXP z
   END_CPP11
 }
 // gregorian-year-month-day.cpp
-cpp11::writable::list collect_year_month_day_fields(cpp11::list_of<cpp11::integers> fields, bool last);
-extern "C" SEXP _clock_collect_year_month_day_fields(SEXP fields, SEXP last) {
+cpp11::writable::list collect_year_month_day_fields(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision);
+extern "C" SEXP _clock_collect_year_month_day_fields(SEXP fields, SEXP precision) {
   BEGIN_CPP11
-    return cpp11::as_sexp(collect_year_month_day_fields(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<bool>>(last)));
+    return cpp11::as_sexp(collect_year_month_day_fields(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision)));
   END_CPP11
 }
 // gregorian-year-month-day.cpp

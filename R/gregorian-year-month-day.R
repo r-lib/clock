@@ -1,35 +1,50 @@
 #' @export
-gregorian_year <- function(year) {
-  ymd <- year_month_day(year)
-  new_year_month_day(field_year(ymd), precision = "year")
-}
+year_month_day <- function(year,
+                           month = NULL,
+                           day = NULL,
+                           hour = NULL,
+                           minute = NULL,
+                           second = NULL) {
+  # Stop on the first `NULL` argument
+  if (is_null(month)) {
+    precision <- "year"
+    fields <- list(year = year)
+  } else if (is_null(day)) {
+    precision <- "month"
+    fields <- list(year = year, month = month)
+  } else if (is_null(hour)) {
+    precision <- "day"
+    fields <- list(year = year, month = month, day = day)
+  } else if (is_null(minute)) {
+    precision <- "hour"
+    fields <- list(year = year, month = month, day = day, hour = hour)
+  } else if (is_null(second)) {
+    precision <- "minute"
+    fields <- list(year = year, month = month, day = day, hour = hour, minute = minute)
+  } else {
+    precision <- "second"
+    fields <- list(year = year, month = month, day = day, hour = hour, minute = minute, second = second)
+  }
 
-#' @export
-year_month <- function(year, month = 1L) {
-  ymd <- year_month_day(year, month)
-  new_year_month_day(field_year(ymd), field_month(ymd), precision = "month")
-}
-
-#' @export
-year_month_day <- function(year, month = 1L, day = 1L) {
-  if (is_last(day)) {
-    day <- -1L
+  if (is_last(fields$day)) {
+    fields$day <- 1L
     last <- TRUE
   } else {
     last <- FALSE
   }
 
-  fields <- list(year = year, month = month, day = day)
-  size <- vec_size_common(!!!fields)
-  fields <- vec_recycle_common(!!!fields, .size = size)
+  fields <- vec_recycle_common(!!!fields)
   fields <- vec_cast_common(!!!fields, .to = integer())
 
-  fields <- collect_year_month_day_fields(
-    fields,
-    last
-  )
+  fields <- collect_year_month_day_fields(fields, precision)
 
-  new_year_month_day_from_fields(fields, precision = "day")
+  out <- new_year_month_day_from_fields(fields, precision)
+
+  if (last) {
+    out <- set_day(out, "last")
+  }
+
+  out
 }
 
 # ------------------------------------------------------------------------------

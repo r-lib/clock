@@ -84,15 +84,15 @@ inline void check_range(const int& value, const char* arg) {
   clock_abort("Unimplemented range check");
 }
 template <>
-inline void check_range<date::year>(const int& value, const char* arg) {
+inline void check_range<date::years>(const int& value, const char* arg) {
   check_range_year(value, arg);
 }
 template <>
-inline void check_range<date::month>(const int& value, const char* arg) {
+inline void check_range<date::months>(const int& value, const char* arg) {
   check_range_month(value, arg);
 }
 template <>
-inline void check_range<date::day>(const int& value, const char* arg) {
+inline void check_range<date::days>(const int& value, const char* arg) {
   check_range_day(value, arg);
 }
 template <>
