@@ -233,3 +233,37 @@ pillar_shaft.clock_zoned_time <- function(x, ...) {
   out <- format(x, print_zone_name = FALSE)
   pillar::new_pillar_shaft_simple(out, align = "left")
 }
+
+# ------------------------------------------------------------------------------
+
+#' @export
+get_zone.clock_zoned_time <- function(x) {
+  zoned_time_zone(x)
+}
+
+#' @export
+get_sys_time <- function(x) {
+  if (!is_zoned_time(x)) {
+    abort("Can only extract sys_time from a zoned_time.")
+  }
+
+  zoned_time_sys_time(x)
+}
+
+#' @export
+get_naive_time <- function(x) {
+  if (!is_zoned_time(x)) {
+    abort("Can only extract naive_time from a zoned_time.")
+  }
+
+  sys_time <- zoned_time_sys_time(x)
+  zone <- zoned_time_zone(x)
+
+  duration <- time_point_duration(sys_time)
+  precision <- time_point_precision(sys_time)
+
+  fields <- get_naive_time_cpp(duration, precision, zone)
+  duration <- new_duration_from_fields(fields, precision)
+
+  new_naive_time(duration)
+}

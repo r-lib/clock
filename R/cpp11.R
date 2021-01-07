@@ -371,3 +371,7 @@ zone_is_valid <- function(zone) {
 zone_current <- function() {
   .Call("_clock_zone_current", PACKAGE = "clock")
 }
+
+get_naive_time_cpp <- function(fields, precision, zone) {
+  .Call("_clock_get_naive_time_cpp", fields, precision, zone, PACKAGE = "clock")
+}

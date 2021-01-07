@@ -656,6 +656,13 @@ extern "C" SEXP _clock_zone_current() {
     return cpp11::as_sexp(zone_current());
   END_CPP11
 }
+// zoned-time.cpp
+cpp11::writable::list get_naive_time_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision, const cpp11::strings& zone);
+extern "C" SEXP _clock_get_naive_time_cpp(SEXP fields, SEXP precision, SEXP zone) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(get_naive_time_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone)));
+  END_CPP11
+}
 
 extern "C" {
 /* .Call calls */
@@ -722,6 +729,7 @@ extern SEXP _clock_format_year_month_weekday(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_format_year_quarternum(SEXP, SEXP);
 extern SEXP _clock_format_year_quarternum_quarterday(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_format_zoned_time_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_get_naive_time_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_get_offset_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_invalid_any_iso_year_weeknum(SEXP, SEXP);
 extern SEXP _clock_invalid_any_iso_year_weeknum_weekday(SEXP, SEXP, SEXP);
@@ -817,6 +825,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_format_year_quarternum",                                                               (DL_FUNC) &_clock_format_year_quarternum,                                                                2},
     {"_clock_format_year_quarternum_quarterday",                                                    (DL_FUNC) &_clock_format_year_quarternum_quarterday,                                                     4},
     {"_clock_format_zoned_time_cpp",                                                                (DL_FUNC) &_clock_format_zoned_time_cpp,                                                                11},
+    {"_clock_get_naive_time_cpp",                                                                   (DL_FUNC) &_clock_get_naive_time_cpp,                                                                    3},
     {"_clock_get_offset_cpp",                                                                       (DL_FUNC) &_clock_get_offset_cpp,                                                                        3},
     {"_clock_invalid_any_iso_year_weeknum",                                                         (DL_FUNC) &_clock_invalid_any_iso_year_weeknum,                                                          2},
     {"_clock_invalid_any_iso_year_weeknum_weekday",                                                 (DL_FUNC) &_clock_invalid_any_iso_year_weeknum_weekday,                                                  3},

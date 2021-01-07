@@ -108,7 +108,7 @@ is_POSIXlt <- function(x) {
 }
 
 is_zoned_or_base <- function(x) {
-  is_zoned_time_point(x) || is_Date(x) || is_POSIXct(x) || is_POSIXlt(x)
+  is_zoned_time(x) || is_Date(x) || is_POSIXct(x) || is_POSIXlt(x)
 }
 
 # ------------------------------------------------------------------------------

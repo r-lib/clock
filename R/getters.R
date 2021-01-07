@@ -5,11 +5,6 @@ get_zone <- function(x) {
 }
 
 #' @export
-get_zone.clock_zoned_time_point <- function(x) {
-  zoned_time_point_zone(x)
-}
-
-#' @export
 get_zone.Date <- function(x) {
   "UTC"
 }
