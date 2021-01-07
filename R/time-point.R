@@ -17,12 +17,19 @@ new_time_point <- function(duration = duration_days(),
 
   clock_validate(clock)
 
+  if (clock_is_sys(clock)) {
+    class <- c(class, "clock_sys_time", "clock_time_point")
+  } else if (clock_is_naive(clock)) {
+    class <- c(class, "clock_naive_time", "clock_time_point")
+  } else {
+    abort("Internal error: Unknown clock.")
+  }
+
   new_clock_rcrd(
     fields = fields,
-    clock = clock,
     ...,
     names = names,
-    class = c(class, "clock_time_point")
+    class = class
   )
 }
 
@@ -34,8 +41,17 @@ is_time_point <- function(x) {
 # ------------------------------------------------------------------------------
 
 time_point_clock <- function(x) {
-  attr(x, "clock", exact = TRUE)
+  UseMethod("time_point_clock")
 }
+#' @export
+time_point_clock.clock_sys_time <- function(x) {
+  "sys"
+}
+#' @export
+time_point_clock.clock_naive_time <- function(x) {
+  "naive"
+}
+
 time_point_duration <- function(x) {
   field_duration(x)
 }
@@ -87,7 +103,6 @@ format.clock_time_point <- function(x,
 
   out
 }
-
 
 time_point_precision_format <- function(precision) {
   switch(
@@ -168,15 +183,8 @@ vec_ptype_abbr.clock_time_point <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
-#' @export
-vec_ptype2.clock_time_point.clock_time_point <- function(x, y, ...) {
-  x_clock <- time_point_clock(x)
-  y_clock <- time_point_clock(y)
-
-  if (x_clock != y_clock) {
-    stop_incompatible_type(x, y, ..., details = "Clocks can't differ.")
-  }
-
+# Caller guarantees that clocks are identical
+ptype2_time_point_and_time_point <- function(x, y, ...) {
   x_precision <- time_point_precision(x)
   y_precision <- time_point_precision(y)
 
@@ -194,15 +202,8 @@ vec_ptype2.clock_time_point.clock_time_point <- function(x, y, ...) {
   }
 }
 
-#' @export
-vec_cast.clock_time_point.clock_time_point <- function(x, to, ...) {
-  x_clock <- time_point_clock(x)
-  to_clock <- time_point_clock(to)
-
-  if (x_clock != to_clock) {
-    stop_incompatible_cast(x, to, ..., details = "Clocks can't differ.")
-  }
-
+# Caller guarantees that clocks are identical
+cast_time_point_to_time_point <- function(x, to, ...) {
   x_duration <- field_duration(x)
   to_duration <- field_duration(to)
 
@@ -224,23 +225,14 @@ vec_cast.clock_time_point.clock_time_point <- function(x, to, ...) {
 
   new_time_point(
     duration = duration,
-    clock = x_clock,
-    ...,
+    clock = time_point_clock(x),
     names = names(x)
   )
 }
 
 # ------------------------------------------------------------------------------
 
-#' @method vec_arith clock_time_point
-#' @export
-vec_arith.clock_time_point <- function(op, x, y, ...) {
-  UseMethod("vec_arith.clock_time_point", y)
-}
-
-#' @method vec_arith.clock_time_point MISSING
-#' @export
-vec_arith.clock_time_point.MISSING <- function(op, x, y, ...) {
+arith_time_point_and_missing <- function(op, x, y, ...) {
   switch (
     op,
     "+" = x,
@@ -248,9 +240,7 @@ vec_arith.clock_time_point.MISSING <- function(op, x, y, ...) {
   )
 }
 
-#' @method vec_arith.clock_time_point clock_time_point
-#' @export
-vec_arith.clock_time_point.clock_time_point <- function(op, x, y, ...) {
+arith_time_point_and_time_point <- function(op, x, y, ...) {
   switch (
     op,
     "-" = time_point_minus_time_point(x, y, names_common(x, y)),
@@ -258,9 +248,7 @@ vec_arith.clock_time_point.clock_time_point <- function(op, x, y, ...) {
   )
 }
 
-#' @method vec_arith.clock_time_point clock_duration
-#' @export
-vec_arith.clock_time_point.clock_duration <- function(op, x, y, ...) {
+arith_time_point_and_duration <- function(op, x, y, ...) {
   switch (
     op,
     "+" = time_point_plus_duration(x, y, duration_precision(y), names_common(x, y)),
@@ -269,9 +257,7 @@ vec_arith.clock_time_point.clock_duration <- function(op, x, y, ...) {
   )
 }
 
-#' @method vec_arith.clock_duration clock_time_point
-#' @export
-vec_arith.clock_duration.clock_time_point <- function(op, x, y, ...) {
+arith_duration_and_time_point <- function(op, x, y, ...) {
   switch (
     op,
     "+" = time_point_plus_duration(y, x, duration_precision(x), names_common(x, y)),
@@ -280,9 +266,7 @@ vec_arith.clock_duration.clock_time_point <- function(op, x, y, ...) {
   )
 }
 
-#' @method vec_arith.clock_time_point numeric
-#' @export
-vec_arith.clock_time_point.numeric <- function(op, x, y, ...) {
+arith_time_point_and_numeric <- function(op, x, y, ...) {
   precision <- time_point_precision(x)
 
   switch (
@@ -293,9 +277,7 @@ vec_arith.clock_time_point.numeric <- function(op, x, y, ...) {
   )
 }
 
-#' @method vec_arith.numeric clock_time_point
-#' @export
-vec_arith.numeric.clock_time_point <- function(op, x, y, ...) {
+arith_numeric_and_time_point <- function(op, x, y, ...) {
   precision <- time_point_precision(y)
 
   switch (
@@ -372,9 +354,6 @@ time_point_arith_duration <- function(x, n, precision_n, names, duration_fn) {
 }
 
 time_point_minus_time_point <- function(x, y, names) {
-  # Enforces same clock and duration precision
-  args <- vec_cast_common(x = x, y = y)
-
   args <- vec_recycle_common(!!!args, names = names)
   x <- args$x
   y <- args$y
@@ -396,14 +375,6 @@ as_year_month_day.clock_time_point <- function(x) {
   new_year_month_day_from_fields(fields, precision, names = names(x))
 }
 
-#' @export
-as_zoned_time.clock_time_point <- function(x, ..., nonexistent = "roll-forward", ambiguous = "earliest") {
-  # TODO: Subclass clock_sys_time and clock_naive_time?
-  # sys_time -> zoned_time will never use dst arguments
-
-  # TODO: Implementation
-}
-
 # ------------------------------------------------------------------------------
 
 clock_validate <- function(clock) {
@@ -412,4 +383,11 @@ clock_validate <- function(clock) {
 
 clocks <- function() {
   c("sys", "naive")
+}
+
+clock_is_sys <- function(x) {
+  x == "sys"
+}
+clock_is_naive <- function(x) {
+  x == "naive"
 }

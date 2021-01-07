@@ -8,7 +8,7 @@ new_zoned_time <- function(sys_time = sys_seconds(),
     abort("`zone` must be a string.")
   }
   if (!is_sys_time(sys_time)) {
-    abort("`sys_time` must be a 'time_point' using the 'sys' clock.")
+    abort("`sys_time` must be a 'clock_sys_time'.")
   }
   if (precision_value(time_point_precision(sys_time)) < PRECISION_SECOND) {
     abort("`sys_time` must be at least second precision.")
@@ -299,4 +299,16 @@ as_naive_time.clock_zoned_time <- function(x) {
   out <- get_naive_time(x)
   names(out) <- names(x)
   out
+}
+
+# ------------------------------------------------------------------------------
+
+zone_validate <- function(zone) {
+  zone <- zone_standardize(zone)
+
+  if (!zone_is_valid(zone)) {
+    abort("`zone` is not a valid time zone.")
+  }
+
+  zone
 }

@@ -17,6 +17,30 @@ enum invalid parse_invalid(const cpp11::strings& x);
 
 // -----------------------------------------------------------------------------
 
+enum class nonexistent {
+  roll_forward,
+  roll_backward,
+  shift_forward,
+  shift_backward,
+  na,
+  error
+};
+
+enum nonexistent parse_nonexistent_one(const cpp11::r_string& x);
+
+// -----------------------------------------------------------------------------
+
+enum class ambiguous {
+  earliest,
+  latest,
+  na,
+  error
+};
+
+enum ambiguous parse_ambiguous_one(const cpp11::r_string& x);
+
+// -----------------------------------------------------------------------------
+
 enum class day_nonexistent {
   last_time,
   first_time,

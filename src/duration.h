@@ -4,8 +4,84 @@
 #include "clock.h"
 #include "integers.h"
 #include "enums.h"
+#include "utils.h"
 
 namespace rclock {
+
+namespace detail {
+
+template <typename Duration>
+inline
+date::sys_time<Duration>
+info_unique(const date::local_info& info, const date::local_time<Duration>& lt)
+{
+  std::chrono::seconds offset = info.first.offset;
+  return date::sys_time<Duration>{lt.time_since_epoch()} - offset;
+}
+
+template <typename Duration>
+inline
+date::sys_time<Duration>
+info_nonexistent_roll_forward(const date::local_info& info) {
+  return info.second.begin;
+}
+
+template <typename Duration>
+inline
+date::sys_time<Duration>
+info_nonexistent_roll_backward(const date::local_info& info) {
+  return info_nonexistent_roll_forward<Duration>(info) - Duration{1};
+}
+
+template <typename Duration>
+inline
+date::sys_time<Duration>
+info_nonexistent_shift_forward(const date::local_info& info, const date::local_time<Duration>& lt) {
+  std::chrono::seconds offset = info.second.offset;
+  std::chrono::seconds gap = info.second.offset - info.first.offset;
+  date::local_time<Duration> lt_shift = lt + gap;
+  return date::sys_time<Duration>{lt_shift.time_since_epoch()} - offset;
+}
+
+template <typename Duration>
+inline
+date::sys_time<Duration>
+info_nonexistent_shift_backward(const date::local_info& info, const date::local_time<Duration>& lt) {
+  std::chrono::seconds offset = info.first.offset;
+  std::chrono::seconds gap = info.second.offset - info.first.offset;
+  date::local_time<Duration> lt_shift = lt - gap;
+  return date::sys_time<Duration>{lt_shift.time_since_epoch()} - offset;
+}
+
+inline
+void
+info_nonexistent_error(const r_ssize& i) {
+  clock_abort("Nonexistent time due to daylight savings at location %i.", (int) i + 1);
+}
+
+template <typename Duration>
+inline
+date::sys_time<Duration>
+info_ambiguous_earliest(const date::local_info& info, const date::local_time<Duration>& lt) {
+  std::chrono::seconds offset = info.first.offset;
+  return date::sys_time<Duration>{lt.time_since_epoch()} - offset;
+}
+
+template <typename Duration>
+inline
+date::sys_time<Duration>
+info_ambiguous_latest(const date::local_info& info, const date::local_time<Duration>& lt) {
+  std::chrono::seconds offset = info.second.offset;
+  return date::sys_time<Duration>{lt.time_since_epoch()} - offset;
+}
+
+inline
+void
+info_ambiguous_error(const r_ssize& i) {
+  clock_abort("Ambiguous time due to daylight savings at location %i.", (int) i + 1);
+}
+
+} // namespace detail
 
 namespace duration {
 
@@ -52,6 +128,12 @@ public:
   void assign_na(r_ssize i);
   void assign(const Duration& x, r_ssize i);
 
+  void convert_local_to_sys_and_assign(const date::local_time<Duration>& x,
+                                       const date::time_zone* p_time_zone,
+                                       const enum nonexistent& nonexistent_val,
+                                       const enum ambiguous& ambiguous_val,
+                                       const r_ssize& i);
+
   CONSTCD11 Duration operator[](r_ssize i) const NOEXCEPT;
 
   cpp11::writable::list to_list() const;
@@ -77,6 +159,12 @@ public:
 
   void assign_na(r_ssize i);
   void assign(const Duration& x, r_ssize i);
+
+  void convert_local_to_sys_and_assign(const date::local_time<Duration>& x,
+                                       const date::time_zone* p_time_zone,
+                                       const enum nonexistent& nonexistent_val,
+                                       const enum ambiguous& ambiguous_val,
+                                       const r_ssize& i);
 
   CONSTCD11 Duration operator[](r_ssize i) const NOEXCEPT;
 
@@ -196,6 +284,84 @@ duration2<Duration>::assign(const Duration& x, r_ssize i)
   ticks_of_day_.assign((x - tick).count(), i);
 }
 
+/*
+ * Zoned times have at least seconds precision, so the only specialization
+ * required for duration2 is for seconds.
+ */
+template <>
+inline
+void
+duration2<std::chrono::seconds>::convert_local_to_sys_and_assign(const date::local_time<std::chrono::seconds>& x,
+                                                                 const date::time_zone* p_time_zone,
+                                                                 const enum nonexistent& nonexistent_val,
+                                                                 const enum ambiguous& ambiguous_val,
+                                                                 const r_ssize& i)
+{
+  const date::local_info info = p_time_zone->get_info(x);
+
+  switch (info.result) {
+  case date::local_info::unique: {
+    date::sys_time<std::chrono::seconds> st = detail::info_unique(info, x);
+    assign(st.time_since_epoch(), i);
+    break;
+  }
+  case date::local_info::nonexistent: {
+    switch (nonexistent_val) {
+    case nonexistent::roll_forward: {
+      date::sys_time<std::chrono::seconds> st = detail::info_nonexistent_roll_forward<std::chrono::seconds>(info);
+      assign(st.time_since_epoch(), i);
+      break;
+    }
+    case nonexistent::roll_backward: {
+      date::sys_time<std::chrono::seconds> st = detail::info_nonexistent_roll_backward<std::chrono::seconds>(info);
+      assign(st.time_since_epoch(), i);
+      break;
+    }
+    case nonexistent::shift_forward: {
+      date::sys_time<std::chrono::seconds> st = detail::info_nonexistent_shift_forward(info, x);
+      assign(st.time_since_epoch(), i);
+      break;
+    }
+    case nonexistent::shift_backward: {
+      date::sys_time<std::chrono::seconds> st = detail::info_nonexistent_shift_backward(info, x);
+      assign(st.time_since_epoch(), i);
+      break;
+    }
+    case nonexistent::na: {
+      assign_na(i);
+      break;
+    }
+    case nonexistent::error: {
+      detail::info_nonexistent_error(i);
+    }
+    }
+    break;
+  }
+  case date::local_info::ambiguous: {
+    switch (ambiguous_val) {
+    case ambiguous::earliest: {
+      date::sys_time<std::chrono::seconds> st = detail::info_ambiguous_earliest(info, x);
+      assign(st.time_since_epoch(), i);
+      break;
+    }
+    case ambiguous::latest: {
+      date::sys_time<std::chrono::seconds> st = detail::info_ambiguous_latest(info, x);
+      assign(st.time_since_epoch(), i);
+      break;
+    }
+    case ambiguous::na: {
+      assign_na(i);
+      break;
+    }
+    case ambiguous::error: {
+      detail::info_ambiguous_error(i);
+    }
+    }
+    break;
+  }
+  }
+}
+
 template <typename Duration>
 CONSTCD11
 inline
@@ -255,6 +421,80 @@ duration3<Duration>::assign(const Duration& x, r_ssize i)
   ticks_.assign(tick.count(), i);
   ticks_of_day_.assign(tick_of_day.count(), i);
   ticks_of_second_.assign(tick_of_second.count(), i);
+}
+
+template <typename Duration>
+inline
+void
+duration3<Duration>::convert_local_to_sys_and_assign(const date::local_time<Duration>& x,
+                                                     const date::time_zone* p_time_zone,
+                                                     const enum nonexistent& nonexistent_val,
+                                                     const enum ambiguous& ambiguous_val,
+                                                     const r_ssize& i)
+{
+  const date::local_info info = p_time_zone->get_info(x);
+
+  switch (info.result) {
+  case date::local_info::unique: {
+    date::sys_time<Duration> st = detail::info_unique(info, x);
+    assign(st.time_since_epoch(), i);
+    break;
+  }
+  case date::local_info::nonexistent: {
+    switch (nonexistent_val) {
+    case nonexistent::roll_forward: {
+      date::sys_time<Duration> st = detail::info_nonexistent_roll_forward<Duration>(info);
+      assign(st.time_since_epoch(), i);
+      break;
+    }
+    case nonexistent::roll_backward: {
+      date::sys_time<Duration> st = detail::info_nonexistent_roll_backward<Duration>(info);
+      assign(st.time_since_epoch(), i);
+      break;
+    }
+    case nonexistent::shift_forward: {
+      date::sys_time<Duration> st = detail::info_nonexistent_shift_forward(info, x);
+      assign(st.time_since_epoch(), i);
+      break;
+    }
+    case nonexistent::shift_backward: {
+      date::sys_time<Duration> st = detail::info_nonexistent_shift_backward(info, x);
+      assign(st.time_since_epoch(), i);
+      break;
+    }
+    case nonexistent::na: {
+      assign_na(i);
+      break;
+    }
+    case nonexistent::error: {
+      detail::info_nonexistent_error(i);
+    }
+    }
+    break;
+  }
+  case date::local_info::ambiguous: {
+    switch (ambiguous_val) {
+    case ambiguous::earliest: {
+      date::sys_time<Duration> st = detail::info_ambiguous_earliest(info, x);
+      assign(st.time_since_epoch(), i);
+      break;
+    }
+    case ambiguous::latest: {
+      date::sys_time<Duration> st = detail::info_ambiguous_latest(info, x);
+      assign(st.time_since_epoch(), i);
+      break;
+    }
+    case ambiguous::na: {
+      assign_na(i);
+      break;
+    }
+    case ambiguous::error: {
+      detail::info_ambiguous_error(i);
+    }
+    }
+    break;
+  }
+  }
 }
 
 template <typename Duration>

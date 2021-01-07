@@ -5,6 +5,7 @@
 
 // -----------------------------------------------------------------------------
 
+// [[ include("enums.h") ]]
 enum invalid parse_invalid(const cpp11::strings& x) {
   if (x.size() != 1) {
     clock_abort("`invalid` must be a string with length 1.");
@@ -21,6 +22,38 @@ enum invalid parse_invalid(const cpp11::strings& x) {
 
   clock_abort("'%s' is not a recognized `invalid` option.", string.c_str());
 }
+
+// -----------------------------------------------------------------------------
+
+// [[ include("enums.h") ]]
+enum nonexistent parse_nonexistent_one(const cpp11::r_string& x) {
+  std::string string(x);
+
+  if (string == "roll-forward") return nonexistent::roll_forward;
+  if (string == "roll-backward") return nonexistent::roll_backward;
+  if (string == "shift-forward") return nonexistent::shift_forward;
+  if (string == "shift-backward") return nonexistent::shift_backward;
+  if (string == "NA") return nonexistent::na;
+  if (string == "error") return nonexistent::error;
+
+  clock_abort("'%s' is not a recognized `nonexistent` option.", string.c_str());
+}
+
+// -----------------------------------------------------------------------------
+
+// [[ include("enums.h") ]]
+enum ambiguous parse_ambiguous_one(const cpp11::r_string& x) {
+  std::string string(x);
+
+  if (string == "earliest") return ambiguous::earliest;
+  if (string == "latest") return ambiguous::latest;
+  if (string == "NA") return ambiguous::na;
+  if (string == "error") return ambiguous::error;
+
+  clock_abort("'%s' is not a recognized `ambiguous` option.", string.c_str());
+}
+
+// -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
 enum day_nonexistent parse_day_nonexistent(const cpp11::strings& x) {

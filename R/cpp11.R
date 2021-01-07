@@ -383,3 +383,7 @@ zone_current <- function() {
 get_naive_time_cpp <- function(fields, precision, zone) {
   .Call("_clock_get_naive_time_cpp", fields, precision, zone, PACKAGE = "clock")
 }
+
+as_zoned_sys_time_from_naive_time_cpp <- function(fields, precision, zone, nonexistent, ambiguous) {
+  .Call("_clock_as_zoned_sys_time_from_naive_time_cpp", fields, precision, zone, nonexistent, ambiguous, PACKAGE = "clock")
+}
