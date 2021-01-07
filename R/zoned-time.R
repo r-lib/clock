@@ -1,3 +1,4 @@
+#' @export
 new_zoned_time <- function(sys_time = sys_seconds(),
                            zone = "UTC",
                            ...,
@@ -9,7 +10,7 @@ new_zoned_time <- function(sys_time = sys_seconds(),
   if (!is_sys_time(sys_time)) {
     abort("`sys_time` must be a 'time_point' using the 'sys' clock.")
   }
-  if (time_point_precision(sys_time) == "day") {
+  if (precision_value(time_point_precision(sys_time)) < PRECISION_SECOND) {
     abort("`sys_time` must be at least second precision.")
   }
 
@@ -24,6 +25,7 @@ new_zoned_time <- function(sys_time = sys_seconds(),
   )
 }
 
+#' @export
 is_zoned_time <- function(x) {
   inherits(x, "clock_zoned_time")
 }
@@ -99,6 +101,30 @@ zoned_time_format <- function(print_zone_name) {
 # ------------------------------------------------------------------------------
 
 #' @export
+vec_proxy.clock_zoned_time <- function(x, ...) {
+  proxy_rcrd(x)
+}
+
+#' @export
+vec_restore.clock_zoned_time <- function(x, to, ...) {
+  fields <- restore_rcrd_fields(x)
+  names <- restore_rcrd_names(x)
+  zone <- zoned_time_zone(to)
+  sys_time <- fields$sys_time
+  new_zoned_time(sys_time, zone, names = names)
+}
+
+#' @export
+vec_proxy_equal.clock_zoned_time <- function(x, ...) {
+  # TODO: How should this be handled? <date> only let's zoned times be equal
+  # if their time zones and points are equal. vctrs assumes POSIXct are equal
+  # if their underlying doubles are equal.
+  proxy_equal_rcrd(x)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 vec_ptype_full.clock_zoned_time <- function(x, ...) {
   zone <- zone_pretty(zoned_time_zone(x))
   precision <- zoned_time_precision(x)
@@ -119,6 +145,70 @@ zone_pretty <- function(zone) {
     zone <- paste0(zone, " (current)")
   }
   zone
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+vec_ptype2.clock_zoned_time.clock_zoned_time <- function(x, y, ...) {
+  x_zone <- zoned_time_zone(x)
+  y_zone <- zoned_time_zone(y)
+
+  if (x_zone != y_zone) {
+    stop_incompatible_type(x, y, ..., details = "Zones can't differ.")
+  }
+
+  x_precision <- zoned_time_precision(x)
+  y_precision <- zoned_time_precision(y)
+
+  if (x_precision == y_precision) {
+    return(x)
+  }
+
+  x_precision_value <- precision_value(x_precision)
+  y_precision_value <- precision_value(y_precision)
+
+  if (x_precision_value > y_precision_value) {
+    x
+  } else {
+    y
+  }
+}
+
+#' @export
+vec_cast.clock_zoned_time.clock_zoned_time <- function(x, to, ...) {
+  x_zone <- zoned_time_zone(x)
+  to_zone <- zoned_time_zone(to)
+
+  if (x_zone != to_zone) {
+    stop_incompatible_cast(x, to, ..., details = "Zones can't differ.")
+  }
+
+  x_sys_time <- zoned_time_sys_time(x)
+  to_sys_time <- zoned_time_sys_time(to)
+
+  x_duration <- time_point_duration(x_sys_time)
+  to_duration <- time_point_duration(to_sys_time)
+
+  x_precision <- duration_precision(x_duration)
+  to_precision <- duration_precision(to_duration)
+
+  if (x_precision == to_precision) {
+    return(x)
+  }
+
+  x_precision_value <- precision_value(x_precision)
+  to_precision_value <- precision_value(to_precision)
+
+  if (x_precision_value > to_precision_value) {
+    stop_incompatible_cast(x, to, ..., details = "Precision would be lost.")
+  }
+
+  duration <- duration_cast(x_duration, to_precision)
+
+  sys_time <- new_sys_time(duration)
+
+  new_zoned_time(sys_time, x_zone, names = names(x))
 }
 
 # ------------------------------------------------------------------------------
