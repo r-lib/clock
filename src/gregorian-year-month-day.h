@@ -321,7 +321,7 @@ inline
 std::ostringstream&
 ym::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
-  rclock::detail::stream_year(os, year_[i]);
+  y::stream(os, i);
   os << '-';
   rclock::detail::stream_month(os, month_[i]);
   return os;
@@ -377,7 +377,7 @@ inline
 void
 ym::assign_na(r_ssize i) NOEXCEPT
 {
-  year_.assign_na(i);
+  y::assign_na(i);
   month_.assign_na(i);
 }
 
@@ -424,9 +424,7 @@ inline
 std::ostringstream&
 ymd::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
-  rclock::detail::stream_year(os, year_[i]);
-  os << '-';
-  rclock::detail::stream_month(os, month_[i]);
+  ym::stream(os, i);
   os << '-';
   rclock::detail::stream_day(os, day_[i]);
   return os;
@@ -460,15 +458,14 @@ void
 ymd::assign_sys_time(const date::sys_time<date::days>& x, r_ssize i) NOEXCEPT
 {
   date::year_month_day ymd{x};
-  assign_year_month_day(x, i);
+  assign_year_month_day(ymd, i);
 }
 
 inline
 void
 ymd::assign_na(r_ssize i) NOEXCEPT
 {
-  year_.assign_na(i);
-  month_.assign_na(i);
+  ym::assign_na(i);
   day_.assign_na(i);
 }
 
@@ -547,11 +544,7 @@ inline
 std::ostringstream&
 ymdh::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
-  rclock::detail::stream_year(os, year_[i]);
-  os << '-';
-  rclock::detail::stream_month(os, month_[i]);
-  os << '-';
-  rclock::detail::stream_day(os, day_[i]);
+  ymd::stream(os, i);
   os << ' ';
   rclock::detail::stream_hour(os, hour_[i]);
   return os;
@@ -578,9 +571,7 @@ inline
 void
 ymdh::assign_na(r_ssize i) NOEXCEPT
 {
-  year_.assign_na(i);
-  month_.assign_na(i);
-  day_.assign_na(i);
+  ymd::assign_na(i);
   hour_.assign_na(i);
 }
 
@@ -655,13 +646,7 @@ inline
 std::ostringstream&
 ymdhm::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
-  rclock::detail::stream_year(os, year_[i]);
-  os << '-';
-  rclock::detail::stream_month(os, month_[i]);
-  os << '-';
-  rclock::detail::stream_day(os, day_[i]);
-  os << ' ';
-  rclock::detail::stream_hour(os, hour_[i]);
+  ymdh::stream(os, i);
   os << ':';
   rclock::detail::stream_minute(os, minute_[i]);
   return os;
@@ -688,10 +673,7 @@ inline
 void
 ymdhm::assign_na(r_ssize i) NOEXCEPT
 {
-  year_.assign_na(i);
-  month_.assign_na(i);
-  day_.assign_na(i);
-  hour_.assign_na(i);
+  ymdh::assign_na(i);
   minute_.assign_na(i);
 }
 
@@ -707,6 +689,8 @@ ymdhm::resolve(r_ssize i, const enum invalid type)
 
   switch (type) {
   case invalid::first_day:
+    assign_year_month_day(detail::resolve_first_day_ymd(elt), i);
+    break;
   case invalid::first_time: {
     assign_year_month_day(detail::resolve_first_day_ymd(elt), i);
     assign_hour(rclock::detail::resolve_first_day_hour(), i);
@@ -714,6 +698,8 @@ ymdhm::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::last_day:
+    assign_day(detail::resolve_last_day_ymd(elt).day(), i);
+    break;
   case invalid::last_time: {
     assign_day(detail::resolve_last_day_ymd(elt).day(), i);
     assign_hour(rclock::detail::resolve_last_day_hour(), i);
@@ -769,15 +755,7 @@ inline
 std::ostringstream&
 ymdhms::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
-  rclock::detail::stream_year(os, year_[i]);
-  os << '-';
-  rclock::detail::stream_month(os, month_[i]);
-  os << '-';
-  rclock::detail::stream_day(os, day_[i]);
-  os << ' ';
-  rclock::detail::stream_hour(os, hour_[i]);
-  os << ':';
-  rclock::detail::stream_minute(os, minute_[i]);
+  ymdhm::stream(os, i);
   os << ':';
   rclock::detail::stream_second(os, second_[i]);
   return os;
@@ -804,11 +782,7 @@ inline
 void
 ymdhms::assign_na(r_ssize i) NOEXCEPT
 {
-  year_.assign_na(i);
-  month_.assign_na(i);
-  day_.assign_na(i);
-  hour_.assign_na(i);
-  minute_.assign_na(i);
+  ymdhm::assign_na(i);
   second_.assign_na(i);
 }
 
@@ -824,6 +798,8 @@ ymdhms::resolve(r_ssize i, const enum invalid type)
 
   switch (type) {
   case invalid::first_day:
+    assign_year_month_day(detail::resolve_first_day_ymd(elt), i);
+    break;
   case invalid::first_time: {
     assign_year_month_day(detail::resolve_first_day_ymd(elt), i);
     assign_hour(rclock::detail::resolve_first_day_hour(), i);
@@ -832,6 +808,8 @@ ymdhms::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::last_day:
+    assign_day(detail::resolve_last_day_ymd(elt).day(), i);
+    break;
   case invalid::last_time: {
     assign_day(detail::resolve_last_day_ymd(elt).day(), i);
     assign_hour(rclock::detail::resolve_last_day_hour(), i);
@@ -892,15 +870,7 @@ inline
 std::ostringstream&
 ymdhmss<Duration>::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
-  rclock::detail::stream_year(os, year_[i]);
-  os << '-';
-  rclock::detail::stream_month(os, month_[i]);
-  os << '-';
-  rclock::detail::stream_day(os, day_[i]);
-  os << ' ';
-  rclock::detail::stream_hour(os, hour_[i]);
-  os << ':';
-  rclock::detail::stream_minute(os, minute_[i]);
+  ymdhm::stream(os, i);
   os << ':';
   rclock::detail::stream_second_and_subsecond<Duration>(os, second_[i], subsecond_[i]);
   return os;
@@ -930,12 +900,7 @@ inline
 void
 ymdhmss<Duration>::assign_na(r_ssize i) NOEXCEPT
 {
-  year_.assign_na(i);
-  month_.assign_na(i);
-  day_.assign_na(i);
-  hour_.assign_na(i);
-  minute_.assign_na(i);
-  second_.assign_na(i);
+  ymdhms::assign_na(i);
   subsecond_.assign_na(i);
 }
 
@@ -952,6 +917,8 @@ ymdhmss<Duration>::resolve(r_ssize i, const enum invalid type)
 
   switch (type) {
   case invalid::first_day:
+    assign_year_month_day(detail::resolve_first_day_ymd(elt), i);
+    break;
   case invalid::first_time: {
     assign_year_month_day(detail::resolve_first_day_ymd(elt), i);
     assign_hour(rclock::detail::resolve_first_day_hour(), i);
@@ -961,6 +928,8 @@ ymdhmss<Duration>::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::last_day:
+    assign_day(detail::resolve_last_day_ymd(elt).day(), i);
+    break;
   case invalid::last_time: {
     assign_day(detail::resolve_last_day_ymd(elt).day(), i);
     assign_hour(rclock::detail::resolve_last_day_hour(), i);
