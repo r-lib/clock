@@ -57,7 +57,7 @@ static inline bool clock_is_string(const cpp11::sexp& x) {
 static int64_t r_int64_na = INT64_MIN;
 
 static inline int64_t as_int64(double x) {
-  if (clock_dbl_is_missing(x)) {
+  if (r_dbl_is_missing(x)) {
     return r_int64_na;
   }
 
