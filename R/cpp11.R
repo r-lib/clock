@@ -387,3 +387,11 @@ get_naive_time_cpp <- function(fields, precision, zone) {
 as_zoned_sys_time_from_naive_time_cpp <- function(fields, precision, zone, nonexistent, ambiguous) {
   .Call("_clock_as_zoned_sys_time_from_naive_time_cpp", fields, precision, zone, nonexistent, ambiguous, PACKAGE = "clock")
 }
+
+to_sys_duration_fields_from_sys_seconds_cpp <- function(seconds) {
+  .Call("_clock_to_sys_duration_fields_from_sys_seconds_cpp", seconds, PACKAGE = "clock")
+}
+
+to_sys_seconds_from_sys_duration_fields_cpp <- function(fields) {
+  .Call("_clock_to_sys_seconds_from_sys_duration_fields_cpp", fields, PACKAGE = "clock")
+}

@@ -153,3 +153,52 @@ as_zoned_sys_time_from_naive_time_cpp(cpp11::list_of<cpp11::integers> fields,
   }
 }
 
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+cpp11::writable::list
+to_sys_duration_fields_from_sys_seconds_cpp(const cpp11::doubles& seconds) {
+  r_ssize size = seconds.size();
+  rclock::duration::seconds out(size);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    // Assume seconds precision!
+    double elt_seconds = seconds[i];
+    int64_t elt = as_int64(elt_seconds);
+
+    if (elt == r_int64_na) {
+      out.assign_na(i);
+      continue;
+    }
+
+    std::chrono::seconds elt_sec{elt};
+
+    out.assign(elt_sec, i);
+  }
+
+  return out.to_list();
+}
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+cpp11::writable::doubles
+to_sys_seconds_from_sys_duration_fields_cpp(cpp11::list_of<cpp11::integers> fields) {
+  const cpp11::integers ticks = get_ticks(fields);
+  const cpp11::integers ticks_of_day = get_ticks_of_day(fields);
+  const rclock::duration::seconds x{ticks, ticks_of_day};
+
+  r_ssize size = ticks.size();
+  cpp11::writable::doubles out(size);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    if (x.is_na(i)) {
+      out[i] = r_dbl_na;
+      continue;
+    }
+    std::chrono::seconds elt = x[i];
+    out[i] = static_cast<double>(elt.count());
+  }
+
+  return out;
+}

@@ -4,16 +4,6 @@ get_zone <- function(x) {
   UseMethod("get_zone")
 }
 
-#' @export
-get_zone.Date <- function(x) {
-  "UTC"
-}
-
-#' @export
-get_zone.POSIXt <- function(x) {
-  zone_standardize(get_tzone(x))
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export

@@ -1,18 +1,3 @@
-
-
-# ------------------------------------------------------------------------------
-
-#' @export
-as_year_month_day.Date <- function(x) {
-  x <- date_to_days(x)
-  new_year_month_day(x)
-}
-
-#' @export
-as_year_month_day.POSIXt <- function(x) {
-  # TODO
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export

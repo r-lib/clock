@@ -684,6 +684,20 @@ extern "C" SEXP _clock_as_zoned_sys_time_from_naive_time_cpp(SEXP fields, SEXP p
     return cpp11::as_sexp(as_zoned_sys_time_from_naive_time_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(ambiguous)));
   END_CPP11
 }
+// zoned-time.cpp
+cpp11::writable::list to_sys_duration_fields_from_sys_seconds_cpp(const cpp11::doubles& seconds);
+extern "C" SEXP _clock_to_sys_duration_fields_from_sys_seconds_cpp(SEXP seconds) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(to_sys_duration_fields_from_sys_seconds_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::doubles&>>(seconds)));
+  END_CPP11
+}
+// zoned-time.cpp
+cpp11::writable::doubles to_sys_seconds_from_sys_duration_fields_cpp(cpp11::list_of<cpp11::integers> fields);
+extern "C" SEXP _clock_to_sys_seconds_from_sys_duration_fields_cpp(SEXP fields) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(to_sys_seconds_from_sys_duration_fields_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields)));
+  END_CPP11
+}
 
 extern "C" {
 /* .Call calls */
@@ -781,6 +795,8 @@ extern SEXP _clock_resolve_nanoseconds_of_second(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_resolve_seconds_of_day(SEXP, SEXP, SEXP);
 extern SEXP _clock_set_field_year_month_day_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_set_field_year_month_day_last_cpp(SEXP, SEXP);
+extern SEXP _clock_to_sys_duration_fields_from_sys_seconds_cpp(SEXP);
+extern SEXP _clock_to_sys_seconds_from_sys_duration_fields_cpp(SEXP);
 extern SEXP _clock_zone_current();
 extern SEXP _clock_zone_is_valid(SEXP);
 extern SEXP _clock_zone_standardize(SEXP);
@@ -880,6 +896,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_resolve_seconds_of_day",                                                               (DL_FUNC) &_clock_resolve_seconds_of_day,                                                                3},
     {"_clock_set_field_year_month_day_cpp",                                                         (DL_FUNC) &_clock_set_field_year_month_day_cpp,                                                          4},
     {"_clock_set_field_year_month_day_last_cpp",                                                    (DL_FUNC) &_clock_set_field_year_month_day_last_cpp,                                                     2},
+    {"_clock_to_sys_duration_fields_from_sys_seconds_cpp",                                          (DL_FUNC) &_clock_to_sys_duration_fields_from_sys_seconds_cpp,                                           1},
+    {"_clock_to_sys_seconds_from_sys_duration_fields_cpp",                                          (DL_FUNC) &_clock_to_sys_seconds_from_sys_duration_fields_cpp,                                           1},
     {"_clock_zone_current",                                                                         (DL_FUNC) &_clock_zone_current,                                                                          0},
     {"_clock_zone_is_valid",                                                                        (DL_FUNC) &_clock_zone_is_valid,                                                                         1},
     {"_clock_zone_standardize",                                                                     (DL_FUNC) &_clock_zone_standardize,                                                                      1},
