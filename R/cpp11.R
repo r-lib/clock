@@ -56,36 +56,8 @@ add_iso_calendar_years <- function(calendar, n, day_nonexistent) {
   .Call("_clock_add_iso_calendar_years", calendar, n, day_nonexistent, PACKAGE = "clock")
 }
 
-convert_zoned_seconds_to_naive_second_point_fields <- function(seconds, zone) {
-  .Call("_clock_convert_zoned_seconds_to_naive_second_point_fields", seconds, zone, PACKAGE = "clock")
-}
-
-convert_naive_second_point_fields_to_zoned_seconds_cpp <- function(calendar, seconds_of_day, zone, dst_nonexistent, dst_ambiguous, size) {
-  .Call("_clock_convert_naive_second_point_fields_to_zoned_seconds_cpp", calendar, seconds_of_day, zone, dst_nonexistent, dst_ambiguous, size, PACKAGE = "clock")
-}
-
-convert_year_month_day_hour_minute_second_to_naive_second_point_fields <- function(year, month, day, hour, minute, second, day_nonexistent) {
-  .Call("_clock_convert_year_month_day_hour_minute_second_to_naive_second_point_fields", year, month, day, hour, minute, second, day_nonexistent, PACKAGE = "clock")
-}
-
-convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields <- function(year, month, day, hour, minute, second, nanosecond, day_nonexistent) {
-  .Call("_clock_convert_year_month_day_hour_minute_second_nanosecond_to_naive_subsecond_point_fields", year, month, day, hour, minute, second, nanosecond, day_nonexistent, PACKAGE = "clock")
-}
-
-convert_calendar_days_to_year_month_day <- function(calendar) {
-  .Call("_clock_convert_calendar_days_to_year_month_day", calendar, PACKAGE = "clock")
-}
-
 convert_seconds_of_day_to_hour_minute_second <- function(seconds_of_day) {
   .Call("_clock_convert_seconds_of_day_to_hour_minute_second", seconds_of_day, PACKAGE = "clock")
-}
-
-convert_second_point_fields_from_zoned_to_naive <- function(calendar, seconds_of_day, zone) {
-  .Call("_clock_convert_second_point_fields_from_zoned_to_naive", calendar, seconds_of_day, zone, PACKAGE = "clock")
-}
-
-convert_zoned_seconds_to_zoned_second_point_fields <- function(seconds) {
-  .Call("_clock_convert_zoned_seconds_to_zoned_second_point_fields", seconds, PACKAGE = "clock")
 }
 
 convert_year_quarternum_quarterday_to_calendar_days <- function(year, quarternum, quarterday, start, day_nonexistent) {
@@ -102,26 +74,6 @@ convert_iso_year_weeknum_weekday_to_calendar_days <- function(year, weeknum, wee
 
 convert_calendar_days_to_iso_year_weeknum_weekday <- function(calendar) {
   .Call("_clock_convert_calendar_days_to_iso_year_weeknum_weekday", calendar, PACKAGE = "clock")
-}
-
-convert_year_month_day_to_calendar_days <- function(year, month, day, day_nonexistent) {
-  .Call("_clock_convert_year_month_day_to_calendar_days", year, month, day, day_nonexistent, PACKAGE = "clock")
-}
-
-convert_calendar_days_hour_minute_second_to_naive_second_point_fields <- function(calendar, hour, minute, second) {
-  .Call("_clock_convert_calendar_days_hour_minute_second_to_naive_second_point_fields", calendar, hour, minute, second, PACKAGE = "clock")
-}
-
-convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields <- function(calendar, hour, minute, second, subsecond, precision) {
-  .Call("_clock_convert_calendar_days_hour_minute_second_subsecond_to_naive_subsecond_point_fields", calendar, hour, minute, second, subsecond, precision, PACKAGE = "clock")
-}
-
-convert_second_point_fields_from_naive_to_zoned_cpp <- function(calendar, seconds_of_day, zone, dst_nonexistent, dst_ambiguous) {
-  .Call("_clock_convert_second_point_fields_from_naive_to_zoned_cpp", calendar, seconds_of_day, zone, dst_nonexistent, dst_ambiguous, PACKAGE = "clock")
-}
-
-convert_subsecond_point_fields_from_naive_to_zoned_cpp <- function(calendar, seconds_of_day, nanoseconds_of_second, precision, zone, dst_nonexistent, dst_ambiguous) {
-  .Call("_clock_convert_subsecond_point_fields_from_naive_to_zoned_cpp", calendar, seconds_of_day, nanoseconds_of_second, precision, zone, dst_nonexistent, dst_ambiguous, PACKAGE = "clock")
 }
 
 convert_calendar_days_to_year_month_weekday_index <- function(calendar) {
