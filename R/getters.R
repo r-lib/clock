@@ -30,12 +30,6 @@ get_year.clock_iso <- function(x) {
   yww$year
 }
 
-#' @export
-get_year.POSIXt <- function(x) {
-  x <- as_zoned_time_point(x)
-  get_year(x)
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export
@@ -118,23 +112,11 @@ get_month <- function(x) {
   UseMethod("get_month")
 }
 
-#' @export
-get_month.POSIXt <- function(x) {
-  x <- as_zoned_time_point(x)
-  get_month(x)
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export
 get_day <- function(x) {
   UseMethod("get_day")
-}
-
-#' @export
-get_day.POSIXt <- function(x) {
-  x <- as_zoned_time_point(x)
-  get_day(x)
 }
 
 # ------------------------------------------------------------------------------
@@ -144,12 +126,6 @@ get_hour <- function(x) {
   UseMethod("get_hour")
 }
 
-#' @export
-get_hour.POSIXt <- function(x) {
-  x <- as_zoned_time_point(x)
-  get_hour(x)
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export
@@ -157,23 +133,11 @@ get_minute <- function(x) {
   UseMethod("get_minute")
 }
 
-#' @export
-get_minute.POSIXt <- function(x) {
-  x <- as_zoned_time_point(x)
-  get_minute(x)
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export
 get_second <- function(x) {
   UseMethod("get_second")
-}
-
-#' @export
-get_second.POSIXt <- function(x) {
-  x <- as_zoned_time_point(x)
-  get_second(x)
 }
 
 # ------------------------------------------------------------------------------

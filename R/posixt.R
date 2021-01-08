@@ -110,6 +110,35 @@ as.POSIXlt.clock_zoned_time <- function(x, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
+get_year.POSIXt <- function(x) {
+  get_posixt_field_year_month_day(x, get_year)
+}
+#' @export
+get_month.POSIXt <- function(x) {
+  get_posixt_field_year_month_day(x, get_month)
+}
+#' @export
+get_day.POSIXt <- function(x) {
+  get_posixt_field_year_month_day(x, get_day)
+}
+#' @export
+get_hour.POSIXt <- function(x) {
+  get_posixt_field_year_month_day(x, get_hour)
+}
+#' @export
+get_minute.POSIXt <- function(x) {
+  get_posixt_field_year_month_day(x, get_minute)
+}
+#' @export
+get_second.POSIXt <- function(x) {
+  get_posixt_field_year_month_day(x, get_second)
+}
+get_posixt_field_year_month_day <- function(x, get_fn) {
+  x <- as_year_month_day(x)
+  get_fn(x)
+}
+
+#' @export
 get_zone.POSIXt <- function(x) {
   zone_standardize(get_tzone(x))
 }
