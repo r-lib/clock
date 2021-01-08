@@ -5,80 +5,14 @@
 #include "integers.h"
 #include "enums.h"
 #include "utils.h"
+#include "stream.h"
+#include "resolve.h"
 
 namespace rclock {
 
+namespace gregorian {
+
 namespace detail {
-
-inline
-std::ostringstream&
-stream_year(std::ostringstream& os, int year) NOEXCEPT
-{
-  os << date::year{year};
-  return os;
-}
-
-inline
-std::ostringstream&
-stream_month(std::ostringstream& os, int month) NOEXCEPT
-{
-  os.fill('0');
-  os.flags(std::ios::dec | std::ios::right);
-  os.width(2);
-  os << month;
-  return os;
-}
-
-inline
-std::ostringstream&
-stream_day(std::ostringstream& os, int day) NOEXCEPT
-{
-  os << date::day{static_cast<unsigned>(day)};
-  return os;
-}
-
-inline
-std::ostringstream&
-stream_hour(std::ostringstream& os, int hour) NOEXCEPT
-{
-  os.fill('0');
-  os.flags(std::ios::dec | std::ios::right);
-  os.width(2);
-  os << hour;
-  return os;
-}
-
-inline
-std::ostringstream&
-stream_minute(std::ostringstream& os, int minute) NOEXCEPT
-{
-  os.fill('0');
-  os.flags(std::ios::dec | std::ios::right);
-  os.width(2);
-  os << minute;
-  return os;
-}
-
-inline
-std::ostringstream&
-stream_second(std::ostringstream& os, int second) NOEXCEPT
-{
-  os.fill('0');
-  os.flags(std::ios::dec | std::ios::right);
-  os.width(2);
-  os << second;
-  return os;
-}
-
-template <typename Duration>
-inline
-std::ostringstream&
-stream_second_and_subsecond(std::ostringstream& os, int second, int subsecond) NOEXCEPT
-{
-  date::detail::decimal_format_seconds<Duration> dfs{std::chrono::seconds{second} + Duration{subsecond}};
-  os << dfs;
-  return os;
-}
 
 inline
 date::year_month_day
@@ -86,67 +20,12 @@ resolve_first_day_ymd(const date::year_month_day& x) {
   return ((x.year() / x.month()) + date::months(1)) / date::day(1);
 }
 inline
-std::chrono::hours
-resolve_first_day_hour() {
-  return std::chrono::hours{0};
-}
-inline
-std::chrono::minutes
-resolve_first_day_minute() {
-  return std::chrono::minutes{0};
-}
-inline
-std::chrono::seconds
-resolve_first_day_second() {
-  return std::chrono::seconds{0};
-}
-template <typename Duration>
-inline
-Duration
-resolve_first_day_subsecond() {
-  return Duration{0};
-}
-
-inline
 date::year_month_day
 resolve_last_day_ymd(const date::year_month_day& x) {
   return x.year() / x.month() / date::last;
 }
-inline
-std::chrono::hours
-resolve_last_day_hour() {
-  return std::chrono::hours{23};
-}
-inline
-std::chrono::minutes
-resolve_last_day_minute() {
-  return std::chrono::minutes{59};
-}
-inline
-std::chrono::seconds
-resolve_last_day_second() {
-  return std::chrono::seconds{59};
-}
-template <typename Duration>
-inline
-Duration
-resolve_last_day_subsecond() {
-  return std::chrono::seconds{1} - Duration{1};
-}
-
-inline
-void
-resolve_error(r_ssize i) {
-  std::string message =
-    std::string{"Invalid day found at location %td. "} +
-    "Resolve invalid day issues by specifying the `invalid` argument.";
-
-  clock_abort(message.c_str(), (ptrdiff_t) i + 1);
-}
 
 } // namespace detail
-
-namespace gregorian {
 
 class y
 {
@@ -366,7 +245,7 @@ inline
 std::ostringstream&
 y::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
-  detail::stream_year(os, year_[i]);
+  rclock::detail::stream_year(os, year_[i]);
   return os;
 }
 
@@ -442,9 +321,9 @@ inline
 std::ostringstream&
 ym::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
-  detail::stream_year(os, year_[i]);
+  rclock::detail::stream_year(os, year_[i]);
   os << '-';
-  detail::stream_month(os, month_[i]);
+  rclock::detail::stream_month(os, month_[i]);
   return os;
 }
 
@@ -545,11 +424,11 @@ inline
 std::ostringstream&
 ymd::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
-  detail::stream_year(os, year_[i]);
+  rclock::detail::stream_year(os, year_[i]);
   os << '-';
-  detail::stream_month(os, month_[i]);
+  rclock::detail::stream_month(os, month_[i]);
   os << '-';
-  detail::stream_day(os, day_[i]);
+  rclock::detail::stream_day(os, day_[i]);
   return os;
 }
 
@@ -619,7 +498,7 @@ ymd::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::error: {
-    detail::resolve_error(i);
+    rclock::detail::resolve_error(i);
   }
   }
 }
@@ -668,13 +547,13 @@ inline
 std::ostringstream&
 ymdh::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
-  detail::stream_year(os, year_[i]);
+  rclock::detail::stream_year(os, year_[i]);
   os << '-';
-  detail::stream_month(os, month_[i]);
+  rclock::detail::stream_month(os, month_[i]);
   os << '-';
-  detail::stream_day(os, day_[i]);
+  rclock::detail::stream_day(os, day_[i]);
   os << ' ';
-  detail::stream_hour(os, hour_[i]);
+  rclock::detail::stream_hour(os, hour_[i]);
   return os;
 }
 
@@ -719,13 +598,13 @@ ymdh::resolve(r_ssize i, const enum invalid type)
   case invalid::first_day:
   case invalid::first_time: {
     assign_year_month_day(detail::resolve_first_day_ymd(elt), i);
-    assign_hour(detail::resolve_first_day_hour(), i);
+    assign_hour(rclock::detail::resolve_first_day_hour(), i);
     break;
   }
   case invalid::last_day:
   case invalid::last_time: {
     assign_day(detail::resolve_last_day_ymd(elt).day(), i);
-    assign_hour(detail::resolve_last_day_hour(), i);
+    assign_hour(rclock::detail::resolve_last_day_hour(), i);
     break;
   }
   case invalid::na: {
@@ -733,7 +612,7 @@ ymdh::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::error: {
-    detail::resolve_error(i);
+    rclock::detail::resolve_error(i);
   }
   }
 }
@@ -776,15 +655,15 @@ inline
 std::ostringstream&
 ymdhm::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
-  detail::stream_year(os, year_[i]);
+  rclock::detail::stream_year(os, year_[i]);
   os << '-';
-  detail::stream_month(os, month_[i]);
+  rclock::detail::stream_month(os, month_[i]);
   os << '-';
-  detail::stream_day(os, day_[i]);
+  rclock::detail::stream_day(os, day_[i]);
   os << ' ';
-  detail::stream_hour(os, hour_[i]);
+  rclock::detail::stream_hour(os, hour_[i]);
   os << ':';
-  detail::stream_minute(os, minute_[i]);
+  rclock::detail::stream_minute(os, minute_[i]);
   return os;
 }
 
@@ -830,15 +709,15 @@ ymdhm::resolve(r_ssize i, const enum invalid type)
   case invalid::first_day:
   case invalid::first_time: {
     assign_year_month_day(detail::resolve_first_day_ymd(elt), i);
-    assign_hour(detail::resolve_first_day_hour(), i);
-    assign_minute(detail::resolve_first_day_minute(), i);
+    assign_hour(rclock::detail::resolve_first_day_hour(), i);
+    assign_minute(rclock::detail::resolve_first_day_minute(), i);
     break;
   }
   case invalid::last_day:
   case invalid::last_time: {
     assign_day(detail::resolve_last_day_ymd(elt).day(), i);
-    assign_hour(detail::resolve_last_day_hour(), i);
-    assign_minute(detail::resolve_last_day_minute(), i);
+    assign_hour(rclock::detail::resolve_last_day_hour(), i);
+    assign_minute(rclock::detail::resolve_last_day_minute(), i);
     break;
   }
   case invalid::na: {
@@ -846,7 +725,7 @@ ymdhm::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::error: {
-    detail::resolve_error(i);
+    rclock::detail::resolve_error(i);
   }
   }
 }
@@ -890,17 +769,17 @@ inline
 std::ostringstream&
 ymdhms::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
-  detail::stream_year(os, year_[i]);
+  rclock::detail::stream_year(os, year_[i]);
   os << '-';
-  detail::stream_month(os, month_[i]);
+  rclock::detail::stream_month(os, month_[i]);
   os << '-';
-  detail::stream_day(os, day_[i]);
+  rclock::detail::stream_day(os, day_[i]);
   os << ' ';
-  detail::stream_hour(os, hour_[i]);
+  rclock::detail::stream_hour(os, hour_[i]);
   os << ':';
-  detail::stream_minute(os, minute_[i]);
+  rclock::detail::stream_minute(os, minute_[i]);
   os << ':';
-  detail::stream_second(os, second_[i]);
+  rclock::detail::stream_second(os, second_[i]);
   return os;
 }
 
@@ -947,17 +826,17 @@ ymdhms::resolve(r_ssize i, const enum invalid type)
   case invalid::first_day:
   case invalid::first_time: {
     assign_year_month_day(detail::resolve_first_day_ymd(elt), i);
-    assign_hour(detail::resolve_first_day_hour(), i);
-    assign_minute(detail::resolve_first_day_minute(), i);
-    assign_second(detail::resolve_first_day_second(), i);
+    assign_hour(rclock::detail::resolve_first_day_hour(), i);
+    assign_minute(rclock::detail::resolve_first_day_minute(), i);
+    assign_second(rclock::detail::resolve_first_day_second(), i);
     break;
   }
   case invalid::last_day:
   case invalid::last_time: {
     assign_day(detail::resolve_last_day_ymd(elt).day(), i);
-    assign_hour(detail::resolve_last_day_hour(), i);
-    assign_minute(detail::resolve_last_day_minute(), i);
-    assign_second(detail::resolve_last_day_second(), i);
+    assign_hour(rclock::detail::resolve_last_day_hour(), i);
+    assign_minute(rclock::detail::resolve_last_day_minute(), i);
+    assign_second(rclock::detail::resolve_last_day_second(), i);
     break;
   }
   case invalid::na: {
@@ -965,7 +844,7 @@ ymdhms::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::error: {
-    detail::resolve_error(i);
+    rclock::detail::resolve_error(i);
   }
   }
 }
@@ -1013,17 +892,17 @@ inline
 std::ostringstream&
 ymdhmss<Duration>::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
-  detail::stream_year(os, year_[i]);
+  rclock::detail::stream_year(os, year_[i]);
   os << '-';
-  detail::stream_month(os, month_[i]);
+  rclock::detail::stream_month(os, month_[i]);
   os << '-';
-  detail::stream_day(os, day_[i]);
+  rclock::detail::stream_day(os, day_[i]);
   os << ' ';
-  detail::stream_hour(os, hour_[i]);
+  rclock::detail::stream_hour(os, hour_[i]);
   os << ':';
-  detail::stream_minute(os, minute_[i]);
+  rclock::detail::stream_minute(os, minute_[i]);
   os << ':';
-  detail::stream_second_and_subsecond<Duration>(os, second_[i], subsecond_[i]);
+  rclock::detail::stream_second_and_subsecond<Duration>(os, second_[i], subsecond_[i]);
   return os;
 }
 
@@ -1075,19 +954,19 @@ ymdhmss<Duration>::resolve(r_ssize i, const enum invalid type)
   case invalid::first_day:
   case invalid::first_time: {
     assign_year_month_day(detail::resolve_first_day_ymd(elt), i);
-    assign_hour(detail::resolve_first_day_hour(), i);
-    assign_minute(detail::resolve_first_day_minute(), i);
-    assign_second(detail::resolve_first_day_second(), i);
-    assign_subsecond(detail::resolve_first_day_subsecond<Duration>(), i);
+    assign_hour(rclock::detail::resolve_first_day_hour(), i);
+    assign_minute(rclock::detail::resolve_first_day_minute(), i);
+    assign_second(rclock::detail::resolve_first_day_second(), i);
+    assign_subsecond(rclock::detail::resolve_first_day_subsecond<Duration>(), i);
     break;
   }
   case invalid::last_day:
   case invalid::last_time: {
     assign_day(detail::resolve_last_day_ymd(elt).day(), i);
-    assign_hour(detail::resolve_last_day_hour(), i);
-    assign_minute(detail::resolve_last_day_minute(), i);
-    assign_second(detail::resolve_last_day_second(), i);
-    assign_subsecond(detail::resolve_last_day_subsecond<Duration>(), i);
+    assign_hour(rclock::detail::resolve_last_day_hour(), i);
+    assign_minute(rclock::detail::resolve_last_day_minute(), i);
+    assign_second(rclock::detail::resolve_last_day_second(), i);
+    assign_subsecond(rclock::detail::resolve_last_day_subsecond<Duration>(), i);
     break;
   }
   case invalid::na: {
@@ -1095,7 +974,7 @@ ymdhmss<Duration>::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::error: {
-    detail::resolve_error(i);
+    rclock::detail::resolve_error(i);
   }
   }
 }
