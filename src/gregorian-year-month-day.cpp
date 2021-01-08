@@ -762,7 +762,11 @@ as_sys_time_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   case precision2::nanosecond: return as_sys_time_year_month_day_impl<duration::nanoseconds>(ymdhmss3);
   default: {
     std::string precision_string = precision[0];
-    std::string message = "Can't convert to a time point from a calendar with '" + precision_string + "' precision.";
+    std::string message =
+      "Can't convert to a time point from a calendar with '" +
+      precision_string +
+      "' precision. " +
+      "A minimum of 'day' precision is required.";
     clock_abort(message.c_str());
   }
   }

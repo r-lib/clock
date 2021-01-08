@@ -56,7 +56,11 @@ info_nonexistent_shift_backward(const date::local_info& info, const date::local_
 inline
 void
 info_nonexistent_error(const r_ssize& i) {
-  clock_abort("Nonexistent time due to daylight savings at location %i.", (int) i + 1);
+  std::string message =
+    std::string{"Nonexistent time due to daylight savings at location %td. "} +
+    "Resolve nonexistent time issues by specifying the `nonexistent` argument.";
+
+  clock_abort(message.c_str(), (ptrdiff_t) i + 1);
 }
 
 template <typename Duration>
@@ -78,7 +82,11 @@ info_ambiguous_latest(const date::local_info& info, const date::local_time<Durat
 inline
 void
 info_ambiguous_error(const r_ssize& i) {
-  clock_abort("Ambiguous time due to daylight savings at location %i.", (int) i + 1);
+  std::string message =
+    std::string{"Ambiguous time due to daylight savings at location %td. "} +
+    "Resolve ambiguous time issues by specifying the `ambiguous` argument.";
+
+  clock_abort(message.c_str(), (ptrdiff_t) i + 1);
 }
 
 } // namespace detail
