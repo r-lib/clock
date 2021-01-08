@@ -466,6 +466,14 @@ ym::add(const date::years& x, r_ssize i) NOEXCEPT
 template <>
 inline
 void
+ym::add(const quarterly::quarters& x, r_ssize i) NOEXCEPT
+{
+  assign_year_month(to_year_month(i) + x, i);
+}
+
+template <>
+inline
+void
 ym::add(const date::months& x, r_ssize i) NOEXCEPT
 {
   assign_year_month(to_year_month(i) + x, i);

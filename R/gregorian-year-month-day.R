@@ -399,6 +399,12 @@ add_years.clock_year_month_day <- function(x, n, ...) {
 }
 
 #' @export
+add_quarters.clock_year_month_day <- function(x, n, ...) {
+  calendar_require_minimum_precision(x, "month", "add_quarters")
+  add_field_year_month_day(x, n, "quarter")
+}
+
+#' @export
 add_months.clock_year_month_day <- function(x, n, ...) {
   calendar_require_minimum_precision(x, "month", "add_months")
   add_field_year_month_day(x, n, "month")

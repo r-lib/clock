@@ -110,3 +110,40 @@ set_date_field_year_month_day <- function(x, value, invalid, set_fn, ...) {
 set_zone.Date <- function(x, zone) {
   abort("'Date' objects are required to be UTC.")
 }
+
+# ------------------------------------------------------------------------------
+
+#' @export
+add_years.Date <- function(x, n, ..., invalid = "error") {
+  add_date_duration_year_month_day(x, n, invalid, add_years, ...)
+}
+#' @export
+add_quarters.Date <- function(x, n, ..., invalid = "error") {
+  add_date_duration_year_month_day(x, n, invalid, add_quarters, ...)
+}
+#' @export
+add_months.Date <- function(x, n, ..., invalid = "error") {
+  add_date_duration_year_month_day(x, n, invalid, add_months, ...)
+}
+add_date_duration_year_month_day <- function(x, n, invalid, add_fn, ...) {
+  check_dots_empty()
+  x <- as_year_month_day(x)
+  x <- add_fn(x, n)
+  x <- invalid_resolve(x, invalid = invalid)
+  as.Date(x)
+}
+
+#' @export
+add_weeks.Date <- function(x, n, ...) {
+  add_date_duration_time_point(x, n, add_weeks, ...)
+}
+#' @export
+add_days.Date <- function(x, n, ...) {
+  add_date_duration_time_point(x, n, add_days, ...)
+}
+add_date_duration_time_point <- function(x, n, add_fn, ...) {
+  check_dots_empty()
+  x <- as_sys_time(x)
+  x <- add_fn(x, n)
+  as.Date(x)
+}

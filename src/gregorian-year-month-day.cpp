@@ -649,6 +649,7 @@ add_field_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
 
   duration::years dy{ticks};
   duration::months dm{ticks};
+  duration::quarters dq{ticks};
 
   switch (precision_fields_val) {
   case precision2::year:
@@ -659,48 +660,56 @@ add_field_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   case precision2::month:
     switch (precision_n_val) {
     case precision2::year: return add_field_year_month_day(ym, dy);
+    case precision2::quarter: return add_field_year_month_day(ym, dq);
     case precision2::month: return add_field_year_month_day(ym, dm);
     default: clock_abort("Internal error: Invalid precision.");
     }
   case precision2::day:
     switch (precision_n_val) {
     case precision2::year: return add_field_year_month_day(ymd, dy);
+    case precision2::quarter: return add_field_year_month_day(ymd, dq);
     case precision2::month: return add_field_year_month_day(ymd, dm);
     default: clock_abort("Internal error: Invalid precision.");
     }
   case precision2::hour:
     switch (precision_n_val) {
     case precision2::year: return add_field_year_month_day(ymdh, dy);
+    case precision2::quarter: return add_field_year_month_day(ymdh, dq);
     case precision2::month: return add_field_year_month_day(ymdh, dm);
     default: clock_abort("Internal error: Invalid precision.");
     }
   case precision2::minute:
     switch (precision_n_val) {
     case precision2::year: return add_field_year_month_day(ymdhm, dy);
+    case precision2::quarter: return add_field_year_month_day(ymdhm, dq);
     case precision2::month: return add_field_year_month_day(ymdhm, dm);
     default: clock_abort("Internal error: Invalid precision.");
     }
   case precision2::second:
     switch (precision_n_val) {
     case precision2::year: return add_field_year_month_day(ymdhms, dy);
+    case precision2::quarter: return add_field_year_month_day(ymdhms, dq);
     case precision2::month: return add_field_year_month_day(ymdhms, dm);
     default: clock_abort("Internal error: Invalid precision.");
     }
   case precision2::millisecond:
     switch (precision_n_val) {
     case precision2::year: return add_field_year_month_day(ymdhmss1, dy);
+    case precision2::quarter: return add_field_year_month_day(ymdhmss1, dq);
     case precision2::month: return add_field_year_month_day(ymdhmss1, dm);
     default: clock_abort("Internal error: Invalid precision.");
     }
   case precision2::microsecond:
     switch (precision_n_val) {
     case precision2::year: return add_field_year_month_day(ymdhmss2, dy);
+    case precision2::quarter: return add_field_year_month_day(ymdhmss2, dq);
     case precision2::month: return add_field_year_month_day(ymdhmss2, dm);
     default: clock_abort("Internal error: Invalid precision.");
     }
   case precision2::nanosecond:
     switch (precision_n_val) {
     case precision2::year: return add_field_year_month_day(ymdhmss3, dy);
+    case precision2::quarter: return add_field_year_month_day(ymdhmss3, dq);
     case precision2::month: return add_field_year_month_day(ymdhmss3, dm);
     default: clock_abort("Internal error: Invalid precision.");
     }

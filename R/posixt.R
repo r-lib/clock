@@ -158,3 +158,61 @@ set_zone.POSIXt <- function(x, zone) {
   set_tzone(x, zone)
 }
 
+# ------------------------------------------------------------------------------
+
+#' @export
+add_years.POSIXt <- function(x, n, ..., invalid = "error", nonexistent = "error", ambiguous = "error") {
+  add_posixt_duration_year_month_day(x, n, invalid, nonexistent, ambiguous, add_years, ...)
+}
+#' @export
+add_quarters.POSIXt <- function(x, n, ..., invalid = "error", nonexistent = "error", ambiguous = "error") {
+  add_posixt_duration_year_month_day(x, n, invalid, nonexistent, ambiguous, add_quarters, ...)
+}
+#' @export
+add_months.POSIXt <- function(x, n, ..., invalid = "error", nonexistent = "error", ambiguous = "error") {
+  add_posixt_duration_year_month_day(x, n, invalid, nonexistent, ambiguous, add_months, ...)
+}
+add_posixt_duration_year_month_day <- function(x, n, invalid, nonexistent, ambiguous, add_fn, ...) {
+  check_dots_empty()
+  zone <- get_tzone(x)
+  x <- as_year_month_day(x)
+  x <- add_fn(x, n)
+  x <- invalid_resolve(x, invalid = invalid)
+  as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
+}
+
+#' @export
+add_weeks.POSIXt <- function(x, n, ..., nonexistent = "error", ambiguous = "error") {
+  add_posixt_duration_naive_time_point(x, n, nonexistent, ambiguous, add_weeks, ...)
+}
+#' @export
+add_days.POSIXt <- function(x, n, ..., nonexistent = "error", ambiguous = "error") {
+  add_posixt_duration_naive_time_point(x, n, nonexistent, ambiguous, add_days, ...)
+}
+add_posixt_duration_naive_time_point <- function(x, n, nonexistent, ambiguous, add_fn, ...) {
+  check_dots_empty()
+  zone <- get_tzone(x)
+  x <- as_naive_time(x)
+  x <- add_fn(x, n)
+  as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
+}
+
+#' @export
+add_hours.POSIXt <- function(x, n, ...) {
+  add_posixt_duration_sys_time_point(x, n, add_hours, ...)
+}
+#' @export
+add_minutes.POSIXt <- function(x, n, ...) {
+  add_posixt_duration_sys_time_point(x, n, add_minutes, ...)
+}
+#' @export
+add_seconds.POSIXt <- function(x, n, ...) {
+  add_posixt_duration_sys_time_point(x, n, add_seconds, ...)
+}
+add_posixt_duration_sys_time_point <- function(x, n, add_fn, ...) {
+  check_dots_empty()
+  zone <- get_tzone(x)
+  x <- as_sys_time(x)
+  x <- add_fn(x, n)
+  as.POSIXct(x, tz = zone)
+}
