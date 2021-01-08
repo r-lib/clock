@@ -31,6 +31,13 @@ pillar_shaft.clock_calendar <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+get_precision.clock_calendar <- function(x) {
+  calendar_precision(x)
+}
+
+# ------------------------------------------------------------------------------
+
 calendar_precision <- function(x) {
   attr(x, "precision", exact = TRUE)
 }

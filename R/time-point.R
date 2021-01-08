@@ -425,6 +425,13 @@ time_point_rounder <- function(x, precision, duration_rounder) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+get_precision.clock_time_point <- function(x) {
+  time_point_precision(x)
+}
+
+# ------------------------------------------------------------------------------
+
 is_valid_time_point_precision <- function(precision) {
   if (!is_valid_precision(precision)) {
     return(FALSE)

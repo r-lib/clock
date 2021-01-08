@@ -308,6 +308,13 @@ as_naive_time.clock_zoned_time <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
+get_precision.clock_zoned_time <- function(x) {
+  zoned_time_precision(x)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 set_zone.clock_zoned_time <- function(x, zone) {
   zone <- zone_validate(zone)
   zoned_time_zone_set(x, zone)
