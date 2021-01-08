@@ -61,3 +61,10 @@ as.Date.clock_zoned_time <- function(x, ...) {
 get_zone.Date <- function(x) {
   "UTC"
 }
+
+# ------------------------------------------------------------------------------
+
+#' @export
+in_zone.Date <- function(x, zone) {
+  in_zone(to_posixct(x), zone)
+}

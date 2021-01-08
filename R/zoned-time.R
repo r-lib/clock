@@ -35,6 +35,10 @@ is_zoned_time <- function(x) {
 zoned_time_zone <- function(x) {
   attr(x, "zone", exact = TRUE)
 }
+zoned_time_zone_set <- function(x, zone) {
+  attr(x, "zone") <- zone
+  x
+}
 zoned_time_sys_time <- function(x) {
   field(x, "sys_time")
 }
@@ -303,11 +307,20 @@ as_naive_time.clock_zoned_time <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+in_zone.clock_zoned_time <- function(x, zone) {
+  zone <- zone_validate(zone)
+  zoned_time_zone_set(x, zone)
+}
+
+# ------------------------------------------------------------------------------
+
 zone_validate <- function(zone) {
   zone <- zone_standardize(zone)
 
   if (!zone_is_valid(zone)) {
-    abort("`zone` is not a valid time zone.")
+    message <- paste0("'", zone, "' is not a known time zone.")
+    abort(message)
   }
 
   zone

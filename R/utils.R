@@ -194,6 +194,10 @@ unstructure <- function(x) {
 get_tzone <- function(x) {
   attr(x, "tzone", exact = TRUE) %||% ""
 }
+set_tzone <- function(x, tzone) {
+  attr(x, "tzone") <- tzone
+  x
+}
 
 # ------------------------------------------------------------------------------
 
