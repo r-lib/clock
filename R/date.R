@@ -71,7 +71,7 @@ get_day.Date <- function(x) {
 }
 get_date_field_year_month_day <- function(x, get_fn) {
   x <- as_year_month_day(x)
-  get_fn(x, value)
+  get_fn(x)
 }
 
 #' @export
