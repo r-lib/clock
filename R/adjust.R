@@ -1,37 +1,4 @@
-#' @export
-adjust_zone <- function(x,
-                        zone,
-                        ...,
-                        dst_nonexistent = "roll-forward",
-                        dst_ambiguous = "earliest") {
-  restrict_zoned_or_base(x)
-  UseMethod("adjust_zone")
-}
 
-#' @export
-adjust_zone.Date <- function(x,
-                             zone,
-                             ...,
-                             dst_nonexistent = "roll-forward",
-                             dst_ambiguous = "earliest") {
-  x <- as_naive_time_point(x)
-  as.POSIXct(x, tz = zone, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
-}
-
-#' @export
-adjust_zone.POSIXt <- adjust_zone.Date
-
-#' @export
-adjust_zone.clock_zoned_time_point <- function(x,
-                                               zone,
-                                               ...,
-                                               dst_nonexistent = "roll-forward",
-                                               dst_ambiguous = "earliest") {
-  x <- as_naive_time_point(x)
-  as_zoned_time_point(x, zone = zone, ..., dst_nonexistent = dst_nonexistent, dst_ambiguous = dst_ambiguous)
-}
-
-# ------------------------------------------------------------------------------
 
 #' Adjust the year
 #'
