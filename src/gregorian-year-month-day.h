@@ -137,7 +137,11 @@ resolve_last_day_subsecond() {
 inline
 void
 resolve_error(r_ssize i) {
-  clock_abort("Invalid day found at location %i.", (int) i + 1);
+  std::string message =
+    std::string{"Invalid day found at location %td. "} +
+    "Resolve invalid day issues by specifying the `invalid` argument.";
+
+  clock_abort(message.c_str(), (ptrdiff_t) i + 1);
 }
 
 } // namespace detail
