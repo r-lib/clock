@@ -54,9 +54,9 @@ cpp11::writable::strings format_duration_cpp(cpp11::list_of<cpp11::integers> fie
                                              const cpp11::strings& precision) {
   using namespace rclock;
 
-  cpp11::integers ticks = get_ticks(fields);
-  cpp11::integers ticks_of_day = get_ticks_of_day(fields);
-  cpp11::integers ticks_of_second = get_ticks_of_second(fields);
+  cpp11::integers ticks = duration::get_ticks(fields);
+  cpp11::integers ticks_of_day = duration::get_ticks_of_day(fields);
+  cpp11::integers ticks_of_second = duration::get_ticks_of_second(fields);
 
   duration::years dy{ticks};
   duration::quarters dq{ticks};
@@ -191,9 +191,9 @@ duration_cast_switch(cpp11::list_of<cpp11::integers>& fields,
                      const enum precision2 precision_to_val) {
   using namespace rclock;
 
-  cpp11::integers ticks = get_ticks(fields);
-  cpp11::integers ticks_of_day = get_ticks_of_day(fields);
-  cpp11::integers ticks_of_second = get_ticks_of_second(fields);
+  cpp11::integers ticks = duration::get_ticks(fields);
+  cpp11::integers ticks_of_day = duration::get_ticks_of_day(fields);
+  cpp11::integers ticks_of_second = duration::get_ticks_of_second(fields);
 
   duration::years dy{ticks};
   duration::quarters dq{ticks};
@@ -290,9 +290,9 @@ duration_arith_switch2(const ClockDuration1& x,
                        const enum arith_op& op) {
   using namespace rclock;
 
-  cpp11::integers ticks = get_ticks(y);
-  cpp11::integers ticks_of_day = get_ticks_of_day(y);
-  cpp11::integers ticks_of_second = get_ticks_of_second(y);
+  cpp11::integers ticks = duration::get_ticks(y);
+  cpp11::integers ticks_of_day = duration::get_ticks_of_day(y);
+  cpp11::integers ticks_of_second = duration::get_ticks_of_second(y);
 
   duration::years dy{ticks};
   duration::quarters dq{ticks};
@@ -331,9 +331,9 @@ duration_arith_switch(cpp11::list_of<cpp11::integers>& x,
                       const enum arith_op& op) {
   using namespace rclock;
 
-  cpp11::integers ticks = get_ticks(x);
-  cpp11::integers ticks_of_day = get_ticks_of_day(x);
-  cpp11::integers ticks_of_second = get_ticks_of_second(x);
+  cpp11::integers ticks = duration::get_ticks(x);
+  cpp11::integers ticks_of_day = duration::get_ticks_of_day(x);
+  cpp11::integers ticks_of_second = duration::get_ticks_of_second(x);
 
   duration::years dy{ticks};
   duration::quarters dq{ticks};
@@ -588,9 +588,9 @@ duration_rounding_switch(cpp11::list_of<cpp11::integers>& fields,
                          const enum rounding& type) {
   using namespace rclock;
 
-  cpp11::integers ticks = get_ticks(fields);
-  cpp11::integers ticks_of_day = get_ticks_of_day(fields);
-  cpp11::integers ticks_of_second = get_ticks_of_second(fields);
+  cpp11::integers ticks = duration::get_ticks(fields);
+  cpp11::integers ticks_of_day = duration::get_ticks_of_day(fields);
+  cpp11::integers ticks_of_second = duration::get_ticks_of_second(fields);
 
   duration::years dy{ticks};
   duration::quarters dq{ticks};
@@ -803,9 +803,9 @@ cpp11::writable::list
 duration_unary_minus_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision) {
   using namespace rclock;
 
-  cpp11::integers ticks = get_ticks(fields);
-  cpp11::integers ticks_of_day = get_ticks_of_day(fields);
-  cpp11::integers ticks_of_second = get_ticks_of_second(fields);
+  cpp11::integers ticks = duration::get_ticks(fields);
+  cpp11::integers ticks_of_day = duration::get_ticks_of_day(fields);
+  cpp11::integers ticks_of_second = duration::get_ticks_of_second(fields);
 
   duration::years dy{ticks};
   duration::quarters dq{ticks};

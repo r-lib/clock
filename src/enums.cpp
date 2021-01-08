@@ -56,6 +56,34 @@ enum ambiguous parse_ambiguous_one(const cpp11::r_string& x) {
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
+enum component parse_component(const cpp11::strings& x) {
+  if (x.size() != 1) {
+    clock_abort("`component` must be a string with length 1.");
+  }
+
+  std::string string = x[0];
+
+  if (string == "year") return component::year;
+  if (string == "month") return component::month;
+  if (string == "day") return component::day;
+  if (string == "hour") return component::hour;
+  if (string == "minute") return component::minute;
+  if (string == "second") return component::second;
+  if (string == "millisecond") return component::millisecond;
+  if (string == "microsecond") return component::microsecond;
+  if (string == "nanosecond") return component::nanosecond;
+  if (string == "quarternum") return component::quarternum;
+  if (string == "quarterday") return component::quarterday;
+  if (string == "weeknum") return component::weeknum;
+  if (string == "weekday") return component::weekday;
+  if (string == "weekday_index") return component::weekday_index;
+
+  clock_abort("'%s' is not a recognized `component` option.", string.c_str());
+}
+
+// -----------------------------------------------------------------------------
+
+// [[ include("enums.h") ]]
 enum day_nonexistent parse_day_nonexistent(const cpp11::strings& x) {
   if (x.size() != 1) {
     clock_abort("`day_nonexistent` must be a string with length 1.");

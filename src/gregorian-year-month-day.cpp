@@ -4,7 +4,7 @@
 #include "enums.h"
 #include "get.h"
 
-template <typename Duration, class Calendar>
+template <enum component Component, class Calendar>
 void
 collect_field(Calendar& x, const cpp11::integers& field, const char* arg) {
   r_ssize size = x.size();
@@ -17,7 +17,7 @@ collect_field(Calendar& x, const cpp11::integers& field, const char* arg) {
       continue;
     }
 
-    check_range<Duration>(elt, arg);
+    check_range<Component>(elt, arg);
   }
 }
 
@@ -27,12 +27,12 @@ collect_year_month_day_fields(cpp11::list_of<cpp11::integers> fields,
                               const cpp11::strings& precision) {
   using namespace rclock;
 
-  cpp11::integers year = get_year(fields);
-  cpp11::integers month = get_month(fields);
-  cpp11::integers day = get_day(fields);
-  cpp11::integers hour = get_hour(fields);
-  cpp11::integers minute = get_minute(fields);
-  cpp11::integers second = get_second(fields);
+  cpp11::integers year = gregorian::get_year(fields);
+  cpp11::integers month = gregorian::get_month(fields);
+  cpp11::integers day = gregorian::get_day(fields);
+  cpp11::integers hour = gregorian::get_hour(fields);
+  cpp11::integers minute = gregorian::get_minute(fields);
+  cpp11::integers second = gregorian::get_second(fields);
 
   gregorian::y y{year};
   gregorian::ym ym{year, month};
@@ -43,42 +43,42 @@ collect_year_month_day_fields(cpp11::list_of<cpp11::integers> fields,
 
   switch (parse_precision2(precision)) {
   case precision2::year: {
-    collect_field<date::years>(y, year, "year");
+    collect_field<component::year>(y, year, "year");
     return y.to_list();
   }
   case precision2::month: {
-    collect_field<date::years>(ym, year, "year");
-    collect_field<date::months>(ym, month, "month");
+    collect_field<component::year>(ym, year, "year");
+    collect_field<component::month>(ym, month, "month");
     return ym.to_list();
   }
   case precision2::day: {
-    collect_field<date::years>(ymd, year, "year");
-    collect_field<date::months>(ymd, month, "month");
-    collect_field<date::days>(ymd, day, "day");
+    collect_field<component::year>(ymd, year, "year");
+    collect_field<component::month>(ymd, month, "month");
+    collect_field<component::day>(ymd, day, "day");
     return ymd.to_list();
   }
   case precision2::hour: {
-    collect_field<date::years>(ymdh, year, "year");
-    collect_field<date::months>(ymdh, month, "month");
-    collect_field<date::days>(ymdh, day, "day");
-    collect_field<std::chrono::hours>(ymdh, hour, "hour");
+    collect_field<component::year>(ymdh, year, "year");
+    collect_field<component::month>(ymdh, month, "month");
+    collect_field<component::day>(ymdh, day, "day");
+    collect_field<component::hour>(ymdh, hour, "hour");
     return ymdh.to_list();
   }
   case precision2::minute: {
-    collect_field<date::years>(ymdhm, year, "year");
-    collect_field<date::months>(ymdhm, month, "month");
-    collect_field<date::days>(ymdhm, day, "day");
-    collect_field<std::chrono::hours>(ymdhm, hour, "hour");
-    collect_field<std::chrono::minutes>(ymdhm, minute, "minute");
+    collect_field<component::year>(ymdhm, year, "year");
+    collect_field<component::month>(ymdhm, month, "month");
+    collect_field<component::day>(ymdhm, day, "day");
+    collect_field<component::hour>(ymdhm, hour, "hour");
+    collect_field<component::minute>(ymdhm, minute, "minute");
     return ymdhm.to_list();
   }
   case precision2::second: {
-    collect_field<date::years>(ymdhms, year, "year");
-    collect_field<date::months>(ymdhms, month, "month");
-    collect_field<date::days>(ymdhms, day, "day");
-    collect_field<std::chrono::hours>(ymdhms, hour, "hour");
-    collect_field<std::chrono::minutes>(ymdhms, minute, "minute");
-    collect_field<std::chrono::seconds>(ymdhms, second, "second");
+    collect_field<component::year>(ymdhms, year, "year");
+    collect_field<component::month>(ymdhms, month, "month");
+    collect_field<component::day>(ymdhms, day, "day");
+    collect_field<component::hour>(ymdhms, hour, "hour");
+    collect_field<component::minute>(ymdhms, minute, "minute");
+    collect_field<component::second>(ymdhms, second, "second");
     return ymdhms.to_list();
   }
   default: clock_abort("Internal error: Invalid precision.");
@@ -126,13 +126,13 @@ format_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
                           const cpp11::strings& precision) {
   using namespace rclock;
 
-  cpp11::integers year = get_year(fields);
-  cpp11::integers month = get_month(fields);
-  cpp11::integers day = get_day(fields);
-  cpp11::integers hour = get_hour(fields);
-  cpp11::integers minute = get_minute(fields);
-  cpp11::integers second = get_second(fields);
-  cpp11::integers subsecond = get_subsecond(fields);
+  cpp11::integers year = gregorian::get_year(fields);
+  cpp11::integers month = gregorian::get_month(fields);
+  cpp11::integers day = gregorian::get_day(fields);
+  cpp11::integers hour = gregorian::get_hour(fields);
+  cpp11::integers minute = gregorian::get_minute(fields);
+  cpp11::integers second = gregorian::get_second(fields);
+  cpp11::integers subsecond = gregorian::get_subsecond(fields);
 
   gregorian::y y{year};
   gregorian::ym ym{year, month};
@@ -183,13 +183,13 @@ invalid_detect_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
                                   const cpp11::strings& precision) {
   using namespace rclock;
 
-  cpp11::integers year = get_year(fields);
-  cpp11::integers month = get_month(fields);
-  cpp11::integers day = get_day(fields);
-  cpp11::integers hour = get_hour(fields);
-  cpp11::integers minute = get_minute(fields);
-  cpp11::integers second = get_second(fields);
-  cpp11::integers subsecond = get_subsecond(fields);
+  cpp11::integers year = gregorian::get_year(fields);
+  cpp11::integers month = gregorian::get_month(fields);
+  cpp11::integers day = gregorian::get_day(fields);
+  cpp11::integers hour = gregorian::get_hour(fields);
+  cpp11::integers minute = gregorian::get_minute(fields);
+  cpp11::integers second = gregorian::get_second(fields);
+  cpp11::integers subsecond = gregorian::get_subsecond(fields);
 
   gregorian::y y{year};
   gregorian::ym ym{year, month};
@@ -237,13 +237,13 @@ bool
 invalid_any_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields, cpp11::strings precision) {
   using namespace rclock;
 
-  cpp11::integers year = get_year(fields);
-  cpp11::integers month = get_month(fields);
-  cpp11::integers day = get_day(fields);
-  cpp11::integers hour = get_hour(fields);
-  cpp11::integers minute = get_minute(fields);
-  cpp11::integers second = get_second(fields);
-  cpp11::integers subsecond = get_subsecond(fields);
+  cpp11::integers year = gregorian::get_year(fields);
+  cpp11::integers month = gregorian::get_month(fields);
+  cpp11::integers day = gregorian::get_day(fields);
+  cpp11::integers hour = gregorian::get_hour(fields);
+  cpp11::integers minute = gregorian::get_minute(fields);
+  cpp11::integers second = gregorian::get_second(fields);
+  cpp11::integers subsecond = gregorian::get_subsecond(fields);
 
   gregorian::y y{year};
   gregorian::ym ym{year, month};
@@ -295,13 +295,13 @@ invalid_count_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
                                  const cpp11::strings& precision) {
   using namespace rclock;
 
-  cpp11::integers year = get_year(fields);
-  cpp11::integers month = get_month(fields);
-  cpp11::integers day = get_day(fields);
-  cpp11::integers hour = get_hour(fields);
-  cpp11::integers minute = get_minute(fields);
-  cpp11::integers second = get_second(fields);
-  cpp11::integers subsecond = get_subsecond(fields);
+  cpp11::integers year = gregorian::get_year(fields);
+  cpp11::integers month = gregorian::get_month(fields);
+  cpp11::integers day = gregorian::get_day(fields);
+  cpp11::integers hour = gregorian::get_hour(fields);
+  cpp11::integers minute = gregorian::get_minute(fields);
+  cpp11::integers second = gregorian::get_second(fields);
+  cpp11::integers subsecond = gregorian::get_subsecond(fields);
 
   gregorian::y y{year};
   gregorian::ym ym{year, month};
@@ -353,13 +353,13 @@ invalid_resolve_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   using namespace rclock;
   const enum invalid invalid_val = parse_invalid(invalid);
 
-  cpp11::integers year = get_year(fields);
-  cpp11::integers month = get_month(fields);
-  cpp11::integers day = get_day(fields);
-  cpp11::integers hour = get_hour(fields);
-  cpp11::integers minute = get_minute(fields);
-  cpp11::integers second = get_second(fields);
-  cpp11::integers subsecond = get_subsecond(fields);
+  cpp11::integers year = gregorian::get_year(fields);
+  cpp11::integers month = gregorian::get_month(fields);
+  cpp11::integers day = gregorian::get_day(fields);
+  cpp11::integers hour = gregorian::get_hour(fields);
+  cpp11::integers minute = gregorian::get_minute(fields);
+  cpp11::integers second = gregorian::get_second(fields);
+  cpp11::integers subsecond = gregorian::get_subsecond(fields);
 
   gregorian::y y{year};
   gregorian::ym ym{year, month};
@@ -387,7 +387,7 @@ invalid_resolve_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
 
 // -----------------------------------------------------------------------------
 
-template <typename Duration, class Calendar>
+template <enum component Component, class Calendar>
 cpp11::writable::list
 set_field_calendar(Calendar& x, rclock::integers& value) {
   const r_ssize size = x.size();
@@ -400,7 +400,7 @@ set_field_calendar(Calendar& x, rclock::integers& value) {
     } else if (value.is_na(i)) {
       x.assign_na(i);
     } else {
-      check_range<Duration>(value[i], "value");
+      check_range<Component>(value[i], "value");
     }
   }
 
@@ -419,13 +419,13 @@ set_field_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   using namespace rclock;
   rclock::integers value2(value);
 
-  cpp11::integers year = get_year(fields);
-  cpp11::integers month = get_month(fields);
-  cpp11::integers day = get_day(fields);
-  cpp11::integers hour = get_hour(fields);
-  cpp11::integers minute = get_minute(fields);
-  cpp11::integers second = get_second(fields);
-  cpp11::integers subsecond = get_subsecond(fields);
+  cpp11::integers year = gregorian::get_year(fields);
+  cpp11::integers month = gregorian::get_month(fields);
+  cpp11::integers day = gregorian::get_day(fields);
+  cpp11::integers hour = gregorian::get_hour(fields);
+  cpp11::integers minute = gregorian::get_minute(fields);
+  cpp11::integers second = gregorian::get_second(fields);
+  cpp11::integers subsecond = gregorian::get_subsecond(fields);
 
   gregorian::y y{year};
   gregorian::ym ym{year, month};
@@ -440,96 +440,96 @@ set_field_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   switch (parse_precision2(precision_fields)) {
   case precision2::year: {
     switch (parse_precision2(precision_value)) {
-    case precision2::year: return set_field_calendar<date::years>(y, value2);
-    case precision2::month: return set_field_calendar<date::months>(y, value2);
+    case precision2::year: return set_field_calendar<component::year>(y, value2);
+    case precision2::month: return set_field_calendar<component::month>(y, value2);
     default: clock_abort("Internal error: Invalid precision.");
     }
   }
   case precision2::month: {
     switch (parse_precision2(precision_value)) {
-    case precision2::year: return set_field_calendar<date::years>(ym, value2);
-    case precision2::month: return set_field_calendar<date::months>(ym, value2);
-    case precision2::day: return set_field_calendar<date::days>(ym, value2);
+    case precision2::year: return set_field_calendar<component::year>(ym, value2);
+    case precision2::month: return set_field_calendar<component::month>(ym, value2);
+    case precision2::day: return set_field_calendar<component::day>(ym, value2);
     default: clock_abort("Internal error: Invalid precision.");
     }
   }
   case precision2::day: {
     switch (parse_precision2(precision_value)) {
-    case precision2::year: return set_field_calendar<date::years>(ymd, value2);
-    case precision2::month: return set_field_calendar<date::months>(ymd, value2);
-    case precision2::day: return set_field_calendar<date::days>(ymd, value2);
-    case precision2::hour: return set_field_calendar<std::chrono::hours>(ymd, value2);
+    case precision2::year: return set_field_calendar<component::year>(ymd, value2);
+    case precision2::month: return set_field_calendar<component::month>(ymd, value2);
+    case precision2::day: return set_field_calendar<component::day>(ymd, value2);
+    case precision2::hour: return set_field_calendar<component::hour>(ymd, value2);
     default: clock_abort("Internal error: Invalid precision.");
     }
   }
   case precision2::hour: {
     switch (parse_precision2(precision_value)) {
-    case precision2::year: return set_field_calendar<date::years>(ymdh, value2);
-    case precision2::month: return set_field_calendar<date::months>(ymdh, value2);
-    case precision2::day: return set_field_calendar<date::days>(ymdh, value2);
-    case precision2::hour: return set_field_calendar<std::chrono::hours>(ymdh, value2);
-    case precision2::minute: return set_field_calendar<std::chrono::minutes>(ymdh, value2);
+    case precision2::year: return set_field_calendar<component::year>(ymdh, value2);
+    case precision2::month: return set_field_calendar<component::month>(ymdh, value2);
+    case precision2::day: return set_field_calendar<component::day>(ymdh, value2);
+    case precision2::hour: return set_field_calendar<component::hour>(ymdh, value2);
+    case precision2::minute: return set_field_calendar<component::minute>(ymdh, value2);
     default: clock_abort("Internal error: Invalid precision.");
     }
   }
   case precision2::minute: {
     switch (parse_precision2(precision_value)) {
-    case precision2::year: return set_field_calendar<date::years>(ymdhm, value2);
-    case precision2::month: return set_field_calendar<date::months>(ymdhm, value2);
-    case precision2::day: return set_field_calendar<date::days>(ymdhm, value2);
-    case precision2::hour: return set_field_calendar<std::chrono::hours>(ymdhm, value2);
-    case precision2::minute: return set_field_calendar<std::chrono::minutes>(ymdhm, value2);
-    case precision2::second: return set_field_calendar<std::chrono::seconds>(ymdhm, value2);
+    case precision2::year: return set_field_calendar<component::year>(ymdhm, value2);
+    case precision2::month: return set_field_calendar<component::month>(ymdhm, value2);
+    case precision2::day: return set_field_calendar<component::day>(ymdhm, value2);
+    case precision2::hour: return set_field_calendar<component::hour>(ymdhm, value2);
+    case precision2::minute: return set_field_calendar<component::minute>(ymdhm, value2);
+    case precision2::second: return set_field_calendar<component::second>(ymdhm, value2);
     default: clock_abort("Internal error: Invalid precision.");
     }
   }
   case precision2::second: {
     switch (parse_precision2(precision_value)) {
-    case precision2::year: return set_field_calendar<date::years>(ymdhms, value2);
-    case precision2::month: return set_field_calendar<date::months>(ymdhms, value2);
-    case precision2::day: return set_field_calendar<date::days>(ymdhms, value2);
-    case precision2::hour: return set_field_calendar<std::chrono::hours>(ymdhms, value2);
-    case precision2::minute: return set_field_calendar<std::chrono::minutes>(ymdhms, value2);
-    case precision2::second: return set_field_calendar<std::chrono::seconds>(ymdhms, value2);
-    case precision2::millisecond: return set_field_calendar<std::chrono::milliseconds>(ymdhms, value2);
-    case precision2::microsecond: return set_field_calendar<std::chrono::microseconds>(ymdhms, value2);
-    case precision2::nanosecond: return set_field_calendar<std::chrono::nanoseconds>(ymdhms, value2);
+    case precision2::year: return set_field_calendar<component::year>(ymdhms, value2);
+    case precision2::month: return set_field_calendar<component::month>(ymdhms, value2);
+    case precision2::day: return set_field_calendar<component::day>(ymdhms, value2);
+    case precision2::hour: return set_field_calendar<component::hour>(ymdhms, value2);
+    case precision2::minute: return set_field_calendar<component::minute>(ymdhms, value2);
+    case precision2::second: return set_field_calendar<component::second>(ymdhms, value2);
+    case precision2::millisecond: return set_field_calendar<component::millisecond>(ymdhms, value2);
+    case precision2::microsecond: return set_field_calendar<component::microsecond>(ymdhms, value2);
+    case precision2::nanosecond: return set_field_calendar<component::nanosecond>(ymdhms, value2);
     default: clock_abort("Internal error: Invalid precision.");
     }
   }
   case precision2::millisecond: {
     switch (parse_precision2(precision_value)) {
-    case precision2::year: return set_field_calendar<date::years>(ymdhmss1, value2);
-    case precision2::month: return set_field_calendar<date::months>(ymdhmss1, value2);
-    case precision2::day: return set_field_calendar<date::days>(ymdhmss1, value2);
-    case precision2::hour: return set_field_calendar<std::chrono::hours>(ymdhmss1, value2);
-    case precision2::minute: return set_field_calendar<std::chrono::minutes>(ymdhmss1, value2);
-    case precision2::second: return set_field_calendar<std::chrono::seconds>(ymdhmss1, value2);
-    case precision2::millisecond: return set_field_calendar<std::chrono::milliseconds>(ymdhmss1, value2);
+    case precision2::year: return set_field_calendar<component::year>(ymdhmss1, value2);
+    case precision2::month: return set_field_calendar<component::month>(ymdhmss1, value2);
+    case precision2::day: return set_field_calendar<component::day>(ymdhmss1, value2);
+    case precision2::hour: return set_field_calendar<component::hour>(ymdhmss1, value2);
+    case precision2::minute: return set_field_calendar<component::minute>(ymdhmss1, value2);
+    case precision2::second: return set_field_calendar<component::second>(ymdhmss1, value2);
+    case precision2::millisecond: return set_field_calendar<component::millisecond>(ymdhmss1, value2);
     default: clock_abort("Internal error: Invalid precision.");
     }
   }
   case precision2::microsecond: {
     switch (parse_precision2(precision_value)) {
-    case precision2::year: return set_field_calendar<date::years>(ymdhmss2, value2);
-    case precision2::month: return set_field_calendar<date::months>(ymdhmss2, value2);
-    case precision2::day: return set_field_calendar<date::days>(ymdhmss2, value2);
-    case precision2::hour: return set_field_calendar<std::chrono::hours>(ymdhmss2, value2);
-    case precision2::minute: return set_field_calendar<std::chrono::minutes>(ymdhmss2, value2);
-    case precision2::second: return set_field_calendar<std::chrono::seconds>(ymdhmss2, value2);
-    case precision2::microsecond: return set_field_calendar<std::chrono::microseconds>(ymdhmss2, value2);
+    case precision2::year: return set_field_calendar<component::year>(ymdhmss2, value2);
+    case precision2::month: return set_field_calendar<component::month>(ymdhmss2, value2);
+    case precision2::day: return set_field_calendar<component::day>(ymdhmss2, value2);
+    case precision2::hour: return set_field_calendar<component::hour>(ymdhmss2, value2);
+    case precision2::minute: return set_field_calendar<component::minute>(ymdhmss2, value2);
+    case precision2::second: return set_field_calendar<component::second>(ymdhmss2, value2);
+    case precision2::microsecond: return set_field_calendar<component::microsecond>(ymdhmss2, value2);
     default: clock_abort("Internal error: Invalid precision.");
     }
   }
   case precision2::nanosecond: {
     switch (parse_precision2(precision_value)) {
-    case precision2::year: return set_field_calendar<date::years>(ymdhmss3, value2);
-    case precision2::month: return set_field_calendar<date::months>(ymdhmss3, value2);
-    case precision2::day: return set_field_calendar<date::days>(ymdhmss3, value2);
-    case precision2::hour: return set_field_calendar<std::chrono::hours>(ymdhmss3, value2);
-    case precision2::minute: return set_field_calendar<std::chrono::minutes>(ymdhmss3, value2);
-    case precision2::second: return set_field_calendar<std::chrono::seconds>(ymdhmss3, value2);
-    case precision2::nanosecond: return set_field_calendar<std::chrono::nanoseconds>(ymdhmss3, value2);
+    case precision2::year: return set_field_calendar<component::year>(ymdhmss3, value2);
+    case precision2::month: return set_field_calendar<component::month>(ymdhmss3, value2);
+    case precision2::day: return set_field_calendar<component::day>(ymdhmss3, value2);
+    case precision2::hour: return set_field_calendar<component::hour>(ymdhmss3, value2);
+    case precision2::minute: return set_field_calendar<component::minute>(ymdhmss3, value2);
+    case precision2::second: return set_field_calendar<component::second>(ymdhmss3, value2);
+    case precision2::nanosecond: return set_field_calendar<component::nanosecond>(ymdhmss3, value2);
     default: clock_abort("Internal error: Invalid precision.");
     }
   }
@@ -564,13 +564,13 @@ set_field_year_month_day_last_cpp(cpp11::list_of<cpp11::integers> fields,
                                   const cpp11::strings& precision_fields) {
   using namespace rclock;
 
-  cpp11::integers year = get_year(fields);
-  cpp11::integers month = get_month(fields);
-  cpp11::integers day = get_day(fields);
-  cpp11::integers hour = get_hour(fields);
-  cpp11::integers minute = get_minute(fields);
-  cpp11::integers second = get_second(fields);
-  cpp11::integers subsecond = get_subsecond(fields);
+  cpp11::integers year = gregorian::get_year(fields);
+  cpp11::integers month = gregorian::get_month(fields);
+  cpp11::integers day = gregorian::get_day(fields);
+  cpp11::integers hour = gregorian::get_hour(fields);
+  cpp11::integers minute = gregorian::get_minute(fields);
+  cpp11::integers second = gregorian::get_second(fields);
+  cpp11::integers subsecond = gregorian::get_subsecond(fields);
 
   gregorian::ym ym{year, month};
   gregorian::ymd ymd{year, month, day};
@@ -627,13 +627,13 @@ add_field_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   const enum precision2 precision_fields_val = parse_precision2(precision_fields);
   const enum precision2 precision_n_val = parse_precision2(precision_n);
 
-  cpp11::integers year = get_year(fields);
-  cpp11::integers month = get_month(fields);
-  cpp11::integers day = get_day(fields);
-  cpp11::integers hour = get_hour(fields);
-  cpp11::integers minute = get_minute(fields);
-  cpp11::integers second = get_second(fields);
-  cpp11::integers subsecond = get_subsecond(fields);
+  cpp11::integers year = gregorian::get_year(fields);
+  cpp11::integers month = gregorian::get_month(fields);
+  cpp11::integers day = gregorian::get_day(fields);
+  cpp11::integers hour = gregorian::get_hour(fields);
+  cpp11::integers minute = gregorian::get_minute(fields);
+  cpp11::integers second = gregorian::get_second(fields);
+  cpp11::integers subsecond = gregorian::get_subsecond(fields);
 
   gregorian::y y{year};
   gregorian::ym ym{year, month};
@@ -645,7 +645,7 @@ add_field_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   gregorian::ymdhmss<std::chrono::microseconds> ymdhmss2{year, month, day, hour, minute, second, subsecond};
   gregorian::ymdhmss<std::chrono::nanoseconds> ymdhmss3{year, month, day, hour, minute, second, subsecond};
 
-  cpp11::integers ticks = get_ticks(fields_n);
+  cpp11::integers ticks = duration::get_ticks(fields_n);
 
   duration::years dy{ticks};
   duration::months dm{ticks};
@@ -745,13 +745,13 @@ as_sys_time_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
                                const cpp11::strings& precision) {
   using namespace rclock;
 
-  cpp11::integers year = get_year(fields);
-  cpp11::integers month = get_month(fields);
-  cpp11::integers day = get_day(fields);
-  cpp11::integers hour = get_hour(fields);
-  cpp11::integers minute = get_minute(fields);
-  cpp11::integers second = get_second(fields);
-  cpp11::integers subsecond = get_subsecond(fields);
+  cpp11::integers year = gregorian::get_year(fields);
+  cpp11::integers month = gregorian::get_month(fields);
+  cpp11::integers day = gregorian::get_day(fields);
+  cpp11::integers hour = gregorian::get_hour(fields);
+  cpp11::integers minute = gregorian::get_minute(fields);
+  cpp11::integers second = gregorian::get_second(fields);
+  cpp11::integers subsecond = gregorian::get_subsecond(fields);
 
   gregorian::ymd ymd{year, month, day};
   gregorian::ymdh ymdh{year, month, day, hour};
@@ -809,9 +809,9 @@ as_year_month_day_from_time_point_cpp(cpp11::list_of<cpp11::integers> fields,
                                const cpp11::strings& precision) {
   using namespace rclock;
 
-  cpp11::integers ticks = get_ticks(fields);
-  cpp11::integers ticks_of_day = get_ticks_of_day(fields);
-  cpp11::integers ticks_of_second = get_ticks_of_second(fields);
+  cpp11::integers ticks = duration::get_ticks(fields);
+  cpp11::integers ticks_of_day = duration::get_ticks_of_day(fields);
+  cpp11::integers ticks_of_second = duration::get_ticks_of_second(fields);
 
   duration::days dd{ticks};
   duration::hours dh{ticks, ticks_of_day};

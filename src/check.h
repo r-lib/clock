@@ -3,6 +3,7 @@
 
 #include "clock.h"
 #include "utils.h"
+#include "enums.h"
 
 static inline void check_range_year(const int& value, const char* arg) {
   if (value > 9999 || value < 0) {
@@ -71,7 +72,7 @@ static inline void check_range_weekday(const int& value, const char* arg) {
     clock_abort("`%s` must be within the range of [1, 7], not %i.", arg, value);
   }
 }
-static inline void check_range_index(const int& value, const char* arg) {
+static inline void check_range_weekday_index(const int& value, const char* arg) {
   if (value > 5 || value < 1) {
     clock_abort("`%s` must be within the range of [1, 5], not %i.", arg, value);
   }
@@ -79,45 +80,53 @@ static inline void check_range_index(const int& value, const char* arg) {
 
 // -----------------------------------------------------------------------------
 
-template <typename Duration>
+template <enum component Component>
 inline void check_range(const int& value, const char* arg) {
   clock_abort("Unimplemented range check");
 }
 template <>
-inline void check_range<date::years>(const int& value, const char* arg) {
+inline void check_range<component::year>(const int& value, const char* arg) {
   check_range_year(value, arg);
 }
 template <>
-inline void check_range<date::months>(const int& value, const char* arg) {
+inline void check_range<component::month>(const int& value, const char* arg) {
   check_range_month(value, arg);
 }
 template <>
-inline void check_range<date::days>(const int& value, const char* arg) {
+inline void check_range<component::day>(const int& value, const char* arg) {
   check_range_day(value, arg);
 }
 template <>
-inline void check_range<std::chrono::hours>(const int& value, const char* arg) {
+inline void check_range<component::hour>(const int& value, const char* arg) {
   check_range_hour(value, arg);
 }
 template <>
-inline void check_range<std::chrono::minutes>(const int& value, const char* arg) {
+inline void check_range<component::minute>(const int& value, const char* arg) {
   check_range_minute(value, arg);
 }
 template <>
-inline void check_range<std::chrono::seconds>(const int& value, const char* arg) {
+inline void check_range<component::second>(const int& value, const char* arg) {
   check_range_second(value, arg);
 }
 template <>
-inline void check_range<std::chrono::milliseconds>(const int& value, const char* arg) {
+inline void check_range<component::millisecond>(const int& value, const char* arg) {
   check_range_millisecond(value, arg);
 }
 template <>
-inline void check_range<std::chrono::microseconds>(const int& value, const char* arg) {
+inline void check_range<component::microsecond>(const int& value, const char* arg) {
   check_range_microsecond(value, arg);
 }
 template <>
-inline void check_range<std::chrono::nanoseconds>(const int& value, const char* arg) {
+inline void check_range<component::nanosecond>(const int& value, const char* arg) {
   check_range_nanosecond(value, arg);
+}
+template <>
+inline void check_range<component::weekday>(const int& value, const char* arg) {
+  check_range_weekday(value, arg);
+}
+template <>
+inline void check_range<component::weekday_index>(const int& value, const char* arg) {
+  check_range_weekday_index(value, arg);
 }
 
 #endif

@@ -41,6 +41,27 @@ enum ambiguous parse_ambiguous_one(const cpp11::r_string& x);
 
 // -----------------------------------------------------------------------------
 
+enum class component {
+  year,
+  month,
+  day,
+  hour,
+  minute,
+  second,
+  millisecond,
+  microsecond,
+  nanosecond,
+  quarternum,
+  quarterday,
+  weeknum,
+  weekday,
+  weekday_index
+};
+
+enum component parse_component(const cpp11::strings& x);
+
+// -----------------------------------------------------------------------------
+
 enum class day_nonexistent {
   last_time,
   first_time,

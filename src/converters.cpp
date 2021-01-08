@@ -348,7 +348,7 @@ clock_writable_field convert_year_month_weekday_index_to_calendar_days(const cpp
     check_range_year(elt_year, "year");
     check_range_month(elt_month, "month");
     check_range_weekday(elt_weekday, "weekday");
-    check_range_index(elt_index, "index");
+    check_range_weekday_index(elt_index, "index");
 
     unsigned elt_date_month = static_cast<unsigned>(elt_month);
     unsigned elt_date_weekday = static_cast<unsigned>(elt_weekday - 1);
@@ -415,7 +415,7 @@ collect_year_month_weekday_fields(const cpp11::integers& year,
       date::year_month_weekday ymw{ym / date::weekday{elt_date_weekday}[date::last]};
       out.assign(ymw, i);
     } else {
-      check_range_index(elt_index, "index");
+      check_range_weekday_index(elt_index, "index");
       date::year_month_weekday ymw{ym / date::weekday{elt_date_weekday}[elt_index]};
       out.assign(ymw, i);
     }

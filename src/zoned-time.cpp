@@ -45,9 +45,9 @@ get_naive_time_cpp(cpp11::list_of<cpp11::integers> fields,
   const std::string zone_name = cpp11::r_string(zone_standard[0]);
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
-  cpp11::integers ticks = get_ticks(fields);
-  cpp11::integers ticks_of_day = get_ticks_of_day(fields);
-  cpp11::integers ticks_of_second = get_ticks_of_second(fields);
+  cpp11::integers ticks = duration::get_ticks(fields);
+  cpp11::integers ticks_of_day = duration::get_ticks_of_day(fields);
+  cpp11::integers ticks_of_second = duration::get_ticks_of_second(fields);
 
   duration::seconds ds{ticks, ticks_of_day};
   duration::milliseconds dmilli{ticks, ticks_of_day, ticks_of_second};
@@ -135,9 +135,9 @@ as_zoned_sys_time_from_naive_time_cpp(cpp11::list_of<cpp11::integers> fields,
   const std::string zone_name = cpp11::r_string(zone_standard[0]);
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
-  cpp11::integers ticks = get_ticks(fields);
-  cpp11::integers ticks_of_day = get_ticks_of_day(fields);
-  cpp11::integers ticks_of_second = get_ticks_of_second(fields);
+  cpp11::integers ticks = duration::get_ticks(fields);
+  cpp11::integers ticks_of_day = duration::get_ticks_of_day(fields);
+  cpp11::integers ticks_of_second = duration::get_ticks_of_second(fields);
 
   duration::seconds ds{ticks, ticks_of_day};
   duration::milliseconds dmilli{ticks, ticks_of_day, ticks_of_second};
@@ -184,8 +184,8 @@ to_sys_duration_fields_from_sys_seconds_cpp(const cpp11::doubles& seconds) {
 [[cpp11::register]]
 cpp11::writable::doubles
 to_sys_seconds_from_sys_duration_fields_cpp(cpp11::list_of<cpp11::integers> fields) {
-  const cpp11::integers ticks = get_ticks(fields);
-  const cpp11::integers ticks_of_day = get_ticks_of_day(fields);
+  const cpp11::integers ticks = rclock::duration::get_ticks(fields);
+  const cpp11::integers ticks_of_day = rclock::duration::get_ticks_of_day(fields);
   const rclock::duration::seconds x{ticks, ticks_of_day};
 
   r_ssize size = ticks.size();
@@ -240,9 +240,9 @@ get_offset_cpp(cpp11::list_of<cpp11::integers> fields,
   const std::string zone_name = cpp11::r_string(zone_standard[0]);
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
-  const cpp11::integers ticks = get_ticks(fields);
-  const cpp11::integers ticks_of_day = get_ticks_of_day(fields);
-  const cpp11::integers ticks_of_second = get_ticks_of_second(fields);
+  const cpp11::integers ticks = duration::get_ticks(fields);
+  const cpp11::integers ticks_of_day = duration::get_ticks_of_day(fields);
+  const cpp11::integers ticks_of_second = duration::get_ticks_of_second(fields);
 
   const duration::seconds ds{ticks, ticks_of_day};
   const duration::milliseconds dmilli{ticks, ticks_of_day, ticks_of_second};
