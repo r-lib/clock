@@ -147,7 +147,18 @@ add_nanoseconds.clock_calendar <- function(x, n, ...) {
 
 # ------------------------------------------------------------------------------
 
-add_duration <- function(x, duration) {
+add_duration <- function(x, duration, ..., swapped = FALSE) {
+  check_dots_empty()
+
+  if (swapped) {
+    # `duration` was LHS, so use names from it if applicable, making sure
+    # that we only recycle everything once
+    args <- vec_recycle_common(x = x, duration = duration)
+    x <- args$x
+    duration <- args$duration
+    names(x) <- names_common(duration, x)
+  }
+
   switch (
     duration_precision(duration),
     year = add_years(x, duration),

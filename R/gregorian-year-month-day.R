@@ -340,77 +340,53 @@ vec_arith.clock_year_month_day <- function(op, x, y, ...) {
 #' @method vec_arith.clock_year_month_day MISSING
 #' @export
 vec_arith.clock_year_month_day.MISSING <- function(op, x, y, ...) {
-  switch (
-    op,
-    "+" = x,
-    stop_incompatible_op(op, x, y, ...)
-  )
+  arith_calendar_and_missing(op, x, y, ...)
 }
 
 #' @method vec_arith.clock_year_month_day clock_duration
 #' @export
 vec_arith.clock_year_month_day.clock_duration <- function(op, x, y, ...) {
-  switch (
-    op,
-    "+" = add_duration(x, y),
-    "-" = add_duration(x, -y),
-    stop_incompatible_op(op, x, y, ...)
-  )
+  arith_calendar_and_duration(op, x, y, ...)
 }
 
 #' @method vec_arith.clock_duration clock_year_month_day
 #' @export
 vec_arith.clock_duration.clock_year_month_day <- function(op, x, y, ...) {
-  switch (
-    op,
-    "+" = add_duration(y, x),
-    "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a calendar from a duration.", ...),
-    stop_incompatible_op(op, x, y, ...)
-  )
+  arith_duration_and_calendar(op, x, y, ...)
 }
 
 #' @method vec_arith.clock_year_month_day numeric
 #' @export
 vec_arith.clock_year_month_day.numeric <- function(op, x, y, ...) {
-  switch (
-    op,
-    "+" = add_duration(x, duration_helper(y, calendar_precision(x))),
-    "-" = add_duration(x, duration_helper(-y, calendar_precision(x))),
-    stop_incompatible_op(op, x, y, ...)
-  )
+  arith_calendar_and_numeric(op, x, y, ...)
 }
 
 #' @method vec_arith.numeric clock_year_month_day
 #' @export
 vec_arith.numeric.clock_year_month_day <- function(op, x, y, ...) {
-  switch (
-    op,
-    "+" = add_duration(y, duration_helper(x, calendar_precision(y))),
-    "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a calendar from a duration.", ...),
-    stop_incompatible_op(op, x, y, ...)
-  )
+  arith_numeric_and_calendar(op, x, y, ...)
 }
 
 # ------------------------------------------------------------------------------
 
 #' @export
 add_years.clock_year_month_day <- function(x, n, ...) {
-  add_field_year_month_day(x, n, "year")
+  year_month_day_plus_duration(x, n, "year")
 }
 
 #' @export
 add_quarters.clock_year_month_day <- function(x, n, ...) {
   calendar_require_minimum_precision(x, "month", "add_quarters")
-  add_field_year_month_day(x, n, "quarter")
+  year_month_day_plus_duration(x, n, "quarter")
 }
 
 #' @export
 add_months.clock_year_month_day <- function(x, n, ...) {
   calendar_require_minimum_precision(x, "month", "add_months")
-  add_field_year_month_day(x, n, "month")
+  year_month_day_plus_duration(x, n, "month")
 }
 
-add_field_year_month_day <- function(x, n, precision_n) {
+year_month_day_plus_duration <- function(x, n, precision_n) {
   precision_fields <- calendar_precision(x)
 
   n <- duration_collect_n(n, precision_n)
@@ -418,9 +394,11 @@ add_field_year_month_day <- function(x, n, precision_n) {
   x <- args$x
   n <- args$n
 
+  names <- names_common(x, n)
+
   fields <- add_field_year_month_day_cpp(x, n, precision_fields, precision_n)
 
-  new_year_month_day_from_fields(fields, precision_fields, names = names(x))
+  new_year_month_day_from_fields(fields, precision_fields, names = names)
 }
 
 # ------------------------------------------------------------------------------
@@ -449,14 +427,7 @@ as_year_month_day.clock_calendar <- function(x) {
 
 #' @export
 as_sys_time.clock_year_month_day <- function(x) {
-  if (invalid_any(x)) {
-    message <- paste0(
-      "Can't convert to a time point when there are invalid dates. ",
-      "Resolve them before converting by calling `invalid_resolve()`."
-    )
-    abort(message)
-  }
-
+  calendar_require_all_valid(x)
   precision <- calendar_precision(x)
   fields <- as_sys_time_year_month_day_cpp(x, precision)
   duration <- new_duration_from_fields(fields, precision)
