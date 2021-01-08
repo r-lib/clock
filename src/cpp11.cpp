@@ -277,13 +277,6 @@ extern "C" SEXP _clock_format_zoned_time_cpp(SEXP fields, SEXP zone, SEXP abbrev
     return cpp11::as_sexp(format_zoned_time_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const bool&>>(abbreviate_zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mon), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mon_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(am_pm), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(decimal_mark)));
   END_CPP11
 }
-// getters.cpp
-cpp11::writable::integers get_offset_cpp(const clock_field& calendar, const clock_field& seconds_of_day, const cpp11::strings& zone);
-extern "C" SEXP _clock_get_offset_cpp(SEXP calendar, SEXP seconds_of_day, SEXP zone) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(get_offset_cpp(cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(seconds_of_day), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone)));
-  END_CPP11
-}
 // gregorian-year-month-day.cpp
 cpp11::writable::list collect_year_month_day_fields(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision);
 extern "C" SEXP _clock_collect_year_month_day_fields(SEXP fields, SEXP precision) {
@@ -612,6 +605,13 @@ cpp11::writable::doubles to_sys_seconds_from_sys_duration_fields_cpp(cpp11::list
 extern "C" SEXP _clock_to_sys_seconds_from_sys_duration_fields_cpp(SEXP fields) {
   BEGIN_CPP11
     return cpp11::as_sexp(to_sys_seconds_from_sys_duration_fields_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields)));
+  END_CPP11
+}
+// zoned-time.cpp
+cpp11::writable::integers get_offset_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision, const cpp11::strings& zone);
+extern "C" SEXP _clock_get_offset_cpp(SEXP fields, SEXP precision, SEXP zone) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(get_offset_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone)));
   END_CPP11
 }
 

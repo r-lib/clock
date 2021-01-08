@@ -308,6 +308,15 @@ as_naive_time.clock_zoned_time <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
+get_offset.clock_zoned_time <- function(x) {
+  zone <- zoned_time_zone(x)
+  sys_time <- zoned_time_sys_time(x)
+  duration <- time_point_duration(sys_time)
+  precision <- time_point_precision(sys_time)
+  get_offset_cpp(duration, precision, zone)
+}
+
+#' @export
 get_precision.clock_zoned_time <- function(x) {
   zoned_time_precision(x)
 }

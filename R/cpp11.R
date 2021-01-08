@@ -156,10 +156,6 @@ format_zoned_time_cpp <- function(fields, zone, abbreviate_zone, format, precisi
   .Call("_clock_format_zoned_time_cpp", fields, zone, abbreviate_zone, format, precision, mon, mon_ab, day, day_ab, am_pm, decimal_mark, PACKAGE = "clock")
 }
 
-get_offset_cpp <- function(calendar, seconds_of_day, zone) {
-  .Call("_clock_get_offset_cpp", calendar, seconds_of_day, zone, PACKAGE = "clock")
-}
-
 collect_year_month_day_fields <- function(fields, precision) {
   .Call("_clock_collect_year_month_day_fields", fields, precision, PACKAGE = "clock")
 }
@@ -346,4 +342,8 @@ to_sys_duration_fields_from_sys_seconds_cpp <- function(seconds) {
 
 to_sys_seconds_from_sys_duration_fields_cpp <- function(fields) {
   .Call("_clock_to_sys_seconds_from_sys_duration_fields_cpp", fields, PACKAGE = "clock")
+}
+
+get_offset_cpp <- function(fields, precision, zone) {
+  .Call("_clock_get_offset_cpp", fields, precision, zone, PACKAGE = "clock")
 }

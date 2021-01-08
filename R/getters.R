@@ -10,25 +10,6 @@ get_offset <- function(x) {
   UseMethod("get_offset")
 }
 
-#' @export
-get_offset.clock_zoned_time_point <- function(x) {
-  calendar <- field_calendar(x)
-  seconds_of_day <- field_seconds_of_day(x)
-  zone <- get_zone(x)
-  get_offset_cpp(calendar, seconds_of_day, zone)
-}
-
-#' @export
-get_offset.Date <- function(x) {
-  zeros_along(x, na_propagate = TRUE)
-}
-
-#' @export
-get_offset.POSIXt <- function(x) {
-  x <- as_zoned_time_point(x)
-  get_offset(x)
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export
