@@ -1,6 +1,5 @@
 #' @export
 get_zone <- function(x) {
-  restrict_zoned_or_base(x)
   UseMethod("get_zone")
 }
 
@@ -8,7 +7,6 @@ get_zone <- function(x) {
 
 #' @export
 get_offset <- function(x) {
-  restrict_zoned_or_base(x)
   UseMethod("get_offset")
 }
 
@@ -35,7 +33,6 @@ get_offset.POSIXt <- function(x) {
 
 #' @export
 get_year <- function(x) {
-  restrict_clock_supported(x)
   UseMethod("get_year")
 }
 
@@ -74,7 +71,6 @@ get_year.POSIXt <- function(x) {
 
 #' @export
 get_quarternum <- function(x) {
-  restrict_clock_supported(x)
   UseMethod("get_quarternum")
 }
 
@@ -101,7 +97,6 @@ get_quarternum.clock_zoned_time_point <- function(x) {
 
 #' @export
 get_quarterday <- function(x) {
-  restrict_clock_supported(x)
   UseMethod("get_quarterday")
 }
 
@@ -128,7 +123,6 @@ get_quarterday.clock_zoned_time_point <- function(x) {
 
 #' @export
 get_weeknum <- function(x) {
-  restrict_clock_supported(x)
   UseMethod("get_weeknum")
 }
 
@@ -154,7 +148,6 @@ get_weeknum.clock_zoned_time_point <- function(x) {
 
 #' @export
 get_weekday <- function(x) {
-  restrict_clock_supported(x)
   UseMethod("get_weekday")
 }
 
@@ -188,7 +181,6 @@ get_weekday.clock_zoned_time_point <- function(x) {
 
 #' @export
 get_weekday_index <- function(x) {
-  restrict_clock_supported(x)
   UseMethod("get_weekday_index")
 }
 
@@ -214,7 +206,6 @@ get_weekday_index.clock_zoned_time_point <- function(x) {
 
 #' @export
 get_month <- function(x) {
-  restrict_clock_supported(x)
   UseMethod("get_month")
 }
 
@@ -240,7 +231,6 @@ get_month.POSIXt <- function(x) {
 
 #' @export
 get_day <- function(x) {
-  restrict_clock_supported(x)
   UseMethod("get_day")
 }
 
@@ -266,7 +256,6 @@ get_day.POSIXt <- function(x) {
 
 #' @export
 get_hour <- function(x) {
-  restrict_clock_supported(x)
   UseMethod("get_hour")
 }
 
@@ -301,7 +290,6 @@ get_hour.POSIXt <- function(x) {
 
 #' @export
 get_minute <- function(x) {
-  restrict_clock_supported(x)
   UseMethod("get_minute")
 }
 
@@ -336,7 +324,6 @@ get_minute.POSIXt <- function(x) {
 
 #' @export
 get_second <- function(x) {
-  restrict_clock_supported(x)
   UseMethod("get_second")
 }
 
@@ -371,7 +358,6 @@ get_second.POSIXt <- function(x) {
 
 #' @export
 get_millisecond <- function(x) {
-  restrict_clock_supported(x)
   UseMethod("get_millisecond")
 }
 
@@ -399,7 +385,6 @@ get_millisecond.POSIXt <- get_millisecond.clock_calendar
 
 #' @export
 get_microsecond <- function(x) {
-  restrict_clock_supported(x)
   UseMethod("get_microsecond")
 }
 
@@ -427,7 +412,6 @@ get_microsecond.POSIXt <- get_microsecond.clock_calendar
 
 #' @export
 get_nanosecond <- function(x) {
-  restrict_clock_supported(x)
   UseMethod("get_nanosecond")
 }
 
