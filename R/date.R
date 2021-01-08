@@ -103,5 +103,5 @@ set_date_field_year_month_day <- function(x, value, invalid, set_fn, ...) {
 
 #' @export
 set_zone.Date <- function(x, zone) {
-  set_zone(to_posixct(x), zone)
+  abort("'Date' objects are required to be UTC.")
 }
