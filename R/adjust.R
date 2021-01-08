@@ -33,66 +33,6 @@ adjust_zone.clock_zoned_time_point <- function(x,
 
 # ------------------------------------------------------------------------------
 
-#' @export
-adjust_precision <- function(x, precision) {
-  UseMethod("adjust_precision")
-}
-
-#' @export
-adjust_precision.clock_naive_time_point <- function(x, precision) {
-  validate_precision(precision)
-
-  nanoseconds_of_second <- adjust_nanoseconds_of_second_precision(x, precision)
-
-  new_naive_time_point(
-    calendar = field_calendar(x),
-    seconds_of_day = field_seconds_of_day(x),
-    nanoseconds_of_second = nanoseconds_of_second,
-    precision = precision,
-    names = names(x)
-  )
-}
-
-#' @export
-adjust_precision.clock_zoned_time_point <- function(x, precision) {
-  validate_precision(precision)
-
-  nanoseconds_of_second <- adjust_nanoseconds_of_second_precision(x, precision)
-
-  new_zoned_time_point(
-    calendar = field_calendar(x),
-    seconds_of_day = field_seconds_of_day(x),
-    nanoseconds_of_second = nanoseconds_of_second,
-    precision = precision,
-    zone = get_zone(x),
-    names = names(x)
-  )
-}
-
-adjust_nanoseconds_of_second_precision <- function(x, precision) {
-  x_precision <- get_precision(x)
-
-  # Requesting 'second' precision nukes `nanoseconds_of_second`
-  if (!is_subsecond_precision(precision)) {
-    return(NULL)
-  }
-
-  # No nanoseconds to begin with, but we need them
-  if (!is_subsecond_precision(x_precision)) {
-    return(nanoseconds_of_second_init(x))
-  }
-
-  nanoseconds_of_second <- field_nanoseconds_of_second(x)
-
-  if (precision_value(x_precision) > precision_value(precision)) {
-    nanoseconds_of_second <- downcast_nanoseconds_of_second_precision(nanoseconds_of_second, precision)
-  }
-
-  nanoseconds_of_second
-}
-
-# ------------------------------------------------------------------------------
-
 #' Adjust the year
 #'
 #' `adjust_year()` adjusts the year of `x` to `value`.
