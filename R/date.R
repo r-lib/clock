@@ -65,6 +65,6 @@ get_zone.Date <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-in_zone.Date <- function(x, zone) {
-  in_zone(to_posixct(x), zone)
+set_zone.Date <- function(x, zone) {
+  set_zone(to_posixct(x), zone)
 }

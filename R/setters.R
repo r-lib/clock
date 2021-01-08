@@ -42,3 +42,9 @@ set_microsecond <- function(x, value, ...) {
 set_nanosecond <- function(x, value, ...) {
   UseMethod("set_nanosecond")
 }
+
+#' @export
+set_zone <- function(x, zone) {
+  UseMethod("set_zone")
+}
+

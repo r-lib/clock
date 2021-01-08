@@ -117,7 +117,7 @@ get_zone.POSIXt <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-in_zone.POSIXt <- function(x, zone) {
+set_zone.POSIXt <- function(x, zone) {
   x <- to_posixct(x)
   zone <- zone_validate(zone)
   set_tzone(x, zone)
