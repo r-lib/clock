@@ -58,11 +58,48 @@ as.Date.clock_zoned_time <- function(x, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
+get_year.Date <- function(x) {
+  get_date_field_year_month_day(x, get_year)
+}
+#' @export
+get_month.Date <- function(x) {
+  get_date_field_year_month_day(x, get_month)
+}
+#' @export
+get_day.Date <- function(x) {
+  get_date_field_year_month_day(x, get_day)
+}
+get_date_field_year_month_day <- function(x, get_fn) {
+  x <- as_year_month_day(x)
+  get_fn(x, value)
+}
+
+#' @export
 get_zone.Date <- function(x) {
   "UTC"
 }
 
 # ------------------------------------------------------------------------------
+
+#' @export
+set_year.Date <- function(x, value, ..., invalid = "error") {
+  set_date_field_year_month_day(x, value, invalid, set_year, ...)
+}
+#' @export
+set_month.Date <- function(x, value, ..., invalid = "error") {
+  set_date_field_year_month_day(x, value, invalid, set_month, ...)
+}
+#' @export
+set_day.Date <- function(x, value, ..., invalid = "error") {
+  set_date_field_year_month_day(x, value, invalid, set_day, ...)
+}
+set_date_field_year_month_day <- function(x, value, invalid, set_fn, ...) {
+  check_dots_empty()
+  x <- as_year_month_day(x)
+  x <- set_fn(x, value)
+  x <- invalid_resolve(x, invalid = invalid)
+  as.Date(x)
+}
 
 #' @export
 set_zone.Date <- function(x, zone) {

@@ -65,12 +65,6 @@ get_year.clock_zoned_time_point <- function(x) {
 }
 
 #' @export
-get_year.Date <- function(x) {
-  x <- as_year_month_day(x)
-  get_year(x)
-}
-
-#' @export
 get_year.POSIXt <- function(x) {
   x <- as_zoned_time_point(x)
   get_year(x)
@@ -237,12 +231,6 @@ get_month.clock_zoned_time_point <- function(x) {
 }
 
 #' @export
-get_month.Date <- function(x) {
-  x <- as_year_month_day(x)
-  get_month(x)
-}
-
-#' @export
 get_month.POSIXt <- function(x) {
   x <- as_zoned_time_point(x)
   get_month(x)
@@ -265,12 +253,6 @@ get_day.clock_naive_time_point <- function(x) {
 #' @export
 get_day.clock_zoned_time_point <- function(x) {
   x <- as_naive_time_point(x)
-  get_day(x)
-}
-
-#' @export
-get_day.Date <- function(x) {
-  x <- as_year_month_day(x)
   get_day(x)
 }
 
