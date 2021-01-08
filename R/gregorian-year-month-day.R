@@ -237,53 +237,62 @@ get_nanosecond.clock_year_month_day <- function(x) {
 
 #' @export
 set_year.clock_year_month_day <- function(x, value, ...) {
+  check_dots_empty()
   set_field_year_month_day(x, value, "year")
 }
 
 #' @export
 set_month.clock_year_month_day <- function(x, value, ...) {
+  check_dots_empty()
   calendar_require_minimum_precision(x, "year", "set_month")
   set_field_year_month_day(x, value, "month")
 }
 
 #' @export
 set_day.clock_year_month_day <- function(x, value, ...) {
+  check_dots_empty()
   calendar_require_minimum_precision(x, "month", "set_day")
   set_field_year_month_day(x, value, "day")
 }
 
 #' @export
 set_hour.clock_year_month_day <- function(x, value, ...) {
+  check_dots_empty()
   calendar_require_minimum_precision(x, "day", "set_hour")
   set_field_year_month_day(x, value, "hour")
 }
 
 #' @export
 set_minute.clock_year_month_day <- function(x, value, ...) {
+  check_dots_empty()
   calendar_require_minimum_precision(x, "hour", "set_minute")
   set_field_year_month_day(x, value, "minute")
 }
 
 #' @export
 set_second.clock_year_month_day <- function(x, value, ...) {
+  check_dots_empty()
   calendar_require_minimum_precision(x, "minute", "set_second")
   set_field_year_month_day(x, value, "second")
 }
 
 #' @export
 set_millisecond.clock_year_month_day <- function(x, value, ...) {
+  check_dots_empty()
   calendar_require_any_of_precisions(x, c("second", "millisecond"), "set_millisecond")
   set_field_year_month_day(x, value, "millisecond")
 }
 
 #' @export
 set_microsecond.clock_year_month_day <- function(x, value, ...) {
+  check_dots_empty()
   calendar_require_any_of_precisions(x, c("second", "microsecond"), "set_microsecond")
   set_field_year_month_day(x, value, "microsecond")
 }
 
 #' @export
 set_nanosecond.clock_year_month_day <- function(x, value, ...) {
+  check_dots_empty()
   calendar_require_any_of_precisions(x, c("second", "nanosecond"), "set_nanosecond")
   set_field_year_month_day(x, value, "nanosecond")
 }
