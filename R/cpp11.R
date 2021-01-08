@@ -28,26 +28,6 @@ downcast_nanoseconds_of_second_precision <- function(nanoseconds_of_second, prec
   .Call("_clock_downcast_nanoseconds_of_second_precision", nanoseconds_of_second, precision, PACKAGE = "clock")
 }
 
-add_gregorian_calendar_years_or_months <- function(calendar, n, day_nonexistent, unit) {
-  .Call("_clock_add_gregorian_calendar_years_or_months", calendar, n, day_nonexistent, unit, PACKAGE = "clock")
-}
-
-add_gregorian_weekday_calendar_years_or_months <- function(calendar, n, day_nonexistent, unit) {
-  .Call("_clock_add_gregorian_weekday_calendar_years_or_months", calendar, n, day_nonexistent, unit, PACKAGE = "clock")
-}
-
-add_calendar_weeks_or_days <- function(calendar, n, unit) {
-  .Call("_clock_add_calendar_weeks_or_days", calendar, n, unit, PACKAGE = "clock")
-}
-
-add_time_point_seconds_of_day_cpp <- function(x, n, unit) {
-  .Call("_clock_add_time_point_seconds_of_day_cpp", x, n, unit, PACKAGE = "clock")
-}
-
-add_time_point_nanoseconds_of_second_cpp <- function(x, n, unit) {
-  .Call("_clock_add_time_point_nanoseconds_of_second_cpp", x, n, unit, PACKAGE = "clock")
-}
-
 add_quarterly_calendar_years_or_quarters <- function(calendar, n, start, day_nonexistent, unit) {
   .Call("_clock_add_quarterly_calendar_years_or_quarters", calendar, n, start, day_nonexistent, unit, PACKAGE = "clock")
 }

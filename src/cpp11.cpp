@@ -54,41 +54,6 @@ extern "C" SEXP _clock_downcast_nanoseconds_of_second_precision(SEXP nanoseconds
   END_CPP11
 }
 // arithmetic.cpp
-cpp11::writable::list add_gregorian_calendar_years_or_months(const clock_field& calendar, const cpp11::integers& n, const cpp11::strings& day_nonexistent, const cpp11::strings& unit);
-extern "C" SEXP _clock_add_gregorian_calendar_years_or_months(SEXP calendar, SEXP n, SEXP day_nonexistent, SEXP unit) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(add_gregorian_calendar_years_or_months(cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(unit)));
-  END_CPP11
-}
-// arithmetic.cpp
-cpp11::writable::list add_gregorian_weekday_calendar_years_or_months(const clock_field& calendar, const cpp11::integers& n, const cpp11::strings& day_nonexistent, const cpp11::strings& unit);
-extern "C" SEXP _clock_add_gregorian_weekday_calendar_years_or_months(SEXP calendar, SEXP n, SEXP day_nonexistent, SEXP unit) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(add_gregorian_weekday_calendar_years_or_months(cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(unit)));
-  END_CPP11
-}
-// arithmetic.cpp
-cpp11::writable::list add_calendar_weeks_or_days(const clock_field& calendar, const cpp11::integers& n, const cpp11::strings& unit);
-extern "C" SEXP _clock_add_calendar_weeks_or_days(SEXP calendar, SEXP n, SEXP unit) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(add_calendar_weeks_or_days(cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(unit)));
-  END_CPP11
-}
-// arithmetic.cpp
-clock_writable_rcrd add_time_point_seconds_of_day_cpp(const clock_rcrd& x, const cpp11::integers& n, const cpp11::strings& unit);
-extern "C" SEXP _clock_add_time_point_seconds_of_day_cpp(SEXP x, SEXP n, SEXP unit) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(add_time_point_seconds_of_day_cpp(cpp11::as_cpp<cpp11::decay_t<const clock_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(unit)));
-  END_CPP11
-}
-// arithmetic.cpp
-clock_writable_rcrd add_time_point_nanoseconds_of_second_cpp(const clock_rcrd& x, const cpp11::integers& n, const cpp11::strings& unit);
-extern "C" SEXP _clock_add_time_point_nanoseconds_of_second_cpp(SEXP x, SEXP n, SEXP unit) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(add_time_point_nanoseconds_of_second_cpp(cpp11::as_cpp<cpp11::decay_t<const clock_rcrd&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(unit)));
-  END_CPP11
-}
-// arithmetic.cpp
 cpp11::writable::list add_quarterly_calendar_years_or_quarters(const clock_field& calendar, const cpp11::integers& n, const int& start, const cpp11::strings& day_nonexistent, const cpp11::strings& unit);
 extern "C" SEXP _clock_add_quarterly_calendar_years_or_quarters(SEXP calendar, SEXP n, SEXP start, SEXP day_nonexistent, SEXP unit) {
   BEGIN_CPP11
@@ -617,14 +582,9 @@ extern "C" SEXP _clock_get_offset_cpp(SEXP fields, SEXP precision, SEXP zone) {
 
 extern "C" {
 /* .Call calls */
-extern SEXP _clock_add_calendar_weeks_or_days(SEXP, SEXP, SEXP);
 extern SEXP _clock_add_field_year_month_day_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_add_gregorian_calendar_years_or_months(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_add_gregorian_weekday_calendar_years_or_months(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_add_iso_calendar_years(SEXP, SEXP, SEXP);
 extern SEXP _clock_add_quarterly_calendar_years_or_quarters(SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_add_time_point_nanoseconds_of_second_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_add_time_point_seconds_of_day_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_adjust_gregorian_calendar(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_adjust_gregorian_weekday_calendar(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_adjust_iso_calendar(SEXP, SEXP, SEXP, SEXP);
@@ -706,14 +666,9 @@ extern SEXP _clock_zone_is_valid(SEXP);
 extern SEXP _clock_zone_standardize(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_clock_add_calendar_weeks_or_days",                          (DL_FUNC) &_clock_add_calendar_weeks_or_days,                           3},
     {"_clock_add_field_year_month_day_cpp",                        (DL_FUNC) &_clock_add_field_year_month_day_cpp,                         4},
-    {"_clock_add_gregorian_calendar_years_or_months",              (DL_FUNC) &_clock_add_gregorian_calendar_years_or_months,               4},
-    {"_clock_add_gregorian_weekday_calendar_years_or_months",      (DL_FUNC) &_clock_add_gregorian_weekday_calendar_years_or_months,       4},
     {"_clock_add_iso_calendar_years",                              (DL_FUNC) &_clock_add_iso_calendar_years,                               3},
     {"_clock_add_quarterly_calendar_years_or_quarters",            (DL_FUNC) &_clock_add_quarterly_calendar_years_or_quarters,             5},
-    {"_clock_add_time_point_nanoseconds_of_second_cpp",            (DL_FUNC) &_clock_add_time_point_nanoseconds_of_second_cpp,             3},
-    {"_clock_add_time_point_seconds_of_day_cpp",                   (DL_FUNC) &_clock_add_time_point_seconds_of_day_cpp,                    3},
     {"_clock_adjust_gregorian_calendar",                           (DL_FUNC) &_clock_adjust_gregorian_calendar,                            4},
     {"_clock_adjust_gregorian_weekday_calendar",                   (DL_FUNC) &_clock_adjust_gregorian_weekday_calendar,                    4},
     {"_clock_adjust_iso_calendar",                                 (DL_FUNC) &_clock_adjust_iso_calendar,                                  4},
