@@ -6,11 +6,20 @@ new_clock_rcrd <- function(fields, ..., names = NULL, class = NULL) {
   size <- vec_size(fields[[1]])
   validate_names(names, size)
 
-  new_rcrd(
+  new_rcrd0(
     fields = fields,
     ...,
     `clock_rcrd:::names` = names,
     class = c(class, "clock_rcrd")
+  )
+}
+
+# Because new_rcrd() is slow and we know what we are doing
+new_rcrd0 <- function(fields, ..., class) {
+  structure(
+    fields,
+    ...,
+    class = c(class, "vctrs_rcrd", "vctrs_vctr")
   )
 }
 
