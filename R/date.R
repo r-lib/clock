@@ -29,6 +29,11 @@ as_year_month_day.Date <- function(x) {
   as_year_month_day(as_sys_time(x))
 }
 
+#' @export
+as_year_month_weekday.Date <- function(x) {
+  as_year_month_weekday(as_sys_time(x))
+}
+
 # ------------------------------------------------------------------------------
 
 # Not using `check_dots_empty()` because that might
@@ -71,6 +76,19 @@ get_day.Date <- function(x) {
 }
 get_date_field_year_month_day <- function(x, get_fn) {
   x <- as_year_month_day(x)
+  get_fn(x)
+}
+
+#' @export
+get_weekday.Date <- function(x) {
+  get_date_field_year_month_weekday(x, get_weekday)
+}
+#' @export
+get_weekday_index.Date <- function(x) {
+  get_date_field_year_month_weekday(x, get_weekday_index)
+}
+get_date_field_year_month_weekday <- function(x, get_fn) {
+  x <- as_year_month_weekday(x)
   get_fn(x)
 }
 

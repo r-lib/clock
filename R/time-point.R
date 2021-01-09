@@ -371,8 +371,16 @@ time_point_minus_time_point <- function(x, y, names) {
 as_year_month_day.clock_time_point <- function(x) {
   duration <- time_point_duration(x)
   precision <- time_point_precision(x)
-  fields <- as_year_month_day_from_time_point_cpp(duration, precision)
+  fields <- as_year_month_day_from_sys_time_cpp(duration, precision)
   new_year_month_day_from_fields(fields, precision, names = names(x))
+}
+
+#' @export
+as_year_month_weekday.clock_time_point <- function(x) {
+  duration <- time_point_duration(x)
+  precision <- time_point_precision(x)
+  fields <- as_year_month_weekday_from_sys_time_cpp(duration, precision)
+  new_year_month_weekday_from_fields(fields, precision, names = names(x))
 }
 
 # ------------------------------------------------------------------------------

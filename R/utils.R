@@ -66,8 +66,19 @@ from_posixct_to_posixct <- function(x) {
 false_along <- function(x) {
   vector("logical", length = vec_size(x))
 }
-ones_along <- function(x) {
-  rep(1L, times = vec_size(x))
+ones_along <- function(x, na_propagate = FALSE) {
+  out <- rep(1L, vec_size(x))
+
+  if (!na_propagate) {
+    return(out)
+  }
+
+  na <- vec_equal_na(x)
+  if (any(na)) {
+    out[na] <- NA_integer_
+  }
+
+  out
 }
 zeros_along <- function(x, na_propagate = FALSE) {
   out <- vector("integer", length = vec_size(x))

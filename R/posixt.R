@@ -31,6 +31,11 @@ as_year_month_day.POSIXt <- function(x) {
   as_year_month_day(as_naive_time(x))
 }
 
+#' @export
+as_year_month_weekday.POSIXt <- function(x) {
+  as_year_month_weekday(as_naive_time(x))
+}
+
 # ------------------------------------------------------------------------------
 
 # Not using `check_dots_empty()` because that might
@@ -135,6 +140,19 @@ get_second.POSIXt <- function(x) {
 }
 get_posixt_field_year_month_day <- function(x, get_fn) {
   x <- as_year_month_day(x)
+  get_fn(x)
+}
+
+#' @export
+get_weekday.POSIXt <- function(x) {
+  get_posixt_field_year_month_weekday(x, get_weekday)
+}
+#' @export
+get_weekday_index.POSIXt <- function(x) {
+  get_posixt_field_year_month_weekday(x, get_weekday_index)
+}
+get_posixt_field_year_month_weekday <- function(x, get_fn) {
+  x <- as_year_month_weekday(x)
   get_fn(x)
 }
 

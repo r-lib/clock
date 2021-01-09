@@ -396,7 +396,7 @@ year_month_day_plus_duration <- function(x, n, precision_n) {
 
   names <- names_common(x, n)
 
-  fields <- add_field_year_month_day_cpp(x, n, precision_fields, precision_n)
+  fields <- year_month_day_plus_duration_cpp(x, n, precision_fields, precision_n)
 
   new_year_month_day_from_fields(fields, precision_fields, names = names)
 }

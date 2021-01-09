@@ -1,25 +1,9 @@
 #include "gregorian-year-month-day.h"
+#include "calendar.h"
 #include "duration.h"
 #include "check.h"
 #include "enums.h"
 #include "get.h"
-
-template <enum component Component, class Calendar>
-void
-collect_field(Calendar& x, const cpp11::integers& field, const char* arg) {
-  r_ssize size = x.size();
-
-  for (r_ssize i = 0; i < size; ++i) {
-    const int elt = field[i];
-
-    if (elt == r_int_na) {
-      x.assign_na(i);
-      continue;
-    }
-
-    check_range<Component>(elt, arg);
-  }
-}
 
 [[cpp11::register]]
 cpp11::writable::list
@@ -87,39 +71,6 @@ collect_year_month_day_fields(cpp11::list_of<cpp11::integers> fields,
 
 // -----------------------------------------------------------------------------
 
-template <class Calendar>
-cpp11::writable::strings
-format_year_month_day_impl(const Calendar& x) {
-  const r_ssize size = x.size();
-  cpp11::writable::strings out(size);
-
-  std::ostringstream stream;
-
-  for (r_ssize i = 0; i < size; ++i) {
-    if (x.is_na(i)) {
-      SET_STRING_ELT(out, i, r_chr_na);
-      continue;
-    }
-
-    stream.str(std::string());
-    stream.clear();
-
-    x.stream(stream, i);
-
-    if (stream.fail()) {
-      // Should never happen but...
-      SET_STRING_ELT(out, i, r_chr_na);
-      continue;
-    }
-
-    const std::string string = stream.str();
-    const SEXP r_string = Rf_mkCharLenCE(string.c_str(), string.size(), CE_UTF8);
-    SET_STRING_ELT(out, i, r_string);
-  }
-
-  return out;
-}
-
 [[cpp11::register]]
 cpp11::writable::strings
 format_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
@@ -145,37 +96,20 @@ format_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   gregorian::ymdhmss<std::chrono::nanoseconds> ymdhmss3{year, month, day, hour, minute, second, subsecond};
 
   switch (parse_precision2(precision)) {
-  case precision2::year: return format_year_month_day_impl(y);
-  case precision2::month: return format_year_month_day_impl(ym);
-  case precision2::day: return format_year_month_day_impl(ymd);
-  case precision2::hour: return format_year_month_day_impl(ymdh);
-  case precision2::minute: return format_year_month_day_impl(ymdhm);
-  case precision2::second: return format_year_month_day_impl(ymdhms);
-  case precision2::millisecond: return format_year_month_day_impl(ymdhmss1);
-  case precision2::microsecond: return format_year_month_day_impl(ymdhmss2);
-  case precision2::nanosecond: return format_year_month_day_impl(ymdhmss3);
+  case precision2::year: return format_calendar_impl(y);
+  case precision2::month: return format_calendar_impl(ym);
+  case precision2::day: return format_calendar_impl(ymd);
+  case precision2::hour: return format_calendar_impl(ymdh);
+  case precision2::minute: return format_calendar_impl(ymdhm);
+  case precision2::second: return format_calendar_impl(ymdhms);
+  case precision2::millisecond: return format_calendar_impl(ymdhmss1);
+  case precision2::microsecond: return format_calendar_impl(ymdhmss2);
+  case precision2::nanosecond: return format_calendar_impl(ymdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
 }
 
 // -----------------------------------------------------------------------------
-
-template <class Calendar>
-cpp11::writable::logicals
-invalid_detect_year_month_day_impl(const Calendar& x) {
-  const r_ssize size = x.size();
-  cpp11::writable::logicals out(size);
-
-  for (r_ssize i = 0; i < size; ++i) {
-    if (x.is_na(i)) {
-      out[i] = false;
-    } else {
-      out[i] = !x.ok(i);
-    }
-  }
-
-  return out;
-}
 
 [[cpp11::register]]
 cpp11::writable::logicals
@@ -202,35 +136,20 @@ invalid_detect_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   gregorian::ymdhmss<std::chrono::nanoseconds> ymdhmss3{year, month, day, hour, minute, second, subsecond};
 
   switch (parse_precision2(precision)) {
-  case precision2::year: return invalid_detect_year_month_day_impl(y);
-  case precision2::month: return invalid_detect_year_month_day_impl(ym);
-  case precision2::day: return invalid_detect_year_month_day_impl(ymd);
-  case precision2::hour: return invalid_detect_year_month_day_impl(ymdh);
-  case precision2::minute: return invalid_detect_year_month_day_impl(ymdhm);
-  case precision2::second: return invalid_detect_year_month_day_impl(ymdhms);
-  case precision2::millisecond: return invalid_detect_year_month_day_impl(ymdhmss1);
-  case precision2::microsecond: return invalid_detect_year_month_day_impl(ymdhmss2);
-  case precision2::nanosecond: return invalid_detect_year_month_day_impl(ymdhmss3);
+  case precision2::year: return invalid_detect_calendar_impl(y);
+  case precision2::month: return invalid_detect_calendar_impl(ym);
+  case precision2::day: return invalid_detect_calendar_impl(ymd);
+  case precision2::hour: return invalid_detect_calendar_impl(ymdh);
+  case precision2::minute: return invalid_detect_calendar_impl(ymdhm);
+  case precision2::second: return invalid_detect_calendar_impl(ymdhms);
+  case precision2::millisecond: return invalid_detect_calendar_impl(ymdhmss1);
+  case precision2::microsecond: return invalid_detect_calendar_impl(ymdhmss2);
+  case precision2::nanosecond: return invalid_detect_calendar_impl(ymdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
 }
 
 // -----------------------------------------------------------------------------
-
-template <class Calendar>
-bool
-invalid_any_year_month_day_impl(const Calendar& x) {
-  const r_ssize size = x.size();
-
-  for (r_ssize i = 0; i < size; ++i) {
-    if (x.is_na(i) || x.ok(i)) {
-      continue;
-    }
-    return true;
-  }
-
-  return false;
-}
 
 [[cpp11::register]]
 bool
@@ -256,38 +175,20 @@ invalid_any_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields, cpp11::st
   gregorian::ymdhmss<std::chrono::nanoseconds> ymdhmss3{year, month, day, hour, minute, second, subsecond};
 
   switch (parse_precision2(precision)) {
-  case precision2::year: return invalid_any_year_month_day_impl(y);
-  case precision2::month: return invalid_any_year_month_day_impl(ym);
-  case precision2::day: return invalid_any_year_month_day_impl(ymd);
-  case precision2::hour: return invalid_any_year_month_day_impl(ymdh);
-  case precision2::minute: return invalid_any_year_month_day_impl(ymdhm);
-  case precision2::second: return invalid_any_year_month_day_impl(ymdhms);
-  case precision2::millisecond: return invalid_any_year_month_day_impl(ymdhmss1);
-  case precision2::microsecond: return invalid_any_year_month_day_impl(ymdhmss2);
-  case precision2::nanosecond: return invalid_any_year_month_day_impl(ymdhmss3);
+  case precision2::year: return invalid_any_calendar_impl(y);
+  case precision2::month: return invalid_any_calendar_impl(ym);
+  case precision2::day: return invalid_any_calendar_impl(ymd);
+  case precision2::hour: return invalid_any_calendar_impl(ymdh);
+  case precision2::minute: return invalid_any_calendar_impl(ymdhm);
+  case precision2::second: return invalid_any_calendar_impl(ymdhms);
+  case precision2::millisecond: return invalid_any_calendar_impl(ymdhmss1);
+  case precision2::microsecond: return invalid_any_calendar_impl(ymdhmss2);
+  case precision2::nanosecond: return invalid_any_calendar_impl(ymdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
 }
 
 // -----------------------------------------------------------------------------
-
-template <class Calendar>
-int
-invalid_count_year_month_day_impl(const Calendar& x) {
-  int count = 0;
-  const r_ssize size = x.size();
-
-  for (r_ssize i = 0; i < size; ++i) {
-    if (x.is_na(i)) {
-      continue;
-    }
-    if (!x.ok(i)) {
-      ++count;
-    }
-  }
-
-  return count;
-}
 
 [[cpp11::register]]
 int
@@ -314,36 +215,20 @@ invalid_count_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   gregorian::ymdhmss<std::chrono::nanoseconds> ymdhmss3{year, month, day, hour, minute, second, subsecond};
 
   switch (parse_precision2(precision)) {
-  case precision2::year: return invalid_count_year_month_day_impl(y);
-  case precision2::month: return invalid_count_year_month_day_impl(ym);
-  case precision2::day: return invalid_count_year_month_day_impl(ymd);
-  case precision2::hour: return invalid_count_year_month_day_impl(ymdh);
-  case precision2::minute: return invalid_count_year_month_day_impl(ymdhm);
-  case precision2::second: return invalid_count_year_month_day_impl(ymdhms);
-  case precision2::millisecond: return invalid_count_year_month_day_impl(ymdhmss1);
-  case precision2::microsecond: return invalid_count_year_month_day_impl(ymdhmss2);
-  case precision2::nanosecond: return invalid_count_year_month_day_impl(ymdhmss3);
+  case precision2::year: return invalid_count_calendar_impl(y);
+  case precision2::month: return invalid_count_calendar_impl(ym);
+  case precision2::day: return invalid_count_calendar_impl(ymd);
+  case precision2::hour: return invalid_count_calendar_impl(ymdh);
+  case precision2::minute: return invalid_count_calendar_impl(ymdhm);
+  case precision2::second: return invalid_count_calendar_impl(ymdhms);
+  case precision2::millisecond: return invalid_count_calendar_impl(ymdhmss1);
+  case precision2::microsecond: return invalid_count_calendar_impl(ymdhmss2);
+  case precision2::nanosecond: return invalid_count_calendar_impl(ymdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
 }
 
 // -----------------------------------------------------------------------------
-
-template <class Calendar>
-cpp11::writable::list
-invalid_resolve_year_month_day_impl(Calendar& x,
-                                    const enum invalid& invalid_val) {
-  const r_ssize size = x.size();
-
-  for (r_ssize i = 0; i < size; ++i) {
-    if (x.is_na(i)) {
-      continue;
-    }
-    x.resolve(i, invalid_val);
-  }
-
-  return x.to_list();
-}
 
 [[cpp11::register]]
 cpp11::writable::list
@@ -372,43 +257,20 @@ invalid_resolve_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   gregorian::ymdhmss<std::chrono::nanoseconds> ymdhmss3{year, month, day, hour, minute, second, subsecond};
 
   switch (parse_precision2(precision)) {
-  case precision2::year: return invalid_resolve_year_month_day_impl(y, invalid_val);
-  case precision2::month: return invalid_resolve_year_month_day_impl(ym, invalid_val);
-  case precision2::day: return invalid_resolve_year_month_day_impl(ymd, invalid_val);
-  case precision2::hour: return invalid_resolve_year_month_day_impl(ymdh, invalid_val);
-  case precision2::minute: return invalid_resolve_year_month_day_impl(ymdhm, invalid_val);
-  case precision2::second: return invalid_resolve_year_month_day_impl(ymdhms, invalid_val);
-  case precision2::millisecond: return invalid_resolve_year_month_day_impl(ymdhmss1, invalid_val);
-  case precision2::microsecond: return invalid_resolve_year_month_day_impl(ymdhmss2, invalid_val);
-  case precision2::nanosecond: return invalid_resolve_year_month_day_impl(ymdhmss3, invalid_val);
+  case precision2::year: return invalid_resolve_calendar_impl(y, invalid_val);
+  case precision2::month: return invalid_resolve_calendar_impl(ym, invalid_val);
+  case precision2::day: return invalid_resolve_calendar_impl(ymd, invalid_val);
+  case precision2::hour: return invalid_resolve_calendar_impl(ymdh, invalid_val);
+  case precision2::minute: return invalid_resolve_calendar_impl(ymdhm, invalid_val);
+  case precision2::second: return invalid_resolve_calendar_impl(ymdhms, invalid_val);
+  case precision2::millisecond: return invalid_resolve_calendar_impl(ymdhmss1, invalid_val);
+  case precision2::microsecond: return invalid_resolve_calendar_impl(ymdhmss2, invalid_val);
+  case precision2::nanosecond: return invalid_resolve_calendar_impl(ymdhmss3, invalid_val);
   default: clock_abort("Internal error: Invalid precision.");
   }
 }
 
 // -----------------------------------------------------------------------------
-
-template <enum component Component, class Calendar>
-cpp11::writable::list
-set_field_calendar(Calendar& x, rclock::integers& value) {
-  const r_ssize size = x.size();
-
-  for (r_ssize i = 0; i < size; ++i) {
-    if (x.is_na(i)) {
-      if (!value.is_na(i)) {
-        value.assign_na(i);
-      }
-    } else if (value.is_na(i)) {
-      x.assign_na(i);
-    } else {
-      check_range<Component>(value[i], "value");
-    }
-  }
-
-  cpp11::writable::list out({x.to_list(), value.sexp()});
-  out.names() = {"fields", "value"};
-
-  return out;
-}
 
 [[cpp11::register]]
 cpp11::writable::list
@@ -596,32 +458,12 @@ set_field_year_month_day_last_cpp(cpp11::list_of<cpp11::integers> fields,
 
 // -----------------------------------------------------------------------------
 
-template <class Calendar, class ClockDuration>
-cpp11::writable::list
-add_field_year_month_day(Calendar& x, const ClockDuration& n) {
-  const r_ssize size = x.size();
-
-  for (r_ssize i = 0; i < size; ++i) {
-    if (x.is_na(i)) {
-      continue;
-    }
-    if (n.is_na(i)) {
-      x.assign_na(i);
-      continue;
-    }
-
-    x.add(n[i], i);
-  }
-
-  return x.to_list();
-}
-
 [[cpp11::register]]
 cpp11::writable::list
-add_field_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
-                             cpp11::list_of<cpp11::integers> fields_n,
-                             const cpp11::strings& precision_fields,
-                             const cpp11::strings& precision_n) {
+year_month_day_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields,
+                                 cpp11::list_of<cpp11::integers> fields_n,
+                                 const cpp11::strings& precision_fields,
+                                 const cpp11::strings& precision_n) {
   using namespace rclock;
 
   const enum precision2 precision_fields_val = parse_precision2(precision_fields);
@@ -648,69 +490,69 @@ add_field_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   cpp11::integers ticks = duration::get_ticks(fields_n);
 
   duration::years dy{ticks};
-  duration::months dm{ticks};
   duration::quarters dq{ticks};
+  duration::months dm{ticks};
 
   switch (precision_fields_val) {
   case precision2::year:
     switch (precision_n_val) {
-    case precision2::year: return add_field_year_month_day(y, dy);
+    case precision2::year: return calendar_plus_duration_impl(y, dy);
     default: clock_abort("Internal error: Invalid precision.");
     }
   case precision2::month:
     switch (precision_n_val) {
-    case precision2::year: return add_field_year_month_day(ym, dy);
-    case precision2::quarter: return add_field_year_month_day(ym, dq);
-    case precision2::month: return add_field_year_month_day(ym, dm);
+    case precision2::year: return calendar_plus_duration_impl(ym, dy);
+    case precision2::quarter: return calendar_plus_duration_impl(ym, dq);
+    case precision2::month: return calendar_plus_duration_impl(ym, dm);
     default: clock_abort("Internal error: Invalid precision.");
     }
   case precision2::day:
     switch (precision_n_val) {
-    case precision2::year: return add_field_year_month_day(ymd, dy);
-    case precision2::quarter: return add_field_year_month_day(ymd, dq);
-    case precision2::month: return add_field_year_month_day(ymd, dm);
+    case precision2::year: return calendar_plus_duration_impl(ymd, dy);
+    case precision2::quarter: return calendar_plus_duration_impl(ymd, dq);
+    case precision2::month: return calendar_plus_duration_impl(ymd, dm);
     default: clock_abort("Internal error: Invalid precision.");
     }
   case precision2::hour:
     switch (precision_n_val) {
-    case precision2::year: return add_field_year_month_day(ymdh, dy);
-    case precision2::quarter: return add_field_year_month_day(ymdh, dq);
-    case precision2::month: return add_field_year_month_day(ymdh, dm);
+    case precision2::year: return calendar_plus_duration_impl(ymdh, dy);
+    case precision2::quarter: return calendar_plus_duration_impl(ymdh, dq);
+    case precision2::month: return calendar_plus_duration_impl(ymdh, dm);
     default: clock_abort("Internal error: Invalid precision.");
     }
   case precision2::minute:
     switch (precision_n_val) {
-    case precision2::year: return add_field_year_month_day(ymdhm, dy);
-    case precision2::quarter: return add_field_year_month_day(ymdhm, dq);
-    case precision2::month: return add_field_year_month_day(ymdhm, dm);
+    case precision2::year: return calendar_plus_duration_impl(ymdhm, dy);
+    case precision2::quarter: return calendar_plus_duration_impl(ymdhm, dq);
+    case precision2::month: return calendar_plus_duration_impl(ymdhm, dm);
     default: clock_abort("Internal error: Invalid precision.");
     }
   case precision2::second:
     switch (precision_n_val) {
-    case precision2::year: return add_field_year_month_day(ymdhms, dy);
-    case precision2::quarter: return add_field_year_month_day(ymdhms, dq);
-    case precision2::month: return add_field_year_month_day(ymdhms, dm);
+    case precision2::year: return calendar_plus_duration_impl(ymdhms, dy);
+    case precision2::quarter: return calendar_plus_duration_impl(ymdhms, dq);
+    case precision2::month: return calendar_plus_duration_impl(ymdhms, dm);
     default: clock_abort("Internal error: Invalid precision.");
     }
   case precision2::millisecond:
     switch (precision_n_val) {
-    case precision2::year: return add_field_year_month_day(ymdhmss1, dy);
-    case precision2::quarter: return add_field_year_month_day(ymdhmss1, dq);
-    case precision2::month: return add_field_year_month_day(ymdhmss1, dm);
+    case precision2::year: return calendar_plus_duration_impl(ymdhmss1, dy);
+    case precision2::quarter: return calendar_plus_duration_impl(ymdhmss1, dq);
+    case precision2::month: return calendar_plus_duration_impl(ymdhmss1, dm);
     default: clock_abort("Internal error: Invalid precision.");
     }
   case precision2::microsecond:
     switch (precision_n_val) {
-    case precision2::year: return add_field_year_month_day(ymdhmss2, dy);
-    case precision2::quarter: return add_field_year_month_day(ymdhmss2, dq);
-    case precision2::month: return add_field_year_month_day(ymdhmss2, dm);
+    case precision2::year: return calendar_plus_duration_impl(ymdhmss2, dy);
+    case precision2::quarter: return calendar_plus_duration_impl(ymdhmss2, dq);
+    case precision2::month: return calendar_plus_duration_impl(ymdhmss2, dm);
     default: clock_abort("Internal error: Invalid precision.");
     }
   case precision2::nanosecond:
     switch (precision_n_val) {
-    case precision2::year: return add_field_year_month_day(ymdhmss3, dy);
-    case precision2::quarter: return add_field_year_month_day(ymdhmss3, dq);
-    case precision2::month: return add_field_year_month_day(ymdhmss3, dm);
+    case precision2::year: return calendar_plus_duration_impl(ymdhmss3, dy);
+    case precision2::quarter: return calendar_plus_duration_impl(ymdhmss3, dq);
+    case precision2::month: return calendar_plus_duration_impl(ymdhmss3, dm);
     default: clock_abort("Internal error: Invalid precision.");
     }
   default: clock_abort("Internal error: Invalid precision.");
@@ -718,26 +560,6 @@ add_field_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
 }
 
 // -----------------------------------------------------------------------------
-
-template <class ClockDuration, class Calendar>
-cpp11::writable::list
-as_sys_time_year_month_day_impl(const Calendar& x) {
-  const r_ssize size = x.size();
-  ClockDuration out(size);
-  using Duration = typename ClockDuration::duration;
-
-  for (r_ssize i = 0; i < size; ++i) {
-    if (x.is_na(i)) {
-      out.assign_na(i);
-    } else {
-      date::sys_time<Duration> elt_st = x.to_sys_time(i);
-      Duration elt = elt_st.time_since_epoch();
-      out.assign(elt, i);
-    }
-  }
-
-  return out.to_list();
-}
 
 [[cpp11::register]]
 cpp11::writable::list
@@ -762,13 +584,13 @@ as_sys_time_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
   gregorian::ymdhmss<std::chrono::nanoseconds> ymdhmss3{year, month, day, hour, minute, second, subsecond};
 
   switch (parse_precision2(precision)) {
-  case precision2::day: return as_sys_time_year_month_day_impl<duration::days>(ymd);
-  case precision2::hour: return as_sys_time_year_month_day_impl<duration::hours>(ymdh);
-  case precision2::minute: return as_sys_time_year_month_day_impl<duration::minutes>(ymdhm);
-  case precision2::second: return as_sys_time_year_month_day_impl<duration::seconds>(ymdhms);
-  case precision2::millisecond: return as_sys_time_year_month_day_impl<duration::milliseconds>(ymdhmss1);
-  case precision2::microsecond: return as_sys_time_year_month_day_impl<duration::microseconds>(ymdhmss2);
-  case precision2::nanosecond: return as_sys_time_year_month_day_impl<duration::nanoseconds>(ymdhmss3);
+  case precision2::day: return as_sys_time_from_calendar_impl<duration::days>(ymd);
+  case precision2::hour: return as_sys_time_from_calendar_impl<duration::hours>(ymdh);
+  case precision2::minute: return as_sys_time_from_calendar_impl<duration::minutes>(ymdhm);
+  case precision2::second: return as_sys_time_from_calendar_impl<duration::seconds>(ymdhms);
+  case precision2::millisecond: return as_sys_time_from_calendar_impl<duration::milliseconds>(ymdhmss1);
+  case precision2::microsecond: return as_sys_time_from_calendar_impl<duration::microseconds>(ymdhmss2);
+  case precision2::nanosecond: return as_sys_time_from_calendar_impl<duration::nanoseconds>(ymdhmss3);
   default: {
     std::string precision_string = precision[0];
     std::string message =
@@ -783,30 +605,10 @@ as_sys_time_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
 
 // -----------------------------------------------------------------------------
 
-template <class Calendar, class ClockDuration>
-cpp11::writable::list
-as_year_month_day_from_time_point_impl(const ClockDuration& x) {
-  const r_ssize size = x.size();
-  Calendar out(size);
-  using Duration = typename ClockDuration::duration;
-
-  for (r_ssize i = 0; i < size; ++i) {
-    if (x.is_na(i)) {
-      out.assign_na(i);
-    } else {
-      Duration elt = x[i];
-      date::sys_time<Duration> elt_st{elt};
-      out.assign_sys_time(elt_st, i);
-    }
-  }
-
-  return out.to_list();
-}
-
 [[cpp11::register]]
 cpp11::writable::list
-as_year_month_day_from_time_point_cpp(cpp11::list_of<cpp11::integers> fields,
-                               const cpp11::strings& precision) {
+as_year_month_day_from_sys_time_cpp(cpp11::list_of<cpp11::integers> fields,
+                                    const cpp11::strings& precision) {
   using namespace rclock;
 
   cpp11::integers ticks = duration::get_ticks(fields);
@@ -822,13 +624,13 @@ as_year_month_day_from_time_point_cpp(cpp11::list_of<cpp11::integers> fields,
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
   switch (parse_precision2(precision)) {
-  case precision2::day: return as_year_month_day_from_time_point_impl<gregorian::ymd>(dd);
-  case precision2::hour: return as_year_month_day_from_time_point_impl<gregorian::ymdh>(dh);
-  case precision2::minute: return as_year_month_day_from_time_point_impl<gregorian::ymdhm>(dmin);
-  case precision2::second: return as_year_month_day_from_time_point_impl<gregorian::ymdhms>(ds);
-  case precision2::millisecond: return as_year_month_day_from_time_point_impl<gregorian::ymdhmss<std::chrono::milliseconds>>(dmilli);
-  case precision2::microsecond: return as_year_month_day_from_time_point_impl<gregorian::ymdhmss<std::chrono::microseconds>>(dmicro);
-  case precision2::nanosecond: return as_year_month_day_from_time_point_impl<gregorian::ymdhmss<std::chrono::nanoseconds>>(dnano);
+  case precision2::day: return as_calendar_from_sys_time_impl<gregorian::ymd>(dd);
+  case precision2::hour: return as_calendar_from_sys_time_impl<gregorian::ymdh>(dh);
+  case precision2::minute: return as_calendar_from_sys_time_impl<gregorian::ymdhm>(dmin);
+  case precision2::second: return as_calendar_from_sys_time_impl<gregorian::ymdhms>(ds);
+  case precision2::millisecond: return as_calendar_from_sys_time_impl<gregorian::ymdhmss<std::chrono::milliseconds>>(dmilli);
+  case precision2::microsecond: return as_calendar_from_sys_time_impl<gregorian::ymdhmss<std::chrono::microseconds>>(dmicro);
+  case precision2::nanosecond: return as_calendar_from_sys_time_impl<gregorian::ymdhmss<std::chrono::nanoseconds>>(dnano);
   default: clock_abort("Internal error: Invalid precision.");
   }
 }

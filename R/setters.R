@@ -14,6 +14,16 @@ set_day <- function(x, value, ...) {
 }
 
 #' @export
+set_weekday <- function(x, value, ...) {
+  UseMethod("set_weekday")
+}
+
+#' @export
+set_weekday_index <- function(x, value, ...) {
+  UseMethod("set_weekday_index")
+}
+
+#' @export
 set_hour <- function(x, value, ...) {
   UseMethod("set_hour")
 }

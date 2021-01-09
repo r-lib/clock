@@ -36,18 +36,6 @@ convert_calendar_days_to_iso_year_weeknum_weekday <- function(calendar) {
   .Call("_clock_convert_calendar_days_to_iso_year_weeknum_weekday", calendar, PACKAGE = "clock")
 }
 
-convert_calendar_days_to_year_month_weekday_index <- function(calendar) {
-  .Call("_clock_convert_calendar_days_to_year_month_weekday_index", calendar, PACKAGE = "clock")
-}
-
-convert_year_month_weekday_index_to_calendar_days <- function(year, month, weekday, index, day_nonexistent) {
-  .Call("_clock_convert_year_month_weekday_index_to_calendar_days", year, month, weekday, index, day_nonexistent, PACKAGE = "clock")
-}
-
-collect_year_month_weekday_fields <- function(year, month, weekday, index, last) {
-  .Call("_clock_collect_year_month_weekday_fields", year, month, weekday, index, last, PACKAGE = "clock")
-}
-
 format_duration_cpp <- function(fields, precision) {
   .Call("_clock_format_duration_cpp", fields, precision, PACKAGE = "clock")
 }
@@ -148,16 +136,60 @@ set_field_year_month_day_last_cpp <- function(fields, precision_fields) {
   .Call("_clock_set_field_year_month_day_last_cpp", fields, precision_fields, PACKAGE = "clock")
 }
 
-add_field_year_month_day_cpp <- function(fields, fields_n, precision_fields, precision_n) {
-  .Call("_clock_add_field_year_month_day_cpp", fields, fields_n, precision_fields, precision_n, PACKAGE = "clock")
+year_month_day_plus_duration_cpp <- function(fields, fields_n, precision_fields, precision_n) {
+  .Call("_clock_year_month_day_plus_duration_cpp", fields, fields_n, precision_fields, precision_n, PACKAGE = "clock")
 }
 
 as_sys_time_year_month_day_cpp <- function(fields, precision) {
   .Call("_clock_as_sys_time_year_month_day_cpp", fields, precision, PACKAGE = "clock")
 }
 
-as_year_month_day_from_time_point_cpp <- function(fields, precision) {
-  .Call("_clock_as_year_month_day_from_time_point_cpp", fields, precision, PACKAGE = "clock")
+as_year_month_day_from_sys_time_cpp <- function(fields, precision) {
+  .Call("_clock_as_year_month_day_from_sys_time_cpp", fields, precision, PACKAGE = "clock")
+}
+
+collect_year_month_weekday_fields <- function(fields, precision) {
+  .Call("_clock_collect_year_month_weekday_fields", fields, precision, PACKAGE = "clock")
+}
+
+format_year_month_weekday_cpp <- function(fields, precision) {
+  .Call("_clock_format_year_month_weekday_cpp", fields, precision, PACKAGE = "clock")
+}
+
+invalid_detect_year_month_weekday_cpp <- function(fields, precision) {
+  .Call("_clock_invalid_detect_year_month_weekday_cpp", fields, precision, PACKAGE = "clock")
+}
+
+invalid_any_year_month_weekday_cpp <- function(fields, precision) {
+  .Call("_clock_invalid_any_year_month_weekday_cpp", fields, precision, PACKAGE = "clock")
+}
+
+invalid_count_year_month_weekday_cpp <- function(fields, precision) {
+  .Call("_clock_invalid_count_year_month_weekday_cpp", fields, precision, PACKAGE = "clock")
+}
+
+invalid_resolve_year_month_weekday_cpp <- function(fields, precision, invalid) {
+  .Call("_clock_invalid_resolve_year_month_weekday_cpp", fields, precision, invalid, PACKAGE = "clock")
+}
+
+set_field_year_month_weekday_cpp <- function(fields, value, precision_fields, component) {
+  .Call("_clock_set_field_year_month_weekday_cpp", fields, value, precision_fields, component, PACKAGE = "clock")
+}
+
+set_field_year_month_weekday_last_cpp <- function(fields, precision_fields) {
+  .Call("_clock_set_field_year_month_weekday_last_cpp", fields, precision_fields, PACKAGE = "clock")
+}
+
+year_month_weekday_plus_duration_cpp <- function(fields, fields_n, precision_fields, precision_n) {
+  .Call("_clock_year_month_weekday_plus_duration_cpp", fields, fields_n, precision_fields, precision_n, PACKAGE = "clock")
+}
+
+as_sys_time_year_month_weekday_cpp <- function(fields, precision) {
+  .Call("_clock_as_sys_time_year_month_weekday_cpp", fields, precision, PACKAGE = "clock")
+}
+
+as_year_month_weekday_from_sys_time_cpp <- function(fields, precision) {
+  .Call("_clock_as_year_month_weekday_from_sys_time_cpp", fields, precision, PACKAGE = "clock")
 }
 
 clock_set_install <- function(path) {
