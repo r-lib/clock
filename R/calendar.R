@@ -136,8 +136,8 @@ arith_duration_and_calendar <- function(op, x, y, ...) {
 arith_calendar_and_numeric <- function(op, x, y, ...) {
   switch (
     op,
-    "+" = add_duration(x, duration_helper(y, calendar_precision(x))),
-    "-" = add_duration(x, duration_helper(-y, calendar_precision(x))),
+    "+" = add_duration(x, duration_helper(y, calendar_precision(x), retain_names = TRUE)),
+    "-" = add_duration(x, duration_helper(-y, calendar_precision(x), retain_names = TRUE)),
     stop_incompatible_op(op, x, y, ...)
   )
 }
@@ -145,7 +145,7 @@ arith_calendar_and_numeric <- function(op, x, y, ...) {
 arith_numeric_and_calendar <- function(op, x, y, ...) {
   switch (
     op,
-    "+" = add_duration(y, duration_helper(x, calendar_precision(y)), swapped = TRUE),
+    "+" = add_duration(y, duration_helper(x, calendar_precision(y), retain_names = TRUE), swapped = TRUE),
     "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a calendar from a duration.", ...),
     stop_incompatible_op(op, x, y, ...)
   )

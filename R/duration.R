@@ -43,8 +43,17 @@ duration_nanoseconds <- function(n = integer()) {
   duration_helper(n, "nanosecond")
 }
 
-duration_helper <- function(n, precision) {
-  names <- names(n)
+duration_helper <- function(n, precision, ..., retain_names = FALSE) {
+  check_dots_empty()
+
+  # Generally don't retain names for helpers like `duration_years()`,
+  # but might need to during arithmetic
+  if (retain_names) {
+    names <- names(n)
+  } else {
+    names <- NULL
+  }
+
   n <- vec_cast(n, integer(), x_arg = "n")
   fields <- duration_helper_cpp(n, precision)
 
@@ -358,7 +367,7 @@ duration_collect_n <- function(n, precision) {
     abort(paste0("`n` must have '", precision, "' precision."))
   }
 
-  duration_helper(n, precision)
+  duration_helper(n, precision, retain_names = TRUE)
 }
 
 # ------------------------------------------------------------------------------
