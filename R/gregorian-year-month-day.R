@@ -78,7 +78,10 @@ new_year_month_day <- function(year = integer(),
     nanosecond = list(year = year, month = month, day = day, hour = hour, minute = minute, second = second, subsecond = subsecond)
   )
 
-  mapply(int_assert, fields, names(fields))
+  field_names <- names(fields)
+  for (i in seq_along(fields)) {
+    int_assert(fields[[i]], fields_names[[i]])
+  }
 
   new_calendar(
     fields = fields,

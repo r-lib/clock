@@ -89,7 +89,10 @@ new_duration <- function(ticks = integer(),
     fields <- list(ticks = ticks, ticks_of_day = ticks_of_day, ticks_of_second = ticks_of_second)
   }
 
-  mapply(int_assert, fields, names(fields))
+  field_names <- names(fields)
+  for (i in seq_along(fields)) {
+    int_assert(fields[[i]], fields_names[[i]])
+  }
 
   new_clock_rcrd(
     fields = fields,
