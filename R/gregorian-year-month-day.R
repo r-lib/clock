@@ -444,6 +444,71 @@ as_naive_time.clock_year_month_day <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+calendar_cast.clock_year_month_day <- function(x, precision) {
+  if (!is_valid_year_month_day_precision(precision)) {
+    abort("`precision` is not a valid 'year_month_day' precision.")
+  }
+
+  x_precision <- calendar_precision(x)
+  x_precision_value <- precision_value(x_precision)
+  to_precision_value <- precision_value(precision)
+
+  if (x_precision_value == to_precision_value) {
+    x
+  } else if (x_precision_value < to_precision_value) {
+    year_month_day_upcast(x, precision, x_precision_value, to_precision_value)
+  } else {
+    year_month_day_downcast(x, precision, x_precision_value, to_precision_value)
+  }
+}
+
+year_month_day_upcast <- function(x, precision, x_precision_value, to_precision_value) {
+  fields <- calendar_fields(x)
+
+  na <- vec_equal_na(x)
+  any_na <- any(na)
+  ones <- na_to_ones(na, any_na)
+
+  if (to_precision_value == PRECISION_YEAR) {
+    abort("Internal error: Should have early returned.")
+  }
+  if (to_precision_value >= PRECISION_MONTH && x_precision_value < PRECISION_MONTH) {
+    fields[["month"]] <- ones
+  }
+  if (to_precision_value >= PRECISION_DAY && x_precision_value < PRECISION_DAY) {
+    fields[["day"]] <- ones
+  }
+  if (to_precision_value >= PRECISION_HOUR && x_precision_value < PRECISION_HOUR) {
+    zeros <- na_to_zeros(na, any_na)
+    fields <- calendar_time_upcast(fields, x_precision_value, to_precision_value, zeros)
+  }
+
+  new_year_month_day_from_fields(fields, precision, names(x))
+}
+
+year_month_day_downcast <- function(x, precision, x_precision_value, to_precision_value) {
+  out <- list()
+  fields <- calendar_fields(x)
+
+  if (to_precision_value >= PRECISION_YEAR) {
+    out[["year"]] <- fields[["year"]]
+  }
+  if (to_precision_value >= PRECISION_MONTH) {
+    out[["month"]] <- fields[["month"]]
+  }
+  if (to_precision_value >= PRECISION_DAY) {
+    out[["day"]] <- fields[["day"]]
+  }
+  if (to_precision_value >= PRECISION_HOUR) {
+    out <- calendar_time_downcast(out, fields, x_precision_value, to_precision_value)
+  }
+
+  new_year_month_day_from_fields(out, precision, names(x))
+}
+
+# ------------------------------------------------------------------------------
+
 field_year <- function(x) {
   field(x, "year")
 }

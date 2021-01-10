@@ -31,6 +31,104 @@ pillar_shaft.clock_calendar <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
+# Note:
+# Calendar casting is the one place where we assume a "default" value when
+# casting to a more precise precision. The default is 1 for months or days,
+# and 0 for time based components. For year-month-weekday, we choose the
+# 1st Sunday as the default value (Sunday==1L).
+
+#' @export
+calendar_cast <- function(x, precision) {
+  UseMethod("calendar_cast")
+}
+
+#' @export
+calendar_cast.clock_calendar <- function(x, precision) {
+  stop_clock_unsupported_calendar_op("calendar_cast")
+}
+
+calendar_time_upcast <- function(fields, x_precision_value, to_precision_value, zeros) {
+  if (to_precision_value >= PRECISION_HOUR && x_precision_value < PRECISION_HOUR) {
+    fields[["hour"]] <- zeros
+  }
+  if (to_precision_value >= PRECISION_MINUTE && x_precision_value < PRECISION_MINUTE) {
+    fields[["minute"]] <- zeros
+  }
+  if (to_precision_value >= PRECISION_SECOND && x_precision_value < PRECISION_SECOND) {
+    fields[["second"]] <- zeros
+  }
+  if (to_precision_value == PRECISION_MILLISECOND) {
+    fields[["subsecond"]] <- zeros
+  }
+  if (to_precision_value == PRECISION_MICROSECOND) {
+    if (x_precision_value == PRECISION_MILLISECOND) {
+      fields[["subsecond"]] <- fields[["subsecond"]] * 1e3L
+    } else {
+      fields[["subsecond"]] <- zeros
+    }
+  }
+  if (to_precision_value == PRECISION_NANOSECOND) {
+    if (x_precision_value == PRECISION_MILLISECOND) {
+      fields[["subsecond"]] <- fields[["subsecond"]] * 1e6L
+    } else if (x_precision_value == PRECISION_MICROSECOND) {
+      fields[["subsecond"]] <- fields[["subsecond"]] * 1e3L
+    } else {
+      fields[["subsecond"]] <- zeros
+    }
+  }
+  fields
+}
+
+calendar_time_downcast <- function(out, fields, x_precision_value, to_precision_value) {
+  if (to_precision_value >= PRECISION_HOUR) {
+    out[["hour"]] <- fields[["hour"]]
+  }
+  if (to_precision_value >= PRECISION_MINUTE) {
+    out[["minute"]] <- fields[["minute"]]
+  }
+  if (to_precision_value >= PRECISION_SECOND) {
+    out[["second"]] <- fields[["second"]]
+  }
+  if (to_precision_value == PRECISION_MILLISECOND) {
+    if (x_precision_value == PRECISION_MILLISECOND) {
+      out[["subsecond"]] <- fields[["subsecond"]]
+    } else if (x_precision_value == PRECISION_MICROSECOND) {
+      out[["subsecond"]] <- fields[["subsecond"]] %/% 1e3L
+    } else if (x_precision_value == PRECISION_NANOSECOND) {
+      out[["subsecond"]] <- fields[["subsecond"]] %/% 1e6L
+    }
+  }
+  if (to_precision_value == PRECISION_MICROSECOND) {
+    if (x_precision_value == PRECISION_MICROSECOND) {
+      out[["subsecond"]] <- fields[["subsecond"]]
+    } else if (x_precision_value == PRECISION_NANOSECOND) {
+      out[["subsecond"]] <- fields[["subsecond"]] %/% 1e3L
+    }
+  }
+  if (to_precision_value == PRECISION_NANOSECOND) {
+    abort("Internal error: Should have early returned.")
+  }
+  out
+}
+
+na_to_ones <- function(na, any_na) {
+  out <- rep(1L, length(na))
+  if (any_na) {
+    out[na] <- NA_integer_
+  }
+  out
+}
+
+na_to_zeros <- function(na, any_na) {
+  out <- vector("integer", length(na))
+  if (any_na) {
+    out[na] <- NA_integer_
+  }
+  out
+}
+
+# ------------------------------------------------------------------------------
+
 #' @export
 get_precision.clock_calendar <- function(x) {
   calendar_precision(x)
@@ -88,6 +186,16 @@ calendar_require_all_valid <- function(x) {
   }
 
   invisible(x)
+}
+
+# ------------------------------------------------------------------------------
+
+calendar_fields <- function(x) {
+  fields <- unclass(x)
+  field_names <- names(fields)
+  fields <- unstructure(fields)
+  names(fields) <- field_names
+  fields
 }
 
 # ------------------------------------------------------------------------------
