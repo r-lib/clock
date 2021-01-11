@@ -32,6 +32,14 @@ extern "C" SEXP _clock_add_iso_calendar_years(SEXP calendar, SEXP n, SEXP day_no
     return cpp11::as_sexp(add_iso_calendar_years(cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(calendar), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent)));
   END_CPP11
 }
+// check.cpp
+void check_range(const cpp11::integers& x, const cpp11::strings& component, const cpp11::strings& arg);
+extern "C" SEXP _clock_check_range(SEXP x, SEXP component, SEXP arg) {
+  BEGIN_CPP11
+    check_range(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(component), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(arg));
+    return R_NilValue;
+  END_CPP11
+}
 // converters.cpp
 clock_writable_list_of_integers convert_seconds_of_day_to_hour_minute_second(const clock_field& seconds_of_day);
 extern "C" SEXP _clock_convert_seconds_of_day_to_hour_minute_second(SEXP seconds_of_day) {
@@ -612,6 +620,7 @@ extern SEXP _clock_as_sys_time_year_month_weekday_cpp(SEXP, SEXP);
 extern SEXP _clock_as_year_month_day_from_sys_time_cpp(SEXP, SEXP);
 extern SEXP _clock_as_year_month_weekday_from_sys_time_cpp(SEXP, SEXP);
 extern SEXP _clock_as_zoned_sys_time_from_naive_time_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_check_range(SEXP, SEXP, SEXP);
 extern SEXP _clock_clock_set_install(SEXP);
 extern SEXP _clock_collect_iso_year_weeknum_weekday_fields(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_collect_year_month_day_fields(SEXP, SEXP);
@@ -699,6 +708,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_as_year_month_day_from_sys_time_cpp",                 (DL_FUNC) &_clock_as_year_month_day_from_sys_time_cpp,                  2},
     {"_clock_as_year_month_weekday_from_sys_time_cpp",             (DL_FUNC) &_clock_as_year_month_weekday_from_sys_time_cpp,              2},
     {"_clock_as_zoned_sys_time_from_naive_time_cpp",               (DL_FUNC) &_clock_as_zoned_sys_time_from_naive_time_cpp,                5},
+    {"_clock_check_range",                                         (DL_FUNC) &_clock_check_range,                                          3},
     {"_clock_clock_set_install",                                   (DL_FUNC) &_clock_clock_set_install,                                    1},
     {"_clock_collect_iso_year_weeknum_weekday_fields",             (DL_FUNC) &_clock_collect_iso_year_weeknum_weekday_fields,              4},
     {"_clock_collect_year_month_day_fields",                       (DL_FUNC) &_clock_collect_year_month_day_fields,                        2},

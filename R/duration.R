@@ -91,7 +91,7 @@ new_duration <- function(ticks = integer(),
 
   field_names <- names(fields)
   for (i in seq_along(fields)) {
-    int_assert(fields[[i]], fields_names[[i]])
+    int_assert(fields[[i]], field_names[[i]])
   }
 
   new_clock_rcrd(

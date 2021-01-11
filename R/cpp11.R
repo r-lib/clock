@@ -16,6 +16,10 @@ add_iso_calendar_years <- function(calendar, n, day_nonexistent) {
   .Call("_clock_add_iso_calendar_years", calendar, n, day_nonexistent, PACKAGE = "clock")
 }
 
+check_range <- function(x, component, arg) {
+  invisible(.Call("_clock_check_range", x, component, arg, PACKAGE = "clock"))
+}
+
 convert_seconds_of_day_to_hour_minute_second <- function(seconds_of_day) {
   .Call("_clock_convert_seconds_of_day_to_hour_minute_second", seconds_of_day, PACKAGE = "clock")
 }

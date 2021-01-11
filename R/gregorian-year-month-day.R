@@ -80,7 +80,7 @@ new_year_month_day <- function(year = integer(),
 
   field_names <- names(fields)
   for (i in seq_along(fields)) {
-    int_assert(fields[[i]], fields_names[[i]])
+    int_assert(fields[[i]], field_names[[i]])
   }
 
   new_calendar(
@@ -154,6 +154,10 @@ is_year_month_day <- function(x) {
 
 is_valid_year_month_day_precision <- function(precision) {
   is_valid_calendar_precision(precision, c("year", "month"))
+}
+
+is_valid_year_month_day_component <- function(component) {
+  is_valid_calendar_component(component, c("year", "month", "day"))
 }
 
 # ------------------------------------------------------------------------------
@@ -300,12 +304,13 @@ set_nanosecond.clock_year_month_day <- function(x, value, ...) {
   set_field_year_month_day(x, value, "nanosecond")
 }
 
-set_field_year_month_day <- function(x, value, precision_value) {
+set_field_year_month_day <- function(x, value, component) {
   if (is_last(value) && identical(precision_value, "day")) {
     return(set_field_year_month_day_last(x))
   }
 
   precision_fields <- calendar_precision(x)
+  precision_value <- year_month_day_component_to_precision(component)
   precision_out <- precision_common2(precision_fields, precision_value)
 
   value <- vec_cast(value, integer(), x_arg = "value")
@@ -315,7 +320,7 @@ set_field_year_month_day <- function(x, value, precision_value) {
 
   result <- set_field_year_month_day_cpp(x, value, precision_fields, precision_value)
   fields <- result$fields
-  field <- precision_field(precision_value)
+  field <- year_month_day_component_to_field(component)
   fields[[field]] <- result$value
 
   new_year_month_day_from_fields(fields, precision_out, names = names(x))
@@ -330,6 +335,38 @@ set_field_year_month_day_last <- function(x) {
   fields[["day"]] <- result$value
 
   new_year_month_day_from_fields(fields, precision_out, names = names(x))
+}
+
+year_month_day_component_to_precision <- function(component) {
+  switch (
+    component,
+    year = component,
+    month = component,
+    day = component,
+    hour = component,
+    minute = component,
+    second = component,
+    millisecond = component,
+    microsecond = component,
+    nanosecond = component,
+    abort("Internal error: Unknown component name.")
+  )
+}
+
+year_month_day_component_to_field <- function(component) {
+  switch (
+    component,
+    year = component,
+    month = component,
+    day = component,
+    hour = component,
+    minute = component,
+    second = component,
+    millisecond = "subsecond",
+    microsecond = "subsecond",
+    nanosecond = "subsecond",
+    abort("Internal error: Unknown component name.")
+  )
 }
 
 # ------------------------------------------------------------------------------
@@ -445,6 +482,42 @@ as_naive_time.clock_year_month_day <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
+calendar_floor.clock_year_month_day <- function(x, precision, ..., n = 1L, drop = TRUE) {
+  check_dots_empty()
+
+  x_precision <- calendar_precision(x)
+
+  if (!is_valid_year_month_day_precision(precision)) {
+    abort("`precision` must be a valid 'year_month_day' precision.")
+  }
+  check_rounding_precision(x_precision, precision, "floor")
+
+  n <- check_rounding_n(n)
+  drop <- check_rounding_drop(drop)
+
+  if (precision == "year") {
+    year <- calendar_year_floor(x, n)
+    x <- new_year_month_day(year = year, precision = "year", names = names(x))
+  } else if (precision == "month") {
+    x <- calendar_month_floor(x, n)
+  } else if (precision == "day") {
+    x <- calendar_day_floor(x, n, field_day)
+    x <- as_year_month_day(x)
+  } else {
+    x <- calendar_time_floor(x, precision, n)
+    x <- as_year_month_day(x)
+  }
+
+  if (!drop) {
+    x <- calendar_cast(x, x_precision)
+  }
+
+  x
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 calendar_cast.clock_year_month_day <- function(x, precision) {
   if (!is_valid_year_month_day_precision(precision)) {
     abort("`precision` is not a valid 'year_month_day' precision.")
@@ -479,7 +552,7 @@ year_month_day_upcast <- function(x, precision, x_precision_value, to_precision_
   if (to_precision_value >= PRECISION_DAY && x_precision_value < PRECISION_DAY) {
     fields[["day"]] <- ones
   }
-  if (to_precision_value >= PRECISION_HOUR && x_precision_value < PRECISION_HOUR) {
+  if (to_precision_value >= PRECISION_HOUR) {
     zeros <- na_to_zeros(na, any_na)
     fields <- calendar_time_upcast(fields, x_precision_value, to_precision_value, zeros)
   }

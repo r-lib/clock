@@ -86,7 +86,7 @@ new_year_month_weekday <- function(year = integer(),
 
   field_names <- names(fields)
   for (i in seq_along(fields)) {
-    int_assert(fields[[i]], fields_names[[i]])
+    int_assert(fields[[i]], field_names[[i]])
   }
 
   new_calendar(
@@ -530,6 +530,47 @@ as_naive_time.clock_year_month_weekday <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
+calendar_floor.clock_year_month_weekday <- function(x, precision, ..., n = 1L, drop = TRUE) {
+  check_dots_empty()
+
+  x_precision <- calendar_precision(x)
+
+  if (!is_valid_year_month_weekday_precision(precision)) {
+    abort("`precision` must be a valid 'year_month_weekday' precision.")
+  }
+  check_rounding_precision(x_precision, precision, "floor")
+
+  n <- check_rounding_n(n)
+  drop <- check_rounding_drop(drop)
+
+  if (precision == "year") {
+    year <- calendar_year_floor(x, n)
+    x <- new_year_month_weekday(year = year, precision = "year", names = names(x))
+  } else if (precision == "month") {
+    x <- calendar_month_floor(x, n)
+  } else if (precision == "day") {
+    # Flooring to 'day' precision for year-month-weekday
+    # uses "day of month" concept from year-month-day, as this
+    # is the only thing that really makes sense. It also aligns with casting
+    # up to day from month with year-month-weekday.
+    x <- as_year_month_day(x)
+    x <- calendar_day_floor(x, n, field_day, "day")
+    x <- as_year_month_weekday(x)
+  } else {
+    x <- calendar_time_floor(x, precision, n)
+    x <- as_year_month_weekday(x)
+  }
+
+  if (!drop) {
+    x <- calendar_cast(x, x_precision)
+  }
+
+  x
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 calendar_cast.clock_year_month_weekday <- function(x, precision) {
   if (!is_valid_year_month_weekday_precision(precision)) {
     abort("`precision` is not a valid 'year_month_weekday' precision.")
@@ -562,11 +603,12 @@ year_month_weekday_upcast <- function(x, precision, x_precision_value, to_precis
     fields[["month"]] <- ones
   }
   if (to_precision_value >= PRECISION_DAY && x_precision_value < PRECISION_DAY) {
-    # "Default" to 1st Sunday
-    fields[["weekday"]] <- ones
-    fields[["weekday_index"]] <- ones
+    # "Default" to 1st weekday in that month
+    ymd <- new_year_month_day(fields[["year"]], fields[["month"]], day = ones, precision = "day")
+    ymw <- as_year_month_weekday(ymd)
+    fields <- calendar_fields(ymw)
   }
-  if (to_precision_value >= PRECISION_HOUR && x_precision_value < PRECISION_HOUR) {
+  if (to_precision_value >= PRECISION_HOUR) {
     zeros <- na_to_zeros(na, any_na)
     fields <- calendar_time_upcast(fields, x_precision_value, to_precision_value, zeros)
   }

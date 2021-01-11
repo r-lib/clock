@@ -31,11 +31,118 @@ pillar_shaft.clock_calendar <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+calendar_floor <- function(x, precision, ..., n = 1L, drop = TRUE) {
+  UseMethod("calendar_floor")
+}
+
+#' @export
+calendar_floor.clock_calendar <- function(x, precision, ..., n = 1L, drop = TRUE) {
+  stop_clock_unsupported_calendar_op("calendar_floor")
+}
+
+# Year starting from 0. Returns `year` value for use in constructor.
+calendar_year_floor <- function(x, n) {
+  check_range(n, "year", "n")
+  field <- field_year(x)
+  compute_count(field, n)
+}
+
+# Returns calendar ready to be returned to the caller
+calendar_month_floor <- function(x, n) {
+  # Month of year
+  check_range(n, "month", "n")
+  field <- field_month(x)
+  x <- calendar_cast(x, "year")
+  x <- calendar_cast(x, "month")
+  count <- compute_count1(field, n)
+  x + duration_months(count)
+}
+
+# Returns sys_time to be converted back to calendar
+calendar_day_floor <- function(x, n, field_fn, component) {
+  check_range(n, component, "n")
+  field <- field_fn(x)
+  x <- calendar_cast(x, "month")
+  x <- calendar_cast(x, "day")
+  x <- as_sys_time(x)
+  count <- compute_count1(field, n)
+  x + duration_days(count)
+}
+
+# Returns sys_time to be converted back to calendar
+calendar_time_floor <- function(x, precision, n) {
+  if (precision == "hour") {
+    # Hour of day
+    precision_downcast <- "day"
+    field_name <- "hour"
+  } else if (precision == "minute") {
+    # Minute of hour
+    precision_downcast <- "hour"
+    field_name <- "minute"
+  } else if (precision == "second") {
+    # Second of minute
+    precision_downcast <- "minute"
+    field_name <- "second"
+  } else if (precision %in% c("millisecond", "microsecond", "nanosecond")) {
+    # Millisecond/Microsecond/Nanosecond of second
+    # Preemptive cast to ensure we extract the correct component
+    x <- calendar_cast(x, precision)
+    precision_downcast <- "second"
+    field_name <- "subsecond"
+  } else {
+    abort("Internal error: `precision` is not a time based precision")
+  }
+
+  # Time based precision maps directly to component
+  component <- precision
+  check_range(n, component, "n")
+
+  field <- field(x, field_name)
+  count <- compute_count(field, n)
+
+  x <- calendar_cast(x, precision_downcast)
+  x <- calendar_cast(x, precision)
+
+  x <- as_sys_time(x)
+
+  x + duration_helper(count, precision)
+}
+
+compute_count <- function(field, n) {
+  (field %/% n) * n
+}
+compute_count1 <- function(field, n) {
+  ((field - 1L) %/% n) * n
+}
+
+check_rounding_n <- function(n) {
+  n <- vec_cast(n, integer(), x_arg = "n")
+  if (!is_number(n)) {
+    abort("`n` must be a single number")
+  }
+  n
+}
+check_rounding_drop <- function(drop) {
+  if (!is_bool(drop)) {
+    abort("`drop` must be a single TRUE or FALSE.")
+  }
+  drop
+}
+check_rounding_precision <- function(x_precision, precision, verb) {
+  if (precision_value(x_precision) < precision_value(precision)) {
+    msg <- paste0("Can't ", verb, " to a precision that is more precise than `x`.")
+    abort(msg)
+  }
+}
+
+# ------------------------------------------------------------------------------
+
 # Note:
 # Calendar casting is the one place where we assume a "default" value when
 # casting to a more precise precision. The default is 1 for months or days,
 # and 0 for time based components. For year-month-weekday, we choose the
-# 1st Sunday as the default value (Sunday==1L).
+# 1st weekday in that month as the default value.
 
 #' @export
 calendar_cast <- function(x, precision) {
