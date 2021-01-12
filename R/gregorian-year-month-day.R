@@ -343,7 +343,7 @@ set_nanosecond.clock_year_month_day <- function(x, value, ...) {
 }
 
 set_field_year_month_day <- function(x, value, component) {
-  if (is_last(value) && identical(precision_value, "day")) {
+  if (is_last(value) && identical(component, "day")) {
     return(set_field_year_month_day_last(x))
   }
 
@@ -621,66 +621,33 @@ calendar_component_grouper.clock_year_month_day <- function(x, component) {
 # ------------------------------------------------------------------------------
 
 #' @export
-calendar_cast.clock_year_month_day <- function(x, precision) {
-  if (!year_month_day_is_valid_precision(precision)) {
-    abort("`precision` is not a valid 'year_month_day' precision.")
-  }
-
+calendar_narrow.clock_year_month_day <- function(x, precision) {
   x_precision <- calendar_precision(x)
+
+  if (x_precision == precision) {
+    return(x)
+  }
+
   x_precision_value <- precision_value(x_precision)
-  to_precision_value <- precision_value(precision)
+  out_precision_value <- precision_value(precision)
 
-  if (x_precision_value == to_precision_value) {
-    x
-  } else if (x_precision_value < to_precision_value) {
-    year_month_day_upcast(x, precision, x_precision_value, to_precision_value)
-  } else {
-    year_month_day_downcast(x, precision, x_precision_value, to_precision_value)
-  }
-}
+  out_fields <- list()
+  x_fields <- calendar_fields(x)
 
-year_month_day_upcast <- function(x, precision, x_precision_value, to_precision_value) {
-  fields <- calendar_fields(x)
-
-  na <- vec_equal_na(x)
-  any_na <- any(na)
-  ones <- na_to_ones(na, any_na)
-
-  if (to_precision_value == PRECISION_YEAR) {
-    abort("Internal error: Should have early returned.")
+  if (out_precision_value >= PRECISION_YEAR) {
+    out_fields[["year"]] <- x_fields[["year"]]
   }
-  if (to_precision_value >= PRECISION_MONTH && x_precision_value < PRECISION_MONTH) {
-    fields[["month"]] <- ones
+  if (out_precision_value >= PRECISION_MONTH) {
+    out_fields[["month"]] <- x_fields[["month"]]
   }
-  if (to_precision_value >= PRECISION_DAY && x_precision_value < PRECISION_DAY) {
-    fields[["day"]] <- ones
+  if (out_precision_value >= PRECISION_DAY) {
+    out_fields[["day"]] <- x_fields[["day"]]
   }
-  if (to_precision_value >= PRECISION_HOUR) {
-    zeros <- na_to_zeros(na, any_na)
-    fields <- calendar_time_upcast(fields, x_precision_value, to_precision_value, zeros)
+  if (out_precision_value >= PRECISION_HOUR) {
+    out_fields <- calendar_narrow_time(out_fields, out_precision_value, x_fields, x_precision_value)
   }
 
-  new_year_month_day_from_fields(fields, precision, names(x))
-}
-
-year_month_day_downcast <- function(x, precision, x_precision_value, to_precision_value) {
-  out <- list()
-  fields <- calendar_fields(x)
-
-  if (to_precision_value >= PRECISION_YEAR) {
-    out[["year"]] <- fields[["year"]]
-  }
-  if (to_precision_value >= PRECISION_MONTH) {
-    out[["month"]] <- fields[["month"]]
-  }
-  if (to_precision_value >= PRECISION_DAY) {
-    out[["day"]] <- fields[["day"]]
-  }
-  if (to_precision_value >= PRECISION_HOUR) {
-    out <- calendar_time_downcast(out, fields, x_precision_value, to_precision_value)
-  }
-
-  new_year_month_day_from_fields(out, precision, names(x))
+  new_year_month_day_from_fields(out_fields, precision = precision, names = names(x))
 }
 
 # ------------------------------------------------------------------------------

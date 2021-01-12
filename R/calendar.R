@@ -58,7 +58,7 @@ calendar_group.clock_calendar <- function(x, precision, ..., n = 1L) {
     abort("Can't floor to a precision that is more precise than `x`.")
   }
 
-  x <- calendar_cast(x, precision)
+  x <- calendar_narrow(x, precision)
 
   component <- calendar_precision_to_component(x, precision)
   group_component_fn <- calendar_component_grouper(x, component)
@@ -91,100 +91,44 @@ group_component1 <- function(x, n) {
 
 # ------------------------------------------------------------------------------
 
-# Note:
-# Calendar casting is the one place where we assume a "default" value when
-# casting to a more precise precision. The default is 1 for months or days,
-# and 0 for time based components. For year-month-weekday, we choose the
-# 1st weekday in that month as the default value.
+#' @export
+calendar_narrow <- function(x, precision) {
+  if (!calendar_is_valid_precision(x, precision)) {
+    abort("`precision` must be a valid precision for a '", calendar_name(x), "'.")
+  }
+
+  x_precision <- calendar_precision(x)
+  if (precision_value(x_precision) < precision_value(precision)) {
+    abort("Can't narrow to a precision that is wider than `x`.")
+  }
+
+  UseMethod("calendar_narrow")
+}
 
 #' @export
-calendar_cast <- function(x, precision) {
-  UseMethod("calendar_cast")
+calendar_narrow.clock_calendar <- function(x, precision) {
+  stop_clock_unsupported_calendar_op("calendar_narrow")
 }
 
-#' @export
-calendar_cast.clock_calendar <- function(x, precision) {
-  stop_clock_unsupported_calendar_op("calendar_cast")
-}
+calendar_narrow_time <- function(out_fields,
+                                 out_precision_value,
+                                 x_fields,
+                                 x_precision_value) {
+  if (out_precision_value >= PRECISION_HOUR) {
+    out_fields[["hour"]] <- x_fields[["hour"]]
+  }
+  if (out_precision_value >= PRECISION_MINUTE) {
+    out_fields[["minute"]] <- x_fields[["minute"]]
+  }
+  if (out_precision_value >= PRECISION_SECOND) {
+    out_fields[["second"]] <- x_fields[["second"]]
+  }
+  if (out_precision_value > PRECISION_SECOND) {
+    factor <- precision_subsecond_factor(out_precision_value, x_precision_value)
+    out_fields[["subsecond"]] <- x_fields[["subsecond"]] %/% factor
+  }
 
-calendar_time_upcast <- function(fields, x_precision_value, to_precision_value, zeros) {
-  if (to_precision_value >= PRECISION_HOUR && x_precision_value < PRECISION_HOUR) {
-    fields[["hour"]] <- zeros
-  }
-  if (to_precision_value >= PRECISION_MINUTE && x_precision_value < PRECISION_MINUTE) {
-    fields[["minute"]] <- zeros
-  }
-  if (to_precision_value >= PRECISION_SECOND && x_precision_value < PRECISION_SECOND) {
-    fields[["second"]] <- zeros
-  }
-  if (to_precision_value == PRECISION_MILLISECOND) {
-    fields[["subsecond"]] <- zeros
-  }
-  if (to_precision_value == PRECISION_MICROSECOND) {
-    if (x_precision_value == PRECISION_MILLISECOND) {
-      fields[["subsecond"]] <- fields[["subsecond"]] * 1e3L
-    } else {
-      fields[["subsecond"]] <- zeros
-    }
-  }
-  if (to_precision_value == PRECISION_NANOSECOND) {
-    if (x_precision_value == PRECISION_MILLISECOND) {
-      fields[["subsecond"]] <- fields[["subsecond"]] * 1e6L
-    } else if (x_precision_value == PRECISION_MICROSECOND) {
-      fields[["subsecond"]] <- fields[["subsecond"]] * 1e3L
-    } else {
-      fields[["subsecond"]] <- zeros
-    }
-  }
-  fields
-}
-
-calendar_time_downcast <- function(out, fields, x_precision_value, to_precision_value) {
-  if (to_precision_value >= PRECISION_HOUR) {
-    out[["hour"]] <- fields[["hour"]]
-  }
-  if (to_precision_value >= PRECISION_MINUTE) {
-    out[["minute"]] <- fields[["minute"]]
-  }
-  if (to_precision_value >= PRECISION_SECOND) {
-    out[["second"]] <- fields[["second"]]
-  }
-  if (to_precision_value == PRECISION_MILLISECOND) {
-    if (x_precision_value == PRECISION_MILLISECOND) {
-      out[["subsecond"]] <- fields[["subsecond"]]
-    } else if (x_precision_value == PRECISION_MICROSECOND) {
-      out[["subsecond"]] <- fields[["subsecond"]] %/% 1e3L
-    } else if (x_precision_value == PRECISION_NANOSECOND) {
-      out[["subsecond"]] <- fields[["subsecond"]] %/% 1e6L
-    }
-  }
-  if (to_precision_value == PRECISION_MICROSECOND) {
-    if (x_precision_value == PRECISION_MICROSECOND) {
-      out[["subsecond"]] <- fields[["subsecond"]]
-    } else if (x_precision_value == PRECISION_NANOSECOND) {
-      out[["subsecond"]] <- fields[["subsecond"]] %/% 1e3L
-    }
-  }
-  if (to_precision_value == PRECISION_NANOSECOND) {
-    abort("Internal error: Should have early returned.")
-  }
-  out
-}
-
-na_to_ones <- function(na, any_na) {
-  out <- rep(1L, length(na))
-  if (any_na) {
-    out[na] <- NA_integer_
-  }
-  out
-}
-
-na_to_zeros <- function(na, any_na) {
-  out <- vector("integer", length(na))
-  if (any_na) {
-    out[na] <- NA_integer_
-  }
-  out
+  out_fields
 }
 
 # ------------------------------------------------------------------------------

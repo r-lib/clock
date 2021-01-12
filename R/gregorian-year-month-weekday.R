@@ -689,70 +689,34 @@ calendar_component_grouper.clock_year_month_weekday <- function(x, component) {
 # ------------------------------------------------------------------------------
 
 #' @export
-calendar_cast.clock_year_month_weekday <- function(x, precision) {
-  if (!year_month_weekday_is_valid_precision(precision)) {
-    abort("`precision` is not a valid 'year_month_weekday' precision.")
-  }
-
+calendar_narrow.clock_year_month_weekday <- function(x, precision) {
   x_precision <- calendar_precision(x)
+
+  if (x_precision == precision) {
+    return(x)
+  }
+
   x_precision_value <- precision_value(x_precision)
-  to_precision_value <- precision_value(precision)
+  out_precision_value <- precision_value(precision)
 
-  if (x_precision_value == to_precision_value) {
-    x
-  } else if (x_precision_value < to_precision_value) {
-    year_month_weekday_upcast(x, precision, x_precision_value, to_precision_value)
-  } else {
-    year_month_weekday_downcast(x, precision, x_precision_value, to_precision_value)
-  }
-}
+  out_fields <- list()
+  x_fields <- calendar_fields(x)
 
-year_month_weekday_upcast <- function(x, precision, x_precision_value, to_precision_value) {
-  fields <- calendar_fields(x)
-
-  na <- vec_equal_na(x)
-  any_na <- any(na)
-  ones <- na_to_ones(na, any_na)
-
-  if (to_precision_value == PRECISION_YEAR) {
-    abort("Internal error: Should have early returned.")
+  if (out_precision_value >= PRECISION_YEAR) {
+    out_fields[["year"]] <- x_fields[["year"]]
   }
-  if (to_precision_value >= PRECISION_MONTH && x_precision_value < PRECISION_MONTH) {
-    fields[["month"]] <- ones
+  if (out_precision_value >= PRECISION_MONTH) {
+    out_fields[["month"]] <- x_fields[["month"]]
   }
-  if (to_precision_value >= PRECISION_DAY && x_precision_value < PRECISION_DAY) {
-    # "Default" to 1st weekday in that month
-    ymd <- new_year_month_day(fields[["year"]], fields[["month"]], day = ones, precision = "day")
-    ymw <- as_year_month_weekday(ymd)
-    fields <- calendar_fields(ymw)
+  if (out_precision_value >= PRECISION_DAY) {
+    out_fields[["weekday"]] <- x_fields[["weekday"]]
+    out_fields[["weekday_index"]] <- x_fields[["weekday_index"]]
   }
-  if (to_precision_value >= PRECISION_HOUR) {
-    zeros <- na_to_zeros(na, any_na)
-    fields <- calendar_time_upcast(fields, x_precision_value, to_precision_value, zeros)
+  if (out_precision_value >= PRECISION_HOUR) {
+    out_fields <- calendar_narrow_time(out_fields, out_precision_value, x_fields, x_precision_value)
   }
 
-  new_year_month_weekday_from_fields(fields, precision, names(x))
-}
-
-year_month_weekday_downcast <- function(x, precision, x_precision_value, to_precision_value) {
-  out <- list()
-  fields <- calendar_fields(x)
-
-  if (to_precision_value >= PRECISION_YEAR) {
-    out[["year"]] <- fields[["year"]]
-  }
-  if (to_precision_value >= PRECISION_MONTH) {
-    out[["month"]] <- fields[["month"]]
-  }
-  if (to_precision_value >= PRECISION_DAY) {
-    out[["weekday"]] <- fields[["weekday"]]
-    out[["weekday_index"]] <- fields[["weekday_index"]]
-  }
-  if (to_precision_value >= PRECISION_HOUR) {
-    out <- calendar_time_downcast(out, fields, x_precision_value, to_precision_value)
-  }
-
-  new_year_month_weekday_from_fields(out, precision, names(x))
+  new_year_month_weekday_from_fields(out_fields, precision = precision, names = names(x))
 }
 
 # ------------------------------------------------------------------------------
