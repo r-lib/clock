@@ -48,6 +48,9 @@ calendar_group.clock_calendar <- function(x, precision, ..., n = 1L) {
   if (!is_number(n)) {
     abort("`n` must be a single number.")
   }
+  if (n <= 0L) {
+    abort("`n` must be a positive number.")
+  }
 
   x_precision <- calendar_precision(x)
 
@@ -58,12 +61,13 @@ calendar_group.clock_calendar <- function(x, precision, ..., n = 1L) {
   x <- calendar_cast(x, precision)
 
   component <- calendar_precision_to_component(x, precision)
-  calendar_check_component_range(x, n, component, "n")
   group_component_fn <- calendar_component_grouper(x, component)
 
-  value <- calendar_get_component(x, component)
-  value <- group_component_fn(value, n)
-  x <- calendar_set_component(x, value, component)
+  if (n != 1L) {
+    value <- calendar_get_component(x, component)
+    value <- group_component_fn(value, n)
+    x <- calendar_set_component(x, value, component)
+  }
 
   x
 }
