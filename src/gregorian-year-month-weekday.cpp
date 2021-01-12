@@ -18,6 +18,7 @@ collect_year_month_weekday_fields(cpp11::list_of<cpp11::integers> fields,
   cpp11::integers hour = weekday::get_hour(fields);
   cpp11::integers minute = weekday::get_minute(fields);
   cpp11::integers second = weekday::get_second(fields);
+  cpp11::integers subsecond = weekday::get_subsecond(fields);
 
   weekday::y y{year};
   weekday::ym ym{year, month};
@@ -25,6 +26,9 @@ collect_year_month_weekday_fields(cpp11::list_of<cpp11::integers> fields,
   weekday::ymwdh ymwdh{year, month, weekday, weekday_index, hour};
   weekday::ymwdhm ymwdhm{year, month, weekday, weekday_index, hour, minute};
   weekday::ymwdhms ymwdhms{year, month, weekday, weekday_index, hour, minute, second};
+  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, weekday, weekday_index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, weekday, weekday_index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, weekday, weekday_index, hour, minute, second, subsecond};
 
   switch (parse_precision2(precision)) {
   case precision2::year: {
@@ -69,6 +73,39 @@ collect_year_month_weekday_fields(cpp11::list_of<cpp11::integers> fields,
     collect_field<component::minute>(ymwdhms, minute, "minute");
     collect_field<component::second>(ymwdhms, second, "second");
     return ymwdhms.to_list();
+  }
+  case precision2::millisecond: {
+    collect_field<component::year>(ymwdhmss1, year, "year");
+    collect_field<component::month>(ymwdhmss1, month, "month");
+    collect_field<component::weekday>(ymwdhmss1, weekday, "weekday");
+    collect_field<component::weekday_index>(ymwdhmss1, weekday_index, "weekday_index");
+    collect_field<component::hour>(ymwdhmss1, hour, "hour");
+    collect_field<component::minute>(ymwdhmss1, minute, "minute");
+    collect_field<component::second>(ymwdhmss1, second, "second");
+    collect_field<component::millisecond>(ymwdhmss1, subsecond, "subsecond");
+    return ymwdhmss1.to_list();
+  }
+  case precision2::microsecond: {
+    collect_field<component::year>(ymwdhmss2, year, "year");
+    collect_field<component::month>(ymwdhmss2, month, "month");
+    collect_field<component::weekday>(ymwdhmss2, weekday, "weekday");
+    collect_field<component::weekday_index>(ymwdhmss2, weekday_index, "weekday_index");
+    collect_field<component::hour>(ymwdhmss2, hour, "hour");
+    collect_field<component::minute>(ymwdhmss2, minute, "minute");
+    collect_field<component::second>(ymwdhmss2, second, "second");
+    collect_field<component::microsecond>(ymwdhmss2, subsecond, "subsecond");
+    return ymwdhmss2.to_list();
+  }
+  case precision2::nanosecond: {
+    collect_field<component::year>(ymwdhmss3, year, "year");
+    collect_field<component::month>(ymwdhmss3, month, "month");
+    collect_field<component::weekday>(ymwdhmss3, weekday, "weekday");
+    collect_field<component::weekday_index>(ymwdhmss3, weekday_index, "weekday_index");
+    collect_field<component::hour>(ymwdhmss3, hour, "hour");
+    collect_field<component::minute>(ymwdhmss3, minute, "minute");
+    collect_field<component::second>(ymwdhmss3, second, "second");
+    collect_field<component::nanosecond>(ymwdhmss3, subsecond, "subsecond");
+    return ymwdhmss3.to_list();
   }
   default: clock_abort("Internal error: Invalid precision.");
   }

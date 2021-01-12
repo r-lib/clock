@@ -5,7 +5,10 @@ year_month_weekday <- function(year,
                                weekday_index = NULL,
                                hour = NULL,
                                minute = NULL,
-                               second = NULL) {
+                               second = NULL,
+                               subsecond = NULL,
+                               ...,
+                               subsecond_precision = NULL) {
   if (xor(is_null(weekday), is_null(weekday_index))) {
     abort("If either `weekday` or `weekday_index` is specified, both must be specified.")
   }
@@ -26,9 +29,12 @@ year_month_weekday <- function(year,
   } else if (is_null(second)) {
     precision <- "minute"
     fields <- list(year = year, month = month, weekday = weekday, weekday_index = weekday_index, hour = hour, minute = minute)
-  } else {
+  } else if (is_null(subsecond)) {
     precision <- "second"
     fields <- list(year = year, month = month, weekday = weekday, weekday_index = weekday_index, hour = hour, minute = minute, second = second)
+  } else {
+    precision <- calendar_validate_subsecond_precision(subsecond_precision)
+    fields <- list(year = year, month = month, weekday = weekday, weekday_index = weekday_index, hour = hour, minute = minute, second = second, subsecond = subsecond)
   }
 
   if (is_last(fields$weekday_index)) {

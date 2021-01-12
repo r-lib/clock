@@ -282,6 +282,17 @@ calendar_has_precision <- function(x, precision) {
   calendar_precision(x) == precision
 }
 
+# For use in calendar constructor helpers
+calendar_validate_subsecond_precision <- function(subsecond_precision) {
+  if (is_null(subsecond_precision)) {
+    abort("If `subsecond` is provided, `subsecond_precision` must be specified.")
+  }
+  if (!is_valid_subsecond_precision(subsecond_precision)) {
+    abort("`subsecond_precision` must be a valid subsecond precision.")
+  }
+  subsecond_precision
+}
+
 # ------------------------------------------------------------------------------
 
 calendar_require_all_valid <- function(x, fn) {

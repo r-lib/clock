@@ -17,6 +17,7 @@ collect_year_month_day_fields(cpp11::list_of<cpp11::integers> fields,
   cpp11::integers hour = gregorian::get_hour(fields);
   cpp11::integers minute = gregorian::get_minute(fields);
   cpp11::integers second = gregorian::get_second(fields);
+  cpp11::integers subsecond = gregorian::get_subsecond(fields);
 
   gregorian::y y{year};
   gregorian::ym ym{year, month};
@@ -24,6 +25,9 @@ collect_year_month_day_fields(cpp11::list_of<cpp11::integers> fields,
   gregorian::ymdh ymdh{year, month, day, hour};
   gregorian::ymdhm ymdhm{year, month, day, hour, minute};
   gregorian::ymdhms ymdhms{year, month, day, hour, minute, second};
+  gregorian::ymdhmss<std::chrono::milliseconds> ymdhmss1{year, month, day, hour, minute, second, subsecond};
+  gregorian::ymdhmss<std::chrono::microseconds> ymdhmss2{year, month, day, hour, minute, second, subsecond};
+  gregorian::ymdhmss<std::chrono::nanoseconds> ymdhmss3{year, month, day, hour, minute, second, subsecond};
 
   switch (parse_precision2(precision)) {
   case precision2::year: {
@@ -64,6 +68,36 @@ collect_year_month_day_fields(cpp11::list_of<cpp11::integers> fields,
     collect_field<component::minute>(ymdhms, minute, "minute");
     collect_field<component::second>(ymdhms, second, "second");
     return ymdhms.to_list();
+  }
+  case precision2::millisecond: {
+    collect_field<component::year>(ymdhmss1, year, "year");
+    collect_field<component::month>(ymdhmss1, month, "month");
+    collect_field<component::day>(ymdhmss1, day, "day");
+    collect_field<component::hour>(ymdhmss1, hour, "hour");
+    collect_field<component::minute>(ymdhmss1, minute, "minute");
+    collect_field<component::second>(ymdhmss1, second, "second");
+    collect_field<component::millisecond>(ymdhmss1, subsecond, "subsecond");
+    return ymdhmss1.to_list();
+  }
+  case precision2::microsecond: {
+    collect_field<component::year>(ymdhmss2, year, "year");
+    collect_field<component::month>(ymdhmss2, month, "month");
+    collect_field<component::day>(ymdhmss2, day, "day");
+    collect_field<component::hour>(ymdhmss2, hour, "hour");
+    collect_field<component::minute>(ymdhmss2, minute, "minute");
+    collect_field<component::second>(ymdhmss2, second, "second");
+    collect_field<component::microsecond>(ymdhmss2, subsecond, "subsecond");
+    return ymdhmss2.to_list();
+  }
+  case precision2::nanosecond: {
+    collect_field<component::year>(ymdhmss3, year, "year");
+    collect_field<component::month>(ymdhmss3, month, "month");
+    collect_field<component::day>(ymdhmss3, day, "day");
+    collect_field<component::hour>(ymdhmss3, hour, "hour");
+    collect_field<component::minute>(ymdhmss3, minute, "minute");
+    collect_field<component::second>(ymdhmss3, second, "second");
+    collect_field<component::nanosecond>(ymdhmss3, subsecond, "subsecond");
+    return ymdhmss3.to_list();
   }
   default: clock_abort("Internal error: Invalid precision.");
   }

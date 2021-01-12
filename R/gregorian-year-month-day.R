@@ -4,7 +4,12 @@ year_month_day <- function(year,
                            day = NULL,
                            hour = NULL,
                            minute = NULL,
-                           second = NULL) {
+                           second = NULL,
+                           subsecond = NULL,
+                           ...,
+                           subsecond_precision = NULL) {
+  check_dots_empty()
+
   # Stop on the first `NULL` argument
   if (is_null(month)) {
     precision <- "year"
@@ -21,9 +26,12 @@ year_month_day <- function(year,
   } else if (is_null(second)) {
     precision <- "minute"
     fields <- list(year = year, month = month, day = day, hour = hour, minute = minute)
-  } else {
+  } else if (is_null(subsecond)) {
     precision <- "second"
     fields <- list(year = year, month = month, day = day, hour = hour, minute = minute, second = second)
+  } else {
+    precision <- calendar_validate_subsecond_precision(subsecond_precision)
+    fields <- list(year = year, month = month, day = day, hour = hour, minute = minute, second = second, subsecond = subsecond)
   }
 
   if (is_last(fields$day)) {

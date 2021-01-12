@@ -78,6 +78,10 @@ is_valid_precision <- function(precision) {
   is_string(precision) && is_true(precision %in% precision_names())
 }
 
+is_valid_subsecond_precision <- function(precision) {
+  is_valid_precision(precision) && precision %in% c("millisecond", "microsecond", "nanosecond")
+}
+
 precision_common2 <- function(x, y) {
   if (precision_value(x) >= precision_value(y)) {
     x
