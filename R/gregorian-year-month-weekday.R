@@ -133,6 +133,24 @@ vec_proxy_equal.clock_year_month_weekday <- function(x, ...) {
   proxy_equal_rcrd(x)
 }
 
+#' @export
+vec_proxy_compare.clock_year_month_weekday <- function(x, ...) {
+  precision <- calendar_precision(x)
+
+  if (precision_value(precision) >= PRECISION_DAY) {
+    # See issue #32
+    message <- paste0(
+      "'year_month_weekday' types with a precision of >= 'day' cannot be ",
+      "trivially compared or ordered. ",
+      "Convert to 'year_month_day' to compare using day-of-month values."
+    )
+    abort(message)
+  }
+
+  # Year / month year-month-weekday precision can be compared without ambiguity
+  proxy_equal_rcrd(x)
+}
+
 # ------------------------------------------------------------------------------
 
 #' @export
