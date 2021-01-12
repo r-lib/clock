@@ -331,6 +331,14 @@ arith_calendar_and_missing <- function(op, x, y, ...) {
   )
 }
 
+arith_calendar_and_calendar <- function(op, x, y, ..., calendar_minus_calendar_fn) {
+  switch (
+    op,
+    "-" = calendar_minus_calendar_fn(op, x, y, ...),
+    stop_incompatible_op(op, x, y, ...)
+  )
+}
+
 arith_calendar_and_duration <- function(op, x, y, ...) {
   switch (
     op,

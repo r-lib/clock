@@ -271,6 +271,13 @@ extern "C" SEXP _clock_as_year_month_day_from_sys_time_cpp(SEXP fields, SEXP pre
     return cpp11::as_sexp(as_year_month_day_from_sys_time_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision)));
   END_CPP11
 }
+// gregorian-year-month-day.cpp
+cpp11::writable::list year_month_day_minus_year_month_day_cpp(cpp11::list_of<cpp11::integers> x, cpp11::list_of<cpp11::integers> y, const cpp11::strings& precision);
+extern "C" SEXP _clock_year_month_day_minus_year_month_day_cpp(SEXP x, SEXP y, SEXP precision) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(year_month_day_minus_year_month_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(y), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision)));
+  END_CPP11
+}
 // gregorian-year-month-weekday.cpp
 cpp11::writable::list collect_year_month_weekday_fields(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision);
 extern "C" SEXP _clock_collect_year_month_weekday_fields(SEXP fields, SEXP precision) {
@@ -346,6 +353,13 @@ cpp11::writable::list as_year_month_weekday_from_sys_time_cpp(cpp11::list_of<cpp
 extern "C" SEXP _clock_as_year_month_weekday_from_sys_time_cpp(SEXP fields, SEXP precision) {
   BEGIN_CPP11
     return cpp11::as_sexp(as_year_month_weekday_from_sys_time_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision)));
+  END_CPP11
+}
+// gregorian-year-month-weekday.cpp
+cpp11::writable::list year_month_weekday_minus_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> x, cpp11::list_of<cpp11::integers> y, const cpp11::strings& precision);
+extern "C" SEXP _clock_year_month_weekday_minus_year_month_weekday_cpp(SEXP x, SEXP y, SEXP precision) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(year_month_weekday_minus_year_month_weekday_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(y), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision)));
   END_CPP11
 }
 // install.cpp
@@ -692,7 +706,9 @@ extern SEXP _clock_set_field_year_month_weekday_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_set_field_year_month_weekday_last_cpp(SEXP, SEXP);
 extern SEXP _clock_to_sys_duration_fields_from_sys_seconds_cpp(SEXP);
 extern SEXP _clock_to_sys_seconds_from_sys_duration_fields_cpp(SEXP);
+extern SEXP _clock_year_month_day_minus_year_month_day_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_year_month_day_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_year_month_weekday_minus_year_month_weekday_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_year_month_weekday_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_zone_current();
 extern SEXP _clock_zone_is_valid(SEXP);
@@ -780,7 +796,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_set_field_year_month_weekday_last_cpp",               (DL_FUNC) &_clock_set_field_year_month_weekday_last_cpp,                2},
     {"_clock_to_sys_duration_fields_from_sys_seconds_cpp",         (DL_FUNC) &_clock_to_sys_duration_fields_from_sys_seconds_cpp,          1},
     {"_clock_to_sys_seconds_from_sys_duration_fields_cpp",         (DL_FUNC) &_clock_to_sys_seconds_from_sys_duration_fields_cpp,          1},
+    {"_clock_year_month_day_minus_year_month_day_cpp",             (DL_FUNC) &_clock_year_month_day_minus_year_month_day_cpp,              3},
     {"_clock_year_month_day_plus_duration_cpp",                    (DL_FUNC) &_clock_year_month_day_plus_duration_cpp,                     4},
+    {"_clock_year_month_weekday_minus_year_month_weekday_cpp",     (DL_FUNC) &_clock_year_month_weekday_minus_year_month_weekday_cpp,      3},
     {"_clock_year_month_weekday_plus_duration_cpp",                (DL_FUNC) &_clock_year_month_weekday_plus_duration_cpp,                 4},
     {"_clock_zone_current",                                        (DL_FUNC) &_clock_zone_current,                                         0},
     {"_clock_zone_is_valid",                                       (DL_FUNC) &_clock_zone_is_valid,                                        1},

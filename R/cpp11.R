@@ -152,6 +152,10 @@ as_year_month_day_from_sys_time_cpp <- function(fields, precision) {
   .Call("_clock_as_year_month_day_from_sys_time_cpp", fields, precision, PACKAGE = "clock")
 }
 
+year_month_day_minus_year_month_day_cpp <- function(x, y, precision) {
+  .Call("_clock_year_month_day_minus_year_month_day_cpp", x, y, precision, PACKAGE = "clock")
+}
+
 collect_year_month_weekday_fields <- function(fields, precision) {
   .Call("_clock_collect_year_month_weekday_fields", fields, precision, PACKAGE = "clock")
 }
@@ -194,6 +198,10 @@ as_sys_time_year_month_weekday_cpp <- function(fields, precision) {
 
 as_year_month_weekday_from_sys_time_cpp <- function(fields, precision) {
   .Call("_clock_as_year_month_weekday_from_sys_time_cpp", fields, precision, PACKAGE = "clock")
+}
+
+year_month_weekday_minus_year_month_weekday_cpp <- function(x, y, precision) {
+  .Call("_clock_year_month_weekday_minus_year_month_weekday_cpp", x, y, precision, PACKAGE = "clock")
 }
 
 clock_set_install <- function(path) {

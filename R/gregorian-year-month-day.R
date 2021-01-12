@@ -516,6 +516,12 @@ vec_arith.clock_year_month_day.MISSING <- function(op, x, y, ...) {
   arith_calendar_and_missing(op, x, y, ...)
 }
 
+#' @method vec_arith.clock_year_month_day clock_year_month_day
+#' @export
+vec_arith.clock_year_month_day.clock_year_month_day <- function(op, x, y, ...) {
+  arith_calendar_and_calendar(op, x, y, ..., calendar_minus_calendar_fn = year_month_day_minus_year_month_day)
+}
+
 #' @method vec_arith.clock_year_month_day clock_duration
 #' @export
 vec_arith.clock_year_month_day.clock_duration <- function(op, x, y, ...) {
@@ -538,6 +544,25 @@ vec_arith.clock_year_month_day.numeric <- function(op, x, y, ...) {
 #' @export
 vec_arith.numeric.clock_year_month_day <- function(op, x, y, ...) {
   arith_numeric_and_calendar(op, x, y, ...)
+}
+
+year_month_day_minus_year_month_day <- function(op, x, y, ...) {
+  args <- vec_recycle_common(x = x, y = y)
+  args <- vec_cast_common(!!!args)
+  x <- args$x
+  y <- args$y
+
+  names <- names_common(x, y)
+
+  precision <- calendar_precision(x)
+
+  if (precision_value(precision) > PRECISION_MONTH) {
+    stop_incompatible_op(op, x, y, ...)
+  }
+
+  fields <- year_month_day_minus_year_month_day_cpp(x, y, precision)
+
+  new_duration_from_fields(fields, precision, names = names)
 }
 
 # ------------------------------------------------------------------------------

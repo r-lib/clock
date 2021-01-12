@@ -634,3 +634,67 @@ as_year_month_day_from_sys_time_cpp(cpp11::list_of<cpp11::integers> fields,
   default: clock_abort("Internal error: Invalid precision.");
   }
 }
+
+// -----------------------------------------------------------------------------
+
+static
+inline
+cpp11::writable::list
+year_minus_year_impl(const rclock::gregorian::y& x,
+                     const rclock::gregorian::y& y) {
+  const r_ssize size = x.size();
+  rclock::duration::years out(size);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    if (x.is_na(i) || y.is_na(i)) {
+      out.assign_na(i);
+      continue;
+    }
+    out.assign(x.to_year(i) - y.to_year(i), i);
+  }
+
+  return out.to_list();
+}
+
+static
+inline
+cpp11::writable::list
+year_month_minus_year_month_impl(const rclock::gregorian::ym& x,
+                                 const rclock::gregorian::ym& y) {
+  const r_ssize size = x.size();
+  rclock::duration::months out(size);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    if (x.is_na(i) || y.is_na(i)) {
+      out.assign_na(i);
+      continue;
+    }
+    out.assign(x.to_year_month(i) - y.to_year_month(i), i);
+  }
+
+  return out.to_list();
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+year_month_day_minus_year_month_day_cpp(cpp11::list_of<cpp11::integers> x,
+                                        cpp11::list_of<cpp11::integers> y,
+                                        const cpp11::strings& precision) {
+  const cpp11::integers x_year = rclock::gregorian::get_year(x);
+  const cpp11::integers x_month = rclock::gregorian::get_month(x);
+
+  const cpp11::integers y_year = rclock::gregorian::get_year(y);
+  const cpp11::integers y_month = rclock::gregorian::get_month(y);
+
+  const rclock::gregorian::y x_y{x_year};
+  const rclock::gregorian::ym x_ym{x_year, x_month};
+
+  const rclock::gregorian::y y_y{y_year};
+  const rclock::gregorian::ym y_ym{y_year, y_month};
+
+  switch (parse_precision2(precision)) {
+  case precision2::year: return year_minus_year_impl(x_y, y_y);
+  case precision2::month: return year_month_minus_year_month_impl(x_ym, y_ym);
+  default: clock_abort("Internal error: Invalid precision.");
+  }
+}
