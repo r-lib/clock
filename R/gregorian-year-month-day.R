@@ -155,6 +155,18 @@ is_year_month_day <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
+vec_ptype2.clock_year_month_day.clock_year_month_day <- function(x, y, ...) {
+  ptype2_calendar_and_calendar(x, y, ...)
+}
+
+#' @export
+vec_cast.clock_year_month_day.clock_year_month_day <- function(x, to, ...) {
+  cast_calendar_to_calendar(x, to, ...)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 calendar_is_valid_precision.clock_year_month_day <- function(x, precision) {
   year_month_day_is_valid_precision(precision)
 }

@@ -162,6 +162,18 @@ is_year_month_weekday <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
+vec_ptype2.clock_year_month_weekday.clock_year_month_weekday <- function(x, y, ...) {
+  ptype2_calendar_and_calendar(x, y, ...)
+}
+
+#' @export
+vec_cast.clock_year_month_weekday.clock_year_month_weekday <- function(x, to, ...) {
+  cast_calendar_to_calendar(x, to, ...)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 calendar_is_valid_precision.clock_year_month_weekday <- function(x, precision) {
   year_month_weekday_is_valid_precision(precision)
 }

@@ -31,6 +31,29 @@ pillar_shaft.clock_calendar <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
+# Note: Cannot cast between calendar precisions. Casting to a more precise
+# precision is undefined because we consider things like year-month to be
+# a range of days over the whole month, and it would be impossible to map
+# that to just one day.
+
+ptype2_calendar_and_calendar <- function(x, y, ...) {
+  if (calendar_precision(x) == calendar_precision(y)) {
+    x
+  } else {
+    stop_incompatible_type(x, y, ...)
+  }
+}
+
+cast_calendar_to_calendar <- function(x, to, ...) {
+  if (calendar_precision(x) == calendar_precision(to)) {
+    x
+  } else {
+    stop_incompatible_cast(x, to, ...)
+  }
+}
+
+# ------------------------------------------------------------------------------
+
 #' @export
 calendar_group <- function(x, precision, ..., n = 1L) {
   UseMethod("calendar_group")
