@@ -133,14 +133,14 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span>
 
-<span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<span class="fu">add_months</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <p>But there is nothing stopping you from choosing a different behavior. You can adjust the default behavior with <code>day_nonexistent</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span>
 
-<span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, day_nonexistent <span class="op">=</span> <span class="st">"first-time"</span><span class="op">)</span>
+<span class="fu">add_months</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, day_nonexistent <span class="op">=</span> <span class="st">"first-time"</span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, day_nonexistent <span class="op">=</span> <span class="st">"last-day"</span><span class="op">)</span></code></pre></div>
+<span class="fu">add_months</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, day_nonexistent <span class="op">=</span> <span class="st">"last-day"</span><span class="op">)</span></code></pre></div>
 <p>In isolation, it might seem intuitive to keep the original time of day using <code>"last-day"</code>, but this can be dangerous when doing data science, which often involves a vector of dates rather than just one. Retaining the original time of day can alter the relative ordering within the vector, which can cause many issues. See the section on Relative Ordering for more information.</p>
 </div>
 <div id="nonexistent-times-due-to-daylight-savings-gaps" class="section level2">
@@ -168,18 +168,18 @@
 </ul>
 <p>Rather than forcing one of these options on you, clock exposes them all through the <code>dst_nonexistent</code> argument, but tries to default to the most common case. Here, that means adjusting to the next instant after the gap.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">add_days</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <p>But you are more than welcome to choose the other options:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, dst_nonexistent <span class="op">=</span> <span class="st">"roll-backward"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu">add_days</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, dst_nonexistent <span class="op">=</span> <span class="st">"roll-backward"</span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, dst_nonexistent <span class="op">=</span> <span class="st">"NA"</span><span class="op">)</span></code></pre></div>
+<span class="fu">add_days</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, dst_nonexistent <span class="op">=</span> <span class="st">"NA"</span><span class="op">)</span></code></pre></div>
 <div id="shifting" class="section level3">
 <h3 class="hasAnchor">
 <a href="#shifting" class="anchor"></a>Shifting</h3>
 <p>The <em>shifting</em> options deserve special mention. The following will add the 1 hour gap to the nonexistent time of <code>02:30:00</code>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, dst_nonexistent <span class="op">=</span> <span class="st">"shift-forward"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">add_days</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, dst_nonexistent <span class="op">=</span> <span class="st">"shift-forward"</span><span class="op">)</span></code></pre></div>
 <p>A word of warning about this. While it might seem convenient in isolation, this behavior can be very problematic when used with a vector of dates because it doesn’t preserve the <em>relative ordering</em> within that vector. For examples, see the Relative Ordering section below.</p>
 </div>
 <div id="direction" class="section level3">
@@ -194,10 +194,10 @@
 <p>To resolve this nonexistent date, it seems intuitive to take into account the <em>direction</em> that you are traveling when performing this arithmetic. Rather than rolling forward to <code>03:00:00</code>, it makes sense to roll back to the previous instant in time of <code>01:59:59</code> since that matches the direction of travel you are already moving in.</p>
 <p>To handle this, the <code>dst_nonexistent</code> argument defaults to <code>"roll-directional"</code>, which chooses <code>"roll-forward"</code> if you are adding time and <code>"roll-backward"</code> if you are subtracting it. This hopefully gives the most intuitive result of:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/clock-arithmetic.html">subtract_days</a></span><span class="op">(</span><span class="va">y</span>, <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">subtract_days</span><span class="op">(</span><span class="va">y</span>, <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <p>But again you can change this if you did want <code>03:00:00</code>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/clock-arithmetic.html">subtract_days</a></span><span class="op">(</span><span class="va">y</span>, <span class="fl">1</span>, dst_nonexistent <span class="op">=</span> <span class="st">"roll-forward"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">subtract_days</span><span class="op">(</span><span class="va">y</span>, <span class="fl">1</span>, dst_nonexistent <span class="op">=</span> <span class="st">"roll-forward"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="ambiguous-times-due-to-daylight-savings-fallbacks" class="section level2">
@@ -232,10 +232,10 @@
 </ul>
 <p>Again, clock exposes all of these options to you through the <code>dst_ambiguous</code> option, but tries to choose the most intuitive one. Here, that means choosing the earliest of the two ambiguous times since you are adding months and are approaching it from before the fallback happened.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">add_months</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <p>If you wanted the latest time, you can use:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, dst_ambiguous <span class="op">=</span> <span class="st">"latest"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">add_months</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, dst_ambiguous <span class="op">=</span> <span class="st">"latest"</span><span class="op">)</span></code></pre></div>
 <div id="direction-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#direction-1" class="anchor"></a>Direction</h3>
@@ -248,10 +248,10 @@
 <span class="co"># but which one?</span></code></pre></div>
 <p>In this case, since you started past when the fallback happened, you probably would like to get the second occurrence of this time, i.e. the <code>"latest"</code> one. <code>dst_ambiguous</code> also defaults to <code>"directional"</code>, which knows to choose <code>"earliest"</code> when adding time, and <code>"latest"</code> when subtracting time. This should result in the most intuitive behavior of:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/clock-arithmetic.html">subtract_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">subtract_months</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <p>But if you wanted the earliest occurrence, you could still get that:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/clock-arithmetic.html">subtract_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, dst_ambiguous <span class="op">=</span> <span class="st">"earliest"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">subtract_months</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, dst_ambiguous <span class="op">=</span> <span class="st">"earliest"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="relative-ordering" class="section level2">
@@ -272,7 +272,7 @@
 <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></code></pre></div>
 <p>What happens if you add 1 month to this vector, and want to keep the time of day? Note that the second element in the vector will have to consult <code>day_nonexistent</code> since <code>"1970-02-31"</code> doesn’t exist.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, day_nonexistent <span class="op">=</span> <span class="st">"last-day"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">add_months</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, day_nonexistent <span class="op">=</span> <span class="st">"last-day"</span><span class="op">)</span>
 
 <span class="va">y</span></code></pre></div>
 <p>This seems like a reasonable result at first, but on closer inspection you’ll notice that the ordering of the dates has flipped!</p>
@@ -286,7 +286,7 @@
 <p>It is often a requirement that <code>index</code> is an increasing series here, and similarly it is expected that <code>starts</code> and <code>stops</code> are also increasing. If the relative ordering is lost then you can’t ensure that this holds.</p>
 <p>The defaults in clock will always preserve relative ordering. For <code>day_nonexistent</code>, it is always safe to use <code>"last-time"</code> and <code>"first-time"</code>. This is why <code>"last-time"</code> pins the time of day to the last possible second in the day.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, day_nonexistent <span class="op">=</span> <span class="st">"last-time"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu">add_months</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, day_nonexistent <span class="op">=</span> <span class="st">"last-time"</span><span class="op">)</span>
 <span class="va">z</span>
 
 <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>
@@ -303,7 +303,7 @@
 <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></code></pre></div>
 <p>If we added 1 day to this vector and used <code>"shift-forward"</code> to keep the time of day by “shifting” forward by the size of the gap, then we’d end up with:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, dst_nonexistent <span class="op">=</span> <span class="st">"shift-forward"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">add_days</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, dst_nonexistent <span class="op">=</span> <span class="st">"shift-forward"</span><span class="op">)</span>
 <span class="va">y</span>
 
 <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>
@@ -311,7 +311,7 @@
 <p>The relative ordering is lost!</p>
 <p>The default option for <code>dst_nonexistent</code> of <code>"roll-directional"</code> will preserve relative ordering, as will choosing <code>"roll-forward"</code> or <code>"roll-backward"</code> directly. This is why <code>"roll-forward"</code> pins the time of day to the first possible second after the gap (and similar reasoning applies for <code>"roll-backward"</code>).</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu">add_days</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>
 <span class="va">z</span>
 
 <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>
@@ -329,17 +329,17 @@
 <span class="co">#</span>
 <span class="co"># Possibly:</span>
 <span class="co"># 1970-04-26 03:30:00</span></code></pre></div>
-<p>The issue with adding multiple periods is that <code><a href="../reference/clock-arithmetic.html">add_days()</a></code> and friends will <em>immediately</em> try to fix any daylight savings issues (i.e. with <code>dst_nonexistent</code>) after each individual unit is added. This means that result of adding multiple periods can depend on the order in which you apply them.</p>
+<p>The issue with adding multiple periods is that <code>add_days()</code> and friends will <em>immediately</em> try to fix any daylight savings issues (i.e. with <code>dst_nonexistent</code>) after each individual unit is added. This means that result of adding multiple periods can depend on the order in which you apply them.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># immediately applies `dst_nonexistent = "roll-forward"`</span>
+  <span class="fu">add_days</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># immediately applies `dst_nonexistent = "roll-forward"`</span>
   <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_hours</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+  <span class="fu">add_hours</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 
 <span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_hours</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">add_hours</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co"># no need for `dst_nonexistent`, we are past the gap</span></code></pre></div>
+  <span class="fu">add_days</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co"># no need for `dst_nonexistent`, we are past the gap</span></code></pre></div>
 <p>To avoid these issues, when working with multiple transformations it is often useful to temporarily transform from a <em>zoned</em> date-time to a <em>local</em> date-time.</p>
 <p>A zoned date-time is one that has a time zone attached. All POSIXct objects are zoned. In the above example, <code>x</code> is associated with the <code>"America/New_York"</code> time zone. All Date objects are also zoned, they are implicitly assumed to be <code>"UTC"</code> throughout R.</p>
 <p>A local date-time is one that isn’t associated with any time zones. This frees it from the issues that <code>dst_nonexistent</code> and <code>dst_ambiguous</code> have to handle.</p>
@@ -351,14 +351,14 @@
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">%&gt;%</span>
   <span class="fu">localize</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_hours</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></code></pre></div>
+  <span class="fu">add_days</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">add_hours</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></code></pre></div>
 <p>After performing the manipulations on the local timeline, we can convert back to a zoned date-time with <code>unlocalize()</code>. This requires a <code>zone</code> argument to specify which zone to convert back to, but we can just pull that from <code>x</code>.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">%&gt;%</span>
   <span class="fu">localize</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_hours</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">add_days</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">add_hours</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">unlocalize</span><span class="op">(</span><span class="fu">get_zone</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><code>unlocalize()</code> also has arguments for resolving any nonexistent or ambiguous daylight savings issues that might occur when converting from a local date-time to a zoned date-time. This is the only place that you should have to worry about daylight savings when working with a local date-time.</p>
 </div>
