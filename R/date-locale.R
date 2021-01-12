@@ -55,3 +55,7 @@ print.clock_date_locale <- function (x, ...) {
   cat("Decimal Mark: ", x$decimal_mark, "\n", sep = "")
   print(x$date_names)
 }
+
+is_date_locale <- function(x) {
+  inherits(x, "clock_date_locale")
+}

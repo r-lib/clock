@@ -6,6 +6,84 @@
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
+enum invalid parse_invalid(const cpp11::strings& x) {
+  if (x.size() != 1) {
+    clock_abort("`invalid` must be a string with length 1.");
+  }
+
+  std::string string = x[0];
+
+  if (string == "last-time") return invalid::last_time;
+  if (string == "first-time") return invalid::first_time;
+  if (string == "last-day") return invalid::last_day;
+  if (string == "first-day") return invalid::first_day;
+  if (string == "NA") return invalid::na;
+  if (string == "error") return invalid::error;
+
+  clock_abort("'%s' is not a recognized `invalid` option.", string.c_str());
+}
+
+// -----------------------------------------------------------------------------
+
+// [[ include("enums.h") ]]
+enum nonexistent parse_nonexistent_one(const cpp11::r_string& x) {
+  std::string string(x);
+
+  if (string == "roll-forward") return nonexistent::roll_forward;
+  if (string == "roll-backward") return nonexistent::roll_backward;
+  if (string == "shift-forward") return nonexistent::shift_forward;
+  if (string == "shift-backward") return nonexistent::shift_backward;
+  if (string == "NA") return nonexistent::na;
+  if (string == "error") return nonexistent::error;
+
+  clock_abort("'%s' is not a recognized `nonexistent` option.", string.c_str());
+}
+
+// -----------------------------------------------------------------------------
+
+// [[ include("enums.h") ]]
+enum ambiguous parse_ambiguous_one(const cpp11::r_string& x) {
+  std::string string(x);
+
+  if (string == "earliest") return ambiguous::earliest;
+  if (string == "latest") return ambiguous::latest;
+  if (string == "NA") return ambiguous::na;
+  if (string == "error") return ambiguous::error;
+
+  clock_abort("'%s' is not a recognized `ambiguous` option.", string.c_str());
+}
+
+// -----------------------------------------------------------------------------
+
+// [[ include("enums.h") ]]
+enum component parse_component(const cpp11::strings& x) {
+  if (x.size() != 1) {
+    clock_abort("`component` must be a string with length 1.");
+  }
+
+  std::string string = x[0];
+
+  if (string == "year") return component::year;
+  if (string == "month") return component::month;
+  if (string == "day") return component::day;
+  if (string == "hour") return component::hour;
+  if (string == "minute") return component::minute;
+  if (string == "second") return component::second;
+  if (string == "millisecond") return component::millisecond;
+  if (string == "microsecond") return component::microsecond;
+  if (string == "nanosecond") return component::nanosecond;
+  if (string == "quarternum") return component::quarternum;
+  if (string == "quarterday") return component::quarterday;
+  if (string == "weeknum") return component::weeknum;
+  if (string == "weekday") return component::weekday;
+  if (string == "weekday_index") return component::weekday_index;
+
+  clock_abort("'%s' is not a recognized `component` option.", string.c_str());
+}
+
+// -----------------------------------------------------------------------------
+
+// [[ include("enums.h") ]]
 enum day_nonexistent parse_day_nonexistent(const cpp11::strings& x) {
   if (x.size() != 1) {
     clock_abort("`day_nonexistent` must be a string with length 1.");
@@ -144,4 +222,45 @@ enum precision parse_precision(const cpp11::strings& x) {
   if (string == "nanosecond") return precision::nanosecond;
 
   clock_abort("'%s' is not a recognized `precision` option.", string.c_str());
+}
+
+// -----------------------------------------------------------------------------
+
+// [[ include("enums.h") ]]
+enum precision2 parse_precision2(const cpp11::strings& x) {
+  if (x.size() != 1) {
+    clock_abort("`precision` must be a string with length 1.");
+  }
+
+  std::string string = x[0];
+
+  if (string == "year") return precision2::year;
+  if (string == "quarter") return precision2::quarter;
+  if (string == "month") return precision2::month;
+  if (string == "week") return precision2::week;
+  if (string == "day") return precision2::day;
+  if (string == "hour") return precision2::hour;
+  if (string == "minute") return precision2::minute;
+  if (string == "second") return precision2::second;
+  if (string == "millisecond") return precision2::millisecond;
+  if (string == "microsecond") return precision2::microsecond;
+  if (string == "nanosecond") return precision2::nanosecond;
+
+  clock_abort("'%s' is not a recognized `precision` option.", string.c_str());
+}
+
+// -----------------------------------------------------------------------------
+
+// [[ include("enums.h") ]]
+enum clock parse_clock(const cpp11::strings& x) {
+  if (x.size() != 1) {
+    clock_abort("`clock` must be a string with length 1.");
+  }
+
+  std::string string = x[0];
+
+  if (string == "sys") return clock::sys;
+  if (string == "naive") return clock::naive;
+
+  clock_abort("'%s' is not a recognized `clock` option.", string.c_str());
 }

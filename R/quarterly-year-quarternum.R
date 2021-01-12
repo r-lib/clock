@@ -1,44 +1,68 @@
 #' @export
-year_quarternum <- function(year, quarternum = 1L, ..., start = 1L) {
-  quarterday <- ones_along(year)
-
-  yqnqd <- year_quarternum_quarterday(
+year_quarternum <- function(year,
+                            quarternum = 1L,
+                            ...,
+                            start = 1L) {
+  x <- year_quarternum_quarterday(
     year = year,
     quarternum = quarternum,
-    quarterday = quarterday,
     ...,
     start = start
   )
 
-  days <- unstructure(yqnqd)
-  start <- get_quarterly_start(yqnqd)
+  start <- get_quarterly_start(x)
 
-  new_year_quarternum(days, start)
-}
-
-new_year_quarternum <- function(days = integer(), start = 1L, ...) {
-  new_quarterly(days, start, ..., class = "clock_year_quarternum")
+  new_year_quarternum(
+    year = field_year(x),
+    quarternum = field_quarternum(x),
+    start = start
+  )
 }
 
 #' @export
-format.clock_year_quarternum <- function(x, ..., format = NULL, locale = default_date_locale()) {
-  if (!is.null(format)) {
-    out <- format_calendar_days(x, format, locale)
-    return(out)
+new_year_quarternum <- function(year = integer(),
+                                quarternum = integer(),
+                                start = 1L,
+                                ...,
+                                names = NULL,
+                                class = NULL) {
+  if (!is_integer(year)) {
+    abort("`year` must be an integer vector.")
+  }
+  if (!is_integer(quarternum)) {
+    abort("`quarternum` must be an integer vector.")
   }
 
-  start <- get_quarterly_start(x)
+  fields <- list(
+    year = year,
+    quarternum = quarternum
+  )
 
-  yqq <- convert_calendar_days_to_year_quarternum_quarterday(x, start)
-  year <- yqq$year
-  quarternum <- yqq$quarternum
+  new_quarterly(
+    fields = fields,
+    start = start,
+    ...,
+    names = names,
+    class = c(class, "clock_year_quarternum")
+  )
+}
 
-  year <- sprintf("%04i", year)
-  quarternum <- sprintf("%i", quarternum)
+new_year_quarternum_from_fields <- function(fields, start, names = NULL) {
+  new_year_quarternum(
+    year = fields$year,
+    quarternum = fields$quarternum,
+    start = start,
+    names = names
+  )
+}
 
-  out <- paste0(year, "-Q", quarternum)
+#' @export
+format.clock_year_quarternum <- function(x, ...) {
+  out <- format_year_quarternum(
+    field_year(x),
+    field_quarternum(x)
+  )
 
-  out[is.na(x)] <- NA_character_
   names(out) <- names(x)
 
   out
@@ -61,4 +85,29 @@ vec_ptype_abbr.clock_year_quarternum <- function(x, ...) {
 #' @export
 is_year_quarternum <- function(x) {
   inherits(x, "clock_year_quarternum")
+}
+
+#' @export
+calendar_is_complete.clock_year_quarternum <- function(x) {
+  FALSE
+}
+
+#' @export
+invalid_detect.clock_year_quarternum <- function(x) {
+  false_along(x)
+}
+
+#' @export
+invalid_any.clock_year_quarternum <- function(x) {
+  FALSE
+}
+
+#' @export
+invalid_count.clock_year_quarternum <- function(x) {
+  0L
+}
+
+#' @export
+invalid_resolve.clock_year_quarternum <- function(x, invalid = "last-day") {
+  x
 }

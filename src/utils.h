@@ -57,12 +57,19 @@ static inline bool clock_is_string(const cpp11::sexp& x) {
 static int64_t r_int64_na = INT64_MIN;
 
 static inline int64_t as_int64(double x) {
-  if (clock_dbl_is_missing(x)) {
+  if (r_dbl_is_missing(x)) {
     return r_int64_na;
   }
 
-  // Truncate towards zero to treat fractional seconds as if they never existed.
-  x = std::trunc(x);
+  // Floor to get rid of fractional seconds. This is the most consistent way
+  // to drop them to pretend like they don't exist. Using `floor()`
+  // to round towards negative infinity is the correct thing to do with
+  // pre 1970 (i.e. negative) times. For example:
+  // unclass(as.POSIXct("1969-12-31 23:59:59.9999", "UTC"))
+  // [1] -0.0001000000000033196556615
+  // Truncating to 0 gives 1970-01-01. Flooring to -1 gives 1969-12-31 23:59:59,
+  // i.e. the "correct" result if we are ignoring fractional seconds.
+  x = std::floor(x);
 
   if (x > INT64_MAX || x < INT64_MIN) {
     return r_int64_na;

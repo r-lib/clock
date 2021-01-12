@@ -6,6 +6,68 @@
 #include "enums.h"
 #include "clock-rcrd.h"
 
+namespace rclock {
+
+namespace detail {
+
+inline
+std::chrono::hours
+resolve_first_day_hour() {
+  return std::chrono::hours{0};
+}
+inline
+std::chrono::minutes
+resolve_first_day_minute() {
+  return std::chrono::minutes{0};
+}
+inline
+std::chrono::seconds
+resolve_first_day_second() {
+  return std::chrono::seconds{0};
+}
+template <typename Duration>
+inline
+Duration
+resolve_first_day_subsecond() {
+  return Duration{0};
+}
+
+inline
+std::chrono::hours
+resolve_last_day_hour() {
+  return std::chrono::hours{23};
+}
+inline
+std::chrono::minutes
+resolve_last_day_minute() {
+  return std::chrono::minutes{59};
+}
+inline
+std::chrono::seconds
+resolve_last_day_second() {
+  return std::chrono::seconds{59};
+}
+template <typename Duration>
+inline
+Duration
+resolve_last_day_subsecond() {
+  return std::chrono::seconds{1} - Duration{1};
+}
+
+inline
+void
+resolve_error(r_ssize i) {
+  std::string message =
+    std::string{"Invalid day found at location %td. "} +
+    "Resolve invalid day issues by specifying the `invalid` argument.";
+
+  clock_abort(message.c_str(), (ptrdiff_t) i + 1);
+}
+
+} // namespace detail
+
+} // namespace rclock
+
 // -----------------------------------------------------------------------------
 
 static inline void resolve_day_nonexistent_ymd_first_day(date::year_month_day& ymd);
@@ -24,6 +86,62 @@ static inline void resolve_day_nonexistent_tod_last_time(std::chrono::seconds& t
 static inline void resolve_day_nonexistent_nanos_last_time(std::chrono::nanoseconds& nanos_of_second);
 static inline void resolve_day_nonexistent_na(bool& na);
 static inline void resolve_day_nonexistent_error(const r_ssize& i);
+
+// -----------------------------------------------------------------------------
+
+static inline void resolve_invalid_ymd(const r_ssize& i,
+                                       const enum invalid& invalid_val,
+                                       date::year_month_day& ymd,
+                                       bool& na) {
+  switch (invalid_val) {
+  case invalid::first_day: {
+    return resolve_day_nonexistent_ymd_first_day(ymd);
+  }
+  case invalid::first_time: {
+    return resolve_day_nonexistent_ymd_first_day(ymd);
+  }
+  case invalid::last_day: {
+    return resolve_day_nonexistent_ymd_last_day(ymd);
+  }
+  case invalid::last_time: {
+    return resolve_day_nonexistent_ymd_last_day(ymd);
+  }
+  case invalid::na: {
+    return resolve_day_nonexistent_na(na);
+  }
+  case invalid::error: {
+    resolve_day_nonexistent_error(i);
+  }
+  }
+}
+
+static inline void resolve_invalid_ymw(const r_ssize& i,
+                                       const enum invalid& invalid_val,
+                                       date::year_month_weekday& ymw,
+                                       bool& na) {
+  switch (invalid_val) {
+  case invalid::first_day: {
+    return resolve_day_nonexistent_ymw_first_day(ymw);
+  }
+  case invalid::first_time: {
+    return resolve_day_nonexistent_ymw_first_day(ymw);
+  }
+  case invalid::last_day: {
+    return resolve_day_nonexistent_ymw_last_day(ymw);
+  }
+  case invalid::last_time: {
+    return resolve_day_nonexistent_ymw_last_day(ymw);
+  }
+  case invalid::na: {
+    return resolve_day_nonexistent_na(na);
+  }
+  case invalid::error: {
+    resolve_day_nonexistent_error(i);
+  }
+  }
+}
+
+// -----------------------------------------------------------------------------
 
 static inline void resolve_day_nonexistent_ymd(const r_ssize& i,
                                                const enum day_nonexistent& day_nonexistent_val,
@@ -179,6 +297,9 @@ static inline void resolve_day_nonexistent_yqnqd_first_day(quarterly::year_quart
 static inline void resolve_day_nonexistent_yww_first_day(iso_week::year_weeknum_weekday& yww) {
   yww = (yww.year() + iso_week::years{1}) / iso_week::weeknum{1} / iso_week::mon;
 }
+static inline void resolve_day_nonexistent_yw_first_day(iso_week::year_weeknum& yw) {
+  yw = (yw.year() + iso_week::years{1}) / iso_week::weeknum{1};
+}
 static inline void resolve_day_nonexistent_tod_first_time(std::chrono::seconds& tod) {
   tod = std::chrono::seconds{0};
 }
@@ -198,6 +319,10 @@ static inline void resolve_day_nonexistent_yqnqd_last_day(quarterly::year_quarte
 }
 static inline void resolve_day_nonexistent_yww_last_day(iso_week::year_weeknum_weekday& yww) {
   yww = yww.year() / iso_week::last / iso_week::sun;
+}
+static inline void resolve_day_nonexistent_yw_last_day(iso_week::year_weeknum& yw) {
+  const iso_week::year_lastweek ylw{yw.year()};
+  yw = iso_week::year_weeknum{ylw.year(), ylw.weeknum()};
 }
 static inline void resolve_day_nonexistent_tod_last_time(std::chrono::seconds& tod) {
   tod = std::chrono::seconds{86400 - 1};

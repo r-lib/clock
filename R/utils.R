@@ -63,8 +63,22 @@ from_posixct_to_posixct <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-ones_along <- function(x) {
-  rep(1L, times = vec_size(x))
+false_along <- function(x) {
+  vector("logical", length = vec_size(x))
+}
+ones_along <- function(x, na_propagate = FALSE) {
+  out <- rep(1L, vec_size(x))
+
+  if (!na_propagate) {
+    return(out)
+  }
+
+  na <- vec_equal_na(x)
+  if (any(na)) {
+    out[na] <- NA_integer_
+  }
+
+  out
 }
 zeros_along <- function(x, na_propagate = FALSE) {
   out <- vector("integer", length = vec_size(x))
@@ -105,7 +119,7 @@ is_POSIXlt <- function(x) {
 }
 
 is_zoned_or_base <- function(x) {
-  is_zoned_time_point(x) || is_Date(x) || is_POSIXct(x) || is_POSIXlt(x)
+  is_zoned_time(x) || is_Date(x) || is_POSIXct(x) || is_POSIXlt(x)
 }
 
 # ------------------------------------------------------------------------------
@@ -127,7 +141,7 @@ days_to_date <- function(x, names = NULL) {
 # ------------------------------------------------------------------------------
 
 restrict_clock_supported <- function(x) {
-  if (is_calendar(x) || is_naive_time_point(x) || is_zoned_or_base(x)) {
+  if (is_calendar(x) || is_time_point(x) || is_zoned_or_base(x) || is_duration(x)) {
     invisible(x)
   } else {
     stop_clock_unsupported_class(x)
@@ -191,6 +205,10 @@ unstructure <- function(x) {
 get_tzone <- function(x) {
   attr(x, "tzone", exact = TRUE) %||% ""
 }
+set_tzone <- function(x, tzone) {
+  attr(x, "tzone") <- tzone
+  x
+}
 
 # ------------------------------------------------------------------------------
 
@@ -212,6 +230,11 @@ stop_clock_unsupported_conversion <- function(x, to_arg) {
 stop_clock_unsupported_calendar_op <- function(op) {
   message <- paste0("This calendar doesn't support `", op, "()`.")
   stop_clock(message, "clock_error_unsupported_calendar_op")
+}
+
+stop_clock_unsupported_time_point_op <- function(op) {
+  message <- paste0("Time points don't support `", op, "()`.")
+  stop_clock(message, "clock_error_unsupported_time_point_op")
 }
 
 paste_class <- function(x) {
@@ -247,6 +270,17 @@ is_number <- function(x) {
   } else {
     TRUE
   }
+}
+
+is_last <- function(x) {
+  identical(x, "last")
+}
+
+int_assert <- function(x, arg) {
+  if (!is_integer(x)) {
+    abort(paste0("`", arg, "` must be an integer vector."))
+  }
+  invisible(NULL)
 }
 
 if_else <- function(condition, true, false, na = NULL) {
