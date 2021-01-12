@@ -67,7 +67,7 @@ new_year_month_weekday <- function(year = integer(),
                                    ...,
                                    names = NULL,
                                    class = NULL) {
-  if (!is_valid_year_month_weekday_precision(precision)) {
+  if (!year_month_weekday_is_valid_precision(precision)) {
     abort("`precision` must be a valid precision for 'year_month_weekday'.")
   }
 
@@ -159,8 +159,32 @@ is_year_month_weekday <- function(x) {
   inherits(x, "clock_year_month_weekday")
 }
 
-is_valid_year_month_weekday_precision <- function(precision) {
-  is_valid_calendar_precision(precision, c("year", "month"))
+# ------------------------------------------------------------------------------
+
+#' @export
+calendar_is_valid_precision.clock_year_month_weekday <- function(x, precision) {
+  year_month_weekday_is_valid_precision(precision)
+}
+
+year_month_weekday_is_valid_precision <- function(precision) {
+  if (!is_string(precision)) {
+    return(FALSE)
+  }
+
+  precision %in% c("year", "month", calendar_standard_precisions())
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+calendar_is_valid_component.clock_year_month_weekday <- function(x, component) {
+  year_month_weekday_is_valid_component(component)
+}
+year_month_weekday_is_valid_component <- function(component) {
+  if (!is_string(component)) {
+    return(FALSE)
+  }
+  component %in% c("year", "month", "weekday", "weekday_index", calendar_standard_components())
 }
 
 # ------------------------------------------------------------------------------
@@ -248,6 +272,26 @@ get_microsecond.clock_year_month_weekday <- function(x) {
 get_nanosecond.clock_year_month_weekday <- function(x) {
   calendar_require_precision(x, "nanosecond", "get_nanosecond")
   field_subsecond(x)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+calendar_get_component.clock_year_month_weekday <- function(x, component) {
+  switch(
+    component,
+    year = get_year(x),
+    month = get_month(x),
+    weekday = get_weekday(x),
+    weekday_index = get_weekday_index(x),
+    hour = get_hour(x),
+    minute = get_minute(x),
+    second = get_second(x),
+    millisecond = get_millisecond(x),
+    microsecond = get_microsecond(x),
+    nanosecond = get_nanosecond(x),
+    abort("Internal error: Unknown component name.")
+  )
 }
 
 # ------------------------------------------------------------------------------
@@ -383,6 +427,46 @@ set_field_year_month_weekday_last <- function(x) {
   new_year_month_weekday_from_fields(fields, precision_fields, names = names(x))
 }
 
+# ------------------------------------------------------------------------------
+
+#' @export
+calendar_set_component.clock_year_month_weekday <- function(x, value, component, ...) {
+  switch(
+    component,
+    year = set_year(x, value, ...),
+    month = set_month(x, value, ...),
+    weekday = set_weekday(x, value, ...),
+    weekday_index = set_weekday_index(x, value, ...),
+    hour = set_hour(x, value, ...),
+    minute = set_minute(x, value, ...),
+    second = set_second(x, value, ...),
+    millisecond = set_millisecond(x, value, ...),
+    microsecond = set_microsecond(x, value, ...),
+    nanosecond = set_nanosecond(x, value, ...),
+    abort("Internal error: Unknown component name.")
+  )
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+calendar_check_component_range.clock_year_month_weekday <- function(x, value, component, value_arg) {
+  check_range(value, component, value_arg)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+calendar_name.clock_year_month_weekday <- function(x) {
+  "year_month_weekday"
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+calendar_component_to_precision.clock_year_month_weekday <- function(x, component) {
+  year_month_weekday_component_to_precision(component)
+}
 year_month_weekday_component_to_precision <- function(component) {
   switch (
     component,
@@ -400,6 +484,10 @@ year_month_weekday_component_to_precision <- function(component) {
   )
 }
 
+#' @export
+calendar_component_to_field.clock_year_month_weekday <- function(x, component) {
+  year_month_weekday_component_to_field(component)
+}
 year_month_weekday_component_to_field <- function(component) {
   switch (
     component,
@@ -414,6 +502,46 @@ year_month_weekday_component_to_field <- function(component) {
     microsecond = "subsecond",
     nanosecond = "subsecond",
     abort("Internal error: Unknown component name.")
+  )
+}
+
+#' @export
+calendar_precision_to_component.clock_year_month_weekday <- function(x, precision) {
+  year_month_weekday_precision_to_component(precision)
+}
+year_month_weekday_precision_to_component <- function(precision) {
+  switch (
+    precision,
+    year = precision,
+    month = precision,
+    day = abort("Internal error: Ambiguous precision -> component mapping (weekday / weekday_index)."),
+    hour = precision,
+    minute = precision,
+    second = precision,
+    millisecond = precision,
+    microsecond = precision,
+    nanosecond = precision,
+    abort("Internal error: Unknown precision.")
+  )
+}
+
+#' @export
+calendar_precision_to_field.clock_year_month_weekday <- function(x, precision) {
+  year_month_weekday_precision_to_field(precision)
+}
+year_month_weekday_precision_to_field <- function(precision) {
+  switch (
+    precision,
+    year = precision,
+    month = precision,
+    day = abort("Internal error: Ambiguous precision -> field mapping (weekday / weekday_index)."),
+    hour = precision,
+    minute = precision,
+    second = precision,
+    millisecond = "subsecond",
+    microsecond = "subsecond",
+    nanosecond = "subsecond",
+    abort("Internal error: Unknown precision.")
   )
 }
 
@@ -530,49 +658,39 @@ as_naive_time.clock_year_month_weekday <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-calendar_floor.clock_year_month_weekday <- function(x, precision, ..., n = 1L, drop = TRUE) {
-  check_dots_empty()
-
-  x_precision <- calendar_precision(x)
-
-  if (!is_valid_year_month_weekday_precision(precision)) {
-    abort("`precision` must be a valid 'year_month_weekday' precision.")
+calendar_group.clock_year_month_weekday <- function(x, precision, ..., n = 1L) {
+  if (identical(precision, "day")) {
+    message <- paste0(
+      "Grouping 'year_month_weekday' by 'day' precision is undefined. ",
+      "Convert to 'year_month_day' to group by day of month."
+    )
+    abort(message)
   }
-  check_rounding_precision(x_precision, precision, "floor")
+  NextMethod()
+}
 
-  n <- check_rounding_n(n)
-  drop <- check_rounding_drop(drop)
-
-  if (precision == "year") {
-    year <- calendar_year_floor(x, n)
-    x <- new_year_month_weekday(year = year, precision = "year", names = names(x))
-  } else if (precision == "month") {
-    x <- calendar_month_floor(x, n)
-  } else if (precision == "day") {
-    # Flooring to 'day' precision for year-month-weekday
-    # uses "day of month" concept from year-month-day, as this
-    # is the only thing that really makes sense. It also aligns with casting
-    # up to day from month with year-month-weekday.
-    x <- as_year_month_day(x)
-    x <- calendar_day_floor(x, n, field_day, "day")
-    x <- as_year_month_weekday(x)
-  } else {
-    x <- calendar_time_floor(x, precision, n)
-    x <- as_year_month_weekday(x)
-  }
-
-  if (!drop) {
-    x <- calendar_cast(x, x_precision)
-  }
-
-  x
+#' @export
+calendar_component_grouper.clock_year_month_weekday <- function(x, component) {
+  switch(
+    component,
+    year = group_component0,
+    month = group_component1,
+    weekday = abort("Internal error: Should have errored earlier. Undefined 'day' grouping"),
+    weekday_index = abort("Internal error: Should have errored earlier. Undefined 'day' grouping"),
+    hour = group_component0,
+    minute = group_component0,
+    second = group_component0,
+    millisecond = group_component0,
+    microsecond = group_component0,
+    nanosecond = group_component0
+  )
 }
 
 # ------------------------------------------------------------------------------
 
 #' @export
 calendar_cast.clock_year_month_weekday <- function(x, precision) {
-  if (!is_valid_year_month_weekday_precision(precision)) {
+  if (!year_month_weekday_is_valid_precision(precision)) {
     abort("`precision` is not a valid 'year_month_weekday' precision.")
   }
 

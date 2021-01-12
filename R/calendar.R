@@ -32,108 +32,57 @@ pillar_shaft.clock_calendar <- function(x, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
-calendar_floor <- function(x, precision, ..., n = 1L, drop = TRUE) {
-  UseMethod("calendar_floor")
+calendar_group <- function(x, precision, ..., n = 1L) {
+  UseMethod("calendar_group")
 }
 
 #' @export
-calendar_floor.clock_calendar <- function(x, precision, ..., n = 1L, drop = TRUE) {
-  stop_clock_unsupported_calendar_op("calendar_floor")
-}
+calendar_group.clock_calendar <- function(x, precision, ..., n = 1L) {
+  check_dots_empty()
 
-# Year starting from 0. Returns `year` value for use in constructor.
-calendar_year_floor <- function(x, n) {
-  check_range(n, "year", "n")
-  field <- field_year(x)
-  compute_count(field, n)
-}
-
-# Returns calendar ready to be returned to the caller
-calendar_month_floor <- function(x, n) {
-  # Month of year
-  check_range(n, "month", "n")
-  field <- field_month(x)
-  x <- calendar_cast(x, "year")
-  x <- calendar_cast(x, "month")
-  count <- compute_count1(field, n)
-  x + duration_months(count)
-}
-
-# Returns sys_time to be converted back to calendar
-calendar_day_floor <- function(x, n, field_fn, component) {
-  check_range(n, component, "n")
-  field <- field_fn(x)
-  x <- calendar_cast(x, "month")
-  x <- calendar_cast(x, "day")
-  x <- as_sys_time(x)
-  count <- compute_count1(field, n)
-  x + duration_days(count)
-}
-
-# Returns sys_time to be converted back to calendar
-calendar_time_floor <- function(x, precision, n) {
-  if (precision == "hour") {
-    # Hour of day
-    precision_downcast <- "day"
-    field_name <- "hour"
-  } else if (precision == "minute") {
-    # Minute of hour
-    precision_downcast <- "hour"
-    field_name <- "minute"
-  } else if (precision == "second") {
-    # Second of minute
-    precision_downcast <- "minute"
-    field_name <- "second"
-  } else if (precision %in% c("millisecond", "microsecond", "nanosecond")) {
-    # Millisecond/Microsecond/Nanosecond of second
-    # Preemptive cast to ensure we extract the correct component
-    x <- calendar_cast(x, precision)
-    precision_downcast <- "second"
-    field_name <- "subsecond"
-  } else {
-    abort("Internal error: `precision` is not a time based precision")
+  if (!calendar_is_valid_precision(x, precision)) {
+    abort(paste0("`precision` must be a valid precision for a '", calendar_name(x), "'."))
   }
 
-  # Time based precision maps directly to component
-  component <- precision
-  check_range(n, component, "n")
-
-  field <- field(x, field_name)
-  count <- compute_count(field, n)
-
-  x <- calendar_cast(x, precision_downcast)
-  x <- calendar_cast(x, precision)
-
-  x <- as_sys_time(x)
-
-  x + duration_helper(count, precision)
-}
-
-compute_count <- function(field, n) {
-  (field %/% n) * n
-}
-compute_count1 <- function(field, n) {
-  ((field - 1L) %/% n) * n
-}
-
-check_rounding_n <- function(n) {
   n <- vec_cast(n, integer(), x_arg = "n")
   if (!is_number(n)) {
-    abort("`n` must be a single number")
+    abort("`n` must be a single number.")
   }
-  n
-}
-check_rounding_drop <- function(drop) {
-  if (!is_bool(drop)) {
-    abort("`drop` must be a single TRUE or FALSE.")
-  }
-  drop
-}
-check_rounding_precision <- function(x_precision, precision, verb) {
+
+  x_precision <- calendar_precision(x)
+
   if (precision_value(x_precision) < precision_value(precision)) {
-    msg <- paste0("Can't ", verb, " to a precision that is more precise than `x`.")
-    abort(msg)
+    abort("Can't floor to a precision that is more precise than `x`.")
   }
+
+  x <- calendar_cast(x, precision)
+
+  component <- calendar_precision_to_component(x, precision)
+  calendar_check_component_range(x, n, component, "n")
+  group_component_fn <- calendar_component_grouper(x, component)
+
+  value <- calendar_get_component(x, component)
+  value <- group_component_fn(value, n)
+  x <- calendar_set_component(x, value, component)
+
+  x
+}
+
+# Internal generic
+calendar_component_grouper <- function(x, component) {
+  UseMethod("calendar_component_grouper")
+}
+
+#' @export
+calendar_component_grouper.clock_calendar <- function(x, component) {
+  stop_clock_unsupported_calendar_op("calendar_component_grouper")
+}
+
+group_component0 <- function(x, n) {
+  (x %/% n) * n
+}
+group_component1 <- function(x, n) {
+  ((x - 1L) %/% n) * n + 1L
 }
 
 # ------------------------------------------------------------------------------
@@ -236,6 +185,87 @@ na_to_zeros <- function(na, any_na) {
 
 # ------------------------------------------------------------------------------
 
+# Internal generic
+calendar_get_component <- function(x, component) {
+  if (!calendar_is_valid_component(x, component)) {
+    abort("`component` must be a valid component for a '", calendar_name(x), "'.")
+  }
+  UseMethod("calendar_get_component")
+}
+
+# ------------------------------------------------------------------------------
+
+# Internal generic
+calendar_set_component <- function(x, value, component, ...) {
+  if (!calendar_is_valid_component(x, component)) {
+    abort("`component` must be a valid component for a '", calendar_name(x), "'.")
+  }
+  UseMethod("calendar_set_component")
+}
+
+# ------------------------------------------------------------------------------
+
+# Internal generic
+calendar_check_component_range <- function(x, value, component, value_arg) {
+  if (!calendar_is_valid_component(x, component)) {
+    abort("`component` must be a valid component for a '", calendar_name(x), "'.")
+  }
+  UseMethod("calendar_check_component_range")
+}
+
+# ------------------------------------------------------------------------------
+
+# Internal generic
+calendar_name <- function(x) {
+  UseMethod("calendar_name")
+}
+
+# ------------------------------------------------------------------------------
+
+# Internal generic
+calendar_component_to_precision <- function(x, component) {
+  UseMethod("calendar_component_to_precision")
+}
+
+# Internal generic
+calendar_component_to_field <- function(x, component) {
+  UseMethod("calendar_component_to_field")
+}
+
+# Internal generic
+calendar_precision_to_component <- function(x, precision) {
+  UseMethod("calendar_precision_to_component")
+}
+
+# Internal generic
+calendar_precision_to_field <- function(x, precision) {
+  UseMethod("calendar_precision_to_field")
+}
+
+# ------------------------------------------------------------------------------
+
+# Internal generic
+calendar_is_valid_precision <- function(x, precision) {
+  UseMethod("calendar_is_valid_precision")
+}
+
+calendar_standard_precisions <- function() {
+  c("day", "hour", "minute", "second", "millisecond", "microsecond", "nanosecond")
+}
+
+# ------------------------------------------------------------------------------
+
+# Internal generic
+calendar_is_valid_component <- function(x, component) {
+  UseMethod("calendar_is_valid_component")
+}
+
+calendar_standard_components <- function() {
+  c("hour", "minute", "second", "millisecond", "microsecond", "nanosecond")
+}
+
+# ------------------------------------------------------------------------------
+
 #' @export
 get_precision.clock_calendar <- function(x) {
   calendar_precision(x)
@@ -283,11 +313,11 @@ calendar_has_precision <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
-calendar_require_all_valid <- function(x) {
+calendar_require_all_valid <- function(x, fn) {
   if (invalid_any(x)) {
     message <- paste0(
-      "Can't convert to a time point when there are invalid dates. ",
-      "Resolve them before converting by calling `invalid_resolve()`."
+      "`", fn, "()` requires that all calendar dates are valid. ",
+      "Resolve invalid dates by calling `invalid_resolve()`."
     )
     abort(message)
   }
