@@ -308,6 +308,15 @@ as_naive_time.clock_zoned_time <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
+zoned_now <- function(zone) {
+  sys_time <- sys_now()
+  zone <- zone_validate(zone)
+  new_zoned_time(sys_time, zone = zone)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 get_offset.clock_zoned_time <- function(x) {
   zone <- zoned_time_zone(x)
   sys_time <- zoned_time_sys_time(x)

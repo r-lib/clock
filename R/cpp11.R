@@ -268,6 +268,10 @@ resolve_nanoseconds_of_second <- function(nanoseconds_of_second, ok, day_nonexis
   .Call("_clock_resolve_nanoseconds_of_second", nanoseconds_of_second, ok, day_nonexistent, precision, PACKAGE = "clock")
 }
 
+sys_now_cpp <- function() {
+  .Call("_clock_sys_now_cpp", PACKAGE = "clock")
+}
+
 format_year_month_weekday <- function(year, month, weekday, index, day) {
   .Call("_clock_format_year_month_weekday", year, month, weekday, index, day, PACKAGE = "clock")
 }

@@ -60,6 +60,15 @@ as_zoned_time.clock_sys_time <- function(x, zone, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
+sys_now <- function() {
+  fields <- sys_now_cpp()
+  duration <- new_duration_from_fields(fields, "nanosecond")
+  new_sys_time(duration)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 vec_ptype2.clock_sys_time.clock_sys_time <- function(x, y, ...) {
   ptype2_time_point_and_time_point(x, y, ...)
 }

@@ -475,6 +475,13 @@ extern "C" SEXP _clock_resolve_nanoseconds_of_second(SEXP nanoseconds_of_second,
     return cpp11::as_sexp(resolve_nanoseconds_of_second(cpp11::as_cpp<cpp11::decay_t<const clock_field&>>(nanoseconds_of_second), cpp11::as_cpp<cpp11::decay_t<const cpp11::logicals&>>(ok), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision)));
   END_CPP11
 }
+// sys-time.cpp
+cpp11::writable::list sys_now_cpp();
+extern "C" SEXP _clock_sys_now_cpp() {
+  BEGIN_CPP11
+    return cpp11::as_sexp(sys_now_cpp());
+  END_CPP11
+}
 // year-month-weekday.cpp
 cpp11::writable::strings format_year_month_weekday(const cpp11::integers& year, const cpp11::integers& month, const cpp11::integers& weekday, const cpp11::integers& index, const cpp11::strings& day);
 extern "C" SEXP _clock_format_year_month_weekday(SEXP year, SEXP month, SEXP weekday, SEXP index, SEXP day) {
@@ -704,6 +711,7 @@ extern SEXP _clock_set_field_year_month_day_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_set_field_year_month_day_last_cpp(SEXP, SEXP);
 extern SEXP _clock_set_field_year_month_weekday_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_set_field_year_month_weekday_last_cpp(SEXP, SEXP);
+extern SEXP _clock_sys_now_cpp();
 extern SEXP _clock_to_sys_duration_fields_from_sys_seconds_cpp(SEXP);
 extern SEXP _clock_to_sys_seconds_from_sys_duration_fields_cpp(SEXP);
 extern SEXP _clock_year_month_day_minus_year_month_day_cpp(SEXP, SEXP, SEXP);
@@ -794,6 +802,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_set_field_year_month_day_last_cpp",                   (DL_FUNC) &_clock_set_field_year_month_day_last_cpp,                    2},
     {"_clock_set_field_year_month_weekday_cpp",                    (DL_FUNC) &_clock_set_field_year_month_weekday_cpp,                     4},
     {"_clock_set_field_year_month_weekday_last_cpp",               (DL_FUNC) &_clock_set_field_year_month_weekday_last_cpp,                2},
+    {"_clock_sys_now_cpp",                                         (DL_FUNC) &_clock_sys_now_cpp,                                          0},
     {"_clock_to_sys_duration_fields_from_sys_seconds_cpp",         (DL_FUNC) &_clock_to_sys_duration_fields_from_sys_seconds_cpp,          1},
     {"_clock_to_sys_seconds_from_sys_duration_fields_cpp",         (DL_FUNC) &_clock_to_sys_seconds_from_sys_duration_fields_cpp,          1},
     {"_clock_year_month_day_minus_year_month_day_cpp",             (DL_FUNC) &_clock_year_month_day_minus_year_month_day_cpp,              3},
