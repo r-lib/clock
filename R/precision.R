@@ -28,24 +28,6 @@ precision_value <- function(precision) {
   )
 }
 
-precision_field <- function(precision) {
-  switch(
-    precision,
-    year = precision,
-    quarter = precision,
-    month = precision,
-    week = precision,
-    day = precision,
-    hour = precision,
-    minute = precision,
-    second = precision,
-    millisecond = "subsecond",
-    microsecond = "subsecond",
-    nanosecond = "subsecond",
-    abort("Internal error: Unknown precision.")
-  )
-}
-
 # ------------------------------------------------------------------------------
 
 precision_names <- function() {
@@ -87,35 +69,5 @@ precision_common2 <- function(x, y) {
     x
   } else {
     y
-  }
-}
-
-precision_subsecond_factor <- function(narrow_precision_value, wide_precision_value) {
-  if (narrow_precision_value == PRECISION_MILLISECOND) {
-    if (wide_precision_value == PRECISION_MILLISECOND) {
-      1L
-    } else if (wide_precision_value == PRECISION_MICROSECOND) {
-      1e3L
-    } else if (wide_precision_value == PRECISION_NANOSECOND) {
-      1e6L
-    } else {
-      abort("Internal error: Invalid precision combination.")
-    }
-  } else if (narrow_precision_value == PRECISION_MICROSECOND) {
-    if (wide_precision_value == PRECISION_MICROSECOND) {
-      1L
-    } else if (wide_precision_value == PRECISION_NANOSECOND) {
-      1e3L
-    } else {
-      abort("Internal error: Invalid precision combination.")
-    }
-  } else if (narrow_precision_value == PRECISION_NANOSECOND) {
-    if (wide_precision_value == PRECISION_NANOSECOND) {
-      1L
-    } else {
-      abort("Internal error: Invalid precision combination.")
-    }
-  } else {
-    abort("Internal error: Invalid precision combination.")
   }
 }

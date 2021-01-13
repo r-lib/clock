@@ -154,6 +154,36 @@ calendar_narrow_time <- function(out_fields,
   out_fields
 }
 
+precision_subsecond_factor <- function(narrow_precision_value, wide_precision_value) {
+  if (narrow_precision_value == PRECISION_MILLISECOND) {
+    if (wide_precision_value == PRECISION_MILLISECOND) {
+      1L
+    } else if (wide_precision_value == PRECISION_MICROSECOND) {
+      1e3L
+    } else if (wide_precision_value == PRECISION_NANOSECOND) {
+      1e6L
+    } else {
+      abort("Internal error: Invalid precision combination.")
+    }
+  } else if (narrow_precision_value == PRECISION_MICROSECOND) {
+    if (wide_precision_value == PRECISION_MICROSECOND) {
+      1L
+    } else if (wide_precision_value == PRECISION_NANOSECOND) {
+      1e3L
+    } else {
+      abort("Internal error: Invalid precision combination.")
+    }
+  } else if (narrow_precision_value == PRECISION_NANOSECOND) {
+    if (wide_precision_value == PRECISION_NANOSECOND) {
+      1L
+    } else {
+      abort("Internal error: Invalid precision combination.")
+    }
+  } else {
+    abort("Internal error: Invalid precision combination.")
+  }
+}
+
 # ------------------------------------------------------------------------------
 
 # Internal generic
@@ -241,6 +271,8 @@ calendar_precision <- function(x) {
   attr(x, "precision", exact = TRUE)
 }
 
+# ------------------------------------------------------------------------------
+
 calendar_require_minimum_precision <- function(x, precision, fn) {
   if (!calendar_has_minimum_precision(x, precision)) {
     msg <- paste0("`", fn, "()` requires a minimum precision of '", precision, "'.")
@@ -248,7 +280,6 @@ calendar_require_minimum_precision <- function(x, precision, fn) {
   }
   invisible(x)
 }
-
 calendar_has_minimum_precision <- function(x, precision) {
   x_precision <- calendar_precision(x)
   precision_value(x_precision) >= precision_value(precision)
@@ -261,7 +292,6 @@ calendar_require_precision <- function(x, precision, fn) {
   }
   invisible(x)
 }
-
 calendar_require_any_of_precisions <- function(x, precisions, fn) {
   results <- vapply(precisions, calendar_has_precision, FUN.VALUE = logical(1), x = x)
   if (!any(results)) {
@@ -270,7 +300,6 @@ calendar_require_any_of_precisions <- function(x, precisions, fn) {
   }
   invisible(x)
 }
-
 calendar_has_precision <- function(x, precision) {
   calendar_precision(x) == precision
 }
