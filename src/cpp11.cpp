@@ -4,14 +4,6 @@
 
 #include "cpp11/declarations.hpp"
 
-// check.cpp
-void check_range(const cpp11::integers& x, const cpp11::strings& component, const cpp11::strings& arg);
-extern "C" SEXP _clock_check_range(SEXP x, SEXP component, SEXP arg) {
-  BEGIN_CPP11
-    check_range(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(component), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(arg));
-    return R_NilValue;
-  END_CPP11
-}
 // duration.cpp
 cpp11::writable::strings format_duration_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision);
 extern "C" SEXP _clock_format_duration_cpp(SEXP fields, SEXP precision) {
@@ -104,6 +96,14 @@ extern "C" SEXP _clock_format_zoned_time_cpp(SEXP fields, SEXP zone, SEXP abbrev
   END_CPP11
 }
 // gregorian-year-month-day.cpp
+void year_month_day_check_range_cpp(const cpp11::integers& x, const cpp11::strings& component, const cpp11::strings& arg);
+extern "C" SEXP _clock_year_month_day_check_range_cpp(SEXP x, SEXP component, SEXP arg) {
+  BEGIN_CPP11
+    year_month_day_check_range_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(component), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(arg));
+    return R_NilValue;
+  END_CPP11
+}
+// gregorian-year-month-day.cpp
 cpp11::writable::list collect_year_month_day_fields(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision);
 extern "C" SEXP _clock_collect_year_month_day_fields(SEXP fields, SEXP precision) {
   BEGIN_CPP11
@@ -185,6 +185,14 @@ cpp11::writable::list year_month_day_minus_year_month_day_cpp(cpp11::list_of<cpp
 extern "C" SEXP _clock_year_month_day_minus_year_month_day_cpp(SEXP x, SEXP y, SEXP precision) {
   BEGIN_CPP11
     return cpp11::as_sexp(year_month_day_minus_year_month_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(y), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision)));
+  END_CPP11
+}
+// gregorian-year-month-weekday.cpp
+void year_month_weekday_check_range_cpp(const cpp11::integers& x, const cpp11::strings& component, const cpp11::strings& arg);
+extern "C" SEXP _clock_year_month_weekday_check_range_cpp(SEXP x, SEXP component, SEXP arg) {
+  BEGIN_CPP11
+    year_month_weekday_check_range_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(component), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(arg));
+    return R_NilValue;
   END_CPP11
 }
 // gregorian-year-month-weekday.cpp
@@ -276,6 +284,14 @@ void clock_set_install(const cpp11::strings& path);
 extern "C" SEXP _clock_clock_set_install(SEXP path) {
   BEGIN_CPP11
     clock_set_install(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(path));
+    return R_NilValue;
+  END_CPP11
+}
+// quarterly-year-quarternum-quarterday.cpp
+void year_quarternum_quarterday_check_range_cpp(const cpp11::integers& x, const cpp11::strings& component, const cpp11::strings& arg);
+extern "C" SEXP _clock_year_quarternum_quarterday_check_range_cpp(SEXP x, SEXP component, SEXP arg) {
+  BEGIN_CPP11
+    year_quarternum_quarterday_check_range_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(component), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(arg));
     return R_NilValue;
   END_CPP11
 }
@@ -436,7 +452,6 @@ extern SEXP _clock_as_year_month_day_from_sys_time_cpp(SEXP, SEXP);
 extern SEXP _clock_as_year_month_weekday_from_sys_time_cpp(SEXP, SEXP);
 extern SEXP _clock_as_year_quarternum_quarterday_from_sys_time_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_as_zoned_sys_time_from_naive_time_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_check_range(SEXP, SEXP, SEXP);
 extern SEXP _clock_clock_set_install(SEXP);
 extern SEXP _clock_collect_year_month_day_fields(SEXP, SEXP);
 extern SEXP _clock_collect_year_month_weekday_fields(SEXP, SEXP);
@@ -480,10 +495,13 @@ extern SEXP _clock_set_field_year_quarternum_quarterday_last_cpp(SEXP, SEXP, SEX
 extern SEXP _clock_sys_now_cpp();
 extern SEXP _clock_to_sys_duration_fields_from_sys_seconds_cpp(SEXP);
 extern SEXP _clock_to_sys_seconds_from_sys_duration_fields_cpp(SEXP);
+extern SEXP _clock_year_month_day_check_range_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_year_month_day_minus_year_month_day_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_year_month_day_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_year_month_weekday_check_range_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_year_month_weekday_minus_year_month_weekday_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_year_month_weekday_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_year_quarternum_quarterday_check_range_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_year_quarternum_quarterday_minus_year_quarternum_quarterday_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_year_quarternum_quarterday_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_zone_current();
@@ -498,7 +516,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_as_year_month_weekday_from_sys_time_cpp",                         (DL_FUNC) &_clock_as_year_month_weekday_from_sys_time_cpp,                          2},
     {"_clock_as_year_quarternum_quarterday_from_sys_time_cpp",                 (DL_FUNC) &_clock_as_year_quarternum_quarterday_from_sys_time_cpp,                  3},
     {"_clock_as_zoned_sys_time_from_naive_time_cpp",                           (DL_FUNC) &_clock_as_zoned_sys_time_from_naive_time_cpp,                            5},
-    {"_clock_check_range",                                                     (DL_FUNC) &_clock_check_range,                                                      3},
     {"_clock_clock_set_install",                                               (DL_FUNC) &_clock_clock_set_install,                                                1},
     {"_clock_collect_year_month_day_fields",                                   (DL_FUNC) &_clock_collect_year_month_day_fields,                                    2},
     {"_clock_collect_year_month_weekday_fields",                               (DL_FUNC) &_clock_collect_year_month_weekday_fields,                                2},
@@ -542,10 +559,13 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_sys_now_cpp",                                                     (DL_FUNC) &_clock_sys_now_cpp,                                                      0},
     {"_clock_to_sys_duration_fields_from_sys_seconds_cpp",                     (DL_FUNC) &_clock_to_sys_duration_fields_from_sys_seconds_cpp,                      1},
     {"_clock_to_sys_seconds_from_sys_duration_fields_cpp",                     (DL_FUNC) &_clock_to_sys_seconds_from_sys_duration_fields_cpp,                      1},
+    {"_clock_year_month_day_check_range_cpp",                                  (DL_FUNC) &_clock_year_month_day_check_range_cpp,                                   3},
     {"_clock_year_month_day_minus_year_month_day_cpp",                         (DL_FUNC) &_clock_year_month_day_minus_year_month_day_cpp,                          3},
     {"_clock_year_month_day_plus_duration_cpp",                                (DL_FUNC) &_clock_year_month_day_plus_duration_cpp,                                 4},
+    {"_clock_year_month_weekday_check_range_cpp",                              (DL_FUNC) &_clock_year_month_weekday_check_range_cpp,                               3},
     {"_clock_year_month_weekday_minus_year_month_weekday_cpp",                 (DL_FUNC) &_clock_year_month_weekday_minus_year_month_weekday_cpp,                  3},
     {"_clock_year_month_weekday_plus_duration_cpp",                            (DL_FUNC) &_clock_year_month_weekday_plus_duration_cpp,                             4},
+    {"_clock_year_quarternum_quarterday_check_range_cpp",                      (DL_FUNC) &_clock_year_quarternum_quarterday_check_range_cpp,                       3},
     {"_clock_year_quarternum_quarterday_minus_year_quarternum_quarterday_cpp", (DL_FUNC) &_clock_year_quarternum_quarterday_minus_year_quarternum_quarterday_cpp,  4},
     {"_clock_year_quarternum_quarterday_plus_duration_cpp",                    (DL_FUNC) &_clock_year_quarternum_quarterday_plus_duration_cpp,                     5},
     {"_clock_zone_current",                                                    (DL_FUNC) &_clock_zone_current,                                                     0},

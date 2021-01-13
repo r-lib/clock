@@ -487,7 +487,7 @@ calendar_set_component.clock_year_month_weekday <- function(x, value, component,
 
 #' @export
 calendar_check_component_range.clock_year_month_weekday <- function(x, value, component, value_arg) {
-  check_range(value, component, value_arg)
+  year_month_weekday_check_range_cpp(value, component, value_arg)
 }
 
 # ------------------------------------------------------------------------------

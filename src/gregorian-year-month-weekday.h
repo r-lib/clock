@@ -7,6 +7,7 @@
 #include "utils.h"
 #include "stream.h"
 #include "resolve.h"
+#include "check.h"
 
 namespace rclock {
 
@@ -42,6 +43,47 @@ resolve_last_day_ymw(const date::year_month_weekday& x) {
   return date::year_month_weekday{x.year() / x.month() / date::last};
 }
 
+template <enum component Component>
+inline void check_range(const int& value, const char* arg) {
+  clock_abort("Unimplemented range check");
+}
+template <>
+inline void check_range<component::year>(const int& value, const char* arg) {
+  check_range_year(value, arg);
+}
+template <>
+inline void check_range<component::weekday>(const int& value, const char* arg) {
+  check_range_weekday(value, arg);
+}
+template <>
+inline void check_range<component::weekday_index>(const int& value, const char* arg) {
+  check_range_weekday_index(value, arg);
+}
+template <>
+inline void check_range<component::hour>(const int& value, const char* arg) {
+  check_range_hour(value, arg);
+}
+template <>
+inline void check_range<component::minute>(const int& value, const char* arg) {
+  check_range_minute(value, arg);
+}
+template <>
+inline void check_range<component::second>(const int& value, const char* arg) {
+  check_range_second(value, arg);
+}
+template <>
+inline void check_range<component::millisecond>(const int& value, const char* arg) {
+  check_range_millisecond(value, arg);
+}
+template <>
+inline void check_range<component::microsecond>(const int& value, const char* arg) {
+  check_range_microsecond(value, arg);
+}
+template <>
+inline void check_range<component::nanosecond>(const int& value, const char* arg) {
+  check_range_nanosecond(value, arg);
+}
+
 } // namespace detail
 
 class y
@@ -67,6 +109,9 @@ public:
   void assign_na(r_ssize i) NOEXCEPT;
 
   void resolve(r_ssize i, const enum invalid type);
+
+  template <component Component>
+  void check_range(const int& value, const char* arg) const;
 
   date::year to_year(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
@@ -307,6 +352,14 @@ void
 y::resolve(r_ssize i, const enum invalid type)
 {
   // Never invalid
+}
+
+template <component Component>
+inline
+void
+y::check_range(const int& value, const char* arg) const
+{
+  detail::check_range<Component>(value, arg);
 }
 
 inline

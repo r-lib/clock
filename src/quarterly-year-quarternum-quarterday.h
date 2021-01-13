@@ -7,6 +7,7 @@
 #include "utils.h"
 #include "stream.h"
 #include "resolve.h"
+#include "check.h"
 
 namespace rclock {
 
@@ -45,6 +46,47 @@ resolve_last_day_yqnqd(const quarterly::year_quarternum_quarterday<S>& x) {
   return x.year() / x.quarternum() / quarterly::last;
 }
 
+template <enum component Component>
+inline void check_range(const int& value, const char* arg) {
+  clock_abort("Unimplemented range check");
+}
+template <>
+inline void check_range<component::year>(const int& value, const char* arg) {
+  check_range_year(value, arg);
+}
+template <>
+inline void check_range<component::quarternum>(const int& value, const char* arg) {
+  check_range_quarternum(value, arg);
+}
+template <>
+inline void check_range<component::quarterday>(const int& value, const char* arg) {
+  check_range_quarterday(value, arg);
+}
+template <>
+inline void check_range<component::hour>(const int& value, const char* arg) {
+  check_range_hour(value, arg);
+}
+template <>
+inline void check_range<component::minute>(const int& value, const char* arg) {
+  check_range_minute(value, arg);
+}
+template <>
+inline void check_range<component::second>(const int& value, const char* arg) {
+  check_range_second(value, arg);
+}
+template <>
+inline void check_range<component::millisecond>(const int& value, const char* arg) {
+  check_range_millisecond(value, arg);
+}
+template <>
+inline void check_range<component::microsecond>(const int& value, const char* arg) {
+  check_range_microsecond(value, arg);
+}
+template <>
+inline void check_range<component::nanosecond>(const int& value, const char* arg) {
+  check_range_nanosecond(value, arg);
+}
+
 } // namespace detail
 
 template <quarterly::start S>
@@ -68,6 +110,9 @@ public:
 
   void assign_year(const quarterly::year<S>& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
+
+  template <component Component>
+  void check_range(const int& value, const char* arg) const;
 
   void resolve(r_ssize i, const enum invalid type);
 
@@ -316,6 +361,15 @@ void
 y<S>::resolve(r_ssize i, const enum invalid type)
 {
   // Never invalid
+}
+
+template <quarterly::start S>
+template <component Component>
+inline
+void
+y<S>::check_range(const int& value, const char* arg) const
+{
+  detail::check_range<Component>(value, arg);
 }
 
 template <quarterly::start S>
