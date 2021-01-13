@@ -633,7 +633,7 @@ as_year_month_day.clock_calendar <- function(x) {
 
 #' @export
 as_sys_time.clock_year_month_day <- function(x) {
-  calendar_require_all_valid(x)
+  calendar_require_all_valid(x, "as_sys_time")
   precision <- calendar_precision(x)
   fields <- as_sys_time_year_month_day_cpp(x, precision)
   duration <- new_duration_from_fields(fields, precision)

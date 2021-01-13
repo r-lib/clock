@@ -4,9 +4,6 @@
 #include <cpp11/integers.hpp>
 #include <cpp11/list_of.hpp>
 
-typedef cpp11::list_of<cpp11::integers> clock_list_of_integers;
-typedef cpp11::writable::list_of<cpp11::writable::integers> clock_writable_list_of_integers;
-
 typedef cpp11::integers clock_field;
 typedef cpp11::writable::integers clock_writable_field;
 

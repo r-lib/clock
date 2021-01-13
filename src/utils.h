@@ -13,30 +13,6 @@
 static inline bool r_dbl_is_missing(double x) {
   return ISNAN(x);
 }
-static inline bool clock_dbl_is_missing(double x) {
-  return cpp11::safe[r_dbl_is_missing](x);
-}
-
-static inline int* r_int_deref(SEXP x) {
-  return INTEGER(x);
-}
-static inline int* clock_int_deref(SEXP x) {
-  return cpp11::safe[r_int_deref](x);
-}
-
-static inline const int* r_int_deref_const(SEXP x) {
-  return (const int*) INTEGER(x);
-}
-static inline const int* clock_int_deref_const(SEXP x) {
-  return cpp11::safe[r_int_deref_const](x);
-}
-
-static inline r_ssize r_length(SEXP x) {
-  return Rf_xlength(x);
-}
-static inline r_ssize clock_length(SEXP x) {
-  return cpp11::safe[r_length](x);
-}
 
 static inline bool r_is_scalar(SEXP x) {
   return Rf_xlength(x) == 1;

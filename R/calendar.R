@@ -40,7 +40,7 @@ ptype2_calendar_and_calendar <- function(x, y, ...) {
   if (calendar_precision(x) == calendar_precision(y)) {
     x
   } else {
-    stop_incompatible_type(x, y, ...)
+    stop_incompatible_type(x, y, ..., details = "Can't combine calendars with different precisions.")
   }
 }
 
@@ -48,7 +48,7 @@ cast_calendar_to_calendar <- function(x, to, ...) {
   if (calendar_precision(x) == calendar_precision(to)) {
     x
   } else {
-    stop_incompatible_cast(x, to, ...)
+    stop_incompatible_cast(x, to, ..., details = "Can't cast between calendars with different precisions.")
   }
 }
 

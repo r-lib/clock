@@ -36,6 +36,11 @@ as_year_month_weekday.POSIXt <- function(x) {
   as_year_month_weekday(as_naive_time(x))
 }
 
+#' @export
+as_year_quarternum_quarterday.POSIXt <- function(x, ..., start = 1L) {
+  as_year_quarternum_quarterday(as_naive_time(x), ..., start = start)
+}
+
 # ------------------------------------------------------------------------------
 
 # Not using `check_dots_empty()` because that might
@@ -153,6 +158,19 @@ get_weekday_index.POSIXt <- function(x) {
 }
 get_posixt_field_year_month_weekday <- function(x, get_fn) {
   x <- as_year_month_weekday(x)
+  get_fn(x)
+}
+
+#' @export
+get_quarternum.POSIXt <- function(x, ..., start = 1L) {
+  get_posixt_field_year_quarternum_quarterday(x, get_quarternum, ..., start = start)
+}
+#' @export
+get_quarterday.POSIXt <- function(x, ..., start = 1L) {
+  get_posixt_field_year_quarternum_quarterday(x, get_quarterday, ..., start = start)
+}
+get_posixt_field_year_quarternum_quarterday <- function(x, get_fn, ..., start) {
+  x <- as_year_quarternum_quarterday(x, ..., start = start)
   get_fn(x)
 }
 

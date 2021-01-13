@@ -62,6 +62,10 @@ enum component parse_component(const cpp11::strings& x);
 
 // -----------------------------------------------------------------------------
 
+enum quarterly::start parse_start(const cpp11::integers& x);
+
+// -----------------------------------------------------------------------------
+
 enum class day_nonexistent {
   last_time,
   first_time,
