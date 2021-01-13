@@ -587,12 +587,16 @@ ymdh::resolve(r_ssize i, const enum invalid type)
 
   switch (type) {
   case invalid::first_day:
+    assign_year_month_day(detail::resolve_first_day_ymd(elt), i);
+    break;
   case invalid::first_time: {
     assign_year_month_day(detail::resolve_first_day_ymd(elt), i);
     assign_hour(rclock::detail::resolve_first_day_hour(), i);
     break;
   }
   case invalid::last_day:
+    assign_day(detail::resolve_last_day_ymd(elt).day(), i);
+    break;
   case invalid::last_time: {
     assign_day(detail::resolve_last_day_ymd(elt).day(), i);
     assign_hour(rclock::detail::resolve_last_day_hour(), i);
