@@ -1,27 +1,18 @@
 to_posixct <- function(x) {
-  if (is_Date(x)) {
-    to_posixct_from_date(x)
-  } else if (is_POSIXct(x)) {
-    to_posixct_from_posixct(x)
+  if (is_POSIXct(x)) {
+    posixct_standardize(x)
   } else if (is_POSIXlt(x)) {
     to_posixct_from_posixlt(x)
   } else {
-    stop_clock_unsupported_class(x)
+    abort("Internal error: Should either be POSIXct/POSIXlt.")
   }
 }
 
-to_posixct_from_date <- function(x) {
-  x <- unclass(x)
-  x <- x * 86400
-  new_datetime(x, "UTC")
+is_POSIXct <- function(x) {
+  inherits(x, "POSIXct")
 }
-
-to_posixct_from_posixct <- function(x) {
-  posixct_standardize(x)
-}
-
-to_posixct_from_posixlt <- function(x) {
-  as.POSIXct.POSIXlt(x)
+is_POSIXlt <- function(x) {
+  inherits(x, "POSIXlt")
 }
 
 posixct_standardize <- function(x) {
@@ -35,37 +26,12 @@ posixct_standardize <- function(x) {
 
   x
 }
-
-# ------------------------------------------------------------------------------
-
-# `x` is POSIXct
-# If `to` is Date, then `x` has a UTC time zone
-from_posixct <- function(x, to) {
-  if (is_Date(to)) {
-    from_posixct_to_date(x)
-  } else if (is_POSIXct(to)) {
-    from_posixct_to_posixct(x)
-  } else if (is_POSIXlt(to)) {
-    # Push towards POSIXct
-    from_posixct_to_posixct(x)
-  }
-}
-
-from_posixct_to_date <- function(x) {
-  out <- floor(unclass(x) / 86400)
-  attr(out, "tzone") <- NULL
-  structure(out, class = "Date")
-}
-
-from_posixct_to_posixct <- function(x) {
-  x
+to_posixct_from_posixlt <- function(x) {
+  as.POSIXct.POSIXlt(x)
 }
 
 # ------------------------------------------------------------------------------
 
-false_along <- function(x) {
-  vector("logical", length = vec_size(x))
-}
 ones_along <- function(x, na_propagate = FALSE) {
   out <- rep(1L, vec_size(x))
 
@@ -95,112 +61,14 @@ zeros_along <- function(x, na_propagate = FALSE) {
   out
 }
 
-# Zeros along + NA propagation
-seconds_of_day_init <- function(x) {
-  zeros_along(x, na_propagate = TRUE)
-}
-
-nanoseconds_of_second_init <- function(x) {
-  zeros_along(x, na_propagate = TRUE)
-}
-
 # ------------------------------------------------------------------------------
-
-is_Date <- function(x) {
-  inherits(x, "Date")
-}
-
-is_POSIXct <- function(x) {
-  inherits(x, "POSIXct")
-}
-
-is_POSIXlt <- function(x) {
-  inherits(x, "POSIXlt")
-}
-
-is_zoned_or_base <- function(x) {
-  is_zoned_time(x) || is_Date(x) || is_POSIXct(x) || is_POSIXlt(x)
-}
-
-# ------------------------------------------------------------------------------
-
-date_to_days <- function(x) {
-  days <- unstructure(x)
-  days <- as.integer(x)
-  names(days) <- names(x)
-  days
-}
-
-days_to_date <- function(x, names = NULL) {
-  date <- unstructure(x)
-  date <- as.double(date)
-  names(date) <- names
-  new_date(date)
-}
-
-# ------------------------------------------------------------------------------
-
-restrict_clock_supported <- function(x) {
-  if (is_calendar(x) || is_time_point(x) || is_zoned_or_base(x) || is_duration(x)) {
-    invisible(x)
-  } else {
-    stop_clock_unsupported_class(x)
-  }
-}
-
-restrict_zoned_or_base <- function(x) {
-  if (is_zoned_or_base(x)) {
-    invisible(x)
-  } else {
-    stop_clock_unsupported_class(x)
-  }
-}
-
-restrict_zoned <- function(x) {
-  if (is_zoned_time_point(x)) {
-    invisible(x)
-  } else {
-    stop_clock_unsupported_class(x)
-  }
-}
-
-restrict_naive <- function(x) {
-  if (is_naive_time_point(x)) {
-    invisible(x)
-  } else {
-    stop_clock_unsupported_class(x)
-  }
-}
-
-# ------------------------------------------------------------------------------
-
-# Purposefully promote to double as this either avoids possible integer overflow
-# or converts integer fields to double to be used in a POSIXct
-
-seconds_in_day <- function() {
-  86400
-}
-seconds_in_hour <- function() {
-  3600
-}
-seconds_in_minute <- function() {
-  60
-}
-
-# ------------------------------------------------------------------------------
-
-glue <- function(...) {
-  do.call(paste0, vctrs::vec_recycle_common(...))
-}
-
-cat_line <- function(...) {
-  cat(paste0(..., "\n", collapse = ""))
-}
 
 unstructure <- function(x) {
   attributes(x) <- NULL
   x
 }
+
+# ------------------------------------------------------------------------------
 
 get_tzone <- function(x) {
   attr(x, "tzone", exact = TRUE) %||% ""
@@ -214,11 +82,6 @@ set_tzone <- function(x, tzone) {
 
 stop_clock <- function(message, class = character()) {
   rlang::abort(message, class = c(class, "clock_error"))
-}
-
-stop_clock_unsupported_class <- function(x) {
-  message <- paste0("Unsupported class ", paste_class(x))
-  stop_clock(message, class = "clock_error_unsupported_class")
 }
 
 stop_clock_unsupported_conversion <- function(x, to_arg) {
@@ -240,22 +103,6 @@ stop_clock_unsupported_time_point_op <- function(op) {
 paste_class <- function(x) {
   out <- paste0(class(x), collapse = "/")
   paste0("<", out, ">")
-}
-
-# ------------------------------------------------------------------------------
-
-set_field <- function(x, i, value) {
-  field(x, i) <- value
-  x
-}
-set_calendar <- function(x, value) {
-  set_field(x, "calendar", value)
-}
-set_seconds_of_day <- function(x, value) {
-  set_field(x, "seconds_of_day", value)
-}
-set_nanoseconds_of_second <- function(x, value) {
-  set_field(x, "nanoseconds_of_second", value)
 }
 
 # ------------------------------------------------------------------------------

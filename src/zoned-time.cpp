@@ -54,11 +54,11 @@ get_naive_time_cpp(cpp11::list_of<cpp11::integers> fields,
   duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision2(precision)) {
-  case precision2::second: return get_naive_time_impl(ds, p_time_zone);
-  case precision2::millisecond: return get_naive_time_impl(dmilli, p_time_zone);
-  case precision2::microsecond: return get_naive_time_impl(dmicro, p_time_zone);
-  case precision2::nanosecond: return get_naive_time_impl(dnano, p_time_zone);
+  switch (parse_precision(precision)) {
+  case precision::second: return get_naive_time_impl(ds, p_time_zone);
+  case precision::millisecond: return get_naive_time_impl(dmilli, p_time_zone);
+  case precision::microsecond: return get_naive_time_impl(dmicro, p_time_zone);
+  case precision::nanosecond: return get_naive_time_impl(dnano, p_time_zone);
   default: clock_abort("Internal error: Should never be called.");
   }
 }
@@ -144,11 +144,11 @@ as_zoned_sys_time_from_naive_time_cpp(cpp11::list_of<cpp11::integers> fields,
   duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision2(precision)) {
-  case precision2::second: return as_zoned_sys_time_from_naive_time_impl(ds, p_time_zone, nonexistent, ambiguous);
-  case precision2::millisecond: return as_zoned_sys_time_from_naive_time_impl(dmilli, p_time_zone, nonexistent, ambiguous);
-  case precision2::microsecond: return as_zoned_sys_time_from_naive_time_impl(dmicro, p_time_zone, nonexistent, ambiguous);
-  case precision2::nanosecond: return as_zoned_sys_time_from_naive_time_impl(dnano, p_time_zone, nonexistent, ambiguous);
+  switch (parse_precision(precision)) {
+  case precision::second: return as_zoned_sys_time_from_naive_time_impl(ds, p_time_zone, nonexistent, ambiguous);
+  case precision::millisecond: return as_zoned_sys_time_from_naive_time_impl(dmilli, p_time_zone, nonexistent, ambiguous);
+  case precision::microsecond: return as_zoned_sys_time_from_naive_time_impl(dmicro, p_time_zone, nonexistent, ambiguous);
+  case precision::nanosecond: return as_zoned_sys_time_from_naive_time_impl(dnano, p_time_zone, nonexistent, ambiguous);
   default: clock_abort("Internal error: Should never be called.");
   }
 }
@@ -249,11 +249,11 @@ get_offset_cpp(cpp11::list_of<cpp11::integers> fields,
   const duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   const duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision2(precision)) {
-  case precision2::second: return get_offset_impl(ds, p_time_zone);
-  case precision2::millisecond: return get_offset_impl(dmilli, p_time_zone);
-  case precision2::microsecond: return get_offset_impl(dmicro, p_time_zone);
-  case precision2::nanosecond: return get_offset_impl(dnano, p_time_zone);
+  switch (parse_precision(precision)) {
+  case precision::second: return get_offset_impl(ds, p_time_zone);
+  case precision::millisecond: return get_offset_impl(dmilli, p_time_zone);
+  case precision::microsecond: return get_offset_impl(dmicro, p_time_zone);
+  case precision::nanosecond: return get_offset_impl(dnano, p_time_zone);
   default: clock_abort("Internal error: Should never be called.");
   }
 }
