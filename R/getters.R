@@ -48,8 +48,8 @@ get_weekday <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-get_weekday_index <- function(x) {
-  UseMethod("get_weekday_index")
+get_index <- function(x) {
+  UseMethod("get_index")
 }
 
 # ------------------------------------------------------------------------------

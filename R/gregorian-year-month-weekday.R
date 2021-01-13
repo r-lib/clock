@@ -1,44 +1,44 @@
 #' @export
 year_month_weekday <- function(year,
                                month = NULL,
-                               weekday = NULL,
-                               weekday_index = NULL,
+                               day = NULL,
+                               index = NULL,
                                hour = NULL,
                                minute = NULL,
                                second = NULL,
                                subsecond = NULL,
                                ...,
                                subsecond_precision = NULL) {
-  if (xor(is_null(weekday), is_null(weekday_index))) {
-    abort("If either `weekday` or `weekday_index` is specified, both must be specified.")
+  if (xor(is_null(day), is_null(index))) {
+    abort("If either `day` or `index` is specified, both must be specified.")
   }
 
   # Stop on the first `NULL` argument
   if (is_null(month)) {
     precision <- "year"
     fields <- list(year = year)
-  } else if (is_null(weekday_index)) {
+  } else if (is_null(index)) {
     precision <- "month"
     fields <- list(year = year, month = month)
   } else if (is_null(hour)) {
     precision <- "day"
-    fields <- list(year = year, month = month, weekday = weekday, weekday_index = weekday_index)
+    fields <- list(year = year, month = month, day = day, index = index)
   } else if (is_null(minute)) {
     precision <- "hour"
-    fields <- list(year = year, month = month, weekday = weekday, weekday_index = weekday_index, hour = hour)
+    fields <- list(year = year, month = month, day = day, index = index, hour = hour)
   } else if (is_null(second)) {
     precision <- "minute"
-    fields <- list(year = year, month = month, weekday = weekday, weekday_index = weekday_index, hour = hour, minute = minute)
+    fields <- list(year = year, month = month, day = day, index = index, hour = hour, minute = minute)
   } else if (is_null(subsecond)) {
     precision <- "second"
-    fields <- list(year = year, month = month, weekday = weekday, weekday_index = weekday_index, hour = hour, minute = minute, second = second)
+    fields <- list(year = year, month = month, day = day, index = index, hour = hour, minute = minute, second = second)
   } else {
     precision <- calendar_validate_subsecond_precision(subsecond_precision)
-    fields <- list(year = year, month = month, weekday = weekday, weekday_index = weekday_index, hour = hour, minute = minute, second = second, subsecond = subsecond)
+    fields <- list(year = year, month = month, day = day, index = index, hour = hour, minute = minute, second = second, subsecond = subsecond)
   }
 
-  if (is_last(fields$weekday_index)) {
-    fields$weekday_index <- 1L
+  if (is_last(fields$index)) {
+    fields$index <- 1L
     last <- TRUE
   } else {
     last <- FALSE
@@ -52,7 +52,7 @@ year_month_weekday <- function(year,
   out <- new_year_month_weekday_from_fields(fields, precision)
 
   if (last) {
-    out <- set_weekday_index(out, "last")
+    out <- set_index(out, "last")
   }
 
   out
@@ -63,8 +63,8 @@ year_month_weekday <- function(year,
 #' @export
 new_year_month_weekday <- function(year = integer(),
                                    month = integer(),
-                                   weekday = integer(),
-                                   weekday_index = integer(),
+                                   day = integer(),
+                                   index = integer(),
                                    hour = integer(),
                                    minute = integer(),
                                    second = integer(),
@@ -81,13 +81,13 @@ new_year_month_weekday <- function(year = integer(),
     precision,
     year = list(year = year),
     month = list(year = year, month = month),
-    day = list(year = year, month = month, weekday = weekday, weekday_index = weekday_index),
-    hour = list(year = year, month = month, weekday = weekday, weekday_index = weekday_index, hour = hour),
-    minute = list(year = year, month = month, weekday = weekday, weekday_index = weekday_index, hour = hour, minute = minute),
-    second = list(year = year, month = month, weekday = weekday, weekday_index = weekday_index, hour = hour, minute = minute, second = second),
-    millisecond = list(year = year, month = month, weekday = weekday, weekday_index = weekday_index, hour = hour, minute = minute, second = second, subsecond = subsecond),
-    microsecond = list(year = year, month = month, weekday = weekday, weekday_index = weekday_index, hour = hour, minute = minute, second = second, subsecond = subsecond),
-    nanosecond = list(year = year, month = month, weekday = weekday, weekday_index = weekday_index, hour = hour, minute = minute, second = second, subsecond = subsecond)
+    day = list(year = year, month = month, day = day, index = index),
+    hour = list(year = year, month = month, day = day, index = index, hour = hour),
+    minute = list(year = year, month = month, day = day, index = index, hour = hour, minute = minute),
+    second = list(year = year, month = month, day = day, index = index, hour = hour, minute = minute, second = second),
+    millisecond = list(year = year, month = month, day = day, index = index, hour = hour, minute = minute, second = second, subsecond = subsecond),
+    microsecond = list(year = year, month = month, day = day, index = index, hour = hour, minute = minute, second = second, subsecond = subsecond),
+    nanosecond = list(year = year, month = month, day = day, index = index, hour = hour, minute = minute, second = second, subsecond = subsecond)
   )
 
   field_names <- names(fields)
@@ -108,8 +108,8 @@ new_year_month_weekday_from_fields <- function(fields, precision, names = NULL) 
   new_year_month_weekday(
     year = fields$year,
     month = fields$month,
-    weekday = fields$weekday,
-    weekday_index = fields$weekday_index,
+    day = fields$day,
+    index = fields$index,
     hour = fields$hour,
     minute = fields$minute,
     second = fields$second,
@@ -220,7 +220,7 @@ year_month_weekday_is_valid_component <- function(component) {
   if (!is_string(component)) {
     return(FALSE)
   }
-  component %in% c("year", "month", "weekday", "weekday_index", calendar_standard_components())
+  component %in% c("year", "month", "day", "index", calendar_standard_components())
 }
 
 # ------------------------------------------------------------------------------
@@ -262,16 +262,16 @@ get_month.clock_year_month_weekday <- function(x) {
 }
 
 #' @export
-get_weekday.clock_year_month_weekday <- function(x) {
+get_day.clock_year_month_weekday <- function(x) {
   # [Sunday, Saturday] -> [1, 7]
-  calendar_require_minimum_precision(x, "day", "get_weekday")
-  field_weekday(x)
+  calendar_require_minimum_precision(x, "day", "get_day")
+  field_day(x)
 }
 
 #' @export
-get_weekday_index.clock_year_month_weekday <- function(x) {
-  calendar_require_minimum_precision(x, "day", "get_weekday_index")
-  field_weekday_index(x)
+get_index.clock_year_month_weekday <- function(x) {
+  calendar_require_minimum_precision(x, "day", "get_index")
+  field_index(x)
 }
 
 #' @export
@@ -318,8 +318,8 @@ calendar_get_component.clock_year_month_weekday <- function(x, component) {
     component,
     year = get_year(x),
     month = get_month(x),
-    weekday = get_weekday(x),
-    weekday_index = get_weekday_index(x),
+    day = get_day(x),
+    index = get_index(x),
     hour = get_hour(x),
     minute = get_minute(x),
     second = get_second(x),
@@ -346,16 +346,16 @@ set_month.clock_year_month_weekday <- function(x, value, ...) {
 }
 
 #' @export
-set_weekday.clock_year_month_weekday <- function(x, value, ..., weekday_index = NULL) {
+set_day.clock_year_month_weekday <- function(x, value, ..., index = NULL) {
   check_dots_empty()
-  calendar_require_minimum_precision(x, "month", "set_weekday")
+  calendar_require_minimum_precision(x, "month", "set_day")
 
-  has_weekday_index <- !is_null(weekday_index)
+  has_index <- !is_null(index)
   precision <- calendar_precision(x)
 
   if (precision_value(precision) == PRECISION_MONTH) {
-    if (!has_weekday_index) {
-      abort("For 'month' precision 'year_month_weekday', both the weekday and index must be set simultaneously.")
+    if (!has_index) {
+      abort("For 'month' precision 'year_month_weekday', both the day and index must be set simultaneously.")
     }
 
     ones <- ones_along(x, na_propagate = TRUE)
@@ -364,27 +364,27 @@ set_weekday.clock_year_month_weekday <- function(x, value, ..., weekday_index = 
     x <- new_year_month_weekday(
       year = get_year(x),
       month = get_month(x),
-      weekday = ones,
-      weekday_index = ones,
+      day = ones,
+      index = ones,
       precision = "day",
       names = names(x)
     )
   }
 
-  out <- set_field_year_month_weekday(x, value, "weekday")
+  out <- set_field_year_month_weekday(x, value, "day")
 
-  if (has_weekday_index) {
-    out <- set_field_year_month_weekday(out, weekday_index, "weekday_index")
+  if (has_index) {
+    out <- set_field_year_month_weekday(out, index, "index")
   }
 
   out
 }
 
 #' @export
-set_weekday_index.clock_year_month_weekday <- function(x, value, ...) {
+set_index.clock_year_month_weekday <- function(x, value, ...) {
   check_dots_empty()
-  calendar_require_minimum_precision(x, "day", "set_weekday_index")
-  set_field_year_month_weekday(x, value, "weekday_index")
+  calendar_require_minimum_precision(x, "day", "set_index")
+  set_field_year_month_weekday(x, value, "index")
 }
 
 #' @export
@@ -430,7 +430,7 @@ set_nanosecond.clock_year_month_weekday <- function(x, value, ...) {
 }
 
 set_field_year_month_weekday <- function(x, value, component) {
-  if (is_last(value) && identical(component, "weekday_index")) {
+  if (is_last(value) && identical(component, "index")) {
     return(set_field_year_month_weekday_last(x))
   }
 
@@ -452,13 +452,13 @@ set_field_year_month_weekday <- function(x, value, component) {
 }
 
 set_field_year_month_weekday_last <- function(x) {
-  # We require 'day' precision to set the `weekday_index` at all, so no
+  # We require 'day' precision to set the `index` at all, so no
   # need to find a common precision here
   precision_fields <- calendar_precision(x)
 
   result <- set_field_year_month_weekday_last_cpp(x, precision_fields)
   fields <- result$fields
-  fields[["weekday_index"]] <- result$value
+  fields[["index"]] <- result$value
 
   new_year_month_weekday_from_fields(fields, precision_fields, names = names(x))
 }
@@ -471,8 +471,8 @@ calendar_set_component.clock_year_month_weekday <- function(x, value, component,
     component,
     year = set_year(x, value, ...),
     month = set_month(x, value, ...),
-    weekday = set_weekday(x, value, ...),
-    weekday_index = set_weekday_index(x, value, ...),
+    day = set_day(x, value, ...),
+    index = set_index(x, value, ...),
     hour = set_hour(x, value, ...),
     minute = set_minute(x, value, ...),
     second = set_second(x, value, ...),
@@ -508,8 +508,8 @@ year_month_weekday_component_to_precision <- function(component) {
     component,
     year = component,
     month = component,
-    weekday = "day",
-    weekday_index = "day",
+    day = component,
+    index = "day",
     hour = component,
     minute = component,
     second = component,
@@ -529,8 +529,8 @@ year_month_weekday_component_to_field <- function(component) {
     component,
     year = component,
     month = component,
-    weekday = component,
-    weekday_index = component,
+    day = component,
+    index = component,
     hour = component,
     minute = component,
     second = component,
@@ -550,7 +550,7 @@ year_month_weekday_precision_to_component <- function(precision) {
     precision,
     year = precision,
     month = precision,
-    day = abort("Internal error: Ambiguous precision -> component mapping (weekday / weekday_index)."),
+    day = abort("Internal error: Ambiguous precision -> component mapping (weekday / index)."),
     hour = precision,
     minute = precision,
     second = precision,
@@ -570,7 +570,7 @@ year_month_weekday_precision_to_field <- function(precision) {
     precision,
     year = precision,
     month = precision,
-    day = abort("Internal error: Ambiguous precision -> field mapping (weekday / weekday_index)."),
+    day = abort("Internal error: Ambiguous precision -> field mapping (weekday / index)."),
     hour = precision,
     minute = precision,
     second = precision,
@@ -736,8 +736,8 @@ calendar_component_grouper.clock_year_month_weekday <- function(x, component) {
     component,
     year = group_component0,
     month = group_component1,
-    weekday = abort("Internal error: Should have errored earlier. Undefined 'day' grouping"),
-    weekday_index = abort("Internal error: Should have errored earlier. Undefined 'day' grouping"),
+    day = abort("Internal error: Should have errored earlier. Undefined 'day' grouping"),
+    index = abort("Internal error: Should have errored earlier. Undefined 'day' grouping"),
     hour = group_component0,
     minute = group_component0,
     second = group_component0,
@@ -770,8 +770,8 @@ calendar_narrow.clock_year_month_weekday <- function(x, precision) {
     out_fields[["month"]] <- x_fields[["month"]]
   }
   if (out_precision_value >= PRECISION_DAY) {
-    out_fields[["weekday"]] <- x_fields[["weekday"]]
-    out_fields[["weekday_index"]] <- x_fields[["weekday_index"]]
+    out_fields[["day"]] <- x_fields[["day"]]
+    out_fields[["index"]] <- x_fields[["index"]]
   }
   if (out_precision_value >= PRECISION_HOUR) {
     out_fields <- calendar_narrow_time(out_fields, out_precision_value, x_fields, x_precision_value)
@@ -782,9 +782,6 @@ calendar_narrow.clock_year_month_weekday <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
-field_weekday <- function(x) {
-  field(x, "weekday")
-}
-field_weekday_index <- function(x) {
-  field(x, "weekday_index")
+field_index <- function(x) {
+  field(x, "index")
 }

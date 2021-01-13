@@ -19,8 +19,8 @@ year_month_weekday_check_range_cpp(const cpp11::integers& x,
   switch (parse_component(component)) {
   case component::year: return calendar_check_range_impl<component::year>(dummy, x, x_arg);
   case component::month: return calendar_check_range_impl<component::month>(dummy, x, x_arg);
-  case component::weekday: return calendar_check_range_impl<component::weekday>(dummy, x, x_arg);
-  case component::weekday_index: return calendar_check_range_impl<component::weekday_index>(dummy, x, x_arg);
+  case component::day: return calendar_check_range_impl<component::day>(dummy, x, x_arg);
+  case component::index: return calendar_check_range_impl<component::index>(dummy, x, x_arg);
   case component::hour: return calendar_check_range_impl<component::hour>(dummy, x, x_arg);
   case component::minute: return calendar_check_range_impl<component::minute>(dummy, x, x_arg);
   case component::second: return calendar_check_range_impl<component::second>(dummy, x, x_arg);
@@ -41,8 +41,8 @@ collect_year_month_weekday_fields(cpp11::list_of<cpp11::integers> fields,
 
   cpp11::integers year = weekday::get_year(fields);
   cpp11::integers month = weekday::get_month(fields);
-  cpp11::integers weekday = weekday::get_weekday(fields);
-  cpp11::integers weekday_index = weekday::get_weekday_index(fields);
+  cpp11::integers day = weekday::get_day(fields);
+  cpp11::integers index = weekday::get_index(fields);
   cpp11::integers hour = weekday::get_hour(fields);
   cpp11::integers minute = weekday::get_minute(fields);
   cpp11::integers second = weekday::get_second(fields);
@@ -50,13 +50,13 @@ collect_year_month_weekday_fields(cpp11::list_of<cpp11::integers> fields,
 
   weekday::y y{year};
   weekday::ym ym{year, month};
-  weekday::ymwd ymwd{year, month, weekday, weekday_index};
-  weekday::ymwdh ymwdh{year, month, weekday, weekday_index, hour};
-  weekday::ymwdhm ymwdhm{year, month, weekday, weekday_index, hour, minute};
-  weekday::ymwdhms ymwdhms{year, month, weekday, weekday_index, hour, minute, second};
-  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, weekday, weekday_index, hour, minute, second, subsecond};
+  weekday::ymwd ymwd{year, month, day, index};
+  weekday::ymwdh ymwdh{year, month, day, index, hour};
+  weekday::ymwdhm ymwdhm{year, month, day, index, hour, minute};
+  weekday::ymwdhms ymwdhms{year, month, day, index, hour, minute, second};
+  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
 
   switch (parse_precision(precision)) {
   case precision::year: {
@@ -71,23 +71,23 @@ collect_year_month_weekday_fields(cpp11::list_of<cpp11::integers> fields,
   case precision::day: {
     collect_field<component::year>(ymwd, year, "year");
     collect_field<component::month>(ymwd, month, "month");
-    collect_field<component::weekday>(ymwd, weekday, "weekday");
-    collect_field<component::weekday_index>(ymwd, weekday_index, "weekday_index");
+    collect_field<component::day>(ymwd, day, "day");
+    collect_field<component::index>(ymwd, index, "index");
     return ymwd.to_list();
   }
   case precision::hour: {
     collect_field<component::year>(ymwdh, year, "year");
     collect_field<component::month>(ymwdh, month, "month");
-    collect_field<component::weekday>(ymwdh, weekday, "weekday");
-    collect_field<component::weekday_index>(ymwdh, weekday_index, "weekday_index");
+    collect_field<component::day>(ymwdh, day, "day");
+    collect_field<component::index>(ymwdh, index, "index");
     collect_field<component::hour>(ymwdh, hour, "hour");
     return ymwdh.to_list();
   }
   case precision::minute: {
     collect_field<component::year>(ymwdhm, year, "year");
     collect_field<component::month>(ymwdhm, month, "month");
-    collect_field<component::weekday>(ymwdhm, weekday, "weekday");
-    collect_field<component::weekday_index>(ymwdhm, weekday_index, "weekday_index");
+    collect_field<component::day>(ymwdhm, day, "day");
+    collect_field<component::index>(ymwdhm, index, "index");
     collect_field<component::hour>(ymwdhm, hour, "hour");
     collect_field<component::minute>(ymwdhm, minute, "minute");
     return ymwdhm.to_list();
@@ -95,8 +95,8 @@ collect_year_month_weekday_fields(cpp11::list_of<cpp11::integers> fields,
   case precision::second: {
     collect_field<component::year>(ymwdhms, year, "year");
     collect_field<component::month>(ymwdhms, month, "month");
-    collect_field<component::weekday>(ymwdhms, weekday, "weekday");
-    collect_field<component::weekday_index>(ymwdhms, weekday_index, "weekday_index");
+    collect_field<component::day>(ymwdhms, day, "day");
+    collect_field<component::index>(ymwdhms, index, "index");
     collect_field<component::hour>(ymwdhms, hour, "hour");
     collect_field<component::minute>(ymwdhms, minute, "minute");
     collect_field<component::second>(ymwdhms, second, "second");
@@ -105,8 +105,8 @@ collect_year_month_weekday_fields(cpp11::list_of<cpp11::integers> fields,
   case precision::millisecond: {
     collect_field<component::year>(ymwdhmss1, year, "year");
     collect_field<component::month>(ymwdhmss1, month, "month");
-    collect_field<component::weekday>(ymwdhmss1, weekday, "weekday");
-    collect_field<component::weekday_index>(ymwdhmss1, weekday_index, "weekday_index");
+    collect_field<component::day>(ymwdhmss1, day, "day");
+    collect_field<component::index>(ymwdhmss1, index, "index");
     collect_field<component::hour>(ymwdhmss1, hour, "hour");
     collect_field<component::minute>(ymwdhmss1, minute, "minute");
     collect_field<component::second>(ymwdhmss1, second, "second");
@@ -116,8 +116,8 @@ collect_year_month_weekday_fields(cpp11::list_of<cpp11::integers> fields,
   case precision::microsecond: {
     collect_field<component::year>(ymwdhmss2, year, "year");
     collect_field<component::month>(ymwdhmss2, month, "month");
-    collect_field<component::weekday>(ymwdhmss2, weekday, "weekday");
-    collect_field<component::weekday_index>(ymwdhmss2, weekday_index, "weekday_index");
+    collect_field<component::day>(ymwdhmss2, day, "day");
+    collect_field<component::index>(ymwdhmss2, index, "index");
     collect_field<component::hour>(ymwdhmss2, hour, "hour");
     collect_field<component::minute>(ymwdhmss2, minute, "minute");
     collect_field<component::second>(ymwdhmss2, second, "second");
@@ -127,8 +127,8 @@ collect_year_month_weekday_fields(cpp11::list_of<cpp11::integers> fields,
   case precision::nanosecond: {
     collect_field<component::year>(ymwdhmss3, year, "year");
     collect_field<component::month>(ymwdhmss3, month, "month");
-    collect_field<component::weekday>(ymwdhmss3, weekday, "weekday");
-    collect_field<component::weekday_index>(ymwdhmss3, weekday_index, "weekday_index");
+    collect_field<component::day>(ymwdhmss3, day, "day");
+    collect_field<component::index>(ymwdhmss3, index, "index");
     collect_field<component::hour>(ymwdhmss3, hour, "hour");
     collect_field<component::minute>(ymwdhmss3, minute, "minute");
     collect_field<component::second>(ymwdhmss3, second, "second");
@@ -148,8 +148,8 @@ format_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, const cpp1
 
   cpp11::integers year = weekday::get_year(fields);
   cpp11::integers month = weekday::get_month(fields);
-  cpp11::integers weekday = weekday::get_weekday(fields);
-  cpp11::integers weekday_index = weekday::get_weekday_index(fields);
+  cpp11::integers day = weekday::get_day(fields);
+  cpp11::integers index = weekday::get_index(fields);
   cpp11::integers hour = weekday::get_hour(fields);
   cpp11::integers minute = weekday::get_minute(fields);
   cpp11::integers second = weekday::get_second(fields);
@@ -157,13 +157,13 @@ format_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, const cpp1
 
   weekday::y y{year};
   weekday::ym ym{year, month};
-  weekday::ymwd ymwd{year, month, weekday, weekday_index};
-  weekday::ymwdh ymwdh{year, month, weekday, weekday_index, hour};
-  weekday::ymwdhm ymwdhm{year, month, weekday, weekday_index, hour, minute};
-  weekday::ymwdhms ymwdhms{year, month, weekday, weekday_index, hour, minute, second};
-  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, weekday, weekday_index, hour, minute, second, subsecond};
+  weekday::ymwd ymwd{year, month, day, index};
+  weekday::ymwdh ymwdh{year, month, day, index, hour};
+  weekday::ymwdhm ymwdhm{year, month, day, index, hour, minute};
+  weekday::ymwdhms ymwdhms{year, month, day, index, hour, minute, second};
+  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
 
   switch (parse_precision(precision)) {
   case precision::year: return format_calendar_impl(y);
@@ -188,8 +188,8 @@ invalid_detect_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, co
 
   cpp11::integers year = weekday::get_year(fields);
   cpp11::integers month = weekday::get_month(fields);
-  cpp11::integers weekday = weekday::get_weekday(fields);
-  cpp11::integers weekday_index = weekday::get_weekday_index(fields);
+  cpp11::integers day = weekday::get_day(fields);
+  cpp11::integers index = weekday::get_index(fields);
   cpp11::integers hour = weekday::get_hour(fields);
   cpp11::integers minute = weekday::get_minute(fields);
   cpp11::integers second = weekday::get_second(fields);
@@ -197,13 +197,13 @@ invalid_detect_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, co
 
   weekday::y y{year};
   weekday::ym ym{year, month};
-  weekday::ymwd ymwd{year, month, weekday, weekday_index};
-  weekday::ymwdh ymwdh{year, month, weekday, weekday_index, hour};
-  weekday::ymwdhm ymwdhm{year, month, weekday, weekday_index, hour, minute};
-  weekday::ymwdhms ymwdhms{year, month, weekday, weekday_index, hour, minute, second};
-  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, weekday, weekday_index, hour, minute, second, subsecond};
+  weekday::ymwd ymwd{year, month, day, index};
+  weekday::ymwdh ymwdh{year, month, day, index, hour};
+  weekday::ymwdhm ymwdhm{year, month, day, index, hour, minute};
+  weekday::ymwdhms ymwdhms{year, month, day, index, hour, minute, second};
+  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
 
   switch (parse_precision(precision)) {
   case precision::year: return invalid_detect_calendar_impl(y);
@@ -228,8 +228,8 @@ invalid_any_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, cpp11
 
   cpp11::integers year = weekday::get_year(fields);
   cpp11::integers month = weekday::get_month(fields);
-  cpp11::integers weekday = weekday::get_weekday(fields);
-  cpp11::integers weekday_index = weekday::get_weekday_index(fields);
+  cpp11::integers day = weekday::get_day(fields);
+  cpp11::integers index = weekday::get_index(fields);
   cpp11::integers hour = weekday::get_hour(fields);
   cpp11::integers minute = weekday::get_minute(fields);
   cpp11::integers second = weekday::get_second(fields);
@@ -237,13 +237,13 @@ invalid_any_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, cpp11
 
   weekday::y y{year};
   weekday::ym ym{year, month};
-  weekday::ymwd ymwd{year, month, weekday, weekday_index};
-  weekday::ymwdh ymwdh{year, month, weekday, weekday_index, hour};
-  weekday::ymwdhm ymwdhm{year, month, weekday, weekday_index, hour, minute};
-  weekday::ymwdhms ymwdhms{year, month, weekday, weekday_index, hour, minute, second};
-  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, weekday, weekday_index, hour, minute, second, subsecond};
+  weekday::ymwd ymwd{year, month, day, index};
+  weekday::ymwdh ymwdh{year, month, day, index, hour};
+  weekday::ymwdhm ymwdhm{year, month, day, index, hour, minute};
+  weekday::ymwdhms ymwdhms{year, month, day, index, hour, minute, second};
+  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
 
   switch (parse_precision(precision)) {
   case precision::year: return invalid_any_calendar_impl(y);
@@ -268,8 +268,8 @@ invalid_count_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, con
 
   cpp11::integers year = weekday::get_year(fields);
   cpp11::integers month = weekday::get_month(fields);
-  cpp11::integers weekday = weekday::get_weekday(fields);
-  cpp11::integers weekday_index = weekday::get_weekday_index(fields);
+  cpp11::integers day = weekday::get_day(fields);
+  cpp11::integers index = weekday::get_index(fields);
   cpp11::integers hour = weekday::get_hour(fields);
   cpp11::integers minute = weekday::get_minute(fields);
   cpp11::integers second = weekday::get_second(fields);
@@ -277,13 +277,13 @@ invalid_count_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, con
 
   weekday::y y{year};
   weekday::ym ym{year, month};
-  weekday::ymwd ymwd{year, month, weekday, weekday_index};
-  weekday::ymwdh ymwdh{year, month, weekday, weekday_index, hour};
-  weekday::ymwdhm ymwdhm{year, month, weekday, weekday_index, hour, minute};
-  weekday::ymwdhms ymwdhms{year, month, weekday, weekday_index, hour, minute, second};
-  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, weekday, weekday_index, hour, minute, second, subsecond};
+  weekday::ymwd ymwd{year, month, day, index};
+  weekday::ymwdh ymwdh{year, month, day, index, hour};
+  weekday::ymwdhm ymwdhm{year, month, day, index, hour, minute};
+  weekday::ymwdhms ymwdhms{year, month, day, index, hour, minute, second};
+  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
 
   switch (parse_precision(precision)) {
   case precision::year: return invalid_count_calendar_impl(y);
@@ -311,8 +311,8 @@ invalid_resolve_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
 
   cpp11::integers year = weekday::get_year(fields);
   cpp11::integers month = weekday::get_month(fields);
-  cpp11::integers weekday = weekday::get_weekday(fields);
-  cpp11::integers weekday_index = weekday::get_weekday_index(fields);
+  cpp11::integers day = weekday::get_day(fields);
+  cpp11::integers index = weekday::get_index(fields);
   cpp11::integers hour = weekday::get_hour(fields);
   cpp11::integers minute = weekday::get_minute(fields);
   cpp11::integers second = weekday::get_second(fields);
@@ -320,13 +320,13 @@ invalid_resolve_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
 
   weekday::y y{year};
   weekday::ym ym{year, month};
-  weekday::ymwd ymwd{year, month, weekday, weekday_index};
-  weekday::ymwdh ymwdh{year, month, weekday, weekday_index, hour};
-  weekday::ymwdhm ymwdhm{year, month, weekday, weekday_index, hour, minute};
-  weekday::ymwdhms ymwdhms{year, month, weekday, weekday_index, hour, minute, second};
-  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, weekday, weekday_index, hour, minute, second, subsecond};
+  weekday::ymwd ymwd{year, month, day, index};
+  weekday::ymwdh ymwdh{year, month, day, index, hour};
+  weekday::ymwdhm ymwdhm{year, month, day, index, hour, minute};
+  weekday::ymwdhms ymwdhms{year, month, day, index, hour, minute, second};
+  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
 
   switch (parse_precision(precision)) {
   case precision::year: return invalid_resolve_calendar_impl(y, invalid_val);
@@ -355,8 +355,8 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
 
   cpp11::integers year = weekday::get_year(fields);
   cpp11::integers month = weekday::get_month(fields);
-  cpp11::integers weekday = weekday::get_weekday(fields);
-  cpp11::integers weekday_index = weekday::get_weekday_index(fields);
+  cpp11::integers day = weekday::get_day(fields);
+  cpp11::integers index = weekday::get_index(fields);
   cpp11::integers hour = weekday::get_hour(fields);
   cpp11::integers minute = weekday::get_minute(fields);
   cpp11::integers second = weekday::get_second(fields);
@@ -364,13 +364,13 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
 
   weekday::y y{year};
   weekday::ym ym{year, month};
-  weekday::ymwd ymwd{year, month, weekday, weekday_index};
-  weekday::ymwdh ymwdh{year, month, weekday, weekday_index, hour};
-  weekday::ymwdhm ymwdhm{year, month, weekday, weekday_index, hour, minute};
-  weekday::ymwdhms ymwdhms{year, month, weekday, weekday_index, hour, minute, second};
-  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, weekday, weekday_index, hour, minute, second, subsecond};
+  weekday::ymwd ymwd{year, month, day, index};
+  weekday::ymwdh ymwdh{year, month, day, index, hour};
+  weekday::ymwdhm ymwdhm{year, month, day, index, hour, minute};
+  weekday::ymwdhms ymwdhms{year, month, day, index, hour, minute, second};
+  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
 
   switch (parse_precision(precision_fields)) {
   case precision::year: {
@@ -392,8 +392,8 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     switch (parse_component(component)) {
     case component::year: return set_field_calendar<component::year>(ymwd, value2);
     case component::month: return set_field_calendar<component::month>(ymwd, value2);
-    case component::weekday: return set_field_calendar<component::weekday>(ymwd, value2);
-    case component::weekday_index: return set_field_calendar<component::weekday_index>(ymwd, value2);
+    case component::day: return set_field_calendar<component::day>(ymwd, value2);
+    case component::index: return set_field_calendar<component::index>(ymwd, value2);
     case component::hour: return set_field_calendar<component::hour>(ymwd, value2);
     default: clock_abort("Internal error: Invalid component.");
     }
@@ -402,8 +402,8 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     switch (parse_component(component)) {
     case component::year: return set_field_calendar<component::year>(ymwdh, value2);
     case component::month: return set_field_calendar<component::month>(ymwdh, value2);
-    case component::weekday: return set_field_calendar<component::weekday>(ymwdh, value2);
-    case component::weekday_index: return set_field_calendar<component::weekday_index>(ymwdh, value2);
+    case component::day: return set_field_calendar<component::day>(ymwdh, value2);
+    case component::index: return set_field_calendar<component::index>(ymwdh, value2);
     case component::hour: return set_field_calendar<component::hour>(ymwdh, value2);
     case component::minute: return set_field_calendar<component::minute>(ymwdh, value2);
     default: clock_abort("Internal error: Invalid component.");
@@ -413,8 +413,8 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     switch (parse_component(component)) {
     case component::year: return set_field_calendar<component::year>(ymwdhm, value2);
     case component::month: return set_field_calendar<component::month>(ymwdhm, value2);
-    case component::weekday: return set_field_calendar<component::weekday>(ymwdhm, value2);
-    case component::weekday_index: return set_field_calendar<component::weekday_index>(ymwdhm, value2);
+    case component::day: return set_field_calendar<component::day>(ymwdhm, value2);
+    case component::index: return set_field_calendar<component::index>(ymwdhm, value2);
     case component::hour: return set_field_calendar<component::hour>(ymwdhm, value2);
     case component::minute: return set_field_calendar<component::minute>(ymwdhm, value2);
     case component::second: return set_field_calendar<component::second>(ymwdhm, value2);
@@ -425,8 +425,8 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     switch (parse_component(component)) {
     case component::year: return set_field_calendar<component::year>(ymwdhms, value2);
     case component::month: return set_field_calendar<component::month>(ymwdhms, value2);
-    case component::weekday: return set_field_calendar<component::weekday>(ymwdhms, value2);
-    case component::weekday_index: return set_field_calendar<component::weekday_index>(ymwdhms, value2);
+    case component::day: return set_field_calendar<component::day>(ymwdhms, value2);
+    case component::index: return set_field_calendar<component::index>(ymwdhms, value2);
     case component::hour: return set_field_calendar<component::hour>(ymwdhms, value2);
     case component::minute: return set_field_calendar<component::minute>(ymwdhms, value2);
     case component::second: return set_field_calendar<component::second>(ymwdhms, value2);
@@ -440,8 +440,8 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     switch (parse_component(component)) {
     case component::year: return set_field_calendar<component::year>(ymwdhmss1, value2);
     case component::month: return set_field_calendar<component::month>(ymwdhmss1, value2);
-    case component::weekday: return set_field_calendar<component::weekday>(ymwdhmss1, value2);
-    case component::weekday_index: return set_field_calendar<component::weekday_index>(ymwdhmss1, value2);
+    case component::day: return set_field_calendar<component::day>(ymwdhmss1, value2);
+    case component::index: return set_field_calendar<component::index>(ymwdhmss1, value2);
     case component::hour: return set_field_calendar<component::hour>(ymwdhmss1, value2);
     case component::minute: return set_field_calendar<component::minute>(ymwdhmss1, value2);
     case component::second: return set_field_calendar<component::second>(ymwdhmss1, value2);
@@ -453,8 +453,8 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     switch (parse_component(component)) {
     case component::year: return set_field_calendar<component::year>(ymwdhmss2, value2);
     case component::month: return set_field_calendar<component::month>(ymwdhmss2, value2);
-    case component::weekday: return set_field_calendar<component::weekday>(ymwdhmss2, value2);
-    case component::weekday_index: return set_field_calendar<component::weekday_index>(ymwdhmss2, value2);
+    case component::day: return set_field_calendar<component::day>(ymwdhmss2, value2);
+    case component::index: return set_field_calendar<component::index>(ymwdhmss2, value2);
     case component::hour: return set_field_calendar<component::hour>(ymwdhmss2, value2);
     case component::minute: return set_field_calendar<component::minute>(ymwdhmss2, value2);
     case component::second: return set_field_calendar<component::second>(ymwdhmss2, value2);
@@ -466,8 +466,8 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     switch (parse_component(component)) {
     case component::year: return set_field_calendar<component::year>(ymwdhmss3, value2);
     case component::month: return set_field_calendar<component::month>(ymwdhmss3, value2);
-    case component::weekday: return set_field_calendar<component::weekday>(ymwdhmss3, value2);
-    case component::weekday_index: return set_field_calendar<component::weekday_index>(ymwdhmss3, value2);
+    case component::day: return set_field_calendar<component::day>(ymwdhmss3, value2);
+    case component::index: return set_field_calendar<component::index>(ymwdhmss3, value2);
     case component::hour: return set_field_calendar<component::hour>(ymwdhmss3, value2);
     case component::minute: return set_field_calendar<component::minute>(ymwdhmss3, value2);
     case component::second: return set_field_calendar<component::second>(ymwdhmss3, value2);
@@ -510,20 +510,20 @@ set_field_year_month_weekday_last_cpp(cpp11::list_of<cpp11::integers> fields,
 
   cpp11::integers year = weekday::get_year(fields);
   cpp11::integers month = weekday::get_month(fields);
-  cpp11::integers weekday = weekday::get_weekday(fields);
-  cpp11::integers weekday_index = weekday::get_weekday_index(fields);
+  cpp11::integers day = weekday::get_day(fields);
+  cpp11::integers index = weekday::get_index(fields);
   cpp11::integers hour = weekday::get_hour(fields);
   cpp11::integers minute = weekday::get_minute(fields);
   cpp11::integers second = weekday::get_second(fields);
   cpp11::integers subsecond = weekday::get_subsecond(fields);
 
-  weekday::ymwd ymwd{year, month, weekday, weekday_index};
-  weekday::ymwdh ymwdh{year, month, weekday, weekday_index, hour};
-  weekday::ymwdhm ymwdhm{year, month, weekday, weekday_index, hour, minute};
-  weekday::ymwdhms ymwdhms{year, month, weekday, weekday_index, hour, minute, second};
-  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, weekday, weekday_index, hour, minute, second, subsecond};
+  weekday::ymwd ymwd{year, month, day, index};
+  weekday::ymwdh ymwdh{year, month, day, index, hour};
+  weekday::ymwdhm ymwdhm{year, month, day, index, hour, minute};
+  weekday::ymwdhms ymwdhms{year, month, day, index, hour, minute, second};
+  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
 
   switch (parse_precision(precision_fields)) {
   case precision::day: return set_field_year_month_weekday_last_impl(ymwd);
@@ -552,8 +552,8 @@ year_month_weekday_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields,
 
   cpp11::integers year = weekday::get_year(fields);
   cpp11::integers month = weekday::get_month(fields);
-  cpp11::integers weekday = weekday::get_weekday(fields);
-  cpp11::integers weekday_index = weekday::get_weekday_index(fields);
+  cpp11::integers day = weekday::get_day(fields);
+  cpp11::integers index = weekday::get_index(fields);
   cpp11::integers hour = weekday::get_hour(fields);
   cpp11::integers minute = weekday::get_minute(fields);
   cpp11::integers second = weekday::get_second(fields);
@@ -561,13 +561,13 @@ year_month_weekday_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields,
 
   weekday::y y{year};
   weekday::ym ym{year, month};
-  weekday::ymwd ymwd{year, month, weekday, weekday_index};
-  weekday::ymwdh ymwdh{year, month, weekday, weekday_index, hour};
-  weekday::ymwdhm ymwdhm{year, month, weekday, weekday_index, hour, minute};
-  weekday::ymwdhms ymwdhms{year, month, weekday, weekday_index, hour, minute, second};
-  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, weekday, weekday_index, hour, minute, second, subsecond};
+  weekday::ymwd ymwd{year, month, day, index};
+  weekday::ymwdh ymwdh{year, month, day, index, hour};
+  weekday::ymwdhm ymwdhm{year, month, day, index, hour, minute};
+  weekday::ymwdhms ymwdhms{year, month, day, index, hour, minute, second};
+  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
 
   cpp11::integers ticks = duration::get_ticks(fields_n);
 
@@ -651,20 +651,20 @@ as_sys_time_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
 
   cpp11::integers year = weekday::get_year(fields);
   cpp11::integers month = weekday::get_month(fields);
-  cpp11::integers weekday = weekday::get_weekday(fields);
-  cpp11::integers weekday_index = weekday::get_weekday_index(fields);
+  cpp11::integers day = weekday::get_day(fields);
+  cpp11::integers index = weekday::get_index(fields);
   cpp11::integers hour = weekday::get_hour(fields);
   cpp11::integers minute = weekday::get_minute(fields);
   cpp11::integers second = weekday::get_second(fields);
   cpp11::integers subsecond = weekday::get_subsecond(fields);
 
-  weekday::ymwd ymwd{year, month, weekday, weekday_index};
-  weekday::ymwdh ymwdh{year, month, weekday, weekday_index, hour};
-  weekday::ymwdhm ymwdhm{year, month, weekday, weekday_index, hour, minute};
-  weekday::ymwdhms ymwdhms{year, month, weekday, weekday_index, hour, minute, second};
-  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, weekday, weekday_index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, weekday, weekday_index, hour, minute, second, subsecond};
+  weekday::ymwd ymwd{year, month, day, index};
+  weekday::ymwdh ymwdh{year, month, day, index, hour};
+  weekday::ymwdhm ymwdhm{year, month, day, index, hour, minute};
+  weekday::ymwdhms ymwdhms{year, month, day, index, hour, minute, second};
+  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
+  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
 
   switch (parse_precision(precision)) {
   case precision::day: return as_sys_time_from_calendar_impl<duration::days>(ymwd);

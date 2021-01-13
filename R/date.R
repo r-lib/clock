@@ -90,19 +90,6 @@ get_date_field_year_month_day <- function(x, get_fn) {
 }
 
 #' @export
-get_weekday.Date <- function(x) {
-  get_date_field_year_month_weekday(x, get_weekday)
-}
-#' @export
-get_weekday_index.Date <- function(x) {
-  get_date_field_year_month_weekday(x, get_weekday_index)
-}
-get_date_field_year_month_weekday <- function(x, get_fn) {
-  x <- as_year_month_weekday(x)
-  get_fn(x)
-}
-
-#' @export
 get_quarternum.Date <- function(x, ..., start = 1L) {
   get_date_field_year_quarternum_quarterday(x, get_quarternum, ..., start = start)
 }

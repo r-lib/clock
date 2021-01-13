@@ -54,8 +54,8 @@ set_weekday <- function(x, value, ...) {
 }
 
 #' @export
-set_weekday_index <- function(x, value, ...) {
-  UseMethod("set_weekday_index")
+set_index <- function(x, value, ...) {
+  UseMethod("set_index")
 }
 
 #' @export

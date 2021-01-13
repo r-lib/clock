@@ -83,14 +83,14 @@ get_month(cpp11::list_of<cpp11::integers>& fields) {
 static
 inline
 cpp11::integers
-get_weekday(cpp11::list_of<cpp11::integers>& fields) {
+get_day(cpp11::list_of<cpp11::integers>& fields) {
   return fields.size() >= 3 ? fields[2] : cpp11::integers{};
 }
 
 static
 inline
 cpp11::integers
-get_weekday_index(cpp11::list_of<cpp11::integers>& fields) {
+get_index(cpp11::list_of<cpp11::integers>& fields) {
   return fields.size() >= 4 ? fields[3] : cpp11::integers{};
 }
 
