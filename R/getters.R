@@ -107,10 +107,3 @@ get_microsecond <- function(x) {
 get_nanosecond <- function(x) {
   UseMethod("get_nanosecond")
 }
-
-# ------------------------------------------------------------------------------
-
-#' @export
-get_precision <- function(x) {
-  UseMethod("get_precision")
-}

@@ -325,11 +325,6 @@ get_offset.clock_zoned_time <- function(x) {
   get_offset_cpp(duration, precision, zone)
 }
 
-#' @export
-get_precision.clock_zoned_time <- function(x) {
-  zoned_time_precision(x)
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export
