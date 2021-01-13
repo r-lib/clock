@@ -41,6 +41,11 @@ as_year_quarternum_quarterday.POSIXt <- function(x, ..., start = 1L) {
   as_year_quarternum_quarterday(as_naive_time(x), ..., start = start)
 }
 
+#' @export
+as_iso_year_weeknum_weekday.POSIXt <- function(x) {
+  as_iso_year_weeknum_weekday(as_naive_time(x))
+}
+
 # ------------------------------------------------------------------------------
 
 # Not using `check_dots_empty()` because that might

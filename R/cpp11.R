@@ -160,6 +160,58 @@ clock_set_install <- function(path) {
   invisible(.Call("_clock_clock_set_install", path, PACKAGE = "clock"))
 }
 
+iso_year_weeknum_weekday_check_range_cpp <- function(x, component, arg) {
+  invisible(.Call("_clock_iso_year_weeknum_weekday_check_range_cpp", x, component, arg, PACKAGE = "clock"))
+}
+
+collect_iso_year_weeknum_weekday_fields <- function(fields, precision) {
+  .Call("_clock_collect_iso_year_weeknum_weekday_fields", fields, precision, PACKAGE = "clock")
+}
+
+format_iso_year_weeknum_weekday_cpp <- function(fields, precision) {
+  .Call("_clock_format_iso_year_weeknum_weekday_cpp", fields, precision, PACKAGE = "clock")
+}
+
+invalid_detect_iso_year_weeknum_weekday_cpp <- function(fields, precision) {
+  .Call("_clock_invalid_detect_iso_year_weeknum_weekday_cpp", fields, precision, PACKAGE = "clock")
+}
+
+invalid_any_iso_year_weeknum_weekday_cpp <- function(fields, precision) {
+  .Call("_clock_invalid_any_iso_year_weeknum_weekday_cpp", fields, precision, PACKAGE = "clock")
+}
+
+invalid_count_iso_year_weeknum_weekday_cpp <- function(fields, precision) {
+  .Call("_clock_invalid_count_iso_year_weeknum_weekday_cpp", fields, precision, PACKAGE = "clock")
+}
+
+invalid_resolve_iso_year_weeknum_weekday_cpp <- function(fields, precision, invalid) {
+  .Call("_clock_invalid_resolve_iso_year_weeknum_weekday_cpp", fields, precision, invalid, PACKAGE = "clock")
+}
+
+set_field_iso_year_weeknum_weekday_cpp <- function(fields, value, precision_fields, precision_value) {
+  .Call("_clock_set_field_iso_year_weeknum_weekday_cpp", fields, value, precision_fields, precision_value, PACKAGE = "clock")
+}
+
+set_field_iso_year_weeknum_weekday_last_cpp <- function(fields, precision_fields) {
+  .Call("_clock_set_field_iso_year_weeknum_weekday_last_cpp", fields, precision_fields, PACKAGE = "clock")
+}
+
+iso_year_weeknum_weekday_plus_duration_cpp <- function(fields, fields_n, precision_fields, precision_n) {
+  .Call("_clock_iso_year_weeknum_weekday_plus_duration_cpp", fields, fields_n, precision_fields, precision_n, PACKAGE = "clock")
+}
+
+as_sys_time_iso_year_weeknum_weekday_cpp <- function(fields, precision) {
+  .Call("_clock_as_sys_time_iso_year_weeknum_weekday_cpp", fields, precision, PACKAGE = "clock")
+}
+
+as_iso_year_weeknum_weekday_from_sys_time_cpp <- function(fields, precision) {
+  .Call("_clock_as_iso_year_weeknum_weekday_from_sys_time_cpp", fields, precision, PACKAGE = "clock")
+}
+
+iso_year_weeknum_weekday_minus_iso_year_weeknum_weekday_cpp <- function(x, y, precision) {
+  .Call("_clock_iso_year_weeknum_weekday_minus_iso_year_weeknum_weekday_cpp", x, y, precision, PACKAGE = "clock")
+}
+
 year_quarternum_quarterday_check_range_cpp <- function(x, component, arg) {
   invisible(.Call("_clock_year_quarternum_quarterday_check_range_cpp", x, component, arg, PACKAGE = "clock"))
 }

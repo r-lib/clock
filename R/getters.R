@@ -17,12 +17,6 @@ get_year <- function(x) {
   UseMethod("get_year")
 }
 
-#' @export
-get_year.clock_iso <- function(x) {
-  yww <- convert_calendar_days_to_iso_year_weeknum_weekday(x)
-  yww$year
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export
@@ -44,24 +38,11 @@ get_weeknum <- function(x) {
   UseMethod("get_weeknum")
 }
 
-#' @export
-get_weeknum.clock_iso <- function(x) {
-  ywnwd <- convert_calendar_days_to_iso_year_weeknum_weekday(x)
-  ywnwd$weeknum
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export
 get_weekday <- function(x) {
   UseMethod("get_weekday")
-}
-
-#' @export
-get_weekday.clock_iso <- function(x) {
-  # [Monday, Sunday] -> [1, 7]
-  ywnwd <- convert_calendar_days_to_iso_year_weeknum_weekday(x)
-  ywnwd$weekday
 }
 
 # ------------------------------------------------------------------------------

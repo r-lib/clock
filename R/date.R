@@ -39,6 +39,11 @@ as_year_quarternum_quarterday.Date <- function(x, ..., start = 1L) {
   as_year_quarternum_quarterday(as_sys_time(x), ..., start = start)
 }
 
+#' @export
+as_iso_year_weeknum_weekday.Date <- function(x) {
+  as_iso_year_weeknum_weekday(as_sys_time(x))
+}
+
 # ------------------------------------------------------------------------------
 
 # Not using `check_dots_empty()` because that might
