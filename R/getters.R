@@ -18,13 +18,6 @@ get_year <- function(x) {
 }
 
 #' @export
-get_year.clock_quarterly <- function(x) {
-  start <- get_quarterly_start(x)
-  yqnqd <- convert_calendar_days_to_year_quarternum_quarterday(x, start)
-  yqnqd$year
-}
-
-#' @export
 get_year.clock_iso <- function(x) {
   yww <- convert_calendar_days_to_iso_year_weeknum_weekday(x)
   yww$year
@@ -33,29 +26,15 @@ get_year.clock_iso <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-get_quarternum <- function(x) {
+get_quarternum <- function(x, ...) {
   UseMethod("get_quarternum")
-}
-
-#' @export
-get_quarternum.clock_quarterly <- function(x) {
-  start <- get_start(x)
-  yqnqd <- convert_calendar_days_to_year_quarternum_quarterday(x, start)
-  yqnqd$quarternum
 }
 
 # ------------------------------------------------------------------------------
 
 #' @export
-get_quarterday <- function(x) {
+get_quarterday <- function(x, ...) {
   UseMethod("get_quarterday")
-}
-
-#' @export
-get_quarterday.clock_quarterly <- function(x) {
-  start <- get_start(x)
-  yqnqd <- convert_calendar_days_to_year_quarternum_quarterday(x, start)
-  yqnqd$quarterday
 }
 
 # ------------------------------------------------------------------------------
@@ -146,18 +125,6 @@ get_microsecond <- function(x) {
 #' @export
 get_nanosecond <- function(x) {
   UseMethod("get_nanosecond")
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
-get_start <- function(x) {
-  UseMethod("get_start")
-}
-
-#' @export
-get_start.clock_quarterly <- function(x) {
-  get_quarterly_start(x)
 }
 
 # ------------------------------------------------------------------------------

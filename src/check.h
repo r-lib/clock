@@ -128,5 +128,13 @@ template <>
 inline void check_range<component::weekday_index>(const int& value, const char* arg) {
   check_range_weekday_index(value, arg);
 }
+template <>
+inline void check_range<component::quarternum>(const int& value, const char* arg) {
+  check_range_quarternum(value, arg);
+}
+template <>
+inline void check_range<component::quarterday>(const int& value, const char* arg) {
+  check_range_quarterday(value, arg);
+}
 
 #endif

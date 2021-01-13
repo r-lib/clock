@@ -34,6 +34,11 @@ as_year_month_weekday.Date <- function(x) {
   as_year_month_weekday(as_sys_time(x))
 }
 
+#' @export
+as_year_quarternum_quarterday.Date <- function(x, ..., start = 1L) {
+  as_year_quarternum_quarterday(as_sys_time(x), ..., start = start)
+}
+
 # ------------------------------------------------------------------------------
 
 # Not using `check_dots_empty()` because that might
@@ -89,6 +94,19 @@ get_weekday_index.Date <- function(x) {
 }
 get_date_field_year_month_weekday <- function(x, get_fn) {
   x <- as_year_month_weekday(x)
+  get_fn(x)
+}
+
+#' @export
+get_quarternum.Date <- function(x, ..., start = 1L) {
+  get_date_field_year_quarternum_quarterday(x, get_quarternum, ..., start = start)
+}
+#' @export
+get_quarterday.Date <- function(x, ..., start = 1L) {
+  get_date_field_year_quarternum_quarterday(x, get_quarterday, ..., start = start)
+}
+get_date_field_year_quarternum_quarterday <- function(x, get_fn, ..., start) {
+  x <- as_year_quarternum_quarterday(x, ..., start = start)
   get_fn(x)
 }
 
