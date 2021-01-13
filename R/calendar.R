@@ -159,7 +159,7 @@ calendar_narrow_time <- function(out_fields,
 # Internal generic
 calendar_get_component <- function(x, component) {
   if (!calendar_is_valid_component(x, component)) {
-    abort("`component` must be a valid component for a '", calendar_name(x), "'.")
+    abort(paste0("`component` must be a valid component for a '", calendar_name(x), "'."))
   }
   UseMethod("calendar_get_component")
 }
@@ -169,7 +169,7 @@ calendar_get_component <- function(x, component) {
 # Internal generic
 calendar_set_component <- function(x, value, component, ...) {
   if (!calendar_is_valid_component(x, component)) {
-    abort("`component` must be a valid component for a '", calendar_name(x), "'.")
+    abort(paste0("`component` must be a valid component for a '", calendar_name(x), "'."))
   }
   UseMethod("calendar_set_component")
 }
@@ -179,7 +179,7 @@ calendar_set_component <- function(x, value, component, ...) {
 # Internal generic
 calendar_check_component_range <- function(x, value, component, value_arg) {
   if (!calendar_is_valid_component(x, component)) {
-    abort("`component` must be a valid component for a '", calendar_name(x), "'.")
+    abort(paste0("`component` must be a valid component for a '", calendar_name(x), "'."))
   }
   UseMethod("calendar_check_component_range")
 }
