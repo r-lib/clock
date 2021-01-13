@@ -109,24 +109,24 @@ enum quarterly::start parse_start(const cpp11::integers& x) {
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum precision2 parse_precision2(const cpp11::strings& x) {
+enum precision parse_precision(const cpp11::strings& x) {
   if (x.size() != 1) {
     clock_abort("`precision` must be a string with length 1.");
   }
 
   std::string string = x[0];
 
-  if (string == "year") return precision2::year;
-  if (string == "quarter") return precision2::quarter;
-  if (string == "month") return precision2::month;
-  if (string == "week") return precision2::week;
-  if (string == "day") return precision2::day;
-  if (string == "hour") return precision2::hour;
-  if (string == "minute") return precision2::minute;
-  if (string == "second") return precision2::second;
-  if (string == "millisecond") return precision2::millisecond;
-  if (string == "microsecond") return precision2::microsecond;
-  if (string == "nanosecond") return precision2::nanosecond;
+  if (string == "year") return precision::year;
+  if (string == "quarter") return precision::quarter;
+  if (string == "month") return precision::month;
+  if (string == "week") return precision::week;
+  if (string == "day") return precision::day;
+  if (string == "hour") return precision::hour;
+  if (string == "minute") return precision::minute;
+  if (string == "second") return precision::second;
+  if (string == "millisecond") return precision::millisecond;
+  if (string == "microsecond") return precision::microsecond;
+  if (string == "nanosecond") return precision::nanosecond;
 
   clock_abort("'%s' is not a recognized `precision` option.", string.c_str());
 }

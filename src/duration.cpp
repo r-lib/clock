@@ -70,18 +70,18 @@ cpp11::writable::strings format_duration_cpp(cpp11::list_of<cpp11::integers> fie
   duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision2(precision)) {
-  case precision2::year: return format_duration_impl(dy);
-  case precision2::quarter: return format_duration_impl(dq);
-  case precision2::month: return format_duration_impl(dm);
-  case precision2::week: return format_duration_impl(dw);
-  case precision2::day: return format_duration_impl(dd);
-  case precision2::hour: return format_duration_impl(dh);
-  case precision2::minute: return format_duration_impl(dmin);
-  case precision2::second: return format_duration_impl(ds);
-  case precision2::millisecond: return format_duration_impl(dmilli);
-  case precision2::microsecond: return format_duration_impl(dmicro);
-  case precision2::nanosecond: return format_duration_impl(dnano);
+  switch (parse_precision(precision)) {
+  case precision::year: return format_duration_impl(dy);
+  case precision::quarter: return format_duration_impl(dq);
+  case precision::month: return format_duration_impl(dm);
+  case precision::week: return format_duration_impl(dw);
+  case precision::day: return format_duration_impl(dd);
+  case precision::hour: return format_duration_impl(dh);
+  case precision::minute: return format_duration_impl(dmin);
+  case precision::second: return format_duration_impl(ds);
+  case precision::millisecond: return format_duration_impl(dmilli);
+  case precision::microsecond: return format_duration_impl(dmicro);
+  case precision::nanosecond: return format_duration_impl(dnano);
   default: clock_abort("Internal error: Should never be called.");
   }
 }
@@ -116,18 +116,18 @@ duration_helper_cpp(const cpp11::integers& n,
                     const cpp11::strings& precision) {
   using namespace rclock;
 
-  switch (parse_precision2(precision)) {
-  case precision2::year: return duration_helper_impl<duration::years>(n);
-  case precision2::quarter: return duration_helper_impl<duration::quarters>(n);
-  case precision2::month: return duration_helper_impl<duration::months>(n);
-  case precision2::week: return duration_helper_impl<duration::weeks>(n);
-  case precision2::day: return duration_helper_impl<duration::days>(n);
-  case precision2::hour: return duration_helper_impl<duration::hours>(n);
-  case precision2::minute: return duration_helper_impl<duration::minutes>(n);
-  case precision2::second: return duration_helper_impl<duration::seconds>(n);
-  case precision2::millisecond: return duration_helper_impl<duration::milliseconds>(n);
-  case precision2::microsecond: return duration_helper_impl<duration::microseconds>(n);
-  case precision2::nanosecond: return duration_helper_impl<duration::nanoseconds>(n);
+  switch (parse_precision(precision)) {
+  case precision::year: return duration_helper_impl<duration::years>(n);
+  case precision::quarter: return duration_helper_impl<duration::quarters>(n);
+  case precision::month: return duration_helper_impl<duration::months>(n);
+  case precision::week: return duration_helper_impl<duration::weeks>(n);
+  case precision::day: return duration_helper_impl<duration::days>(n);
+  case precision::hour: return duration_helper_impl<duration::hours>(n);
+  case precision::minute: return duration_helper_impl<duration::minutes>(n);
+  case precision::second: return duration_helper_impl<duration::seconds>(n);
+  case precision::millisecond: return duration_helper_impl<duration::milliseconds>(n);
+  case precision::microsecond: return duration_helper_impl<duration::microseconds>(n);
+  case precision::nanosecond: return duration_helper_impl<duration::nanoseconds>(n);
   default: clock_abort("Internal error: Should never be called.");
   }
 }
@@ -166,29 +166,29 @@ template <class ClockDurationFrom>
 inline
 cpp11::writable::list
 duration_cast_switch2(const ClockDurationFrom& cd,
-                      const enum precision2 precision_to_val) {
+                      const enum precision precision_to_val) {
   using namespace rclock;
 
   switch (precision_to_val) {
-  case precision2::year: return duration_cast_impl<duration::years>(cd);
-  case precision2::quarter: return duration_cast_impl<duration::quarters>(cd);
-  case precision2::month: return duration_cast_impl<duration::months>(cd);
-  case precision2::week: return duration_cast_impl<duration::weeks>(cd);
-  case precision2::day: return duration_cast_impl<duration::days>(cd);
-  case precision2::hour: return duration_cast_impl<duration::hours>(cd);
-  case precision2::minute: return duration_cast_impl<duration::minutes>(cd);
-  case precision2::second: return duration_cast_impl<duration::seconds>(cd);
-  case precision2::millisecond: return duration_cast_impl<duration::milliseconds>(cd);
-  case precision2::microsecond: return duration_cast_impl<duration::microseconds>(cd);
-  case precision2::nanosecond: return duration_cast_impl<duration::nanoseconds>(cd);
+  case precision::year: return duration_cast_impl<duration::years>(cd);
+  case precision::quarter: return duration_cast_impl<duration::quarters>(cd);
+  case precision::month: return duration_cast_impl<duration::months>(cd);
+  case precision::week: return duration_cast_impl<duration::weeks>(cd);
+  case precision::day: return duration_cast_impl<duration::days>(cd);
+  case precision::hour: return duration_cast_impl<duration::hours>(cd);
+  case precision::minute: return duration_cast_impl<duration::minutes>(cd);
+  case precision::second: return duration_cast_impl<duration::seconds>(cd);
+  case precision::millisecond: return duration_cast_impl<duration::milliseconds>(cd);
+  case precision::microsecond: return duration_cast_impl<duration::microseconds>(cd);
+  case precision::nanosecond: return duration_cast_impl<duration::nanoseconds>(cd);
   }
 }
 
 inline
 cpp11::writable::list
 duration_cast_switch(cpp11::list_of<cpp11::integers>& fields,
-                     const enum precision2 precision_from_val,
-                     const enum precision2 precision_to_val) {
+                     const enum precision precision_from_val,
+                     const enum precision precision_to_val) {
   using namespace rclock;
 
   cpp11::integers ticks = duration::get_ticks(fields);
@@ -208,17 +208,17 @@ duration_cast_switch(cpp11::list_of<cpp11::integers>& fields,
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
   switch (precision_from_val) {
-  case precision2::year: return duration_cast_switch2(dy, precision_to_val);
-  case precision2::quarter: return duration_cast_switch2(dq, precision_to_val);
-  case precision2::month: return duration_cast_switch2(dm, precision_to_val);
-  case precision2::week: return duration_cast_switch2(dw, precision_to_val);
-  case precision2::day: return duration_cast_switch2(dd, precision_to_val);
-  case precision2::hour: return duration_cast_switch2(dh, precision_to_val);
-  case precision2::minute: return duration_cast_switch2(dmin, precision_to_val);
-  case precision2::second: return duration_cast_switch2(ds, precision_to_val);
-  case precision2::millisecond: return duration_cast_switch2(dmilli, precision_to_val);
-  case precision2::microsecond: return duration_cast_switch2(dmicro, precision_to_val);
-  case precision2::nanosecond: return duration_cast_switch2(dnano, precision_to_val);
+  case precision::year: return duration_cast_switch2(dy, precision_to_val);
+  case precision::quarter: return duration_cast_switch2(dq, precision_to_val);
+  case precision::month: return duration_cast_switch2(dm, precision_to_val);
+  case precision::week: return duration_cast_switch2(dw, precision_to_val);
+  case precision::day: return duration_cast_switch2(dd, precision_to_val);
+  case precision::hour: return duration_cast_switch2(dh, precision_to_val);
+  case precision::minute: return duration_cast_switch2(dmin, precision_to_val);
+  case precision::second: return duration_cast_switch2(ds, precision_to_val);
+  case precision::millisecond: return duration_cast_switch2(dmilli, precision_to_val);
+  case precision::microsecond: return duration_cast_switch2(dmicro, precision_to_val);
+  case precision::nanosecond: return duration_cast_switch2(dnano, precision_to_val);
   }
 }
 
@@ -227,8 +227,8 @@ cpp11::writable::list
 duration_cast_cpp(cpp11::list_of<cpp11::integers> fields,
                   const cpp11::strings& precision_from,
                   const cpp11::strings& precision_to) {
-  const enum precision2 precision_from_val = parse_precision2(precision_from);
-  const enum precision2 precision_to_val = parse_precision2(precision_to);
+  const enum precision precision_from_val = parse_precision(precision_from);
+  const enum precision precision_to_val = parse_precision(precision_to);
 
   return duration_cast_switch(
     fields,
@@ -286,7 +286,7 @@ inline
 cpp11::writable::list
 duration_arith_switch2(const ClockDuration1& x,
                        cpp11::list_of<cpp11::integers>& y,
-                       const enum precision2& precision_y_val,
+                       const enum precision& precision_y_val,
                        const enum arith_op& op) {
   using namespace rclock;
 
@@ -307,17 +307,17 @@ duration_arith_switch2(const ClockDuration1& x,
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
   switch (precision_y_val) {
-  case precision2::year: return duration_arith_impl(x, dy, op);
-  case precision2::quarter: return duration_arith_impl(x, dq, op);
-  case precision2::month: return duration_arith_impl(x, dm, op);
-  case precision2::week: return duration_arith_impl(x, dw, op);
-  case precision2::day: return duration_arith_impl(x, dd, op);
-  case precision2::hour: return duration_arith_impl(x, dh, op);
-  case precision2::minute: return duration_arith_impl(x, dmin, op);
-  case precision2::second: return duration_arith_impl(x, ds, op);
-  case precision2::millisecond: return duration_arith_impl(x, dmilli, op);
-  case precision2::microsecond: return duration_arith_impl(x, dmicro, op);
-  case precision2::nanosecond: return duration_arith_impl(x, dnano, op);
+  case precision::year: return duration_arith_impl(x, dy, op);
+  case precision::quarter: return duration_arith_impl(x, dq, op);
+  case precision::month: return duration_arith_impl(x, dm, op);
+  case precision::week: return duration_arith_impl(x, dw, op);
+  case precision::day: return duration_arith_impl(x, dd, op);
+  case precision::hour: return duration_arith_impl(x, dh, op);
+  case precision::minute: return duration_arith_impl(x, dmin, op);
+  case precision::second: return duration_arith_impl(x, ds, op);
+  case precision::millisecond: return duration_arith_impl(x, dmilli, op);
+  case precision::microsecond: return duration_arith_impl(x, dmicro, op);
+  case precision::nanosecond: return duration_arith_impl(x, dnano, op);
   }
 }
 
@@ -326,8 +326,8 @@ inline
 cpp11::writable::list
 duration_arith_switch(cpp11::list_of<cpp11::integers>& x,
                       cpp11::list_of<cpp11::integers>& y,
-                      const enum precision2& precision_x_val,
-                      const enum precision2& precision_y_val,
+                      const enum precision& precision_x_val,
+                      const enum precision& precision_y_val,
                       const enum arith_op& op) {
   using namespace rclock;
 
@@ -348,21 +348,21 @@ duration_arith_switch(cpp11::list_of<cpp11::integers>& x,
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
   switch (precision_x_val) {
-  case precision2::year: return duration_arith_switch2(dy, y, precision_y_val, op);
-  case precision2::quarter: return duration_arith_switch2(dq, y, precision_y_val, op);
-  case precision2::month: return duration_arith_switch2(dm, y, precision_y_val, op);
-  case precision2::week: return duration_arith_switch2(dw, y, precision_y_val, op);
-  case precision2::day: return duration_arith_switch2(dd, y, precision_y_val, op);
-  case precision2::hour: return duration_arith_switch2(dh, y, precision_y_val, op);
-  case precision2::minute: return duration_arith_switch2(dmin, y, precision_y_val, op);
-  case precision2::second: return duration_arith_switch2(ds, y, precision_y_val, op);
-  case precision2::millisecond: return duration_arith_switch2(dmilli, y, precision_y_val, op);
-  case precision2::microsecond: return duration_arith_switch2(dmicro, y, precision_y_val, op);
-  case precision2::nanosecond: return duration_arith_switch2(dnano, y, precision_y_val, op);
+  case precision::year: return duration_arith_switch2(dy, y, precision_y_val, op);
+  case precision::quarter: return duration_arith_switch2(dq, y, precision_y_val, op);
+  case precision::month: return duration_arith_switch2(dm, y, precision_y_val, op);
+  case precision::week: return duration_arith_switch2(dw, y, precision_y_val, op);
+  case precision::day: return duration_arith_switch2(dd, y, precision_y_val, op);
+  case precision::hour: return duration_arith_switch2(dh, y, precision_y_val, op);
+  case precision::minute: return duration_arith_switch2(dmin, y, precision_y_val, op);
+  case precision::second: return duration_arith_switch2(ds, y, precision_y_val, op);
+  case precision::millisecond: return duration_arith_switch2(dmilli, y, precision_y_val, op);
+  case precision::microsecond: return duration_arith_switch2(dmicro, y, precision_y_val, op);
+  case precision::nanosecond: return duration_arith_switch2(dnano, y, precision_y_val, op);
   }
 }
 
-static inline enum precision2 duration_common_precision(const enum precision2 x_precision, const enum precision2 y_precision);
+static inline enum precision duration_common_precision(const enum precision x_precision, const enum precision y_precision);
 
 static
 inline
@@ -372,12 +372,12 @@ duration_arith(cpp11::list_of<cpp11::integers>& x,
                const cpp11::strings& precision_x,
                const cpp11::strings& precision_y,
                const enum arith_op& op) {
-  const enum precision2 precision_x_val = parse_precision2(precision_x);
-  const enum precision2 precision_y_val = parse_precision2(precision_y);
+  const enum precision precision_x_val = parse_precision(precision_x);
+  const enum precision precision_y_val = parse_precision(precision_y);
 
   // Common precision detection will error if no valid common precision
-  enum precision2 precision = duration_common_precision(precision_x_val, precision_y_val);
-  std::string precision_string = precision_to_string(precision);
+  enum precision precision_val = duration_common_precision(precision_x_val, precision_y_val);
+  std::string precision_string = precision_to_string(precision_val);
   cpp11::writable::strings out_precision({precision_string});
 
   cpp11::writable::list out_fields = duration_arith_switch(
@@ -425,83 +425,83 @@ duration_minus_cpp(cpp11::list_of<cpp11::integers> x,
  */
 template <typename Duration1, typename Duration2>
 inline
-std::pair<enum precision2, bool>
+std::pair<enum precision, bool>
 duration_common_precision_impl() {
   using CT = typename std::common_type<Duration1, Duration2>::type;
 
   if (std::is_same<CT, date::years>::value) {
-    return std::make_pair(precision2::year, true);
+    return std::make_pair(precision::year, true);
   } else if (std::is_same<CT, quarterly::quarters>::value) {
-    return std::make_pair(precision2::quarter, true);
+    return std::make_pair(precision::quarter, true);
   } else if (std::is_same<CT, date::months>::value) {
-    return std::make_pair(precision2::month, true);
+    return std::make_pair(precision::month, true);
   } else if (std::is_same<CT, date::weeks>::value) {
-    return std::make_pair(precision2::week, true);
+    return std::make_pair(precision::week, true);
   } else if (std::is_same<CT, date::days>::value) {
-    return std::make_pair(precision2::day, true);
+    return std::make_pair(precision::day, true);
   } else if (std::is_same<CT, std::chrono::hours>::value) {
-    return std::make_pair(precision2::hour, true);
+    return std::make_pair(precision::hour, true);
   } else if (std::is_same<CT, std::chrono::minutes>::value) {
-    return std::make_pair(precision2::minute, true);
+    return std::make_pair(precision::minute, true);
   } else if (std::is_same<CT, std::chrono::seconds>::value) {
-    return std::make_pair(precision2::second, true);
+    return std::make_pair(precision::second, true);
   } else if (std::is_same<CT, std::chrono::milliseconds>::value) {
-    return std::make_pair(precision2::millisecond, true);
+    return std::make_pair(precision::millisecond, true);
   } else if (std::is_same<CT, std::chrono::microseconds>::value) {
-    return std::make_pair(precision2::microsecond, true);
+    return std::make_pair(precision::microsecond, true);
   } else if (std::is_same<CT, std::chrono::nanoseconds>::value) {
-    return std::make_pair(precision2::nanosecond, true);
+    return std::make_pair(precision::nanosecond, true);
   } else {
-    return std::make_pair(precision2::year, false);
+    return std::make_pair(precision::year, false);
   }
 }
 
 template <typename Duration1>
 static
 inline
-std::pair<enum precision2, bool>
-duration_common_precision_switch2(const enum precision2& y_precision) {
+std::pair<enum precision, bool>
+duration_common_precision_switch2(const enum precision& y_precision) {
   switch (y_precision) {
-  case precision2::year: return duration_common_precision_impl<Duration1, date::years>();
-  case precision2::quarter: return duration_common_precision_impl<Duration1, quarterly::quarters>();
-  case precision2::month: return duration_common_precision_impl<Duration1, date::months>();
-  case precision2::week: return duration_common_precision_impl<Duration1, date::weeks>();
-  case precision2::day: return duration_common_precision_impl<Duration1, date::days>();
-  case precision2::hour: return duration_common_precision_impl<Duration1, std::chrono::hours>();
-  case precision2::minute: return duration_common_precision_impl<Duration1, std::chrono::minutes>();
-  case precision2::second: return duration_common_precision_impl<Duration1, std::chrono::seconds>();
-  case precision2::millisecond: return duration_common_precision_impl<Duration1, std::chrono::milliseconds>();
-  case precision2::microsecond: return duration_common_precision_impl<Duration1, std::chrono::microseconds>();
-  case precision2::nanosecond: return duration_common_precision_impl<Duration1, std::chrono::nanoseconds>();
+  case precision::year: return duration_common_precision_impl<Duration1, date::years>();
+  case precision::quarter: return duration_common_precision_impl<Duration1, quarterly::quarters>();
+  case precision::month: return duration_common_precision_impl<Duration1, date::months>();
+  case precision::week: return duration_common_precision_impl<Duration1, date::weeks>();
+  case precision::day: return duration_common_precision_impl<Duration1, date::days>();
+  case precision::hour: return duration_common_precision_impl<Duration1, std::chrono::hours>();
+  case precision::minute: return duration_common_precision_impl<Duration1, std::chrono::minutes>();
+  case precision::second: return duration_common_precision_impl<Duration1, std::chrono::seconds>();
+  case precision::millisecond: return duration_common_precision_impl<Duration1, std::chrono::milliseconds>();
+  case precision::microsecond: return duration_common_precision_impl<Duration1, std::chrono::microseconds>();
+  case precision::nanosecond: return duration_common_precision_impl<Duration1, std::chrono::nanoseconds>();
   }
 }
 
 static
 inline
-std::pair<enum precision2, bool>
-duration_common_precision_pair(const enum precision2& x_precision,
-                               const enum precision2& y_precision) {
+std::pair<enum precision, bool>
+duration_common_precision_pair(const enum precision& x_precision,
+                               const enum precision& y_precision) {
   switch (x_precision) {
-  case precision2::year: return duration_common_precision_switch2<date::years>(y_precision);
-  case precision2::quarter: return duration_common_precision_switch2<quarterly::quarters>(y_precision);
-  case precision2::month: return duration_common_precision_switch2<date::months>(y_precision);
-  case precision2::week: return duration_common_precision_switch2<date::weeks>(y_precision);
-  case precision2::day: return duration_common_precision_switch2<date::days>(y_precision);
-  case precision2::hour: return duration_common_precision_switch2<std::chrono::hours>(y_precision);
-  case precision2::minute: return duration_common_precision_switch2<std::chrono::minutes>(y_precision);
-  case precision2::second: return duration_common_precision_switch2<std::chrono::seconds>(y_precision);
-  case precision2::millisecond: return duration_common_precision_switch2<std::chrono::milliseconds>(y_precision);
-  case precision2::microsecond: return duration_common_precision_switch2<std::chrono::microseconds>(y_precision);
-  case precision2::nanosecond: return duration_common_precision_switch2<std::chrono::nanoseconds>(y_precision);
+  case precision::year: return duration_common_precision_switch2<date::years>(y_precision);
+  case precision::quarter: return duration_common_precision_switch2<quarterly::quarters>(y_precision);
+  case precision::month: return duration_common_precision_switch2<date::months>(y_precision);
+  case precision::week: return duration_common_precision_switch2<date::weeks>(y_precision);
+  case precision::day: return duration_common_precision_switch2<date::days>(y_precision);
+  case precision::hour: return duration_common_precision_switch2<std::chrono::hours>(y_precision);
+  case precision::minute: return duration_common_precision_switch2<std::chrono::minutes>(y_precision);
+  case precision::second: return duration_common_precision_switch2<std::chrono::seconds>(y_precision);
+  case precision::millisecond: return duration_common_precision_switch2<std::chrono::milliseconds>(y_precision);
+  case precision::microsecond: return duration_common_precision_switch2<std::chrono::microseconds>(y_precision);
+  case precision::nanosecond: return duration_common_precision_switch2<std::chrono::nanoseconds>(y_precision);
   }
 }
 
 static
 inline
-enum precision2
-duration_common_precision(const enum precision2 x_precision,
-                          const enum precision2 y_precision) {
-  std::pair<enum precision2, bool> pair = duration_common_precision_pair(x_precision, y_precision);
+enum precision
+duration_common_precision(const enum precision x_precision,
+                          const enum precision y_precision) {
+  std::pair<enum precision, bool> pair = duration_common_precision_pair(x_precision, y_precision);
 
   if (!pair.second) {
     std::string x_precision_str = precision_to_string(x_precision);
@@ -517,9 +517,9 @@ duration_common_precision(const enum precision2 x_precision,
 cpp11::writable::strings
 duration_common_precision_cpp(const cpp11::strings& x_precision,
                               const cpp11::strings& y_precision) {
-  const enum precision2 x_precision_val = parse_precision2(x_precision);
-  const enum precision2 y_precision_val = parse_precision2(y_precision);
-  const enum precision2 common = duration_common_precision(x_precision_val, y_precision_val);
+  const enum precision x_precision_val = parse_precision(x_precision);
+  const enum precision y_precision_val = parse_precision(y_precision);
+  const enum precision common = duration_common_precision(x_precision_val, y_precision_val);
   std::string string = precision_to_string(common);
   return cpp11::writable::strings({string});
 }
@@ -527,8 +527,8 @@ duration_common_precision_cpp(const cpp11::strings& x_precision,
 static
 inline
 bool
-duration_has_common_precision(const enum precision2& x_precision,
-                              const enum precision2& y_precision) {
+duration_has_common_precision(const enum precision& x_precision,
+                              const enum precision& y_precision) {
   return duration_common_precision_pair(x_precision, y_precision).second;
 }
 
@@ -536,8 +536,8 @@ duration_has_common_precision(const enum precision2& x_precision,
 bool
 duration_has_common_precision_cpp(const cpp11::strings& x_precision,
                                   const cpp11::strings& y_precision) {
-  const enum precision2 x_precision_val = parse_precision2(x_precision);
-  const enum precision2 y_precision_val = parse_precision2(y_precision);
+  const enum precision x_precision_val = parse_precision(x_precision);
+  const enum precision y_precision_val = parse_precision(y_precision);
   return duration_has_common_precision(x_precision_val, y_precision_val);
 }
 
@@ -583,8 +583,8 @@ duration_rounding_impl(const ClockDurationFrom& cd, const enum rounding& type) {
 inline
 cpp11::writable::list
 duration_rounding_switch(cpp11::list_of<cpp11::integers>& fields,
-                         const enum precision2& precision_from_val,
-                         const enum precision2& precision_to_val,
+                         const enum precision& precision_from_val,
+                         const enum precision& precision_to_val,
                          const enum rounding& type) {
   using namespace rclock;
 
@@ -605,124 +605,124 @@ duration_rounding_switch(cpp11::list_of<cpp11::integers>& fields,
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
   switch (precision_from_val) {
-  case precision2::year: {
+  case precision::year: {
     switch (precision_to_val) {
-    case precision2::year: return duration_rounding_impl<duration::years>(dy, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dy, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
-  case precision2::quarter: {
+  case precision::quarter: {
     switch (precision_to_val) {
-    case precision2::year: return duration_rounding_impl<duration::years>(dq, type);
-    case precision2::quarter: return duration_rounding_impl<duration::quarters>(dq, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dq, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(dq, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
-  case precision2::month: {
+  case precision::month: {
     switch (precision_to_val) {
-    case precision2::year: return duration_rounding_impl<duration::years>(dm, type);
-    case precision2::quarter: return duration_rounding_impl<duration::quarters>(dm, type);
-    case precision2::month: return duration_rounding_impl<duration::months>(dm, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dm, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(dm, type);
+    case precision::month: return duration_rounding_impl<duration::months>(dm, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
-  case precision2::week: {
+  case precision::week: {
     switch (precision_to_val) {
-    case precision2::year: return duration_rounding_impl<duration::years>(dw, type);
-    case precision2::quarter: return duration_rounding_impl<duration::quarters>(dw, type);
-    case precision2::month: return duration_rounding_impl<duration::months>(dw, type);
-    case precision2::week: return duration_rounding_impl<duration::weeks>(dw, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dw, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(dw, type);
+    case precision::month: return duration_rounding_impl<duration::months>(dw, type);
+    case precision::week: return duration_rounding_impl<duration::weeks>(dw, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
-  case precision2::day: {
+  case precision::day: {
     switch (precision_to_val) {
-    case precision2::year: return duration_rounding_impl<duration::years>(dd, type);
-    case precision2::quarter: return duration_rounding_impl<duration::quarters>(dd, type);
-    case precision2::month: return duration_rounding_impl<duration::months>(dd, type);
-    case precision2::week: return duration_rounding_impl<duration::weeks>(dd, type);
-    case precision2::day: return duration_rounding_impl<duration::days>(dd, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dd, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(dd, type);
+    case precision::month: return duration_rounding_impl<duration::months>(dd, type);
+    case precision::week: return duration_rounding_impl<duration::weeks>(dd, type);
+    case precision::day: return duration_rounding_impl<duration::days>(dd, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
-  case precision2::hour: {
+  case precision::hour: {
     switch (precision_to_val) {
-    case precision2::year: return duration_rounding_impl<duration::years>(dh, type);
-    case precision2::quarter: return duration_rounding_impl<duration::quarters>(dh, type);
-    case precision2::month: return duration_rounding_impl<duration::months>(dh, type);
-    case precision2::week: return duration_rounding_impl<duration::weeks>(dh, type);
-    case precision2::day: return duration_rounding_impl<duration::days>(dh, type);
-    case precision2::hour: return duration_rounding_impl<duration::hours>(dh, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dh, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(dh, type);
+    case precision::month: return duration_rounding_impl<duration::months>(dh, type);
+    case precision::week: return duration_rounding_impl<duration::weeks>(dh, type);
+    case precision::day: return duration_rounding_impl<duration::days>(dh, type);
+    case precision::hour: return duration_rounding_impl<duration::hours>(dh, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
-  case precision2::minute: {
+  case precision::minute: {
     switch (precision_to_val) {
-    case precision2::year: return duration_rounding_impl<duration::years>(dmin, type);
-    case precision2::quarter: return duration_rounding_impl<duration::quarters>(dmin, type);
-    case precision2::month: return duration_rounding_impl<duration::months>(dmin, type);
-    case precision2::week: return duration_rounding_impl<duration::weeks>(dmin, type);
-    case precision2::day: return duration_rounding_impl<duration::days>(dmin, type);
-    case precision2::hour: return duration_rounding_impl<duration::hours>(dmin, type);
-    case precision2::minute: return duration_rounding_impl<duration::minutes>(dmin, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dmin, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(dmin, type);
+    case precision::month: return duration_rounding_impl<duration::months>(dmin, type);
+    case precision::week: return duration_rounding_impl<duration::weeks>(dmin, type);
+    case precision::day: return duration_rounding_impl<duration::days>(dmin, type);
+    case precision::hour: return duration_rounding_impl<duration::hours>(dmin, type);
+    case precision::minute: return duration_rounding_impl<duration::minutes>(dmin, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
-  case precision2::second: {
+  case precision::second: {
     switch (precision_to_val) {
-    case precision2::year: return duration_rounding_impl<duration::years>(ds, type);
-    case precision2::quarter: return duration_rounding_impl<duration::quarters>(ds, type);
-    case precision2::month: return duration_rounding_impl<duration::months>(ds, type);
-    case precision2::week: return duration_rounding_impl<duration::weeks>(ds, type);
-    case precision2::day: return duration_rounding_impl<duration::days>(ds, type);
-    case precision2::hour: return duration_rounding_impl<duration::hours>(ds, type);
-    case precision2::minute: return duration_rounding_impl<duration::minutes>(ds, type);
-    case precision2::second: return duration_rounding_impl<duration::seconds>(ds, type);
+    case precision::year: return duration_rounding_impl<duration::years>(ds, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(ds, type);
+    case precision::month: return duration_rounding_impl<duration::months>(ds, type);
+    case precision::week: return duration_rounding_impl<duration::weeks>(ds, type);
+    case precision::day: return duration_rounding_impl<duration::days>(ds, type);
+    case precision::hour: return duration_rounding_impl<duration::hours>(ds, type);
+    case precision::minute: return duration_rounding_impl<duration::minutes>(ds, type);
+    case precision::second: return duration_rounding_impl<duration::seconds>(ds, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
-  case precision2::millisecond: {
+  case precision::millisecond: {
     switch (precision_to_val) {
-    case precision2::year: return duration_rounding_impl<duration::years>(dmilli, type);
-    case precision2::quarter: return duration_rounding_impl<duration::quarters>(dmilli, type);
-    case precision2::month: return duration_rounding_impl<duration::months>(dmilli, type);
-    case precision2::week: return duration_rounding_impl<duration::weeks>(dmilli, type);
-    case precision2::day: return duration_rounding_impl<duration::days>(dmilli, type);
-    case precision2::hour: return duration_rounding_impl<duration::hours>(dmilli, type);
-    case precision2::minute: return duration_rounding_impl<duration::minutes>(dmilli, type);
-    case precision2::second: return duration_rounding_impl<duration::seconds>(dmilli, type);
-    case precision2::millisecond: return duration_rounding_impl<duration::milliseconds>(dmilli, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dmilli, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(dmilli, type);
+    case precision::month: return duration_rounding_impl<duration::months>(dmilli, type);
+    case precision::week: return duration_rounding_impl<duration::weeks>(dmilli, type);
+    case precision::day: return duration_rounding_impl<duration::days>(dmilli, type);
+    case precision::hour: return duration_rounding_impl<duration::hours>(dmilli, type);
+    case precision::minute: return duration_rounding_impl<duration::minutes>(dmilli, type);
+    case precision::second: return duration_rounding_impl<duration::seconds>(dmilli, type);
+    case precision::millisecond: return duration_rounding_impl<duration::milliseconds>(dmilli, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
-  case precision2::microsecond: {
+  case precision::microsecond: {
     switch (precision_to_val) {
-    case precision2::year: return duration_rounding_impl<duration::years>(dmicro, type);
-    case precision2::quarter: return duration_rounding_impl<duration::quarters>(dmicro, type);
-    case precision2::month: return duration_rounding_impl<duration::months>(dmicro, type);
-    case precision2::week: return duration_rounding_impl<duration::weeks>(dmicro, type);
-    case precision2::day: return duration_rounding_impl<duration::days>(dmicro, type);
-    case precision2::hour: return duration_rounding_impl<duration::hours>(dmicro, type);
-    case precision2::minute: return duration_rounding_impl<duration::minutes>(dmicro, type);
-    case precision2::second: return duration_rounding_impl<duration::seconds>(dmicro, type);
-    case precision2::millisecond: return duration_rounding_impl<duration::milliseconds>(dmicro, type);
-    case precision2::microsecond: return duration_rounding_impl<duration::microseconds>(dmicro, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dmicro, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(dmicro, type);
+    case precision::month: return duration_rounding_impl<duration::months>(dmicro, type);
+    case precision::week: return duration_rounding_impl<duration::weeks>(dmicro, type);
+    case precision::day: return duration_rounding_impl<duration::days>(dmicro, type);
+    case precision::hour: return duration_rounding_impl<duration::hours>(dmicro, type);
+    case precision::minute: return duration_rounding_impl<duration::minutes>(dmicro, type);
+    case precision::second: return duration_rounding_impl<duration::seconds>(dmicro, type);
+    case precision::millisecond: return duration_rounding_impl<duration::milliseconds>(dmicro, type);
+    case precision::microsecond: return duration_rounding_impl<duration::microseconds>(dmicro, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
-  case precision2::nanosecond: {
+  case precision::nanosecond: {
     switch (precision_to_val) {
-    case precision2::year: return duration_rounding_impl<duration::years>(dnano, type);
-    case precision2::quarter: return duration_rounding_impl<duration::quarters>(dnano, type);
-    case precision2::month: return duration_rounding_impl<duration::months>(dnano, type);
-    case precision2::week: return duration_rounding_impl<duration::weeks>(dnano, type);
-    case precision2::day: return duration_rounding_impl<duration::days>(dnano, type);
-    case precision2::hour: return duration_rounding_impl<duration::hours>(dnano, type);
-    case precision2::minute: return duration_rounding_impl<duration::minutes>(dnano, type);
-    case precision2::second: return duration_rounding_impl<duration::seconds>(dnano, type);
-    case precision2::millisecond: return duration_rounding_impl<duration::milliseconds>(dnano, type);
-    case precision2::microsecond: return duration_rounding_impl<duration::microseconds>(dnano, type);
-    case precision2::nanosecond: return duration_rounding_impl<duration::nanoseconds>(dnano, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dnano, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(dnano, type);
+    case precision::month: return duration_rounding_impl<duration::months>(dnano, type);
+    case precision::week: return duration_rounding_impl<duration::weeks>(dnano, type);
+    case precision::day: return duration_rounding_impl<duration::days>(dnano, type);
+    case precision::hour: return duration_rounding_impl<duration::hours>(dnano, type);
+    case precision::minute: return duration_rounding_impl<duration::minutes>(dnano, type);
+    case precision::second: return duration_rounding_impl<duration::seconds>(dnano, type);
+    case precision::millisecond: return duration_rounding_impl<duration::milliseconds>(dnano, type);
+    case precision::microsecond: return duration_rounding_impl<duration::microseconds>(dnano, type);
+    case precision::nanosecond: return duration_rounding_impl<duration::nanoseconds>(dnano, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
@@ -734,8 +734,8 @@ cpp11::writable::list
 duration_floor_cpp(cpp11::list_of<cpp11::integers> fields,
                    const cpp11::strings& precision_from,
                    const cpp11::strings& precision_to) {
-  const enum precision2 precision_from_val = parse_precision2(precision_from);
-  const enum precision2 precision_to_val = parse_precision2(precision_to);
+  const enum precision precision_from_val = parse_precision(precision_from);
+  const enum precision precision_to_val = parse_precision(precision_to);
 
   return duration_rounding_switch(
     fields,
@@ -750,8 +750,8 @@ cpp11::writable::list
 duration_ceil_cpp(cpp11::list_of<cpp11::integers> fields,
                   const cpp11::strings& precision_from,
                   const cpp11::strings& precision_to) {
-  const enum precision2 precision_from_val = parse_precision2(precision_from);
-  const enum precision2 precision_to_val = parse_precision2(precision_to);
+  const enum precision precision_from_val = parse_precision(precision_from);
+  const enum precision precision_to_val = parse_precision(precision_to);
 
   return duration_rounding_switch(
     fields,
@@ -766,8 +766,8 @@ cpp11::writable::list
 duration_round_cpp(cpp11::list_of<cpp11::integers> fields,
                    const cpp11::strings& precision_from,
                    const cpp11::strings& precision_to) {
-  const enum precision2 precision_from_val = parse_precision2(precision_from);
-  const enum precision2 precision_to_val = parse_precision2(precision_to);
+  const enum precision precision_from_val = parse_precision(precision_from);
+  const enum precision precision_to_val = parse_precision(precision_to);
 
   return duration_rounding_switch(
     fields,
@@ -819,18 +819,18 @@ duration_unary_minus_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::st
   duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision2(precision)) {
-  case precision2::year: return duration_unary_minus_impl(dy);
-  case precision2::quarter: return duration_unary_minus_impl(dq);
-  case precision2::month: return duration_unary_minus_impl(dm);
-  case precision2::week: return duration_unary_minus_impl(dw);
-  case precision2::day: return duration_unary_minus_impl(dd);
-  case precision2::hour: return duration_unary_minus_impl(dh);
-  case precision2::minute: return duration_unary_minus_impl(dmin);
-  case precision2::second: return duration_unary_minus_impl(ds);
-  case precision2::millisecond: return duration_unary_minus_impl(dmilli);
-  case precision2::microsecond: return duration_unary_minus_impl(dmicro);
-  case precision2::nanosecond: return duration_unary_minus_impl(dnano);
+  switch (parse_precision(precision)) {
+  case precision::year: return duration_unary_minus_impl(dy);
+  case precision::quarter: return duration_unary_minus_impl(dq);
+  case precision::month: return duration_unary_minus_impl(dm);
+  case precision::week: return duration_unary_minus_impl(dw);
+  case precision::day: return duration_unary_minus_impl(dd);
+  case precision::hour: return duration_unary_minus_impl(dh);
+  case precision::minute: return duration_unary_minus_impl(dmin);
+  case precision::second: return duration_unary_minus_impl(ds);
+  case precision::millisecond: return duration_unary_minus_impl(dmilli);
+  case precision::microsecond: return duration_unary_minus_impl(dmicro);
+  case precision::nanosecond: return duration_unary_minus_impl(dnano);
   }
 }
 
