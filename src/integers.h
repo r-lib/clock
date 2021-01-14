@@ -19,17 +19,17 @@ public:
   integers(r_ssize size);
 
   bool is_na(r_ssize i) const NOEXCEPT;
-  CONSTCD11 r_ssize size() const NOEXCEPT;
+  r_ssize size() const NOEXCEPT;
 
   void assign(int x, r_ssize i);
   void assign_na(r_ssize i);
 
-  CONSTCD11 int operator[](r_ssize i) const NOEXCEPT;
+  int operator[](r_ssize i) const NOEXCEPT;
 
-  CONSTCD11 SEXP sexp() const NOEXCEPT;
+  SEXP sexp() const NOEXCEPT;
 
 private:
-  CONSTCD11 bool is_writable() const NOEXCEPT;
+  bool is_writable() const NOEXCEPT;
   void as_writable();
 };
 
@@ -60,7 +60,6 @@ integers::is_na(r_ssize i) const NOEXCEPT {
   return this->operator[](i) == r_int_na;
 }
 
-CONSTCD11
 inline
 r_ssize
 integers::size() const NOEXCEPT {
@@ -82,21 +81,18 @@ integers::assign_na(r_ssize i) {
   return assign(r_int_na, i);
 }
 
-CONSTCD11
 inline
 int
 integers::operator[](r_ssize i) const NOEXCEPT {
   return writable_ ? write_[i] : read_[i];
 }
 
-CONSTCD11
 inline
 SEXP
 integers::sexp() const NOEXCEPT {
   return writable_ ? write_ : read_;
 }
 
-CONSTCD11
 inline
 bool
 integers::is_writable() const NOEXCEPT {
