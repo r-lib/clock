@@ -31,6 +31,8 @@ year_quarter_day_check_range_cpp(const cpp11::integers& x,
   case component::nanosecond: return calendar_check_range_impl<component::nanosecond>(dummy, x, x_arg);
   default: clock_abort("Internal error: Unknown component");
   }
+
+  never_reached("year_quarter_day_check_range_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -133,6 +135,8 @@ collect_year_quarter_day_fields_impl(cpp11::list_of<cpp11::integers> fields,
   }
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("collect_year_quarter_day_fields_impl");
 }
 
 [[cpp11::register]]
@@ -156,6 +160,8 @@ collect_year_quarter_day_fields(cpp11::list_of<cpp11::integers> fields,
   case start::november: return collect_year_quarter_day_fields_impl<start::november>(fields, precision);
   case start::december: return collect_year_quarter_day_fields_impl<start::december>(fields, precision);
   }
+
+  never_reached("collect_year_quarter_day_fields");
 }
 
 // -----------------------------------------------------------------------------
@@ -198,6 +204,8 @@ format_year_quarter_day_impl(cpp11::list_of<cpp11::integers> fields,
   case precision::nanosecond: return format_calendar_impl(yqnqdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("format_year_quarter_day_impl");
 }
 
 [[cpp11::register]]
@@ -221,6 +229,8 @@ format_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
   case start::november: return format_year_quarter_day_impl<start::november>(fields, precision);
   case start::december: return format_year_quarter_day_impl<start::december>(fields, precision);
   }
+
+  never_reached("format_year_quarter_day_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -261,6 +271,8 @@ invalid_detect_year_quarter_day_impl(cpp11::list_of<cpp11::integers> fields,
   case precision::nanosecond: return invalid_detect_calendar_impl(yqnqdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("invalid_detect_year_quarter_day_impl");
 }
 
 [[cpp11::register]]
@@ -284,6 +296,8 @@ invalid_detect_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
   case start::november: return invalid_detect_year_quarter_day_impl<start::november>(fields, precision);
   case start::december: return invalid_detect_year_quarter_day_impl<start::december>(fields, precision);
   }
+
+  never_reached("invalid_detect_year_quarter_day_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -326,6 +340,8 @@ invalid_any_year_quarter_day_impl(cpp11::list_of<cpp11::integers> fields,
   case precision::nanosecond: return invalid_any_calendar_impl(yqnqdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("invalid_any_year_quarter_day_impl");
 }
 
 [[cpp11::register]]
@@ -349,6 +365,8 @@ invalid_any_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
   case start::november: return invalid_any_year_quarter_day_impl<start::november>(fields, precision);
   case start::december: return invalid_any_year_quarter_day_impl<start::december>(fields, precision);
   }
+
+  never_reached("invalid_any_year_quarter_day_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -391,6 +409,8 @@ invalid_count_year_quarter_day_impl(cpp11::list_of<cpp11::integers> fields,
   case precision::nanosecond: return invalid_count_calendar_impl(yqnqdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("invalid_count_year_quarter_day_impl");
 }
 
 [[cpp11::register]]
@@ -414,6 +434,8 @@ invalid_count_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
   case start::november: return invalid_count_year_quarter_day_impl<start::november>(fields, precision);
   case start::december: return invalid_count_year_quarter_day_impl<start::december>(fields, precision);
   }
+
+  never_reached("invalid_count_year_quarter_day_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -458,6 +480,8 @@ invalid_resolve_year_quarter_day_impl(cpp11::list_of<cpp11::integers> fields,
   case precision::nanosecond: return invalid_resolve_calendar_impl(yqnqdhmss3, invalid_val);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("invalid_resolve_year_quarter_day_impl");
 }
 
 [[cpp11::register]]
@@ -482,6 +506,8 @@ invalid_resolve_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
   case start::november: return invalid_resolve_year_quarter_day_impl<start::november>(fields, precision, invalid);
   case start::december: return invalid_resolve_year_quarter_day_impl<start::december>(fields, precision, invalid);
   }
+
+  never_reached("invalid_resolve_year_quarter_day_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -612,6 +638,8 @@ set_field_year_quarter_day_impl(cpp11::list_of<cpp11::integers> fields,
   }
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("set_field_year_quarter_day_impl");
 }
 
 [[cpp11::register]]
@@ -637,6 +665,8 @@ set_field_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
   case start::november: return set_field_year_quarter_day_impl<start::november>(fields, value, precision_fields, precision_value);
   case start::december: return set_field_year_quarter_day_impl<start::december>(fields, value, precision_fields, precision_value);
   }
+
+  never_reached("set_field_year_quarter_day_cpp");
 }
 
 template <quarterly::start S, class Calendar>
@@ -695,6 +725,8 @@ set_field_year_quarter_day_last_switch(cpp11::list_of<cpp11::integers> fields,
   case precision::nanosecond: return set_field_year_quarter_day_last_impl<S>(yqnqdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("set_field_year_quarter_day_last_switch");
 }
 
 [[cpp11::register]]
@@ -718,6 +750,8 @@ set_field_year_quarter_day_last_cpp(cpp11::list_of<cpp11::integers> fields,
   case start::november: return set_field_year_quarter_day_last_switch<start::november>(fields, precision_fields);
   case start::december: return set_field_year_quarter_day_last_switch<start::december>(fields, precision_fields);
   }
+
+  never_reached("set_field_year_quarter_day_last_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -812,6 +846,8 @@ year_quarter_day_plus_duration_impl(cpp11::list_of<cpp11::integers> fields,
     }
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("year_quarter_day_plus_duration_impl");
 }
 
 [[cpp11::register]]
@@ -837,6 +873,8 @@ year_quarter_day_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields,
   case start::november: return year_quarter_day_plus_duration_impl<start::november>(fields, fields_n, precision_fields, precision_n);
   case start::december: return year_quarter_day_plus_duration_impl<start::december>(fields, fields_n, precision_fields, precision_n);
   }
+
+  never_reached("year_quarter_day_plus_duration_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -883,6 +921,8 @@ as_sys_time_year_quarter_day_impl(cpp11::list_of<cpp11::integers> fields,
     clock_abort(message.c_str());
   }
   }
+
+  never_reached("as_sys_time_year_quarter_day_impl");
 }
 
 [[cpp11::register]]
@@ -906,6 +946,8 @@ as_sys_time_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
   case start::november: return as_sys_time_year_quarter_day_impl<start::november>(fields, precision);
   case start::december: return as_sys_time_year_quarter_day_impl<start::december>(fields, precision);
   }
+
+  never_reached("as_sys_time_year_quarter_day_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -938,6 +980,8 @@ as_year_quarter_day_from_sys_time_impl(cpp11::list_of<cpp11::integers> fields,
   case precision::nanosecond: return as_calendar_from_sys_time_impl<rquarterly::yqnqdhmss<std::chrono::nanoseconds, S>>(dnano);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("as_year_quarter_day_from_sys_time_impl");
 }
 
 [[cpp11::register]]
@@ -961,6 +1005,8 @@ as_year_quarter_day_from_sys_time_cpp(cpp11::list_of<cpp11::integers> fields,
   case start::november: return as_year_quarter_day_from_sys_time_impl<start::november>(fields, precision);
   case start::december: return as_year_quarter_day_from_sys_time_impl<start::december>(fields, precision);
   }
+
+  never_reached("as_year_quarter_day_from_sys_time_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -1027,6 +1073,8 @@ year_quarter_day_minus_year_quarter_day_impl(cpp11::list_of<cpp11::integers> x,
   case precision::quarter: return year_quarter_minus_year_quarter_impl(x_yqn, y_yqn);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("year_quarter_day_minus_year_quarter_day_impl");
 }
 
 [[cpp11::register]]
@@ -1051,4 +1099,6 @@ year_quarter_day_minus_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> x,
   case start::november: return year_quarter_day_minus_year_quarter_day_impl<start::november>(x, y, precision);
   case start::december: return year_quarter_day_minus_year_quarter_day_impl<start::december>(x, y, precision);
   }
+
+  never_reached("year_quarter_day_minus_year_quarter_day_cpp");
 }

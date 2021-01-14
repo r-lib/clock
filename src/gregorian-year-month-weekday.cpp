@@ -29,6 +29,8 @@ year_month_weekday_check_range_cpp(const cpp11::integers& x,
   case component::nanosecond: return calendar_check_range_impl<component::nanosecond>(dummy, x, x_arg);
   default: clock_abort("Internal error: Unknown component");
   }
+
+  never_reached("year_month_weekday_check_range_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -137,6 +139,8 @@ collect_year_month_weekday_fields(cpp11::list_of<cpp11::integers> fields,
   }
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("collect_year_month_weekday_fields");
 }
 
 // -----------------------------------------------------------------------------
@@ -177,6 +181,8 @@ format_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, const cpp1
   case precision::nanosecond: return format_calendar_impl(ymwdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("format_year_month_weekday_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -217,6 +223,8 @@ invalid_detect_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, co
   case precision::nanosecond: return invalid_detect_calendar_impl(ymwdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("invalid_detect_year_month_weekday_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -257,6 +265,8 @@ invalid_any_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, cpp11
   case precision::nanosecond: return invalid_any_calendar_impl(ymwdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("invalid_any_year_month_weekday_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -297,6 +307,8 @@ invalid_count_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, con
   case precision::nanosecond: return invalid_count_calendar_impl(ymwdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("invalid_count_year_month_weekday_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -340,6 +352,8 @@ invalid_resolve_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
   case precision::nanosecond: return invalid_resolve_calendar_impl(ymwdhmss3, invalid_val);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("invalid_resolve_year_month_weekday_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -477,6 +491,8 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
   }
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("set_field_year_month_weekday_cpp");
 }
 
 template <class Calendar>
@@ -535,6 +551,8 @@ set_field_year_month_weekday_last_cpp(cpp11::list_of<cpp11::integers> fields,
   case precision::nanosecond: return set_field_year_month_weekday_last_impl(ymwdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("set_field_year_month_weekday_last_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -639,6 +657,8 @@ year_month_weekday_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields,
     }
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("year_month_weekday_plus_duration_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -684,6 +704,8 @@ as_sys_time_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     clock_abort(message.c_str());
   }
   }
+
+  never_reached("as_sys_time_year_month_weekday_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -716,6 +738,8 @@ as_year_month_weekday_from_sys_time_cpp(cpp11::list_of<cpp11::integers> fields,
   case precision::nanosecond: return as_calendar_from_sys_time_impl<weekday::ymwdhmss<std::chrono::nanoseconds>>(dnano);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("as_year_month_weekday_from_sys_time_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -780,4 +804,6 @@ year_month_weekday_minus_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> 
   case precision::month: return year_month_minus_year_month_impl(x_ym, y_ym);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("year_month_weekday_minus_year_month_weekday_cpp");
 }
