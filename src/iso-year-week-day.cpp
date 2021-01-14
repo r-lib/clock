@@ -8,7 +8,7 @@
 [[cpp11::register]]
 void
 iso_year_week_day_check_range_cpp(const cpp11::integers& x,
-                                  const cpp11::strings& component,
+                                  const cpp11::strings& component_string,
                                   const cpp11::strings& arg) {
   std::string x_arg_string = arg[0];
   const char* x_arg = x_arg_string.c_str();
@@ -16,7 +16,7 @@ iso_year_week_day_check_range_cpp(const cpp11::integers& x,
   // Used to access the non-static method
   rclock::iso::y dummy(0);
 
-  switch (parse_component(component)) {
+  switch (parse_component(component_string)) {
   case component::year: return calendar_check_range_impl<component::year>(dummy, x, x_arg);
   case component::week: return calendar_check_range_impl<component::week>(dummy, x, x_arg);
   case component::day: return calendar_check_range_impl<component::day>(dummy, x, x_arg);

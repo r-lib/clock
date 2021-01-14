@@ -96,10 +96,10 @@ extern "C" SEXP _clock_format_zoned_time_cpp(SEXP fields, SEXP zone, SEXP abbrev
   END_CPP11
 }
 // gregorian-year-month-day.cpp
-void year_month_day_check_range_cpp(const cpp11::integers& x, const cpp11::strings& component, const cpp11::strings& arg);
-extern "C" SEXP _clock_year_month_day_check_range_cpp(SEXP x, SEXP component, SEXP arg) {
+void year_month_day_check_range_cpp(const cpp11::integers& x, const cpp11::strings& component_string, const cpp11::strings& arg);
+extern "C" SEXP _clock_year_month_day_check_range_cpp(SEXP x, SEXP component_string, SEXP arg) {
   BEGIN_CPP11
-    year_month_day_check_range_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(component), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(arg));
+    year_month_day_check_range_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(component_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(arg));
     return R_NilValue;
   END_CPP11
 }
@@ -188,10 +188,10 @@ extern "C" SEXP _clock_year_month_day_minus_year_month_day_cpp(SEXP x, SEXP y, S
   END_CPP11
 }
 // gregorian-year-month-weekday.cpp
-void year_month_weekday_check_range_cpp(const cpp11::integers& x, const cpp11::strings& component, const cpp11::strings& arg);
-extern "C" SEXP _clock_year_month_weekday_check_range_cpp(SEXP x, SEXP component, SEXP arg) {
+void year_month_weekday_check_range_cpp(const cpp11::integers& x, const cpp11::strings& component_string, const cpp11::strings& arg);
+extern "C" SEXP _clock_year_month_weekday_check_range_cpp(SEXP x, SEXP component_string, SEXP arg) {
   BEGIN_CPP11
-    year_month_weekday_check_range_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(component), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(arg));
+    year_month_weekday_check_range_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(component_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(arg));
     return R_NilValue;
   END_CPP11
 }
@@ -238,10 +238,10 @@ extern "C" SEXP _clock_invalid_resolve_year_month_weekday_cpp(SEXP fields, SEXP 
   END_CPP11
 }
 // gregorian-year-month-weekday.cpp
-cpp11::writable::list set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& value, const cpp11::strings& precision_fields, const cpp11::strings& component);
-extern "C" SEXP _clock_set_field_year_month_weekday_cpp(SEXP fields, SEXP value, SEXP precision_fields, SEXP component) {
+cpp11::writable::list set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& value, const cpp11::strings& precision_fields, const cpp11::strings& component_string);
+extern "C" SEXP _clock_set_field_year_month_weekday_cpp(SEXP fields, SEXP value, SEXP precision_fields, SEXP component_string) {
   BEGIN_CPP11
-    return cpp11::as_sexp(set_field_year_month_weekday_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(value), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(component)));
+    return cpp11::as_sexp(set_field_year_month_weekday_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(value), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(component_string)));
   END_CPP11
 }
 // gregorian-year-month-weekday.cpp
@@ -288,10 +288,10 @@ extern "C" SEXP _clock_clock_set_install(SEXP path) {
   END_CPP11
 }
 // iso-year-week-day.cpp
-void iso_year_week_day_check_range_cpp(const cpp11::integers& x, const cpp11::strings& component, const cpp11::strings& arg);
-extern "C" SEXP _clock_iso_year_week_day_check_range_cpp(SEXP x, SEXP component, SEXP arg) {
+void iso_year_week_day_check_range_cpp(const cpp11::integers& x, const cpp11::strings& component_string, const cpp11::strings& arg);
+extern "C" SEXP _clock_iso_year_week_day_check_range_cpp(SEXP x, SEXP component_string, SEXP arg) {
   BEGIN_CPP11
-    iso_year_week_day_check_range_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(component), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(arg));
+    iso_year_week_day_check_range_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(component_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(arg));
     return R_NilValue;
   END_CPP11
 }
@@ -380,10 +380,10 @@ extern "C" SEXP _clock_iso_year_week_day_minus_iso_year_week_day_cpp(SEXP x, SEX
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-void year_quarter_day_check_range_cpp(const cpp11::integers& x, const cpp11::strings& component, const cpp11::strings& arg);
-extern "C" SEXP _clock_year_quarter_day_check_range_cpp(SEXP x, SEXP component, SEXP arg) {
+void year_quarter_day_check_range_cpp(const cpp11::integers& x, const cpp11::strings& component_string, const cpp11::strings& arg);
+extern "C" SEXP _clock_year_quarter_day_check_range_cpp(SEXP x, SEXP component_string, SEXP arg) {
   BEGIN_CPP11
-    year_quarter_day_check_range_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(component), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(arg));
+    year_quarter_day_check_range_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(component_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(arg));
     return R_NilValue;
   END_CPP11
 }

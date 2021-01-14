@@ -8,7 +8,7 @@
 [[cpp11::register]]
 void
 year_month_weekday_check_range_cpp(const cpp11::integers& x,
-                                   const cpp11::strings& component,
+                                   const cpp11::strings& component_string,
                                    const cpp11::strings& arg) {
   std::string x_arg_string = arg[0];
   const char* x_arg = x_arg_string.c_str();
@@ -16,7 +16,7 @@ year_month_weekday_check_range_cpp(const cpp11::integers& x,
   // Used to access the non-static method
   rclock::weekday::y dummy(0);
 
-  switch (parse_component(component)) {
+  switch (parse_component(component_string)) {
   case component::year: return calendar_check_range_impl<component::year>(dummy, x, x_arg);
   case component::month: return calendar_check_range_impl<component::month>(dummy, x, x_arg);
   case component::day: return calendar_check_range_impl<component::day>(dummy, x, x_arg);
@@ -367,7 +367,7 @@ cpp11::writable::list
 set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
                                  const cpp11::integers& value,
                                  const cpp11::strings& precision_fields,
-                                 const cpp11::strings& component) {
+                                 const cpp11::strings& component_string) {
   using namespace rclock;
   rclock::integers value2(value);
 
@@ -392,14 +392,14 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
 
   switch (parse_precision(precision_fields)) {
   case precision::year: {
-    switch (parse_component(component)) {
+    switch (parse_component(component_string)) {
     case component::year: return set_field_calendar<component::year>(y, value2);
     case component::month: return set_field_calendar<component::month>(y, value2);
     default: clock_abort("Internal error: Invalid component.");
     }
   }
   case precision::month: {
-    switch (parse_component(component)) {
+    switch (parse_component(component_string)) {
     case component::year: return set_field_calendar<component::year>(ym, value2);
     case component::month: return set_field_calendar<component::month>(ym, value2);
     // Note: month precision will be promoted up to day before setting weekday/index
@@ -407,7 +407,7 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     }
   }
   case precision::day: {
-    switch (parse_component(component)) {
+    switch (parse_component(component_string)) {
     case component::year: return set_field_calendar<component::year>(ymwd, value2);
     case component::month: return set_field_calendar<component::month>(ymwd, value2);
     case component::day: return set_field_calendar<component::day>(ymwd, value2);
@@ -417,7 +417,7 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     }
   }
   case precision::hour: {
-    switch (parse_component(component)) {
+    switch (parse_component(component_string)) {
     case component::year: return set_field_calendar<component::year>(ymwdh, value2);
     case component::month: return set_field_calendar<component::month>(ymwdh, value2);
     case component::day: return set_field_calendar<component::day>(ymwdh, value2);
@@ -428,7 +428,7 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     }
   }
   case precision::minute: {
-    switch (parse_component(component)) {
+    switch (parse_component(component_string)) {
     case component::year: return set_field_calendar<component::year>(ymwdhm, value2);
     case component::month: return set_field_calendar<component::month>(ymwdhm, value2);
     case component::day: return set_field_calendar<component::day>(ymwdhm, value2);
@@ -440,7 +440,7 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     }
   }
   case precision::second: {
-    switch (parse_component(component)) {
+    switch (parse_component(component_string)) {
     case component::year: return set_field_calendar<component::year>(ymwdhms, value2);
     case component::month: return set_field_calendar<component::month>(ymwdhms, value2);
     case component::day: return set_field_calendar<component::day>(ymwdhms, value2);
@@ -455,7 +455,7 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     }
   }
   case precision::millisecond: {
-    switch (parse_component(component)) {
+    switch (parse_component(component_string)) {
     case component::year: return set_field_calendar<component::year>(ymwdhmss1, value2);
     case component::month: return set_field_calendar<component::month>(ymwdhmss1, value2);
     case component::day: return set_field_calendar<component::day>(ymwdhmss1, value2);
@@ -468,7 +468,7 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     }
   }
   case precision::microsecond: {
-    switch (parse_component(component)) {
+    switch (parse_component(component_string)) {
     case component::year: return set_field_calendar<component::year>(ymwdhmss2, value2);
     case component::month: return set_field_calendar<component::month>(ymwdhmss2, value2);
     case component::day: return set_field_calendar<component::day>(ymwdhmss2, value2);
@@ -481,7 +481,7 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     }
   }
   case precision::nanosecond: {
-    switch (parse_component(component)) {
+    switch (parse_component(component_string)) {
     case component::year: return set_field_calendar<component::year>(ymwdhmss3, value2);
     case component::month: return set_field_calendar<component::month>(ymwdhmss3, value2);
     case component::day: return set_field_calendar<component::day>(ymwdhmss3, value2);

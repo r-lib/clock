@@ -52,8 +52,8 @@ format_zoned_time_cpp <- function(fields, zone, abbreviate_zone, format, precisi
   .Call("_clock_format_zoned_time_cpp", fields, zone, abbreviate_zone, format, precision_string, mon, mon_ab, day, day_ab, am_pm, decimal_mark, PACKAGE = "clock")
 }
 
-year_month_day_check_range_cpp <- function(x, component, arg) {
-  invisible(.Call("_clock_year_month_day_check_range_cpp", x, component, arg, PACKAGE = "clock"))
+year_month_day_check_range_cpp <- function(x, component_string, arg) {
+  invisible(.Call("_clock_year_month_day_check_range_cpp", x, component_string, arg, PACKAGE = "clock"))
 }
 
 collect_year_month_day_fields <- function(fields, precision_string) {
@@ -104,8 +104,8 @@ year_month_day_minus_year_month_day_cpp <- function(x, y, precision_string) {
   .Call("_clock_year_month_day_minus_year_month_day_cpp", x, y, precision_string, PACKAGE = "clock")
 }
 
-year_month_weekday_check_range_cpp <- function(x, component, arg) {
-  invisible(.Call("_clock_year_month_weekday_check_range_cpp", x, component, arg, PACKAGE = "clock"))
+year_month_weekday_check_range_cpp <- function(x, component_string, arg) {
+  invisible(.Call("_clock_year_month_weekday_check_range_cpp", x, component_string, arg, PACKAGE = "clock"))
 }
 
 collect_year_month_weekday_fields <- function(fields, precision_string) {
@@ -132,8 +132,8 @@ invalid_resolve_year_month_weekday_cpp <- function(fields, precision_string, inv
   .Call("_clock_invalid_resolve_year_month_weekday_cpp", fields, precision_string, invalid_string, PACKAGE = "clock")
 }
 
-set_field_year_month_weekday_cpp <- function(fields, value, precision_fields, component) {
-  .Call("_clock_set_field_year_month_weekday_cpp", fields, value, precision_fields, component, PACKAGE = "clock")
+set_field_year_month_weekday_cpp <- function(fields, value, precision_fields, component_string) {
+  .Call("_clock_set_field_year_month_weekday_cpp", fields, value, precision_fields, component_string, PACKAGE = "clock")
 }
 
 set_field_year_month_weekday_last_cpp <- function(fields, precision_fields) {
@@ -160,8 +160,8 @@ clock_set_install <- function(path) {
   invisible(.Call("_clock_clock_set_install", path, PACKAGE = "clock"))
 }
 
-iso_year_week_day_check_range_cpp <- function(x, component, arg) {
-  invisible(.Call("_clock_iso_year_week_day_check_range_cpp", x, component, arg, PACKAGE = "clock"))
+iso_year_week_day_check_range_cpp <- function(x, component_string, arg) {
+  invisible(.Call("_clock_iso_year_week_day_check_range_cpp", x, component_string, arg, PACKAGE = "clock"))
 }
 
 collect_iso_year_week_day_fields <- function(fields, precision_string) {
@@ -212,8 +212,8 @@ iso_year_week_day_minus_iso_year_week_day_cpp <- function(x, y, precision_string
   .Call("_clock_iso_year_week_day_minus_iso_year_week_day_cpp", x, y, precision_string, PACKAGE = "clock")
 }
 
-year_quarter_day_check_range_cpp <- function(x, component, arg) {
-  invisible(.Call("_clock_year_quarter_day_check_range_cpp", x, component, arg, PACKAGE = "clock"))
+year_quarter_day_check_range_cpp <- function(x, component_string, arg) {
+  invisible(.Call("_clock_year_quarter_day_check_range_cpp", x, component_string, arg, PACKAGE = "clock"))
 }
 
 collect_year_quarter_day_fields <- function(fields, precision_string, start) {
