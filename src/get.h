@@ -201,14 +201,14 @@ get_year(cpp11::list_of<cpp11::integers>& fields) {
 static
 inline
 cpp11::integers
-get_weeknum(cpp11::list_of<cpp11::integers>& fields) {
+get_week(cpp11::list_of<cpp11::integers>& fields) {
   return fields.size() >= 2 ? fields[1] : cpp11::integers{};
 }
 
 static
 inline
 cpp11::integers
-get_weekday(cpp11::list_of<cpp11::integers>& fields) {
+get_day(cpp11::list_of<cpp11::integers>& fields) {
   return fields.size() >= 3 ? fields[2] : cpp11::integers{};
 }
 

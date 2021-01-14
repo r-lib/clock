@@ -34,15 +34,8 @@ get_quarterday <- function(x, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
-get_weeknum <- function(x) {
-  UseMethod("get_weeknum")
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
-get_weekday <- function(x) {
-  UseMethod("get_weekday")
+get_week <- function(x) {
+  UseMethod("get_week")
 }
 
 # ------------------------------------------------------------------------------

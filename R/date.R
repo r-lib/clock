@@ -40,8 +40,8 @@ as_year_quarternum_quarterday.Date <- function(x, ..., start = 1L) {
 }
 
 #' @export
-as_iso_year_weeknum_weekday.Date <- function(x) {
-  as_iso_year_weeknum_weekday(as_sys_time(x))
+as_iso_year_week_day.Date <- function(x) {
+  as_iso_year_week_day(as_sys_time(x))
 }
 
 # ------------------------------------------------------------------------------

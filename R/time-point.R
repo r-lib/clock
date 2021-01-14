@@ -394,11 +394,11 @@ as_year_quarternum_quarterday.clock_time_point <- function(x, ..., start = 1L) {
 }
 
 #' @export
-as_iso_year_weeknum_weekday.clock_time_point <- function(x) {
+as_iso_year_week_day.clock_time_point <- function(x) {
   duration <- time_point_duration(x)
   precision <- time_point_precision(x)
-  fields <- as_iso_year_weeknum_weekday_from_sys_time_cpp(duration, precision)
-  new_iso_year_weeknum_weekday_from_fields(fields, precision, names = names(x))
+  fields <- as_iso_year_week_day_from_sys_time_cpp(duration, precision)
+  new_iso_year_week_day_from_fields(fields, precision, names = names(x))
 }
 
 # ------------------------------------------------------------------------------

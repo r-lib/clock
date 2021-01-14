@@ -44,13 +44,8 @@ set_nanosecond <- function(x, value, ...) {
 }
 
 #' @export
-set_weeknum <- function(x, value, ...) {
-  UseMethod("set_weeknum")
-}
-
-#' @export
-set_weekday <- function(x, value, ...) {
-  UseMethod("set_weekday")
+set_week <- function(x, value, ...) {
+  UseMethod("set_week")
 }
 
 #' @export

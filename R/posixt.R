@@ -42,8 +42,8 @@ as_year_quarternum_quarterday.POSIXt <- function(x, ..., start = 1L) {
 }
 
 #' @export
-as_iso_year_weeknum_weekday.POSIXt <- function(x) {
-  as_iso_year_weeknum_weekday(as_naive_time(x))
+as_iso_year_week_day.POSIXt <- function(x) {
+  as_iso_year_week_day(as_naive_time(x))
 }
 
 # ------------------------------------------------------------------------------

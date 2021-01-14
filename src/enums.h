@@ -56,8 +56,6 @@ enum class component {
   index,
 
   // TODO: Remove me
-  weeknum,
-  weekday,
   quarternum,
   quarterday
 };
