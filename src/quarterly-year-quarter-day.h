@@ -1,5 +1,5 @@
-#ifndef CLOCK_QUARTERLY_YEAR_QUARTERNUM_QUARTERDAY_H
-#define CLOCK_QUARTERLY_YEAR_QUARTERNUM_QUARTERDAY_H
+#ifndef CLOCK_QUARTERLY_YEAR_QUARTER_DAY_H
+#define CLOCK_QUARTERLY_YEAR_QUARTER_DAY_H
 
 #include "clock.h"
 #include "integers.h"
@@ -17,32 +17,32 @@ namespace detail {
 
 inline
 std::ostringstream&
-stream_quarternum(std::ostringstream& os, int quarternum) NOEXCEPT
+stream_quarter(std::ostringstream& os, int quarter) NOEXCEPT
 {
-  os << quarterly::quarternum{static_cast<unsigned>(quarternum)};
+  os << quarterly::quarternum{static_cast<unsigned>(quarter)};
   return os;
 }
 inline
 std::ostringstream&
-stream_quarterday(std::ostringstream& os, int quarterday) NOEXCEPT
+stream_day(std::ostringstream& os, int day) NOEXCEPT
 {
   os.fill('0');
   os.flags(std::ios::dec | std::ios::right);
   os.width(2);
-  os << quarterday;
+  os << day;
   return os;
 }
 
 template <quarterly::start S>
 inline
 quarterly::year_quarternum_quarterday<S>
-resolve_first_day_yqnqd(const quarterly::year_quarternum_quarterday<S>& x) {
+resolve_first_day_yqd(const quarterly::year_quarternum_quarterday<S>& x) {
   return ((x.year() / x.quarternum()) + quarterly::quarters(1)) / quarterly::quarterday{1u};
 }
 template <quarterly::start S>
 inline
 quarterly::year_quarternum_quarterday<S>
-resolve_last_day_yqnqd(const quarterly::year_quarternum_quarterday<S>& x) {
+resolve_last_day_yqd(const quarterly::year_quarternum_quarterday<S>& x) {
   return x.year() / x.quarternum() / quarterly::last;
 }
 
@@ -55,12 +55,12 @@ inline void check_range<component::year>(const int& value, const char* arg) {
   check_range_year(value, arg);
 }
 template <>
-inline void check_range<component::quarternum>(const int& value, const char* arg) {
-  check_range_quarternum(value, arg);
+inline void check_range<component::quarter>(const int& value, const char* arg) {
+  check_range_quarterly_quarter(value, arg);
 }
 template <>
-inline void check_range<component::quarterday>(const int& value, const char* arg) {
-  check_range_quarterday(value, arg);
+inline void check_range<component::day>(const int& value, const char* arg) {
+  check_range_quarterly_day(value, arg);
 }
 template <>
 inline void check_range<component::hour>(const int& value, const char* arg) {
@@ -124,12 +124,12 @@ template <quarterly::start S>
 class yqn : public y<S>
 {
 protected:
-  rclock::integers quarternum_;
+  rclock::integers quarter_;
 
 public:
   yqn(r_ssize size);
   yqn(const cpp11::integers& year,
-      const cpp11::integers& quarternum);
+      const cpp11::integers& quarter);
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
 
@@ -151,13 +151,13 @@ template <quarterly::start S>
 class yqnqd : public yqn<S>
 {
 protected:
-  rclock::integers quarterday_;
+  rclock::integers day_;
 
 public:
   yqnqd(r_ssize size);
   yqnqd(const cpp11::integers& year,
-        const cpp11::integers& quarternum,
-        const cpp11::integers& quarterday);
+        const cpp11::integers& quarter,
+        const cpp11::integers& day);
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
 
@@ -184,8 +184,8 @@ protected:
 public:
   yqnqdh(r_ssize size);
   yqnqdh(const cpp11::integers& year,
-         const cpp11::integers& quarternum,
-         const cpp11::integers& quarterday,
+         const cpp11::integers& quarter,
+         const cpp11::integers& day,
          const cpp11::integers& hour);
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
@@ -209,8 +209,8 @@ protected:
 public:
   yqnqdhm(r_ssize size);
   yqnqdhm(const cpp11::integers& year,
-          const cpp11::integers& quarternum,
-          const cpp11::integers& quarterday,
+          const cpp11::integers& quarter,
+          const cpp11::integers& day,
           const cpp11::integers& hour,
           const cpp11::integers& minute);
 
@@ -235,8 +235,8 @@ protected:
 public:
   yqnqdhms(r_ssize size);
   yqnqdhms(const cpp11::integers& year,
-           const cpp11::integers& quarternum,
-           const cpp11::integers& quarterday,
+           const cpp11::integers& quarter,
+           const cpp11::integers& day,
            const cpp11::integers& hour,
            const cpp11::integers& minute,
            const cpp11::integers& second);
@@ -262,8 +262,8 @@ protected:
 public:
   yqnqdhmss(r_ssize size);
   yqnqdhmss(const cpp11::integers& year,
-            const cpp11::integers& quarternum,
-            const cpp11::integers& quarterday,
+            const cpp11::integers& quarter,
+            const cpp11::integers& day,
             const cpp11::integers& hour,
             const cpp11::integers& minute,
             const cpp11::integers& second,
@@ -396,15 +396,15 @@ template <quarterly::start S>
 inline
 yqn<S>::yqn(r_ssize size)
   : y<S>(size),
-    quarternum_(size)
+    quarter_(size)
   {}
 
 template <quarterly::start S>
 inline
 yqn<S>::yqn(const cpp11::integers& year,
-            const cpp11::integers& quarternum)
+            const cpp11::integers& quarter)
   : y<S>(year),
-    quarternum_(quarternum)
+    quarter_(quarter)
   {}
 
 template <quarterly::start S>
@@ -414,7 +414,7 @@ yqn<S>::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
   y<S>::stream(os, i);
   os << '-';
-  detail::stream_quarternum(os, quarternum_[i]);
+  detail::stream_quarter(os, quarter_[i]);
   return os;
 }
 
@@ -439,7 +439,7 @@ inline
 void
 yqn<S>::assign_quarternum(const quarterly::quarternum& x, r_ssize i) NOEXCEPT
 {
-  quarternum_.assign(static_cast<int>(static_cast<unsigned>(x)), i);
+  quarter_.assign(static_cast<int>(static_cast<unsigned>(x)), i);
 }
 
 template <quarterly::start S>
@@ -457,7 +457,7 @@ void
 yqn<S>::assign_na(r_ssize i) NOEXCEPT
 {
   y<S>::assign_na(i);
-  quarternum_.assign_na(i);
+  quarter_.assign_na(i);
 }
 
 template <quarterly::start S>
@@ -473,7 +473,7 @@ inline
 quarterly::year_quarternum<S>
 yqn<S>::to_year_quarternum(r_ssize i) const NOEXCEPT
 {
-  return quarterly::year<S>{y<S>::year_[i]} / static_cast<unsigned>(quarternum_[i]);
+  return quarterly::year<S>{y<S>::year_[i]} / static_cast<unsigned>(quarter_[i]);
 }
 
 template <quarterly::start S>
@@ -481,8 +481,8 @@ inline
 cpp11::writable::list
 yqn<S>::to_list() const
 {
-  cpp11::writable::list out({y<S>::year_.sexp(), quarternum_.sexp()});
-  out.names() = {"year", "quarternum"};
+  cpp11::writable::list out({y<S>::year_.sexp(), quarter_.sexp()});
+  out.names() = {"year", "quarter"};
   return out;
 }
 
@@ -492,16 +492,16 @@ template <quarterly::start S>
 inline
 yqnqd<S>::yqnqd(r_ssize size)
   : yqn<S>(size),
-    quarterday_(size)
+    day_(size)
   {}
 
 template <quarterly::start S>
 inline
 yqnqd<S>::yqnqd(const cpp11::integers& year,
-                const cpp11::integers& quarternum,
-                const cpp11::integers& quarterday)
-  : yqn<S>(year, quarternum),
-    quarterday_(quarterday)
+                const cpp11::integers& quarter,
+                const cpp11::integers& day)
+  : yqn<S>(year, quarter),
+    day_(day)
   {}
 
 template <quarterly::start S>
@@ -511,7 +511,7 @@ yqnqd<S>::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
   yqn<S>::stream(os, i);
   os << '-';
-  detail::stream_quarterday(os, quarterday_[i]);
+  detail::stream_day(os, day_[i]);
   return os;
 }
 
@@ -528,7 +528,7 @@ inline
 void
 yqnqd<S>::assign_quarterday(const quarterly::quarterday& x, r_ssize i) NOEXCEPT
 {
-  quarterday_.assign(static_cast<int>(static_cast<unsigned>(x)), i);
+  day_.assign(static_cast<int>(static_cast<unsigned>(x)), i);
 }
 
 template <quarterly::start S>
@@ -556,7 +556,7 @@ void
 yqnqd<S>::assign_na(r_ssize i) NOEXCEPT
 {
   yqn<S>::assign_na(i);
-  quarterday_.assign_na(i);
+  day_.assign_na(i);
 }
 
 template <quarterly::start S>
@@ -573,12 +573,12 @@ yqnqd<S>::resolve(r_ssize i, const enum invalid type)
   switch (type) {
   case invalid::first_day:
   case invalid::first_time: {
-    assign_year_quarternum_quarterday(detail::resolve_first_day_yqnqd(elt), i);
+    assign_year_quarternum_quarterday(detail::resolve_first_day_yqd(elt), i);
     break;
   }
   case invalid::last_day:
   case invalid::last_time: {
-    assign_quarterday(detail::resolve_last_day_yqnqd(elt).quarterday(), i);
+    assign_quarterday(detail::resolve_last_day_yqd(elt).quarterday(), i);
     break;
   }
   case invalid::na: {
@@ -605,7 +605,7 @@ quarterly::year_quarternum_quarterday<S>
 yqnqd<S>::to_year_quarternum_quarterday(r_ssize i) const NOEXCEPT
 {
   return yqn<S>::to_year_quarternum(i) /
-    static_cast<unsigned>(quarterday_[i]);
+    static_cast<unsigned>(day_[i]);
 }
 
 template <quarterly::start S>
@@ -613,8 +613,8 @@ inline
 cpp11::writable::list
 yqnqd<S>::to_list() const
 {
-  cpp11::writable::list out({yqn<S>::year_.sexp(), yqn<S>::quarternum_.sexp(), quarterday_.sexp()});
-  out.names() = {"year", "quarternum", "quarterday"};
+  cpp11::writable::list out({yqn<S>::year_.sexp(), yqn<S>::quarter_.sexp(), day_.sexp()});
+  out.names() = {"year", "quarter", "day"};
   return out;
 }
 
@@ -630,10 +630,10 @@ yqnqdh<S>::yqnqdh(r_ssize size)
 template <quarterly::start S>
 inline
 yqnqdh<S>::yqnqdh(const cpp11::integers& year,
-                  const cpp11::integers& quarternum,
-                  const cpp11::integers& quarterday,
+                  const cpp11::integers& quarter,
+                  const cpp11::integers& day,
                   const cpp11::integers& hour)
-  : yqnqd<S>(year, quarternum, quarterday),
+  : yqnqd<S>(year, quarter, day),
     hour_(hour)
   {}
 
@@ -689,18 +689,18 @@ yqnqdh<S>::resolve(r_ssize i, const enum invalid type)
 
   switch (type) {
   case invalid::first_day:
-    yqnqd<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqnqd(elt), i);
+    yqnqd<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqd(elt), i);
     break;
   case invalid::first_time: {
-    yqnqd<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqnqd(elt), i);
+    yqnqd<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqd(elt), i);
     assign_hour(rclock::detail::resolve_first_day_hour(), i);
     break;
   }
   case invalid::last_day:
-    yqnqd<S>::assign_quarterday(detail::resolve_last_day_yqnqd(elt).quarterday(), i);
+    yqnqd<S>::assign_quarterday(detail::resolve_last_day_yqd(elt).quarterday(), i);
     break;
   case invalid::last_time: {
-    yqnqd<S>::assign_quarterday(detail::resolve_last_day_yqnqd(elt).quarterday(), i);
+    yqnqd<S>::assign_quarterday(detail::resolve_last_day_yqd(elt).quarterday(), i);
     assign_hour(rclock::detail::resolve_last_day_hour(), i);
     break;
   }
@@ -727,8 +727,8 @@ inline
 cpp11::writable::list
 yqnqdh<S>::to_list() const
 {
-  cpp11::writable::list out({yqnqd<S>::year_.sexp(), yqnqd<S>::quarternum_.sexp(), yqnqd<S>::quarterday_.sexp(), hour_.sexp()});
-  out.names() = {"year", "quarternum", "quarterday", "hour"};
+  cpp11::writable::list out({yqnqd<S>::year_.sexp(), yqnqd<S>::quarter_.sexp(), yqnqd<S>::day_.sexp(), hour_.sexp()});
+  out.names() = {"year", "quarter", "day", "hour"};
   return out;
 }
 
@@ -744,11 +744,11 @@ yqnqdhm<S>::yqnqdhm(r_ssize size)
 template <quarterly::start S>
 inline
 yqnqdhm<S>::yqnqdhm(const cpp11::integers& year,
-                    const cpp11::integers& quarternum,
-                    const cpp11::integers& quarterday,
+                    const cpp11::integers& quarter,
+                    const cpp11::integers& day,
                     const cpp11::integers& hour,
                     const cpp11::integers& minute)
-  : yqnqdh<S>(year, quarternum, quarterday, hour),
+  : yqnqdh<S>(year, quarter, day, hour),
     minute_(minute)
   {}
 
@@ -804,19 +804,19 @@ yqnqdhm<S>::resolve(r_ssize i, const enum invalid type)
 
   switch (type) {
   case invalid::first_day:
-    yqnqdh<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqnqd(elt), i);
+    yqnqdh<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqd(elt), i);
     break;
   case invalid::first_time: {
-    yqnqdh<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqnqd(elt), i);
+    yqnqdh<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqd(elt), i);
     yqnqdh<S>::assign_hour(rclock::detail::resolve_first_day_hour(), i);
     assign_minute(rclock::detail::resolve_first_day_minute(), i);
     break;
   }
   case invalid::last_day:
-    yqnqdh<S>::assign_quarterday(detail::resolve_last_day_yqnqd(elt).quarterday(), i);
+    yqnqdh<S>::assign_quarterday(detail::resolve_last_day_yqd(elt).quarterday(), i);
     break;
   case invalid::last_time: {
-    yqnqdh<S>::assign_quarterday(detail::resolve_last_day_yqnqd(elt).quarterday(), i);
+    yqnqdh<S>::assign_quarterday(detail::resolve_last_day_yqd(elt).quarterday(), i);
     yqnqdh<S>::assign_hour(rclock::detail::resolve_last_day_hour(), i);
     assign_minute(rclock::detail::resolve_last_day_minute(), i);
     break;
@@ -844,8 +844,8 @@ inline
 cpp11::writable::list
 yqnqdhm<S>::to_list() const
 {
-  cpp11::writable::list out({yqnqdh<S>::year_.sexp(), yqnqdh<S>::quarternum_.sexp(), yqnqdh<S>::quarterday_.sexp(), yqnqdh<S>::hour_.sexp(), minute_.sexp()});
-  out.names() = {"year", "quarternum", "quarterday", "hour", "minute"};
+  cpp11::writable::list out({yqnqdh<S>::year_.sexp(), yqnqdh<S>::quarter_.sexp(), yqnqdh<S>::day_.sexp(), yqnqdh<S>::hour_.sexp(), minute_.sexp()});
+  out.names() = {"year", "quarter", "day", "hour", "minute"};
   return out;
 }
 
@@ -861,12 +861,12 @@ yqnqdhms<S>::yqnqdhms(r_ssize size)
 template <quarterly::start S>
 inline
 yqnqdhms<S>::yqnqdhms(const cpp11::integers& year,
-                      const cpp11::integers& quarternum,
-                      const cpp11::integers& quarterday,
+                      const cpp11::integers& quarter,
+                      const cpp11::integers& day,
                       const cpp11::integers& hour,
                       const cpp11::integers& minute,
                       const cpp11::integers& second)
-  : yqnqdhm<S>(year, quarternum, quarterday, hour, minute),
+  : yqnqdhm<S>(year, quarter, day, hour, minute),
     second_(second)
   {}
 
@@ -922,20 +922,20 @@ yqnqdhms<S>::resolve(r_ssize i, const enum invalid type)
 
   switch (type) {
   case invalid::first_day:
-    yqnqdhm<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqnqd(elt), i);
+    yqnqdhm<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqd(elt), i);
     break;
   case invalid::first_time: {
-    yqnqdhm<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqnqd(elt), i);
+    yqnqdhm<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqd(elt), i);
     yqnqdhm<S>::assign_hour(rclock::detail::resolve_first_day_hour(), i);
     yqnqdhm<S>::assign_minute(rclock::detail::resolve_first_day_minute(), i);
     assign_second(rclock::detail::resolve_first_day_second(), i);
     break;
   }
   case invalid::last_day:
-    yqnqdhm<S>::assign_quarterday(detail::resolve_last_day_yqnqd(elt).quarterday(), i);
+    yqnqdhm<S>::assign_quarterday(detail::resolve_last_day_yqd(elt).quarterday(), i);
     break;
   case invalid::last_time: {
-    yqnqdhm<S>::assign_quarterday(detail::resolve_last_day_yqnqd(elt).quarterday(), i);
+    yqnqdhm<S>::assign_quarterday(detail::resolve_last_day_yqd(elt).quarterday(), i);
     yqnqdhm<S>::assign_hour(rclock::detail::resolve_last_day_hour(), i);
     yqnqdhm<S>::assign_minute(rclock::detail::resolve_last_day_minute(), i);
     assign_second(rclock::detail::resolve_last_day_second(), i);
@@ -964,8 +964,8 @@ inline
 cpp11::writable::list
 yqnqdhms<S>::to_list() const
 {
-  cpp11::writable::list out({yqnqdhms<S>::year_.sexp(), yqnqdhms<S>::quarternum_.sexp(), yqnqdhms<S>::quarterday_.sexp(), yqnqdhms<S>::hour_.sexp(), yqnqdhms<S>::minute_.sexp(), second_.sexp()});
-  out.names() = {"year", "quarternum", "quarterday", "hour", "minute", "second"};
+  cpp11::writable::list out({yqnqdhms<S>::year_.sexp(), yqnqdhms<S>::quarter_.sexp(), yqnqdhms<S>::day_.sexp(), yqnqdhms<S>::hour_.sexp(), yqnqdhms<S>::minute_.sexp(), second_.sexp()});
+  out.names() = {"year", "quarter", "day", "hour", "minute", "second"};
   return out;
 }
 
@@ -981,13 +981,13 @@ yqnqdhmss<Duration, S>::yqnqdhmss(r_ssize size)
 template <typename Duration, quarterly::start S>
 inline
 yqnqdhmss<Duration, S>::yqnqdhmss(const cpp11::integers& year,
-                                  const cpp11::integers& quarternum,
-                                  const cpp11::integers& quarterday,
+                                  const cpp11::integers& quarter,
+                                  const cpp11::integers& day,
                                   const cpp11::integers& hour,
                                   const cpp11::integers& minute,
                                   const cpp11::integers& second,
                                   const cpp11::integers& subsecond)
-  : yqnqdhms<S>(year, quarternum, quarterday, hour, minute, second),
+  : yqnqdhms<S>(year, quarter, day, hour, minute, second),
     subsecond_(subsecond)
   {}
 
@@ -1043,10 +1043,10 @@ yqnqdhmss<Duration, S>::resolve(r_ssize i, const enum invalid type)
 
   switch (type) {
   case invalid::first_day:
-    yqnqdhms<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqnqd(elt), i);
+    yqnqdhms<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqd(elt), i);
     break;
   case invalid::first_time: {
-    yqnqdhms<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqnqd(elt), i);
+    yqnqdhms<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqd(elt), i);
     yqnqdhms<S>::assign_hour(rclock::detail::resolve_first_day_hour(), i);
     yqnqdhms<S>::assign_minute(rclock::detail::resolve_first_day_minute(), i);
     yqnqdhms<S>::assign_second(rclock::detail::resolve_first_day_second(), i);
@@ -1054,10 +1054,10 @@ yqnqdhmss<Duration, S>::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::last_day:
-    yqnqdhms<S>::assign_quarterday(detail::resolve_last_day_yqnqd(elt).quarterday(), i);
+    yqnqdhms<S>::assign_quarterday(detail::resolve_last_day_yqd(elt).quarterday(), i);
     break;
   case invalid::last_time: {
-    yqnqdhms<S>::assign_quarterday(detail::resolve_last_day_yqnqd(elt).quarterday(), i);
+    yqnqdhms<S>::assign_quarterday(detail::resolve_last_day_yqd(elt).quarterday(), i);
     yqnqdhms<S>::assign_hour(rclock::detail::resolve_last_day_hour(), i);
     yqnqdhms<S>::assign_minute(rclock::detail::resolve_last_day_minute(), i);
     yqnqdhms<S>::assign_second(rclock::detail::resolve_last_day_second(), i);
@@ -1087,8 +1087,8 @@ inline
 cpp11::writable::list
 yqnqdhmss<Duration, S>::to_list() const
 {
-  cpp11::writable::list out({yqnqdhms<S>::year_.sexp(), yqnqdhms<S>::quarternum_.sexp(), yqnqdhms<S>::quarterday_.sexp(), yqnqdhms<S>::hour_.sexp(), yqnqdhms<S>::minute_.sexp(), yqnqdhms<S>::second_.sexp(), subsecond_.sexp()});
-  out.names() = {"year", "quarternum", "quarterday", "hour", "minute", "second", "subsecond"};
+  cpp11::writable::list out({yqnqdhms<S>::year_.sexp(), yqnqdhms<S>::quarter_.sexp(), yqnqdhms<S>::day_.sexp(), yqnqdhms<S>::hour_.sexp(), yqnqdhms<S>::minute_.sexp(), yqnqdhms<S>::second_.sexp(), subsecond_.sexp()});
+  out.names() = {"year", "quarter", "day", "hour", "minute", "second", "subsecond"};
   return out;
 }
 

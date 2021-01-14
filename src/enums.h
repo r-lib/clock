@@ -53,11 +53,7 @@ enum class component {
   millisecond,
   microsecond,
   nanosecond,
-  index,
-
-  // TODO: Remove me
-  quarternum,
-  quarterday
+  index
 };
 
 enum component parse_component(const cpp11::strings& x);

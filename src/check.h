@@ -53,12 +53,12 @@ static inline void check_range_nanosecond(const int& value, const char* arg) {
 }
 
 // Quarterly
-static inline void check_range_quarternum(const int& value, const char* arg) {
+static inline void check_range_quarterly_quarter(const int& value, const char* arg) {
   if (value > 4 || value < 1) {
     clock_abort("`%s` must be within the range of [1, 4], not %i.", arg, value);
   }
 }
-static inline void check_range_quarterday(const int& value, const char* arg) {
+static inline void check_range_quarterly_day(const int& value, const char* arg) {
   if (value > 92 || value < 1) {
     clock_abort("`%s` must be within the range of [1, 92], not %i.", arg, value);
   }

@@ -37,8 +37,8 @@ as_year_month_weekday.POSIXt <- function(x) {
 }
 
 #' @export
-as_year_quarternum_quarterday.POSIXt <- function(x, ..., start = 1L) {
-  as_year_quarternum_quarterday(as_naive_time(x), ..., start = start)
+as_year_quarter_day.POSIXt <- function(x, ..., start = 1L) {
+  as_year_quarter_day(as_naive_time(x), ..., start = start)
 }
 
 #' @export
@@ -150,20 +150,6 @@ get_second.POSIXt <- function(x) {
 }
 get_posixt_field_year_month_day <- function(x, get_fn) {
   x <- as_year_month_day(x)
-  get_fn(x)
-}
-
-
-#' @export
-get_quarternum.POSIXt <- function(x, ..., start = 1L) {
-  get_posixt_field_year_quarternum_quarterday(x, get_quarternum, ..., start = start)
-}
-#' @export
-get_quarterday.POSIXt <- function(x, ..., start = 1L) {
-  get_posixt_field_year_quarternum_quarterday(x, get_quarterday, ..., start = start)
-}
-get_posixt_field_year_quarternum_quarterday <- function(x, get_fn, ..., start) {
-  x <- as_year_quarternum_quarterday(x, ..., start = start)
   get_fn(x)
 }
 

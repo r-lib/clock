@@ -20,15 +20,8 @@ get_year <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-get_quarternum <- function(x, ...) {
-  UseMethod("get_quarternum")
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
-get_quarterday <- function(x, ...) {
-  UseMethod("get_quarterday")
+get_quarter <- function(x, ...) {
+  UseMethod("get_quarter")
 }
 
 # ------------------------------------------------------------------------------

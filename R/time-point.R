@@ -384,13 +384,13 @@ as_year_month_weekday.clock_time_point <- function(x) {
 }
 
 #' @export
-as_year_quarternum_quarterday.clock_time_point <- function(x, ..., start = 1L) {
+as_year_quarter_day.clock_time_point <- function(x, ..., start = 1L) {
   check_dots_empty()
   duration <- time_point_duration(x)
   precision <- time_point_precision(x)
   start <- quarterly_validate_start(start)
-  fields <- as_year_quarternum_quarterday_from_sys_time_cpp(duration, precision, start)
-  new_year_quarternum_quarterday_from_fields(fields, precision, start, names = names(x))
+  fields <- as_year_quarter_day_from_sys_time_cpp(duration, precision, start)
+  new_year_quarter_day_from_fields(fields, precision, start, names = names(x))
 }
 
 #' @export

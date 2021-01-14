@@ -54,13 +54,8 @@ set_index <- function(x, value, ...) {
 }
 
 #' @export
-set_quarternum <- function(x, value, ...) {
-  UseMethod("set_quarternum")
-}
-
-#' @export
-set_quarterday <- function(x, value, ...) {
-  UseMethod("set_quarterday")
+set_quarter <- function(x, value, ...) {
+  UseMethod("set_quarter")
 }
 
 #' @export

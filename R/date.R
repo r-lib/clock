@@ -35,8 +35,8 @@ as_year_month_weekday.Date <- function(x) {
 }
 
 #' @export
-as_year_quarternum_quarterday.Date <- function(x, ..., start = 1L) {
-  as_year_quarternum_quarterday(as_sys_time(x), ..., start = start)
+as_year_quarter_day.Date <- function(x, ..., start = 1L) {
+  as_year_quarter_day(as_sys_time(x), ..., start = start)
 }
 
 #' @export
@@ -86,19 +86,6 @@ get_day.Date <- function(x) {
 }
 get_date_field_year_month_day <- function(x, get_fn) {
   x <- as_year_month_day(x)
-  get_fn(x)
-}
-
-#' @export
-get_quarternum.Date <- function(x, ..., start = 1L) {
-  get_date_field_year_quarternum_quarterday(x, get_quarternum, ..., start = start)
-}
-#' @export
-get_quarterday.Date <- function(x, ..., start = 1L) {
-  get_date_field_year_quarternum_quarterday(x, get_quarterday, ..., start = start)
-}
-get_date_field_year_quarternum_quarterday <- function(x, get_fn, ..., start) {
-  x <- as_year_quarternum_quarterday(x, ..., start = start)
   get_fn(x)
 }
 

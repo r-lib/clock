@@ -142,14 +142,14 @@ get_year(cpp11::list_of<cpp11::integers>& fields) {
 static
 inline
 cpp11::integers
-get_quarternum(cpp11::list_of<cpp11::integers>& fields) {
+get_quarter(cpp11::list_of<cpp11::integers>& fields) {
   return fields.size() >= 2 ? fields[1] : cpp11::integers{};
 }
 
 static
 inline
 cpp11::integers
-get_quarterday(cpp11::list_of<cpp11::integers>& fields) {
+get_day(cpp11::list_of<cpp11::integers>& fields) {
   return fields.size() >= 3 ? fields[2] : cpp11::integers{};
 }
 
