@@ -4,8 +4,18 @@ set_year <- function(x, value, ...) {
 }
 
 #' @export
+set_quarter <- function(x, value, ...) {
+  UseMethod("set_quarter")
+}
+
+#' @export
 set_month <- function(x, value, ...) {
   UseMethod("set_month")
+}
+
+#' @export
+set_week <- function(x, value, ...) {
+  UseMethod("set_week")
 }
 
 #' @export
@@ -44,18 +54,8 @@ set_nanosecond <- function(x, value, ...) {
 }
 
 #' @export
-set_week <- function(x, value, ...) {
-  UseMethod("set_week")
-}
-
-#' @export
 set_index <- function(x, value, ...) {
   UseMethod("set_index")
-}
-
-#' @export
-set_quarter <- function(x, value, ...) {
-  UseMethod("set_quarter")
 }
 
 #' @export
