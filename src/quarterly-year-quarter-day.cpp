@@ -446,9 +446,9 @@ inline
 cpp11::writable::list
 invalid_resolve_year_quarter_day_impl(cpp11::list_of<cpp11::integers> fields,
                                       const cpp11::strings& precision_string,
-                                      const cpp11::strings& invalid) {
+                                      const cpp11::strings& invalid_string) {
   using namespace rclock;
-  const enum invalid invalid_val = parse_invalid(invalid);
+  const enum invalid invalid_val = parse_invalid(invalid_string);
 
   cpp11::integers year = rquarterly::get_year(fields);
   cpp11::integers quarter = rquarterly::get_quarter(fields);
@@ -489,22 +489,22 @@ cpp11::writable::list
 invalid_resolve_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
                                      const cpp11::strings& precision_string,
                                      const cpp11::integers& start,
-                                     const cpp11::strings& invalid) {
+                                     const cpp11::strings& invalid_string) {
   using namespace quarterly;
 
   switch (parse_start(start)) {
-  case start::january: return invalid_resolve_year_quarter_day_impl<start::january>(fields, precision_string, invalid);
-  case start::february: return invalid_resolve_year_quarter_day_impl<start::february>(fields, precision_string, invalid);
-  case start::march: return invalid_resolve_year_quarter_day_impl<start::march>(fields, precision_string, invalid);
-  case start::april: return invalid_resolve_year_quarter_day_impl<start::april>(fields, precision_string, invalid);
-  case start::may: return invalid_resolve_year_quarter_day_impl<start::may>(fields, precision_string, invalid);
-  case start::june: return invalid_resolve_year_quarter_day_impl<start::june>(fields, precision_string, invalid);
-  case start::july: return invalid_resolve_year_quarter_day_impl<start::july>(fields, precision_string, invalid);
-  case start::august: return invalid_resolve_year_quarter_day_impl<start::august>(fields, precision_string, invalid);
-  case start::september: return invalid_resolve_year_quarter_day_impl<start::september>(fields, precision_string, invalid);
-  case start::october: return invalid_resolve_year_quarter_day_impl<start::october>(fields, precision_string, invalid);
-  case start::november: return invalid_resolve_year_quarter_day_impl<start::november>(fields, precision_string, invalid);
-  case start::december: return invalid_resolve_year_quarter_day_impl<start::december>(fields, precision_string, invalid);
+  case start::january: return invalid_resolve_year_quarter_day_impl<start::january>(fields, precision_string, invalid_string);
+  case start::february: return invalid_resolve_year_quarter_day_impl<start::february>(fields, precision_string, invalid_string);
+  case start::march: return invalid_resolve_year_quarter_day_impl<start::march>(fields, precision_string, invalid_string);
+  case start::april: return invalid_resolve_year_quarter_day_impl<start::april>(fields, precision_string, invalid_string);
+  case start::may: return invalid_resolve_year_quarter_day_impl<start::may>(fields, precision_string, invalid_string);
+  case start::june: return invalid_resolve_year_quarter_day_impl<start::june>(fields, precision_string, invalid_string);
+  case start::july: return invalid_resolve_year_quarter_day_impl<start::july>(fields, precision_string, invalid_string);
+  case start::august: return invalid_resolve_year_quarter_day_impl<start::august>(fields, precision_string, invalid_string);
+  case start::september: return invalid_resolve_year_quarter_day_impl<start::september>(fields, precision_string, invalid_string);
+  case start::october: return invalid_resolve_year_quarter_day_impl<start::october>(fields, precision_string, invalid_string);
+  case start::november: return invalid_resolve_year_quarter_day_impl<start::november>(fields, precision_string, invalid_string);
+  case start::december: return invalid_resolve_year_quarter_day_impl<start::december>(fields, precision_string, invalid_string);
   }
 
   never_reached("invalid_resolve_year_quarter_day_cpp");

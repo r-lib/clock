@@ -321,9 +321,9 @@ invalid_count_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
 cpp11::writable::list
 invalid_resolve_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
                                        const cpp11::strings& precision_string,
-                                       const cpp11::strings& invalid) {
+                                       const cpp11::strings& invalid_string) {
   using namespace rclock;
-  const enum invalid invalid_val = parse_invalid(invalid);
+  const enum invalid invalid_val = parse_invalid(invalid_string);
 
   cpp11::integers year = weekday::get_year(fields);
   cpp11::integers month = weekday::get_month(fields);
