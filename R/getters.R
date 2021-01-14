@@ -4,7 +4,7 @@ get_year <- function(x) {
 }
 
 #' @export
-get_quarter <- function(x, ...) {
+get_quarter <- function(x) {
   UseMethod("get_quarter")
 }
 
