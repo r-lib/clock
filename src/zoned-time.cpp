@@ -37,7 +37,7 @@ get_naive_time_impl(const ClockDuration& x,
 [[cpp11::register]]
 cpp11::writable::list
 get_naive_time_cpp(cpp11::list_of<cpp11::integers> fields,
-                   const cpp11::strings& precision,
+                   const cpp11::strings& precision_string,
                    const cpp11::strings& zone) {
   using namespace rclock;
 
@@ -54,7 +54,7 @@ get_naive_time_cpp(cpp11::list_of<cpp11::integers> fields,
   duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::second: return get_naive_time_impl(ds, p_time_zone);
   case precision::millisecond: return get_naive_time_impl(dmilli, p_time_zone);
   case precision::microsecond: return get_naive_time_impl(dmicro, p_time_zone);
@@ -125,7 +125,7 @@ as_zoned_sys_time_from_naive_time_impl(const ClockDuration& x,
 [[cpp11::register]]
 cpp11::writable::list
 as_zoned_sys_time_from_naive_time_cpp(cpp11::list_of<cpp11::integers> fields,
-                                      const cpp11::strings& precision,
+                                      const cpp11::strings& precision_string,
                                       const cpp11::strings& zone,
                                       const cpp11::strings& nonexistent,
                                       const cpp11::strings& ambiguous) {
@@ -144,7 +144,7 @@ as_zoned_sys_time_from_naive_time_cpp(cpp11::list_of<cpp11::integers> fields,
   duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::second: return as_zoned_sys_time_from_naive_time_impl(ds, p_time_zone, nonexistent, ambiguous);
   case precision::millisecond: return as_zoned_sys_time_from_naive_time_impl(dmilli, p_time_zone, nonexistent, ambiguous);
   case precision::microsecond: return as_zoned_sys_time_from_naive_time_impl(dmicro, p_time_zone, nonexistent, ambiguous);
@@ -232,7 +232,7 @@ get_offset_impl(const ClockDuration& x,
 [[cpp11::register]]
 cpp11::writable::integers
 get_offset_cpp(cpp11::list_of<cpp11::integers> fields,
-               const cpp11::strings& precision,
+               const cpp11::strings& precision_string,
                const cpp11::strings& zone) {
   using namespace rclock;
 
@@ -249,7 +249,7 @@ get_offset_cpp(cpp11::list_of<cpp11::integers> fields,
   const duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   const duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::second: return get_offset_impl(ds, p_time_zone);
   case precision::millisecond: return get_offset_impl(dmilli, p_time_zone);
   case precision::microsecond: return get_offset_impl(dmicro, p_time_zone);
