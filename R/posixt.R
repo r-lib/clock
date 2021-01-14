@@ -1,12 +1,12 @@
 #' @export
 as_sys_time.POSIXt <- function(x) {
   # The sys_time that would give the equivalent zoned time when a tz is attached
-  get_sys_time(as_zoned_time(x))
+  as_sys_time(as_zoned_time(x))
 }
 
 #' @export
 as_naive_time.POSIXt <- function(x) {
-  get_naive_time(as_zoned_time(x))
+  as_naive_time(as_zoned_time(x))
 }
 
 #' @export
