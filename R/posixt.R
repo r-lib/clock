@@ -1,12 +1,12 @@
 #' @export
 as_sys_time.POSIXt <- function(x) {
   # The sys_time that would give the equivalent zoned time when a tz is attached
-  get_sys_time(as_zoned_time(x))
+  as_sys_time(as_zoned_time(x))
 }
 
 #' @export
 as_naive_time.POSIXt <- function(x) {
-  get_naive_time(as_zoned_time(x))
+  as_naive_time(as_zoned_time(x))
 }
 
 #' @export
@@ -37,13 +37,13 @@ as_year_month_weekday.POSIXt <- function(x) {
 }
 
 #' @export
-as_year_quarternum_quarterday.POSIXt <- function(x, ..., start = 1L) {
-  as_year_quarternum_quarterday(as_naive_time(x), ..., start = start)
+as_year_quarter_day.POSIXt <- function(x, ..., start = 1L) {
+  as_year_quarter_day(as_naive_time(x), ..., start = start)
 }
 
 #' @export
-as_iso_year_weeknum_weekday.POSIXt <- function(x) {
-  as_iso_year_weeknum_weekday(as_naive_time(x))
+as_iso_year_week_day.POSIXt <- function(x) {
+  as_iso_year_week_day(as_naive_time(x))
 }
 
 # ------------------------------------------------------------------------------
@@ -150,32 +150,6 @@ get_second.POSIXt <- function(x) {
 }
 get_posixt_field_year_month_day <- function(x, get_fn) {
   x <- as_year_month_day(x)
-  get_fn(x)
-}
-
-#' @export
-get_weekday.POSIXt <- function(x) {
-  get_posixt_field_year_month_weekday(x, get_weekday)
-}
-#' @export
-get_weekday_index.POSIXt <- function(x) {
-  get_posixt_field_year_month_weekday(x, get_weekday_index)
-}
-get_posixt_field_year_month_weekday <- function(x, get_fn) {
-  x <- as_year_month_weekday(x)
-  get_fn(x)
-}
-
-#' @export
-get_quarternum.POSIXt <- function(x, ..., start = 1L) {
-  get_posixt_field_year_quarternum_quarterday(x, get_quarternum, ..., start = start)
-}
-#' @export
-get_quarterday.POSIXt <- function(x, ..., start = 1L) {
-  get_posixt_field_year_quarternum_quarterday(x, get_quarterday, ..., start = start)
-}
-get_posixt_field_year_quarternum_quarterday <- function(x, get_fn, ..., start) {
-  x <- as_year_quarternum_quarterday(x, ..., start = start)
   get_fn(x)
 }
 

@@ -1,5 +1,5 @@
-#ifndef CLOCK_ISO_YEAR_WEEKNUM_WEEKDAY_H
-#define CLOCK_ISO_YEAR_WEEKNUM_WEEKDAY_H
+#ifndef CLOCK_ISO_YEAR_WEEK_DAY_H
+#define CLOCK_ISO_YEAR_WEEK_DAY_H
 
 #include "clock.h"
 #include "integers.h"
@@ -17,32 +17,32 @@ namespace detail {
 
 inline
 std::ostringstream&
-stream_weeknum(std::ostringstream& os, int weeknum) NOEXCEPT
+stream_week(std::ostringstream& os, int week) NOEXCEPT
 {
   os << 'W';
   os.fill('0');
   os.flags(std::ios::dec | std::ios::right);
   os.width(2);
-  os << weeknum;
+  os << week;
   return os;
 }
 inline
 std::ostringstream&
-stream_weekday(std::ostringstream& os, int weekday) NOEXCEPT
+stream_day(std::ostringstream& os, int day) NOEXCEPT
 {
-  os << weekday;
+  os << day;
   return os;
 }
 
 inline
 iso_week::year_weeknum_weekday
-resolve_first_day_yww(const iso_week::year_weeknum_weekday& x) {
+resolve_first_day_ywd(const iso_week::year_weeknum_weekday& x) {
   // Only invalid on nonexistent week 53 day, rolls to first day of next iso year
   return (x.year() + iso_week::years{1}) / iso_week::weeknum{1} / iso_week::mon;
 }
 inline
 iso_week::year_weeknum_weekday
-resolve_last_day_yww(const iso_week::year_weeknum_weekday& x) {
+resolve_last_day_ywd(const iso_week::year_weeknum_weekday& x) {
   // Only invalid on nonexistent week 53 day, rolls to last day of current iso year
   return x.year() / iso_week::last / iso_week::sun;
 }
@@ -70,12 +70,12 @@ inline void check_range<component::year>(const int& value, const char* arg) {
   check_range_year(value, arg);
 }
 template <>
-inline void check_range<component::weeknum>(const int& value, const char* arg) {
-  check_range_iso_weeknum(value, arg);
+inline void check_range<component::week>(const int& value, const char* arg) {
+  check_range_iso_week(value, arg);
 }
 template <>
-inline void check_range<component::weekday>(const int& value, const char* arg) {
-  check_range_iso_weekday(value, arg);
+inline void check_range<component::day>(const int& value, const char* arg) {
+  check_range_iso_day(value, arg);
 }
 template <>
 inline void check_range<component::hour>(const int& value, const char* arg) {
@@ -138,12 +138,12 @@ public:
 class ywn : public y
 {
 protected:
-  rclock::integers weeknum_;
+  rclock::integers week_;
 
 public:
   ywn(r_ssize size);
   ywn(const cpp11::integers& year,
-      const cpp11::integers& weeknum);
+      const cpp11::integers& week);
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
 
@@ -165,13 +165,13 @@ public:
 class ywnwd : public ywn
 {
 protected:
-  rclock::integers weekday_;
+  rclock::integers day_;
 
 public:
   ywnwd(r_ssize size);
   ywnwd(const cpp11::integers& year,
-        const cpp11::integers& weeknum,
-        const cpp11::integers& weekday);
+        const cpp11::integers& week,
+        const cpp11::integers& day);
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
 
@@ -197,8 +197,8 @@ protected:
 public:
   ywnwdh(r_ssize size);
   ywnwdh(const cpp11::integers& year,
-         const cpp11::integers& weeknum,
-         const cpp11::integers& weekday,
+         const cpp11::integers& week,
+         const cpp11::integers& day,
          const cpp11::integers& hour);
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
@@ -221,8 +221,8 @@ protected:
 public:
   ywnwdhm(r_ssize size);
   ywnwdhm(const cpp11::integers& year,
-          const cpp11::integers& weeknum,
-          const cpp11::integers& weekday,
+          const cpp11::integers& week,
+          const cpp11::integers& day,
           const cpp11::integers& hour,
           const cpp11::integers& minute);
 
@@ -246,8 +246,8 @@ protected:
 public:
   ywnwdhms(r_ssize size);
   ywnwdhms(const cpp11::integers& year,
-           const cpp11::integers& weeknum,
-           const cpp11::integers& weekday,
+           const cpp11::integers& week,
+           const cpp11::integers& day,
            const cpp11::integers& hour,
            const cpp11::integers& minute,
            const cpp11::integers& second);
@@ -273,8 +273,8 @@ protected:
 public:
   ywnwdhmss(r_ssize size);
   ywnwdhmss(const cpp11::integers& year,
-            const cpp11::integers& weeknum,
-            const cpp11::integers& weekday,
+            const cpp11::integers& week,
+            const cpp11::integers& day,
             const cpp11::integers& hour,
             const cpp11::integers& minute,
             const cpp11::integers& second,
@@ -394,15 +394,14 @@ y::to_list() const
 inline
 ywn::ywn(r_ssize size)
   : y(size),
-    weeknum_(size)
+    week_(size)
   {}
-
 
 inline
 ywn::ywn(const cpp11::integers& year,
-         const cpp11::integers& weeknum)
+         const cpp11::integers& week)
   : y(year),
-    weeknum_(weeknum)
+    week_(week)
   {}
 
 inline
@@ -411,7 +410,7 @@ ywn::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
   y::stream(os, i);
   os << '-';
-  detail::stream_weeknum(os, weeknum_[i]);
+  detail::stream_week(os, week_[i]);
   return os;
 }
 
@@ -434,7 +433,7 @@ inline
 void
 ywn::assign_weeknum(const iso_week::weeknum& x, r_ssize i) NOEXCEPT
 {
-  weeknum_.assign(static_cast<int>(static_cast<unsigned>(x)), i);
+  week_.assign(static_cast<int>(static_cast<unsigned>(x)), i);
 }
 
 inline
@@ -450,7 +449,7 @@ void
 ywn::assign_na(r_ssize i) NOEXCEPT
 {
   y::assign_na(i);
-  weeknum_.assign_na(i);
+  week_.assign_na(i);
 }
 
 inline
@@ -488,15 +487,15 @@ inline
 iso_week::year_weeknum
 ywn::to_year_weeknum(r_ssize i) const NOEXCEPT
 {
-  return iso_week::year{year_[i]} / static_cast<unsigned>(weeknum_[i]);
+  return iso_week::year{year_[i]} / static_cast<unsigned>(week_[i]);
 }
 
 inline
 cpp11::writable::list
 ywn::to_list() const
 {
-  cpp11::writable::list out({year_.sexp(), weeknum_.sexp()});
-  out.names() = {"year", "weeknum"};
+  cpp11::writable::list out({year_.sexp(), week_.sexp()});
+  out.names() = {"year", "week"};
   return out;
 }
 
@@ -505,15 +504,15 @@ ywn::to_list() const
 inline
 ywnwd::ywnwd(r_ssize size)
   : ywn(size),
-    weekday_(size)
+    day_(size)
   {}
 
 inline
 ywnwd::ywnwd(const cpp11::integers& year,
-             const cpp11::integers& weeknum,
-             const cpp11::integers& weekday)
-  : ywn(year, weeknum),
-    weekday_(weekday)
+             const cpp11::integers& week,
+             const cpp11::integers& day)
+  : ywn(year, week),
+    day_(day)
   {}
 
 inline
@@ -522,7 +521,7 @@ ywnwd::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
   ywn::stream(os, i);
   os << '-';
-  detail::stream_weekday(os, weekday_[i]);
+  detail::stream_day(os, day_[i]);
   return os;
 }
 
@@ -537,7 +536,7 @@ inline
 void
 ywnwd::assign_weekday(const iso_week::weekday& x, r_ssize i) NOEXCEPT
 {
-  weekday_.assign(static_cast<int>(static_cast<unsigned>(x)), i);
+  day_.assign(static_cast<int>(static_cast<unsigned>(x)), i);
 }
 
 inline
@@ -562,7 +561,7 @@ void
 ywnwd::assign_na(r_ssize i) NOEXCEPT
 {
   ywn::assign_na(i);
-  weekday_.assign_na(i);
+  day_.assign_na(i);
 }
 
 inline
@@ -578,12 +577,12 @@ ywnwd::resolve(r_ssize i, const enum invalid type)
   switch (type) {
   case invalid::first_day:
   case invalid::first_time: {
-    assign_year_weeknum_weekday(detail::resolve_first_day_yww(elt), i);
+    assign_year_weeknum_weekday(detail::resolve_first_day_ywd(elt), i);
     break;
   }
   case invalid::last_day:
   case invalid::last_time: {
-    assign_year_weeknum_weekday(detail::resolve_last_day_yww(elt), i);
+    assign_year_weeknum_weekday(detail::resolve_last_day_ywd(elt), i);
     break;
   }
   case invalid::na: {
@@ -608,16 +607,16 @@ iso_week::year_weeknum_weekday
 ywnwd::to_year_weeknum_weekday(r_ssize i) const NOEXCEPT
 {
   return iso_week::year{year_[i]} /
-    iso_week::weeknum{static_cast<unsigned>(weeknum_[i])} /
-    iso_week::weekday{static_cast<unsigned>(weekday_[i])};
+    iso_week::weeknum{static_cast<unsigned>(week_[i])} /
+    iso_week::weekday{static_cast<unsigned>(day_[i])};
 }
 
 inline
 cpp11::writable::list
 ywnwd::to_list() const
 {
-  cpp11::writable::list out({year_.sexp(), weeknum_.sexp(), weekday_.sexp()});
-  out.names() = {"year", "weeknum", "weekday"};
+  cpp11::writable::list out({year_.sexp(), week_.sexp(), day_.sexp()});
+  out.names() = {"year", "week", "day"};
   return out;
 }
 
@@ -631,10 +630,10 @@ ywnwdh::ywnwdh(r_ssize size)
 
 inline
 ywnwdh::ywnwdh(const cpp11::integers& year,
-               const cpp11::integers& weeknum,
-               const cpp11::integers& weekday,
+               const cpp11::integers& week,
+               const cpp11::integers& day,
                const cpp11::integers& hour)
-  : ywnwd(year, weeknum, weekday),
+  : ywnwd(year, week, day),
     hour_(hour)
 {}
 
@@ -685,18 +684,18 @@ ywnwdh::resolve(r_ssize i, const enum invalid type)
 
   switch (type) {
   case invalid::first_day:
-    assign_year_weeknum_weekday(detail::resolve_first_day_yww(elt), i);
+    assign_year_weeknum_weekday(detail::resolve_first_day_ywd(elt), i);
     break;
   case invalid::first_time: {
-    assign_year_weeknum_weekday(detail::resolve_first_day_yww(elt), i);
+    assign_year_weeknum_weekday(detail::resolve_first_day_ywd(elt), i);
     assign_hour(rclock::detail::resolve_first_day_hour(), i);
     break;
   }
   case invalid::last_day:
-    assign_year_weeknum_weekday(detail::resolve_last_day_yww(elt), i);
+    assign_year_weeknum_weekday(detail::resolve_last_day_ywd(elt), i);
     break;
   case invalid::last_time: {
-    assign_year_weeknum_weekday(detail::resolve_last_day_yww(elt), i);
+    assign_year_weeknum_weekday(detail::resolve_last_day_ywd(elt), i);
     assign_hour(rclock::detail::resolve_last_day_hour(), i);
     break;
   }
@@ -721,8 +720,8 @@ inline
 cpp11::writable::list
 ywnwdh::to_list() const
 {
-  cpp11::writable::list out({year_.sexp(), weeknum_.sexp(), weekday_.sexp(), hour_.sexp()});
-  out.names() = {"year", "weeknum", "weekday", "hour"};
+  cpp11::writable::list out({year_.sexp(), week_.sexp(), day_.sexp(), hour_.sexp()});
+  out.names() = {"year", "week", "day", "hour"};
   return out;
 }
 
@@ -736,11 +735,11 @@ ywnwdhm::ywnwdhm(r_ssize size)
 
 inline
 ywnwdhm::ywnwdhm(const cpp11::integers& year,
-                 const cpp11::integers& weeknum,
-                 const cpp11::integers& weekday,
+                 const cpp11::integers& week,
+                 const cpp11::integers& day,
                  const cpp11::integers& hour,
                  const cpp11::integers& minute)
-  : ywnwdh(year, weeknum, weekday, hour),
+  : ywnwdh(year, week, day, hour),
     minute_(minute)
   {}
 
@@ -791,19 +790,19 @@ ywnwdhm::resolve(r_ssize i, const enum invalid type)
 
   switch (type) {
   case invalid::first_day:
-    assign_year_weeknum_weekday(detail::resolve_first_day_yww(elt), i);
+    assign_year_weeknum_weekday(detail::resolve_first_day_ywd(elt), i);
     break;
   case invalid::first_time: {
-    assign_year_weeknum_weekday(detail::resolve_first_day_yww(elt), i);
+    assign_year_weeknum_weekday(detail::resolve_first_day_ywd(elt), i);
     assign_hour(rclock::detail::resolve_first_day_hour(), i);
     assign_minute(rclock::detail::resolve_first_day_minute(), i);
     break;
   }
   case invalid::last_day:
-    assign_year_weeknum_weekday(detail::resolve_last_day_yww(elt), i);
+    assign_year_weeknum_weekday(detail::resolve_last_day_ywd(elt), i);
     break;
   case invalid::last_time: {
-    assign_year_weeknum_weekday(detail::resolve_last_day_yww(elt), i);
+    assign_year_weeknum_weekday(detail::resolve_last_day_ywd(elt), i);
     assign_hour(rclock::detail::resolve_last_day_hour(), i);
     assign_minute(rclock::detail::resolve_last_day_minute(), i);
     break;
@@ -829,8 +828,8 @@ inline
 cpp11::writable::list
 ywnwdhm::to_list() const
 {
-  cpp11::writable::list out({year_.sexp(), weeknum_.sexp(), weekday_.sexp(), hour_.sexp(), minute_.sexp()});
-  out.names() = {"year", "weeknum", "weekday", "hour", "minute"};
+  cpp11::writable::list out({year_.sexp(), week_.sexp(), day_.sexp(), hour_.sexp(), minute_.sexp()});
+  out.names() = {"year", "week", "day", "hour", "minute"};
   return out;
 }
 
@@ -844,12 +843,12 @@ ywnwdhms::ywnwdhms(r_ssize size)
 
 inline
 ywnwdhms::ywnwdhms(const cpp11::integers& year,
-                   const cpp11::integers& weeknum,
-                   const cpp11::integers& weekday,
+                   const cpp11::integers& week,
+                   const cpp11::integers& day,
                    const cpp11::integers& hour,
                    const cpp11::integers& minute,
                    const cpp11::integers& second)
-  : ywnwdhm(year, weeknum, weekday, hour, minute),
+  : ywnwdhm(year, week, day, hour, minute),
     second_(second)
   {}
 
@@ -900,20 +899,20 @@ ywnwdhms::resolve(r_ssize i, const enum invalid type)
 
   switch (type) {
   case invalid::first_day:
-    assign_year_weeknum_weekday(detail::resolve_first_day_yww(elt), i);
+    assign_year_weeknum_weekday(detail::resolve_first_day_ywd(elt), i);
     break;
   case invalid::first_time: {
-    assign_year_weeknum_weekday(detail::resolve_first_day_yww(elt), i);
+    assign_year_weeknum_weekday(detail::resolve_first_day_ywd(elt), i);
     assign_hour(rclock::detail::resolve_first_day_hour(), i);
     assign_minute(rclock::detail::resolve_first_day_minute(), i);
     assign_second(rclock::detail::resolve_first_day_second(), i);
     break;
   }
   case invalid::last_day:
-    assign_year_weeknum_weekday(detail::resolve_last_day_yww(elt), i);
+    assign_year_weeknum_weekday(detail::resolve_last_day_ywd(elt), i);
     break;
   case invalid::last_time: {
-    assign_year_weeknum_weekday(detail::resolve_last_day_yww(elt), i);
+    assign_year_weeknum_weekday(detail::resolve_last_day_ywd(elt), i);
     assign_hour(rclock::detail::resolve_last_day_hour(), i);
     assign_minute(rclock::detail::resolve_last_day_minute(), i);
     assign_second(rclock::detail::resolve_last_day_second(), i);
@@ -940,8 +939,8 @@ inline
 cpp11::writable::list
 ywnwdhms::to_list() const
 {
-  cpp11::writable::list out({year_.sexp(), weeknum_.sexp(), weekday_.sexp(), hour_.sexp(), minute_.sexp(), second_.sexp()});
-  out.names() = {"year", "weeknum", "weekday", "hour", "minute", "second"};
+  cpp11::writable::list out({year_.sexp(), week_.sexp(), day_.sexp(), hour_.sexp(), minute_.sexp(), second_.sexp()});
+  out.names() = {"year", "week", "day", "hour", "minute", "second"};
   return out;
 }
 
@@ -957,13 +956,13 @@ ywnwdhmss<Duration>::ywnwdhmss(r_ssize size)
 template <typename Duration>
 inline
 ywnwdhmss<Duration>::ywnwdhmss(const cpp11::integers& year,
-                               const cpp11::integers& weeknum,
-                               const cpp11::integers& weekday,
+                               const cpp11::integers& week,
+                               const cpp11::integers& day,
                                const cpp11::integers& hour,
                                const cpp11::integers& minute,
                                const cpp11::integers& second,
                                const cpp11::integers& subsecond)
-  : ywnwdhms(year, weeknum, weekday, hour, minute, second),
+  : ywnwdhms(year, week, day, hour, minute, second),
     subsecond_(subsecond)
   {}
 
@@ -1019,10 +1018,10 @@ ywnwdhmss<Duration>::resolve(r_ssize i, const enum invalid type)
 
   switch (type) {
   case invalid::first_day:
-    assign_year_weeknum_weekday(detail::resolve_first_day_yww(elt), i);
+    assign_year_weeknum_weekday(detail::resolve_first_day_ywd(elt), i);
     break;
   case invalid::first_time: {
-    assign_year_weeknum_weekday(detail::resolve_first_day_yww(elt), i);
+    assign_year_weeknum_weekday(detail::resolve_first_day_ywd(elt), i);
     assign_hour(rclock::detail::resolve_first_day_hour(), i);
     assign_minute(rclock::detail::resolve_first_day_minute(), i);
     assign_second(rclock::detail::resolve_first_day_second(), i);
@@ -1030,10 +1029,10 @@ ywnwdhmss<Duration>::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::last_day:
-    assign_year_weeknum_weekday(detail::resolve_last_day_yww(elt), i);
+    assign_year_weeknum_weekday(detail::resolve_last_day_ywd(elt), i);
     break;
   case invalid::last_time: {
-    assign_year_weeknum_weekday(detail::resolve_last_day_yww(elt), i);
+    assign_year_weeknum_weekday(detail::resolve_last_day_ywd(elt), i);
     assign_hour(rclock::detail::resolve_last_day_hour(), i);
     assign_minute(rclock::detail::resolve_last_day_minute(), i);
     assign_second(rclock::detail::resolve_last_day_second(), i);
@@ -1063,8 +1062,8 @@ inline
 cpp11::writable::list
 ywnwdhmss<Duration>::to_list() const
 {
-  cpp11::writable::list out({year_.sexp(), weeknum_.sexp(), weekday_.sexp(), hour_.sexp(), minute_.sexp(), second_.sexp(), subsecond_.sexp()});
-  out.names() = {"year", "weeknum", "weekday", "hour", "minute", "second", "subsecond"};
+  cpp11::writable::list out({year_.sexp(), week_.sexp(), day_.sexp(), hour_.sexp(), minute_.sexp(), second_.sexp(), subsecond_.sexp()});
+  out.names() = {"year", "week", "day", "hour", "minute", "second", "subsecond"};
   return out;
 }
 

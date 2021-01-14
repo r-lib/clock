@@ -43,7 +43,9 @@ enum ambiguous parse_ambiguous_one(const cpp11::r_string& x);
 
 enum class component {
   year,
+  quarter,
   month,
+  week,
   day,
   hour,
   minute,
@@ -51,11 +53,7 @@ enum class component {
   millisecond,
   microsecond,
   nanosecond,
-  quarternum,
-  quarterday,
-  weeknum,
-  weekday,
-  weekday_index
+  index
 };
 
 enum component parse_component(const cpp11::strings& x);

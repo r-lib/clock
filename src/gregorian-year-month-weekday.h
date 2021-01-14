@@ -17,16 +17,16 @@ namespace detail {
 
 inline
 std::ostringstream&
-stream_weekday(std::ostringstream& os, int weekday) NOEXCEPT
+stream_day(std::ostringstream& os, int day) NOEXCEPT
 {
-  os << date::weekday{static_cast<unsigned>(weekday - 1)};
+  os << date::weekday{static_cast<unsigned>(day - 1)};
   return os;
 }
 inline
 std::ostringstream&
-stream_weekday_index(std::ostringstream& os, int weekday_index) NOEXCEPT
+stream_index(std::ostringstream& os, int index) NOEXCEPT
 {
-  os << weekday_index;
+  os << index;
   return os;
 }
 
@@ -52,11 +52,15 @@ inline void check_range<component::year>(const int& value, const char* arg) {
   check_range_year(value, arg);
 }
 template <>
-inline void check_range<component::weekday>(const int& value, const char* arg) {
-  check_range_weekday(value, arg);
+inline void check_range<component::month>(const int& value, const char* arg) {
+  check_range_month(value, arg);
 }
 template <>
-inline void check_range<component::weekday_index>(const int& value, const char* arg) {
+inline void check_range<component::day>(const int& value, const char* arg) {
+  check_range_weekday_day(value, arg);
+}
+template <>
+inline void check_range<component::index>(const int& value, const char* arg) {
   check_range_weekday_index(value, arg);
 }
 template <>
@@ -147,22 +151,22 @@ public:
 class ymwd : public ym
 {
 protected:
-  rclock::integers weekday_;
-  rclock::integers weekday_index_;
+  rclock::integers day_;
+  rclock::integers index_;
 
 public:
   ymwd(r_ssize size);
   ymwd(const cpp11::integers& year,
        const cpp11::integers& month,
-       const cpp11::integers& weekday,
-       const cpp11::integers& weekday_index);
+       const cpp11::integers& day,
+       const cpp11::integers& index);
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
 
   bool ok(r_ssize i) const NOEXCEPT;
 
   void assign_weekday(const date::weekday& x, r_ssize i) NOEXCEPT;
-  void assign_weekday_index(const unsigned& x, r_ssize i) NOEXCEPT;
+  void assign_index(const unsigned& x, r_ssize i) NOEXCEPT;
   void assign_year_month_weekday(const date::year_month_weekday& x, r_ssize i) NOEXCEPT;
   void assign_sys_time(const date::sys_time<date::days>& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
@@ -183,8 +187,8 @@ public:
   ymwdh(r_ssize size);
   ymwdh(const cpp11::integers& year,
         const cpp11::integers& month,
-        const cpp11::integers& weekday,
-        const cpp11::integers& weekday_index,
+        const cpp11::integers& day,
+        const cpp11::integers& index,
         const cpp11::integers& hour);
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
@@ -208,8 +212,8 @@ public:
   ymwdhm(r_ssize size);
   ymwdhm(const cpp11::integers& year,
          const cpp11::integers& month,
-         const cpp11::integers& weekday,
-         const cpp11::integers& weekday_index,
+         const cpp11::integers& day,
+         const cpp11::integers& index,
          const cpp11::integers& hour,
          const cpp11::integers& minute);
 
@@ -234,8 +238,8 @@ public:
   ymwdhms(r_ssize size);
   ymwdhms(const cpp11::integers& year,
           const cpp11::integers& month,
-          const cpp11::integers& weekday,
-          const cpp11::integers& weekday_index,
+          const cpp11::integers& day,
+          const cpp11::integers& index,
           const cpp11::integers& hour,
           const cpp11::integers& minute,
           const cpp11::integers& second);
@@ -262,8 +266,8 @@ public:
   ymwdhmss(r_ssize size);
   ymwdhmss(const cpp11::integers& year,
            const cpp11::integers& month,
-           const cpp11::integers& weekday,
-           const cpp11::integers& weekday_index,
+           const cpp11::integers& day,
+           const cpp11::integers& index,
            const cpp11::integers& hour,
            const cpp11::integers& minute,
            const cpp11::integers& second,
@@ -486,18 +490,18 @@ ym::to_list() const
 inline
 ymwd::ymwd(r_ssize size)
   : ym(size),
-    weekday_(size),
-    weekday_index_(size)
+    day_(size),
+    index_(size)
   {}
 
 inline
 ymwd::ymwd(const cpp11::integers& year,
            const cpp11::integers& month,
-           const cpp11::integers& weekday,
-           const cpp11::integers& weekday_index)
+           const cpp11::integers& day,
+           const cpp11::integers& index)
   : ym(year, month),
-    weekday_(weekday),
-    weekday_index_(weekday_index)
+    day_(day),
+    index_(index)
   {}
 
 inline
@@ -506,9 +510,9 @@ ymwd::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
   ym::stream(os, i);
   os << '-';
-  detail::stream_weekday(os, weekday_[i]);
+  detail::stream_day(os, day_[i]);
   os << '[';
-  detail::stream_weekday_index(os, weekday_index_[i]);
+  detail::stream_index(os, index_[i]);
   os << ']';
   return os;
 }
@@ -524,14 +528,14 @@ inline
 void
 ymwd::assign_weekday(const date::weekday& x, r_ssize i) NOEXCEPT
 {
-  weekday_.assign(static_cast<int>(x.c_encoding() + 1), i);
+  day_.assign(static_cast<int>(x.c_encoding() + 1), i);
 }
 
 inline
 void
-ymwd::assign_weekday_index(const unsigned& x, r_ssize i) NOEXCEPT
+ymwd::assign_index(const unsigned& x, r_ssize i) NOEXCEPT
 {
-  weekday_index_.assign(static_cast<int>(x), i);
+  index_.assign(static_cast<int>(x), i);
 }
 
 inline
@@ -541,7 +545,7 @@ ymwd::assign_year_month_weekday(const date::year_month_weekday& x, r_ssize i) NO
   assign_year(x.year(), i);
   assign_month(x.month(), i);
   assign_weekday(x.weekday(), i);
-  assign_weekday_index(x.index(), i);
+  assign_index(x.index(), i);
 }
 
 inline
@@ -557,8 +561,8 @@ void
 ymwd::assign_na(r_ssize i) NOEXCEPT
 {
   ym::assign_na(i);
-  weekday_.assign_na(i);
-  weekday_index_.assign_na(i);
+  day_.assign_na(i);
+  index_.assign_na(i);
 }
 
 inline
@@ -605,15 +609,15 @@ ymwd::to_year_month_weekday(r_ssize i) const NOEXCEPT
 {
   return date::year{year_[i]} /
     date::month{static_cast<unsigned>(month_[i])} /
-    date::weekday{static_cast<unsigned>(weekday_[i] - 1)}[static_cast<unsigned>(weekday_index_[i])];
+    date::weekday{static_cast<unsigned>(day_[i] - 1)}[static_cast<unsigned>(index_[i])];
 }
 
 inline
 cpp11::writable::list
 ymwd::to_list() const
 {
-  cpp11::writable::list out({year_.sexp(), month_.sexp(), weekday_.sexp(), weekday_index_.sexp()});
-  out.names() = {"year", "month", "weekday", "weekday_index"};
+  cpp11::writable::list out({year_.sexp(), month_.sexp(), day_.sexp(), index_.sexp()});
+  out.names() = {"year", "month", "day", "index"};
   return out;
 }
 
@@ -628,10 +632,10 @@ ymwdh::ymwdh(r_ssize size)
 inline
 ymwdh::ymwdh(const cpp11::integers& year,
              const cpp11::integers& month,
-             const cpp11::integers& weekday,
-             const cpp11::integers& weekday_index,
+             const cpp11::integers& day,
+             const cpp11::integers& index,
              const cpp11::integers& hour)
-  : ymwd(year, month, weekday, weekday_index),
+  : ymwd(year, month, day, index),
     hour_(hour)
 {}
 
@@ -718,8 +722,8 @@ inline
 cpp11::writable::list
 ymwdh::to_list() const
 {
-  cpp11::writable::list out({year_.sexp(), month_.sexp(), weekday_.sexp(), weekday_index_.sexp(), hour_.sexp()});
-  out.names() = {"year", "month", "weekday", "weekday_index", "hour"};
+  cpp11::writable::list out({year_.sexp(), month_.sexp(), day_.sexp(), index_.sexp(), hour_.sexp()});
+  out.names() = {"year", "month", "day", "index", "hour"};
   return out;
 }
 
@@ -734,11 +738,11 @@ ymwdhm::ymwdhm(r_ssize size)
 inline
 ymwdhm::ymwdhm(const cpp11::integers& year,
                const cpp11::integers& month,
-               const cpp11::integers& weekday,
-               const cpp11::integers& weekday_index,
+               const cpp11::integers& day,
+               const cpp11::integers& index,
                const cpp11::integers& hour,
                const cpp11::integers& minute)
-  : ymwdh(year, month, weekday, weekday_index, hour),
+  : ymwdh(year, month, day, index, hour),
     minute_(minute)
   {}
 
@@ -827,8 +831,8 @@ inline
 cpp11::writable::list
 ymwdhm::to_list() const
 {
-  cpp11::writable::list out({year_.sexp(), month_.sexp(), weekday_.sexp(), weekday_index_.sexp(), hour_.sexp(), minute_.sexp()});
-  out.names() = {"year", "month", "weekday", "weekday_index", "hour", "minute"};
+  cpp11::writable::list out({year_.sexp(), month_.sexp(), day_.sexp(), index_.sexp(), hour_.sexp(), minute_.sexp()});
+  out.names() = {"year", "month", "day", "index", "hour", "minute"};
   return out;
 }
 
@@ -843,12 +847,12 @@ ymwdhms::ymwdhms(r_ssize size)
 inline
 ymwdhms::ymwdhms(const cpp11::integers& year,
                  const cpp11::integers& month,
-                 const cpp11::integers& weekday,
-                 const cpp11::integers& weekday_index,
+                 const cpp11::integers& day,
+                 const cpp11::integers& index,
                  const cpp11::integers& hour,
                  const cpp11::integers& minute,
                  const cpp11::integers& second)
-  : ymwdhm(year, month, weekday, weekday_index, hour, minute),
+  : ymwdhm(year, month, day, index, hour, minute),
     second_(second)
   {}
 
@@ -939,8 +943,8 @@ inline
 cpp11::writable::list
 ymwdhms::to_list() const
 {
-  cpp11::writable::list out({year_.sexp(), month_.sexp(), weekday_.sexp(), weekday_index_.sexp(), hour_.sexp(), minute_.sexp(), second_.sexp()});
-  out.names() = {"year", "month", "weekday", "weekday_index", "hour", "minute", "second"};
+  cpp11::writable::list out({year_.sexp(), month_.sexp(), day_.sexp(), index_.sexp(), hour_.sexp(), minute_.sexp(), second_.sexp()});
+  out.names() = {"year", "month", "day", "index", "hour", "minute", "second"};
   return out;
 }
 
@@ -957,13 +961,13 @@ template <typename Duration>
 inline
 ymwdhmss<Duration>::ymwdhmss(const cpp11::integers& year,
                              const cpp11::integers& month,
-                             const cpp11::integers& weekday,
-                             const cpp11::integers& weekday_index,
+                             const cpp11::integers& day,
+                             const cpp11::integers& index,
                              const cpp11::integers& hour,
                              const cpp11::integers& minute,
                              const cpp11::integers& second,
                              const cpp11::integers& subsecond)
-  : ymwdhms(year, month, weekday, weekday_index, hour, minute, second),
+  : ymwdhms(year, month, day, index, hour, minute, second),
     subsecond_(subsecond)
   {}
 
@@ -1063,8 +1067,8 @@ inline
 cpp11::writable::list
 ymwdhmss<Duration>::to_list() const
 {
-  cpp11::writable::list out({year_.sexp(), month_.sexp(), weekday_.sexp(), weekday_index_.sexp(), hour_.sexp(), minute_.sexp(), second_.sexp(), subsecond_.sexp()});
-  out.names() = {"year", "month", "weekday", "weekday_index", "hour", "minute", "second", "subsecond"};
+  cpp11::writable::list out({year_.sexp(), month_.sexp(), day_.sexp(), index_.sexp(), hour_.sexp(), minute_.sexp(), second_.sexp(), subsecond_.sexp()});
+  out.names() = {"year", "month", "day", "index", "hour", "minute", "second", "subsecond"};
   return out;
 }
 

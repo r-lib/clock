@@ -64,7 +64,9 @@ enum component parse_component(const cpp11::strings& x) {
   std::string string = x[0];
 
   if (string == "year") return component::year;
+  if (string == "quarter") return component::quarter;
   if (string == "month") return component::month;
+  if (string == "week") return component::week;
   if (string == "day") return component::day;
   if (string == "hour") return component::hour;
   if (string == "minute") return component::minute;
@@ -72,11 +74,7 @@ enum component parse_component(const cpp11::strings& x) {
   if (string == "millisecond") return component::millisecond;
   if (string == "microsecond") return component::microsecond;
   if (string == "nanosecond") return component::nanosecond;
-  if (string == "quarternum") return component::quarternum;
-  if (string == "quarterday") return component::quarterday;
-  if (string == "weeknum") return component::weeknum;
-  if (string == "weekday") return component::weekday;
-  if (string == "weekday_index") return component::weekday_index;
+  if (string == "index") return component::index;
 
   clock_abort("'%s' is not a recognized `component` option.", string.c_str());
 }
