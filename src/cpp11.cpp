@@ -5,17 +5,17 @@
 #include "cpp11/declarations.hpp"
 
 // duration.cpp
-cpp11::writable::strings format_duration_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision);
-extern "C" SEXP _clock_format_duration_cpp(SEXP fields, SEXP precision) {
+cpp11::writable::strings format_duration_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string);
+extern "C" SEXP _clock_format_duration_cpp(SEXP fields, SEXP precision_string) {
   BEGIN_CPP11
-    return cpp11::as_sexp(format_duration_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision)));
+    return cpp11::as_sexp(format_duration_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string)));
   END_CPP11
 }
 // duration.cpp
-cpp11::writable::list_of<cpp11::writable::integers> duration_helper_cpp(const cpp11::integers& n, const cpp11::strings& precision);
-extern "C" SEXP _clock_duration_helper_cpp(SEXP n, SEXP precision) {
+cpp11::writable::list_of<cpp11::writable::integers> duration_helper_cpp(const cpp11::integers& n, const cpp11::strings& precision_string);
+extern "C" SEXP _clock_duration_helper_cpp(SEXP n, SEXP precision_string) {
   BEGIN_CPP11
-    return cpp11::as_sexp(duration_helper_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision)));
+    return cpp11::as_sexp(duration_helper_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string)));
   END_CPP11
 }
 // duration.cpp
@@ -75,10 +75,10 @@ extern "C" SEXP _clock_duration_round_cpp(SEXP fields, SEXP precision_from, SEXP
   END_CPP11
 }
 // duration.cpp
-cpp11::writable::list duration_unary_minus_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision);
-extern "C" SEXP _clock_duration_unary_minus_cpp(SEXP fields, SEXP precision) {
+cpp11::writable::list duration_unary_minus_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string);
+extern "C" SEXP _clock_duration_unary_minus_cpp(SEXP fields, SEXP precision_string) {
   BEGIN_CPP11
-    return cpp11::as_sexp(duration_unary_minus_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision)));
+    return cpp11::as_sexp(duration_unary_minus_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string)));
   END_CPP11
 }
 // format.cpp

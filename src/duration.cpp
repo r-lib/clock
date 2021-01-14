@@ -51,7 +51,7 @@ format_duration_impl(const ClockDuration& cd) {
 
 [[cpp11::register]]
 cpp11::writable::strings format_duration_cpp(cpp11::list_of<cpp11::integers> fields,
-                                             const cpp11::strings& precision) {
+                                             const cpp11::strings& precision_string) {
   using namespace rclock;
 
   cpp11::integers ticks = duration::get_ticks(fields);
@@ -70,7 +70,7 @@ cpp11::writable::strings format_duration_cpp(cpp11::list_of<cpp11::integers> fie
   duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::year: return format_duration_impl(dy);
   case precision::quarter: return format_duration_impl(dq);
   case precision::month: return format_duration_impl(dm);
@@ -114,10 +114,10 @@ duration_helper_impl(const cpp11::integers& n) {
 [[cpp11::register]]
 cpp11::writable::list_of<cpp11::writable::integers>
 duration_helper_cpp(const cpp11::integers& n,
-                    const cpp11::strings& precision) {
+                    const cpp11::strings& precision_string) {
   using namespace rclock;
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::year: return duration_helper_impl<duration::years>(n);
   case precision::quarter: return duration_helper_impl<duration::quarters>(n);
   case precision::month: return duration_helper_impl<duration::months>(n);
@@ -816,7 +816,7 @@ duration_unary_minus_impl(const ClockDuration& x) {
 
 [[cpp11::register]]
 cpp11::writable::list
-duration_unary_minus_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision) {
+duration_unary_minus_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string) {
   using namespace rclock;
 
   cpp11::integers ticks = duration::get_ticks(fields);
@@ -835,7 +835,7 @@ duration_unary_minus_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::st
   duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::year: return duration_unary_minus_impl(dy);
   case precision::quarter: return duration_unary_minus_impl(dq);
   case precision::month: return duration_unary_minus_impl(dm);
