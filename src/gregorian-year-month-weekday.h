@@ -165,7 +165,7 @@ public:
 
   bool ok(r_ssize i) const NOEXCEPT;
 
-  void assign_day(const date::weekday& x, r_ssize i) NOEXCEPT;
+  void assign_weekday(const date::weekday& x, r_ssize i) NOEXCEPT;
   void assign_index(const unsigned& x, r_ssize i) NOEXCEPT;
   void assign_year_month_weekday(const date::year_month_weekday& x, r_ssize i) NOEXCEPT;
   void assign_sys_time(const date::sys_time<date::days>& x, r_ssize i) NOEXCEPT;
@@ -526,7 +526,7 @@ ymwd::ok(r_ssize i) const NOEXCEPT
 
 inline
 void
-ymwd::assign_day(const date::weekday& x, r_ssize i) NOEXCEPT
+ymwd::assign_weekday(const date::weekday& x, r_ssize i) NOEXCEPT
 {
   day_.assign(static_cast<int>(x.c_encoding() + 1), i);
 }
@@ -544,7 +544,7 @@ ymwd::assign_year_month_weekday(const date::year_month_weekday& x, r_ssize i) NO
 {
   assign_year(x.year(), i);
   assign_month(x.month(), i);
-  assign_day(x.weekday(), i);
+  assign_weekday(x.weekday(), i);
   assign_index(x.index(), i);
 }
 
