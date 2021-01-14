@@ -694,27 +694,3 @@ calendar_narrow.clock_year_month_day <- function(x, precision) {
 
   new_year_month_day_from_fields(out_fields, precision = precision, names = names(x))
 }
-
-# ------------------------------------------------------------------------------
-
-field_year <- function(x) {
-  field(x, "year")
-}
-field_month <- function(x) {
-  field(x, "month")
-}
-field_day <- function(x) {
-  field(x, "day")
-}
-field_hour <- function(x) {
-  field(x, "hour")
-}
-field_minute <- function(x) {
-  field(x, "minute")
-}
-field_second <- function(x) {
-  field(x, "second")
-}
-field_subsecond <- function(x) {
-  field(x, "subsecond")
-}

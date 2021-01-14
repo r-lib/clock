@@ -727,12 +727,6 @@ calendar_narrow.clock_year_quarter_day <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
-field_quarter <- function(x) {
-  field(x, "quarter")
-}
-
-# ------------------------------------------------------------------------------
-
 quarterly_start <- function(x) {
   attr(x, "start", exact = TRUE)
 }

@@ -779,9 +779,3 @@ calendar_narrow.clock_year_month_weekday <- function(x, precision) {
 
   new_year_month_weekday_from_fields(out_fields, precision = precision, names = names(x))
 }
-
-# ------------------------------------------------------------------------------
-
-field_index <- function(x) {
-  field(x, "index")
-}

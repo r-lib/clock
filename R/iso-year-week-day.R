@@ -682,9 +682,3 @@ calendar_narrow.clock_iso_year_week_day <- function(x, precision) {
 
   new_iso_year_week_day_from_fields(out_fields, precision = precision, names = names(x))
 }
-
-# ------------------------------------------------------------------------------
-
-field_week <- function(x) {
-  field(x, "week")
-}

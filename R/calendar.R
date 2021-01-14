@@ -408,4 +408,36 @@ arith_numeric_and_calendar <- function(op, x, y, ...) {
   )
 }
 
+# ------------------------------------------------------------------------------
+
+field_year <- function(x) {
+  field(x, "year")
+}
+field_quarter <- function(x) {
+  field(x, "quarter")
+}
+field_month <- function(x) {
+  field(x, "month")
+}
+field_week <- function(x) {
+  field(x, "week")
+}
+field_day <- function(x) {
+  field(x, "day")
+}
+field_hour <- function(x) {
+  field(x, "hour")
+}
+field_minute <- function(x) {
+  field(x, "minute")
+}
+field_second <- function(x) {
+  field(x, "second")
+}
+field_subsecond <- function(x) {
+  field(x, "subsecond")
+}
+field_index <- function(x) {
+  field(x, "index")
+}
 
