@@ -1151,8 +1151,8 @@ cpp11::writable::strings format_time_point_cpp(cpp11::list_of<cpp11::integers> f
                                                const cpp11::strings& day_ab,
                                                const cpp11::strings& am_pm,
                                                const cpp11::strings& decimal_mark) {
-  switch (parse_clock(clock)) {
-  case clock::sys: {
+  switch (parse_clock_name(clock)) {
+  case clock_name::sys: {
   switch (parse_precision(precision)) {
   case precision::day: return format_time_point_impl<std::chrono::system_clock>(rclock::duration::duration1<date::days>(fields[0]), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
   case precision::hour: return format_time_point_impl<std::chrono::system_clock>(rclock::duration::duration2<std::chrono::hours>(fields[0], fields[1]), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
@@ -1164,7 +1164,7 @@ cpp11::writable::strings format_time_point_cpp(cpp11::list_of<cpp11::integers> f
   default: clock_abort("Internal error: Unexpected precision.");
   }
   }
-  case clock::naive: {
+  case clock_name::naive: {
   switch (parse_precision(precision)) {
   case precision::day: return format_time_point_impl<date::local_t>(rclock::duration::duration1<date::days>(fields[0]), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);
   case precision::hour: return format_time_point_impl<date::local_t>(rclock::duration::duration2<std::chrono::hours>(fields[0], fields[1]), format, mon, mon_ab, day, day_ab, am_pm, decimal_mark);

@@ -103,12 +103,12 @@ precision_to_string(const enum precision precision_val) {
 
 // -----------------------------------------------------------------------------
 
-enum class clock {
+enum class clock_name {
   sys,
   naive
 };
 
-enum clock parse_clock(const cpp11::strings& x);
+enum clock_name parse_clock_name(const cpp11::strings& x);
 
 // -----------------------------------------------------------------------------
 #endif

@@ -132,15 +132,15 @@ enum precision parse_precision(const cpp11::strings& x) {
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum clock parse_clock(const cpp11::strings& x) {
+enum clock_name parse_clock_name(const cpp11::strings& x) {
   if (x.size() != 1) {
     clock_abort("`clock` must be a string with length 1.");
   }
 
   std::string string = x[0];
 
-  if (string == "sys") return clock::sys;
-  if (string == "naive") return clock::naive;
+  if (string == "sys") return clock_name::sys;
+  if (string == "naive") return clock_name::naive;
 
   clock_abort("'%s' is not a recognized `clock` option.", string.c_str());
 }
