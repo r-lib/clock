@@ -388,87 +388,87 @@ extern "C" SEXP _clock_year_quarter_day_check_range_cpp(SEXP x, SEXP component_s
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-cpp11::writable::list collect_year_quarter_day_fields(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string, const cpp11::integers& start);
-extern "C" SEXP _clock_collect_year_quarter_day_fields(SEXP fields, SEXP precision_string, SEXP start) {
+cpp11::writable::list collect_year_quarter_day_fields(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string, const cpp11::integers& start_int);
+extern "C" SEXP _clock_collect_year_quarter_day_fields(SEXP fields, SEXP precision_string, SEXP start_int) {
   BEGIN_CPP11
-    return cpp11::as_sexp(collect_year_quarter_day_fields(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start)));
+    return cpp11::as_sexp(collect_year_quarter_day_fields(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-cpp11::writable::strings format_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string, const cpp11::integers& start);
-extern "C" SEXP _clock_format_year_quarter_day_cpp(SEXP fields, SEXP precision_string, SEXP start) {
+cpp11::writable::strings format_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string, const cpp11::integers& start_int);
+extern "C" SEXP _clock_format_year_quarter_day_cpp(SEXP fields, SEXP precision_string, SEXP start_int) {
   BEGIN_CPP11
-    return cpp11::as_sexp(format_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start)));
+    return cpp11::as_sexp(format_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-cpp11::writable::logicals invalid_detect_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string, const cpp11::integers& start);
-extern "C" SEXP _clock_invalid_detect_year_quarter_day_cpp(SEXP fields, SEXP precision_string, SEXP start) {
+cpp11::writable::logicals invalid_detect_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string, const cpp11::integers& start_int);
+extern "C" SEXP _clock_invalid_detect_year_quarter_day_cpp(SEXP fields, SEXP precision_string, SEXP start_int) {
   BEGIN_CPP11
-    return cpp11::as_sexp(invalid_detect_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start)));
+    return cpp11::as_sexp(invalid_detect_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-bool invalid_any_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string, const cpp11::integers& start);
-extern "C" SEXP _clock_invalid_any_year_quarter_day_cpp(SEXP fields, SEXP precision_string, SEXP start) {
+bool invalid_any_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string, const cpp11::integers& start_int);
+extern "C" SEXP _clock_invalid_any_year_quarter_day_cpp(SEXP fields, SEXP precision_string, SEXP start_int) {
   BEGIN_CPP11
-    return cpp11::as_sexp(invalid_any_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start)));
+    return cpp11::as_sexp(invalid_any_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-int invalid_count_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string, const cpp11::integers& start);
-extern "C" SEXP _clock_invalid_count_year_quarter_day_cpp(SEXP fields, SEXP precision_string, SEXP start) {
+int invalid_count_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string, const cpp11::integers& start_int);
+extern "C" SEXP _clock_invalid_count_year_quarter_day_cpp(SEXP fields, SEXP precision_string, SEXP start_int) {
   BEGIN_CPP11
-    return cpp11::as_sexp(invalid_count_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start)));
+    return cpp11::as_sexp(invalid_count_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-cpp11::writable::list invalid_resolve_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string, const cpp11::integers& start, const cpp11::strings& invalid_string);
-extern "C" SEXP _clock_invalid_resolve_year_quarter_day_cpp(SEXP fields, SEXP precision_string, SEXP start, SEXP invalid_string) {
+cpp11::writable::list invalid_resolve_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string, const cpp11::integers& start_int, const cpp11::strings& invalid_string);
+extern "C" SEXP _clock_invalid_resolve_year_quarter_day_cpp(SEXP fields, SEXP precision_string, SEXP start_int, SEXP invalid_string) {
   BEGIN_CPP11
-    return cpp11::as_sexp(invalid_resolve_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(invalid_string)));
+    return cpp11::as_sexp(invalid_resolve_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(invalid_string)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-cpp11::writable::list set_field_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& value, const cpp11::strings& precision_fields, const cpp11::strings& precision_value, const cpp11::integers& start);
-extern "C" SEXP _clock_set_field_year_quarter_day_cpp(SEXP fields, SEXP value, SEXP precision_fields, SEXP precision_value, SEXP start) {
+cpp11::writable::list set_field_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& value, const cpp11::strings& precision_fields, const cpp11::strings& precision_value, const cpp11::integers& start_int);
+extern "C" SEXP _clock_set_field_year_quarter_day_cpp(SEXP fields, SEXP value, SEXP precision_fields, SEXP precision_value, SEXP start_int) {
   BEGIN_CPP11
-    return cpp11::as_sexp(set_field_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(value), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_value), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start)));
+    return cpp11::as_sexp(set_field_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(value), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_value), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-cpp11::writable::list set_field_year_quarter_day_last_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_fields, const cpp11::integers& start);
-extern "C" SEXP _clock_set_field_year_quarter_day_last_cpp(SEXP fields, SEXP precision_fields, SEXP start) {
+cpp11::writable::list set_field_year_quarter_day_last_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_fields, const cpp11::integers& start_int);
+extern "C" SEXP _clock_set_field_year_quarter_day_last_cpp(SEXP fields, SEXP precision_fields, SEXP start_int) {
   BEGIN_CPP11
-    return cpp11::as_sexp(set_field_year_quarter_day_last_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start)));
+    return cpp11::as_sexp(set_field_year_quarter_day_last_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-cpp11::writable::list year_quarter_day_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields, cpp11::list_of<cpp11::integers> fields_n, const cpp11::strings& precision_fields, const cpp11::strings& precision_n, const cpp11::integers& start);
-extern "C" SEXP _clock_year_quarter_day_plus_duration_cpp(SEXP fields, SEXP fields_n, SEXP precision_fields, SEXP precision_n, SEXP start) {
+cpp11::writable::list year_quarter_day_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields, cpp11::list_of<cpp11::integers> fields_n, const cpp11::strings& precision_fields, const cpp11::strings& precision_n, const cpp11::integers& start_int);
+extern "C" SEXP _clock_year_quarter_day_plus_duration_cpp(SEXP fields, SEXP fields_n, SEXP precision_fields, SEXP precision_n, SEXP start_int) {
   BEGIN_CPP11
-    return cpp11::as_sexp(year_quarter_day_plus_duration_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields_n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_n), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start)));
+    return cpp11::as_sexp(year_quarter_day_plus_duration_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields_n), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_n), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-cpp11::writable::list as_sys_time_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string, const cpp11::integers& start);
-extern "C" SEXP _clock_as_sys_time_year_quarter_day_cpp(SEXP fields, SEXP precision_string, SEXP start) {
+cpp11::writable::list as_sys_time_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string, const cpp11::integers& start_int);
+extern "C" SEXP _clock_as_sys_time_year_quarter_day_cpp(SEXP fields, SEXP precision_string, SEXP start_int) {
   BEGIN_CPP11
-    return cpp11::as_sexp(as_sys_time_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start)));
+    return cpp11::as_sexp(as_sys_time_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-cpp11::writable::list as_year_quarter_day_from_sys_time_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string, const cpp11::integers& start);
-extern "C" SEXP _clock_as_year_quarter_day_from_sys_time_cpp(SEXP fields, SEXP precision_string, SEXP start) {
+cpp11::writable::list as_year_quarter_day_from_sys_time_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string, const cpp11::integers& start_int);
+extern "C" SEXP _clock_as_year_quarter_day_from_sys_time_cpp(SEXP fields, SEXP precision_string, SEXP start_int) {
   BEGIN_CPP11
-    return cpp11::as_sexp(as_year_quarter_day_from_sys_time_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start)));
+    return cpp11::as_sexp(as_year_quarter_day_from_sys_time_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-cpp11::writable::list year_quarter_day_minus_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> x, cpp11::list_of<cpp11::integers> y, const cpp11::strings& precision_string, const cpp11::integers& start);
-extern "C" SEXP _clock_year_quarter_day_minus_year_quarter_day_cpp(SEXP x, SEXP y, SEXP precision_string, SEXP start) {
+cpp11::writable::list year_quarter_day_minus_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> x, cpp11::list_of<cpp11::integers> y, const cpp11::strings& precision_string, const cpp11::integers& start_int);
+extern "C" SEXP _clock_year_quarter_day_minus_year_quarter_day_cpp(SEXP x, SEXP y, SEXP precision_string, SEXP start_int) {
   BEGIN_CPP11
-    return cpp11::as_sexp(year_quarter_day_minus_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(y), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start)));
+    return cpp11::as_sexp(year_quarter_day_minus_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(y), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
   END_CPP11
 }
 // sys-time.cpp
@@ -507,10 +507,10 @@ extern "C" SEXP _clock_get_naive_time_cpp(SEXP fields, SEXP precision_string, SE
   END_CPP11
 }
 // zoned-time.cpp
-cpp11::writable::list as_zoned_sys_time_from_naive_time_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string, const cpp11::strings& zone, const cpp11::strings& nonexistent, const cpp11::strings& ambiguous);
-extern "C" SEXP _clock_as_zoned_sys_time_from_naive_time_cpp(SEXP fields, SEXP precision_string, SEXP zone, SEXP nonexistent, SEXP ambiguous) {
+cpp11::writable::list as_zoned_sys_time_from_naive_time_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string, const cpp11::strings& zone, const cpp11::strings& nonexistent_string, const cpp11::strings& ambiguous_string);
+extern "C" SEXP _clock_as_zoned_sys_time_from_naive_time_cpp(SEXP fields, SEXP precision_string, SEXP zone, SEXP nonexistent_string, SEXP ambiguous_string) {
   BEGIN_CPP11
-    return cpp11::as_sexp(as_zoned_sys_time_from_naive_time_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(nonexistent), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(ambiguous)));
+    return cpp11::as_sexp(as_zoned_sys_time_from_naive_time_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(nonexistent_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(ambiguous_string)));
   END_CPP11
 }
 // zoned-time.cpp

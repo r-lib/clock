@@ -143,10 +143,10 @@ collect_year_quarter_day_fields_impl(cpp11::list_of<cpp11::integers> fields,
 cpp11::writable::list
 collect_year_quarter_day_fields(cpp11::list_of<cpp11::integers> fields,
                                 const cpp11::strings& precision_string,
-                                const cpp11::integers& start) {
+                                const cpp11::integers& start_int) {
   using namespace quarterly;
 
-  switch (parse_start(start)) {
+  switch (parse_start(start_int)) {
   case start::january: return collect_year_quarter_day_fields_impl<start::january>(fields, precision_string);
   case start::february: return collect_year_quarter_day_fields_impl<start::february>(fields, precision_string);
   case start::march: return collect_year_quarter_day_fields_impl<start::march>(fields, precision_string);
@@ -212,10 +212,10 @@ format_year_quarter_day_impl(cpp11::list_of<cpp11::integers> fields,
 cpp11::writable::strings
 format_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
                             const cpp11::strings& precision_string,
-                            const cpp11::integers& start) {
+                            const cpp11::integers& start_int) {
   using namespace quarterly;
 
-  switch (parse_start(start)) {
+  switch (parse_start(start_int)) {
   case start::january: return format_year_quarter_day_impl<start::january>(fields, precision_string);
   case start::february: return format_year_quarter_day_impl<start::february>(fields, precision_string);
   case start::march: return format_year_quarter_day_impl<start::march>(fields, precision_string);
@@ -279,10 +279,10 @@ invalid_detect_year_quarter_day_impl(cpp11::list_of<cpp11::integers> fields,
 cpp11::writable::logicals
 invalid_detect_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
                                     const cpp11::strings& precision_string,
-                                    const cpp11::integers& start) {
+                                    const cpp11::integers& start_int) {
   using namespace quarterly;
 
-  switch (parse_start(start)) {
+  switch (parse_start(start_int)) {
   case start::january: return invalid_detect_year_quarter_day_impl<start::january>(fields, precision_string);
   case start::february: return invalid_detect_year_quarter_day_impl<start::february>(fields, precision_string);
   case start::march: return invalid_detect_year_quarter_day_impl<start::march>(fields, precision_string);
@@ -348,10 +348,10 @@ invalid_any_year_quarter_day_impl(cpp11::list_of<cpp11::integers> fields,
 bool
 invalid_any_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
                                  const cpp11::strings& precision_string,
-                                 const cpp11::integers& start) {
+                                 const cpp11::integers& start_int) {
   using namespace quarterly;
 
-  switch (parse_start(start)) {
+  switch (parse_start(start_int)) {
   case start::january: return invalid_any_year_quarter_day_impl<start::january>(fields, precision_string);
   case start::february: return invalid_any_year_quarter_day_impl<start::february>(fields, precision_string);
   case start::march: return invalid_any_year_quarter_day_impl<start::march>(fields, precision_string);
@@ -417,10 +417,10 @@ invalid_count_year_quarter_day_impl(cpp11::list_of<cpp11::integers> fields,
 int
 invalid_count_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
                                    const cpp11::strings& precision_string,
-                                   const cpp11::integers& start) {
+                                   const cpp11::integers& start_int) {
   using namespace quarterly;
 
-  switch (parse_start(start)) {
+  switch (parse_start(start_int)) {
   case start::january: return invalid_count_year_quarter_day_impl<start::january>(fields, precision_string);
   case start::february: return invalid_count_year_quarter_day_impl<start::february>(fields, precision_string);
   case start::march: return invalid_count_year_quarter_day_impl<start::march>(fields, precision_string);
@@ -488,11 +488,11 @@ invalid_resolve_year_quarter_day_impl(cpp11::list_of<cpp11::integers> fields,
 cpp11::writable::list
 invalid_resolve_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
                                      const cpp11::strings& precision_string,
-                                     const cpp11::integers& start,
+                                     const cpp11::integers& start_int,
                                      const cpp11::strings& invalid_string) {
   using namespace quarterly;
 
-  switch (parse_start(start)) {
+  switch (parse_start(start_int)) {
   case start::january: return invalid_resolve_year_quarter_day_impl<start::january>(fields, precision_string, invalid_string);
   case start::february: return invalid_resolve_year_quarter_day_impl<start::february>(fields, precision_string, invalid_string);
   case start::march: return invalid_resolve_year_quarter_day_impl<start::march>(fields, precision_string, invalid_string);
@@ -648,10 +648,10 @@ set_field_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
                                const cpp11::integers& value,
                                const cpp11::strings& precision_fields,
                                const cpp11::strings& precision_value,
-                               const cpp11::integers& start) {
+                               const cpp11::integers& start_int) {
   using namespace quarterly;
 
-  switch (parse_start(start)) {
+  switch (parse_start(start_int)) {
   case start::january: return set_field_year_quarter_day_impl<start::january>(fields, value, precision_fields, precision_value);
   case start::february: return set_field_year_quarter_day_impl<start::february>(fields, value, precision_fields, precision_value);
   case start::march: return set_field_year_quarter_day_impl<start::march>(fields, value, precision_fields, precision_value);
@@ -733,10 +733,10 @@ set_field_year_quarter_day_last_switch(cpp11::list_of<cpp11::integers> fields,
 cpp11::writable::list
 set_field_year_quarter_day_last_cpp(cpp11::list_of<cpp11::integers> fields,
                                     const cpp11::strings& precision_fields,
-                                    const cpp11::integers& start) {
+                                    const cpp11::integers& start_int) {
   using namespace quarterly;
 
-  switch (parse_start(start)) {
+  switch (parse_start(start_int)) {
   case start::january: return set_field_year_quarter_day_last_switch<start::january>(fields, precision_fields);
   case start::february: return set_field_year_quarter_day_last_switch<start::february>(fields, precision_fields);
   case start::march: return set_field_year_quarter_day_last_switch<start::march>(fields, precision_fields);
@@ -856,10 +856,10 @@ year_quarter_day_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields,
                                    cpp11::list_of<cpp11::integers> fields_n,
                                    const cpp11::strings& precision_fields,
                                    const cpp11::strings& precision_n,
-                                   const cpp11::integers& start) {
+                                   const cpp11::integers& start_int) {
   using namespace quarterly;
 
-  switch (parse_start(start)) {
+  switch (parse_start(start_int)) {
   case start::january: return year_quarter_day_plus_duration_impl<start::january>(fields, fields_n, precision_fields, precision_n);
   case start::february: return year_quarter_day_plus_duration_impl<start::february>(fields, fields_n, precision_fields, precision_n);
   case start::march: return year_quarter_day_plus_duration_impl<start::march>(fields, fields_n, precision_fields, precision_n);
@@ -929,10 +929,10 @@ as_sys_time_year_quarter_day_impl(cpp11::list_of<cpp11::integers> fields,
 cpp11::writable::list
 as_sys_time_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
                                  const cpp11::strings& precision_string,
-                                 const cpp11::integers& start) {
+                                 const cpp11::integers& start_int) {
   using namespace quarterly;
 
-  switch (parse_start(start)) {
+  switch (parse_start(start_int)) {
   case start::january: return as_sys_time_year_quarter_day_impl<start::january>(fields, precision_string);
   case start::february: return as_sys_time_year_quarter_day_impl<start::february>(fields, precision_string);
   case start::march: return as_sys_time_year_quarter_day_impl<start::march>(fields, precision_string);
@@ -988,10 +988,10 @@ as_year_quarter_day_from_sys_time_impl(cpp11::list_of<cpp11::integers> fields,
 cpp11::writable::list
 as_year_quarter_day_from_sys_time_cpp(cpp11::list_of<cpp11::integers> fields,
                                       const cpp11::strings& precision_string,
-                                      const cpp11::integers& start) {
+                                      const cpp11::integers& start_int) {
   using namespace quarterly;
 
-  switch (parse_start(start)) {
+  switch (parse_start(start_int)) {
   case start::january: return as_year_quarter_day_from_sys_time_impl<start::january>(fields, precision_string);
   case start::february: return as_year_quarter_day_from_sys_time_impl<start::february>(fields, precision_string);
   case start::march: return as_year_quarter_day_from_sys_time_impl<start::march>(fields, precision_string);
@@ -1082,10 +1082,10 @@ cpp11::writable::list
 year_quarter_day_minus_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> x,
                                             cpp11::list_of<cpp11::integers> y,
                                             const cpp11::strings& precision_string,
-                                            const cpp11::integers& start) {
+                                            const cpp11::integers& start_int) {
   using namespace quarterly;
 
-  switch (parse_start(start)) {
+  switch (parse_start(start_int)) {
   case start::january: return year_quarter_day_minus_year_quarter_day_impl<start::january>(x, y, precision_string);
   case start::february: return year_quarter_day_minus_year_quarter_day_impl<start::february>(x, y, precision_string);
   case start::march: return year_quarter_day_minus_year_quarter_day_impl<start::march>(x, y, precision_string);

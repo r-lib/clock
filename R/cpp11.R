@@ -216,52 +216,52 @@ year_quarter_day_check_range_cpp <- function(x, component_string, arg) {
   invisible(.Call("_clock_year_quarter_day_check_range_cpp", x, component_string, arg, PACKAGE = "clock"))
 }
 
-collect_year_quarter_day_fields <- function(fields, precision_string, start) {
-  .Call("_clock_collect_year_quarter_day_fields", fields, precision_string, start, PACKAGE = "clock")
+collect_year_quarter_day_fields <- function(fields, precision_string, start_int) {
+  .Call("_clock_collect_year_quarter_day_fields", fields, precision_string, start_int, PACKAGE = "clock")
 }
 
-format_year_quarter_day_cpp <- function(fields, precision_string, start) {
-  .Call("_clock_format_year_quarter_day_cpp", fields, precision_string, start, PACKAGE = "clock")
+format_year_quarter_day_cpp <- function(fields, precision_string, start_int) {
+  .Call("_clock_format_year_quarter_day_cpp", fields, precision_string, start_int, PACKAGE = "clock")
 }
 
-invalid_detect_year_quarter_day_cpp <- function(fields, precision_string, start) {
-  .Call("_clock_invalid_detect_year_quarter_day_cpp", fields, precision_string, start, PACKAGE = "clock")
+invalid_detect_year_quarter_day_cpp <- function(fields, precision_string, start_int) {
+  .Call("_clock_invalid_detect_year_quarter_day_cpp", fields, precision_string, start_int, PACKAGE = "clock")
 }
 
-invalid_any_year_quarter_day_cpp <- function(fields, precision_string, start) {
-  .Call("_clock_invalid_any_year_quarter_day_cpp", fields, precision_string, start, PACKAGE = "clock")
+invalid_any_year_quarter_day_cpp <- function(fields, precision_string, start_int) {
+  .Call("_clock_invalid_any_year_quarter_day_cpp", fields, precision_string, start_int, PACKAGE = "clock")
 }
 
-invalid_count_year_quarter_day_cpp <- function(fields, precision_string, start) {
-  .Call("_clock_invalid_count_year_quarter_day_cpp", fields, precision_string, start, PACKAGE = "clock")
+invalid_count_year_quarter_day_cpp <- function(fields, precision_string, start_int) {
+  .Call("_clock_invalid_count_year_quarter_day_cpp", fields, precision_string, start_int, PACKAGE = "clock")
 }
 
-invalid_resolve_year_quarter_day_cpp <- function(fields, precision_string, start, invalid_string) {
-  .Call("_clock_invalid_resolve_year_quarter_day_cpp", fields, precision_string, start, invalid_string, PACKAGE = "clock")
+invalid_resolve_year_quarter_day_cpp <- function(fields, precision_string, start_int, invalid_string) {
+  .Call("_clock_invalid_resolve_year_quarter_day_cpp", fields, precision_string, start_int, invalid_string, PACKAGE = "clock")
 }
 
-set_field_year_quarter_day_cpp <- function(fields, value, precision_fields, precision_value, start) {
-  .Call("_clock_set_field_year_quarter_day_cpp", fields, value, precision_fields, precision_value, start, PACKAGE = "clock")
+set_field_year_quarter_day_cpp <- function(fields, value, precision_fields, precision_value, start_int) {
+  .Call("_clock_set_field_year_quarter_day_cpp", fields, value, precision_fields, precision_value, start_int, PACKAGE = "clock")
 }
 
-set_field_year_quarter_day_last_cpp <- function(fields, precision_fields, start) {
-  .Call("_clock_set_field_year_quarter_day_last_cpp", fields, precision_fields, start, PACKAGE = "clock")
+set_field_year_quarter_day_last_cpp <- function(fields, precision_fields, start_int) {
+  .Call("_clock_set_field_year_quarter_day_last_cpp", fields, precision_fields, start_int, PACKAGE = "clock")
 }
 
-year_quarter_day_plus_duration_cpp <- function(fields, fields_n, precision_fields, precision_n, start) {
-  .Call("_clock_year_quarter_day_plus_duration_cpp", fields, fields_n, precision_fields, precision_n, start, PACKAGE = "clock")
+year_quarter_day_plus_duration_cpp <- function(fields, fields_n, precision_fields, precision_n, start_int) {
+  .Call("_clock_year_quarter_day_plus_duration_cpp", fields, fields_n, precision_fields, precision_n, start_int, PACKAGE = "clock")
 }
 
-as_sys_time_year_quarter_day_cpp <- function(fields, precision_string, start) {
-  .Call("_clock_as_sys_time_year_quarter_day_cpp", fields, precision_string, start, PACKAGE = "clock")
+as_sys_time_year_quarter_day_cpp <- function(fields, precision_string, start_int) {
+  .Call("_clock_as_sys_time_year_quarter_day_cpp", fields, precision_string, start_int, PACKAGE = "clock")
 }
 
-as_year_quarter_day_from_sys_time_cpp <- function(fields, precision_string, start) {
-  .Call("_clock_as_year_quarter_day_from_sys_time_cpp", fields, precision_string, start, PACKAGE = "clock")
+as_year_quarter_day_from_sys_time_cpp <- function(fields, precision_string, start_int) {
+  .Call("_clock_as_year_quarter_day_from_sys_time_cpp", fields, precision_string, start_int, PACKAGE = "clock")
 }
 
-year_quarter_day_minus_year_quarter_day_cpp <- function(x, y, precision_string, start) {
-  .Call("_clock_year_quarter_day_minus_year_quarter_day_cpp", x, y, precision_string, start, PACKAGE = "clock")
+year_quarter_day_minus_year_quarter_day_cpp <- function(x, y, precision_string, start_int) {
+  .Call("_clock_year_quarter_day_minus_year_quarter_day_cpp", x, y, precision_string, start_int, PACKAGE = "clock")
 }
 
 sys_now_cpp <- function() {
@@ -284,8 +284,8 @@ get_naive_time_cpp <- function(fields, precision_string, zone) {
   .Call("_clock_get_naive_time_cpp", fields, precision_string, zone, PACKAGE = "clock")
 }
 
-as_zoned_sys_time_from_naive_time_cpp <- function(fields, precision_string, zone, nonexistent, ambiguous) {
-  .Call("_clock_as_zoned_sys_time_from_naive_time_cpp", fields, precision_string, zone, nonexistent, ambiguous, PACKAGE = "clock")
+as_zoned_sys_time_from_naive_time_cpp <- function(fields, precision_string, zone, nonexistent_string, ambiguous_string) {
+  .Call("_clock_as_zoned_sys_time_from_naive_time_cpp", fields, precision_string, zone, nonexistent_string, ambiguous_string, PACKAGE = "clock")
 }
 
 to_sys_duration_fields_from_sys_seconds_cpp <- function(seconds) {
