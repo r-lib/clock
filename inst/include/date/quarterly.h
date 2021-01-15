@@ -1526,15 +1526,17 @@ year_quarternum_quarterday_last<S>::quarterday() const NOEXCEPT
 {
     CONSTDATA unsigned s = static_cast<unsigned>(S) - 1;
 
-    CONSTDATA quarterly::quarterday quarterdays[] = {
-        // [12, 1, 2]               [1, 2, 3]                   [2, 3, 4]
-        quarterly::quarterday(90u), quarterly::quarterday(90u), quarterly::quarterday(89u),
-        // [3, 4, 5]                [4, 5, 6]                   [5, 6, 7]
-        quarterly::quarterday(92u), quarterly::quarterday(91u), quarterly::quarterday(92u),
-        // [6, 7, 8]                [7, 8, 9]                   [8, 9, 10]
-        quarterly::quarterday(92u), quarterly::quarterday(92u), quarterly::quarterday(92u),
-        // [9, 10, 11]              [10, 11, 12]                [11, 12, 1]
-        quarterly::quarterday(91u), quarterly::quarterday(92u), quarterly::quarterday(92u)
+    // Use an unsigned array rather than a quarterday array to avoid a
+    // gcc warning with Rtools36's old gcc. Issue #43.
+    CONSTDATA unsigned quarterdays[] = {
+    // [12, 1, 2]     [1, 2, 3]     [2, 3, 4]
+        90u,           90u,          89u,
+    // [3, 4, 5]      [4, 5, 6]     [5, 6, 7]
+        92u,           91u,          92u,
+    // [6, 7, 8]      [7, 8, 9]     [8, 9, 10]
+        92u,           92u,          92u,
+    // [9, 10, 11]    [10, 11, 12]  [11, 12, 1]
+        91u,           92u,          92u
     };
 
     const unsigned quarternum = static_cast<unsigned>(qn_) - 1;
@@ -1551,11 +1553,11 @@ year_quarternum_quarterday_last<S>::quarterday() const NOEXCEPT
         // If `!qn_.ok()`, don't index into `quarterdays[]` to avoid OOB error.
         // Instead, return the minimum of the possible "last day of quarter"
         // days, as `year_month_day_last::day()` does.
-        return quarterdays[2];
+        return quarterly::quarterday{quarterdays[2]};
     } else if (key <= 2 && y_.is_leap()) {
-        return quarterdays[key] + quarterly::days{1u};
+        return quarterly::quarterday{quarterdays[key]} + quarterly::days{1u};
     } else {
-        return quarterdays[key];
+        return quarterly::quarterday{quarterdays[key]};
     }
 }
 
