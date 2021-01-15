@@ -1529,13 +1529,13 @@ year_quarternum_quarterday_last<S>::quarterday() const NOEXCEPT
     // Use an unsigned array rather than a quarterday array to avoid a
     // gcc warning with Rtools36's old gcc. Issue #43.
     CONSTDATA unsigned quarterdays[] = {
-    // [12, 1, 2]     [1, 2, 3]     [2, 3, 4]
+    //  [12, 1, 2]     [1, 2, 3]     [2, 3, 4]
         90u,           90u,          89u,
-    // [3, 4, 5]      [4, 5, 6]     [5, 6, 7]
+    //  [3, 4, 5]      [4, 5, 6]     [5, 6, 7]
         92u,           91u,          92u,
-    // [6, 7, 8]      [7, 8, 9]     [8, 9, 10]
+    //  [6, 7, 8]      [7, 8, 9]     [8, 9, 10]
         92u,           92u,          92u,
-    // [9, 10, 11]    [10, 11, 12]  [11, 12, 1]
+    //  [9, 10, 11]    [10, 11, 12]  [11, 12, 1]
         91u,           92u,          92u
     };
 
