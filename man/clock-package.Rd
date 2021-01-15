@@ -4,13 +4,14 @@
 \name{clock-package}
 \alias{clock}
 \alias{clock-package}
-\title{clock: Local and Zoned Dates}
+\title{clock: Calendars, Time Points, and Durations}
 \description{
-Provides comprehensive support for local and zoned
-    dates and times. A local date does not assume any particular time zone.
-    A zoned date is a local date with a time zone attached. Precision up
-    to nanoseconds is supported, and partial date types representing
-    coarser periods such as months or weeks are also implemented.
+Provides a comprehensive interface for date and datetime
+    manipulations. Both naive and zoned datetimes are supported, with
+    precision up to nanoseconds. Additionally, multiple types of calendars
+    have been implemented, allowing for various ways to represent calendar
+    dates, such as year-month-day, year-month-weekday, or
+    year-quarter-day.
 }
 \seealso{
 Useful links:
