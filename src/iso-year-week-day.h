@@ -459,6 +459,12 @@ ywn::resolve(r_ssize i, const enum invalid type)
     assign_year_weeknum(detail::resolve_previous_day_yw(elt), i);
     break;
   }
+  case invalid::overflow_day:
+  case invalid::overflow: {
+    // Overflowing invalid 2019-53 results in 2020-01
+    assign_year_weeknum(detail::resolve_next_day_yw(elt), i);
+    break;
+  }
   case invalid::na: {
     assign_na(i);
     break;
@@ -569,6 +575,11 @@ ywnwd::resolve(r_ssize i, const enum invalid type)
   case invalid::previous_day:
   case invalid::previous: {
     assign_year_weeknum_weekday(detail::resolve_previous_day_ywd(elt), i);
+    break;
+  }
+  case invalid::overflow_day:
+  case invalid::overflow: {
+    assign_year_weeknum_weekday(date::sys_days{elt}, i);
     break;
   }
   case invalid::na: {
@@ -685,6 +696,14 @@ ywnwdh::resolve(r_ssize i, const enum invalid type)
     assign_hour(rclock::detail::resolve_previous_hour(), i);
     break;
   }
+  case invalid::overflow_day:
+    assign_year_weeknum_weekday(date::sys_days{elt}, i);
+    break;
+  case invalid::overflow: {
+    assign_year_weeknum_weekday(date::sys_days{elt}, i);
+    assign_hour(rclock::detail::resolve_next_hour(), i);
+    break;
+  }
   case invalid::na: {
     assign_na(i);
     break;
@@ -791,6 +810,15 @@ ywnwdhm::resolve(r_ssize i, const enum invalid type)
     assign_year_weeknum_weekday(detail::resolve_previous_day_ywd(elt), i);
     assign_hour(rclock::detail::resolve_previous_hour(), i);
     assign_minute(rclock::detail::resolve_previous_minute(), i);
+    break;
+  }
+  case invalid::overflow_day:
+    assign_year_weeknum_weekday(date::sys_days{elt}, i);
+    break;
+  case invalid::overflow: {
+    assign_year_weeknum_weekday(date::sys_days{elt}, i);
+    assign_hour(rclock::detail::resolve_next_hour(), i);
+    assign_minute(rclock::detail::resolve_next_minute(), i);
     break;
   }
   case invalid::na: {
@@ -902,6 +930,16 @@ ywnwdhms::resolve(r_ssize i, const enum invalid type)
     assign_hour(rclock::detail::resolve_previous_hour(), i);
     assign_minute(rclock::detail::resolve_previous_minute(), i);
     assign_second(rclock::detail::resolve_previous_second(), i);
+    break;
+  }
+  case invalid::overflow_day:
+    assign_year_weeknum_weekday(date::sys_days{elt}, i);
+    break;
+  case invalid::overflow: {
+    assign_year_weeknum_weekday(date::sys_days{elt}, i);
+    assign_hour(rclock::detail::resolve_next_hour(), i);
+    assign_minute(rclock::detail::resolve_next_minute(), i);
+    assign_second(rclock::detail::resolve_next_second(), i);
     break;
   }
   case invalid::na: {
@@ -1023,6 +1061,17 @@ ywnwdhmss<Duration>::resolve(r_ssize i, const enum invalid type)
     assign_minute(rclock::detail::resolve_previous_minute(), i);
     assign_second(rclock::detail::resolve_previous_second(), i);
     assign_subsecond(rclock::detail::resolve_previous_subsecond<Duration>(), i);
+    break;
+  }
+  case invalid::overflow_day:
+    assign_year_weeknum_weekday(date::sys_days{elt}, i);
+    break;
+  case invalid::overflow: {
+    assign_year_weeknum_weekday(date::sys_days{elt}, i);
+    assign_hour(rclock::detail::resolve_next_hour(), i);
+    assign_minute(rclock::detail::resolve_next_minute(), i);
+    assign_second(rclock::detail::resolve_next_second(), i);
+    assign_subsecond(rclock::detail::resolve_next_subsecond<Duration>(), i);
     break;
   }
   case invalid::na: {

@@ -8,8 +8,10 @@
 enum class invalid {
   previous,
   next,
+  overflow,
   previous_day,
   next_day,
+  overflow_day,
   na,
   error
 };

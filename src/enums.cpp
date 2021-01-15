@@ -15,8 +15,10 @@ enum invalid parse_invalid(const cpp11::strings& x) {
 
   if (string == "previous") return invalid::previous;
   if (string == "next") return invalid::next;
+  if (string == "overflow") return invalid::overflow;
   if (string == "previous-day") return invalid::previous_day;
   if (string == "next-day") return invalid::next_day;
+  if (string == "overflow-day") return invalid::overflow_day;
   if (string == "NA") return invalid::na;
   if (string == "error") return invalid::error;
 

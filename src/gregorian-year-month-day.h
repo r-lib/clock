@@ -522,6 +522,11 @@ ymd::resolve(r_ssize i, const enum invalid type)
     assign_day(detail::resolve_previous_day_ymd(elt).day(), i);
     break;
   }
+  case invalid::overflow_day:
+  case invalid::overflow: {
+    assign_year_month_day(date::sys_days{elt}, i);
+    break;
+  }
   case invalid::na: {
     assign_na(i);
     break;
@@ -634,6 +639,14 @@ ymdh::resolve(r_ssize i, const enum invalid type)
     assign_hour(rclock::detail::resolve_previous_hour(), i);
     break;
   }
+  case invalid::overflow_day:
+    assign_year_month_day(date::sys_days{elt}, i);
+    break;
+  case invalid::overflow: {
+    assign_year_month_day(date::sys_days{elt}, i);
+    assign_hour(rclock::detail::resolve_next_hour(), i);
+    break;
+  }
   case invalid::na: {
     assign_na(i);
     break;
@@ -740,6 +753,15 @@ ymdhm::resolve(r_ssize i, const enum invalid type)
     assign_day(detail::resolve_previous_day_ymd(elt).day(), i);
     assign_hour(rclock::detail::resolve_previous_hour(), i);
     assign_minute(rclock::detail::resolve_previous_minute(), i);
+    break;
+  }
+  case invalid::overflow_day:
+    assign_year_month_day(date::sys_days{elt}, i);
+    break;
+  case invalid::overflow: {
+    assign_year_month_day(date::sys_days{elt}, i);
+    assign_hour(rclock::detail::resolve_next_hour(), i);
+    assign_minute(rclock::detail::resolve_next_minute(), i);
     break;
   }
   case invalid::na: {
@@ -851,6 +873,16 @@ ymdhms::resolve(r_ssize i, const enum invalid type)
     assign_hour(rclock::detail::resolve_previous_hour(), i);
     assign_minute(rclock::detail::resolve_previous_minute(), i);
     assign_second(rclock::detail::resolve_previous_second(), i);
+    break;
+  }
+  case invalid::overflow_day:
+    assign_year_month_day(date::sys_days{elt}, i);
+    break;
+  case invalid::overflow: {
+    assign_year_month_day(date::sys_days{elt}, i);
+    assign_hour(rclock::detail::resolve_next_hour(), i);
+    assign_minute(rclock::detail::resolve_next_minute(), i);
+    assign_second(rclock::detail::resolve_next_second(), i);
     break;
   }
   case invalid::na: {
@@ -972,6 +1004,17 @@ ymdhmss<Duration>::resolve(r_ssize i, const enum invalid type)
     assign_minute(rclock::detail::resolve_previous_minute(), i);
     assign_second(rclock::detail::resolve_previous_second(), i);
     assign_subsecond(rclock::detail::resolve_previous_subsecond<Duration>(), i);
+    break;
+  }
+  case invalid::overflow_day:
+    assign_year_month_day(date::sys_days{elt}, i);
+    break;
+  case invalid::overflow: {
+    assign_year_month_day(date::sys_days{elt}, i);
+    assign_hour(rclock::detail::resolve_next_hour(), i);
+    assign_minute(rclock::detail::resolve_next_minute(), i);
+    assign_second(rclock::detail::resolve_next_second(), i);
+    assign_subsecond(rclock::detail::resolve_next_subsecond<Duration>(), i);
     break;
   }
   case invalid::na: {
