@@ -268,6 +268,22 @@ sys_now_cpp <- function() {
   .Call("_clock_sys_now_cpp", PACKAGE = "clock")
 }
 
+weekday_add_days_cpp <- function(x, n) {
+  .Call("_clock_weekday_add_days_cpp", x, n, PACKAGE = "clock")
+}
+
+weekday_minus_weekday_cpp <- function(x, y) {
+  .Call("_clock_weekday_minus_weekday_cpp", x, y, PACKAGE = "clock")
+}
+
+weekday_from_time_point_cpp <- function(x) {
+  .Call("_clock_weekday_from_time_point_cpp", x, PACKAGE = "clock")
+}
+
+format_weekday_cpp <- function(x, day_ab) {
+  .Call("_clock_format_weekday_cpp", x, day_ab, PACKAGE = "clock")
+}
+
 zone_standardize <- function(zone) {
   .Call("_clock_zone_standardize", zone, PACKAGE = "clock")
 }

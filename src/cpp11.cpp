@@ -478,6 +478,34 @@ extern "C" SEXP _clock_sys_now_cpp() {
     return cpp11::as_sexp(sys_now_cpp());
   END_CPP11
 }
+// weekday.cpp
+cpp11::writable::integers weekday_add_days_cpp(const cpp11::integers& x, cpp11::list_of<cpp11::integers> n);
+extern "C" SEXP _clock_weekday_add_days_cpp(SEXP x, SEXP n) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(weekday_add_days_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(n)));
+  END_CPP11
+}
+// weekday.cpp
+cpp11::writable::list weekday_minus_weekday_cpp(const cpp11::integers& x, const cpp11::integers& y);
+extern "C" SEXP _clock_weekday_minus_weekday_cpp(SEXP x, SEXP y) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(weekday_minus_weekday_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(y)));
+  END_CPP11
+}
+// weekday.cpp
+cpp11::writable::integers weekday_from_time_point_cpp(cpp11::list_of<cpp11::integers> x);
+extern "C" SEXP _clock_weekday_from_time_point_cpp(SEXP x) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(weekday_from_time_point_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(x)));
+  END_CPP11
+}
+// weekday.cpp
+cpp11::writable::strings format_weekday_cpp(const cpp11::integers& x, const cpp11::strings& day_ab);
+extern "C" SEXP _clock_format_weekday_cpp(SEXP x, SEXP day_ab) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(format_weekday_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_ab)));
+  END_CPP11
+}
 // zone.cpp
 cpp11::writable::strings zone_standardize(const cpp11::strings& zone);
 extern "C" SEXP _clock_zone_standardize(SEXP zone) {
@@ -564,6 +592,7 @@ extern SEXP _clock_duration_unary_minus_cpp(SEXP, SEXP);
 extern SEXP _clock_format_duration_cpp(SEXP, SEXP);
 extern SEXP _clock_format_iso_year_week_day_cpp(SEXP, SEXP);
 extern SEXP _clock_format_time_point_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_format_weekday_cpp(SEXP, SEXP);
 extern SEXP _clock_format_year_month_day_cpp(SEXP, SEXP);
 extern SEXP _clock_format_year_month_weekday_cpp(SEXP, SEXP);
 extern SEXP _clock_format_year_quarter_day_cpp(SEXP, SEXP, SEXP);
@@ -600,6 +629,9 @@ extern SEXP _clock_set_field_year_quarter_day_last_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_sys_now_cpp();
 extern SEXP _clock_to_sys_duration_fields_from_sys_seconds_cpp(SEXP);
 extern SEXP _clock_to_sys_seconds_from_sys_duration_fields_cpp(SEXP);
+extern SEXP _clock_weekday_add_days_cpp(SEXP, SEXP);
+extern SEXP _clock_weekday_from_time_point_cpp(SEXP);
+extern SEXP _clock_weekday_minus_weekday_cpp(SEXP, SEXP);
 extern SEXP _clock_year_month_day_check_range_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_year_month_day_minus_year_month_day_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_year_month_day_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP);
@@ -641,6 +673,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_format_duration_cpp",                             (DL_FUNC) &_clock_format_duration_cpp,                              2},
     {"_clock_format_iso_year_week_day_cpp",                    (DL_FUNC) &_clock_format_iso_year_week_day_cpp,                     2},
     {"_clock_format_time_point_cpp",                           (DL_FUNC) &_clock_format_time_point_cpp,                           10},
+    {"_clock_format_weekday_cpp",                              (DL_FUNC) &_clock_format_weekday_cpp,                               2},
     {"_clock_format_year_month_day_cpp",                       (DL_FUNC) &_clock_format_year_month_day_cpp,                        2},
     {"_clock_format_year_month_weekday_cpp",                   (DL_FUNC) &_clock_format_year_month_weekday_cpp,                    2},
     {"_clock_format_year_quarter_day_cpp",                     (DL_FUNC) &_clock_format_year_quarter_day_cpp,                      3},
@@ -677,6 +710,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_sys_now_cpp",                                     (DL_FUNC) &_clock_sys_now_cpp,                                      0},
     {"_clock_to_sys_duration_fields_from_sys_seconds_cpp",     (DL_FUNC) &_clock_to_sys_duration_fields_from_sys_seconds_cpp,      1},
     {"_clock_to_sys_seconds_from_sys_duration_fields_cpp",     (DL_FUNC) &_clock_to_sys_seconds_from_sys_duration_fields_cpp,      1},
+    {"_clock_weekday_add_days_cpp",                            (DL_FUNC) &_clock_weekday_add_days_cpp,                             2},
+    {"_clock_weekday_from_time_point_cpp",                     (DL_FUNC) &_clock_weekday_from_time_point_cpp,                      1},
+    {"_clock_weekday_minus_weekday_cpp",                       (DL_FUNC) &_clock_weekday_minus_weekday_cpp,                        2},
     {"_clock_year_month_day_check_range_cpp",                  (DL_FUNC) &_clock_year_month_day_check_range_cpp,                   3},
     {"_clock_year_month_day_minus_year_month_day_cpp",         (DL_FUNC) &_clock_year_month_day_minus_year_month_day_cpp,          3},
     {"_clock_year_month_day_plus_duration_cpp",                (DL_FUNC) &_clock_year_month_day_plus_duration_cpp,                 4},
