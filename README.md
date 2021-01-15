@@ -22,8 +22,8 @@ dates and times. A few of the key features of clock are:
 
 -   *Duration* types for working with absolute intervals of time.
 
--   Clear and unambiguous handling of otherwise confusing date time
-    manipulation issues, such as leap days and daylight savings.
+-   Clear and unambiguous handling of confusing date time manipulation
+    issues, such as leap days, time zones, and daylight savings.
 
 -   A high level API supporting R’s Date and POSIXct classes to ease you
     into clock before having to learn about the more advanced features
