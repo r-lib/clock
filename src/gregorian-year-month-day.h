@@ -85,8 +85,7 @@ public:
 
   bool ok(r_ssize i) const NOEXCEPT;
 
-  template <typename Duration>
-  void add(const Duration& x, r_ssize i) NOEXCEPT;
+  void add(const date::years& x, r_ssize i) NOEXCEPT;
 
   void assign_year(const date::year& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
@@ -114,8 +113,7 @@ public:
 
   bool ok(r_ssize i) const NOEXCEPT;
 
-  template <typename Duration>
-  void add(const Duration& x, r_ssize i) NOEXCEPT;
+  void add(const date::months& x, r_ssize i) NOEXCEPT;
 
   void assign_month(const date::month& x, r_ssize i) NOEXCEPT;
   void assign_year_month(const date::year_month& x, r_ssize i) NOEXCEPT;
@@ -300,7 +298,6 @@ y::ok(r_ssize i) const NOEXCEPT
   return true;
 }
 
-template <>
 inline
 void
 y::add(const date::years& x, r_ssize i) NOEXCEPT
@@ -386,23 +383,6 @@ ym::ok(r_ssize i) const NOEXCEPT
   return true;
 }
 
-template <>
-inline
-void
-ym::add(const date::years& x, r_ssize i) NOEXCEPT
-{
-  assign_year(to_year(i) + x, i);
-}
-
-template <>
-inline
-void
-ym::add(const quarterly::quarters& x, r_ssize i) NOEXCEPT
-{
-  assign_year_month(to_year_month(i) + x, i);
-}
-
-template <>
 inline
 void
 ym::add(const date::months& x, r_ssize i) NOEXCEPT
