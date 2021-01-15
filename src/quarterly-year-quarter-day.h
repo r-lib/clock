@@ -36,13 +36,13 @@ stream_day(std::ostringstream& os, int day) NOEXCEPT
 template <quarterly::start S>
 inline
 quarterly::year_quarternum_quarterday<S>
-resolve_first_day_yqd(const quarterly::year_quarternum_quarterday<S>& x) {
+resolve_next_day_yqd(const quarterly::year_quarternum_quarterday<S>& x) {
   return ((x.year() / x.quarternum()) + quarterly::quarters(1)) / quarterly::quarterday{1u};
 }
 template <quarterly::start S>
 inline
 quarterly::year_quarternum_quarterday<S>
-resolve_last_day_yqd(const quarterly::year_quarternum_quarterday<S>& x) {
+resolve_previous_day_yqd(const quarterly::year_quarternum_quarterday<S>& x) {
   return x.year() / x.quarternum() / quarterly::last;
 }
 
@@ -570,14 +570,14 @@ yqnqd<S>::resolve(r_ssize i, const enum invalid type)
   }
 
   switch (type) {
-  case invalid::first_day:
-  case invalid::first_time: {
-    assign_year_quarternum_quarterday(detail::resolve_first_day_yqd(elt), i);
+  case invalid::next_day:
+  case invalid::next: {
+    assign_year_quarternum_quarterday(detail::resolve_next_day_yqd(elt), i);
     break;
   }
-  case invalid::last_day:
-  case invalid::last_time: {
-    assign_quarterday(detail::resolve_last_day_yqd(elt).quarterday(), i);
+  case invalid::previous_day:
+  case invalid::previous: {
+    assign_quarterday(detail::resolve_previous_day_yqd(elt).quarterday(), i);
     break;
   }
   case invalid::na: {
@@ -687,20 +687,20 @@ yqnqdh<S>::resolve(r_ssize i, const enum invalid type)
   }
 
   switch (type) {
-  case invalid::first_day:
-    yqnqd<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqd(elt), i);
+  case invalid::next_day:
+    yqnqd<S>::assign_year_quarternum_quarterday(detail::resolve_next_day_yqd(elt), i);
     break;
-  case invalid::first_time: {
-    yqnqd<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqd(elt), i);
-    assign_hour(rclock::detail::resolve_first_day_hour(), i);
+  case invalid::next: {
+    yqnqd<S>::assign_year_quarternum_quarterday(detail::resolve_next_day_yqd(elt), i);
+    assign_hour(rclock::detail::resolve_next_hour(), i);
     break;
   }
-  case invalid::last_day:
-    yqnqd<S>::assign_quarterday(detail::resolve_last_day_yqd(elt).quarterday(), i);
+  case invalid::previous_day:
+    yqnqd<S>::assign_quarterday(detail::resolve_previous_day_yqd(elt).quarterday(), i);
     break;
-  case invalid::last_time: {
-    yqnqd<S>::assign_quarterday(detail::resolve_last_day_yqd(elt).quarterday(), i);
-    assign_hour(rclock::detail::resolve_last_day_hour(), i);
+  case invalid::previous: {
+    yqnqd<S>::assign_quarterday(detail::resolve_previous_day_yqd(elt).quarterday(), i);
+    assign_hour(rclock::detail::resolve_previous_hour(), i);
     break;
   }
   case invalid::na: {
@@ -802,22 +802,22 @@ yqnqdhm<S>::resolve(r_ssize i, const enum invalid type)
   }
 
   switch (type) {
-  case invalid::first_day:
-    yqnqdh<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqd(elt), i);
+  case invalid::next_day:
+    yqnqdh<S>::assign_year_quarternum_quarterday(detail::resolve_next_day_yqd(elt), i);
     break;
-  case invalid::first_time: {
-    yqnqdh<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqd(elt), i);
-    yqnqdh<S>::assign_hour(rclock::detail::resolve_first_day_hour(), i);
-    assign_minute(rclock::detail::resolve_first_day_minute(), i);
+  case invalid::next: {
+    yqnqdh<S>::assign_year_quarternum_quarterday(detail::resolve_next_day_yqd(elt), i);
+    yqnqdh<S>::assign_hour(rclock::detail::resolve_next_hour(), i);
+    assign_minute(rclock::detail::resolve_next_minute(), i);
     break;
   }
-  case invalid::last_day:
-    yqnqdh<S>::assign_quarterday(detail::resolve_last_day_yqd(elt).quarterday(), i);
+  case invalid::previous_day:
+    yqnqdh<S>::assign_quarterday(detail::resolve_previous_day_yqd(elt).quarterday(), i);
     break;
-  case invalid::last_time: {
-    yqnqdh<S>::assign_quarterday(detail::resolve_last_day_yqd(elt).quarterday(), i);
-    yqnqdh<S>::assign_hour(rclock::detail::resolve_last_day_hour(), i);
-    assign_minute(rclock::detail::resolve_last_day_minute(), i);
+  case invalid::previous: {
+    yqnqdh<S>::assign_quarterday(detail::resolve_previous_day_yqd(elt).quarterday(), i);
+    yqnqdh<S>::assign_hour(rclock::detail::resolve_previous_hour(), i);
+    assign_minute(rclock::detail::resolve_previous_minute(), i);
     break;
   }
   case invalid::na: {
@@ -920,24 +920,24 @@ yqnqdhms<S>::resolve(r_ssize i, const enum invalid type)
   }
 
   switch (type) {
-  case invalid::first_day:
-    yqnqdhm<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqd(elt), i);
+  case invalid::next_day:
+    yqnqdhm<S>::assign_year_quarternum_quarterday(detail::resolve_next_day_yqd(elt), i);
     break;
-  case invalid::first_time: {
-    yqnqdhm<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqd(elt), i);
-    yqnqdhm<S>::assign_hour(rclock::detail::resolve_first_day_hour(), i);
-    yqnqdhm<S>::assign_minute(rclock::detail::resolve_first_day_minute(), i);
-    assign_second(rclock::detail::resolve_first_day_second(), i);
+  case invalid::next: {
+    yqnqdhm<S>::assign_year_quarternum_quarterday(detail::resolve_next_day_yqd(elt), i);
+    yqnqdhm<S>::assign_hour(rclock::detail::resolve_next_hour(), i);
+    yqnqdhm<S>::assign_minute(rclock::detail::resolve_next_minute(), i);
+    assign_second(rclock::detail::resolve_next_second(), i);
     break;
   }
-  case invalid::last_day:
-    yqnqdhm<S>::assign_quarterday(detail::resolve_last_day_yqd(elt).quarterday(), i);
+  case invalid::previous_day:
+    yqnqdhm<S>::assign_quarterday(detail::resolve_previous_day_yqd(elt).quarterday(), i);
     break;
-  case invalid::last_time: {
-    yqnqdhm<S>::assign_quarterday(detail::resolve_last_day_yqd(elt).quarterday(), i);
-    yqnqdhm<S>::assign_hour(rclock::detail::resolve_last_day_hour(), i);
-    yqnqdhm<S>::assign_minute(rclock::detail::resolve_last_day_minute(), i);
-    assign_second(rclock::detail::resolve_last_day_second(), i);
+  case invalid::previous: {
+    yqnqdhm<S>::assign_quarterday(detail::resolve_previous_day_yqd(elt).quarterday(), i);
+    yqnqdhm<S>::assign_hour(rclock::detail::resolve_previous_hour(), i);
+    yqnqdhm<S>::assign_minute(rclock::detail::resolve_previous_minute(), i);
+    assign_second(rclock::detail::resolve_previous_second(), i);
     break;
   }
   case invalid::na: {
@@ -1041,26 +1041,26 @@ yqnqdhmss<Duration, S>::resolve(r_ssize i, const enum invalid type)
   }
 
   switch (type) {
-  case invalid::first_day:
-    yqnqdhms<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqd(elt), i);
+  case invalid::next_day:
+    yqnqdhms<S>::assign_year_quarternum_quarterday(detail::resolve_next_day_yqd(elt), i);
     break;
-  case invalid::first_time: {
-    yqnqdhms<S>::assign_year_quarternum_quarterday(detail::resolve_first_day_yqd(elt), i);
-    yqnqdhms<S>::assign_hour(rclock::detail::resolve_first_day_hour(), i);
-    yqnqdhms<S>::assign_minute(rclock::detail::resolve_first_day_minute(), i);
-    yqnqdhms<S>::assign_second(rclock::detail::resolve_first_day_second(), i);
-    assign_subsecond(rclock::detail::resolve_first_day_subsecond<Duration>(), i);
+  case invalid::next: {
+    yqnqdhms<S>::assign_year_quarternum_quarterday(detail::resolve_next_day_yqd(elt), i);
+    yqnqdhms<S>::assign_hour(rclock::detail::resolve_next_hour(), i);
+    yqnqdhms<S>::assign_minute(rclock::detail::resolve_next_minute(), i);
+    yqnqdhms<S>::assign_second(rclock::detail::resolve_next_second(), i);
+    assign_subsecond(rclock::detail::resolve_next_subsecond<Duration>(), i);
     break;
   }
-  case invalid::last_day:
-    yqnqdhms<S>::assign_quarterday(detail::resolve_last_day_yqd(elt).quarterday(), i);
+  case invalid::previous_day:
+    yqnqdhms<S>::assign_quarterday(detail::resolve_previous_day_yqd(elt).quarterday(), i);
     break;
-  case invalid::last_time: {
-    yqnqdhms<S>::assign_quarterday(detail::resolve_last_day_yqd(elt).quarterday(), i);
-    yqnqdhms<S>::assign_hour(rclock::detail::resolve_last_day_hour(), i);
-    yqnqdhms<S>::assign_minute(rclock::detail::resolve_last_day_minute(), i);
-    yqnqdhms<S>::assign_second(rclock::detail::resolve_last_day_second(), i);
-    assign_subsecond(rclock::detail::resolve_last_day_subsecond<Duration>(), i);
+  case invalid::previous: {
+    yqnqdhms<S>::assign_quarterday(detail::resolve_previous_day_yqd(elt).quarterday(), i);
+    yqnqdhms<S>::assign_hour(rclock::detail::resolve_previous_hour(), i);
+    yqnqdhms<S>::assign_minute(rclock::detail::resolve_previous_minute(), i);
+    yqnqdhms<S>::assign_second(rclock::detail::resolve_previous_second(), i);
+    assign_subsecond(rclock::detail::resolve_previous_subsecond<Duration>(), i);
     break;
   }
   case invalid::na: {

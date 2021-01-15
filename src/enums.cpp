@@ -13,10 +13,10 @@ enum invalid parse_invalid(const cpp11::strings& x) {
 
   std::string string = x[0];
 
-  if (string == "last-time") return invalid::last_time;
-  if (string == "first-time") return invalid::first_time;
-  if (string == "last-day") return invalid::last_day;
-  if (string == "first-day") return invalid::first_day;
+  if (string == "previous") return invalid::previous;
+  if (string == "next") return invalid::next;
+  if (string == "previous-day") return invalid::previous_day;
+  if (string == "next-day") return invalid::next_day;
   if (string == "NA") return invalid::na;
   if (string == "error") return invalid::error;
 

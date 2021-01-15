@@ -10,45 +10,45 @@ namespace detail {
 
 inline
 std::chrono::hours
-resolve_first_day_hour() {
+resolve_next_hour() {
   return std::chrono::hours{0};
 }
 inline
 std::chrono::minutes
-resolve_first_day_minute() {
+resolve_next_minute() {
   return std::chrono::minutes{0};
 }
 inline
 std::chrono::seconds
-resolve_first_day_second() {
+resolve_next_second() {
   return std::chrono::seconds{0};
 }
 template <typename Duration>
 inline
 Duration
-resolve_first_day_subsecond() {
+resolve_next_subsecond() {
   return Duration{0};
 }
 
 inline
 std::chrono::hours
-resolve_last_day_hour() {
+resolve_previous_hour() {
   return std::chrono::hours{23};
 }
 inline
 std::chrono::minutes
-resolve_last_day_minute() {
+resolve_previous_minute() {
   return std::chrono::minutes{59};
 }
 inline
 std::chrono::seconds
-resolve_last_day_second() {
+resolve_previous_second() {
   return std::chrono::seconds{59};
 }
 template <typename Duration>
 inline
 Duration
-resolve_last_day_subsecond() {
+resolve_previous_subsecond() {
   return std::chrono::seconds{1} - Duration{1};
 }
 

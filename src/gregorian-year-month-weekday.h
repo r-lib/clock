@@ -32,13 +32,13 @@ stream_index(std::ostringstream& os, int index) NOEXCEPT
 
 inline
 date::year_month_weekday
-resolve_first_day_ymw(const date::year_month_weekday& x) {
+resolve_next_day_ymw(const date::year_month_weekday& x) {
   // First day in next month
   return date::year_month_weekday{((x.year() / x.month()) + date::months(1)) / date::day(1)};
 }
 inline
 date::year_month_weekday
-resolve_last_day_ymw(const date::year_month_weekday& x) {
+resolve_previous_day_ymw(const date::year_month_weekday& x) {
   // Last day in current month
   return date::year_month_weekday{x.year() / x.month() / date::last};
 }
@@ -555,14 +555,14 @@ ymwd::resolve(r_ssize i, const enum invalid type)
   }
 
   switch (type) {
-  case invalid::first_day:
-  case invalid::first_time: {
-    assign_year_month_weekday(detail::resolve_first_day_ymw(elt), i);
+  case invalid::next_day:
+  case invalid::next: {
+    assign_year_month_weekday(detail::resolve_next_day_ymw(elt), i);
     break;
   }
-  case invalid::last_day:
-  case invalid::last_time: {
-    assign_year_month_weekday(detail::resolve_last_day_ymw(elt), i);
+  case invalid::previous_day:
+  case invalid::previous: {
+    assign_year_month_weekday(detail::resolve_previous_day_ymw(elt), i);
     break;
   }
   case invalid::na: {
@@ -664,20 +664,20 @@ ymwdh::resolve(r_ssize i, const enum invalid type)
   }
 
   switch (type) {
-  case invalid::first_day:
-    assign_year_month_weekday(detail::resolve_first_day_ymw(elt), i);
+  case invalid::next_day:
+    assign_year_month_weekday(detail::resolve_next_day_ymw(elt), i);
     break;
-  case invalid::first_time: {
-    assign_year_month_weekday(detail::resolve_first_day_ymw(elt), i);
-    assign_hour(rclock::detail::resolve_first_day_hour(), i);
+  case invalid::next: {
+    assign_year_month_weekday(detail::resolve_next_day_ymw(elt), i);
+    assign_hour(rclock::detail::resolve_next_hour(), i);
     break;
   }
-  case invalid::last_day:
-    assign_year_month_weekday(detail::resolve_last_day_ymw(elt), i);
+  case invalid::previous_day:
+    assign_year_month_weekday(detail::resolve_previous_day_ymw(elt), i);
     break;
-  case invalid::last_time: {
-    assign_year_month_weekday(detail::resolve_last_day_ymw(elt), i);
-    assign_hour(rclock::detail::resolve_last_day_hour(), i);
+  case invalid::previous: {
+    assign_year_month_weekday(detail::resolve_previous_day_ymw(elt), i);
+    assign_hour(rclock::detail::resolve_previous_hour(), i);
     break;
   }
   case invalid::na: {
@@ -771,22 +771,22 @@ ymwdhm::resolve(r_ssize i, const enum invalid type)
   }
 
   switch (type) {
-  case invalid::first_day:
-    assign_year_month_weekday(detail::resolve_first_day_ymw(elt), i);
+  case invalid::next_day:
+    assign_year_month_weekday(detail::resolve_next_day_ymw(elt), i);
     break;
-  case invalid::first_time: {
-    assign_year_month_weekday(detail::resolve_first_day_ymw(elt), i);
-    assign_hour(rclock::detail::resolve_first_day_hour(), i);
-    assign_minute(rclock::detail::resolve_first_day_minute(), i);
+  case invalid::next: {
+    assign_year_month_weekday(detail::resolve_next_day_ymw(elt), i);
+    assign_hour(rclock::detail::resolve_next_hour(), i);
+    assign_minute(rclock::detail::resolve_next_minute(), i);
     break;
   }
-  case invalid::last_day:
-    assign_year_month_weekday(detail::resolve_last_day_ymw(elt), i);
+  case invalid::previous_day:
+    assign_year_month_weekday(detail::resolve_previous_day_ymw(elt), i);
     break;
-  case invalid::last_time: {
-    assign_year_month_weekday(detail::resolve_last_day_ymw(elt), i);
-    assign_hour(rclock::detail::resolve_last_day_hour(), i);
-    assign_minute(rclock::detail::resolve_last_day_minute(), i);
+  case invalid::previous: {
+    assign_year_month_weekday(detail::resolve_previous_day_ymw(elt), i);
+    assign_hour(rclock::detail::resolve_previous_hour(), i);
+    assign_minute(rclock::detail::resolve_previous_minute(), i);
     break;
   }
   case invalid::na: {
@@ -881,24 +881,24 @@ ymwdhms::resolve(r_ssize i, const enum invalid type)
   }
 
   switch (type) {
-  case invalid::first_day:
-    assign_year_month_weekday(detail::resolve_first_day_ymw(elt), i);
+  case invalid::next_day:
+    assign_year_month_weekday(detail::resolve_next_day_ymw(elt), i);
     break;
-  case invalid::first_time: {
-    assign_year_month_weekday(detail::resolve_first_day_ymw(elt), i);
-    assign_hour(rclock::detail::resolve_first_day_hour(), i);
-    assign_minute(rclock::detail::resolve_first_day_minute(), i);
-    assign_second(rclock::detail::resolve_first_day_second(), i);
+  case invalid::next: {
+    assign_year_month_weekday(detail::resolve_next_day_ymw(elt), i);
+    assign_hour(rclock::detail::resolve_next_hour(), i);
+    assign_minute(rclock::detail::resolve_next_minute(), i);
+    assign_second(rclock::detail::resolve_next_second(), i);
     break;
   }
-  case invalid::last_day:
-    assign_year_month_weekday(detail::resolve_last_day_ymw(elt), i);
+  case invalid::previous_day:
+    assign_year_month_weekday(detail::resolve_previous_day_ymw(elt), i);
     break;
-  case invalid::last_time: {
-    assign_year_month_weekday(detail::resolve_last_day_ymw(elt), i);
-    assign_hour(rclock::detail::resolve_last_day_hour(), i);
-    assign_minute(rclock::detail::resolve_last_day_minute(), i);
-    assign_second(rclock::detail::resolve_last_day_second(), i);
+  case invalid::previous: {
+    assign_year_month_weekday(detail::resolve_previous_day_ymw(elt), i);
+    assign_hour(rclock::detail::resolve_previous_hour(), i);
+    assign_minute(rclock::detail::resolve_previous_minute(), i);
+    assign_second(rclock::detail::resolve_previous_second(), i);
     break;
   }
   case invalid::na: {
@@ -1001,26 +1001,26 @@ ymwdhmss<Duration>::resolve(r_ssize i, const enum invalid type)
   }
 
   switch (type) {
-  case invalid::first_day:
-    assign_year_month_weekday(detail::resolve_first_day_ymw(elt), i);
+  case invalid::next_day:
+    assign_year_month_weekday(detail::resolve_next_day_ymw(elt), i);
     break;
-  case invalid::first_time: {
-    assign_year_month_weekday(detail::resolve_first_day_ymw(elt), i);
-    assign_hour(rclock::detail::resolve_first_day_hour(), i);
-    assign_minute(rclock::detail::resolve_first_day_minute(), i);
-    assign_second(rclock::detail::resolve_first_day_second(), i);
-    assign_subsecond(rclock::detail::resolve_first_day_subsecond<Duration>(), i);
+  case invalid::next: {
+    assign_year_month_weekday(detail::resolve_next_day_ymw(elt), i);
+    assign_hour(rclock::detail::resolve_next_hour(), i);
+    assign_minute(rclock::detail::resolve_next_minute(), i);
+    assign_second(rclock::detail::resolve_next_second(), i);
+    assign_subsecond(rclock::detail::resolve_next_subsecond<Duration>(), i);
     break;
   }
-  case invalid::last_day:
-    assign_year_month_weekday(detail::resolve_last_day_ymw(elt), i);
+  case invalid::previous_day:
+    assign_year_month_weekday(detail::resolve_previous_day_ymw(elt), i);
     break;
-  case invalid::last_time: {
-    assign_year_month_weekday(detail::resolve_last_day_ymw(elt), i);
-    assign_hour(rclock::detail::resolve_last_day_hour(), i);
-    assign_minute(rclock::detail::resolve_last_day_minute(), i);
-    assign_second(rclock::detail::resolve_last_day_second(), i);
-    assign_subsecond(rclock::detail::resolve_last_day_subsecond<Duration>(), i);
+  case invalid::previous: {
+    assign_year_month_weekday(detail::resolve_previous_day_ymw(elt), i);
+    assign_hour(rclock::detail::resolve_previous_hour(), i);
+    assign_minute(rclock::detail::resolve_previous_minute(), i);
+    assign_second(rclock::detail::resolve_previous_second(), i);
+    assign_subsecond(rclock::detail::resolve_previous_subsecond<Duration>(), i);
     break;
   }
   case invalid::na: {

@@ -6,10 +6,10 @@
 // -----------------------------------------------------------------------------
 
 enum class invalid {
-  last_time,
-  first_time,
-  last_day,
-  first_day,
+  previous,
+  next,
+  previous_day,
+  next_day,
   na,
   error
 };
