@@ -10,26 +10,24 @@ coverage](https://codecov.io/gh/DavisVaughan/clock/branch/master/graph/badge.svg
 [![R-CMD-check](https://github.com/DavisVaughan/clock/workflows/R-CMD-check/badge.svg)](https://github.com/DavisVaughan/clock/actions)
 <!-- badges: end -->
 
-The goal of clock is to provide new types for working with *naive* and
-*zoned* date-times. A *naive* date-time is completely unaware of any
-time zone. A *zoned* date-time can be thought of as a naive date-time
-plus a time zone.
+The goal of clock is to provide a comprehensive library for working with
+dates and times. A few of the key features of clock are:
 
-The standard Gregorian calendar is supported through naive classes like
-`year_month_day()` and `naive_datetime()` and zoned classes like
-`zoned_datetime()`. Additionally, there is support for other calendars,
-such as a quarterly calendar, through classes like `year_quarter_day()`.
-*Partial* calendars, which have a precision that is coarser than a
-single day, are also supported through classes like `year_month()` and
-`year_quarter()`.
+-   *Time points* with precision that can vary from second up to
+    nanosecond.
 
-Nanotime precision is supported for both naive and zoned types through
-`naive_nano_datetime()` and `zoned_nano_datetime()`.
+-   *Calendar* types, such as year-month-day, year-month-weekday,
+    year-quarter-day, and iso-year-week-day, that can vary in precision
+    from year up to nanosecond.
 
-Additionally, all functionality works with Date and POSIXct, with the
-goal of expanding on the groundwork laid by lubridate to make working
-around issues of daylight savings and leap years a little more
-intuitive.
+-   *Duration* types for working with absolute intervals of time.
+
+-   Clear and unambiguous handling of otherwise confusing date time
+    manipulation issues, such as leap days and daylight savings.
+
+-   A high level API supporting R’s Date and POSIXct classes to ease you
+    into clock before having to learn about the more advanced features
+    mentioned above.
 
 ## Installation
 
@@ -38,4 +36,53 @@ You can install the development version of clock with:
 ``` r
 # install.packages("remotes")
 remotes::install_github("DavisVaughan/clock")
+```
+
+## Example
+
+``` r
+library(clock)
+library(magrittr)
+```
+
+With clock, there is a high level API supporting Date and POSIXct. This
+is often the easiest way to begin using clock.
+
+For example, to add 5 days:
+
+``` r
+x <- as.Date("2019-05-01")
+
+add_days(x, 5)
+#> [1] "2019-05-06"
+```
+
+To add 5 hours:
+
+``` r
+y <- as.POSIXct("2019-01-01 02:30:00", tz = "America/New_York")
+
+add_hours(y, 5)
+#> [1] "2019-01-01 07:30:00 EST"
+```
+
+To get the month:
+
+``` r
+get_month(x)
+#> [1] 5
+
+get_month(y)
+#> [1] 1
+```
+
+To set the day:
+
+``` r
+set_day(x, 1:5)
+#> [1] "2019-05-01" "2019-05-02" "2019-05-03" "2019-05-04" "2019-05-05"
+
+# Last day in the month
+set_day(x, "last")
+#> [1] "2019-05-31"
 ```
