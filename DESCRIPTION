@@ -9,7 +9,7 @@ Authors@R:
       person(given = "RStudio",
              role = "cph"))
 Description: Provides a comprehensive interface for date and datetime
-    manipulations. Both local and zoned datetimes are supported, with
+    manipulations. Both naive and zoned datetimes are supported, with
     precision up to nanoseconds. Additionally, multiple types of calendars
     have been implemented, allowing for various ways to represent calendar
     dates, such as year-month-day, year-month-weekday, or
