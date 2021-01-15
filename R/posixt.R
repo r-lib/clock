@@ -167,6 +167,40 @@ get_offset.POSIXt <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
+set_year.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "error", ambiguous = "error") {
+  set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_year, ...)
+}
+#' @export
+set_month.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "error", ambiguous = "error") {
+  set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_month, ...)
+}
+#' @export
+set_day.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "error", ambiguous = "error") {
+  set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_day, ...)
+}
+#' @export
+set_hour.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "error", ambiguous = "error") {
+  set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_hour, ...)
+}
+#' @export
+set_minute.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "error", ambiguous = "error") {
+  set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_minute, ...)
+}
+#' @export
+set_second.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "error", ambiguous = "error") {
+  set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_second, ...)
+}
+set_posixt_field_year_month_day <- function(x, value, invalid, nonexistent, ambiguous, set_fn, ...) {
+  check_dots_empty()
+  zone <- get_tzone(x)
+  x <- as_year_month_day(x)
+  x <- set_fn(x, value)
+  x <- invalid_resolve(x, invalid = invalid)
+  as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
+}
+
+
+#' @export
 set_zone.POSIXt <- function(x, zone) {
   x <- to_posixct(x)
   zone <- zone_validate(zone)
