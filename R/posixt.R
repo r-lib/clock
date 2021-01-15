@@ -28,22 +28,30 @@ as_zoned_time.POSIXt <- function(x, ...) {
 
 #' @export
 as_year_month_day.POSIXt <- function(x) {
-  as_year_month_day(as_naive_time(x))
+  # Assumes zoned -> naive -> calendar is what the user expects
+  x <- as_naive_time(x)
+  as_year_month_day(x)
 }
 
 #' @export
 as_year_month_weekday.POSIXt <- function(x) {
-  as_year_month_weekday(as_naive_time(x))
+  # Assumes zoned -> naive -> calendar is what the user expects
+  x <- as_naive_time(x)
+  as_year_month_weekday(x)
 }
 
 #' @export
 as_year_quarter_day.POSIXt <- function(x, ..., start = 1L) {
-  as_year_quarter_day(as_naive_time(x), ..., start = start)
+  # Assumes zoned -> naive -> calendar is what the user expects
+  x <- as_naive_time(x)
+  as_year_quarter_day(x, ..., start = start)
 }
 
 #' @export
 as_iso_year_week_day.POSIXt <- function(x) {
-  as_iso_year_week_day(as_naive_time(x))
+  # Assumes zoned -> naive -> calendar is what the user expects
+  x <- as_naive_time(x)
+  as_iso_year_week_day(x)
 }
 
 # ------------------------------------------------------------------------------
