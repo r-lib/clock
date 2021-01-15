@@ -5,18 +5,19 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Local and Zoned Dates • clock</title>
+<title>Calendars, Time Points, and Durations • clock</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Local and Zoned Dates">
-<meta property="og:description" content="Provides comprehensive support for local and zoned
-    dates and times. A local date does not assume any particular time zone.
-    A zoned date is a local date with a time zone attached. Precision up
-    to nanoseconds is supported, and partial date types representing
-    coarser periods such as months or weeks are also implemented.">
+<script src="pkgdown.js"></script><meta property="og:title" content="Calendars, Time Points, and Durations">
+<meta property="og:description" content="Provides a comprehensive interface for date and datetime
+    manipulations. Both naive and zoned datetimes are supported, with
+    precision up to nanoseconds. Additionally, multiple types of calendars
+    have been implemented, allowing for various ways to represent calendar
+    dates, such as year-month-day, year-month-weekday, or
+    year-quarter-day.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -87,10 +88,14 @@
 <a href="#clock" class="anchor"></a>clock</h1></div>
 <!-- badges: start -->
 
-<p>The goal of clock is to provide new types for working with <em>naive</em> and <em>zoned</em> date-times. A <em>naive</em> date-time is completely unaware of any time zone. A <em>zoned</em> date-time can be thought of as a naive date-time plus a time zone.</p>
-<p>The standard Gregorian calendar is supported through naive classes like <code>year_month_day()</code> and <code>naive_datetime()</code> and zoned classes like <code>zoned_datetime()</code>. Additionally, there is support for other calendars, such as a quarterly calendar, through classes like <code>year_quarter_day()</code>. <em>Partial</em> calendars, which have a precision that is coarser than a single day, are also supported through classes like <code>year_month()</code> and <code>year_quarter()</code>.</p>
-<p>Nanotime precision is supported for both naive and zoned types through <code>naive_nano_datetime()</code> and <code>zoned_nano_datetime()</code>.</p>
-<p>Additionally, all functionality works with Date and POSIXct, with the goal of expanding on the groundwork laid by lubridate to make working around issues of daylight savings and leap years a little more intuitive.</p>
+<p>The goal of clock is to provide a comprehensive library for working with dates and times. A few of the key features of clock are:</p>
+<ul>
+<li><p><em>Time points</em> with precision that can vary from second up to nanosecond.</p></li>
+<li><p><em>Calendar</em> types, such as year-month-day, year-month-weekday, year-quarter-day, and iso-year-week-day, that can vary in precision from year up to nanosecond.</p></li>
+<li><p><em>Duration</em> types for working with absolute intervals of time.</p></li>
+<li><p>Clear and unambiguous handling of otherwise confusing date time manipulation issues, such as leap days and daylight savings.</p></li>
+<li><p>A high level API supporting R’s Date and POSIXct classes to ease you into clock before having to learn about the more advanced features mentioned above.</p></li>
+</ul>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -98,6 +103,41 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
 <span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"DavisVaughan/clock"</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#example" class="anchor"></a>Example</h2>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/DavisVaughan/clock">clock</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span></code></pre></div>
+<p>With clock, there is a high level API supporting Date and POSIXct. This is often the easiest way to begin using clock.</p>
+<p>For example, to add 5 days:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2019-05-01"</span><span class="op">)</span>
+
+<span class="fu">add_days</span><span class="op">(</span><span class="va">x</span>, <span class="fl">5</span><span class="op">)</span>
+<span class="co">#&gt; [1] "2019-05-06"</span></code></pre></div>
+<p>To add 5 hours:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-01 02:30:00"</span>, tz <span class="op">=</span> <span class="st">"America/New_York"</span><span class="op">)</span>
+
+<span class="fu">add_hours</span><span class="op">(</span><span class="va">y</span>, <span class="fl">5</span><span class="op">)</span>
+<span class="co">#&gt; [1] "2019-01-01 07:30:00 EST"</span></code></pre></div>
+<p>To get the month:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">get_month</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="co">#&gt; [1] 5</span>
+
+<span class="fu">get_month</span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
+<span class="co">#&gt; [1] 1</span></code></pre></div>
+<p>To set the day:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">set_day</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
+<span class="co">#&gt; [1] "2019-05-01" "2019-05-02" "2019-05-03" "2019-05-04" "2019-05-05"</span>
+
+<span class="co"># Last day in the month</span>
+<span class="fu">set_day</span><span class="op">(</span><span class="va">x</span>, <span class="st">"last"</span><span class="op">)</span>
+<span class="co">#&gt; [1] "2019-05-31"</span></code></pre></div>
 </div>
 </div>
   </div>
