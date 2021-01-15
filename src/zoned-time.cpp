@@ -37,7 +37,7 @@ get_naive_time_impl(const ClockDuration& x,
 [[cpp11::register]]
 cpp11::writable::list
 get_naive_time_cpp(cpp11::list_of<cpp11::integers> fields,
-                   const cpp11::strings& precision,
+                   const cpp11::strings& precision_string,
                    const cpp11::strings& zone) {
   using namespace rclock;
 
@@ -54,7 +54,7 @@ get_naive_time_cpp(cpp11::list_of<cpp11::integers> fields,
   duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::second: return get_naive_time_impl(ds, p_time_zone);
   case precision::millisecond: return get_naive_time_impl(dmilli, p_time_zone);
   case precision::microsecond: return get_naive_time_impl(dmicro, p_time_zone);
@@ -71,24 +71,24 @@ inline
 cpp11::writable::list
 as_zoned_sys_time_from_naive_time_impl(const ClockDuration& x,
                                        const date::time_zone* p_time_zone,
-                                       const cpp11::strings& nonexistent,
-                                       const cpp11::strings& ambiguous) {
+                                       const cpp11::strings& nonexistent_string,
+                                       const cpp11::strings& ambiguous_string) {
   using Duration = typename ClockDuration::duration;
 
   const r_ssize size = x.size();
   ClockDuration out(size);
 
-  const bool recycle_nonexistent = clock_is_scalar(nonexistent);
-  const bool recycle_ambiguous = clock_is_scalar(ambiguous);
+  const bool recycle_nonexistent = clock_is_scalar(nonexistent_string);
+  const bool recycle_ambiguous = clock_is_scalar(ambiguous_string);
 
   enum nonexistent nonexistent_val;
   enum ambiguous ambiguous_val;
 
   if (recycle_nonexistent) {
-    nonexistent_val = parse_nonexistent_one(nonexistent[0]);
+    nonexistent_val = parse_nonexistent_one(nonexistent_string[0]);
   }
   if (recycle_ambiguous) {
-    ambiguous_val = parse_ambiguous_one(ambiguous[0]);
+    ambiguous_val = parse_ambiguous_one(ambiguous_string[0]);
   }
 
   for (r_ssize i = 0; i < size; ++i) {
@@ -100,12 +100,12 @@ as_zoned_sys_time_from_naive_time_impl(const ClockDuration& x,
     const enum nonexistent elt_nonexistent_val =
       recycle_nonexistent ?
       nonexistent_val :
-      parse_nonexistent_one(nonexistent[i]);
+      parse_nonexistent_one(nonexistent_string[i]);
 
     const enum ambiguous elt_ambiguous_val =
       recycle_ambiguous ?
       ambiguous_val :
-      parse_ambiguous_one(ambiguous[i]);
+      parse_ambiguous_one(ambiguous_string[i]);
 
     const Duration elt = x[i];
     const date::local_time<Duration> elt_lt{elt};
@@ -125,10 +125,10 @@ as_zoned_sys_time_from_naive_time_impl(const ClockDuration& x,
 [[cpp11::register]]
 cpp11::writable::list
 as_zoned_sys_time_from_naive_time_cpp(cpp11::list_of<cpp11::integers> fields,
-                                      const cpp11::strings& precision,
+                                      const cpp11::strings& precision_string,
                                       const cpp11::strings& zone,
-                                      const cpp11::strings& nonexistent,
-                                      const cpp11::strings& ambiguous) {
+                                      const cpp11::strings& nonexistent_string,
+                                      const cpp11::strings& ambiguous_string) {
   using namespace rclock;
 
   const cpp11::writable::strings zone_standard = zone_standardize(zone);
@@ -144,11 +144,11 @@ as_zoned_sys_time_from_naive_time_cpp(cpp11::list_of<cpp11::integers> fields,
   duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision(precision)) {
-  case precision::second: return as_zoned_sys_time_from_naive_time_impl(ds, p_time_zone, nonexistent, ambiguous);
-  case precision::millisecond: return as_zoned_sys_time_from_naive_time_impl(dmilli, p_time_zone, nonexistent, ambiguous);
-  case precision::microsecond: return as_zoned_sys_time_from_naive_time_impl(dmicro, p_time_zone, nonexistent, ambiguous);
-  case precision::nanosecond: return as_zoned_sys_time_from_naive_time_impl(dnano, p_time_zone, nonexistent, ambiguous);
+  switch (parse_precision(precision_string)) {
+  case precision::second: return as_zoned_sys_time_from_naive_time_impl(ds, p_time_zone, nonexistent_string, ambiguous_string);
+  case precision::millisecond: return as_zoned_sys_time_from_naive_time_impl(dmilli, p_time_zone, nonexistent_string, ambiguous_string);
+  case precision::microsecond: return as_zoned_sys_time_from_naive_time_impl(dmicro, p_time_zone, nonexistent_string, ambiguous_string);
+  case precision::nanosecond: return as_zoned_sys_time_from_naive_time_impl(dnano, p_time_zone, nonexistent_string, ambiguous_string);
   default: clock_abort("Internal error: Should never be called.");
   }
 }
@@ -232,7 +232,7 @@ get_offset_impl(const ClockDuration& x,
 [[cpp11::register]]
 cpp11::writable::integers
 get_offset_cpp(cpp11::list_of<cpp11::integers> fields,
-               const cpp11::strings& precision,
+               const cpp11::strings& precision_string,
                const cpp11::strings& zone) {
   using namespace rclock;
 
@@ -249,7 +249,7 @@ get_offset_cpp(cpp11::list_of<cpp11::integers> fields,
   const duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   const duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::second: return get_offset_impl(ds, p_time_zone);
   case precision::millisecond: return get_offset_impl(dmilli, p_time_zone);
   case precision::microsecond: return get_offset_impl(dmicro, p_time_zone);

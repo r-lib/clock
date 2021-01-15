@@ -8,7 +8,7 @@
 [[cpp11::register]]
 void
 year_month_weekday_check_range_cpp(const cpp11::integers& x,
-                                   const cpp11::strings& component,
+                                   const cpp11::strings& component_string,
                                    const cpp11::strings& arg) {
   std::string x_arg_string = arg[0];
   const char* x_arg = x_arg_string.c_str();
@@ -16,7 +16,7 @@ year_month_weekday_check_range_cpp(const cpp11::integers& x,
   // Used to access the non-static method
   rclock::weekday::y dummy(0);
 
-  switch (parse_component(component)) {
+  switch (parse_component(component_string)) {
   case component::year: return calendar_check_range_impl<component::year>(dummy, x, x_arg);
   case component::month: return calendar_check_range_impl<component::month>(dummy, x, x_arg);
   case component::day: return calendar_check_range_impl<component::day>(dummy, x, x_arg);
@@ -29,6 +29,8 @@ year_month_weekday_check_range_cpp(const cpp11::integers& x,
   case component::nanosecond: return calendar_check_range_impl<component::nanosecond>(dummy, x, x_arg);
   default: clock_abort("Internal error: Unknown component");
   }
+
+  never_reached("year_month_weekday_check_range_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -36,7 +38,7 @@ year_month_weekday_check_range_cpp(const cpp11::integers& x,
 [[cpp11::register]]
 cpp11::writable::list
 collect_year_month_weekday_fields(cpp11::list_of<cpp11::integers> fields,
-                                  const cpp11::strings& precision) {
+                                  const cpp11::strings& precision_string) {
   using namespace rclock;
 
   cpp11::integers year = weekday::get_year(fields);
@@ -58,7 +60,7 @@ collect_year_month_weekday_fields(cpp11::list_of<cpp11::integers> fields,
   weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
   weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::year: {
     collect_field<component::year>(y, year, "year");
     return y.to_list();
@@ -137,13 +139,16 @@ collect_year_month_weekday_fields(cpp11::list_of<cpp11::integers> fields,
   }
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("collect_year_month_weekday_fields");
 }
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
 cpp11::writable::strings
-format_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision) {
+format_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
+                              const cpp11::strings& precision_string) {
   using namespace rclock;
 
   cpp11::integers year = weekday::get_year(fields);
@@ -165,7 +170,7 @@ format_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, const cpp1
   weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
   weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::year: return format_calendar_impl(y);
   case precision::month: return format_calendar_impl(ym);
   case precision::day: return format_calendar_impl(ymwd);
@@ -177,13 +182,16 @@ format_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, const cpp1
   case precision::nanosecond: return format_calendar_impl(ymwdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("format_year_month_weekday_cpp");
 }
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
 cpp11::writable::logicals
-invalid_detect_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision) {
+invalid_detect_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
+                                      const cpp11::strings& precision_string) {
   using namespace rclock;
 
   cpp11::integers year = weekday::get_year(fields);
@@ -205,7 +213,7 @@ invalid_detect_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, co
   weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
   weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::year: return invalid_detect_calendar_impl(y);
   case precision::month: return invalid_detect_calendar_impl(ym);
   case precision::day: return invalid_detect_calendar_impl(ymwd);
@@ -217,13 +225,16 @@ invalid_detect_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, co
   case precision::nanosecond: return invalid_detect_calendar_impl(ymwdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("invalid_detect_year_month_weekday_cpp");
 }
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
 bool
-invalid_any_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, cpp11::strings precision) {
+invalid_any_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
+                                   const cpp11::strings& precision_string) {
   using namespace rclock;
 
   cpp11::integers year = weekday::get_year(fields);
@@ -245,7 +256,7 @@ invalid_any_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, cpp11
   weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
   weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::year: return invalid_any_calendar_impl(y);
   case precision::month: return invalid_any_calendar_impl(ym);
   case precision::day: return invalid_any_calendar_impl(ymwd);
@@ -257,13 +268,16 @@ invalid_any_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, cpp11
   case precision::nanosecond: return invalid_any_calendar_impl(ymwdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("invalid_any_year_month_weekday_cpp");
 }
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
 int
-invalid_count_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision) {
+invalid_count_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
+                                     const cpp11::strings& precision_string) {
   using namespace rclock;
 
   cpp11::integers year = weekday::get_year(fields);
@@ -285,7 +299,7 @@ invalid_count_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, con
   weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
   weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::year: return invalid_count_calendar_impl(y);
   case precision::month: return invalid_count_calendar_impl(ym);
   case precision::day: return invalid_count_calendar_impl(ymwd);
@@ -297,6 +311,8 @@ invalid_count_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, con
   case precision::nanosecond: return invalid_count_calendar_impl(ymwdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("invalid_count_year_month_weekday_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -304,10 +320,10 @@ invalid_count_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, con
 [[cpp11::register]]
 cpp11::writable::list
 invalid_resolve_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
-                                       const cpp11::strings& precision,
-                                       const cpp11::strings& invalid) {
+                                       const cpp11::strings& precision_string,
+                                       const cpp11::strings& invalid_string) {
   using namespace rclock;
-  const enum invalid invalid_val = parse_invalid(invalid);
+  const enum invalid invalid_val = parse_invalid(invalid_string);
 
   cpp11::integers year = weekday::get_year(fields);
   cpp11::integers month = weekday::get_month(fields);
@@ -328,7 +344,7 @@ invalid_resolve_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
   weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
   weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::year: return invalid_resolve_calendar_impl(y, invalid_val);
   case precision::month: return invalid_resolve_calendar_impl(ym, invalid_val);
   case precision::day: return invalid_resolve_calendar_impl(ymwd, invalid_val);
@@ -340,6 +356,8 @@ invalid_resolve_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
   case precision::nanosecond: return invalid_resolve_calendar_impl(ymwdhmss3, invalid_val);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("invalid_resolve_year_month_weekday_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -349,7 +367,7 @@ cpp11::writable::list
 set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
                                  const cpp11::integers& value,
                                  const cpp11::strings& precision_fields,
-                                 const cpp11::strings& component) {
+                                 const cpp11::strings& component_string) {
   using namespace rclock;
   rclock::integers value2(value);
 
@@ -374,14 +392,14 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
 
   switch (parse_precision(precision_fields)) {
   case precision::year: {
-    switch (parse_component(component)) {
+    switch (parse_component(component_string)) {
     case component::year: return set_field_calendar<component::year>(y, value2);
     case component::month: return set_field_calendar<component::month>(y, value2);
     default: clock_abort("Internal error: Invalid component.");
     }
   }
   case precision::month: {
-    switch (parse_component(component)) {
+    switch (parse_component(component_string)) {
     case component::year: return set_field_calendar<component::year>(ym, value2);
     case component::month: return set_field_calendar<component::month>(ym, value2);
     // Note: month precision will be promoted up to day before setting weekday/index
@@ -389,7 +407,7 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     }
   }
   case precision::day: {
-    switch (parse_component(component)) {
+    switch (parse_component(component_string)) {
     case component::year: return set_field_calendar<component::year>(ymwd, value2);
     case component::month: return set_field_calendar<component::month>(ymwd, value2);
     case component::day: return set_field_calendar<component::day>(ymwd, value2);
@@ -399,7 +417,7 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     }
   }
   case precision::hour: {
-    switch (parse_component(component)) {
+    switch (parse_component(component_string)) {
     case component::year: return set_field_calendar<component::year>(ymwdh, value2);
     case component::month: return set_field_calendar<component::month>(ymwdh, value2);
     case component::day: return set_field_calendar<component::day>(ymwdh, value2);
@@ -410,7 +428,7 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     }
   }
   case precision::minute: {
-    switch (parse_component(component)) {
+    switch (parse_component(component_string)) {
     case component::year: return set_field_calendar<component::year>(ymwdhm, value2);
     case component::month: return set_field_calendar<component::month>(ymwdhm, value2);
     case component::day: return set_field_calendar<component::day>(ymwdhm, value2);
@@ -422,7 +440,7 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     }
   }
   case precision::second: {
-    switch (parse_component(component)) {
+    switch (parse_component(component_string)) {
     case component::year: return set_field_calendar<component::year>(ymwdhms, value2);
     case component::month: return set_field_calendar<component::month>(ymwdhms, value2);
     case component::day: return set_field_calendar<component::day>(ymwdhms, value2);
@@ -437,7 +455,7 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     }
   }
   case precision::millisecond: {
-    switch (parse_component(component)) {
+    switch (parse_component(component_string)) {
     case component::year: return set_field_calendar<component::year>(ymwdhmss1, value2);
     case component::month: return set_field_calendar<component::month>(ymwdhmss1, value2);
     case component::day: return set_field_calendar<component::day>(ymwdhmss1, value2);
@@ -450,7 +468,7 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     }
   }
   case precision::microsecond: {
-    switch (parse_component(component)) {
+    switch (parse_component(component_string)) {
     case component::year: return set_field_calendar<component::year>(ymwdhmss2, value2);
     case component::month: return set_field_calendar<component::month>(ymwdhmss2, value2);
     case component::day: return set_field_calendar<component::day>(ymwdhmss2, value2);
@@ -463,7 +481,7 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
     }
   }
   case precision::nanosecond: {
-    switch (parse_component(component)) {
+    switch (parse_component(component_string)) {
     case component::year: return set_field_calendar<component::year>(ymwdhmss3, value2);
     case component::month: return set_field_calendar<component::month>(ymwdhmss3, value2);
     case component::day: return set_field_calendar<component::day>(ymwdhmss3, value2);
@@ -477,6 +495,8 @@ set_field_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
   }
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("set_field_year_month_weekday_cpp");
 }
 
 template <class Calendar>
@@ -535,6 +555,8 @@ set_field_year_month_weekday_last_cpp(cpp11::list_of<cpp11::integers> fields,
   case precision::nanosecond: return set_field_year_month_weekday_last_impl(ymwdhmss3);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("set_field_year_month_weekday_last_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -639,6 +661,8 @@ year_month_weekday_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields,
     }
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("year_month_weekday_plus_duration_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -646,7 +670,7 @@ year_month_weekday_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields,
 [[cpp11::register]]
 cpp11::writable::list
 as_sys_time_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
-                               const cpp11::strings& precision) {
+                               const cpp11::strings& precision_string) {
   using namespace rclock;
 
   cpp11::integers year = weekday::get_year(fields);
@@ -666,7 +690,7 @@ as_sys_time_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
   weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
   weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::day: return as_sys_time_from_calendar_impl<duration::days>(ymwd);
   case precision::hour: return as_sys_time_from_calendar_impl<duration::hours>(ymwdh);
   case precision::minute: return as_sys_time_from_calendar_impl<duration::minutes>(ymwdhm);
@@ -675,15 +699,17 @@ as_sys_time_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
   case precision::microsecond: return as_sys_time_from_calendar_impl<duration::microseconds>(ymwdhmss2);
   case precision::nanosecond: return as_sys_time_from_calendar_impl<duration::nanoseconds>(ymwdhmss3);
   default: {
-    std::string precision_string = precision[0];
+    std::string precision_str = precision_string[0];
     std::string message =
       "Can't convert to a time point from a calendar with '" +
-      precision_string +
+      precision_str +
       "' precision. " +
       "A minimum of 'day' precision is required.";
     clock_abort(message.c_str());
   }
   }
+
+  never_reached("as_sys_time_year_month_weekday_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -691,7 +717,7 @@ as_sys_time_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
 [[cpp11::register]]
 cpp11::writable::list
 as_year_month_weekday_from_sys_time_cpp(cpp11::list_of<cpp11::integers> fields,
-                                        const cpp11::strings& precision) {
+                                        const cpp11::strings& precision_string) {
   using namespace rclock;
 
   cpp11::integers ticks = duration::get_ticks(fields);
@@ -706,7 +732,7 @@ as_year_month_weekday_from_sys_time_cpp(cpp11::list_of<cpp11::integers> fields,
   duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::day: return as_calendar_from_sys_time_impl<weekday::ymwd>(dd);
   case precision::hour: return as_calendar_from_sys_time_impl<weekday::ymwdh>(dh);
   case precision::minute: return as_calendar_from_sys_time_impl<weekday::ymwdhm>(dmin);
@@ -716,6 +742,8 @@ as_year_month_weekday_from_sys_time_cpp(cpp11::list_of<cpp11::integers> fields,
   case precision::nanosecond: return as_calendar_from_sys_time_impl<weekday::ymwdhmss<std::chrono::nanoseconds>>(dnano);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("as_year_month_weekday_from_sys_time_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -762,7 +790,7 @@ year_month_minus_year_month_impl(const rclock::weekday::ym& x,
 cpp11::writable::list
 year_month_weekday_minus_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> x,
                                                 cpp11::list_of<cpp11::integers> y,
-                                                const cpp11::strings& precision) {
+                                                const cpp11::strings& precision_string) {
   const cpp11::integers x_year = rclock::weekday::get_year(x);
   const cpp11::integers x_month = rclock::weekday::get_month(x);
 
@@ -775,9 +803,11 @@ year_month_weekday_minus_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> 
   const rclock::weekday::y y_y{y_year};
   const rclock::weekday::ym y_ym{y_year, y_month};
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::year: return year_minus_year_impl(x_y, y_y);
   case precision::month: return year_month_minus_year_month_impl(x_ym, y_ym);
   default: clock_abort("Internal error: Invalid precision.");
   }
+
+  never_reached("year_month_weekday_minus_year_month_weekday_cpp");
 }

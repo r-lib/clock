@@ -2,6 +2,7 @@
 #define CLOCK_ENUMS_H
 
 #include "clock.h"
+#include "utils.h"
 // -----------------------------------------------------------------------------
 
 enum class invalid {
@@ -97,16 +98,17 @@ precision_to_string(const enum precision precision_val) {
   case precision::microsecond: return "microsecond";
   case precision::nanosecond: return "nanosecond";
   }
+  never_reached("precision_to_string");
 }
 
 // -----------------------------------------------------------------------------
 
-enum class clock {
+enum class clock_name {
   sys,
   naive
 };
 
-enum clock parse_clock(const cpp11::strings& x);
+enum clock_name parse_clock_name(const cpp11::strings& x);
 
 // -----------------------------------------------------------------------------
 #endif

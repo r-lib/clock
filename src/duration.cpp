@@ -51,7 +51,7 @@ format_duration_impl(const ClockDuration& cd) {
 
 [[cpp11::register]]
 cpp11::writable::strings format_duration_cpp(cpp11::list_of<cpp11::integers> fields,
-                                             const cpp11::strings& precision) {
+                                             const cpp11::strings& precision_string) {
   using namespace rclock;
 
   cpp11::integers ticks = duration::get_ticks(fields);
@@ -70,7 +70,7 @@ cpp11::writable::strings format_duration_cpp(cpp11::list_of<cpp11::integers> fie
   duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::year: return format_duration_impl(dy);
   case precision::quarter: return format_duration_impl(dq);
   case precision::month: return format_duration_impl(dm);
@@ -82,8 +82,9 @@ cpp11::writable::strings format_duration_cpp(cpp11::list_of<cpp11::integers> fie
   case precision::millisecond: return format_duration_impl(dmilli);
   case precision::microsecond: return format_duration_impl(dmicro);
   case precision::nanosecond: return format_duration_impl(dnano);
-  default: clock_abort("Internal error: Should never be called.");
   }
+
+  never_reached("format_duration_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -113,10 +114,10 @@ duration_helper_impl(const cpp11::integers& n) {
 [[cpp11::register]]
 cpp11::writable::list_of<cpp11::writable::integers>
 duration_helper_cpp(const cpp11::integers& n,
-                    const cpp11::strings& precision) {
+                    const cpp11::strings& precision_string) {
   using namespace rclock;
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::year: return duration_helper_impl<duration::years>(n);
   case precision::quarter: return duration_helper_impl<duration::quarters>(n);
   case precision::month: return duration_helper_impl<duration::months>(n);
@@ -128,8 +129,9 @@ duration_helper_cpp(const cpp11::integers& n,
   case precision::millisecond: return duration_helper_impl<duration::milliseconds>(n);
   case precision::microsecond: return duration_helper_impl<duration::microseconds>(n);
   case precision::nanosecond: return duration_helper_impl<duration::nanoseconds>(n);
-  default: clock_abort("Internal error: Should never be called.");
   }
+
+  never_reached("duration_helper_cpp");
 }
 
 // -----------------------------------------------------------------------------
@@ -182,6 +184,8 @@ duration_cast_switch2(const ClockDurationFrom& cd,
   case precision::microsecond: return duration_cast_impl<duration::microseconds>(cd);
   case precision::nanosecond: return duration_cast_impl<duration::nanoseconds>(cd);
   }
+
+  never_reached("duration_cast_switch2");
 }
 
 inline
@@ -220,6 +224,8 @@ duration_cast_switch(cpp11::list_of<cpp11::integers>& fields,
   case precision::microsecond: return duration_cast_switch2(dmicro, precision_to_val);
   case precision::nanosecond: return duration_cast_switch2(dnano, precision_to_val);
   }
+
+  never_reached("duration_cast_switch");
 }
 
 [[cpp11::register]]
@@ -319,6 +325,8 @@ duration_arith_switch2(const ClockDuration1& x,
   case precision::microsecond: return duration_arith_impl(x, dmicro, op);
   case precision::nanosecond: return duration_arith_impl(x, dnano, op);
   }
+
+  never_reached("duration_arith_switch2");
 }
 
 static
@@ -360,6 +368,8 @@ duration_arith_switch(cpp11::list_of<cpp11::integers>& x,
   case precision::microsecond: return duration_arith_switch2(dmicro, y, precision_y_val, op);
   case precision::nanosecond: return duration_arith_switch2(dnano, y, precision_y_val, op);
   }
+
+  never_reached("duration_arith_switch");
 }
 
 static inline enum precision duration_common_precision(const enum precision x_precision, const enum precision y_precision);
@@ -454,6 +464,8 @@ duration_common_precision_impl() {
   } else {
     return std::make_pair(precision::year, false);
   }
+
+  never_reached("duration_common_precision_impl");
 }
 
 template <typename Duration1>
@@ -474,6 +486,7 @@ duration_common_precision_switch2(const enum precision& y_precision) {
   case precision::microsecond: return duration_common_precision_impl<Duration1, std::chrono::microseconds>();
   case precision::nanosecond: return duration_common_precision_impl<Duration1, std::chrono::nanoseconds>();
   }
+  never_reached("duration_common_precision_switch2");
 }
 
 static
@@ -494,6 +507,7 @@ duration_common_precision_pair(const enum precision& x_precision,
   case precision::microsecond: return duration_common_precision_switch2<std::chrono::microseconds>(y_precision);
   case precision::nanosecond: return duration_common_precision_switch2<std::chrono::nanoseconds>(y_precision);
   }
+  never_reached("duration_common_precision_pair");
 }
 
 static
@@ -727,6 +741,8 @@ duration_rounding_switch(cpp11::list_of<cpp11::integers>& fields,
     }
   }
   }
+
+  never_reached("duration_rounding_switch");
 }
 
 [[cpp11::register]]
@@ -800,7 +816,7 @@ duration_unary_minus_impl(const ClockDuration& x) {
 
 [[cpp11::register]]
 cpp11::writable::list
-duration_unary_minus_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision) {
+duration_unary_minus_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string) {
   using namespace rclock;
 
   cpp11::integers ticks = duration::get_ticks(fields);
@@ -819,7 +835,7 @@ duration_unary_minus_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::st
   duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision(precision)) {
+  switch (parse_precision(precision_string)) {
   case precision::year: return duration_unary_minus_impl(dy);
   case precision::quarter: return duration_unary_minus_impl(dq);
   case precision::month: return duration_unary_minus_impl(dm);
@@ -832,6 +848,8 @@ duration_unary_minus_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::st
   case precision::microsecond: return duration_unary_minus_impl(dmicro);
   case precision::nanosecond: return duration_unary_minus_impl(dnano);
   }
+
+  never_reached("duration_unary_minus_cpp");
 }
 
 

@@ -100,7 +100,7 @@ public:
   y(const cpp11::integers& year);
 
   bool is_na(r_ssize i) const NOEXCEPT;
-  CONSTCD11 r_ssize size() const NOEXCEPT;
+  r_ssize size() const NOEXCEPT;
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
 
@@ -306,7 +306,6 @@ y::is_na(r_ssize i) const NOEXCEPT
   return year_.is_na(i);
 }
 
-CONSTCD11
 inline
 r_ssize
 y::size() const NOEXCEPT
