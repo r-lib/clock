@@ -216,21 +216,35 @@ duration_cast <- function(x, precision) {
 }
 
 #' @export
-duration_floor <- function(x, precision) {
-  duration_rounder(x, precision, duration_floor_cpp, "floor")
+duration_floor <- function(x, precision, ..., n = 1L) {
+  duration_rounder(x, precision, n, duration_floor_cpp, "floor", ...)
 }
 
 #' @export
-duration_ceil <- function(x, precision) {
-  duration_rounder(x, precision, duration_ceil_cpp, "ceil")
+duration_ceiling <- function(x, precision, ..., n = 1L) {
+  duration_rounder(x, precision, n, duration_ceiling_cpp, "ceiling", ...)
 }
 
 #' @export
-duration_round <- function(x, precision) {
-  duration_rounder(x, precision, duration_round_cpp, "round")
+duration_round <- function(x, precision, ..., n = 1L) {
+  duration_rounder(x, precision, n, duration_round_cpp, "round", ...)
 }
 
-duration_rounder <- function(x, precision, rounder, verb) {
+duration_rounder <- function(x, precision, n, rounder, verb, ...) {
+  check_dots_empty()
+
+  if (!is_duration(x)) {
+    abort("`x` must be a duration object.")
+  }
+
+  n <- vec_cast(n, integer(), x_arg = "n")
+  if (!is_number(n)) {
+    abort("`n` must be a single number.")
+  }
+  if (n <= 0L) {
+    abort("`n` must be a positive number.")
+  }
+
   if (!is_valid_precision(precision)) {
     abort("`precision` must be a valid precision string.")
   }
@@ -241,7 +255,7 @@ duration_rounder <- function(x, precision, rounder, verb) {
     abort(paste0("Can't ", verb, " to a more precise precision."))
   }
 
-  fields <- rounder(x, x_precision, precision)
+  fields <- rounder(x, x_precision, precision, n)
 
   new_duration(
     ticks = fields$ticks,

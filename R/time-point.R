@@ -419,22 +419,49 @@ time_point_cast <- function(x, precision) {
   new_time_point(duration, clock = time_point_clock(x), names = names(x))
 }
 
+# Notes:
+# Boundary handling for `time_point_ceiling()` requires a little bit of
+# explanation. Both flooring and ceiling while on a boundary returns the
+# input at the new precision, without changing the actual value.
+# This is mathematically consistent with definitions of floor and
+# ceiling, as floor(2) == ceiling(2) == 2. For example:
+#
+# x <- as_naive_time(year_month_day(1970, 01, 01, 00, 00, 00))
+# time_point_ceiling(x, "second") == "1970-01-01T00:00:00"
+# time_point_ceiling(x, "day") == "1970-01-01"
+# time_point_ceiling(x, "day", n = 2) == "1970-01-01"
+# time_point_ceiling(x + 1, "day") == "1970-01-02"
+#
+# lubridate has special default handling of Date objects that rounds up with ceil
+# lubridate::ceiling_date(as.Date("1970-01-01"), "day") == "1970-01-02"
+#
+# It would not make sense for this to round up, since we consider x and y
+# to be exactly identical time points, just with differing precision
+# y <- as_naive_time(year_month_day(1970, 01, 01))
+# time_point_ceiling(y, "day") == "1970-01-01"
+# x == y is TRUE
+#
+# Should add an example of changing the origin time, like:
+# time_point_floor(x - duration_seconds(-86400), "day", n = 2) + duration_seconds(-86400)
+
 #' @export
-time_point_floor <- function(x, precision) {
-  time_point_rounder(x, precision, duration_floor)
+time_point_floor <- function(x, precision, ..., n = 1L) {
+  time_point_rounder(x, precision, n, duration_floor, ...)
 }
 
 #' @export
-time_point_ceil <- function(x, precision) {
-  time_point_rounder(x, precision, duration_ceil)
+time_point_ceiling <- function(x, precision, ..., n = 1L) {
+  time_point_rounder(x, precision, n, duration_ceiling, ...)
 }
 
 #' @export
-time_point_round <- function(x, precision) {
-  time_point_rounder(x, precision, duration_round)
+time_point_round <- function(x, precision, ..., n = 1L) {
+  time_point_rounder(x, precision, n, duration_round, ...)
 }
 
-time_point_rounder <- function(x, precision, duration_rounder) {
+time_point_rounder <- function(x, precision, n, duration_rounder, ...) {
+  check_dots_empty()
+
   if (!is_time_point(x)) {
     abort("`x` must be a 'time_point'.")
   }
@@ -444,7 +471,7 @@ time_point_rounder <- function(x, precision, duration_rounder) {
   }
 
   duration <- time_point_duration(x)
-  duration <- duration_rounder(duration, precision)
+  duration <- duration_rounder(duration, precision, n = n)
 
   new_time_point(duration, clock = time_point_clock(x), names = names(x))
 }
