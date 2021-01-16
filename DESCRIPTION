@@ -29,7 +29,7 @@ Suggests:
     magrittr,
     pillar,
     rmarkdown,
-    testthat,
+    testthat (>= 3.0.0),
     withr
 LinkingTo: 
     cpp11
