@@ -440,6 +440,9 @@ time_point_cast <- function(x, precision) {
 # y <- as_naive_time(year_month_day(1970, 01, 01))
 # time_point_ceiling(y, "day") == "1970-01-01"
 # x == y is TRUE
+#
+# Should add an example of changing the origin time, like:
+# time_point_floor(x - duration_seconds(-86400), "day", n = 2) + duration_seconds(-86400)
 
 #' @export
 time_point_floor <- function(x, precision, ..., n = 1L) {
