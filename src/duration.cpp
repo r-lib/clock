@@ -563,31 +563,92 @@ enum class rounding {
   ceil,
 };
 
+template <class Duration>
+static
+inline
+Duration
+clock_multi_floor_impl(const Duration& x, const int& n) {
+  const typename Duration::rep c = x.count();
+  return Duration{(c >= 0 ? c : (c - n + 1)) / n * n};
+}
+
+template <class DurationTo, class DurationFrom>
+static
+inline
+DurationTo
+clock_floor(const DurationFrom& d, const int& n) {
+  const DurationTo x = date::floor<DurationTo>(d);
+  return n == 1 ? x : clock_multi_floor_impl(x, n);
+}
+
+template <class DurationTo, class DurationFrom>
+static
+inline
+DurationTo
+clock_ceil(const DurationFrom& d, const int& n) {
+  DurationTo x = clock_floor<DurationTo>(d, n);
+  if (x < d) {
+    // Return input at new precision if on boundary, otherwise do ceiling
+    x += DurationTo{n};
+  }
+  return x;
+}
+
+template <class DurationTo, class DurationFrom>
+static
+inline
+DurationTo
+clock_round(const DurationFrom& d, const int& n) {
+  const DurationTo floor = clock_floor<DurationTo>(d, n);
+  const DurationTo ceil = floor < d ? floor + DurationTo{n} : floor;
+
+  if (ceil - d <= d - floor) {
+    return ceil;
+  } else {
+    return floor;
+  }
+}
+
 template <class ClockDurationTo, class ClockDurationFrom>
 cpp11::writable::list
-duration_rounding_impl(const ClockDurationFrom& cd, const enum rounding& type) {
+duration_rounding_impl(const ClockDurationFrom& cd,
+                       const int& n,
+                       const enum rounding& type) {
   using DurationFrom = typename ClockDurationFrom::duration;
   using DurationTo = typename ClockDurationTo::duration;
-
-  if (std::is_same<DurationFrom, DurationTo>::value) {
-    return(cd.to_list());
-  }
 
   r_ssize size = cd.size();
   ClockDurationTo out(size);
 
-  for (r_ssize i = 0; i < size; ++i) {
-    if (cd.is_na(i)) {
-      out.assign_na(i);
-      continue;
+  if (type == rounding::floor) {
+    for (r_ssize i = 0; i < size; ++i) {
+      if (cd.is_na(i)) {
+        out.assign_na(i);
+        continue;
+      }
+      const DurationFrom from = cd[i];
+      const DurationTo to = clock_floor<DurationTo>(from, n);
+      out.assign(to, i);
     }
-
-    const DurationFrom from = cd[i];
-
-    switch (type) {
-    case rounding::round: out.assign(date::round<DurationTo>(from), i); break;
-    case rounding::floor: out.assign(date::floor<DurationTo>(from), i); break;
-    case rounding::ceil: out.assign(date::ceil<DurationTo>(from), i); break;
+  } else if (type == rounding::ceil) {
+    for (r_ssize i = 0; i < size; ++i) {
+      if (cd.is_na(i)) {
+        out.assign_na(i);
+        continue;
+      }
+      const DurationFrom from = cd[i];
+      const DurationTo to = clock_ceil<DurationTo>(from, n);
+      out.assign(to, i);
+    }
+  } else {
+    for (r_ssize i = 0; i < size; ++i) {
+      if (cd.is_na(i)) {
+        out.assign_na(i);
+        continue;
+      }
+      const DurationFrom from = cd[i];
+      const DurationTo to = clock_round<DurationTo>(from, n);
+      out.assign(to, i);
     }
   }
 
@@ -599,6 +660,7 @@ cpp11::writable::list
 duration_rounding_switch(cpp11::list_of<cpp11::integers>& fields,
                          const enum precision& precision_from_val,
                          const enum precision& precision_to_val,
+                         const int& n,
                          const enum rounding& type) {
   using namespace rclock;
 
@@ -621,122 +683,122 @@ duration_rounding_switch(cpp11::list_of<cpp11::integers>& fields,
   switch (precision_from_val) {
   case precision::year: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(dy, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dy, n, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
   case precision::quarter: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(dq, type);
-    case precision::quarter: return duration_rounding_impl<duration::quarters>(dq, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dq, n, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(dq, n, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
   case precision::month: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(dm, type);
-    case precision::quarter: return duration_rounding_impl<duration::quarters>(dm, type);
-    case precision::month: return duration_rounding_impl<duration::months>(dm, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dm, n, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(dm, n, type);
+    case precision::month: return duration_rounding_impl<duration::months>(dm, n, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
   case precision::week: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(dw, type);
-    case precision::quarter: return duration_rounding_impl<duration::quarters>(dw, type);
-    case precision::month: return duration_rounding_impl<duration::months>(dw, type);
-    case precision::week: return duration_rounding_impl<duration::weeks>(dw, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dw, n, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(dw, n, type);
+    case precision::month: return duration_rounding_impl<duration::months>(dw, n, type);
+    case precision::week: return duration_rounding_impl<duration::weeks>(dw, n, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
   case precision::day: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(dd, type);
-    case precision::quarter: return duration_rounding_impl<duration::quarters>(dd, type);
-    case precision::month: return duration_rounding_impl<duration::months>(dd, type);
-    case precision::week: return duration_rounding_impl<duration::weeks>(dd, type);
-    case precision::day: return duration_rounding_impl<duration::days>(dd, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dd, n, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(dd, n, type);
+    case precision::month: return duration_rounding_impl<duration::months>(dd, n, type);
+    case precision::week: return duration_rounding_impl<duration::weeks>(dd, n, type);
+    case precision::day: return duration_rounding_impl<duration::days>(dd, n, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
   case precision::hour: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(dh, type);
-    case precision::quarter: return duration_rounding_impl<duration::quarters>(dh, type);
-    case precision::month: return duration_rounding_impl<duration::months>(dh, type);
-    case precision::week: return duration_rounding_impl<duration::weeks>(dh, type);
-    case precision::day: return duration_rounding_impl<duration::days>(dh, type);
-    case precision::hour: return duration_rounding_impl<duration::hours>(dh, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dh, n, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(dh, n, type);
+    case precision::month: return duration_rounding_impl<duration::months>(dh, n, type);
+    case precision::week: return duration_rounding_impl<duration::weeks>(dh, n, type);
+    case precision::day: return duration_rounding_impl<duration::days>(dh, n, type);
+    case precision::hour: return duration_rounding_impl<duration::hours>(dh, n, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
   case precision::minute: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(dmin, type);
-    case precision::quarter: return duration_rounding_impl<duration::quarters>(dmin, type);
-    case precision::month: return duration_rounding_impl<duration::months>(dmin, type);
-    case precision::week: return duration_rounding_impl<duration::weeks>(dmin, type);
-    case precision::day: return duration_rounding_impl<duration::days>(dmin, type);
-    case precision::hour: return duration_rounding_impl<duration::hours>(dmin, type);
-    case precision::minute: return duration_rounding_impl<duration::minutes>(dmin, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dmin, n, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(dmin, n, type);
+    case precision::month: return duration_rounding_impl<duration::months>(dmin, n, type);
+    case precision::week: return duration_rounding_impl<duration::weeks>(dmin, n, type);
+    case precision::day: return duration_rounding_impl<duration::days>(dmin, n, type);
+    case precision::hour: return duration_rounding_impl<duration::hours>(dmin, n, type);
+    case precision::minute: return duration_rounding_impl<duration::minutes>(dmin, n, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
   case precision::second: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(ds, type);
-    case precision::quarter: return duration_rounding_impl<duration::quarters>(ds, type);
-    case precision::month: return duration_rounding_impl<duration::months>(ds, type);
-    case precision::week: return duration_rounding_impl<duration::weeks>(ds, type);
-    case precision::day: return duration_rounding_impl<duration::days>(ds, type);
-    case precision::hour: return duration_rounding_impl<duration::hours>(ds, type);
-    case precision::minute: return duration_rounding_impl<duration::minutes>(ds, type);
-    case precision::second: return duration_rounding_impl<duration::seconds>(ds, type);
+    case precision::year: return duration_rounding_impl<duration::years>(ds, n, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(ds, n, type);
+    case precision::month: return duration_rounding_impl<duration::months>(ds, n, type);
+    case precision::week: return duration_rounding_impl<duration::weeks>(ds, n, type);
+    case precision::day: return duration_rounding_impl<duration::days>(ds, n, type);
+    case precision::hour: return duration_rounding_impl<duration::hours>(ds, n, type);
+    case precision::minute: return duration_rounding_impl<duration::minutes>(ds, n, type);
+    case precision::second: return duration_rounding_impl<duration::seconds>(ds, n, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
   case precision::millisecond: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(dmilli, type);
-    case precision::quarter: return duration_rounding_impl<duration::quarters>(dmilli, type);
-    case precision::month: return duration_rounding_impl<duration::months>(dmilli, type);
-    case precision::week: return duration_rounding_impl<duration::weeks>(dmilli, type);
-    case precision::day: return duration_rounding_impl<duration::days>(dmilli, type);
-    case precision::hour: return duration_rounding_impl<duration::hours>(dmilli, type);
-    case precision::minute: return duration_rounding_impl<duration::minutes>(dmilli, type);
-    case precision::second: return duration_rounding_impl<duration::seconds>(dmilli, type);
-    case precision::millisecond: return duration_rounding_impl<duration::milliseconds>(dmilli, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dmilli, n, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(dmilli, n, type);
+    case precision::month: return duration_rounding_impl<duration::months>(dmilli, n, type);
+    case precision::week: return duration_rounding_impl<duration::weeks>(dmilli, n, type);
+    case precision::day: return duration_rounding_impl<duration::days>(dmilli, n, type);
+    case precision::hour: return duration_rounding_impl<duration::hours>(dmilli, n, type);
+    case precision::minute: return duration_rounding_impl<duration::minutes>(dmilli, n, type);
+    case precision::second: return duration_rounding_impl<duration::seconds>(dmilli, n, type);
+    case precision::millisecond: return duration_rounding_impl<duration::milliseconds>(dmilli, n, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
   case precision::microsecond: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(dmicro, type);
-    case precision::quarter: return duration_rounding_impl<duration::quarters>(dmicro, type);
-    case precision::month: return duration_rounding_impl<duration::months>(dmicro, type);
-    case precision::week: return duration_rounding_impl<duration::weeks>(dmicro, type);
-    case precision::day: return duration_rounding_impl<duration::days>(dmicro, type);
-    case precision::hour: return duration_rounding_impl<duration::hours>(dmicro, type);
-    case precision::minute: return duration_rounding_impl<duration::minutes>(dmicro, type);
-    case precision::second: return duration_rounding_impl<duration::seconds>(dmicro, type);
-    case precision::millisecond: return duration_rounding_impl<duration::milliseconds>(dmicro, type);
-    case precision::microsecond: return duration_rounding_impl<duration::microseconds>(dmicro, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dmicro, n, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(dmicro, n, type);
+    case precision::month: return duration_rounding_impl<duration::months>(dmicro, n, type);
+    case precision::week: return duration_rounding_impl<duration::weeks>(dmicro, n, type);
+    case precision::day: return duration_rounding_impl<duration::days>(dmicro, n, type);
+    case precision::hour: return duration_rounding_impl<duration::hours>(dmicro, n, type);
+    case precision::minute: return duration_rounding_impl<duration::minutes>(dmicro, n, type);
+    case precision::second: return duration_rounding_impl<duration::seconds>(dmicro, n, type);
+    case precision::millisecond: return duration_rounding_impl<duration::milliseconds>(dmicro, n, type);
+    case precision::microsecond: return duration_rounding_impl<duration::microseconds>(dmicro, n, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
   case precision::nanosecond: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(dnano, type);
-    case precision::quarter: return duration_rounding_impl<duration::quarters>(dnano, type);
-    case precision::month: return duration_rounding_impl<duration::months>(dnano, type);
-    case precision::week: return duration_rounding_impl<duration::weeks>(dnano, type);
-    case precision::day: return duration_rounding_impl<duration::days>(dnano, type);
-    case precision::hour: return duration_rounding_impl<duration::hours>(dnano, type);
-    case precision::minute: return duration_rounding_impl<duration::minutes>(dnano, type);
-    case precision::second: return duration_rounding_impl<duration::seconds>(dnano, type);
-    case precision::millisecond: return duration_rounding_impl<duration::milliseconds>(dnano, type);
-    case precision::microsecond: return duration_rounding_impl<duration::microseconds>(dnano, type);
-    case precision::nanosecond: return duration_rounding_impl<duration::nanoseconds>(dnano, type);
+    case precision::year: return duration_rounding_impl<duration::years>(dnano, n, type);
+    case precision::quarter: return duration_rounding_impl<duration::quarters>(dnano, n, type);
+    case precision::month: return duration_rounding_impl<duration::months>(dnano, n, type);
+    case precision::week: return duration_rounding_impl<duration::weeks>(dnano, n, type);
+    case precision::day: return duration_rounding_impl<duration::days>(dnano, n, type);
+    case precision::hour: return duration_rounding_impl<duration::hours>(dnano, n, type);
+    case precision::minute: return duration_rounding_impl<duration::minutes>(dnano, n, type);
+    case precision::second: return duration_rounding_impl<duration::seconds>(dnano, n, type);
+    case precision::millisecond: return duration_rounding_impl<duration::milliseconds>(dnano, n, type);
+    case precision::microsecond: return duration_rounding_impl<duration::microseconds>(dnano, n, type);
+    case precision::nanosecond: return duration_rounding_impl<duration::nanoseconds>(dnano, n, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
@@ -749,7 +811,8 @@ duration_rounding_switch(cpp11::list_of<cpp11::integers>& fields,
 cpp11::writable::list
 duration_floor_cpp(cpp11::list_of<cpp11::integers> fields,
                    const cpp11::strings& precision_from,
-                   const cpp11::strings& precision_to) {
+                   const cpp11::strings& precision_to,
+                   const int& n) {
   const enum precision precision_from_val = parse_precision(precision_from);
   const enum precision precision_to_val = parse_precision(precision_to);
 
@@ -757,15 +820,17 @@ duration_floor_cpp(cpp11::list_of<cpp11::integers> fields,
     fields,
     precision_from_val,
     precision_to_val,
+    n,
     rounding::floor
   );
 }
 
 [[cpp11::register]]
 cpp11::writable::list
-duration_ceil_cpp(cpp11::list_of<cpp11::integers> fields,
-                  const cpp11::strings& precision_from,
-                  const cpp11::strings& precision_to) {
+duration_ceiling_cpp(cpp11::list_of<cpp11::integers> fields,
+                     const cpp11::strings& precision_from,
+                     const cpp11::strings& precision_to,
+                     const int& n) {
   const enum precision precision_from_val = parse_precision(precision_from);
   const enum precision precision_to_val = parse_precision(precision_to);
 
@@ -773,6 +838,7 @@ duration_ceil_cpp(cpp11::list_of<cpp11::integers> fields,
     fields,
     precision_from_val,
     precision_to_val,
+    n,
     rounding::ceil
   );
 }
@@ -781,7 +847,8 @@ duration_ceil_cpp(cpp11::list_of<cpp11::integers> fields,
 cpp11::writable::list
 duration_round_cpp(cpp11::list_of<cpp11::integers> fields,
                    const cpp11::strings& precision_from,
-                   const cpp11::strings& precision_to) {
+                   const cpp11::strings& precision_to,
+                   const int& n) {
   const enum precision precision_from_val = parse_precision(precision_from);
   const enum precision precision_to_val = parse_precision(precision_to);
 
@@ -789,6 +856,7 @@ duration_round_cpp(cpp11::list_of<cpp11::integers> fields,
     fields,
     precision_from_val,
     precision_to_val,
+    n,
     rounding::round
   );
 }

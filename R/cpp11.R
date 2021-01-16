@@ -28,16 +28,16 @@ duration_has_common_precision_cpp <- function(x_precision, y_precision) {
   .Call("_clock_duration_has_common_precision_cpp", x_precision, y_precision, PACKAGE = "clock")
 }
 
-duration_floor_cpp <- function(fields, precision_from, precision_to) {
-  .Call("_clock_duration_floor_cpp", fields, precision_from, precision_to, PACKAGE = "clock")
+duration_floor_cpp <- function(fields, precision_from, precision_to, n) {
+  .Call("_clock_duration_floor_cpp", fields, precision_from, precision_to, n, PACKAGE = "clock")
 }
 
-duration_ceil_cpp <- function(fields, precision_from, precision_to) {
-  .Call("_clock_duration_ceil_cpp", fields, precision_from, precision_to, PACKAGE = "clock")
+duration_ceiling_cpp <- function(fields, precision_from, precision_to, n) {
+  .Call("_clock_duration_ceiling_cpp", fields, precision_from, precision_to, n, PACKAGE = "clock")
 }
 
-duration_round_cpp <- function(fields, precision_from, precision_to) {
-  .Call("_clock_duration_round_cpp", fields, precision_from, precision_to, PACKAGE = "clock")
+duration_round_cpp <- function(fields, precision_from, precision_to, n) {
+  .Call("_clock_duration_round_cpp", fields, precision_from, precision_to, n, PACKAGE = "clock")
 }
 
 duration_unary_minus_cpp <- function(fields, precision_string) {
