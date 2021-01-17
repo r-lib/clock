@@ -20,3 +20,16 @@ void clock_set_install(const cpp11::strings& path) {
   date::set_install(string_path);
 #endif
 }
+
+[[cpp11::register]]
+void clock_set_tz_dir(const cpp11::strings& path) {
+  if (path.size() != 1) {
+    clock_abort("Internal error: Time zone database installation path should have size 1.");
+  }
+
+  std::string string_path(path[0]);
+
+#if USE_BINARY_TZDB && !USE_OS_TZDB
+  date::set_tz_dir(string_path);
+#endif
+}
