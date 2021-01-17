@@ -20,6 +20,10 @@ duration_minus_cpp <- function(x, y, precision_x, precision_y) {
   .Call("_clock_duration_minus_cpp", x, y, precision_x, precision_y, PACKAGE = "clock")
 }
 
+duration_modulus_cpp <- function(x, y, precision_x, precision_y) {
+  .Call("_clock_duration_modulus_cpp", x, y, precision_x, precision_y, PACKAGE = "clock")
+}
+
 duration_common_precision_cpp <- function(x_precision, y_precision) {
   .Call("_clock_duration_common_precision_cpp", x_precision, y_precision, PACKAGE = "clock")
 }

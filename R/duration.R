@@ -291,6 +291,7 @@ vec_arith.clock_duration.clock_duration <- function(op, x, y, ...) {
     op,
     "+" = duration_plus(x, y, names_common(x, y)),
     "-" = duration_minus(x, y, names_common(x, y)),
+    "%%" = duration_modulus(x, y, names_common(x, y)),
     stop_incompatible_op(op, x, y)
   )
 }
@@ -372,6 +373,9 @@ duration_plus <- function(x, y, names) {
 }
 duration_minus <- function(x, y, names) {
   duration_arith(x, y, names, duration_minus_cpp)
+}
+duration_modulus <- function(x, y, names) {
+  duration_arith(x, y, names, duration_modulus_cpp)
 }
 
 duration_arith <- function(x, y, names, fn) {

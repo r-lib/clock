@@ -247,7 +247,8 @@ duration_cast_cpp(cpp11::list_of<cpp11::integers> fields,
 
 enum class arith_op {
   plus,
-  minus
+  minus,
+  modulus
 };
 
 template <class ClockDuration1, class ClockDuration2>
@@ -279,6 +280,16 @@ duration_arith_impl(const ClockDuration1& x, const ClockDuration2& y, const enum
       }
       out.assign(x[i] - y[i], i);
     }
+    break;
+  }
+  case arith_op::modulus: {
+    for (r_ssize i = 0; i < size; ++i) {
+    if (x.is_na(i) || y.is_na(i)) {
+      out.assign_na(i);
+      continue;
+    }
+    out.assign(x[i] % y[i], i);
+  }
     break;
   }
   }
@@ -420,6 +431,15 @@ duration_minus_cpp(cpp11::list_of<cpp11::integers> x,
                    const cpp11::strings& precision_x,
                    const cpp11::strings& precision_y) {
   return duration_arith(x, y, precision_x, precision_y, arith_op::minus);
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+duration_modulus_cpp(cpp11::list_of<cpp11::integers> x,
+                     cpp11::list_of<cpp11::integers> y,
+                     const cpp11::strings& precision_x,
+                     const cpp11::strings& precision_y) {
+  return duration_arith(x, y, precision_x, precision_y, arith_op::modulus);
 }
 
 // -----------------------------------------------------------------------------
