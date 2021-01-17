@@ -291,6 +291,20 @@ vec_arith.clock_duration.clock_duration <- function(op, x, y, ...) {
     op,
     "+" = duration_plus(x, y, names_common(x, y)),
     "-" = duration_minus(x, y, names_common(x, y)),
+    "%%" = duration_modulus(x, y, names_common(x, y)),
+
+    # TODO: Operation would return an integer vector,
+    # but precision often won't be good enough
+    "%/%" = stop_incompatible_op(
+      op,
+      x,
+      y,
+      details = paste0(
+        "<duration> %/% <duration> is not yet supported, ",
+        "as the resulting type often won't fit into an R integer."
+      )
+    ),
+
     stop_incompatible_op(op, x, y)
   )
 }
@@ -300,8 +314,9 @@ vec_arith.clock_duration.clock_duration <- function(op, x, y, ...) {
 vec_arith.clock_duration.numeric <- function(op, x, y, ...) {
   switch(
     op,
-    "+" = duration_plus(x, duration_helper(y, duration_precision(x)), names_common(x, y)),
-    "-" = duration_minus(x, duration_helper(y, duration_precision(x)), names_common(x, y)),
+    "*" = duration_scalar_multiply(x, y, names_common(x, y)),
+    "/" = stop_incompatible_op(op, x, y, details = "Durations only support integer division. Did you want `%/%`?"),
+    "%/%" = duration_scalar_divide(x, y, names_common(x, y)),
     stop_incompatible_op(op, x, y)
   )
 }
@@ -311,8 +326,9 @@ vec_arith.clock_duration.numeric <- function(op, x, y, ...) {
 vec_arith.numeric.clock_duration <- function(op, x, y, ...) {
   switch(
     op,
-    "+" = duration_plus(duration_helper(x, duration_precision(y)), y, names_common(x, y)),
-    "-" = stop_incompatible_op(op, x, y, details = "Cannot subtract a duration from a numeric."),
+    "*" = duration_scalar_multiply(y, x, names_common(x, y)),
+    "/" = stop_incompatible_op(op, x, y, details = "Durations only support integer division. Did you want `%/%`?"),
+    "%/%" = stop_incompatible_op(op, x, y, details = "Cannot divide a numeric by a duration."),
     stop_incompatible_op(op, x, y)
   )
 }
@@ -395,6 +411,9 @@ duration_plus <- function(x, y, names) {
 duration_minus <- function(x, y, names) {
   duration_arith(x, y, names, duration_minus_cpp)
 }
+duration_modulus <- function(x, y, names) {
+  duration_arith(x, y, names, duration_modulus_cpp)
+}
 
 duration_arith <- function(x, y, names, fn) {
   if (!is_duration(x) || !is_duration(y)) {
@@ -414,6 +433,36 @@ duration_arith <- function(x, y, names, fn) {
   new_duration_from_fields(
     fields = result$fields,
     precision = result$precision,
+    names = names
+  )
+}
+
+duration_scalar_multiply <- function(x, y, names) {
+  duration_scalar_arith(x, y, names, duration_scalar_multiply_cpp)
+}
+duration_scalar_divide <- function(x, y, names) {
+  duration_scalar_arith(x, y, names, duration_scalar_divide_cpp)
+}
+
+duration_scalar_arith <- function(x, y, names, fn) {
+  if (!is_duration(x)) {
+    abort("`x` must be a 'duration' object.")
+  }
+
+  precision <- duration_precision(x)
+
+  y <- vec_cast(y, integer(), x_arg = "y")
+
+  args <- vec_recycle_common(x = x, y = y, names = names)
+  x <- args$x
+  y <- args$y
+  names <- args$names
+
+  fields <- fn(x, y, precision)
+
+  new_duration_from_fields(
+    fields = fields,
+    precision = precision,
     names = names
   )
 }

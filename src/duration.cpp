@@ -247,7 +247,8 @@ duration_cast_cpp(cpp11::list_of<cpp11::integers> fields,
 
 enum class arith_op {
   plus,
-  minus
+  minus,
+  modulus
 };
 
 template <class ClockDuration1, class ClockDuration2>
@@ -279,6 +280,16 @@ duration_arith_impl(const ClockDuration1& x, const ClockDuration2& y, const enum
       }
       out.assign(x[i] - y[i], i);
     }
+    break;
+  }
+  case arith_op::modulus: {
+    for (r_ssize i = 0; i < size; ++i) {
+    if (x.is_na(i) || y.is_na(i)) {
+      out.assign_na(i);
+      continue;
+    }
+    out.assign(x[i] % y[i], i);
+  }
     break;
   }
   }
@@ -420,6 +431,119 @@ duration_minus_cpp(cpp11::list_of<cpp11::integers> x,
                    const cpp11::strings& precision_x,
                    const cpp11::strings& precision_y) {
   return duration_arith(x, y, precision_x, precision_y, arith_op::minus);
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+duration_modulus_cpp(cpp11::list_of<cpp11::integers> x,
+                     cpp11::list_of<cpp11::integers> y,
+                     const cpp11::strings& precision_x,
+                     const cpp11::strings& precision_y) {
+  return duration_arith(x, y, precision_x, precision_y, arith_op::modulus);
+}
+
+// -----------------------------------------------------------------------------
+
+enum class arith_scalar_op {
+  multiply,
+  divide
+};
+
+template <class ClockDuration>
+static
+inline
+cpp11::writable::list
+duration_scalar_arith_impl(const ClockDuration& x,
+                           const cpp11::integers& y,
+                           const enum arith_scalar_op& op) {
+  r_ssize size = x.size();
+  ClockDuration out(size);
+
+  switch (op) {
+  case arith_scalar_op::multiply: {
+    for (r_ssize i = 0; i < size; ++i) {
+      const int elt_y = y[i];
+      if (x.is_na(i) || elt_y == r_int_na) {
+        out.assign_na(i);
+        continue;
+      }
+      out.assign(x[i] * elt_y, i);
+  }
+    break;
+  }
+  case arith_scalar_op::divide: {
+    for (r_ssize i = 0; i < size; ++i) {
+      const int elt_y = y[i];
+      if (x.is_na(i) || elt_y == r_int_na) {
+        out.assign_na(i);
+        continue;
+      }
+      out.assign(x[i] / elt_y, i);
+  }
+    break;
+  }
+  }
+
+  return out.to_list();
+}
+
+
+static
+inline
+cpp11::writable::list
+duration_scalar_arith(cpp11::list_of<cpp11::integers>& x,
+                      const cpp11::integers& y,
+                      const cpp11::strings& precision_string,
+                      const enum arith_scalar_op& op) {
+  using namespace rclock;
+
+  cpp11::integers ticks = duration::get_ticks(x);
+  cpp11::integers ticks_of_day = duration::get_ticks_of_day(x);
+  cpp11::integers ticks_of_second = duration::get_ticks_of_second(x);
+
+  duration::years dy{ticks};
+  duration::quarters dq{ticks};
+  duration::months dm{ticks};
+  duration::weeks dw{ticks};
+  duration::days dd{ticks};
+  duration::hours dh{ticks, ticks_of_day};
+  duration::minutes dmin{ticks, ticks_of_day};
+  duration::seconds ds{ticks, ticks_of_day};
+  duration::milliseconds dmilli{ticks, ticks_of_day, ticks_of_second};
+  duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
+  duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
+
+  switch (parse_precision(precision_string)) {
+  case precision::year: return duration_scalar_arith_impl(dy, y, op);
+  case precision::quarter: return duration_scalar_arith_impl(dq, y, op);
+  case precision::month: return duration_scalar_arith_impl(dm, y, op);
+  case precision::week: return duration_scalar_arith_impl(dw, y, op);
+  case precision::day: return duration_scalar_arith_impl(dd, y, op);
+  case precision::hour: return duration_scalar_arith_impl(dh, y, op);
+  case precision::minute: return duration_scalar_arith_impl(dmin, y, op);
+  case precision::second: return duration_scalar_arith_impl(ds, y, op);
+  case precision::millisecond: return duration_scalar_arith_impl(dmilli, y, op);
+  case precision::microsecond: return duration_scalar_arith_impl(dmicro, y, op);
+  case precision::nanosecond: return duration_scalar_arith_impl(dnano, y, op);
+  }
+
+  never_reached("duration_scalar_arith");
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+duration_scalar_multiply_cpp(cpp11::list_of<cpp11::integers> x,
+                             const cpp11::integers& y,
+                             const cpp11::strings& precision_string) {
+  return duration_scalar_arith(x, y, precision_string, arith_scalar_op::multiply);
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+duration_scalar_divide_cpp(cpp11::list_of<cpp11::integers> x,
+                           const cpp11::integers& y,
+                           const cpp11::strings& precision_string) {
+  return duration_scalar_arith(x, y, precision_string, arith_scalar_op::divide);
 }
 
 // -----------------------------------------------------------------------------
