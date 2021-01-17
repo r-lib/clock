@@ -308,6 +308,14 @@ extern "C" SEXP _clock_clock_set_install(SEXP path) {
     return R_NilValue;
   END_CPP11
 }
+// install.cpp
+void clock_set_tz_dir(const cpp11::strings& path);
+extern "C" SEXP _clock_clock_set_tz_dir(SEXP path) {
+  BEGIN_CPP11
+    clock_set_tz_dir(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(path));
+    return R_NilValue;
+  END_CPP11
+}
 // iso-year-week-day.cpp
 void iso_year_week_day_check_range_cpp(const cpp11::integers& x, const cpp11::strings& component_string, const cpp11::strings& arg);
 extern "C" SEXP _clock_iso_year_week_day_check_range_cpp(SEXP x, SEXP component_string, SEXP arg) {
@@ -596,6 +604,7 @@ extern SEXP _clock_as_year_month_weekday_from_sys_time_cpp(SEXP, SEXP);
 extern SEXP _clock_as_year_quarter_day_from_sys_time_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_as_zoned_sys_time_from_naive_time_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_clock_set_install(SEXP);
+extern SEXP _clock_clock_set_tz_dir(SEXP);
 extern SEXP _clock_collect_iso_year_week_day_fields(SEXP, SEXP);
 extern SEXP _clock_collect_year_month_day_fields(SEXP, SEXP);
 extern SEXP _clock_collect_year_month_weekday_fields(SEXP, SEXP);
@@ -680,6 +689,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_as_year_quarter_day_from_sys_time_cpp",           (DL_FUNC) &_clock_as_year_quarter_day_from_sys_time_cpp,            3},
     {"_clock_as_zoned_sys_time_from_naive_time_cpp",           (DL_FUNC) &_clock_as_zoned_sys_time_from_naive_time_cpp,            5},
     {"_clock_clock_set_install",                               (DL_FUNC) &_clock_clock_set_install,                                1},
+    {"_clock_clock_set_tz_dir",                                (DL_FUNC) &_clock_clock_set_tz_dir,                                 1},
     {"_clock_collect_iso_year_week_day_fields",                (DL_FUNC) &_clock_collect_iso_year_week_day_fields,                 2},
     {"_clock_collect_year_month_day_fields",                   (DL_FUNC) &_clock_collect_year_month_day_fields,                    2},
     {"_clock_collect_year_month_weekday_fields",               (DL_FUNC) &_clock_collect_year_month_weekday_fields,                2},

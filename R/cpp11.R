@@ -172,6 +172,10 @@ clock_set_install <- function(path) {
   invisible(.Call("_clock_clock_set_install", path, PACKAGE = "clock"))
 }
 
+clock_set_tz_dir <- function(path) {
+  invisible(.Call("_clock_clock_set_tz_dir", path, PACKAGE = "clock"))
+}
+
 iso_year_week_day_check_range_cpp <- function(x, component_string, arg) {
   invisible(.Call("_clock_iso_year_week_day_check_range_cpp", x, component_string, arg, PACKAGE = "clock"))
 }
