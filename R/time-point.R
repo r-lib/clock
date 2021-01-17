@@ -368,6 +368,11 @@ time_point_minus_time_point <- function(x, y, names) {
 # ------------------------------------------------------------------------------
 
 #' @export
+as_duration.clock_time_point <- function(x) {
+  time_point_duration(x)
+}
+
+#' @export
 as_year_month_day.clock_time_point <- function(x) {
   duration <- time_point_duration(x)
   precision <- time_point_precision(x)

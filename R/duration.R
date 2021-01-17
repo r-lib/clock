@@ -193,6 +193,18 @@ vec_cast.clock_duration.clock_duration <- function(x, to, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+as_duration <- function(x) {
+  UseMethod("as_duration")
+}
+
+#' @export
+as_duration.clock_duration <- function(x) {
+  x
+}
+
+# ------------------------------------------------------------------------------
+
 # Note:
 # Will cast upward or downward.
 # Casting year -> day or month -> day can lose precision because those durations
