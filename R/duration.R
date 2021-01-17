@@ -295,28 +295,6 @@ vec_arith.clock_duration.clock_duration <- function(op, x, y, ...) {
   )
 }
 
-#' @export
-#' @method vec_arith.clock_duration numeric
-vec_arith.clock_duration.numeric <- function(op, x, y, ...) {
-  switch(
-    op,
-    "+" = duration_plus(x, duration_helper(y, duration_precision(x)), names_common(x, y)),
-    "-" = duration_minus(x, duration_helper(y, duration_precision(x)), names_common(x, y)),
-    stop_incompatible_op(op, x, y)
-  )
-}
-
-#' @export
-#' @method vec_arith.numeric clock_duration
-vec_arith.numeric.clock_duration <- function(op, x, y, ...) {
-  switch(
-    op,
-    "+" = duration_plus(duration_helper(x, duration_precision(y)), y, names_common(x, y)),
-    "-" = stop_incompatible_op(op, x, y, details = "Cannot subtract a duration from a numeric."),
-    stop_incompatible_op(op, x, y)
-  )
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export
