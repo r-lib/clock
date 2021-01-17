@@ -24,6 +24,14 @@ duration_modulus_cpp <- function(x, y, precision_x, precision_y) {
   .Call("_clock_duration_modulus_cpp", x, y, precision_x, precision_y, PACKAGE = "clock")
 }
 
+duration_scalar_multiply_cpp <- function(x, y, precision_string) {
+  .Call("_clock_duration_scalar_multiply_cpp", x, y, precision_string, PACKAGE = "clock")
+}
+
+duration_scalar_divide_cpp <- function(x, y, precision_string) {
+  .Call("_clock_duration_scalar_divide_cpp", x, y, precision_string, PACKAGE = "clock")
+}
+
 duration_common_precision_cpp <- function(x_precision, y_precision) {
   .Call("_clock_duration_common_precision_cpp", x_precision, y_precision, PACKAGE = "clock")
 }
