@@ -528,44 +528,6 @@ is_duration <- function(x) {
   inherits(x, "clock_duration")
 }
 
-is_years <- function(x) {
-  is_duration_with_precision("year")
-}
-is_quarters <- function(x) {
-  is_duration_with_precision("quarter")
-}
-is_months <- function(x) {
-  is_duration_with_precision("month")
-}
-is_weeks <- function(x) {
-  is_duration_with_precision("week")
-}
-is_days <- function(x) {
-  is_duration_with_precision("day")
-}
-is_hours <- function(x) {
-  is_duration_with_precision("hour")
-}
-is_minutes <- function(x) {
-  is_duration_with_precision("minute")
-}
-is_seconds <- function(x) {
-  is_duration_with_precision("second")
-}
-is_milliseconds <- function(x) {
-  is_duration_with_precision("millisecond")
-}
-is_microseconds <- function(x) {
-  is_duration_with_precision("microsecond")
-}
-is_nanoseconds <- function(x) {
-  is_duration_with_precision("nanoseconds")
-}
-is_duration_with_precision <- function(x, precision) {
-  is_duration(x) && duration_precision(x) == precision
-}
-
-
 # ------------------------------------------------------------------------------
 
 duration_precision <- function(x) {
