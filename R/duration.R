@@ -1,43 +1,71 @@
+#' Construct a duration
+#'
+#' These helpers construct durations of the specified precision.
+#'
+#' @param n `[integer]`
+#'
+#'   The number of ticks to use when creating the duration.
+#'
+#' @return A duration of the specified precision.
+#'
+#' @name duration-helper
+#'
+#' @examples
+#' duration_years(1:5)
+#' duration_nanoseconds(1:5)
+NULL
+
+#' @rdname duration-helper
 #' @export
 duration_years <- function(n = integer()) {
   duration_helper(n, "year")
 }
+#' @rdname duration-helper
 #' @export
 duration_quarters <- function(n = integer()) {
   duration_helper(n, "quarter")
 }
+#' @rdname duration-helper
 #' @export
 duration_months <- function(n = integer()) {
   duration_helper(n, "month")
 }
+#' @rdname duration-helper
 #' @export
 duration_weeks <- function(n = integer()) {
   duration_helper(n, "week")
 }
+#' @rdname duration-helper
 #' @export
 duration_days <- function(n = integer()) {
   duration_helper(n, "day")
 }
+#' @rdname duration-helper
 #' @export
 duration_hours <- function(n = integer()) {
   duration_helper(n, "hour")
 }
+#' @rdname duration-helper
 #' @export
 duration_minutes <- function(n = integer()) {
   duration_helper(n, "minute")
 }
+#' @rdname duration-helper
 #' @export
 duration_seconds <- function(n = integer()) {
   duration_helper(n, "second")
 }
+#' @rdname duration-helper
 #' @export
 duration_milliseconds <- function(n = integer()) {
   duration_helper(n, "millisecond")
 }
+#' @rdname duration-helper
 #' @export
 duration_microseconds <- function(n = integer()) {
   duration_helper(n, "microsecond")
 }
+#' @rdname duration-helper
 #' @export
 duration_nanoseconds <- function(n = integer()) {
   duration_helper(n, "nanosecond")
