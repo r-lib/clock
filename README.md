@@ -86,3 +86,22 @@ set_day(x, 1:5)
 set_day(x, "last")
 #> [1] "2019-05-31"
 ```
+
+## Acknowledgements
+
+The ideas used to build clock have come from a number of places:
+
+-   First and foremost, clock depends on and is inspired by the
+    [date](https://github.com/HowardHinnant/date) library by Howard
+    Hinnant, a variant of which has been voted in to C++20.
+
+-   The R “record” types that clock is built on come from
+    [vctrs](https://github.com/r-lib/vctrs).
+
+-   The [nanotime](https://github.com/eddelbuettel/nanotime) package was
+    the first to implement a nanosecond resolution time type for R.
+
+-   The [zoo](https://cran.r-project.org/web/packages/zoo/index.html)
+    package was the first to implement year-month and year-quarter
+    types, and has functioned as a very successful time series
+    infrastructure package for many years.
