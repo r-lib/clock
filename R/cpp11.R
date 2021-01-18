@@ -32,8 +32,8 @@ duration_scalar_divide_cpp <- function(x, y, precision_string) {
   .Call("_clock_duration_scalar_divide_cpp", x, y, precision_string, PACKAGE = "clock")
 }
 
-duration_common_precision_cpp <- function(x_precision, y_precision) {
-  .Call("_clock_duration_common_precision_cpp", x_precision, y_precision, PACKAGE = "clock")
+duration_precision_common_cpp <- function(x_precision, y_precision) {
+  .Call("_clock_duration_precision_common_cpp", x_precision, y_precision, PACKAGE = "clock")
 }
 
 duration_has_common_precision_cpp <- function(x_precision, y_precision) {

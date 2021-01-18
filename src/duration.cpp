@@ -653,13 +653,18 @@ duration_common_precision(const enum precision x_precision,
 
 [[cpp11::register]]
 cpp11::writable::strings
-duration_common_precision_cpp(const cpp11::strings& x_precision,
+duration_precision_common_cpp(const cpp11::strings& x_precision,
                               const cpp11::strings& y_precision) {
   const enum precision x_precision_val = parse_precision(x_precision);
   const enum precision y_precision_val = parse_precision(y_precision);
-  const enum precision common = duration_common_precision(x_precision_val, y_precision_val);
-  std::string string = precision_to_string(common);
-  return cpp11::writable::strings({string});
+  std::pair<enum precision, bool> pair = duration_common_precision_pair(x_precision_val, y_precision_val);
+
+  if (pair.second) {
+    std::string string = precision_to_string(pair.first);
+    return cpp11::writable::strings({string});
+  } else {
+    return cpp11::writable::strings({r_chr_na});
+  }
 }
 
 static

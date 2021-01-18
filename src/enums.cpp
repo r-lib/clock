@@ -114,21 +114,22 @@ enum precision parse_precision(const cpp11::strings& x) {
     clock_abort("`precision` must be a string with length 1.");
   }
 
-  std::string string = x[0];
+  SEXP x_elt = x[0];
+  const char* x_char = CHAR(x_elt);
 
-  if (string == "year") return precision::year;
-  if (string == "quarter") return precision::quarter;
-  if (string == "month") return precision::month;
-  if (string == "week") return precision::week;
-  if (string == "day") return precision::day;
-  if (string == "hour") return precision::hour;
-  if (string == "minute") return precision::minute;
-  if (string == "second") return precision::second;
-  if (string == "millisecond") return precision::millisecond;
-  if (string == "microsecond") return precision::microsecond;
-  if (string == "nanosecond") return precision::nanosecond;
+  if (!strcmp(x_char, "year")) return precision::year;
+  else if (!strcmp(x_char, "quarter")) return precision::quarter;
+  else if (!strcmp(x_char, "month")) return precision::month;
+  else if (!strcmp(x_char, "week")) return precision::week;
+  else if (!strcmp(x_char, "day")) return precision::day;
+  else if (!strcmp(x_char, "hour")) return precision::hour;
+  else if (!strcmp(x_char, "minute")) return precision::minute;
+  else if (!strcmp(x_char, "second")) return precision::second;
+  else if (!strcmp(x_char, "millisecond")) return precision::millisecond;
+  else if (!strcmp(x_char, "microsecond")) return precision::microsecond;
+  else if (!strcmp(x_char, "nanosecond")) return precision::nanosecond;
 
-  clock_abort("'%s' is not a recognized `precision` option.", string.c_str());
+  clock_abort("'%s' is not a recognized `precision` option.", x_char);
 }
 
 // -----------------------------------------------------------------------------

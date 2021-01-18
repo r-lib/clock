@@ -61,10 +61,10 @@ extern "C" SEXP _clock_duration_scalar_divide_cpp(SEXP x, SEXP y, SEXP precision
   END_CPP11
 }
 // duration.cpp
-cpp11::writable::strings duration_common_precision_cpp(const cpp11::strings& x_precision, const cpp11::strings& y_precision);
-extern "C" SEXP _clock_duration_common_precision_cpp(SEXP x_precision, SEXP y_precision) {
+cpp11::writable::strings duration_precision_common_cpp(const cpp11::strings& x_precision, const cpp11::strings& y_precision);
+extern "C" SEXP _clock_duration_precision_common_cpp(SEXP x_precision, SEXP y_precision) {
   BEGIN_CPP11
-    return cpp11::as_sexp(duration_common_precision_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x_precision), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(y_precision)));
+    return cpp11::as_sexp(duration_precision_common_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x_precision), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(y_precision)));
   END_CPP11
 }
 // duration.cpp
@@ -602,13 +602,13 @@ extern SEXP _clock_collect_year_month_weekday_fields(SEXP, SEXP);
 extern SEXP _clock_collect_year_quarter_day_fields(SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_cast_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_ceiling_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_duration_common_precision_cpp(SEXP, SEXP);
 extern SEXP _clock_duration_floor_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_has_common_precision_cpp(SEXP, SEXP);
 extern SEXP _clock_duration_helper_cpp(SEXP, SEXP);
 extern SEXP _clock_duration_minus_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_modulus_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_plus_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_duration_precision_common_cpp(SEXP, SEXP);
 extern SEXP _clock_duration_round_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_scalar_divide_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_scalar_multiply_cpp(SEXP, SEXP, SEXP);
@@ -686,13 +686,13 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_collect_year_quarter_day_fields",                 (DL_FUNC) &_clock_collect_year_quarter_day_fields,                  3},
     {"_clock_duration_cast_cpp",                               (DL_FUNC) &_clock_duration_cast_cpp,                                3},
     {"_clock_duration_ceiling_cpp",                            (DL_FUNC) &_clock_duration_ceiling_cpp,                             4},
-    {"_clock_duration_common_precision_cpp",                   (DL_FUNC) &_clock_duration_common_precision_cpp,                    2},
     {"_clock_duration_floor_cpp",                              (DL_FUNC) &_clock_duration_floor_cpp,                               4},
     {"_clock_duration_has_common_precision_cpp",               (DL_FUNC) &_clock_duration_has_common_precision_cpp,                2},
     {"_clock_duration_helper_cpp",                             (DL_FUNC) &_clock_duration_helper_cpp,                              2},
     {"_clock_duration_minus_cpp",                              (DL_FUNC) &_clock_duration_minus_cpp,                               4},
     {"_clock_duration_modulus_cpp",                            (DL_FUNC) &_clock_duration_modulus_cpp,                             4},
     {"_clock_duration_plus_cpp",                               (DL_FUNC) &_clock_duration_plus_cpp,                                4},
+    {"_clock_duration_precision_common_cpp",                   (DL_FUNC) &_clock_duration_precision_common_cpp,                    2},
     {"_clock_duration_round_cpp",                              (DL_FUNC) &_clock_duration_round_cpp,                               4},
     {"_clock_duration_scalar_divide_cpp",                      (DL_FUNC) &_clock_duration_scalar_divide_cpp,                       3},
     {"_clock_duration_scalar_multiply_cpp",                    (DL_FUNC) &_clock_duration_scalar_multiply_cpp,                     3},

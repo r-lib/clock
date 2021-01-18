@@ -196,26 +196,63 @@ vec_proxy_equal.clock_duration <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
-# Don't allow automatic promotion of duration precisions. There is no common
-# duration type between, say, <year> and <day> because the common
-# ratio is <216> and doesn't result in a named duration class.
-
 #' @export
 vec_ptype2.clock_duration.clock_duration <- function(x, y, ...) {
-  if (duration_precision(x) == duration_precision(y)) {
+  x_precision <- duration_precision(x)
+  y_precision <- duration_precision(y)
+
+  if (x_precision == y_precision) {
+    return(x)
+  }
+
+  precision <- duration_precision_common(x_precision, y_precision)
+
+  if (is_na(precision)) {
+    stop_incompatible_type(
+      x = x,
+      y = y,
+      ...,
+      details = "Duration common type would not generate a named duration type."
+    )
+  }
+
+  if (precision == x_precision) {
     x
   } else {
-    stop_incompatible_type(x, y, ...)
+    y
   }
 }
 
 #' @export
 vec_cast.clock_duration.clock_duration <- function(x, to, ...) {
-  if (duration_precision(x) == duration_precision(to)) {
-    x
-  } else {
-    stop_incompatible_cast(x, to, ...)
+  x_precision <- duration_precision(x)
+  to_precision <- duration_precision(to)
+
+  if (x_precision == to_precision) {
+    return(x)
   }
+
+  if (precision_value(x_precision) > precision_value(to_precision)) {
+    stop_incompatible_cast(
+      x = x,
+      to = to,
+      ...,
+      details = "Can't cast to a less precise precision."
+    )
+  }
+
+  precision <- duration_precision_common(x_precision, to_precision)
+
+  if (is_na(precision)) {
+    stop_incompatible_cast(
+      x = x,
+      to = to,
+      ...,
+      details = "Duration cast cannot be done exactly."
+    )
+  }
+
+  duration_cast(x, precision)
 }
 
 # ------------------------------------------------------------------------------
@@ -531,6 +568,10 @@ is_duration <- function(x) {
 
 duration_precision <- function(x) {
   attr(x, "precision", exact = TRUE)
+}
+
+duration_precision_common <- function(x_precision, y_precision) {
+  duration_precision_common_cpp(x_precision, y_precision)
 }
 
 # ------------------------------------------------------------------------------
