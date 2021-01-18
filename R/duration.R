@@ -96,7 +96,6 @@ duration_helper <- function(n, precision, ..., retain_names = FALSE) {
 
 # ------------------------------------------------------------------------------
 
-#' @export
 new_duration <- function(ticks = integer(),
                          ticks_of_day = integer(),
                          ticks_of_second = integer(),
