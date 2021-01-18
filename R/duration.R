@@ -496,19 +496,19 @@ duration_arith <- function(x, y, names, fn) {
     abort("`x` and `y` must both be 'duration' objects.")
   }
 
-  x_precision <- duration_precision(x)
-  y_precision <- duration_precision(y)
-
-  args <- vec_recycle_common(x = x, y = y, names = names)
+  args <- vec_cast_common(x = x, y = y)
+  args <- vec_recycle_common(!!!args, names = names)
   x <- args$x
   y <- args$y
   names <- args$names
 
-  result <- fn(x, y, x_precision, y_precision)
+  precision <- duration_precision(x)
+
+  fields <- fn(x, y, precision)
 
   new_duration_from_fields(
-    fields = result$fields,
-    precision = result$precision,
+    fields = fields,
+    precision = precision,
     names = names
   )
 }
@@ -562,6 +562,10 @@ duration_unary_minus <- function(x) {
 #' @export
 is_duration <- function(x) {
   inherits(x, "clock_duration")
+}
+
+is_duration_with_precision <- function(x, precision) {
+  is_duration(x) && duration_precision(x) == precision
 }
 
 # ------------------------------------------------------------------------------

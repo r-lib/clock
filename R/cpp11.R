@@ -12,16 +12,16 @@ duration_cast_cpp <- function(fields, precision_from, precision_to) {
   .Call("_clock_duration_cast_cpp", fields, precision_from, precision_to, PACKAGE = "clock")
 }
 
-duration_plus_cpp <- function(x, y, precision_x, precision_y) {
-  .Call("_clock_duration_plus_cpp", x, y, precision_x, precision_y, PACKAGE = "clock")
+duration_plus_cpp <- function(x, y, precision_string) {
+  .Call("_clock_duration_plus_cpp", x, y, precision_string, PACKAGE = "clock")
 }
 
-duration_minus_cpp <- function(x, y, precision_x, precision_y) {
-  .Call("_clock_duration_minus_cpp", x, y, precision_x, precision_y, PACKAGE = "clock")
+duration_minus_cpp <- function(x, y, precision_string) {
+  .Call("_clock_duration_minus_cpp", x, y, precision_string, PACKAGE = "clock")
 }
 
-duration_modulus_cpp <- function(x, y, precision_x, precision_y) {
-  .Call("_clock_duration_modulus_cpp", x, y, precision_x, precision_y, PACKAGE = "clock")
+duration_modulus_cpp <- function(x, y, precision_string) {
+  .Call("_clock_duration_modulus_cpp", x, y, precision_string, PACKAGE = "clock")
 }
 
 duration_scalar_multiply_cpp <- function(x, y, precision_string) {

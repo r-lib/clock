@@ -251,13 +251,13 @@ enum class arith_op {
   modulus
 };
 
-template <class ClockDuration1, class ClockDuration2>
+template <class ClockDuration>
 static
 inline
 cpp11::writable::list
-duration_arith_impl(const ClockDuration1& x, const ClockDuration2& y, const enum arith_op& op) {
-  using ClockDuration = typename std::common_type<ClockDuration1, ClockDuration2>::type;
-
+duration_arith_impl(const ClockDuration& x,
+                    const ClockDuration& y,
+                    const enum arith_op& op) {
   r_ssize size = x.size();
   ClockDuration out(size);
 
@@ -297,149 +297,103 @@ duration_arith_impl(const ClockDuration1& x, const ClockDuration2& y, const enum
   return out.to_list();
 }
 
-template <class ClockDuration1>
-static
-inline
-cpp11::writable::list
-duration_arith_switch2(const ClockDuration1& x,
-                       cpp11::list_of<cpp11::integers>& y,
-                       const enum precision& precision_y_val,
-                       const enum arith_op& op) {
-  using namespace rclock;
-
-  cpp11::integers ticks = duration::get_ticks(y);
-  cpp11::integers ticks_of_day = duration::get_ticks_of_day(y);
-  cpp11::integers ticks_of_second = duration::get_ticks_of_second(y);
-
-  duration::years dy{ticks};
-  duration::quarters dq{ticks};
-  duration::months dm{ticks};
-  duration::weeks dw{ticks};
-  duration::days dd{ticks};
-  duration::hours dh{ticks, ticks_of_day};
-  duration::minutes dmin{ticks, ticks_of_day};
-  duration::seconds ds{ticks, ticks_of_day};
-  duration::milliseconds dmilli{ticks, ticks_of_day, ticks_of_second};
-  duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
-  duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
-
-  switch (precision_y_val) {
-  case precision::year: return duration_arith_impl(x, dy, op);
-  case precision::quarter: return duration_arith_impl(x, dq, op);
-  case precision::month: return duration_arith_impl(x, dm, op);
-  case precision::week: return duration_arith_impl(x, dw, op);
-  case precision::day: return duration_arith_impl(x, dd, op);
-  case precision::hour: return duration_arith_impl(x, dh, op);
-  case precision::minute: return duration_arith_impl(x, dmin, op);
-  case precision::second: return duration_arith_impl(x, ds, op);
-  case precision::millisecond: return duration_arith_impl(x, dmilli, op);
-  case precision::microsecond: return duration_arith_impl(x, dmicro, op);
-  case precision::nanosecond: return duration_arith_impl(x, dnano, op);
-  }
-
-  never_reached("duration_arith_switch2");
-}
-
 static
 inline
 cpp11::writable::list
 duration_arith_switch(cpp11::list_of<cpp11::integers>& x,
                       cpp11::list_of<cpp11::integers>& y,
-                      const enum precision& precision_x_val,
-                      const enum precision& precision_y_val,
+                      const enum precision& precision_val,
                       const enum arith_op& op) {
   using namespace rclock;
 
-  cpp11::integers ticks = duration::get_ticks(x);
-  cpp11::integers ticks_of_day = duration::get_ticks_of_day(x);
-  cpp11::integers ticks_of_second = duration::get_ticks_of_second(x);
+  const cpp11::integers x_ticks = duration::get_ticks(x);
+  const cpp11::integers x_ticks_of_day = duration::get_ticks_of_day(x);
+  const cpp11::integers x_ticks_of_second = duration::get_ticks_of_second(x);
 
-  duration::years dy{ticks};
-  duration::quarters dq{ticks};
-  duration::months dm{ticks};
-  duration::weeks dw{ticks};
-  duration::days dd{ticks};
-  duration::hours dh{ticks, ticks_of_day};
-  duration::minutes dmin{ticks, ticks_of_day};
-  duration::seconds ds{ticks, ticks_of_day};
-  duration::milliseconds dmilli{ticks, ticks_of_day, ticks_of_second};
-  duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
-  duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
+  const cpp11::integers y_ticks = duration::get_ticks(y);
+  const cpp11::integers y_ticks_of_day = duration::get_ticks_of_day(y);
+  const cpp11::integers y_ticks_of_second = duration::get_ticks_of_second(y);
 
-  switch (precision_x_val) {
-  case precision::year: return duration_arith_switch2(dy, y, precision_y_val, op);
-  case precision::quarter: return duration_arith_switch2(dq, y, precision_y_val, op);
-  case precision::month: return duration_arith_switch2(dm, y, precision_y_val, op);
-  case precision::week: return duration_arith_switch2(dw, y, precision_y_val, op);
-  case precision::day: return duration_arith_switch2(dd, y, precision_y_val, op);
-  case precision::hour: return duration_arith_switch2(dh, y, precision_y_val, op);
-  case precision::minute: return duration_arith_switch2(dmin, y, precision_y_val, op);
-  case precision::second: return duration_arith_switch2(ds, y, precision_y_val, op);
-  case precision::millisecond: return duration_arith_switch2(dmilli, y, precision_y_val, op);
-  case precision::microsecond: return duration_arith_switch2(dmicro, y, precision_y_val, op);
-  case precision::nanosecond: return duration_arith_switch2(dnano, y, precision_y_val, op);
+  const duration::years x_dy{x_ticks};
+  const duration::quarters x_dq{x_ticks};
+  const duration::months x_dm{x_ticks};
+  const duration::weeks x_dw{x_ticks};
+  const duration::days x_dd{x_ticks};
+  const duration::hours x_dh{x_ticks, x_ticks_of_day};
+  const duration::minutes x_dmin{x_ticks, x_ticks_of_day};
+  const duration::seconds x_ds{x_ticks, x_ticks_of_day};
+  const duration::milliseconds x_dmilli{x_ticks, x_ticks_of_day, x_ticks_of_second};
+  const duration::microseconds x_dmicro{x_ticks, x_ticks_of_day, x_ticks_of_second};
+  const duration::nanoseconds x_dnano{x_ticks, x_ticks_of_day, x_ticks_of_second};
+
+  const duration::years y_dy{y_ticks};
+  const duration::quarters y_dq{y_ticks};
+  const duration::months y_dm{y_ticks};
+  const duration::weeks y_dw{y_ticks};
+  const duration::days y_dd{y_ticks};
+  const duration::hours y_dh{y_ticks, y_ticks_of_day};
+  const duration::minutes y_dmin{y_ticks, y_ticks_of_day};
+  const duration::seconds y_ds{y_ticks, y_ticks_of_day};
+  const duration::milliseconds y_dmilli{y_ticks, y_ticks_of_day, y_ticks_of_second};
+  const duration::microseconds y_dmicro{y_ticks, y_ticks_of_day, y_ticks_of_second};
+  const duration::nanoseconds y_dnano{y_ticks, y_ticks_of_day, y_ticks_of_second};
+
+  switch (precision_val) {
+  case precision::year: return duration_arith_impl(x_dy, y_dy, op);
+  case precision::quarter: return duration_arith_impl(x_dq, y_dq, op);
+  case precision::month: return duration_arith_impl(x_dm, y_dm, op);
+  case precision::week: return duration_arith_impl(x_dw, y_dw, op);
+  case precision::day: return duration_arith_impl(x_dd, y_dd, op);
+  case precision::hour: return duration_arith_impl(x_dh, y_dh, op);
+  case precision::minute: return duration_arith_impl(x_dmin, y_dmin, op);
+  case precision::second: return duration_arith_impl(x_ds, y_ds, op);
+  case precision::millisecond: return duration_arith_impl(x_dmilli, y_dmilli, op);
+  case precision::microsecond: return duration_arith_impl(x_dmicro, y_dmicro, op);
+  case precision::nanosecond: return duration_arith_impl(x_dnano, y_dnano, op);
   }
 
   never_reached("duration_arith_switch");
 }
-
-static inline enum precision duration_common_precision(const enum precision x_precision, const enum precision y_precision);
 
 static
 inline
 cpp11::writable::list
 duration_arith(cpp11::list_of<cpp11::integers>& x,
                cpp11::list_of<cpp11::integers>& y,
-               const cpp11::strings& precision_x,
-               const cpp11::strings& precision_y,
+               const cpp11::strings& precision_string,
                const enum arith_op& op) {
-  const enum precision precision_x_val = parse_precision(precision_x);
-  const enum precision precision_y_val = parse_precision(precision_y);
+  const enum precision precision_val = parse_precision(precision_string);
 
-  // Common precision detection will error if no valid common precision
-  enum precision precision_val = duration_common_precision(precision_x_val, precision_y_val);
-  std::string precision_string = precision_to_string(precision_val);
-  cpp11::writable::strings out_precision({precision_string});
-
-  cpp11::writable::list out_fields = duration_arith_switch(
+  return duration_arith_switch(
     x,
     y,
-    precision_x_val,
-    precision_y_val,
+    precision_val,
     op
   );
-
-  cpp11::writable::list out({out_fields, out_precision});
-  out.names() = {"fields", "precision"};
-
-  return out;
 }
 
 [[cpp11::register]]
 cpp11::writable::list
 duration_plus_cpp(cpp11::list_of<cpp11::integers> x,
                   cpp11::list_of<cpp11::integers> y,
-                  const cpp11::strings& precision_x,
-                  const cpp11::strings& precision_y) {
-  return duration_arith(x, y, precision_x, precision_y, arith_op::plus);
+                  const cpp11::strings& precision_string) {
+  return duration_arith(x, y, precision_string, arith_op::plus);
 }
 
 [[cpp11::register]]
 cpp11::writable::list
 duration_minus_cpp(cpp11::list_of<cpp11::integers> x,
                    cpp11::list_of<cpp11::integers> y,
-                   const cpp11::strings& precision_x,
-                   const cpp11::strings& precision_y) {
-  return duration_arith(x, y, precision_x, precision_y, arith_op::minus);
+                   const cpp11::strings& precision_string) {
+  return duration_arith(x, y, precision_string, arith_op::minus);
 }
 
 [[cpp11::register]]
 cpp11::writable::list
 duration_modulus_cpp(cpp11::list_of<cpp11::integers> x,
                      cpp11::list_of<cpp11::integers> y,
-                     const cpp11::strings& precision_x,
-                     const cpp11::strings& precision_y) {
-  return duration_arith(x, y, precision_x, precision_y, arith_op::modulus);
+                     const cpp11::strings& precision_string) {
+  return duration_arith(x, y, precision_string, arith_op::modulus);
 }
 
 // -----------------------------------------------------------------------------
@@ -634,45 +588,20 @@ duration_common_precision_pair(const enum precision& x_precision,
   never_reached("duration_common_precision_pair");
 }
 
-static
-inline
-enum precision
-duration_common_precision(const enum precision x_precision,
-                          const enum precision y_precision) {
-  std::pair<enum precision, bool> pair = duration_common_precision_pair(x_precision, y_precision);
-
-  if (!pair.second) {
-    std::string x_precision_str = precision_to_string(x_precision);
-    std::string y_precision_str = precision_to_string(y_precision);
-    std::string message = "No common precision between '" + x_precision_str + "' and '" + y_precision_str + "'.";
-    clock_abort(message.c_str());
-  }
-
-  return pair.first;
-}
-
 [[cpp11::register]]
 cpp11::writable::strings
 duration_precision_common_cpp(const cpp11::strings& x_precision,
                               const cpp11::strings& y_precision) {
   const enum precision x_precision_val = parse_precision(x_precision);
   const enum precision y_precision_val = parse_precision(y_precision);
-  std::pair<enum precision, bool> pair = duration_common_precision_pair(x_precision_val, y_precision_val);
+  const std::pair<enum precision, bool> pair = duration_common_precision_pair(x_precision_val, y_precision_val);
 
   if (pair.second) {
-    std::string string = precision_to_string(pair.first);
+    const std::string string = precision_to_string(pair.first);
     return cpp11::writable::strings({string});
   } else {
     return cpp11::writable::strings({r_chr_na});
   }
-}
-
-static
-inline
-bool
-duration_has_common_precision(const enum precision& x_precision,
-                              const enum precision& y_precision) {
-  return duration_common_precision_pair(x_precision, y_precision).second;
 }
 
 [[cpp11::register]]
@@ -681,7 +610,7 @@ duration_has_common_precision_cpp(const cpp11::strings& x_precision,
                                   const cpp11::strings& y_precision) {
   const enum precision x_precision_val = parse_precision(x_precision);
   const enum precision y_precision_val = parse_precision(y_precision);
-  return duration_has_common_precision(x_precision_val, y_precision_val);
+  return duration_common_precision_pair(x_precision_val, y_precision_val).second;
 }
 
 // -----------------------------------------------------------------------------

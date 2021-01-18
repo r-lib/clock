@@ -26,24 +26,24 @@ extern "C" SEXP _clock_duration_cast_cpp(SEXP fields, SEXP precision_from, SEXP 
   END_CPP11
 }
 // duration.cpp
-cpp11::writable::list duration_plus_cpp(cpp11::list_of<cpp11::integers> x, cpp11::list_of<cpp11::integers> y, const cpp11::strings& precision_x, const cpp11::strings& precision_y);
-extern "C" SEXP _clock_duration_plus_cpp(SEXP x, SEXP y, SEXP precision_x, SEXP precision_y) {
+cpp11::writable::list duration_plus_cpp(cpp11::list_of<cpp11::integers> x, cpp11::list_of<cpp11::integers> y, const cpp11::strings& precision_string);
+extern "C" SEXP _clock_duration_plus_cpp(SEXP x, SEXP y, SEXP precision_string) {
   BEGIN_CPP11
-    return cpp11::as_sexp(duration_plus_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(y), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_y)));
+    return cpp11::as_sexp(duration_plus_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(y), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string)));
   END_CPP11
 }
 // duration.cpp
-cpp11::writable::list duration_minus_cpp(cpp11::list_of<cpp11::integers> x, cpp11::list_of<cpp11::integers> y, const cpp11::strings& precision_x, const cpp11::strings& precision_y);
-extern "C" SEXP _clock_duration_minus_cpp(SEXP x, SEXP y, SEXP precision_x, SEXP precision_y) {
+cpp11::writable::list duration_minus_cpp(cpp11::list_of<cpp11::integers> x, cpp11::list_of<cpp11::integers> y, const cpp11::strings& precision_string);
+extern "C" SEXP _clock_duration_minus_cpp(SEXP x, SEXP y, SEXP precision_string) {
   BEGIN_CPP11
-    return cpp11::as_sexp(duration_minus_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(y), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_y)));
+    return cpp11::as_sexp(duration_minus_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(y), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string)));
   END_CPP11
 }
 // duration.cpp
-cpp11::writable::list duration_modulus_cpp(cpp11::list_of<cpp11::integers> x, cpp11::list_of<cpp11::integers> y, const cpp11::strings& precision_x, const cpp11::strings& precision_y);
-extern "C" SEXP _clock_duration_modulus_cpp(SEXP x, SEXP y, SEXP precision_x, SEXP precision_y) {
+cpp11::writable::list duration_modulus_cpp(cpp11::list_of<cpp11::integers> x, cpp11::list_of<cpp11::integers> y, const cpp11::strings& precision_string);
+extern "C" SEXP _clock_duration_modulus_cpp(SEXP x, SEXP y, SEXP precision_string) {
   BEGIN_CPP11
-    return cpp11::as_sexp(duration_modulus_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(y), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_y)));
+    return cpp11::as_sexp(duration_modulus_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(y), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string)));
   END_CPP11
 }
 // duration.cpp
@@ -605,9 +605,9 @@ extern SEXP _clock_duration_ceiling_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_floor_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_has_common_precision_cpp(SEXP, SEXP);
 extern SEXP _clock_duration_helper_cpp(SEXP, SEXP);
-extern SEXP _clock_duration_minus_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_duration_modulus_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_duration_plus_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_duration_minus_cpp(SEXP, SEXP, SEXP);
+extern SEXP _clock_duration_modulus_cpp(SEXP, SEXP, SEXP);
+extern SEXP _clock_duration_plus_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_precision_common_cpp(SEXP, SEXP);
 extern SEXP _clock_duration_round_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_scalar_divide_cpp(SEXP, SEXP, SEXP);
@@ -689,9 +689,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_duration_floor_cpp",                              (DL_FUNC) &_clock_duration_floor_cpp,                               4},
     {"_clock_duration_has_common_precision_cpp",               (DL_FUNC) &_clock_duration_has_common_precision_cpp,                2},
     {"_clock_duration_helper_cpp",                             (DL_FUNC) &_clock_duration_helper_cpp,                              2},
-    {"_clock_duration_minus_cpp",                              (DL_FUNC) &_clock_duration_minus_cpp,                               4},
-    {"_clock_duration_modulus_cpp",                            (DL_FUNC) &_clock_duration_modulus_cpp,                             4},
-    {"_clock_duration_plus_cpp",                               (DL_FUNC) &_clock_duration_plus_cpp,                                4},
+    {"_clock_duration_minus_cpp",                              (DL_FUNC) &_clock_duration_minus_cpp,                               3},
+    {"_clock_duration_modulus_cpp",                            (DL_FUNC) &_clock_duration_modulus_cpp,                             3},
+    {"_clock_duration_plus_cpp",                               (DL_FUNC) &_clock_duration_plus_cpp,                                3},
     {"_clock_duration_precision_common_cpp",                   (DL_FUNC) &_clock_duration_precision_common_cpp,                    2},
     {"_clock_duration_round_cpp",                              (DL_FUNC) &_clock_duration_round_cpp,                               4},
     {"_clock_duration_scalar_divide_cpp",                      (DL_FUNC) &_clock_duration_scalar_divide_cpp,                       3},
