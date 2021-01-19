@@ -719,6 +719,14 @@ as_naive_time.clock_year_month_weekday <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
+calendar_leap_year.clock_year_month_weekday <- function(x) {
+  x <- get_year(x)
+  gregorian_leap_year_cpp(x)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 calendar_group.clock_year_month_weekday <- function(x, precision, ..., n = 1L) {
   if (identical(precision, "day")) {
     message <- paste0(

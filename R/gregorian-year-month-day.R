@@ -648,6 +648,14 @@ as_naive_time.clock_year_month_day <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
+calendar_leap_year.clock_year_month_day <- function(x) {
+  x <- get_year(x)
+  gregorian_leap_year_cpp(x)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 calendar_component_grouper.clock_year_month_day <- function(x, component) {
   switch(
     component,

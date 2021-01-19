@@ -116,6 +116,10 @@ year_month_day_minus_year_month_day_cpp <- function(x, y, precision_string) {
   .Call("_clock_year_month_day_minus_year_month_day_cpp", x, y, precision_string, PACKAGE = "clock")
 }
 
+gregorian_leap_year_cpp <- function(year) {
+  .Call("_clock_gregorian_leap_year_cpp", year, PACKAGE = "clock")
+}
+
 year_month_weekday_check_range_cpp <- function(x, component_string, arg) {
   invisible(.Call("_clock_year_month_weekday_check_range_cpp", x, component_string, arg, PACKAGE = "clock"))
 }

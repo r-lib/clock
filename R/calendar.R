@@ -54,6 +54,34 @@ cast_calendar_to_calendar <- function(x, to, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Is the calendar year a leap year?
+#'
+#' `calendar_leap_year()` detects if the year is a leap year according to
+#' the Gregorian calendar. It is only relevant for calendar types that use
+#' a Gregorian year, i.e. [year_month_day()] and [year_month_weekday()].
+#'
+#' @param x `[calendar]`
+#'
+#'   A calendar type to detect leap years in.
+#'
+#' @return A logical vector the same size as `x`. Returns `TRUE` if in a leap
+#'   year, `FALSE` if not in a leap year, and `NA` if `x` is `NA`.
+#'
+#' @examples
+#' x <- year_month_day(c(2019:2024, NA))
+#' calendar_leap_year(x)
+#' @export
+calendar_leap_year <- function(x) {
+  UseMethod("calendar_leap_year")
+}
+
+#' @export
+calendar_leap_year.clock_calendar <- function(x) {
+  stop_clock_unsupported_calendar_op("calendar_leap_year")
+}
+
+# ------------------------------------------------------------------------------
+
 #' @export
 calendar_group <- function(x, precision, ..., n = 1L) {
   UseMethod("calendar_group")

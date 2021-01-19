@@ -208,6 +208,13 @@ extern "C" SEXP _clock_year_month_day_minus_year_month_day_cpp(SEXP x, SEXP y, S
     return cpp11::as_sexp(year_month_day_minus_year_month_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(y), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(precision_string)));
   END_CPP11
 }
+// gregorian-year-month-day.cpp
+cpp11::writable::logicals gregorian_leap_year_cpp(const cpp11::integers& year);
+extern "C" SEXP _clock_gregorian_leap_year_cpp(SEXP year) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(gregorian_leap_year_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year)));
+  END_CPP11
+}
 // gregorian-year-month-weekday.cpp
 void year_month_weekday_check_range_cpp(const cpp11::integers& x, const cpp11::strings& component_string, const cpp11::strings& arg);
 extern "C" SEXP _clock_year_month_weekday_check_range_cpp(SEXP x, SEXP component_string, SEXP arg) {
@@ -623,6 +630,7 @@ extern SEXP _clock_format_year_quarter_day_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_format_zoned_time_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_get_naive_time_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_get_offset_cpp(SEXP, SEXP, SEXP);
+extern SEXP _clock_gregorian_leap_year_cpp(SEXP);
 extern SEXP _clock_invalid_any_iso_year_week_day_cpp(SEXP, SEXP);
 extern SEXP _clock_invalid_any_year_month_day_cpp(SEXP, SEXP);
 extern SEXP _clock_invalid_any_year_month_weekday_cpp(SEXP, SEXP);
@@ -707,6 +715,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_format_zoned_time_cpp",                           (DL_FUNC) &_clock_format_zoned_time_cpp,                           11},
     {"_clock_get_naive_time_cpp",                              (DL_FUNC) &_clock_get_naive_time_cpp,                               3},
     {"_clock_get_offset_cpp",                                  (DL_FUNC) &_clock_get_offset_cpp,                                   3},
+    {"_clock_gregorian_leap_year_cpp",                         (DL_FUNC) &_clock_gregorian_leap_year_cpp,                          1},
     {"_clock_invalid_any_iso_year_week_day_cpp",               (DL_FUNC) &_clock_invalid_any_iso_year_week_day_cpp,                2},
     {"_clock_invalid_any_year_month_day_cpp",                  (DL_FUNC) &_clock_invalid_any_year_month_day_cpp,                   2},
     {"_clock_invalid_any_year_month_weekday_cpp",              (DL_FUNC) &_clock_invalid_any_year_month_weekday_cpp,               2},
