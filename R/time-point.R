@@ -145,21 +145,36 @@ pillar_shaft.clock_time_point <- function(x, ...) {
 
 #' @export
 vec_proxy.clock_time_point <- function(x, ...) {
-  proxy_rcrd(x)
+  names <- names(x)
+  time_point_proxy(x, names)
+}
+
+time_point_proxy <- function(x, names = NULL) {
+  x <- time_point_duration(x)
+  duration_proxy(x, names)
 }
 
 #' @export
 vec_restore.clock_time_point <- function(x, to, ...) {
-  fields <- restore_rcrd_fields(x)
   names <- restore_rcrd_names(x)
+  time_point_restore(x, to, names)
+}
+
+time_point_restore <- function(x, to, names = NULL) {
   clock <- time_point_clock(to)
-  duration <- fields$duration
-  new_time_point(duration, clock, names = names)
+  to <- time_point_duration(to)
+  x <- duration_restore(x, to)
+  new_time_point(x, clock, names = names)
 }
 
 #' @export
 vec_proxy_equal.clock_time_point <- function(x, ...) {
   proxy_equal_rcrd(x)
+}
+
+time_point_proxy_equal <- function(x) {
+  x <- time_point_duration(x)
+  duration_proxy_equal(x)
 }
 
 # ------------------------------------------------------------------------------

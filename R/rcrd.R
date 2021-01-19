@@ -121,16 +121,12 @@ proxy_rcrd <- function(x) {
 }
 
 proxy_equal_rcrd <- function(x) {
-  out <- unclass(x)
-  out <- new_data_frame(out)
-  out
+  new_data_frame(x)
 }
 
 restore_rcrd_fields <- function(x) {
   x[["clock_rcrd:::names"]] <- NULL
-  names <- names(x)
-  x <- unstructure(x)
-  names(x) <- names
+  attributes(x) <- list(names = names(x))
   x
 }
 

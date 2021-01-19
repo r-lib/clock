@@ -120,24 +120,38 @@ zoned_time_format <- function(print_zone_name) {
 
 #' @export
 vec_proxy.clock_zoned_time <- function(x, ...) {
-  proxy_rcrd(x)
+  names <- names(x)
+  zoned_time_proxy(x, names)
+}
+
+zoned_time_proxy <- function(x, names = NULL) {
+  x <- zoned_time_sys_time(x)
+  time_point_proxy(x, names)
 }
 
 #' @export
 vec_restore.clock_zoned_time <- function(x, to, ...) {
-  fields <- restore_rcrd_fields(x)
   names <- restore_rcrd_names(x)
+  zoned_time_restore(x, to, names)
+}
+
+zoned_time_restore <- function(x, to, names = NULL) {
   zone <- zoned_time_zone(to)
-  sys_time <- fields$sys_time
-  new_zoned_time(sys_time, zone, names = names)
+  to <- zoned_time_sys_time(to)
+  x <- time_point_restore(x, to)
+  new_zoned_time(x, zone, names = names)
 }
 
 #' @export
 vec_proxy_equal.clock_zoned_time <- function(x, ...) {
-  # TODO: How should this be handled? <date> only let's zoned times be equal
-  # if their time zones and points are equal. vctrs assumes POSIXct are equal
-  # if their underlying doubles are equal.
-  proxy_equal_rcrd(x)
+  # ptype2 / cast will prevent zoned times with different zones from being
+  # compared, so the equality proxy doesn't need to worry about zone.
+  zoned_time_proxy_equal(x)
+}
+
+zoned_time_proxy_equal <- function(x) {
+  x <- zoned_time_sys_time(x)
+  time_point_proxy_equal(x)
 }
 
 # ------------------------------------------------------------------------------
