@@ -123,20 +123,20 @@ new_year_month_weekday_from_fields <- function(fields, precision, names = NULL) 
 
 #' @export
 vec_proxy.clock_year_month_weekday <- function(x, ...) {
-  proxy_rcrd(x)
+  clock_rcrd_proxy(x, names(x))
 }
 
 #' @export
 vec_restore.clock_year_month_weekday <- function(x, to, ...) {
-  fields <- restore_rcrd_fields(x)
-  names <- restore_rcrd_names(x)
+  fields <- clock_rcrd_restore_fields(x)
+  names <- clock_rcrd_restore_names(x)
   precision <- calendar_precision(to)
   new_year_month_weekday_from_fields(fields, precision, names)
 }
 
 #' @export
 vec_proxy_equal.clock_year_month_weekday <- function(x, ...) {
-  proxy_equal_rcrd(x)
+  clock_rcrd_proxy_equal(x)
 }
 
 #' @export
@@ -154,7 +154,7 @@ vec_proxy_compare.clock_year_month_weekday <- function(x, ...) {
   }
 
   # Year / month year-month-weekday precision can be compared without ambiguity
-  proxy_equal_rcrd(x)
+  clock_rcrd_proxy_equal(x)
 }
 
 # ------------------------------------------------------------------------------

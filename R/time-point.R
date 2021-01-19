@@ -156,7 +156,7 @@ time_point_proxy <- function(x, names = NULL) {
 
 #' @export
 vec_restore.clock_time_point <- function(x, to, ...) {
-  names <- restore_rcrd_names(x)
+  names <- clock_rcrd_restore_names(x)
   time_point_restore(x, to, names)
 }
 
@@ -169,7 +169,7 @@ time_point_restore <- function(x, to, names = NULL) {
 
 #' @export
 vec_proxy_equal.clock_time_point <- function(x, ...) {
-  proxy_equal_rcrd(x)
+  time_point_proxy_equal(x)
 }
 
 time_point_proxy_equal <- function(x) {

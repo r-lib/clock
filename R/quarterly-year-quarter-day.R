@@ -127,13 +127,13 @@ new_year_quarter_day_from_fields <- function(fields, precision, start, names = N
 
 #' @export
 vec_proxy.clock_year_quarter_day <- function(x, ...) {
-  proxy_rcrd(x)
+  clock_rcrd_proxy(x, names(x))
 }
 
 #' @export
 vec_restore.clock_year_quarter_day <- function(x, to, ...) {
-  fields <- restore_rcrd_fields(x)
-  names <- restore_rcrd_names(x)
+  fields <- clock_rcrd_restore_fields(x)
+  names <- clock_rcrd_restore_names(x)
   precision <- calendar_precision(to)
   start <- quarterly_start(to)
   new_year_quarter_day_from_fields(fields, precision, start, names)

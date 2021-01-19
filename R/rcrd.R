@@ -113,24 +113,24 @@ validate_names <- function(names, size) {
 
 # ------------------------------------------------------------------------------
 
-proxy_rcrd <- function(x) {
+clock_rcrd_proxy <- function(x, names = NULL) {
   out <- unclass(x)
-  out[["clock_rcrd:::names"]] <- names(x)
+  out[["clock_rcrd:::names"]] <- names
   out <- new_data_frame(out)
   out
 }
 
-proxy_equal_rcrd <- function(x) {
+clock_rcrd_proxy_equal <- function(x) {
   new_data_frame(x)
 }
 
-restore_rcrd_fields <- function(x) {
-  x[["clock_rcrd:::names"]] <- NULL
+clock_rcrd_restore_fields <- function(x) {
   attributes(x) <- list(names = names(x))
+  x[["clock_rcrd:::names"]] <- NULL
   x
 }
 
-restore_rcrd_names <- function(x) {
+clock_rcrd_restore_names <- function(x) {
   names <- x[["clock_rcrd:::names"]]
 
   if (is_null(names)) {
@@ -153,5 +153,3 @@ repair_na_names <- function(names) {
 
   names
 }
-
-

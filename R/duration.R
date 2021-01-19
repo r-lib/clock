@@ -183,20 +183,17 @@ vec_proxy.clock_duration <- function(x, ...) {
 }
 
 duration_proxy <- function(x, names = NULL) {
-  out <- unclass(x)
-  out[["clock_rcrd:::names"]] <- names
-  out <- new_data_frame(out)
-  out
+  clock_rcrd_proxy(x, names)
 }
 
 #' @export
 vec_restore.clock_duration <- function(x, to, ...) {
-  names <- restore_rcrd_names(x)
+  names <- clock_rcrd_restore_names(x)
   duration_restore(x, to, names)
 }
 
 duration_restore <- function(x, to, names = NULL) {
-  fields <- restore_rcrd_fields(x)
+  fields <- clock_rcrd_restore_fields(x)
   precision <- duration_precision(to)
   new_duration_from_fields(fields, precision, names)
 }
@@ -207,7 +204,7 @@ vec_proxy_equal.clock_duration <- function(x, ...) {
 }
 
 duration_proxy_equal <- function(x) {
-  proxy_equal_rcrd(x)
+  clock_rcrd_proxy_equal(x)
 }
 
 # ------------------------------------------------------------------------------

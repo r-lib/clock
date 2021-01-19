@@ -131,7 +131,7 @@ zoned_time_proxy <- function(x, names = NULL) {
 
 #' @export
 vec_restore.clock_zoned_time <- function(x, to, ...) {
-  names <- restore_rcrd_names(x)
+  names <- clock_rcrd_restore_names(x)
   zoned_time_restore(x, to, names)
 }
 
