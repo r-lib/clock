@@ -208,30 +208,30 @@ to_sys_seconds_from_sys_duration_fields_cpp(cpp11::list_of<cpp11::integers> fiel
 template <class ClockDuration>
 static
 inline
-cpp11::writable::integers
-get_offset_impl(const ClockDuration& x,
-                const date::time_zone* p_time_zone) {
+cpp11::writable::list
+zoned_offset_impl(const ClockDuration& x,
+                  const date::time_zone* p_time_zone) {
   using Duration = typename ClockDuration::duration;
 
   const r_ssize size = x.size();
-  cpp11::writable::integers out(size);
+  rclock::duration::seconds out(size);
 
   for (r_ssize i = 0; i < size; ++i) {
     if (x.is_na(i)) {
-      out[i] = r_int_na;
+      out.assign_na(i);
       continue;
     }
     const date::sys_time<Duration> elt{x[i]};
     const date::sys_info info = p_time_zone->get_info(elt);
-    out[i] = info.offset.count();
+    out.assign(info.offset, i);
   }
 
-  return out;
+  return out.to_list();
 }
 
 [[cpp11::register]]
-cpp11::writable::integers
-get_offset_cpp(cpp11::list_of<cpp11::integers> fields,
+cpp11::writable::list
+zoned_offset_cpp(cpp11::list_of<cpp11::integers> fields,
                const cpp11::strings& precision_string,
                const cpp11::strings& zone) {
   using namespace rclock;
@@ -250,10 +250,10 @@ get_offset_cpp(cpp11::list_of<cpp11::integers> fields,
   const duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
   switch (parse_precision(precision_string)) {
-  case precision::second: return get_offset_impl(ds, p_time_zone);
-  case precision::millisecond: return get_offset_impl(dmilli, p_time_zone);
-  case precision::microsecond: return get_offset_impl(dmicro, p_time_zone);
-  case precision::nanosecond: return get_offset_impl(dnano, p_time_zone);
+  case precision::second: return zoned_offset_impl(ds, p_time_zone);
+  case precision::millisecond: return zoned_offset_impl(dmilli, p_time_zone);
+  case precision::microsecond: return zoned_offset_impl(dmicro, p_time_zone);
+  case precision::nanosecond: return zoned_offset_impl(dnano, p_time_zone);
   default: clock_abort("Internal error: Should never be called.");
   }
 }

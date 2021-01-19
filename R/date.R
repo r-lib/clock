@@ -94,9 +94,12 @@ get_zone.Date <- function(x) {
   "UTC"
 }
 
+# ------------------------------------------------------------------------------
+
 #' @export
-get_offset.Date <- function(x) {
-  zeros_along(x, na_propagate = TRUE)
+zoned_offset.Date <- function(x) {
+  n <- zeros_along(x, na_propagate = TRUE)
+  duration_seconds(n)
 }
 
 # ------------------------------------------------------------------------------

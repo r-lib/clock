@@ -62,8 +62,3 @@ get_index <- function(x) {
 get_zone <- function(x) {
   UseMethod("get_zone")
 }
-
-#' @export
-get_offset <- function(x) {
-  UseMethod("get_offset")
-}

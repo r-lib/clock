@@ -166,10 +166,12 @@ get_zone.POSIXt <- function(x) {
   zone_standardize(get_tzone(x))
 }
 
+# ------------------------------------------------------------------------------
+
 #' @export
-get_offset.POSIXt <- function(x) {
+zoned_offset.POSIXt <- function(x) {
   x <- as_zoned_time(x)
-  get_offset(x)
+  zoned_offset(x)
 }
 
 # ------------------------------------------------------------------------------
