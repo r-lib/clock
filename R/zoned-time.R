@@ -389,6 +389,8 @@ zoned_set_zone.clock_zoned_time <- function(x, zone) {
 #'
 #'   A zoned time to extract the offset for.
 #'
+#' @return A seconds precision duration object the same size as `x`.
+#' @export
 #' @examples
 #' # R defines Date as UTC
 #' zoned_offset(as.Date("2019-01-01"))
@@ -402,7 +404,6 @@ zoned_set_zone.clock_zoned_time <- function(x, zone) {
 #'
 #' # Can extract directly from POSIXct if you started with one of those
 #' zoned_offset(as.POSIXct(x))
-#' @export
 zoned_offset <- function(x) {
   UseMethod("zoned_offset")
 }
@@ -415,6 +416,42 @@ zoned_offset.clock_zoned_time <- function(x) {
   precision <- time_point_precision(sys_time)
   fields <- zoned_offset_cpp(duration, precision, zone)
   new_duration_from_fields(fields, precision = "second")
+}
+
+# ------------------------------------------------------------------------------
+
+#' Is daylight saving time active?
+#'
+#' `zoned_dst()` detects if daylight saving time is currently active.
+#'
+#' @param x `[zoned_time / Date / POSIXt]`
+#'
+#'   A zoned time to check if daylight saving time is active for.
+#'
+#' @return A logical the same size as `x`. Returns `TRUE` if daylight saving
+#'   time is active, `FALSE` if not, and `NA` if `x` is `NA`.
+#' @export
+#' @examples
+#' # R defines Date as UTC, where DST is never active
+#' zoned_dst(as.Date("2019-01-01"))
+#'
+#' x <- year_month_day(2021, 03, 14, hour = c(1, 3))
+#' x <- as_naive_time(x)
+#' x <- as_zoned_time(x, "America/New_York")
+#'
+#' # Daylight savings time was turned on at 2am
+#' zoned_dst(x)
+zoned_dst <- function(x) {
+  UseMethod("zoned_dst")
+}
+
+#' @export
+zoned_dst.clock_zoned_time <- function(x) {
+  zone <- zoned_time_zone(x)
+  sys_time <- zoned_time_sys_time(x)
+  sys_time <- time_point_cast(sys_time, "second")
+  duration <- time_point_duration(sys_time)
+  zoned_dst_cpp(duration, zone)
 }
 
 # ------------------------------------------------------------------------------

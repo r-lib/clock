@@ -107,6 +107,11 @@ zoned_offset.Date <- function(x) {
   duration_seconds(n)
 }
 
+#' @export
+zoned_dst.Date <- function(x) {
+  false_along(x, na_propagate = TRUE)
+}
+
 # ------------------------------------------------------------------------------
 
 #' @export

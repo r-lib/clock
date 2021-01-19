@@ -331,3 +331,7 @@ to_sys_seconds_from_sys_duration_fields_cpp <- function(fields) {
 zoned_offset_cpp <- function(fields, precision_string, zone) {
   .Call("_clock_zoned_offset_cpp", fields, precision_string, zone, PACKAGE = "clock")
 }
+
+zoned_dst_cpp <- function(fields, zone) {
+  .Call("_clock_zoned_dst_cpp", fields, zone, PACKAGE = "clock")
+}

@@ -257,3 +257,39 @@ zoned_offset_cpp(cpp11::list_of<cpp11::integers> fields,
   default: clock_abort("Internal error: Should never be called.");
   }
 }
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+cpp11::writable::logicals
+zoned_dst_cpp(cpp11::list_of<cpp11::integers> fields,
+              const cpp11::strings& zone) {
+  using namespace rclock;
+
+  const cpp11::writable::strings zone_standard = zone_standardize(zone);
+  const std::string zone_name = cpp11::r_string(zone_standard[0]);
+  const date::time_zone* p_time_zone = zone_name_load(zone_name);
+
+  const cpp11::integers ticks = duration::get_ticks(fields);
+  const cpp11::integers ticks_of_day = duration::get_ticks_of_day(fields);
+
+  // Cast to seconds precision at R level
+  const duration::seconds x{ticks, ticks_of_day};
+
+  const r_ssize size = x.size();
+  cpp11::writable::logicals out(size);
+
+  const std::chrono::minutes zero{0};
+
+  for (r_ssize i = 0; i < size; ++i) {
+    if (x.is_na(i)) {
+      out[i] = r_lgl_na;
+      continue;
+    }
+    const date::sys_time<std::chrono::seconds> elt{x[i]};
+    const date::sys_info info = p_time_zone->get_info(elt);
+    out[i] = info.save != zero;
+  }
+
+  return out;
+}

@@ -11,6 +11,9 @@ zoned_offset(x)
 
 A zoned time to extract the offset for.}
 }
+\value{
+A seconds precision duration object the same size as \code{x}.
+}
 \description{
 \code{zoned_offset()} returns the offset from UTC as a duration of seconds.
 }

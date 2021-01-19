@@ -181,6 +181,12 @@ zoned_offset.POSIXt <- function(x) {
   zoned_offset(x)
 }
 
+#' @export
+zoned_dst.POSIXt <- function(x) {
+  x <- as_zoned_time(x)
+  zoned_dst(x)
+}
+
 # ------------------------------------------------------------------------------
 
 #' @export
