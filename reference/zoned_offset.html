@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • clock</title>
+<title>Get the offset from UTC — zoned_offset • clock</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Get the offset from UTC — zoned_offset" />
+<meta property="og:description" content="zoned_offset() returns the offset from UTC as a duration of seconds." />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -117,78 +118,51 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Get the offset from UTC</h1>
+    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/zoned-time.R'><code>R/zoned-time.R</code></a></small>
+    <div class="hidden name"><code>zoned_offset.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p><code>zoned_offset()</code> returns the offset from UTC as a duration of seconds.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>zoned_offset</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="calendar_leap_year.html">calendar_leap_year()</a></code> </p>
-        </td>
-        <td><p>Is the calendar year a leap year?</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="date_locale.html">date_locale()</a></code> <code><a href="date_locale.html">default_date_locale()</a></code> </p>
-        </td>
-        <td><p>Create a date locale</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="date_names.html">date_names()</a></code> <code><a href="date_names.html">date_names_lang()</a></code> <code><a href="date_names.html">date_names_langs()</a></code> </p>
-        </td>
-        <td><p>Create or retrieve date names</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="duration-helper.html">duration_years()</a></code> <code><a href="duration-helper.html">duration_quarters()</a></code> <code><a href="duration-helper.html">duration_months()</a></code> <code><a href="duration-helper.html">duration_weeks()</a></code> <code><a href="duration-helper.html">duration_days()</a></code> <code><a href="duration-helper.html">duration_hours()</a></code> <code><a href="duration-helper.html">duration_minutes()</a></code> <code><a href="duration-helper.html">duration_seconds()</a></code> <code><a href="duration-helper.html">duration_milliseconds()</a></code> <code><a href="duration-helper.html">duration_microseconds()</a></code> <code><a href="duration-helper.html">duration_nanoseconds()</a></code> </p>
-        </td>
-        <td><p>Construct a duration</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="zoned-zone.html">zoned_zone()</a></code> <code><a href="zoned-zone.html">zoned_set_zone()</a></code> </p>
-        </td>
-        <td><p>Retrieve or set the time zone</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="zoned_dst.html">zoned_dst()</a></code> </p>
-        </td>
-        <td><p>Is daylight saving time active?</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="zoned_offset.html">zoned_offset()</a></code> </p>
-        </td>
-        <td><p>Get the offset from UTC</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p><code>[zoned_time / Date / POSIXt]</code></p>
+<p>A zoned time to extract the offset for.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A seconds precision duration object the same size as <code>x</code>.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># R defines Date as UTC</span>
+<span class='fu'>zoned_offset</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;duration&lt;second&gt;[1]&gt;
+#&gt; [1] 0</div><div class='input'>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>year_month_day</span><span class='op'>(</span><span class='fl'>2021</span>, <span class='fl'>03</span>, <span class='fl'>14</span>, hour <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>as_naive_time</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>as_zoned_time</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
+
+<span class='co'># Daylight savings time alters the offset from UTC</span>
+<span class='fu'>zoned_offset</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;duration&lt;second&gt;[2]&gt;
+#&gt; [1] -18000 -14400</div><div class='input'>
+<span class='co'># Can extract directly from POSIXct if you started with one of those</span>
+<span class='fu'>zoned_offset</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;duration&lt;second&gt;[2]&gt;
+#&gt; [1] -18000 -14400</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
