@@ -57,8 +57,3 @@ get_nanosecond <- function(x) {
 get_index <- function(x) {
   UseMethod("get_index")
 }
-
-#' @export
-get_zone <- function(x) {
-  UseMethod("get_zone")
-}

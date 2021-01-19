@@ -35,7 +35,7 @@ is_zoned_time <- function(x) {
 zoned_time_zone <- function(x) {
   attr(x, "zone", exact = TRUE)
 }
-zoned_time_zone_set <- function(x, zone) {
+zoned_time_set_zone <- function(x, zone) {
   attr(x, "zone") <- zone
   x
 }
@@ -269,13 +269,6 @@ pillar_shaft.clock_zoned_time <- function(x, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
-get_zone.clock_zoned_time <- function(x) {
-  zoned_time_zone(x)
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
 as_zoned_time <- function(x, ...) {
   UseMethod("as_zoned_time")
 }
@@ -317,6 +310,77 @@ zoned_now <- function(zone) {
 
 # ------------------------------------------------------------------------------
 
+#' Retrieve or set the time zone
+#'
+#' @description
+#' `zoned_zone()` retrieves the time zone.
+#'
+#' `zoned_set_zone()` sets the time zone _without changing the
+#' underlying instant_. This means that the result will represent the equivalent
+#' time in the new time zone.
+#'
+#' @param x `[zoned_time / Date / POSIXt]`
+#'
+#'   A zoned time to get or set the time zone of.
+#'
+#' @param zone `[character(1)]`
+#'
+#'   A valid time zone to switch to.
+#'
+#' @return
+#' `zoned_zone()` returns a string containing the time zone.
+#'
+#' `zoned_set_zone()` returns `x` with an altered time zone attribute. The
+#' underlying instant is _not_ changed.
+#'
+#' @name zoned-zone
+#'
+#' @examples
+#' x <- as.POSIXct("2019-01-01 00:00:00", tz = "America/New_York")
+#'
+#' zoned_zone(x)
+#'
+#' # Equivalent UTC time
+#' zoned_set_zone(x, "UTC")
+#'
+#' y <- as_zoned_time(x)
+#'
+#' # With a zoned-time
+#' zoned_set_zone(y, "UTC")
+#'
+#' # To force a new time zone with the same wall time,
+#' # convert to a naive time that has no implied time zone,
+#' # then convert back to a zoned time in the new time zone.
+#' nt <- as_naive_time(y)
+#' nt
+#' as_zoned_time(nt, "UTC")
+NULL
+
+#' @rdname zoned-zone
+#' @export
+zoned_zone <- function(x) {
+  UseMethod("zoned_zone")
+}
+
+#' @export
+zoned_zone.clock_zoned_time <- function(x) {
+  zoned_time_zone(x)
+}
+
+#' @rdname zoned-zone
+#' @export
+zoned_set_zone <- function(x, zone) {
+  UseMethod("zoned_set_zone")
+}
+
+#' @export
+zoned_set_zone.clock_zoned_time <- function(x, zone) {
+  zone <- zone_validate(zone)
+  zoned_time_set_zone(x, zone)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Get the offset from UTC
 #'
 #' `zoned_offset()` returns the offset from UTC as a duration of seconds.
@@ -351,14 +415,6 @@ zoned_offset.clock_zoned_time <- function(x) {
   precision <- time_point_precision(sys_time)
   fields <- zoned_offset_cpp(duration, precision, zone)
   new_duration_from_fields(fields, precision = "second")
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
-set_zone.clock_zoned_time <- function(x, zone) {
-  zone <- zone_validate(zone)
-  zoned_time_zone_set(x, zone)
 }
 
 # ------------------------------------------------------------------------------

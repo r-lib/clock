@@ -17,7 +17,7 @@ as_zoned_time.POSIXt <- function(x, ...) {
 
   names <- names(x)
   seconds <- unstructure(x)
-  zone <- get_zone(x)
+  zone <- posixt_tzone(x)
 
   fields <- to_sys_duration_fields_from_sys_seconds_cpp(seconds)
   duration <- new_duration_from_fields(fields, "second")
@@ -161,12 +161,19 @@ get_posixt_field_year_month_day <- function(x, get_fn) {
   get_fn(x)
 }
 
+# ------------------------------------------------------------------------------
+
 #' @export
-get_zone.POSIXt <- function(x) {
-  zone_standardize(get_tzone(x))
+zoned_zone.POSIXt <- function(x) {
+  zone_standardize(posixt_tzone(x))
 }
 
-# ------------------------------------------------------------------------------
+#' @export
+zoned_set_zone.POSIXt <- function(x, zone) {
+  x <- to_posixct(x)
+  zone <- zone_validate(zone)
+  posixt_set_tzone(x, zone)
+}
 
 #' @export
 zoned_offset.POSIXt <- function(x) {
@@ -202,19 +209,11 @@ set_second.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "e
 }
 set_posixt_field_year_month_day <- function(x, value, invalid, nonexistent, ambiguous, set_fn, ...) {
   check_dots_empty()
-  zone <- get_tzone(x)
+  zone <- posixt_tzone(x)
   x <- as_year_month_day(x)
   x <- set_fn(x, value)
   x <- invalid_resolve(x, invalid = invalid)
   as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
-}
-
-
-#' @export
-set_zone.POSIXt <- function(x, zone) {
-  x <- to_posixct(x)
-  zone <- zone_validate(zone)
-  set_tzone(x, zone)
 }
 
 # ------------------------------------------------------------------------------
@@ -233,7 +232,7 @@ add_months.POSIXt <- function(x, n, ..., invalid = "error", nonexistent = "error
 }
 add_posixt_duration_year_month_day <- function(x, n, invalid, nonexistent, ambiguous, add_fn, ...) {
   check_dots_empty()
-  zone <- get_tzone(x)
+  zone <- posixt_tzone(x)
   x <- as_year_month_day(x)
   x <- add_fn(x, n)
   x <- invalid_resolve(x, invalid = invalid)
@@ -250,7 +249,7 @@ add_days.POSIXt <- function(x, n, ..., nonexistent = "error", ambiguous = "error
 }
 add_posixt_duration_naive_time_point <- function(x, n, nonexistent, ambiguous, add_fn, ...) {
   check_dots_empty()
-  zone <- get_tzone(x)
+  zone <- posixt_tzone(x)
   x <- as_naive_time(x)
   x <- add_fn(x, n)
   as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
@@ -270,7 +269,7 @@ add_seconds.POSIXt <- function(x, n, ...) {
 }
 add_posixt_duration_sys_time_point <- function(x, n, add_fn, ...) {
   check_dots_empty()
-  zone <- get_tzone(x)
+  zone <- posixt_tzone(x)
   x <- as_sys_time(x)
   x <- add_fn(x, n)
   as.POSIXct(x, tz = zone)

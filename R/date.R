@@ -89,12 +89,17 @@ get_date_field_year_month_day <- function(x, get_fn) {
   get_fn(x)
 }
 
+# ------------------------------------------------------------------------------
+
 #' @export
-get_zone.Date <- function(x) {
+zoned_zone.Date <- function(x) {
   "UTC"
 }
 
-# ------------------------------------------------------------------------------
+#' @export
+zoned_set_zone.Date <- function(x, zone) {
+  abort("'Date' objects are required to be UTC.")
+}
 
 #' @export
 zoned_offset.Date <- function(x) {
@@ -122,11 +127,6 @@ set_date_field_year_month_day <- function(x, value, invalid, set_fn, ...) {
   x <- set_fn(x, value)
   x <- invalid_resolve(x, invalid = invalid)
   as.Date(x)
-}
-
-#' @export
-set_zone.Date <- function(x, zone) {
-  abort("'Date' objects are required to be UTC.")
 }
 
 # ------------------------------------------------------------------------------
