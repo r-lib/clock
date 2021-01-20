@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 
 clock is a new R package for working with date-time data. It:
 
-- Provides a new family of orthogonal date-time classes (durations, time points, zoned times, and calendar dates) that partition responsibilities so that you only have to think about time zones when you need them.
+- Provides a new family of orthogonal date-time classes (durations, time points, zoned times, and calendars) that partition responsibilities so that you only have to think about time zones when you need them.
 
 - Implements a high level API for Date and POSIXct classes that lets you get productive quickly without having to learn the details of the underlying classes.
 
