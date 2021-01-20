@@ -9,7 +9,7 @@ new_time_point <- function(duration = duration_days(),
   }
 
   precision <- duration_precision(duration)
-  if (precision_value(precision) < PRECISION_DAY) {
+  if (precision < PRECISION_DAY) {
     abort("`duration` must have at least daily precision.")
   }
 
@@ -90,7 +90,7 @@ format.clock_time_point <- function(x,
     fields = duration,
     clock = clock,
     format = format,
-    precision_string = precision,
+    precision_int = precision,
     mon = date_names$mon,
     mon_ab = date_names$mon_ab,
     day = date_names$day,
@@ -105,6 +105,8 @@ format.clock_time_point <- function(x,
 }
 
 time_point_precision_format <- function(precision) {
+  precision <- precision_to_string(precision)
+
   switch(
     precision,
     day = "%Y-%m-%d",
@@ -184,6 +186,7 @@ vec_ptype_full.clock_time_point <- function(x, ...) {
   clock <- time_point_clock(x)
   duration <- time_point_duration(x)
   precision <- duration_precision(duration)
+  precision <- precision_to_string(precision)
   paste0("time_point<", clock, "><", precision, ">")
 }
 
@@ -192,6 +195,7 @@ vec_ptype_abbr.clock_time_point <- function(x, ...) {
   clock <- time_point_clock(x)
   duration <- time_point_duration(x)
   precision <- duration_precision(duration)
+  precision <- precision_to_string(precision)
   precision <- precision_abbr(precision)
   paste0("tp<", clock, "><", precision, ">")
 }
@@ -200,17 +204,7 @@ vec_ptype_abbr.clock_time_point <- function(x, ...) {
 
 # Caller guarantees that clocks are identical
 ptype2_time_point_and_time_point <- function(x, y, ...) {
-  x_precision <- time_point_precision(x)
-  y_precision <- time_point_precision(y)
-
-  if (x_precision == y_precision) {
-    return(x)
-  }
-
-  x_precision_value <- precision_value(x_precision)
-  y_precision_value <- precision_value(y_precision)
-
-  if (x_precision_value > y_precision_value) {
+  if (time_point_precision(x) >= time_point_precision(y)) {
     x
   } else {
     y
@@ -229,14 +223,11 @@ cast_time_point_to_time_point <- function(x, to, ...) {
     return(x)
   }
 
-  x_precision_value <- precision_value(x_precision)
-  to_precision_value <- precision_value(to_precision)
-
-  if (x_precision_value > to_precision_value) {
+  if (x_precision > to_precision) {
     stop_incompatible_cast(x, to, ..., details = "Precision would be lost.")
   }
 
-  duration <- duration_cast(x_duration, to_precision)
+  duration <- duration_cast_impl(x_duration, to_precision)
 
   new_time_point(
     duration = duration,
@@ -307,42 +298,42 @@ arith_numeric_and_time_point <- function(op, x, y, ...) {
 
 #' @export
 add_weeks.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, "week", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_WEEK, names_common(x, n))
 }
 
 #' @export
 add_days.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, "day", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_DAY, names_common(x, n))
 }
 
 #' @export
 add_hours.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, "hour", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_HOUR, names_common(x, n))
 }
 
 #' @export
 add_minutes.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, "minute", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_MINUTE, names_common(x, n))
 }
 
 #' @export
 add_seconds.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, "second", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_SECOND, names_common(x, n))
 }
 
 #' @export
 add_milliseconds.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, "millisecond", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_MILLISECOND, names_common(x, n))
 }
 
 #' @export
 add_microseconds.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, "microsecond", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_MICROSECOND, names_common(x, n))
 }
 
 #' @export
 add_nanoseconds.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, "nanosecond", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_NANOSECOND, names_common(x, n))
 }
 
 time_point_plus_duration <- function(x, n, precision_n, names) {
@@ -429,12 +420,10 @@ time_point_cast <- function(x, precision) {
     abort("`x` must be a 'time_point'.")
   }
 
-  if (!is_valid_time_point_precision(precision)) {
-    abort("`precision` must be a valid precision string, and must be at least 'day' precision.")
-  }
+  precision <- validate_time_point_precision(precision)
 
   duration <- time_point_duration(x)
-  duration <- duration_cast(duration, precision)
+  duration <- duration_cast_impl(duration, precision)
 
   new_time_point(duration, clock = time_point_clock(x), names = names(x))
 }
@@ -486,9 +475,7 @@ time_point_rounder <- function(x, precision, n, duration_rounder, ...) {
     abort("`x` must be a 'time_point'.")
   }
 
-  if (!is_valid_time_point_precision(precision)) {
-    abort("`precision` must be a valid precision string, and must be at least 'day' precision.")
-  }
+  precision <- validate_time_point_precision(precision)
 
   duration <- time_point_duration(x)
   duration <- duration_rounder(duration, precision, n = n)
@@ -498,11 +485,18 @@ time_point_rounder <- function(x, precision, n, duration_rounder, ...) {
 
 # ------------------------------------------------------------------------------
 
-is_valid_time_point_precision <- function(precision) {
-  if (!is_valid_precision(precision)) {
-    return(FALSE)
+validate_time_point_precision <- function(precision) {
+  precision <- validate_precision(precision)
+
+  if (!is_valid_time_point_precision(precision)) {
+    abort("`precision` must be at least 'day' precision.")
   }
-  precision_value(precision) >= PRECISION_DAY
+
+  precision
+}
+
+is_valid_time_point_precision <- function(precision) {
+  precision >= PRECISION_DAY
 }
 
 # ------------------------------------------------------------------------------

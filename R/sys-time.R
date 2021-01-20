@@ -62,7 +62,7 @@ as_zoned_time.clock_sys_time <- function(x, zone, ...) {
 #' @export
 sys_now <- function() {
   fields <- sys_now_cpp()
-  duration <- new_duration_from_fields(fields, "nanosecond")
+  duration <- new_duration_from_fields(fields, PRECISION_NANOSECOND)
   new_sys_time(duration)
 }
 

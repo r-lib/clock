@@ -46,6 +46,6 @@ test_that("can't round to more precise precision", {
 
 test_that("input is validated", {
   expect_error(duration_floor(1, "year"), "must be a duration object")
-  expect_error(duration_floor(duration_seconds(1), "foo"), "valid precision")
+  expect_error(duration_floor(duration_seconds(1), "foo"), "not recognized")
   expect_error(duration_floor(duration_seconds(1), "day", n = -1), "positive number")
 })

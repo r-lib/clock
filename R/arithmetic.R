@@ -159,8 +159,11 @@ add_duration <- function(x, duration, ..., swapped = FALSE) {
     names(x) <- names_common(duration, x)
   }
 
+  precision <- duration_precision(duration)
+  precision <- precision_to_string(precision)
+
   switch (
-    duration_precision(duration),
+    precision,
     year = add_years(x, duration),
     quarter = add_quarters(x, duration),
     month = add_months(x, duration),

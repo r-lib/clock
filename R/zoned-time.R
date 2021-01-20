@@ -10,7 +10,7 @@ new_zoned_time <- function(sys_time = sys_seconds(),
   if (!is_sys_time(sys_time)) {
     abort("`sys_time` must be a 'clock_sys_time'.")
   }
-  if (precision_value(time_point_precision(sys_time)) < PRECISION_SECOND) {
+  if (time_point_precision(sys_time) < PRECISION_SECOND) {
     abort("`sys_time` must be at least second precision.")
   }
 
@@ -91,7 +91,7 @@ format.clock_zoned_time <- function(x,
     zone = zone,
     abbreviate_zone = abbreviate_zone,
     format = format,
-    precision_string = precision,
+    precision_int = precision,
     mon = date_names$mon,
     mon_ab = date_names$mon_ab,
     day = date_names$day,
@@ -160,6 +160,7 @@ zoned_time_proxy_equal <- function(x) {
 vec_ptype_full.clock_zoned_time <- function(x, ...) {
   zone <- zone_pretty(zoned_time_zone(x))
   precision <- zoned_time_precision(x)
+  precision <- precision_to_string(precision)
   paste0("zoned_time<", precision, "><", zone, ">")
 }
 
@@ -167,6 +168,7 @@ vec_ptype_full.clock_zoned_time <- function(x, ...) {
 vec_ptype_abbr.clock_zoned_time <- function(x, ...) {
   zone <- zone_pretty(zoned_time_zone(x))
   precision <- zoned_time_precision(x)
+  precision <- precision_to_string(precision)
   precision <- precision_abbr(precision)
   paste0("zt<", precision, "><", zone, ">")
 }
@@ -193,14 +195,7 @@ vec_ptype2.clock_zoned_time.clock_zoned_time <- function(x, y, ...) {
   x_precision <- zoned_time_precision(x)
   y_precision <- zoned_time_precision(y)
 
-  if (x_precision == y_precision) {
-    return(x)
-  }
-
-  x_precision_value <- precision_value(x_precision)
-  y_precision_value <- precision_value(y_precision)
-
-  if (x_precision_value > y_precision_value) {
+  if (x_precision >= y_precision) {
     x
   } else {
     y
@@ -229,14 +224,11 @@ vec_cast.clock_zoned_time.clock_zoned_time <- function(x, to, ...) {
     return(x)
   }
 
-  x_precision_value <- precision_value(x_precision)
-  to_precision_value <- precision_value(to_precision)
-
-  if (x_precision_value > to_precision_value) {
+  if (x_precision > to_precision) {
     stop_incompatible_cast(x, to, ..., details = "Precision would be lost.")
   }
 
-  duration <- duration_cast(x_duration, to_precision)
+  duration <- duration_cast_impl(x_duration, to_precision)
 
   sys_time <- new_sys_time(duration)
 
@@ -415,7 +407,7 @@ zoned_offset.clock_zoned_time <- function(x) {
   duration <- time_point_duration(sys_time)
   precision <- time_point_precision(sys_time)
   fields <- zoned_offset_cpp(duration, precision, zone)
-  new_duration_from_fields(fields, precision = "second")
+  new_duration_from_fields(fields, precision = PRECISION_SECOND)
 }
 
 # ------------------------------------------------------------------------------

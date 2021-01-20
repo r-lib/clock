@@ -18,57 +18,57 @@ NULL
 #' @rdname duration-helper
 #' @export
 duration_years <- function(n = integer()) {
-  duration_helper(n, "year")
+  duration_helper(n, PRECISION_YEAR)
 }
 #' @rdname duration-helper
 #' @export
 duration_quarters <- function(n = integer()) {
-  duration_helper(n, "quarter")
+  duration_helper(n, PRECISION_QUARTER)
 }
 #' @rdname duration-helper
 #' @export
 duration_months <- function(n = integer()) {
-  duration_helper(n, "month")
+  duration_helper(n, PRECISION_MONTH)
 }
 #' @rdname duration-helper
 #' @export
 duration_weeks <- function(n = integer()) {
-  duration_helper(n, "week")
+  duration_helper(n, PRECISION_WEEK)
 }
 #' @rdname duration-helper
 #' @export
 duration_days <- function(n = integer()) {
-  duration_helper(n, "day")
+  duration_helper(n, PRECISION_DAY)
 }
 #' @rdname duration-helper
 #' @export
 duration_hours <- function(n = integer()) {
-  duration_helper(n, "hour")
+  duration_helper(n, PRECISION_HOUR)
 }
 #' @rdname duration-helper
 #' @export
 duration_minutes <- function(n = integer()) {
-  duration_helper(n, "minute")
+  duration_helper(n, PRECISION_MINUTE)
 }
 #' @rdname duration-helper
 #' @export
 duration_seconds <- function(n = integer()) {
-  duration_helper(n, "second")
+  duration_helper(n, PRECISION_SECOND)
 }
 #' @rdname duration-helper
 #' @export
 duration_milliseconds <- function(n = integer()) {
-  duration_helper(n, "millisecond")
+  duration_helper(n, PRECISION_MILLISECOND)
 }
 #' @rdname duration-helper
 #' @export
 duration_microseconds <- function(n = integer()) {
-  duration_helper(n, "microsecond")
+  duration_helper(n, PRECISION_MICROSECOND)
 }
 #' @rdname duration-helper
 #' @export
 duration_nanoseconds <- function(n = integer()) {
-  duration_helper(n, "nanosecond")
+  duration_helper(n, PRECISION_NANOSECOND)
 }
 
 duration_helper <- function(n, precision, ..., retain_names = FALSE) {
@@ -99,18 +99,17 @@ duration_helper <- function(n, precision, ..., retain_names = FALSE) {
 new_duration <- function(ticks = integer(),
                          ticks_of_day = integer(),
                          ticks_of_second = integer(),
-                         precision = "year",
+                         precision = 0L,
                          ...,
                          names = NULL,
                          class = NULL) {
-  if (!is_valid_precision(precision)) {
-    abort("`precision` must be a valid precision string.")
+  if (!is.integer(precision)) {
+    abort("`precision` must be an integer.")
   }
-  precision_value <- precision_value(precision)
 
-  if (precision_value <= PRECISION_DAY) {
+  if (precision <= PRECISION_DAY) {
     fields <- list(ticks = ticks)
-  } else if (precision_value <= PRECISION_SECOND) {
+  } else if (precision <= PRECISION_SECOND) {
     fields <- list(ticks = ticks, ticks_of_day = ticks_of_day)
   } else {
     fields <- list(ticks = ticks, ticks_of_day = ticks_of_day, ticks_of_second = ticks_of_second)
@@ -164,12 +163,14 @@ obj_print_data.clock_duration <- function(x, ...) {
 #' @export
 vec_ptype_full.clock_duration <- function(x, ...) {
   precision <- duration_precision(x)
+  precision <- precision_to_string(precision)
   paste0("duration<", precision, ">")
 }
 
 #' @export
 vec_ptype_abbr.clock_duration <- function(x, ...) {
   precision <- duration_precision(x)
+  precision <- precision_to_string(precision)
   precision <- precision_abbr(precision)
   paste0("dur<", precision, ">")
 }
@@ -218,9 +219,9 @@ vec_ptype2.clock_duration.clock_duration <- function(x, y, ...) {
     return(x)
   }
 
-  precision <- duration_precision_common(x_precision, y_precision)
+  precision <- duration_precision_common_cpp(x_precision, y_precision)
 
-  if (is_na(precision)) {
+  if (is.na(precision)) {
     stop_incompatible_type(
       x = x,
       y = y,
@@ -245,7 +246,7 @@ vec_cast.clock_duration.clock_duration <- function(x, to, ...) {
     return(x)
   }
 
-  if (precision_value(x_precision) > precision_value(to_precision)) {
+  if (x_precision > to_precision) {
     stop_incompatible_cast(
       x = x,
       to = to,
@@ -254,9 +255,9 @@ vec_cast.clock_duration.clock_duration <- function(x, to, ...) {
     )
   }
 
-  precision <- duration_precision_common(x_precision, to_precision)
+  precision <- duration_precision_common_cpp(x_precision, to_precision)
 
-  if (is_na(precision)) {
+  if (is.na(precision)) {
     stop_incompatible_cast(
       x = x,
       to = to,
@@ -265,7 +266,7 @@ vec_cast.clock_duration.clock_duration <- function(x, to, ...) {
     )
   }
 
-  duration_cast(x, precision)
+  duration_cast_impl(x, precision)
 }
 
 # ------------------------------------------------------------------------------
@@ -289,10 +290,12 @@ as_duration.clock_duration <- function(x) {
 
 #' @export
 duration_cast <- function(x, precision) {
-  if (!is_valid_precision(precision)) {
-    abort("`precision` must be a valid precision string.")
-  }
+  precision <- validate_precision(precision)
+  duration_cast_impl(x, precision)
+}
 
+# Assumes `precision` is an integer already
+duration_cast_impl <- function(x, precision) {
   fields <- duration_cast_cpp(x, duration_precision(x), precision)
 
   new_duration(
@@ -334,13 +337,10 @@ duration_rounder <- function(x, precision, n, rounder, verb, ...) {
     abort("`n` must be a positive number.")
   }
 
-  if (!is_valid_precision(precision)) {
-    abort("`precision` must be a valid precision string.")
-  }
-
+  precision <- validate_precision(precision)
   x_precision <- duration_precision(x)
 
-  if (precision_value(x_precision) < precision_value(precision)) {
+  if (x_precision < precision) {
     abort(paste0("Can't ", verb, " to a more precise precision."))
   }
 
@@ -426,57 +426,57 @@ vec_arith.numeric.clock_duration <- function(op, x, y, ...) {
 
 #' @export
 add_years.clock_duration <- function(x, n, ...) {
-  n <- duration_collect_n(n, "year")
+  n <- duration_collect_n(n, PRECISION_YEAR)
   duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_quarters.clock_duration <- function(x, n, ...) {
-  n <- duration_collect_n(n, "quarter")
+  n <- duration_collect_n(n, PRECISION_QUARTER)
   duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_months.clock_duration <- function(x, n, ...) {
-  n <- duration_collect_n(n, "month")
+  n <- duration_collect_n(n, PRECISION_MONTH)
   duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_weeks.clock_duration <- function(x, n, ...) {
-  n <- duration_collect_n(n, "week")
+  n <- duration_collect_n(n, PRECISION_WEEK)
   duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_days.clock_duration <- function(x, n, ...) {
-  n <- duration_collect_n(n, "day")
+  n <- duration_collect_n(n, PRECISION_DAY)
   duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_hours.clock_duration <- function(x, n, ...) {
-  n <- duration_collect_n(n, "hour")
+  n <- duration_collect_n(n, PRECISION_HOUR)
   duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_minutes.clock_duration <- function(x, n, ...) {
-  n <- duration_collect_n(n, "minute")
+  n <- duration_collect_n(n, PRECISION_MINUTE)
   duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_seconds.clock_duration <- function(x, n, ...) {
-  n <- duration_collect_n(n, "second")
+  n <- duration_collect_n(n, PRECISION_SECOND)
   duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_milliseconds.clock_duration <- function(x, n, ...) {
-  n <- duration_collect_n(n, "millisecond")
+  n <- duration_collect_n(n, PRECISION_MILLISECOND)
   duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_microseconds.clock_duration <- function(x, n, ...) {
-  n <- duration_collect_n(n, "microsecond")
+  n <- duration_collect_n(n, PRECISION_MICROSECOND)
   duration_plus(x, n, names_common(x, n))
 }
 #' @export
 add_nanoseconds.clock_duration <- function(x, n, ...) {
-  n <- duration_collect_n(n, "nanosecond")
+  n <- duration_collect_n(n, PRECISION_NANOSECOND)
   duration_plus(x, n, names_common(x, n))
 }
 
@@ -486,7 +486,8 @@ duration_collect_n <- function(n, precision) {
   }
 
   if (is_duration(n)) {
-    abort(paste0("`n` must have '", precision, "' precision."))
+    precision_string <- precision_to_string(precision)
+    abort(paste0("`n` must have '", precision_string, "' precision."))
   }
 
   duration_helper(n, precision, retain_names = TRUE)
@@ -585,10 +586,6 @@ is_duration_with_precision <- function(x, precision) {
 
 duration_precision <- function(x) {
   attr(x, "precision", exact = TRUE)
-}
-
-duration_precision_common <- function(x_precision, y_precision) {
-  duration_precision_common_cpp(x_precision, y_precision)
 }
 
 # ------------------------------------------------------------------------------

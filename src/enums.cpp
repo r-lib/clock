@@ -154,6 +154,15 @@ precision_to_cpp_string(const enum precision& x) {
   }
 }
 
+[[cpp11::register]]
+cpp11::writable::strings
+precision_to_string(const cpp11::integers& precision_int) {
+  const enum precision precision_val = parse_precision(precision_int);
+  const std::string precision_string = precision_to_cpp_string(precision_val);
+  cpp11::writable::strings out{precision_string};
+  return out;
+}
+
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]

@@ -56,6 +56,10 @@ duration_unary_minus_cpp <- function(fields, precision_int) {
   .Call("_clock_duration_unary_minus_cpp", fields, precision_int, PACKAGE = "clock")
 }
 
+precision_to_string <- function(precision_int) {
+  .Call("_clock_precision_to_string", precision_int, PACKAGE = "clock")
+}
+
 format_time_point_cpp <- function(fields, clock, format, precision_int, mon, mon_ab, day, day_ab, am_pm, decimal_mark) {
   .Call("_clock_format_time_point_cpp", fields, clock, format, precision_int, mon, mon_ab, day, day_ab, am_pm, decimal_mark, PACKAGE = "clock")
 }
