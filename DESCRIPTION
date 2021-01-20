@@ -1,5 +1,5 @@
 Package: clock
-Title: Calendars, Time Points, and Durations
+Title: Durations, Time Points, Zoned Times, and Calendars
 Version: 0.0.0.9000
 Authors@R: 
     c(person(given = "Davis",
@@ -8,12 +8,11 @@ Authors@R:
              email = "davis@rstudio.com"),
       person(given = "RStudio",
              role = "cph"))
-Description: Provides a comprehensive interface for date and datetime
-    manipulations. Both naive and zoned datetimes are supported, with
-    precision up to nanoseconds. Additionally, multiple types of calendars
-    have been implemented, allowing for various ways to represent calendar
-    dates, such as year-month-day, year-month-weekday, or
-    year-quarter-day.
+Description: Provides a comprehensive library for date-time manipulations
+    using a new family of orthogonal date-time classes (durations, time
+    points, zoned times, and calendars) that partition responsibilities so
+    that the complexities of time zones are only considered when they are
+    really needed.
 License: MIT + file LICENSE
 URL: https://github.com/DavisVaughan/clock
 BugReports: https://github.com/DavisVaughan/clock/issues
