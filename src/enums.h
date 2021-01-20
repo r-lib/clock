@@ -67,7 +67,7 @@ enum quarterly::start parse_start(const cpp11::integers& x);
 
 // -----------------------------------------------------------------------------
 
-enum class precision {
+enum class precision: unsigned char {
   year,
   quarter,
   month,
@@ -81,27 +81,9 @@ enum class precision {
   nanosecond
 };
 
-enum precision parse_precision(const cpp11::strings& x);
+enum precision parse_precision(const cpp11::integers& x);
 
-static
-inline
-std::string
-precision_to_string(const enum precision precision_val) {
-  switch (precision_val) {
-  case precision::year: return "year";
-  case precision::quarter: return "quarter";
-  case precision::month: return "month";
-  case precision::week: return "week";
-  case precision::day: return "day";
-  case precision::hour: return "hour";
-  case precision::minute: return "minute";
-  case precision::second: return "second";
-  case precision::millisecond: return "millisecond";
-  case precision::microsecond: return "microsecond";
-  case precision::nanosecond: return "nanosecond";
-  }
-  never_reached("precision_to_string");
-}
+const std::string& precision_to_cpp_string(const enum precision& x);
 
 // -----------------------------------------------------------------------------
 
