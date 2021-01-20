@@ -88,13 +88,19 @@
 <a href="#clock" class="anchor"></a>clock</h1></div>
 <!-- badges: start -->
 
-<p>The goal of clock is to provide a comprehensive library for working with dates and times. A few of the key features of clock are:</p>
+<p>clock is a new R package for working with date-time data. It:</p>
 <ul>
-<li><p><em>Time points</em> with precision that can vary from second up to nanosecond.</p></li>
-<li><p><em>Calendar</em> types, such as year-month-day, year-month-weekday, year-quarter-day, and iso-year-week-day, that can vary in precision from year up to nanosecond.</p></li>
-<li><p><em>Duration</em> types for working with absolute intervals of time.</p></li>
-<li><p>Clear and unambiguous handling of confusing date time manipulation issues, such as leap days, time zones, and daylight savings.</p></li>
-<li><p>A high level API supporting R’s Date and POSIXct classes to ease you into clock before having to learn about the more advanced features mentioned above.</p></li>
+<li><p>Provides a new family of orthogonal date-time classes (durations, time points, zoned times, and calendar dates) that partition responsibilities so that you only have to think about time zones when you need them.</p></li>
+<li><p>Implements a high level API for Date and POSIXct classes that lets you get productive quickly without having to learn the details of the underlying classes.</p></li>
+<li><p>Requires explicit handling of impossible dates (e.g. what date is one month after January 31st?) and ambiguous times (caused by daylight savings).</p></li>
+<li><p>Is built on the C++ <a href="https://github.com/HowardHinnant/date">date</a> library, which provides a correct and high-performance backend.</p></li>
+</ul>
+<p>There are four key classes in clock, inspired by the design of the C++ date and chrono libraries. Some types are more efficient than others at particular operations, and it is only when all 4 are taken as a whole do you get a complete date time library.</p>
+<ul>
+<li><p>A <em>duration</em> counts units of time, like “5 years” or “6 nanoseconds”. Bigger units are defined in terms of seconds, i.e. 1 day is 86400 seconds and 1 year is 365.2425 days. Durations are important because they form the backbone of clock; it’s relatively rare to use them directly.</p></li>
+<li><p>A <em>time point</em> records an instant in time, like “1:24pm January 1st 2015”. It combines a <em>duration</em> with a “clock” that defines when to start counting and what exactly to count. There are two important types of time in clock: <code>sys_time</code> and <code>naive_time</code>. They’re equivalent until you start working with zoned times.</p></li>
+<li><p>A <em>zoned time</em> is a time point paired with a time zone. You can create them from either a <code>sys_time</code> or a <code>naive_time</code>, depending on whether you want to convert the time point from UTC (leaving the underlying duration unchanged, but changing the printed time), or declare that the time point is in a specific time zone (leaving the printed time unchanged, but changing the underlying duration). Zoned times are primarily needed for communication with humans.</p></li>
+<li><p>A <em>calendar</em> represents a date using a combination of fields like year-month-day, year-month-weekday, year-quarter-day, or iso-year-week-day, along with hour/minute/second fields to represent time within a day (so they’re similar to R’s POSIXlt). Calendar objects are extremely efficient at arithmetic involving irregular periods such as months, quarters, and years and at getting and setting specified components. A calendar can represent invalid dates (like 2020-02-31) which only need to be resolved when converting back to a time point.</p></li>
 </ul>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
