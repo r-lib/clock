@@ -20,7 +20,7 @@ as_zoned_time.POSIXt <- function(x, ...) {
   zone <- posixt_tzone(x)
 
   fields <- to_sys_duration_fields_from_sys_seconds_cpp(seconds)
-  duration <- new_duration_from_fields(fields, "second")
+  duration <- new_duration_from_fields(fields, PRECISION_SECOND)
   sys_time <- new_sys_time(duration)
 
   new_zoned_time(sys_time, zone = zone, names = names)

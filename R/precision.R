@@ -10,7 +10,13 @@ PRECISION_MILLISECOND = 8L
 PRECISION_MICROSECOND = 9L
 PRECISION_NANOSECOND = 10L
 
-precision_value <- function(precision) {
+# ------------------------------------------------------------------------------
+
+validate_precision <- function(precision, arg = "precision") {
+  if (!is_string(precision)) {
+    abort(paste0("`", arg, "` must be a string."))
+  }
+
   switch(
     precision,
     year = PRECISION_YEAR,
@@ -24,48 +30,33 @@ precision_value <- function(precision) {
     millisecond = PRECISION_MILLISECOND,
     microsecond = PRECISION_MICROSECOND,
     nanosecond = PRECISION_NANOSECOND,
-    abort("Internal error: Unknown precision.")
+    abort(paste0("`", arg, "` not recognized."))
   )
 }
 
-# ------------------------------------------------------------------------------
-
-precision_names <- function() {
-  c(
-    "year",
-    "quarter",
-    "month",
-    "week",
-    "day",
-    "hour",
-    "minute",
-    "second",
-    "millisecond",
-    "microsecond",
-    "nanosecond"
-  )
-}
-
-precision_abbr <- function(precision) {
+precision_abbr <- function(precision_string) {
   switch(
-    precision,
+    precision_string,
     millisecond = "milli",
     microsecond = "micro",
     nanosecond = "nano",
-    precision # fallthrough
+    precision_string # fallthrough
   )
 }
 
 is_valid_precision <- function(precision) {
-  is_string(precision) && is_true(precision %in% precision_names())
+  is.integer(precision) &&
+    length(precision) == 1L &&
+    precision >= PRECISION_YEAR &&
+    precision <= PRECISION_NANOSECOND
 }
 
 is_valid_subsecond_precision <- function(precision) {
-  is_valid_precision(precision) && precision %in% c("millisecond", "microsecond", "nanosecond")
+  is.integer(precision) && precision >= PRECISION_MILLISECOND && precision <= PRECISION_NANOSECOND
 }
 
 precision_common2 <- function(x, y) {
-  if (precision_value(x) >= precision_value(y)) {
+  if (x >= y) {
     x
   } else {
     y

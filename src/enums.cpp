@@ -109,27 +109,58 @@ enum quarterly::start parse_start(const cpp11::integers& x) {
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum precision parse_precision(const cpp11::strings& x) {
+enum precision
+parse_precision(const cpp11::integers& x) {
   if (x.size() != 1) {
-    clock_abort("`precision` must be a string with length 1.");
+    clock_abort("`precision` must be an integer with length 1.");
   }
 
-  SEXP x_elt = x[0];
-  const char* x_char = CHAR(x_elt);
+  const int elt = x[0];
 
-  if (!strcmp(x_char, "year")) return precision::year;
-  else if (!strcmp(x_char, "quarter")) return precision::quarter;
-  else if (!strcmp(x_char, "month")) return precision::month;
-  else if (!strcmp(x_char, "week")) return precision::week;
-  else if (!strcmp(x_char, "day")) return precision::day;
-  else if (!strcmp(x_char, "hour")) return precision::hour;
-  else if (!strcmp(x_char, "minute")) return precision::minute;
-  else if (!strcmp(x_char, "second")) return precision::second;
-  else if (!strcmp(x_char, "millisecond")) return precision::millisecond;
-  else if (!strcmp(x_char, "microsecond")) return precision::microsecond;
-  else if (!strcmp(x_char, "nanosecond")) return precision::nanosecond;
+  if (elt > 10 || elt < 0) {
+    clock_abort("`%i` is not a recognized `precision` option.", elt);
+  }
 
-  clock_abort("'%s' is not a recognized `precision` option.", x_char);
+  return static_cast<enum precision>(static_cast<unsigned char>(elt));
+}
+
+static const std::string chr_year{"year"};
+static const std::string chr_quarter{"quarter"};
+static const std::string chr_month{"month"};
+static const std::string chr_week{"week"};
+static const std::string chr_day{"day"};
+static const std::string chr_hour{"hour"};
+static const std::string chr_minute{"minute"};
+static const std::string chr_second{"second"};
+static const std::string chr_millisecond{"millisecond"};
+static const std::string chr_microsecond{"microsecond"};
+static const std::string chr_nanosecond{"nanosecond"};
+
+const std::string&
+precision_to_cpp_string(const enum precision& x) {
+  switch (x) {
+  case precision::year: return chr_year;
+  case precision::quarter: return chr_quarter;
+  case precision::month: return chr_month;
+  case precision::week: return chr_week;
+  case precision::day: return chr_day;
+  case precision::hour: return chr_hour;
+  case precision::minute: return chr_minute;
+  case precision::second: return chr_second;
+  case precision::millisecond: return chr_millisecond;
+  case precision::microsecond: return chr_microsecond;
+  case precision::nanosecond: return chr_nanosecond;
+  default: never_reached("precision_to_cpp_string");
+  }
+}
+
+[[cpp11::register]]
+cpp11::writable::strings
+precision_to_string(const cpp11::integers& precision_int) {
+  const enum precision precision_val = parse_precision(precision_int);
+  const std::string precision_string = precision_to_cpp_string(precision_val);
+  cpp11::writable::strings out{precision_string};
+  return out;
 }
 
 // -----------------------------------------------------------------------------

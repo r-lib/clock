@@ -91,6 +91,9 @@ calendar_group <- function(x, precision, ..., n = 1L) {
 calendar_group.clock_calendar <- function(x, precision, ..., n = 1L) {
   check_dots_empty()
 
+  precision_string <- precision
+  precision <- validate_precision(precision_string)
+
   if (!calendar_is_valid_precision(x, precision)) {
     abort(paste0("`precision` must be a valid precision for a '", calendar_name(x), "'."))
   }
@@ -105,11 +108,11 @@ calendar_group.clock_calendar <- function(x, precision, ..., n = 1L) {
 
   x_precision <- calendar_precision(x)
 
-  if (precision_value(x_precision) < precision_value(precision)) {
+  if (x_precision < precision) {
     abort("Can't floor to a precision that is more precise than `x`.")
   }
 
-  x <- calendar_narrow(x, precision)
+  x <- calendar_narrow(x, precision_string)
 
   component <- calendar_precision_to_component(x, precision)
   group_component_fn <- calendar_component_grouper(x, component)
@@ -144,12 +147,14 @@ group_component1 <- function(x, n) {
 
 #' @export
 calendar_narrow <- function(x, precision) {
+  precision <- validate_precision(precision)
+
   if (!calendar_is_valid_precision(x, precision)) {
-    abort("`precision` must be a valid precision for a '", calendar_name(x), "'.")
+    abort(paste0("`precision` must be a valid precision for a '", calendar_name(x), "'."))
   }
 
   x_precision <- calendar_precision(x)
-  if (precision_value(x_precision) < precision_value(precision)) {
+  if (x_precision < precision) {
     abort("Can't narrow to a precision that is wider than `x`.")
   }
 
@@ -162,47 +167,47 @@ calendar_narrow.clock_calendar <- function(x, precision) {
 }
 
 calendar_narrow_time <- function(out_fields,
-                                 out_precision_value,
+                                 out_precision,
                                  x_fields,
-                                 x_precision_value) {
-  if (out_precision_value >= PRECISION_HOUR) {
+                                 x_precision) {
+  if (out_precision >= PRECISION_HOUR) {
     out_fields[["hour"]] <- x_fields[["hour"]]
   }
-  if (out_precision_value >= PRECISION_MINUTE) {
+  if (out_precision >= PRECISION_MINUTE) {
     out_fields[["minute"]] <- x_fields[["minute"]]
   }
-  if (out_precision_value >= PRECISION_SECOND) {
+  if (out_precision >= PRECISION_SECOND) {
     out_fields[["second"]] <- x_fields[["second"]]
   }
-  if (out_precision_value > PRECISION_SECOND) {
-    factor <- precision_subsecond_factor(out_precision_value, x_precision_value)
+  if (out_precision > PRECISION_SECOND) {
+    factor <- precision_subsecond_factor(out_precision, x_precision)
     out_fields[["subsecond"]] <- x_fields[["subsecond"]] %/% factor
   }
 
   out_fields
 }
 
-precision_subsecond_factor <- function(narrow_precision_value, wide_precision_value) {
-  if (narrow_precision_value == PRECISION_MILLISECOND) {
-    if (wide_precision_value == PRECISION_MILLISECOND) {
+precision_subsecond_factor <- function(narrow_precision, wide_precision) {
+  if (narrow_precision == PRECISION_MILLISECOND) {
+    if (wide_precision == PRECISION_MILLISECOND) {
       1L
-    } else if (wide_precision_value == PRECISION_MICROSECOND) {
+    } else if (wide_precision == PRECISION_MICROSECOND) {
       1e3L
-    } else if (wide_precision_value == PRECISION_NANOSECOND) {
+    } else if (wide_precision == PRECISION_NANOSECOND) {
       1e6L
     } else {
       abort("Internal error: Invalid precision combination.")
     }
-  } else if (narrow_precision_value == PRECISION_MICROSECOND) {
-    if (wide_precision_value == PRECISION_MICROSECOND) {
+  } else if (narrow_precision == PRECISION_MICROSECOND) {
+    if (wide_precision == PRECISION_MICROSECOND) {
       1L
-    } else if (wide_precision_value == PRECISION_NANOSECOND) {
+    } else if (wide_precision == PRECISION_NANOSECOND) {
       1e3L
     } else {
       abort("Internal error: Invalid precision combination.")
     }
-  } else if (narrow_precision_value == PRECISION_NANOSECOND) {
-    if (wide_precision_value == PRECISION_NANOSECOND) {
+  } else if (narrow_precision == PRECISION_NANOSECOND) {
+    if (wide_precision == PRECISION_NANOSECOND) {
       1L
     } else {
       abort("Internal error: Invalid precision combination.")
@@ -278,10 +283,6 @@ calendar_is_valid_precision <- function(x, precision) {
   UseMethod("calendar_is_valid_precision")
 }
 
-calendar_standard_precisions <- function() {
-  c("day", "hour", "minute", "second", "millisecond", "microsecond", "nanosecond")
-}
-
 # ------------------------------------------------------------------------------
 
 # Internal generic
@@ -303,19 +304,20 @@ calendar_precision <- function(x) {
 
 calendar_require_minimum_precision <- function(x, precision, fn) {
   if (!calendar_has_minimum_precision(x, precision)) {
-    msg <- paste0("`", fn, "()` requires a minimum precision of '", precision, "'.")
+    precision_string <- precision_to_string(precision)
+    msg <- paste0("`", fn, "()` requires a minimum precision of '", precision_string, "'.")
     abort(msg)
   }
   invisible(x)
 }
 calendar_has_minimum_precision <- function(x, precision) {
-  x_precision <- calendar_precision(x)
-  precision_value(x_precision) >= precision_value(precision)
+  calendar_precision(x) >= precision
 }
 
 calendar_require_precision <- function(x, precision, fn) {
   if (!calendar_has_precision(x, precision)) {
-    msg <- paste0("`", fn, "()` requires a precision of '", precision, "'.")
+    precision_string <- precision_to_string(precision)
+    msg <- paste0("`", fn, "()` requires a precision of '", precision_string, "'.")
     abort(msg)
   }
   invisible(x)
@@ -323,7 +325,8 @@ calendar_require_precision <- function(x, precision, fn) {
 calendar_require_any_of_precisions <- function(x, precisions, fn) {
   results <- vapply(precisions, calendar_has_precision, FUN.VALUE = logical(1), x = x)
   if (!any(results)) {
-    msg <- paste0("`", fn, "()` does not support a precision of '", calendar_precision(x), "'.")
+    precision_string <- precision_to_string(calendar_precision(x))
+    msg <- paste0("`", fn, "()` does not support a precision of '", precision_string, "'.")
     abort(msg)
   }
   invisible(x)
@@ -337,9 +340,13 @@ calendar_validate_subsecond_precision <- function(subsecond_precision) {
   if (is_null(subsecond_precision)) {
     abort("If `subsecond` is provided, `subsecond_precision` must be specified.")
   }
+
+  subsecond_precision <- validate_precision(subsecond_precision, "subsecond_precision")
+
   if (!is_valid_subsecond_precision(subsecond_precision)) {
     abort("`subsecond_precision` must be a valid subsecond precision.")
   }
+
   subsecond_precision
 }
 
@@ -372,12 +379,14 @@ calendar_fields <- function(x) {
 calendar_ptype_full <- function(x, class) {
   count <- invalid_count(x)
   precision <- calendar_precision(x)
+  precision <- precision_to_string(precision)
   paste0(class, "<", precision, ">[invalid=", count, "]")
 }
 
 calendar_ptype_abbr <- function(x, abbr) {
   count <- invalid_count(x)
   precision <- calendar_precision(x)
+  precision <- precision_to_string(precision)
   precision <- precision_abbr(precision)
   paste0(abbr, "<", precision, ">[i=", count, "]")
 }

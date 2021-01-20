@@ -4,14 +4,13 @@
 \name{clock-package}
 \alias{clock}
 \alias{clock-package}
-\title{clock: Calendars, Time Points, and Durations}
+\title{clock: Durations, Time Points, Zoned Times, and Calendars}
 \description{
-Provides a comprehensive interface for date and datetime
-    manipulations. Both naive and zoned datetimes are supported, with
-    precision up to nanoseconds. Additionally, multiple types of calendars
-    have been implemented, allowing for various ways to represent calendar
-    dates, such as year-month-day, year-month-weekday, or
-    year-quarter-day.
+Provides a comprehensive library for date-time manipulations
+    using a new family of orthogonal date-time classes (durations, time
+    points, zoned times, and calendars) that partition responsibilities so
+    that the complexities of time zones are only considered when they are
+    really needed.
 }
 \seealso{
 Useful links:

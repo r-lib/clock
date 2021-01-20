@@ -51,7 +51,7 @@ format_duration_impl(const ClockDuration& cd) {
 
 [[cpp11::register]]
 cpp11::writable::strings format_duration_cpp(cpp11::list_of<cpp11::integers> fields,
-                                             const cpp11::strings& precision_string) {
+                                             const cpp11::integers& precision_int) {
   using namespace rclock;
 
   cpp11::integers ticks = duration::get_ticks(fields);
@@ -70,7 +70,7 @@ cpp11::writable::strings format_duration_cpp(cpp11::list_of<cpp11::integers> fie
   duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision(precision_string)) {
+  switch (parse_precision(precision_int)) {
   case precision::year: return format_duration_impl(dy);
   case precision::quarter: return format_duration_impl(dq);
   case precision::month: return format_duration_impl(dm);
@@ -114,10 +114,10 @@ duration_helper_impl(const cpp11::integers& n) {
 [[cpp11::register]]
 cpp11::writable::list_of<cpp11::writable::integers>
 duration_helper_cpp(const cpp11::integers& n,
-                    const cpp11::strings& precision_string) {
+                    const cpp11::integers& precision_int) {
   using namespace rclock;
 
-  switch (parse_precision(precision_string)) {
+  switch (parse_precision(precision_int)) {
   case precision::year: return duration_helper_impl<duration::years>(n);
   case precision::quarter: return duration_helper_impl<duration::quarters>(n);
   case precision::month: return duration_helper_impl<duration::months>(n);
@@ -231,8 +231,8 @@ duration_cast_switch(cpp11::list_of<cpp11::integers>& fields,
 [[cpp11::register]]
 cpp11::writable::list
 duration_cast_cpp(cpp11::list_of<cpp11::integers> fields,
-                  const cpp11::strings& precision_from,
-                  const cpp11::strings& precision_to) {
+                  const cpp11::integers& precision_from,
+                  const cpp11::integers& precision_to) {
   const enum precision precision_from_val = parse_precision(precision_from);
   const enum precision precision_to_val = parse_precision(precision_to);
 
@@ -360,9 +360,9 @@ inline
 cpp11::writable::list
 duration_arith(cpp11::list_of<cpp11::integers>& x,
                cpp11::list_of<cpp11::integers>& y,
-               const cpp11::strings& precision_string,
+               const cpp11::integers& precision_int,
                const enum arith_op& op) {
-  const enum precision precision_val = parse_precision(precision_string);
+  const enum precision precision_val = parse_precision(precision_int);
 
   return duration_arith_switch(
     x,
@@ -376,24 +376,24 @@ duration_arith(cpp11::list_of<cpp11::integers>& x,
 cpp11::writable::list
 duration_plus_cpp(cpp11::list_of<cpp11::integers> x,
                   cpp11::list_of<cpp11::integers> y,
-                  const cpp11::strings& precision_string) {
-  return duration_arith(x, y, precision_string, arith_op::plus);
+                  const cpp11::integers& precision_int) {
+  return duration_arith(x, y, precision_int, arith_op::plus);
 }
 
 [[cpp11::register]]
 cpp11::writable::list
 duration_minus_cpp(cpp11::list_of<cpp11::integers> x,
                    cpp11::list_of<cpp11::integers> y,
-                   const cpp11::strings& precision_string) {
-  return duration_arith(x, y, precision_string, arith_op::minus);
+                   const cpp11::integers& precision_int) {
+  return duration_arith(x, y, precision_int, arith_op::minus);
 }
 
 [[cpp11::register]]
 cpp11::writable::list
 duration_modulus_cpp(cpp11::list_of<cpp11::integers> x,
                      cpp11::list_of<cpp11::integers> y,
-                     const cpp11::strings& precision_string) {
-  return duration_arith(x, y, precision_string, arith_op::modulus);
+                     const cpp11::integers& precision_int) {
+  return duration_arith(x, y, precision_int, arith_op::modulus);
 }
 
 // -----------------------------------------------------------------------------
@@ -447,7 +447,7 @@ inline
 cpp11::writable::list
 duration_scalar_arith(cpp11::list_of<cpp11::integers>& x,
                       const cpp11::integers& y,
-                      const cpp11::strings& precision_string,
+                      const cpp11::integers& precision_int,
                       const enum arith_scalar_op& op) {
   using namespace rclock;
 
@@ -467,7 +467,7 @@ duration_scalar_arith(cpp11::list_of<cpp11::integers>& x,
   duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision(precision_string)) {
+  switch (parse_precision(precision_int)) {
   case precision::year: return duration_scalar_arith_impl(dy, y, op);
   case precision::quarter: return duration_scalar_arith_impl(dq, y, op);
   case precision::month: return duration_scalar_arith_impl(dm, y, op);
@@ -488,16 +488,16 @@ duration_scalar_arith(cpp11::list_of<cpp11::integers>& x,
 cpp11::writable::list
 duration_scalar_multiply_cpp(cpp11::list_of<cpp11::integers> x,
                              const cpp11::integers& y,
-                             const cpp11::strings& precision_string) {
-  return duration_scalar_arith(x, y, precision_string, arith_scalar_op::multiply);
+                             const cpp11::integers& precision_int) {
+  return duration_scalar_arith(x, y, precision_int, arith_scalar_op::multiply);
 }
 
 [[cpp11::register]]
 cpp11::writable::list
 duration_scalar_divide_cpp(cpp11::list_of<cpp11::integers> x,
                            const cpp11::integers& y,
-                           const cpp11::strings& precision_string) {
-  return duration_scalar_arith(x, y, precision_string, arith_scalar_op::divide);
+                           const cpp11::integers& precision_int) {
+  return duration_scalar_arith(x, y, precision_int, arith_scalar_op::divide);
 }
 
 // -----------------------------------------------------------------------------
@@ -589,25 +589,24 @@ duration_common_precision_pair(const enum precision& x_precision,
 }
 
 [[cpp11::register]]
-cpp11::writable::strings
-duration_precision_common_cpp(const cpp11::strings& x_precision,
-                              const cpp11::strings& y_precision) {
+int
+duration_precision_common_cpp(const cpp11::integers& x_precision,
+                              const cpp11::integers& y_precision) {
   const enum precision x_precision_val = parse_precision(x_precision);
   const enum precision y_precision_val = parse_precision(y_precision);
   const std::pair<enum precision, bool> pair = duration_common_precision_pair(x_precision_val, y_precision_val);
 
   if (pair.second) {
-    const std::string string = precision_to_string(pair.first);
-    return cpp11::writable::strings({string});
+    return static_cast<int>(pair.first);
   } else {
-    return cpp11::writable::strings({r_chr_na});
+    return r_int_na;
   }
 }
 
 [[cpp11::register]]
 bool
-duration_has_common_precision_cpp(const cpp11::strings& x_precision,
-                                  const cpp11::strings& y_precision) {
+duration_has_common_precision_cpp(const cpp11::integers& x_precision,
+                                  const cpp11::integers& y_precision) {
   const enum precision x_precision_val = parse_precision(x_precision);
   const enum precision y_precision_val = parse_precision(y_precision);
   return duration_common_precision_pair(x_precision_val, y_precision_val).second;
@@ -868,8 +867,8 @@ duration_rounding_switch(cpp11::list_of<cpp11::integers>& fields,
 [[cpp11::register]]
 cpp11::writable::list
 duration_floor_cpp(cpp11::list_of<cpp11::integers> fields,
-                   const cpp11::strings& precision_from,
-                   const cpp11::strings& precision_to,
+                   const cpp11::integers& precision_from,
+                   const cpp11::integers& precision_to,
                    const int& n) {
   const enum precision precision_from_val = parse_precision(precision_from);
   const enum precision precision_to_val = parse_precision(precision_to);
@@ -886,8 +885,8 @@ duration_floor_cpp(cpp11::list_of<cpp11::integers> fields,
 [[cpp11::register]]
 cpp11::writable::list
 duration_ceiling_cpp(cpp11::list_of<cpp11::integers> fields,
-                     const cpp11::strings& precision_from,
-                     const cpp11::strings& precision_to,
+                     const cpp11::integers& precision_from,
+                     const cpp11::integers& precision_to,
                      const int& n) {
   const enum precision precision_from_val = parse_precision(precision_from);
   const enum precision precision_to_val = parse_precision(precision_to);
@@ -904,8 +903,8 @@ duration_ceiling_cpp(cpp11::list_of<cpp11::integers> fields,
 [[cpp11::register]]
 cpp11::writable::list
 duration_round_cpp(cpp11::list_of<cpp11::integers> fields,
-                   const cpp11::strings& precision_from,
-                   const cpp11::strings& precision_to,
+                   const cpp11::integers& precision_from,
+                   const cpp11::integers& precision_to,
                    const int& n) {
   const enum precision precision_from_val = parse_precision(precision_from);
   const enum precision precision_to_val = parse_precision(precision_to);
@@ -942,7 +941,8 @@ duration_unary_minus_impl(const ClockDuration& x) {
 
 [[cpp11::register]]
 cpp11::writable::list
-duration_unary_minus_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& precision_string) {
+duration_unary_minus_cpp(cpp11::list_of<cpp11::integers> fields,
+                         const cpp11::integers& precision_int) {
   using namespace rclock;
 
   cpp11::integers ticks = duration::get_ticks(fields);
@@ -961,7 +961,7 @@ duration_unary_minus_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::st
   duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
   duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
-  switch (parse_precision(precision_string)) {
+  switch (parse_precision(precision_int)) {
   case precision::year: return duration_unary_minus_impl(dy);
   case precision::quarter: return duration_unary_minus_impl(dq);
   case precision::month: return duration_unary_minus_impl(dm);
