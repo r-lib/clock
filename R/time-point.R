@@ -50,9 +50,7 @@ time_point_precision <- function(x) {
 time_point_duration <- function(x) {
   names <- NULL
   precision <- time_point_precision(x)
-  attributes <- list(names = clock_rcrd_field_names(x))
-  fields <- set_attributes(x, attributes)
-  new_duration_from_fields(fields, precision, names)
+  new_duration_from_fields(x, precision, names)
 }
 
 # ------------------------------------------------------------------------------
