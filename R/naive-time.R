@@ -70,17 +70,12 @@ as_zoned_time.clock_naive_time <- function(x,
   x <- vec_cast(x, vec_ptype2(x, naive_seconds()))
 
   zone <- zone_validate(zone)
-
   precision <- time_point_precision(x)
+  names <- clock_rcrd_names(x)
 
   fields <- as_zoned_sys_time_from_naive_time_cpp(x, precision, zone, nonexistent, ambiguous)
 
-  new_zoned_time_from_fields(
-    fields = fields,
-    precision = precision,
-    zone = zone,
-    names = clock_rcrd_names(x)
-  )
+  new_zoned_time_from_fields(fields, precision, zone, names)
 }
 
 # ------------------------------------------------------------------------------

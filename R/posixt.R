@@ -20,12 +20,7 @@ as_zoned_time.POSIXt <- function(x, ...) {
 
   fields <- to_sys_duration_fields_from_sys_seconds_cpp(x)
 
-  new_zoned_time_from_fields(
-    fields = fields,
-    precision = PRECISION_SECOND,
-    zone = zone,
-    names = names
-  )
+  new_zoned_time_from_fields(fields, PRECISION_SECOND, zone, names)
 }
 
 #' @export

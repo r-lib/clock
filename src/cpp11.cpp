@@ -584,6 +584,13 @@ extern "C" SEXP _clock_zone_current() {
   END_CPP11
 }
 // zoned-time.cpp
+SEXP new_zoned_time_from_fields(SEXP fields, const cpp11::integers& precision_int, const cpp11::strings& zone, SEXP names);
+extern "C" SEXP _clock_new_zoned_time_from_fields(SEXP fields, SEXP precision_int, SEXP zone, SEXP names) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(new_zoned_time_from_fields(cpp11::as_cpp<cpp11::decay_t<SEXP>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<SEXP>>(names)));
+  END_CPP11
+}
+// zoned-time.cpp
 cpp11::writable::list get_naive_time_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::strings& zone);
 extern "C" SEXP _clock_get_naive_time_cpp(SEXP fields, SEXP precision_int, SEXP zone) {
   BEGIN_CPP11
@@ -687,6 +694,7 @@ extern SEXP _clock_iso_year_week_day_minus_iso_year_week_day_cpp(SEXP, SEXP, SEX
 extern SEXP _clock_iso_year_week_day_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_new_duration_from_fields(SEXP, SEXP, SEXP);
 extern SEXP _clock_new_time_point_from_fields(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_new_zoned_time_from_fields(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_precision_to_string(SEXP);
 extern SEXP _clock_set_field_iso_year_week_day_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_set_field_iso_year_week_day_last_cpp(SEXP, SEXP);
@@ -777,6 +785,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_iso_year_week_day_plus_duration_cpp",             (DL_FUNC) &_clock_iso_year_week_day_plus_duration_cpp,              4},
     {"_clock_new_duration_from_fields",                        (DL_FUNC) &_clock_new_duration_from_fields,                         3},
     {"_clock_new_time_point_from_fields",                      (DL_FUNC) &_clock_new_time_point_from_fields,                       4},
+    {"_clock_new_zoned_time_from_fields",                      (DL_FUNC) &_clock_new_zoned_time_from_fields,                       4},
     {"_clock_precision_to_string",                             (DL_FUNC) &_clock_precision_to_string,                              1},
     {"_clock_set_field_iso_year_week_day_cpp",                 (DL_FUNC) &_clock_set_field_iso_year_week_day_cpp,                  4},
     {"_clock_set_field_iso_year_week_day_last_cpp",            (DL_FUNC) &_clock_set_field_iso_year_week_day_last_cpp,             2},

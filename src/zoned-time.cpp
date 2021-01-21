@@ -2,7 +2,64 @@
 #include "enums.h"
 #include "utils.h"
 #include "get.h"
+#include "rcrd.h"
 #include "zone.h"
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+SEXP
+new_zoned_time_from_fields(SEXP fields,
+                           const cpp11::integers& precision_int,
+                           const cpp11::strings& zone,
+                           SEXP names) {
+  const enum precision precision_val = parse_precision(precision_int);
+
+  const r_ssize n_fields = Rf_xlength(fields);
+
+  switch (precision_val) {
+  case precision::year:
+  case precision::quarter:
+  case precision::month:
+  case precision::week:
+  case precision::day:
+  case precision::hour:
+  case precision::minute: {
+    clock_abort("`precision` must be at least 'second' precision.");
+  }
+  case precision::second: {
+    if (n_fields != 2) {
+      clock_abort("`fields` must have 2 fields for second precision.");
+    }
+    break;
+  }
+  case precision::millisecond:
+  case precision::microsecond:
+  case precision::nanosecond: {
+    if (n_fields != 3) {
+      clock_abort("`fields` must have 3 fields for [millisecond, nanosecond] precision.");
+    }
+    break;
+  }
+  default: {
+    never_reached("new_zoned_time_from_fields");
+  }
+  }
+
+  if (!r_is_string(zone)) {
+    clock_abort("`zone` must be a string.");
+  }
+
+  SEXP out = PROTECT(new_clock_rcrd_from_fields(fields, names, classes_zoned_time));
+
+  Rf_setAttrib(out, syms_precision, precision_int);
+  Rf_setAttrib(out, syms_zone, zone);
+
+  UNPROTECT(1);
+  return out;
+}
+
+// -----------------------------------------------------------------------------
 
 template <class ClockDuration>
 static
