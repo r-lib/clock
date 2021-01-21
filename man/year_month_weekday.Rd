@@ -59,6 +59,8 @@ If using microseconds, values [0, 999999] are allowed.
 
 If using nanoseconds, values [0, 999999999] are allowed.}
 
+\item{...}{These dots are for future extensions and must be empty.}
+
 \item{subsecond_precision}{\verb{[character(1) / NULL]}
 
 The precision to interpret \code{subsecond} as. One of: \code{"millisecond"},

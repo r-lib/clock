@@ -29,5 +29,5 @@ The result of the arithmetic operation.
 Support for vctrs arithmetic
 }
 \examples{
-vec_arith("+", year_month_day(2019), 1)
+vctrs::vec_arith("+", year_month_day(2019), 1)
 }

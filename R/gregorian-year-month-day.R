@@ -9,6 +9,8 @@
 #' Fields are collected in order until the first `NULL` field is located. No
 #' fields after the first `NULL` field are used.
 #'
+#' @inheritParams ellipsis::dots_empty
+#'
 #' @param year `[integer]`
 #'
 #'   The year. Values \[-9999, 9999\] are allowed.
@@ -608,7 +610,7 @@ year_month_day_precision_to_field <- function(precision) {
 #'
 #' @return The result of the arithmetic operation.
 #' @examples
-#' vec_arith("+", year_month_day(2019), 1)
+#' vctrs::vec_arith("+", year_month_day(2019), 1)
 NULL
 
 #' @rdname clock-arith
