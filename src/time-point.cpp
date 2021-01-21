@@ -64,3 +64,28 @@ new_time_point_from_fields(SEXP fields,
   UNPROTECT(1);
   return out;
 }
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+SEXP
+time_point_restore(SEXP x, SEXP to) {
+  SEXP clock_int = Rf_getAttrib(to, syms_clock);
+  SEXP precision_int = Rf_getAttrib(to, syms_precision);
+
+  SEXP classes;
+
+  switch (parse_clock_name(clock_int)) {
+  case clock_name::naive: classes = classes_naive_time; break;
+  case clock_name::sys: classes = classes_sys_time; break;
+  default: clock_abort("Internal error: Unknown clock.");
+  }
+
+  SEXP out = PROTECT(clock_rcrd_restore(x, to, classes));
+
+  Rf_setAttrib(out, syms_clock, clock_int);
+  Rf_setAttrib(out, syms_precision, precision_int);
+
+  UNPROTECT(1);
+  return out;
+}

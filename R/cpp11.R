@@ -304,6 +304,10 @@ new_time_point_from_fields <- function(fields, precision_int, clock_int, names) 
   .Call("_clock_new_time_point_from_fields", fields, precision_int, clock_int, names, PACKAGE = "clock")
 }
 
+time_point_restore <- function(x, to) {
+  .Call("_clock_time_point_restore", x, to, PACKAGE = "clock")
+}
+
 weekday_add_days_cpp <- function(x, n) {
   .Call("_clock_weekday_add_days_cpp", x, n, PACKAGE = "clock")
 }

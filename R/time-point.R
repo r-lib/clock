@@ -107,23 +107,11 @@ vec_proxy.clock_time_point <- function(x, ...) {
 
 #' @export
 vec_restore.clock_time_point <- function(x, to, ...) {
-  names <- clock_rcrd_restore_names(x)
-  time_point_restore(x, to, names)
-}
-
-time_point_restore <- function(x, to, names = NULL) {
-  fields <- clock_rcrd_restore_fields(x)
-  precision <- time_point_precision(to)
-  clock <- time_point_clock(to)
-  new_time_point_from_fields(fields, precision, clock, names)
+  .Call("_clock_time_point_restore", x, to, PACKAGE = "clock")
 }
 
 #' @export
 vec_proxy_equal.clock_time_point <- function(x, ...) {
-  time_point_proxy_equal(x)
-}
-
-time_point_proxy_equal <- function(x) {
   clock_rcrd_proxy_equal(x)
 }
 

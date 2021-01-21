@@ -78,3 +78,46 @@ validate_names(SEXP names, r_ssize size) {
     }
   }
 }
+
+// -----------------------------------------------------------------------------
+
+SEXP
+clock_rcrd_restore(SEXP x, SEXP to, SEXP classes) {
+  const r_ssize size = Rf_xlength(x);
+
+  SEXP field_names = Rf_getAttrib(x, R_NamesSymbol);
+  const SEXP* p_field_names = STRING_PTR_RO(field_names);
+
+  const SEXP last_field_name = p_field_names[size - 1];
+  const char* last_field_name_char = CHAR(last_field_name);
+
+  // Check if the last field name matches `clock_rcrd:::names`
+  const bool has_names = !strcmp(last_field_name_char, cpp_strings_clock_rcrd_names.c_str());
+
+  if (!has_names) {
+    // No names, so restore new clock_rcrd without any names
+    return new_clock_rcrd_from_fields(x, r_null, classes);
+  }
+
+  const SEXP* p_x = r_list_deref_const(x);
+
+  // Extract and possibly repair the names
+  SEXP names = p_x[size - 1];
+  names = PROTECT(r_repair_na_names(names));
+
+  const r_ssize new_size = size - 1;
+  SEXP new_field_names = PROTECT(Rf_allocVector(STRSXP, new_size));
+  SEXP new_x = PROTECT(Rf_allocVector(VECSXP, new_size));
+
+  for (r_ssize i = 0; i < new_size; ++i) {
+    SET_STRING_ELT(new_field_names, i, p_field_names[i]);
+    SET_VECTOR_ELT(new_x, i, p_x[i]);
+  }
+
+  Rf_setAttrib(new_x, R_NamesSymbol, new_field_names);
+
+  SEXP out = new_clock_rcrd_from_fields(x, r_null, classes);
+
+  UNPROTECT(3);
+  return out;
+}

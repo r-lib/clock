@@ -541,6 +541,13 @@ extern "C" SEXP _clock_new_time_point_from_fields(SEXP fields, SEXP precision_in
     return cpp11::as_sexp(new_time_point_from_fields(cpp11::as_cpp<cpp11::decay_t<SEXP>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(clock_int), cpp11::as_cpp<cpp11::decay_t<SEXP>>(names)));
   END_CPP11
 }
+// time-point.cpp
+SEXP time_point_restore(SEXP x, SEXP to);
+extern "C" SEXP _clock_time_point_restore(SEXP x, SEXP to) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(time_point_restore(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(to)));
+  END_CPP11
+}
 // weekday.cpp
 cpp11::writable::integers weekday_add_days_cpp(const cpp11::integers& x, cpp11::list_of<cpp11::integers> n);
 extern "C" SEXP _clock_weekday_add_days_cpp(SEXP x, SEXP n) {
@@ -713,6 +720,7 @@ extern SEXP _clock_set_field_year_month_weekday_last_cpp(SEXP, SEXP);
 extern SEXP _clock_set_field_year_quarter_day_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_set_field_year_quarter_day_last_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_sys_now_cpp();
+extern SEXP _clock_time_point_restore(SEXP, SEXP);
 extern SEXP _clock_to_sys_duration_fields_from_sys_seconds_cpp(SEXP);
 extern SEXP _clock_to_sys_seconds_from_sys_duration_fields_cpp(SEXP);
 extern SEXP _clock_weekday_add_days_cpp(SEXP, SEXP);
@@ -805,6 +813,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_set_field_year_quarter_day_cpp",                  (DL_FUNC) &_clock_set_field_year_quarter_day_cpp,                   5},
     {"_clock_set_field_year_quarter_day_last_cpp",             (DL_FUNC) &_clock_set_field_year_quarter_day_last_cpp,              3},
     {"_clock_sys_now_cpp",                                     (DL_FUNC) &_clock_sys_now_cpp,                                      0},
+    {"_clock_time_point_restore",                              (DL_FUNC) &_clock_time_point_restore,                               2},
     {"_clock_to_sys_duration_fields_from_sys_seconds_cpp",     (DL_FUNC) &_clock_to_sys_duration_fields_from_sys_seconds_cpp,      1},
     {"_clock_to_sys_seconds_from_sys_duration_fields_cpp",     (DL_FUNC) &_clock_to_sys_seconds_from_sys_duration_fields_cpp,      1},
     {"_clock_weekday_add_days_cpp",                            (DL_FUNC) &_clock_weekday_add_days_cpp,                             2},

@@ -5,4 +5,6 @@
 
 SEXP new_clock_rcrd_from_fields(SEXP fields, SEXP names, SEXP classes);
 
+SEXP clock_rcrd_restore(SEXP x, SEXP to, SEXP classes);
+
 #endif
