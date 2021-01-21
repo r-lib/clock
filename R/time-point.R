@@ -137,6 +137,7 @@ time_point_proxy_equal <- function(x) {
 #' @export
 vec_ptype_full.clock_time_point <- function(x, ...) {
   clock <- time_point_clock(x)
+  clock <- clock_to_string(clock)
   precision <- time_point_precision(x)
   precision <- precision_to_string(precision)
   paste0("time_point<", clock, "><", precision, ">")
@@ -145,6 +146,7 @@ vec_ptype_full.clock_time_point <- function(x, ...) {
 #' @export
 vec_ptype_abbr.clock_time_point <- function(x, ...) {
   clock <- time_point_clock(x)
+  clock <- clock_to_string(clock)
   precision <- time_point_precision(x)
   precision <- precision_to_string(precision)
   precision <- precision_abbr(precision)
@@ -448,21 +450,4 @@ validate_time_point_precision <- function(precision) {
 
 is_valid_time_point_precision <- function(precision) {
   precision >= PRECISION_DAY
-}
-
-# ------------------------------------------------------------------------------
-
-clock_validate <- function(clock) {
-  is_string(clock) && clock %in% clocks()
-}
-
-clocks <- function() {
-  c("sys", "naive")
-}
-
-clock_is_sys <- function(x) {
-  x == "sys"
-}
-clock_is_naive <- function(x) {
-  x == "naive"
 }

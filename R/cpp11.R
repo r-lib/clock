@@ -64,6 +64,10 @@ precision_to_string <- function(precision_int) {
   .Call("_clock_precision_to_string", precision_int, PACKAGE = "clock")
 }
 
+clock_to_string <- function(clock_int) {
+  .Call("_clock_clock_to_string", clock_int, PACKAGE = "clock")
+}
+
 format_time_point_cpp <- function(fields, clock, format, precision_int, mon, mon_ab, day, day_ab, am_pm, decimal_mark) {
   .Call("_clock_format_time_point_cpp", fields, clock, format, precision_int, mon, mon_ab, day, day_ab, am_pm, decimal_mark, PACKAGE = "clock")
 }
@@ -292,8 +296,8 @@ sys_now_cpp <- function() {
   .Call("_clock_sys_now_cpp", PACKAGE = "clock")
 }
 
-new_time_point_from_fields <- function(fields, precision_int, clock_string, names) {
-  .Call("_clock_new_time_point_from_fields", fields, precision_int, clock_string, names, PACKAGE = "clock")
+new_time_point_from_fields <- function(fields, precision_int, clock_int, names) {
+  .Call("_clock_new_time_point_from_fields", fields, precision_int, clock_int, names, PACKAGE = "clock")
 }
 
 weekday_add_days_cpp <- function(x, n) {

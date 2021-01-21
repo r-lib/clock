@@ -1,5 +1,5 @@
 new_sys_time_from_fields <- function(fields, precision, names) {
-  new_time_point_from_fields(fields, precision, "sys", names)
+  new_time_point_from_fields(fields, precision, CLOCK_SYS, names)
 }
 
 #' @export
