@@ -1,4 +1,64 @@
+#' Calendar: year-month-day
+#'
+#' `year_month_day()` constructs the most common calendar type using the
+#' Gregorian year, month, day, and time of day components.
+#'
+#' @details
+#' Fields are recycled against each other.
+#'
+#' Fields are collected in order until the first `NULL` field is located. No
+#' fields after the first `NULL` field are used.
+#'
+#' @param year `[integer]`
+#'
+#'   The year.
+#'
+#' @param month `[integer / NULL]`
+#'
+#'   The month.
+#'
+#' @param day `[integer / NULL]`
+#'
+#'   The day.
+#'
+#' @param hour `[integer / NULL]`
+#'
+#'   The hour.
+#'
+#' @param minute `[integer / NULL]`
+#'
+#'   The minute.
+#'
+#' @param second `[integer / NULL]`
+#'
+#'   The second.
+#'
+#' @param subsecond `[integer / NULL]`
+#'
+#'   The subsecond. If specified, `subsecond_precision` must also be specified
+#'   to determine how to interpret the `subsecond`.
+#'
+#' @param subsecond_precision `[character(1) / NULL]`
+#'
+#'   The precision to interpret `subsecond` as. One of: `"millisecond"`,
+#'   `"microsecond"`, or `"nanosecond"`.
+#'
+#' @return A year-month-day calendar object.
+#'
 #' @export
+#' @examples
+#' # Just the year
+#' x <- year_month_day(2019:2025)
+#'
+#' # Year-month type
+#' year_month_day(2020, 1:12)
+#'
+#' # The most common use case involves year, month, and day fields
+#' x <- year_month_day(2020, 1, 1:5)
+#' x
+#'
+#' # Precision can go all the way out to nanosecond
+#' year_month_day(2019, 1, 2, 2, 40, 45, 200, subsecond_precision = "nanosecond")
 year_month_day <- function(year,
                            month = NULL,
                            day = NULL,
@@ -57,7 +117,6 @@ year_month_day <- function(year,
 
 # ------------------------------------------------------------------------------
 
-#' @export
 new_year_month_day <- function(year = integer(),
                                month = integer(),
                                day = integer(),
@@ -157,7 +216,20 @@ vec_ptype_abbr.clock_year_month_day <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Is `x` a year-month-day?
+#'
+#' Check if `x` is a year-month-day.
+#'
+#' @param x `[object]`
+#'
+#'   An object.
+#'
+#' @return Returns `TRUE` if `x` inherits from `"clock_year_month_day"`,
+#'   otherwise returns `FALSE`
+#'
 #' @export
+#' @examples
+#' is_year_month_day(year_month_day(2019))
 is_year_month_day <- function(x) {
   inherits(x, "clock_year_month_day")
 }
@@ -523,6 +595,17 @@ year_month_day_precision_to_field <- function(precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Support for vctrs arithmetic
+#'
+#' @inheritParams vctrs::vec_arith
+#' @name clock-arith
+#'
+#' @return The result of the arithmetic operation.
+#' @examples
+#' vec_arith("+", year_month_day(2019), 1)
+NULL
+
+#' @rdname clock-arith
 #' @method vec_arith clock_year_month_day
 #' @export
 vec_arith.clock_year_month_day <- function(op, x, y, ...) {
@@ -620,7 +703,27 @@ year_month_day_plus_duration <- function(x, n, precision_n) {
 
 # ------------------------------------------------------------------------------
 
+#' Convert to year-month-day
+#'
+#' `as_year_month_day()` converts a vector to the year-month-day calendar.
+#' Time points, Dates, POSIXct, and other calendars can all be converted to
+#' year-month-day.
+#'
+#' @param x `[vector]`
+#'
+#'   A vector to convert to year-month-day.
+#'
+#' @return A year-month-day vector.
 #' @export
+#' @examples
+#' # From Date
+#' as_year_month_day(as.Date("2019-01-01"))
+#'
+#' # From POSIXct, which assumes that the naive time is what should be converted
+#' as_year_month_day(as.POSIXct("2019-01-01 02:30:30", "America/New_York"))
+#'
+#' # From other calendars
+#' as_year_month_day(year_quarter_day(2019, quarter = 2, day = 50))
 as_year_month_day <- function(x)  {
   UseMethod("as_year_month_day")
 }
