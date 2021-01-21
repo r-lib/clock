@@ -9,10 +9,14 @@
 
 // -----------------------------------------------------------------------------
 
+static std::string cpp_strings_clock_rcrd_names("clock_rcrd:::names");
+
 static cpp11::sexp syms_precision(Rf_install("precision"));
 static cpp11::sexp syms_clock(Rf_install("clock"));
 static cpp11::sexp syms_zone(Rf_install("zone"));
 static cpp11::sexp syms_clock_rcrd_names(Rf_install("clock_rcrd:::names"));
+
+static cpp11::sexp strings_empty(Rf_mkCharCE("", CE_UTF8));
 
 static cpp11::writable::strings classes_duration({"clock_duration", "clock_rcrd", "vctrs_rcrd", "vctrs_vctr"});
 static cpp11::writable::strings classes_sys_time({"clock_sys_time", "clock_time_point", "clock_rcrd", "vctrs_rcrd", "vctrs_vctr"});
@@ -41,6 +45,49 @@ r_list_deref_const(SEXP x) {
 #else
   return ((const SEXP*) DATAPTR_RO(x));
 #endif
+}
+
+// -----------------------------------------------------------------------------
+
+static
+inline
+bool
+r_chr_any_na(const SEXP* p_x, r_ssize size) {
+  for (r_ssize i = 0; i < size; ++i) {
+    if (p_x[i] == r_chr_na) {
+      return true;
+    }
+  }
+  return false;
+}
+
+static
+inline
+SEXP
+r_repair_na_names(SEXP names) {
+  const SEXP* p_names = STRING_PTR_RO(names);
+  const r_ssize size = Rf_xlength(names);
+
+  bool any_na = r_chr_any_na(p_names, size);
+
+  if (!any_na) {
+    return names;
+  }
+
+  SEXP out = PROTECT(Rf_allocVector(STRSXP, size));
+
+  for (r_ssize i = 0; i < size; ++i) {
+    const SEXP name = p_names[i];
+
+    if (name == r_chr_na) {
+      SET_STRING_ELT(out, i, strings_empty);
+    } else {
+      SET_STRING_ELT(out, i, name);
+    }
+  }
+
+  UNPROTECT(1);
+  return out;
 }
 
 // -----------------------------------------------------------------------------

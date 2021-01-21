@@ -12,6 +12,13 @@ extern "C" SEXP _clock_new_duration_from_fields(SEXP fields, SEXP precision_int,
   END_CPP11
 }
 // duration.cpp
+SEXP duration_restore(SEXP x, SEXP to);
+extern "C" SEXP _clock_duration_restore(SEXP x, SEXP to) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(duration_restore(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(to)));
+  END_CPP11
+}
+// duration.cpp
 cpp11::writable::strings format_duration_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int);
 extern "C" SEXP _clock_format_duration_cpp(SEXP fields, SEXP precision_int) {
   BEGIN_CPP11
@@ -659,6 +666,7 @@ extern SEXP _clock_duration_minus_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_modulus_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_plus_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_precision_common_cpp(SEXP, SEXP);
+extern SEXP _clock_duration_restore(SEXP, SEXP);
 extern SEXP _clock_duration_round_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_scalar_divide_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_scalar_multiply_cpp(SEXP, SEXP, SEXP);
@@ -750,6 +758,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_duration_modulus_cpp",                            (DL_FUNC) &_clock_duration_modulus_cpp,                             3},
     {"_clock_duration_plus_cpp",                               (DL_FUNC) &_clock_duration_plus_cpp,                                3},
     {"_clock_duration_precision_common_cpp",                   (DL_FUNC) &_clock_duration_precision_common_cpp,                    2},
+    {"_clock_duration_restore",                                (DL_FUNC) &_clock_duration_restore,                                 2},
     {"_clock_duration_round_cpp",                              (DL_FUNC) &_clock_duration_round_cpp,                               4},
     {"_clock_duration_scalar_divide_cpp",                      (DL_FUNC) &_clock_duration_scalar_divide_cpp,                       3},
     {"_clock_duration_scalar_multiply_cpp",                    (DL_FUNC) &_clock_duration_scalar_multiply_cpp,                     3},

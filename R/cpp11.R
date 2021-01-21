@@ -4,6 +4,10 @@ new_duration_from_fields <- function(fields, precision_int, names) {
   .Call("_clock_new_duration_from_fields", fields, precision_int, names, PACKAGE = "clock")
 }
 
+duration_restore <- function(x, to) {
+  .Call("_clock_duration_restore", x, to, PACKAGE = "clock")
+}
+
 format_duration_cpp <- function(fields, precision_int) {
   .Call("_clock_format_duration_cpp", fields, precision_int, PACKAGE = "clock")
 }

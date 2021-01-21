@@ -128,32 +128,17 @@ vec_ptype_abbr.clock_duration <- function(x, ...) {
 
 #' @export
 vec_proxy.clock_duration <- function(x, ...) {
-  names <- names(x)
-  duration_proxy(x, names)
-}
-
-duration_proxy <- function(x, names = NULL) {
+  names <- clock_rcrd_names(x)
   clock_rcrd_proxy(x, names)
 }
 
 #' @export
 vec_restore.clock_duration <- function(x, to, ...) {
-  names <- clock_rcrd_restore_names(x)
-  duration_restore(x, to, names)
-}
-
-duration_restore <- function(x, to, names = NULL) {
-  fields <- clock_rcrd_restore_fields(x)
-  precision <- duration_precision(to)
-  new_duration_from_fields(fields, precision, names)
+  .Call("_clock_duration_restore", x, to, PACKAGE = "clock")
 }
 
 #' @export
 vec_proxy_equal.clock_duration <- function(x, ...) {
-  duration_proxy_equal(x)
-}
-
-duration_proxy_equal <- function(x) {
   clock_rcrd_proxy_equal(x)
 }
 

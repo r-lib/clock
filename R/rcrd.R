@@ -129,10 +129,11 @@ names.clock_rcrd <- function(x) {
 # ------------------------------------------------------------------------------
 
 clock_rcrd_proxy <- function(x, names = NULL) {
-  out <- unclass(x)
-  out[["clock_rcrd:::names"]] <- names
-  out <- new_data_frame(out)
-  out
+  if (!is.null(names)) {
+    x <- unclass(x)
+    x[["clock_rcrd:::names"]] <- names
+  }
+  new_data_frame(x)
 }
 
 clock_rcrd_proxy_equal <- function(x) {
