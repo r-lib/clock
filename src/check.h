@@ -7,8 +7,8 @@
 
 // Gregorian / general
 static inline void check_range_year(const int& value, const char* arg) {
-  if (value > 9999 || value < 0) {
-    clock_abort("`%s` must be within the range of [0, 9999], not %i.", arg, value);
+  if (value > 9999 || value < -9999) {
+    clock_abort("`%s` must be within the range of [-9999, 9999], not %i.", arg, value);
   }
 }
 static inline void check_range_month(const int& value, const char* arg) {
