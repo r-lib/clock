@@ -213,7 +213,7 @@ weekday_minus_weekday <- function(op, x, y, ...) {
 
   fields <- weekday_minus_weekday_cpp(x, y)
 
-  new_duration_from_fields(fields, PRECISION_DAY, names = names)
+  new_duration_from_fields(fields, PRECISION_DAY, names)
 }
 
 # ------------------------------------------------------------------------------

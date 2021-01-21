@@ -703,7 +703,7 @@ year_month_weekday_minus_year_month_weekday <- function(op, x, y, ...) {
 
   fields <- year_month_weekday_minus_year_month_weekday_cpp(x, y, precision)
 
-  new_duration_from_fields(fields, precision, names = names)
+  new_duration_from_fields(fields, precision, names)
 }
 
 # ------------------------------------------------------------------------------
