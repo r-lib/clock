@@ -1,36 +1,3 @@
-new_time_point_from_fields <- function(fields, precision, clock, names) {
-  # Remove all attributes except field names.
-  # We often pass a duration or other time points through as `fields`,
-  # which will need to be stripped of attributes.
-  # This will eventually be much faster at the C++ level, and should be
-  # pushed into a C++ new_clock_rcrd_from_fields().
-  attributes <- list(names = clock_rcrd_field_names(fields))
-  fields <- set_attributes(fields, attributes)
-
-  if (precision < PRECISION_DAY) {
-    abort("`duration` must have at least daily precision.")
-  }
-
-  clock_validate(clock)
-
-  if (clock_is_sys(clock)) {
-    class <- c("clock_sys_time", "clock_time_point")
-  } else if (clock_is_naive(clock)) {
-    class <- c("clock_naive_time", "clock_time_point")
-  } else {
-    abort("Internal error: Unknown clock.")
-  }
-
-  new_clock_rcrd(
-    fields = fields,
-    precision = precision,
-    clock = clock,
-    names = names,
-    class = class
-  )
-}
-
-# ------------------------------------------------------------------------------
 
 #' @export
 is_time_point <- function(x) {
@@ -135,33 +102,16 @@ pillar_shaft.clock_time_point <- function(x, ...) {
 
 #' @export
 vec_proxy.clock_time_point <- function(x, ...) {
-  names <- clock_rcrd_names(x)
-  time_point_proxy(x, names)
-}
-
-time_point_proxy <- function(x, names = NULL) {
-  clock_rcrd_proxy(x, names)
+  clock_rcrd_proxy(x)
 }
 
 #' @export
 vec_restore.clock_time_point <- function(x, to, ...) {
-  names <- clock_rcrd_restore_names(x)
-  time_point_restore(x, to, names)
-}
-
-time_point_restore <- function(x, to, names = NULL) {
-  fields <- clock_rcrd_restore_fields(x)
-  precision <- time_point_precision(to)
-  clock <- time_point_clock(to)
-  new_time_point_from_fields(fields, precision, clock, names)
+  .Call("_clock_time_point_restore", x, to, PACKAGE = "clock")
 }
 
 #' @export
 vec_proxy_equal.clock_time_point <- function(x, ...) {
-  time_point_proxy_equal(x)
-}
-
-time_point_proxy_equal <- function(x) {
   clock_rcrd_proxy_equal(x)
 }
 
@@ -170,6 +120,7 @@ time_point_proxy_equal <- function(x) {
 #' @export
 vec_ptype_full.clock_time_point <- function(x, ...) {
   clock <- time_point_clock(x)
+  clock <- clock_to_string(clock)
   precision <- time_point_precision(x)
   precision <- precision_to_string(precision)
   paste0("time_point<", clock, "><", precision, ">")
@@ -178,6 +129,7 @@ vec_ptype_full.clock_time_point <- function(x, ...) {
 #' @export
 vec_ptype_abbr.clock_time_point <- function(x, ...) {
   clock <- time_point_clock(x)
+  clock <- clock_to_string(clock)
   precision <- time_point_precision(x)
   precision <- precision_to_string(precision)
   precision <- precision_abbr(precision)
@@ -210,12 +162,10 @@ cast_time_point_to_time_point <- function(x, to, ...) {
 
   fields <- duration_cast_cpp(x, x_precision, to_precision)
 
-  new_time_point_from_fields(
-    fields = fields,
-    precision = to_precision,
-    clock = time_point_clock(x),
-    names = clock_rcrd_names(x)
-  )
+  names <- clock_rcrd_names(x)
+  clock <- time_point_clock(x)
+
+  new_time_point_from_fields(fields, to_precision, clock, names)
 }
 
 # ------------------------------------------------------------------------------
@@ -404,12 +354,10 @@ time_point_cast <- function(x, precision) {
 
   fields <- duration_cast_cpp(x, x_precision, precision)
 
-  new_time_point_from_fields(
-    fields = fields,
-    precision = precision,
-    clock = time_point_clock(x),
-    names = clock_rcrd_names(x)
-  )
+  names <- clock_rcrd_names(x)
+  clock <- time_point_clock(x)
+
+  new_time_point_from_fields(fields, precision, clock, names)
 }
 
 # Notes:
@@ -465,12 +413,10 @@ time_point_rounder <- function(x, precision, n, duration_rounder, ...) {
   duration <- time_point_duration(x)
   duration <- duration_rounder(duration, precision_string, n = n)
 
-  new_time_point_from_fields(
-    fields = duration,
-    precision = precision,
-    clock = time_point_clock(x),
-    names = clock_rcrd_names(x)
-  )
+  names <- clock_rcrd_names(x)
+  clock <- time_point_clock(x)
+
+  new_time_point_from_fields(duration, precision, clock, names)
 }
 
 # ------------------------------------------------------------------------------
@@ -487,21 +433,4 @@ validate_time_point_precision <- function(precision) {
 
 is_valid_time_point_precision <- function(precision) {
   precision >= PRECISION_DAY
-}
-
-# ------------------------------------------------------------------------------
-
-clock_validate <- function(clock) {
-  is_string(clock) && clock %in% clocks()
-}
-
-clocks <- function() {
-  c("sys", "naive")
-}
-
-clock_is_sys <- function(x) {
-  x == "sys"
-}
-clock_is_naive <- function(x) {
-  x == "naive"
 }

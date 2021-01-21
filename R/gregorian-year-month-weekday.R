@@ -163,7 +163,7 @@ new_year_month_weekday_from_fields <- function(fields, precision, names = NULL) 
 
 #' @export
 vec_proxy.clock_year_month_weekday <- function(x, ...) {
-  clock_rcrd_proxy(x, names(x))
+  clock_rcrd_proxy(x)
 }
 
 #' @export
@@ -703,7 +703,7 @@ year_month_weekday_minus_year_month_weekday <- function(op, x, y, ...) {
 
   fields <- year_month_weekday_minus_year_month_weekday_cpp(x, y, precision)
 
-  new_duration_from_fields(fields, precision, names = names)
+  new_duration_from_fields(fields, precision, names)
 }
 
 # ------------------------------------------------------------------------------

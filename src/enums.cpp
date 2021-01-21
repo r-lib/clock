@@ -166,15 +166,37 @@ precision_to_string(const cpp11::integers& precision_int) {
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum clock_name parse_clock_name(const cpp11::strings& x) {
+enum clock_name parse_clock_name(const cpp11::integers& x) {
   if (x.size() != 1) {
-    clock_abort("`clock` must be a string with length 1.");
+    clock_abort("`clock_name` must be an integer with length 1.");
   }
 
-  std::string string = x[0];
+  const int elt = x[0];
 
-  if (string == "sys") return clock_name::sys;
-  if (string == "naive") return clock_name::naive;
+  if (elt > 1 || elt < 0) {
+    clock_abort("`%i` is not a recognized `clock_name` option.", elt);
+  }
 
-  clock_abort("'%s' is not a recognized `clock` option.", string.c_str());
+  return static_cast<enum clock_name>(static_cast<unsigned char>(elt));
+}
+
+static const std::string chr_sys{"sys"};
+static const std::string chr_naive{"naive"};
+
+const std::string&
+clock_name_to_cpp_string(const enum clock_name& x) {
+  switch (x) {
+  case clock_name::sys: return chr_sys;
+  case clock_name::naive: return chr_naive;
+  default: never_reached("clock_name_to_cpp_string");
+  }
+}
+
+[[cpp11::register]]
+cpp11::writable::strings
+clock_to_string(const cpp11::integers& clock_int) {
+  const enum clock_name clock_val = parse_clock_name(clock_int);
+  const std::string clock_string = clock_name_to_cpp_string(clock_val);
+  cpp11::writable::strings out{clock_string};
+  return out;
 }

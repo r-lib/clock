@@ -90,52 +90,6 @@ duration_helper <- function(n, precision, ..., retain_names = FALSE) {
 
 # ------------------------------------------------------------------------------
 
-new_duration_from_fields <- function(fields, precision, names) {
-  # Remove all attributes except field names.
-  # This will eventually be much faster at the C++ level, and should be
-  # pushed into a C++ new_clock_rcrd_from_fields().
-  attributes <- list(names = clock_rcrd_field_names(fields))
-  fields <- set_attributes(fields, attributes)
-
-  n_fields <- length(fields)
-
-  if (!is.integer(precision)) {
-    abort("`precision` must be an integer.")
-  }
-
-  if (precision <= PRECISION_DAY) {
-    if (n_fields != 1L) {
-      abort("`fields` should have length 1 if precision is [year, day].")
-    }
-  } else if (precision <= PRECISION_SECOND) {
-    if (n_fields != 2L) {
-      abort("`fields` should have length 2 if precision is [hour, second].")
-    }
-  } else if (precision <= PRECISION_NANOSECOND) {
-    if (n_fields != 3L) {
-      abort("`fields` should have length 3 if precision is [millisecond, nanosecond].")
-    }
-  } else {
-    abort("Unknown `precision`.")
-  }
-
-  field_names <- names(fields)
-  for (i in seq_len(n_fields)) {
-    int_assert(fields[[i]], field_names[[i]])
-  }
-
-  class <- "clock_duration"
-
-  new_clock_rcrd(
-    fields = fields,
-    precision = precision,
-    names = names,
-    class = class
-  )
-}
-
-# ------------------------------------------------------------------------------
-
 #' @export
 format.clock_duration <- function(x, ...) {
   out <- format_duration_cpp(x, duration_precision(x))
@@ -174,32 +128,16 @@ vec_ptype_abbr.clock_duration <- function(x, ...) {
 
 #' @export
 vec_proxy.clock_duration <- function(x, ...) {
-  names <- names(x)
-  duration_proxy(x, names)
-}
-
-duration_proxy <- function(x, names = NULL) {
-  clock_rcrd_proxy(x, names)
+  clock_rcrd_proxy(x)
 }
 
 #' @export
 vec_restore.clock_duration <- function(x, to, ...) {
-  names <- clock_rcrd_restore_names(x)
-  duration_restore(x, to, names)
-}
-
-duration_restore <- function(x, to, names = NULL) {
-  fields <- clock_rcrd_restore_fields(x)
-  precision <- duration_precision(to)
-  new_duration_from_fields(fields, precision, names)
+  .Call("_clock_duration_restore", x, to, PACKAGE = "clock")
 }
 
 #' @export
 vec_proxy_equal.clock_duration <- function(x, ...) {
-  duration_proxy_equal(x)
-}
-
-duration_proxy_equal <- function(x) {
   clock_rcrd_proxy_equal(x)
 }
 
@@ -332,11 +270,7 @@ duration_rounder <- function(x, precision, n, rounder, verb, ...) {
 
   fields <- rounder(x, x_precision, precision, n)
 
-  new_duration_from_fields(
-    fields = fields,
-    precision = precision,
-    names = clock_rcrd_names(x)
-  )
+  new_duration_from_fields(fields, precision, clock_rcrd_names(x))
 }
 
 # ------------------------------------------------------------------------------
@@ -504,11 +438,7 @@ duration_arith <- function(x, y, names, fn) {
 
   fields <- fn(x, y, precision)
 
-  new_duration_from_fields(
-    fields = fields,
-    precision = precision,
-    names = names
-  )
+  new_duration_from_fields(fields, precision, names)
 }
 
 duration_scalar_multiply <- function(x, y, names) {
@@ -534,11 +464,7 @@ duration_scalar_arith <- function(x, y, names, fn) {
 
   fields <- fn(x, y, precision)
 
-  new_duration_from_fields(
-    fields = fields,
-    precision = precision,
-    names = names
-  )
+  new_duration_from_fields(fields, precision, names)
 }
 
 names_common <- function(x, y) {

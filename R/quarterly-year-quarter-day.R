@@ -130,7 +130,7 @@ new_year_quarter_day_from_fields <- function(fields, precision, start, names = N
 
 #' @export
 vec_proxy.clock_year_quarter_day <- function(x, ...) {
-  clock_rcrd_proxy(x, names(x))
+  clock_rcrd_proxy(x)
 }
 
 #' @export

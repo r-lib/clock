@@ -187,7 +187,7 @@ new_year_month_day_from_fields <- function(fields, precision, names = NULL) {
 
 #' @export
 vec_proxy.clock_year_month_day <- function(x, ...) {
-  clock_rcrd_proxy(x, names(x))
+  clock_rcrd_proxy(x)
 }
 
 #' @export
@@ -672,7 +672,7 @@ year_month_day_minus_year_month_day <- function(op, x, y, ...) {
 
   fields <- year_month_day_minus_year_month_day_cpp(x, y, precision)
 
-  new_duration_from_fields(fields, precision, names = names)
+  new_duration_from_fields(fields, precision, names)
 }
 
 # ------------------------------------------------------------------------------

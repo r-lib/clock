@@ -1,5 +1,5 @@
 new_sys_time_from_fields <- function(fields, precision, names) {
-  new_time_point_from_fields(fields, precision, "sys", names)
+  new_time_point_from_fields(fields, precision, CLOCK_SYS, names)
 }
 
 #' @export
@@ -55,13 +55,9 @@ as_zoned_time.clock_sys_time <- function(x, zone, ...) {
   x <- vec_cast(x, vec_ptype2(x, sys_seconds()))
 
   precision <- time_point_precision(x)
+  names <- clock_rcrd_names(x)
 
-  new_zoned_time_from_fields(
-    fields = x,
-    precision = precision,
-    zone = zone,
-    names = clock_rcrd_names(x)
-  )
+  new_zoned_time_from_fields(x, precision, zone, names)
 }
 
 # ------------------------------------------------------------------------------

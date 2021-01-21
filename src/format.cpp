@@ -1142,7 +1142,7 @@ cpp11::writable::strings format_time_point_impl(const ClockDuration& cd,
 
 [[cpp11::register]]
 cpp11::writable::strings format_time_point_cpp(cpp11::list_of<cpp11::integers> fields,
-                                               const cpp11::strings& clock,
+                                               const cpp11::integers& clock,
                                                const cpp11::strings& format,
                                                const cpp11::integers& precision_int,
                                                const cpp11::strings& mon,

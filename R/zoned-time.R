@@ -1,30 +1,3 @@
-new_zoned_time_from_fields <- function(fields, precision, zone, names) {
-  # Remove all attributes except field names.
-  # This will eventually be much faster at the C++ level, and should be
-  # pushed into a C++ new_clock_rcrd_from_fields().
-  attributes <- list(names = clock_rcrd_field_names(fields))
-  fields <- set_attributes(fields, attributes)
-
-  if (!is_string(zone)) {
-    abort("`zone` must be a string.")
-  }
-  if (precision < PRECISION_SECOND) {
-    abort("`precision` must be at least second precision.")
-  }
-
-  class <- "clock_zoned_time"
-
-  new_clock_rcrd(
-    fields = fields,
-    precision = precision,
-    zone = zone,
-    names = names,
-    class = class
-  )
-}
-
-# ------------------------------------------------------------------------------
-
 #' @export
 is_zoned_time <- function(x) {
   inherits(x, "clock_zoned_time")
@@ -115,35 +88,18 @@ zoned_time_format <- function(print_zone_name) {
 
 #' @export
 vec_proxy.clock_zoned_time <- function(x, ...) {
-  names <- clock_rcrd_names(x)
-  zoned_time_proxy(x, names)
-}
-
-zoned_time_proxy <- function(x, names = NULL) {
-  clock_rcrd_proxy(x, names)
+  clock_rcrd_proxy(x)
 }
 
 #' @export
 vec_restore.clock_zoned_time <- function(x, to, ...) {
-  names <- clock_rcrd_restore_names(x)
-  zoned_time_restore(x, to, names)
-}
-
-zoned_time_restore <- function(x, to, names = NULL) {
-  fields <- clock_rcrd_restore_fields(x)
-  precision <- zoned_time_precision(to)
-  zone <- zoned_time_zone(to)
-  new_zoned_time_from_fields(fields, precision, zone, names)
+  .Call("_clock_zoned_time_restore", x, to, PACKAGE = "clock")
 }
 
 #' @export
 vec_proxy_equal.clock_zoned_time <- function(x, ...) {
   # ptype2 / cast will prevent zoned times with different zones from being
   # compared, so the equality proxy doesn't need to worry about zone.
-  zoned_time_proxy_equal(x)
-}
-
-zoned_time_proxy_equal <- function(x) {
   clock_rcrd_proxy_equal(x)
 }
 
@@ -217,12 +173,9 @@ vec_cast.clock_zoned_time.clock_zoned_time <- function(x, to, ...) {
 
   fields <- duration_cast_cpp(x, x_precision, to_precision)
 
-  new_zoned_time_from_fields(
-    fields = fields,
-    precision = to_precision,
-    zone = x_zone,
-    names = clock_rcrd_names(x)
-  )
+  names <- clock_rcrd_names(x)
+
+  new_zoned_time_from_fields(fields, to_precision, x_zone, names)
 }
 
 # ------------------------------------------------------------------------------

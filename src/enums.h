@@ -68,17 +68,17 @@ enum quarterly::start parse_start(const cpp11::integers& x);
 // -----------------------------------------------------------------------------
 
 enum class precision: unsigned char {
-  year,
-  quarter,
-  month,
-  week,
-  day,
-  hour,
-  minute,
-  second,
-  millisecond,
-  microsecond,
-  nanosecond
+  year = 0u,
+  quarter = 1u,
+  month = 2u,
+  week = 3u,
+  day = 4u,
+  hour = 5u,
+  minute = 6u,
+  second = 7u,
+  millisecond = 8u,
+  microsecond = 9u,
+  nanosecond = 10u
 };
 
 enum precision parse_precision(const cpp11::integers& x);
@@ -87,12 +87,12 @@ const std::string& precision_to_cpp_string(const enum precision& x);
 
 // -----------------------------------------------------------------------------
 
-enum class clock_name {
-  sys,
-  naive
+enum class clock_name: unsigned char {
+  sys = 0u,
+  naive = 1u
 };
 
-enum clock_name parse_clock_name(const cpp11::strings& x);
+enum clock_name parse_clock_name(const cpp11::integers& x);
 
 // -----------------------------------------------------------------------------
 #endif

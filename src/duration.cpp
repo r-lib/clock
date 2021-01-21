@@ -3,7 +3,72 @@
 #include "duration.h"
 #include "enums.h"
 #include "get.h"
+#include "rcrd.h"
 #include <sstream>
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+SEXP
+new_duration_from_fields(SEXP fields,
+                         const cpp11::integers& precision_int,
+                         SEXP names) {
+  const r_ssize n_fields = Rf_xlength(fields);
+  const enum precision& precision_val = parse_precision(precision_int);
+
+  switch (precision_val) {
+  case precision::year:
+  case precision::quarter:
+  case precision::month:
+  case precision::week:
+  case precision::day: {
+    if (n_fields != 1) {
+      clock_abort("`fields` must have 1 field for [year, day] precision.");
+    }
+    break;
+  }
+  case precision::hour:
+  case precision::minute:
+  case precision::second: {
+    if (n_fields != 2) {
+      clock_abort("`fields` must have 2 fields for [hour, second] precision.");
+    }
+    break;
+  }
+  case precision::millisecond:
+  case precision::microsecond:
+  case precision::nanosecond: {
+    if (n_fields != 3) {
+      clock_abort("`fields` must have 3 fields for [millisecond, nanosecond] precision.");
+    }
+    break;
+  }
+  default: {
+    never_reached("new_duration_from_fields");
+  }
+  }
+
+  SEXP out = PROTECT(new_clock_rcrd_from_fields(fields, names, classes_duration));
+
+  Rf_setAttrib(out, syms_precision, precision_int);
+
+  UNPROTECT(1);
+  return out;
+}
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+SEXP
+duration_restore(SEXP x, SEXP to) {
+  SEXP out = PROTECT(clock_rcrd_restore(x, to, classes_duration));
+
+  SEXP precision = Rf_getAttrib(to, syms_precision);
+  Rf_setAttrib(out, syms_precision, precision);
+
+  UNPROTECT(1);
+  return out;
+}
 
 // -----------------------------------------------------------------------------
 
