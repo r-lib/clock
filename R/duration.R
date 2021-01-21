@@ -128,8 +128,7 @@ vec_ptype_abbr.clock_duration <- function(x, ...) {
 
 #' @export
 vec_proxy.clock_duration <- function(x, ...) {
-  names <- clock_rcrd_names(x)
-  clock_rcrd_proxy(x, names)
+  clock_rcrd_proxy(x)
 }
 
 #' @export

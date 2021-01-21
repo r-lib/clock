@@ -102,12 +102,7 @@ pillar_shaft.clock_time_point <- function(x, ...) {
 
 #' @export
 vec_proxy.clock_time_point <- function(x, ...) {
-  names <- clock_rcrd_names(x)
-  time_point_proxy(x, names)
-}
-
-time_point_proxy <- function(x, names = NULL) {
-  clock_rcrd_proxy(x, names)
+  clock_rcrd_proxy(x)
 }
 
 #' @export

@@ -163,7 +163,7 @@ new_year_month_weekday_from_fields <- function(fields, precision, names = NULL) 
 
 #' @export
 vec_proxy.clock_year_month_weekday <- function(x, ...) {
-  clock_rcrd_proxy(x, names(x))
+  clock_rcrd_proxy(x)
 }
 
 #' @export

@@ -88,12 +88,7 @@ zoned_time_format <- function(print_zone_name) {
 
 #' @export
 vec_proxy.clock_zoned_time <- function(x, ...) {
-  names <- clock_rcrd_names(x)
-  zoned_time_proxy(x, names)
-}
-
-zoned_time_proxy <- function(x, names = NULL) {
-  clock_rcrd_proxy(x, names)
+  clock_rcrd_proxy(x)
 }
 
 #' @export

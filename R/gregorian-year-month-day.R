@@ -187,7 +187,7 @@ new_year_month_day_from_fields <- function(fields, precision, names = NULL) {
 
 #' @export
 vec_proxy.clock_year_month_day <- function(x, ...) {
-  clock_rcrd_proxy(x, names(x))
+  clock_rcrd_proxy(x)
 }
 
 #' @export

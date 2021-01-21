@@ -90,7 +90,7 @@ validate_names <- function(names, size) {
 
 #' @export
 names.clock_rcrd <- function(x) {
-  clock_rcrd_names(x)
+  attr(x, "clock_rcrd:::names", exact = TRUE)
 }
 
 #' @export
@@ -128,11 +128,14 @@ names.clock_rcrd <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-clock_rcrd_proxy <- function(x, names = NULL) {
+clock_rcrd_proxy <- function(x) {
+  names <- attr(x, "clock_rcrd:::names", exact = TRUE)
+
   if (!is.null(names)) {
     x <- unclass(x)
     x[["clock_rcrd:::names"]] <- names
   }
+
   new_data_frame(x)
 }
 
