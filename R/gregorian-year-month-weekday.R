@@ -1,4 +1,42 @@
+#' Calendar: year-month-weekday
+#'
+#' `year_month_weekday()` constructs a calendar vector from the Gregorian
+#' year, month, weekday, and index specifying that this is the n-th weekday
+#' of the month.
+#'
+#' @details
+#' Fields are recycled against each other.
+#'
+#' Fields are collected in order until the first `NULL` field is located. No
+#' fields after the first `NULL` field are used.
+#'
+#' @inheritParams year_month_day
+#'
+#' @param day `[integer / NULL]`
+#'
+#'   The weekday of the month. Values \[1, 7\] are allowed, where `1` is
+#'   Sunday and `7` is Saturday.
+#'
+#' @param index `[integer / NULL]`
+#'
+#'   The index specifying that `day` is the n-th weekday of the month.
+#'   Values `\[1, 5\]` are allowed.
+#'
+#' @return A year-month-weekday calendar vector.
+#'
 #' @export
+#' @examples
+#' friday <- 6
+#'
+#' # All Fridays in January, 2019
+#' # Note that there was no 5th Friday in January
+#' x <- year_month_weekday(2019, 1, friday, 1:5)
+#' x
+#'
+#' invalid_detect(x)
+#'
+#' # Resolve this invalid date by using the previous valid date
+#' invalid_resolve(x, invalid = "previous")
 year_month_weekday <- function(year,
                                month = NULL,
                                day = NULL,
@@ -180,7 +218,20 @@ vec_ptype_abbr.clock_year_month_weekday <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Is `x` a year-month-weekday?
+#'
+#' Check if `x` is a year-month-weekday.
+#'
+#' @param x `[object]`
+#'
+#'   An object.
+#'
+#' @return Returns `TRUE` if `x` inherits from `"clock_year_month_weekday"`,
+#'   otherwise returns `FALSE`.
+#'
 #' @export
+#' @examples
+#' is_year_month_weekday(year_month_weekday(2019))
 is_year_month_weekday <- function(x) {
   inherits(x, "clock_year_month_weekday")
 }
@@ -593,6 +644,7 @@ year_month_weekday_precision_to_field <- function(precision) {
 
 # ------------------------------------------------------------------------------
 
+#' @rdname clock-arith
 #' @method vec_arith clock_year_month_weekday
 #' @export
 vec_arith.clock_year_month_weekday <- function(op, x, y, ...) {
