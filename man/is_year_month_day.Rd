@@ -13,7 +13,7 @@ An object.}
 }
 \value{
 Returns \code{TRUE} if \code{x} inherits from \code{"clock_year_month_day"},
-otherwise returns \code{FALSE}
+otherwise returns \code{FALSE}.
 }
 \description{
 Check if \code{x} is a year-month-day.

@@ -19,32 +19,38 @@ year_month_day(
 \arguments{
 \item{year}{\verb{[integer]}
 
-The year.}
+The year. Values [-9999, 9999] are allowed.}
 
 \item{month}{\verb{[integer / NULL]}
 
-The month.}
+The month. Values [1, 12] are allowed.}
 
 \item{day}{\verb{[integer / NULL]}
 
-The day.}
+The day of the month. Values [1, 31] are allowed.}
 
 \item{hour}{\verb{[integer / NULL]}
 
-The hour.}
+The hour. Values [0, 23] are allowed.}
 
 \item{minute}{\verb{[integer / NULL]}
 
-The minute.}
+The minute. Values [0, 59] are allowed.}
 
 \item{second}{\verb{[integer / NULL]}
 
-The second.}
+The second. Values [0, 59] are allowed.}
 
 \item{subsecond}{\verb{[integer / NULL]}
 
 The subsecond. If specified, \code{subsecond_precision} must also be specified
-to determine how to interpret the \code{subsecond}.}
+to determine how to interpret the \code{subsecond}.
+
+If using milliseconds, values [0, 999] are allowed.
+
+If using microseconds, values [0, 999999] are allowed.
+
+If using nanoseconds, values [0, 999999999] are allowed.}
 
 \item{subsecond_precision}{\verb{[character(1) / NULL]}
 
@@ -52,7 +58,7 @@ The precision to interpret \code{subsecond} as. One of: \code{"millisecond"},
 \code{"microsecond"}, or \code{"nanosecond"}.}
 }
 \value{
-A year-month-day calendar object.
+A year-month-day calendar vector.
 }
 \description{
 \code{year_month_day()} constructs the most common calendar type using the

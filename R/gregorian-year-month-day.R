@@ -11,39 +11,45 @@
 #'
 #' @param year `[integer]`
 #'
-#'   The year.
+#'   The year. Values \[-9999, 9999\] are allowed.
 #'
 #' @param month `[integer / NULL]`
 #'
-#'   The month.
+#'   The month. Values \[1, 12\] are allowed.
 #'
 #' @param day `[integer / NULL]`
 #'
-#'   The day.
+#'   The day of the month. Values \[1, 31\] are allowed.
 #'
 #' @param hour `[integer / NULL]`
 #'
-#'   The hour.
+#'   The hour. Values \[0, 23\] are allowed.
 #'
 #' @param minute `[integer / NULL]`
 #'
-#'   The minute.
+#'   The minute. Values \[0, 59\] are allowed.
 #'
 #' @param second `[integer / NULL]`
 #'
-#'   The second.
+#'   The second. Values \[0, 59\] are allowed.
 #'
 #' @param subsecond `[integer / NULL]`
 #'
 #'   The subsecond. If specified, `subsecond_precision` must also be specified
 #'   to determine how to interpret the `subsecond`.
 #'
+#'   If using milliseconds, values \[0, 999\] are allowed.
+#'
+#'   If using microseconds, values \[0, 999999\] are allowed.
+#'
+#'   If using nanoseconds, values \[0, 999999999\] are allowed.
+#'
 #' @param subsecond_precision `[character(1) / NULL]`
 #'
 #'   The precision to interpret `subsecond` as. One of: `"millisecond"`,
 #'   `"microsecond"`, or `"nanosecond"`.
 #'
-#' @return A year-month-day calendar object.
+#' @return A year-month-day calendar vector.
 #'
 #' @export
 #' @examples
@@ -225,7 +231,7 @@ vec_ptype_abbr.clock_year_month_day <- function(x, ...) {
 #'   An object.
 #'
 #' @return Returns `TRUE` if `x` inherits from `"clock_year_month_day"`,
-#'   otherwise returns `FALSE`
+#'   otherwise returns `FALSE`.
 #'
 #' @export
 #' @examples
