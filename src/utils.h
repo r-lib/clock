@@ -39,6 +39,13 @@ r_clone_referenced(SEXP x) {
 static
 inline
 const SEXP*
+r_chr_deref_const(SEXP x) {
+  return (const SEXP*) STRING_PTR(x);
+}
+
+static
+inline
+const SEXP*
 r_list_deref_const(SEXP x) {
 #if (R_VERSION < R_Version(3, 5, 0))
   return ((const SEXP*) STRING_PTR(x));
@@ -65,7 +72,7 @@ static
 inline
 SEXP
 r_repair_na_names(SEXP names) {
-  const SEXP* p_names = STRING_PTR_RO(names);
+  const SEXP* p_names = r_chr_deref_const(names);
   const r_ssize size = Rf_xlength(names);
 
   bool any_na = r_chr_any_na(p_names, size);

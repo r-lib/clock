@@ -69,7 +69,7 @@ validate_names(SEXP names, r_ssize size) {
     clock_abort("Names must have length %i, not %i.", size, names_size);
   }
 
-  const SEXP* p_names = STRING_PTR_RO(names);
+  const SEXP* p_names = r_chr_deref_const(names);
 
   for (r_ssize i = 0; i < size; ++i) {
     const SEXP name = p_names[i];
@@ -86,7 +86,7 @@ clock_rcrd_restore(SEXP x, SEXP to, SEXP classes) {
   const r_ssize size = Rf_xlength(x);
 
   SEXP field_names = Rf_getAttrib(x, R_NamesSymbol);
-  const SEXP* p_field_names = STRING_PTR_RO(field_names);
+  const SEXP* p_field_names = r_chr_deref_const(field_names);
 
   const SEXP last_field_name = p_field_names[size - 1];
   const char* last_field_name_char = CHAR(last_field_name);
