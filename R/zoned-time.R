@@ -1,29 +1,29 @@
-#' @export
-new_zoned_time <- function(sys_time = sys_seconds(),
-                           zone = "UTC",
-                           ...,
-                           names = NULL,
-                           class = NULL) {
+new_zoned_time_from_fields <- function(fields, precision, zone, names) {
+  # Remove all attributes except field names.
+  # This will eventually be much faster at the C++ level, and should be
+  # pushed into a C++ new_clock_rcrd_from_fields().
+  attributes <- list(names = clock_rcrd_field_names(fields))
+  fields <- set_attributes(fields, attributes)
+
   if (!is_string(zone)) {
     abort("`zone` must be a string.")
   }
-  if (!is_sys_time(sys_time)) {
-    abort("`sys_time` must be a 'clock_sys_time'.")
-  }
-  if (time_point_precision(sys_time) < PRECISION_SECOND) {
-    abort("`sys_time` must be at least second precision.")
+  if (precision < PRECISION_SECOND) {
+    abort("`precision` must be at least second precision.")
   }
 
-  fields <- list(sys_time = sys_time)
+  class <- "clock_zoned_time"
 
   new_clock_rcrd(
     fields = fields,
+    precision = precision,
     zone = zone,
-    ...,
     names = names,
-    class = c(class, "clock_zoned_time")
+    class = class
   )
 }
+
+# ------------------------------------------------------------------------------
 
 #' @export
 is_zoned_time <- function(x) {
@@ -40,24 +40,21 @@ zoned_time_set_zone <- function(x, zone) {
   x
 }
 
+zoned_time_precision <- function(x) {
+  attr(x, "precision", exact = TRUE)
+}
+
 zoned_time_sys_time <- function(x) {
-  field(x, "sys_time")
+  names <- NULL
+  precision <- zoned_time_precision(x)
+  new_sys_time_from_fields(x, precision, names)
 }
 zoned_time_naive_time <- function(x) {
-  sys_time <- zoned_time_sys_time(x)
+  names <- NULL
   zone <- zoned_time_zone(x)
-
-  duration <- time_point_duration(sys_time)
-  precision <- time_point_precision(sys_time)
-
-  fields <- get_naive_time_cpp(duration, precision, zone)
-  duration <- new_duration_from_fields(fields, precision)
-
-  new_naive_time(duration)
-}
-
-zoned_time_precision <- function(x) {
-  time_point_precision(zoned_time_sys_time(x))
+  precision <- zoned_time_precision(x)
+  fields <- get_naive_time_cpp(x, precision, zone)
+  new_naive_time_from_fields(fields, precision, names)
 }
 
 # ------------------------------------------------------------------------------
@@ -73,9 +70,7 @@ format.clock_zoned_time <- function(x,
   }
 
   zone <- zoned_time_zone(x)
-  sys_time <- zoned_time_sys_time(x)
-  duration <- time_point_duration(sys_time)
-  precision <- duration_precision(duration)
+  precision <- zoned_time_precision(x)
 
   if (is_null(format)) {
     # Collect internal option
@@ -87,7 +82,7 @@ format.clock_zoned_time <- function(x,
   decimal_mark <- locale$decimal_mark
 
   out <- format_zoned_time_cpp(
-    fields = duration,
+    fields = x,
     zone = zone,
     abbreviate_zone = abbreviate_zone,
     format = format,
@@ -100,7 +95,7 @@ format.clock_zoned_time <- function(x,
     decimal_mark = decimal_mark
   )
 
-  names(out) <- names(x)
+  names(out) <- clock_rcrd_names(x)
 
   out
 }
@@ -120,13 +115,12 @@ zoned_time_format <- function(print_zone_name) {
 
 #' @export
 vec_proxy.clock_zoned_time <- function(x, ...) {
-  names <- names(x)
+  names <- clock_rcrd_names(x)
   zoned_time_proxy(x, names)
 }
 
 zoned_time_proxy <- function(x, names = NULL) {
-  x <- zoned_time_sys_time(x)
-  time_point_proxy(x, names)
+  clock_rcrd_proxy(x, names)
 }
 
 #' @export
@@ -136,10 +130,10 @@ vec_restore.clock_zoned_time <- function(x, to, ...) {
 }
 
 zoned_time_restore <- function(x, to, names = NULL) {
+  fields <- clock_rcrd_restore_fields(x)
+  precision <- zoned_time_precision(to)
   zone <- zoned_time_zone(to)
-  to <- zoned_time_sys_time(to)
-  x <- time_point_restore(x, to)
-  new_zoned_time(x, zone, names = names)
+  new_zoned_time_from_fields(fields, precision, zone, names)
 }
 
 #' @export
@@ -150,8 +144,7 @@ vec_proxy_equal.clock_zoned_time <- function(x, ...) {
 }
 
 zoned_time_proxy_equal <- function(x) {
-  x <- zoned_time_sys_time(x)
-  time_point_proxy_equal(x)
+  clock_rcrd_proxy_equal(x)
 }
 
 # ------------------------------------------------------------------------------
@@ -211,14 +204,8 @@ vec_cast.clock_zoned_time.clock_zoned_time <- function(x, to, ...) {
     stop_incompatible_cast(x, to, ..., details = "Zones can't differ.")
   }
 
-  x_sys_time <- zoned_time_sys_time(x)
-  to_sys_time <- zoned_time_sys_time(to)
-
-  x_duration <- time_point_duration(x_sys_time)
-  to_duration <- time_point_duration(to_sys_time)
-
-  x_precision <- duration_precision(x_duration)
-  to_precision <- duration_precision(to_duration)
+  x_precision <- zoned_time_precision(x)
+  to_precision <- zoned_time_precision(to)
 
   if (x_precision == to_precision) {
     return(x)
@@ -228,11 +215,14 @@ vec_cast.clock_zoned_time.clock_zoned_time <- function(x, to, ...) {
     stop_incompatible_cast(x, to, ..., details = "Precision would be lost.")
   }
 
-  duration <- duration_cast_impl(x_duration, to_precision)
+  fields <- duration_cast_cpp(x, x_precision, to_precision)
 
-  sys_time <- new_sys_time(duration)
-
-  new_zoned_time(sys_time, x_zone, names = names(x))
+  new_zoned_time_from_fields(
+    fields = fields,
+    precision = to_precision,
+    zone = x_zone,
+    names = clock_rcrd_names(x)
+  )
 }
 
 # ------------------------------------------------------------------------------
@@ -280,14 +270,14 @@ as_zoned_time.clock_zoned_time <- function(x, ...) {
 #' @export
 as_sys_time.clock_zoned_time <- function(x) {
   out <- zoned_time_sys_time(x)
-  names(out) <- names(x)
+  out <- clock_rcrd_set_names(out, clock_rcrd_names(x))
   out
 }
 
 #' @export
 as_naive_time.clock_zoned_time <- function(x) {
   out <- zoned_time_naive_time(x)
-  names(out) <- names(x)
+  out <- clock_rcrd_set_names(out, clock_rcrd_names(x))
   out
 }
 
@@ -295,9 +285,11 @@ as_naive_time.clock_zoned_time <- function(x) {
 
 #' @export
 zoned_now <- function(zone) {
+  names <- NULL
   sys_time <- sys_now()
+  precision <- time_point_precision(sys_time)
   zone <- zone_validate(zone)
-  new_zoned_time(sys_time, zone = zone)
+  new_zoned_time_from_fields(sys_time, precision, zone, names)
 }
 
 # ------------------------------------------------------------------------------
@@ -402,12 +394,11 @@ zoned_offset <- function(x) {
 
 #' @export
 zoned_offset.clock_zoned_time <- function(x) {
+  names <- NULL
   zone <- zoned_time_zone(x)
-  sys_time <- zoned_time_sys_time(x)
-  duration <- time_point_duration(sys_time)
-  precision <- time_point_precision(sys_time)
-  fields <- zoned_offset_cpp(duration, precision, zone)
-  new_duration_from_fields(fields, precision = PRECISION_SECOND)
+  precision <- zoned_time_precision(x)
+  fields <- zoned_offset_cpp(x, precision, zone)
+  new_duration_from_fields(fields, PRECISION_SECOND, names)
 }
 
 # ------------------------------------------------------------------------------
@@ -442,8 +433,7 @@ zoned_dst.clock_zoned_time <- function(x) {
   zone <- zoned_time_zone(x)
   sys_time <- zoned_time_sys_time(x)
   sys_time <- time_point_cast(sys_time, "second")
-  duration <- time_point_duration(sys_time)
-  zoned_dst_cpp(duration, zone)
+  zoned_dst_cpp(sys_time, zone)
 }
 
 # ------------------------------------------------------------------------------

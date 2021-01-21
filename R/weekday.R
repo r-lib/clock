@@ -101,11 +101,9 @@ as_weekday.clock_weekday <- function(x) {
 
 #' @export
 as_weekday.clock_time_point <- function(x) {
-  names <- names(x)
   x <- time_point_cast(x, "day")
-  x <- time_point_duration(x)
   day <- weekday_from_time_point_cpp(x)
-  names(day) <- names
+  names(day) <- clock_rcrd_names(x)
   new_weekday(day)
 }
 
@@ -215,7 +213,7 @@ weekday_minus_weekday <- function(op, x, y, ...) {
 
   fields <- weekday_minus_weekday_cpp(x, y)
 
-  new_duration_from_fields(fields, "day", names = names)
+  new_duration_from_fields(fields, PRECISION_DAY, names = names)
 }
 
 # ------------------------------------------------------------------------------

@@ -3,7 +3,7 @@ as_sys_time.Date <- function(x) {
   names <- names(x)
   x <- unstructure(x)
   x <- duration_days(x)
-  new_sys_time(x, names = names)
+  new_sys_time_from_fields(x, PRECISION_DAY, names)
 }
 
 #' @export
@@ -14,14 +14,8 @@ as_naive_time.Date <- function(x) {
 #' @export
 as_zoned_time.Date <- function(x, ...) {
   check_dots_empty()
-
   x <- as_sys_time(x)
-  x <- time_point_cast(x, "second")
-
-  names <- names(x)
-  x <- unname(x)
-
-  new_zoned_time(x, zone = "UTC", names = names)
+  as_zoned_time(x, zone = "UTC")
 }
 
 #' @export
@@ -56,9 +50,8 @@ as.Date.clock_calendar <- function(x, ...) {
 
 #' @export
 as.Date.clock_time_point <- function(x, ...) {
-  names <- names(x)
+  names <- clock_rcrd_names(x)
   x <- time_point_cast(x, "day")
-  x <- time_point_duration(x)
   x <- field_ticks(x)
   x <- as.double(x)
   names(x) <- names

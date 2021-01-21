@@ -1,37 +1,36 @@
-#' @export
-new_time_point <- function(duration = duration_days(),
-                           clock = "sys",
-                           ...,
-                           names = NULL,
-                           class = NULL) {
-  if (!is_duration(duration)) {
-    abort("`duration` must be a duration.")
-  }
+new_time_point_from_fields <- function(fields, precision, clock, names) {
+  # Remove all attributes except field names.
+  # We often pass a duration or other time points through as `fields`,
+  # which will need to be stripped of attributes.
+  # This will eventually be much faster at the C++ level, and should be
+  # pushed into a C++ new_clock_rcrd_from_fields().
+  attributes <- list(names = clock_rcrd_field_names(fields))
+  fields <- set_attributes(fields, attributes)
 
-  precision <- duration_precision(duration)
   if (precision < PRECISION_DAY) {
     abort("`duration` must have at least daily precision.")
   }
 
-  fields <- list(duration = duration)
-
   clock_validate(clock)
 
   if (clock_is_sys(clock)) {
-    class <- c(class, "clock_sys_time", "clock_time_point")
+    class <- c("clock_sys_time", "clock_time_point")
   } else if (clock_is_naive(clock)) {
-    class <- c(class, "clock_naive_time", "clock_time_point")
+    class <- c("clock_naive_time", "clock_time_point")
   } else {
     abort("Internal error: Unknown clock.")
   }
 
   new_clock_rcrd(
     fields = fields,
-    ...,
+    precision = precision,
+    clock = clock,
     names = names,
     class = class
   )
 }
+
+# ------------------------------------------------------------------------------
 
 #' @export
 is_time_point <- function(x) {
@@ -41,26 +40,17 @@ is_time_point <- function(x) {
 # ------------------------------------------------------------------------------
 
 time_point_clock <- function(x) {
-  UseMethod("time_point_clock")
+  attr(x, "clock", exact = TRUE)
 }
-#' @export
-time_point_clock.clock_sys_time <- function(x) {
-  "sys"
-}
-#' @export
-time_point_clock.clock_naive_time <- function(x) {
-  "naive"
+
+time_point_precision <- function(x) {
+  attr(x, "precision", exact = TRUE)
 }
 
 time_point_duration <- function(x) {
-  field_duration(x)
-}
-time_point_precision <- function(x) {
-  duration_precision(time_point_duration(x))
-}
-
-field_duration <- function(x) {
-  field(x, "duration")
+  names <- NULL
+  precision <- time_point_precision(x)
+  new_duration_from_fields(x, precision, names)
 }
 
 # ------------------------------------------------------------------------------
@@ -74,10 +64,8 @@ format.clock_time_point <- function(x,
     abort("`locale` must be a date locale object.")
   }
 
-  duration <- time_point_duration(x)
   clock <- time_point_clock(x)
-
-  precision <- duration_precision(duration)
+  precision <- time_point_precision(x)
 
   if (is_null(format)) {
     format <- time_point_precision_format(precision)
@@ -87,7 +75,7 @@ format.clock_time_point <- function(x,
   decimal_mark <- locale$decimal_mark
 
   out <- format_time_point_cpp(
-    fields = duration,
+    fields = x,
     clock = clock,
     format = format,
     precision_int = precision,
@@ -99,7 +87,7 @@ format.clock_time_point <- function(x,
     decimal_mark = decimal_mark
   )
 
-  names(out) <- names(x)
+  names(out) <- clock_rcrd_names(x)
 
   out
 }
@@ -147,13 +135,12 @@ pillar_shaft.clock_time_point <- function(x, ...) {
 
 #' @export
 vec_proxy.clock_time_point <- function(x, ...) {
-  names <- names(x)
+  names <- clock_rcrd_names(x)
   time_point_proxy(x, names)
 }
 
 time_point_proxy <- function(x, names = NULL) {
-  x <- time_point_duration(x)
-  duration_proxy(x, names)
+  clock_rcrd_proxy(x, names)
 }
 
 #' @export
@@ -163,10 +150,10 @@ vec_restore.clock_time_point <- function(x, to, ...) {
 }
 
 time_point_restore <- function(x, to, names = NULL) {
+  fields <- clock_rcrd_restore_fields(x)
+  precision <- time_point_precision(to)
   clock <- time_point_clock(to)
-  to <- time_point_duration(to)
-  x <- duration_restore(x, to)
-  new_time_point(x, clock, names = names)
+  new_time_point_from_fields(fields, precision, clock, names)
 }
 
 #' @export
@@ -175,8 +162,7 @@ vec_proxy_equal.clock_time_point <- function(x, ...) {
 }
 
 time_point_proxy_equal <- function(x) {
-  x <- time_point_duration(x)
-  duration_proxy_equal(x)
+  clock_rcrd_proxy_equal(x)
 }
 
 # ------------------------------------------------------------------------------
@@ -184,8 +170,7 @@ time_point_proxy_equal <- function(x) {
 #' @export
 vec_ptype_full.clock_time_point <- function(x, ...) {
   clock <- time_point_clock(x)
-  duration <- time_point_duration(x)
-  precision <- duration_precision(duration)
+  precision <- time_point_precision(x)
   precision <- precision_to_string(precision)
   paste0("time_point<", clock, "><", precision, ">")
 }
@@ -193,8 +178,7 @@ vec_ptype_full.clock_time_point <- function(x, ...) {
 #' @export
 vec_ptype_abbr.clock_time_point <- function(x, ...) {
   clock <- time_point_clock(x)
-  duration <- time_point_duration(x)
-  precision <- duration_precision(duration)
+  precision <- time_point_precision(x)
   precision <- precision_to_string(precision)
   precision <- precision_abbr(precision)
   paste0("tp<", clock, "><", precision, ">")
@@ -213,26 +197,24 @@ ptype2_time_point_and_time_point <- function(x, y, ...) {
 
 # Caller guarantees that clocks are identical
 cast_time_point_to_time_point <- function(x, to, ...) {
-  x_duration <- field_duration(x)
-  to_duration <- field_duration(to)
-
-  x_precision <- duration_precision(x_duration)
-  to_precision <- duration_precision(to_duration)
+  x_precision <- time_point_precision(x)
+  to_precision <- time_point_precision(to)
 
   if (x_precision == to_precision) {
     return(x)
   }
 
   if (x_precision > to_precision) {
-    stop_incompatible_cast(x, to, ..., details = "Precision would be lost.")
+    stop_incompatible_cast(x, to, ..., details = "Can't cast to a less precise precision.")
   }
 
-  duration <- duration_cast_impl(x_duration, to_precision)
+  fields <- duration_cast_cpp(x, x_precision, to_precision)
 
-  new_time_point(
-    duration = duration,
+  new_time_point_from_fields(
+    fields = fields,
+    precision = to_precision,
     clock = time_point_clock(x),
-    names = names(x)
+    names = clock_rcrd_names(x)
   )
 }
 
@@ -345,18 +327,17 @@ time_point_minus_duration <- function(x, n, precision_n, names) {
 
 time_point_arith_duration <- function(x, n, precision_n, names, duration_fn) {
   clock <- time_point_clock(x)
-  duration <- time_point_duration(x)
+  x <- time_point_duration(x)
 
   n <- duration_collect_n(n, precision_n)
 
-  args <- vec_recycle_common(x = x, n = n, names = names)
-  x <- args$x
-  n <- args$n
-  names <- args$names
+  # Handles recycling and casting
+  duration <- duration_fn(x = x, y = n, names = names)
 
-  duration <- duration_fn(x = duration, y = n, names = NULL)
+  names <- clock_rcrd_names(duration)
+  precision <- duration_precision(duration)
 
-  new_time_point(duration, clock, names = names)
+  new_time_point_from_fields(duration, precision, clock, names)
 }
 
 time_point_minus_time_point <- function(x, y, names) {
@@ -375,40 +356,38 @@ time_point_minus_time_point <- function(x, y, names) {
 
 #' @export
 as_duration.clock_time_point <- function(x) {
-  time_point_duration(x)
+  out <- time_point_duration(x)
+  out <- clock_rcrd_set_names(out, clock_rcrd_names(x))
+  out
 }
 
 #' @export
 as_year_month_day.clock_time_point <- function(x) {
-  duration <- time_point_duration(x)
   precision <- time_point_precision(x)
-  fields <- as_year_month_day_from_sys_time_cpp(duration, precision)
+  fields <- as_year_month_day_from_sys_time_cpp(x, precision)
   new_year_month_day_from_fields(fields, precision, names = names(x))
 }
 
 #' @export
 as_year_month_weekday.clock_time_point <- function(x) {
-  duration <- time_point_duration(x)
   precision <- time_point_precision(x)
-  fields <- as_year_month_weekday_from_sys_time_cpp(duration, precision)
+  fields <- as_year_month_weekday_from_sys_time_cpp(x, precision)
   new_year_month_weekday_from_fields(fields, precision, names = names(x))
 }
 
 #' @export
 as_year_quarter_day.clock_time_point <- function(x, ..., start = 1L) {
   check_dots_empty()
-  duration <- time_point_duration(x)
   precision <- time_point_precision(x)
   start <- quarterly_validate_start(start)
-  fields <- as_year_quarter_day_from_sys_time_cpp(duration, precision, start)
+  fields <- as_year_quarter_day_from_sys_time_cpp(x, precision, start)
   new_year_quarter_day_from_fields(fields, precision, start, names = names(x))
 }
 
 #' @export
 as_iso_year_week_day.clock_time_point <- function(x) {
-  duration <- time_point_duration(x)
   precision <- time_point_precision(x)
-  fields <- as_iso_year_week_day_from_sys_time_cpp(duration, precision)
+  fields <- as_iso_year_week_day_from_sys_time_cpp(x, precision)
   new_iso_year_week_day_from_fields(fields, precision, names = names(x))
 }
 
@@ -420,12 +399,17 @@ time_point_cast <- function(x, precision) {
     abort("`x` must be a 'time_point'.")
   }
 
+  x_precision <- time_point_precision(x)
   precision <- validate_time_point_precision(precision)
 
-  duration <- time_point_duration(x)
-  duration <- duration_cast_impl(duration, precision)
+  fields <- duration_cast_cpp(x, x_precision, precision)
 
-  new_time_point(duration, clock = time_point_clock(x), names = names(x))
+  new_time_point_from_fields(
+    fields = fields,
+    precision = precision,
+    clock = time_point_clock(x),
+    names = clock_rcrd_names(x)
+  )
 }
 
 # Notes:
@@ -475,12 +459,18 @@ time_point_rounder <- function(x, precision, n, duration_rounder, ...) {
     abort("`x` must be a 'time_point'.")
   }
 
+  precision_string <- precision
   precision <- validate_time_point_precision(precision)
 
   duration <- time_point_duration(x)
-  duration <- duration_rounder(duration, precision, n = n)
+  duration <- duration_rounder(duration, precision_string, n = n)
 
-  new_time_point(duration, clock = time_point_clock(x), names = names(x))
+  new_time_point_from_fields(
+    fields = duration,
+    precision = precision,
+    clock = time_point_clock(x),
+    names = clock_rcrd_names(x)
+  )
 }
 
 # ------------------------------------------------------------------------------

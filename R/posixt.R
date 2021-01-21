@@ -16,14 +16,16 @@ as_zoned_time.POSIXt <- function(x, ...) {
   x <- to_posixct(x)
 
   names <- names(x)
-  seconds <- unstructure(x)
   zone <- posixt_tzone(x)
 
-  fields <- to_sys_duration_fields_from_sys_seconds_cpp(seconds)
-  duration <- new_duration_from_fields(fields, PRECISION_SECOND)
-  sys_time <- new_sys_time(duration)
+  fields <- to_sys_duration_fields_from_sys_seconds_cpp(x)
 
-  new_zoned_time(sys_time, zone = zone, names = names)
+  new_zoned_time_from_fields(
+    fields = fields,
+    precision = PRECISION_SECOND,
+    zone = zone,
+    names = names
+  )
 }
 
 #' @export
@@ -76,13 +78,8 @@ as.POSIXct.clock_calendar <- function(x,
 as.POSIXct.clock_sys_time <- function(x, tz = "", ...) {
   zone <- zone_standardize(tz)
   x <- time_point_cast(x, "second")
-  duration <- time_point_duration(x)
-
-  seconds <- to_sys_seconds_from_sys_duration_fields_cpp(
-    fields = duration
-  )
-
-  names(seconds) <- names(x)
+  seconds <- to_sys_seconds_from_sys_duration_fields_cpp(x)
+  names(seconds) <- clock_rcrd_names(x)
   new_datetime(seconds, zone)
 }
 
@@ -99,8 +96,8 @@ as.POSIXct.clock_naive_time <- function(x,
 #' @export
 as.POSIXct.clock_zoned_time <- function(x, ...) {
   zone <- zoned_time_zone(x)
-  sys_time <- zoned_time_sys_time(x)
-  as.POSIXct(sys_time, tz = zone)
+  x <- as_sys_time(x)
+  as.POSIXct(x, tz = zone)
 }
 
 # ------------------------------------------------------------------------------
