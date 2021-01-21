@@ -8,6 +8,37 @@
 #include <cstdio> // For `vsnprintf()`
 
 // -----------------------------------------------------------------------------
+
+static cpp11::sexp syms_precision(Rf_install("precision"));
+static cpp11::sexp syms_clock_rcrd_names(Rf_install("clock_rcrd:::names"));
+
+static cpp11::writable::strings classes_duration({"clock_duration", "clock_rcrd", "vctrs_rcrd", "vctrs_vctr"});
+
+// -----------------------------------------------------------------------------
+
+static
+inline
+SEXP
+r_clone_referenced(SEXP x) {
+  if (MAYBE_REFERENCED(x)) {
+    return Rf_shallow_duplicate(x);
+  } else {
+    return x;
+  }
+}
+
+static
+inline
+const SEXP*
+r_list_deref_const(SEXP x) {
+#if (R_VERSION < R_Version(3, 5, 0))
+  return ((const SEXP*) STRING_PTR(x));
+#else
+  return ((const SEXP*) DATAPTR_RO(x));
+#endif
+}
+
+// -----------------------------------------------------------------------------
 // "Safe" variants on rlib functions
 
 static inline bool r_dbl_is_missing(double x) {
