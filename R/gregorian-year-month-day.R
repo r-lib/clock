@@ -738,11 +738,6 @@ as_year_month_day.clock_year_month_day <- function(x) {
   x
 }
 
-#' @export
-as_year_month_day.clock_calendar <- function(x) {
-  as_year_month_day(as_sys_time(x))
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export

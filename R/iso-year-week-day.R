@@ -623,11 +623,6 @@ as_iso_year_week_day.clock_iso_year_week_day <- function(x) {
   x
 }
 
-#' @export
-as_iso_year_week_day.clock_calendar <- function(x) {
-  as_iso_year_week_day(as_sys_time(x))
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export

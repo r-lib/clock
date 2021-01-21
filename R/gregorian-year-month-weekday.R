@@ -705,11 +705,6 @@ as_year_month_weekday.clock_year_month_weekday <- function(x) {
   x
 }
 
-#' @export
-as_year_month_weekday.clock_calendar <- function(x) {
-  as_year_month_weekday(as_sys_time(x))
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export

@@ -663,11 +663,6 @@ as_year_quarter_day.clock_year_quarter_day <- function(x, ...) {
   x
 }
 
-#' @export
-as_year_quarter_day.clock_calendar <- function(x, ..., start = 1L) {
-  as_year_quarter_day(as_sys_time(x), ..., start = start)
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export
