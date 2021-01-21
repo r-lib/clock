@@ -82,7 +82,48 @@ calendar_leap_year.clock_calendar <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' Group calendar components
+#'
+#' `calendar_group()` groups calendar vectors to a multiple of the
+#' specified precision. The value of the component that matches the supplied
+#' `precision` will be adjusted, and more precise components will be dropped.
+#'
+#' @inheritParams ellipsis::dots_empty
+#'
+#' @param x `[calendar]`
+#'
+#'   A calendar vector.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   A precision. Allowed precisions are dependent on the calendar used.
+#'
+#' @param n `[positive integer(1)]`
+#'
+#'   A single positive integer specifying a multiple of `precision` to
+#'   group by.
+#'
+#' @return `x` grouped at the specified `precision`.
 #' @export
+#' @examples
+#' x <- year_month_day(2019, c(1, 1, 2, 2, 3, 3, 4, 4), 1:8)
+#' x
+#'
+#' # Group by two months
+#' calendar_group(x, "month", n = 2)
+#'
+#' # Group by two days of the month
+#' calendar_group(x, "day", n = 2)
+#'
+#' y <- c(year_quarter_day(2019, 1, 50:60), year_quarter_day(2019, 2, 50:60))
+#'
+#' # Group by 3 days of the current quarter
+#' calendar_group(y, "day", n = 3)
+#'
+#' z <- c(iso_year_week_day(2019, 1:10), iso_year_week_day(2020, 1:10))
+#'
+#' # Group by 5 ISO weeks of the current ISO year
+#' calendar_group(z, "week", n = 5)
 calendar_group <- function(x, precision, ..., n = 1L) {
   UseMethod("calendar_group")
 }
@@ -145,7 +186,21 @@ group_component1 <- function(x, n) {
 
 # ------------------------------------------------------------------------------
 
+#' Narrow a calendar to a less precise precision
+#'
+#' `calendar_narrow()` drops `x` to the specified `precision`.
+#'
+#' @inheritParams calendar_group
+#'
+#' @return `x` narrowed to the supplied `precision`.
 #' @export
+#' @examples
+#' # Second precision
+#' x <- year_month_day(2019, 1, 1, 1, 1, 1)
+#' x
+#'
+#' # Drop to day precision
+#' calendar_narrow(x, "day")
 calendar_narrow <- function(x, precision) {
   precision <- validate_precision(precision)
 
