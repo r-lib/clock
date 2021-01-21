@@ -121,7 +121,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Support for vctrs arithmetic</h1>
-    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/gregorian-year-month-day.R'><code>R/gregorian-year-month-day.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/gregorian-year-month-day.R'><code>R/gregorian-year-month-day.R</code></a>, <a href='https://github.com/DavisVaughan/clock/blob/master/R/gregorian-year-month-weekday.R'><code>R/gregorian-year-month-weekday.R</code></a></small>
     <div class="hidden name"><code>clock-arith.Rd</code></div>
     </div>
 
@@ -130,6 +130,9 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for clock_year_month_day</span>
+<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for clock_year_month_weekday</span>
 <span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -160,8 +163,9 @@ a sentinel object of class <code>MISSING</code>, as created by <code>MISSING()</
     <p>The result of the arithmetic operation.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>vec_arith</span><span class='op'>(</span><span class='st'>"+"</span>, <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in vec_arith("+", year_month_day(2019), 1): could not find function "vec_arith"</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>vctrs</span><span class='fu'>::</span><span class='fu'><a href='https://vctrs.r-lib.org/reference/vec_arith.html'>vec_arith</a></span><span class='op'>(</span><span class='st'>"+"</span>, <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;year&gt;[invalid=0][1]&gt;
+#&gt; [1] "2020"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
