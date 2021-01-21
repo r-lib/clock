@@ -93,25 +93,13 @@ vec_proxy.clock_zoned_time <- function(x, ...) {
 
 #' @export
 vec_restore.clock_zoned_time <- function(x, to, ...) {
-  names <- clock_rcrd_restore_names(x)
-  zoned_time_restore(x, to, names)
-}
-
-zoned_time_restore <- function(x, to, names = NULL) {
-  fields <- clock_rcrd_restore_fields(x)
-  precision <- zoned_time_precision(to)
-  zone <- zoned_time_zone(to)
-  new_zoned_time_from_fields(fields, precision, zone, names)
+  .Call("_clock_zoned_time_restore", x, to, PACKAGE = "clock")
 }
 
 #' @export
 vec_proxy_equal.clock_zoned_time <- function(x, ...) {
   # ptype2 / cast will prevent zoned times with different zones from being
   # compared, so the equality proxy doesn't need to worry about zone.
-  zoned_time_proxy_equal(x)
-}
-
-zoned_time_proxy_equal <- function(x) {
   clock_rcrd_proxy_equal(x)
 }
 

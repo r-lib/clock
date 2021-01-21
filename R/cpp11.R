@@ -340,6 +340,10 @@ new_zoned_time_from_fields <- function(fields, precision_int, zone, names) {
   .Call("_clock_new_zoned_time_from_fields", fields, precision_int, zone, names, PACKAGE = "clock")
 }
 
+zoned_time_restore <- function(x, to) {
+  .Call("_clock_zoned_time_restore", x, to, PACKAGE = "clock")
+}
+
 get_naive_time_cpp <- function(fields, precision_int, zone) {
   .Call("_clock_get_naive_time_cpp", fields, precision_int, zone, PACKAGE = "clock")
 }

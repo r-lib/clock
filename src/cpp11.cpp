@@ -605,6 +605,13 @@ extern "C" SEXP _clock_new_zoned_time_from_fields(SEXP fields, SEXP precision_in
   END_CPP11
 }
 // zoned-time.cpp
+SEXP zoned_time_restore(SEXP x, SEXP to);
+extern "C" SEXP _clock_zoned_time_restore(SEXP x, SEXP to) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(zoned_time_restore(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(to)));
+  END_CPP11
+}
+// zoned-time.cpp
 cpp11::writable::list get_naive_time_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::strings& zone);
 extern "C" SEXP _clock_get_naive_time_cpp(SEXP fields, SEXP precision_int, SEXP zone) {
   BEGIN_CPP11
@@ -740,6 +747,7 @@ extern SEXP _clock_zone_is_valid(SEXP);
 extern SEXP _clock_zone_standardize(SEXP);
 extern SEXP _clock_zoned_dst_cpp(SEXP, SEXP);
 extern SEXP _clock_zoned_offset_cpp(SEXP, SEXP, SEXP);
+extern SEXP _clock_zoned_time_restore(SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
     {"_clock_as_iso_year_week_day_from_sys_time_cpp",          (DL_FUNC) &_clock_as_iso_year_week_day_from_sys_time_cpp,           2},
@@ -833,6 +841,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_zone_standardize",                                (DL_FUNC) &_clock_zone_standardize,                                 1},
     {"_clock_zoned_dst_cpp",                                   (DL_FUNC) &_clock_zoned_dst_cpp,                                    2},
     {"_clock_zoned_offset_cpp",                                (DL_FUNC) &_clock_zoned_offset_cpp,                                 3},
+    {"_clock_zoned_time_restore",                              (DL_FUNC) &_clock_zoned_time_restore,                               2},
     {NULL, NULL, 0}
 };
 }

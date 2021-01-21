@@ -61,6 +61,23 @@ new_zoned_time_from_fields(SEXP fields,
 
 // -----------------------------------------------------------------------------
 
+[[cpp11::register]]
+SEXP
+zoned_time_restore(SEXP x, SEXP to) {
+  SEXP zone = Rf_getAttrib(to, syms_zone);
+  SEXP precision = Rf_getAttrib(to, syms_precision);
+
+  SEXP out = PROTECT(clock_rcrd_restore(x, to, classes_zoned_time));
+
+  Rf_setAttrib(out, syms_zone, zone);
+  Rf_setAttrib(out, syms_precision, precision);
+
+  UNPROTECT(1);
+  return out;
+}
+
+// -----------------------------------------------------------------------------
+
 template <class ClockDuration>
 static
 inline
