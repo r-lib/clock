@@ -171,10 +171,14 @@ enum clock_name parse_clock_name(const cpp11::strings& x) {
     clock_abort("`clock` must be a string with length 1.");
   }
 
-  std::string string = x[0];
+  const SEXP elt = x[0];
+  const char* elt_char = CHAR(elt);
 
-  if (string == "sys") return clock_name::sys;
-  if (string == "naive") return clock_name::naive;
-
-  clock_abort("'%s' is not a recognized `clock` option.", string.c_str());
+  if (!strcmp(elt_char, "sys")) {
+    return clock_name::sys;
+  } else if (!strcmp(elt_char, "naive")) {
+    return clock_name::naive;
+  } else {
+    clock_abort("'%s' is not a recognized `clock` option.", elt_char);
+  }
 }

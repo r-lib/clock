@@ -292,6 +292,10 @@ sys_now_cpp <- function() {
   .Call("_clock_sys_now_cpp", PACKAGE = "clock")
 }
 
+new_time_point_from_fields <- function(fields, precision_int, clock_string, names) {
+  .Call("_clock_new_time_point_from_fields", fields, precision_int, clock_string, names, PACKAGE = "clock")
+}
+
 weekday_add_days_cpp <- function(x, n) {
   .Call("_clock_weekday_add_days_cpp", x, n, PACKAGE = "clock")
 }

@@ -10,9 +10,12 @@
 // -----------------------------------------------------------------------------
 
 static cpp11::sexp syms_precision(Rf_install("precision"));
+static cpp11::sexp syms_clock(Rf_install("clock"));
 static cpp11::sexp syms_clock_rcrd_names(Rf_install("clock_rcrd:::names"));
 
 static cpp11::writable::strings classes_duration({"clock_duration", "clock_rcrd", "vctrs_rcrd", "vctrs_vctr"});
+static cpp11::writable::strings classes_sys_time({"clock_sys_time", "clock_time_point", "clock_rcrd", "vctrs_rcrd", "vctrs_vctr"});
+static cpp11::writable::strings classes_naive_time({"clock_naive_time", "clock_time_point", "clock_rcrd", "vctrs_rcrd", "vctrs_vctr"});
 
 // -----------------------------------------------------------------------------
 

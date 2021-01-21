@@ -1,36 +1,3 @@
-new_time_point_from_fields <- function(fields, precision, clock, names) {
-  # Remove all attributes except field names.
-  # We often pass a duration or other time points through as `fields`,
-  # which will need to be stripped of attributes.
-  # This will eventually be much faster at the C++ level, and should be
-  # pushed into a C++ new_clock_rcrd_from_fields().
-  attributes <- list(names = clock_rcrd_field_names(fields))
-  fields <- set_attributes(fields, attributes)
-
-  if (precision < PRECISION_DAY) {
-    abort("`duration` must have at least daily precision.")
-  }
-
-  clock_validate(clock)
-
-  if (clock_is_sys(clock)) {
-    class <- c("clock_sys_time", "clock_time_point")
-  } else if (clock_is_naive(clock)) {
-    class <- c("clock_naive_time", "clock_time_point")
-  } else {
-    abort("Internal error: Unknown clock.")
-  }
-
-  new_clock_rcrd(
-    fields = fields,
-    precision = precision,
-    clock = clock,
-    names = names,
-    class = class
-  )
-}
-
-# ------------------------------------------------------------------------------
 
 #' @export
 is_time_point <- function(x) {
@@ -210,12 +177,10 @@ cast_time_point_to_time_point <- function(x, to, ...) {
 
   fields <- duration_cast_cpp(x, x_precision, to_precision)
 
-  new_time_point_from_fields(
-    fields = fields,
-    precision = to_precision,
-    clock = time_point_clock(x),
-    names = clock_rcrd_names(x)
-  )
+  names <- clock_rcrd_names(x)
+  clock <- time_point_clock(x)
+
+  new_time_point_from_fields(fields, to_precision, clock, names)
 }
 
 # ------------------------------------------------------------------------------
@@ -404,12 +369,10 @@ time_point_cast <- function(x, precision) {
 
   fields <- duration_cast_cpp(x, x_precision, precision)
 
-  new_time_point_from_fields(
-    fields = fields,
-    precision = precision,
-    clock = time_point_clock(x),
-    names = clock_rcrd_names(x)
-  )
+  names <- clock_rcrd_names(x)
+  clock <- time_point_clock(x)
+
+  new_time_point_from_fields(fields, precision, clock, names)
 }
 
 # Notes:
@@ -465,12 +428,10 @@ time_point_rounder <- function(x, precision, n, duration_rounder, ...) {
   duration <- time_point_duration(x)
   duration <- duration_rounder(duration, precision_string, n = n)
 
-  new_time_point_from_fields(
-    fields = duration,
-    precision = precision,
-    clock = time_point_clock(x),
-    names = clock_rcrd_names(x)
-  )
+  names <- clock_rcrd_names(x)
+  clock <- time_point_clock(x)
+
+  new_time_point_from_fields(duration, precision, clock, names)
 }
 
 # ------------------------------------------------------------------------------
