@@ -266,7 +266,9 @@ vec_cast.clock_duration.clock_duration <- function(x, to, ...) {
     )
   }
 
-  duration_cast_impl(x, precision)
+  fields <- duration_cast_cpp(x, x_precision, to_precision)
+
+  new_duration_from_fields(fields, to_precision, clock_rcrd_names(x))
 }
 
 # ------------------------------------------------------------------------------
@@ -290,21 +292,10 @@ as_duration.clock_duration <- function(x) {
 
 #' @export
 duration_cast <- function(x, precision) {
+  x_precision <- duration_precision(x)
   precision <- validate_precision(precision)
-  duration_cast_impl(x, precision)
-}
-
-# Assumes `precision` is an integer already
-duration_cast_impl <- function(x, precision) {
-  fields <- duration_cast_cpp(x, duration_precision(x), precision)
-
-  new_duration(
-    ticks = fields$ticks,
-    ticks_of_day = fields$ticks_of_day,
-    ticks_of_second = fields$ticks_of_second,
-    precision = precision,
-    names = names(x)
-  )
+  fields <- duration_cast_cpp(x, x_precision, precision)
+  new_duration_from_fields(fields, precision, clock_rcrd_names(x))
 }
 
 #' @export

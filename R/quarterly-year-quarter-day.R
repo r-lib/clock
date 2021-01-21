@@ -671,8 +671,7 @@ as_sys_time.clock_year_quarter_day <- function(x) {
   start <- quarterly_start(x)
   precision <- calendar_precision(x)
   fields <- as_sys_time_year_quarter_day_cpp(x, precision, start)
-  duration <- new_duration_from_fields(fields, precision)
-  new_sys_time(duration, names = names(x))
+  new_sys_time_from_fields(fields, precision, clock_rcrd_names(x))
 }
 
 #' @export

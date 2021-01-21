@@ -1,19 +1,22 @@
-new_naive_time <- function(duration = duration_days(), ..., names = NULL) {
-  check_dots_empty()
-  new_time_point(duration, clock = "naive", names = names)
+new_naive_time_from_fields <- function(fields, precision, names) {
+  new_time_point_from_fields(fields, precision, "naive", names)
 }
 
 #' @export
 naive_days <- function(n = integer()) {
+  names <- NULL
   duration <- duration_days(n)
-  new_naive_time(duration)
+  new_naive_time_from_fields(duration, PRECISION_DAY, names)
 }
 
 #' @export
 naive_seconds <- function(n = integer()) {
+  names <- NULL
   duration <- duration_seconds(n)
-  new_naive_time(duration)
+  new_naive_time_from_fields(duration, PRECISION_SECOND, names)
 }
+
+# ------------------------------------------------------------------------------
 
 #' @export
 is_naive_time <- function(x) {
@@ -41,7 +44,7 @@ as_naive_time.clock_calendar <- function(x) {
 
 #' @export
 as_sys_time.clock_naive_time <- function(x) {
-  new_sys_time(time_point_duration(x), names = names(x))
+  new_sys_time_from_fields(x, time_point_precision(x), clock_rcrd_names(x))
 }
 
 #' @export
@@ -68,15 +71,16 @@ as_zoned_time.clock_naive_time <- function(x,
 
   zone <- zone_validate(zone)
 
-  duration <- time_point_duration(x)
   precision <- time_point_precision(x)
 
-  fields <- as_zoned_sys_time_from_naive_time_cpp(duration, precision, zone, nonexistent, ambiguous)
-  duration <- new_duration_from_fields(fields, precision)
+  fields <- as_zoned_sys_time_from_naive_time_cpp(x, precision, zone, nonexistent, ambiguous)
 
-  sys_time <- new_sys_time(duration)
-
-  new_zoned_time(sys_time, zone, names = names(x))
+  new_zoned_time_from_fields(
+    fields = fields,
+    precision = precision,
+    zone = zone,
+    names = clock_rcrd_names(x)
+  )
 }
 
 # ------------------------------------------------------------------------------

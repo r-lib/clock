@@ -1,19 +1,22 @@
-new_sys_time <- function(duration = duration_days(), ..., names = NULL) {
-  check_dots_empty()
-  new_time_point(duration, clock = "sys", names = names)
+new_sys_time_from_fields <- function(fields, precision, names) {
+  new_time_point_from_fields(fields, precision, "sys", names)
 }
 
 #' @export
 sys_days <- function(n = integer()) {
+  names <- NULL
   duration <- duration_days(n)
-  new_sys_time(duration)
+  new_sys_time_from_fields(duration, PRECISION_DAY, names)
 }
 
 #' @export
 sys_seconds <- function(n = integer()) {
+  names <- NULL
   duration <- duration_seconds(n)
-  new_sys_time(duration)
+  new_sys_time_from_fields(duration, PRECISION_SECOND, names)
 }
+
+# ------------------------------------------------------------------------------
 
 #' @export
 is_sys_time <- function(x) {
@@ -41,7 +44,7 @@ as_sys_time.clock_calendar <- function(x) {
 
 #' @export
 as_naive_time.clock_sys_time <- function(x) {
-  new_naive_time(time_point_duration(x), names = names(x))
+  new_naive_time_from_fields(x, time_point_precision(x), clock_rcrd_names(x))
 }
 
 #' @export
@@ -51,19 +54,23 @@ as_zoned_time.clock_sys_time <- function(x, zone, ...) {
   # Promote to at least seconds precision for `zoned_time`
   x <- vec_cast(x, vec_ptype2(x, sys_seconds()))
 
-  names <- names(x)
-  sys_time <- unname(x)
+  precision <- time_point_precision(x)
 
-  new_zoned_time(sys_time, zone, names = names)
+  new_zoned_time_from_fields(
+    fields = x,
+    precision = precision,
+    zone = zone,
+    names = clock_rcrd_names(x)
+  )
 }
 
 # ------------------------------------------------------------------------------
 
 #' @export
 sys_now <- function() {
+  names <- NULL
   fields <- sys_now_cpp()
-  duration <- new_duration_from_fields(fields, PRECISION_NANOSECOND)
-  new_sys_time(duration)
+  new_sys_time_from_fields(fields, PRECISION_NANOSECOND, names)
 }
 
 # ------------------------------------------------------------------------------

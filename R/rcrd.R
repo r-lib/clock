@@ -25,13 +25,16 @@ new_rcrd0 <- function(fields, ..., class) {
 
 # ------------------------------------------------------------------------------
 
-#' @export
-names.clock_rcrd <- function(x) {
+clock_rcrd_field_names <- function(x) {
+  attributes <- attributes(x)
+  attributes$names
+}
+
+clock_rcrd_names <- function(x) {
   attr(x, "clock_rcrd:::names", exact = TRUE)
 }
 
-#' @export
-`names<-.clock_rcrd` <- function(x, value) {
+clock_rcrd_set_names <- function(x, value) {
   attrib <- attributes(x)
 
   # Remove names
@@ -81,6 +84,18 @@ validate_names <- function(names, size) {
   }
 
   invisible(names)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+names.clock_rcrd <- function(x) {
+  clock_rcrd_names(x)
+}
+
+#' @export
+`names<-.clock_rcrd` <- function(x, value) {
+  clock_rcrd_set_names(x, value)
 }
 
 # ------------------------------------------------------------------------------

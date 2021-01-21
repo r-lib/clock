@@ -78,7 +78,11 @@ false_along <- function(x, na_propagate = FALSE) {
 # ------------------------------------------------------------------------------
 
 unstructure <- function(x) {
-  attributes(x) <- NULL
+  set_attributes(x, NULL)
+}
+
+set_attributes <- function(x, attributes) {
+  attributes(x) <- attributes
   x
 }
 
