@@ -116,7 +116,7 @@ clock_rcrd_restore(SEXP x, SEXP to, SEXP classes) {
 
   Rf_setAttrib(new_x, R_NamesSymbol, new_field_names);
 
-  SEXP out = new_clock_rcrd_from_fields(x, r_null, classes);
+  SEXP out = new_clock_rcrd_from_fields(new_x, names, classes);
 
   UNPROTECT(3);
   return out;
