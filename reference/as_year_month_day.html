@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Is daylight saving time active? — zoned_dst • clock</title>
+<title>Convert to year-month-day — as_year_month_day • clock</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="Is daylight saving time active? — zoned_dst" />
-<meta property="og:description" content="zoned_dst() detects if daylight saving time is currently active." />
+<meta property="og:title" content="Convert to year-month-day — as_year_month_day" />
+<meta property="og:description" content="as_year_month_day() converts a vector to the year-month-day calendar.
+Time points, Dates, POSIXct, and other calendars can all be converted to
+year-month-day." />
 
 
 
@@ -120,43 +122,46 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Is daylight saving time active?</h1>
-    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/zoned-time.R'><code>R/zoned-time.R</code></a></small>
-    <div class="hidden name"><code>zoned_dst.Rd</code></div>
+    <h1>Convert to year-month-day</h1>
+    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/gregorian-year-month-day.R'><code>R/gregorian-year-month-day.R</code></a></small>
+    <div class="hidden name"><code>as_year_month_day.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>zoned_dst()</code> detects if daylight saving time is currently active.</p>
+    <p><code>as_year_month_day()</code> converts a vector to the year-month-day calendar.
+Time points, Dates, POSIXct, and other calendars can all be converted to
+year-month-day.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>zoned_dst</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>as_year_month_day</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><code>[zoned_time / Date / POSIXt]</code></p>
-<p>A zoned time to check if daylight saving time is active for.</p></td>
+      <td><p><code>[vector]</code></p>
+<p>A vector to convert to year-month-day.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A logical the same size as <code>x</code>. Returns <code>TRUE</code> if daylight saving
-time is active, <code>FALSE</code> if not, and <code>NA</code> if <code>x</code> is <code>NA</code>.</p>
+    <p>A year-month-day vector.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># R defines Date as UTC, where DST is never active</span>
-<span class='fu'>zoned_dst</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2021</span>, <span class='fl'>03</span>, <span class='fl'>14</span>, hour <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>as_naive_time</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>as_zoned_time</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
-
-<span class='co'># Daylight savings time was turned on at 2am</span>
-<span class='fu'>zoned_dst</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] FALSE  TRUE</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># From Date</span>
+<span class='fu'>as_year_month_day</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][1]&gt;
+#&gt; [1] "2019-01-01"</div><div class='input'>
+<span class='co'># From POSIXct, which assumes that the naive time is what should be converted</span>
+<span class='fu'>as_year_month_day</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"2019-01-01 02:30:30"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;second&gt;[invalid=0][1]&gt;
+#&gt; [1] "2019-01-01 02:30:30"</div><div class='input'>
+<span class='co'># From other calendars</span>
+<span class='fu'>as_year_month_day</span><span class='op'>(</span><span class='fu'>year_quarter_day</span><span class='op'>(</span><span class='fl'>2019</span>, quarter <span class='op'>=</span> <span class='fl'>2</span>, day <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][1]&gt;
+#&gt; [1] "2019-05-20"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
