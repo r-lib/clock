@@ -244,6 +244,14 @@ iso_year_week_day_minus_iso_year_week_day_cpp <- function(x, y, precision_int) {
   .Call("_clock_iso_year_week_day_minus_iso_year_week_day_cpp", x, y, precision_int, PACKAGE = "clock")
 }
 
+parse_zoned_time_cpp <- function(x, format, precision_int, zone, nonexistent_string, ambiguous_string) {
+  .Call("_clock_parse_zoned_time_cpp", x, format, precision_int, zone, nonexistent_string, ambiguous_string, PACKAGE = "clock")
+}
+
+parse_time_point_cpp <- function(x, format, precision_int, clock_int) {
+  .Call("_clock_parse_time_point_cpp", x, format, precision_int, clock_int, PACKAGE = "clock")
+}
+
 year_quarter_day_check_range_cpp <- function(x, component_string, arg) {
   invisible(.Call("_clock_year_quarter_day_check_range_cpp", x, component_string, arg, PACKAGE = "clock"))
 }

@@ -1,52 +1,53 @@
-# parse_zoned_datetime <- function(x,
-#                                  ...,
-#                                  format = "%Y-%m-%d %H:%M:%S",
-#                                  zone = "UTC",
-#                                  dst_nonexistent = "roll-forward",
-#                                  dst_ambiguous = "earliest") {
+parse_naive_time <- function(x,
+                             format,
+                             ...,
+                             precision = "second") {
+  check_dots_empty()
+  precision <- validate_time_point_precision(precision)
+  fields <- parse_time_point_cpp(x, format, precision, CLOCK_NAIVE)
+  new_naive_time_from_fields(fields, precision, names(x))
+}
+
+parse_sys_time <- function(x,
+                           format,
+                           ...,
+                           precision = "second") {
+  check_dots_empty()
+  precision <- validate_time_point_precision(precision)
+  fields <- parse_time_point_cpp(x, format, precision, CLOCK_SYS)
+  new_sys_time_from_fields(fields, precision, names(x))
+}
+
+
+# TODO: Remove this or keep?
+#
+# Current thinking:
+# Parsing into sys / naive time is enough. The user should know what time
+# zone to use, and we can assume there is only 1 time zone for the entire
+# character vector. The only difference between parsing into naive/sys
+# time (besides how they are interpreted later) is that parsing into sys
+# time while using %z will treat the input as local time, then offset it
+# by %z to get the sys time.
+#
+# parse_zoned_time <- function(x,
+#                              format,
+#                              zone,
+#                              ...,
+#                              precision = "second",
+#                              nonexistent = "error",
+#                              ambiguous = "error") {
 #   check_dots_empty()
 #
-#   size <- vec_size_common(
-#     x = x,
-#     dst_nonexistent = dst_nonexistent,
-#     dst_ambiguous = dst_ambiguous
-#   )
+#   # `nonexistent` and `ambiguous` are allowed to be
+#   # size 1 or the same size as `x`
+#   size <- vec_size(x)
+#   validate_nonexistent(nonexistent, size)
+#   validate_ambiguous(nonexistent, size)
 #
-#   zone <- zone_standardize(zone)
+#   zone <- zone_validate(zone)
+#   precision <- validate_zoned_time_precision(precision)
 #
-#   fields <- parse_zoned_datetime_cpp(
-#     x = x,
-#     format = format,
-#     zone = zone,
-#     dst_nonexistent = dst_nonexistent,
-#     dst_ambiguous = dst_ambiguous,
-#     size = size
-#   )
+#   fields <- parse_zoned_time_cpp(x, format, precision, zone, nonexistent, ambiguous)
 #
-#   days <- fields$days
-#   time_of_day <- fields$time_of_day
-#
-#   calendar <- new_year_month_day(days)
-#   seconds_of_day <- time_of_day
-#
-#   new_zoned_time_point(calendar, seconds_of_day, precision = "second", zone = zone)
-# }
-#
-# parse_naive_datetime <- function(x,
-#                                  ...,
-#                                  format = "%Y-%m-%d %H:%M:%S") {
-#   check_dots_empty()
-#
-#   fields <- parse_naive_datetime_cpp(
-#     x = x,
-#     format = format
-#   )
-#
-#   days <- fields$days
-#   time_of_day <- fields$time_of_day
-#
-#   calendar <- new_year_month_day(days)
-#   seconds_of_day <- time_of_day
-#
-#   new_naive_time_point(calendar, seconds_of_day, precision = "second")
+#   new_zoned_time_from_fields(fields, precision, zone, names(x))
 # }
