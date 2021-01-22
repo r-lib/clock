@@ -77,6 +77,28 @@ time_point_precision_format <- function(precision) {
 
 # ------------------------------------------------------------------------------
 
+parse_naive_time <- function(x,
+                             format,
+                             ...,
+                             precision = "second") {
+  check_dots_empty()
+  precision <- validate_time_point_precision(precision)
+  fields <- parse_time_point_cpp(x, format, precision, CLOCK_NAIVE)
+  new_naive_time_from_fields(fields, precision, names(x))
+}
+
+parse_sys_time <- function(x,
+                           format,
+                           ...,
+                           precision = "second") {
+  check_dots_empty()
+  precision <- validate_time_point_precision(precision)
+  fields <- parse_time_point_cpp(x, format, precision, CLOCK_SYS)
+  new_sys_time_from_fields(fields, precision, names(x))
+}
+
+# ------------------------------------------------------------------------------
+
 # - Each subclass implements a `format()` method
 # - Unlike vctrs, don't use `print(quote = FALSE)` since we want to match base R
 #' @export

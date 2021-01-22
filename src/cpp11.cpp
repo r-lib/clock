@@ -442,13 +442,6 @@ extern "C" SEXP _clock_iso_year_week_day_minus_iso_year_week_day_cpp(SEXP x, SEX
     return cpp11::as_sexp(iso_year_week_day_minus_iso_year_week_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(y), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int)));
   END_CPP11
 }
-// parse.cpp
-cpp11::writable::list parse_time_point_cpp(const cpp11::strings& x, const cpp11::strings& format, const cpp11::integers& precision_int, const cpp11::integers& clock_int);
-extern "C" SEXP _clock_parse_time_point_cpp(SEXP x, SEXP format, SEXP precision_int, SEXP clock_int) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(parse_time_point_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(clock_int)));
-  END_CPP11
-}
 // quarterly-year-quarter-day.cpp
 void year_quarter_day_check_range_cpp(const cpp11::integers& x, const cpp11::strings& component_string, const cpp11::strings& arg);
 extern "C" SEXP _clock_year_quarter_day_check_range_cpp(SEXP x, SEXP component_string, SEXP arg) {
@@ -560,6 +553,13 @@ SEXP time_point_restore(SEXP x, SEXP to);
 extern "C" SEXP _clock_time_point_restore(SEXP x, SEXP to) {
   BEGIN_CPP11
     return cpp11::as_sexp(time_point_restore(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(to)));
+  END_CPP11
+}
+// time-point.cpp
+cpp11::writable::list parse_time_point_cpp(const cpp11::strings& x, const cpp11::strings& format, const cpp11::integers& precision_int, const cpp11::integers& clock_int);
+extern "C" SEXP _clock_parse_time_point_cpp(SEXP x, SEXP format, SEXP precision_int, SEXP clock_int) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(parse_time_point_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(clock_int)));
   END_CPP11
 }
 // weekday.cpp

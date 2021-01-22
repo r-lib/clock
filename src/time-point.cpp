@@ -2,6 +2,8 @@
 #include "enums.h"
 #include "utils.h"
 #include "rcrd.h"
+#include "duration.h"
+#include <sstream>
 
 [[cpp11::register]]
 SEXP
@@ -88,4 +90,87 @@ time_point_restore(SEXP x, SEXP to) {
 
   UNPROTECT(1);
   return out;
+}
+
+// -----------------------------------------------------------------------------
+
+template <class ClockDuration, class Clock>
+static
+cpp11::writable::list
+parse_time_point_impl(const cpp11::strings& x, const cpp11::strings& format) {
+  const r_ssize size = x.size();
+  ClockDuration out(size);
+  using Duration = typename ClockDuration::duration;
+
+  if (!r_is_string(format)) {
+    clock_abort("`format` must be a single string.");
+  }
+  const SEXP format_sexp = format[0];
+  const char* format_char = CHAR(format_sexp);
+
+  std::istringstream stream;
+
+  for (r_ssize i = 0; i < size; ++i) {
+    const SEXP elt = x[i];
+
+    if (elt == r_chr_na) {
+      out.assign_na(i);
+      continue;
+    }
+
+    const char* elt_char = CHAR(elt);
+
+    stream.clear();
+    stream.str(elt_char);
+
+    std::chrono::time_point<Clock, Duration> tp;
+
+    date::from_stream(stream, format_char, tp);
+
+    if (stream.fail()) {
+      out.assign_na(i);
+      continue;
+    }
+
+    out.assign(tp.time_since_epoch(), i);
+  }
+
+  return out.to_list();
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+parse_time_point_cpp(const cpp11::strings& x,
+                     const cpp11::strings& format,
+                     const cpp11::integers& precision_int,
+                     const cpp11::integers& clock_int) {
+  using namespace rclock;
+
+  switch (parse_clock_name(clock_int)) {
+  case clock_name::naive: {
+    switch (parse_precision(precision_int)) {
+    case precision::day: return parse_time_point_impl<duration::days, date::local_t>(x, format);
+    case precision::hour: return parse_time_point_impl<duration::hours, date::local_t>(x, format);
+    case precision::minute: return parse_time_point_impl<duration::minutes, date::local_t>(x, format);
+    case precision::second: return parse_time_point_impl<duration::seconds, date::local_t>(x, format);
+    case precision::millisecond: return parse_time_point_impl<duration::milliseconds, date::local_t>(x, format);
+    case precision::microsecond: return parse_time_point_impl<duration::microseconds, date::local_t>(x, format);
+    case precision::nanosecond: return parse_time_point_impl<duration::nanoseconds, date::local_t>(x, format);
+    default: never_reached("parse_time_point_cpp");
+    }
+  }
+  case clock_name::sys: {
+    switch (parse_precision(precision_int)) {
+    case precision::day: return parse_time_point_impl<duration::days, std::chrono::system_clock>(x, format);
+    case precision::hour: return parse_time_point_impl<duration::hours, std::chrono::system_clock>(x, format);
+    case precision::minute: return parse_time_point_impl<duration::minutes, std::chrono::system_clock>(x, format);
+    case precision::second: return parse_time_point_impl<duration::seconds, std::chrono::system_clock>(x, format);
+    case precision::millisecond: return parse_time_point_impl<duration::milliseconds, std::chrono::system_clock>(x, format);
+    case precision::microsecond: return parse_time_point_impl<duration::microseconds, std::chrono::system_clock>(x, format);
+    case precision::nanosecond: return parse_time_point_impl<duration::nanoseconds, std::chrono::system_clock>(x, format);
+    default: never_reached("parse_time_point_cpp");
+    }
+  }
+  default: never_reached("parse_time_point_cpp");
+  }
 }

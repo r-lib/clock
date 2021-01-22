@@ -248,10 +248,6 @@ iso_year_week_day_minus_iso_year_week_day_cpp <- function(x, y, precision_int) {
   .Call("_clock_iso_year_week_day_minus_iso_year_week_day_cpp", x, y, precision_int, PACKAGE = "clock")
 }
 
-parse_time_point_cpp <- function(x, format, precision_int, clock_int) {
-  .Call("_clock_parse_time_point_cpp", x, format, precision_int, clock_int, PACKAGE = "clock")
-}
-
 year_quarter_day_check_range_cpp <- function(x, component_string, arg) {
   invisible(.Call("_clock_year_quarter_day_check_range_cpp", x, component_string, arg, PACKAGE = "clock"))
 }
@@ -314,6 +310,10 @@ new_time_point_from_fields <- function(fields, precision_int, clock_int, names) 
 
 time_point_restore <- function(x, to) {
   .Call("_clock_time_point_restore", x, to, PACKAGE = "clock")
+}
+
+parse_time_point_cpp <- function(x, format, precision_int, clock_int) {
+  .Call("_clock_parse_time_point_cpp", x, format, precision_int, clock_int, PACKAGE = "clock")
 }
 
 weekday_add_days_cpp <- function(x, n) {
