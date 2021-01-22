@@ -55,16 +55,9 @@ as_zoned_time.clock_naive_time <- function(x,
                                            ambiguous = "error") {
   # `nonexistent` and `ambiguous` are allowed to be
   # size 1 or the same size as `x`
-  x_size <- vec_size(x)
-  nonexistent_size <- vec_size(nonexistent)
-  ambiguous_size <- vec_size(ambiguous)
-
-  if (nonexistent_size != 1L && nonexistent_size != x_size) {
-    abort("`nonexistent` must have length 1, or length equal to the length of `x`.")
-  }
-  if (ambiguous_size != 1L && ambiguous_size != x_size) {
-    abort("`ambiguous` must have length 1, or length equal to the length of `x`.")
-  }
+  size <- vec_size(x)
+  validate_nonexistent(nonexistent, size)
+  validate_ambiguous(nonexistent, size)
 
   # Promote to at least seconds precision for `zoned_time`
   x <- vec_cast(x, vec_ptype2(x, naive_seconds()))
@@ -76,6 +69,26 @@ as_zoned_time.clock_naive_time <- function(x,
   fields <- as_zoned_sys_time_from_naive_time_cpp(x, precision, zone, nonexistent, ambiguous)
 
   new_zoned_time_from_fields(fields, precision, zone, names)
+}
+
+validate_nonexistent <- function(nonexistent, size) {
+  nonexistent_size <- vec_size(nonexistent)
+
+  if (nonexistent_size != 1L && nonexistent_size != size) {
+    abort(paste0("`nonexistent` must have length 1, or ", size, "."))
+  }
+
+  invisible(nonexistent)
+}
+
+validate_ambiguous <- function(ambiguous, size) {
+  ambiguous_size <- vec_size(ambiguous)
+
+  if (ambiguous_size != 1L && ambiguous_size != size) {
+    abort(paste0("`ambiguous` must have length 1, or ", size, "."))
+  }
+
+  invisible(ambiguous)
 }
 
 # ------------------------------------------------------------------------------
