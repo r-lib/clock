@@ -132,6 +132,10 @@ year_month_day_minus_year_month_day_cpp <- function(x, y, precision_int) {
   .Call("_clock_year_month_day_minus_year_month_day_cpp", x, y, precision_int, PACKAGE = "clock")
 }
 
+parse_year_month_day_cpp <- function(x, precision_int) {
+  .Call("_clock_parse_year_month_day_cpp", x, precision_int, PACKAGE = "clock")
+}
+
 gregorian_leap_year_cpp <- function(year) {
   .Call("_clock_gregorian_leap_year_cpp", year, PACKAGE = "clock")
 }
@@ -242,10 +246,6 @@ as_iso_year_week_day_from_sys_time_cpp <- function(fields, precision_int) {
 
 iso_year_week_day_minus_iso_year_week_day_cpp <- function(x, y, precision_int) {
   .Call("_clock_iso_year_week_day_minus_iso_year_week_day_cpp", x, y, precision_int, PACKAGE = "clock")
-}
-
-parse_zoned_time_cpp <- function(x, format, precision_int, zone, nonexistent_string, ambiguous_string) {
-  .Call("_clock_parse_zoned_time_cpp", x, format, precision_int, zone, nonexistent_string, ambiguous_string, PACKAGE = "clock")
 }
 
 parse_time_point_cpp <- function(x, format, precision_int, clock_int) {

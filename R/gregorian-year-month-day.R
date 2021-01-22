@@ -224,6 +224,70 @@ vec_ptype_abbr.clock_year_month_day <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Parse into a year-month-day calendar
+#'
+#' `parse_year_month_day()` parses a character vector into a year-month-day
+#' calendar.
+#'
+#' @details
+#' There is no `format` argument, as this function can only parse the result
+#' of [format()]-ting a year-month-day. If you need the flexibility of a
+#' `format` argument, try [parse_naive_time()] or [parse_sys_time()].
+#'
+#' @inheritParams ellipsis::dots_empty
+#'
+#' @param x `[character]`
+#'
+#'   A character vector to parse.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   The precision of the resulting year-month-day.
+#'
+#' @return A year-month-day calendar vector. If a parsing fails, `NA` is
+#'   returned.
+#'
+#' @export
+#' @examples
+#' x <- "2019-01-01"
+#'
+#' # Default parses at day precision
+#' parse_year_month_day(x)
+#'
+#' # Can parse at less precise precisions too
+#' parse_year_month_day(x, precision = "month")
+#' parse_year_month_day(x, precision = "year")
+#'
+#' # Even invalid dates can be round-tripped through format<->parse calls
+#' invalid <- year_month_day(2019, 2, 30)
+#' parse_year_month_day(format(invalid))
+#'
+#' # Can parse with time of day
+#' x <- year_month_day(
+#'   2019, 01, 30, 02, 30, 00, 5000,
+#'   subsecond_precision = "nanosecond"
+#' )
+#'
+#' parse_year_month_day(format(x), precision = "nanosecond")
+parse_year_month_day <- function(x, ..., precision = "day") {
+  check_dots_empty()
+
+  if (!is_character(x)) {
+    abort("`x` must be a character vector.")
+  }
+
+  precision <- validate_precision(precision)
+  if (!year_month_day_is_valid_precision(precision)) {
+    abort("`precision` must be a valid precision for 'year_month_day'.")
+  }
+
+  fields <- parse_year_month_day_cpp(x, precision)
+
+  new_year_month_day_from_fields(fields, precision, names(x))
+}
+
+# ------------------------------------------------------------------------------
+
 #' Is `x` a year-month-day?
 #'
 #' Check if `x` is a year-month-day.

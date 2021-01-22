@@ -237,6 +237,13 @@ extern "C" SEXP _clock_year_month_day_minus_year_month_day_cpp(SEXP x, SEXP y, S
   END_CPP11
 }
 // gregorian-year-month-day.cpp
+cpp11::writable::list parse_year_month_day_cpp(const cpp11::strings& x, const cpp11::integers& precision_int);
+extern "C" SEXP _clock_parse_year_month_day_cpp(SEXP x, SEXP precision_int) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(parse_year_month_day_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int)));
+  END_CPP11
+}
+// gregorian-year-month-day.cpp
 cpp11::writable::logicals gregorian_leap_year_cpp(const cpp11::integers& year);
 extern "C" SEXP _clock_gregorian_leap_year_cpp(SEXP year) {
   BEGIN_CPP11
@@ -433,13 +440,6 @@ cpp11::writable::list iso_year_week_day_minus_iso_year_week_day_cpp(cpp11::list_
 extern "C" SEXP _clock_iso_year_week_day_minus_iso_year_week_day_cpp(SEXP x, SEXP y, SEXP precision_int) {
   BEGIN_CPP11
     return cpp11::as_sexp(iso_year_week_day_minus_iso_year_week_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(y), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int)));
-  END_CPP11
-}
-// parse.cpp
-cpp11::writable::list parse_zoned_time_cpp(const cpp11::strings& x, const cpp11::strings& format, const cpp11::integers& precision_int, const cpp11::strings& zone, const cpp11::strings& nonexistent_string, const cpp11::strings& ambiguous_string);
-extern "C" SEXP _clock_parse_zoned_time_cpp(SEXP x, SEXP format, SEXP precision_int, SEXP zone, SEXP nonexistent_string, SEXP ambiguous_string) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(parse_zoned_time_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(nonexistent_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(ambiguous_string)));
   END_CPP11
 }
 // parse.cpp
@@ -732,7 +732,7 @@ extern SEXP _clock_new_duration_from_fields(SEXP, SEXP, SEXP);
 extern SEXP _clock_new_time_point_from_fields(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_new_zoned_time_from_fields(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_parse_time_point_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_parse_zoned_time_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_parse_year_month_day_cpp(SEXP, SEXP);
 extern SEXP _clock_precision_to_string(SEXP);
 extern SEXP _clock_set_field_iso_year_week_day_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_set_field_iso_year_week_day_last_cpp(SEXP, SEXP);
@@ -828,7 +828,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_new_time_point_from_fields",                      (DL_FUNC) &_clock_new_time_point_from_fields,                       4},
     {"_clock_new_zoned_time_from_fields",                      (DL_FUNC) &_clock_new_zoned_time_from_fields,                       4},
     {"_clock_parse_time_point_cpp",                            (DL_FUNC) &_clock_parse_time_point_cpp,                             4},
-    {"_clock_parse_zoned_time_cpp",                            (DL_FUNC) &_clock_parse_zoned_time_cpp,                             6},
+    {"_clock_parse_year_month_day_cpp",                        (DL_FUNC) &_clock_parse_year_month_day_cpp,                         2},
     {"_clock_precision_to_string",                             (DL_FUNC) &_clock_precision_to_string,                              1},
     {"_clock_set_field_iso_year_week_day_cpp",                 (DL_FUNC) &_clock_set_field_iso_year_week_day_cpp,                  4},
     {"_clock_set_field_iso_year_week_day_last_cpp",            (DL_FUNC) &_clock_set_field_iso_year_week_day_last_cpp,             2},

@@ -253,6 +253,8 @@ public:
 
   date::sys_time<Duration> to_sys_time(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
+
+  using duration = Duration;
 };
 
 // Implementation
