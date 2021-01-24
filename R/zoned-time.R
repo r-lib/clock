@@ -318,7 +318,45 @@ zoned_set_zone.clock_zoned_time <- function(x, zone) {
 
 # ------------------------------------------------------------------------------
 
+#' Retrieve low-level zoned time information
+#'
+#' @description
+#' `zoned_info()` retrieves a set of low-level information generally not
+#' required for most date-time manipulations. It returns a data frame with
+#' the following columns:
+#'
+#' - `begin`, `end`: Zoned times specifying the range of the current daylight
+#'   saving time rule. The range is a half-open interval of `[begin, end)`.
+#'
+#' - `offset`: A second precision `duration` specifying the offset from UTC.
+#'
+#' - `dst`: A logical vector specifying if daylight saving time is currently
+#'   active.
+#'
+#' - `abbreviation`: The time zone abbreviation in use throughout
+#'   this `begin` to `end` range.
+#'
+#' @param x `[zoned_time]`
+#'
+#'   A zoned time.
+#'
+#' @return A data frame of low level information to retrieve information for.
+#'
 #' @export
+#' @examples
+#' x <- year_month_day(2021, 03, 14, c(01, 03), c(59, 00), c(59, 00))
+#' x <- as_naive_time(x)
+#' x <- as_zoned_time(x, "America/New_York")
+#'
+#' # x[1] is in EST, x[2] is in EDT
+#' x
+#'
+#' info <- zoned_info(x)
+#' info
+#'
+#' # `end` can be used to iterate through daylight saving time transitions
+#' # by repeatedly calling `zoned_info()`
+#' zoned_info(info$end)
 zoned_info <- function(x) {
   UseMethod("zoned_info")
 }
