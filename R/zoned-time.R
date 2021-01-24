@@ -336,6 +336,15 @@ zoned_set_zone.clock_zoned_time <- function(x, zone) {
 #' - `abbreviation`: The time zone abbreviation in use throughout
 #'   this `begin` to `end` range.
 #'
+#' @details
+#' If there have never been any daylight saving time transitions, the minimum
+#' supported year value is returned for `begin` (typically, a year value of
+#' `-32767`).
+#'
+#' If daylight saving time is no longer used in a time zone, the maximum
+#' supported year value is returned for `end` (typically, a year value of
+#' `32767`).
+#'
 #' @param x `[zoned_time]`
 #'
 #'   A zoned time.

@@ -28,6 +28,15 @@ active.
 this \code{begin} to \code{end} range.
 }
 }
+\details{
+If there have never been any daylight saving time transitions, the minimum
+supported year value is returned for \code{begin} (typically, a year value of
+\code{-32767}).
+
+If daylight saving time is no longer used in a time zone, the maximum
+supported year value is returned for \code{end} (typically, a year value of
+\code{32767}).
+}
 \examples{
 x <- year_month_day(2021, 03, 14, c(01, 03), c(59, 00), c(59, 00))
 x <- as_naive_time(x)
