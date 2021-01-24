@@ -168,6 +168,12 @@ zoned_set_zone.POSIXt <- function(x, zone) {
 }
 
 #' @export
+zoned_info.POSIXt <- function(x) {
+  x <- as_zoned_time(x)
+  zoned_info(x)
+}
+
+#' @export
 zoned_offset.POSIXt <- function(x) {
   x <- as_zoned_time(x)
   zoned_offset(x)

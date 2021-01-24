@@ -95,6 +95,12 @@ zoned_set_zone.Date <- function(x, zone) {
 }
 
 #' @export
+zoned_info.Date <- function(x) {
+  x <- as_zoned_time(x)
+  zoned_info(x)
+}
+
+#' @export
 zoned_offset.Date <- function(x) {
   n <- zeros_along(x, na_propagate = TRUE)
   duration_seconds(n)
