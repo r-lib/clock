@@ -318,6 +318,28 @@ zoned_set_zone.clock_zoned_time <- function(x, zone) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+zoned_info <- function(x) {
+  UseMethod("zoned_info")
+}
+
+#' @export
+zoned_info.clock_zoned_time <- function(x) {
+  names <- NULL
+  zone <- zoned_time_zone(x)
+  precision <- zoned_time_precision(x)
+
+  out <- zoned_info_cpp(x, precision, zone)
+
+  out[["begin"]] <- new_zoned_time_from_fields(out[["begin"]], PRECISION_SECOND, zone, names)
+  out[["end"]] <- new_zoned_time_from_fields(out[["end"]], PRECISION_SECOND, zone, names)
+  out[["offset"]] <- new_duration_from_fields(out[["offset"]], PRECISION_SECOND, names)
+
+  new_data_frame(out)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Get the offset from UTC
 #'
 #' `zoned_offset()` returns the offset from UTC as a duration of seconds.
@@ -347,11 +369,7 @@ zoned_offset <- function(x) {
 
 #' @export
 zoned_offset.clock_zoned_time <- function(x) {
-  names <- NULL
-  zone <- zoned_time_zone(x)
-  precision <- zoned_time_precision(x)
-  fields <- zoned_offset_cpp(x, precision, zone)
-  new_duration_from_fields(fields, PRECISION_SECOND, names)
+  zoned_info(x)$offset
 }
 
 # ------------------------------------------------------------------------------
@@ -383,10 +401,7 @@ zoned_dst <- function(x) {
 
 #' @export
 zoned_dst.clock_zoned_time <- function(x) {
-  zone <- zoned_time_zone(x)
-  sys_time <- zoned_time_sys_time(x)
-  sys_time <- time_point_cast(sys_time, "second")
-  zoned_dst_cpp(sys_time, zone)
+  zoned_info(x)$dst
 }
 
 # ------------------------------------------------------------------------------

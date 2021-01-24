@@ -283,29 +283,56 @@ template <class ClockDuration>
 static
 inline
 cpp11::writable::list
-zoned_offset_impl(const ClockDuration& x,
-                  const date::time_zone* p_time_zone) {
+zoned_info_impl(const ClockDuration& x,
+                const date::time_zone* p_time_zone) {
+  const r_ssize size = x.size();
   using Duration = typename ClockDuration::duration;
 
-  const r_ssize size = x.size();
-  rclock::duration::seconds out(size);
+  rclock::duration::seconds begin(size);
+  rclock::duration::seconds end(size);
+  rclock::duration::seconds offset(size);
+  cpp11::writable::logicals dst(size);
+  cpp11::writable::strings abbreviation(size);
+
+  const std::chrono::minutes zero{0};
 
   for (r_ssize i = 0; i < size; ++i) {
     if (x.is_na(i)) {
-      out.assign_na(i);
+      begin.assign_na(i);
+      end.assign_na(i);
+      offset.assign_na(i);
+      dst[i] = r_lgl_na;
+      SET_STRING_ELT(abbreviation, i, r_chr_na);
       continue;
     }
+
     const date::sys_time<Duration> elt{x[i]};
     const date::sys_info info = p_time_zone->get_info(elt);
-    out.assign(info.offset, i);
+
+    begin.assign(info.begin.time_since_epoch(), i);
+    end.assign(info.end.time_since_epoch(), i);
+
+    offset.assign(info.offset, i);
+
+    dst[i] = info.save != zero;
+
+    const SEXP abbreviation_elt = Rf_mkCharLenCE(info.abbrev.c_str(), info.abbrev.size(), CE_UTF8);
+    SET_STRING_ELT(abbreviation, i, abbreviation_elt);
   }
 
-  return out.to_list();
+  cpp11::writable::list out_begin = begin.to_list();
+  cpp11::writable::list out_end = end.to_list();
+  cpp11::writable::list out_offset = offset.to_list();
+
+  cpp11::writable::list out = { out_begin, out_end, out_offset, dst, abbreviation};
+  out.names() = {"begin", "end", "offset", "dst", "abbreviation"};
+
+  return out;
 }
 
 [[cpp11::register]]
 cpp11::writable::list
-zoned_offset_cpp(cpp11::list_of<cpp11::integers> fields,
+zoned_info_cpp(cpp11::list_of<cpp11::integers> fields,
                const cpp11::integers& precision_int,
                const cpp11::strings& zone) {
   using namespace rclock;
@@ -324,46 +351,10 @@ zoned_offset_cpp(cpp11::list_of<cpp11::integers> fields,
   const duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
   switch (parse_precision(precision_int)) {
-  case precision::second: return zoned_offset_impl(ds, p_time_zone);
-  case precision::millisecond: return zoned_offset_impl(dmilli, p_time_zone);
-  case precision::microsecond: return zoned_offset_impl(dmicro, p_time_zone);
-  case precision::nanosecond: return zoned_offset_impl(dnano, p_time_zone);
+  case precision::second: return zoned_info_impl(ds, p_time_zone);
+  case precision::millisecond: return zoned_info_impl(dmilli, p_time_zone);
+  case precision::microsecond: return zoned_info_impl(dmicro, p_time_zone);
+  case precision::nanosecond: return zoned_info_impl(dnano, p_time_zone);
   default: clock_abort("Internal error: Should never be called.");
   }
-}
-
-// -----------------------------------------------------------------------------
-
-[[cpp11::register]]
-cpp11::writable::logicals
-zoned_dst_cpp(cpp11::list_of<cpp11::integers> fields,
-              const cpp11::strings& zone) {
-  using namespace rclock;
-
-  const cpp11::writable::strings zone_standard = zone_standardize(zone);
-  const std::string zone_name = cpp11::r_string(zone_standard[0]);
-  const date::time_zone* p_time_zone = zone_name_load(zone_name);
-
-  const cpp11::integers ticks = duration::get_ticks(fields);
-  const cpp11::integers ticks_of_day = duration::get_ticks_of_day(fields);
-
-  // Cast to seconds precision at R level
-  const duration::seconds x{ticks, ticks_of_day};
-
-  const r_ssize size = x.size();
-  cpp11::writable::logicals out(size);
-
-  const std::chrono::minutes zero{0};
-
-  for (r_ssize i = 0; i < size; ++i) {
-    if (x.is_na(i)) {
-      out[i] = r_lgl_na;
-      continue;
-    }
-    const date::sys_time<std::chrono::seconds> elt{x[i]};
-    const date::sys_info info = p_time_zone->get_info(elt);
-    out[i] = info.save != zero;
-  }
-
-  return out;
 }
