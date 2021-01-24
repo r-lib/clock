@@ -86,6 +86,18 @@ zoned_time_format <- function(print_zone_name) {
 
 # ------------------------------------------------------------------------------
 
+parse_zoned_time <- function(x,
+                             ...,
+                             format = "%Y-%m-%dT%H:%M:%S%Ez[%Z]",
+                             precision = "second") {
+  check_dots_empty()
+  precision <- validate_zoned_time_precision(precision)
+  result <- parse_zoned_time_cpp(x, format, precision)
+  new_zoned_time_from_fields(result$fields, precision, result$zone, names(x))
+}
+
+# ------------------------------------------------------------------------------
+
 #' @export
 vec_proxy.clock_zoned_time <- function(x, ...) {
   clock_rcrd_proxy(x)
@@ -430,4 +442,20 @@ zone_validate <- function(zone) {
   }
 
   zone
+}
+
+# ------------------------------------------------------------------------------
+
+validate_zoned_time_precision <- function(precision) {
+  precision <- validate_precision(precision)
+
+  if (!is_valid_zoned_time_precision(precision)) {
+    abort("`precision` must be at least 'second' precision.")
+  }
+
+  precision
+}
+
+is_valid_zoned_time_precision <- function(precision) {
+  precision >= PRECISION_SECOND
 }

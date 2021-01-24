@@ -660,6 +660,13 @@ extern "C" SEXP _clock_zoned_info_cpp(SEXP fields, SEXP precision_int, SEXP zone
     return cpp11::as_sexp(zoned_info_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone)));
   END_CPP11
 }
+// zoned-time.cpp
+cpp11::writable::list parse_zoned_time_cpp(const cpp11::strings& x, const cpp11::strings& format, const cpp11::integers& precision_int);
+extern "C" SEXP _clock_parse_zoned_time_cpp(SEXP x, SEXP format, SEXP precision_int) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(parse_zoned_time_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int)));
+  END_CPP11
+}
 
 extern "C" {
 /* .Call calls */
@@ -726,6 +733,7 @@ extern SEXP _clock_new_time_point_from_fields(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_new_zoned_time_from_fields(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_parse_time_point_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_parse_year_month_day_cpp(SEXP, SEXP);
+extern SEXP _clock_parse_zoned_time_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_precision_to_string(SEXP);
 extern SEXP _clock_set_field_iso_year_week_day_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_set_field_iso_year_week_day_last_cpp(SEXP, SEXP);
@@ -821,6 +829,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_new_zoned_time_from_fields",                      (DL_FUNC) &_clock_new_zoned_time_from_fields,                       4},
     {"_clock_parse_time_point_cpp",                            (DL_FUNC) &_clock_parse_time_point_cpp,                             4},
     {"_clock_parse_year_month_day_cpp",                        (DL_FUNC) &_clock_parse_year_month_day_cpp,                         2},
+    {"_clock_parse_zoned_time_cpp",                            (DL_FUNC) &_clock_parse_zoned_time_cpp,                             3},
     {"_clock_precision_to_string",                             (DL_FUNC) &_clock_precision_to_string,                              1},
     {"_clock_set_field_iso_year_week_day_cpp",                 (DL_FUNC) &_clock_set_field_iso_year_week_day_cpp,                  4},
     {"_clock_set_field_iso_year_week_day_last_cpp",            (DL_FUNC) &_clock_set_field_iso_year_week_day_last_cpp,             2},

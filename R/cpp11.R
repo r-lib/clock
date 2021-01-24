@@ -371,3 +371,7 @@ to_sys_seconds_from_sys_duration_fields_cpp <- function(fields) {
 zoned_info_cpp <- function(fields, precision_int, zone) {
   .Call("_clock_zoned_info_cpp", fields, precision_int, zone, PACKAGE = "clock")
 }
+
+parse_zoned_time_cpp <- function(x, format, precision_int) {
+  .Call("_clock_parse_zoned_time_cpp", x, format, precision_int, PACKAGE = "clock")
+}

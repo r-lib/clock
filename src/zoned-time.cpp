@@ -358,3 +358,101 @@ zoned_info_cpp(cpp11::list_of<cpp11::integers> fields,
   default: clock_abort("Internal error: Should never be called.");
   }
 }
+
+// -----------------------------------------------------------------------------
+
+template <class ClockDuration>
+cpp11::writable::list
+parse_zoned_time_impl(const cpp11::strings& x, const cpp11::strings& format) {
+  const r_ssize size = x.size();
+  ClockDuration fields(size);
+  using Duration = typename ClockDuration::duration;
+
+  if (!r_is_string(format)) {
+    clock_abort("`format` must be a single string.");
+  }
+  const SEXP format_sexp = format[0];
+  const char* format_char = CHAR(format_sexp);
+
+  std::string zone;
+  const date::time_zone* p_time_zone;
+
+  std::istringstream stream;
+
+  for (r_ssize i = 0; i < size; ++i) {
+    const SEXP elt = x[i];
+
+    if (elt == r_chr_na) {
+      fields.assign_na(i);
+      continue;
+    }
+
+    const char* elt_char = CHAR(elt);
+
+    stream.clear();
+    stream.str(elt_char);
+
+    date::local_time<Duration> elt_lt;
+    std::string elt_zone;
+    std::chrono::minutes elt_offset{std::chrono::minutes::min()};
+
+    from_stream(stream, format_char, elt_lt, &elt_zone, &elt_offset);
+
+    if (stream.fail()) {
+      fields.assign_na(i);
+      continue;
+    }
+
+    if (zone.empty()) {
+      // First time, load zone
+      try {
+        p_time_zone = date::locate_zone(elt_zone);
+        zone = elt_zone;
+      } catch (const std::runtime_error& error) {
+        std::string message =
+          "`%%Z` must be used, and must result in a valid time zone name, not '" + elt_zone + "'.";
+        clock_abort(message.c_str());
+      };
+    } else if (elt_zone != zone) {
+      std::string message =
+        std::string{"All elements of `x` must have the same time zone name. "} +
+        "Found different zone names of: '" +
+        zone + "' and '" + elt_zone +
+        "'.";
+
+      clock_abort(message.c_str());
+    }
+
+    if (elt_offset == std::chrono::minutes::min()) {
+      clock_abort("`%%z` must be used, and must result in a valid offset from UTC.");
+    }
+
+    fields.assign(elt_lt.time_since_epoch() - elt_offset, i);
+  }
+
+  cpp11::writable::strings out_zone(1);
+  out_zone[0] = zone;
+
+  cpp11::writable::list out_fields = fields.to_list();
+
+  cpp11::writable::list out = {out_fields, out_zone};
+  out.names() = {"fields", "zone"};
+
+  return out;
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+parse_zoned_time_cpp(const cpp11::strings& x,
+                     const cpp11::strings& format,
+                     const cpp11::integers& precision_int) {
+  using namespace rclock;
+
+  switch (parse_precision(precision_int)) {
+  case precision::second: return parse_zoned_time_impl<duration::seconds>(x, format);
+  case precision::millisecond: return parse_zoned_time_impl<duration::milliseconds>(x, format);
+  case precision::microsecond: return parse_zoned_time_impl<duration::microseconds>(x, format);
+  case precision::nanosecond: return parse_zoned_time_impl<duration::nanoseconds>(x, format);
+  default: never_reached("parse_zoned_time_cpp");
+  }
+}
