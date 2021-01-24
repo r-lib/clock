@@ -60,20 +60,6 @@ zeros_along <- function(x, na_propagate = FALSE) {
 
   out
 }
-false_along <- function(x, na_propagate = FALSE) {
-  out <- vector("logical", length = vec_size(x))
-
-  if (!na_propagate) {
-    return(out)
-  }
-
-  na <- vec_equal_na(x)
-  if (any(na)) {
-    out[na] <- NA_integer_
-  }
-
-  out
-}
 
 # ------------------------------------------------------------------------------
 
