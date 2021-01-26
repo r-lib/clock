@@ -1178,6 +1178,48 @@ from_stream(std::basic_istream<CharT, Traits>& is,
   return is;
 }
 
+template <class CharT, class Traits, class Alloc = std::allocator<CharT>>
+std::basic_istream<CharT, Traits>&
+from_stream(std::basic_istream<CharT, Traits>& is,
+            const CharT* fmt,
+            const std::pair<const std::string*, const std::string*>& month_names_pair,
+            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
+            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+            date::year& y,
+            std::basic_string<CharT, Traits, Alloc>* abbrev = nullptr,
+            std::chrono::minutes* offset = nullptr)
+{
+    using CT = std::chrono::seconds;
+    date::fields<CT> fds{};
+    rclock::from_stream(is, fmt, month_names_pair, weekday_names_pair, ampm_names_pair, fds, abbrev, offset);
+    if (!fds.ymd.year().ok())
+        is.setstate(std::ios::failbit);
+    if (!is.fail())
+        y = fds.ymd.year();
+    return is;
+}
+
+template <class CharT, class Traits, class Alloc = std::allocator<CharT>>
+std::basic_istream<CharT, Traits>&
+from_stream(std::basic_istream<CharT, Traits>& is,
+            const CharT* fmt,
+            const std::pair<const std::string*, const std::string*>& month_names_pair,
+            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
+            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+            date::year_month& ym,
+            std::basic_string<CharT, Traits, Alloc>* abbrev = nullptr,
+            std::chrono::minutes* offset = nullptr)
+{
+    using CT = std::chrono::seconds;
+    date::fields<CT> fds{};
+    rclock::from_stream(is, fmt, month_names_pair, weekday_names_pair, ampm_names_pair, fds, abbrev, offset);
+    if (!fds.ymd.month().ok())
+        is.setstate(std::ios::failbit);
+    if (!is.fail())
+        ym = fds.ymd.year()/fds.ymd.month();
+    return is;
+}
+
 /*
  * Extra template variations of `from_stream()`
  *

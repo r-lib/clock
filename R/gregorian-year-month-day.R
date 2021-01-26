@@ -229,20 +229,30 @@ vec_ptype_abbr.clock_year_month_day <- function(x, ...) {
 #' `parse_year_month_day()` parses a character vector into a year-month-day
 #' calendar.
 #'
-#' @details
-#' There is no `format` argument, as this function can only parse the result
-#' of [format()]-ting a year-month-day. If you need the flexibility of a
-#' `format` argument, try [parse_naive_time()] or [parse_sys_time()].
-#'
 #' @inheritParams ellipsis::dots_empty
 #'
 #' @param x `[character]`
 #'
 #'   A character vector to parse.
 #'
+#' @param format `[NULL / character(1)]`
+#'
+#'   A character format string.
+#'
+#'   If `NULL`, a default format string is chosen based on the `precision`.
+#'   The default format string is chosen to parse the result of calling
+#'   `format()` on a year-month-day object. For example, with
+#'   `precision = "month"`, `format` would be set to `"%Y-%m`, and with
+#'   `precision = "millisecond"` it would be set to `"%Y-%m-%d %H:%M:%S"`.
+#'
 #' @param precision `[character(1)]`
 #'
 #'   The precision of the resulting year-month-day.
+#'
+#' @param locale `[clock_locale]`
+#'
+#'   A locale object created by [date_locale()]. Defaults to
+#'   [default_date_locale()].
 #'
 #' @return A year-month-day calendar vector. If a parsing fails, `NA` is
 #'   returned.
@@ -269,7 +279,25 @@ vec_ptype_abbr.clock_year_month_day <- function(x, ...) {
 #' )
 #'
 #' parse_year_month_day(format(x), precision = "nanosecond")
-parse_year_month_day <- function(x, ..., precision = "day") {
+#'
+#' # Can parse using other format tokens as well
+#' parse_year_month_day(
+#'   "January, 2019",
+#'   format = "%B, %Y",
+#'   precision = "month"
+#' )
+#'
+#' # Parsing a French year-month-day
+#' parse_year_month_day(
+#'   "octobre 1, 2000",
+#'   format = "%B %d, %Y",
+#'   locale = date_locale("fr")
+#' )
+parse_year_month_day <- function(x,
+                                 ...,
+                                 format = NULL,
+                                 precision = "day",
+                                 locale = default_date_locale()) {
   check_dots_empty()
 
   if (!is_character(x)) {
@@ -281,9 +309,48 @@ parse_year_month_day <- function(x, ..., precision = "day") {
     abort("`precision` must be a valid precision for 'year_month_day'.")
   }
 
-  fields <- parse_year_month_day_cpp(x, precision)
+  if (is_null(format)) {
+    format <- year_month_day_format(precision)
+  }
+
+  if (!is_date_locale(locale)) {
+    abort("`locale` must be a 'clock_date_locale' object.")
+  }
+
+  mapping <- locale$date_names
+  mark <- locale$decimal_mark
+
+  fields <- parse_year_month_day_cpp(
+    x,
+    format,
+    precision,
+    mapping$mon,
+    mapping$mon_ab,
+    mapping$day,
+    mapping$day_ab,
+    mapping$am_pm,
+    mark
+  )
 
   new_year_month_day_from_fields(fields, precision, names(x))
+}
+
+year_month_day_format <- function(precision) {
+  precision <- precision_to_string(precision)
+
+  switch(
+    precision,
+    year = "%Y",
+    month = "%Y-%m",
+    day = "%Y-%m-%d",
+    hour = "%Y-%m-%d %H",
+    minute = "%Y-%m-%d %H:%M",
+    second = ,
+    millisecond = ,
+    microsecond = ,
+    nanosecond = "%Y-%m-%d %H:%M:%S",
+    abort("Internal error: Unknown precision.")
+  )
 }
 
 # ------------------------------------------------------------------------------

@@ -5,6 +5,7 @@
 #include "enums.h"
 #include "get.h"
 #include "parse.h"
+#include "locale.h"
 
 [[cpp11::register]]
 void
@@ -791,174 +792,254 @@ year_month_day_minus_year_month_day_cpp(cpp11::list_of<cpp11::integers> x,
 
 // -----------------------------------------------------------------------------
 
-// // Default impl applies to millisecond/microsecond/nanosecond parsers
-// template <class Calendar>
-// inline
-// void
-// year_month_day_from_stream(std::istringstream& stream,
-//                            const r_ssize& i,
-//                            Calendar& out) {
-//   using Duration = typename Calendar::duration;
-//   date::year_month_day ymd;
-//   date::hh_mm_ss<Duration> hms;
-//   rclock::from_stream(stream, "%Y-%m-%d %H:%M:%S", ymd, hms);
-//   if (stream.fail()) {
-//     out.assign_na(i);
-//   } else {
-//     out.assign_year_month_day(ymd, i);
-//     out.assign_hour(hms.hours(), i);
-//     out.assign_minute(hms.minutes(), i);
-//     out.assign_second(hms.seconds(), i);
-//     out.assign_subsecond(hms.subseconds(), i);
-//   }
-// }
-//
-// template <>
-// inline
-// void
-// year_month_day_from_stream(std::istringstream& stream,
-//                            const r_ssize& i,
-//                            rclock::gregorian::y& out) {
-//   date::year x;
-//   date::from_stream(stream, "%Y", x);
-//   if (stream.fail()) {
-//     out.assign_na(i);
-//   } else {
-//     out.assign_year(x, i);
-//   }
-// }
-//
-// template <>
-// inline
-// void
-// year_month_day_from_stream(std::istringstream& stream,
-//                            const r_ssize& i,
-//                            rclock::gregorian::ym& out) {
-//   date::year_month x;
-//   date::from_stream(stream, "%Y-%m", x);
-//   if (stream.fail()) {
-//     out.assign_na(i);
-//   } else {
-//     out.assign_year_month(x, i);
-//   }
-// }
-//
-// template <>
-// inline
-// void
-// year_month_day_from_stream(std::istringstream& stream,
-//                            const r_ssize& i,
-//                            rclock::gregorian::ymd& out) {
-//   date::year_month_day x;
-//   rclock::from_stream(stream, "%Y-%m-%d", x);
-//   if (stream.fail()) {
-//     out.assign_na(i);
-//   } else {
-//     out.assign_year_month_day(x, i);
-//   }
-// }
-//
-// template <>
-// inline
-// void
-// year_month_day_from_stream(std::istringstream& stream,
-//                            const r_ssize& i,
-//                            rclock::gregorian::ymdh& out) {
-//   date::year_month_day ymd;
-//   date::hh_mm_ss<std::chrono::seconds> hms;
-//   rclock::from_stream(stream, "%Y-%m-%d %H", ymd, hms);
-//   if (stream.fail()) {
-//     out.assign_na(i);
-//   } else {
-//     out.assign_year_month_day(ymd, i);
-//     out.assign_hour(hms.hours(), i);
-//   }
-// }
-//
-// template <>
-// inline
-// void
-// year_month_day_from_stream(std::istringstream& stream,
-//                            const r_ssize& i,
-//                            rclock::gregorian::ymdhm& out) {
-//   date::year_month_day ymd;
-//   date::hh_mm_ss<std::chrono::seconds> hms;
-//   rclock::from_stream(stream, "%Y-%m-%d %H:%M", ymd, hms);
-//   if (stream.fail()) {
-//     out.assign_na(i);
-//   } else {
-//     out.assign_year_month_day(ymd, i);
-//     out.assign_hour(hms.hours(), i);
-//     out.assign_minute(hms.minutes(), i);
-//   }
-// }
-//
-// template <>
-// inline
-// void
-// year_month_day_from_stream(std::istringstream& stream,
-//                            const r_ssize& i,
-//                            rclock::gregorian::ymdhms& out) {
-//   date::year_month_day ymd;
-//   date::hh_mm_ss<std::chrono::seconds> hms;
-//   rclock::from_stream(stream, "%Y-%m-%d %H:%M:%S", ymd, hms);
-//   if (stream.fail()) {
-//     out.assign_na(i);
-//   } else {
-//     out.assign_year_month_day(ymd, i);
-//     out.assign_hour(hms.hours(), i);
-//     out.assign_minute(hms.minutes(), i);
-//     out.assign_second(hms.seconds(), i);
-//   }
-// }
-//
-// template <class Calendar>
-// static
-// cpp11::writable::list
-// parse_year_month_day_impl(const cpp11::strings& x) {
-//   const r_ssize size = x.size();
-//   Calendar out(size);
-//
-//   std::istringstream stream;
-//
-//   for (r_ssize i = 0; i < size; ++i) {
-//     const SEXP elt = x[i];
-//
-//     if (elt == r_chr_na) {
-//       out.assign_na(i);
-//       continue;
-//     }
-//
-//     const char* elt_char = CHAR(elt);
-//
-//     stream.clear();
-//     stream.str(elt_char);
-//
-//     year_month_day_from_stream(stream, i, out);
-//   }
-//
-//   return out.to_list();
-// }
-//
-// [[cpp11::register]]
-// cpp11::writable::list
-// parse_year_month_day_cpp(const cpp11::strings& x,
-//                          const cpp11::integers& precision_int) {
-//   using namespace rclock;
-//
-//   switch (parse_precision(precision_int)) {
-//   case precision::year: return parse_year_month_day_impl<gregorian::y>(x);
-//   case precision::month: return parse_year_month_day_impl<gregorian::ym>(x);
-//   case precision::day: return parse_year_month_day_impl<gregorian::ymd>(x);
-//   case precision::hour: return parse_year_month_day_impl<gregorian::ymdh>(x);
-//   case precision::minute: return parse_year_month_day_impl<gregorian::ymdhm>(x);
-//   case precision::second: return parse_year_month_day_impl<gregorian::ymdhms>(x);
-//   case precision::millisecond: return parse_year_month_day_impl<gregorian::ymdhmss<std::chrono::milliseconds>>(x);
-//   case precision::microsecond: return parse_year_month_day_impl<gregorian::ymdhmss<std::chrono::microseconds>>(x);
-//   case precision::nanosecond: return parse_year_month_day_impl<gregorian::ymdhmss<std::chrono::nanoseconds>>(x);
-//   default: never_reached("parse_year_month_day_cpp");
-//   }
-// }
+// Default impl applies to millisecond/microsecond/nanosecond parsers
+template <class Calendar>
+inline
+void
+year_month_day_from_stream(std::istringstream& stream,
+                           const char* format,
+                           const std::pair<const std::string*, const std::string*>& month_names_pair,
+                           const std::pair<const std::string*, const std::string*>& weekday_names_pair,
+                           const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+                           const r_ssize& i,
+                           Calendar& out) {
+  using Duration = typename Calendar::duration;
+  date::year_month_day ymd;
+  date::hh_mm_ss<Duration> hms;
+  rclock::from_stream(stream, format, month_names_pair, weekday_names_pair, ampm_names_pair, ymd, hms);
+  if (stream.fail()) {
+    out.assign_na(i);
+  } else {
+    out.assign_year_month_day(ymd, i);
+    out.assign_hour(hms.hours(), i);
+    out.assign_minute(hms.minutes(), i);
+    out.assign_second(hms.seconds(), i);
+    out.assign_subsecond(hms.subseconds(), i);
+  }
+}
+
+template <>
+inline
+void
+year_month_day_from_stream(std::istringstream& stream,
+                           const char* format,
+                           const std::pair<const std::string*, const std::string*>& month_names_pair,
+                           const std::pair<const std::string*, const std::string*>& weekday_names_pair,
+                           const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+                           const r_ssize& i,
+                           rclock::gregorian::y& out) {
+  date::year x;
+  rclock::from_stream(stream, format, month_names_pair, weekday_names_pair, ampm_names_pair, x);
+  if (stream.fail()) {
+    out.assign_na(i);
+  } else {
+    out.assign_year(x, i);
+  }
+}
+
+template <>
+inline
+void
+year_month_day_from_stream(std::istringstream& stream,
+                           const char* format,
+                           const std::pair<const std::string*, const std::string*>& month_names_pair,
+                           const std::pair<const std::string*, const std::string*>& weekday_names_pair,
+                           const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+                           const r_ssize& i,
+                           rclock::gregorian::ym& out) {
+  date::year_month x;
+  rclock::from_stream(stream, format, month_names_pair, weekday_names_pair, ampm_names_pair, x);
+  if (stream.fail()) {
+    out.assign_na(i);
+  } else {
+    out.assign_year_month(x, i);
+  }
+}
+
+template <>
+inline
+void
+year_month_day_from_stream(std::istringstream& stream,
+                           const char* format,
+                           const std::pair<const std::string*, const std::string*>& month_names_pair,
+                           const std::pair<const std::string*, const std::string*>& weekday_names_pair,
+                           const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+                           const r_ssize& i,
+                           rclock::gregorian::ymd& out) {
+  date::year_month_day x;
+  rclock::from_stream(stream, format, month_names_pair, weekday_names_pair, ampm_names_pair, x);
+  if (stream.fail()) {
+    out.assign_na(i);
+  } else {
+    out.assign_year_month_day(x, i);
+  }
+}
+
+template <>
+inline
+void
+year_month_day_from_stream(std::istringstream& stream,
+                           const char* format,
+                           const std::pair<const std::string*, const std::string*>& month_names_pair,
+                           const std::pair<const std::string*, const std::string*>& weekday_names_pair,
+                           const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+                           const r_ssize& i,
+                           rclock::gregorian::ymdh& out) {
+  date::year_month_day ymd;
+  date::hh_mm_ss<std::chrono::seconds> hms;
+  rclock::from_stream(stream, format, month_names_pair, weekday_names_pair, ampm_names_pair, ymd, hms);
+  if (stream.fail()) {
+    out.assign_na(i);
+  } else {
+    out.assign_year_month_day(ymd, i);
+    out.assign_hour(hms.hours(), i);
+  }
+}
+
+template <>
+inline
+void
+year_month_day_from_stream(std::istringstream& stream,
+                           const char* format,
+                           const std::pair<const std::string*, const std::string*>& month_names_pair,
+                           const std::pair<const std::string*, const std::string*>& weekday_names_pair,
+                           const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+                           const r_ssize& i,
+                           rclock::gregorian::ymdhm& out) {
+  date::year_month_day ymd;
+  date::hh_mm_ss<std::chrono::seconds> hms;
+  rclock::from_stream(stream, format, month_names_pair, weekday_names_pair, ampm_names_pair, ymd, hms);
+  if (stream.fail()) {
+    out.assign_na(i);
+  } else {
+    out.assign_year_month_day(ymd, i);
+    out.assign_hour(hms.hours(), i);
+    out.assign_minute(hms.minutes(), i);
+  }
+}
+
+template <>
+inline
+void
+year_month_day_from_stream(std::istringstream& stream,
+                           const char* format,
+                           const std::pair<const std::string*, const std::string*>& month_names_pair,
+                           const std::pair<const std::string*, const std::string*>& weekday_names_pair,
+                           const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+                           const r_ssize& i,
+                           rclock::gregorian::ymdhms& out) {
+  date::year_month_day ymd;
+  date::hh_mm_ss<std::chrono::seconds> hms;
+  rclock::from_stream(stream, format, month_names_pair, weekday_names_pair, ampm_names_pair, ymd, hms);
+  if (stream.fail()) {
+    out.assign_na(i);
+  } else {
+    out.assign_year_month_day(ymd, i);
+    out.assign_hour(hms.hours(), i);
+    out.assign_minute(hms.minutes(), i);
+    out.assign_second(hms.seconds(), i);
+  }
+}
+
+template <class Calendar>
+static
+cpp11::writable::list
+parse_year_month_day_impl(const cpp11::strings& x,
+                          const cpp11::strings& format,
+                          const cpp11::strings& mon,
+                          const cpp11::strings& mon_ab,
+                          const cpp11::strings& day,
+                          const cpp11::strings& day_ab,
+                          const cpp11::strings& am_pm,
+                          const cpp11::strings& mark) {
+  const r_ssize size = x.size();
+  Calendar out(size);
+
+  if (!r_is_string(format)) {
+    clock_abort("`format` must be a single string.");
+  }
+  const SEXP format_sexp = format[0];
+  const char* format_char = CHAR(format_sexp);
+
+  const enum decimal_mark dmark = parse_decimal_mark(mark);
+  std::locale loc(std::locale::classic(), new clock_numpunct(dmark));
+
+  std::string month_names[24];
+  const std::pair<const std::string*, const std::string*>& month_names_pair = fill_month_names(
+    mon,
+    mon_ab,
+    month_names
+  );
+
+  std::string weekday_names[14];
+  const std::pair<const std::string*, const std::string*>& weekday_names_pair = fill_weekday_names(
+    day,
+    day_ab,
+    weekday_names
+  );
+
+  std::string ampm_names[2];
+  const std::pair<const std::string*, const std::string*>& ampm_names_pair = fill_ampm_names(
+    am_pm,
+    ampm_names
+  );
+
+  std::istringstream stream;
+  stream.imbue(loc);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    const SEXP elt = x[i];
+
+    if (elt == r_chr_na) {
+      out.assign_na(i);
+      continue;
+    }
+
+    const char* elt_char = CHAR(elt);
+
+    stream.clear();
+    stream.str(elt_char);
+
+    year_month_day_from_stream(
+      stream,
+      format_char,
+      month_names_pair,
+      weekday_names_pair,
+      ampm_names_pair,
+      i,
+      out
+    );
+  }
+
+  return out.to_list();
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+parse_year_month_day_cpp(const cpp11::strings& x,
+                         const cpp11::strings& format,
+                         const cpp11::integers& precision_int,
+                         const cpp11::strings& mon,
+                         const cpp11::strings& mon_ab,
+                         const cpp11::strings& day,
+                         const cpp11::strings& day_ab,
+                         const cpp11::strings& am_pm,
+                         const cpp11::strings& mark) {
+  using namespace rclock;
+
+  switch (parse_precision(precision_int)) {
+  case precision::year: return parse_year_month_day_impl<gregorian::y>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
+  case precision::month: return parse_year_month_day_impl<gregorian::ym>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
+  case precision::day: return parse_year_month_day_impl<gregorian::ymd>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
+  case precision::hour: return parse_year_month_day_impl<gregorian::ymdh>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
+  case precision::minute: return parse_year_month_day_impl<gregorian::ymdhm>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
+  case precision::second: return parse_year_month_day_impl<gregorian::ymdhms>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
+  case precision::millisecond: return parse_year_month_day_impl<gregorian::ymdhmss<std::chrono::milliseconds>>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
+  case precision::microsecond: return parse_year_month_day_impl<gregorian::ymdhmss<std::chrono::microseconds>>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
+  case precision::nanosecond: return parse_year_month_day_impl<gregorian::ymdhmss<std::chrono::nanoseconds>>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
+  default: never_reached("parse_year_month_day_cpp");
+  }
+}
 
 // -----------------------------------------------------------------------------
 

@@ -132,6 +132,10 @@ year_month_day_minus_year_month_day_cpp <- function(x, y, precision_int) {
   .Call("_clock_year_month_day_minus_year_month_day_cpp", x, y, precision_int, PACKAGE = "clock")
 }
 
+parse_year_month_day_cpp <- function(x, format, precision_int, mon, mon_ab, day, day_ab, am_pm, mark) {
+  .Call("_clock_parse_year_month_day_cpp", x, format, precision_int, mon, mon_ab, day, day_ab, am_pm, mark, PACKAGE = "clock")
+}
+
 gregorian_leap_year_cpp <- function(year) {
   .Call("_clock_gregorian_leap_year_cpp", year, PACKAGE = "clock")
 }
