@@ -95,4 +95,13 @@ enum class clock_name: unsigned char {
 enum clock_name parse_clock_name(const cpp11::integers& x);
 
 // -----------------------------------------------------------------------------
+
+enum class decimal_mark {
+  period,
+  comma
+};
+
+enum decimal_mark parse_decimal_mark(const cpp11::strings& x);
+
+// -----------------------------------------------------------------------------
 #endif

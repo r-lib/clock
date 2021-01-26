@@ -89,10 +89,31 @@ zoned_time_format <- function(print_zone_name) {
 parse_zoned_time <- function(x,
                              ...,
                              format = "%Y-%m-%dT%H:%M:%S%Ez[%Z]",
-                             precision = "second") {
+                             precision = "second",
+                             locale = default_date_locale()) {
   check_dots_empty()
+
   precision <- validate_zoned_time_precision(precision)
-  result <- parse_zoned_time_cpp(x, format, precision)
+
+  if (!is_date_locale(locale)) {
+    abort("`locale` must be a 'clock_date_locale'.")
+  }
+
+  mapping <- locale$date_names
+  mark <- locale$decimal_mark
+
+  result <- parse_zoned_time_cpp(
+    x,
+    format,
+    precision,
+    mapping$mon,
+    mapping$mon_ab,
+    mapping$day,
+    mapping$day_ab,
+    mapping$am_pm,
+    mark
+  )
+
   new_zoned_time_from_fields(result$fields, precision, result$zone, names(x))
 }
 

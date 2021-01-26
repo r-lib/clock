@@ -4,7 +4,13 @@
 \alias{parse_year_month_day}
 \title{Parse into a year-month-day calendar}
 \usage{
-parse_year_month_day(x, ..., precision = "day")
+parse_year_month_day(
+  x,
+  ...,
+  format = NULL,
+  precision = "day",
+  locale = default_date_locale()
+)
 }
 \arguments{
 \item{x}{\verb{[character]}
@@ -13,9 +19,24 @@ A character vector to parse.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
+\item{format}{\verb{[NULL / character(1)]}
+
+A character format string.
+
+If \code{NULL}, a default format string is chosen based on the \code{precision}.
+The default format string is chosen to parse the result of calling
+\code{format()} on a year-month-day object. For example, with
+\code{precision = "month"}, \code{format} would be set to \verb{"\%Y-\%m}, and with
+\code{precision = "millisecond"} it would be set to \code{"\%Y-\%m-\%d \%H:\%M:\%S"}.}
+
 \item{precision}{\verb{[character(1)]}
 
 The precision of the resulting year-month-day.}
+
+\item{locale}{\verb{[clock_locale]}
+
+A locale object created by \code{\link[=date_locale]{date_locale()}}. Defaults to
+\code{\link[=default_date_locale]{default_date_locale()}}.}
 }
 \value{
 A year-month-day calendar vector. If a parsing fails, \code{NA} is
@@ -24,11 +45,6 @@ returned.
 \description{
 \code{parse_year_month_day()} parses a character vector into a year-month-day
 calendar.
-}
-\details{
-There is no \code{format} argument, as this function can only parse the result
-of \code{\link[=format]{format()}}-ting a year-month-day. If you need the flexibility of a
-\code{format} argument, try \code{\link[=parse_naive_time]{parse_naive_time()}} or \code{\link[=parse_sys_time]{parse_sys_time()}}.
 }
 \examples{
 x <- "2019-01-01"
@@ -51,4 +67,18 @@ x <- year_month_day(
 )
 
 parse_year_month_day(format(x), precision = "nanosecond")
+
+# Can parse using other format tokens as well
+parse_year_month_day(
+  "January, 2019",
+  format = "\%B, \%Y",
+  precision = "month"
+)
+
+# Parsing a French year-month-day
+parse_year_month_day(
+  "octobre 1, 2000",
+  format = "\%B \%d, \%Y",
+  locale = date_locale("fr")
+)
 }

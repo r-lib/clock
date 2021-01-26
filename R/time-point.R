@@ -80,21 +80,50 @@ time_point_precision_format <- function(precision) {
 parse_naive_time <- function(x,
                              format,
                              ...,
-                             precision = "second") {
-  check_dots_empty()
+                             precision = "second",
+                             locale = default_date_locale()) {
   precision <- validate_time_point_precision(precision)
-  fields <- parse_time_point_cpp(x, format, precision, CLOCK_NAIVE)
+  fields <- parse_time_point(x, format, ..., precision = precision, locale = locale, clock = CLOCK_NAIVE)
   new_naive_time_from_fields(fields, precision, names(x))
 }
 
 parse_sys_time <- function(x,
                            format,
                            ...,
-                           precision = "second") {
-  check_dots_empty()
+                           precision = "second",
+                           locale = default_date_locale()) {
   precision <- validate_time_point_precision(precision)
-  fields <- parse_time_point_cpp(x, format, precision, CLOCK_SYS)
+  fields <- parse_time_point(x, format, ..., precision = precision, locale = locale, clock = CLOCK_SYS)
   new_sys_time_from_fields(fields, precision, names(x))
+}
+
+parse_time_point <- function(x,
+                             format,
+                             ...,
+                             precision,
+                             locale,
+                             clock) {
+  check_dots_empty()
+
+  if (!is_date_locale(locale)) {
+    abort("`locale` must be a 'clock_date_locale'.")
+  }
+
+  mapping <- locale$date_names
+  mark <- locale$decimal_mark
+
+  parse_time_point_cpp(
+    x,
+    format,
+    precision,
+    clock,
+    mapping$mon,
+    mapping$mon_ab,
+    mapping$day,
+    mapping$day_ab,
+    mapping$am_pm,
+    mark
+  )
 }
 
 # ------------------------------------------------------------------------------
