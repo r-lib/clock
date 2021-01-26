@@ -9,19 +9,17 @@
 
 // -----------------------------------------------------------------------------
 
-static std::string cpp_strings_clock_rcrd_names("clock_rcrd:::names");
+extern SEXP strings_empty;
 
-static cpp11::sexp syms_precision(Rf_install("precision"));
-static cpp11::sexp syms_clock(Rf_install("clock"));
-static cpp11::sexp syms_zone(Rf_install("zone"));
-static cpp11::sexp syms_clock_rcrd_names(Rf_install("clock_rcrd:::names"));
+extern SEXP syms_precision;
+extern SEXP syms_clock;
+extern SEXP syms_zone;
+extern SEXP syms_clock_rcrd_names;
 
-static cpp11::sexp strings_empty(Rf_mkCharCE("", CE_UTF8));
-
-static cpp11::writable::strings classes_duration({"clock_duration", "clock_rcrd", "vctrs_rcrd", "vctrs_vctr"});
-static cpp11::writable::strings classes_sys_time({"clock_sys_time", "clock_time_point", "clock_rcrd", "vctrs_rcrd", "vctrs_vctr"});
-static cpp11::writable::strings classes_naive_time({"clock_naive_time", "clock_time_point", "clock_rcrd", "vctrs_rcrd", "vctrs_vctr"});
-static cpp11::writable::strings classes_zoned_time({"clock_zoned_time", "clock_rcrd", "vctrs_rcrd", "vctrs_vctr"});
+extern SEXP classes_duration;
+extern SEXP classes_sys_time;
+extern SEXP classes_naive_time;
+extern SEXP classes_zoned_time;
 
 // -----------------------------------------------------------------------------
 

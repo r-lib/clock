@@ -1,4 +1,6 @@
 .onLoad <- function(libname, pkgname) {
+  clock_init_utils()
+
   tzdata <- system.file("tzdata", package = "clock", mustWork = TRUE)
   clock_set_install(tzdata)
 
