@@ -407,7 +407,6 @@ parse_zoned_time_impl(const cpp11::strings& x,
   );
 
   std::string zone;
-  const date::time_zone* p_time_zone;
 
   std::istringstream stream;
 
@@ -447,7 +446,7 @@ parse_zoned_time_impl(const cpp11::strings& x,
     if (zone.empty()) {
       // First time, load zone
       try {
-        p_time_zone = date::locate_zone(elt_zone);
+        (void) date::locate_zone(elt_zone);
         zone = elt_zone;
       } catch (const std::runtime_error& error) {
         std::string message =
