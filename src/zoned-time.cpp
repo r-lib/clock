@@ -4,6 +4,7 @@
 #include "get.h"
 #include "rcrd.h"
 #include "zone.h"
+#include "parse.h"
 
 // -----------------------------------------------------------------------------
 
@@ -396,7 +397,7 @@ parse_zoned_time_impl(const cpp11::strings& x, const cpp11::strings& format) {
     std::string elt_zone;
     std::chrono::minutes elt_offset{std::chrono::minutes::min()};
 
-    from_stream(stream, format_char, elt_lt, &elt_zone, &elt_offset);
+    rclock::from_stream(stream, format_char, elt_lt, &elt_zone, &elt_offset);
 
     if (stream.fail()) {
       fields.assign_na(i);

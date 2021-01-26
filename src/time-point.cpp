@@ -3,6 +3,7 @@
 #include "utils.h"
 #include "rcrd.h"
 #include "duration.h"
+#include "parse.h"
 #include <sstream>
 
 [[cpp11::register]]
@@ -125,7 +126,7 @@ parse_time_point_impl(const cpp11::strings& x, const cpp11::strings& format) {
 
     std::chrono::time_point<Clock, Duration> tp;
 
-    date::from_stream(stream, format_char, tp);
+    rclock::from_stream(stream, format_char, tp);
 
     if (stream.fail()) {
       out.assign_na(i);
