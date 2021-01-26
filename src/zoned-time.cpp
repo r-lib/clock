@@ -5,6 +5,7 @@
 #include "rcrd.h"
 #include "zone.h"
 #include "parse.h"
+#include "locale.h"
 
 // -----------------------------------------------------------------------------
 
@@ -364,7 +365,14 @@ zoned_info_cpp(cpp11::list_of<cpp11::integers> fields,
 
 template <class ClockDuration>
 cpp11::writable::list
-parse_zoned_time_impl(const cpp11::strings& x, const cpp11::strings& format) {
+parse_zoned_time_impl(const cpp11::strings& x,
+                      const cpp11::strings& format,
+                      const cpp11::strings& mon,
+                      const cpp11::strings& mon_ab,
+                      const cpp11::strings& day,
+                      const cpp11::strings& day_ab,
+                      const cpp11::strings& am_pm,
+                      const cpp11::strings& mark) {
   const r_ssize size = x.size();
   ClockDuration fields(size);
   using Duration = typename ClockDuration::duration;
@@ -374,6 +382,29 @@ parse_zoned_time_impl(const cpp11::strings& x, const cpp11::strings& format) {
   }
   const SEXP format_sexp = format[0];
   const char* format_char = CHAR(format_sexp);
+
+  const enum decimal_mark dmark = parse_decimal_mark(mark);
+  std::locale loc(std::locale::classic(), new clock_numpunct(dmark));
+
+  std::string month_names[24];
+  const std::pair<const std::string*, const std::string*>& month_names_pair = fill_month_names(
+    mon,
+    mon_ab,
+    month_names
+  );
+
+  std::string weekday_names[14];
+  const std::pair<const std::string*, const std::string*>& weekday_names_pair = fill_weekday_names(
+    day,
+    day_ab,
+    weekday_names
+  );
+
+  std::string ampm_names[2];
+  const std::pair<const std::string*, const std::string*>& ampm_names_pair = fill_ampm_names(
+    am_pm,
+    ampm_names
+  );
 
   std::string zone;
   const date::time_zone* p_time_zone;
@@ -397,7 +428,16 @@ parse_zoned_time_impl(const cpp11::strings& x, const cpp11::strings& format) {
     std::string elt_zone;
     std::chrono::minutes elt_offset{std::chrono::minutes::min()};
 
-    rclock::from_stream(stream, format_char, elt_lt, &elt_zone, &elt_offset);
+    rclock::from_stream(
+      stream,
+      format_char,
+      month_names_pair,
+      weekday_names_pair,
+      ampm_names_pair,
+      elt_lt,
+      &elt_zone,
+      &elt_offset
+    );
 
     if (stream.fail()) {
       fields.assign_na(i);
@@ -446,14 +486,20 @@ parse_zoned_time_impl(const cpp11::strings& x, const cpp11::strings& format) {
 cpp11::writable::list
 parse_zoned_time_cpp(const cpp11::strings& x,
                      const cpp11::strings& format,
-                     const cpp11::integers& precision_int) {
+                     const cpp11::integers& precision_int,
+                     const cpp11::strings& mon,
+                     const cpp11::strings& mon_ab,
+                     const cpp11::strings& day,
+                     const cpp11::strings& day_ab,
+                     const cpp11::strings& am_pm,
+                     const cpp11::strings& mark) {
   using namespace rclock;
 
   switch (parse_precision(precision_int)) {
-  case precision::second: return parse_zoned_time_impl<duration::seconds>(x, format);
-  case precision::millisecond: return parse_zoned_time_impl<duration::milliseconds>(x, format);
-  case precision::microsecond: return parse_zoned_time_impl<duration::microseconds>(x, format);
-  case precision::nanosecond: return parse_zoned_time_impl<duration::nanoseconds>(x, format);
+  case precision::second: return parse_zoned_time_impl<duration::seconds>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
+  case precision::millisecond: return parse_zoned_time_impl<duration::milliseconds>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
+  case precision::microsecond: return parse_zoned_time_impl<duration::microseconds>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
+  case precision::nanosecond: return parse_zoned_time_impl<duration::nanoseconds>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
   default: never_reached("parse_zoned_time_cpp");
   }
 }

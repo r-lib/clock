@@ -11,6 +11,9 @@ template <class CharT, class Traits, class Duration, class Alloc = std::allocato
 std::basic_istream<CharT, Traits>&
 from_stream(std::basic_istream<CharT, Traits>& is,
             const CharT* fmt,
+            const std::pair<const std::string*, const std::string*>& month_names_pair,
+            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
+            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
             date::fields<Duration>& fds,
             std::basic_string<CharT, Traits, Alloc>* abbrev,
             std::chrono::minutes* offset)
@@ -90,7 +93,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                     {
                         if (modified == CharT{})
                         {
-                            auto nm = date::detail::weekday_names();
+                            auto nm = weekday_names_pair;
                             auto i = date::detail::scan_keyword(is, nm.first, nm.second) - nm.first;
                             if (!is.fail())
                                 trial_wd = i % 7;
@@ -146,7 +149,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                     if (modified == CharT{})
                     {
                         int ttm = not_a_month;
-                        auto nm = date::detail::month_names();
+                        auto nm = month_names_pair;
                         auto i = date::detail::scan_keyword(is, nm.first, nm.second) - nm.first;
                         if (!is.fail())
                             ttm = i % 12 + 1;
@@ -167,11 +170,11 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                     if (modified != CharT{'O'})
                     {
                         // "%a %b %e %T %Y"
-                        auto nm = date::detail::weekday_names();
+                        auto nm = weekday_names_pair;
                         auto i = date::detail::scan_keyword(is, nm.first, nm.second) - nm.first;
                         checked_set(wd, static_cast<int>(i % 7), not_a_weekday, is);
                         ws(is);
-                        nm = date::detail::month_names();
+                        nm = month_names_pair;
                         i = date::detail::scan_keyword(is, nm.first, nm.second) - nm.first;
                         checked_set(m, static_cast<int>(i % 12 + 1), not_a_month, is);
                         ws(is);
@@ -466,7 +469,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                     if (modified == CharT{})
                     {
                         int tp = not_a_ampm;
-                        auto nm = date::detail::ampm_names();
+                        auto nm = ampm_names_pair;
                         auto i = date::detail::scan_keyword(is, nm.first, nm.second) - nm.first;
                         tp = i;
                         checked_set(p, tp, not_a_ampm, is);
@@ -499,7 +502,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                         checked_set(s, round_i<Duration>(duration<long double>{S}),
                                     not_a_second, is);
                         ws(is);
-                        auto nm = date::detail::ampm_names();
+                        auto nm = ampm_names_pair;
                         auto i = date::detail::scan_keyword(is, nm.first, nm.second) - nm.first;
                         checked_set(p, static_cast<int>(i), not_a_ampm, is);
                     }
@@ -1130,6 +1133,9 @@ template <class Duration, class CharT, class Traits, class Alloc = std::allocato
 std::basic_istream<CharT, Traits>&
 from_stream(std::basic_istream<CharT, Traits>& is,
             const CharT* fmt,
+            const std::pair<const std::string*, const std::string*>& month_names_pair,
+            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
+            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
             date::sys_time<Duration>& tp,
             std::basic_string<CharT, Traits, Alloc>* abbrev = nullptr,
             std::chrono::minutes* offset = nullptr)
@@ -1140,7 +1146,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
   auto offptr = offset ? offset : &offset_local;
   date::fields<CT> fds{};
   fds.has_tod = true;
-  rclock::from_stream(is, fmt, fds, abbrev, offptr);
+  rclock::from_stream(is, fmt, month_names_pair, weekday_names_pair, ampm_names_pair, fds, abbrev, offptr);
   if (!fds.ymd.ok() || !fds.tod.in_conventional_range())
     is.setstate(std::ios::failbit);
   if (!is.fail())
@@ -1153,6 +1159,9 @@ template <class Duration, class CharT, class Traits, class Alloc = std::allocato
 std::basic_istream<CharT, Traits>&
 from_stream(std::basic_istream<CharT, Traits>& is,
             const CharT* fmt,
+            const std::pair<const std::string*, const std::string*>& month_names_pair,
+            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
+            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
             date::local_time<Duration>& tp,
             std::basic_string<CharT, Traits, Alloc>* abbrev = nullptr,
             std::chrono::minutes* offset = nullptr)
@@ -1161,7 +1170,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
   using date::detail::round_i;
   date::fields<CT> fds{};
   fds.has_tod = true;
-  rclock::from_stream(is, fmt, fds, abbrev, offset);
+  rclock::from_stream(is, fmt, month_names_pair, weekday_names_pair, ampm_names_pair, fds, abbrev, offset);
   if (!fds.ymd.ok() || !fds.tod.in_conventional_range())
     is.setstate(std::ios::failbit);
   if (!is.fail())
@@ -1183,6 +1192,9 @@ template <class Duration, class CharT, class Traits, class Alloc = std::allocato
 std::basic_istream<CharT, Traits>&
 from_stream(std::basic_istream<CharT, Traits>& is,
             const CharT* fmt,
+            const std::pair<const std::string*, const std::string*>& month_names_pair,
+            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
+            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
             date::year_month_day& ymd,
             date::hh_mm_ss<Duration>& tod,
             std::basic_string<CharT, Traits, Alloc>* abbrev = nullptr,
@@ -1193,7 +1205,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
   std::chrono::minutes* offptr = offset ? offset : &offset_local;
   date::fields<CT> fds{};
   fds.has_tod = true;
-  rclock::from_stream(is, fmt, fds, abbrev, offptr);
+  rclock::from_stream(is, fmt, month_names_pair, weekday_names_pair, ampm_names_pair, fds, abbrev, offptr);
   // Fields must be `ok()` independently, not jointly. i.e. invalid dates are allowed.
   if (!fds.ymd.year().ok() || !fds.ymd.month().ok() || !fds.ymd.day().ok() || !fds.tod.in_conventional_range())
     is.setstate(std::ios::failbit);
@@ -1208,13 +1220,16 @@ template <class CharT, class Traits, class Alloc = std::allocator<CharT>>
 std::basic_istream<CharT, Traits>&
 from_stream(std::basic_istream<CharT, Traits>& is,
             const CharT* fmt,
+            const std::pair<const std::string*, const std::string*>& month_names_pair,
+            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
+            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
             date::year_month_day& ymd,
             std::basic_string<CharT, Traits, Alloc>* abbrev = nullptr,
             std::chrono::minutes* offset = nullptr)
 {
   using CT = std::chrono::seconds;
   date::fields<CT> fds{};
-  rclock::from_stream(is, fmt, fds, abbrev, offset);
+  rclock::from_stream(is, fmt, month_names_pair, weekday_names_pair, ampm_names_pair, fds, abbrev, offset);
   // Fields must be `ok()` independently, not jointly. i.e. invalid dates are allowed.
   if (!fds.ymd.year().ok() || !fds.ymd.month().ok() || !fds.ymd.day().ok())
     is.setstate(std::ios::failbit);

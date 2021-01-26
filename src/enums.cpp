@@ -200,3 +200,19 @@ clock_to_string(const cpp11::integers& clock_int) {
   cpp11::writable::strings out{clock_string};
   return out;
 }
+
+// -----------------------------------------------------------------------------
+
+// [[ include("enums.h") ]]
+enum decimal_mark parse_decimal_mark(const cpp11::strings& x) {
+  if (x.size() != 1) {
+    clock_abort("`decimal_mark` must be a string with length 1.");
+  }
+
+  std::string string = x[0];
+
+  if (string == ".") return decimal_mark::period;
+  if (string == ",") return decimal_mark::comma;
+
+  clock_abort("'%s' is not a recognized `decimal_mark` option.", string.c_str());
+}

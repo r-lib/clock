@@ -132,10 +132,6 @@ year_month_day_minus_year_month_day_cpp <- function(x, y, precision_int) {
   .Call("_clock_year_month_day_minus_year_month_day_cpp", x, y, precision_int, PACKAGE = "clock")
 }
 
-parse_year_month_day_cpp <- function(x, precision_int) {
-  .Call("_clock_parse_year_month_day_cpp", x, precision_int, PACKAGE = "clock")
-}
-
 gregorian_leap_year_cpp <- function(year) {
   .Call("_clock_gregorian_leap_year_cpp", year, PACKAGE = "clock")
 }
@@ -312,8 +308,8 @@ time_point_restore <- function(x, to) {
   .Call("_clock_time_point_restore", x, to, PACKAGE = "clock")
 }
 
-parse_time_point_cpp <- function(x, format, precision_int, clock_int) {
-  .Call("_clock_parse_time_point_cpp", x, format, precision_int, clock_int, PACKAGE = "clock")
+parse_time_point_cpp <- function(x, format, precision_int, clock_int, mon, mon_ab, day, day_ab, am_pm, mark) {
+  .Call("_clock_parse_time_point_cpp", x, format, precision_int, clock_int, mon, mon_ab, day, day_ab, am_pm, mark, PACKAGE = "clock")
 }
 
 weekday_add_days_cpp <- function(x, n) {
@@ -372,6 +368,6 @@ zoned_info_cpp <- function(fields, precision_int, zone) {
   .Call("_clock_zoned_info_cpp", fields, precision_int, zone, PACKAGE = "clock")
 }
 
-parse_zoned_time_cpp <- function(x, format, precision_int) {
-  .Call("_clock_parse_zoned_time_cpp", x, format, precision_int, PACKAGE = "clock")
+parse_zoned_time_cpp <- function(x, format, precision_int, mon, mon_ab, day, day_ab, am_pm, mark) {
+  .Call("_clock_parse_zoned_time_cpp", x, format, precision_int, mon, mon_ab, day, day_ab, am_pm, mark, PACKAGE = "clock")
 }
