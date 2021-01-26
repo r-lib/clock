@@ -316,6 +316,10 @@ parse_time_point_cpp <- function(x, format, precision_int, clock_int, mon, mon_a
   .Call("_clock_parse_time_point_cpp", x, format, precision_int, clock_int, mon, mon_ab, day, day_ab, am_pm, mark, PACKAGE = "clock")
 }
 
+clock_init_utils <- function() {
+  .Call("_clock_clock_init_utils", PACKAGE = "clock")
+}
+
 weekday_add_days_cpp <- function(x, n) {
   .Call("_clock_weekday_add_days_cpp", x, n, PACKAGE = "clock")
 }

@@ -92,7 +92,7 @@ clock_rcrd_restore(SEXP x, SEXP to, SEXP classes) {
   const char* last_field_name_char = CHAR(last_field_name);
 
   // Check if the last field name matches `clock_rcrd:::names`
-  const bool has_names = !strcmp(last_field_name_char, cpp_strings_clock_rcrd_names.c_str());
+  const bool has_names = !strcmp(last_field_name_char, "clock_rcrd:::names");
 
   if (!has_names) {
     // No names, so restore new clock_rcrd without any names
