@@ -336,6 +336,14 @@ clock_rcrd_proxy <- function(x) {
   .Call("_clock_clock_rcrd_proxy", x, PACKAGE = "clock")
 }
 
+clock_rcrd_names <- function(x) {
+  .Call("_clock_clock_rcrd_names", x, PACKAGE = "clock")
+}
+
+clock_rcrd_set_names <- function(x, names) {
+  .Call("_clock_clock_rcrd_set_names", x, names, PACKAGE = "clock")
+}
+
 sys_now_cpp <- function() {
   .Call("_clock_sys_now_cpp", PACKAGE = "clock")
 }

@@ -597,6 +597,20 @@ extern "C" SEXP _clock_clock_rcrd_proxy(SEXP x) {
     return cpp11::as_sexp(clock_rcrd_proxy(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x)));
   END_CPP11
 }
+// rcrd.cpp
+SEXP clock_rcrd_names(SEXP x);
+extern "C" SEXP _clock_clock_rcrd_names(SEXP x) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(clock_rcrd_names(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x)));
+  END_CPP11
+}
+// rcrd.cpp
+SEXP clock_rcrd_set_names(SEXP x, SEXP names);
+extern "C" SEXP _clock_clock_rcrd_set_names(SEXP x, SEXP names) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(clock_rcrd_set_names(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(names)));
+  END_CPP11
+}
 // sys-time.cpp
 cpp11::writable::list sys_now_cpp();
 extern "C" SEXP _clock_sys_now_cpp() {
@@ -750,7 +764,9 @@ extern SEXP _clock_as_year_month_weekday_from_sys_time_cpp(SEXP, SEXP);
 extern SEXP _clock_as_year_quarter_day_from_sys_time_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_as_zoned_sys_time_from_naive_time_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_clock_init_utils();
+extern SEXP _clock_clock_rcrd_names(SEXP);
 extern SEXP _clock_clock_rcrd_proxy(SEXP);
+extern SEXP _clock_clock_rcrd_set_names(SEXP, SEXP);
 extern SEXP _clock_clock_set_install(SEXP);
 extern SEXP _clock_clock_to_string(SEXP);
 extern SEXP _clock_collect_iso_year_week_day_fields(SEXP, SEXP);
@@ -856,7 +872,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_as_year_quarter_day_from_sys_time_cpp",           (DL_FUNC) &_clock_as_year_quarter_day_from_sys_time_cpp,            3},
     {"_clock_as_zoned_sys_time_from_naive_time_cpp",           (DL_FUNC) &_clock_as_zoned_sys_time_from_naive_time_cpp,            5},
     {"_clock_clock_init_utils",                                (DL_FUNC) &_clock_clock_init_utils,                                 0},
+    {"_clock_clock_rcrd_names",                                (DL_FUNC) &_clock_clock_rcrd_names,                                 1},
     {"_clock_clock_rcrd_proxy",                                (DL_FUNC) &_clock_clock_rcrd_proxy,                                 1},
+    {"_clock_clock_rcrd_set_names",                            (DL_FUNC) &_clock_clock_rcrd_set_names,                             2},
     {"_clock_clock_set_install",                               (DL_FUNC) &_clock_clock_set_install,                                1},
     {"_clock_clock_to_string",                                 (DL_FUNC) &_clock_clock_to_string,                                  1},
     {"_clock_collect_iso_year_week_day_fields",                (DL_FUNC) &_clock_collect_iso_year_week_day_fields,                 2},

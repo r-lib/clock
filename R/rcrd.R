@@ -1,71 +1,13 @@
 # ------------------------------------------------------------------------------
 
-clock_rcrd_names <- function(x) {
-  attr(x, "clock_rcrd:::names", exact = TRUE)
-}
-
-clock_rcrd_set_names <- function(x, value) {
-  attrib <- attributes(x)
-
-  # Remove names
-  if (is.null(value)) {
-    attrib[["clock_rcrd:::names"]] <- NULL
-    attributes(x) <- attrib
-
-    return(x)
-  }
-
-  size <- vec_size(x)
-  value <- as_names(value, size)
-
-  attrib[["clock_rcrd:::names"]] <- value
-  attributes(x) <- attrib
-
-  x
-}
-
-as_names <- function(x, size) {
-  x <- unstructure(x)
-
-  if (!is_character(x)) {
-    x <- as.character(x)
-  }
-
-  validate_names(x, size)
-
-  x
-}
-
-validate_names <- function(names, size) {
-  if (is_null(names)) {
-    return(invisible(names))
-  }
-
-  if (!is_character(names)) {
-    abort("Names must be a character vector.")
-  }
-
-  if (length(names) != size) {
-    abort(paste0("Names must have length ", size, " not ", length(names), "."))
-  }
-
-  if (any(is.na(names))) {
-    abort("Names cannot be `NA`.")
-  }
-
-  invisible(names)
-}
-
-# ------------------------------------------------------------------------------
-
 #' @export
 names.clock_rcrd <- function(x) {
-  attr(x, "clock_rcrd:::names", exact = TRUE)
+  .Call("_clock_clock_rcrd_names", x, PACKAGE = "clock")
 }
 
 #' @export
 `names<-.clock_rcrd` <- function(x, value) {
-  clock_rcrd_set_names(x, value)
+  .Call("_clock_clock_rcrd_set_names", x, value, PACKAGE = "clock")
 }
 
 # ------------------------------------------------------------------------------

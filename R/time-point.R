@@ -14,8 +14,12 @@ time_point_precision <- function(x) {
   attr(x, "precision", exact = TRUE)
 }
 
-time_point_duration <- function(x) {
-  names <- NULL
+time_point_duration <- function(x, retain_names = FALSE) {
+  if (retain_names) {
+    names <- clock_rcrd_names(x)
+  } else {
+    names <- NULL
+  }
   precision <- time_point_precision(x)
   new_duration_from_fields(x, precision, names)
 }
@@ -457,9 +461,7 @@ time_point_minus_time_point <- function(x, y, names) {
 
 #' @export
 as_duration.clock_time_point <- function(x) {
-  out <- time_point_duration(x)
-  out <- clock_rcrd_set_names(out, clock_rcrd_names(x))
-  out
+  time_point_duration(x, retain_names = TRUE)
 }
 
 #' @export
