@@ -3784,7 +3784,9 @@ public:
 
     CONSTCD14 std::chrono::seconds& seconds() NOEXCEPT {return s_;}
     CONSTCD11 std::chrono::seconds seconds() const NOEXCEPT {return s_;}
+    // clock-edit-start
     CONSTCD14 precision& subseconds() NOEXCEPT {return sub_s_;}
+    // clock-edit-stop
     CONSTCD11 precision subseconds() const NOEXCEPT {return sub_s_;}
 
     CONSTCD14 precision to_duration() const NOEXCEPT
@@ -3897,17 +3899,23 @@ public:
         {}
 
     CONSTCD11 std::chrono::hours hours() const NOEXCEPT {return h_;}
+    // clock-edit-start
     CONSTCD14 std::chrono::hours&
         hours(detail::undocumented) NOEXCEPT {return h_;}
+    // clock-edit-stop
     CONSTCD11 std::chrono::minutes minutes() const NOEXCEPT {return m_;}
+    // clock-edit-start
     CONSTCD14 std::chrono::minutes&
         minutes(detail::undocumented) NOEXCEPT {return m_;}
+    // clock-edit-stop
     CONSTCD11 std::chrono::seconds seconds() const NOEXCEPT {return s_.seconds();}
     CONSTCD14 std::chrono::seconds&
         seconds(detail::undocumented) NOEXCEPT {return s_.seconds();}
     CONSTCD11 precision subseconds() const NOEXCEPT {return s_.subseconds();}
+    // clock-edit-start
     CONSTCD14 precision&
         subseconds(detail::undocumented) NOEXCEPT {return s_.subseconds();}
+    // clock-edit-stop
     CONSTCD11 bool is_negative() const NOEXCEPT {return neg_;}
 
     CONSTCD11 explicit operator  precision()   const NOEXCEPT {return to_duration();}
