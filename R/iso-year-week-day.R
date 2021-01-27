@@ -612,6 +612,50 @@ as_naive_time.clock_iso_year_week_day <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' Grouping: iso-year-week-day
+#'
+#' Grouping for a iso-year-week-day object can be done at any precision, as
+#' long as `x` is at least as precise as `precision`.
+#'
+#' @inheritParams calendar_group
+#'
+#' @param x `[clock_iso_year_week_day]`
+#'
+#'   A iso-year-week-day to group.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"year"`
+#'   - `"week"`
+#'   - `"day"`
+#'   - `"hour"`
+#'   - `"minute"`
+#'   - `"second"`
+#'   - `"millisecond"`
+#'   - `"microsecond"`
+#'   - `"nanosecond"`
+#'
+#' @return `x` grouped at the specified `precision`.
+#'
+#' @name iso-year-week-day-group
+#'
+#' @export
+#' @examples
+#' x <- iso_year_week_day(2019, 1:52)
+#'
+#' # Group by 3 ISO weeks
+#' calendar_group(x, "week", n = 3)
+#'
+#' y <- iso_year_week_day(2000:2020, 1, 1)
+#'
+#' # Group by 2 ISO years
+#' calendar_group(y, "year", n = 2)
+calendar_group.clock_iso_year_week_day <- function(x, precision, ..., n = 1L) {
+  NextMethod()
+}
+
 #' @export
 calendar_component_grouper.clock_iso_year_week_day <- function(x, component) {
   switch(

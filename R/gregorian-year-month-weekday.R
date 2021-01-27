@@ -759,7 +759,46 @@ calendar_leap_year.clock_year_month_weekday <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' Grouping: year-month-weekday
+#'
+#' Grouping for a year-month-weekday object can be done at any precision except
+#' for `"day"`, as long as `x` is at least as precise as `precision`.
+#'
+#' @details
+#' Grouping by `"day"` is undefined for a year-month-weekday because there are
+#' two day fields, the weekday and the index, and there is no clear way to
+#' define how to group by that.
+#'
+#' @inheritParams calendar_group
+#'
+#' @param x `[clock_year_month_weekday]`
+#'
+#'   A year-month-weekday to group.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"year"`
+#'   - `"month"`
+#'   - `"hour"`
+#'   - `"minute"`
+#'   - `"second"`
+#'   - `"millisecond"`
+#'   - `"microsecond"`
+#'   - `"nanosecond"`
+#'
+#' @return `x` grouped at the specified `precision`.
+#'
+#' @name year-month-weekday-group
+#'
 #' @export
+#' @examples
+#' x <- year_month_weekday(2019, 1:12, 1, 1, 00, 05, 05)
+#' x
+#'
+#' # Group by 3 months - drops more precise components!
+#' calendar_group(x, "month", n = 3)
 calendar_group.clock_year_month_weekday <- function(x, precision, ..., n = 1L) {
   if (identical(precision, "day")) {
     message <- paste0(

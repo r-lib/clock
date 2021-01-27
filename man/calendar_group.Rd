@@ -26,11 +26,23 @@ group by.}
 \code{x} grouped at the specified \code{precision}.
 }
 \description{
-\code{calendar_group()} groups calendar vectors to a multiple of the
-specified precision. The value of the component that matches the supplied
-\code{precision} will be adjusted, and more precise components will be dropped.
+\code{calendar_group()} groups at a multiple of the specified precision. Grouping
+alters the value of a single component (i.e. the month component
+if grouping by month). Components that are more precise than the precision
+being grouped at are dropped altogether (i.e. the day component is dropped
+if grouping by month).
+
+Each calendar has its own help page describing the grouping process in more
+detail:
+\itemize{
+\item \link[=year-month-day-group]{year-month-day}
+\item \link[=year-month-weekday-group]{year-month-weekday}
+\item \link[=iso-year-week-day-group]{iso-year-week-day}
+\item \link[=year-quarter-day-group]{year-quarter-day}
+}
 }
 \examples{
+# See the calendar specific help pages for more examples
 x <- year_month_day(2019, c(1, 1, 2, 2, 3, 3, 4, 4), 1:8)
 x
 
@@ -39,14 +51,4 @@ calendar_group(x, "month", n = 2)
 
 # Group by two days of the month
 calendar_group(x, "day", n = 2)
-
-y <- c(year_quarter_day(2019, 1, 50:60), year_quarter_day(2019, 2, 50:60))
-
-# Group by 3 days of the current quarter
-calendar_group(y, "day", n = 3)
-
-z <- c(iso_year_week_day(2019, 1:10), iso_year_week_day(2020, 1:10))
-
-# Group by 5 ISO weeks of the current ISO year
-calendar_group(z, "week", n = 5)
 }

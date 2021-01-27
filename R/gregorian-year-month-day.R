@@ -899,6 +899,63 @@ calendar_leap_year.clock_year_month_day <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' Grouping: year-month-day
+#'
+#' Grouping for a year-month-day object can be done at any precision, as
+#' long as `x` is at least as precise as `precision`.
+#'
+#' @inheritParams calendar_group
+#'
+#' @param x `[clock_year_month_day]`
+#'
+#'   A year-month-day to group.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"year"`
+#'   - `"month"`
+#'   - `"day"`
+#'   - `"hour"`
+#'   - `"minute"`
+#'   - `"second"`
+#'   - `"millisecond"`
+#'   - `"microsecond"`
+#'   - `"nanosecond"`
+#'
+#' @return `x` grouped at the specified `precision`.
+#'
+#' @name year-month-day-group
+#'
+#' @export
+#' @examples
+#' steps <- duration_days(seq(0, 100, by = 5))
+#' x <- year_month_day(2019, 1, 1)
+#' x <- as_naive_time(x) + steps
+#' x <- as_year_month_day(x)
+#' x
+#'
+#' # Group by a single month
+#' calendar_group(x, "month")
+#'
+#' # Or multiple months
+#' calendar_group(x, "month", n = 2)
+#'
+#' # Group 3 days of the month together
+#' y <- year_month_day(2019, 1, 1:12)
+#' calendar_group(y, "day", n = 3)
+#'
+#' # Group by 5 nanosecond of the current second
+#' z <- year_month_day(
+#'   2019, 1, 2, 1, 5, 20, 1:20,
+#'   subsecond_precision = "nanosecond"
+#' )
+#' calendar_group(z, "nanosecond", n = 5)
+calendar_group.clock_year_month_day <- function(x, precision, ..., n = 1L) {
+  NextMethod()
+}
+
 #' @export
 calendar_component_grouper.clock_year_month_day <- function(x, component) {
   switch(

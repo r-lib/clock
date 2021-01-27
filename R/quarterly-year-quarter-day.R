@@ -658,6 +658,52 @@ as_naive_time.clock_year_quarter_day <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' Grouping: year-quarter-day
+#'
+#' Grouping for a year-quarter-day object can be done at any precision, as
+#' long as `x` is at least as precise as `precision`.
+#'
+#' @inheritParams calendar_group
+#'
+#' @param x `[clock_year_quarter_day]`
+#'
+#'   A year-quarter-day to group.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"year"`
+#'   - `"quarter"`
+#'   - `"day"`
+#'   - `"hour"`
+#'   - `"minute"`
+#'   - `"second"`
+#'   - `"millisecond"`
+#'   - `"microsecond"`
+#'   - `"nanosecond"`
+#'
+#' @return `x` grouped at the specified `precision`.
+#'
+#' @name year-quarter-day-group
+#'
+#' @export
+#' @examples
+#' x <- year_quarter_day(2019, 1:4)
+#' x <- c(x, set_year(x, 2020))
+#'
+#' # Group by 3 quarters
+#' # Note that this is a grouping of 3 quarters of the current year
+#' # (i.e. the count resets at the beginning of the next year)
+#' calendar_group(x, "quarter", n = 3)
+#'
+#' # Group by 5 days of the current quarter
+#' y <- year_quarter_day(2019, 1, 1:90)
+#' calendar_group(y, "day", n = 5)
+calendar_group.clock_year_quarter_day <- function(x, precision, ..., n = 1L) {
+  NextMethod()
+}
+
 #' @export
 calendar_component_grouper.clock_year_quarter_day <- function(x, component) {
   switch(

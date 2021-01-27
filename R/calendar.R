@@ -76,9 +76,23 @@ calendar_leap_year.clock_calendar <- function(x) {
 
 #' Group calendar components
 #'
-#' `calendar_group()` groups calendar vectors to a multiple of the
-#' specified precision. The value of the component that matches the supplied
-#' `precision` will be adjusted, and more precise components will be dropped.
+#' @description
+#' `calendar_group()` groups at a multiple of the specified precision. Grouping
+#' alters the value of a single component (i.e. the month component
+#' if grouping by month). Components that are more precise than the precision
+#' being grouped at are dropped altogether (i.e. the day component is dropped
+#' if grouping by month).
+#'
+#' Each calendar has its own help page describing the grouping process in more
+#' detail:
+#'
+#' - [year-month-day][year-month-day-group]
+#'
+#' - [year-month-weekday][year-month-weekday-group]
+#'
+#' - [iso-year-week-day][iso-year-week-day-group]
+#'
+#' - [year-quarter-day][year-quarter-day-group]
 #'
 #' @inheritParams ellipsis::dots_empty
 #'
@@ -96,8 +110,10 @@ calendar_leap_year.clock_calendar <- function(x) {
 #'   group by.
 #'
 #' @return `x` grouped at the specified `precision`.
+#'
 #' @export
 #' @examples
+#' # See the calendar specific help pages for more examples
 #' x <- year_month_day(2019, c(1, 1, 2, 2, 3, 3, 4, 4), 1:8)
 #' x
 #'
@@ -106,16 +122,6 @@ calendar_leap_year.clock_calendar <- function(x) {
 #'
 #' # Group by two days of the month
 #' calendar_group(x, "day", n = 2)
-#'
-#' y <- c(year_quarter_day(2019, 1, 50:60), year_quarter_day(2019, 2, 50:60))
-#'
-#' # Group by 3 days of the current quarter
-#' calendar_group(y, "day", n = 3)
-#'
-#' z <- c(iso_year_week_day(2019, 1:10), iso_year_week_day(2020, 1:10))
-#'
-#' # Group by 5 ISO weeks of the current ISO year
-#' calendar_group(z, "week", n = 5)
 calendar_group <- function(x, precision, ..., n = 1L) {
   UseMethod("calendar_group")
 }
@@ -142,7 +148,15 @@ calendar_group.clock_calendar <- function(x, precision, ..., n = 1L) {
   x_precision <- calendar_precision(x)
 
   if (x_precision < precision) {
-    abort("Can't floor to a precision that is more precise than `x`.")
+    x_precision <- precision_to_string(x_precision)
+    precision <- precision_to_string(precision)
+
+    message <- paste0(
+      "Can't group at a precision (", precision, ") that is more ",
+      "precise than `x` (", x_precision, ")."
+    )
+
+    abort(message)
   }
 
   x <- calendar_narrow(x, precision_string)
