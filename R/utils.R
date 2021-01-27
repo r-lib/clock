@@ -127,13 +127,6 @@ is_last <- function(x) {
   identical(x, "last")
 }
 
-int_assert <- function(x, arg) {
-  if (!is_integer(x)) {
-    abort(paste0("`", arg, "` must be an integer vector."))
-  }
-  invisible(NULL)
-}
-
 if_else <- function(condition, true, false, na = NULL) {
   vec_assert(condition, logical())
 

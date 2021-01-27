@@ -1,11 +1,3 @@
-new_calendar <- function(fields, precision, ..., names = NULL, class = NULL) {
-  new_clock_rcrd(fields, precision = precision, ..., names = names, class = c(class, "clock_calendar"))
-}
-
-is_calendar <- function(x) {
-  inherits(x, "clock_calendar")
-}
-
 # ------------------------------------------------------------------------------
 
 # - Each subclass implements a `format()` method
