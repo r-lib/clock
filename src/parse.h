@@ -7,6 +7,70 @@
 
 namespace rclock {
 
+/*
+ * Custom version of `read_long_double()` that allows for supplying the
+ * `decimal_mark` directly.
+ */
+template <class CharT, class Traits>
+long double
+read_seconds(std::basic_istream<CharT, Traits>& is,
+             const CharT& decimal_mark,
+             unsigned m = 1,
+             unsigned M = 10)
+{
+    unsigned count = 0;
+    auto decimal_point = Traits::to_int_type(decimal_mark);
+    std::string buf;
+    while (true)
+    {
+        auto ic = is.peek();
+        if (Traits::eq_int_type(ic, Traits::eof()))
+            break;
+        if (Traits::eq_int_type(ic, decimal_point))
+        {
+            buf += '.';
+            decimal_point = Traits::eof();
+            is.get();
+        }
+        else
+        {
+            auto c = static_cast<char>(Traits::to_char_type(ic));
+            if (!('0' <= c && c <= '9'))
+                break;
+            buf += c;
+            (void)is.get();
+        }
+        if (++count == M)
+            break;
+    }
+    if (count < m)
+    {
+        is.setstate(std::ios::failbit);
+        return 0;
+    }
+    return std::stold(buf);
+}
+
+// Takes the `read()` variant for rld, removes the Args..., and
+// uses `read_seconds()`
+template <class CharT, class Traits>
+void
+read(std::basic_istream<CharT, Traits>& is,
+     const CharT& decimal_mark,
+     date::detail::rld a0)
+{
+    auto x = read_seconds(is, decimal_mark, a0.m, a0.M);
+    if (is.fail())
+        return;
+    a0.i = x;
+}
+
+} // namespace rclock
+
+// -----------------------------------------------------------------------------
+
+namespace rclock {
+
 template <class CharT, class Traits, class Duration, class Alloc = std::allocator<CharT>>
 std::basic_istream<CharT, Traits>&
 from_stream(std::basic_istream<CharT, Traits>& is,
@@ -14,6 +78,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
             const std::pair<const std::string*, const std::string*>& month_names_pair,
             const std::pair<const std::string*, const std::string*>& weekday_names_pair,
             const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+            const CharT& decimal_mark,
             date::fields<Duration>& fds,
             std::basic_string<CharT, Traits, Alloc>* abbrev,
             std::chrono::minutes* offset)
@@ -187,8 +252,8 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                         int tH;
                         int tM;
                         long double S;
-                        read(is, ru{tH, 1, 2}, CharT{':'}, ru{tM, 1, 2},
-                                               CharT{':'}, rld{S, 1, w});
+                        read(is, ru{tH, 1, 2}, CharT{':'}, ru{tM, 1, 2}, CharT{':'});
+                        rclock::read(is, decimal_mark, rld{S, 1, w});
                         checked_set(H, tH, not_a_hour, is);
                         checked_set(M, tM, not_a_minute, is);
                         checked_set(s, round_i<Duration>(duration<long double>{S}),
@@ -242,8 +307,8 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                         int tH = not_a_hour;
                         int tM = not_a_minute;
                         long double S;
-                        read(is, ru{tH, 1, 2}, CharT{':'}, ru{tM, 1, 2},
-                                               CharT{':'}, rld{S, 1, w});
+                        read(is, ru{tH, 1, 2}, CharT{':'}, ru{tM, 1, 2}, CharT{':'});
+                        rclock::read(is, decimal_mark, rld{S, 1, w});
                         checked_set(H, tH, not_a_hour, is);
                         checked_set(M, tM, not_a_minute, is);
                         checked_set(s, round_i<Duration>(duration<long double>{S}),
@@ -495,8 +560,8 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                         long double S;
                         int tI = not_a_hour_12_value;
                         int tM = not_a_minute;
-                        read(is, ru{tI, 1, 2}, CharT{':'}, ru{tM, 1, 2},
-                                               CharT{':'}, rld{S, 1, w});
+                        read(is, ru{tI, 1, 2}, CharT{':'}, ru{tM, 1, 2}, CharT{':'});
+                        rclock::read(is, decimal_mark, rld{S, 1, w});
                         checked_set(I, tI, not_a_hour_12_value, is);
                         checked_set(M, tM, not_a_minute, is);
                         checked_set(s, round_i<Duration>(duration<long double>{S}),
@@ -544,7 +609,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                         using dfs = date::detail::decimal_format_seconds<Duration>;
                         CONSTDATA auto w = Duration::period::den == 1 ? 2 : 3 + dfs::width;
                         long double S;
-                        read(is, rld{S, 1, width == -1 ? w : static_cast<unsigned>(width)});
+                        rclock::read(is, decimal_mark, rld{S, 1, width == -1 ? w : static_cast<unsigned>(width)});
                         checked_set(s, round_i<Duration>(duration<long double>{S}),
                                     not_a_second, is);
                     }
@@ -567,8 +632,8 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                         int tH = not_a_hour;
                         int tM = not_a_minute;
                         long double S;
-                        read(is, ru{tH, 1, 2}, CharT{':'}, ru{tM, 1, 2},
-                                               CharT{':'}, rld{S, 1, w});
+                        read(is, ru{tH, 1, 2}, CharT{':'}, ru{tM, 1, 2}, CharT{':'});
+                        rclock::read(is, decimal_mark, rld{S, 1, w});
                         checked_set(H, tH, not_a_hour, is);
                         checked_set(M, tM, not_a_minute, is);
                         checked_set(s, round_i<Duration>(duration<long double>{S}),
@@ -1136,6 +1201,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
             const std::pair<const std::string*, const std::string*>& month_names_pair,
             const std::pair<const std::string*, const std::string*>& weekday_names_pair,
             const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+            const CharT& decimal_mark,
             date::sys_time<Duration>& tp,
             std::basic_string<CharT, Traits, Alloc>* abbrev = nullptr,
             std::chrono::minutes* offset = nullptr)
@@ -1146,7 +1212,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
   auto offptr = offset ? offset : &offset_local;
   date::fields<CT> fds{};
   fds.has_tod = true;
-  rclock::from_stream(is, fmt, month_names_pair, weekday_names_pair, ampm_names_pair, fds, abbrev, offptr);
+  rclock::from_stream(is, fmt, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, fds, abbrev, offptr);
   if (!fds.ymd.ok() || !fds.tod.in_conventional_range())
     is.setstate(std::ios::failbit);
   if (!is.fail())
@@ -1162,6 +1228,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
             const std::pair<const std::string*, const std::string*>& month_names_pair,
             const std::pair<const std::string*, const std::string*>& weekday_names_pair,
             const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+            const CharT& decimal_mark,
             date::local_time<Duration>& tp,
             std::basic_string<CharT, Traits, Alloc>* abbrev = nullptr,
             std::chrono::minutes* offset = nullptr)
@@ -1170,7 +1237,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
   using date::detail::round_i;
   date::fields<CT> fds{};
   fds.has_tod = true;
-  rclock::from_stream(is, fmt, month_names_pair, weekday_names_pair, ampm_names_pair, fds, abbrev, offset);
+  rclock::from_stream(is, fmt, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, fds, abbrev, offset);
   if (!fds.ymd.ok() || !fds.tod.in_conventional_range())
     is.setstate(std::ios::failbit);
   if (!is.fail())
@@ -1185,13 +1252,14 @@ from_stream(std::basic_istream<CharT, Traits>& is,
             const std::pair<const std::string*, const std::string*>& month_names_pair,
             const std::pair<const std::string*, const std::string*>& weekday_names_pair,
             const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+            const CharT& decimal_mark,
             date::year& y,
             std::basic_string<CharT, Traits, Alloc>* abbrev = nullptr,
             std::chrono::minutes* offset = nullptr)
 {
     using CT = std::chrono::seconds;
     date::fields<CT> fds{};
-    rclock::from_stream(is, fmt, month_names_pair, weekday_names_pair, ampm_names_pair, fds, abbrev, offset);
+    rclock::from_stream(is, fmt, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, fds, abbrev, offset);
     if (!fds.ymd.year().ok())
         is.setstate(std::ios::failbit);
     if (!is.fail())
@@ -1206,13 +1274,14 @@ from_stream(std::basic_istream<CharT, Traits>& is,
             const std::pair<const std::string*, const std::string*>& month_names_pair,
             const std::pair<const std::string*, const std::string*>& weekday_names_pair,
             const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+            const CharT& decimal_mark,
             date::year_month& ym,
             std::basic_string<CharT, Traits, Alloc>* abbrev = nullptr,
             std::chrono::minutes* offset = nullptr)
 {
     using CT = std::chrono::seconds;
     date::fields<CT> fds{};
-    rclock::from_stream(is, fmt, month_names_pair, weekday_names_pair, ampm_names_pair, fds, abbrev, offset);
+    rclock::from_stream(is, fmt, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, fds, abbrev, offset);
     if (!fds.ymd.month().ok())
         is.setstate(std::ios::failbit);
     if (!is.fail())
@@ -1237,6 +1306,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
             const std::pair<const std::string*, const std::string*>& month_names_pair,
             const std::pair<const std::string*, const std::string*>& weekday_names_pair,
             const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+            const CharT& decimal_mark,
             date::year_month_day& ymd,
             date::hh_mm_ss<Duration>& tod,
             std::basic_string<CharT, Traits, Alloc>* abbrev = nullptr,
@@ -1247,7 +1317,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
   std::chrono::minutes* offptr = offset ? offset : &offset_local;
   date::fields<CT> fds{};
   fds.has_tod = true;
-  rclock::from_stream(is, fmt, month_names_pair, weekday_names_pair, ampm_names_pair, fds, abbrev, offptr);
+  rclock::from_stream(is, fmt, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, fds, abbrev, offptr);
   // Fields must be `ok()` independently, not jointly. i.e. invalid dates are allowed.
   if (!fds.ymd.year().ok() || !fds.ymd.month().ok() || !fds.ymd.day().ok() || !fds.tod.in_conventional_range())
     is.setstate(std::ios::failbit);
@@ -1265,13 +1335,14 @@ from_stream(std::basic_istream<CharT, Traits>& is,
             const std::pair<const std::string*, const std::string*>& month_names_pair,
             const std::pair<const std::string*, const std::string*>& weekday_names_pair,
             const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+            const CharT& decimal_mark,
             date::year_month_day& ymd,
             std::basic_string<CharT, Traits, Alloc>* abbrev = nullptr,
             std::chrono::minutes* offset = nullptr)
 {
   using CT = std::chrono::seconds;
   date::fields<CT> fds{};
-  rclock::from_stream(is, fmt, month_names_pair, weekday_names_pair, ampm_names_pair, fds, abbrev, offset);
+  rclock::from_stream(is, fmt, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, fds, abbrev, offset);
   // Fields must be `ok()` independently, not jointly. i.e. invalid dates are allowed.
   if (!fds.ymd.year().ok() || !fds.ymd.month().ok() || !fds.ymd.day().ok())
     is.setstate(std::ios::failbit);

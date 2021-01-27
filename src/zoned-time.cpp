@@ -383,8 +383,12 @@ parse_zoned_time_impl(const cpp11::strings& x,
   const SEXP format_sexp = format[0];
   const char* format_char = CHAR(format_sexp);
 
-  const enum decimal_mark dmark = parse_decimal_mark(mark);
-  std::locale loc(std::locale::classic(), new clock_numpunct(dmark));
+  char dmark;
+  switch (parse_decimal_mark(mark)) {
+  case decimal_mark::comma: dmark = ','; break;
+  case decimal_mark::period: dmark = '.'; break;
+  default: clock_abort("Internal error: Unknown decimal mark.");
+  }
 
   std::string month_names[24];
   const std::pair<const std::string*, const std::string*>& month_names_pair = fill_month_names(
@@ -433,6 +437,7 @@ parse_zoned_time_impl(const cpp11::strings& x,
       month_names_pair,
       weekday_names_pair,
       ampm_names_pair,
+      dmark,
       elt_lt,
       &elt_zone,
       &elt_offset
