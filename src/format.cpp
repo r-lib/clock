@@ -19,8 +19,6 @@
 /*
  * Custom seconds formatter to be able to use user-supplied decimal mark.
  * Essentially copies the `decimal_format_seconds` `<<` operator.
- * Requires a bit of a roundabout hack to construct a `decimal_format_seconds`
- * object, as you can't just extract it from `tod`.
  */
 template <class CharT, class Traits, class Duration>
 static
@@ -36,16 +34,15 @@ stream_seconds(std::basic_ostream<CharT, Traits>& os,
   os.fill('0');
   os.width(2);
   os.flags(std::ios::dec | std::ios::right);
-  // TODO: This is a hack to get the private `s_` out from `tod`. Anything better?
-  date::detail::decimal_format_seconds<Duration> s_{tod.seconds() + tod.subseconds()};
-  os << s_.seconds().count();
-  if (s_.width > 0)
+  auto dfs = tod.decimal_format_seconds(date::detail::undocumented{});
+  os << dfs.seconds().count();
+  if (dfs.width > 0)
   {
     os << decimal_mark;
     save_ostream<CharT, Traits> _s(os);
     os.imbue(std::locale::classic());
-    os.width(s_.width);
-    os << s_.subseconds().count();
+    os.width(dfs.width);
+    os << dfs.subseconds().count();
   }
   return os;
 }
