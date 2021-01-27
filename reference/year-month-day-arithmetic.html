@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Clock arithmetic — clock-arithmetic • clock</title>
+<title>Arithmetic: year-month-day — year-month-day-arithmetic • clock</title>
 
 
 <!-- jquery -->
@@ -39,24 +39,16 @@
 
 
 
-<meta property="og:title" content="Clock arithmetic — clock-arithmetic" />
-<meta property="og:description" content="This is the landing page for all clock arithmetic functions. There are
-specific sub-pages describing how arithmetic works for different calendars
-and time points, which is where you should look for more information.
-Calendars are efficient at arithmetic with irregular units of time, such as
-month, quarters, or years.
-year-month-day
-year-month-weekday
-year-quarter-day
-iso-year-week-day
+<meta property="og:title" content="Arithmetic: year-month-day — year-month-day-arithmetic" />
+<meta property="og:description" content="The following arithmetic operations are available for use on year-month-day
+calendar vectors.
+add_years()
+add_quarters()
+add_months()
 
 
-Time points, such as naive-times and sys-times, are efficient at arithmetic
-with regular, well-defined units of time, such as days, hours, seconds,
-or nanoseconds.
-time-point
-
-" />
+Notably, you cannot add days to a year-month-day. For day-based arithmetic,
+first convert to a time point with as_naive_time() or as_sys_time()." />
 
 
 
@@ -136,60 +128,39 @@ time-point
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Clock arithmetic</h1>
-    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/arithmetic.R'><code>R/arithmetic.R</code></a></small>
-    <div class="hidden name"><code>clock-arithmetic.Rd</code></div>
+    <h1>Arithmetic: year-month-day</h1>
+    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/gregorian-year-month-day.R'><code>R/gregorian-year-month-day.R</code></a></small>
+    <div class="hidden name"><code>year-month-day-arithmetic.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This is the landing page for all clock arithmetic functions. There are
-specific sub-pages describing how arithmetic works for different calendars
-and time points, which is where you should look for more information.</p>
-<p>Calendars are efficient at arithmetic with irregular units of time, such as
-month, quarters, or years.</p><ul>
-<li><p><a href='year-month-day-arithmetic.html'>year-month-day</a></p></li>
-<li><p><a href='year-month-weekday-arithmetic.html'>year-month-weekday</a></p></li>
-<li><p><a href='year-quarter-day-arithmetic.html'>year-quarter-day</a></p></li>
-<li><p><a href='iso-year-week-day-arithmetic.html'>iso-year-week-day</a></p></li>
+    <p>The following arithmetic operations are available for use on year-month-day
+calendar vectors.</p><ul>
+<li><p><code><a href='clock-arithmetic.html'>add_years()</a></code></p></li>
+<li><p><code><a href='clock-arithmetic.html'>add_quarters()</a></code></p></li>
+<li><p><code><a href='clock-arithmetic.html'>add_months()</a></code></p></li>
 </ul>
 
-<p>Time points, such as naive-times and sys-times, are efficient at arithmetic
-with regular, well-defined units of time, such as days, hours, seconds,
-or nanoseconds.</p><ul>
-<li><p><a href='time-point-arithmetic.html'>time-point</a></p></li>
-</ul>
-
+<p>Notably, <em>you cannot add days to a year-month-day</em>. For day-based arithmetic,
+first convert to a time point with <code>as_naive_time()</code> or <code>as_sys_time()</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>add_years</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
+    <pre class="usage"><span class='co'># S3 method for clock_year_month_day</span>
+<span class='fu'><a href='clock-arithmetic.html'>add_years</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>add_quarters</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='co'># S3 method for clock_year_month_day</span>
+<span class='fu'><a href='clock-arithmetic.html'>add_quarters</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>add_months</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='fu'>add_weeks</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='fu'>add_days</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='fu'>add_hours</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='fu'>add_minutes</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='fu'>add_seconds</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='fu'>add_milliseconds</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='fu'>add_microseconds</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='fu'>add_nanoseconds</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='co'># S3 method for clock_year_month_day</span>
+<span class='fu'><a href='clock-arithmetic.html'>add_months</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><code>[object]</code></p>
-<p>An object.</p></td>
+      <td><p><code>[clock_year_month_day]</code></p>
+<p>A year-month-day vector.</p></td>
     </tr>
     <tr>
       <th>n</th>
@@ -210,17 +181,38 @@ units of duration.</p></td>
     <p><code>x</code> after performing the arithmetic.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Months and years are considered "irregular" because some months have more
-days then others (28, 29, 30, or 31), and some years have more days than
-others (365 or 366).</p>
-<p>Days are considered "regular" because they are defined as 86,400 seconds.</p>
+    <p>Adding a single quarter with <code><a href='clock-arithmetic.html'>add_quarters()</a></code> is equivalent to adding
+3 months.</p>
+<p><code>x</code> and <code>n</code> are recycled against each other.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># See each sub-page for more specific examples</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>2</span>, <span class='fl'>1</span><span class='op'>)</span>
-<span class='fu'>add_months</span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][1]&gt;
-#&gt; [1] "2019-03-01"</div></pre>
+    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span>
+
+<span class='fu'><a href='clock-arithmetic.html'>add_years</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][5]&gt;
+#&gt; [1] "2020-01-01" "2021-01-01" "2022-01-01" "2023-01-01" "2024-01-01"</div><div class='input'>
+<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>31</span><span class='op'>)</span>
+
+<span class='co'># Adding 1 month to `y` generates an invalid date</span>
+<span class='va'>y_plus</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-arithmetic.html'>add_months</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>y_plus</span>
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=1][2]&gt;
+#&gt; [1] "2019-02-31" "2019-03-31"</div><div class='input'>
+<span class='co'># Invalid dates are fine, as long as they are eventually resolved</span>
+<span class='co'># by either manually resolving, or by calling `invalid_resolve()`</span>
+
+<span class='co'># Resolve by returning the previous / next valid moment in time</span>
+<span class='fu'><a href='clock-invalid.html'>invalid_resolve</a></span><span class='op'>(</span><span class='va'>y_plus</span>, invalid <span class='op'>=</span> <span class='st'>"previous"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][2]&gt;
+#&gt; [1] "2019-02-28" "2019-03-31"</div><div class='input'><span class='fu'><a href='clock-invalid.html'>invalid_resolve</a></span><span class='op'>(</span><span class='va'>y_plus</span>, invalid <span class='op'>=</span> <span class='st'>"next"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][2]&gt;
+#&gt; [1] "2019-03-01" "2019-03-31"</div><div class='input'>
+<span class='co'># Manually resolve by setting to the last day of the month</span>
+<span class='va'>invalid</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-invalid.html'>invalid_detect</a></span><span class='op'>(</span><span class='va'>y_plus</span><span class='op'>)</span>
+<span class='va'>y_plus</span><span class='op'>[</span><span class='va'>invalid</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'>set_day</span><span class='op'>(</span><span class='va'>y_plus</span><span class='op'>[</span><span class='va'>invalid</span><span class='op'>]</span>, <span class='st'>"last"</span><span class='op'>)</span>
+<span class='va'>y_plus</span>
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][2]&gt;
+#&gt; [1] "2019-02-28" "2019-03-31"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

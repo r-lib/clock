@@ -120,13 +120,13 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2019-05-01"</span><span class="op">)</span>
 
-<span class="fu">add_days</span><span class="op">(</span><span class="va">x</span>, <span class="fl">5</span><span class="op">)</span>
+<span class="fu"><a href="reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">5</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2019-05-06"</span></code></pre></div>
 <p>To add 5 hours:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-01 02:30:00"</span>, tz <span class="op">=</span> <span class="st">"America/New_York"</span><span class="op">)</span>
 
-<span class="fu">add_hours</span><span class="op">(</span><span class="va">y</span>, <span class="fl">5</span><span class="op">)</span>
+<span class="fu"><a href="reference/clock-arithmetic.html">add_hours</a></span><span class="op">(</span><span class="va">y</span>, <span class="fl">5</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2019-01-01 07:30:00 EST"</span></code></pre></div>
 <p>To get the month:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
