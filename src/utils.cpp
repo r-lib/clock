@@ -15,6 +15,8 @@ SEXP strings_clock_year_month_day = NULL;
 SEXP strings_clock_year_month_weekday = NULL;
 SEXP strings_clock_iso_year_week_day = NULL;
 SEXP strings_clock_year_quarter_day = NULL;
+SEXP strings_data_frame = NULL;
+SEXP strings_clock_rcrd_names = NULL;
 
 SEXP syms_precision = NULL;
 SEXP syms_start = NULL;
@@ -30,11 +32,14 @@ SEXP classes_year_month_day = NULL;
 SEXP classes_year_month_weekday = NULL;
 SEXP classes_iso_year_week_day = NULL;
 SEXP classes_year_quarter_day = NULL;
+SEXP classes_data_frame = NULL;
+
+SEXP ints_empty = NULL;
 
 [[cpp11::register]]
 SEXP
 clock_init_utils() {
-  strings = Rf_allocVector(STRSXP, 14);
+  strings = Rf_allocVector(STRSXP, 16);
   R_PreserveObject(strings);
   MARK_NOT_MUTABLE(strings);
 
@@ -79,6 +84,12 @@ clock_init_utils() {
 
   strings_clock_year_quarter_day = Rf_mkChar("clock_year_quarter_day");
   SET_STRING_ELT(strings, 13, strings_clock_year_quarter_day);
+
+  strings_data_frame = Rf_mkChar("data.frame");
+  SET_STRING_ELT(strings, 14, strings_data_frame);
+
+  strings_clock_rcrd_names = Rf_mkChar("clock_rcrd:::names");
+  SET_STRING_ELT(strings, 15, strings_clock_rcrd_names);
 
 
   syms_precision = Rf_install("precision");
@@ -157,6 +168,16 @@ clock_init_utils() {
   SET_STRING_ELT(classes_year_quarter_day, 2, strings_clock_rcrd);
   SET_STRING_ELT(classes_year_quarter_day, 3, strings_vctrs_rcrd);
   SET_STRING_ELT(classes_year_quarter_day, 4, strings_vctrs_vctr);
+
+  classes_data_frame = Rf_allocVector(STRSXP, 1);
+  R_PreserveObject(classes_data_frame);
+  MARK_NOT_MUTABLE(classes_data_frame);
+  SET_STRING_ELT(classes_data_frame, 0, strings_data_frame);
+
+
+  ints_empty = Rf_allocVector(INTSXP, 0);
+  R_PreserveObject(ints_empty);
+  MARK_NOT_MUTABLE(ints_empty);
 
   return r_null;
 }

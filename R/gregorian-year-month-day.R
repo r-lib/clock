@@ -129,7 +129,7 @@ year_month_day <- function(year,
 
 #' @export
 vec_proxy.clock_year_month_day <- function(x, ...) {
-  clock_rcrd_proxy(x)
+  .Call("_clock_clock_rcrd_proxy", x, PACKAGE = "clock")
 }
 
 #' @export

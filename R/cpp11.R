@@ -332,6 +332,10 @@ year_quarter_day_minus_year_quarter_day_cpp <- function(x, y, precision_int, sta
   .Call("_clock_year_quarter_day_minus_year_quarter_day_cpp", x, y, precision_int, start_int, PACKAGE = "clock")
 }
 
+clock_rcrd_proxy <- function(x) {
+  .Call("_clock_clock_rcrd_proxy", x, PACKAGE = "clock")
+}
+
 sys_now_cpp <- function() {
   .Call("_clock_sys_now_cpp", PACKAGE = "clock")
 }

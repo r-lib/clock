@@ -121,7 +121,7 @@ parse_zoned_time <- function(x,
 
 #' @export
 vec_proxy.clock_zoned_time <- function(x, ...) {
-  clock_rcrd_proxy(x)
+  .Call("_clock_clock_rcrd_proxy", x, PACKAGE = "clock")
 }
 
 #' @export

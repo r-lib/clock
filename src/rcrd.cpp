@@ -81,6 +81,64 @@ validate_names(SEXP names, r_ssize size) {
 
 // -----------------------------------------------------------------------------
 
+[[cpp11::register]]
+SEXP
+clock_rcrd_proxy(SEXP x) {
+  if (TYPEOF(x) != VECSXP) {
+    clock_abort("`x` must be a list.");
+  }
+
+  // clock-rcrds always have at least 1 field
+  SEXP field = VECTOR_ELT(x, 0);
+  const r_ssize size = Rf_xlength(field);
+
+  SEXP field_names = Rf_getAttrib(x, R_NamesSymbol);
+  const r_ssize n_fields = Rf_xlength(x);
+  const SEXP* p_x = r_list_deref_const(x);
+
+  SEXP names = Rf_getAttrib(x, syms_clock_rcrd_names);
+
+  if (names == r_null) {
+    // Most common case - Return a new clean data frame
+    SEXP out = PROTECT(Rf_allocVector(VECSXP, n_fields));
+
+    for (r_ssize i = 0; i < n_fields; ++i) {
+      SET_VECTOR_ELT(out, i, p_x[i]);
+    }
+
+    Rf_setAttrib(out, R_NamesSymbol, field_names);
+    r_init_data_frame(out, size);
+
+    UNPROTECT(1);
+    return out;
+  }
+
+  // Otherwise, extend `x` by 1 by adding the names as a column
+
+  const r_ssize n_fields_out = n_fields + 1;
+
+  SEXP out = PROTECT(Rf_allocVector(VECSXP, n_fields_out));
+  SEXP out_names = PROTECT(Rf_allocVector(STRSXP, n_fields_out));
+
+  const SEXP* p_field_names = r_chr_deref_const(field_names);
+
+  for (r_ssize i = 0; i < n_fields; ++i) {
+    SET_VECTOR_ELT(out, i, p_x[i]);
+    SET_STRING_ELT(out_names, i, p_field_names[i]);
+  }
+
+  SET_VECTOR_ELT(out, n_fields, names);
+  SET_STRING_ELT(out_names, n_fields, strings_clock_rcrd_names);
+
+  Rf_setAttrib(out, R_NamesSymbol, out_names);
+  r_init_data_frame(out, size);
+
+  UNPROTECT(2);
+  return out;
+}
+
+// -----------------------------------------------------------------------------
+
 SEXP
 clock_rcrd_restore(SEXP x, SEXP to, SEXP classes) {
   const r_ssize size = Rf_xlength(x);

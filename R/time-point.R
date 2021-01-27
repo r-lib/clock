@@ -153,7 +153,7 @@ pillar_shaft.clock_time_point <- function(x, ...) {
 
 #' @export
 vec_proxy.clock_time_point <- function(x, ...) {
-  clock_rcrd_proxy(x)
+  .Call("_clock_clock_rcrd_proxy", x, PACKAGE = "clock")
 }
 
 #' @export

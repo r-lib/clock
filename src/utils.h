@@ -10,6 +10,7 @@
 // -----------------------------------------------------------------------------
 
 extern SEXP strings_empty;
+extern SEXP strings_clock_rcrd_names;
 
 extern SEXP syms_precision;
 extern SEXP syms_start;
@@ -25,6 +26,9 @@ extern SEXP classes_year_month_day;
 extern SEXP classes_year_month_weekday;
 extern SEXP classes_iso_year_week_day;
 extern SEXP classes_year_quarter_day;
+extern SEXP classes_data_frame;
+
+extern SEXP ints_empty;
 
 // -----------------------------------------------------------------------------
 
@@ -98,6 +102,39 @@ r_repair_na_names(SEXP names) {
 
   UNPROTECT(1);
   return out;
+}
+
+// -----------------------------------------------------------------------------
+
+static
+inline
+SEXP new_compact_rownames(r_ssize n_rows) {
+  if (n_rows <= 0) {
+    return ints_empty;
+  }
+
+  SEXP out = Rf_allocVector(INTSXP, 2);
+  int* p_out = INTEGER(out);
+  p_out[0] = r_int_na;
+  p_out[1] = -n_rows;
+
+  return out;
+}
+
+static
+inline
+void init_compact_rownames(SEXP x, r_ssize n_rows) {
+  SEXP rn = PROTECT(new_compact_rownames(n_rows));
+  Rf_setAttrib(x, R_RowNamesSymbol, rn);
+  UNPROTECT(1);
+}
+
+static
+inline
+void
+r_init_data_frame(SEXP x, r_ssize n_rows) {
+  init_compact_rownames(x, n_rows);
+  Rf_setAttrib(x, R_ClassSymbol, classes_data_frame);
 }
 
 // -----------------------------------------------------------------------------
