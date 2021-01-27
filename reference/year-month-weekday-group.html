@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Group calendar components — calendar_group • clock</title>
+<title>Grouping: year-month-weekday — year-month-weekday-group • clock</title>
 
 
 <!-- jquery -->
@@ -39,20 +39,9 @@
 
 
 
-<meta property="og:title" content="Group calendar components — calendar_group" />
-<meta property="og:description" content="calendar_group() groups at a multiple of the specified precision. Grouping
-alters the value of a single component (i.e. the month component
-if grouping by month). Components that are more precise than the precision
-being grouped at are dropped altogether (i.e. the day component is dropped
-if grouping by month).
-Each calendar has its own help page describing the grouping process in more
-detail:
-year-month-day
-year-month-weekday
-iso-year-week-day
-year-quarter-day
-
-" />
+<meta property="og:title" content="Grouping: year-month-weekday — year-month-weekday-group" />
+<meta property="og:description" content="Grouping for a year-month-weekday object can be done at any precision except
+for &quot;day&quot;, as long as x is at least as precise as precision." />
 
 
 
@@ -132,41 +121,40 @@ year-quarter-day
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Group calendar components</h1>
-    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/calendar.R'><code>R/calendar.R</code></a></small>
-    <div class="hidden name"><code>calendar_group.Rd</code></div>
+    <h1>Grouping: year-month-weekday</h1>
+    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/gregorian-year-month-weekday.R'><code>R/gregorian-year-month-weekday.R</code></a></small>
+    <div class="hidden name"><code>year-month-weekday-group.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>calendar_group()</code> groups at a multiple of the specified precision. Grouping
-alters the value of a single component (i.e. the month component
-if grouping by month). Components that are more precise than the precision
-being grouped at are dropped altogether (i.e. the day component is dropped
-if grouping by month).</p>
-<p>Each calendar has its own help page describing the grouping process in more
-detail:</p><ul>
-<li><p><a href='year-month-day-group.html'>year-month-day</a></p></li>
-<li><p><a href='year-month-weekday-group.html'>year-month-weekday</a></p></li>
-<li><p><a href='iso-year-week-day-group.html'>iso-year-week-day</a></p></li>
-<li><p><a href='year-quarter-day-group.html'>year-quarter-day</a></p></li>
-</ul>
-
+    <p>Grouping for a year-month-weekday object can be done at any precision except
+for <code>"day"</code>, as long as <code>x</code> is at least as precise as <code>precision</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>calendar_group</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>precision</span>, <span class='va'>...</span>, n <span class='op'>=</span> <span class='fl'>1L</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='co'># S3 method for clock_year_month_weekday</span>
+<span class='fu'><a href='calendar_group.html'>calendar_group</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>precision</span>, <span class='va'>...</span>, n <span class='op'>=</span> <span class='fl'>1L</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><code>[calendar]</code></p>
-<p>A calendar vector.</p></td>
+      <td><p><code>[clock_year_month_weekday]</code></p>
+<p>A year-month-weekday to group.</p></td>
     </tr>
     <tr>
       <th>precision</th>
       <td><p><code>[character(1)]</code></p>
-<p>A precision. Allowed precisions are dependent on the calendar used.</p></td>
+<p>One of:</p><ul>
+<li><p><code>"year"</code></p></li>
+<li><p><code>"month"</code></p></li>
+<li><p><code>"hour"</code></p></li>
+<li><p><code>"minute"</code></p></li>
+<li><p><code>"second"</code></p></li>
+<li><p><code>"millisecond"</code></p></li>
+<li><p><code>"microsecond"</code></p></li>
+<li><p><code>"nanosecond"</code></p></li>
+</ul></td>
     </tr>
     <tr>
       <th>...</th>
@@ -183,24 +171,27 @@ group by.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>x</code> grouped at the specified <code>precision</code>.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Grouping by <code>"day"</code> is undefined for a year-month-weekday because there are
+two day fields, the weekday and the index, and there is no clear way to
+define how to group by that.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># See the calendar specific help pages for more examples</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>4</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_weekday.html'>year_month_weekday</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>00</span>, <span class='fl'>05</span>, <span class='fl'>05</span><span class='op'>)</span>
 <span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][8]&gt;
-#&gt; [1] "2019-01-01" "2019-01-02" "2019-02-03" "2019-02-04" "2019-03-05"
-#&gt; [6] "2019-03-06" "2019-04-07" "2019-04-08"</div><div class='input'>
-<span class='co'># Group by two months</span>
-<span class='fu'>calendar_group</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"month"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;month&gt;[invalid=0][8]&gt;
-#&gt; [1] "2019-01" "2019-01" "2019-01" "2019-01" "2019-03" "2019-03" "2019-03"
-#&gt; [8] "2019-03"</div><div class='input'>
-<span class='co'># Group by two days of the month</span>
-<span class='fu'>calendar_group</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][8]&gt;
-#&gt; [1] "2019-01-01" "2019-01-01" "2019-02-03" "2019-02-03" "2019-03-05"
-#&gt; [6] "2019-03-05" "2019-04-07" "2019-04-07"</div></pre>
+</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;second&gt;[invalid=0][12]&gt;
+#&gt;  [1] "2019-01-Sun[1] 00:05:05" "2019-02-Sun[1] 00:05:05"
+#&gt;  [3] "2019-03-Sun[1] 00:05:05" "2019-04-Sun[1] 00:05:05"
+#&gt;  [5] "2019-05-Sun[1] 00:05:05" "2019-06-Sun[1] 00:05:05"
+#&gt;  [7] "2019-07-Sun[1] 00:05:05" "2019-08-Sun[1] 00:05:05"
+#&gt;  [9] "2019-09-Sun[1] 00:05:05" "2019-10-Sun[1] 00:05:05"
+#&gt; [11] "2019-11-Sun[1] 00:05:05" "2019-12-Sun[1] 00:05:05"</div><div class='input'>
+<span class='co'># Group by 3 months - drops more precise components!</span>
+<span class='fu'><a href='calendar_group.html'>calendar_group</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"month"</span>, n <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;month&gt;[invalid=0][12]&gt;
+#&gt;  [1] "2019-01" "2019-01" "2019-01" "2019-04" "2019-04" "2019-04" "2019-07"
+#&gt;  [8] "2019-07" "2019-07" "2019-10" "2019-10" "2019-10"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
