@@ -64,49 +64,6 @@ r_list_deref_const(SEXP x) {
 
 static
 inline
-bool
-r_chr_any_na(const SEXP* p_x, r_ssize size) {
-  for (r_ssize i = 0; i < size; ++i) {
-    if (p_x[i] == r_chr_na) {
-      return true;
-    }
-  }
-  return false;
-}
-
-static
-inline
-SEXP
-r_repair_na_names(SEXP names) {
-  const SEXP* p_names = r_chr_deref_const(names);
-  const r_ssize size = Rf_xlength(names);
-
-  bool any_na = r_chr_any_na(p_names, size);
-
-  if (!any_na) {
-    return names;
-  }
-
-  SEXP out = PROTECT(Rf_allocVector(STRSXP, size));
-
-  for (r_ssize i = 0; i < size; ++i) {
-    const SEXP name = p_names[i];
-
-    if (name == r_chr_na) {
-      SET_STRING_ELT(out, i, strings_empty);
-    } else {
-      SET_STRING_ELT(out, i, name);
-    }
-  }
-
-  UNPROTECT(1);
-  return out;
-}
-
-// -----------------------------------------------------------------------------
-
-static
-inline
 SEXP new_compact_rownames(r_ssize n_rows) {
   if (n_rows <= 0) {
     return ints_empty;
