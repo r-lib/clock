@@ -12,6 +12,7 @@
 extern SEXP strings_empty;
 
 extern SEXP syms_precision;
+extern SEXP syms_start;
 extern SEXP syms_clock;
 extern SEXP syms_zone;
 extern SEXP syms_clock_rcrd_names;
@@ -20,6 +21,10 @@ extern SEXP classes_duration;
 extern SEXP classes_sys_time;
 extern SEXP classes_naive_time;
 extern SEXP classes_zoned_time;
+extern SEXP classes_year_month_day;
+extern SEXP classes_year_month_weekday;
+extern SEXP classes_iso_year_week_day;
+extern SEXP classes_year_quarter_day;
 
 // -----------------------------------------------------------------------------
 

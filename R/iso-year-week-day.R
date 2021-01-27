@@ -46,7 +46,9 @@ iso_year_week_day <- function(year,
 
   fields <- collect_iso_year_week_day_fields(fields, precision)
 
-  out <- new_iso_year_week_day_from_fields(fields, precision)
+  names <- NULL
+
+  out <- new_iso_year_week_day_from_fields(fields, precision, names)
 
   if (last) {
     out <- set_week(out, "last")
@@ -58,77 +60,13 @@ iso_year_week_day <- function(year,
 # ------------------------------------------------------------------------------
 
 #' @export
-new_iso_year_week_day <- function(year = integer(),
-                                  week = integer(),
-                                  day = integer(),
-                                  hour = integer(),
-                                  minute = integer(),
-                                  second = integer(),
-                                  subsecond = integer(),
-                                  precision = 0L,
-                                  ...,
-                                  names = NULL,
-                                  class = NULL) {
-  if (!is.integer(precision)) {
-    abort("`precision` must be an integer.")
-  }
-
-  precision_string <- precision_to_string(precision)
-
-  fields <- switch(
-    precision_string,
-    year = list(year = year),
-    week = list(year = year, week = week),
-    day = list(year = year, week = week, day = day),
-    hour = list(year = year, week = week, day = day, hour = hour),
-    minute = list(year = year, week = week, day = day, hour = hour, minute = minute),
-    second = list(year = year, week = week, day = day, hour = hour, minute = minute, second = second),
-    millisecond = list(year = year, week = week, day = day, hour = hour, minute = minute, second = second, subsecond = subsecond),
-    microsecond = list(year = year, week = week, day = day, hour = hour, minute = minute, second = second, subsecond = subsecond),
-    nanosecond = list(year = year, week = week, day = day, hour = hour, minute = minute, second = second, subsecond = subsecond)
-  )
-
-  field_names <- names(fields)
-  for (i in seq_along(fields)) {
-    int_assert(fields[[i]], field_names[[i]])
-  }
-
-  new_calendar(
-    fields = fields,
-    precision = precision,
-    ...,
-    names = names,
-    class = c(class, "clock_iso_year_week_day")
-  )
-}
-
-new_iso_year_week_day_from_fields <- function(fields, precision, names = NULL) {
-  new_iso_year_week_day(
-    year = fields$year,
-    week = fields$week,
-    day = fields$day,
-    hour = fields$hour,
-    minute = fields$minute,
-    second = fields$second,
-    subsecond = fields$subsecond,
-    precision = precision,
-    names = names
-  )
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
 vec_proxy.clock_iso_year_week_day <- function(x, ...) {
   clock_rcrd_proxy(x)
 }
 
 #' @export
 vec_restore.clock_iso_year_week_day <- function(x, to, ...) {
-  fields <- clock_rcrd_restore_fields(x)
-  names <- clock_rcrd_restore_names(x)
-  precision <- calendar_precision(to)
-  new_iso_year_week_day_from_fields(fields, precision, names)
+  .Call("_clock_iso_year_week_day_restore", x, to, PACKAGE = "clock")
 }
 
 #' @export
@@ -717,5 +655,5 @@ calendar_narrow.clock_iso_year_week_day <- function(x, precision) {
     out_fields <- calendar_narrow_time(out_fields, precision, x_fields, x_precision)
   }
 
-  new_iso_year_week_day_from_fields(out_fields, precision = precision, names = names(x))
+  new_iso_year_week_day_from_fields(out_fields, precision, names = names(x))
 }

@@ -87,7 +87,9 @@ year_month_weekday <- function(year,
 
   fields <- collect_year_month_weekday_fields(fields, precision)
 
-  out <- new_year_month_weekday_from_fields(fields, precision)
+  names <- NULL
+
+  out <- new_year_month_weekday_from_fields(fields, precision, names)
 
   if (last) {
     out <- set_index(out, "last")
@@ -99,79 +101,13 @@ year_month_weekday <- function(year,
 # ------------------------------------------------------------------------------
 
 #' @export
-new_year_month_weekday <- function(year = integer(),
-                                   month = integer(),
-                                   day = integer(),
-                                   index = integer(),
-                                   hour = integer(),
-                                   minute = integer(),
-                                   second = integer(),
-                                   subsecond = integer(),
-                                   precision = 0L,
-                                   ...,
-                                   names = NULL,
-                                   class = NULL) {
-  if (!is.integer(precision)) {
-    abort("`precision` must be an integer.")
-  }
-
-  precision_string <- precision_to_string(precision)
-
-  fields <- switch(
-    precision_string,
-    year = list(year = year),
-    month = list(year = year, month = month),
-    day = list(year = year, month = month, day = day, index = index),
-    hour = list(year = year, month = month, day = day, index = index, hour = hour),
-    minute = list(year = year, month = month, day = day, index = index, hour = hour, minute = minute),
-    second = list(year = year, month = month, day = day, index = index, hour = hour, minute = minute, second = second),
-    millisecond = list(year = year, month = month, day = day, index = index, hour = hour, minute = minute, second = second, subsecond = subsecond),
-    microsecond = list(year = year, month = month, day = day, index = index, hour = hour, minute = minute, second = second, subsecond = subsecond),
-    nanosecond = list(year = year, month = month, day = day, index = index, hour = hour, minute = minute, second = second, subsecond = subsecond)
-  )
-
-  field_names <- names(fields)
-  for (i in seq_along(fields)) {
-    int_assert(fields[[i]], field_names[[i]])
-  }
-
-  new_calendar(
-    fields = fields,
-    precision = precision,
-    ...,
-    names = names,
-    class = c(class, "clock_year_month_weekday")
-  )
-}
-
-new_year_month_weekday_from_fields <- function(fields, precision, names = NULL) {
-  new_year_month_weekday(
-    year = fields$year,
-    month = fields$month,
-    day = fields$day,
-    index = fields$index,
-    hour = fields$hour,
-    minute = fields$minute,
-    second = fields$second,
-    subsecond = fields$subsecond,
-    precision = precision,
-    names = names
-  )
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
 vec_proxy.clock_year_month_weekday <- function(x, ...) {
   clock_rcrd_proxy(x)
 }
 
 #' @export
 vec_restore.clock_year_month_weekday <- function(x, to, ...) {
-  fields <- clock_rcrd_restore_fields(x)
-  names <- clock_rcrd_restore_names(x)
-  precision <- calendar_precision(to)
-  new_year_month_weekday_from_fields(fields, precision, names)
+  .Call("_clock_year_month_weekday_restore", x, to, PACKAGE = "clock")
 }
 
 #' @export
@@ -415,17 +351,10 @@ set_day.clock_year_month_weekday <- function(x, value, ..., index = NULL) {
       abort("For 'month' precision 'year_month_weekday', both the day and index must be set simultaneously.")
     }
 
-    ones <- ones_along(x, na_propagate = TRUE)
-
     # Promote up to day precision so we can assign to fields individually
-    x <- new_year_month_weekday(
-      year = get_year(x),
-      month = get_month(x),
-      day = ones,
-      index = ones,
-      precision = PRECISION_DAY,
-      names = names(x)
-    )
+    ones <- ones_along(x, na_propagate = TRUE)
+    fields <- list(year = get_year(x), month = get_month(x), day = ones, index = ones)
+    x <- new_year_month_weekday_from_fields(fields, PRECISION_DAY, names(x))
   }
 
   out <- set_field_year_month_weekday(x, value, "day")
@@ -887,5 +816,5 @@ calendar_narrow.clock_year_month_weekday <- function(x, precision) {
     out_fields <- calendar_narrow_time(out_fields, precision, x_fields, x_precision)
   }
 
-  new_year_month_weekday_from_fields(out_fields, precision = precision, names = names(x))
+  new_year_month_weekday_from_fields(out_fields, precision, names = names(x))
 }

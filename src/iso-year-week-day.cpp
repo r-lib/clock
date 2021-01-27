@@ -4,6 +4,61 @@
 #include "check.h"
 #include "enums.h"
 #include "get.h"
+#include "rcrd.h"
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+SEXP
+new_iso_year_week_day_from_fields(SEXP fields,
+                                  const cpp11::integers& precision_int,
+                                  SEXP names) {
+  const enum precision precision_val = parse_precision(precision_int);
+
+  const r_ssize n_fields = Rf_xlength(fields);
+
+  r_ssize n;
+  switch (precision_val) {
+  case precision::year: n = 1; break;
+  case precision::week: n = 2; break;
+  case precision::day: n = 3; break;
+  case precision::hour: n = 4; break;
+  case precision::minute: n = 5; break;
+  case precision::second: n = 6; break;
+  case precision::millisecond: n = 7; break;
+  case precision::microsecond: n = 7; break;
+  case precision::nanosecond: n = 7; break;
+  default: never_reached("new_iso_year_week_day_from_fields");
+  }
+
+  if (n != n_fields) {
+    clock_abort("With the given precision, `fields` must have length %i, not %i.", n, n_fields);
+  }
+
+  SEXP out = PROTECT(new_clock_rcrd_from_fields(fields, names, classes_iso_year_week_day));
+
+  Rf_setAttrib(out, syms_precision, precision_int);
+
+  UNPROTECT(1);
+  return out;
+}
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+SEXP
+iso_year_week_day_restore(SEXP x, SEXP to) {
+  SEXP precision = Rf_getAttrib(to, syms_precision);
+
+  SEXP out = PROTECT(clock_rcrd_restore(x, to, classes_iso_year_week_day));
+
+  Rf_setAttrib(out, syms_precision, precision);
+
+  UNPROTECT(1);
+  return out;
+}
+
+// -----------------------------------------------------------------------------
 
 [[cpp11::register]]
 void

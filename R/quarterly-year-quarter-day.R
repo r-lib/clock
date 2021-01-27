@@ -49,7 +49,9 @@ year_quarter_day <- function(year,
 
   fields <- collect_year_quarter_day_fields(fields, precision, start)
 
-  out <- new_year_quarter_day_from_fields(fields, precision, start)
+  names <- NULL
+
+  out <- new_year_quarter_day_from_fields(fields, precision, start, names)
 
   if (last) {
     out <- set_day(out, "last")
@@ -61,85 +63,13 @@ year_quarter_day <- function(year,
 # ------------------------------------------------------------------------------
 
 #' @export
-new_year_quarter_day <- function(year = integer(),
-                                 quarter = integer(),
-                                 day = integer(),
-                                 hour = integer(),
-                                 minute = integer(),
-                                 second = integer(),
-                                 subsecond = integer(),
-                                 precision = 0L,
-                                 start = 1L,
-                                 ...,
-                                 names = NULL,
-                                 class = NULL) {
-  if (!is.integer(precision)) {
-    abort("`precision` must be an integer.")
-  }
-
-  precision_string <- precision_to_string(precision)
-
-  if (!is_integer(start, n = 1L)) {
-    abort("`start` must be a single integer.")
-  }
-
-  fields <- switch(
-    precision_string,
-    year = list(year = year),
-    quarter = list(year = year, quarter = quarter),
-    day = list(year = year, quarter = quarter, day = day),
-    hour = list(year = year, quarter = quarter, day = day, hour = hour),
-    minute = list(year = year, quarter = quarter, day = day, hour = hour, minute = minute),
-    second = list(year = year, quarter = quarter, day = day, hour = hour, minute = minute, second = second),
-    millisecond = list(year = year, quarter = quarter, day = day, hour = hour, minute = minute, second = second, subsecond = subsecond),
-    microsecond = list(year = year, quarter = quarter, day = day, hour = hour, minute = minute, second = second, subsecond = subsecond),
-    nanosecond = list(year = year, quarter = quarter, day = day, hour = hour, minute = minute, second = second, subsecond = subsecond)
-  )
-
-  field_names <- names(fields)
-  for (i in seq_along(fields)) {
-    int_assert(fields[[i]], field_names[[i]])
-  }
-
-  new_calendar(
-    fields = fields,
-    precision = precision,
-    start = start,
-    ...,
-    names = names,
-    class = c(class, "clock_year_quarter_day")
-  )
-}
-
-new_year_quarter_day_from_fields <- function(fields, precision, start, names = NULL) {
-  new_year_quarter_day(
-    year = fields$year,
-    quarter = fields$quarter,
-    day = fields$day,
-    hour = fields$hour,
-    minute = fields$minute,
-    second = fields$second,
-    subsecond = fields$subsecond,
-    precision = precision,
-    start = start,
-    names = names
-  )
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
 vec_proxy.clock_year_quarter_day <- function(x, ...) {
   clock_rcrd_proxy(x)
 }
 
 #' @export
 vec_restore.clock_year_quarter_day <- function(x, to, ...) {
-  fields <- clock_rcrd_restore_fields(x)
-  names <- clock_rcrd_restore_names(x)
-  precision <- calendar_precision(to)
-  start <- quarterly_start(to)
-  new_year_quarter_day_from_fields(fields, precision, start, names)
+  .Call("_clock_year_quarter_day_restore", x, to, PACKAGE = "clock")
 }
 
 #' @export
