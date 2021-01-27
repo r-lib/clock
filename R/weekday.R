@@ -50,12 +50,12 @@ is_weekday <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-format.clock_weekday <- function(x, ..., locale = default_date_locale()) {
-  if (!is_date_locale(locale)) {
-    abort("`locale` must be a date locale object.")
+format.clock_weekday <- function(x, ..., locale = default_clock_locale()) {
+  if (!is_clock_locale(locale)) {
+    abort("`locale` must be a 'clock_locale' object.")
   }
 
-  day_ab <- locale$date_names$day_ab
+  day_ab <- locale$mapping$day_ab
 
   out <- format_weekday_cpp(x, day_ab)
   names(out) <- names(x)

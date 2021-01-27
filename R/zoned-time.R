@@ -36,10 +36,10 @@ zoned_time_naive_time <- function(x) {
 format.clock_zoned_time <- function(x,
                                     ...,
                                     format = NULL,
-                                    locale = default_date_locale(),
+                                    locale = default_clock_locale(),
                                     abbreviate_zone = FALSE) {
-  if (!is_date_locale(locale)) {
-    abort("`locale` must be a date locale object.")
+  if (!is_clock_locale(locale)) {
+    abort("`locale` must be a 'clock_locale' object.")
   }
 
   zone <- zoned_time_zone(x)
@@ -51,7 +51,7 @@ format.clock_zoned_time <- function(x,
     format <- zoned_time_format(print_zone_name)
   }
 
-  date_names <- locale$date_names
+  mapping <- locale$mapping
   decimal_mark <- locale$decimal_mark
 
   out <- format_zoned_time_cpp(
@@ -60,11 +60,11 @@ format.clock_zoned_time <- function(x,
     abbreviate_zone = abbreviate_zone,
     format = format,
     precision_int = precision,
-    mon = date_names$mon,
-    mon_ab = date_names$mon_ab,
-    day = date_names$day,
-    day_ab = date_names$day_ab,
-    am_pm = date_names$am_pm,
+    mon = mapping$mon,
+    mon_ab = mapping$mon_ab,
+    day = mapping$day,
+    day_ab = mapping$day_ab,
+    am_pm = mapping$am_pm,
     decimal_mark = decimal_mark
   )
 
@@ -90,16 +90,16 @@ parse_zoned_time <- function(x,
                              ...,
                              format = "%Y-%m-%dT%H:%M:%S%Ez[%Z]",
                              precision = "second",
-                             locale = default_date_locale()) {
+                             locale = default_clock_locale()) {
   check_dots_empty()
 
   precision <- validate_zoned_time_precision(precision)
 
-  if (!is_date_locale(locale)) {
-    abort("`locale` must be a 'clock_date_locale'.")
+  if (!is_clock_locale(locale)) {
+    abort("`locale` must be a 'clock_locale' object.")
   }
 
-  mapping <- locale$date_names
+  mapping <- locale$mapping
   mark <- locale$decimal_mark
 
   result <- parse_zoned_time_cpp(
