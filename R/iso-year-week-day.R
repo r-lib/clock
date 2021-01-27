@@ -586,6 +586,40 @@ iso_year_week_day_minus_iso_year_week_day <- function(op, x, y, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Arithmetic: iso-year-week-day
+#'
+#' @description
+#' The following arithmetic operations are available for use on
+#' iso-year-week-day calendar vectors.
+#'
+#' - `add_years()`
+#'
+#' You cannot add weeks or days to an iso-year-week-day calendar. Adding
+#' days is much more efficiently done by converting to a time point first
+#' by using [as_naive_time()] or [as_sys_time()]. Adding weeks is equally
+#' as efficient as adding 7 days. Additionally, adding weeks to an invalid
+#' iso-year-week object containing `iso_year_week_day(2019, 53)` would be
+#' undefined, as the 53rd ISO week of 2019 doesn't exist to begin with.
+#'
+#' @details
+#' `x` and `n` are recycled against each other.
+#'
+#' @inheritParams add_years
+#'
+#' @param x `[clock_iso_year_week_day]`
+#'
+#'   A iso-year-week-day vector.
+#'
+#' @return `x` after performing the arithmetic.
+#'
+#' @name iso-year-week-day-arithmetic
+#'
+#' @examples
+#' x <- iso_year_week_day(2019, 1, 1)
+#' add_years(x, 1:2)
+NULL
+
+#' @rdname iso-year-week-day-arithmetic
 #' @export
 add_years.clock_iso_year_week_day <- function(x, n, ...) {
   iso_year_week_day_plus_duration(x, n, PRECISION_YEAR)

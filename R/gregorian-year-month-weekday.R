@@ -708,17 +708,65 @@ year_month_weekday_minus_year_month_weekday <- function(op, x, y, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Arithmetic: year-month-weekday
+#'
+#' @description
+#' The following arithmetic operations are available for use on
+#' year-month-weekday calendar vectors.
+#'
+#' - `add_years()`
+#'
+#' - `add_quarters()`
+#'
+#' - `add_months()`
+#'
+#' Notably, _you cannot add days to a year-month-weekday_. For day-based
+#' arithmetic, first convert to a time point with [as_naive_time()] or
+#' [as_sys_time()].
+#'
+#' @details
+#' Adding a single quarter with `add_quarters()` is equivalent to adding
+#' 3 months.
+#'
+#' `x` and `n` are recycled against each other.
+#'
+#' @inheritParams add_years
+#'
+#' @param x `[clock_year_month_weekday]`
+#'
+#'   A year-month-weekday vector.
+#'
+#' @return `x` after performing the arithmetic.
+#'
+#' @name year-month-weekday-arithmetic
+#'
+#' @examples
+#' friday <- 6L
+#'
+#' # 2nd Friday in January, 2019
+#' x <- year_month_weekday(2019, 1, friday, 2)
+#' x
+#'
+#' add_months(x, 1:5)
+#'
+#' # These don't necessarily correspond to the same day of the month
+#' as_year_month_day(add_months(x, 1:5))
+NULL
+
+#' @rdname year-month-weekday-arithmetic
 #' @export
 add_years.clock_year_month_weekday <- function(x, n, ...) {
   year_month_weekday_plus_duration(x, n, PRECISION_YEAR)
 }
 
+#' @rdname year-month-weekday-arithmetic
 #' @export
 add_quarters.clock_year_month_weekday <- function(x, n, ...) {
   calendar_require_minimum_precision(x, PRECISION_MONTH, "add_quarters")
   year_month_weekday_plus_duration(x, n, PRECISION_QUARTER)
 }
 
+#' @rdname year-month-weekday-arithmetic
 #' @export
 add_months.clock_year_month_weekday <- function(x, n, ...) {
   calendar_require_minimum_precision(x, PRECISION_MONTH, "add_months")

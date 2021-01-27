@@ -618,11 +618,58 @@ year_quarter_day_minus_year_quarter_day <- function(op, x, y, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Arithmetic: year-quarter-day
+#'
+#' @description
+#' The following arithmetic operations are available for use on
+#' year-quarter-day calendar vectors.
+#'
+#' - `add_years()`
+#'
+#' - `add_quarters()`
+#'
+#' Notably, _you cannot add days to a year-quarter-day_. For day-based
+#' arithmetic, first convert to a time point with [as_naive_time()] or
+#' [as_sys_time()].
+#'
+#' @details
+#' `x` and `n` are recycled against each other.
+#'
+#' @inheritParams add_years
+#'
+#' @param x `[clock_year_quarter_day]`
+#'
+#'   A year-quarter-day vector.
+#'
+#' @return `x` after performing the arithmetic.
+#'
+#' @name year-quarter-day-arithmetic
+#'
+#' @examples
+#' x <- year_quarter_day(2019, 1:3)
+#' x
+#'
+#' add_quarters(x, 2)
+#'
+#' # Make the fiscal year start in March
+#' y <- year_quarter_day(2019, 1:2, 1, start = 3)
+#' y
+#'
+#' add_quarters(y, 1)
+#'
+#' # What year-month-day does this correspond to?
+#' # Note that the fiscal year doesn't necessarily align with the Gregorian
+#' # year!
+#' as_year_month_day(add_quarters(y, 1))
+NULL
+
+#' @rdname year-quarter-day-arithmetic
 #' @export
 add_years.clock_year_quarter_day <- function(x, n, ...) {
   year_quarter_day_plus_duration(x, n, PRECISION_YEAR)
 }
 
+#' @rdname year-quarter-day-arithmetic
 #' @export
 add_quarters.clock_year_quarter_day <- function(x, n, ...) {
   calendar_require_minimum_precision(x, PRECISION_QUARTER, "add_quarters")

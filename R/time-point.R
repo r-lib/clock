@@ -279,41 +279,141 @@ arith_numeric_and_time_point <- function(op, x, y, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Arithmetic: Time points
+#'
+#' @description
+#' The following arithmetic operations are available for use on
+#' time points, such as naive-times or sys-times.
+#'
+#' - `add_weeks()`
+#'
+#' - `add_days()`
+#'
+#' - `add_hours()`
+#'
+#' - `add_minutes()`
+#'
+#' - `add_seconds()`
+#'
+#' - `add_milliseconds()`
+#'
+#' - `add_microseconds()`
+#'
+#' - `add_nanoseconds()`
+#'
+#' When working with zoned times, generally you convert to either sys-time
+#' or naive-time, add the duration, then convert back to zoned time. Typically,
+#' _weeks and days_ are added in _naive-time_, and _hours, minutes, seconds,
+#' and subseconds_ are added in _sys-time_.
+#'
+#' If you aren't using zoned times, arithmetic on sys-times and naive-time
+#' is equivalent.
+#'
+#' If you need to add larger irregular units of time, such as months, quarters,
+#' or years, convert to a calendar type with a converter like
+#' [as_year_month_day()].
+#'
+#' @details
+#' `x` and `n` are recycled against each other.
+#'
+#' @inheritParams add_years
+#'
+#' @param x `[clock_sys_time / clock_naive_time]`
+#'
+#'   A time point vector.
+#'
+#' @return `x` after performing the arithmetic.
+#'
+#' @name time-point-arithmetic
+#'
+#' @examples
+#' library(magrittr)
+#'
+#' # Say you started with this zoned time, and you want to add 1 day to it
+#' x <- parse_zoned_time("1970-04-25T02:30:00-05:00[America/New_York]")
+#' x
+#'
+#' # Note that there was a daylight saving time gap on 1970-04-26 where
+#' # we jumped from 01:59:59 -> 03:00:00.
+#'
+#' # You can choose to add 1 day in "system time", by first converting to
+#' # sys-time (the equivalent UTC time), adding the day, then converting back to
+#' # zoned time. If you sat still for exactly 86,400 seconds, this is the
+#' # time that you would see after daylight saving time adjusted the clock
+#' # (note that the hour field is shifted forward by the size of the gap)
+#' as_sys_time(x)
+#'
+#' x %>%
+#'   as_sys_time() %>%
+#'   add_days(1) %>%
+#'   as_zoned_time(zoned_zone(x))
+#'
+#' # Alternatively, you can add 1 day in "naive time". Naive time represents
+#' # a clock time with a yet-to-be-specified time zone. It tries to maintain
+#' # smaller units where possible, so adding 1 day would attempt to return
+#' # "1970-04-26T02:30:00" in the America/New_York time zone, but...
+#' as_naive_time(x)
+#'
+#' try({
+#' x %>%
+#'   as_naive_time() %>%
+#'   add_days(1) %>%
+#'   as_zoned_time(zoned_zone(x))
+#' })
+#'
+#' # ...this time doesn't exist in that time zone! It is "nonexistent".
+#' # You can resolve nonexistent times by setting the `nonexistent` argument
+#' # when converting to zoned time. Let's roll forward to the next available
+#' # moment in time.
+#' x %>%
+#'   as_naive_time() %>%
+#'   add_days(1) %>%
+#'   as_zoned_time(zoned_zone(x), nonexistent = "roll-forward")
+NULL
+
+#' @rdname time-point-arithmetic
 #' @export
 add_weeks.clock_time_point <- function(x, n, ...) {
   time_point_plus_duration(x, n, PRECISION_WEEK, names_common(x, n))
 }
 
+#' @rdname time-point-arithmetic
 #' @export
 add_days.clock_time_point <- function(x, n, ...) {
   time_point_plus_duration(x, n, PRECISION_DAY, names_common(x, n))
 }
 
+#' @rdname time-point-arithmetic
 #' @export
 add_hours.clock_time_point <- function(x, n, ...) {
   time_point_plus_duration(x, n, PRECISION_HOUR, names_common(x, n))
 }
 
+#' @rdname time-point-arithmetic
 #' @export
 add_minutes.clock_time_point <- function(x, n, ...) {
   time_point_plus_duration(x, n, PRECISION_MINUTE, names_common(x, n))
 }
 
+#' @rdname time-point-arithmetic
 #' @export
 add_seconds.clock_time_point <- function(x, n, ...) {
   time_point_plus_duration(x, n, PRECISION_SECOND, names_common(x, n))
 }
 
+#' @rdname time-point-arithmetic
 #' @export
 add_milliseconds.clock_time_point <- function(x, n, ...) {
   time_point_plus_duration(x, n, PRECISION_MILLISECOND, names_common(x, n))
 }
 
+#' @rdname time-point-arithmetic
 #' @export
 add_microseconds.clock_time_point <- function(x, n, ...) {
   time_point_plus_duration(x, n, PRECISION_MICROSECOND, names_common(x, n))
 }
 
+#' @rdname time-point-arithmetic
 #' @export
 add_nanoseconds.clock_time_point <- function(x, n, ...) {
   time_point_plus_duration(x, n, PRECISION_NANOSECOND, names_common(x, n))

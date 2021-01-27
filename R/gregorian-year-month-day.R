@@ -808,17 +808,75 @@ year_month_day_minus_year_month_day <- function(op, x, y, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Arithmetic: year-month-day
+#'
+#' @description
+#' The following arithmetic operations are available for use on year-month-day
+#' calendar vectors.
+#'
+#' - `add_years()`
+#'
+#' - `add_quarters()`
+#'
+#' - `add_months()`
+#'
+#' Notably, _you cannot add days to a year-month-day_. For day-based arithmetic,
+#' first convert to a time point with [as_naive_time()] or [as_sys_time()].
+#'
+#' @details
+#' Adding a single quarter with `add_quarters()` is equivalent to adding
+#' 3 months.
+#'
+#' `x` and `n` are recycled against each other.
+#'
+#' @inheritParams add_years
+#'
+#' @param x `[clock_year_month_day]`
+#'
+#'   A year-month-day vector.
+#'
+#' @return `x` after performing the arithmetic.
+#'
+#' @name year-month-day-arithmetic
+#'
+#' @examples
+#' x <- year_month_day(2019, 1, 1)
+#'
+#' add_years(x, 1:5)
+#'
+#' y <- year_month_day(2019, 1, 31)
+#'
+#' # Adding 1 month to `y` generates an invalid date
+#' y_plus <- add_months(y, 1:2)
+#' y_plus
+#'
+#' # Invalid dates are fine, as long as they are eventually resolved
+#' # by either manually resolving, or by calling `invalid_resolve()`
+#'
+#' # Resolve by returning the previous / next valid moment in time
+#' invalid_resolve(y_plus, invalid = "previous")
+#' invalid_resolve(y_plus, invalid = "next")
+#'
+#' # Manually resolve by setting to the last day of the month
+#' invalid <- invalid_detect(y_plus)
+#' y_plus[invalid] <- set_day(y_plus[invalid], "last")
+#' y_plus
+NULL
+
+#' @rdname year-month-day-arithmetic
 #' @export
 add_years.clock_year_month_day <- function(x, n, ...) {
   year_month_day_plus_duration(x, n, PRECISION_YEAR)
 }
 
+#' @rdname year-month-day-arithmetic
 #' @export
 add_quarters.clock_year_month_day <- function(x, n, ...) {
   calendar_require_minimum_precision(x, PRECISION_MONTH, "add_quarters")
   year_month_day_plus_duration(x, n, PRECISION_QUARTER)
 }
 
+#' @rdname year-month-day-arithmetic
 #' @export
 add_months.clock_year_month_day <- function(x, n, ...) {
   calendar_require_minimum_precision(x, PRECISION_MONTH, "add_months")
