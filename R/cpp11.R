@@ -212,6 +212,14 @@ clock_set_install <- function(path) {
   invisible(.Call("_clock_clock_set_install", path, PACKAGE = "clock"))
 }
 
+new_iso_year_week_day_from_fields <- function(fields, precision_int, names) {
+  .Call("_clock_new_iso_year_week_day_from_fields", fields, precision_int, names, PACKAGE = "clock")
+}
+
+iso_year_week_day_restore <- function(x, to) {
+  .Call("_clock_iso_year_week_day_restore", x, to, PACKAGE = "clock")
+}
+
 iso_year_week_day_check_range_cpp <- function(x, component_string, arg) {
   invisible(.Call("_clock_iso_year_week_day_check_range_cpp", x, component_string, arg, PACKAGE = "clock"))
 }
