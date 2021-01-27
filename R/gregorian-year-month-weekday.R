@@ -816,5 +816,5 @@ calendar_narrow.clock_year_month_weekday <- function(x, precision) {
     out_fields <- calendar_narrow_time(out_fields, precision, x_fields, x_precision)
   }
 
-  new_year_month_weekday_from_fields(out_fields, precision = precision, names = names(x))
+  new_year_month_weekday_from_fields(out_fields, precision, names = names(x))
 }
