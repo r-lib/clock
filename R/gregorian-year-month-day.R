@@ -114,73 +114,15 @@ year_month_day <- function(year,
 
   fields <- collect_year_month_day_fields(fields, precision)
 
-  out <- new_year_month_day_from_fields(fields, precision)
+  names <- NULL
+
+  out <- new_year_month_day_from_fields(fields, precision, names)
 
   if (last) {
     out <- set_day(out, "last")
   }
 
   out
-}
-
-# ------------------------------------------------------------------------------
-
-new_year_month_day <- function(year = integer(),
-                               month = integer(),
-                               day = integer(),
-                               hour = integer(),
-                               minute = integer(),
-                               second = integer(),
-                               subsecond = integer(),
-                               precision = 0L,
-                               ...,
-                               names = NULL,
-                               class = NULL) {
-  if (!is.integer(precision)) {
-    abort("`precision` must be an integer.")
-  }
-
-  precision_string <- precision_to_string(precision)
-
-  fields <- switch(
-    precision_string,
-    year = list(year = year),
-    month = list(year = year, month = month),
-    day = list(year = year, month = month, day = day),
-    hour = list(year = year, month = month, day = day, hour = hour),
-    minute = list(year = year, month = month, day = day, hour = hour, minute = minute),
-    second = list(year = year, month = month, day = day, hour = hour, minute = minute, second = second),
-    millisecond = list(year = year, month = month, day = day, hour = hour, minute = minute, second = second, subsecond = subsecond),
-    microsecond = list(year = year, month = month, day = day, hour = hour, minute = minute, second = second, subsecond = subsecond),
-    nanosecond = list(year = year, month = month, day = day, hour = hour, minute = minute, second = second, subsecond = subsecond)
-  )
-
-  field_names <- names(fields)
-  for (i in seq_along(fields)) {
-    int_assert(fields[[i]], field_names[[i]])
-  }
-
-  new_calendar(
-    fields = fields,
-    precision = precision,
-    ...,
-    names = names,
-    class = c(class, "clock_year_month_day")
-  )
-}
-
-new_year_month_day_from_fields <- function(fields, precision, names = NULL) {
-  new_year_month_day(
-    year = fields$year,
-    month = fields$month,
-    day = fields$day,
-    hour = fields$hour,
-    minute = fields$minute,
-    second = fields$second,
-    subsecond = fields$subsecond,
-    precision = precision,
-    names = names
-  )
 }
 
 # ------------------------------------------------------------------------------
@@ -439,7 +381,7 @@ invalid_resolve.clock_year_month_day <- function(x, ..., invalid = "error") {
   check_dots_empty()
   precision <- calendar_precision(x)
   fields <- invalid_resolve_year_month_day_cpp(x, precision, invalid)
-  new_year_month_day_from_fields(fields, precision, names = names(x))
+  new_year_month_day_from_fields(fields, precision, names(x))
 }
 
 # ------------------------------------------------------------------------------
@@ -1003,5 +945,5 @@ calendar_narrow.clock_year_month_day <- function(x, precision) {
     out_fields <- calendar_narrow_time(out_fields, precision, x_fields, x_precision)
   }
 
-  new_year_month_day_from_fields(out_fields, precision = precision, names = names(x))
+  new_year_month_day_from_fields(out_fields, precision, names = names(x))
 }

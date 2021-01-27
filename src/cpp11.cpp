@@ -145,6 +145,13 @@ extern "C" SEXP _clock_format_zoned_time_cpp(SEXP fields, SEXP zone, SEXP abbrev
   END_CPP11
 }
 // gregorian-year-month-day.cpp
+SEXP new_year_month_day_from_fields(SEXP fields, const cpp11::integers& precision_int, SEXP names);
+extern "C" SEXP _clock_new_year_month_day_from_fields(SEXP fields, SEXP precision_int, SEXP names) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(new_year_month_day_from_fields(cpp11::as_cpp<cpp11::decay_t<SEXP>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<SEXP>>(names)));
+  END_CPP11
+}
+// gregorian-year-month-day.cpp
 void year_month_day_check_range_cpp(const cpp11::integers& x, const cpp11::strings& component_string, const cpp11::strings& arg);
 extern "C" SEXP _clock_year_month_day_check_range_cpp(SEXP x, SEXP component_string, SEXP arg) {
   BEGIN_CPP11
@@ -738,6 +745,7 @@ extern SEXP _clock_iso_year_week_day_minus_iso_year_week_day_cpp(SEXP, SEXP, SEX
 extern SEXP _clock_iso_year_week_day_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_new_duration_from_fields(SEXP, SEXP, SEXP);
 extern SEXP _clock_new_time_point_from_fields(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_new_year_month_day_from_fields(SEXP, SEXP, SEXP);
 extern SEXP _clock_new_zoned_time_from_fields(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_parse_time_point_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_parse_year_month_day_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -835,6 +843,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_iso_year_week_day_plus_duration_cpp",             (DL_FUNC) &_clock_iso_year_week_day_plus_duration_cpp,              4},
     {"_clock_new_duration_from_fields",                        (DL_FUNC) &_clock_new_duration_from_fields,                         3},
     {"_clock_new_time_point_from_fields",                      (DL_FUNC) &_clock_new_time_point_from_fields,                       4},
+    {"_clock_new_year_month_day_from_fields",                  (DL_FUNC) &_clock_new_year_month_day_from_fields,                   3},
     {"_clock_new_zoned_time_from_fields",                      (DL_FUNC) &_clock_new_zoned_time_from_fields,                       4},
     {"_clock_parse_time_point_cpp",                            (DL_FUNC) &_clock_parse_time_point_cpp,                            10},
     {"_clock_parse_year_month_day_cpp",                        (DL_FUNC) &_clock_parse_year_month_day_cpp,                         9},

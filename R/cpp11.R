@@ -80,6 +80,10 @@ format_zoned_time_cpp <- function(fields, zone, abbreviate_zone, format, precisi
   .Call("_clock_format_zoned_time_cpp", fields, zone, abbreviate_zone, format, precision_int, mon, mon_ab, day, day_ab, am_pm, decimal_mark, PACKAGE = "clock")
 }
 
+new_year_month_day_from_fields <- function(fields, precision_int, names) {
+  .Call("_clock_new_year_month_day_from_fields", fields, precision_int, names, PACKAGE = "clock")
+}
+
 year_month_day_check_range_cpp <- function(x, component_string, arg) {
   invisible(.Call("_clock_year_month_day_check_range_cpp", x, component_string, arg, PACKAGE = "clock"))
 }
