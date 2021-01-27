@@ -8,7 +8,7 @@ locale_info <- function(x) {
   full <- stri_datetime_symbols(x, context = "format", width = "wide")
   abbr <- stri_datetime_symbols(x, context = "format", width = "abbreviated")
 
-  date_names(
+  clock_mapping(
     mon = full$Month,
     mon_ab = abbr$Month,
     day = full$Weekday,
@@ -17,7 +17,7 @@ locale_info <- function(x) {
   )
 }
 
-date_symbols <- lapply(base, locale_info)
-names(date_symbols) <- base
+clock_mappings <- lapply(base, locale_info)
+names(clock_mappings) <- base
 
-usethis::use_data(date_symbols, internal = TRUE, overwrite = TRUE)
+usethis::use_data(clock_mappings, internal = TRUE, overwrite = TRUE)

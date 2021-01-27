@@ -9,7 +9,7 @@ parse_year_month_day(
   ...,
   format = NULL,
   precision = "day",
-  locale = default_date_locale()
+  locale = default_clock_locale()
 )
 }
 \arguments{
@@ -35,8 +35,8 @@ The precision of the resulting year-month-day.}
 
 \item{locale}{\verb{[clock_locale]}
 
-A locale object created by \code{\link[=date_locale]{date_locale()}}. Defaults to
-\code{\link[=default_date_locale]{default_date_locale()}}.}
+A locale object created by \code{\link[=clock_locale]{clock_locale()}}. Defaults to
+\code{\link[=default_clock_locale]{default_clock_locale()}}.}
 }
 \value{
 A year-month-day calendar vector. If a parsing fails, \code{NA} is
@@ -79,6 +79,6 @@ parse_year_month_day(
 parse_year_month_day(
   "octobre 1, 2000",
   format = "\%B \%d, \%Y",
-  locale = date_locale("fr")
+  locale = clock_locale("fr")
 )
 }
