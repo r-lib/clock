@@ -134,10 +134,7 @@ vec_proxy.clock_year_month_day <- function(x, ...) {
 
 #' @export
 vec_restore.clock_year_month_day <- function(x, to, ...) {
-  fields <- clock_rcrd_restore_fields(x)
-  names <- clock_rcrd_restore_names(x)
-  precision <- calendar_precision(to)
-  new_year_month_day_from_fields(fields, precision, names)
+  .Call("_clock_year_month_day_restore", x, to, PACKAGE = "clock")
 }
 
 #' @export

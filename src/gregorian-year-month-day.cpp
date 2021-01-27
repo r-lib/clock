@@ -50,6 +50,21 @@ new_year_month_day_from_fields(SEXP fields,
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
+SEXP
+year_month_day_restore(SEXP x, SEXP to) {
+  SEXP precision = Rf_getAttrib(to, syms_precision);
+
+  SEXP out = PROTECT(clock_rcrd_restore(x, to, classes_year_month_day));
+
+  Rf_setAttrib(out, syms_precision, precision);
+
+  UNPROTECT(1);
+  return out;
+}
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
 void
 year_month_day_check_range_cpp(const cpp11::integers& x,
                                const cpp11::strings& component_string,

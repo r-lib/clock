@@ -152,6 +152,13 @@ extern "C" SEXP _clock_new_year_month_day_from_fields(SEXP fields, SEXP precisio
   END_CPP11
 }
 // gregorian-year-month-day.cpp
+SEXP year_month_day_restore(SEXP x, SEXP to);
+extern "C" SEXP _clock_year_month_day_restore(SEXP x, SEXP to) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(year_month_day_restore(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<SEXP>>(to)));
+  END_CPP11
+}
+// gregorian-year-month-day.cpp
 void year_month_day_check_range_cpp(const cpp11::integers& x, const cpp11::strings& component_string, const cpp11::strings& arg);
 extern "C" SEXP _clock_year_month_day_check_range_cpp(SEXP x, SEXP component_string, SEXP arg) {
   BEGIN_CPP11
@@ -769,6 +776,7 @@ extern SEXP _clock_weekday_minus_weekday_cpp(SEXP, SEXP);
 extern SEXP _clock_year_month_day_check_range_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_year_month_day_minus_year_month_day_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_year_month_day_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_year_month_day_restore(SEXP, SEXP);
 extern SEXP _clock_year_month_weekday_check_range_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_year_month_weekday_minus_year_month_weekday_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_year_month_weekday_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP);
@@ -867,6 +875,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_year_month_day_check_range_cpp",                  (DL_FUNC) &_clock_year_month_day_check_range_cpp,                   3},
     {"_clock_year_month_day_minus_year_month_day_cpp",         (DL_FUNC) &_clock_year_month_day_minus_year_month_day_cpp,          3},
     {"_clock_year_month_day_plus_duration_cpp",                (DL_FUNC) &_clock_year_month_day_plus_duration_cpp,                 4},
+    {"_clock_year_month_day_restore",                          (DL_FUNC) &_clock_year_month_day_restore,                           2},
     {"_clock_year_month_weekday_check_range_cpp",              (DL_FUNC) &_clock_year_month_weekday_check_range_cpp,               3},
     {"_clock_year_month_weekday_minus_year_month_weekday_cpp", (DL_FUNC) &_clock_year_month_weekday_minus_year_month_weekday_cpp,  3},
     {"_clock_year_month_weekday_plus_duration_cpp",            (DL_FUNC) &_clock_year_month_weekday_plus_duration_cpp,             4},

@@ -84,6 +84,10 @@ new_year_month_day_from_fields <- function(fields, precision_int, names) {
   .Call("_clock_new_year_month_day_from_fields", fields, precision_int, names, PACKAGE = "clock")
 }
 
+year_month_day_restore <- function(x, to) {
+  .Call("_clock_year_month_day_restore", x, to, PACKAGE = "clock")
+}
+
 year_month_day_check_range_cpp <- function(x, component_string, arg) {
   invisible(.Call("_clock_year_month_day_check_range_cpp", x, component_string, arg, PACKAGE = "clock"))
 }
