@@ -12,6 +12,7 @@ SEXP strings_clock_zoned_time = NULL;
 SEXP strings_clock_duration = NULL;
 SEXP strings_clock_calendar = NULL;
 SEXP strings_clock_year_month_day = NULL;
+SEXP strings_clock_year_month_weekday = NULL;
 
 SEXP syms_precision = NULL;
 SEXP syms_clock = NULL;
@@ -23,11 +24,12 @@ SEXP classes_sys_time = NULL;
 SEXP classes_naive_time = NULL;
 SEXP classes_zoned_time = NULL;
 SEXP classes_year_month_day = NULL;
+SEXP classes_year_month_weekday = NULL;
 
 [[cpp11::register]]
 SEXP
 clock_init_utils() {
-  strings = Rf_allocVector(STRSXP, 11);
+  strings = Rf_allocVector(STRSXP, 12);
   R_PreserveObject(strings);
   MARK_NOT_MUTABLE(strings);
 
@@ -63,6 +65,9 @@ clock_init_utils() {
 
   strings_clock_year_month_day = Rf_mkChar("clock_year_month_day");
   SET_STRING_ELT(strings, 10, strings_clock_year_month_day);
+
+  strings_clock_year_month_weekday = Rf_mkChar("clock_year_month_weekday");
+  SET_STRING_ELT(strings, 11, strings_clock_year_month_weekday);
 
 
   syms_precision = Rf_install("precision");
@@ -113,6 +118,15 @@ clock_init_utils() {
   SET_STRING_ELT(classes_year_month_day, 2, strings_clock_rcrd);
   SET_STRING_ELT(classes_year_month_day, 3, strings_vctrs_rcrd);
   SET_STRING_ELT(classes_year_month_day, 4, strings_vctrs_vctr);
+
+  classes_year_month_weekday = Rf_allocVector(STRSXP, 5);
+  R_PreserveObject(classes_year_month_weekday);
+  MARK_NOT_MUTABLE(classes_year_month_weekday);
+  SET_STRING_ELT(classes_year_month_weekday, 0, strings_clock_year_month_weekday);
+  SET_STRING_ELT(classes_year_month_weekday, 1, strings_clock_calendar);
+  SET_STRING_ELT(classes_year_month_weekday, 2, strings_clock_rcrd);
+  SET_STRING_ELT(classes_year_month_weekday, 3, strings_vctrs_rcrd);
+  SET_STRING_ELT(classes_year_month_weekday, 4, strings_vctrs_vctr);
 
   return r_null;
 }

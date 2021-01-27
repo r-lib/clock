@@ -148,6 +148,14 @@ gregorian_leap_year_cpp <- function(year) {
   .Call("_clock_gregorian_leap_year_cpp", year, PACKAGE = "clock")
 }
 
+new_year_month_weekday_from_fields <- function(fields, precision_int, names) {
+  .Call("_clock_new_year_month_weekday_from_fields", fields, precision_int, names, PACKAGE = "clock")
+}
+
+year_month_weekday_restore <- function(x, to) {
+  .Call("_clock_year_month_weekday_restore", x, to, PACKAGE = "clock")
+}
+
 year_month_weekday_check_range_cpp <- function(x, component_string, arg) {
   invisible(.Call("_clock_year_month_weekday_check_range_cpp", x, component_string, arg, PACKAGE = "clock"))
 }

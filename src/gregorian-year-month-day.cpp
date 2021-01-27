@@ -30,9 +30,7 @@ new_year_month_day_from_fields(SEXP fields,
   case precision::millisecond: n = 7; break;
   case precision::microsecond: n = 7; break;
   case precision::nanosecond: n = 7; break;
-  default: {
-    never_reached("new_year_month_day_from_fields");
-  }
+  default: never_reached("new_year_month_day_from_fields");
   }
 
   if (n != n_fields) {

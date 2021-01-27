@@ -21,6 +21,7 @@ extern SEXP classes_sys_time;
 extern SEXP classes_naive_time;
 extern SEXP classes_zoned_time;
 extern SEXP classes_year_month_day;
+extern SEXP classes_year_month_weekday;
 
 // -----------------------------------------------------------------------------
 
