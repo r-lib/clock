@@ -272,6 +272,14 @@ iso_year_week_day_minus_iso_year_week_day_cpp <- function(x, y, precision_int) {
   .Call("_clock_iso_year_week_day_minus_iso_year_week_day_cpp", x, y, precision_int, PACKAGE = "clock")
 }
 
+new_year_quarter_day_from_fields <- function(fields, precision_int, start, names) {
+  .Call("_clock_new_year_quarter_day_from_fields", fields, precision_int, start, names, PACKAGE = "clock")
+}
+
+year_quarter_day_restore <- function(x, to) {
+  .Call("_clock_year_quarter_day_restore", x, to, PACKAGE = "clock")
+}
+
 year_quarter_day_check_range_cpp <- function(x, component_string, arg) {
   invisible(.Call("_clock_year_quarter_day_check_range_cpp", x, component_string, arg, PACKAGE = "clock"))
 }
