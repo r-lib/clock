@@ -517,7 +517,12 @@ as_year_quarter_day.clock_calendar <- function(x, ..., start = 1L) {
 # ------------------------------------------------------------------------------
 
 field_year <- function(x) {
-  field(x, "year")
+  # The `year` field is the first field of every calendar type, which makes
+  # it the field that names are on. When extracting the field, we don't ever
+  # want the names to come with it.
+  out <- field(x, "year")
+  names(out) <- NULL
+  out
 }
 field_quarter <- function(x) {
   field(x, "quarter")
