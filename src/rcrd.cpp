@@ -2,8 +2,6 @@
 #include "utils.h"
 #include "enums.h"
 
-static inline void validate_names(SEXP names, r_ssize size);
-
 SEXP
 new_clock_rcrd_from_fields(SEXP fields, SEXP names, SEXP classes) {
   if (TYPEOF(fields) != VECSXP) {
@@ -28,11 +26,11 @@ new_clock_rcrd_from_fields(SEXP fields, SEXP names, SEXP classes) {
 
   const SEXP* p_fields = r_list_deref_const(fields);
 
-  const SEXP field = p_fields[0];
-  if (TYPEOF(field) != INTSXP) {
+  SEXP field0 = p_fields[0];
+  if (TYPEOF(field0) != INTSXP) {
     clock_abort("All clock_rcrd types have integer fields.");
   }
-  const r_ssize size = Rf_xlength(field);
+  const r_ssize size = Rf_xlength(field0);
 
   for (r_ssize i = 1; i < n_fields; ++i) {
     const SEXP field = p_fields[i];
@@ -46,13 +44,98 @@ new_clock_rcrd_from_fields(SEXP fields, SEXP names, SEXP classes) {
 
   Rf_setAttrib(fields, R_ClassSymbol, classes);
 
-  if (names != r_null) {
-    validate_names(names, size);
-    Rf_setAttrib(fields, syms_clock_rcrd_names, names);
+  SEXP field0_names = Rf_getAttrib(field0, R_NamesSymbol);
+
+  if (names != field0_names) {
+    // If names are "new" (based on pointer comparison), set them.
+    // This can remove names if `names` is `NULL`.
+    // We assume `names` coming through here are validated names, for performance.
+    field0 = set_names_dispatch(field0, names);
+    SET_VECTOR_ELT(fields, 0, field0);
   }
 
   UNPROTECT(1);
   return fields;
+}
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+SEXP
+clock_rcrd_proxy(SEXP x) {
+  const r_ssize n_fields = Rf_xlength(x);
+  const SEXP* p_x = r_list_deref_const(x);
+
+  // clock-rcrds always have at least 1 field
+  const r_ssize size = Rf_xlength(p_x[0]);
+
+  SEXP out = PROTECT(Rf_allocVector(VECSXP, n_fields));
+  Rf_setAttrib(out, R_NamesSymbol, Rf_getAttrib(x, R_NamesSymbol));
+  r_init_data_frame(out, size);
+
+  for (r_ssize i = 0; i < n_fields; ++i) {
+    SET_VECTOR_ELT(out, i, p_x[i]);
+  }
+
+  UNPROTECT(1);
+  return out;
+}
+
+// -----------------------------------------------------------------------------
+
+SEXP
+clock_rcrd_restore(SEXP x, SEXP to, SEXP classes) {
+  const r_ssize n_fields = Rf_xlength(x);
+  const SEXP* p_x = r_list_deref_const(x);
+
+  SEXP out = PROTECT(Rf_allocVector(VECSXP, n_fields));
+  Rf_setAttrib(out, R_NamesSymbol, Rf_getAttrib(x, R_NamesSymbol));
+  Rf_setAttrib(out, R_ClassSymbol, classes);
+
+  for (r_ssize i = 0; i < n_fields; ++i) {
+    SET_VECTOR_ELT(out, i, p_x[i]);
+  }
+
+  UNPROTECT(1);
+  return out;
+}
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+SEXP
+clock_rcrd_names(SEXP x) {
+  SEXP field0 = VECTOR_ELT(x, 0);
+  return Rf_getAttrib(field0, R_NamesSymbol);
+}
+
+// -----------------------------------------------------------------------------
+
+static inline void validate_names(SEXP names, r_ssize size);
+
+[[cpp11::register]]
+SEXP
+clock_rcrd_set_names(SEXP x, SEXP names) {
+  SEXP field0 = VECTOR_ELT(x, 0);
+  SEXP field0_names = Rf_getAttrib(field0, R_NamesSymbol);
+
+  if (field0_names == names) {
+    // New and old were either `NULL`, or we are using the exact same chr SEXP
+    return x;
+  }
+
+  x = PROTECT(r_clone_referenced(x));
+
+  if (names != r_null) {
+    const r_ssize size = Rf_xlength(field0);
+    validate_names(names, size);
+  }
+
+  field0 = set_names_dispatch(field0, names);
+  SET_VECTOR_ELT(x, 0, field0);
+
+  UNPROTECT(1);
+  return x;
 }
 
 static
@@ -77,105 +160,4 @@ validate_names(SEXP names, r_ssize size) {
       clock_abort("Names cannot be `NA`.");
     }
   }
-}
-
-// -----------------------------------------------------------------------------
-
-[[cpp11::register]]
-SEXP
-clock_rcrd_proxy(SEXP x) {
-  if (TYPEOF(x) != VECSXP) {
-    clock_abort("`x` must be a list.");
-  }
-
-  // clock-rcrds always have at least 1 field
-  SEXP field = VECTOR_ELT(x, 0);
-  const r_ssize size = Rf_xlength(field);
-
-  SEXP field_names = Rf_getAttrib(x, R_NamesSymbol);
-  const r_ssize n_fields = Rf_xlength(x);
-  const SEXP* p_x = r_list_deref_const(x);
-
-  SEXP names = Rf_getAttrib(x, syms_clock_rcrd_names);
-
-  if (names == r_null) {
-    // Most common case - Return a new clean data frame
-    SEXP out = PROTECT(Rf_allocVector(VECSXP, n_fields));
-
-    for (r_ssize i = 0; i < n_fields; ++i) {
-      SET_VECTOR_ELT(out, i, p_x[i]);
-    }
-
-    Rf_setAttrib(out, R_NamesSymbol, field_names);
-    r_init_data_frame(out, size);
-
-    UNPROTECT(1);
-    return out;
-  }
-
-  // Otherwise, extend `x` by 1 by adding the names as a column
-
-  const r_ssize n_fields_out = n_fields + 1;
-
-  SEXP out = PROTECT(Rf_allocVector(VECSXP, n_fields_out));
-  SEXP out_names = PROTECT(Rf_allocVector(STRSXP, n_fields_out));
-
-  const SEXP* p_field_names = r_chr_deref_const(field_names);
-
-  for (r_ssize i = 0; i < n_fields; ++i) {
-    SET_VECTOR_ELT(out, i, p_x[i]);
-    SET_STRING_ELT(out_names, i, p_field_names[i]);
-  }
-
-  SET_VECTOR_ELT(out, n_fields, names);
-  SET_STRING_ELT(out_names, n_fields, strings_clock_rcrd_names);
-
-  Rf_setAttrib(out, R_NamesSymbol, out_names);
-  r_init_data_frame(out, size);
-
-  UNPROTECT(2);
-  return out;
-}
-
-// -----------------------------------------------------------------------------
-
-SEXP
-clock_rcrd_restore(SEXP x, SEXP to, SEXP classes) {
-  const r_ssize size = Rf_xlength(x);
-
-  SEXP field_names = Rf_getAttrib(x, R_NamesSymbol);
-  const SEXP* p_field_names = r_chr_deref_const(field_names);
-
-  const SEXP last_field_name = p_field_names[size - 1];
-  const char* last_field_name_char = CHAR(last_field_name);
-
-  // Check if the last field name matches `clock_rcrd:::names`
-  const bool has_names = !strcmp(last_field_name_char, "clock_rcrd:::names");
-
-  if (!has_names) {
-    // No names, so restore new clock_rcrd without any names
-    return new_clock_rcrd_from_fields(x, r_null, classes);
-  }
-
-  const SEXP* p_x = r_list_deref_const(x);
-
-  // Extract and possibly repair the names
-  SEXP names = p_x[size - 1];
-  names = PROTECT(r_repair_na_names(names));
-
-  const r_ssize new_size = size - 1;
-  SEXP new_field_names = PROTECT(Rf_allocVector(STRSXP, new_size));
-  SEXP new_x = PROTECT(Rf_allocVector(VECSXP, new_size));
-
-  for (r_ssize i = 0; i < new_size; ++i) {
-    SET_STRING_ELT(new_field_names, i, p_field_names[i]);
-    SET_VECTOR_ELT(new_x, i, p_x[i]);
-  }
-
-  Rf_setAttrib(new_x, R_NamesSymbol, new_field_names);
-
-  SEXP out = new_clock_rcrd_from_fields(new_x, names, classes);
-
-  UNPROTECT(3);
-  return out;
 }

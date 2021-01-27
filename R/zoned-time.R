@@ -17,19 +17,6 @@ zoned_time_precision <- function(x) {
   attr(x, "precision", exact = TRUE)
 }
 
-zoned_time_sys_time <- function(x) {
-  names <- NULL
-  precision <- zoned_time_precision(x)
-  new_sys_time_from_fields(x, precision, names)
-}
-zoned_time_naive_time <- function(x) {
-  names <- NULL
-  zone <- zoned_time_zone(x)
-  precision <- zoned_time_precision(x)
-  fields <- get_naive_time_cpp(x, precision, zone)
-  new_naive_time_from_fields(fields, precision, names)
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export
@@ -255,16 +242,18 @@ as_zoned_time.clock_zoned_time <- function(x, ...) {
 
 #' @export
 as_sys_time.clock_zoned_time <- function(x) {
-  out <- zoned_time_sys_time(x)
-  out <- clock_rcrd_set_names(out, clock_rcrd_names(x))
-  out
+  names <- clock_rcrd_names(x)
+  precision <- zoned_time_precision(x)
+  new_sys_time_from_fields(x, precision, names)
 }
 
 #' @export
 as_naive_time.clock_zoned_time <- function(x) {
-  out <- zoned_time_naive_time(x)
-  out <- clock_rcrd_set_names(out, clock_rcrd_names(x))
-  out
+  names <- clock_rcrd_names(x)
+  zone <- zoned_time_zone(x)
+  precision <- zoned_time_precision(x)
+  fields <- get_naive_time_cpp(x, precision, zone)
+  new_naive_time_from_fields(fields, precision, names)
 }
 
 # ------------------------------------------------------------------------------

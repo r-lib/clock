@@ -10,13 +10,12 @@
 // -----------------------------------------------------------------------------
 
 extern SEXP strings_empty;
-extern SEXP strings_clock_rcrd_names;
 
 extern SEXP syms_precision;
 extern SEXP syms_start;
 extern SEXP syms_clock;
 extern SEXP syms_zone;
-extern SEXP syms_clock_rcrd_names;
+extern SEXP syms_set_names;
 
 extern SEXP classes_duration;
 extern SEXP classes_sys_time;
@@ -135,6 +134,21 @@ void
 r_init_data_frame(SEXP x, r_ssize n_rows) {
   init_compact_rownames(x, n_rows);
   Rf_setAttrib(x, R_ClassSymbol, classes_data_frame);
+}
+
+// -----------------------------------------------------------------------------
+
+/*
+ * `names<-()` can take advantage of shallow duplication using an ALTREP wrapper
+ * which is otherwise not exposed in the R API
+ */
+static
+inline
+SEXP set_names_dispatch(SEXP x, SEXP value) {
+  SEXP call = PROTECT(Rf_lang3(syms_set_names, x, value));
+  SEXP out = Rf_eval(call, R_GlobalEnv);
+  UNPROTECT(1);
+  return out;
 }
 
 // -----------------------------------------------------------------------------
