@@ -3916,6 +3916,9 @@ public:
     CONSTCD14 precision&
         subseconds(detail::undocumented) NOEXCEPT {return s_.subseconds();}
     // clock-edit-stop
+    // clock-edit-start
+    CONSTCD11 dfs decimal_format_seconds(detail::undocumented) const NOEXCEPT {return s_;}
+    // clock-edit-stop
     CONSTCD11 bool is_negative() const NOEXCEPT {return neg_;}
 
     CONSTCD11 explicit operator  precision()   const NOEXCEPT {return to_duration();}
