@@ -243,17 +243,56 @@ invalid_resolve.clock_year_month_weekday <- function(x, ..., invalid = "error") 
 
 # ------------------------------------------------------------------------------
 
+#' Getters: year-month-weekday
+#'
+#' @description
+#' These functions are supported getters for a year-month-weekday vector.
+#'
+#' - `get_year()` returns the Gregorian year.
+#'
+#' - `get_month()` returns the month of the year.
+#'
+#' - `get_day()` returns the day of the week encoded from 1-7, where 1 = Sunday
+#'   and 7 = Saturday.
+#'
+#' - `get_index()` returns a value from 1-5 indicating that the corresponding
+#'   weekday is the n-th instance of that weekday in the current month.
+#'
+#' - There are sub-daily getters for extracting more precise components.
+#'
+#' @param x `[clock_year_month_weekday]`
+#'
+#'   A year-month-weekday to get the component from.
+#'
+#' @return The component.
+#'
+#' @name year-month-weekday-getters
+#' @examples
+#' x <- year_month_weekday(2019, 1, 2:5, 1:4)
+#' x
+#'
+#' # Gets the weekday, 1 = Sunday, 7 = Saturday
+#' get_day(x)
+#'
+#' # Gets the index indicating which instance of that particular weekday
+#' # it is in the current month (i.e. the "1st Monday of January, 2019")
+#' get_index(x)
+NULL
+
+#' @rdname year-month-weekday-getters
 #' @export
 get_year.clock_year_month_weekday <- function(x) {
   field_year(x)
 }
 
+#' @rdname year-month-weekday-getters
 #' @export
 get_month.clock_year_month_weekday <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_MONTH, "get_month")
   field_month(x)
 }
 
+#' @rdname year-month-weekday-getters
 #' @export
 get_day.clock_year_month_weekday <- function(x) {
   # [Sunday, Saturday] -> [1, 7]
@@ -261,42 +300,49 @@ get_day.clock_year_month_weekday <- function(x) {
   field_day(x)
 }
 
+#' @rdname year-month-weekday-getters
 #' @export
 get_index.clock_year_month_weekday <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_DAY, "get_index")
   field_index(x)
 }
 
+#' @rdname year-month-weekday-getters
 #' @export
 get_hour.clock_year_month_weekday <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_HOUR, "get_hour")
   field_hour(x)
 }
 
+#' @rdname year-month-weekday-getters
 #' @export
 get_minute.clock_year_month_weekday <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_MINUTE, "get_minute")
   field_minute(x)
 }
 
+#' @rdname year-month-weekday-getters
 #' @export
 get_second.clock_year_month_weekday <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_SECOND, "get_second")
   field_second(x)
 }
 
+#' @rdname year-month-weekday-getters
 #' @export
 get_millisecond.clock_year_month_weekday <- function(x) {
   calendar_require_precision(x, PRECISION_MILLISECOND, "get_millisecond")
   field_subsecond(x)
 }
 
+#' @rdname year-month-weekday-getters
 #' @export
 get_microsecond.clock_year_month_weekday <- function(x) {
   calendar_require_precision(x, PRECISION_MICROSECOND, "get_microsecond")
   field_subsecond(x)
 }
 
+#' @rdname year-month-weekday-getters
 #' @export
 get_nanosecond.clock_year_month_weekday <- function(x) {
   calendar_require_precision(x, PRECISION_NANOSECOND, "get_nanosecond")

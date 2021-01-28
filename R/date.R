@@ -65,14 +65,43 @@ as.Date.clock_zoned_time <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Getters: Dates
+#'
+#' @description
+#' These functions are supported getters for a Date vector.
+#'
+#' - `get_year()` returns the Gregorian year.
+#'
+#' - `get_month()` returns the month of the year.
+#'
+#' - `get_day()` returns the day of the month.
+#'
+#' For more advanced component extraction, convert to the calendar type
+#' that you are interested in.
+#'
+#' @param x `[Date]`
+#'
+#'   A Date to get the component from.
+#'
+#' @return The component.
+#'
+#' @name Date-getters
+#' @examples
+#' x <- as.Date("2019-01-01") + 0:5
+#' get_day(x)
+NULL
+
+#' @rdname Date-getters
 #' @export
 get_year.Date <- function(x) {
   get_date_field_year_month_day(x, get_year)
 }
+#' @rdname Date-getters
 #' @export
 get_month.Date <- function(x) {
   get_date_field_year_month_day(x, get_month)
 }
+#' @rdname Date-getters
 #' @export
 get_day.Date <- function(x) {
   get_date_field_year_month_day(x, get_day)

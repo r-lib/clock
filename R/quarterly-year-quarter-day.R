@@ -189,17 +189,62 @@ invalid_resolve.clock_year_quarter_day <- function(x, ..., invalid = "error") {
 
 # ------------------------------------------------------------------------------
 
+#' Getters: year-quarter-day
+#'
+#' @description
+#' These functions are supported getters for a year-quarter-day vector.
+#'
+#' - `get_year()` returns the fiscal year. Note that this can differ from the
+#'   Gregorian year if `start != 1L`.
+#'
+#' - `get_quarter()` returns the fiscal quarter as a value between 1-4.
+#'
+#' - `get_day()` returns the day of the fiscal quarter as a value between 1-92.
+#'
+#' - There are sub-daily getters for extracting more precise components.
+#'
+#' @param x `[clock_year_quarter_day]`
+#'
+#'   A year-quarter-day to get the component from.
+#'
+#' @return The component.
+#'
+#' @name year-quarter-day-getters
+#' @examples
+#' x <- year_quarter_day(2020, 1:4)
+#'
+#' get_quarter(x)
+#'
+#' # Set and then get the last day of the quarter
+#' x <- set_day(x, "last")
+#' get_day(x)
+#'
+#' # Start the fiscal year in November and choose the 50th day in
+#' # each quarter of 2020
+#' november <- 11
+#' y <- year_quarter_day(2020, 1:4, 50, start = 11)
+#' y
+#'
+#' get_day(y)
+#'
+#' # What does that map to in year-month-day?
+#' as_year_month_day(y)
+NULL
+
+#' @rdname year-quarter-day-getters
 #' @export
 get_year.clock_year_quarter_day <- function(x) {
   field_year(x)
 }
 
+#' @rdname year-quarter-day-getters
 #' @export
 get_quarter.clock_year_quarter_day <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_QUARTER, "get_quarter")
   field_quarter(x)
 }
 
+#' @rdname year-quarter-day-getters
 #' @export
 get_day.clock_year_quarter_day <- function(x, ...) {
   check_dots_empty()
@@ -207,36 +252,42 @@ get_day.clock_year_quarter_day <- function(x, ...) {
   field_day(x)
 }
 
+#' @rdname year-quarter-day-getters
 #' @export
 get_hour.clock_year_quarter_day <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_HOUR, "get_hour")
   field_hour(x)
 }
 
+#' @rdname year-quarter-day-getters
 #' @export
 get_minute.clock_year_quarter_day <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_MINUTE, "get_minute")
   field_minute(x)
 }
 
+#' @rdname year-quarter-day-getters
 #' @export
 get_second.clock_year_quarter_day <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_SECOND, "get_second")
   field_second(x)
 }
 
+#' @rdname year-quarter-day-getters
 #' @export
 get_millisecond.clock_year_quarter_day <- function(x) {
   calendar_require_precision(x, PRECISION_MILLISECOND, "get_millisecond")
   field_subsecond(x)
 }
 
+#' @rdname year-quarter-day-getters
 #' @export
 get_microsecond.clock_year_quarter_day <- function(x) {
   calendar_require_precision(x, PRECISION_MICROSECOND, "get_microsecond")
   field_subsecond(x)
 }
 
+#' @rdname year-quarter-day-getters
 #' @export
 get_nanosecond.clock_year_quarter_day <- function(x) {
   calendar_require_precision(x, PRECISION_NANOSECOND, "get_nanosecond")

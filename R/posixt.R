@@ -124,26 +124,67 @@ as.POSIXlt.clock_zoned_time <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Getters: Date-times
+#'
+#' @description
+#' These functions are supported getters for date-time vectors, like POSIXct
+#' and POSIXlt.
+#'
+#' - `get_year()` returns the Gregorian year.
+#'
+#' - `get_month()` returns the month of the year.
+#'
+#' - `get_day()` returns the day of the month.
+#'
+#' - There are sub-daily getters for extracting more precise components, up to
+#'   a precision of seconds.
+#'
+#' For more advanced component extraction, convert to the calendar type
+#' that you are interested in.
+#'
+#' @param x `[POSIXct / POSIXlt]`
+#'
+#'   A date-time type to get the component from.
+#'
+#' @return The component.
+#'
+#' @name posixt-getters
+#' @examples
+#' x <- as.POSIXct("2019-01-01", tz = "America/New_York")
+#'
+#' x <- add_days(x, 0:5)
+#' x <- set_second(x, 10:15)
+#'
+#' get_day(x)
+#' get_second(x)
+NULL
+
+#' @rdname posixt-getters
 #' @export
 get_year.POSIXt <- function(x) {
   get_posixt_field_year_month_day(x, get_year)
 }
+#' @rdname posixt-getters
 #' @export
 get_month.POSIXt <- function(x) {
   get_posixt_field_year_month_day(x, get_month)
 }
+#' @rdname posixt-getters
 #' @export
 get_day.POSIXt <- function(x) {
   get_posixt_field_year_month_day(x, get_day)
 }
+#' @rdname posixt-getters
 #' @export
 get_hour.POSIXt <- function(x) {
   get_posixt_field_year_month_day(x, get_hour)
 }
+#' @rdname posixt-getters
 #' @export
 get_minute.POSIXt <- function(x) {
   get_posixt_field_year_month_day(x, get_minute)
 }
+#' @rdname posixt-getters
 #' @export
 get_second.POSIXt <- function(x) {
   get_posixt_field_year_month_day(x, get_second)

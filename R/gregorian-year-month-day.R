@@ -383,53 +383,97 @@ invalid_resolve.clock_year_month_day <- function(x, ..., invalid = "error") {
 
 # ------------------------------------------------------------------------------
 
+#' Getters: year-month-day
+#'
+#' @description
+#' These functions are supported getters for a year-month-day vector.
+#'
+#' - `get_year()` returns the Gregorian year.
+#'
+#' - `get_month()` returns the month of the year.
+#'
+#' - `get_day()` returns the day of the month.
+#'
+#' - There are sub-daily getters for extracting more precise components.
+#'
+#' @param x `[clock_year_month_day]`
+#'
+#'   A year-month-day to get the component from.
+#'
+#' @return The component.
+#'
+#' @name year-month-day-getters
+#' @examples
+#' x <- year_month_day(2019, 1:3, 5:7, 1, 20, 30)
+#'
+#' get_month(x)
+#' get_day(x)
+#' get_second(x)
+#'
+#' # Cannot extract more precise components
+#' y <- year_month_day(2019, 1)
+#' try(get_day(y))
+#'
+#' # Cannot extract components that don't exist for this calendar
+#' try(get_quarter(x))
+NULL
+
+#' @rdname year-month-day-getters
 #' @export
 get_year.clock_year_month_day <- function(x) {
   field_year(x)
 }
 
+#' @rdname year-month-day-getters
 #' @export
 get_month.clock_year_month_day <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_MONTH, "get_month")
   field_month(x)
 }
 
+#' @rdname year-month-day-getters
 #' @export
 get_day.clock_year_month_day <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_DAY, "get_day")
   field_day(x)
 }
 
+#' @rdname year-month-day-getters
 #' @export
 get_hour.clock_year_month_day <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_HOUR, "get_hour")
   field_hour(x)
 }
 
+#' @rdname year-month-day-getters
 #' @export
 get_minute.clock_year_month_day <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_MINUTE, "get_minute")
   field_minute(x)
 }
 
+#' @rdname year-month-day-getters
 #' @export
 get_second.clock_year_month_day <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_SECOND, "get_second")
   field_second(x)
 }
 
+#' @rdname year-month-day-getters
 #' @export
 get_millisecond.clock_year_month_day <- function(x) {
   calendar_require_precision(x, PRECISION_MILLISECOND, "get_millisecond")
   field_subsecond(x)
 }
 
+#' @rdname year-month-day-getters
 #' @export
 get_microsecond.clock_year_month_day <- function(x) {
   calendar_require_precision(x, PRECISION_MICROSECOND, "get_microsecond")
   field_subsecond(x)
 }
 
+#' @rdname year-month-day-getters
 #' @export
 get_nanosecond.clock_year_month_day <- function(x) {
   calendar_require_precision(x, PRECISION_NANOSECOND, "get_nanosecond")

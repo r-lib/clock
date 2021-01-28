@@ -171,53 +171,103 @@ invalid_resolve.clock_iso_year_week_day <- function(x, ..., invalid = "error") {
 
 # ------------------------------------------------------------------------------
 
+#' Getters: iso-year-week-day
+#'
+#' @description
+#' These functions are supported getters for a iso-year-week-day vector.
+#'
+#' - `get_year()` returns the ISO year. Note that this can differ from the
+#'   Gregorian year.
+#'
+#' - `get_week()` returns the ISO week of the current ISO year.
+#'
+#' - `get_day()` returns a value between 1-7 indicating the weekday of the
+#'   current ISO week, where 1 = Monday and 7 = Sunday, in line with the
+#'   ISO standard.
+#'
+#' - There are sub-daily getters for extracting more precise components.
+#'
+#' @param x `[clock_iso_year_week_day]`
+#'
+#'   A iso-year-week-day to get the component from.
+#'
+#' @return The component.
+#'
+#' @name iso-year-week-day-getters
+#' @examples
+#' x <- iso_year_week_day(2019, 50:52, 1:3)
+#' x
+#'
+#' # Get the ISO week
+#' get_week(x)
+#'
+#' # Gets the weekday, 1 = Monday, 7 = Sunday
+#' get_day(x)
+#'
+#' # Note that the ISO year can differ from the Gregorian year
+#' iso <- iso_year_week_day(2019, 1, 1)
+#' ymd <- as_year_month_day(iso)
+#'
+#' get_year(iso)
+#' get_year(ymd)
+NULL
+
+#' @rdname iso-year-week-day-getters
 #' @export
 get_year.clock_iso_year_week_day <- function(x) {
   field_year(x)
 }
 
+#' @rdname iso-year-week-day-getters
 #' @export
 get_week.clock_iso_year_week_day <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_WEEK, "get_week")
   field_week(x)
 }
 
+#' @rdname iso-year-week-day-getters
 #' @export
 get_day.clock_iso_year_week_day <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_DAY, "get_day")
   field_day(x)
 }
 
+#' @rdname iso-year-week-day-getters
 #' @export
 get_hour.clock_iso_year_week_day <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_HOUR, "get_hour")
   field_hour(x)
 }
 
+#' @rdname iso-year-week-day-getters
 #' @export
 get_minute.clock_iso_year_week_day <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_MINUTE, "get_minute")
   field_minute(x)
 }
 
+#' @rdname iso-year-week-day-getters
 #' @export
 get_second.clock_iso_year_week_day <- function(x) {
   calendar_require_minimum_precision(x, PRECISION_SECOND, "get_second")
   field_second(x)
 }
 
+#' @rdname iso-year-week-day-getters
 #' @export
 get_millisecond.clock_iso_year_week_day <- function(x) {
   calendar_require_precision(x, PRECISION_MILLISECOND, "get_millisecond")
   field_subsecond(x)
 }
 
+#' @rdname iso-year-week-day-getters
 #' @export
 get_microsecond.clock_iso_year_week_day <- function(x) {
   calendar_require_precision(x, PRECISION_MICROSECOND, "get_microsecond")
   field_subsecond(x)
 }
 
+#' @rdname iso-year-week-day-getters
 #' @export
 get_nanosecond.clock_iso_year_week_day <- function(x) {
   calendar_require_precision(x, PRECISION_NANOSECOND, "get_nanosecond")
