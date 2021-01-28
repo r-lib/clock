@@ -66,6 +66,12 @@ directly from R's native date and date-time types.
 \item \link[=posixt-getters]{date-times (POSIXct / POSIXlt)}
 }
 }
+\details{
+You cannot extract components directly from a time point type, such as
+sys-time or naive-time. Convert it to a calendar type first. Similarly,
+a zoned-time must be converted to either a sys-time or naive-time, and
+then to a calendar type, to be able to extract components from it.
+}
 \examples{
 x <- year_month_day(2019, 1:3, 5:7, 1, 20, 30)
 get_month(x)

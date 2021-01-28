@@ -20,6 +20,12 @@
 #'
 #' - [date-times (POSIXct / POSIXlt)][posixt-getters]
 #'
+#' @details
+#' You cannot extract components directly from a time point type, such as
+#' sys-time or naive-time. Convert it to a calendar type first. Similarly,
+#' a zoned-time must be converted to either a sys-time or naive-time, and
+#' then to a calendar type, to be able to extract components from it.
+#'
 #' @param x `[object]`
 #'
 #'   An object to get the component from.
