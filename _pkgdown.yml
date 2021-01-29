@@ -1,0 +1,123 @@
+destination: docs
+
+development:
+  mode: auto
+
+reference:
+- title: Calendars
+  contents:
+  - calendar_group
+  - calendar_leap_year
+  - calendar_narrow
+  - get_year
+  - set_year
+
+- title: Year-month-day
+  contents:
+  - year_month_day
+  - as_year_month_day
+  - is_year_month_day
+  - calendar_group.clock_year_month_day
+  - add_years.clock_year_month_day
+  - get_year.clock_year_month_day
+  - set_year.clock_year_month_day
+
+- title: Year-month-weekday
+  contents:
+  - year_month_weekday
+  - as_year_month_weekday
+  - is_year_month_weekday
+  - calendar_group.clock_year_month_weekday
+  - parse_year_month_day
+  - add_years.clock_year_month_weekday
+  - get_year.clock_year_month_weekday
+  - set_year.clock_year_month_weekday
+
+- title: ISO-year-week-day
+  contents:
+  - iso_year_week_day
+  - as_iso_year_week_day
+  - is_iso_year_week_day
+  - calendar_group.clock_iso_year_week_day
+  - add_years.clock_iso_year_week_day
+  - get_year.clock_iso_year_week_day
+  - set_year.clock_iso_year_week_day
+
+- title: Year-quarter-day
+  contents:
+  - year_quarter_day
+  - as_year_quarter_day
+  - is_year_quarter_day
+  - calendar_group.clock_year_quarter_day
+  - add_years.clock_year_quarter_day
+  - get_year.clock_year_quarter_day
+  - set_year.clock_year_quarter_day
+
+- title: Invalid dates
+  contents:
+  - invalid_resolve
+
+- title: Durations
+  contents:
+  - duration_years
+  - duration_cast
+  - duration-rounding
+  - duration-arithmetic
+  - is_duration
+  - as_duration
+
+- title: Time points
+  contents:
+  - as_naive_time
+  - as_sys_time
+  - sys_now
+  - time_point_cast
+  - time-point-rounding
+  - add_weeks.clock_time_point
+  - is_naive_time
+  - is_sys_time
+  - as-zoned-time-naive-time
+  - as-zoned-time-sys-time
+
+- title: Zoned-time
+  contents:
+  - as_zoned_time
+  - zoned_now
+  - zoned_zone
+  - zoned_info
+  - is_zoned_time
+
+- title: Weekdays
+  contents:
+  - weekday
+  - weekday-encoding
+  - weekday-arithmetic
+  - is_weekday
+  - as_weekday
+
+- title: Date support
+  contents:
+  - get_year.Date
+  - set_year.Date
+  - Date-arithmetic
+  - as-zoned-time-Date
+
+- title: POSIXct / POSIXlt support
+  contents:
+  - get_year.POSIXt
+  - set_year.POSIXt
+  - posixt-arithmetic
+  - as-zoned-time-posixt
+
+- title: Arithmetic
+  contents:
+  - add_years
+
+- title: Locale
+  contents:
+  - clock_locale
+  - clock_mapping
+
+- title: Developer
+  contents:
+  - vec_arith.clock_year_month_day
