@@ -11,7 +11,24 @@ as_naive_time.Date <- function(x) {
   as_naive_time(as_sys_time(x))
 }
 
+#' Convert to a zoned-time from a date
+#'
+#' Since R assumes that Dates are UTC, converting to a zoned-time returns
+#' a zoned-time with a UTC time zone. There is no `zone` argument.
+#'
+#' @inheritParams ellipsis::dots_empty
+#'
+#' @param x `[Date]`
+#'
+#'   A Date.
+#'
+#' @return A zoned-time.
+#'
+#' @name as-zoned-time-Date
 #' @export
+#' @examples
+#' x <- as.Date("2019-01-01")
+#' as_zoned_time(x)
 as_zoned_time.Date <- function(x, ...) {
   check_dots_empty()
   x <- as_sys_time(x)
@@ -65,7 +82,7 @@ as.Date.clock_zoned_time <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
-#' Getters: Dates
+#' Getters: date
 #'
 #' @description
 #' These functions are supported getters for a Date vector.
@@ -137,14 +154,66 @@ zoned_offset.Date <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' Setters: date
+#'
+#' @description
+#' These functions are supported setters for a Date vector.
+#'
+#' - `set_year()` sets the year.
+#'
+#' - `set_month()` sets the month of the year. Valid values are in the range
+#'   of `[1, 12]`.
+#'
+#' - `set_day()` sets the day of the month. Valid values are in the range
+#'   of `[1, 31]`.
+#'
+#' @inheritParams ellipsis::dots_empty
+#' @inheritParams invalid_resolve
+#'
+#' @param x `[Date]`
+#'
+#'   A Date vector.
+#'
+#' @param value `[integer / "last"]`
+#'
+#'   The value to set the component to.
+#'
+#'   For `set_day()`, this can also be `"last"` to set the day to the
+#'   last day of the month.
+#'
+#' @return `x` with the component set.
+#'
+#' @name Date-setters
+#' @examples
+#' x <- as.Date("2019-02-01")
+#'
+#' # Set the day
+#' set_day(x, 12:14)
+#'
+#' # Set to the "last" day of the month
+#' set_day(x, "last")
+#'
+#' # You cannot set a Date to an invalid day like you can with
+#' # a year-month-day. Instead, the default strategy is to error.
+#' try(set_day(x, 31))
+#' set_day(as_year_month_day(x), 31)
+#'
+#' # You can resolve these issues while setting the day by specifying
+#' # an invalid date resolution strategy with `invalid`
+#' set_day(x, 31, invalid = "previous")
+NULL
+
+#' @rdname Date-setters
 #' @export
 set_year.Date <- function(x, value, ..., invalid = "error") {
   set_date_field_year_month_day(x, value, invalid, set_year, ...)
 }
+#' @rdname Date-setters
 #' @export
 set_month.Date <- function(x, value, ..., invalid = "error") {
   set_date_field_year_month_day(x, value, invalid, set_month, ...)
 }
+#' @rdname Date-setters
 #' @export
 set_day.Date <- function(x, value, ..., invalid = "error") {
   set_date_field_year_month_day(x, value, invalid, set_day, ...)

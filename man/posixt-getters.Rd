@@ -8,7 +8,7 @@
 \alias{get_hour.POSIXt}
 \alias{get_minute.POSIXt}
 \alias{get_second.POSIXt}
-\title{Getters: Date-times}
+\title{Getters: date-time}
 \usage{
 \method{get_year}{POSIXt}(x)
 

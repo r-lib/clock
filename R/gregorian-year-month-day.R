@@ -501,12 +501,65 @@ calendar_get_component.clock_year_month_day <- function(x, component) {
 
 # ------------------------------------------------------------------------------
 
+#' Setters: year-month-day
+#'
+#' @description
+#' These functions are supported setters for a year-month-day vector.
+#'
+#' - `set_year()` sets the Gregorian year.
+#'
+#' - `set_month()` sets the month of the year. Valid values are in the range
+#'   of `[1, 12]`.
+#'
+#' - `set_day()` sets the day of the month. Valid values are in the range
+#'   of `[1, 31]`.
+#'
+#' - There are sub-daily setters for setting more precise components.
+#'
+#' @inheritParams ellipsis::dots_empty
+#'
+#' @param x `[clock_year_month_day]`
+#'
+#'   A year-month-day vector.
+#'
+#' @param value `[integer / "last"]`
+#'
+#'   The value to set the component to.
+#'
+#'   For `set_day()`, this can also be `"last"` to set the day to the
+#'   last day of the month.
+#'
+#' @return `x` with the component set.
+#'
+#' @name year-month-day-setters
+#' @examples
+#' x <- year_month_day(2019, 1:3)
+#'
+#' # Set the day
+#' set_day(x, 12:14)
+#'
+#' # Set to the "last" day of the month
+#' set_day(x, "last")
+#'
+#' # Set to an invalid day of the month
+#' invalid <- set_day(x, 31)
+#' invalid
+#'
+#' # Then resolve the invalid day by choosing the next valid day
+#' invalid_resolve(invalid, invalid = "next")
+#'
+#' # Cannot set a component two levels more precise than where you currently are
+#' try(set_hour(x, 5))
+NULL
+
+#' @rdname year-month-day-setters
 #' @export
 set_year.clock_year_month_day <- function(x, value, ...) {
   check_dots_empty()
   set_field_year_month_day(x, value, "year")
 }
 
+#' @rdname year-month-day-setters
 #' @export
 set_month.clock_year_month_day <- function(x, value, ...) {
   check_dots_empty()
@@ -514,6 +567,7 @@ set_month.clock_year_month_day <- function(x, value, ...) {
   set_field_year_month_day(x, value, "month")
 }
 
+#' @rdname year-month-day-setters
 #' @export
 set_day.clock_year_month_day <- function(x, value, ...) {
   check_dots_empty()
@@ -521,6 +575,7 @@ set_day.clock_year_month_day <- function(x, value, ...) {
   set_field_year_month_day(x, value, "day")
 }
 
+#' @rdname year-month-day-setters
 #' @export
 set_hour.clock_year_month_day <- function(x, value, ...) {
   check_dots_empty()
@@ -528,6 +583,7 @@ set_hour.clock_year_month_day <- function(x, value, ...) {
   set_field_year_month_day(x, value, "hour")
 }
 
+#' @rdname year-month-day-setters
 #' @export
 set_minute.clock_year_month_day <- function(x, value, ...) {
   check_dots_empty()
@@ -535,6 +591,7 @@ set_minute.clock_year_month_day <- function(x, value, ...) {
   set_field_year_month_day(x, value, "minute")
 }
 
+#' @rdname year-month-day-setters
 #' @export
 set_second.clock_year_month_day <- function(x, value, ...) {
   check_dots_empty()
@@ -542,6 +599,7 @@ set_second.clock_year_month_day <- function(x, value, ...) {
   set_field_year_month_day(x, value, "second")
 }
 
+#' @rdname year-month-day-setters
 #' @export
 set_millisecond.clock_year_month_day <- function(x, value, ...) {
   check_dots_empty()
@@ -549,6 +607,7 @@ set_millisecond.clock_year_month_day <- function(x, value, ...) {
   set_field_year_month_day(x, value, "millisecond")
 }
 
+#' @rdname year-month-day-setters
 #' @export
 set_microsecond.clock_year_month_day <- function(x, value, ...) {
   check_dots_empty()
@@ -556,6 +615,7 @@ set_microsecond.clock_year_month_day <- function(x, value, ...) {
   set_field_year_month_day(x, value, "microsecond")
 }
 
+#' @rdname year-month-day-setters
 #' @export
 set_nanosecond.clock_year_month_day <- function(x, value, ...) {
   check_dots_empty()

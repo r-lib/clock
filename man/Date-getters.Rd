@@ -5,7 +5,7 @@
 \alias{get_year.Date}
 \alias{get_month.Date}
 \alias{get_day.Date}
-\title{Getters: Dates}
+\title{Getters: date}
 \usage{
 \method{get_year}{Date}(x)
 

@@ -295,12 +295,66 @@ calendar_get_component.clock_iso_year_week_day <- function(x, component) {
 
 # ------------------------------------------------------------------------------
 
+#' Setters: iso-year-week-day
+#'
+#' @description
+#' These functions are supported setters for a iso-year-week-day vector.
+#'
+#' - `set_year()` sets the ISO year.
+#'
+#' - `set_week()` sets the ISO week of the year. Valid values are in the range
+#'   of `[1, 53]`.
+#'
+#' - `set_day()` sets the day of the week. Valid values are in the range of
+#'   `[1, 7]`, with 1 = Monday, and 7 = Sunday.
+#'
+#' - There are sub-daily setters for setting more precise components.
+#'
+#' @inheritParams ellipsis::dots_empty
+#'
+#' @param x `[clock_iso_year_week_day]`
+#'
+#'   A iso-year-week-day vector.
+#'
+#' @param value `[integer / "last"]`
+#'
+#'   The value to set the component to.
+#'
+#'   For `set_week()`, this can also be `"last"` to adjust to the last
+#'   week of the current ISO year.
+#'
+#' @return `x` with the component set.
+#'
+#' @name iso-year-week-day-setters
+#' @examples
+#' # Year precision vector
+#' x <- iso_year_week_day(2019:2023)
+#'
+#' # Promote to week precision by setting the week
+#' # (Note that some ISO weeks have 52 weeks, and others have 53)
+#' x <- set_week(x, "last")
+#' x
+#'
+#' # Set to an invalid week
+#' invalid <- set_week(x, 53)
+#' invalid
+#'
+#' # Here are the invalid ones (they only have 52 weeks)
+#' invalid[invalid_detect(invalid)]
+#'
+#' # Resolve the invalid dates by choosing the previous/next valid moment
+#' invalid_resolve(invalid, invalid = "previous")
+#' invalid_resolve(invalid, invalid = "next")
+NULL
+
+#' @rdname iso-year-week-day-setters
 #' @export
 set_year.clock_iso_year_week_day <- function(x, value, ...) {
   check_dots_empty()
   set_field_iso_year_week_day(x, value, "year")
 }
 
+#' @rdname iso-year-week-day-setters
 #' @export
 set_week.clock_iso_year_week_day <- function(x, value, ...) {
   check_dots_empty()
@@ -308,6 +362,7 @@ set_week.clock_iso_year_week_day <- function(x, value, ...) {
   set_field_iso_year_week_day(x, value, "week")
 }
 
+#' @rdname iso-year-week-day-setters
 #' @export
 set_day.clock_iso_year_week_day <- function(x, value, ...) {
   check_dots_empty()
@@ -315,6 +370,7 @@ set_day.clock_iso_year_week_day <- function(x, value, ...) {
   set_field_iso_year_week_day(x, value, "day")
 }
 
+#' @rdname iso-year-week-day-setters
 #' @export
 set_hour.clock_iso_year_week_day <- function(x, value, ...) {
   check_dots_empty()
@@ -322,6 +378,7 @@ set_hour.clock_iso_year_week_day <- function(x, value, ...) {
   set_field_iso_year_week_day(x, value, "hour")
 }
 
+#' @rdname iso-year-week-day-setters
 #' @export
 set_minute.clock_iso_year_week_day <- function(x, value, ...) {
   check_dots_empty()
@@ -329,6 +386,7 @@ set_minute.clock_iso_year_week_day <- function(x, value, ...) {
   set_field_iso_year_week_day(x, value, "minute")
 }
 
+#' @rdname iso-year-week-day-setters
 #' @export
 set_second.clock_iso_year_week_day <- function(x, value, ...) {
   check_dots_empty()
@@ -336,6 +394,7 @@ set_second.clock_iso_year_week_day <- function(x, value, ...) {
   set_field_iso_year_week_day(x, value, "second")
 }
 
+#' @rdname iso-year-week-day-setters
 #' @export
 set_millisecond.clock_iso_year_week_day <- function(x, value, ...) {
   check_dots_empty()
@@ -343,6 +402,7 @@ set_millisecond.clock_iso_year_week_day <- function(x, value, ...) {
   set_field_iso_year_week_day(x, value, "millisecond")
 }
 
+#' @rdname iso-year-week-day-setters
 #' @export
 set_microsecond.clock_iso_year_week_day <- function(x, value, ...) {
   check_dots_empty()
@@ -350,6 +410,7 @@ set_microsecond.clock_iso_year_week_day <- function(x, value, ...) {
   set_field_iso_year_week_day(x, value, "microsecond")
 }
 
+#' @rdname iso-year-week-day-setters
 #' @export
 set_nanosecond.clock_iso_year_week_day <- function(x, value, ...) {
   check_dots_empty()

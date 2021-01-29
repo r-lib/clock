@@ -9,7 +9,24 @@ as_naive_time.POSIXt <- function(x) {
   as_naive_time(as_zoned_time(x))
 }
 
+#' Convert to a zoned-time from a date-time
+#'
+#' Converting from one of R's native date-time classes (POSIXct or POSIXlt)
+#' will retain the time zone of that object. There is no `zone` argument.
+#'
+#' @inheritParams ellipsis::dots_empty
+#'
+#' @param x `[POSIXct / POSIXlt]`
+#'
+#'   A date-time.
+#'
+#' @return A zoned-time.
+#'
+#' @name as-zoned-time-posixt
 #' @export
+#' @examples
+#' x <- as.POSIXct("2019-01-01", tz = "America/New_York")
+#' as_zoned_time(x)
 as_zoned_time.POSIXt <- function(x, ...) {
   check_dots_empty()
 
@@ -124,7 +141,7 @@ as.POSIXlt.clock_zoned_time <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
-#' Getters: Date-times
+#' Getters: date-time
 #'
 #' @description
 #' These functions are supported getters for date-time vectors, like POSIXct
@@ -222,26 +239,94 @@ zoned_offset.POSIXt <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' Setters: date-time
+#'
+#' @description
+#' These functions are supported setters for date-time vectors, like POSIXct
+#' and POSIXlt.
+#'
+#' - `set_year()` sets the year.
+#'
+#' - `set_month()` sets the month of the year. Valid values are in the range
+#'   of `[1, 12]`.
+#'
+#' - `set_day()` sets the day of the month. Valid values are in the range
+#'   of `[1, 31]`.
+#'
+#' - There are sub-daily setters for setting more precise components, up to
+#'   a precision of seconds.
+#'
+#' @inheritParams ellipsis::dots_empty
+#' @inheritParams invalid_resolve
+#' @inheritParams as-zoned-time-naive-time
+#'
+#' @param x `[POSIXct / POSIXlt]`
+#'
+#'   A date-time vector.
+#'
+#' @param value `[integer / "last"]`
+#'
+#'   The value to set the component to.
+#'
+#'   For `set_day()`, this can also be `"last"` to set the day to the
+#'   last day of the month.
+#'
+#' @return `x` with the component set.
+#'
+#' @name posixt-setters
+#' @examples
+#' x <- as.POSIXct("2019-02-01", tz = "America/New_York")
+#'
+#' # Set the day
+#' set_day(x, 12:14)
+#'
+#' # Set to the "last" day of the month
+#' set_day(x, "last")
+#'
+#' # You cannot set a date-time to an invalid date like you can with
+#' # a year-month-day. Instead, the default strategy is to error.
+#' try(set_day(x, 31))
+#' set_day(as_year_month_day(x), 31)
+#'
+#' # You can resolve these issues while setting the day by specifying
+#' # an invalid date resolution strategy with `invalid`
+#' set_day(x, 31, invalid = "previous")
+#'
+#' y <- as.POSIXct("2020-03-08 01:30:00", tz = "America/New_York")
+#'
+#' # Nonexistent and ambiguous times must be resolved immediately when
+#' # working with R's native date-time types. An error is thrown by default.
+#' try(set_hour(y, 2))
+#' set_hour(y, 2, nonexistent = "roll-forward")
+#' set_hour(y, 2, nonexistent = "roll-backward")
+NULL
+
+#' @rdname posixt-setters
 #' @export
 set_year.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "error", ambiguous = "error") {
   set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_year, ...)
 }
+#' @rdname posixt-setters
 #' @export
 set_month.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "error", ambiguous = "error") {
   set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_month, ...)
 }
+#' @rdname posixt-setters
 #' @export
 set_day.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "error", ambiguous = "error") {
   set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_day, ...)
 }
+#' @rdname posixt-setters
 #' @export
 set_hour.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "error", ambiguous = "error") {
   set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_hour, ...)
 }
+#' @rdname posixt-setters
 #' @export
 set_minute.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "error", ambiguous = "error") {
   set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_minute, ...)
 }
+#' @rdname posixt-setters
 #' @export
 set_second.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "error", ambiguous = "error") {
   set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_second, ...)

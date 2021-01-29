@@ -223,7 +223,39 @@ pillar_shaft.clock_zoned_time <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Convert to a zoned-time
+#'
+#' @description
+#' `as_zoned_time()` converts `x` to a zoned-time. You generally convert
+#' to a zoned time from either a sys-time or a naive time. Each are documented
+#' on their own page:
+#'
+#' - [sys-time][as-zoned-time-sys-time]
+#'
+#' - [naive-time][as-zoned-time-naive-time]
+#'
+#' There are also convenience methods for converting to a zoned time from
+#' native R date and date-time types:
+#'
+#' - [dates (Date)][as-zoned-time-Date]
+#'
+#' - [date-times (POSIXct / POSIXlt)][as-zoned-time-posixt]
+#'
+#' @inheritParams ellipsis::dots_empty
+#'
+#' @param x `[object]`
+#'
+#'   An object to convert to a zoned-time.
+#'
+#' @return A zoned-time vector.
+#'
 #' @export
+#' @examples
+#' x <- as.Date("2019-01-01")
+#' as_zoned_time(x)
+#'
+#' y <- as_naive_time(year_month_day(2019, 2, 1))
+#' as_zoned_time(y, zone = "America/New_York")
 as_zoned_time <- function(x, ...) {
   UseMethod("as_zoned_time")
 }

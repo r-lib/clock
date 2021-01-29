@@ -371,12 +371,91 @@ calendar_get_component.clock_year_month_weekday <- function(x, component) {
 
 # ------------------------------------------------------------------------------
 
+#' Setters: year-month-weekday
+#'
+#' @description
+#' These functions are supported setters for a year-month-weekday vector.
+#'
+#' - `set_year()` sets the Gregorian year.
+#'
+#' - `set_month()` sets the month of the year. Valid values are in the range
+#'   of `[1, 12]`.
+#'
+#' - `set_day()` sets the day of the week. Valid values are in the range of
+#'   `[1, 7]`, with 1 = Sunday, and 7 = Saturday.
+#'
+#' - `set_index()` sets the index indicating that the corresponding
+#'   weekday is the n-th instance of that weekday in the current month. Valid
+#'   values are in the range of `[1, 5]`.
+#'
+#' - There are sub-daily setters for setting more precise components.
+#'
+#' @inheritParams ellipsis::dots_empty
+#'
+#' @param x `[clock_year_month_weekday]`
+#'
+#'   A year-month-weekday vector.
+#'
+#' @param value `[integer / "last"]`
+#'
+#'   The value to set the component to.
+#'
+#'   For `set_index()`, this can also be `"last"` to adjust to the last
+#'   instance of the corresponding weekday in that month.
+#'
+#' @param index `[NULL / integer / "last"]`
+#'
+#'   This argument is only used with `set_day()`, and allows you to set the
+#'   index while also setting the weekday.
+#'
+#'   If `x` is a month precision year-month-weekday, `index` is required to
+#'   be set, as you must specify the weekday and the index simultaneously to
+#'   promote from month to day precision.
+#'
+#' @return `x` with the component set.
+#'
+#' @name year-month-weekday-setters
+#' @examples
+#' x <- year_month_weekday(2019, 1:3)
+#'
+#' set_year(x, 2020:2022)
+#'
+#' # Setting the weekday on a month precision year-month-weekday requires
+#' # also setting the `index` to fully specify the day information
+#' x <- set_day(x, 1, index = 1)
+#' x
+#'
+#' # Once you have at least day precision, you can set the weekday and
+#' # the index separately
+#' set_day(x, 2)
+#' set_index(x, 3)
+#'
+#' # Set to the "last" instance of the corresponding weekday in this month
+#' # (Note that some months have 4 Sundays, and others have 5)
+#' set_index(x, "last")
+#'
+#' # Set to an invalid index
+#' # January and February of 2019 don't have 5 Sundays!
+#' invalid <- set_index(x, 5)
+#' invalid
+#'
+#' # Resolve the invalid dates by choosing the previous/next valid moment
+#' invalid_resolve(invalid, invalid = "previous")
+#' invalid_resolve(invalid, invalid = "next")
+#'
+#' # You can also "overflow" the index. This keeps the weekday, but resets
+#' # the index to 1 and increments the month value by 1.
+#' invalid_resolve(invalid, invalid = "overflow")
+NULL
+
+#' @rdname year-month-weekday-setters
 #' @export
 set_year.clock_year_month_weekday <- function(x, value, ...) {
   check_dots_empty()
   set_field_year_month_weekday(x, value, "year")
 }
 
+#' @rdname year-month-weekday-setters
 #' @export
 set_month.clock_year_month_weekday <- function(x, value, ...) {
   check_dots_empty()
@@ -384,6 +463,7 @@ set_month.clock_year_month_weekday <- function(x, value, ...) {
   set_field_year_month_weekday(x, value, "month")
 }
 
+#' @rdname year-month-weekday-setters
 #' @export
 set_day.clock_year_month_weekday <- function(x, value, ..., index = NULL) {
   check_dots_empty()
@@ -412,6 +492,7 @@ set_day.clock_year_month_weekday <- function(x, value, ..., index = NULL) {
   out
 }
 
+#' @rdname year-month-weekday-setters
 #' @export
 set_index.clock_year_month_weekday <- function(x, value, ...) {
   check_dots_empty()
@@ -419,6 +500,7 @@ set_index.clock_year_month_weekday <- function(x, value, ...) {
   set_field_year_month_weekday(x, value, "index")
 }
 
+#' @rdname year-month-weekday-setters
 #' @export
 set_hour.clock_year_month_weekday <- function(x, value, ...) {
   check_dots_empty()
@@ -426,6 +508,7 @@ set_hour.clock_year_month_weekday <- function(x, value, ...) {
   set_field_year_month_weekday(x, value, "hour")
 }
 
+#' @rdname year-month-weekday-setters
 #' @export
 set_minute.clock_year_month_weekday <- function(x, value, ...) {
   check_dots_empty()
@@ -433,6 +516,7 @@ set_minute.clock_year_month_weekday <- function(x, value, ...) {
   set_field_year_month_weekday(x, value, "minute")
 }
 
+#' @rdname year-month-weekday-setters
 #' @export
 set_second.clock_year_month_weekday <- function(x, value, ...) {
   check_dots_empty()
@@ -440,6 +524,7 @@ set_second.clock_year_month_weekday <- function(x, value, ...) {
   set_field_year_month_weekday(x, value, "second")
 }
 
+#' @rdname year-month-weekday-setters
 #' @export
 set_millisecond.clock_year_month_weekday <- function(x, value, ...) {
   check_dots_empty()
@@ -447,6 +532,7 @@ set_millisecond.clock_year_month_weekday <- function(x, value, ...) {
   set_field_year_month_weekday(x, value, "millisecond")
 }
 
+#' @rdname year-month-weekday-setters
 #' @export
 set_microsecond.clock_year_month_weekday <- function(x, value, ...) {
   check_dots_empty()
@@ -454,6 +540,7 @@ set_microsecond.clock_year_month_weekday <- function(x, value, ...) {
   set_field_year_month_weekday(x, value, "microsecond")
 }
 
+#' @rdname year-month-weekday-setters
 #' @export
 set_nanosecond.clock_year_month_weekday <- function(x, value, ...) {
   check_dots_empty()

@@ -246,7 +246,7 @@ get_quarter.clock_year_quarter_day <- function(x) {
 
 #' @rdname year-quarter-day-getters
 #' @export
-get_day.clock_year_quarter_day <- function(x, ...) {
+get_day.clock_year_quarter_day <- function(x) {
   check_dots_empty()
   calendar_require_minimum_precision(x, PRECISION_DAY, "get_day")
   field_day(x)
@@ -315,12 +315,88 @@ calendar_get_component.clock_year_quarter_day <- function(x, component) {
 
 # ------------------------------------------------------------------------------
 
+#' Setters: year-quarter-day
+#'
+#' @description
+#' These functions are supported setters for a year-quarter-day vector.
+#'
+#' - `set_year()` sets the fiscal year.
+#'
+#' - `set_quarter()` sets the fiscal quarter of the year.
+#'   Valid values are in the range of `[1, 4]`.
+#'
+#' - `set_day()` sets the day of the fiscal quarter.
+#'   Valid values are in the range of `[1, 92]`.
+#'
+#' - There are sub-daily setters for setting more precise components.
+#'
+#' @inheritParams ellipsis::dots_empty
+#'
+#' @param x `[clock_year_quarter_day]`
+#'
+#'   A year-quarter-day vector.
+#'
+#' @param value `[integer / "last"]`
+#'
+#'   The value to set the component to.
+#'
+#'   For `set_day()`, this can also be `"last"` to adjust to the last
+#'   day of the current fiscal quarter.
+#'
+#' @return `x` with the component set.
+#'
+#' @name year-quarter-day-setters
+#' @examples
+#' library(magrittr)
+#'
+#' # Quarter precision vector
+#' x <- year_quarter_day(2019, 1:4)
+#' x
+#'
+#' # Promote to day precision by setting the day
+#' x <- set_day(x, 1)
+#' x
+#'
+#' # Or set to the last day of the quarter
+#' x <- set_day(x, "last")
+#' x
+#'
+#' # What year-month-day is this?
+#' as_year_month_day(x)
+#'
+#' # Set to an invalid day of the quarter
+#' # (not all quarters have 92 days)
+#' invalid <- set_day(x, 92)
+#' invalid
+#'
+#' # Here are the invalid ones
+#' invalid[invalid_detect(invalid)]
+#'
+#' # Resolve the invalid dates by choosing the previous/next valid moment
+#' invalid_resolve(invalid, invalid = "previous")
+#' invalid_resolve(invalid, invalid = "next")
+#'
+#' # Or resolve by "overflowing" by the number of days that you have
+#' # gone past the last valid day
+#' invalid_resolve(invalid, invalid = "overflow")
+#'
+#' # This is similar to
+#' days <- get_day(invalid) - 1L
+#' invalid %>%
+#'   set_day(1) %>%
+#'   as_naive_time() %>%
+#'   add_days(days) %>%
+#'   as_year_quarter_day()
+NULL
+
+#' @rdname year-quarter-day-setters
 #' @export
 set_year.clock_year_quarter_day <- function(x, value, ...) {
   check_dots_empty()
   set_field_year_quarter_day(x, value, "year")
 }
 
+#' @rdname year-quarter-day-setters
 #' @export
 set_quarter.clock_year_quarter_day <- function(x, value, ...) {
   check_dots_empty()
@@ -328,6 +404,7 @@ set_quarter.clock_year_quarter_day <- function(x, value, ...) {
   set_field_year_quarter_day(x, value, "quarter")
 }
 
+#' @rdname year-quarter-day-setters
 #' @export
 set_day.clock_year_quarter_day <- function(x, value, ...) {
   check_dots_empty()
@@ -335,6 +412,7 @@ set_day.clock_year_quarter_day <- function(x, value, ...) {
   set_field_year_quarter_day(x, value, "day")
 }
 
+#' @rdname year-quarter-day-setters
 #' @export
 set_hour.clock_year_quarter_day <- function(x, value, ...) {
   check_dots_empty()
@@ -342,6 +420,7 @@ set_hour.clock_year_quarter_day <- function(x, value, ...) {
   set_field_year_quarter_day(x, value, "hour")
 }
 
+#' @rdname year-quarter-day-setters
 #' @export
 set_minute.clock_year_quarter_day <- function(x, value, ...) {
   check_dots_empty()
@@ -349,6 +428,7 @@ set_minute.clock_year_quarter_day <- function(x, value, ...) {
   set_field_year_quarter_day(x, value, "minute")
 }
 
+#' @rdname year-quarter-day-setters
 #' @export
 set_second.clock_year_quarter_day <- function(x, value, ...) {
   check_dots_empty()
@@ -356,6 +436,7 @@ set_second.clock_year_quarter_day <- function(x, value, ...) {
   set_field_year_quarter_day(x, value, "second")
 }
 
+#' @rdname year-quarter-day-setters
 #' @export
 set_millisecond.clock_year_quarter_day <- function(x, value, ...) {
   check_dots_empty()
@@ -363,6 +444,7 @@ set_millisecond.clock_year_quarter_day <- function(x, value, ...) {
   set_field_year_quarter_day(x, value, "millisecond")
 }
 
+#' @rdname year-quarter-day-setters
 #' @export
 set_microsecond.clock_year_quarter_day <- function(x, value, ...) {
   check_dots_empty()
@@ -370,6 +452,7 @@ set_microsecond.clock_year_quarter_day <- function(x, value, ...) {
   set_field_year_quarter_day(x, value, "microsecond")
 }
 
+#' @rdname year-quarter-day-setters
 #' @export
 set_nanosecond.clock_year_quarter_day <- function(x, value, ...) {
   check_dots_empty()

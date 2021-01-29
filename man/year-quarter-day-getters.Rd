@@ -17,7 +17,7 @@
 
 \method{get_quarter}{clock_year_quarter_day}(x)
 
-\method{get_day}{clock_year_quarter_day}(x, ...)
+\method{get_day}{clock_year_quarter_day}(x)
 
 \method{get_hour}{clock_year_quarter_day}(x)
 
