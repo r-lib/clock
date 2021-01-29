@@ -10,6 +10,7 @@
 #' fields after the first `NULL` field are used.
 #'
 #' @inheritParams ellipsis::dots_empty
+#' @inheritParams year_month_day
 #'
 #' @param year `[integer]`
 #'
@@ -136,7 +137,20 @@ vec_ptype_abbr.clock_iso_year_week_day <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Is `x` a iso-year-week-day?
+#'
+#' Check if `x` is a iso-year-week-day.
+#'
+#' @param x `[object]`
+#'
+#'   An object.
+#'
+#' @return Returns `TRUE` if `x` inherits from `"clock_iso_year_week_day"`,
+#'   otherwise returns `FALSE`.
+#'
 #' @export
+#' @examples
+#' is_iso_year_week_day(iso_year_week_day(2019))
 is_iso_year_week_day <- function(x) {
   inherits(x, "clock_iso_year_week_day")
 }

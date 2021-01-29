@@ -32,11 +32,39 @@ The day of the quarter. Values \verb{[1, 92]} are allowed.
 
 If \code{"last"}, the last day of the quarter is returned.}
 
+\item{hour}{\verb{[integer / NULL]}
+
+The hour. Values \verb{[0, 23]} are allowed.}
+
+\item{minute}{\verb{[integer / NULL]}
+
+The minute. Values \verb{[0, 59]} are allowed.}
+
+\item{second}{\verb{[integer / NULL]}
+
+The second. Values \verb{[0, 59]} are allowed.}
+
+\item{subsecond}{\verb{[integer / NULL]}
+
+The subsecond. If specified, \code{subsecond_precision} must also be specified
+to determine how to interpret the \code{subsecond}.
+
+If using milliseconds, values \verb{[0, 999]} are allowed.
+
+If using microseconds, values \verb{[0, 999999]} are allowed.
+
+If using nanoseconds, values \verb{[0, 999999999]} are allowed.}
+
 \item{...}{These dots are for future extensions and must be empty.}
 
 \item{start}{\verb{[integer(1)]}
 
 The month to start the fiscal year in. 1 = January and 12 = December.}
+
+\item{subsecond_precision}{\verb{[character(1) / NULL]}
+
+The precision to interpret \code{subsecond} as. One of: \code{"millisecond"},
+\code{"microsecond"}, or \code{"nanosecond"}.}
 }
 \value{
 A year-quarter-day calendar vector.

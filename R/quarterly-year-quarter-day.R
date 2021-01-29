@@ -11,6 +11,7 @@
 #' fields after the first `NULL` field are used.
 #'
 #' @inheritParams ellipsis::dots_empty
+#' @inheritParams year_month_day
 #'
 #' @param year `[integer]`
 #'
@@ -157,7 +158,20 @@ vec_ptype_abbr.clock_year_quarter_day <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Is `x` a year-quarter-day?
+#'
+#' Check if `x` is a year-quarter-day.
+#'
+#' @param x `[object]`
+#'
+#'   An object.
+#'
+#' @return Returns `TRUE` if `x` inherits from `"clock_year_quarter_day"`,
+#'   otherwise returns `FALSE`.
+#'
 #' @export
+#' @examples
+#' is_year_quarter_day(year_quarter_day(2019))
 is_year_quarter_day <- function(x) {
   inherits(x, "clock_year_quarter_day")
 }
