@@ -1,4 +1,58 @@
+#' Construct a weekday vector
+#'
+#' @description
+#' A `weekday` is a simple type that represents a day of the week.
+#'
+#' The most interesting thing about the weekday type is that it implements
+#' _circular arithmetic_, which makes determining the "next Monday" or
+#' "previous Tuesday" from a sys-time or naive-time easy to compute.
+#' See the examples.
+#'
+#' @param day `[integer]`
+#'
+#'   The values for `day` can be provided as:
+#'
+#'   - Integers between `[0, 6]`, with 0 = Sunday and 6 = Saturday. This is
+#'     known as _C encoding_.
+#'
+#'   - Integers between `[1, 7]`, with 1 = Monday and 7 = Sunday. This is
+#'     known as _ISO encoding_.
+#'
+#'   Because the only value that differs in the two encodings is Sunday (it
+#'   is a 0 in C encoding, but a 7 in ISO encoding), you can supply either
+#'   encoding as `day`, as long as you don't mix 0's with 7's.
+#'
+#' @return A weekday vector.
+#'
 #' @export
+#' @examples
+#' x <- as_naive_time(year_month_day(2019, 01, 05))
+#'
+#' # This is a Saturday!
+#' as_weekday(x)
+#'
+#' # Adjust to the next Wednesday
+#' wednesday <- weekday(3)
+#'
+#' # This returns the number of days until the next Wednesday using
+#' # circular arithmetic
+#' # "Wednesday - Saturday = 4 days until next Wednesday"
+#' wednesday - as_weekday(x)
+#'
+#' # Advance to the next Wednesday
+#' x_next_wednesday <- x + (wednesday - as_weekday(x))
+#'
+#' as_weekday(x_next_wednesday)
+#'
+#' # What about the previous Tuesday?
+#' tuesday <- weekday(2)
+#' x - (as_weekday(x) - tuesday)
+#'
+#' # What about the next Saturday?
+#' # With an additional condition that if today is a Saturday,
+#' # then advance to the next one.
+#' saturday <- weekday(6)
+#' x + 1L + (saturday - as_weekday(x + 1L))
 weekday <- function(day = integer()) {
   # No other helpers retain names, so we don't here either
   day <- unname(day)
@@ -28,7 +82,6 @@ weekday <- function(day = integer()) {
   new_weekday(day)
 }
 
-#' @export
 new_weekday <- function(day = integer(), ..., class = NULL) {
   if (!is_integer(day)) {
     abort("`day` must be an integer vector.")
@@ -42,7 +95,22 @@ new_weekday <- function(day = integer(), ..., class = NULL) {
   )
 }
 
+# ------------------------------------------------------------------------------
+
+#' Is `x` a weekday?
+#'
+#' This function determines if the input is a weekday object.
+#'
+#' @param x `[object]`
+#'
+#'   An object.
+#'
+#' @return `TRUE` if `x` inherits from `"clock_weekday"`, otherwise `FALSE`.
+#'
 #' @export
+#' @examples
+#' is_weekday(1)
+#' is_weekday(weekday(1))
 is_weekday <- function(x) {
   inherits(x, "clock_weekday")
 }
@@ -89,7 +157,27 @@ vec_cast.clock_weekday.clock_weekday <- function(x, to, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Convert to a weekday
+#'
+#' `as_weekday()` converts to a weekday type. This is normally useful for
+#' converting to a weekday from a sys-time or naive-time. You can use this
+#' function along with the _circular arithmetic_ that weekday implements to
+#' easily get to the "next Monday" or "previous Sunday".
+#'
+#' @param x `[object]`
+#'
+#'   An object to convert to a weekday. Usually a sys-time or naive-time.
+#'
+#' @return A weekday.
+#'
 #' @export
+#' @examples
+#' x <- as_naive_time(year_month_day(2019, 01, 05))
+#'
+#' # This is a Saturday!
+#' as_weekday(x)
+#'
+#' # See the examples in `?weekday` for more usage.
 as_weekday <- function(x) {
   UseMethod("as_weekday")
 }
@@ -100,20 +188,42 @@ as_weekday.clock_weekday <- function(x) {
 }
 
 #' @export
-as_weekday.clock_time_point <- function(x) {
-  x <- time_point_cast(x, "day")
-  day <- weekday_from_time_point_cpp(x)
-  names(day) <- clock_rcrd_names(x)
-  new_weekday(day)
-}
-
-#' @export
 as_weekday.clock_calendar <- function(x) {
   abort("Can't extract the weekday from a calendar. Convert to a time point first.")
 }
 
 # ------------------------------------------------------------------------------
 
+#' Extract weekday encodings
+#'
+#' @description
+#' Given a weekday object, `x`:
+#'
+#' - `weekday_c_encoding()` returns the underlying C encoding, with a range
+#'   of `[0, 6]`, where 0 = Sunday, and 6 = Saturday.
+#'
+#' - `weekday_iso_encoding()` returns the underlying ISO encoding, with a
+#'   range of `[1, 7]`, where 1 = Monday, and 7 = Sunday.
+#'
+#' @param x `[weekday]`
+#'
+#'   A weekday vector.
+#'
+#' @return An integer vector of encodings.
+#'
+#' @name weekday-encoding
+#'
+#' @examples
+#' # Here we supply a C encoding to `weekday()`
+#' x <- weekday(0:6)
+#' x
+#'
+#' # Notice that Sunday is the only day that is different
+#' weekday_c_encoding(x)
+#' weekday_iso_encoding(x)
+NULL
+
+#' @rdname weekday-encoding
 #' @export
 weekday_c_encoding <- function(x) {
   if (!is_weekday(x)) {
@@ -123,6 +233,7 @@ weekday_c_encoding <- function(x) {
   unstructure(x)
 }
 
+#' @rdname weekday-encoding
 #' @export
 weekday_iso_encoding <- function(x) {
   x <- weekday_c_encoding(x)
@@ -186,8 +297,8 @@ vec_arith.clock_duration.clock_weekday <- function(op, x, y, ...) {
 vec_arith.clock_weekday.numeric <- function(op, x, y, ...) {
   switch(
     op,
-    "+" = add_duration(x, duration_helper(y, "day", retain_names = TRUE)),
-    "-" = add_duration(x, duration_helper(-y, "day", retain_names = TRUE)),
+    "+" = add_duration(x, duration_helper(y, PRECISION_DAY, retain_names = TRUE)),
+    "-" = add_duration(x, duration_helper(-y, PRECISION_DAY, retain_names = TRUE)),
     stop_incompatible_op(op, x, y, ...)
   )
 }
@@ -197,7 +308,7 @@ vec_arith.clock_weekday.numeric <- function(op, x, y, ...) {
 vec_arith.numeric.clock_weekday <- function(op, x, y, ...) {
   switch(
     op,
-    "+" = add_duration(y, duration_helper(x, "day", retain_names = TRUE), swapped = TRUE),
+    "+" = add_duration(y, duration_helper(x, PRECISION_DAY, retain_names = TRUE), swapped = TRUE),
     "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a weekday from a duration.", ...),
     stop_incompatible_op(op, x, y, ...)
   )
@@ -218,9 +329,43 @@ weekday_minus_weekday <- function(op, x, y, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Arithmetic: weekday
+#'
+#' @description
+#' The following arithmetic operations are available for use on
+#' weekdays.
+#'
+#' - `add_days()`
+#'
+#' Also check out the examples on the [weekday()] page for more advanced
+#' usage.
+#'
+#' @details
+#' `x` and `n` are recycled against each other.
+#'
+#' @inheritParams add_years
+#'
+#' @param x `[clock_weekday]`
+#'
+#'   A weekday vector.
+#'
+#' @return `x` after performing the arithmetic.
+#'
+#' @name weekday-arithmetic
+#'
+#' @examples
+#' saturday <- 6
+#' saturday <- weekday(saturday)
+#' saturday
+#'
+#' add_days(saturday, 1)
+#' add_days(saturday, 2)
+NULL
+
+#' @rdname weekday-arithmetic
 #' @export
 add_days.clock_weekday <- function(x, n, ...) {
-  n <- duration_collect_n(n, "day")
+  n <- duration_collect_n(n, PRECISION_DAY)
 
   args <- vec_recycle_common(x = x, n = n)
   x <- args$x

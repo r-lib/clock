@@ -498,6 +498,14 @@ as_iso_year_week_day.clock_time_point <- function(x) {
   new_iso_year_week_day_from_fields(fields, precision, names = names(x))
 }
 
+#' @export
+as_weekday.clock_time_point <- function(x) {
+  x <- time_point_cast(x, "day")
+  day <- weekday_from_time_point_cpp(x)
+  names(day) <- clock_rcrd_names(x)
+  new_weekday(day)
+}
+
 # ------------------------------------------------------------------------------
 
 #' Cast a time point between precisions

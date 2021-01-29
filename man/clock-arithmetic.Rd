@@ -82,6 +82,11 @@ input and the function used.
 \item \link[=duration-arithmetic]{duration}
 }
 
+Weekdays can perform day-based circular arithmetic.
+\itemize{
+\item \link[=weekday-arithmetic]{weekday}
+}
+
 There are also convenience methods for doing arithmetic directly on a
 native R date or date-time type:
 \itemize{

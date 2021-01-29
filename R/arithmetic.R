@@ -28,6 +28,10 @@
 #'
 #' - [duration][duration-arithmetic]
 #'
+#' Weekdays can perform day-based circular arithmetic.
+#'
+#' - [weekday][weekday-arithmetic]
+#'
 #' There are also convenience methods for doing arithmetic directly on a
 #' native R date or date-time type:
 #'
