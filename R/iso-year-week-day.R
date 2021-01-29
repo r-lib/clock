@@ -1,4 +1,45 @@
+#' Calendar: iso-year-week-day
+#'
+#' `iso_year_week_day()` constructs a calendar from the ISO year, week number,
+#' and week day.
+#'
+#' @details
+#' Fields are recycled against each other.
+#'
+#' Fields are collected in order until the first `NULL` field is located. No
+#' fields after the first `NULL` field are used.
+#'
+#' @inheritParams ellipsis::dots_empty
+#'
+#' @param year `[integer]`
+#'
+#'   The ISO year. Values `[-9999, 9999]` are allowed.
+#'
+#' @param week `[integer / "last" / NULL]`
+#'
+#'   The ISO week. Values `[1, 53]` are allowed.
+#'
+#'   If `"last"`, then the last week of the ISO year is returned.
+#'
+#' @param day `[integer / NULL]`
+#'
+#'   The day of the week. Values `[1, 7]` are allowed, with 1 = Monday
+#'   and 7 = Sunday, in accordance with the ISO specifications.
+#'
+#' @return A iso-year-week-day calendar vector.
+#'
 #' @export
+#' @examples
+#' # Year-week
+#' x <- iso_year_week_day(2019:2025, 1)
+#' x
+#'
+#' # 2nd day of the first ISO week in multiple years
+#' iso_days <- set_day(x, 2)
+#' iso_days
+#'
+#' # What year-month-day is this?
+#' as_year_month_day(iso_days)
 iso_year_week_day <- function(year,
                               week = NULL,
                               day = NULL,

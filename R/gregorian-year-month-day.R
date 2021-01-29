@@ -13,38 +13,40 @@
 #'
 #' @param year `[integer]`
 #'
-#'   The year. Values \[-9999, 9999\] are allowed.
+#'   The year. Values `[-9999, 9999]` are allowed.
 #'
 #' @param month `[integer / NULL]`
 #'
-#'   The month. Values \[1, 12\] are allowed.
+#'   The month. Values `[1, 12]` are allowed.
 #'
-#' @param day `[integer / NULL]`
+#' @param day `[integer / "last" / NULL]`
 #'
-#'   The day of the month. Values \[1, 31\] are allowed.
+#'   The day of the month. Values `[1, 31]` are allowed.
+#'
+#'   If `"last"`, then the last day of the month is returned.
 #'
 #' @param hour `[integer / NULL]`
 #'
-#'   The hour. Values \[0, 23\] are allowed.
+#'   The hour. Values `[0, 23]` are allowed.
 #'
 #' @param minute `[integer / NULL]`
 #'
-#'   The minute. Values \[0, 59\] are allowed.
+#'   The minute. Values `[0, 59]` are allowed.
 #'
 #' @param second `[integer / NULL]`
 #'
-#'   The second. Values \[0, 59\] are allowed.
+#'   The second. Values `[0, 59]` are allowed.
 #'
 #' @param subsecond `[integer / NULL]`
 #'
 #'   The subsecond. If specified, `subsecond_precision` must also be specified
 #'   to determine how to interpret the `subsecond`.
 #'
-#'   If using milliseconds, values \[0, 999\] are allowed.
+#'   If using milliseconds, values `[0, 999]` are allowed.
 #'
-#'   If using microseconds, values \[0, 999999\] are allowed.
+#'   If using microseconds, values `[0, 999999]` are allowed.
 #'
-#'   If using nanoseconds, values \[0, 999999999\] are allowed.
+#'   If using nanoseconds, values `[0, 999999999]` are allowed.
 #'
 #' @param subsecond_precision `[character(1) / NULL]`
 #'

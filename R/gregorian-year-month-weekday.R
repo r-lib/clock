@@ -14,13 +14,16 @@
 #'
 #' @param day `[integer / NULL]`
 #'
-#'   The weekday of the month. Values \[1, 7\] are allowed, where `1` is
+#'   The weekday of the month. Values `[1, 7]` are allowed, where `1` is
 #'   Sunday and `7` is Saturday.
 #'
-#' @param index `[integer / NULL]`
+#' @param index `[integer / "last" / NULL]`
 #'
 #'   The index specifying that `day` is the n-th weekday of the month.
-#'   Values `\[1, 5\]` are allowed.
+#'   Values `[1, 5]` are allowed.
+#'
+#'   If `"last"`, then the last instance of `day` in the current month
+#'   is returned.
 #'
 #' @return A year-month-weekday calendar vector.
 #'

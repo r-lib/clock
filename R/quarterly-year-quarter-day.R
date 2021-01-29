@@ -1,4 +1,57 @@
+#' Calendar: year-quarter-day
+#'
+#' `year_quarter_day()` constructs a calendar from the fiscal year, fiscal
+#' quarter, and day of the quarter, along with a value determining which
+#' month the fiscal year `start`s in.
+#'
+#' @details
+#' Fields are recycled against each other.
+#'
+#' Fields are collected in order until the first `NULL` field is located. No
+#' fields after the first `NULL` field are used.
+#'
+#' @inheritParams ellipsis::dots_empty
+#'
+#' @param year `[integer]`
+#'
+#'   The fiscal year. Values `[-9999, 9999]` are allowed.
+#'
+#' @param quarter `[integer / NULL]`
+#'
+#'   The fiscal quarter. Values `[1, 4]` are allowed.
+#'
+#' @param day `[integer / "last" / NULL]`
+#'
+#'   The day of the quarter. Values `[1, 92]` are allowed.
+#'
+#'   If `"last"`, the last day of the quarter is returned.
+#'
+#' @param start `[integer(1)]`
+#'
+#'   The month to start the fiscal year in. 1 = January and 12 = December.
+#'
+#' @return A year-quarter-day calendar vector.
+#'
 #' @export
+#' @examples
+#' # Year-quarter type
+#' x <- year_quarter_day(2019, 1:4)
+#' x
+#'
+#' add_quarters(x, 2)
+#'
+#' # Set the day to the last day of the quarter
+#' x <- set_day(x, "last")
+#' x
+#'
+#' # Start the fiscal year in June
+#' june <- 6L
+#' y <- year_quarter_day(2019, 1:4, "last", start = june)
+#'
+#' # Compare the year-month-day values that result from having different
+#' # fiscal year start months
+#' as_year_month_day(x)
+#' as_year_month_day(y)
 year_quarter_day <- function(year,
                              quarter = NULL,
                              day = NULL,

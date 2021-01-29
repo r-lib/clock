@@ -19,38 +19,40 @@ year_month_day(
 \arguments{
 \item{year}{\verb{[integer]}
 
-The year. Values [-9999, 9999] are allowed.}
+The year. Values \verb{[-9999, 9999]} are allowed.}
 
 \item{month}{\verb{[integer / NULL]}
 
-The month. Values [1, 12] are allowed.}
+The month. Values \verb{[1, 12]} are allowed.}
 
-\item{day}{\verb{[integer / NULL]}
+\item{day}{\verb{[integer / "last" / NULL]}
 
-The day of the month. Values [1, 31] are allowed.}
+The day of the month. Values \verb{[1, 31]} are allowed.
+
+If \code{"last"}, then the last day of the month is returned.}
 
 \item{hour}{\verb{[integer / NULL]}
 
-The hour. Values [0, 23] are allowed.}
+The hour. Values \verb{[0, 23]} are allowed.}
 
 \item{minute}{\verb{[integer / NULL]}
 
-The minute. Values [0, 59] are allowed.}
+The minute. Values \verb{[0, 59]} are allowed.}
 
 \item{second}{\verb{[integer / NULL]}
 
-The second. Values [0, 59] are allowed.}
+The second. Values \verb{[0, 59]} are allowed.}
 
 \item{subsecond}{\verb{[integer / NULL]}
 
 The subsecond. If specified, \code{subsecond_precision} must also be specified
 to determine how to interpret the \code{subsecond}.
 
-If using milliseconds, values [0, 999] are allowed.
+If using milliseconds, values \verb{[0, 999]} are allowed.
 
-If using microseconds, values [0, 999999] are allowed.
+If using microseconds, values \verb{[0, 999999]} are allowed.
 
-If using nanoseconds, values [0, 999999999] are allowed.}
+If using nanoseconds, values \verb{[0, 999999999]} are allowed.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
