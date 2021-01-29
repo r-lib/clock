@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calendar: year-month-day — year_month_day • clock</title>
+<title>Calendar: year-quarter-day — year_quarter_day • clock</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,10 @@
 
 
 
-<meta property="og:title" content="Calendar: year-month-day — year_month_day" />
-<meta property="og:description" content="year_month_day() constructs the most common calendar type using the
-Gregorian year, month, day, and time of day components." />
+<meta property="og:title" content="Calendar: year-quarter-day — year_quarter_day" />
+<meta property="og:description" content="year_quarter_day() constructs a calendar from the fiscal year, fiscal
+quarter, and day of the quarter, along with a value determining which
+month the fiscal year starts in." />
 
 
 
@@ -121,25 +122,27 @@ Gregorian year, month, day, and time of day components." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calendar: year-month-day</h1>
-    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/gregorian-year-month-day.R'><code>R/gregorian-year-month-day.R</code></a></small>
-    <div class="hidden name"><code>year_month_day.Rd</code></div>
+    <h1>Calendar: year-quarter-day</h1>
+    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/quarterly-year-quarter-day.R'><code>R/quarterly-year-quarter-day.R</code></a></small>
+    <div class="hidden name"><code>year_quarter_day.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>year_month_day()</code> constructs the most common calendar type using the
-Gregorian year, month, day, and time of day components.</p>
+    <p><code>year_quarter_day()</code> constructs a calendar from the fiscal year, fiscal
+quarter, and day of the quarter, along with a value determining which
+month the fiscal year <code>start</code>s in.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>year_month_day</span><span class='op'>(</span>
+    <pre class="usage"><span class='fu'>year_quarter_day</span><span class='op'>(</span>
   <span class='va'>year</span>,
-  month <span class='op'>=</span> <span class='cn'>NULL</span>,
+  quarter <span class='op'>=</span> <span class='cn'>NULL</span>,
   day <span class='op'>=</span> <span class='cn'>NULL</span>,
   hour <span class='op'>=</span> <span class='cn'>NULL</span>,
   minute <span class='op'>=</span> <span class='cn'>NULL</span>,
   second <span class='op'>=</span> <span class='cn'>NULL</span>,
   subsecond <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>,
+  start <span class='op'>=</span> <span class='cn'>NULL</span>,
   subsecond_precision <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
@@ -149,18 +152,18 @@ Gregorian year, month, day, and time of day components.</p>
     <tr>
       <th>year</th>
       <td><p><code>[integer]</code></p>
-<p>The year. Values <code>[-9999, 9999]</code> are allowed.</p></td>
+<p>The fiscal year. Values <code>[-9999, 9999]</code> are allowed.</p></td>
     </tr>
     <tr>
-      <th>month</th>
+      <th>quarter</th>
       <td><p><code>[integer / NULL]</code></p>
-<p>The month. Values <code>[1, 12]</code> are allowed.</p></td>
+<p>The fiscal quarter. Values <code>[1, 4]</code> are allowed.</p></td>
     </tr>
     <tr>
       <th>day</th>
       <td><p><code>[integer / "last" / NULL]</code></p>
-<p>The day of the month. Values <code>[1, 31]</code> are allowed.</p>
-<p>If <code>"last"</code>, then the last day of the month is returned.</p></td>
+<p>The day of the quarter. Values <code>[1, 92]</code> are allowed.</p>
+<p>If <code>"last"</code>, the last day of the quarter is returned.</p></td>
     </tr>
     <tr>
       <th>hour</th>
@@ -191,6 +194,12 @@ to determine how to interpret the <code>subsecond</code>.</p>
       <td><p>These dots are for future extensions and must be empty.</p></td>
     </tr>
     <tr>
+      <th>start</th>
+      <td><p><code>[integer(1) / NULL]</code></p>
+<p>The month to start the fiscal year in. 1 = January and 12 = December.</p>
+<p>If <code>NULL</code>, a <code>start</code> of January will be used.</p></td>
+    </tr>
+    <tr>
       <th>subsecond_precision</th>
       <td><p><code>[character(1) / NULL]</code></p>
 <p>The precision to interpret <code>subsecond</code> as. One of: <code>"millisecond"</code>,
@@ -200,7 +209,7 @@ to determine how to interpret the <code>subsecond</code>.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A year-month-day calendar vector.</p>
+    <p>A year-quarter-day calendar vector.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Fields are recycled against each other.</p>
@@ -208,23 +217,30 @@ to determine how to interpret the <code>subsecond</code>.</p>
 fields after the first <code>NULL</code> field are used.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Just the year</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>year_month_day</span><span class='op'>(</span><span class='fl'>2019</span><span class='op'>:</span><span class='fl'>2025</span><span class='op'>)</span>
-
-<span class='co'># Year-month type</span>
-<span class='fu'>year_month_day</span><span class='op'>(</span><span class='fl'>2020</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;month&gt;[invalid=0][12]&gt;
-#&gt;  [1] "2020-01" "2020-02" "2020-03" "2020-04" "2020-05" "2020-06" "2020-07"
-#&gt;  [8] "2020-08" "2020-09" "2020-10" "2020-11" "2020-12"</div><div class='input'>
-<span class='co'># The most common use case involves year, month, and day fields</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>year_month_day</span><span class='op'>(</span><span class='fl'>2020</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='co'># Year-quarter type</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>year_quarter_day</span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>
 <span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][5]&gt;
-#&gt; [1] "2020-01-01" "2020-01-02" "2020-01-03" "2020-01-04" "2020-01-05"</div><div class='input'>
-<span class='co'># Precision can go all the way out to nanosecond</span>
-<span class='fu'>year_month_day</span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>40</span>, <span class='fl'>45</span>, <span class='fl'>200</span>, subsecond_precision <span class='op'>=</span> <span class='st'>"nanosecond"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;nanosecond&gt;[invalid=0][1]&gt;
-#&gt; [1] "2019-01-02 02:40:45.000000200"</div></pre>
+</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;quarter&gt;[invalid=0][4]&gt;
+#&gt; [1] "2019-Q1" "2019-Q2" "2019-Q3" "2019-Q4"</div><div class='input'>
+<span class='fu'><a href='clock-arithmetic.html'>add_quarters</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;quarter&gt;[invalid=0][4]&gt;
+#&gt; [1] "2019-Q3" "2019-Q4" "2020-Q1" "2020-Q2"</div><div class='input'>
+<span class='co'># Set the day to the last day of the quarter</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"last"</span><span class='op'>)</span>
+<span class='va'>x</span>
+</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[invalid=0][4]&gt;
+#&gt; [1] "2019-Q1-90" "2019-Q2-91" "2019-Q3-92" "2019-Q4-92"</div><div class='input'>
+<span class='co'># Start the fiscal year in June</span>
+<span class='va'>june</span> <span class='op'>&lt;-</span> <span class='fl'>6L</span>
+<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'>year_quarter_day</span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, <span class='st'>"last"</span>, start <span class='op'>=</span> <span class='va'>june</span><span class='op'>)</span>
+
+<span class='co'># Compare the year-month-day values that result from having different</span>
+<span class='co'># fiscal year start months</span>
+<span class='fu'><a href='as_year_month_day.html'>as_year_month_day</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][4]&gt;
+#&gt; [1] "2019-03-31" "2019-06-30" "2019-09-30" "2019-12-31"</div><div class='input'><span class='fu'><a href='as_year_month_day.html'>as_year_month_day</a></span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][4]&gt;
+#&gt; [1] "2018-08-31" "2018-11-30" "2019-02-28" "2019-05-31"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

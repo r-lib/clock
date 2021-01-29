@@ -174,7 +174,7 @@ group by.</p></td>
     <p><code>x</code> grouped at the specified <code>precision</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>iso_year_week_day</span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>52</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='iso_year_week_day.html'>iso_year_week_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>52</span><span class='op'>)</span>
 
 <span class='co'># Group by 3 ISO weeks</span>
 <span class='fu'><a href='calendar_group.html'>calendar_group</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"week"</span>, n <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
@@ -188,7 +188,7 @@ group by.</p></td>
 #&gt; [37] "2019-W37" "2019-W37" "2019-W37" "2019-W40" "2019-W40" "2019-W40"
 #&gt; [43] "2019-W43" "2019-W43" "2019-W43" "2019-W46" "2019-W46" "2019-W46"
 #&gt; [49] "2019-W49" "2019-W49" "2019-W49" "2019-W52"</div><div class='input'>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'>iso_year_week_day</span><span class='op'>(</span><span class='fl'>2000</span><span class='op'>:</span><span class='fl'>2020</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='iso_year_week_day.html'>iso_year_week_day</a></span><span class='op'>(</span><span class='fl'>2000</span><span class='op'>:</span><span class='fl'>2020</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span>
 
 <span class='co'># Group by 2 ISO years</span>
 <span class='fu'><a href='calendar_group.html'>calendar_group</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='st'>"year"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>

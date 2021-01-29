@@ -201,7 +201,7 @@ day of the current fiscal quarter.</p></td>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span>
 
 <span class='co'># Quarter precision vector</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>year_quarter_day</span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_quarter_day.html'>year_quarter_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>
 <span class='va'>x</span>
 </div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;quarter&gt;[invalid=0][4]&gt;
 #&gt; [1] "2019-Q1" "2019-Q2" "2019-Q3" "2019-Q4"</div><div class='input'>
@@ -246,7 +246,7 @@ day of the current fiscal quarter.</p></td>
   <span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='va'>days</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>as_year_quarter_day</span><span class='op'>(</span><span class='op'>)</span>
+  <span class='fu'><a href='as_year_quarter_day.html'>as_year_quarter_day</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[invalid=0][4]&gt;
 #&gt; [1] "2019-Q2-02" "2019-Q3-01" "2019-Q3-92" "2019-Q4-92"</div></pre>
   </div>

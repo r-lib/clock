@@ -56,6 +56,22 @@ with regular, well-defined units of time, such as days, hours, seconds,
 or nanoseconds.
 time-point
 
+
+Durations can use any of these arithmetic functions, and return a new
+duration with a precision corresponding to the common type of the
+input and the function used.
+duration
+
+
+Weekdays can perform day-based circular arithmetic.
+weekday
+
+
+There are also convenience methods for doing arithmetic directly on a
+native R date or date-time type:
+dates (Date)
+date-times (POSIXct / POSIXlt)
+
 " />
 
 
@@ -157,6 +173,22 @@ month, quarters, or years.</p><ul>
 with regular, well-defined units of time, such as days, hours, seconds,
 or nanoseconds.</p><ul>
 <li><p><a href='time-point-arithmetic.html'>time-point</a></p></li>
+</ul>
+
+<p>Durations can use any of these arithmetic functions, and return a new
+duration with a precision corresponding to the common type of the
+input and the function used.</p><ul>
+<li><p><a href='duration-arithmetic.html'>duration</a></p></li>
+</ul>
+
+<p>Weekdays can perform day-based circular arithmetic.</p><ul>
+<li><p><a href='weekday-arithmetic.html'>weekday</a></p></li>
+</ul>
+
+<p>There are also convenience methods for doing arithmetic directly on a
+native R date or date-time type:</p><ul>
+<li><p><a href='Date-arithmetic.html'>dates (Date)</a></p></li>
+<li><p><a href='posixt-arithmetic.html'>date-times (POSIXct / POSIXlt)</a></p></li>
 </ul>
 
     </div>

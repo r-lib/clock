@@ -189,7 +189,7 @@ ISO standard.</p></li>
     <p>The component.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>iso_year_week_day</span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>50</span><span class='op'>:</span><span class='fl'>52</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='iso_year_week_day.html'>iso_year_week_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>50</span><span class='op'>:</span><span class='fl'>52</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>
 <span class='va'>x</span>
 </div><div class='output co'>#&gt; &lt;iso_year_week_day&lt;day&gt;[invalid=0][3]&gt;
 #&gt; [1] "2019-W50-1" "2019-W51-2" "2019-W52-3"</div><div class='input'>
@@ -200,7 +200,7 @@ ISO standard.</p></li>
 <span class='fu'><a href='clock-getters.html'>get_day</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 1 2 3</div><div class='input'>
 <span class='co'># Note that the ISO year can differ from the Gregorian year</span>
-<span class='va'>iso</span> <span class='op'>&lt;-</span> <span class='fu'>iso_year_week_day</span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>iso</span> <span class='op'>&lt;-</span> <span class='fu'><a href='iso_year_week_day.html'>iso_year_week_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span>
 <span class='va'>ymd</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_year_month_day.html'>as_year_month_day</a></span><span class='op'>(</span><span class='va'>iso</span><span class='op'>)</span>
 
 <span class='fu'><a href='clock-getters.html'>get_year</a></span><span class='op'>(</span><span class='va'>iso</span><span class='op'>)</span>

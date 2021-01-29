@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Construct a duration — duration-helper" />
-<meta property="og:description" content="These helpers construct durations of the specified precision." />
+<meta property="og:description" content="These helpers construct durations of the specified precision. Durations
+represent units of time in a specified precision." />
 
 
 
@@ -126,7 +127,8 @@
     </div>
 
     <div class="ref-description">
-    <p>These helpers construct durations of the specified precision.</p>
+    <p>These helpers construct durations of the specified precision. Durations
+represent units of time in a specified precision.</p>
     </div>
 
     <pre class="usage"><span class='fu'>duration_years</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>integer</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
@@ -157,13 +159,39 @@
     <tr>
       <th>n</th>
       <td><p><code>[integer]</code></p>
-<p>The number of ticks to use when creating the duration.</p></td>
+<p>The number of units of time to use when creating the duration.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A duration of the specified precision.</p>
+    <h2 class="hasAnchor" id="internal-representation"><a class="anchor" href="#internal-representation"></a>Internal Representation</h2>
+
+    
+
+
+<p>Durations are internally represented as an integer number of "ticks" along
+with a ratio describing how it converts to a number of seconds. The
+following duration ratios are used in clock:</p><ul>
+<li><p><code>1 year == 31556952 seconds</code></p></li>
+<li><p><code>1 quarter == 7889238 seconds</code></p></li>
+<li><p><code>1 month == 2629746 seconds</code></p></li>
+<li><p><code>1 week == 604800 seconds</code></p></li>
+<li><p><code>1 day == 86400 seconds</code></p></li>
+<li><p><code>1 hour == 3600 seconds</code></p></li>
+<li><p><code>1 minute == 60 seconds</code></p></li>
+<li><p><code>1 second == 1 second</code></p></li>
+<li><p><code>1 millisecond == 1 / 1000 seconds</code></p></li>
+<li><p><code>1 microsecond == 1 / 1000000 seconds</code></p></li>
+<li><p><code>1 nanosecond == 1 / 1000000000 seconds</code></p></li>
+</ul>
+
+<p>A duration of 1 year is defined to correspond to the
+average length of a proleptic Gregorian year, i.e. 365.2425 days.</p>
+<p>A duration of 1 month is defined as exactly 1/12 of a year.</p>
+<p>A duration of 1 quarter is defined as exactly 1/4 of a year.</p>
+<p>A duration of 1 week is defined as exactly 7 days.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>duration_years</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Arithmetic: year-quarter-day — year-quarter-day-arithmetic • clock</title>
+<title>Calendar: iso-year-week-day — iso_year_week_day • clock</title>
 
 
 <!-- jquery -->
@@ -39,16 +39,9 @@
 
 
 
-<meta property="og:title" content="Arithmetic: year-quarter-day — year-quarter-day-arithmetic" />
-<meta property="og:description" content="The following arithmetic operations are available for use on
-year-quarter-day calendar vectors.
-add_years()
-add_quarters()
-
-
-Notably, you cannot add days to a year-quarter-day. For day-based
-arithmetic, first convert to a time point with as_naive_time() or
-as_sys_time()." />
+<meta property="og:title" content="Calendar: iso-year-week-day — iso_year_week_day" />
+<meta property="og:description" content="iso_year_week_day() constructs a calendar from the ISO year, week number,
+and week day." />
 
 
 
@@ -128,80 +121,110 @@ as_sys_time()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Arithmetic: year-quarter-day</h1>
-    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/quarterly-year-quarter-day.R'><code>R/quarterly-year-quarter-day.R</code></a></small>
-    <div class="hidden name"><code>year-quarter-day-arithmetic.Rd</code></div>
+    <h1>Calendar: iso-year-week-day</h1>
+    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/iso-year-week-day.R'><code>R/iso-year-week-day.R</code></a></small>
+    <div class="hidden name"><code>iso_year_week_day.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The following arithmetic operations are available for use on
-year-quarter-day calendar vectors.</p><ul>
-<li><p><code><a href='clock-arithmetic.html'>add_years()</a></code></p></li>
-<li><p><code><a href='clock-arithmetic.html'>add_quarters()</a></code></p></li>
-</ul>
-
-<p>Notably, <em>you cannot add days to a year-quarter-day</em>. For day-based
-arithmetic, first convert to a time point with <code><a href='as_naive_time.html'>as_naive_time()</a></code> or
-<code><a href='as_sys_time.html'>as_sys_time()</a></code>.</p>
+    <p><code>iso_year_week_day()</code> constructs a calendar from the ISO year, week number,
+and week day.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for clock_year_quarter_day</span>
-<span class='fu'><a href='clock-arithmetic.html'>add_years</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for clock_year_quarter_day</span>
-<span class='fu'><a href='clock-arithmetic.html'>add_quarters</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>iso_year_week_day</span><span class='op'>(</span>
+  <span class='va'>year</span>,
+  week <span class='op'>=</span> <span class='cn'>NULL</span>,
+  day <span class='op'>=</span> <span class='cn'>NULL</span>,
+  hour <span class='op'>=</span> <span class='cn'>NULL</span>,
+  minute <span class='op'>=</span> <span class='cn'>NULL</span>,
+  second <span class='op'>=</span> <span class='cn'>NULL</span>,
+  subsecond <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>,
+  subsecond_precision <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p><code>[clock_year_quarter_day]</code></p>
-<p>A year-quarter-day vector.</p></td>
+      <th>year</th>
+      <td><p><code>[integer]</code></p>
+<p>The ISO year. Values <code>[-9999, 9999]</code> are allowed.</p></td>
     </tr>
     <tr>
-      <th>n</th>
-      <td><p><code>[integer / clock_duration]</code></p>
-<p>An integer vector to be converted to a duration, or a duration
-corresponding to the arithmetic function being used. This corresponds
-to the number of duration units to add. <code>n</code> may be negative to subtract
-units of duration.</p></td>
+      <th>week</th>
+      <td><p><code>[integer / "last" / NULL]</code></p>
+<p>The ISO week. Values <code>[1, 53]</code> are allowed.</p>
+<p>If <code>"last"</code>, then the last week of the ISO year is returned.</p></td>
+    </tr>
+    <tr>
+      <th>day</th>
+      <td><p><code>[integer / NULL]</code></p>
+<p>The day of the week. Values <code>[1, 7]</code> are allowed, with 1 = Monday
+and 7 = Sunday, in accordance with the ISO specifications.</p></td>
+    </tr>
+    <tr>
+      <th>hour</th>
+      <td><p><code>[integer / NULL]</code></p>
+<p>The hour. Values <code>[0, 23]</code> are allowed.</p></td>
+    </tr>
+    <tr>
+      <th>minute</th>
+      <td><p><code>[integer / NULL]</code></p>
+<p>The minute. Values <code>[0, 59]</code> are allowed.</p></td>
+    </tr>
+    <tr>
+      <th>second</th>
+      <td><p><code>[integer / NULL]</code></p>
+<p>The second. Values <code>[0, 59]</code> are allowed.</p></td>
+    </tr>
+    <tr>
+      <th>subsecond</th>
+      <td><p><code>[integer / NULL]</code></p>
+<p>The subsecond. If specified, <code>subsecond_precision</code> must also be specified
+to determine how to interpret the <code>subsecond</code>.</p>
+<p>If using milliseconds, values <code>[0, 999]</code> are allowed.</p>
+<p>If using microseconds, values <code>[0, 999999]</code> are allowed.</p>
+<p>If using nanoseconds, values <code>[0, 999999999]</code> are allowed.</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>These dots are for future extensions and must be empty.</p></td>
     </tr>
+    <tr>
+      <th>subsecond_precision</th>
+      <td><p><code>[character(1) / NULL]</code></p>
+<p>The precision to interpret <code>subsecond</code> as. One of: <code>"millisecond"</code>,
+<code>"microsecond"</code>, or <code>"nanosecond"</code>.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>x</code> after performing the arithmetic.</p>
+    <p>A iso-year-week-day calendar vector.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>x</code> and <code>n</code> are recycled against each other.</p>
+    <p>Fields are recycled against each other.</p>
+<p>Fields are collected in order until the first <code>NULL</code> field is located. No
+fields after the first <code>NULL</code> field are used.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_quarter_day.html'>year_quarter_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='co'># Year-week</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>iso_year_week_day</span><span class='op'>(</span><span class='fl'>2019</span><span class='op'>:</span><span class='fl'>2025</span>, <span class='fl'>1</span><span class='op'>)</span>
 <span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;quarter&gt;[invalid=0][3]&gt;
-#&gt; [1] "2019-Q1" "2019-Q2" "2019-Q3"</div><div class='input'>
-<span class='fu'><a href='clock-arithmetic.html'>add_quarters</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;quarter&gt;[invalid=0][3]&gt;
-#&gt; [1] "2019-Q3" "2019-Q4" "2020-Q1"</div><div class='input'>
-<span class='co'># Make the fiscal year start in March</span>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_quarter_day.html'>year_quarter_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, <span class='fl'>1</span>, start <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
-<span class='va'>y</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;March&gt;&lt;day&gt;[invalid=0][2]&gt;
-#&gt; [1] "2019-Q1-01" "2019-Q2-01"</div><div class='input'>
-<span class='fu'><a href='clock-arithmetic.html'>add_quarters</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;March&gt;&lt;day&gt;[invalid=0][2]&gt;
-#&gt; [1] "2019-Q2-01" "2019-Q3-01"</div><div class='input'>
-<span class='co'># What year-month-day does this correspond to?</span>
-<span class='co'># Note that the fiscal year doesn't necessarily align with the Gregorian</span>
-<span class='co'># year!</span>
-<span class='fu'><a href='as_year_month_day.html'>as_year_month_day</a></span><span class='op'>(</span><span class='fu'><a href='clock-arithmetic.html'>add_quarters</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][2]&gt;
-#&gt; [1] "2018-06-01" "2018-09-01"</div></pre>
+</div><div class='output co'>#&gt; &lt;iso_year_week_day&lt;week&gt;[invalid=0][7]&gt;
+#&gt; [1] "2019-W01" "2020-W01" "2021-W01" "2022-W01" "2023-W01" "2024-W01" "2025-W01"</div><div class='input'>
+<span class='co'># 2nd day of the first ISO week in multiple years</span>
+<span class='va'>iso_days</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>iso_days</span>
+</div><div class='output co'>#&gt; &lt;iso_year_week_day&lt;day&gt;[invalid=0][7]&gt;
+#&gt; [1] "2019-W01-2" "2020-W01-2" "2021-W01-2" "2022-W01-2" "2023-W01-2"
+#&gt; [6] "2024-W01-2" "2025-W01-2"</div><div class='input'>
+<span class='co'># What year-month-day is this?</span>
+<span class='fu'><a href='as_year_month_day.html'>as_year_month_day</a></span><span class='op'>(</span><span class='va'>iso_days</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][7]&gt;
+#&gt; [1] "2019-01-01" "2019-12-31" "2021-01-05" "2022-01-04" "2023-01-03"
+#&gt; [6] "2024-01-02" "2024-12-31"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

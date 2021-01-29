@@ -152,48 +152,50 @@ of the month.</p>
     <tr>
       <th>year</th>
       <td><p><code>[integer]</code></p>
-<p>The year. Values [-9999, 9999] are allowed.</p></td>
+<p>The year. Values <code>[-9999, 9999]</code> are allowed.</p></td>
     </tr>
     <tr>
       <th>month</th>
       <td><p><code>[integer / NULL]</code></p>
-<p>The month. Values [1, 12] are allowed.</p></td>
+<p>The month. Values <code>[1, 12]</code> are allowed.</p></td>
     </tr>
     <tr>
       <th>day</th>
       <td><p><code>[integer / NULL]</code></p>
-<p>The weekday of the month. Values [1, 7] are allowed, where <code>1</code> is
+<p>The weekday of the month. Values <code>[1, 7]</code> are allowed, where <code>1</code> is
 Sunday and <code>7</code> is Saturday.</p></td>
     </tr>
     <tr>
       <th>index</th>
-      <td><p><code>[integer / NULL]</code></p>
+      <td><p><code>[integer / "last" / NULL]</code></p>
 <p>The index specifying that <code>day</code> is the n-th weekday of the month.
-Values <code>\[1, 5\]</code> are allowed.</p></td>
+Values <code>[1, 5]</code> are allowed.</p>
+<p>If <code>"last"</code>, then the last instance of <code>day</code> in the current month
+is returned.</p></td>
     </tr>
     <tr>
       <th>hour</th>
       <td><p><code>[integer / NULL]</code></p>
-<p>The hour. Values [0, 23] are allowed.</p></td>
+<p>The hour. Values <code>[0, 23]</code> are allowed.</p></td>
     </tr>
     <tr>
       <th>minute</th>
       <td><p><code>[integer / NULL]</code></p>
-<p>The minute. Values [0, 59] are allowed.</p></td>
+<p>The minute. Values <code>[0, 59]</code> are allowed.</p></td>
     </tr>
     <tr>
       <th>second</th>
       <td><p><code>[integer / NULL]</code></p>
-<p>The second. Values [0, 59] are allowed.</p></td>
+<p>The second. Values <code>[0, 59]</code> are allowed.</p></td>
     </tr>
     <tr>
       <th>subsecond</th>
       <td><p><code>[integer / NULL]</code></p>
 <p>The subsecond. If specified, <code>subsecond_precision</code> must also be specified
 to determine how to interpret the <code>subsecond</code>.</p>
-<p>If using milliseconds, values [0, 999] are allowed.</p>
-<p>If using microseconds, values [0, 999999] are allowed.</p>
-<p>If using nanoseconds, values [0, 999999999] are allowed.</p></td>
+<p>If using milliseconds, values <code>[0, 999]</code> are allowed.</p>
+<p>If using microseconds, values <code>[0, 999999]</code> are allowed.</p>
+<p>If using nanoseconds, values <code>[0, 999999999]</code> are allowed.</p></td>
     </tr>
     <tr>
       <th>...</th>

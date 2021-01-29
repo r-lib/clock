@@ -259,7 +259,7 @@ time resolution strategies.</p>
 #&gt; [1] "2020-03-08T01:59:59-05:00" "2020-03-08T03:30:00-04:00"</div><div class='input'>
 <span class='co'># Note that rolling backwards will choose the last possible moment in</span>
 <span class='co'># time at the current precision of the input</span>
-<span class='va'>nonexistent_nanotime</span> <span class='op'>&lt;-</span> <span class='fu'>time_point_cast</span><span class='op'>(</span><span class='va'>nonexistent_time</span>, <span class='st'>"nanosecond"</span><span class='op'>)</span>
+<span class='va'>nonexistent_nanotime</span> <span class='op'>&lt;-</span> <span class='fu'><a href='time_point_cast.html'>time_point_cast</a></span><span class='op'>(</span><span class='va'>nonexistent_time</span>, <span class='st'>"nanosecond"</span><span class='op'>)</span>
 <span class='va'>nonexistent_nanotime</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;nanosecond&gt;[2]&gt;
 #&gt; [1] "2020-03-08T02:45:00.000000000" "2020-03-08T03:30:00.000000000"</div><div class='input'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>nonexistent_nanotime</span>, <span class='va'>new_york</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-backward"</span><span class='op'>)</span>
