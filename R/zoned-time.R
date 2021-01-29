@@ -1,4 +1,17 @@
+#' Is `x` a zoned-time?
+#'
+#' This function determines if the input is a zoned-time object.
+#'
+#' @param x `[object]`
+#'
+#'   An object.
+#'
+#' @return `TRUE` if `x` inherits from `"clock_zoned_time"`, otherwise `FALSE`.
+#'
 #' @export
+#' @examples
+#' is_zoned_time(1)
+#' is_zoned_time(zoned_now("America/New_York"))
 is_zoned_time <- function(x) {
   inherits(x, "clock_zoned_time")
 }
