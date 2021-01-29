@@ -18,7 +18,20 @@ sys_seconds <- function(n = integer()) {
 
 # ------------------------------------------------------------------------------
 
+#' Is `x` a sys-time?
+#'
+#' This function determines if the input is a sys-time object.
+#'
+#' @param x `[object]`
+#'
+#'   An object.
+#'
+#' @return `TRUE` if `x` inherits from `"clock_sys_time"`, otherwise `FALSE`.
+#'
 #' @export
+#' @examples
+#' is_sys_time(1)
+#' is_sys_time(as_sys_time(duration_days(1)))
 is_sys_time <- function(x) {
   inherits(x, "clock_sys_time")
 }

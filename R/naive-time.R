@@ -18,7 +18,20 @@ naive_seconds <- function(n = integer()) {
 
 # ------------------------------------------------------------------------------
 
+#' Is `x` a naive-time?
+#'
+#' This function determines if the input is a naive-time object.
+#'
+#' @param x `[object]`
+#'
+#'   An object.
+#'
+#' @return `TRUE` if `x` inherits from `"clock_naive_time"`, otherwise `FALSE`.
+#'
 #' @export
+#' @examples
+#' is_naive_time(1)
+#' is_naive_time(as_naive_time(duration_days(1)))
 is_naive_time <- function(x) {
   inherits(x, "clock_naive_time")
 }
