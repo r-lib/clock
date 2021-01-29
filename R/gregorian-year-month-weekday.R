@@ -855,7 +855,27 @@ year_month_weekday_plus_duration <- function(x, n, precision_n) {
 
 # ------------------------------------------------------------------------------
 
+#' Convert to year-month-weekday
+#'
+#' `as_year_month_weekday()` converts a vector to the year-month-weekday
+#' calendar. Time points, Dates, POSIXct, and other calendars can all be
+#' converted to year-month-weekday.
+#'
+#' @param x `[vector]`
+#'
+#'   A vector to convert to year-month-weekday.
+#'
+#' @return A year-month-weekday vector.
 #' @export
+#' @examples
+#' # From Date
+#' as_year_month_weekday(as.Date("2019-01-01"))
+#'
+#' # From POSIXct, which assumes that the naive time is what should be converted
+#' as_year_month_weekday(as.POSIXct("2019-01-01 02:30:30", "America/New_York"))
+#'
+#' # From other calendars
+#' as_year_month_weekday(year_quarter_day(2019, quarter = 2, day = 50))
 as_year_month_weekday <- function(x)  {
   UseMethod("as_year_month_weekday")
 }

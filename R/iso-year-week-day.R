@@ -746,7 +746,27 @@ iso_year_week_day_plus_duration <- function(x, n, precision_n) {
 
 # ------------------------------------------------------------------------------
 
+#' Convert to iso-year-week-day
+#'
+#' `as_iso_year_week_day()` converts a vector to the iso-year-week-day
+#' calendar. Time points, Dates, POSIXct, and other calendars can all be
+#' converted to iso-year-week-day.
+#'
+#' @param x `[vector]`
+#'
+#'   A vector to convert to iso-year-week-day.
+#'
+#' @return A iso-year-week-day vector.
 #' @export
+#' @examples
+#' # From Date
+#' as_iso_year_week_day(as.Date("2019-01-01"))
+#'
+#' # From POSIXct, which assumes that the naive time is what should be converted
+#' as_iso_year_week_day(as.POSIXct("2019-01-01 02:30:30", "America/New_York"))
+#'
+#' # From other calendars
+#' as_iso_year_week_day(year_quarter_day(2019, quarter = 2, day = 50))
 as_iso_year_week_day <- function(x)  {
   UseMethod("as_iso_year_week_day")
 }
