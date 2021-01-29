@@ -146,12 +146,6 @@ zoned_info.Date <- function(x) {
   zoned_info(x)
 }
 
-#' @export
-zoned_offset.Date <- function(x) {
-  n <- zeros_along(x, na_propagate = TRUE)
-  duration_seconds(n)
-}
-
 # ------------------------------------------------------------------------------
 
 #' Setters: date

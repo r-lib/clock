@@ -474,40 +474,6 @@ zoned_info.clock_zoned_time <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-#' Get the offset from UTC
-#'
-#' `zoned_offset()` returns the offset from UTC as a duration of seconds.
-#'
-#' @param x `[zoned_time / Date / POSIXt]`
-#'
-#'   A zoned time to extract the offset for.
-#'
-#' @return A seconds precision duration object the same size as `x`.
-#' @export
-#' @examples
-#' # R defines Date as UTC
-#' zoned_offset(as.Date("2019-01-01"))
-#'
-#' x <- year_month_day(2021, 03, 14, hour = c(1, 3))
-#' x <- as_naive_time(x)
-#' x <- as_zoned_time(x, "America/New_York")
-#'
-#' # Daylight savings time alters the offset from UTC
-#' zoned_offset(x)
-#'
-#' # Can extract directly from POSIXct if you started with one of those
-#' zoned_offset(as.POSIXct(x))
-zoned_offset <- function(x) {
-  UseMethod("zoned_offset")
-}
-
-#' @export
-zoned_offset.clock_zoned_time <- function(x) {
-  zoned_info(x)$offset
-}
-
-# ------------------------------------------------------------------------------
-
 zone_validate <- function(zone) {
   zone <- zone_standardize(zone)
 
