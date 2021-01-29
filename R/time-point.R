@@ -483,7 +483,7 @@ as_year_month_weekday.clock_time_point <- function(x) {
 }
 
 #' @export
-as_year_quarter_day.clock_time_point <- function(x, ..., start = 1L) {
+as_year_quarter_day.clock_time_point <- function(x, ..., start = NULL) {
   check_dots_empty()
   precision <- time_point_precision(x)
   start <- quarterly_validate_start(start)

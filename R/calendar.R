@@ -524,7 +524,7 @@ as_iso_year_week_day.clock_calendar <- function(x) {
 }
 
 #' @export
-as_year_quarter_day.clock_calendar <- function(x, ..., start = 1L) {
+as_year_quarter_day.clock_calendar <- function(x, ..., start = NULL) {
   as_year_quarter_day(as_sys_time(x), ..., start = start)
 }
 

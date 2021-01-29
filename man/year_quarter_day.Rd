@@ -13,7 +13,7 @@ year_quarter_day(
   second = NULL,
   subsecond = NULL,
   ...,
-  start = 1L,
+  start = NULL,
   subsecond_precision = NULL
 )
 }
@@ -57,9 +57,11 @@ If using nanoseconds, values \verb{[0, 999999999]} are allowed.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{start}{\verb{[integer(1)]}
+\item{start}{\verb{[integer(1) / NULL]}
 
-The month to start the fiscal year in. 1 = January and 12 = December.}
+The month to start the fiscal year in. 1 = January and 12 = December.
+
+If \code{NULL}, a \code{start} of January will be used.}
 
 \item{subsecond_precision}{\verb{[character(1) / NULL]}
 
