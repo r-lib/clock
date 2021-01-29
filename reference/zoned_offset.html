@@ -151,7 +151,7 @@
 </div><div class='output co'>#&gt; &lt;duration&lt;second&gt;[1]&gt;
 #&gt; [1] 0</div><div class='input'>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2021</span>, <span class='fl'>03</span>, <span class='fl'>14</span>, hour <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>as_naive_time</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
 
 <span class='co'># Daylight savings time alters the offset from UTC</span>

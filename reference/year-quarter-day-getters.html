@@ -192,7 +192,7 @@ Gregorian year if <code>start != 1L</code>.</p></li>
 <span class='co'># Set and then get the last day of the quarter</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"last"</span><span class='op'>)</span>
 <span class='fu'><a href='clock-getters.html'>get_day</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error: No ... found</span></div><div class='input'>
+</div><div class='output co'>#&gt; [1] 91 91 92 92</div><div class='input'>
 <span class='co'># Start the fiscal year in November and choose the 50th day in</span>
 <span class='co'># each quarter of 2020</span>
 <span class='va'>november</span> <span class='op'>&lt;-</span> <span class='fl'>11</span>
@@ -201,7 +201,7 @@ Gregorian year if <code>start != 1L</code>.</p></li>
 </div><div class='output co'>#&gt; &lt;year_quarter_day&lt;November&gt;&lt;day&gt;[invalid=0][4]&gt;
 #&gt; [1] "2020-Q1-50" "2020-Q2-50" "2020-Q3-50" "2020-Q4-50"</div><div class='input'>
 <span class='fu'><a href='clock-getters.html'>get_day</a></span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error: No ... found</span></div><div class='input'>
+</div><div class='output co'>#&gt; [1] 50 50 50 50</div><div class='input'>
 <span class='co'># What does that map to in year-month-day?</span>
 <span class='fu'><a href='as_year_month_day.html'>as_year_month_day</a></span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][4]&gt;

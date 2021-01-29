@@ -229,7 +229,7 @@ the <code>ambiguous</code> argument can be used to specify one of many ambiguous
 time resolution strategies.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>as_naive_time</span><span class='op'>(</span><span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Converting a naive-time to a zoned-time generally retains the</span>
 <span class='co'># printed time, while changing the underlying duration.</span>
@@ -248,7 +248,7 @@ time resolution strategies.</p>
 <span class='co'># naive-times don't exist in that time zone. By default, attempting to</span>
 <span class='co'># convert it to a zoned time will result in an error.</span>
 <span class='va'>nonexistent_time</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2020</span>, <span class='fl'>03</span>, <span class='fl'>08</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>02</span>, <span class='fl'>03</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>45</span>, <span class='fl'>30</span><span class='op'>)</span>, <span class='fl'>00</span><span class='op'>)</span>
-<span class='va'>nonexistent_time</span> <span class='op'>&lt;-</span> <span class='fu'>as_naive_time</span><span class='op'>(</span><span class='va'>nonexistent_time</span><span class='op'>)</span>
+<span class='va'>nonexistent_time</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='va'>nonexistent_time</span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>nonexistent_time</span>, <span class='va'>new_york</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Error : Nonexistent time due to daylight savings at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.</div><div class='input'>
 <span class='co'># Resolve this by specifying a nonexistent time resolution strategy</span>
@@ -287,7 +287,7 @@ time resolution strategies.</p>
 <span class='co'># By default, attempting to convert it to a zoned time will result in an</span>
 <span class='co'># error.</span>
 <span class='va'>ambiguous_time</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2020</span>, <span class='fl'>11</span>, <span class='fl'>01</span>, <span class='fl'>01</span>, <span class='fl'>30</span>, <span class='fl'>00</span><span class='op'>)</span>
-<span class='va'>ambiguous_time</span> <span class='op'>&lt;-</span> <span class='fu'>as_naive_time</span><span class='op'>(</span><span class='va'>ambiguous_time</span><span class='op'>)</span>
+<span class='va'>ambiguous_time</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='va'>ambiguous_time</span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>ambiguous_time</span>, <span class='va'>new_york</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Error : Ambiguous time due to daylight savings at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.</div><div class='input'>
 <span class='co'># Resolve this by specifying an ambiguous time resolution strategy</span>

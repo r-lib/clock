@@ -143,7 +143,7 @@ iso-year-week-day calendar vectors.</p><ul>
 
 <p>You cannot add weeks or days to an iso-year-week-day calendar. Adding
 days is much more efficiently done by converting to a time point first
-by using <code>as_naive_time()</code> or <code>as_sys_time()</code>. Adding weeks is equally
+by using <code><a href='as_naive_time.html'>as_naive_time()</a></code> or <code><a href='as_sys_time.html'>as_sys_time()</a></code>. Adding weeks is equally
 as efficient as adding 7 days. Additionally, adding weeks to an invalid
 iso-year-week object containing <code>iso_year_week_day(2019, 53)</code> would be
 undefined, as the 53rd ISO week of 2019 doesn't exist to begin with.</p>
