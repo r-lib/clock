@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9000</span>
       </span>
     </div>
 
@@ -121,7 +121,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Support for vctrs arithmetic</h1>
-    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/gregorian-year-month-day.R'><code>R/gregorian-year-month-day.R</code></a>, <a href='https://github.com/DavisVaughan/clock/blob/master/R/gregorian-year-month-weekday.R'><code>R/gregorian-year-month-weekday.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/gregorian-year-month-day.R'><code>R/gregorian-year-month-day.R</code></a>, <a href='https://github.com/DavisVaughan/clock/blob/master/R/gregorian-year-month-weekday.R'><code>R/gregorian-year-month-weekday.R</code></a>, <a href='https://github.com/DavisVaughan/clock/blob/master/R/iso-year-week-day.R'><code>R/iso-year-week-day.R</code></a>, and 4 more</small>
     <div class="hidden name"><code>clock-arith.Rd</code></div>
     </div>
 
@@ -133,6 +133,21 @@
 <span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for clock_year_month_weekday</span>
+<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for clock_iso_year_week_day</span>
+<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for clock_naive_time</span>
+<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for clock_year_quarter_day</span>
+<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for clock_sys_time</span>
+<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for clock_weekday</span>
 <span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>

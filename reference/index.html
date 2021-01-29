@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9000</span>
       </span>
     </div>
 
@@ -133,7 +133,7 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <h2 id="section-calendars" class="hasAnchor"><a href="#section-calendars" class="anchor"></a>Calendars</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -143,102 +143,6 @@
       
       
       <tr>
-        
-        <td>
-          <p><code><a href="Date-arithmetic.html">add_years(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_quarters(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_months(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_weeks(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_days(<i>&lt;Date&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Arithmetic: date</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Date-getters.html">get_year(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-getters.html">get_month(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-getters.html">get_day(<i>&lt;Date&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Getters: date</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Date-setters.html">set_year(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-setters.html">set_month(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-setters.html">set_day(<i>&lt;Date&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Setters: date</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as-zoned-time-Date.html">as_zoned_time(<i>&lt;Date&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Convert to a zoned-time from a date</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as-zoned-time-naive-time.html">as_zoned_time(<i>&lt;clock_naive_time&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Convert to a zoned-time from a naive-time</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as-zoned-time-posixt.html">as_zoned_time(<i>&lt;POSIXt&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Convert to a zoned-time from a date-time</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as-zoned-time-sys-time.html">as_zoned_time(<i>&lt;clock_sys_time&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Convert to a zoned-time from a sys-time</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as_duration.html">as_duration()</a></code> </p>
-        </td>
-        <td><p>Convert to a duration</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as_iso_year_week_day.html">as_iso_year_week_day()</a></code> </p>
-        </td>
-        <td><p>Convert to iso-year-week-day</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as_naive_time.html">as_naive_time()</a></code> </p>
-        </td>
-        <td><p>Convert to a naive-time</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as_sys_time.html">as_sys_time()</a></code> </p>
-        </td>
-        <td><p>Convert to a sys-time</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as_weekday.html">as_weekday()</a></code> </p>
-        </td>
-        <td><p>Convert to a weekday</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as_year_month_day.html">as_year_month_day()</a></code> </p>
-        </td>
-        <td><p>Convert to year-month-day</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as_year_month_weekday.html">as_year_month_weekday()</a></code> </p>
-        </td>
-        <td><p>Convert to year-month-weekday</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as_year_quarter_day.html">as_year_quarter_day()</a></code> </p>
-        </td>
-        <td><p>Convert to year-quarter-day</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as_zoned_time.html">as_zoned_time()</a></code> </p>
-        </td>
-        <td><p>Convert to a zoned-time</p></td>
-      </tr><tr>
         
         <td>
           <p><code><a href="calendar_group.html">calendar_group()</a></code> </p>
@@ -259,99 +163,40 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="clock-arith.html">vec_arith(<i>&lt;clock_year_month_day&gt;</i>)</a></code> <code><a href="clock-arith.html">vec_arith(<i>&lt;clock_year_month_weekday&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Support for vctrs arithmetic</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="clock-arithmetic.html">add_years()</a></code> <code><a href="clock-arithmetic.html">add_quarters()</a></code> <code><a href="clock-arithmetic.html">add_months()</a></code> <code><a href="clock-arithmetic.html">add_weeks()</a></code> <code><a href="clock-arithmetic.html">add_days()</a></code> <code><a href="clock-arithmetic.html">add_hours()</a></code> <code><a href="clock-arithmetic.html">add_minutes()</a></code> <code><a href="clock-arithmetic.html">add_seconds()</a></code> <code><a href="clock-arithmetic.html">add_milliseconds()</a></code> <code><a href="clock-arithmetic.html">add_microseconds()</a></code> <code><a href="clock-arithmetic.html">add_nanoseconds()</a></code> </p>
-        </td>
-        <td><p>Clock arithmetic</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="clock-getters.html">get_year()</a></code> <code><a href="clock-getters.html">get_quarter()</a></code> <code><a href="clock-getters.html">get_month()</a></code> <code><a href="clock-getters.html">get_week()</a></code> <code><a href="clock-getters.html">get_day()</a></code> <code><a href="clock-getters.html">get_hour()</a></code> <code><a href="clock-getters.html">get_minute()</a></code> <code><a href="clock-getters.html">get_second()</a></code> <code><a href="clock-getters.html">get_millisecond()</a></code> <code><a href="clock-getters.html">get_microsecond()</a></code> <code><a href="clock-getters.html">get_nanosecond()</a></code> <code><a href="clock-getters.html">get_index()</a></code> </p>
         </td>
         <td><p>Calendar getters</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="clock-invalid.html">invalid_detect()</a></code> <code><a href="clock-invalid.html">invalid_any()</a></code> <code><a href="clock-invalid.html">invalid_count()</a></code> <code><a href="clock-invalid.html">invalid_resolve()</a></code> </p>
-        </td>
-        <td><p>Invalid calendar dates</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="clock-setters.html">set_year()</a></code> <code><a href="clock-setters.html">set_quarter()</a></code> <code><a href="clock-setters.html">set_month()</a></code> <code><a href="clock-setters.html">set_week()</a></code> <code><a href="clock-setters.html">set_day()</a></code> <code><a href="clock-setters.html">set_hour()</a></code> <code><a href="clock-setters.html">set_minute()</a></code> <code><a href="clock-setters.html">set_second()</a></code> <code><a href="clock-setters.html">set_millisecond()</a></code> <code><a href="clock-setters.html">set_microsecond()</a></code> <code><a href="clock-setters.html">set_nanosecond()</a></code> <code><a href="clock-setters.html">set_index()</a></code> </p>
         </td>
         <td><p>Calendar setters</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-year-month-day" class="hasAnchor"><a href="#section-year-month-day" class="anchor"></a>Year-month-day</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="year_month_day.html">year_month_day()</a></code> </p>
+        </td>
+        <td><p>Calendar: year-month-day</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="clock_locale.html">clock_locale()</a></code> <code><a href="clock_locale.html">default_clock_locale()</a></code> </p>
+          <p><code><a href="as_year_month_day.html">as_year_month_day()</a></code> </p>
         </td>
-        <td><p>Create a clock locale</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="clock_mapping.html">clock_mapping()</a></code> <code><a href="clock_mapping.html">clock_mapping_lookup()</a></code> <code><a href="clock_mapping.html">clock_mapping_languages()</a></code> </p>
-        </td>
-        <td><p>Create or retrieve date related mappings</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="duration-arithmetic.html">add_years(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_quarters(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_months(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_weeks(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_days(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_hours(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_minutes(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_seconds(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_milliseconds(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_microseconds(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_nanoseconds(<i>&lt;clock_duration&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Arithmetic: duration</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="duration-helper.html">duration_years()</a></code> <code><a href="duration-helper.html">duration_quarters()</a></code> <code><a href="duration-helper.html">duration_months()</a></code> <code><a href="duration-helper.html">duration_weeks()</a></code> <code><a href="duration-helper.html">duration_days()</a></code> <code><a href="duration-helper.html">duration_hours()</a></code> <code><a href="duration-helper.html">duration_minutes()</a></code> <code><a href="duration-helper.html">duration_seconds()</a></code> <code><a href="duration-helper.html">duration_milliseconds()</a></code> <code><a href="duration-helper.html">duration_microseconds()</a></code> <code><a href="duration-helper.html">duration_nanoseconds()</a></code> </p>
-        </td>
-        <td><p>Construct a duration</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="duration-rounding.html">duration_floor()</a></code> <code><a href="duration-rounding.html">duration_ceiling()</a></code> <code><a href="duration-rounding.html">duration_round()</a></code> </p>
-        </td>
-        <td><p>Duration rounding</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="duration_cast.html">duration_cast()</a></code> </p>
-        </td>
-        <td><p>Cast a duration between precisions</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is_duration.html">is_duration()</a></code> </p>
-        </td>
-        <td><p>Is <code>x</code> a duration?</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is_iso_year_week_day.html">is_iso_year_week_day()</a></code> </p>
-        </td>
-        <td><p>Is <code>x</code> a iso-year-week-day?</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is_naive_time.html">is_naive_time()</a></code> </p>
-        </td>
-        <td><p>Is <code>x</code> a naive-time?</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is_sys_time.html">is_sys_time()</a></code> </p>
-        </td>
-        <td><p>Is <code>x</code> a sys-time?</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is_weekday.html">is_weekday()</a></code> </p>
-        </td>
-        <td><p>Is <code>x</code> a weekday?</p></td>
+        <td><p>Convert to year-month-day</p></td>
       </tr><tr>
         
         <td>
@@ -361,117 +206,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="is_year_month_weekday.html">is_year_month_weekday()</a></code> </p>
+          <p><code><a href="year-month-day-group.html">calendar_group(<i>&lt;clock_year_month_day&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Is <code>x</code> a year-month-weekday?</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is_year_quarter_day.html">is_year_quarter_day()</a></code> </p>
-        </td>
-        <td><p>Is <code>x</code> a year-quarter-day?</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is_zoned_time.html">is_zoned_time()</a></code> </p>
-        </td>
-        <td><p>Is <code>x</code> a zoned-time?</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="iso-year-week-day-arithmetic.html">add_years(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Arithmetic: iso-year-week-day</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="iso-year-week-day-getters.html">get_year(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-getters.html">get_week(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-getters.html">get_day(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-getters.html">get_hour(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-getters.html">get_minute(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-getters.html">get_second(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-getters.html">get_millisecond(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-getters.html">get_microsecond(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-getters.html">get_nanosecond(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Getters: iso-year-week-day</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="iso-year-week-day-group.html">calendar_group(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Grouping: iso-year-week-day</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="iso-year-week-day-setters.html">set_year(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-setters.html">set_week(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-setters.html">set_day(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-setters.html">set_hour(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-setters.html">set_minute(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-setters.html">set_second(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-setters.html">set_millisecond(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-setters.html">set_microsecond(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-setters.html">set_nanosecond(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Setters: iso-year-week-day</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="iso_year_week_day.html">iso_year_week_day()</a></code> </p>
-        </td>
-        <td><p>Calendar: iso-year-week-day</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="parse_year_month_day.html">parse_year_month_day()</a></code> </p>
-        </td>
-        <td><p>Parse into a year-month-day calendar</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="posixt-arithmetic.html">add_years(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_quarters(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_months(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_weeks(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_days(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_hours(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_minutes(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_seconds(<i>&lt;POSIXt&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Arithmetic: date-time</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="posixt-getters.html">get_year(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_month(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_day(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_hour(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_minute(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_second(<i>&lt;POSIXt&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Getters: date-time</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="posixt-setters.html">set_year(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_month(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_day(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_hour(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_minute(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_second(<i>&lt;POSIXt&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Setters: date-time</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sys_now.html">sys_now()</a></code> </p>
-        </td>
-        <td><p>What is the current sys-time?</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="time-point-arithmetic.html">add_weeks(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_days(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_hours(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_minutes(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_seconds(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_milliseconds(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_microseconds(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_nanoseconds(<i>&lt;clock_time_point&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Arithmetic: Time points</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="time-point-rounding.html">time_point_floor()</a></code> <code><a href="time-point-rounding.html">time_point_ceiling()</a></code> <code><a href="time-point-rounding.html">time_point_round()</a></code> </p>
-        </td>
-        <td><p>Time point rounding</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="time_point_cast.html">time_point_cast()</a></code> </p>
-        </td>
-        <td><p>Cast a time point between precisions</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="weekday-arithmetic.html">add_days(<i>&lt;clock_weekday&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Arithmetic: weekday</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="weekday-encoding.html">weekday_c_encoding()</a></code> <code><a href="weekday-encoding.html">weekday_iso_encoding()</a></code> </p>
-        </td>
-        <td><p>Extract weekday encodings</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="weekday.html">weekday()</a></code> </p>
-        </td>
-        <td><p>Construct a weekday vector</p></td>
+        <td><p>Grouping: year-month-day</p></td>
       </tr><tr>
         
         <td>
@@ -487,15 +224,52 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="year-month-day-group.html">calendar_group(<i>&lt;clock_year_month_day&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Grouping: year-month-day</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="year-month-day-setters.html">set_year(<i>&lt;clock_year_month_day&gt;</i>)</a></code> <code><a href="year-month-day-setters.html">set_month(<i>&lt;clock_year_month_day&gt;</i>)</a></code> <code><a href="year-month-day-setters.html">set_day(<i>&lt;clock_year_month_day&gt;</i>)</a></code> <code><a href="year-month-day-setters.html">set_hour(<i>&lt;clock_year_month_day&gt;</i>)</a></code> <code><a href="year-month-day-setters.html">set_minute(<i>&lt;clock_year_month_day&gt;</i>)</a></code> <code><a href="year-month-day-setters.html">set_second(<i>&lt;clock_year_month_day&gt;</i>)</a></code> <code><a href="year-month-day-setters.html">set_millisecond(<i>&lt;clock_year_month_day&gt;</i>)</a></code> <code><a href="year-month-day-setters.html">set_microsecond(<i>&lt;clock_year_month_day&gt;</i>)</a></code> <code><a href="year-month-day-setters.html">set_nanosecond(<i>&lt;clock_year_month_day&gt;</i>)</a></code> </p>
         </td>
         <td><p>Setters: year-month-day</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-year-month-weekday" class="hasAnchor"><a href="#section-year-month-weekday" class="anchor"></a>Year-month-weekday</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="year_month_weekday.html">year_month_weekday()</a></code> </p>
+        </td>
+        <td><p>Calendar: year-month-weekday</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as_year_month_weekday.html">as_year_month_weekday()</a></code> </p>
+        </td>
+        <td><p>Convert to year-month-weekday</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_year_month_weekday.html">is_year_month_weekday()</a></code> </p>
+        </td>
+        <td><p>Is <code>x</code> a year-month-weekday?</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="year-month-weekday-group.html">calendar_group(<i>&lt;clock_year_month_weekday&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Grouping: year-month-weekday</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="parse_year_month_day.html">parse_year_month_day()</a></code> </p>
+        </td>
+        <td><p>Parse into a year-month-day calendar</p></td>
       </tr><tr>
         
         <td>
@@ -511,15 +285,101 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="year-month-weekday-group.html">calendar_group(<i>&lt;clock_year_month_weekday&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Grouping: year-month-weekday</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="year-month-weekday-setters.html">set_year(<i>&lt;clock_year_month_weekday&gt;</i>)</a></code> <code><a href="year-month-weekday-setters.html">set_month(<i>&lt;clock_year_month_weekday&gt;</i>)</a></code> <code><a href="year-month-weekday-setters.html">set_day(<i>&lt;clock_year_month_weekday&gt;</i>)</a></code> <code><a href="year-month-weekday-setters.html">set_index(<i>&lt;clock_year_month_weekday&gt;</i>)</a></code> <code><a href="year-month-weekday-setters.html">set_hour(<i>&lt;clock_year_month_weekday&gt;</i>)</a></code> <code><a href="year-month-weekday-setters.html">set_minute(<i>&lt;clock_year_month_weekday&gt;</i>)</a></code> <code><a href="year-month-weekday-setters.html">set_second(<i>&lt;clock_year_month_weekday&gt;</i>)</a></code> <code><a href="year-month-weekday-setters.html">set_millisecond(<i>&lt;clock_year_month_weekday&gt;</i>)</a></code> <code><a href="year-month-weekday-setters.html">set_microsecond(<i>&lt;clock_year_month_weekday&gt;</i>)</a></code> <code><a href="year-month-weekday-setters.html">set_nanosecond(<i>&lt;clock_year_month_weekday&gt;</i>)</a></code> </p>
         </td>
         <td><p>Setters: year-month-weekday</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-iso-year-week-day" class="hasAnchor"><a href="#section-iso-year-week-day" class="anchor"></a>ISO-year-week-day</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="iso_year_week_day.html">iso_year_week_day()</a></code> </p>
+        </td>
+        <td><p>Calendar: iso-year-week-day</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as_iso_year_week_day.html">as_iso_year_week_day()</a></code> </p>
+        </td>
+        <td><p>Convert to iso-year-week-day</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_iso_year_week_day.html">is_iso_year_week_day()</a></code> </p>
+        </td>
+        <td><p>Is <code>x</code> a iso-year-week-day?</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="iso-year-week-day-group.html">calendar_group(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Grouping: iso-year-week-day</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="iso-year-week-day-arithmetic.html">add_years(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Arithmetic: iso-year-week-day</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="iso-year-week-day-getters.html">get_year(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-getters.html">get_week(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-getters.html">get_day(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-getters.html">get_hour(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-getters.html">get_minute(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-getters.html">get_second(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-getters.html">get_millisecond(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-getters.html">get_microsecond(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-getters.html">get_nanosecond(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Getters: iso-year-week-day</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="iso-year-week-day-setters.html">set_year(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-setters.html">set_week(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-setters.html">set_day(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-setters.html">set_hour(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-setters.html">set_minute(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-setters.html">set_second(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-setters.html">set_millisecond(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-setters.html">set_microsecond(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="iso-year-week-day-setters.html">set_nanosecond(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Setters: iso-year-week-day</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-year-quarter-day" class="hasAnchor"><a href="#section-year-quarter-day" class="anchor"></a>Year-quarter-day</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="year_quarter_day.html">year_quarter_day()</a></code> </p>
+        </td>
+        <td><p>Calendar: year-quarter-day</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as_year_quarter_day.html">as_year_quarter_day()</a></code> </p>
+        </td>
+        <td><p>Convert to year-quarter-day</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_year_quarter_day.html">is_year_quarter_day()</a></code> </p>
+        </td>
+        <td><p>Is <code>x</code> a year-quarter-day?</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="year-quarter-day-group.html">calendar_group(<i>&lt;clock_year_quarter_day&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Grouping: year-quarter-day</p></td>
       </tr><tr>
         
         <td>
@@ -535,33 +395,175 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="year-quarter-day-group.html">calendar_group(<i>&lt;clock_year_quarter_day&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Grouping: year-quarter-day</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="year-quarter-day-setters.html">set_year(<i>&lt;clock_year_quarter_day&gt;</i>)</a></code> <code><a href="year-quarter-day-setters.html">set_quarter(<i>&lt;clock_year_quarter_day&gt;</i>)</a></code> <code><a href="year-quarter-day-setters.html">set_day(<i>&lt;clock_year_quarter_day&gt;</i>)</a></code> <code><a href="year-quarter-day-setters.html">set_hour(<i>&lt;clock_year_quarter_day&gt;</i>)</a></code> <code><a href="year-quarter-day-setters.html">set_minute(<i>&lt;clock_year_quarter_day&gt;</i>)</a></code> <code><a href="year-quarter-day-setters.html">set_second(<i>&lt;clock_year_quarter_day&gt;</i>)</a></code> <code><a href="year-quarter-day-setters.html">set_millisecond(<i>&lt;clock_year_quarter_day&gt;</i>)</a></code> <code><a href="year-quarter-day-setters.html">set_microsecond(<i>&lt;clock_year_quarter_day&gt;</i>)</a></code> <code><a href="year-quarter-day-setters.html">set_nanosecond(<i>&lt;clock_year_quarter_day&gt;</i>)</a></code> </p>
         </td>
         <td><p>Setters: year-quarter-day</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-invalid-dates" class="hasAnchor"><a href="#section-invalid-dates" class="anchor"></a>Invalid dates</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="clock-invalid.html">invalid_detect()</a></code> <code><a href="clock-invalid.html">invalid_any()</a></code> <code><a href="clock-invalid.html">invalid_count()</a></code> <code><a href="clock-invalid.html">invalid_resolve()</a></code> </p>
+        </td>
+        <td><p>Invalid calendar dates</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-durations" class="hasAnchor"><a href="#section-durations" class="anchor"></a>Durations</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="duration-helper.html">duration_years()</a></code> <code><a href="duration-helper.html">duration_quarters()</a></code> <code><a href="duration-helper.html">duration_months()</a></code> <code><a href="duration-helper.html">duration_weeks()</a></code> <code><a href="duration-helper.html">duration_days()</a></code> <code><a href="duration-helper.html">duration_hours()</a></code> <code><a href="duration-helper.html">duration_minutes()</a></code> <code><a href="duration-helper.html">duration_seconds()</a></code> <code><a href="duration-helper.html">duration_milliseconds()</a></code> <code><a href="duration-helper.html">duration_microseconds()</a></code> <code><a href="duration-helper.html">duration_nanoseconds()</a></code> </p>
+        </td>
+        <td><p>Construct a duration</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="year_month_day.html">year_month_day()</a></code> </p>
+          <p><code><a href="duration_cast.html">duration_cast()</a></code> </p>
         </td>
-        <td><p>Calendar: year-month-day</p></td>
+        <td><p>Cast a duration between precisions</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="year_month_weekday.html">year_month_weekday()</a></code> </p>
+          <p><code><a href="duration-rounding.html">duration_floor()</a></code> <code><a href="duration-rounding.html">duration_ceiling()</a></code> <code><a href="duration-rounding.html">duration_round()</a></code> </p>
         </td>
-        <td><p>Calendar: year-month-weekday</p></td>
+        <td><p>Duration rounding</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="year_quarter_day.html">year_quarter_day()</a></code> </p>
+          <p><code><a href="duration-arithmetic.html">add_years(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_quarters(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_months(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_weeks(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_days(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_hours(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_minutes(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_seconds(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_milliseconds(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_microseconds(<i>&lt;clock_duration&gt;</i>)</a></code> <code><a href="duration-arithmetic.html">add_nanoseconds(<i>&lt;clock_duration&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Calendar: year-quarter-day</p></td>
+        <td><p>Arithmetic: duration</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_duration.html">is_duration()</a></code> </p>
+        </td>
+        <td><p>Is <code>x</code> a duration?</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as_duration.html">as_duration()</a></code> </p>
+        </td>
+        <td><p>Convert to a duration</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-time-points" class="hasAnchor"><a href="#section-time-points" class="anchor"></a>Time points</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="as_naive_time.html">as_naive_time()</a></code> </p>
+        </td>
+        <td><p>Convert to a naive-time</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as_sys_time.html">as_sys_time()</a></code> </p>
+        </td>
+        <td><p>Convert to a sys-time</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sys_now.html">sys_now()</a></code> </p>
+        </td>
+        <td><p>What is the current sys-time?</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="time_point_cast.html">time_point_cast()</a></code> </p>
+        </td>
+        <td><p>Cast a time point between precisions</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="time-point-rounding.html">time_point_floor()</a></code> <code><a href="time-point-rounding.html">time_point_ceiling()</a></code> <code><a href="time-point-rounding.html">time_point_round()</a></code> </p>
+        </td>
+        <td><p>Time point rounding</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="time-point-arithmetic.html">add_weeks(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_days(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_hours(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_minutes(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_seconds(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_milliseconds(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_microseconds(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_nanoseconds(<i>&lt;clock_time_point&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Arithmetic: Time points</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_naive_time.html">is_naive_time()</a></code> </p>
+        </td>
+        <td><p>Is <code>x</code> a naive-time?</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_sys_time.html">is_sys_time()</a></code> </p>
+        </td>
+        <td><p>Is <code>x</code> a sys-time?</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as-zoned-time-naive-time.html">as_zoned_time(<i>&lt;clock_naive_time&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Convert to a zoned-time from a naive-time</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as-zoned-time-sys-time.html">as_zoned_time(<i>&lt;clock_sys_time&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Convert to a zoned-time from a sys-time</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-zoned-time" class="hasAnchor"><a href="#section-zoned-time" class="anchor"></a>Zoned-time</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="as_zoned_time.html">as_zoned_time()</a></code> </p>
+        </td>
+        <td><p>Convert to a zoned-time</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="zoned_now.html">zoned_now()</a></code> </p>
+        </td>
+        <td><p>What is the current zoned-time?</p></td>
       </tr><tr>
         
         <td>
@@ -577,9 +579,189 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="zoned_now.html">zoned_now()</a></code> </p>
+          <p><code><a href="is_zoned_time.html">is_zoned_time()</a></code> </p>
         </td>
-        <td><p>What is the current zoned-time?</p></td>
+        <td><p>Is <code>x</code> a zoned-time?</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-weekdays" class="hasAnchor"><a href="#section-weekdays" class="anchor"></a>Weekdays</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="weekday.html">weekday()</a></code> </p>
+        </td>
+        <td><p>Construct a weekday vector</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="weekday-encoding.html">weekday_c_encoding()</a></code> <code><a href="weekday-encoding.html">weekday_iso_encoding()</a></code> </p>
+        </td>
+        <td><p>Extract weekday encodings</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="weekday-arithmetic.html">add_days(<i>&lt;clock_weekday&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Arithmetic: weekday</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_weekday.html">is_weekday()</a></code> </p>
+        </td>
+        <td><p>Is <code>x</code> a weekday?</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as_weekday.html">as_weekday()</a></code> </p>
+        </td>
+        <td><p>Convert to a weekday</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-date-support" class="hasAnchor"><a href="#section-date-support" class="anchor"></a>Date support</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="Date-getters.html">get_year(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-getters.html">get_month(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-getters.html">get_day(<i>&lt;Date&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Getters: date</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Date-setters.html">set_year(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-setters.html">set_month(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-setters.html">set_day(<i>&lt;Date&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Setters: date</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Date-arithmetic.html">add_years(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_quarters(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_months(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_weeks(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_days(<i>&lt;Date&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Arithmetic: date</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as-zoned-time-Date.html">as_zoned_time(<i>&lt;Date&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Convert to a zoned-time from a date</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-posixct-posixlt-support" class="hasAnchor"><a href="#section-posixct-posixlt-support" class="anchor"></a>POSIXct / POSIXlt support</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="posixt-getters.html">get_year(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_month(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_day(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_hour(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_minute(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_second(<i>&lt;POSIXt&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Getters: date-time</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="posixt-setters.html">set_year(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_month(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_day(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_hour(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_minute(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_second(<i>&lt;POSIXt&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Setters: date-time</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="posixt-arithmetic.html">add_years(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_quarters(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_months(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_weeks(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_days(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_hours(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_minutes(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_seconds(<i>&lt;POSIXt&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Arithmetic: date-time</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as-zoned-time-posixt.html">as_zoned_time(<i>&lt;POSIXt&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Convert to a zoned-time from a date-time</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-arithmetic" class="hasAnchor"><a href="#section-arithmetic" class="anchor"></a>Arithmetic</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="clock-arithmetic.html">add_years()</a></code> <code><a href="clock-arithmetic.html">add_quarters()</a></code> <code><a href="clock-arithmetic.html">add_months()</a></code> <code><a href="clock-arithmetic.html">add_weeks()</a></code> <code><a href="clock-arithmetic.html">add_days()</a></code> <code><a href="clock-arithmetic.html">add_hours()</a></code> <code><a href="clock-arithmetic.html">add_minutes()</a></code> <code><a href="clock-arithmetic.html">add_seconds()</a></code> <code><a href="clock-arithmetic.html">add_milliseconds()</a></code> <code><a href="clock-arithmetic.html">add_microseconds()</a></code> <code><a href="clock-arithmetic.html">add_nanoseconds()</a></code> </p>
+        </td>
+        <td><p>Clock arithmetic</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-locale" class="hasAnchor"><a href="#section-locale" class="anchor"></a>Locale</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="clock_locale.html">clock_locale()</a></code> <code><a href="clock_locale.html">default_clock_locale()</a></code> </p>
+        </td>
+        <td><p>Create a clock locale</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="clock_mapping.html">clock_mapping()</a></code> <code><a href="clock_mapping.html">clock_mapping_lookup()</a></code> <code><a href="clock_mapping.html">clock_mapping_languages()</a></code> </p>
+        </td>
+        <td><p>Create or retrieve date related mappings</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-developer" class="hasAnchor"><a href="#section-developer" class="anchor"></a>Developer</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="clock-arith.html">vec_arith(<i>&lt;clock_year_month_day&gt;</i>)</a></code> <code><a href="clock-arith.html">vec_arith(<i>&lt;clock_year_month_weekday&gt;</i>)</a></code> <code><a href="clock-arith.html">vec_arith(<i>&lt;clock_iso_year_week_day&gt;</i>)</a></code> <code><a href="clock-arith.html">vec_arith(<i>&lt;clock_naive_time&gt;</i>)</a></code> <code><a href="clock-arith.html">vec_arith(<i>&lt;clock_year_quarter_day&gt;</i>)</a></code> <code><a href="clock-arith.html">vec_arith(<i>&lt;clock_sys_time&gt;</i>)</a></code> <code><a href="clock-arith.html">vec_arith(<i>&lt;clock_weekday&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Support for vctrs arithmetic</p></td>
       </tr>
     </tbody>
     </table>
