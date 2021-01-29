@@ -334,7 +334,8 @@ arith_numeric_and_time_point <- function(op, x, y, ...) {
 #' library(magrittr)
 #'
 #' # Say you started with this zoned time, and you want to add 1 day to it
-#' x <- parse_zoned_time("1970-04-25T02:30:00-05:00[America/New_York]")
+#' x <- as_naive_time(year_month_day(1970, 04, 25, 02, 30, 00))
+#' x <- as_zoned_time(x, "America/New_York")
 #' x
 #'
 #' # Note that there was a daylight saving time gap on 1970-04-26 where
