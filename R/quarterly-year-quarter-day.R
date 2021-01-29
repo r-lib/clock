@@ -247,7 +247,6 @@ get_quarter.clock_year_quarter_day <- function(x) {
 #' @rdname year-quarter-day-getters
 #' @export
 get_day.clock_year_quarter_day <- function(x) {
-  check_dots_empty()
   calendar_require_minimum_precision(x, PRECISION_DAY, "get_day")
   field_day(x)
 }
