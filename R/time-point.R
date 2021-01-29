@@ -1,5 +1,4 @@
 
-#' @export
 is_time_point <- function(x) {
   inherits(x, "clock_time_point")
 }
