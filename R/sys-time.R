@@ -164,7 +164,22 @@ as_zoned_time.clock_sys_time <- function(x, zone, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' What is the current sys-time?
+#'
+#' @description
+#' `sys_now()` returns the current time in UTC.
+#'
+#' @details
+#' The time is returned with a nanosecond precision, but the actual amount
+#' of data returned is OS dependent. Usually, information at at least the
+#' microsecond level is returned, with some platforms returning nanosecond
+#' information.
+#'
+#' @return A sys-time of the current time in UTC.
+#'
 #' @export
+#' @examples
+#' x <- sys_now()
 sys_now <- function() {
   names <- NULL
   fields <- sys_now_cpp()

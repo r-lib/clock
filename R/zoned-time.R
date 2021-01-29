@@ -303,7 +303,27 @@ as_naive_time.clock_zoned_time <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' What is the current zoned-time?
+#'
+#' @description
+#' `zoned_now()` returns the current time in the corresponding `zone`. It
+#' is a wrapper around [sys_now()] that attaches the time zone.
+#'
+#' @details
+#' The time is returned with a nanosecond precision, but the actual amount
+#' of data returned is OS dependent. Usually, information at at least the
+#' microsecond level is returned, with some platforms returning nanosecond
+#' information.
+#'
+#' @param zone `[character(1)]`
+#'
+#'   A time zone to get the current time for.
+#'
+#' @return A zoned-time of the current time.
+#'
 #' @export
+#' @examples
+#' x <- zoned_now("America/New_York")
 zoned_now <- function(zone) {
   names <- NULL
   sys_time <- sys_now()
