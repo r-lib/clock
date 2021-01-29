@@ -500,7 +500,64 @@ as_iso_year_week_day.clock_time_point <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' Cast a time point between precisions
+#'
+#' @description
+#' Casting is one way to change a time point's precision.
+#'
+#' Casting to a less precise precision will completely drop information that
+#' is more precise than the precision that you are casting to. It does so
+#' in a way that makes it round towards zero. When converting time points
+#' to a less precise precision, you often want [time_point_floor()] instead
+#' of `time_point_cast()`, as that handles pre-1970 dates (which are
+#' stored as negative durations) in a more intuitive manner.
+#'
+#' Casting to a more precise precision is done through a multiplication by
+#' a conversion factor between the current precision and the new precision.
+#'
+#' @param x `[clock_sys_time / clock_naive_time]`
+#'
+#'   A sys-time or naive-time.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   A time point precision. One of:
+#'
+#'   - `"day"`
+#'
+#'   - `"hour"`
+#'
+#'   - `"minute"`
+#'
+#'   - `"second"`
+#'
+#'   - `"millisecond"`
+#'
+#'   - `"microsecond"`
+#'
+#'   - `"nanosecond"`
+#'
 #' @export
+#' @examples
+#' # Hour precision time points
+#' # One is pre-1970, one is post-1970
+#' x <- duration_hours(c(25, -25))
+#' x <- as_naive_time(x)
+#' x
+#'
+#' # Casting rounds the underlying duration towards 0
+#' cast <- time_point_cast(x, "day")
+#' cast
+#'
+#' # Flooring rounds the underlying duration towards negative infinity,
+#' # which is often more intuitive for time points.
+#' # Note that the cast ends up rounding the pre-1970 date up to the next
+#' # day, while the post-1970 date is rounded down.
+#' floor <- time_point_floor(x, "day")
+#' floor
+#'
+#' # Casting to a more precise precision, hour->millisecond
+#' time_point_cast(x, "millisecond")
 time_point_cast <- function(x, precision) {
   if (!is_time_point(x)) {
     abort("`x` must be a 'time_point'.")
@@ -517,41 +574,114 @@ time_point_cast <- function(x, precision) {
   new_time_point_from_fields(fields, precision, clock, names)
 }
 
-# Notes:
-# Boundary handling for `time_point_ceiling()` requires a little bit of
-# explanation. Both flooring and ceiling while on a boundary returns the
-# input at the new precision, without changing the actual value.
-# This is mathematically consistent with definitions of floor and
-# ceiling, as floor(2) == ceiling(2) == 2. For example:
-#
-# x <- as_naive_time(year_month_day(1970, 01, 01, 00, 00, 00))
-# time_point_ceiling(x, "second") == "1970-01-01T00:00:00"
-# time_point_ceiling(x, "day") == "1970-01-01"
-# time_point_ceiling(x, "day", n = 2) == "1970-01-01"
-# time_point_ceiling(x + 1, "day") == "1970-01-02"
-#
-# lubridate has special default handling of Date objects that rounds up with ceil
-# lubridate::ceiling_date(as.Date("1970-01-01"), "day") == "1970-01-02"
-#
-# It would not make sense for this to round up, since we consider x and y
-# to be exactly identical time points, just with differing precision
-# y <- as_naive_time(year_month_day(1970, 01, 01))
-# time_point_ceiling(y, "day") == "1970-01-01"
-# x == y is TRUE
-#
-# Should add an example of changing the origin time, like:
-# time_point_floor(x - duration_seconds(-86400), "day", n = 2) + duration_seconds(-86400)
+#' Time point rounding
+#'
+#' @description
+#' - `time_point_floor()` rounds a time point down to a multiple of the
+#'   specified `precision`.
+#'
+#' - `time_point_ceiling()` rounds a time point up to a multiple of the
+#'   specified `precision`.
+#'
+#' - `time_point_round()` rounds up or down depending on what is closer,
+#'   rounding up on ties.
+#'
+#' Rounding time points is mainly useful for rounding sub-daily time points
+#' up to daily time points.
+#'
+#' It can also be useful for flooring by a set number of days (like 20) with
+#' respect to some origin. By default, the origin is `1970-01-01 00:00:00`.
+#'
+#' If you want to group by components, such as "day of the month", rather than
+#' by "n days", see [calendar_group()].
+#'
+#' @section Boundary Handling:
+#'
+#' To understand how flooring and ceiling work, you need to know how they
+#' create their intervals for rounding.
+#'
+#' - `time_point_floor()` constructs intervals of \code{[lower, upper)} that
+#'   bound each element of `x`, then always chooses the _left-hand side_.
+#'
+#' - `time_point_ceiling()` constructs intervals of \code{(lower, upper]} that
+#'   bound each element of `x`, then always chooses the _right-hand side_.
+#'
+#' As an easy example, consider `"2020-01-02 00:00:05"`.
+#'
+#' To floor this to the nearest day, the following interval is constructed,
+#' and the left-hand side is returned at day precision:
+#'
+#' \code{[2020-01-02 00:00:00, 2020-01-03 00:00:00)}
+#'
+#' To ceiling this to the nearest day, the following interval
+#' is constructed, and the right-hand side is returned at day precision:
+#'
+#' \code{(2020-01-02 00:00:00, 2020-01-03 00:00:00]}
+#'
+#' Here is another example, this time with a time point on a boundary,
+#' `"2020-01-02 00:00:00"`.
+#'
+#' To floor this to the nearest day, the following interval is constructed,
+#' and the left-hand side is returned at day precision:
+#'
+#' \code{[2020-01-02 00:00:00, 2020-01-03 00:00:00)}
+#'
+#' To ceiling this to the nearest day, the following interval
+#' is constructed, and the right-hand side is returned at day precision:
+#'
+#' \code{(2020-01-01 00:00:00, 2020-01-02 00:00:00]}
+#'
+#' Notice that, regardless of whether you are doing a floor or ceiling, if
+#' the input falls on a boundary then it will be returned as is.
+#'
+#' @inheritParams ellipsis::dots_empty
+#' @inheritParams time_point_cast
+#'
+#' @param n `[positive integer(1)]`
+#'
+#'   A positive integer specifying the multiple of `precision` to use.
+#'
+#' @name time-point-rounding
+#'
+#' @examples
+#' library(magrittr)
+#'
+#' x <- as_naive_time(year_month_day(2019, 01, 01))
+#' x <- add_days(x, 0:40)
+#' head(x)
+#'
+#' # Floor by sets of 20 days
+#' # The implicit origin to start the 20 day counter is 1970-01-01
+#' time_point_floor(x, "day", n = 20)
+#'
+#' # You can easily customize the origin by creating a duration out of the
+#' # origin date of interest...
+#' origin <- year_month_day(2019, 01, 01) %>%
+#'   as_naive_time() %>%
+#'   as_duration()
+#'
+#' # Which you can subtract from, floor, and then add to your input
+#' time_point_floor(x - origin, "day", n = 20) + origin
+#'
+#' # For times on the boundary, floor and ceiling both return the input
+#' # at the new precision. Notice how the first element is on the boundary,
+#' # and the second is 1 second after the boundary.
+#' y <- as_naive_time(year_month_day(2020, 01, 02, 00, 00, c(00, 01)))
+#' time_point_floor(y, "day")
+#' time_point_ceiling(y, "day")
+NULL
 
+#' @rdname time-point-rounding
 #' @export
 time_point_floor <- function(x, precision, ..., n = 1L) {
   time_point_rounder(x, precision, n, duration_floor, ...)
 }
-
+#' @rdname time-point-rounding
 #' @export
 time_point_ceiling <- function(x, precision, ..., n = 1L) {
   time_point_rounder(x, precision, n, duration_ceiling, ...)
 }
-
+#' @rdname time-point-rounding
 #' @export
 time_point_round <- function(x, precision, ..., n = 1L) {
   time_point_rounder(x, precision, n, duration_round, ...)
