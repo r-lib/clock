@@ -39,10 +39,10 @@ A positive integer specifying the multiple of \code{precision} to use.}
 }
 \description{
 \itemize{
-\item \code{time_point_floor()} rounds a time point down to a multiple of the
-specified \code{precision}.
-\item \code{time_point_ceiling()} rounds a time point up to a multiple of the
-specified \code{precision}.
+\item \code{time_point_floor()} rounds a sys-time or naive-time down to a multiple of
+the specified \code{precision}.
+\item \code{time_point_ceiling()} rounds a sys-time or naive-time up to a multiple of
+the specified \code{precision}.
 \item \code{time_point_round()} rounds up or down depending on what is closer,
 rounding up on ties.
 }
