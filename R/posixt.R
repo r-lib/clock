@@ -342,14 +342,125 @@ set_posixt_field_year_month_day <- function(x, value, invalid, nonexistent, ambi
 
 # ------------------------------------------------------------------------------
 
+#' Arithmetic: date-time
+#'
+#' @description
+#' The following arithmetic operations are available for use on R's native
+#' date-time types, POSIXct and POSIXlt.
+#'
+#' Calendrical based arithmetic:
+#'
+#' These functions convert to a naive-time, then to a year-month-day, perform
+#' the arithmetic, then convert back to a date-time.
+#'
+#' - `add_years()`
+#'
+#' - `add_quarters()`
+#'
+#' - `add_months()`
+#'
+#' Naive-time based arithmetic:
+#'
+#' These functions convert to a naive-time, perform the arithmetic, then
+#' convert back to a date-time.
+#'
+#' - `add_weeks()`
+#'
+#' - `add_days()`
+#'
+#' Sys-time based arithmetic:
+#'
+#' These functions convert to a sys-time, perform the arithmetic, then
+#' convert back to a date-time.
+#'
+#' - `add_hours()`
+#'
+#' - `add_minutes()`
+#'
+#' - `add_seconds()`
+#'
+#' @details
+#' Adding a single quarter with `add_quarters()` is equivalent to adding
+#' 3 months.
+#'
+#' `x` and `n` are recycled against each other.
+#'
+#' Calendrical based arithmetic has the potential to generate invalid dates
+#' (like the 31st of February), nonexistent times (due to daylight saving
+#' time gaps), and ambiguous times (due to daylight saving time fallbacks).
+#'
+#' Naive-time based arithmetic will never generate an invalid date, but
+#' may generate a nonexistent or ambiguous time (i.e. you added 1 day and
+#' landed in a daylight saving time gap).
+#'
+#' Sys-time based arithmetic operates in the UTC time zone, which means
+#' that it will never generate any invalid dates or nonexistent / ambiguous
+#' times.
+#'
+#' The conversion from POSIXct/POSIXlt to the corresponding clock type uses
+#' a "best guess" about whether you want to do the arithmetic using a naive-time
+#' or a sys-time. For example, when adding months, you probably want to
+#' retain the printed time when converting to a year-month-day to perform
+#' the arithmetic, so the conversion goes through naive-time. However,
+#' when adding smaller units like seconds, you probably want
+#' `"2020-03-08 01:59:59" + 1 second` in the America/New_York time zone to
+#' return `"2020-03-08 03:00:00"`, taking into account the fact that there
+#' was a daylight saving time gap. This requires doing the arithmetic in
+#' sys-time, so that is what clock converts to. If you disagree with this
+#' heuristic for any reason, you can take control and perform the conversions
+#' yourself. For example, you could convert the previous example to a
+#' naive-time instead of a sys-time manually with [as_naive_time()], add
+#' 1 second giving `"2020-03-08 02:00:00"`, then convert back to a
+#' POSIXct/POSIXlt, dealing with the nonexistent time that get's created by
+#' using the `nonexistent` argument of `as.POSIXct()`.
+#'
+#' @inheritParams add_years
+#' @inheritParams invalid_resolve
+#' @inheritParams as-zoned-time-naive-time
+#'
+#' @param x `[POSIXct / POSIXlt]`
+#'
+#'   A date-time vector.
+#'
+#' @return `x` after performing the arithmetic.
+#'
+#' @name posixt-arithmetic
+#'
+#' @examples
+#' x <- as.POSIXct("2019-01-01", tz = "America/New_York")
+#'
+#' add_years(x, 1:5)
+#'
+#' y <- as.POSIXct("2019-01-31 00:30:00", tz = "America/New_York")
+#'
+#' # Adding 1 month to `y` generates an invalid date. Unlike year-month-day
+#' # types, R's native date-time types cannot handle invalid dates, so you must
+#' # resolve them immediately. If you don't you get an error:
+#' try(add_months(y, 1:2))
+#' add_months(as_year_month_day(y), 1:2)
+#'
+#' # Resolve invalid dates by specifying an invalid date resolution strategy
+#' # with the `invalid` argument. Using `"previous"` here sets the date-time to
+#' # the previous valid moment in time - i.e. the end of the month. The
+#' # time is set to the last moment in the day to retain the relative ordering
+#' # within your input. If you are okay with potentially losing this, and
+#' # want to retain your time of day, you can use `"previous-day"` to set the
+#' # date-time to the previous valid day, while keeping the time of day.
+#' add_months(y, 1:2, invalid = "previous")
+#' add_months(y, 1:2, invalid = "previous-day")
+NULL
+
+#' @rdname posixt-arithmetic
 #' @export
 add_years.POSIXt <- function(x, n, ..., invalid = "error", nonexistent = "error", ambiguous = "error") {
   add_posixt_duration_year_month_day(x, n, invalid, nonexistent, ambiguous, add_years, ...)
 }
+#' @rdname posixt-arithmetic
 #' @export
 add_quarters.POSIXt <- function(x, n, ..., invalid = "error", nonexistent = "error", ambiguous = "error") {
   add_posixt_duration_year_month_day(x, n, invalid, nonexistent, ambiguous, add_quarters, ...)
 }
+#' @rdname posixt-arithmetic
 #' @export
 add_months.POSIXt <- function(x, n, ..., invalid = "error", nonexistent = "error", ambiguous = "error") {
   add_posixt_duration_year_month_day(x, n, invalid, nonexistent, ambiguous, add_months, ...)
@@ -363,10 +474,12 @@ add_posixt_duration_year_month_day <- function(x, n, invalid, nonexistent, ambig
   as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
 }
 
+#' @rdname posixt-arithmetic
 #' @export
 add_weeks.POSIXt <- function(x, n, ..., nonexistent = "error", ambiguous = "error") {
   add_posixt_duration_naive_time_point(x, n, nonexistent, ambiguous, add_weeks, ...)
 }
+#' @rdname posixt-arithmetic
 #' @export
 add_days.POSIXt <- function(x, n, ..., nonexistent = "error", ambiguous = "error") {
   add_posixt_duration_naive_time_point(x, n, nonexistent, ambiguous, add_days, ...)
@@ -379,14 +492,17 @@ add_posixt_duration_naive_time_point <- function(x, n, nonexistent, ambiguous, a
   as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
 }
 
+#' @rdname posixt-arithmetic
 #' @export
 add_hours.POSIXt <- function(x, n, ...) {
   add_posixt_duration_sys_time_point(x, n, add_hours, ...)
 }
+#' @rdname posixt-arithmetic
 #' @export
 add_minutes.POSIXt <- function(x, n, ...) {
   add_posixt_duration_sys_time_point(x, n, add_minutes, ...)
 }
+#' @rdname posixt-arithmetic
 #' @export
 add_seconds.POSIXt <- function(x, n, ...) {
   add_posixt_duration_sys_time_point(x, n, add_seconds, ...)

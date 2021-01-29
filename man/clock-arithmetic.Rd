@@ -74,6 +74,13 @@ or nanoseconds.
 \itemize{
 \item \link[=time-point-arithmetic]{time-point}
 }
+
+There are also convenience methods for doing arithmetic directly on a
+native R date or date-time type:
+\itemize{
+\item \link[=Date-arithmetic]{dates (Date)}
+\item \link[=posixt-arithmetic]{date-times (POSIXct / POSIXlt)}
+}
 }
 \details{
 Months and years are considered "irregular" because some months have more

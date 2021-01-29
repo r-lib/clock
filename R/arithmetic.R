@@ -22,6 +22,13 @@
 #'
 #' - [time-point][time-point-arithmetic]
 #'
+#' There are also convenience methods for doing arithmetic directly on a
+#' native R date or date-time type:
+#'
+#' - [dates (Date)][Date-arithmetic]
+#'
+#' - [date-times (POSIXct / POSIXlt)][posixt-arithmetic]
+#'
 #' @details
 #' Months and years are considered "irregular" because some months have more
 #' days then others (28, 29, 30, or 31), and some years have more days than

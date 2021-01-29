@@ -228,14 +228,83 @@ set_date_field_year_month_day <- function(x, value, invalid, set_fn, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Arithmetic: date
+#'
+#' @description
+#' The following arithmetic operations are available for use on R's native
+#' Date type.
+#'
+#' Calendrical based arithmetic:
+#'
+#' These functions convert to a year-month-day calendar, perform
+#' the arithmetic, then convert back to a Date.
+#'
+#' - `add_years()`
+#'
+#' - `add_quarters()`
+#'
+#' - `add_months()`
+#'
+#' Time point based arithmetic:
+#'
+#' These functions convert to a time point, perform the arithmetic, then
+#' convert back to a Date.
+#'
+#' - `add_weeks()`
+#'
+#' - `add_days()`
+#'
+#' @details
+#' Adding a single quarter with `add_quarters()` is equivalent to adding
+#' 3 months.
+#'
+#' `x` and `n` are recycled against each other.
+#'
+#' Only calendrical based arithmetic has the potential to generate invalid
+#' dates. Time point based arithmetic, like adding days, will always generate
+#' a valid date.
+#'
+#' @inheritParams add_years
+#' @inheritParams invalid_resolve
+#'
+#' @param x `[Date]`
+#'
+#'   A Date vector.
+#'
+#' @return `x` after performing the arithmetic.
+#'
+#' @name Date-arithmetic
+#'
+#' @examples
+#' x <- as.Date("2019-01-01")
+#'
+#' add_years(x, 1:5)
+#'
+#' y <- as.Date("2019-01-31")
+#'
+#' # Adding 1 month to `y` generates an invalid date. Unlike year-month-day
+#' # types, R's native Date type cannot handle invalid dates, so you must
+#' # resolve them immediately. If you don't you get an error:
+#' try(add_months(y, 1:2))
+#' add_months(as_year_month_day(y), 1:2)
+#'
+#' # Resolve invalid dates by specifying an invalid date resolution strategy
+#' # with the `invalid` argument. Using `"previous"` here sets the date to
+#' # the previous valid date - i.e. the end of the month.
+#' add_months(y, 1:2, invalid = "previous")
+NULL
+
+#' @rdname Date-arithmetic
 #' @export
 add_years.Date <- function(x, n, ..., invalid = "error") {
   add_date_duration_year_month_day(x, n, invalid, add_years, ...)
 }
+#' @rdname Date-arithmetic
 #' @export
 add_quarters.Date <- function(x, n, ..., invalid = "error") {
   add_date_duration_year_month_day(x, n, invalid, add_quarters, ...)
 }
+#' @rdname Date-arithmetic
 #' @export
 add_months.Date <- function(x, n, ..., invalid = "error") {
   add_date_duration_year_month_day(x, n, invalid, add_months, ...)
@@ -248,10 +317,12 @@ add_date_duration_year_month_day <- function(x, n, invalid, add_fn, ...) {
   as.Date(x)
 }
 
+#' @rdname Date-arithmetic
 #' @export
 add_weeks.Date <- function(x, n, ...) {
   add_date_duration_time_point(x, n, add_weeks, ...)
 }
+#' @rdname Date-arithmetic
 #' @export
 add_days.Date <- function(x, n, ...) {
   add_date_duration_time_point(x, n, add_days, ...)
