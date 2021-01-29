@@ -25,7 +25,54 @@ is_sys_time <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' Convert to a sys-time
+#'
+#' @description
+#' `as_sys_time()` converts `x` to a sys-time.
+#'
+#' You can convert to a sys-time from any calendar type, as long as it has
+#' at least day precision. There also must not be any invalid dates. If invalid
+#' dates exist, they must first be resolved with [invalid_resolve()].
+#'
+#' Converting to a sys-time from a naive-time retains the printed time,
+#' but adds an assumption that the time should be interpreted in the UTC time
+#' zone.
+#'
+#' Converting to a sys-time from a zoned-time retains the underlying duration,
+#' but the printed time is the equivalent UTC time to whatever the zoned-time's
+#' zone happened to be.
+#'
+#' There are convenience methods for converting to a sys-time from R's
+#' native date and date-time types. Like converting from a zoned-time, these
+#' retain the underlying duration, but will change the printed time if the
+#' zone was not already UTC.
+#'
+#' @param x `[object]`
+#'
+#'   An object to convert to a sys-time.
+#'
+#' @return A sys-time vector.
+#'
 #' @export
+#' @examples
+#' x <- as.Date("2019-01-01")
+#'
+#' # Dates are assumed to be UTC, so the printed time is the same
+#' as_sys_time(x)
+#'
+#' y <- as.POSIXct("2019-01-01 01:00:00", tz = "America/New_York")
+#'
+#' # The sys time displays the equivalent time in UTC (5 hours ahead of
+#' # America/New_York at this point in the year)
+#' as_sys_time(y)
+#'
+#' ym <- year_month_day(2019, 02)
+#'
+#' # A minimum of day precision is required
+#' try(as_sys_time(ym))
+#'
+#' ymd <- set_day(ym, 10)
+#' as_sys_time(ymd)
 as_sys_time <- function(x) {
   UseMethod("as_sys_time")
 }

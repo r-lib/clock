@@ -25,7 +25,41 @@ is_naive_time <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' Convert to a naive-time
+#'
+#' @description
+#' `as_naive_time()` converts `x` to a naive-time.
+#'
+#' You can convert to a naive-time from any calendar type, as long as it has
+#' at least day precision. There also must not be any invalid dates. If invalid
+#' dates exist, they must first be resolved with [invalid_resolve()].
+#'
+#' Converting to a naive-time from a sys-time or zoned-time retains the printed
+#' time, but drops the assumption that the time should be interpreted with any
+#' specific time zone.
+#'
+#' There are convenience methods for converting to a naive-time from R's
+#' native date and date-time types. Like converting from a zoned-time, these
+#' retain the printed time.
+#'
+#' @param x `[object]`
+#'
+#'   An object to convert to a naive-time.
+#'
+#' @return A naive-time vector.
+#'
 #' @export
+#' @examples
+#' x <- as.Date("2019-01-01")
+#' as_naive_time(x)
+#'
+#' ym <- year_month_day(2019, 02)
+#'
+#' # A minimum of day precision is required
+#' try(as_naive_time(ym))
+#'
+#' ymd <- set_day(ym, 10)
+#' as_naive_time(ymd)
 as_naive_time <- function(x) {
   UseMethod("as_naive_time")
 }
