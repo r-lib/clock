@@ -38,6 +38,10 @@ is_naive_time <- function(x) {
 #' time, but drops the assumption that the time should be interpreted with any
 #' specific time zone.
 #'
+#' Converting to a naive-time from a duration just wraps the duration in a
+#' naive-time object, there is no assumption about the time zone. The duration
+#' must have at least day precision.
+#'
 #' There are convenience methods for converting to a naive-time from R's
 #' native date and date-time types. Like converting from a zoned-time, these
 #' retain the printed time.

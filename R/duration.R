@@ -1,10 +1,49 @@
 #' Construct a duration
 #'
-#' These helpers construct durations of the specified precision.
+#' @description
+#' These helpers construct durations of the specified precision. Durations
+#' represent units of time in a specified precision.
+#'
+#' @section Internal Representation:
+#'
+#' Durations are internally represented as an integer number of "ticks" along
+#' with a ratio describing how it converts to a number of seconds. The
+#' following duration ratios are used in clock:
+#'
+#' - `1 year == 31556952 seconds`
+#'
+#' - `1 quarter == 7889238 seconds`
+#'
+#' - `1 month == 2629746 seconds`
+#'
+#' - `1 week == 604800 seconds`
+#'
+#' - `1 day == 86400 seconds`
+#'
+#' - `1 hour == 3600 seconds`
+#'
+#' - `1 minute == 60 seconds`
+#'
+#' - `1 second == 1 second`
+#'
+#' - `1 millisecond == 1 / 1000 seconds`
+#'
+#' - `1 microsecond == 1 / 1000000 seconds`
+#'
+#' - `1 nanosecond == 1 / 1000000000 seconds`
+#'
+#' A duration of 1 year is defined to correspond to the
+#' average length of a proleptic Gregorian year, i.e. 365.2425 days.
+#'
+#' A duration of 1 month is defined as exactly 1/12 of a year.
+#'
+#' A duration of 1 quarter is defined as exactly 1/4 of a year.
+#'
+#' A duration of 1 week is defined as exactly 7 days.
 #'
 #' @param n `[integer]`
 #'
-#'   The number of ticks to use when creating the duration.
+#'   The number of units of time to use when creating the duration.
 #'
 #' @return A duration of the specified precision.
 #'
@@ -206,7 +245,29 @@ vec_cast.clock_duration.clock_duration <- function(x, to, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Convert to a duration
+#'
+#' You generally convert to a duration from either a sys-time or a naive-time.
+#' The precision of the input is retained in the returned duration.
+#'
+#' @param x `[object]`
+#'
+#'   An object to convert to a duration.
+#'
+#' @return A duration with the same precision as `x`.
+#'
 #' @export
+#' @examples
+#' x <- as_sys_time(year_month_day(2019, 01, 01))
+#'
+#' # The number of days since 1970-01-01 UTC
+#' as_duration(x)
+#'
+#' x <- x + duration_seconds(1)
+#' x
+#'
+#' # The number of seconds since 1970-01-01 00:00:00 UTC
+#' as_duration(x)
 as_duration <- function(x) {
   UseMethod("as_duration")
 }
@@ -218,29 +279,175 @@ as_duration.clock_duration <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-# Note:
-# Will cast upward or downward.
-# Casting year -> day or month -> day can lose precision because those durations
-# are based on fractions of a day and durations always use integer storage
+#' @export
+as_sys_time.clock_duration <- function(x) {
+  names <- clock_rcrd_names(x)
+  precision <- duration_precision(x)
+
+  if (precision < PRECISION_DAY) {
+    abort("`x` must have at least 'day' precision to convert to a time point.")
+  }
+
+  new_sys_time_from_fields(x, precision, names)
+}
 
 #' @export
+as_naive_time.clock_duration <- function(x) {
+  as_naive_time(as_sys_time(x))
+}
+
+# ------------------------------------------------------------------------------
+
+#' Cast a duration between precisions
+#'
+#' @description
+#' Casting is one way to change a duration's precision.
+#'
+#' Casting to a less precise precision will completely drop information that
+#' is more precise than the precision that you are casting to. It does so
+#' in a way that makes it round towards zero.
+#'
+#' Casting to a more precise precision is done through a multiplication by
+#' a conversion factor between the current precision and the new precision.
+#'
+#' @details
+#' When you want to change to a less precise precision, you often want
+#' [duration_floor()] instead of `duration_cast()`, as that rounds towards
+#' negative infinity, which is generally the desired behavior when working with
+#' time points (especially ones pre-1970, which are stored as negative
+#' durations).
+#'
+#' @param x `[clock_duration]`
+#'
+#'   A duration.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   A precision. One of:
+#'
+#'   - `"year"`
+#'
+#'   - `"quarter"`
+#'
+#'   - `"month"`
+#'
+#'   - `"week"`
+#'
+#'   - `"day"`
+#'
+#'   - `"hour"`
+#'
+#'   - `"minute"`
+#'
+#'   - `"second"`
+#'
+#'   - `"millisecond"`
+#'
+#'   - `"microsecond"`
+#'
+#'   - `"nanosecond"`
+#'
+#' @export
+#' @examples
+#' x <- duration_seconds(c(86401, -86401))
+#'
+#' # Casting rounds towards 0
+#' cast <- duration_cast(x, "day")
+#' cast
+#'
+#' # Flooring rounds towards negative infinity
+#' floor <- duration_floor(x, "day")
+#' floor
+#'
+#' # Flooring is generally more useful when working with time points,
+#' # note that the cast ends up rounding the pre-1970 date up to the next
+#' # day, while the post-1970 date is rounded down.
+#' as_sys_time(x)
+#' as_sys_time(cast)
+#' as_sys_time(floor)
+#'
+#' # Casting to a more precise precision
+#' duration_cast(x, "millisecond")
 duration_cast <- function(x, precision) {
+  if (!is_duration(x)) {
+    abort("`x` must be a duration.")
+  }
   x_precision <- duration_precision(x)
   precision <- validate_precision(precision)
   fields <- duration_cast_cpp(x, x_precision, precision)
   new_duration_from_fields(fields, precision, clock_rcrd_names(x))
 }
 
+# ------------------------------------------------------------------------------
+
+#' Duration rounding
+#'
+#' @description
+#' - `duration_floor()` rounds a duration down to a multiple of the specified
+#'   `precision`.
+#'
+#' - `duration_ceiling()` rounds a duration up to a multiple of the specified
+#'   `precision`.
+#'
+#' - `duration_round()` rounds up or down depending on what is closer,
+#'   rounding up on ties.
+#'
+#' @details
+#' Duration rounding is most useful when rounding from sub-daily precisions up
+#' to daily precision, or when rounding monthly/quarterly precisions up to
+#' yearly precision. These durations are defined intuitively relative to
+#' each other.
+#'
+#' Be _extremely_ careful when rounding sub-daily or daily precisions up to more
+#' granular precisions such as monthly or yearly. Durations are defined in terms
+#' of a number of seconds, and calendrical months and years cannot be broken
+#' down like that, since they are irregular periods of time (there aren't always
+#' 30 days in a month, or 365 days in a year). Read the Internal Representation
+#' section of the documentation for [duration helpers][duration-helper] to
+#' learn more about how durations are defined.
+#'
+#' @inheritParams ellipsis::dots_empty
+#' @inheritParams duration_cast
+#'
+#' @param n `[positive integer(1)]`
+#'
+#'   A positive integer specifying the multiple of `precision` to use.
+#'
+#' @name duration-rounding
+#'
+#' @examples
+#' x <- duration_seconds(c(86399, 86401))
+#'
+#' duration_floor(x, "day")
+#' duration_ceiling(x, "day")
+#'
+#' # Every 2 days, using an origin of day 0
+#' y <- duration_seconds(c(0, 86400, 86400 * 2, 86400 * 3))
+#' duration_floor(y, "day", n = 2)
+#'
+#' # Shifting the origin to be day 1
+#' origin <- duration_days(1)
+#' duration_floor(y - origin, "day", n = 2) + origin
+#'
+#' # Rounding will round ties up
+#' half_day <- 86400 / 2
+#' half_day_durations <- duration_seconds(c(half_day - 1, half_day, half_day + 1))
+#' duration_round(half_day_durations, "day")
+NULL
+
+#' @rdname duration-rounding
 #' @export
 duration_floor <- function(x, precision, ..., n = 1L) {
   duration_rounder(x, precision, n, duration_floor_cpp, "floor", ...)
 }
 
+#' @rdname duration-rounding
 #' @export
 duration_ceiling <- function(x, precision, ..., n = 1L) {
   duration_rounder(x, precision, n, duration_ceiling_cpp, "ceiling", ...)
 }
 
+#' @rdname duration-rounding
 #' @export
 duration_round <- function(x, precision, ..., n = 1L) {
   duration_rounder(x, precision, n, duration_round_cpp, "round", ...)
@@ -483,7 +690,20 @@ duration_unary_minus <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' Is `x` a duration?
+#'
+#' This function determines if the input is a duration object.
+#'
+#' @param x `[object]`
+#'
+#'   An object.
+#'
+#' @return `TRUE` if `x` inherits from `"clock_duration"`, otherwise `FALSE`.
+#'
 #' @export
+#' @examples
+#' is_duration(1)
+#' is_duration(duration_days(1))
 is_duration <- function(x) {
   inherits(x, "clock_duration")
 }

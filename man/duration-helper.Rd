@@ -40,14 +40,45 @@ duration_nanoseconds(n = integer())
 \arguments{
 \item{n}{\verb{[integer]}
 
-The number of ticks to use when creating the duration.}
+The number of units of time to use when creating the duration.}
 }
 \value{
 A duration of the specified precision.
 }
 \description{
-These helpers construct durations of the specified precision.
+These helpers construct durations of the specified precision. Durations
+represent units of time in a specified precision.
 }
+\section{Internal Representation}{
+
+
+Durations are internally represented as an integer number of "ticks" along
+with a ratio describing how it converts to a number of seconds. The
+following duration ratios are used in clock:
+\itemize{
+\item \verb{1 year == 31556952 seconds}
+\item \verb{1 quarter == 7889238 seconds}
+\item \verb{1 month == 2629746 seconds}
+\item \verb{1 week == 604800 seconds}
+\item \verb{1 day == 86400 seconds}
+\item \verb{1 hour == 3600 seconds}
+\item \verb{1 minute == 60 seconds}
+\item \verb{1 second == 1 second}
+\item \verb{1 millisecond == 1 / 1000 seconds}
+\item \verb{1 microsecond == 1 / 1000000 seconds}
+\item \verb{1 nanosecond == 1 / 1000000000 seconds}
+}
+
+A duration of 1 year is defined to correspond to the
+average length of a proleptic Gregorian year, i.e. 365.2425 days.
+
+A duration of 1 month is defined as exactly 1/12 of a year.
+
+A duration of 1 quarter is defined as exactly 1/4 of a year.
+
+A duration of 1 week is defined as exactly 7 days.
+}
+
 \examples{
 duration_years(1:5)
 duration_nanoseconds(1:5)

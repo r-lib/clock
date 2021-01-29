@@ -29,6 +29,10 @@ Converting to a sys-time from a zoned-time retains the underlying duration,
 but the printed time is the equivalent UTC time to whatever the zoned-time's
 zone happened to be.
 
+Converting to a sys-time from a duration just wraps the duration in a
+sys-time object, adding the assumption that the time should be interpreted
+in the UTC time zone. The duration must have at least day precision.
+
 There are convenience methods for converting to a sys-time from R's
 native date and date-time types. Like converting from a zoned-time, these
 retain the underlying duration, but will change the printed time if the
