@@ -200,6 +200,7 @@ vec_cast.clock_sys_time.clock_sys_time <- function(x, to, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' @rdname clock-arith
 #' @method vec_arith clock_sys_time
 #' @export
 vec_arith.clock_sys_time <- function(op, x, y, ...) {

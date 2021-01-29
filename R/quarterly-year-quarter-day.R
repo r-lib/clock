@@ -686,6 +686,7 @@ year_quarter_day_precision_to_field <- function(precision) {
 
 # ------------------------------------------------------------------------------
 
+#' @rdname clock-arith
 #' @method vec_arith clock_year_quarter_day
 #' @export
 vec_arith.clock_year_quarter_day <- function(op, x, y, ...) {

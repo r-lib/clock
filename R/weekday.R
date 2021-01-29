@@ -244,6 +244,7 @@ weekday_iso_encoding <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' @rdname clock-arith
 #' @method vec_arith clock_weekday
 #' @export
 vec_arith.clock_weekday <- function(op, x, y, ...) {

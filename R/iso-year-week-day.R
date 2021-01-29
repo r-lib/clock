@@ -627,6 +627,7 @@ iso_year_week_day_precision_to_field <- function(precision) {
 
 # ------------------------------------------------------------------------------
 
+#' @rdname clock-arith
 #' @method vec_arith clock_iso_year_week_day
 #' @export
 vec_arith.clock_iso_year_week_day <- function(op, x, y, ...) {

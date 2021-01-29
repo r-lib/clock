@@ -307,6 +307,7 @@ vec_cast.clock_naive_time.clock_naive_time <- function(x, to, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' @rdname clock-arith
 #' @method vec_arith clock_naive_time
 #' @export
 vec_arith.clock_naive_time <- function(op, x, y, ...) {
