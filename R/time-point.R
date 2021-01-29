@@ -81,32 +81,36 @@ time_point_precision_format <- function(precision) {
 # ------------------------------------------------------------------------------
 
 parse_naive_time <- function(x,
-                             format,
                              ...,
+                             format = NULL,
                              precision = "second",
                              locale = default_clock_locale()) {
   precision <- validate_time_point_precision(precision)
-  fields <- parse_time_point(x, format, ..., precision = precision, locale = locale, clock = CLOCK_NAIVE)
+  fields <- parse_time_point(x, ..., format = format, precision = precision, locale = locale, clock = CLOCK_NAIVE)
   new_naive_time_from_fields(fields, precision, names(x))
 }
 
 parse_sys_time <- function(x,
-                           format,
                            ...,
+                           format = NULL,
                            precision = "second",
                            locale = default_clock_locale()) {
   precision <- validate_time_point_precision(precision)
-  fields <- parse_time_point(x, format, ..., precision = precision, locale = locale, clock = CLOCK_SYS)
+  fields <- parse_time_point(x, ..., format = format, precision = precision, locale = locale, clock = CLOCK_SYS)
   new_sys_time_from_fields(fields, precision, names(x))
 }
 
 parse_time_point <- function(x,
-                             format,
                              ...,
+                             format,
                              precision,
                              locale,
                              clock) {
   check_dots_empty()
+
+  if (is_null(format)) {
+    format <- time_point_precision_format(precision)
+  }
 
   if (!is_clock_locale(locale)) {
     abort("`locale` must be a 'clock_locale' object.")
