@@ -75,6 +75,13 @@ or nanoseconds.
 \item \link[=time-point-arithmetic]{time-point}
 }
 
+Durations can use any of these arithmetic functions, and return a new
+duration with a precision corresponding to the common type of the
+input and the function used.
+\itemize{
+\item \link[=duration-arithmetic]{duration}
+}
+
 There are also convenience methods for doing arithmetic directly on a
 native R date or date-time type:
 \itemize{

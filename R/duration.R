@@ -549,56 +549,146 @@ vec_arith.numeric.clock_duration <- function(op, x, y, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Arithmetic: duration
+#'
+#' @description
+#' The following arithmetic operations are available for use on
+#' durations.
+#'
+#' - `add_years()`
+#'
+#' - `add_quarters()`
+#'
+#' - `add_months()`
+#'
+#' - `add_weeks()`
+#'
+#' - `add_days()`
+#'
+#' - `add_hours()`
+#'
+#' - `add_minutes()`
+#'
+#' - `add_seconds()`
+#'
+#' - `add_milliseconds()`
+#'
+#' - `add_microseconds()`
+#'
+#' - `add_nanoseconds()`
+#'
+#' When adding to a duration using one of these functions, a second duration
+#' is created based on the function name and `n`. The two durations are then
+#' added together, and the precision of the result is determined as the
+#' _more precise precision_ of the two durations.
+#'
+#' @details
+#' Duration arithmetic is most useful when adding sub-daily or daily
+#' precisions together, or when adding monthly/quarterly/yearly precisions to
+#' other durations of similar precisions.
+#'
+#' Be _extremely_ careful when adding sub-daily or daily precisions to less
+#' precise precisions, such as monthly or yearly. Durations are defined in terms
+#' of a number of seconds, and calendrical months and years cannot be broken
+#' down like that, since they are irregular periods of time (there aren't always
+#' 30 days in a month, or 365 days in a year). Read the Internal Representation
+#' section of the documentation for [duration helpers][duration-helper] to
+#' learn more about how durations are defined.
+#'
+#' `x` and `n` are recycled against each other.
+#'
+#' @inheritParams add_years
+#'
+#' @param x `[clock_duration]`
+#'
+#'   A duration vector.
+#'
+#' @return `x` after performing the arithmetic, possibly with a more precise
+#'   precision.
+#'
+#' @name duration-arithmetic
+#'
+#' @examples
+#' x <- duration_seconds(5)
+#'
+#' # Addition in the same precision
+#' add_seconds(x, 1:10)
+#'
+#' # Addition with days, defined as 86400 seconds
+#' add_days(x, 1)
+#'
+#' # Similarly, if you start with days and add seconds, you get the common
+#' # precision of the two back, which is seconds
+#' y <- duration_days(1)
+#' add_seconds(y, 5)
+#'
+#' # You can add years to a duration of months, which adds
+#' # an additional 12 months / year
+#' z <- duration_months(5)
+#' add_years(z, 1)
+NULL
+
+#' @rdname duration-arithmetic
 #' @export
 add_years.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, PRECISION_YEAR)
   duration_plus(x, n, names_common(x, n))
 }
+#' @rdname duration-arithmetic
 #' @export
 add_quarters.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, PRECISION_QUARTER)
   duration_plus(x, n, names_common(x, n))
 }
+#' @rdname duration-arithmetic
 #' @export
 add_months.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, PRECISION_MONTH)
   duration_plus(x, n, names_common(x, n))
 }
+#' @rdname duration-arithmetic
 #' @export
 add_weeks.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, PRECISION_WEEK)
   duration_plus(x, n, names_common(x, n))
 }
+#' @rdname duration-arithmetic
 #' @export
 add_days.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, PRECISION_DAY)
   duration_plus(x, n, names_common(x, n))
 }
+#' @rdname duration-arithmetic
 #' @export
 add_hours.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, PRECISION_HOUR)
   duration_plus(x, n, names_common(x, n))
 }
+#' @rdname duration-arithmetic
 #' @export
 add_minutes.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, PRECISION_MINUTE)
   duration_plus(x, n, names_common(x, n))
 }
+#' @rdname duration-arithmetic
 #' @export
 add_seconds.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, PRECISION_SECOND)
   duration_plus(x, n, names_common(x, n))
 }
+#' @rdname duration-arithmetic
 #' @export
 add_milliseconds.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, PRECISION_MILLISECOND)
   duration_plus(x, n, names_common(x, n))
 }
+#' @rdname duration-arithmetic
 #' @export
 add_microseconds.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, PRECISION_MICROSECOND)
   duration_plus(x, n, names_common(x, n))
 }
+#' @rdname duration-arithmetic
 #' @export
 add_nanoseconds.clock_duration <- function(x, n, ...) {
   n <- duration_collect_n(n, PRECISION_NANOSECOND)

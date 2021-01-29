@@ -22,6 +22,12 @@
 #'
 #' - [time-point][time-point-arithmetic]
 #'
+#' Durations can use any of these arithmetic functions, and return a new
+#' duration with a precision corresponding to the common type of the
+#' input and the function used.
+#'
+#' - [duration][duration-arithmetic]
+#'
 #' There are also convenience methods for doing arithmetic directly on a
 #' native R date or date-time type:
 #'
