@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get the offset from UTC — zoned_offset • clock</title>
+<title>Getters: year-month-weekday — year-month-weekday-getters • clock</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,17 @@
 
 
 
-<meta property="og:title" content="Get the offset from UTC — zoned_offset" />
-<meta property="og:description" content="zoned_offset() returns the offset from UTC as a duration of seconds." />
+<meta property="og:title" content="Getters: year-month-weekday — year-month-weekday-getters" />
+<meta property="og:description" content="These functions are supported getters for a year-month-weekday vector.
+get_year() returns the Gregorian year.
+get_month() returns the month of the year.
+get_day() returns the day of the week encoded from 1-7, where 1 = Sunday
+and 7 = Saturday.
+get_index() returns a value from 1-5 indicating that the corresponding
+weekday is the n-th instance of that weekday in the current month.
+There are sub-daily getters for extracting more precise components.
+
+" />
 
 
 
@@ -120,48 +129,80 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get the offset from UTC</h1>
-    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/zoned-time.R'><code>R/zoned-time.R</code></a></small>
-    <div class="hidden name"><code>zoned_offset.Rd</code></div>
+    <h1>Getters: year-month-weekday</h1>
+    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/gregorian-year-month-weekday.R'><code>R/gregorian-year-month-weekday.R</code></a></small>
+    <div class="hidden name"><code>year-month-weekday-getters.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>zoned_offset()</code> returns the offset from UTC as a duration of seconds.</p>
+    <p>These functions are supported getters for a year-month-weekday vector.</p><ul>
+<li><p><code><a href='clock-getters.html'>get_year()</a></code> returns the Gregorian year.</p></li>
+<li><p><code><a href='clock-getters.html'>get_month()</a></code> returns the month of the year.</p></li>
+<li><p><code><a href='clock-getters.html'>get_day()</a></code> returns the day of the week encoded from 1-7, where 1 = Sunday
+and 7 = Saturday.</p></li>
+<li><p><code><a href='clock-getters.html'>get_index()</a></code> returns a value from 1-5 indicating that the corresponding
+weekday is the n-th instance of that weekday in the current month.</p></li>
+<li><p>There are sub-daily getters for extracting more precise components.</p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>zoned_offset</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='co'># S3 method for clock_year_month_weekday</span>
+<span class='fu'><a href='clock-getters.html'>get_year</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># S3 method for clock_year_month_weekday</span>
+<span class='fu'><a href='clock-getters.html'>get_month</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># S3 method for clock_year_month_weekday</span>
+<span class='fu'><a href='clock-getters.html'>get_day</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># S3 method for clock_year_month_weekday</span>
+<span class='fu'><a href='clock-getters.html'>get_index</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># S3 method for clock_year_month_weekday</span>
+<span class='fu'><a href='clock-getters.html'>get_hour</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># S3 method for clock_year_month_weekday</span>
+<span class='fu'><a href='clock-getters.html'>get_minute</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># S3 method for clock_year_month_weekday</span>
+<span class='fu'><a href='clock-getters.html'>get_second</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># S3 method for clock_year_month_weekday</span>
+<span class='fu'><a href='clock-getters.html'>get_millisecond</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># S3 method for clock_year_month_weekday</span>
+<span class='fu'><a href='clock-getters.html'>get_microsecond</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># S3 method for clock_year_month_weekday</span>
+<span class='fu'><a href='clock-getters.html'>get_nanosecond</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><code>[zoned_time / Date / POSIXt]</code></p>
-<p>A zoned time to extract the offset for.</p></td>
+      <td><p><code>[clock_year_month_weekday]</code></p>
+<p>A year-month-weekday to get the component from.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A seconds precision duration object the same size as <code>x</code>.</p>
+    <p>The component.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># R defines Date as UTC</span>
-<span class='fu'>zoned_offset</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;duration&lt;second&gt;[1]&gt;
-#&gt; [1] 0</div><div class='input'>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2021</span>, <span class='fl'>03</span>, <span class='fl'>14</span>, hour <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>as_naive_time</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
-
-<span class='co'># Daylight savings time alters the offset from UTC</span>
-<span class='fu'>zoned_offset</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;duration&lt;second&gt;[2]&gt;
-#&gt; [1] -18000 -14400</div><div class='input'>
-<span class='co'># Can extract directly from POSIXct if you started with one of those</span>
-<span class='fu'>zoned_offset</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;duration&lt;second&gt;[2]&gt;
-#&gt; [1] -18000 -14400</div></pre>
+    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_weekday.html'>year_month_weekday</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>
+<span class='va'>x</span>
+</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[invalid=0][4]&gt;
+#&gt; [1] "2019-01-Mon[1]" "2019-01-Tue[2]" "2019-01-Wed[3]" "2019-01-Thu[4]"</div><div class='input'>
+<span class='co'># Gets the weekday, 1 = Sunday, 7 = Saturday</span>
+<span class='fu'><a href='clock-getters.html'>get_day</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 2 3 4 5</div><div class='input'>
+<span class='co'># Gets the index indicating which instance of that particular weekday</span>
+<span class='co'># it is in the current month (i.e. the "1st Monday of January, 2019")</span>
+<span class='fu'><a href='clock-getters.html'>get_index</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1 2 3 4</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

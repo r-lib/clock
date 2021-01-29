@@ -242,7 +242,7 @@ units of duration.</p></td>
 <span class='va'>x</span> <span class='op'>%&gt;%</span>
   <span class='fu'>as_sys_time</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>as_zoned_time</span><span class='op'>(</span><span class='fu'><a href='zoned-zone.html'>zoned_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='fu'><a href='zoned-zone.html'>zoned_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='error'>Error in as_sys_time(.): object 'x' not found</span></div><div class='input'>
 <span class='co'># Alternatively, you can add 1 day in "naive time". Naive time represents</span>
 <span class='co'># a clock time with a yet-to-be-specified time zone. It tries to maintain</span>
@@ -254,7 +254,7 @@ units of duration.</p></td>
 <span class='va'>x</span> <span class='op'>%&gt;%</span>
   <span class='fu'>as_naive_time</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>as_zoned_time</span><span class='op'>(</span><span class='fu'><a href='zoned-zone.html'>zoned_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='fu'><a href='zoned-zone.html'>zoned_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>}</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Error in as_naive_time(.) : object 'x' not found</div><div class='input'>
 <span class='co'># ...this time doesn't exist in that time zone! It is "nonexistent".</span>
@@ -264,7 +264,7 @@ units of duration.</p></td>
 <span class='va'>x</span> <span class='op'>%&gt;%</span>
   <span class='fu'>as_naive_time</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>as_zoned_time</span><span class='op'>(</span><span class='fu'><a href='zoned-zone.html'>zoned_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-forward"</span><span class='op'>)</span>
+  <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='fu'><a href='zoned-zone.html'>zoned_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-forward"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='error'>Error in as_naive_time(.): object 'x' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

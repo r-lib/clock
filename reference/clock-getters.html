@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get the offset from UTC — zoned_offset • clock</title>
+<title>Calendar getters — clock-getters • clock</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,22 @@
 
 
 
-<meta property="og:title" content="Get the offset from UTC — zoned_offset" />
-<meta property="og:description" content="zoned_offset() returns the offset from UTC as a duration of seconds." />
+<meta property="og:title" content="Calendar getters — clock-getters" />
+<meta property="og:description" content="This family of functions extract fields from a calendar vector. Each
+calendar has its own set of supported getters, which are documented on
+their own help page:
+year-month-day
+year-month-weekday
+iso-year-week-day
+year-quarter-day
+
+
+There are also convenience methods for extracting certain components
+directly from R's native date and date-time types.
+dates (Date)
+date-times (POSIXct / POSIXlt)
+
+" />
 
 
 
@@ -120,48 +134,79 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get the offset from UTC</h1>
-    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/zoned-time.R'><code>R/zoned-time.R</code></a></small>
-    <div class="hidden name"><code>zoned_offset.Rd</code></div>
+    <h1>Calendar getters</h1>
+    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/getters.R'><code>R/getters.R</code></a></small>
+    <div class="hidden name"><code>clock-getters.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>zoned_offset()</code> returns the offset from UTC as a duration of seconds.</p>
+    <p>This family of functions extract fields from a calendar vector. Each
+calendar has its own set of supported getters, which are documented on
+their own help page:</p><ul>
+<li><p><a href='year-month-day-getters.html'>year-month-day</a></p></li>
+<li><p><a href='year-month-weekday-getters.html'>year-month-weekday</a></p></li>
+<li><p><a href='iso-year-week-day-getters.html'>iso-year-week-day</a></p></li>
+<li><p><a href='year-quarter-day-getters.html'>year-quarter-day</a></p></li>
+</ul>
+
+<p>There are also convenience methods for extracting certain components
+directly from R's native date and date-time types.</p><ul>
+<li><p><a href='Date-getters.html'>dates (Date)</a></p></li>
+<li><p><a href='posixt-getters.html'>date-times (POSIXct / POSIXlt)</a></p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>zoned_offset</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_year</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='fu'>get_quarter</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='fu'>get_month</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='fu'>get_week</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='fu'>get_day</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='fu'>get_hour</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='fu'>get_minute</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='fu'>get_second</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='fu'>get_millisecond</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='fu'>get_microsecond</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='fu'>get_nanosecond</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='fu'>get_index</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><code>[zoned_time / Date / POSIXt]</code></p>
-<p>A zoned time to extract the offset for.</p></td>
+      <td><p><code>[object]</code></p>
+<p>An object to get the component from.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A seconds precision duration object the same size as <code>x</code>.</p>
+    <p>The component.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>You cannot extract components directly from a time point type, such as
+sys-time or naive-time. Convert it to a calendar type first. Similarly,
+a zoned-time must be converted to either a sys-time or naive-time, and
+then to a calendar type, to be able to extract components from it.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># R defines Date as UTC</span>
-<span class='fu'>zoned_offset</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;duration&lt;second&gt;[1]&gt;
-#&gt; [1] 0</div><div class='input'>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2021</span>, <span class='fl'>03</span>, <span class='fl'>14</span>, hour <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>as_naive_time</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
-
-<span class='co'># Daylight savings time alters the offset from UTC</span>
-<span class='fu'>zoned_offset</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;duration&lt;second&gt;[2]&gt;
-#&gt; [1] -18000 -14400</div><div class='input'>
-<span class='co'># Can extract directly from POSIXct if you started with one of those</span>
-<span class='fu'>zoned_offset</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;duration&lt;second&gt;[2]&gt;
-#&gt; [1] -18000 -14400</div></pre>
+    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, <span class='fl'>5</span><span class='op'>:</span><span class='fl'>7</span>, <span class='fl'>1</span>, <span class='fl'>20</span>, <span class='fl'>30</span><span class='op'>)</span>
+<span class='fu'>get_month</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1 2 3</div><div class='input'><span class='fu'>get_day</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 5 6 7</div><div class='input'><span class='fu'>get_second</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 30 30 30</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
