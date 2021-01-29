@@ -2,14 +2,14 @@ new_sys_time_from_fields <- function(fields, precision, names) {
   new_time_point_from_fields(fields, precision, CLOCK_SYS, names)
 }
 
-#' @export
+# ------------------------------------------------------------------------------
+
 sys_days <- function(n = integer()) {
   names <- NULL
   duration <- duration_days(n)
   new_sys_time_from_fields(duration, PRECISION_DAY, names)
 }
 
-#' @export
 sys_seconds <- function(n = integer()) {
   names <- NULL
   duration <- duration_seconds(n)
