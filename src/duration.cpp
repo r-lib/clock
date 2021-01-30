@@ -5,6 +5,7 @@
 #include "get.h"
 #include "rcrd.h"
 #include <sstream>
+#include <cfloat>
 
 // -----------------------------------------------------------------------------
 
@@ -1043,4 +1044,178 @@ duration_unary_minus_cpp(cpp11::list_of<cpp11::integers> fields,
   never_reached("duration_unary_minus_cpp");
 }
 
+// -----------------------------------------------------------------------------
 
+template <class ClockDuration>
+static
+inline
+cpp11::writable::integers
+duration_as_integer_impl(const ClockDuration& x) {
+  const r_ssize size = x.size();
+  cpp11::writable::integers out(size);
+
+  using Duration = typename ClockDuration::duration;
+  using Rep = typename Duration::rep;
+
+  bool warn = false;
+  r_ssize loc = 0;
+
+  for (r_ssize i = 0; i < size; ++i) {
+    if (x.is_na(i)) {
+      out[i] = r_int_na;
+      continue;
+    }
+
+    Duration elt = x[i];
+    Rep elt_rep = elt.count();
+
+    if (elt_rep > INT32_MAX || elt_rep <= INT32_MIN) {
+      out[i] = r_int_na;
+      if (!warn) {
+        loc = i + 1;
+      }
+      warn = true;
+      continue;
+    }
+
+    out[i] = static_cast<int>(elt_rep);
+  }
+
+  if (warn) {
+    cpp11::warning(
+      "Conversion from duration to integer is outside the range of an integer. "
+      "`NA` values have been introduced, beginning at location %td.",
+      (ptrdiff_t) loc
+    );
+  }
+
+  return out;
+}
+
+[[cpp11::register]]
+cpp11::writable::integers
+duration_as_integer_cpp(cpp11::list_of<cpp11::integers> fields,
+                        const cpp11::integers& precision_int) {
+  using namespace rclock;
+
+  cpp11::integers ticks = duration::get_ticks(fields);
+  cpp11::integers ticks_of_day = duration::get_ticks_of_day(fields);
+  cpp11::integers ticks_of_second = duration::get_ticks_of_second(fields);
+
+  duration::years dy{ticks};
+  duration::quarters dq{ticks};
+  duration::months dm{ticks};
+  duration::weeks dw{ticks};
+  duration::days dd{ticks};
+  duration::hours dh{ticks, ticks_of_day};
+  duration::minutes dmin{ticks, ticks_of_day};
+  duration::seconds ds{ticks, ticks_of_day};
+  duration::milliseconds dmilli{ticks, ticks_of_day, ticks_of_second};
+  duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
+  duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
+
+  switch (parse_precision(precision_int)) {
+  case precision::year: return duration_as_integer_impl(dy);
+  case precision::quarter: return duration_as_integer_impl(dq);
+  case precision::month: return duration_as_integer_impl(dm);
+  case precision::week: return duration_as_integer_impl(dw);
+  case precision::day: return duration_as_integer_impl(dd);
+  case precision::hour: return duration_as_integer_impl(dh);
+  case precision::minute: return duration_as_integer_impl(dmin);
+  case precision::second: return duration_as_integer_impl(ds);
+  case precision::millisecond: return duration_as_integer_impl(dmilli);
+  case precision::microsecond: return duration_as_integer_impl(dmicro);
+  case precision::nanosecond: return duration_as_integer_impl(dnano);
+  }
+
+  never_reached("duration_as_integer_cpp");
+}
+
+// -----------------------------------------------------------------------------
+
+template <class ClockDuration>
+static
+inline
+cpp11::writable::doubles
+duration_as_double_impl(const ClockDuration& x) {
+  // Usually 2^53 - 1
+  static int64_t DOUBLE_MAX_NO_LOSS = static_cast<int64_t>(pow(FLT_RADIX, DBL_MANT_DIG) - 1);
+  static int64_t DOUBLE_MIN_NO_LOSS = -DOUBLE_MAX_NO_LOSS;
+
+  const r_ssize size = x.size();
+  cpp11::writable::doubles out(size);
+
+  using Duration = typename ClockDuration::duration;
+  using Rep = typename Duration::rep;
+
+  bool warn = false;
+  r_ssize loc = 0;
+
+  for (r_ssize i = 0; i < size; ++i) {
+    if (x.is_na(i)) {
+      out[i] = r_dbl_na;
+      continue;
+    }
+
+    Duration elt = x[i];
+    Rep elt_rep = elt.count();
+
+    if (elt_rep > DOUBLE_MAX_NO_LOSS || elt_rep < DOUBLE_MIN_NO_LOSS) {
+      if (!warn) {
+        loc = i + 1;
+      }
+      warn = true;
+    }
+
+    out[i] = static_cast<double>(elt_rep);
+  }
+
+  if (warn) {
+    cpp11::warning(
+      "Conversion from duration to double is outside the range of lossless conversion. "
+      "Precision may have been lost, beginning at location %td.",
+      (ptrdiff_t) loc
+    );
+  }
+
+  return out;
+}
+
+[[cpp11::register]]
+cpp11::writable::doubles
+duration_as_double_cpp(cpp11::list_of<cpp11::integers> fields,
+                       const cpp11::integers& precision_int) {
+  using namespace rclock;
+
+  cpp11::integers ticks = duration::get_ticks(fields);
+  cpp11::integers ticks_of_day = duration::get_ticks_of_day(fields);
+  cpp11::integers ticks_of_second = duration::get_ticks_of_second(fields);
+
+  duration::years dy{ticks};
+  duration::quarters dq{ticks};
+  duration::months dm{ticks};
+  duration::weeks dw{ticks};
+  duration::days dd{ticks};
+  duration::hours dh{ticks, ticks_of_day};
+  duration::minutes dmin{ticks, ticks_of_day};
+  duration::seconds ds{ticks, ticks_of_day};
+  duration::milliseconds dmilli{ticks, ticks_of_day, ticks_of_second};
+  duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
+  duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
+
+  switch (parse_precision(precision_int)) {
+  case precision::year: return duration_as_double_impl(dy);
+  case precision::quarter: return duration_as_double_impl(dq);
+  case precision::month: return duration_as_double_impl(dm);
+  case precision::week: return duration_as_double_impl(dw);
+  case precision::day: return duration_as_double_impl(dd);
+  case precision::hour: return duration_as_double_impl(dh);
+  case precision::minute: return duration_as_double_impl(dmin);
+  case precision::second: return duration_as_double_impl(ds);
+  case precision::millisecond: return duration_as_double_impl(dmilli);
+  case precision::microsecond: return duration_as_double_impl(dmicro);
+  case precision::nanosecond: return duration_as_double_impl(dnano);
+  }
+
+  never_reached("duration_as_double_cpp");
+}

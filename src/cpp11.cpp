@@ -116,6 +116,20 @@ extern "C" SEXP _clock_duration_unary_minus_cpp(SEXP fields, SEXP precision_int)
     return cpp11::as_sexp(duration_unary_minus_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int)));
   END_CPP11
 }
+// duration.cpp
+cpp11::writable::integers duration_as_integer_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int);
+extern "C" SEXP _clock_duration_as_integer_cpp(SEXP fields, SEXP precision_int) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(duration_as_integer_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int)));
+  END_CPP11
+}
+// duration.cpp
+cpp11::writable::doubles duration_as_double_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int);
+extern "C" SEXP _clock_duration_as_double_cpp(SEXP fields, SEXP precision_int) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(duration_as_double_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int)));
+  END_CPP11
+}
 // enums.cpp
 cpp11::writable::strings precision_to_string(const cpp11::integers& precision_int);
 extern "C" SEXP _clock_precision_to_string(SEXP precision_int) {
@@ -773,6 +787,8 @@ extern SEXP _clock_collect_iso_year_week_day_fields(SEXP, SEXP);
 extern SEXP _clock_collect_year_month_day_fields(SEXP, SEXP);
 extern SEXP _clock_collect_year_month_weekday_fields(SEXP, SEXP);
 extern SEXP _clock_collect_year_quarter_day_fields(SEXP, SEXP, SEXP);
+extern SEXP _clock_duration_as_double_cpp(SEXP, SEXP);
+extern SEXP _clock_duration_as_integer_cpp(SEXP, SEXP);
 extern SEXP _clock_duration_cast_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_ceiling_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_duration_floor_cpp(SEXP, SEXP, SEXP, SEXP);
@@ -881,6 +897,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_collect_year_month_day_fields",                   (DL_FUNC) &_clock_collect_year_month_day_fields,                    2},
     {"_clock_collect_year_month_weekday_fields",               (DL_FUNC) &_clock_collect_year_month_weekday_fields,                2},
     {"_clock_collect_year_quarter_day_fields",                 (DL_FUNC) &_clock_collect_year_quarter_day_fields,                  3},
+    {"_clock_duration_as_double_cpp",                          (DL_FUNC) &_clock_duration_as_double_cpp,                           2},
+    {"_clock_duration_as_integer_cpp",                         (DL_FUNC) &_clock_duration_as_integer_cpp,                          2},
     {"_clock_duration_cast_cpp",                               (DL_FUNC) &_clock_duration_cast_cpp,                                3},
     {"_clock_duration_ceiling_cpp",                            (DL_FUNC) &_clock_duration_ceiling_cpp,                             4},
     {"_clock_duration_floor_cpp",                              (DL_FUNC) &_clock_duration_floor_cpp,                               4},
