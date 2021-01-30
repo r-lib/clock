@@ -297,14 +297,14 @@ as_naive_time.clock_duration <- function(x) {
 }
 
 #' @export
-as.integer.clock_duration <- function(x) {
+as.integer.clock_duration <- function(x, ...) {
   out <- duration_as_integer_cpp(x, duration_precision(x))
   names(out) <- names(x)
   out
 }
 
 #' @export
-as.double.clock_duration <- function(x) {
+as.double.clock_duration <- function(x, ...) {
   out <- duration_as_double_cpp(x, duration_precision(x))
   names(out) <- names(x)
   out
