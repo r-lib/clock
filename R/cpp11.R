@@ -64,6 +64,14 @@ duration_unary_minus_cpp <- function(fields, precision_int) {
   .Call("_clock_duration_unary_minus_cpp", fields, precision_int, PACKAGE = "clock")
 }
 
+duration_as_integer_cpp <- function(fields, precision_int) {
+  .Call("_clock_duration_as_integer_cpp", fields, precision_int, PACKAGE = "clock")
+}
+
+duration_as_double_cpp <- function(fields, precision_int) {
+  .Call("_clock_duration_as_double_cpp", fields, precision_int, PACKAGE = "clock")
+}
+
 precision_to_string <- function(precision_int) {
   .Call("_clock_precision_to_string", precision_int, PACKAGE = "clock")
 }
