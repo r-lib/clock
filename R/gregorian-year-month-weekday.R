@@ -568,26 +568,6 @@ set_field_year_month_weekday_last <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-calendar_set_component.clock_year_month_weekday <- function(x, value, component, ...) {
-  switch(
-    component,
-    year = set_year(x, value, ...),
-    month = set_month(x, value, ...),
-    day = set_day(x, value, ...),
-    index = set_index(x, value, ...),
-    hour = set_hour(x, value, ...),
-    minute = set_minute(x, value, ...),
-    second = set_second(x, value, ...),
-    millisecond = set_millisecond(x, value, ...),
-    microsecond = set_microsecond(x, value, ...),
-    nanosecond = set_nanosecond(x, value, ...),
-    abort("Internal error: Unknown component name.")
-  )
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
 calendar_check_component_range.clock_year_month_weekday <- function(x, value, component, value_arg) {
   year_month_weekday_check_range_cpp(value, component, value_arg)
 }

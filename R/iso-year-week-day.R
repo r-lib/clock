@@ -490,25 +490,6 @@ set_field_iso_year_week_day_last <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-calendar_set_component.clock_iso_year_week_day <- function(x, value, component, ...) {
-  switch(
-    component,
-    year = set_year(x, value, ...),
-    week = set_week(x, value, ...),
-    day = set_day(x, value, ...),
-    hour = set_hour(x, value, ...),
-    minute = set_minute(x, value, ...),
-    second = set_second(x, value, ...),
-    millisecond = set_millisecond(x, value, ...),
-    microsecond = set_microsecond(x, value, ...),
-    nanosecond = set_nanosecond(x, value, ...),
-    abort("Internal error: Unknown component name.")
-  )
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
 calendar_check_component_range.clock_iso_year_week_day <- function(x, value, component, value_arg) {
   iso_year_week_day_check_range_cpp(value, component, value_arg)
 }
