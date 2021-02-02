@@ -11,7 +11,7 @@ clock_labels(
   month_abbrev = month,
   weekday,
   weekday_abbrev = weekday,
-  am_pm = c("AM", "PM")
+  am_pm
 )
 
 clock_labels_lookup(language)

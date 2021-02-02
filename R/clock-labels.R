@@ -36,7 +36,7 @@ clock_labels <- function(month,
                          month_abbrev = month,
                          weekday,
                          weekday_abbrev = weekday,
-                         am_pm = c("AM", "PM")) {
+                         am_pm) {
   if (!is_character(month, n = 12L)) {
     abort("`month` must be a character vector of length 12.")
   }
