@@ -5,16 +5,16 @@
 \alias{default_clock_locale}
 \title{Create a clock locale}
 \usage{
-clock_locale(mapping = "en", decimal_mark = ".")
+clock_locale(labels = "en", decimal_mark = ".")
 
 default_clock_locale()
 }
 \arguments{
-\item{mapping}{\verb{[clock_mapping / character(1)]}
+\item{labels}{\verb{[clock_labels / character(1)]}
 
 Character representations of localized weekday names, month names, and
 AM/PM names. Either the language code as string (passed on to
-\code{\link[=clock_mapping_lookup]{clock_mapping_lookup()}}), or an object created by \code{\link[=clock_mapping]{clock_mapping()}}.}
+\code{\link[=clock_labels_lookup]{clock_labels_lookup()}}), or an object created by \code{\link[=clock_labels]{clock_labels()}}.}
 
 \item{decimal_mark}{\verb{[character(1)]}
 
@@ -31,6 +31,6 @@ will be used as the default instead.
 }
 \examples{
 clock_locale()
-clock_locale(mapping = "fr")
+clock_locale(labels = "fr")
 default_clock_locale()
 }

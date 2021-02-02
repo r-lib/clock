@@ -1,18 +1,18 @@
-#' Create or retrieve date related mappings
+#' Create or retrieve date related labels
 #'
 #' @description
 #' When parsing and formatting dates, you often need to know how weekdays of
 #' the week and months are represented as text. These functions allow you
-#' to either create your own mapping, or look one up from a standard set of
-#' language specific mappings. The standard list is derived from ICU
+#' to either create your own labels, or look them up from a standard set of
+#' language specific labels. The standard list is derived from ICU
 #' (<https://unicode-org.github.io/icu/>) via the stringi package.
 #'
-#' - `clock_mapping_lookup()` looks up a set of mapping information from a
+#' - `clock_labels_lookup()` looks up a set of labels from a
 #'   given language code.
 #'
-#' - `clock_mapping_languages()` lists the language codes that are accepted.
+#' - `clock_labels_languages()` lists the language codes that are accepted.
 #'
-#' - `clock_mapping()` lets you create your own mapping. Use this if the
+#' - `clock_labels()` lets you create your own set of labels. Use this if the
 #'   currently supported languages don't meet your needs.
 #'
 #' @param mon,mon_ab `[character(12)]`
@@ -29,14 +29,14 @@
 #'
 #' @export
 #' @examples
-#' clock_mapping_lookup("en")
-#' clock_mapping_lookup("ko")
-#' clock_mapping_lookup("fr")
-clock_mapping <- function(mon,
-                          mon_ab = mon,
-                          day,
-                          day_ab = day,
-                          am_pm = c("AM", "PM")) {
+#' clock_labels_lookup("en")
+#' clock_labels_lookup("ko")
+#' clock_labels_lookup("fr")
+clock_labels <- function(mon,
+                         mon_ab = mon,
+                         day,
+                         day_ab = day,
+                         am_pm = c("AM", "PM")) {
   if (!is_character(mon, n = 12L)) {
     abort("`mon` must be a character vector of length 12.")
   }
@@ -61,40 +61,40 @@ clock_mapping <- function(mon,
       day_ab = enc2utf8(day_ab),
       am_pm = enc2utf8(am_pm)
     ),
-    class = "clock_mapping"
+    class = "clock_labels"
   )
 }
 
-#' @rdname clock_mapping
+#' @rdname clock_labels
 #' @param language `[character(1)]`
 #'
 #'   A BCP 47 locale, generally constructed from a two or three
-#'   digit language code. See `clock_mapping_languages()` for a complete list of
+#'   digit language code. See `clock_labels_languages()` for a complete list of
 #'   available locales.
 #' @export
-clock_mapping_lookup <- function(language) {
+clock_labels_lookup <- function(language) {
   if (!is_character(language, n = 1L)) {
     abort("`language` must be a character vector of length 1.")
   }
 
-  mapping <- clock_mappings[[language]]
+  labels <- clock_labels_list[[language]]
 
-  if (is.null(mapping)) {
+  if (is.null(labels)) {
     abort(paste0("Unknown language '", language, "'."))
   }
 
-  mapping
+  labels
 }
 
 #' @export
-#' @rdname clock_mapping
-clock_mapping_languages <- function() {
-  names(clock_mappings)
+#' @rdname clock_labels
+clock_labels_languages <- function() {
+  names(clock_labels_list)
 }
 
 #' @export
-print.clock_mapping <- function(x, ...) {
-  cat("<clock_mapping>\n")
+print.clock_labels <- function(x, ...) {
+  cat("<clock_labels>\n")
 
   if (identical(x$day, x$day_ab)) {
     day <- paste0(x$day, collapse = ", ")
@@ -115,8 +115,8 @@ print.clock_mapping <- function(x, ...) {
   cat_wrap("AM/PM:  ", am_pm)
 }
 
-is_clock_mapping <- function(x) {
-  inherits(x, "clock_mapping")
+is_clock_labels <- function(x) {
+  inherits(x, "clock_labels")
 }
 
 cat_wrap <- function(header, body) {

@@ -41,7 +41,7 @@ format.clock_time_point <- function(x,
     format <- time_point_precision_format(precision)
   }
 
-  mapping <- locale$mapping
+  labels <- locale$labels
   decimal_mark <- locale$decimal_mark
 
   out <- format_time_point_cpp(
@@ -49,11 +49,11 @@ format.clock_time_point <- function(x,
     clock = clock,
     format = format,
     precision_int = precision,
-    mon = mapping$mon,
-    mon_ab = mapping$mon_ab,
-    day = mapping$day,
-    day_ab = mapping$day_ab,
-    am_pm = mapping$am_pm,
+    mon = labels$mon,
+    mon_ab = labels$mon_ab,
+    day = labels$day,
+    day_ab = labels$day_ab,
+    am_pm = labels$am_pm,
     decimal_mark = decimal_mark
   )
 
@@ -116,7 +116,7 @@ parse_time_point <- function(x,
     abort("`locale` must be a 'clock_locale' object.")
   }
 
-  mapping <- locale$mapping
+  labels <- locale$labels
   mark <- locale$decimal_mark
 
   parse_time_point_cpp(
@@ -124,11 +124,11 @@ parse_time_point <- function(x,
     format,
     precision,
     clock,
-    mapping$mon,
-    mapping$mon_ab,
-    mapping$day,
-    mapping$day_ab,
-    mapping$am_pm,
+    labels$mon,
+    labels$mon_ab,
+    labels$day,
+    labels$day_ab,
+    labels$am_pm,
     mark
   )
 }

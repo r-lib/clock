@@ -258,18 +258,18 @@ parse_year_month_day <- function(x,
     abort("`locale` must be a 'clock_locale' object.")
   }
 
-  mapping <- locale$mapping
+  labels <- locale$labels
   mark <- locale$decimal_mark
 
   fields <- parse_year_month_day_cpp(
     x,
     format,
     precision,
-    mapping$mon,
-    mapping$mon_ab,
-    mapping$day,
-    mapping$day_ab,
-    mapping$am_pm,
+    labels$mon,
+    labels$mon_ab,
+    labels$day,
+    labels$day_ab,
+    labels$am_pm,
     mark
   )
 

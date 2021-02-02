@@ -116,7 +116,7 @@ reference:
 - title: Locale
   contents:
   - clock_locale
-  - clock_mapping
+  - clock_labels
 
 - title: Developer
   contents:

@@ -7,11 +7,11 @@
 #' `clock.default_clock_locale` global option to your preferred locale, and that
 #' will be used as the default instead.
 #'
-#' @param mapping `[clock_mapping / character(1)]`
+#' @param labels `[clock_labels / character(1)]`
 #'
 #'   Character representations of localized weekday names, month names, and
 #'   AM/PM names. Either the language code as string (passed on to
-#'   [clock_mapping_lookup()]), or an object created by [clock_mapping()].
+#'   [clock_labels_lookup()]), or an object created by [clock_labels()].
 #'
 #' @param decimal_mark `[character(1)]`
 #'
@@ -21,14 +21,14 @@
 #' @export
 #' @examples
 #' clock_locale()
-#' clock_locale(mapping = "fr")
+#' clock_locale(labels = "fr")
 #' default_clock_locale()
-clock_locale <- function(mapping = "en", decimal_mark = ".") {
-  if (is_character(mapping)) {
-    mapping <- clock_mapping_lookup(mapping)
+clock_locale <- function(labels = "en", decimal_mark = ".") {
+  if (is_character(labels)) {
+    labels <- clock_labels_lookup(labels)
   }
-  if (!is_clock_mapping(mapping)) {
-    abort("`mapping` must be a 'clock_mapping' object.")
+  if (!is_clock_labels(labels)) {
+    abort("`labels` must be a 'clock_labels' object.")
   }
 
   ok <- identical(decimal_mark, ".") || identical(decimal_mark, ",")
@@ -36,7 +36,7 @@ clock_locale <- function(mapping = "en", decimal_mark = ".") {
     abort("`decimal_mark` must be either ',' or '.'.")
   }
 
-  new_clock_locale(mapping, decimal_mark)
+  new_clock_locale(labels, decimal_mark)
 }
 
 #' @rdname clock_locale
@@ -55,10 +55,10 @@ default_clock_locale <- function() {
   loc
 }
 
-new_clock_locale <- function(mapping, decimal_mark) {
+new_clock_locale <- function(labels, decimal_mark) {
   structure(
     list(
-      mapping = mapping,
+      labels = labels,
       decimal_mark = decimal_mark
     ),
     class = "clock_locale"
@@ -69,7 +69,7 @@ new_clock_locale <- function(mapping, decimal_mark) {
 print.clock_locale <- function (x, ...) {
   cat("<clock_locale>\n")
   cat("Decimal Mark: ", x$decimal_mark, "\n", sep = "")
-  print(x$mapping)
+  print(x$labels)
 }
 
 is_clock_locale <- function(x) {
