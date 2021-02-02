@@ -574,10 +574,6 @@ year_quarter_day_component_to_field <- function(component) {
   )
 }
 
-#' @export
-calendar_precision_to_component.clock_year_quarter_day <- function(x, precision) {
-  year_quarter_day_precision_to_component(precision)
-}
 year_quarter_day_precision_to_component <- function(precision) {
   precision <- precision_to_string(precision)
 
