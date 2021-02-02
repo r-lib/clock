@@ -55,6 +55,11 @@ as_iso_year_week_day.Date <- function(x) {
   as_iso_year_week_day(as_sys_time(x))
 }
 
+#' @export
+as_weekday.Date <- function(x) {
+  as_weekday(as_sys_time(x))
+}
+
 # ------------------------------------------------------------------------------
 
 # Not using `check_dots_empty()` because that might

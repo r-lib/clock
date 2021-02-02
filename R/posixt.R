@@ -68,6 +68,13 @@ as_iso_year_week_day.POSIXt <- function(x) {
   as_iso_year_week_day(x)
 }
 
+#' @export
+as_weekday.POSIXt <- function(x) {
+  # Assumes zoned -> naive is what the user expects
+  x <- as_naive_time(x)
+  as_weekday(x)
+}
+
 # ------------------------------------------------------------------------------
 
 # Not using `check_dots_empty()` because that might
