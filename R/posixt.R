@@ -515,3 +515,103 @@ add_posixt_duration_sys_time_point <- function(x, n, add_fn, ...) {
   x <- add_fn(x, n)
   as.POSIXct(x, tz = zone)
 }
+
+# ------------------------------------------------------------------------------
+
+#' Group date-time components
+#'
+#' @description
+#' `date_group()` groups by a single component of a date-time, such as month
+#' of the year, day of the month, or hour of the day.
+#'
+#' If you need to group by more complex components, like ISO weeks, or quarters,
+#' convert to a calendar type that contains the component you are interested
+#' in grouping by.
+#'
+#' @inheritParams date_group
+#' @inheritParams invalid_resolve
+#' @inheritParams as-zoned-time-naive-time
+#'
+#' @param x `[POSIXct / POSIXlt]`
+#'
+#'   A date-time vector.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"year"`
+#'
+#'   - `"month"`
+#'
+#'   - `"day"`
+#'
+#'   - `"hour"`
+#'
+#'   - `"minute"`
+#'
+#'   - `"second"`
+#'
+#' @return `x`, grouped at `precision`.
+#'
+#' @name posixt-group
+#'
+#' @export
+#' @examples
+#' x <- as.POSIXct("2019-01-01", "America/New_York")
+#' x <- add_days(x, -3:5)
+#'
+#' # Group by 2 days of the current month.
+#' # Note that this resets at the beginning of the month, creating day groups
+#' # of [29, 30] [31] [01, 02] [03, 04].
+#' date_group(x, "day", n = 2)
+#'
+#' # Group by month
+#' date_group(x, "month")
+#'
+#' # Group by hour of the day
+#' y <- as.POSIXct("2019-12-30", "America/New_York")
+#' y <- add_hours(y, 0:12)
+#' y
+#'
+#' date_group(y, "hour", n = 3)
+date_group.POSIXt <- function(x,
+                              precision,
+                              ...,
+                              n = 1L,
+                              invalid = "error",
+                              nonexistent = "error",
+                              ambiguous = "error") {
+  zone <- zoned_zone(x)
+
+  x <- as_year_month_day(x)
+
+  x <- calendar_group(x, precision, ..., n = n)
+
+  precision <- validate_precision(precision)
+
+  if (precision <= PRECISION_YEAR) {
+    x <- set_month(x, 1L)
+  }
+  if (precision <= PRECISION_MONTH) {
+    x <- set_day(x, 1L)
+  }
+  if (precision <= PRECISION_DAY) {
+    x <- set_hour(x, 0L)
+  }
+  if (precision <= PRECISION_HOUR) {
+    x <- set_minute(x, 0L)
+  }
+  if (precision <= PRECISION_MINUTE) {
+    x <- set_second(x, 0L)
+  }
+
+  as.POSIXct(
+    x = x,
+    tz = zone,
+    invalid = invalid,
+    nonexistent = nonexistent,
+    ambiguous = ambiguous
+  )
+}
+

@@ -332,3 +332,97 @@ add_date_duration_time_point <- function(x, n, add_fn, ...) {
   x <- add_fn(x, n)
   as.Date(x)
 }
+
+# ------------------------------------------------------------------------------
+
+#' Group date and date-time components
+#'
+#' @description
+#' `date_group()` groups by a single component of a date-time, such as month
+#' of the year, or day of the month.
+#'
+#' There are separate help pages for grouping dates and date-times:
+#'
+#' - [dates (Date)][date-group]
+#'
+#' - [date-times (POSIXct/POSIXlt)][posixt-group]
+#'
+#' @inheritParams calendar_group
+#'
+#' @param x `[Date / POSIXct / POSIXlt]`
+#'
+#'   A date or date-time vector.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   A precision. Allowed precisions are dependent on the input used.
+#'
+#' @return `x`, grouped at `precision`.
+#'
+#' @export
+#' @examples
+#' # See type specific documentation for more examples
+#' date_group(as.Date("2019-01-01") + 0:5, "day", n = 2)
+date_group <- function(x, precision, ..., n = 1L) {
+  UseMethod("date_group")
+}
+
+#' Group date components
+#'
+#' @description
+#' `date_group()` groups by a single component of a Date, such as month
+#' of the year, or day of the month.
+#'
+#' If you need to group by more complex components, like ISO weeks, or quarters,
+#' convert to a calendar type that contains the component you are interested
+#' in grouping by.
+#'
+#' @inheritParams date_group
+#' @inheritParams invalid_resolve
+#'
+#' @param x `[Date]`
+#'
+#'   A date vector.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"year"`
+#'
+#'   - `"month"`
+#'
+#'   - `"day"`
+#'
+#' @return `x`, grouped at `precision`.
+#'
+#' @name date-group
+#'
+#' @export
+#' @examples
+#' x <- as.Date("2019-01-01") + -3:5
+#' x
+#'
+#' # Group by 2 days of the current month.
+#' # Note that this resets at the beginning of the month, creating day groups
+#' # of [29, 30] [31] [01, 02] [03, 04].
+#' date_group(x, "day", n = 2)
+#'
+#' # Group by month
+#' date_group(x, "month")
+date_group.Date <- function(x, precision, ..., n = 1L, invalid = "error") {
+  x <- as_year_month_day(x)
+
+  x <- calendar_group(x, precision, ..., n = n)
+
+  precision <- validate_precision(precision)
+
+  if (precision <= PRECISION_YEAR) {
+    x <- set_month(x, 1L)
+  }
+  if (precision <= PRECISION_MONTH) {
+    x <- set_day(x, 1L)
+  }
+
+  as.Date(x, invalid = invalid)
+}
