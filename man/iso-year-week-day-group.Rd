@@ -10,7 +10,7 @@
 \arguments{
 \item{x}{\verb{[clock_iso_year_week_day]}
 
-A iso-year-week-day to group.}
+A iso-year-week-day vector.}
 
 \item{precision}{\verb{[character(1)]}
 

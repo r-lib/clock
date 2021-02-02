@@ -280,6 +280,126 @@ precision_subsecond_factor <- function(narrow_precision, wide_precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Widen a calendar to a more precise precision
+#'
+#' @description
+#' `calendar_widen()` widens `x` to the specified `precision`. It does so
+#' by setting new components to their smallest value.
+#'
+#' Each calendar has its own help page describing the precisions that you
+#' can widen to:
+#'
+#' - [year-month-day][year-month-day-widen]
+#'
+#' - [year-month-weekday][year-month-weekday-widen]
+#'
+#' - [iso-year-week-day][iso-year-week-day-widen]
+#'
+#' - [year-quarter-day][year-quarter-day-widen]
+#'
+#' @details
+#' A subsecond precision `x` cannot be widened. You cannot widen from, say,
+#' `"millisecond"` to `"nanosecond"` precision. clock operates under the
+#' philosophy that once you have set the subsecond precision of a calendar,
+#' it is "locked in" at that precision. If you expected this to multiply
+#' the milliseconds by 1e6 to get to nanosecond precision, you probably
+#' want to convert to a time point first, and use [time_point_cast()].
+#'
+#' Generally, clock treats calendars at a specific precision as a _range_ of
+#' values. For example, a month precision year-month-day is treated as a range
+#' over `[yyyy-mm-01, yyyy-mm-last]`, with no assumption about the day of the
+#' month. However, occasionally it is useful to quickly widen a calendar,
+#' assuming that you want the beginning of this range to be used for each
+#' component. This is where `calendar_widen()` can come in handy.
+#'
+#' @inheritParams calendar_group
+#'
+#' @return `x` widened to the supplied `precision`.
+#'
+#' @export
+#' @examples
+#' # Month precision
+#' x <- year_month_day(2019, 1)
+#' x
+#'
+#' # Widen to day precision
+#' calendar_widen(x, "day")
+#'
+#' # Or second precision
+#' calendar_widen(x, "second")
+calendar_widen <- function(x, precision) {
+  precision <- validate_precision(precision)
+
+  if (!calendar_is_valid_precision(x, precision)) {
+    message <- paste0(
+      "`precision` must be a valid precision for a '", calendar_name(x), "'."
+    )
+    abort(message)
+  }
+
+  x_precision <- calendar_precision(x)
+
+  if (x_precision > precision) {
+    precision <- precision_to_string(precision)
+    x_precision <- precision_to_string(x_precision)
+
+    message <- paste0(
+      "Can't widen to a precision (", precision, ") ",
+      "that is narrower than `x` (", x_precision, ")."
+    )
+    abort(message)
+  }
+
+  if (x_precision > PRECISION_SECOND) {
+    # Allowing Millisecond -> Nanosecond wouldn't be consistent with us
+    # disallowing `set_nanosecond(<calendar<millisecond>>)`, and is ambiguous.
+    # We even abort this on Millisecond -> Millisecond for consistency, since
+    # you should never call this function on a subsecond input.
+    precision <- precision_to_string(precision)
+    x_precision <- precision_to_string(x_precision)
+
+    message <- paste0(
+      "Can't widen a subsecond precision `x` (", x_precision, ") ",
+      "to another subsecond precision (", precision, ")."
+    )
+    abort(message)
+  }
+
+  UseMethod("calendar_widen")
+}
+
+#' @export
+calendar_widen.clock_calendar <- function(x, precision) {
+  stop_clock_unsupported_calendar_op("calendar_widen")
+}
+
+calendar_widen_time <- function(x, x_precision, precision) {
+  if (precision >= PRECISION_HOUR && x_precision < PRECISION_HOUR) {
+    x <- set_hour(x, 0L)
+  }
+  if (precision >= PRECISION_MINUTE && x_precision < PRECISION_MINUTE) {
+    x <- set_minute(x, 0L)
+  }
+  if (precision >= PRECISION_SECOND && x_precision < PRECISION_SECOND) {
+    x <- set_second(x, 0L)
+  }
+
+  # `x` is required to start at `<= PRECISION_SECOND`, so these are all safe
+  if (precision == PRECISION_MILLISECOND) {
+    x <- set_millisecond(x, 0L)
+  }
+  if (precision == PRECISION_MICROSECOND) {
+    x <- set_microsecond(x, 0L)
+  }
+  if (precision == PRECISION_NANOSECOND) {
+    x <- set_nanosecond(x, 0L)
+  }
+
+  x
+}
+
+# ------------------------------------------------------------------------------
+
 # Internal generic
 calendar_get_component <- function(x, component) {
   if (!calendar_is_valid_component(x, component)) {

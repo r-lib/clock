@@ -927,7 +927,7 @@ as_naive_time.clock_year_quarter_day <- function(x) {
 #'
 #' @param x `[clock_year_quarter_day]`
 #'
-#'   A year-quarter-day to group.
+#'   A year-quarter-day vector.
 #'
 #' @param precision `[character(1)]`
 #'
@@ -1010,6 +1010,47 @@ calendar_narrow.clock_year_quarter_day <- function(x, precision) {
   }
 
   new_year_quarter_day_from_fields(out_fields, precision, start, names = names(x))
+}
+
+# ------------------------------------------------------------------------------
+
+#' Widen: year-quarter-day
+#'
+#' This is a year-quarter-day method for the [calendar_widen()] generic. It
+#' widens a year-quarter-day vector to the specified `precision`.
+#'
+#' @inheritParams year-quarter-day-group
+#'
+#' @return `x` widened to the supplied `precision`.
+#'
+#' @name year-quarter-day-widen
+#'
+#' @export
+#' @examples
+#' # Quarter precision
+#' x <- year_quarter_day(2019, 1)
+#' x
+#'
+#' # Widen to day precision
+#' calendar_widen(x, "day")
+#'
+#' # Or second precision
+#' sec <- calendar_widen(x, "second")
+#' sec
+calendar_widen.clock_year_quarter_day <- function(x, precision) {
+  x_precision <- calendar_precision(x)
+  precision <- validate_precision(precision)
+
+  if (precision >= PRECISION_QUARTER && x_precision < PRECISION_QUARTER) {
+    x <- set_quarter(x, 1L)
+  }
+  if (precision >= PRECISION_DAY && x_precision < PRECISION_DAY) {
+    x <- set_day(x, 1L)
+  }
+
+  x <- calendar_widen_time(x, x_precision, precision)
+
+  x
 }
 
 # ------------------------------------------------------------------------------

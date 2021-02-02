@@ -10,7 +10,7 @@
 \arguments{
 \item{x}{\verb{[clock_year_quarter_day]}
 
-A year-quarter-day to group.}
+A year-quarter-day vector.}
 
 \item{precision}{\verb{[character(1)]}
 

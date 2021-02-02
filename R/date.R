@@ -412,17 +412,7 @@ date_group <- function(x, precision, ..., n = 1L) {
 #' date_group(x, "month")
 date_group.Date <- function(x, precision, ..., n = 1L, invalid = "error") {
   x <- as_year_month_day(x)
-
   x <- calendar_group(x, precision, ..., n = n)
-
-  precision <- validate_precision(precision)
-
-  if (precision <= PRECISION_YEAR) {
-    x <- set_month(x, 1L)
-  }
-  if (precision <= PRECISION_MONTH) {
-    x <- set_day(x, 1L)
-  }
-
+  x <- calendar_widen(x, "day")
   as.Date(x, invalid = invalid)
 }

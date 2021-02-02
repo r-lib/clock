@@ -583,35 +583,9 @@ date_group.POSIXt <- function(x,
                               nonexistent = "error",
                               ambiguous = "error") {
   zone <- zoned_zone(x)
-
   x <- as_year_month_day(x)
-
   x <- calendar_group(x, precision, ..., n = n)
-
-  precision <- validate_precision(precision)
-
-  if (precision <= PRECISION_YEAR) {
-    x <- set_month(x, 1L)
-  }
-  if (precision <= PRECISION_MONTH) {
-    x <- set_day(x, 1L)
-  }
-  if (precision <= PRECISION_DAY) {
-    x <- set_hour(x, 0L)
-  }
-  if (precision <= PRECISION_HOUR) {
-    x <- set_minute(x, 0L)
-  }
-  if (precision <= PRECISION_MINUTE) {
-    x <- set_second(x, 0L)
-  }
-
-  as.POSIXct(
-    x = x,
-    tz = zone,
-    invalid = invalid,
-    nonexistent = nonexistent,
-    ambiguous = ambiguous
-  )
+  x <- calendar_widen(x, "second")
+  as.POSIXct(x, zone, invalid = invalid, nonexistent = nonexistent, ambiguous = ambiguous)
 }
 

@@ -929,7 +929,7 @@ calendar_leap_year.clock_year_month_weekday <- function(x) {
 #'
 #' @param x `[clock_year_month_weekday]`
 #'
-#'   A year-month-weekday to group.
+#'   A year-month-weekday vector.
 #'
 #' @param precision `[character(1)]`
 #'
@@ -1012,4 +1012,66 @@ calendar_narrow.clock_year_month_weekday <- function(x, precision) {
   }
 
   new_year_month_weekday_from_fields(out_fields, precision, names = names(x))
+}
+
+# ------------------------------------------------------------------------------
+
+#' Widen: year-month-weekday
+#'
+#' This is a year-month-weekday method for the [calendar_widen()] generic. It
+#' widens a year-month-weekday vector to the specified `precision`.
+#'
+#' @details
+#' Widening a month precision year-month-weekday to day precision will set
+#' the day and the index to `1`. This sets the weekday components to the
+#' first Sunday of the month.
+#'
+#' @inheritParams year-month-weekday-group
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"year"`
+#'   - `"month"`
+#'   - `"day"`
+#'   - `"hour"`
+#'   - `"minute"`
+#'   - `"second"`
+#'   - `"millisecond"`
+#'   - `"microsecond"`
+#'   - `"nanosecond"`
+#'
+#' @return `x` widened to the supplied `precision`.
+#'
+#' @name year-month-weekday-widen
+#'
+#' @export
+#' @examples
+#' # Month precision
+#' x <- year_month_weekday(2019, 1)
+#' x
+#'
+#' # Widen to day precision
+#' # Note that this sets both the day and index to 1,
+#' # i.e. the first Sunday of the month.
+#' calendar_widen(x, "day")
+#'
+#' # Or second precision
+#' sec <- calendar_widen(x, "second")
+#' sec
+calendar_widen.clock_year_month_weekday <- function(x, precision) {
+  x_precision <- calendar_precision(x)
+  precision <- validate_precision(precision)
+
+  if (precision >= PRECISION_MONTH && x_precision < PRECISION_MONTH) {
+    x <- set_month(x, 1L)
+  }
+  if (precision >= PRECISION_DAY && x_precision < PRECISION_DAY) {
+    x <- set_day(x, 1L, index = 1L)
+  }
+
+  x <- calendar_widen_time(x, x_precision, precision)
+
+  x
 }

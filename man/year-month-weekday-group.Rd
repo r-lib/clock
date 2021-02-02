@@ -10,7 +10,7 @@
 \arguments{
 \item{x}{\verb{[clock_year_month_weekday]}
 
-A year-month-weekday to group.}
+A year-month-weekday vector.}
 
 \item{precision}{\verb{[character(1)]}
 
