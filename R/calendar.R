@@ -464,13 +464,6 @@ calendar_name <- function(x) {
 # ------------------------------------------------------------------------------
 
 # Internal generic
-calendar_precision_to_field <- function(x, precision) {
-  UseMethod("calendar_precision_to_field")
-}
-
-# ------------------------------------------------------------------------------
-
-# Internal generic
 calendar_is_valid_precision <- function(x, precision) {
   UseMethod("calendar_is_valid_precision")
 }

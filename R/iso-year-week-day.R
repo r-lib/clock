@@ -533,10 +533,6 @@ iso_year_week_day_precision_to_component <- function(precision) {
   )
 }
 
-#' @export
-calendar_precision_to_field.clock_iso_year_week_day <- function(x, precision) {
-  iso_year_week_day_precision_to_field(precision)
-}
 iso_year_week_day_precision_to_field <- function(precision) {
   precision <- precision_to_string(precision)
 
