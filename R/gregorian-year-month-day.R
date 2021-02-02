@@ -348,19 +348,6 @@ year_month_day_is_valid_precision <- function(precision) {
 # ------------------------------------------------------------------------------
 
 #' @export
-calendar_is_valid_component.clock_year_month_day <- function(x, component) {
-  year_month_day_is_valid_component(component)
-}
-year_month_day_is_valid_component <- function(component) {
-  if (!is_string(component)) {
-    return(FALSE)
-  }
-  component %in% c("year", "month", "day", calendar_standard_components())
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
 invalid_detect.clock_year_month_day <- function(x) {
   invalid_detect_year_month_day_cpp(x, calendar_precision(x))
 }

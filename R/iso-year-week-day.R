@@ -189,19 +189,6 @@ iso_year_week_day_is_valid_precision <- function(precision) {
 # ------------------------------------------------------------------------------
 
 #' @export
-calendar_is_valid_component.clock_iso_year_week_day <- function(x, component) {
-  iso_year_week_day_is_valid_component(component)
-}
-iso_year_week_day_is_valid_component <- function(component) {
-  if (!is_string(component)) {
-    return(FALSE)
-  }
-  component %in% c("year", "week", "day", calendar_standard_components())
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
 invalid_detect.clock_iso_year_week_day <- function(x) {
   invalid_detect_iso_year_week_day_cpp(x, calendar_precision(x))
 }

@@ -492,17 +492,6 @@ calendar_is_valid_precision <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
-# Internal generic
-calendar_is_valid_component <- function(x, component) {
-  UseMethod("calendar_is_valid_component")
-}
-
-calendar_standard_components <- function() {
-  c("hour", "minute", "second", "millisecond", "microsecond", "nanosecond")
-}
-
-# ------------------------------------------------------------------------------
-
 calendar_precision <- function(x) {
   attr(x, "precision", exact = TRUE)
 }

@@ -220,19 +220,6 @@ year_quarter_day_is_valid_precision <- function(precision) {
 # ------------------------------------------------------------------------------
 
 #' @export
-calendar_is_valid_component.clock_year_quarter_day <- function(x, component) {
-  year_quarter_day_is_valid_component(component)
-}
-year_quarter_day_is_valid_component <- function(component) {
-  if (!is_string(component)) {
-    return(FALSE)
-  }
-  component %in% c("year", "quarter", "day", calendar_standard_components())
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
 invalid_detect.clock_year_quarter_day <- function(x) {
   invalid_detect_year_quarter_day_cpp(x, calendar_precision(x), quarterly_start(x))
 }
