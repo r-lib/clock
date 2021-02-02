@@ -416,3 +416,35 @@ date_group.Date <- function(x, precision, ..., n = 1L, invalid = "error") {
   x <- calendar_widen(x, "day")
   as.Date(x, invalid = invalid)
 }
+
+# ------------------------------------------------------------------------------
+
+#' Is the year a leap year?
+#'
+#' `date_leap_year()` detects if the year is a leap year.
+#'
+#' @param x `[Date / POSIXct / POSIXlt]`
+#'
+#'   A date or date-time to detect leap years in.
+#'
+#' @return A logical vector the same size as `x`. Returns `TRUE` if in a leap
+#'   year, `FALSE` if not in a leap year, and `NA` if `x` is `NA`.
+#'
+#' @examples
+#' x <- as.Date("2019-01-01")
+#' x <- add_years(x, 0:5)
+#' date_leap_year(x)
+#'
+#' y <- as.POSIXct("2019-01-01", "America/New_York")
+#' y <- add_years(y, 0:5)
+#' date_leap_year(y)
+#' @export
+date_leap_year <- function(x) {
+  UseMethod("date_leap_year")
+}
+
+#' @export
+date_leap_year.Date <- function(x) {
+  x <- as_year_month_day(x)
+  calendar_leap_year(x)
+}

@@ -589,3 +589,10 @@ date_group.POSIXt <- function(x,
   as.POSIXct(x, zone, invalid = invalid, nonexistent = nonexistent, ambiguous = ambiguous)
 }
 
+# ------------------------------------------------------------------------------
+
+#' @export
+date_leap_year.POSIXt <- function(x) {
+  x <- as_year_month_day(x)
+  calendar_leap_year(x)
+}

@@ -44,3 +44,12 @@ test_that("can't group by non-year-month-day precisions", {
   x <- as.Date("2019-01-01")
   expect_snapshot_error(date_group(x, "quarter"))
 })
+
+# ------------------------------------------------------------------------------
+# date_leap_year()
+
+test_that("can detect leap years", {
+  x <- c("2019-01-01", "2020-01-01", NA)
+  x <- as.Date(x)
+  expect_identical(date_leap_year(x), c(FALSE, TRUE, NA))
+})
