@@ -364,25 +364,6 @@ get_nanosecond.clock_year_quarter_day <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-#' @export
-calendar_get_component.clock_year_quarter_day <- function(x, component) {
-  switch(
-    component,
-    year = get_year(x),
-    quarter = get_quarter(x),
-    day = get_day(x),
-    hour = get_hour(x),
-    minute = get_minute(x),
-    second = get_second(x),
-    millisecond = get_millisecond(x),
-    microsecond = get_microsecond(x),
-    nanosecond = get_nanosecond(x),
-    abort("Internal error: Unknown component name.")
-  )
-}
-
-# ------------------------------------------------------------------------------
-
 #' Setters: year-quarter-day
 #'
 #' @description
