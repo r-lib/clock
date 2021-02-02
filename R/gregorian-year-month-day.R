@@ -642,13 +642,6 @@ set_field_year_month_day_last <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-calendar_check_component_range.clock_year_month_day <- function(x, value, component, value_arg) {
-  year_month_day_check_range_cpp(value, component, value_arg)
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
 calendar_name.clock_year_month_day <- function(x) {
   "year_month_day"
 }

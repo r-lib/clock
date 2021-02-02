@@ -96,10 +96,6 @@ year_month_day_restore <- function(x, to) {
   .Call("_clock_year_month_day_restore", x, to, PACKAGE = "clock")
 }
 
-year_month_day_check_range_cpp <- function(x, component_string, arg) {
-  invisible(.Call("_clock_year_month_day_check_range_cpp", x, component_string, arg, PACKAGE = "clock"))
-}
-
 collect_year_month_day_fields <- function(fields, precision_int) {
   .Call("_clock_collect_year_month_day_fields", fields, precision_int, PACKAGE = "clock")
 }
@@ -164,10 +160,6 @@ year_month_weekday_restore <- function(x, to) {
   .Call("_clock_year_month_weekday_restore", x, to, PACKAGE = "clock")
 }
 
-year_month_weekday_check_range_cpp <- function(x, component_string, arg) {
-  invisible(.Call("_clock_year_month_weekday_check_range_cpp", x, component_string, arg, PACKAGE = "clock"))
-}
-
 collect_year_month_weekday_fields <- function(fields, precision_int) {
   .Call("_clock_collect_year_month_weekday_fields", fields, precision_int, PACKAGE = "clock")
 }
@@ -228,10 +220,6 @@ iso_year_week_day_restore <- function(x, to) {
   .Call("_clock_iso_year_week_day_restore", x, to, PACKAGE = "clock")
 }
 
-iso_year_week_day_check_range_cpp <- function(x, component_string, arg) {
-  invisible(.Call("_clock_iso_year_week_day_check_range_cpp", x, component_string, arg, PACKAGE = "clock"))
-}
-
 collect_iso_year_week_day_fields <- function(fields, precision_int) {
   .Call("_clock_collect_iso_year_week_day_fields", fields, precision_int, PACKAGE = "clock")
 }
@@ -286,10 +274,6 @@ new_year_quarter_day_from_fields <- function(fields, precision_int, start, names
 
 year_quarter_day_restore <- function(x, to) {
   .Call("_clock_year_quarter_day_restore", x, to, PACKAGE = "clock")
-}
-
-year_quarter_day_check_range_cpp <- function(x, component_string, arg) {
-  invisible(.Call("_clock_year_quarter_day_check_range_cpp", x, component_string, arg, PACKAGE = "clock"))
 }
 
 collect_year_quarter_day_fields <- function(fields, precision_int, start_int) {

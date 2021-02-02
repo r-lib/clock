@@ -61,36 +61,6 @@ year_month_weekday_restore(SEXP x, SEXP to) {
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
-void
-year_month_weekday_check_range_cpp(const cpp11::integers& x,
-                                   const cpp11::strings& component_string,
-                                   const cpp11::strings& arg) {
-  std::string x_arg_string = arg[0];
-  const char* x_arg = x_arg_string.c_str();
-
-  // Used to access the non-static method
-  rclock::weekday::y dummy(0);
-
-  switch (parse_component(component_string)) {
-  case component::year: return calendar_check_range_impl<component::year>(dummy, x, x_arg);
-  case component::month: return calendar_check_range_impl<component::month>(dummy, x, x_arg);
-  case component::day: return calendar_check_range_impl<component::day>(dummy, x, x_arg);
-  case component::index: return calendar_check_range_impl<component::index>(dummy, x, x_arg);
-  case component::hour: return calendar_check_range_impl<component::hour>(dummy, x, x_arg);
-  case component::minute: return calendar_check_range_impl<component::minute>(dummy, x, x_arg);
-  case component::second: return calendar_check_range_impl<component::second>(dummy, x, x_arg);
-  case component::millisecond: return calendar_check_range_impl<component::millisecond>(dummy, x, x_arg);
-  case component::microsecond: return calendar_check_range_impl<component::microsecond>(dummy, x, x_arg);
-  case component::nanosecond: return calendar_check_range_impl<component::nanosecond>(dummy, x, x_arg);
-  default: clock_abort("Internal error: Unknown component");
-  }
-
-  never_reached("year_month_weekday_check_range_cpp");
-}
-
-// -----------------------------------------------------------------------------
-
-[[cpp11::register]]
 cpp11::writable::list
 collect_year_month_weekday_fields(cpp11::list_of<cpp11::integers> fields,
                                   const cpp11::integers& precision_int) {

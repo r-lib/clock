@@ -549,13 +549,6 @@ set_field_year_quarter_day_last <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-calendar_check_component_range.clock_year_quarter_day <- function(x, value, component, value_arg) {
-  year_quarter_day_check_range_cpp(value, component, value_arg)
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
 calendar_name.clock_year_quarter_day <- function(x) {
   "year_quarter_day"
 }

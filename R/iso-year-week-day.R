@@ -490,13 +490,6 @@ set_field_iso_year_week_day_last <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-calendar_check_component_range.clock_iso_year_week_day <- function(x, value, component, value_arg) {
-  iso_year_week_day_check_range_cpp(value, component, value_arg)
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
 calendar_name.clock_iso_year_week_day <- function(x) {
   "iso_year_week_day"
 }

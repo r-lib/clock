@@ -457,16 +457,6 @@ calendar_widen_time <- function(x, x_precision, precision) {
 # ------------------------------------------------------------------------------
 
 # Internal generic
-calendar_check_component_range <- function(x, value, component, value_arg) {
-  if (!calendar_is_valid_component(x, component)) {
-    abort(paste0("`component` must be a valid component for a '", calendar_name(x), "'."))
-  }
-  UseMethod("calendar_check_component_range")
-}
-
-# ------------------------------------------------------------------------------
-
-# Internal generic
 calendar_name <- function(x) {
   UseMethod("calendar_name")
 }
