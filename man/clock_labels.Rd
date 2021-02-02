@@ -6,14 +6,14 @@
 \alias{clock_labels_languages}
 \title{Create or retrieve date related labels}
 \usage{
-clock_labels(mon, mon_ab = mon, day, day_ab = day, am_pm = c("AM", "PM"))
+clock_labels(month, mon_ab = month, day, day_ab = day, am_pm = c("AM", "PM"))
 
 clock_labels_lookup(language)
 
 clock_labels_languages()
 }
 \arguments{
-\item{mon, mon_ab}{\verb{[character(12)]}
+\item{month, mon_ab}{\verb{[character(12)]}
 
 Full and abbreviated month names. Starts with January.}
 

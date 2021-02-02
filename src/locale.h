@@ -26,11 +26,11 @@ fill_weekday_names(const cpp11::strings& day,
 static
 inline
 std::pair<const std::string*, const std::string*>
-fill_month_names(const cpp11::strings& mon,
+fill_month_names(const cpp11::strings& month,
                  const cpp11::strings& mon_ab,
                  std::string (&month_names)[24]) {
   for (int i = 0; i < 12; ++i) {
-    std::string string = mon[i];
+    std::string string = month[i];
     month_names[i] = string;
   }
   for (int i = 0; i < 12; ++i) {

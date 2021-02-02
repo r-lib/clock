@@ -101,7 +101,7 @@ static
 cpp11::writable::list
 parse_time_point_impl(const cpp11::strings& x,
                       const cpp11::strings& format,
-                      const cpp11::strings& mon,
+                      const cpp11::strings& month,
                       const cpp11::strings& mon_ab,
                       const cpp11::strings& day,
                       const cpp11::strings& day_ab,
@@ -126,7 +126,7 @@ parse_time_point_impl(const cpp11::strings& x,
 
   std::string month_names[24];
   const std::pair<const std::string*, const std::string*>& month_names_pair = fill_month_names(
-    mon,
+    month,
     mon_ab,
     month_names
   );
@@ -188,7 +188,7 @@ parse_time_point_cpp(const cpp11::strings& x,
                      const cpp11::strings& format,
                      const cpp11::integers& precision_int,
                      const cpp11::integers& clock_int,
-                     const cpp11::strings& mon,
+                     const cpp11::strings& month,
                      const cpp11::strings& mon_ab,
                      const cpp11::strings& day,
                      const cpp11::strings& day_ab,
@@ -199,25 +199,25 @@ parse_time_point_cpp(const cpp11::strings& x,
   switch (parse_clock_name(clock_int)) {
   case clock_name::naive: {
     switch (parse_precision(precision_int)) {
-    case precision::day: return parse_time_point_impl<duration::days, date::local_t>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
-    case precision::hour: return parse_time_point_impl<duration::hours, date::local_t>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
-    case precision::minute: return parse_time_point_impl<duration::minutes, date::local_t>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
-    case precision::second: return parse_time_point_impl<duration::seconds, date::local_t>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
-    case precision::millisecond: return parse_time_point_impl<duration::milliseconds, date::local_t>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
-    case precision::microsecond: return parse_time_point_impl<duration::microseconds, date::local_t>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
-    case precision::nanosecond: return parse_time_point_impl<duration::nanoseconds, date::local_t>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
+    case precision::day: return parse_time_point_impl<duration::days, date::local_t>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
+    case precision::hour: return parse_time_point_impl<duration::hours, date::local_t>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
+    case precision::minute: return parse_time_point_impl<duration::minutes, date::local_t>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
+    case precision::second: return parse_time_point_impl<duration::seconds, date::local_t>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
+    case precision::millisecond: return parse_time_point_impl<duration::milliseconds, date::local_t>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
+    case precision::microsecond: return parse_time_point_impl<duration::microseconds, date::local_t>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
+    case precision::nanosecond: return parse_time_point_impl<duration::nanoseconds, date::local_t>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
     default: never_reached("parse_time_point_cpp");
     }
   }
   case clock_name::sys: {
     switch (parse_precision(precision_int)) {
-    case precision::day: return parse_time_point_impl<duration::days, std::chrono::system_clock>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
-    case precision::hour: return parse_time_point_impl<duration::hours, std::chrono::system_clock>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
-    case precision::minute: return parse_time_point_impl<duration::minutes, std::chrono::system_clock>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
-    case precision::second: return parse_time_point_impl<duration::seconds, std::chrono::system_clock>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
-    case precision::millisecond: return parse_time_point_impl<duration::milliseconds, std::chrono::system_clock>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
-    case precision::microsecond: return parse_time_point_impl<duration::microseconds, std::chrono::system_clock>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
-    case precision::nanosecond: return parse_time_point_impl<duration::nanoseconds, std::chrono::system_clock>(x, format, mon, mon_ab, day, day_ab, am_pm, mark);
+    case precision::day: return parse_time_point_impl<duration::days, std::chrono::system_clock>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
+    case precision::hour: return parse_time_point_impl<duration::hours, std::chrono::system_clock>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
+    case precision::minute: return parse_time_point_impl<duration::minutes, std::chrono::system_clock>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
+    case precision::second: return parse_time_point_impl<duration::seconds, std::chrono::system_clock>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
+    case precision::millisecond: return parse_time_point_impl<duration::milliseconds, std::chrono::system_clock>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
+    case precision::microsecond: return parse_time_point_impl<duration::microseconds, std::chrono::system_clock>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
+    case precision::nanosecond: return parse_time_point_impl<duration::nanoseconds, std::chrono::system_clock>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
     default: never_reached("parse_time_point_cpp");
     }
   }

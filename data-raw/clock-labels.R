@@ -9,7 +9,7 @@ locale_info <- function(x) {
   abbr <- stri_datetime_symbols(x, context = "format", width = "abbreviated")
 
   clock_labels(
-    mon = full$Month,
+    month = full$Month,
     mon_ab = abbr$Month,
     day = full$Weekday,
     day_ab = abbr$Weekday,
