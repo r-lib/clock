@@ -12,6 +12,7 @@ reference:
   - date_group
   - date-group
   - posixt-group
+  - date_leap_year
   - get_year.Date
   - get_year.POSIXt
   - set_year.Date
