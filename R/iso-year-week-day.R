@@ -835,7 +835,7 @@ calendar_narrow.clock_iso_year_week_day <- function(x, precision) {
   precision <- validate_precision(precision)
 
   out_fields <- list()
-  x_fields <- calendar_fields(x)
+  x_fields <- unclass(x)
 
   if (precision >= PRECISION_YEAR) {
     out_fields[["year"]] <- x_fields[["year"]]

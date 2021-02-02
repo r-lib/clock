@@ -958,7 +958,7 @@ calendar_narrow.clock_year_quarter_day <- function(x, precision) {
   start <- quarterly_start(x)
 
   out_fields <- list()
-  x_fields <- calendar_fields(x)
+  x_fields <- unclass(x)
 
   if (precision >= PRECISION_YEAR) {
     out_fields[["year"]] <- x_fields[["year"]]

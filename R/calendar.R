@@ -562,16 +562,6 @@ calendar_require_all_valid <- function(x, fn) {
 
 # ------------------------------------------------------------------------------
 
-calendar_fields <- function(x) {
-  fields <- unclass(x)
-  field_names <- names(fields)
-  fields <- unstructure(fields)
-  names(fields) <- field_names
-  fields
-}
-
-# ------------------------------------------------------------------------------
-
 calendar_ptype_full <- function(x, class) {
   count <- invalid_count(x)
   precision <- calendar_precision(x)
