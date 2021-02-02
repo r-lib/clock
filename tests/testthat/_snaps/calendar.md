@@ -1,3 +1,19 @@
+# group: `precision` is validated
+
+    `precision` not recognized.
+
+# group: `precision` must be calendar specific
+
+    `precision` must be a valid precision for a 'year_month_day'.
+
+# group: `precision` can't be wider than `x`
+
+    Can't group at a precision (second) that is more precise than `x` (day).
+
+# group: can't group a subsecond precision `x` at another subsecond precision
+
+    Can't group a subsecond precision `x` (nanosecond) by another subsecond precision (microsecond).
+
 # narrow: `precision` is validated
 
     `precision` not recognized.

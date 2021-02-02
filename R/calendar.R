@@ -134,7 +134,36 @@ calendar_group.clock_calendar <- function(x, precision, ..., n = 1L) {
   precision <- validate_precision(precision_string)
 
   if (!calendar_is_valid_precision(x, precision)) {
-    abort(paste0("`precision` must be a valid precision for a '", calendar_name(x), "'."))
+    message <- paste0(
+      "`precision` must be a valid precision for a '", calendar_name(x), "'."
+    )
+    abort(message)
+  }
+
+  x_precision <- calendar_precision(x)
+
+  if (precision > x_precision) {
+    precision <- precision_to_string(precision)
+    x_precision <- precision_to_string(x_precision)
+
+    message <- paste0(
+      "Can't group at a precision (", precision, ") ",
+      "that is more precise than `x` (", x_precision, ")."
+    )
+    abort(message)
+  }
+
+  if (precision > PRECISION_SECOND && x_precision != precision) {
+    # Grouping nanosecond precision by millisecond would be inconsistent
+    # with our general philosophy that you "lock in" the subsecond precision.
+    precision <- precision_to_string(precision)
+    x_precision <- precision_to_string(x_precision)
+
+    message <- paste0(
+      "Can't group a subsecond precision `x` (", x_precision, ") ",
+      "by another subsecond precision (", precision, ")."
+    )
+    abort(message)
   }
 
   n <- vec_cast(n, integer(), x_arg = "n")
@@ -143,20 +172,6 @@ calendar_group.clock_calendar <- function(x, precision, ..., n = 1L) {
   }
   if (n <= 0L) {
     abort("`n` must be a positive number.")
-  }
-
-  x_precision <- calendar_precision(x)
-
-  if (x_precision < precision) {
-    x_precision <- precision_to_string(x_precision)
-    precision <- precision_to_string(precision)
-
-    message <- paste0(
-      "Can't group at a precision (", precision, ") that is more ",
-      "precise than `x` (", x_precision, ")."
-    )
-
-    abort(message)
   }
 
   x <- calendar_narrow(x, precision_string)
