@@ -574,42 +574,6 @@ year_quarter_day_component_to_field <- function(component) {
   )
 }
 
-year_quarter_day_precision_to_component <- function(precision) {
-  precision <- precision_to_string(precision)
-
-  switch (
-    precision,
-    year = precision,
-    quarter = precision,
-    day = precision,
-    hour = precision,
-    minute = precision,
-    second = precision,
-    millisecond = precision,
-    microsecond = precision,
-    nanosecond = precision,
-    abort("Internal error: Unknown precision.")
-  )
-}
-
-year_quarter_day_precision_to_field <- function(precision) {
-  precision <- precision_to_string(precision)
-
-  switch (
-    precision,
-    year = precision,
-    quarter = precision,
-    day = precision,
-    hour = precision,
-    minute = precision,
-    second = precision,
-    millisecond = "subsecond",
-    microsecond = "subsecond",
-    nanosecond = "subsecond",
-    abort("Internal error: Unknown precision.")
-  )
-}
-
 # ------------------------------------------------------------------------------
 
 #' @rdname clock-arith

@@ -595,42 +595,6 @@ year_month_weekday_component_to_field <- function(component) {
   )
 }
 
-year_month_weekday_precision_to_component <- function(precision) {
-  precision <- precision_to_string(precision)
-
-  switch (
-    precision,
-    year = precision,
-    month = precision,
-    day = abort("Internal error: Ambiguous precision -> component mapping (weekday / index)."),
-    hour = precision,
-    minute = precision,
-    second = precision,
-    millisecond = precision,
-    microsecond = precision,
-    nanosecond = precision,
-    abort("Internal error: Unknown precision.")
-  )
-}
-
-year_month_weekday_precision_to_field <- function(precision) {
-  precision <- precision_to_string(precision)
-
-  switch (
-    precision,
-    year = precision,
-    month = precision,
-    day = abort("Internal error: Ambiguous precision -> field mapping (weekday / index)."),
-    hour = precision,
-    minute = precision,
-    second = precision,
-    millisecond = "subsecond",
-    microsecond = "subsecond",
-    nanosecond = "subsecond",
-    abort("Internal error: Unknown precision.")
-  )
-}
-
 # ------------------------------------------------------------------------------
 
 #' @rdname clock-arith
