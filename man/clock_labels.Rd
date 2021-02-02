@@ -6,20 +6,26 @@
 \alias{clock_labels_languages}
 \title{Create or retrieve date related labels}
 \usage{
-clock_labels(mon, mon_ab = mon, day, day_ab = day, am_pm = c("AM", "PM"))
+clock_labels(
+  month,
+  month_abbrev = month,
+  weekday,
+  weekday_abbrev = weekday,
+  am_pm
+)
 
 clock_labels_lookup(language)
 
 clock_labels_languages()
 }
 \arguments{
-\item{mon, mon_ab}{\verb{[character(12)]}
+\item{month, month_abbrev}{\verb{[character(12)]}
 
 Full and abbreviated month names. Starts with January.}
 
-\item{day, day_ab}{\verb{[character(7)]}
+\item{weekday, weekday_abbrev}{\verb{[character(7)]}
 
-Full and abbreviated week day names. Starts with Sunday.}
+Full and abbreviated weekday names. Starts with Sunday.}
 
 \item{am_pm}{\verb{[character(2)]}
 

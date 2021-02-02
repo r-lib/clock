@@ -123,9 +123,9 @@ format.clock_weekday <- function(x, ..., locale = default_clock_locale()) {
     abort("`locale` must be a 'clock_locale' object.")
   }
 
-  day_ab <- locale$labels$day_ab
+  weekday_abbrev <- locale$labels$weekday_abbrev
 
-  out <- format_weekday_cpp(x, day_ab)
+  out <- format_weekday_cpp(x, weekday_abbrev)
   names(out) <- names(x)
 
   out

@@ -78,16 +78,16 @@ weekday_from_time_point_cpp(cpp11::list_of<cpp11::integers> x) {
 
 [[cpp11::register]]
 cpp11::writable::strings
-format_weekday_cpp(const cpp11::integers& x, const cpp11::strings& day_ab) {
+format_weekday_cpp(const cpp11::integers& x, const cpp11::strings& weekday_abbrev) {
   const r_ssize size = x.size();
 
-  const SEXP sun = day_ab[0];
-  const SEXP mon = day_ab[1];
-  const SEXP tue = day_ab[2];
-  const SEXP wed = day_ab[3];
-  const SEXP thu = day_ab[4];
-  const SEXP fri = day_ab[5];
-  const SEXP sat = day_ab[6];
+  const SEXP sun = weekday_abbrev[0];
+  const SEXP mon = weekday_abbrev[1];
+  const SEXP tue = weekday_abbrev[2];
+  const SEXP wed = weekday_abbrev[3];
+  const SEXP thu = weekday_abbrev[4];
+  const SEXP fri = weekday_abbrev[5];
+  const SEXP sat = weekday_abbrev[6];
 
   const std::vector<SEXP> abbreviations = {
     sun, mon, tue, wed, thu, fri, sat
