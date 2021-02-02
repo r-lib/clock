@@ -956,31 +956,33 @@ calendar_leap_year.clock_year_month_weekday <- function(x) {
 #' # Group by 3 months - drops more precise components!
 #' calendar_group(x, "month", n = 3)
 calendar_group.clock_year_month_weekday <- function(x, precision, ..., n = 1L) {
-  if (identical(precision, "day")) {
+  n <- validate_calendar_group_n(n)
+  x <- calendar_narrow(x, precision)
+
+  precision <- validate_precision(precision)
+
+  if (precision == PRECISION_YEAR) {
+    value <- get_year(x)
+    value <- group_component0(value, n)
+    x <- set_year(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_MONTH) {
+    value <- get_month(x)
+    value <- group_component1(value, n)
+    x <- set_month(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_DAY) {
     message <- paste0(
       "Grouping 'year_month_weekday' by 'day' precision is undefined. ",
       "Convert to 'year_month_day' to group by day of month."
     )
     abort(message)
   }
-  NextMethod()
-}
 
-#' @export
-calendar_component_grouper.clock_year_month_weekday <- function(x, component) {
-  switch(
-    component,
-    year = group_component0,
-    month = group_component1,
-    day = abort("Internal error: Should have errored earlier. Undefined 'day' grouping"),
-    index = abort("Internal error: Should have errored earlier. Undefined 'day' grouping"),
-    hour = group_component0,
-    minute = group_component0,
-    second = group_component0,
-    millisecond = group_component0,
-    microsecond = group_component0,
-    nanosecond = group_component0
-  )
+  x <- calendar_group_time(x, n, precision)
+  x
 }
 
 # ------------------------------------------------------------------------------

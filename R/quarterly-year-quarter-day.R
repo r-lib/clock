@@ -961,23 +961,32 @@ as_naive_time.clock_year_quarter_day <- function(x) {
 #' y <- year_quarter_day(2019, 1, 1:90)
 #' calendar_group(y, "day", n = 5)
 calendar_group.clock_year_quarter_day <- function(x, precision, ..., n = 1L) {
-  NextMethod()
-}
+  n <- validate_calendar_group_n(n)
+  x <- calendar_narrow(x, precision)
 
-#' @export
-calendar_component_grouper.clock_year_quarter_day <- function(x, component) {
-  switch(
-    component,
-    year = group_component0,
-    quarter = group_component1,
-    day = group_component1,
-    hour = group_component0,
-    minute = group_component0,
-    second = group_component0,
-    millisecond = group_component0,
-    microsecond = group_component0,
-    nanosecond = group_component0
-  )
+  precision <- validate_precision(precision)
+
+  if (precision == PRECISION_YEAR) {
+    value <- get_year(x)
+    value <- group_component0(value, n)
+    x <- set_year(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_QUARTER) {
+    value <- get_quarter(x)
+    value <- group_component1(value, n)
+    x <- set_quarter(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_DAY) {
+    value <- get_day(x)
+    value <- group_component1(value, n)
+    x <- set_day(x, value)
+    return(x)
+  }
+
+  x <- calendar_group_time(x, n, precision)
+  x
 }
 
 # ------------------------------------------------------------------------------

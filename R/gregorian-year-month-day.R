@@ -1059,23 +1059,32 @@ calendar_leap_year.clock_year_month_day <- function(x) {
 #' )
 #' calendar_group(z, "nanosecond", n = 5)
 calendar_group.clock_year_month_day <- function(x, precision, ..., n = 1L) {
-  NextMethod()
-}
+  n <- validate_calendar_group_n(n)
+  x <- calendar_narrow(x, precision)
 
-#' @export
-calendar_component_grouper.clock_year_month_day <- function(x, component) {
-  switch(
-    component,
-    year = group_component0,
-    month = group_component1,
-    day = group_component1,
-    hour = group_component0,
-    minute = group_component0,
-    second = group_component0,
-    millisecond = group_component0,
-    microsecond = group_component0,
-    nanosecond = group_component0
-  )
+  precision <- validate_precision(precision)
+
+  if (precision == PRECISION_YEAR) {
+    value <- get_year(x)
+    value <- group_component0(value, n)
+    x <- set_year(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_MONTH) {
+    value <- get_month(x)
+    value <- group_component1(value, n)
+    x <- set_month(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_DAY) {
+    value <- get_day(x)
+    value <- group_component1(value, n)
+    x <- set_day(x, value)
+    return(x)
+  }
+
+  x <- calendar_group_time(x, n, precision)
+  x
 }
 
 # ------------------------------------------------------------------------------

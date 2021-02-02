@@ -840,23 +840,32 @@ as_naive_time.clock_iso_year_week_day <- function(x) {
 #' # Group by 2 ISO years
 #' calendar_group(y, "year", n = 2)
 calendar_group.clock_iso_year_week_day <- function(x, precision, ..., n = 1L) {
-  NextMethod()
-}
+  n <- validate_calendar_group_n(n)
+  x <- calendar_narrow(x, precision)
 
-#' @export
-calendar_component_grouper.clock_iso_year_week_day <- function(x, component) {
-  switch(
-    component,
-    year = group_component0,
-    week = group_component1,
-    day = group_component1,
-    hour = group_component0,
-    minute = group_component0,
-    second = group_component0,
-    millisecond = group_component0,
-    microsecond = group_component0,
-    nanosecond = group_component0
-  )
+  precision <- validate_precision(precision)
+
+  if (precision == PRECISION_YEAR) {
+    value <- get_year(x)
+    value <- group_component0(value, n)
+    x <- set_year(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_WEEK) {
+    value <- get_week(x)
+    value <- group_component1(value, n)
+    x <- set_week(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_DAY) {
+    value <- get_day(x)
+    value <- group_component1(value, n)
+    x <- set_day(x, value)
+    return(x)
+  }
+
+  x <- calendar_group_time(x, n, precision)
+  x
 }
 
 # ------------------------------------------------------------------------------

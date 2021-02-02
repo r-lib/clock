@@ -123,15 +123,9 @@ calendar_leap_year.clock_calendar <- function(x) {
 #' # Group by two days of the month
 #' calendar_group(x, "day", n = 2)
 calendar_group <- function(x, precision, ..., n = 1L) {
-  UseMethod("calendar_group")
-}
-
-#' @export
-calendar_group.clock_calendar <- function(x, precision, ..., n = 1L) {
   check_dots_empty()
 
-  precision_string <- precision
-  precision <- validate_precision(precision_string)
+  precision <- validate_precision(precision)
 
   if (!calendar_is_valid_precision(x, precision)) {
     message <- paste0(
@@ -166,36 +160,56 @@ calendar_group.clock_calendar <- function(x, precision, ..., n = 1L) {
     abort(message)
   }
 
-  n <- vec_cast(n, integer(), x_arg = "n")
-  if (!is_number(n)) {
-    abort("`n` must be a single number.")
-  }
-  if (n <= 0L) {
-    abort("`n` must be a positive number.")
-  }
-
-  x <- calendar_narrow(x, precision_string)
-
-  component <- calendar_precision_to_component(x, precision)
-  group_component_fn <- calendar_component_grouper(x, component)
-
-  if (n != 1L) {
-    value <- calendar_get_component(x, component)
-    value <- group_component_fn(value, n)
-    x <- calendar_set_component(x, value, component)
-  }
-
-  x
-}
-
-# Internal generic
-calendar_component_grouper <- function(x, component) {
-  UseMethod("calendar_component_grouper")
+  UseMethod("calendar_group")
 }
 
 #' @export
-calendar_component_grouper.clock_calendar <- function(x, component) {
-  stop_clock_unsupported_calendar_op("calendar_component_grouper")
+calendar_group.clock_calendar <- function(x, precision, ..., n = 1L) {
+  stop_clock_unsupported_calendar_op("calendar_group")
+}
+
+calendar_group_time <- function(x, n, precision) {
+  if (precision == PRECISION_HOUR) {
+    value <- get_hour(x)
+    value <- group_component0(value, n)
+    x <- set_hour(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_MINUTE) {
+    value <- get_minute(x)
+    value <- group_component0(value, n)
+    x <- set_minute(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_SECOND) {
+    value <- get_second(x)
+    value <- group_component0(value, n)
+    x <- set_second(x, value)
+    return(x)
+  }
+
+  # Generic ensures that if `x_precision > PRECISION_SECOND`,
+  # then `precision == x_precision`, making this safe.
+  if (precision == PRECISION_MILLISECOND) {
+    value <- get_millisecond(x)
+    value <- group_component0(value, n)
+    x <- set_millisecond(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_MICROSECOND) {
+    value <- get_microsecond(x)
+    value <- group_component0(value, n)
+    x <- set_microsecond(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_NANOSECOND) {
+    value <- get_nanosecond(x)
+    value <- group_component0(value, n)
+    x <- set_nanosecond(x, value)
+    return(x)
+  }
+
+  abort("Internal error: Unknown precision.")
 }
 
 group_component0 <- function(x, n) {
@@ -203,6 +217,17 @@ group_component0 <- function(x, n) {
 }
 group_component1 <- function(x, n) {
   ((x - 1L) %/% n) * n + 1L
+}
+
+validate_calendar_group_n <- function(n) {
+  n <- vec_cast(n, integer(), x_arg = "n")
+  if (!is_number(n)) {
+    abort("`n` must be a single number.")
+  }
+  if (n <= 0L) {
+    abort("`n` must be a positive number.")
+  }
+  n
 }
 
 # ------------------------------------------------------------------------------
