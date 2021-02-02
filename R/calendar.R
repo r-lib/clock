@@ -106,8 +106,7 @@ calendar_leap_year.clock_calendar <- function(x) {
 #'
 #' @param n `[positive integer(1)]`
 #'
-#'   A single positive integer specifying a multiple of `precision` to
-#'   group by.
+#'   A single positive integer specifying a multiple of `precision` to use.
 #'
 #' @return `x` grouped at the specified `precision`.
 #'

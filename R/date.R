@@ -448,3 +448,216 @@ date_leap_year.Date <- function(x) {
   x <- as_year_month_day(x)
   calendar_leap_year(x)
 }
+
+# ------------------------------------------------------------------------------
+
+#' Date and date-time rounding
+#'
+#' @description
+#' - `date_floor()` rounds a date or date-time down to a multiple of
+#'   the specified `precision`.
+#'
+#' - `date_ceiling()` rounds a date or date-time up to a multiple of
+#'   the specified `precision`.
+#'
+#' - `date_round()` rounds up or down depending on what is closer,
+#'   rounding up on ties.
+#'
+#' There are separate help pages for rounding dates and date-times:
+#'
+#' - [dates (Date)][date-rounding]
+#'
+#' - [date-times (POSIXct/POSIXlt)][posixt-rounding]
+#'
+#' These functions round the underlying duration itself, relative to an
+#' `origin`. For example, rounding to 15 hours will construct groups of
+#' 15 hours, starting from `origin`, which defaults to a naive time of
+#' `"1970-01-01 00:00:00"`.
+#'
+#' If you want to group by components, such as "day of the month", see
+#' [date_group()].
+#'
+#' @inheritParams date_group
+#'
+#' @param origin `[Date(1) / POSIXct(1) / POSIXlt(1) / NULL]`
+#'
+#'   An origin to start counting from. The default `origin` is
+#'   implicitly midnight on `"1970-01-01"` in the time zone of `x`.
+#'
+#' @return `x` rounded to the specified `precision`.
+#'
+#' @name date-and-date-time-rounding
+#'
+#' @examples
+#' # See the type specific documentation for more examples
+#'
+#' x <- as.Date("2019-03-31") + 0:5
+#' x
+#'
+#' # Flooring by 2 days, note that this is not tied to the current month,
+#' # and instead counts from the specified `origin`.
+#' date_floor(x, "day", n = 2)
+NULL
+
+#' @rdname date-and-date-time-rounding
+#' @export
+date_floor <- function(x, precision, ..., n = 1L, origin = NULL) {
+  UseMethod("date_floor")
+}
+
+#' @rdname date-and-date-time-rounding
+#' @export
+date_ceiling <- function(x, precision, ..., n = 1L, origin = NULL) {
+  UseMethod("date_ceiling")
+}
+
+#' @rdname date-and-date-time-rounding
+#' @export
+date_round <- function(x, precision, ..., n = 1L, origin = NULL) {
+  UseMethod("date_round")
+}
+
+#' Rounding: date
+#'
+#' @description
+#' - `date_floor()` rounds a date down to a multiple of
+#'   the specified `precision`.
+#'
+#' - `date_ceiling()` rounds a date up to a multiple of
+#'   the specified `precision`.
+#'
+#' - `date_round()` rounds up or down depending on what is closer,
+#'   rounding up on ties.
+#'
+#' The only supported rounding `precision`s for Dates are `"day"` and `"week"`.
+#' You can group by irregular periods such as `"month"` or `"year"` by using
+#' [date_group()].
+#'
+#' @details
+#' Rounding by `"week"` is a simple alias for rounding by `"day"` with 7 times
+#' as many days.
+#'
+#' When rounding by `"week"`, remember that the `origin` determines the "week
+#' start". By default, `"1970-01-01"` is the implicit origin, which is a
+#' Thursday. If you would like to round by weeks with a different week start,
+#' just supply an origin on the weekday you are interested in.
+#'
+#' @inheritParams date_floor
+#'
+#' @param x `[Date]`
+#'
+#'   A date vector.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"week"`
+#'
+#'   - `"day"`
+#'
+#' @param origin `[Date(1) / NULL]`
+#'
+#'   An origin to start counting from. The default `origin` is
+#'   implicitly `"1970-01-01"`.
+#'
+#' @name date-rounding
+#'
+#' @examples
+#' x <- as.Date("2019-03-31") + 0:5
+#' x
+#'
+#' # Flooring by 2 days, note that this is not tied to the current month,
+#' # and instead counts from the specified `origin`, so groups can cross
+#' # the month boundary
+#' date_floor(x, "day", n = 2)
+#'
+#' # Compare to `date_group()`, which groups by the day of the month
+#' date_group(x, "day", n = 2)
+#'
+#' y <- as.Date("2019-01-01") + 0:20
+#' y
+#'
+#' # Flooring by week uses an implicit `origin` of `"1970-01-01"`, which
+#' # is a Thursday
+#' date_floor(y, "week")
+#' as_weekday(date_floor(y, "week"))
+#'
+#' # If you want to round by weeks with a different week start, supply an
+#' # `origin` that falls on the weekday you care about. This uses a Monday.
+#' origin <- as.Date("1970-01-05")
+#' as_weekday(origin)
+#'
+#' date_floor(y, "week", origin = origin)
+#' as_weekday(date_floor(y, "week", origin = origin))
+NULL
+
+#' @rdname date-rounding
+#' @export
+date_floor.Date <- function(x, precision, ..., n = 1L, origin = NULL) {
+  date_rounder(x, precision, n, origin, time_point_floor, ...)
+}
+
+#' @rdname date-rounding
+#' @export
+date_ceiling.Date <- function(x, precision, ..., n = 1L, origin = NULL) {
+  date_rounder(x, precision, n, origin, time_point_ceiling, ...)
+}
+
+#' @rdname date-rounding
+#' @export
+date_round.Date <- function(x, precision, ..., n = 1L, origin = NULL) {
+  date_rounder(x, precision, n, origin, time_point_round, ...)
+}
+
+date_rounder <- function(x, precision, n, origin, time_point_rounder, ...) {
+  result <- tweak_date_rounder_precision(precision, n)
+  precision <- result$precision
+  n <- result$n
+
+  x <- as_naive_time(x)
+
+  has_origin <- !is_null(origin)
+
+  if (has_origin) {
+    origin <- validate_date_rounder_origin(origin)
+    origin <- as_naive_time(origin)
+    origin <- as_duration(origin)
+    x <- x - origin
+  }
+
+  x <- time_point_rounder(x, precision, ..., n = n)
+
+  if (has_origin) {
+    x <- x + origin
+  }
+
+  as.Date(x)
+}
+
+# Note:
+# For Date and POSIXct, which are always day and second precision, we can
+# allow a special "week" precision for the rounding functions. This isn't
+# normally allowed for time points, as there is no week precision time point,
+# and instead you'd do `day`,` `n = n * 7`. This makes that a little easier.
+tweak_date_rounder_precision <- function(precision, n) {
+  if (identical(precision, "week")) {
+    precision <- "day"
+    n <- n * 7L
+  }
+
+  list(precision = precision, n = n)
+}
+
+validate_date_rounder_origin <- function(origin) {
+  if (!inherits(origin, "Date")) {
+    abort("`origin` must be a 'Date'.")
+  }
+  if (length(origin) != 1L) {
+    abort("`origin` must have length 1.")
+  }
+  if (!is.finite(origin)) {
+    abort("`origin` must not be `NA` or an infinite date.")
+  }
+  origin
+}

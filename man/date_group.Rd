@@ -19,8 +19,7 @@ A precision. Allowed precisions are dependent on the input used.}
 
 \item{n}{\verb{[positive integer(1)]}
 
-A single positive integer specifying a multiple of \code{precision} to
-group by.}
+A single positive integer specifying a multiple of \code{precision} to use.}
 }
 \value{
 \code{x}, grouped at \code{precision}.

@@ -10,3 +10,31 @@
 
     `precision` must be a valid precision for a 'year_month_day'.
 
+# flooring can handle nonexistent times
+
+    Nonexistent time due to daylight savings at location 2. Resolve nonexistent time issues by specifying the `nonexistent` argument.
+
+# `origin` is validated
+
+    `origin` must be a 'POSIXt'.
+
+---
+
+    `origin` must not be `NA` or an infinite date.
+
+---
+
+    `origin` must not be `NA` or an infinite date.
+
+---
+
+    `origin` must have length 1.
+
+---
+
+    `origin` must have the same time zone as `x`.
+
+---
+
+    `origin` must have the same time zone as `x`.
+

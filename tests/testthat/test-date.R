@@ -53,3 +53,53 @@ test_that("can detect leap years", {
   x <- as.Date(x)
   expect_identical(date_leap_year(x), c(FALSE, TRUE, NA))
 })
+
+# ------------------------------------------------------------------------------
+# date_floor()
+
+test_that("can floor by weeks", {
+  x <- c("1970-01-01", "1970-01-07", "1970-01-08")
+  x <- as.Date(x)
+  expect_identical(date_floor(x, "week"), x[c(1, 1, 3)])
+  expect_identical(date_floor(x, "week", n = 2), x[c(1, 1, 1)])
+})
+
+test_that("can only floor by week/day", {
+  expect_snapshot_error(date_floor(as.Date("2019-01-01"), "hour"))
+  expect_snapshot_error(date_floor(as.Date("2019-01-01"), "month"))
+})
+
+test_that("`origin` can be used", {
+  origin <- as.Date("1970-01-02")
+  x <- as.Date(c("1970-01-01", "1970-01-02", "1970-01-03"))
+  expect <- as.Date(c("1969-12-31", "1970-01-02", "1970-01-02"))
+  expect_identical(date_floor(x, "day", n = 2, origin = origin), expect)
+})
+
+test_that("`origin` is validated", {
+  x <- as.Date("2019-01-01")
+  expect_snapshot_error(date_floor(x, "day", origin = 1))
+  expect_snapshot_error(date_floor(x, "day", origin = new_date(NA_real_)))
+  expect_snapshot_error(date_floor(x, "day", origin = new_date(Inf)))
+  expect_snapshot_error(date_floor(x, "day", origin = new_date(c(0, 1))))
+})
+
+# ------------------------------------------------------------------------------
+# date_ceiling()
+
+test_that("can ceiling", {
+  x <- c("1970-01-01", "1970-01-07", "1970-01-08")
+  x <- as.Date(x)
+  expect_identical(date_ceiling(x, "week"), x[c(1, 3, 3)])
+  expect_identical(date_ceiling(x, "week", n = 2), as.Date(c("1970-01-01", "1970-01-15", "1970-01-15")))
+})
+
+# ------------------------------------------------------------------------------
+# date_round()
+
+test_that("can round", {
+  x <- c("1970-01-01", "1970-01-03", "1970-01-05", "1970-01-08")
+  x <- as.Date(x)
+  expect_identical(date_round(x, "week"), x[c(1, 1, 4, 4)])
+  expect_identical(date_round(x, "week", n = 2), as.Date(c("1970-01-01", "1970-01-01", "1970-01-01", "1970-01-15")))
+})

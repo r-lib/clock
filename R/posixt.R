@@ -596,3 +596,174 @@ date_leap_year.POSIXt <- function(x) {
   x <- as_year_month_day(x)
   calendar_leap_year(x)
 }
+
+# ------------------------------------------------------------------------------
+
+#' Rounding: date-time
+#'
+#' @description
+#' - `date_floor()` rounds a date-time down to a multiple of
+#'   the specified `precision`.
+#'
+#' - `date_ceiling()` rounds a date-time up to a multiple of
+#'   the specified `precision`.
+#'
+#' - `date_round()` rounds up or down depending on what is closer,
+#'   rounding up on ties.
+#'
+#' You can group by irregular periods such as `"month"` or `"year"` by using
+#' [date_group()].
+#'
+#' @details
+#' Rounding by `"week"` is a simple alias for rounding by `"day"` with 7 times
+#' as many days.
+#'
+#' When rounding by `"week"`, remember that the `origin` determines the "week
+#' start". By default, `"1970-01-01"` is the implicit origin, which is a
+#' Thursday. If you would like to round by weeks with a different week start,
+#' just supply an origin on the weekday you are interested in.
+#'
+#' @inheritParams date_floor
+#' @inheritParams as-zoned-time-naive-time
+#'
+#' @param x `[POSIXct / POSIXlt]`
+#'
+#'   A date-time vector.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"week"`
+#'
+#'   - `"day"`
+#'
+#'   - `"hour"`
+#'
+#'   - `"minute"`
+#'
+#'   - `"second"`
+#'
+#' @param origin `[POSIXct(1) / POSIXlt(1) / NULL]`
+#'
+#'   An origin to start counting from. Must have exactly the same time
+#'   zone as `x`. The default `origin` is implicitly midnight on `"1970-01-01"`
+#'   in the time zone of `x`.
+#'
+#' @name posixt-rounding
+#'
+#' @examples
+#' x <- as.POSIXct("2019-03-31", "America/New_York")
+#' x <- add_days(x, 0:5)
+#'
+#' # Flooring by 2 days, note that this is not tied to the current month,
+#' # and instead counts from the specified `origin`, so groups can cross
+#' # the month boundary
+#' date_floor(x, "day", n = 2)
+#'
+#' # Compare to `date_group()`, which groups by the day of the month
+#' date_group(x, "day", n = 2)
+#'
+#' # Note that daylight saving time gaps can throw off rounding
+#' x <- as.POSIXct("1970-04-26 01:59:59", "America/New_York") + c(0, 1)
+#' x
+#'
+#' # Rounding is done in naive-time, which means that rounding by 2 hours
+#' # will attempt to generate a time of `"1970-04-26 02:00:00"`, which doesn't
+#' # exist in this time zone
+#' try(date_floor(x, "hour", n = 2))
+#'
+#' # You can handle this by specifying a nonexistent time resolution strategy
+#' date_floor(x, "hour", n = 2, nonexistent = "roll-forward")
+NULL
+
+#' @rdname posixt-rounding
+#' @export
+date_floor.POSIXt <- function(x,
+                              precision,
+                              ...,
+                              n = 1L,
+                              origin = NULL,
+                              nonexistent = "error",
+                              ambiguous = "error") {
+  date_time_rounder(x, precision, n, origin, nonexistent, ambiguous, time_point_floor, ...)
+}
+
+#' @rdname posixt-rounding
+#' @export
+date_ceiling.POSIXt <- function(x,
+                                precision,
+                                ...,
+                                n = 1L,
+                                origin = NULL,
+                                nonexistent = "error",
+                                ambiguous = "error") {
+  date_time_rounder(x, precision, n, origin, nonexistent, ambiguous, time_point_ceiling, ...)
+}
+
+#' @rdname posixt-rounding
+#' @export
+date_round.POSIXt <- function(x,
+                              precision,
+                              ...,
+                              n = 1L,
+                              origin = NULL,
+                              nonexistent = "error",
+                              ambiguous = "error") {
+  date_time_rounder(x, precision, n, origin, nonexistent, ambiguous, time_point_round, ...)
+}
+
+date_time_rounder <- function(x,
+                              precision,
+                              n,
+                              origin,
+                              nonexistent,
+                              ambiguous,
+                              time_point_rounder,
+                              ...) {
+  result <- tweak_date_rounder_precision(precision, n)
+  precision <- result$precision
+  n <- result$n
+
+  zone <- zoned_zone(x)
+
+  x <- as_naive_time(x)
+
+  has_origin <- !is_null(origin)
+
+  if (has_origin) {
+    origin <- validate_date_time_rounder_origin(origin, zone)
+    origin <- as_naive_time(origin)
+    origin <- as_duration(origin)
+    x <- x - origin
+  }
+
+  x <- time_point_rounder(x, precision, ..., n = n)
+
+  if (has_origin) {
+    x <- x + origin
+  }
+
+  as.POSIXct(x, zone, nonexistent = nonexistent, ambiguous = ambiguous)
+}
+
+validate_date_time_rounder_origin <- function(origin, zone) {
+  if (!inherits(origin, "POSIXt")) {
+    abort("`origin` must be a 'POSIXt'.")
+  }
+
+  origin <- to_posixct(origin)
+
+  if (length(origin) != 1L) {
+    abort("`origin` must have length 1.")
+  }
+  if (!is.finite(origin)) {
+    abort("`origin` must not be `NA` or an infinite date.")
+  }
+
+  if (!identical(zoned_zone(origin), zone)) {
+    abort("`origin` must have the same time zone as `x`.")
+  }
+
+  origin
+}

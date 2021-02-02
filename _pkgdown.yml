@@ -13,6 +13,9 @@ reference:
   - date-group
   - posixt-group
   - date_leap_year
+  - date-and-date-time-rounding
+  - date-rounding
+  - posixt-rounding
   - get_year.Date
   - get_year.POSIXt
   - set_year.Date

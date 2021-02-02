@@ -25,8 +25,7 @@ One of:
 
 \item{n}{\verb{[positive integer(1)]}
 
-A single positive integer specifying a multiple of \code{precision} to
-group by.}
+A single positive integer specifying a multiple of \code{precision} to use.}
 
 \item{invalid}{\verb{[character(1)]}
 
