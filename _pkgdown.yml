@@ -4,6 +4,23 @@ development:
   mode: auto
 
 reference:
+- title: High Level API
+  desc: This section contains the high level API for R's native date and
+    date-time types, Date, POSIXct, and POSIXlt. If you are new to clock,
+    this is the best place to start.
+  contents:
+  - date_group
+  - date-group
+  - posixt-group
+  - get_year.Date
+  - get_year.POSIXt
+  - set_year.Date
+  - set_year.POSIXt
+  - Date-arithmetic
+  - posixt-arithmetic
+  - as-zoned-time-Date
+  - as-zoned-time-posixt
+
 - title: Calendars
   contents:
   - calendar_group
@@ -103,20 +120,6 @@ reference:
   - weekday-arithmetic
   - is_weekday
   - as_weekday
-
-- title: Date support
-  contents:
-  - get_year.Date
-  - set_year.Date
-  - Date-arithmetic
-  - as-zoned-time-Date
-
-- title: POSIXct / POSIXlt support
-  contents:
-  - get_year.POSIXt
-  - set_year.POSIXt
-  - posixt-arithmetic
-  - as-zoned-time-posixt
 
 - title: Arithmetic
   contents:
