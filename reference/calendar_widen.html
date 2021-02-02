@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Grouping: year-month-weekday — year-month-weekday-group • clock</title>
+<title>Widen a calendar to a more precise precision — calendar_widen • clock</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,17 @@
 
 
 
-<meta property="og:title" content="Grouping: year-month-weekday — year-month-weekday-group" />
-<meta property="og:description" content="Grouping for a year-month-weekday object can be done at any precision except
-for &quot;day&quot;, as long as x is at least as precise as precision." />
+<meta property="og:title" content="Widen a calendar to a more precise precision — calendar_widen" />
+<meta property="og:description" content="calendar_widen() widens x to the specified precision. It does so
+by setting new components to their smallest value.
+Each calendar has its own help page describing the precisions that you
+can widen to:
+year-month-day
+year-month-weekday
+iso-year-week-day
+year-quarter-day
+
+" />
 
 
 
@@ -109,77 +117,73 @@ for &quot;day&quot;, as long as x is at least as precise as precision." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Grouping: year-month-weekday</h1>
-    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/gregorian-year-month-weekday.R'><code>R/gregorian-year-month-weekday.R</code></a></small>
-    <div class="hidden name"><code>year-month-weekday-group.Rd</code></div>
+    <h1>Widen a calendar to a more precise precision</h1>
+    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/calendar.R'><code>R/calendar.R</code></a></small>
+    <div class="hidden name"><code>calendar_widen.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Grouping for a year-month-weekday object can be done at any precision except
-for <code>"day"</code>, as long as <code>x</code> is at least as precise as <code>precision</code>.</p>
+    <p><code>calendar_widen()</code> widens <code>x</code> to the specified <code>precision</code>. It does so
+by setting new components to their smallest value.</p>
+<p>Each calendar has its own help page describing the precisions that you
+can widen to:</p><ul>
+<li><p><a href='year-month-day-widen.html'>year-month-day</a></p></li>
+<li><p><a href='year-month-weekday-widen.html'>year-month-weekday</a></p></li>
+<li><p><a href='iso-year-week-day-widen.html'>iso-year-week-day</a></p></li>
+<li><p><a href='year-quarter-day-widen.html'>year-quarter-day</a></p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for clock_year_month_weekday</span>
-<span class='fu'><a href='calendar_group.html'>calendar_group</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>precision</span>, <span class='va'>...</span>, n <span class='op'>=</span> <span class='fl'>1L</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>calendar_widen</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>precision</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><code>[clock_year_month_weekday]</code></p>
-<p>A year-month-weekday vector.</p></td>
+      <td><p><code>[calendar]</code></p>
+<p>A calendar vector.</p></td>
     </tr>
     <tr>
       <th>precision</th>
       <td><p><code>[character(1)]</code></p>
-<p>One of:</p><ul>
-<li><p><code>"year"</code></p></li>
-<li><p><code>"month"</code></p></li>
-<li><p><code>"hour"</code></p></li>
-<li><p><code>"minute"</code></p></li>
-<li><p><code>"second"</code></p></li>
-<li><p><code>"millisecond"</code></p></li>
-<li><p><code>"microsecond"</code></p></li>
-<li><p><code>"nanosecond"</code></p></li>
-</ul></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>These dots are for future extensions and must be empty.</p></td>
-    </tr>
-    <tr>
-      <th>n</th>
-      <td><p><code>[positive integer(1)]</code></p>
-<p>A single positive integer specifying a multiple of <code>precision</code> to
-group by.</p></td>
+<p>A precision. Allowed precisions are dependent on the calendar used.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>x</code> grouped at the specified <code>precision</code>.</p>
+    <p><code>x</code> widened to the supplied <code>precision</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Grouping by <code>"day"</code> is undefined for a year-month-weekday because there are
-two day fields, the weekday and the index, and there is no clear way to
-define how to group by that.</p>
+    <p>A subsecond precision <code>x</code> cannot be widened. You cannot widen from, say,
+<code>"millisecond"</code> to <code>"nanosecond"</code> precision. clock operates under the
+philosophy that once you have set the subsecond precision of a calendar,
+it is "locked in" at that precision. If you expected this to multiply
+the milliseconds by 1e6 to get to nanosecond precision, you probably
+want to convert to a time point first, and use <code><a href='time_point_cast.html'>time_point_cast()</a></code>.</p>
+<p>Generally, clock treats calendars at a specific precision as a <em>range</em> of
+values. For example, a month precision year-month-day is treated as a range
+over <code>[yyyy-mm-01, yyyy-mm-last]</code>, with no assumption about the day of the
+month. However, occasionally it is useful to quickly widen a calendar,
+assuming that you want the beginning of this range to be used for each
+component. This is where <code>calendar_widen()</code> can come in handy.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_weekday.html'>year_month_weekday</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>00</span>, <span class='fl'>05</span>, <span class='fl'>05</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='co'># Month precision</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span><span class='op'>)</span>
 <span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;second&gt;[invalid=0][12]&gt;
-#&gt;  [1] "2019-01-Sun[1] 00:05:05" "2019-02-Sun[1] 00:05:05"
-#&gt;  [3] "2019-03-Sun[1] 00:05:05" "2019-04-Sun[1] 00:05:05"
-#&gt;  [5] "2019-05-Sun[1] 00:05:05" "2019-06-Sun[1] 00:05:05"
-#&gt;  [7] "2019-07-Sun[1] 00:05:05" "2019-08-Sun[1] 00:05:05"
-#&gt;  [9] "2019-09-Sun[1] 00:05:05" "2019-10-Sun[1] 00:05:05"
-#&gt; [11] "2019-11-Sun[1] 00:05:05" "2019-12-Sun[1] 00:05:05"</div><div class='input'>
-<span class='co'># Group by 3 months - drops more precise components!</span>
-<span class='fu'><a href='calendar_group.html'>calendar_group</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"month"</span>, n <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;month&gt;[invalid=0][12]&gt;
-#&gt;  [1] "2019-01" "2019-01" "2019-01" "2019-04" "2019-04" "2019-04" "2019-07"
-#&gt;  [8] "2019-07" "2019-07" "2019-10" "2019-10" "2019-10"</div></pre>
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;month&gt;[invalid=0][1]&gt;
+#&gt; [1] "2019-01"</div><div class='input'>
+<span class='co'># Widen to day precision</span>
+<span class='fu'>calendar_widen</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][1]&gt;
+#&gt; [1] "2019-01-01"</div><div class='input'>
+<span class='co'># Or second precision</span>
+<span class='fu'>calendar_widen</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;second&gt;[invalid=0][1]&gt;
+#&gt; [1] "2019-01-01 00:00:00"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
