@@ -145,17 +145,17 @@ extern "C" SEXP _clock_clock_to_string(SEXP clock_int) {
   END_CPP11
 }
 // format.cpp
-cpp11::writable::strings format_time_point_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& clock, const cpp11::strings& format, const cpp11::integers& precision_int, const cpp11::strings& month, const cpp11::strings& mon_ab, const cpp11::strings& day, const cpp11::strings& day_ab, const cpp11::strings& am_pm, const cpp11::strings& decimal_mark);
-extern "C" SEXP _clock_format_time_point_cpp(SEXP fields, SEXP clock, SEXP format, SEXP precision_int, SEXP month, SEXP mon_ab, SEXP day, SEXP day_ab, SEXP am_pm, SEXP decimal_mark) {
+cpp11::writable::strings format_time_point_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& clock, const cpp11::strings& format, const cpp11::integers& precision_int, const cpp11::strings& month, const cpp11::strings& month_abbrev, const cpp11::strings& day, const cpp11::strings& day_ab, const cpp11::strings& am_pm, const cpp11::strings& decimal_mark);
+extern "C" SEXP _clock_format_time_point_cpp(SEXP fields, SEXP clock, SEXP format, SEXP precision_int, SEXP month, SEXP month_abbrev, SEXP day, SEXP day_ab, SEXP am_pm, SEXP decimal_mark) {
   BEGIN_CPP11
-    return cpp11::as_sexp(format_time_point_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(clock), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mon_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(am_pm), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(decimal_mark)));
+    return cpp11::as_sexp(format_time_point_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(clock), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month_abbrev), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(am_pm), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(decimal_mark)));
   END_CPP11
 }
 // format.cpp
-cpp11::writable::strings format_zoned_time_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& zone, const bool& abbreviate_zone, const cpp11::strings& format, const cpp11::integers& precision_int, const cpp11::strings& month, const cpp11::strings& mon_ab, const cpp11::strings& day, const cpp11::strings& day_ab, const cpp11::strings& am_pm, const cpp11::strings& decimal_mark);
-extern "C" SEXP _clock_format_zoned_time_cpp(SEXP fields, SEXP zone, SEXP abbreviate_zone, SEXP format, SEXP precision_int, SEXP month, SEXP mon_ab, SEXP day, SEXP day_ab, SEXP am_pm, SEXP decimal_mark) {
+cpp11::writable::strings format_zoned_time_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::strings& zone, const bool& abbreviate_zone, const cpp11::strings& format, const cpp11::integers& precision_int, const cpp11::strings& month, const cpp11::strings& month_abbrev, const cpp11::strings& day, const cpp11::strings& day_ab, const cpp11::strings& am_pm, const cpp11::strings& decimal_mark);
+extern "C" SEXP _clock_format_zoned_time_cpp(SEXP fields, SEXP zone, SEXP abbreviate_zone, SEXP format, SEXP precision_int, SEXP month, SEXP month_abbrev, SEXP day, SEXP day_ab, SEXP am_pm, SEXP decimal_mark) {
   BEGIN_CPP11
-    return cpp11::as_sexp(format_zoned_time_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const bool&>>(abbreviate_zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mon_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(am_pm), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(decimal_mark)));
+    return cpp11::as_sexp(format_zoned_time_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const bool&>>(abbreviate_zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month_abbrev), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(am_pm), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(decimal_mark)));
   END_CPP11
 }
 // gregorian-year-month-day.cpp
@@ -265,10 +265,10 @@ extern "C" SEXP _clock_year_month_day_minus_year_month_day_cpp(SEXP x, SEXP y, S
   END_CPP11
 }
 // gregorian-year-month-day.cpp
-cpp11::writable::list parse_year_month_day_cpp(const cpp11::strings& x, const cpp11::strings& format, const cpp11::integers& precision_int, const cpp11::strings& month, const cpp11::strings& mon_ab, const cpp11::strings& day, const cpp11::strings& day_ab, const cpp11::strings& am_pm, const cpp11::strings& mark);
-extern "C" SEXP _clock_parse_year_month_day_cpp(SEXP x, SEXP format, SEXP precision_int, SEXP month, SEXP mon_ab, SEXP day, SEXP day_ab, SEXP am_pm, SEXP mark) {
+cpp11::writable::list parse_year_month_day_cpp(const cpp11::strings& x, const cpp11::strings& format, const cpp11::integers& precision_int, const cpp11::strings& month, const cpp11::strings& month_abbrev, const cpp11::strings& day, const cpp11::strings& day_ab, const cpp11::strings& am_pm, const cpp11::strings& mark);
+extern "C" SEXP _clock_parse_year_month_day_cpp(SEXP x, SEXP format, SEXP precision_int, SEXP month, SEXP month_abbrev, SEXP day, SEXP day_ab, SEXP am_pm, SEXP mark) {
   BEGIN_CPP11
-    return cpp11::as_sexp(parse_year_month_day_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mon_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(am_pm), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mark)));
+    return cpp11::as_sexp(parse_year_month_day_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month_abbrev), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(am_pm), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mark)));
   END_CPP11
 }
 // gregorian-year-month-day.cpp
@@ -647,10 +647,10 @@ extern "C" SEXP _clock_time_point_restore(SEXP x, SEXP to) {
   END_CPP11
 }
 // time-point.cpp
-cpp11::writable::list parse_time_point_cpp(const cpp11::strings& x, const cpp11::strings& format, const cpp11::integers& precision_int, const cpp11::integers& clock_int, const cpp11::strings& month, const cpp11::strings& mon_ab, const cpp11::strings& day, const cpp11::strings& day_ab, const cpp11::strings& am_pm, const cpp11::strings& mark);
-extern "C" SEXP _clock_parse_time_point_cpp(SEXP x, SEXP format, SEXP precision_int, SEXP clock_int, SEXP month, SEXP mon_ab, SEXP day, SEXP day_ab, SEXP am_pm, SEXP mark) {
+cpp11::writable::list parse_time_point_cpp(const cpp11::strings& x, const cpp11::strings& format, const cpp11::integers& precision_int, const cpp11::integers& clock_int, const cpp11::strings& month, const cpp11::strings& month_abbrev, const cpp11::strings& day, const cpp11::strings& day_ab, const cpp11::strings& am_pm, const cpp11::strings& mark);
+extern "C" SEXP _clock_parse_time_point_cpp(SEXP x, SEXP format, SEXP precision_int, SEXP clock_int, SEXP month, SEXP month_abbrev, SEXP day, SEXP day_ab, SEXP am_pm, SEXP mark) {
   BEGIN_CPP11
-    return cpp11::as_sexp(parse_time_point_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(clock_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mon_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(am_pm), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mark)));
+    return cpp11::as_sexp(parse_time_point_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(clock_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month_abbrev), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(am_pm), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mark)));
   END_CPP11
 }
 // utils.cpp
@@ -759,10 +759,10 @@ extern "C" SEXP _clock_zoned_info_cpp(SEXP fields, SEXP precision_int, SEXP zone
   END_CPP11
 }
 // zoned-time.cpp
-cpp11::writable::list parse_zoned_time_cpp(const cpp11::strings& x, const cpp11::strings& format, const cpp11::integers& precision_int, const cpp11::strings& month, const cpp11::strings& mon_ab, const cpp11::strings& day, const cpp11::strings& day_ab, const cpp11::strings& am_pm, const cpp11::strings& mark);
-extern "C" SEXP _clock_parse_zoned_time_cpp(SEXP x, SEXP format, SEXP precision_int, SEXP month, SEXP mon_ab, SEXP day, SEXP day_ab, SEXP am_pm, SEXP mark) {
+cpp11::writable::list parse_zoned_time_cpp(const cpp11::strings& x, const cpp11::strings& format, const cpp11::integers& precision_int, const cpp11::strings& month, const cpp11::strings& month_abbrev, const cpp11::strings& day, const cpp11::strings& day_ab, const cpp11::strings& am_pm, const cpp11::strings& mark);
+extern "C" SEXP _clock_parse_zoned_time_cpp(SEXP x, SEXP format, SEXP precision_int, SEXP month, SEXP month_abbrev, SEXP day, SEXP day_ab, SEXP am_pm, SEXP mark) {
   BEGIN_CPP11
-    return cpp11::as_sexp(parse_zoned_time_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mon_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(am_pm), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mark)));
+    return cpp11::as_sexp(parse_zoned_time_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month_abbrev), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(day_ab), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(am_pm), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mark)));
   END_CPP11
 }
 

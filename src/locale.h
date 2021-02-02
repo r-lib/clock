@@ -27,14 +27,14 @@ static
 inline
 std::pair<const std::string*, const std::string*>
 fill_month_names(const cpp11::strings& month,
-                 const cpp11::strings& mon_ab,
+                 const cpp11::strings& month_abbrev,
                  std::string (&month_names)[24]) {
   for (int i = 0; i < 12; ++i) {
     std::string string = month[i];
     month_names[i] = string;
   }
   for (int i = 0; i < 12; ++i) {
-    month_names[i + 12] = mon_ab[i];
+    month_names[i + 12] = month_abbrev[i];
   }
   return std::make_pair(month_names, month_names+sizeof(month_names)/sizeof(month_names[0]));
 }

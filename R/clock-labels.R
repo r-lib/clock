@@ -15,7 +15,7 @@
 #' - `clock_labels()` lets you create your own set of labels. Use this if the
 #'   currently supported languages don't meet your needs.
 #'
-#' @param month,mon_ab `[character(12)]`
+#' @param month,month_abbrev `[character(12)]`
 #'
 #'   Full and abbreviated month names. Starts with January.
 #'
@@ -33,15 +33,15 @@
 #' clock_labels_lookup("ko")
 #' clock_labels_lookup("fr")
 clock_labels <- function(month,
-                         mon_ab = month,
+                         month_abbrev = month,
                          day,
                          day_ab = day,
                          am_pm = c("AM", "PM")) {
   if (!is_character(month, n = 12L)) {
     abort("`month` must be a character vector of length 12.")
   }
-  if (!is_character(mon_ab, n = 12L)) {
-    abort("`mon_ab` must be a character vector of length 12.")
+  if (!is_character(month_abbrev, n = 12L)) {
+    abort("`month_abbrev` must be a character vector of length 12.")
   }
   if (!is_character(day, n = 7L)) {
     abort("`day` must be a character vector of length 7.")
@@ -56,7 +56,7 @@ clock_labels <- function(month,
   structure(
     list(
       month = enc2utf8(month),
-      mon_ab = enc2utf8(mon_ab),
+      month_abbrev = enc2utf8(month_abbrev),
       day = enc2utf8(day),
       day_ab = enc2utf8(day_ab),
       am_pm = enc2utf8(am_pm)
@@ -102,10 +102,10 @@ print.clock_labels <- function(x, ...) {
     day <- paste0(x$day, " (", x$day_ab, ")", collapse = ", ")
   }
 
-  if (identical(x$month, x$mon_ab)) {
+  if (identical(x$month, x$month_abbrev)) {
     month <- paste0(x$month, collapse = ", ")
   } else {
-    month <- paste0(x$month, " (", x$mon_ab, ")", collapse = ", ")
+    month <- paste0(x$month, " (", x$month_abbrev, ")", collapse = ", ")
   }
 
   am_pm <- paste0(x$am_pm, collapse = "/")

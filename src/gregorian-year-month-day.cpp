@@ -1009,7 +1009,7 @@ cpp11::writable::list
 parse_year_month_day_impl(const cpp11::strings& x,
                           const cpp11::strings& format,
                           const cpp11::strings& month,
-                          const cpp11::strings& mon_ab,
+                          const cpp11::strings& month_abbrev,
                           const cpp11::strings& day,
                           const cpp11::strings& day_ab,
                           const cpp11::strings& am_pm,
@@ -1033,7 +1033,7 @@ parse_year_month_day_impl(const cpp11::strings& x,
   std::string month_names[24];
   const std::pair<const std::string*, const std::string*>& month_names_pair = fill_month_names(
     month,
-    mon_ab,
+    month_abbrev,
     month_names
   );
 
@@ -1086,7 +1086,7 @@ parse_year_month_day_cpp(const cpp11::strings& x,
                          const cpp11::strings& format,
                          const cpp11::integers& precision_int,
                          const cpp11::strings& month,
-                         const cpp11::strings& mon_ab,
+                         const cpp11::strings& month_abbrev,
                          const cpp11::strings& day,
                          const cpp11::strings& day_ab,
                          const cpp11::strings& am_pm,
@@ -1094,15 +1094,15 @@ parse_year_month_day_cpp(const cpp11::strings& x,
   using namespace rclock;
 
   switch (parse_precision(precision_int)) {
-  case precision::year: return parse_year_month_day_impl<gregorian::y>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
-  case precision::month: return parse_year_month_day_impl<gregorian::ym>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
-  case precision::day: return parse_year_month_day_impl<gregorian::ymd>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
-  case precision::hour: return parse_year_month_day_impl<gregorian::ymdh>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
-  case precision::minute: return parse_year_month_day_impl<gregorian::ymdhm>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
-  case precision::second: return parse_year_month_day_impl<gregorian::ymdhms>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
-  case precision::millisecond: return parse_year_month_day_impl<gregorian::ymdhmss<std::chrono::milliseconds>>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
-  case precision::microsecond: return parse_year_month_day_impl<gregorian::ymdhmss<std::chrono::microseconds>>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
-  case precision::nanosecond: return parse_year_month_day_impl<gregorian::ymdhmss<std::chrono::nanoseconds>>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
+  case precision::year: return parse_year_month_day_impl<gregorian::y>(x, format, month, month_abbrev, day, day_ab, am_pm, mark);
+  case precision::month: return parse_year_month_day_impl<gregorian::ym>(x, format, month, month_abbrev, day, day_ab, am_pm, mark);
+  case precision::day: return parse_year_month_day_impl<gregorian::ymd>(x, format, month, month_abbrev, day, day_ab, am_pm, mark);
+  case precision::hour: return parse_year_month_day_impl<gregorian::ymdh>(x, format, month, month_abbrev, day, day_ab, am_pm, mark);
+  case precision::minute: return parse_year_month_day_impl<gregorian::ymdhm>(x, format, month, month_abbrev, day, day_ab, am_pm, mark);
+  case precision::second: return parse_year_month_day_impl<gregorian::ymdhms>(x, format, month, month_abbrev, day, day_ab, am_pm, mark);
+  case precision::millisecond: return parse_year_month_day_impl<gregorian::ymdhmss<std::chrono::milliseconds>>(x, format, month, month_abbrev, day, day_ab, am_pm, mark);
+  case precision::microsecond: return parse_year_month_day_impl<gregorian::ymdhmss<std::chrono::microseconds>>(x, format, month, month_abbrev, day, day_ab, am_pm, mark);
+  case precision::nanosecond: return parse_year_month_day_impl<gregorian::ymdhmss<std::chrono::nanoseconds>>(x, format, month, month_abbrev, day, day_ab, am_pm, mark);
   default: never_reached("parse_year_month_day_cpp");
   }
 }

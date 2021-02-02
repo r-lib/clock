@@ -10,7 +10,7 @@ locale_info <- function(x) {
 
   clock_labels(
     month = full$Month,
-    mon_ab = abbr$Month,
+    month_abbrev = abbr$Month,
     day = full$Weekday,
     day_ab = abbr$Weekday,
     am_pm = full$AmPm

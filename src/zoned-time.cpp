@@ -368,7 +368,7 @@ cpp11::writable::list
 parse_zoned_time_impl(const cpp11::strings& x,
                       const cpp11::strings& format,
                       const cpp11::strings& month,
-                      const cpp11::strings& mon_ab,
+                      const cpp11::strings& month_abbrev,
                       const cpp11::strings& day,
                       const cpp11::strings& day_ab,
                       const cpp11::strings& am_pm,
@@ -393,7 +393,7 @@ parse_zoned_time_impl(const cpp11::strings& x,
   std::string month_names[24];
   const std::pair<const std::string*, const std::string*>& month_names_pair = fill_month_names(
     month,
-    mon_ab,
+    month_abbrev,
     month_names
   );
 
@@ -492,7 +492,7 @@ parse_zoned_time_cpp(const cpp11::strings& x,
                      const cpp11::strings& format,
                      const cpp11::integers& precision_int,
                      const cpp11::strings& month,
-                     const cpp11::strings& mon_ab,
+                     const cpp11::strings& month_abbrev,
                      const cpp11::strings& day,
                      const cpp11::strings& day_ab,
                      const cpp11::strings& am_pm,
@@ -500,10 +500,10 @@ parse_zoned_time_cpp(const cpp11::strings& x,
   using namespace rclock;
 
   switch (parse_precision(precision_int)) {
-  case precision::second: return parse_zoned_time_impl<duration::seconds>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
-  case precision::millisecond: return parse_zoned_time_impl<duration::milliseconds>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
-  case precision::microsecond: return parse_zoned_time_impl<duration::microseconds>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
-  case precision::nanosecond: return parse_zoned_time_impl<duration::nanoseconds>(x, format, month, mon_ab, day, day_ab, am_pm, mark);
+  case precision::second: return parse_zoned_time_impl<duration::seconds>(x, format, month, month_abbrev, day, day_ab, am_pm, mark);
+  case precision::millisecond: return parse_zoned_time_impl<duration::milliseconds>(x, format, month, month_abbrev, day, day_ab, am_pm, mark);
+  case precision::microsecond: return parse_zoned_time_impl<duration::microseconds>(x, format, month, month_abbrev, day, day_ab, am_pm, mark);
+  case precision::nanosecond: return parse_zoned_time_impl<duration::nanoseconds>(x, format, month, month_abbrev, day, day_ab, am_pm, mark);
   default: never_reached("parse_zoned_time_cpp");
   }
 }
