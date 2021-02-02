@@ -123,64 +123,93 @@ calendar_leap_year.clock_calendar <- function(x) {
 #' # Group by two days of the month
 #' calendar_group(x, "day", n = 2)
 calendar_group <- function(x, precision, ..., n = 1L) {
+  check_dots_empty()
+
+  precision <- validate_precision(precision)
+
+  if (!calendar_is_valid_precision(x, precision)) {
+    message <- paste0(
+      "`precision` must be a valid precision for a '", calendar_name(x), "'."
+    )
+    abort(message)
+  }
+
+  x_precision <- calendar_precision(x)
+
+  if (precision > x_precision) {
+    precision <- precision_to_string(precision)
+    x_precision <- precision_to_string(x_precision)
+
+    message <- paste0(
+      "Can't group at a precision (", precision, ") ",
+      "that is more precise than `x` (", x_precision, ")."
+    )
+    abort(message)
+  }
+
+  if (precision > PRECISION_SECOND && x_precision != precision) {
+    # Grouping nanosecond precision by millisecond would be inconsistent
+    # with our general philosophy that you "lock in" the subsecond precision.
+    precision <- precision_to_string(precision)
+    x_precision <- precision_to_string(x_precision)
+
+    message <- paste0(
+      "Can't group a subsecond precision `x` (", x_precision, ") ",
+      "by another subsecond precision (", precision, ")."
+    )
+    abort(message)
+  }
+
   UseMethod("calendar_group")
 }
 
 #' @export
 calendar_group.clock_calendar <- function(x, precision, ..., n = 1L) {
-  check_dots_empty()
-
-  precision_string <- precision
-  precision <- validate_precision(precision_string)
-
-  if (!calendar_is_valid_precision(x, precision)) {
-    abort(paste0("`precision` must be a valid precision for a '", calendar_name(x), "'."))
-  }
-
-  n <- vec_cast(n, integer(), x_arg = "n")
-  if (!is_number(n)) {
-    abort("`n` must be a single number.")
-  }
-  if (n <= 0L) {
-    abort("`n` must be a positive number.")
-  }
-
-  x_precision <- calendar_precision(x)
-
-  if (x_precision < precision) {
-    x_precision <- precision_to_string(x_precision)
-    precision <- precision_to_string(precision)
-
-    message <- paste0(
-      "Can't group at a precision (", precision, ") that is more ",
-      "precise than `x` (", x_precision, ")."
-    )
-
-    abort(message)
-  }
-
-  x <- calendar_narrow(x, precision_string)
-
-  component <- calendar_precision_to_component(x, precision)
-  group_component_fn <- calendar_component_grouper(x, component)
-
-  if (n != 1L) {
-    value <- calendar_get_component(x, component)
-    value <- group_component_fn(value, n)
-    x <- calendar_set_component(x, value, component)
-  }
-
-  x
+  stop_clock_unsupported_calendar_op("calendar_group")
 }
 
-# Internal generic
-calendar_component_grouper <- function(x, component) {
-  UseMethod("calendar_component_grouper")
-}
+calendar_group_time <- function(x, n, precision) {
+  if (precision == PRECISION_HOUR) {
+    value <- get_hour(x)
+    value <- group_component0(value, n)
+    x <- set_hour(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_MINUTE) {
+    value <- get_minute(x)
+    value <- group_component0(value, n)
+    x <- set_minute(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_SECOND) {
+    value <- get_second(x)
+    value <- group_component0(value, n)
+    x <- set_second(x, value)
+    return(x)
+  }
 
-#' @export
-calendar_component_grouper.clock_calendar <- function(x, component) {
-  stop_clock_unsupported_calendar_op("calendar_component_grouper")
+  # Generic ensures that if `x_precision > PRECISION_SECOND`,
+  # then `precision == x_precision`, making this safe.
+  if (precision == PRECISION_MILLISECOND) {
+    value <- get_millisecond(x)
+    value <- group_component0(value, n)
+    x <- set_millisecond(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_MICROSECOND) {
+    value <- get_microsecond(x)
+    value <- group_component0(value, n)
+    x <- set_microsecond(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_NANOSECOND) {
+    value <- get_nanosecond(x)
+    value <- group_component0(value, n)
+    x <- set_nanosecond(x, value)
+    return(x)
+  }
+
+  abort("Internal error: Unknown precision.")
 }
 
 group_component0 <- function(x, n) {
@@ -190,33 +219,95 @@ group_component1 <- function(x, n) {
   ((x - 1L) %/% n) * n + 1L
 }
 
+validate_calendar_group_n <- function(n) {
+  n <- vec_cast(n, integer(), x_arg = "n")
+  if (!is_number(n)) {
+    abort("`n` must be a single number.")
+  }
+  if (n <= 0L) {
+    abort("`n` must be a positive number.")
+  }
+  n
+}
+
 # ------------------------------------------------------------------------------
 
 #' Narrow a calendar to a less precise precision
 #'
-#' `calendar_narrow()` drops `x` to the specified `precision`.
+#' @description
+#' `calendar_narrow()` narrows `x` to the specified `precision`. It does so
+#' by dropping components that represent a precision that is finer than
+#' `precision`.
+#'
+#' Each calendar has its own help page describing the precisions that you
+#' can narrow to:
+#'
+#' - [year-month-day][year-month-day-narrow]
+#'
+#' - [year-month-weekday][year-month-weekday-narrow]
+#'
+#' - [iso-year-week-day][iso-year-week-day-narrow]
+#'
+#' - [year-quarter-day][year-quarter-day-narrow]
+#'
+#' @details
+#' A subsecond precision `x` cannot be narrowed to another subsecond precision.
+#' You cannot narrow from, say, `"nanosecond"` to `"millisecond"` precision.
+#' clock operates under the philosophy that once you have set the subsecond
+#' precision of a calendar, it is "locked in" at that precision. If you
+#' expected this to use integer division to divide the nanoseconds by 1e6 to
+#' get to millisecond precision, you probably want to convert to a time point
+#' first, and use [time_point_floor()].
 #'
 #' @inheritParams calendar_group
 #'
 #' @return `x` narrowed to the supplied `precision`.
+#'
 #' @export
 #' @examples
-#' # Second precision
-#' x <- year_month_day(2019, 1, 1, 1, 1, 1)
+#' # Hour precision
+#' x <- year_month_day(2019, 1, 3, 4)
 #' x
 #'
-#' # Drop to day precision
+#' # Narrowed to day precision
 #' calendar_narrow(x, "day")
+#'
+#' # Or month precision
+#' calendar_narrow(x, "month")
 calendar_narrow <- function(x, precision) {
   precision <- validate_precision(precision)
 
   if (!calendar_is_valid_precision(x, precision)) {
-    abort(paste0("`precision` must be a valid precision for a '", calendar_name(x), "'."))
+    message <- paste0(
+      "`precision` must be a valid precision for a '", calendar_name(x), "'."
+    )
+    abort(message)
   }
 
   x_precision <- calendar_precision(x)
-  if (x_precision < precision) {
-    abort("Can't narrow to a precision that is wider than `x`.")
+
+  if (precision > x_precision) {
+    precision <- precision_to_string(precision)
+    x_precision <- precision_to_string(x_precision)
+
+    message <- paste0(
+      "Can't narrow to a precision (", precision, ") ",
+      "that is wider than `x` (", x_precision, ")."
+    )
+    abort(message)
+  }
+
+  if (precision > PRECISION_SECOND && x_precision != precision) {
+    # Allowing Nanosecond -> Millisecond wouldn't be consistent with us
+    # disallowing `set_millisecond(<calendar<nanosecond>>)`, and is ambiguous.
+    precision <- precision_to_string(precision)
+    x_precision <- precision_to_string(x_precision)
+
+    message <- paste0(
+      "Can't narrow a subsecond precision `x` (", x_precision, ") ",
+      "to another subsecond precision (", precision, ")."
+    )
+    abort(message)
   }
 
   UseMethod("calendar_narrow")
@@ -227,10 +318,7 @@ calendar_narrow.clock_calendar <- function(x, precision) {
   stop_clock_unsupported_calendar_op("calendar_narrow")
 }
 
-calendar_narrow_time <- function(out_fields,
-                                 out_precision,
-                                 x_fields,
-                                 x_precision) {
+calendar_narrow_time <- function(out_fields, out_precision, x_fields) {
   if (out_precision >= PRECISION_HOUR) {
     out_fields[["hour"]] <- x_fields[["hour"]]
   }
@@ -241,41 +329,129 @@ calendar_narrow_time <- function(out_fields,
     out_fields[["second"]] <- x_fields[["second"]]
   }
   if (out_precision > PRECISION_SECOND) {
-    factor <- precision_subsecond_factor(out_precision, x_precision)
-    out_fields[["subsecond"]] <- x_fields[["subsecond"]] %/% factor
+    out_fields[["subsecond"]] <- x_fields[["subsecond"]]
   }
 
   out_fields
 }
 
-precision_subsecond_factor <- function(narrow_precision, wide_precision) {
-  if (narrow_precision == PRECISION_MILLISECOND) {
-    if (wide_precision == PRECISION_MILLISECOND) {
-      1L
-    } else if (wide_precision == PRECISION_MICROSECOND) {
-      1e3L
-    } else if (wide_precision == PRECISION_NANOSECOND) {
-      1e6L
-    } else {
-      abort("Internal error: Invalid precision combination.")
-    }
-  } else if (narrow_precision == PRECISION_MICROSECOND) {
-    if (wide_precision == PRECISION_MICROSECOND) {
-      1L
-    } else if (wide_precision == PRECISION_NANOSECOND) {
-      1e3L
-    } else {
-      abort("Internal error: Invalid precision combination.")
-    }
-  } else if (narrow_precision == PRECISION_NANOSECOND) {
-    if (wide_precision == PRECISION_NANOSECOND) {
-      1L
-    } else {
-      abort("Internal error: Invalid precision combination.")
-    }
-  } else {
-    abort("Internal error: Invalid precision combination.")
+# ------------------------------------------------------------------------------
+
+#' Widen a calendar to a more precise precision
+#'
+#' @description
+#' `calendar_widen()` widens `x` to the specified `precision`. It does so
+#' by setting new components to their smallest value.
+#'
+#' Each calendar has its own help page describing the precisions that you
+#' can widen to:
+#'
+#' - [year-month-day][year-month-day-widen]
+#'
+#' - [year-month-weekday][year-month-weekday-widen]
+#'
+#' - [iso-year-week-day][iso-year-week-day-widen]
+#'
+#' - [year-quarter-day][year-quarter-day-widen]
+#'
+#' @details
+#' A subsecond precision `x` cannot be widened. You cannot widen from, say,
+#' `"millisecond"` to `"nanosecond"` precision. clock operates under the
+#' philosophy that once you have set the subsecond precision of a calendar,
+#' it is "locked in" at that precision. If you expected this to multiply
+#' the milliseconds by 1e6 to get to nanosecond precision, you probably
+#' want to convert to a time point first, and use [time_point_cast()].
+#'
+#' Generally, clock treats calendars at a specific precision as a _range_ of
+#' values. For example, a month precision year-month-day is treated as a range
+#' over `[yyyy-mm-01, yyyy-mm-last]`, with no assumption about the day of the
+#' month. However, occasionally it is useful to quickly widen a calendar,
+#' assuming that you want the beginning of this range to be used for each
+#' component. This is where `calendar_widen()` can come in handy.
+#'
+#' @inheritParams calendar_group
+#'
+#' @return `x` widened to the supplied `precision`.
+#'
+#' @export
+#' @examples
+#' # Month precision
+#' x <- year_month_day(2019, 1)
+#' x
+#'
+#' # Widen to day precision
+#' calendar_widen(x, "day")
+#'
+#' # Or second precision
+#' calendar_widen(x, "second")
+calendar_widen <- function(x, precision) {
+  precision <- validate_precision(precision)
+
+  if (!calendar_is_valid_precision(x, precision)) {
+    message <- paste0(
+      "`precision` must be a valid precision for a '", calendar_name(x), "'."
+    )
+    abort(message)
   }
+
+  x_precision <- calendar_precision(x)
+
+  if (x_precision > precision) {
+    precision <- precision_to_string(precision)
+    x_precision <- precision_to_string(x_precision)
+
+    message <- paste0(
+      "Can't widen to a precision (", precision, ") ",
+      "that is narrower than `x` (", x_precision, ")."
+    )
+    abort(message)
+  }
+
+  if (x_precision > PRECISION_SECOND && x_precision != precision) {
+    # Allowing Millisecond -> Nanosecond wouldn't be consistent with us
+    # disallowing `set_nanosecond(<calendar<millisecond>>)`, and is ambiguous.
+    precision <- precision_to_string(precision)
+    x_precision <- precision_to_string(x_precision)
+
+    message <- paste0(
+      "Can't widen a subsecond precision `x` (", x_precision, ") ",
+      "to another subsecond precision (", precision, ")."
+    )
+    abort(message)
+  }
+
+  UseMethod("calendar_widen")
+}
+
+#' @export
+calendar_widen.clock_calendar <- function(x, precision) {
+  stop_clock_unsupported_calendar_op("calendar_widen")
+}
+
+calendar_widen_time <- function(x, x_precision, precision) {
+  if (precision >= PRECISION_HOUR && x_precision < PRECISION_HOUR) {
+    x <- set_hour(x, 0L)
+  }
+  if (precision >= PRECISION_MINUTE && x_precision < PRECISION_MINUTE) {
+    x <- set_minute(x, 0L)
+  }
+  if (precision >= PRECISION_SECOND && x_precision < PRECISION_SECOND) {
+    x <- set_second(x, 0L)
+  }
+
+  # `x` is required to fulfill:
+  # `x_precision < PRECISION_SECOND` or `x_precision == precision`
+  if (precision == PRECISION_MILLISECOND && x_precision != precision) {
+    x <- set_millisecond(x, 0L)
+  }
+  if (precision == PRECISION_MICROSECOND && x_precision != precision) {
+    x <- set_microsecond(x, 0L)
+  }
+  if (precision == PRECISION_NANOSECOND && x_precision != precision) {
+    x <- set_nanosecond(x, 0L)
+  }
+
+  x
 }
 
 # ------------------------------------------------------------------------------

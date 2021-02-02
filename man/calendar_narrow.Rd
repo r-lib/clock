@@ -19,13 +19,36 @@ A precision. Allowed precisions are dependent on the calendar used.}
 \code{x} narrowed to the supplied \code{precision}.
 }
 \description{
-\code{calendar_narrow()} drops \code{x} to the specified \code{precision}.
+\code{calendar_narrow()} narrows \code{x} to the specified \code{precision}. It does so
+by dropping components that represent a precision that is finer than
+\code{precision}.
+
+Each calendar has its own help page describing the precisions that you
+can narrow to:
+\itemize{
+\item \link[=year-month-day-narrow]{year-month-day}
+\item \link[=year-month-weekday-narrow]{year-month-weekday}
+\item \link[=iso-year-week-day-narrow]{iso-year-week-day}
+\item \link[=year-quarter-day-narrow]{year-quarter-day}
+}
+}
+\details{
+A subsecond precision \code{x} cannot be narrowed to another subsecond precision.
+You cannot narrow from, say, \code{"nanosecond"} to \code{"millisecond"} precision.
+clock operates under the philosophy that once you have set the subsecond
+precision of a calendar, it is "locked in" at that precision. If you
+expected this to use integer division to divide the nanoseconds by 1e6 to
+get to millisecond precision, you probably want to convert to a time point
+first, and use \code{\link[=time_point_floor]{time_point_floor()}}.
 }
 \examples{
-# Second precision
-x <- year_month_day(2019, 1, 1, 1, 1, 1)
+# Hour precision
+x <- year_month_day(2019, 1, 3, 4)
 x
 
-# Drop to day precision
+# Narrowed to day precision
 calendar_narrow(x, "day")
+
+# Or month precision
+calendar_narrow(x, "month")
 }

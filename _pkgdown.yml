@@ -9,6 +9,7 @@ reference:
   - calendar_group
   - calendar_leap_year
   - calendar_narrow
+  - calendar_widen
   - get_year
   - set_year
 
@@ -18,6 +19,8 @@ reference:
   - as_year_month_day
   - is_year_month_day
   - calendar_group.clock_year_month_day
+  - year-month-day-narrow
+  - year-month-day-widen
   - add_years.clock_year_month_day
   - get_year.clock_year_month_day
   - set_year.clock_year_month_day
@@ -28,6 +31,8 @@ reference:
   - as_year_month_weekday
   - is_year_month_weekday
   - calendar_group.clock_year_month_weekday
+  - year-month-weekday-narrow
+  - year-month-weekday-widen
   - parse_year_month_day
   - add_years.clock_year_month_weekday
   - get_year.clock_year_month_weekday
@@ -39,6 +44,8 @@ reference:
   - as_iso_year_week_day
   - is_iso_year_week_day
   - calendar_group.clock_iso_year_week_day
+  - iso-year-week-day-narrow
+  - iso-year-week-day-widen
   - add_years.clock_iso_year_week_day
   - get_year.clock_iso_year_week_day
   - set_year.clock_iso_year_week_day
@@ -49,6 +56,8 @@ reference:
   - as_year_quarter_day
   - is_year_quarter_day
   - calendar_group.clock_year_quarter_day
+  - year-quarter-day-narrow
+  - year-quarter-day-widen
   - add_years.clock_year_quarter_day
   - get_year.clock_year_quarter_day
   - set_year.clock_year_quarter_day

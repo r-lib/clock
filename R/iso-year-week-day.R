@@ -808,7 +808,7 @@ as_naive_time.clock_iso_year_week_day <- function(x) {
 #'
 #' @param x `[clock_iso_year_week_day]`
 #'
-#'   A iso-year-week-day to group.
+#'   A iso-year-week-day vector.
 #'
 #' @param precision `[character(1)]`
 #'
@@ -840,35 +840,57 @@ as_naive_time.clock_iso_year_week_day <- function(x) {
 #' # Group by 2 ISO years
 #' calendar_group(y, "year", n = 2)
 calendar_group.clock_iso_year_week_day <- function(x, precision, ..., n = 1L) {
-  NextMethod()
-}
+  n <- validate_calendar_group_n(n)
+  x <- calendar_narrow(x, precision)
 
-#' @export
-calendar_component_grouper.clock_iso_year_week_day <- function(x, component) {
-  switch(
-    component,
-    year = group_component0,
-    week = group_component1,
-    day = group_component1,
-    hour = group_component0,
-    minute = group_component0,
-    second = group_component0,
-    millisecond = group_component0,
-    microsecond = group_component0,
-    nanosecond = group_component0
-  )
+  precision <- validate_precision(precision)
+
+  if (precision == PRECISION_YEAR) {
+    value <- get_year(x)
+    value <- group_component0(value, n)
+    x <- set_year(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_WEEK) {
+    value <- get_week(x)
+    value <- group_component1(value, n)
+    x <- set_week(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_DAY) {
+    value <- get_day(x)
+    value <- group_component1(value, n)
+    x <- set_day(x, value)
+    return(x)
+  }
+
+  x <- calendar_group_time(x, n, precision)
+  x
 }
 
 # ------------------------------------------------------------------------------
 
+#' Narrow: iso-year-week-day
+#'
+#' This is a iso-year-week-day method for the [calendar_narrow()] generic. It
+#' narrows a iso-year-week-day vector to the specified `precision`.
+#'
+#' @inheritParams iso-year-week-day-group
+#'
+#' @return `x` narrowed to the supplied `precision`.
+#'
+#' @name iso-year-week-day-narrow
+#'
 #' @export
+#' @examples
+#' # Day precision
+#' x <- iso_year_week_day(2019, 1, 5)
+#' x
+#'
+#' # Narrowed to week precision
+#' calendar_narrow(x, "week")
 calendar_narrow.clock_iso_year_week_day <- function(x, precision) {
-  x_precision <- calendar_precision(x)
   precision <- validate_precision(precision)
-
-  if (x_precision == precision) {
-    return(x)
-  }
 
   out_fields <- list()
   x_fields <- calendar_fields(x)
@@ -882,9 +904,50 @@ calendar_narrow.clock_iso_year_week_day <- function(x, precision) {
   if (precision >= PRECISION_DAY) {
     out_fields[["day"]] <- x_fields[["day"]]
   }
-  if (precision >= PRECISION_HOUR) {
-    out_fields <- calendar_narrow_time(out_fields, precision, x_fields, x_precision)
-  }
+
+  out_fields <- calendar_narrow_time(out_fields, precision, x_fields)
 
   new_iso_year_week_day_from_fields(out_fields, precision, names = names(x))
+}
+
+# ------------------------------------------------------------------------------
+
+#' Widen: iso-year-week-day
+#'
+#' This is a iso-year-week-day method for the [calendar_widen()] generic. It
+#' widens a iso-year-week-day vector to the specified `precision`.
+#'
+#' @inheritParams iso-year-week-day-group
+#'
+#' @return `x` widened to the supplied `precision`.
+#'
+#' @name iso-year-week-day-widen
+#'
+#' @export
+#' @examples
+#' # Week precision
+#' x <- iso_year_week_day(2019, 1)
+#' x
+#'
+#' # Widen to day precision
+#' # In the ISO calendar, the first day of the week is a Monday
+#' calendar_widen(x, "day")
+#'
+#' # Or second precision
+#' sec <- calendar_widen(x, "second")
+#' sec
+calendar_widen.clock_iso_year_week_day <- function(x, precision) {
+  x_precision <- calendar_precision(x)
+  precision <- validate_precision(precision)
+
+  if (precision >= PRECISION_WEEK && x_precision < PRECISION_WEEK) {
+    x <- set_week(x, 1L)
+  }
+  if (precision >= PRECISION_DAY && x_precision < PRECISION_DAY) {
+    x <- set_day(x, 1L)
+  }
+
+  x <- calendar_widen_time(x, x_precision, precision)
+
+  x
 }

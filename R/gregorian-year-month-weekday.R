@@ -929,7 +929,7 @@ calendar_leap_year.clock_year_month_weekday <- function(x) {
 #'
 #' @param x `[clock_year_month_weekday]`
 #'
-#'   A year-month-weekday to group.
+#'   A year-month-weekday vector.
 #'
 #' @param precision `[character(1)]`
 #'
@@ -956,43 +956,58 @@ calendar_leap_year.clock_year_month_weekday <- function(x) {
 #' # Group by 3 months - drops more precise components!
 #' calendar_group(x, "month", n = 3)
 calendar_group.clock_year_month_weekday <- function(x, precision, ..., n = 1L) {
-  if (identical(precision, "day")) {
+  n <- validate_calendar_group_n(n)
+  x <- calendar_narrow(x, precision)
+
+  precision <- validate_precision(precision)
+
+  if (precision == PRECISION_YEAR) {
+    value <- get_year(x)
+    value <- group_component0(value, n)
+    x <- set_year(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_MONTH) {
+    value <- get_month(x)
+    value <- group_component1(value, n)
+    x <- set_month(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_DAY) {
     message <- paste0(
       "Grouping 'year_month_weekday' by 'day' precision is undefined. ",
       "Convert to 'year_month_day' to group by day of month."
     )
     abort(message)
   }
-  NextMethod()
-}
 
-#' @export
-calendar_component_grouper.clock_year_month_weekday <- function(x, component) {
-  switch(
-    component,
-    year = group_component0,
-    month = group_component1,
-    day = abort("Internal error: Should have errored earlier. Undefined 'day' grouping"),
-    index = abort("Internal error: Should have errored earlier. Undefined 'day' grouping"),
-    hour = group_component0,
-    minute = group_component0,
-    second = group_component0,
-    millisecond = group_component0,
-    microsecond = group_component0,
-    nanosecond = group_component0
-  )
+  x <- calendar_group_time(x, n, precision)
+  x
 }
 
 # ------------------------------------------------------------------------------
 
+#' Narrow: year-month-weekday
+#'
+#' This is a year-month-weekday method for the [calendar_narrow()] generic. It
+#' narrows a year-month-weekday vector to the specified `precision`.
+#'
+#' @inheritParams year-month-weekday-widen
+#'
+#' @return `x` narrowed to the supplied `precision`.
+#'
+#' @name year-month-weekday-narrow
+#'
 #' @export
+#' @examples
+#' # Day precision
+#' x <- year_month_weekday(2019, 1, 1, 2)
+#' x
+#'
+#' # Narrowed to month precision
+#' calendar_narrow(x, "month")
 calendar_narrow.clock_year_month_weekday <- function(x, precision) {
-  x_precision <- calendar_precision(x)
   precision <- validate_precision(precision)
-
-  if (x_precision == precision) {
-    return(x)
-  }
 
   out_fields <- list()
   x_fields <- calendar_fields(x)
@@ -1007,9 +1022,70 @@ calendar_narrow.clock_year_month_weekday <- function(x, precision) {
     out_fields[["day"]] <- x_fields[["day"]]
     out_fields[["index"]] <- x_fields[["index"]]
   }
-  if (precision >= PRECISION_HOUR) {
-    out_fields <- calendar_narrow_time(out_fields, precision, x_fields, x_precision)
-  }
+
+  out_fields <- calendar_narrow_time(out_fields, precision, x_fields)
 
   new_year_month_weekday_from_fields(out_fields, precision, names = names(x))
+}
+
+# ------------------------------------------------------------------------------
+
+#' Widen: year-month-weekday
+#'
+#' This is a year-month-weekday method for the [calendar_widen()] generic. It
+#' widens a year-month-weekday vector to the specified `precision`.
+#'
+#' @details
+#' Widening a month precision year-month-weekday to day precision will set
+#' the day and the index to `1`. This sets the weekday components to the
+#' first Sunday of the month.
+#'
+#' @inheritParams year-month-weekday-group
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"year"`
+#'   - `"month"`
+#'   - `"day"`
+#'   - `"hour"`
+#'   - `"minute"`
+#'   - `"second"`
+#'   - `"millisecond"`
+#'   - `"microsecond"`
+#'   - `"nanosecond"`
+#'
+#' @return `x` widened to the supplied `precision`.
+#'
+#' @name year-month-weekday-widen
+#'
+#' @export
+#' @examples
+#' # Month precision
+#' x <- year_month_weekday(2019, 1)
+#' x
+#'
+#' # Widen to day precision
+#' # Note that this sets both the day and index to 1,
+#' # i.e. the first Sunday of the month.
+#' calendar_widen(x, "day")
+#'
+#' # Or second precision
+#' sec <- calendar_widen(x, "second")
+#' sec
+calendar_widen.clock_year_month_weekday <- function(x, precision) {
+  x_precision <- calendar_precision(x)
+  precision <- validate_precision(precision)
+
+  if (precision >= PRECISION_MONTH && x_precision < PRECISION_MONTH) {
+    x <- set_month(x, 1L)
+  }
+  if (precision >= PRECISION_DAY && x_precision < PRECISION_DAY) {
+    x <- set_day(x, 1L, index = 1L)
+  }
+
+  x <- calendar_widen_time(x, x_precision, precision)
+
+  x
 }

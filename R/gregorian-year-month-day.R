@@ -1014,7 +1014,7 @@ calendar_leap_year.clock_year_month_day <- function(x) {
 #'
 #' @param x `[clock_year_month_day]`
 #'
-#'   A year-month-day to group.
+#'   A year-month-day vector.
 #'
 #' @param precision `[character(1)]`
 #'
@@ -1059,35 +1059,73 @@ calendar_leap_year.clock_year_month_day <- function(x) {
 #' )
 #' calendar_group(z, "nanosecond", n = 5)
 calendar_group.clock_year_month_day <- function(x, precision, ..., n = 1L) {
-  NextMethod()
-}
+  n <- validate_calendar_group_n(n)
+  x <- calendar_narrow(x, precision)
 
-#' @export
-calendar_component_grouper.clock_year_month_day <- function(x, component) {
-  switch(
-    component,
-    year = group_component0,
-    month = group_component1,
-    day = group_component1,
-    hour = group_component0,
-    minute = group_component0,
-    second = group_component0,
-    millisecond = group_component0,
-    microsecond = group_component0,
-    nanosecond = group_component0
-  )
+  precision <- validate_precision(precision)
+
+  if (precision == PRECISION_YEAR) {
+    value <- get_year(x)
+    value <- group_component0(value, n)
+    x <- set_year(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_MONTH) {
+    value <- get_month(x)
+    value <- group_component1(value, n)
+    x <- set_month(x, value)
+    return(x)
+  }
+  if (precision == PRECISION_DAY) {
+    value <- get_day(x)
+    value <- group_component1(value, n)
+    x <- set_day(x, value)
+    return(x)
+  }
+
+  x <- calendar_group_time(x, n, precision)
+  x
 }
 
 # ------------------------------------------------------------------------------
 
+#' Narrow: year-month-day
+#'
+#' This is a year-month-day method for the [calendar_narrow()] generic. It
+#' narrows a year-month-day vector to the specified `precision`.
+#'
+#' @inheritParams year-month-day-group
+#'
+#' @return `x` narrowed to the supplied `precision`.
+#'
+#' @name year-month-day-narrow
+#'
 #' @export
+#' @examples
+#' # Hour precision
+#' x <- year_month_day(2019, 1, 3, 4)
+#' x
+#'
+#' # Narrowed to day precision
+#' calendar_narrow(x, "day")
+#'
+#' # Or month precision
+#' calendar_narrow(x, "month")
+#'
+#' # Subsecond precision can be narrowed to second precision
+#' milli <- calendar_widen(x, "millisecond")
+#' micro <- calendar_widen(x, "microsecond")
+#' milli
+#' micro
+#'
+#' calendar_narrow(milli, "second")
+#' calendar_narrow(micro, "second")
+#'
+#' # But once you have "locked in" a subsecond precision, it can't be
+#' # narrowed to another subsecond precision
+#' try(calendar_narrow(micro, "millisecond"))
 calendar_narrow.clock_year_month_day <- function(x, precision) {
-  x_precision <- calendar_precision(x)
   precision <- validate_precision(precision)
-
-  if (x_precision == precision) {
-    return(x)
-  }
 
   out_fields <- list()
   x_fields <- calendar_fields(x)
@@ -1101,9 +1139,59 @@ calendar_narrow.clock_year_month_day <- function(x, precision) {
   if (precision >= PRECISION_DAY) {
     out_fields[["day"]] <- x_fields[["day"]]
   }
-  if (precision >= PRECISION_HOUR) {
-    out_fields <- calendar_narrow_time(out_fields, precision, x_fields, x_precision)
-  }
+
+  out_fields <- calendar_narrow_time(out_fields, precision, x_fields)
 
   new_year_month_day_from_fields(out_fields, precision, names = names(x))
+}
+
+# ------------------------------------------------------------------------------
+
+#' Widen: year-month-day
+#'
+#' This is a year-month-day method for the [calendar_widen()] generic. It
+#' widens a year-month-day vector to the specified `precision`.
+#'
+#' @inheritParams year-month-day-group
+#'
+#' @return `x` widened to the supplied `precision`.
+#'
+#' @name year-month-day-widen
+#'
+#' @export
+#' @examples
+#' # Month precision
+#' x <- year_month_day(2019, 1)
+#' x
+#'
+#' # Widen to day precision
+#' calendar_widen(x, "day")
+#'
+#' # Or second precision
+#' sec <- calendar_widen(x, "second")
+#' sec
+#'
+#' # Second precision can be widened to subsecond precision
+#' milli <- calendar_widen(sec, "millisecond")
+#' micro <- calendar_widen(sec, "microsecond")
+#' milli
+#' micro
+#'
+#' # But once you have "locked in" a subsecond precision, it can't
+#' # be widened again
+#' try(calendar_widen(milli, "microsecond"))
+calendar_widen.clock_year_month_day <- function(x, precision) {
+  x_precision <- calendar_precision(x)
+  precision <- validate_precision(precision)
+
+  if (precision >= PRECISION_MONTH && x_precision < PRECISION_MONTH) {
+    x <- set_month(x, 1L)
+  }
+  if (precision >= PRECISION_DAY && x_precision < PRECISION_DAY) {
+    x <- set_day(x, 1L)
+  }
+
+  x <- calendar_widen_time(x, x_precision, precision)
+
+  x
 }
