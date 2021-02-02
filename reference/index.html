@@ -121,6 +121,85 @@
     <tbody>
       <tr>
         <th colspan="2">
+          <h2 id="section-high-level-api" class="hasAnchor"><a href="#section-high-level-api" class="anchor"></a>High Level API</h2>
+          <p class="section-desc"><p>This section contains the high level API for R’s native date and date-time types, Date, POSIXct, and POSIXlt. If you are new to clock, this is the best place to start.</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="date_group.html">date_group()</a></code> </p>
+        </td>
+        <td><p>Group date and date-time components</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="date-group.html">date_group(<i>&lt;Date&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Group date components</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="posixt-group.html">date_group(<i>&lt;POSIXt&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Group date-time components</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Date-getters.html">get_year(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-getters.html">get_month(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-getters.html">get_day(<i>&lt;Date&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Getters: date</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="posixt-getters.html">get_year(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_month(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_day(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_hour(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_minute(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_second(<i>&lt;POSIXt&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Getters: date-time</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Date-setters.html">set_year(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-setters.html">set_month(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-setters.html">set_day(<i>&lt;Date&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Setters: date</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="posixt-setters.html">set_year(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_month(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_day(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_hour(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_minute(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_second(<i>&lt;POSIXt&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Setters: date-time</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Date-arithmetic.html">add_years(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_quarters(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_months(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_weeks(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_days(<i>&lt;Date&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Arithmetic: date</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="posixt-arithmetic.html">add_years(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_quarters(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_months(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_weeks(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_days(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_hours(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_minutes(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_seconds(<i>&lt;POSIXt&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Arithmetic: date-time</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as-zoned-time-Date.html">as_zoned_time(<i>&lt;Date&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Convert to a zoned-time from a date</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as-zoned-time-posixt.html">as_zoned_time(<i>&lt;POSIXt&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Convert to a zoned-time from a date-time</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
           <h2 id="section-calendars" class="hasAnchor"><a href="#section-calendars" class="anchor"></a>Calendars</h2>
           <p class="section-desc"></p>
         </th>
@@ -667,80 +746,6 @@
           <p><code><a href="as_weekday.html">as_weekday()</a></code> </p>
         </td>
         <td><p>Convert to a weekday</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-date-support" class="hasAnchor"><a href="#section-date-support" class="anchor"></a>Date support</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="Date-getters.html">get_year(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-getters.html">get_month(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-getters.html">get_day(<i>&lt;Date&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Getters: date</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Date-setters.html">set_year(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-setters.html">set_month(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-setters.html">set_day(<i>&lt;Date&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Setters: date</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Date-arithmetic.html">add_years(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_quarters(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_months(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_weeks(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_days(<i>&lt;Date&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Arithmetic: date</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as-zoned-time-Date.html">as_zoned_time(<i>&lt;Date&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Convert to a zoned-time from a date</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-posixct-posixlt-support" class="hasAnchor"><a href="#section-posixct-posixlt-support" class="anchor"></a>POSIXct / POSIXlt support</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="posixt-getters.html">get_year(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_month(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_day(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_hour(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_minute(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-getters.html">get_second(<i>&lt;POSIXt&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Getters: date-time</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="posixt-setters.html">set_year(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_month(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_day(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_hour(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_minute(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_second(<i>&lt;POSIXt&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Setters: date-time</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="posixt-arithmetic.html">add_years(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_quarters(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_months(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_weeks(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_days(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_hours(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_minutes(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_seconds(<i>&lt;POSIXt&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Arithmetic: date-time</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as-zoned-time-posixt.html">as_zoned_time(<i>&lt;POSIXt&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Convert to a zoned-time from a date-time</p></td>
       </tr>
     </tbody><tbody>
       <tr>
