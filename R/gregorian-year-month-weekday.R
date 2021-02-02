@@ -985,14 +985,27 @@ calendar_component_grouper.clock_year_month_weekday <- function(x, component) {
 
 # ------------------------------------------------------------------------------
 
+#' Narrow: year-month-weekday
+#'
+#' This is a year-month-weekday method for the [calendar_narrow()] generic. It
+#' narrows a year-month-weekday vector to the specified `precision`.
+#'
+#' @inheritParams year-month-weekday-widen
+#'
+#' @return `x` narrowed to the supplied `precision`.
+#'
+#' @name year-month-weekday-narrow
+#'
 #' @export
+#' @examples
+#' # Day precision
+#' x <- year_month_weekday(2019, 1, 1, 2)
+#' x
+#'
+#' # Narrowed to month precision
+#' calendar_narrow(x, "month")
 calendar_narrow.clock_year_month_weekday <- function(x, precision) {
-  x_precision <- calendar_precision(x)
   precision <- validate_precision(precision)
-
-  if (x_precision == precision) {
-    return(x)
-  }
 
   out_fields <- list()
   x_fields <- calendar_fields(x)
@@ -1007,9 +1020,8 @@ calendar_narrow.clock_year_month_weekday <- function(x, precision) {
     out_fields[["day"]] <- x_fields[["day"]]
     out_fields[["index"]] <- x_fields[["index"]]
   }
-  if (precision >= PRECISION_HOUR) {
-    out_fields <- calendar_narrow_time(out_fields, precision, x_fields, x_precision)
-  }
+
+  out_fields <- calendar_narrow_time(out_fields, precision, x_fields)
 
   new_year_month_weekday_from_fields(out_fields, precision, names = names(x))
 }

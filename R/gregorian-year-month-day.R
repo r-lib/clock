@@ -1080,14 +1080,43 @@ calendar_component_grouper.clock_year_month_day <- function(x, component) {
 
 # ------------------------------------------------------------------------------
 
+#' Narrow: year-month-day
+#'
+#' This is a year-month-day method for the [calendar_narrow()] generic. It
+#' narrows a year-month-day vector to the specified `precision`.
+#'
+#' @inheritParams year-month-day-group
+#'
+#' @return `x` narrowed to the supplied `precision`.
+#'
+#' @name year-month-day-narrow
+#'
 #' @export
+#' @examples
+#' # Hour precision
+#' x <- year_month_day(2019, 1, 3, 4)
+#' x
+#'
+#' # Narrowed to day precision
+#' calendar_narrow(x, "day")
+#'
+#' # Or month precision
+#' calendar_narrow(x, "month")
+#'
+#' # Subsecond precision can be narrowed to second precision
+#' milli <- calendar_widen(x, "millisecond")
+#' micro <- calendar_widen(x, "microsecond")
+#' milli
+#' micro
+#'
+#' calendar_narrow(milli, "second")
+#' calendar_narrow(micro, "second")
+#'
+#' # But once you have "locked in" a subsecond precision, it can't be
+#' # narrowed to another subsecond precision
+#' try(calendar_narrow(micro, "millisecond"))
 calendar_narrow.clock_year_month_day <- function(x, precision) {
-  x_precision <- calendar_precision(x)
   precision <- validate_precision(precision)
-
-  if (x_precision == precision) {
-    return(x)
-  }
 
   out_fields <- list()
   x_fields <- calendar_fields(x)
@@ -1101,9 +1130,8 @@ calendar_narrow.clock_year_month_day <- function(x, precision) {
   if (precision >= PRECISION_DAY) {
     out_fields[["day"]] <- x_fields[["day"]]
   }
-  if (precision >= PRECISION_HOUR) {
-    out_fields <- calendar_narrow_time(out_fields, precision, x_fields, x_precision)
-  }
+
+  out_fields <- calendar_narrow_time(out_fields, precision, x_fields)
 
   new_year_month_day_from_fields(out_fields, precision, names = names(x))
 }

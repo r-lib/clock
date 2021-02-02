@@ -1,4 +1,21 @@
 # ------------------------------------------------------------------------------
+# calendar_narrow()
+
+test_that("can narrow to week", {
+  x_expect <- iso_year_week_day(2019, 2)
+  x <- set_day(x_expect, 1)
+  expect_identical(calendar_narrow(x, "week"), x_expect)
+  expect_identical(calendar_narrow(x_expect, "week"), x_expect)
+})
+
+test_that("can narrow to day", {
+  x_expect <- iso_year_week_day(2019, 2, 3)
+  x <- set_hour(x_expect, 5)
+  expect_identical(calendar_narrow(x, "day"), x_expect)
+  expect_identical(calendar_narrow(x_expect, "day"), x_expect)
+})
+
+# ------------------------------------------------------------------------------
 # calendar_widen()
 
 test_that("can widen to week", {

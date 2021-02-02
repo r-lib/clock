@@ -982,14 +982,27 @@ calendar_component_grouper.clock_year_quarter_day <- function(x, component) {
 
 # ------------------------------------------------------------------------------
 
+#' Narrow: year-quarter-day
+#'
+#' This is a year-quarter-day method for the [calendar_narrow()] generic. It
+#' narrows a year-quarter-day vector to the specified `precision`.
+#'
+#' @inheritParams year-quarter-day-group
+#'
+#' @return `x` narrowed to the supplied `precision`.
+#'
+#' @name year-quarter-day-narrow
+#'
 #' @export
+#' @examples
+#' # Day precision
+#' x <- year_quarter_day(2019, 1, 5)
+#' x
+#'
+#' # Narrow to quarter precision
+#' calendar_narrow(x, "quarter")
 calendar_narrow.clock_year_quarter_day <- function(x, precision) {
-  x_precision <- calendar_precision(x)
   precision <- validate_precision(precision)
-
-  if (x_precision == precision) {
-    return(x)
-  }
 
   start <- quarterly_start(x)
 
@@ -1005,9 +1018,8 @@ calendar_narrow.clock_year_quarter_day <- function(x, precision) {
   if (precision >= PRECISION_DAY) {
     out_fields[["day"]] <- x_fields[["day"]]
   }
-  if (precision >= PRECISION_HOUR) {
-    out_fields <- calendar_narrow_time(out_fields, precision, x_fields, x_precision)
-  }
+
+  out_fields <- calendar_narrow_time(out_fields, precision, x_fields)
 
   new_year_quarter_day_from_fields(out_fields, precision, start, names = names(x))
 }

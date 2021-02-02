@@ -1,4 +1,44 @@
 # ------------------------------------------------------------------------------
+# calendar_narrow()
+
+test_that("can narrow to month", {
+  x_expect <- year_month_day(2019, 2)
+  x <- set_day(x_expect, 1)
+  expect_identical(calendar_narrow(x, "month"), x_expect)
+  expect_identical(calendar_narrow(x_expect, "month"), x_expect)
+})
+
+test_that("can narrow to day", {
+  x_expect <- year_month_day(2019, 2, 3)
+  x <- set_hour(x_expect, 5)
+  expect_identical(calendar_narrow(x, "day"), x_expect)
+  expect_identical(calendar_narrow(x_expect, "day"), x_expect)
+})
+
+test_that("can narrow to hour", {
+  x_expect <- year_month_day(2019, 2, 3, 4)
+  x <- set_minute(x_expect, 5)
+  expect_identical(calendar_narrow(x, "hour"), x_expect)
+  expect_identical(calendar_narrow(x_expect, "hour"), x_expect)
+})
+
+test_that("can narrow to minute", {
+  x_expect <- year_month_day(2019, 2, 3, 4, 5)
+  x <- set_second(x_expect, 6)
+  expect_identical(calendar_narrow(x, "minute"), x_expect)
+  expect_identical(calendar_narrow(x_expect, "minute"), x_expect)
+})
+
+test_that("can narrow to second", {
+  expect <- year_month_day(2019, 2, 3, 4, 5, 6)
+  x <- set_millisecond(expect, 7)
+  y <- set_nanosecond(expect, 7)
+  expect_identical(calendar_narrow(x, "second"), expect)
+  expect_identical(calendar_narrow(y, "second"), expect)
+  expect_identical(calendar_narrow(expect, "second"), expect)
+})
+
+# ------------------------------------------------------------------------------
 # calendar_widen()
 
 test_that("can widen to month", {
