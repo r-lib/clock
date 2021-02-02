@@ -9,8 +9,8 @@
 clock_labels(
   month,
   month_abbrev = month,
-  day,
-  day_ab = day,
+  weekday,
+  weekday_abbrev = weekday,
   am_pm = c("AM", "PM")
 )
 
@@ -23,9 +23,9 @@ clock_labels_languages()
 
 Full and abbreviated month names. Starts with January.}
 
-\item{day, day_ab}{\verb{[character(7)]}
+\item{weekday, weekday_abbrev}{\verb{[character(7)]}
 
-Full and abbreviated week day names. Starts with Sunday.}
+Full and abbreviated weekday names. Starts with Sunday.}
 
 \item{am_pm}{\verb{[character(2)]}
 

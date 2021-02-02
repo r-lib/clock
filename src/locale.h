@@ -10,15 +10,15 @@
 static
 inline
 std::pair<const std::string*, const std::string*>
-fill_weekday_names(const cpp11::strings& day,
-                   const cpp11::strings& day_ab,
+fill_weekday_names(const cpp11::strings& weekday,
+                   const cpp11::strings& weekday_abbrev,
                    std::string (&weekday_names)[14]) {
   for (int i = 0; i < 7; ++i) {
-    std::string string = day[i];
+    std::string string = weekday[i];
     weekday_names[i] = string;
   }
   for (int i = 0; i < 7; ++i) {
-    weekday_names[i + 7] = day_ab[i];
+    weekday_names[i + 7] = weekday_abbrev[i];
   }
   return std::make_pair(weekday_names, weekday_names+sizeof(weekday_names)/sizeof(weekday_names[0]));
 }

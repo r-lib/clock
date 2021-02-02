@@ -19,9 +19,9 @@
 #'
 #'   Full and abbreviated month names. Starts with January.
 #'
-#' @param day,day_ab `[character(7)]`
+#' @param weekday,weekday_abbrev `[character(7)]`
 #'
-#'   Full and abbreviated week day names. Starts with Sunday.
+#'   Full and abbreviated weekday names. Starts with Sunday.
 #'
 #' @param am_pm `[character(2)]`
 #'
@@ -34,8 +34,8 @@
 #' clock_labels_lookup("fr")
 clock_labels <- function(month,
                          month_abbrev = month,
-                         day,
-                         day_ab = day,
+                         weekday,
+                         weekday_abbrev = weekday,
                          am_pm = c("AM", "PM")) {
   if (!is_character(month, n = 12L)) {
     abort("`month` must be a character vector of length 12.")
@@ -43,11 +43,11 @@ clock_labels <- function(month,
   if (!is_character(month_abbrev, n = 12L)) {
     abort("`month_abbrev` must be a character vector of length 12.")
   }
-  if (!is_character(day, n = 7L)) {
-    abort("`day` must be a character vector of length 7.")
+  if (!is_character(weekday, n = 7L)) {
+    abort("`weekday` must be a character vector of length 7.")
   }
-  if (!is_character(day_ab, n = 7L)) {
-    abort("`day_ab` must be a character vector of length 7.")
+  if (!is_character(weekday_abbrev, n = 7L)) {
+    abort("`weekday_abbrev` must be a character vector of length 7.")
   }
   if (!is_character(am_pm, n = 2L)) {
     abort("`am_pm` must be a character vector of length 2.")
@@ -57,8 +57,8 @@ clock_labels <- function(month,
     list(
       month = enc2utf8(month),
       month_abbrev = enc2utf8(month_abbrev),
-      day = enc2utf8(day),
-      day_ab = enc2utf8(day_ab),
+      weekday = enc2utf8(weekday),
+      weekday_abbrev = enc2utf8(weekday_abbrev),
       am_pm = enc2utf8(am_pm)
     ),
     class = "clock_labels"
@@ -96,10 +96,10 @@ clock_labels_languages <- function() {
 print.clock_labels <- function(x, ...) {
   cat("<clock_labels>\n")
 
-  if (identical(x$day, x$day_ab)) {
-    day <- paste0(x$day, collapse = ", ")
+  if (identical(x$weekday, x$weekday_abbrev)) {
+    weekday <- paste0(x$weekday, collapse = ", ")
   } else {
-    day <- paste0(x$day, " (", x$day_ab, ")", collapse = ", ")
+    weekday <- paste0(x$weekday, " (", x$weekday_abbrev, ")", collapse = ", ")
   }
 
   if (identical(x$month, x$month_abbrev)) {
@@ -110,9 +110,9 @@ print.clock_labels <- function(x, ...) {
 
   am_pm <- paste0(x$am_pm, collapse = "/")
 
-  cat_wrap("Days:   ", day)
-  cat_wrap("Months: ", month)
-  cat_wrap("AM/PM:  ", am_pm)
+  cat_wrap("Weekdays: ", weekday)
+  cat_wrap("Months:   ", month)
+  cat_wrap("AM/PM:    ", am_pm)
 }
 
 is_clock_labels <- function(x) {

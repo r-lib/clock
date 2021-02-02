@@ -267,8 +267,8 @@ parse_year_month_day <- function(x,
     precision,
     labels$month,
     labels$month_abbrev,
-    labels$day,
-    labels$day_ab,
+    labels$weekday,
+    labels$weekday_abbrev,
     labels$am_pm,
     mark
   )

@@ -51,8 +51,8 @@ format.clock_time_point <- function(x,
     precision_int = precision,
     month = labels$month,
     month_abbrev = labels$month_abbrev,
-    day = labels$day,
-    day_ab = labels$day_ab,
+    weekday = labels$weekday,
+    weekday_abbrev = labels$weekday_abbrev,
     am_pm = labels$am_pm,
     decimal_mark = decimal_mark
   )
@@ -126,8 +126,8 @@ parse_time_point <- function(x,
     clock,
     labels$month,
     labels$month_abbrev,
-    labels$day,
-    labels$day_ab,
+    labels$weekday,
+    labels$weekday_abbrev,
     labels$am_pm,
     mark
   )
