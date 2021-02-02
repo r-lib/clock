@@ -483,10 +483,6 @@ calendar_name.clock_iso_year_week_day <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-#' @export
-calendar_component_to_precision.clock_iso_year_week_day <- function(x, component) {
-  iso_year_week_day_component_to_precision(component)
-}
 iso_year_week_day_component_to_precision <- function(component) {
   switch(
     component,

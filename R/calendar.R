@@ -464,11 +464,6 @@ calendar_name <- function(x) {
 # ------------------------------------------------------------------------------
 
 # Internal generic
-calendar_component_to_precision <- function(x, component) {
-  UseMethod("calendar_component_to_precision")
-}
-
-# Internal generic
 calendar_component_to_field <- function(x, component) {
   UseMethod("calendar_component_to_field")
 }

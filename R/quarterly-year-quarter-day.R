@@ -542,10 +542,6 @@ calendar_name.clock_year_quarter_day <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-#' @export
-calendar_component_to_precision.clock_year_quarter_day <- function(x, component) {
-  year_quarter_day_component_to_precision(component)
-}
 year_quarter_day_component_to_precision <- function(component) {
   switch(
     component,

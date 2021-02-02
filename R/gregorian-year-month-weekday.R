@@ -561,10 +561,6 @@ calendar_name.clock_year_month_weekday <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-#' @export
-calendar_component_to_precision.clock_year_month_weekday <- function(x, component) {
-  year_month_weekday_component_to_precision(component)
-}
 year_month_weekday_component_to_precision <- function(component) {
   switch(
     component,
