@@ -5,9 +5,9 @@ development:
 
 reference:
 - title: High Level API
-  desc: This section contains the high level API for R's native date and
-    date-time types, Date, POSIXct, and POSIXlt. If you are new to clock,
-    this is the best place to start.
+  desc: This section contains the high level API for usage with R's native
+    date and date-time types, Date, POSIXct, and POSIXlt. If you are new to
+    clock, this is the best place to start.
   contents:
   - date_group
   - date-group
