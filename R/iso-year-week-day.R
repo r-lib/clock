@@ -499,10 +499,6 @@ iso_year_week_day_component_to_precision <- function(component) {
   )
 }
 
-#' @export
-calendar_component_to_field.clock_iso_year_week_day <- function(x, component) {
-  iso_year_week_day_component_to_field(component)
-}
 iso_year_week_day_component_to_field <- function(component) {
   switch (
     component,

@@ -651,10 +651,6 @@ year_month_day_component_to_precision <- function(component) {
   )
 }
 
-#' @export
-calendar_component_to_field.clock_year_month_day <- function(x, component) {
-  year_month_day_component_to_field(component)
-}
 year_month_day_component_to_field <- function(component) {
   switch (
     component,
