@@ -78,9 +78,9 @@ zoned_time_print_zone_name <- function(..., print_zone_name = TRUE) {
 }
 zoned_time_format <- function(print_zone_name) {
   if (print_zone_name) {
-    "%Y-%m-%dT%H:%M:%S%Ez[%Z]"
+    "%Y-%m-%d %H:%M:%S%Ez[%Z]"
   } else {
-    "%Y-%m-%dT%H:%M:%S%Ez"
+    "%Y-%m-%d %H:%M:%S%Ez"
   }
 }
 
@@ -88,7 +88,7 @@ zoned_time_format <- function(print_zone_name) {
 
 parse_zoned_time <- function(x,
                              ...,
-                             format = "%Y-%m-%dT%H:%M:%S%Ez[%Z]",
+                             format = "%Y-%m-%d %H:%M:%S%Ez[%Z]",
                              precision = "second",
                              locale = default_clock_locale()) {
   check_dots_empty()
