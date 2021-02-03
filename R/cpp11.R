@@ -400,6 +400,10 @@ as_zoned_sys_time_from_naive_time_cpp <- function(fields, precision_int, zone, n
   .Call("_clock_as_zoned_sys_time_from_naive_time_cpp", fields, precision_int, zone, nonexistent_string, ambiguous_string, PACKAGE = "clock")
 }
 
+as_zoned_sys_time_from_naive_time_with_reference_cpp <- function(fields, precision_int, zone, nonexistent_string, ambiguous_string, reference) {
+  .Call("_clock_as_zoned_sys_time_from_naive_time_with_reference_cpp", fields, precision_int, zone, nonexistent_string, ambiguous_string, reference, PACKAGE = "clock")
+}
+
 to_sys_duration_fields_from_sys_seconds_cpp <- function(seconds) {
   .Call("_clock_to_sys_duration_fields_from_sys_seconds_cpp", seconds, PACKAGE = "clock")
 }

@@ -173,9 +173,10 @@ as_sys_time.clock_naive_time <- function(x) {
 #'   recommended over shifting, as these two strategies maintain the
 #'   _relative ordering_ between elements of the input.
 #'
-#' @param ambiguous `[character]`
+#' @param ambiguous `[character / zoned_time / POSIXct / list(2)]`
 #'
-#'   One of the following ambiguous time resolution strategies:
+#'   One of the following ambiguous time resolution strategies, allowed to be
+#'   either length 1, or the same length as the input:
 #'
 #'   - `"earliest"`: Of the two possible times, choose the earliest one.
 #'
@@ -185,13 +186,29 @@ as_sys_time.clock_naive_time <- function(x) {
 #'
 #'   - `"error"`: Error on ambiguous times.
 #'
-#'   Allowed to be either length 1, or the same length as the input.
+#'   Alternatively, `ambiguous` is allowed to be a zoned_time (or POSIXct) that
+#'   is either length 1, or the same length as the input. If an ambiguous time
+#'   is encountered, the zoned_time is consulted. If the zoned_time corresponds
+#'   to a naive_time that is also ambiguous _and_ uses the same daylight saving
+#'   time transition point as the original ambiguous time, then the offset of
+#'   the zoned_time is used to resolve the ambiguity. If the ambiguity cannot be
+#'   resolved by consulting the zoned_time, then this method falls back to
+#'   `"error"`.
+#'
+#'   Finally, `ambiguous` is allowed to be a list of size 2, where the first
+#'   element of the list is a zoned_time (as described above), and the second
+#'   element of the list is an ambiguous time resolution strategy to use when
+#'   the ambiguous time cannot be resolved by consulting the zoned_time.
+#'   Specifying a zoned_time on its own is identical to `list(<zoned_time>,
+#'   "error")`.
 #'
 #' @return A zoned-time vector.
 #'
 #' @name as-zoned-time-naive-time
 #' @export
 #' @examples
+#' library(magrittr)
+#'
 #' x <- as_naive_time(year_month_day(2019, 1, 1))
 #'
 #' # Converting a naive-time to a zoned-time generally retains the
@@ -247,28 +264,99 @@ as_sys_time.clock_naive_time <- function(x) {
 #' try(as_zoned_time(ambiguous_time, new_york))
 #'
 #' # Resolve this by specifying an ambiguous time resolution strategy
-#' as_zoned_time(ambiguous_time, new_york, ambiguous = "earliest")
-#' as_zoned_time(ambiguous_time, new_york, ambiguous = "latest")
-#' as_zoned_time(ambiguous_time, new_york, ambiguous = "NA")
+#' earliest <- as_zoned_time(ambiguous_time, new_york, ambiguous = "earliest")
+#' latest <- as_zoned_time(ambiguous_time, new_york, ambiguous = "latest")
+#' na <- as_zoned_time(ambiguous_time, new_york, ambiguous = "NA")
+#' earliest
+#' latest
+#' na
+#'
+#' # Now assume that you were given the following zoned-times, i.e.,
+#' # you didn't build them from scratch so you already know their otherwise
+#' # ambiguous offsets
+#' x <- c(earliest, latest)
+#' x
+#'
+#' # To set the seconds to 5 in both, you might try:
+#' x_naive <- x %>%
+#'   as_naive_time() %>%
+#'   as_year_month_day() %>%
+#'   set_second(5) %>%
+#'   as_naive_time()
+#'
+#' x_naive
+#'
+#' # But this fails because you've "lost" the information about which
+#' # offsets these ambiguous times started in
+#' try(as_zoned_time(x_naive, zoned_zone(x)))
+#'
+#' # To get around this, you can use that information by specifying
+#' # `ambiguous = x`, which will use the offset from `x` to resolve the
+#' # ambiguity in `x_naive` as long as `x` is also an ambiguous time with the
+#' # same daylight saving time transition point as `x_naive` (i.e. here
+#' # everything has a transition point of `"2020-11-01 01:00:00 EST"`).
+#' as_zoned_time(x_naive, zoned_zone(x), ambiguous = x)
+#'
+#' # Say you added one more time to `x` that would not be considered ambiguous
+#' # in naive-time
+#' x <- c(x, as_zoned_time(as_sys_time(latest) + 3600, zoned_zone(latest)))
+#' x
+#'
+#' # Imagine you want to floor this vector to a multiple of 2 hours, with
+#' # an origin of 1am that day. You can do this by subtracting the origin,
+#' # flooring, then adding it back
+#' origin <- as_duration(as_naive_time(year_month_day(2019, 11, 01, 01, 00, 00)))
+#'
+#' x_naive <- x %>%
+#'   as_naive_time() %>%
+#'   add_seconds(-origin) %>%
+#'   time_point_floor("hour", n = 2) %>%
+#'   add_seconds(origin)
+#'
+#' x_naive
+#'
+#' # You again have ambiguous naive-time points, so you might try using
+#' # `ambiguous = x`. It looks like this took care of the first two problems,
+#' # but we have an issue at location 3.
+#' try(as_zoned_time(x_naive, zoned_zone(x), ambiguous = x))
+#'
+#' # When we floored from 02:30:00 -> 01:00:00, we went from being
+#' # unambiguous -> ambiguous. In clock, this is something you must handle
+#' # explicitly, and cannot be handled by using information from `x`. You can
+#' # handle this while still retaining the behavior for the other two
+#' # time points that were ambiguous before and after the floor by passing a
+#' # list containing `x` and an ambiguous time resolution strategy to use
+#' # when information from `x` can't resolve ambiguities:
+#' as_zoned_time(x_naive, zoned_zone(x), ambiguous = list(x, "latest"))
 as_zoned_time.clock_naive_time <- function(x,
                                            zone,
                                            ...,
                                            nonexistent = "error",
                                            ambiguous = "error") {
-  # `nonexistent` and `ambiguous` are allowed to be
-  # size 1 or the same size as `x`
-  size <- vec_size(x)
-  validate_nonexistent(nonexistent, size)
-  validate_ambiguous(ambiguous, size)
+  zone <- zone_validate(zone)
 
   # Promote to at least seconds precision for `zoned_time`
   x <- vec_cast(x, vec_ptype2(x, naive_seconds()))
 
-  zone <- zone_validate(zone)
+  size <- vec_size(x)
   precision <- time_point_precision(x)
   names <- clock_rcrd_names(x)
 
-  fields <- as_zoned_sys_time_from_naive_time_cpp(x, precision, zone, nonexistent, ambiguous)
+  nonexistent <- validate_nonexistent(nonexistent, size)
+
+  info <- validate_ambiguous(ambiguous, size, zone)
+  method <- info$method
+
+  if (identical(method, "string")) {
+    ambiguous <- info$ambiguous
+    fields <- as_zoned_sys_time_from_naive_time_cpp(x, precision, zone, nonexistent, ambiguous)
+  } else if (identical(method, "reference")) {
+    reference <- info$reference
+    ambiguous <- info$ambiguous
+    fields <- as_zoned_sys_time_from_naive_time_with_reference_cpp(x, precision, zone, nonexistent, ambiguous, reference)
+  } else {
+    abort("Internal error: Unknown ambiguous handling method.")
+  }
 
   new_zoned_time_from_fields(fields, precision, zone, names)
 }
@@ -280,17 +368,79 @@ validate_nonexistent <- function(nonexistent, size) {
     abort(paste0("`nonexistent` must have length 1, or ", size, "."))
   }
 
-  invisible(nonexistent)
+  if (!is_character(nonexistent)) {
+    abort("`nonexistent` must be a character vector.")
+  }
+
+  nonexistent
 }
 
-validate_ambiguous <- function(ambiguous, size) {
+validate_ambiguous <- function(ambiguous, size, zone) {
+  if (is_character(ambiguous)) {
+    ambiguous <- validate_ambiguous_chr(ambiguous, size)
+    list(method = "string", ambiguous = ambiguous)
+  } else if (is_zoned_time(ambiguous) || inherits(ambiguous, "POSIXt")) {
+    reference <- validate_ambiguous_zoned(ambiguous, size, zone)
+    list(method = "reference", reference = reference, ambiguous = "error")
+  } else if (is_list(ambiguous)) {
+    result <- validate_ambiguous_list(ambiguous, size, zone)
+    list(method = "reference", reference = result$reference, ambiguous = result$ambiguous)
+  } else {
+    abort("`ambiguous` must be a character vector, a zoned-time, a POSIXct, or a list.")
+  }
+}
+
+validate_ambiguous_chr <- function(ambiguous, size) {
   ambiguous_size <- vec_size(ambiguous)
 
   if (ambiguous_size != 1L && ambiguous_size != size) {
     abort(paste0("`ambiguous` must have length 1, or ", size, "."))
   }
 
-  invisible(ambiguous)
+  ambiguous
+}
+
+validate_ambiguous_zoned <- function(ambiguous, size, zone) {
+  # POSIXt -> zoned_time
+  reference <- as_zoned_time(ambiguous)
+
+  reference_size <- vec_size(reference)
+  reference_zone <- zoned_time_zone(reference)
+
+  if (reference_size != 1L && reference_size != size) {
+    abort(paste0("A zoned-time or POSIXct `ambiguous` must have length 1, or ", size, "."))
+  }
+  if (reference_zone != zone) {
+    abort("A zoned-time or POSIXct `ambiguous` must have the same zone as `zone`.")
+  }
+
+  # Force seconds precision to avoid the need for C++ templating
+  sys_time <- as_sys_time(reference)
+  sys_time <- time_point_floor(sys_time, "second")
+  reference <- as_zoned_time(sys_time, reference_zone)
+
+  reference
+}
+
+validate_ambiguous_list <- function(ambiguous, size, zone) {
+  if (length(ambiguous) != 2L) {
+    abort("A list `ambiguous` must have length 2.")
+  }
+
+  reference <- ambiguous[[1]]
+  ambiguous <- ambiguous[[2]]
+
+  if (!is_zoned_time(reference) && !inherits(reference, "POSIXt")) {
+    abort("The first element of a list `ambiguous` must be a zoned-time or POSIXt.")
+  }
+  if (!is_character(ambiguous)) {
+    abort("The second element of a list `ambiguous` must be a character vector.")
+  }
+
+  reference <- validate_ambiguous_zoned(reference, size, zone)
+  ambiguous <- validate_ambiguous_chr(ambiguous, size)
+
+  list(reference = reference, ambiguous = ambiguous)
 }
 
 # ------------------------------------------------------------------------------

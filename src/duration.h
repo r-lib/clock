@@ -136,11 +136,19 @@ public:
   void assign_na(r_ssize i);
   void assign(const Duration& x, r_ssize i);
 
-  void convert_local_to_sys_and_assign(const date::local_time<Duration>& x,
-                                       const date::time_zone* p_time_zone,
+  void convert_local_to_sys_and_assign(const date::local_seconds& x,
+                                       const date::local_info& info,
                                        const enum nonexistent& nonexistent_val,
                                        const enum ambiguous& ambiguous_val,
                                        const r_ssize& i);
+
+  void convert_local_with_reference_to_sys_and_assign(const date::local_seconds& x,
+                                                      const date::local_info& info,
+                                                      const enum nonexistent& nonexistent_val,
+                                                      const enum ambiguous& ambiguous_val,
+                                                      const date::zoned_seconds& reference,
+                                                      const date::time_zone* p_time_zone,
+                                                      const r_ssize& i);
 
   CONSTCD11 Duration operator[](r_ssize i) const NOEXCEPT;
 
@@ -169,10 +177,18 @@ public:
   void assign(const Duration& x, r_ssize i);
 
   void convert_local_to_sys_and_assign(const date::local_time<Duration>& x,
-                                       const date::time_zone* p_time_zone,
+                                       const date::local_info& info,
                                        const enum nonexistent& nonexistent_val,
                                        const enum ambiguous& ambiguous_val,
                                        const r_ssize& i);
+
+  void convert_local_with_reference_to_sys_and_assign(const date::local_time<Duration>& x,
+                                                      const date::local_info& info,
+                                                      const enum nonexistent& nonexistent_val,
+                                                      const enum ambiguous& ambiguous_val,
+                                                      const date::zoned_seconds& reference,
+                                                      const date::time_zone* p_time_zone,
+                                                      const r_ssize& i);
 
   CONSTCD11 Duration operator[](r_ssize i) const NOEXCEPT;
 
@@ -299,14 +315,12 @@ duration2<Duration>::assign(const Duration& x, r_ssize i)
 template <>
 inline
 void
-duration2<std::chrono::seconds>::convert_local_to_sys_and_assign(const date::local_time<std::chrono::seconds>& x,
-                                                                 const date::time_zone* p_time_zone,
+duration2<std::chrono::seconds>::convert_local_to_sys_and_assign(const date::local_seconds& x,
+                                                                 const date::local_info& info,
                                                                  const enum nonexistent& nonexistent_val,
                                                                  const enum ambiguous& ambiguous_val,
                                                                  const r_ssize& i)
 {
-  const date::local_info info = p_time_zone->get_info(x);
-
   switch (info.result) {
   case date::local_info::unique: {
     date::sys_time<std::chrono::seconds> st = detail::info_unique(info, x);
@@ -368,6 +382,56 @@ duration2<std::chrono::seconds>::convert_local_to_sys_and_assign(const date::loc
     break;
   }
   }
+}
+
+/*
+ * Zoned times have at least seconds precision, so the only specialization
+ * required for duration2 is for seconds.
+ */
+template <>
+inline
+void
+duration2<std::chrono::seconds>::convert_local_with_reference_to_sys_and_assign(const date::local_seconds& x,
+                                                                                const date::local_info& info,
+                                                                                const enum nonexistent& nonexistent_val,
+                                                                                const enum ambiguous& ambiguous_val,
+                                                                                const date::zoned_seconds& reference,
+                                                                                const date::time_zone* p_time_zone,
+                                                                                const r_ssize& i)
+{
+  if (info.result == date::local_info::unique ||
+      info.result == date::local_info::nonexistent) {
+    // For `unique` and `nonexistent`, nothing changes
+    convert_local_to_sys_and_assign(x, info, nonexistent_val, ambiguous_val, i);
+    return;
+  }
+
+  const date::local_seconds ref_lt = reference.get_local_time();
+  const date::local_info ref_info = p_time_zone->get_info(ref_lt);
+
+  if (ref_info.result != date::local_info::ambiguous) {
+    // If reference time is not ambiguous, we can't get any offset information
+    // from it so fallback to using `ambiguous_val`
+    convert_local_to_sys_and_assign(x, info, nonexistent_val, ambiguous_val, i);
+    return;
+  }
+  if (ref_info.first.end != info.first.end) {
+    // If reference time is ambiguous, but the transitions don't match,
+    // we again can't get offset information from it
+    convert_local_to_sys_and_assign(x, info, nonexistent_val, ambiguous_val, i);
+    return;
+  }
+
+  const date::sys_seconds ref_st = reference.get_sys_time();
+
+  const std::chrono::seconds offset =
+    ref_st < ref_info.first.end ?
+    ref_info.first.offset :
+    ref_info.second.offset;
+
+  const date::sys_seconds st = date::sys_seconds{x.time_since_epoch()} - offset;
+
+  assign(st.time_since_epoch(), i);
 }
 
 template <typename Duration>
@@ -435,13 +499,11 @@ template <typename Duration>
 inline
 void
 duration3<Duration>::convert_local_to_sys_and_assign(const date::local_time<Duration>& x,
-                                                     const date::time_zone* p_time_zone,
+                                                     const date::local_info& info,
                                                      const enum nonexistent& nonexistent_val,
                                                      const enum ambiguous& ambiguous_val,
                                                      const r_ssize& i)
 {
-  const date::local_info info = p_time_zone->get_info(x);
-
   switch (info.result) {
   case date::local_info::unique: {
     date::sys_time<Duration> st = detail::info_unique(info, x);
@@ -503,6 +565,52 @@ duration3<Duration>::convert_local_to_sys_and_assign(const date::local_time<Dura
     break;
   }
   }
+}
+
+template <typename Duration>
+inline
+void
+duration3<Duration>::convert_local_with_reference_to_sys_and_assign(const date::local_time<Duration>& x,
+                                                                    const date::local_info& info,
+                                                                    const enum nonexistent& nonexistent_val,
+                                                                    const enum ambiguous& ambiguous_val,
+                                                                    const date::zoned_seconds& reference,
+                                                                    const date::time_zone* p_time_zone,
+                                                                    const r_ssize& i)
+{
+  if (info.result == date::local_info::unique ||
+      info.result == date::local_info::nonexistent) {
+    // For `unique` and `nonexistent`, nothing changes
+    convert_local_to_sys_and_assign(x, info, nonexistent_val, ambiguous_val, i);
+    return;
+  }
+
+  const date::local_seconds ref_lt = reference.get_local_time();
+  const date::local_info ref_info = p_time_zone->get_info(ref_lt);
+
+  if (ref_info.result != date::local_info::ambiguous) {
+    // If reference time is not ambiguous, we can't get any offset information
+    // from it so fallback to using `ambiguous_val`
+    convert_local_to_sys_and_assign(x, info, nonexistent_val, ambiguous_val, i);
+    return;
+  }
+  if (ref_info.first.end != info.first.end) {
+    // If reference time is ambiguous, but the transitions don't match,
+    // we again can't get offset information from it
+    convert_local_to_sys_and_assign(x, info, nonexistent_val, ambiguous_val, i);
+    return;
+  }
+
+  const date::sys_seconds ref_st = reference.get_sys_time();
+
+  const std::chrono::seconds offset =
+    ref_st < ref_info.first.end ?
+    ref_info.first.offset :
+    ref_info.second.offset;
+
+  const date::sys_time<Duration> st = date::sys_time<Duration>{x.time_since_epoch()} - offset;
+
+  assign(st.time_since_epoch(), i);
 }
 
 template <typename Duration>
