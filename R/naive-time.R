@@ -259,7 +259,7 @@ as_zoned_time.clock_naive_time <- function(x,
   # size 1 or the same size as `x`
   size <- vec_size(x)
   validate_nonexistent(nonexistent, size)
-  validate_ambiguous(nonexistent, size)
+  validate_ambiguous(ambiguous, size)
 
   # Promote to at least seconds precision for `zoned_time`
   x <- vec_cast(x, vec_ptype2(x, naive_seconds()))
