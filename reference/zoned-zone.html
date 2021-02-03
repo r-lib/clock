@@ -161,7 +161,7 @@ underlying instant is <em>not</em> changed.</p>
 <span class='co'># With a zoned-time</span>
 <span class='fu'>zoned_set_zone</span><span class='op'>(</span><span class='va'>y</span>, <span class='st'>"UTC"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;UTC&gt;[1]&gt;
-#&gt; [1] "2019-01-01T05:00:00+00:00"</div><div class='input'>
+#&gt; [1] "2019-01-01 05:00:00+00:00"</div><div class='input'>
 <span class='co'># To force a new time zone with the same wall time,</span>
 <span class='co'># convert to a naive time that has no implied time zone,</span>
 <span class='co'># then convert back to a zoned time in the new time zone.</span>
@@ -170,7 +170,7 @@ underlying instant is <em>not</em> changed.</p>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;
 #&gt; [1] "2019-01-01 00:00:00"</div><div class='input'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>nt</span>, <span class='st'>"UTC"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;UTC&gt;[1]&gt;
-#&gt; [1] "2019-01-01T00:00:00+00:00"</div></pre>
+#&gt; [1] "2019-01-01 00:00:00+00:00"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

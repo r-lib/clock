@@ -171,24 +171,24 @@ supported year value is returned for <code>end</code> (typically, a year value o
 <span class='co'># x[1] is in EST, x[2] is in EDT</span>
 <span class='va'>x</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;
-#&gt; [1] "2021-03-14T01:59:59-05:00" "2021-03-14T03:00:00-04:00"</div><div class='input'>
+#&gt; [1] "2021-03-14 01:59:59-05:00" "2021-03-14 03:00:00-04:00"</div><div class='input'>
 <span class='va'>info</span> <span class='op'>&lt;-</span> <span class='fu'>zoned_info</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 <span class='va'>info</span>
 </div><div class='output co'>#&gt;                                         begin
-#&gt; 1 2020-11-01T01:00:00-05:00[America/New_York]
-#&gt; 2 2021-03-14T03:00:00-04:00[America/New_York]
+#&gt; 1 2020-11-01 01:00:00-05:00[America/New_York]
+#&gt; 2 2021-03-14 03:00:00-04:00[America/New_York]
 #&gt;                                           end offset   dst abbreviation
-#&gt; 1 2021-03-14T03:00:00-04:00[America/New_York] -18000 FALSE          EST
-#&gt; 2 2021-11-07T01:00:00-05:00[America/New_York] -14400  TRUE          EDT</div><div class='input'>
+#&gt; 1 2021-03-14 03:00:00-04:00[America/New_York] -18000 FALSE          EST
+#&gt; 2 2021-11-07 01:00:00-05:00[America/New_York] -14400  TRUE          EDT</div><div class='input'>
 <span class='co'># `end` can be used to iterate through daylight saving time transitions</span>
 <span class='co'># by repeatedly calling `zoned_info()`</span>
 <span class='fu'>zoned_info</span><span class='op'>(</span><span class='va'>info</span><span class='op'>$</span><span class='va'>end</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;                                         begin
-#&gt; 1 2021-03-14T03:00:00-04:00[America/New_York]
-#&gt; 2 2021-11-07T01:00:00-05:00[America/New_York]
+#&gt; 1 2021-03-14 03:00:00-04:00[America/New_York]
+#&gt; 2 2021-11-07 01:00:00-05:00[America/New_York]
 #&gt;                                           end offset   dst abbreviation
-#&gt; 1 2021-11-07T01:00:00-05:00[America/New_York] -14400  TRUE          EDT
-#&gt; 2 2022-03-13T03:00:00-04:00[America/New_York] -18000 FALSE          EST</div></pre>
+#&gt; 1 2021-11-07 01:00:00-05:00[America/New_York] -14400  TRUE          EDT
+#&gt; 2 2022-03-13 03:00:00-04:00[America/New_York] -18000 FALSE          EST</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

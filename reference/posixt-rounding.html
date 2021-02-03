@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Group date-time components — posixt-group • clock</title>
+<title>Rounding: date-time — posixt-rounding • clock</title>
 
 
 <!-- jquery -->
@@ -39,12 +39,19 @@
 
 
 
-<meta property="og:title" content="Group date-time components — posixt-group" />
-<meta property="og:description" content="date_group() groups by a single component of a date-time, such as month
-of the year, day of the month, or hour of the day.
-If you need to group by more complex components, like ISO weeks, or quarters,
-convert to a calendar type that contains the component you are interested
-in grouping by." />
+<meta property="og:title" content="Rounding: date-time — posixt-rounding" />
+<meta property="og:description" content="
+
+date_floor() rounds a date-time down to a multiple of
+the specified precision.
+date_ceiling() rounds a date-time up to a multiple of
+the specified precision.
+date_round() rounds up or down depending on what is closer,
+rounding up on ties.
+
+
+You can group by irregular periods such as &quot;month&quot; or &quot;year&quot; by using
+date_group()." />
 
 
 
@@ -112,26 +119,55 @@ in grouping by." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Group date-time components</h1>
+    <h1>Rounding: date-time</h1>
     <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/posixt.R'><code>R/posixt.R</code></a></small>
-    <div class="hidden name"><code>posixt-group.Rd</code></div>
+    <div class="hidden name"><code>posixt-rounding.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code><a href='date_group.html'>date_group()</a></code> groups by a single component of a date-time, such as month
-of the year, day of the month, or hour of the day.</p>
-<p>If you need to group by more complex components, like ISO weeks, or quarters,
-convert to a calendar type that contains the component you are interested
-in grouping by.</p>
+    
+<ul>
+<li><p><code><a href='date-and-date-time-rounding.html'>date_floor()</a></code> rounds a date-time down to a multiple of
+the specified <code>precision</code>.</p></li>
+<li><p><code><a href='date-and-date-time-rounding.html'>date_ceiling()</a></code> rounds a date-time up to a multiple of
+the specified <code>precision</code>.</p></li>
+<li><p><code><a href='date-and-date-time-rounding.html'>date_round()</a></code> rounds up or down depending on what is closer,
+rounding up on ties.</p></li>
+</ul>
+
+<p>You can group by irregular periods such as <code>"month"</code> or <code>"year"</code> by using
+<code><a href='date_group.html'>date_group()</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for POSIXt</span>
-<span class='fu'><a href='date_group.html'>date_group</a></span><span class='op'>(</span>
+<span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span>
   <span class='va'>x</span>,
   <span class='va'>precision</span>,
   <span class='va'>...</span>,
   n <span class='op'>=</span> <span class='fl'>1L</span>,
-  invalid <span class='op'>=</span> <span class='st'>"error"</span>,
+  origin <span class='op'>=</span> <span class='cn'>NULL</span>,
+  nonexistent <span class='op'>=</span> <span class='st'>"error"</span>,
+  ambiguous <span class='op'>=</span> <span class='st'>"error"</span>
+<span class='op'>)</span>
+
+<span class='co'># S3 method for POSIXt</span>
+<span class='fu'><a href='date-and-date-time-rounding.html'>date_ceiling</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>precision</span>,
+  <span class='va'>...</span>,
+  n <span class='op'>=</span> <span class='fl'>1L</span>,
+  origin <span class='op'>=</span> <span class='cn'>NULL</span>,
+  nonexistent <span class='op'>=</span> <span class='st'>"error"</span>,
+  ambiguous <span class='op'>=</span> <span class='st'>"error"</span>
+<span class='op'>)</span>
+
+<span class='co'># S3 method for POSIXt</span>
+<span class='fu'><a href='date-and-date-time-rounding.html'>date_round</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>precision</span>,
+  <span class='va'>...</span>,
+  n <span class='op'>=</span> <span class='fl'>1L</span>,
+  origin <span class='op'>=</span> <span class='cn'>NULL</span>,
   nonexistent <span class='op'>=</span> <span class='st'>"error"</span>,
   ambiguous <span class='op'>=</span> <span class='st'>"error"</span>
 <span class='op'>)</span></pre>
@@ -148,8 +184,7 @@ in grouping by.</p>
       <th>precision</th>
       <td><p><code>[character(1)]</code></p>
 <p>One of:</p><ul>
-<li><p><code>"year"</code></p></li>
-<li><p><code>"month"</code></p></li>
+<li><p><code>"week"</code></p></li>
 <li><p><code>"day"</code></p></li>
 <li><p><code>"hour"</code></p></li>
 <li><p><code>"minute"</code></p></li>
@@ -166,21 +201,11 @@ in grouping by.</p>
 <p>A single positive integer specifying a multiple of <code>precision</code> to use.</p></td>
     </tr>
     <tr>
-      <th>invalid</th>
-      <td><p><code>[character(1)]</code></p>
-<p>One of the following invalid resolution strategies:</p><ul>
-<li><p><code>"previous"</code>: The previous valid instant in time.</p></li>
-<li><p><code>"previous-day"</code>: The previous valid day in time, keeping the time of
-day.</p></li>
-<li><p><code>"next"</code>: The next valid instant in time.</p></li>
-<li><p><code>"next-day"</code>: The next valid day in time, keeping the time of day.</p></li>
-<li><p><code>"overflow"</code>: Overflow by the number of days that <code>x</code> is invalid by.
-Time of day is dropped.</p></li>
-<li><p><code>"overflow-day"</code>: Overflow by the number of days that <code>x</code> is invalid by.
-Time of day is kept.</p></li>
-<li><p><code>"NA"</code>: Replace invalid dates with <code>NA</code>.</p></li>
-<li><p><code>"error"</code>: Error on invalid dates.</p></li>
-</ul></td>
+      <th>origin</th>
+      <td><p><code>[POSIXct(1) / POSIXlt(1) / NULL]</code></p>
+<p>An origin to start counting from. Must have exactly the same time
+zone as <code>x</code>. The default <code>origin</code> is implicitly midnight on <code>"1970-01-01"</code>
+in the time zone of <code>x</code>.</p></td>
     </tr>
     <tr>
       <th>nonexistent</th>
@@ -215,45 +240,41 @@ recommended over shifting, as these two strategies maintain the
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>x</code>, grouped at <code>precision</code>.</p>
+    <p>Rounding by <code>"week"</code> is a simple alias for rounding by <code>"day"</code> with 7 times
+as many days.</p>
+<p>When rounding by <code>"week"</code>, remember that the <code>origin</code> determines the "week
+start". By default, <code>"1970-01-01"</code> is the implicit origin, which is a
+Thursday. If you would like to round by weeks with a different week start,
+just supply an origin on the weekday you are interested in.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='op'>-</span><span class='fl'>3</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"2019-03-31"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>0</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>
 
-<span class='co'># Group by 2 days of the current month.</span>
-<span class='co'># Note that this resets at the beginning of the month, creating day groups</span>
-<span class='co'># of [29, 30] [31] [01, 02] [03, 04].</span>
+<span class='co'># Flooring by 2 days, note that this is not tied to the current month,</span>
+<span class='co'># and instead counts from the specified `origin`, so groups can cross</span>
+<span class='co'># the month boundary</span>
+<span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2019-03-31 EDT" "2019-03-31 EDT" "2019-04-02 EDT" "2019-04-02 EDT"
+#&gt; [5] "2019-04-04 EDT" "2019-04-04 EDT"</div><div class='input'>
+<span class='co'># Compare to `date_group()`, which groups by the day of the month</span>
 <span class='fu'><a href='date_group.html'>date_group</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2018-12-29 EST" "2018-12-29 EST" "2018-12-31 EST" "2019-01-01 EST"
-#&gt; [5] "2019-01-01 EST" "2019-01-03 EST" "2019-01-03 EST" "2019-01-05 EST"
-#&gt; [9] "2019-01-05 EST"</div><div class='input'>
-<span class='co'># Group by month</span>
-<span class='fu'><a href='date_group.html'>date_group</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"month"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2018-12-01 EST" "2018-12-01 EST" "2018-12-01 EST" "2019-01-01 EST"
-#&gt; [5] "2019-01-01 EST" "2019-01-01 EST" "2019-01-01 EST" "2019-01-01 EST"
-#&gt; [9] "2019-01-01 EST"</div><div class='input'>
-<span class='co'># Group by hour of the day</span>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"2019-12-30"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-arithmetic.html'>add_hours</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='fl'>0</span><span class='op'>:</span><span class='fl'>12</span><span class='op'>)</span>
-<span class='va'>y</span>
-</div><div class='output co'>#&gt;  [1] "2019-12-30 00:00:00 EST" "2019-12-30 01:00:00 EST"
-#&gt;  [3] "2019-12-30 02:00:00 EST" "2019-12-30 03:00:00 EST"
-#&gt;  [5] "2019-12-30 04:00:00 EST" "2019-12-30 05:00:00 EST"
-#&gt;  [7] "2019-12-30 06:00:00 EST" "2019-12-30 07:00:00 EST"
-#&gt;  [9] "2019-12-30 08:00:00 EST" "2019-12-30 09:00:00 EST"
-#&gt; [11] "2019-12-30 10:00:00 EST" "2019-12-30 11:00:00 EST"
-#&gt; [13] "2019-12-30 12:00:00 EST"</div><div class='input'>
-<span class='fu'><a href='date_group.html'>date_group</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='st'>"hour"</span>, n <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "2019-12-30 00:00:00 EST" "2019-12-30 00:00:00 EST"
-#&gt;  [3] "2019-12-30 00:00:00 EST" "2019-12-30 03:00:00 EST"
-#&gt;  [5] "2019-12-30 03:00:00 EST" "2019-12-30 03:00:00 EST"
-#&gt;  [7] "2019-12-30 06:00:00 EST" "2019-12-30 06:00:00 EST"
-#&gt;  [9] "2019-12-30 06:00:00 EST" "2019-12-30 09:00:00 EST"
-#&gt; [11] "2019-12-30 09:00:00 EST" "2019-12-30 09:00:00 EST"
-#&gt; [13] "2019-12-30 12:00:00 EST"</div></pre>
+</div><div class='output co'>#&gt; [1] "2019-03-31 EDT" "2019-04-01 EDT" "2019-04-01 EDT" "2019-04-03 EDT"
+#&gt; [5] "2019-04-03 EDT" "2019-04-05 EDT"</div><div class='input'>
+<span class='co'># Note that daylight saving time gaps can throw off rounding</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"1970-04-26 01:59:59"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>x</span>
+</div><div class='output co'>#&gt; [1] "1970-04-26 01:59:59 EST" "1970-04-26 03:00:00 EDT"</div><div class='input'>
+<span class='co'># Rounding is done in naive-time, which means that rounding by 2 hours</span>
+<span class='co'># will attempt to generate a time of `"1970-04-26 02:00:00"`, which doesn't</span>
+<span class='co'># exist in this time zone</span>
+<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"hour"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Error : Nonexistent time due to daylight savings at location 2. Resolve nonexistent time issues by specifying the `nonexistent` argument.</div><div class='input'>
+<span class='co'># You can handle this by specifying a nonexistent time resolution strategy</span>
+<span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"hour"</span>, n <span class='op'>=</span> <span class='fl'>2</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-forward"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "1970-04-26 00:00:00 EST" "1970-04-26 03:00:00 EDT"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
