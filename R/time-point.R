@@ -289,8 +289,8 @@ arith_numeric_and_time_point <- function(op, x, y, ...) {
 #' Arithmetic: Time points
 #'
 #' @description
-#' The following arithmetic operations are available for use on
-#' time points, such as naive-times or sys-times.
+#' These are naive-time and sys-time methods for the
+#' [arithmetic generics][clock-arithmetic].
 #'
 #' - `add_weeks()`
 #'

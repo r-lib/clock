@@ -67,6 +67,8 @@ Specifying a zoned_time on its own is identical to \verb{list(<zoned_time>, "err
 A zoned-time vector.
 }
 \description{
+This is a naive-time method for the \code{\link[=as_zoned_time]{as_zoned_time()}} generic.
+
 Converting to a zoned-time from a naive-time retains the printed time,
 but changes the underlying duration, depending on the \code{zone} that you choose.
 

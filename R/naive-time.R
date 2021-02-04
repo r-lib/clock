@@ -101,6 +101,8 @@ as_sys_time.clock_naive_time <- function(x) {
 #' Convert to a zoned-time from a naive-time
 #'
 #' @description
+#' This is a naive-time method for the [as_zoned_time()] generic.
+#'
 #' Converting to a zoned-time from a naive-time retains the printed time,
 #' but changes the underlying duration, depending on the `zone` that you choose.
 #'

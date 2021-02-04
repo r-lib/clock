@@ -22,6 +22,8 @@ The zone to convert to.}
 A zoned-time vector.
 }
 \description{
+This is a sys-time method for the \code{\link[=as_zoned_time]{as_zoned_time()}} generic.
+
 Converting to a zoned-time from a sys-time retains the underlying duration,
 but changes the printed time, depending on the \code{zone} that you choose.
 Remember that sys-times are interpreted as UTC.

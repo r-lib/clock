@@ -333,8 +333,8 @@ weekday_minus_weekday <- function(op, x, y, ...) {
 #' Arithmetic: weekday
 #'
 #' @description
-#' The following arithmetic operations are available for use on
-#' weekdays.
+#' These are weekday methods for the
+#' [arithmetic generics][clock-arithmetic].
 #'
 #' - `add_days()`
 #'

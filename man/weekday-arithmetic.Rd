@@ -25,8 +25,8 @@ units of duration.}
 \code{x} after performing the arithmetic.
 }
 \description{
-The following arithmetic operations are available for use on
-weekdays.
+These are weekday methods for the
+\link[=clock-arithmetic]{arithmetic generics}.
 \itemize{
 \item \code{add_days()}
 }

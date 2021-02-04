@@ -114,6 +114,8 @@ as_naive_time.clock_sys_time <- function(x) {
 #' Convert to a zoned-time from a sys-time
 #'
 #' @description
+#' This is a sys-time method for the [as_zoned_time()] generic.
+#'
 #' Converting to a zoned-time from a sys-time retains the underlying duration,
 #' but changes the printed time, depending on the `zone` that you choose.
 #' Remember that sys-times are interpreted as UTC.
