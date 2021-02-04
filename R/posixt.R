@@ -786,3 +786,14 @@ date_weekday_factor.POSIXt <- function(x,
   x <- as_weekday(x)
   weekday_factor(x, ..., labels = labels, abbreviate = abbreviate, encoding = encoding)
 }
+
+# ------------------------------------------------------------------------------
+
+#' @export
+date_month_factor.POSIXt <- function(x,
+                                     ...,
+                                     labels = "en",
+                                     abbreviate = FALSE) {
+  x <- as_year_month_day(x)
+  calendar_month_factor(x, ..., labels = labels, abbreviate = abbreviate)
+}

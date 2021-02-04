@@ -143,3 +143,15 @@ test_that("can convert to a weekday factor", {
     weekday_factor(as_weekday(x), labels = "fr", abbreviate = TRUE, encoding = "iso"),
   )
 })
+
+# ------------------------------------------------------------------------------
+# date_month_factor()
+
+test_that("can convert to a month factor", {
+  x <- add_months(as.POSIXct("2019-01-01", tz = "America/New_York"), 0:11)
+
+  expect_identical(
+    date_month_factor(x, labels = "fr", abbreviate = TRUE),
+    calendar_month_factor(as_year_month_day(x), labels = "fr", abbreviate = TRUE),
+  )
+})

@@ -718,3 +718,43 @@ date_weekday_factor.Date <- function(x,
   x <- as_weekday(x)
   weekday_factor(x, ..., labels = labels, abbreviate = abbreviate, encoding = encoding)
 }
+
+# ------------------------------------------------------------------------------
+
+#' Convert a date or date-time to an ordered factor of month names
+#'
+#' @description
+#' `date_month_factor()` extracts the month values from a date or date-time and
+#' converts them to an ordered factor of month names. This can be useful in
+#' combination with ggplot2, or for modeling.
+#'
+#' @inheritParams calendar_month_factor
+#'
+#' @param x `[Date / POSIXct / POSIXlt]`
+#'
+#'   A date or date-time vector.
+#'
+#' @return An ordered factor representing the months.
+#'
+#' @export
+#' @examples
+#' x <- add_months(as.Date("2019-01-01"), 0:11)
+#'
+#' date_month_factor(x)
+#' date_month_factor(x, abbreviate = TRUE)
+#' date_month_factor(x, labels = "fr")
+date_month_factor <- function(x,
+                              ...,
+                              labels = "en",
+                              abbreviate = FALSE) {
+  UseMethod("date_month_factor")
+}
+
+#' @export
+date_month_factor.Date <- function(x,
+                                   ...,
+                                   labels = "en",
+                                   abbreviate = FALSE) {
+  x <- as_year_month_day(x)
+  calendar_month_factor(x, ..., labels = labels, abbreviate = abbreviate)
+}
