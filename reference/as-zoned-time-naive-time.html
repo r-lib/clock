@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Convert to a zoned-time from a naive-time — as-zoned-time-naive-time" />
-<meta property="og:description" content="Converting to a zoned-time from a naive-time retains the printed time,
+<meta property="og:description" content="This is a naive-time method for the as_zoned_time() generic.
+Converting to a zoned-time from a naive-time retains the printed time,
 but changes the underlying duration, depending on the zone that you choose.
 Naive-times are time points with a yet-to-be-determined time zone. By
 converting them to a zoned-time, all you are doing is specifying that
@@ -122,7 +123,8 @@ interpreted as having a UTC time zone." />
     </div>
 
     <div class="ref-description">
-    <p>Converting to a zoned-time from a naive-time retains the printed time,
+    <p>This is a naive-time method for the <code><a href='as_zoned_time.html'>as_zoned_time()</a></code> generic.</p>
+<p>Converting to a zoned-time from a naive-time retains the printed time,
 but changes the underlying duration, depending on the <code>zone</code> that you choose.</p>
 <p>Naive-times are time points with a yet-to-be-determined time zone. By
 converting them to a zoned-time, all you are doing is specifying that
@@ -156,7 +158,8 @@ interpreted as having a UTC time zone.</p>
     <tr>
       <th>nonexistent</th>
       <td><p><code>[character]</code></p>
-<p>One of the following nonexistent time resolution strategies:</p><ul>
+<p>One of the following nonexistent time resolution strategies, allowed to be
+either length 1, or the same length as the input:</p><ul>
 <li><p><code>"roll-forward"</code>: The next valid instant in time.</p></li>
 <li><p><code>"roll-backward"</code>: The previous valid instant in time.</p></li>
 <li><p><code>"shift-forward"</code>: Shift the nonexistent time forward by the size of
@@ -167,7 +170,6 @@ the daylight saving time gap.</p></li>
 <li><p><code>"error"</code>: Error on nonexistent times.</p></li>
 </ul>
 
-<p>Allowed to be either length 1, or the same length as the input.</p>
 <p>Using either <code>"roll-forward"</code> or <code>"roll-backward"</code> is generally
 recommended over shifting, as these two strategies maintain the
 <em>relative ordering</em> between elements of the input.</p></td>

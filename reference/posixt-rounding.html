@@ -40,8 +40,8 @@
 
 
 <meta property="og:title" content="Rounding: date-time — posixt-rounding" />
-<meta property="og:description" content="
-
+<meta property="og:description" content="These are POSIXct/POSIXlt methods for the
+rounding generics.
 date_floor() rounds a date-time down to a multiple of
 the specified precision.
 date_ceiling() rounds a date-time up to a multiple of
@@ -125,8 +125,8 @@ date_group()." />
     </div>
 
     <div class="ref-description">
-    
-<ul>
+    <p>These are POSIXct/POSIXlt methods for the
+<a href='date-and-date-time-rounding.html'>rounding generics</a>.</p><ul>
 <li><p><code><a href='date-and-date-time-rounding.html'>date_floor()</a></code> rounds a date-time down to a multiple of
 the specified <code>precision</code>.</p></li>
 <li><p><code><a href='date-and-date-time-rounding.html'>date_ceiling()</a></code> rounds a date-time up to a multiple of
@@ -210,7 +210,8 @@ in the time zone of <code>x</code>.</p></td>
     <tr>
       <th>nonexistent</th>
       <td><p><code>[character]</code></p>
-<p>One of the following nonexistent time resolution strategies:</p><ul>
+<p>One of the following nonexistent time resolution strategies, allowed to be
+either length 1, or the same length as the input:</p><ul>
 <li><p><code>"roll-forward"</code>: The next valid instant in time.</p></li>
 <li><p><code>"roll-backward"</code>: The previous valid instant in time.</p></li>
 <li><p><code>"shift-forward"</code>: Shift the nonexistent time forward by the size of
@@ -221,7 +222,6 @@ the daylight saving time gap.</p></li>
 <li><p><code>"error"</code>: Error on nonexistent times.</p></li>
 </ul>
 
-<p>Allowed to be either length 1, or the same length as the input.</p>
 <p>Using either <code>"roll-forward"</code> or <code>"roll-backward"</code> is generally
 recommended over shifting, as these two strategies maintain the
 <em>relative ordering</em> between elements of the input.</p></td>
