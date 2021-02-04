@@ -7,11 +7,11 @@
 \alias{set_day.Date}
 \title{Setters: date}
 \usage{
-\method{set_year}{Date}(x, value, ..., invalid = "error")
+\method{set_year}{Date}(x, value, ..., invalid = NULL)
 
-\method{set_month}{Date}(x, value, ..., invalid = "error")
+\method{set_month}{Date}(x, value, ..., invalid = NULL)
 
-\method{set_day}{Date}(x, value, ..., invalid = "error")
+\method{set_day}{Date}(x, value, ..., invalid = NULL)
 }
 \arguments{
 \item{x}{\verb{[Date]}
@@ -27,7 +27,7 @@ last day of the month.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{invalid}{\verb{[character(1)]}
+\item{invalid}{\verb{[character(1) / NULL]}
 
 One of the following invalid date resolution strategies:
 \itemize{
@@ -46,7 +46,13 @@ invalid by. Time of day is kept.
 
 Using either \code{"previous"} or \code{"next"} is generally recommended, as these
 two strategies maintain the \emph{relative ordering} between elements of the
-input.}
+input.
+
+If \code{NULL}, defaults to \code{"error"}.
+
+If \code{getOption("clock.strict")} is \code{TRUE}, \code{invalid} must be supplied and
+cannot be \code{NULL}. This is a convenient way to make production code robust
+to invalid dates.}
 }
 \value{
 \code{x} with the component set.

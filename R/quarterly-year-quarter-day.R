@@ -235,10 +235,11 @@ invalid_count.clock_year_quarter_day <- function(x) {
 }
 
 #' @export
-invalid_resolve.clock_year_quarter_day <- function(x, ..., invalid = "error") {
+invalid_resolve.clock_year_quarter_day <- function(x, ..., invalid = NULL) {
   check_dots_empty()
   precision <- calendar_precision(x)
   start <- quarterly_start(x)
+  invalid <- validate_invalid(invalid)
   fields <- invalid_resolve_year_quarter_day_cpp(x, precision, start, invalid)
   new_year_quarter_day_from_fields(fields, precision, start, names = names(x))
 }

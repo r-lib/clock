@@ -10,7 +10,7 @@
   precision,
   ...,
   n = 1L,
-  invalid = "error",
+  invalid = NULL,
   nonexistent = "error",
   ambiguous = x
 )
@@ -38,7 +38,7 @@ One of:
 
 A single positive integer specifying a multiple of \code{precision} to use.}
 
-\item{invalid}{\verb{[character(1)]}
+\item{invalid}{\verb{[character(1) / NULL]}
 
 One of the following invalid date resolution strategies:
 \itemize{
@@ -57,7 +57,13 @@ invalid by. Time of day is kept.
 
 Using either \code{"previous"} or \code{"next"} is generally recommended, as these
 two strategies maintain the \emph{relative ordering} between elements of the
-input.}
+input.
+
+If \code{NULL}, defaults to \code{"error"}.
+
+If \code{getOption("clock.strict")} is \code{TRUE}, \code{invalid} must be supplied and
+cannot be \code{NULL}. This is a convenient way to make production code robust
+to invalid dates.}
 
 \item{nonexistent}{\verb{[character]}
 

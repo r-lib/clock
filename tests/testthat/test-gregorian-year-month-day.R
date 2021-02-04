@@ -86,3 +86,11 @@ test_that("can widen to subsecond precision", {
   expect_identical(calendar_widen(x, "microsecond"), x_expect)
   expect_identical(calendar_widen(y, "nanosecond"), y_expect)
 })
+
+# ------------------------------------------------------------------------------
+# invalid_resolve()
+
+test_that("strict mode can be activated", {
+  local_options(clock.strict = TRUE)
+  expect_snapshot_error(invalid_resolve(year_month_day(2019, 1, 1)))
+})

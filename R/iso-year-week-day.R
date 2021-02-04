@@ -204,9 +204,10 @@ invalid_count.clock_iso_year_week_day <- function(x) {
 }
 
 #' @export
-invalid_resolve.clock_iso_year_week_day <- function(x, ..., invalid = "error") {
+invalid_resolve.clock_iso_year_week_day <- function(x, ..., invalid = NULL) {
   check_dots_empty()
   precision <- calendar_precision(x)
+  invalid <- validate_invalid(invalid)
   fields <- invalid_resolve_iso_year_week_day_cpp(x, precision, invalid)
   new_iso_year_week_day_from_fields(fields, precision, names = names(x))
 }
