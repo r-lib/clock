@@ -150,13 +150,13 @@ convert back to a Date.</p><ul>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for Date</span>
-<span class='fu'><a href='clock-arithmetic.html'>add_years</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span>, invalid <span class='op'>=</span> <span class='st'>"error"</span><span class='op'>)</span>
+<span class='fu'><a href='clock-arithmetic.html'>add_years</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span>, invalid <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
 <span class='co'># S3 method for Date</span>
-<span class='fu'><a href='clock-arithmetic.html'>add_quarters</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span>, invalid <span class='op'>=</span> <span class='st'>"error"</span><span class='op'>)</span>
+<span class='fu'><a href='clock-arithmetic.html'>add_quarters</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span>, invalid <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
 <span class='co'># S3 method for Date</span>
-<span class='fu'><a href='clock-arithmetic.html'>add_months</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span>, invalid <span class='op'>=</span> <span class='st'>"error"</span><span class='op'>)</span>
+<span class='fu'><a href='clock-arithmetic.html'>add_months</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span>, invalid <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
 <span class='co'># S3 method for Date</span>
 <span class='fu'><a href='clock-arithmetic.html'>add_weeks</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span>
@@ -186,7 +186,7 @@ units of duration.</p></td>
     </tr>
     <tr>
       <th>invalid</th>
-      <td><p><code>[character(1)]</code></p>
+      <td><p><code>[character(1) / NULL]</code></p>
 <p>One of the following invalid date resolution strategies:</p><ul>
 <li><p><code>"previous"</code>: The previous valid instant in time.</p></li>
 <li><p><code>"previous-day"</code>: The previous valid day in time, keeping the time of
@@ -203,7 +203,11 @@ invalid by. Time of day is kept.</p></li>
 
 <p>Using either <code>"previous"</code> or <code>"next"</code> is generally recommended, as these
 two strategies maintain the <em>relative ordering</em> between elements of the
-input.</p></td>
+input.</p>
+<p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
+<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>invalid</code> must be supplied and
+cannot be <code>NULL</code>. This is a convenient way to make production code robust
+to invalid dates.</p></td>
     </tr>
     </table>
 
