@@ -35,20 +35,24 @@ units of duration.}
 
 \item{invalid}{\verb{[character(1)]}
 
-One of the following invalid resolution strategies:
+One of the following invalid date resolution strategies:
 \itemize{
 \item \code{"previous"}: The previous valid instant in time.
 \item \code{"previous-day"}: The previous valid day in time, keeping the time of
 day.
 \item \code{"next"}: The next valid instant in time.
 \item \code{"next-day"}: The next valid day in time, keeping the time of day.
-\item \code{"overflow"}: Overflow by the number of days that \code{x} is invalid by.
-Time of day is dropped.
-\item \code{"overflow-day"}: Overflow by the number of days that \code{x} is invalid by.
-Time of day is kept.
+\item \code{"overflow"}: Overflow by the number of days that the input is invalid
+by. Time of day is dropped.
+\item \code{"overflow-day"}: Overflow by the number of days that the input is
+invalid by. Time of day is kept.
 \item \code{"NA"}: Replace invalid dates with \code{NA}.
 \item \code{"error"}: Error on invalid dates.
-}}
+}
+
+Using either \code{"previous"} or \code{"next"} is generally recommended, as these
+two strategies maintain the \emph{relative ordering} between elements of the
+input.}
 }
 \value{
 \code{x} after performing the arithmetic.

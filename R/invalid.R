@@ -25,7 +25,7 @@
 #'
 #' @param invalid `[character(1)]`
 #'
-#'   One of the following invalid resolution strategies:
+#'   One of the following invalid date resolution strategies:
 #'
 #'   - `"previous"`: The previous valid instant in time.
 #'
@@ -36,15 +36,19 @@
 #'
 #'   - `"next-day"`: The next valid day in time, keeping the time of day.
 #'
-#'   - `"overflow"`: Overflow by the number of days that `x` is invalid by.
-#'     Time of day is dropped.
+#'   - `"overflow"`: Overflow by the number of days that the input is invalid
+#'     by. Time of day is dropped.
 #'
-#'   - `"overflow-day"`: Overflow by the number of days that `x` is invalid by.
-#'     Time of day is kept.
+#'   - `"overflow-day"`: Overflow by the number of days that the input is
+#'     invalid by. Time of day is kept.
 #'
 #'   - `"NA"`: Replace invalid dates with `NA`.
 #'
 #'   - `"error"`: Error on invalid dates.
+#'
+#'   Using either `"previous"` or `"next"` is generally recommended, as these
+#'   two strategies maintain the _relative ordering_ between elements of the
+#'   input.
 #'
 #' @return
 #' - `invalid_detect()`: Returns a logical vector detecting invalid dates.
