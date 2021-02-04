@@ -10,20 +10,18 @@ reference:
     clock, this is the best place to start.
   contents:
   - date_group
-  - date-group
-  - posixt-group
   - date_leap_year
   - date-and-date-time-rounding
-  - date-rounding
-  - posixt-rounding
   - get_year.Date
   - get_year.POSIXt
   - set_year.Date
   - set_year.POSIXt
   - Date-arithmetic
   - posixt-arithmetic
-  - as-zoned-time-Date
-  - as-zoned-time-posixt
+
+- title: Arithmetic
+  contents:
+  - add_years
 
 - title: Calendars
   contents:
@@ -39,6 +37,7 @@ reference:
   - year_month_day
   - as_year_month_day
   - is_year_month_day
+  - parse_year_month_day
   - calendar_group.clock_year_month_day
   - year-month-day-narrow
   - year-month-day-widen
@@ -54,7 +53,6 @@ reference:
   - calendar_group.clock_year_month_weekday
   - year-month-weekday-narrow
   - year-month-weekday-widen
-  - parse_year_month_day
   - add_years.clock_year_month_weekday
   - get_year.clock_year_month_weekday
   - set_year.clock_year_month_weekday
@@ -90,45 +88,41 @@ reference:
 - title: Durations
   contents:
   - duration_years
+  - as_duration
+  - is_duration
   - duration_cast
   - duration-rounding
   - duration-arithmetic
-  - is_duration
-  - as_duration
 
 - title: Time points
   contents:
+  - sys_now
   - as_naive_time
   - as_sys_time
-  - sys_now
+  - is_naive_time
+  - is_sys_time
   - time_point_cast
   - time-point-rounding
   - add_weeks.clock_time_point
-  - is_naive_time
-  - is_sys_time
   - as-zoned-time-naive-time
   - as-zoned-time-sys-time
 
 - title: Zoned-time
   contents:
-  - as_zoned_time
   - zoned_now
+  - as_zoned_time
+  - is_zoned_time
   - zoned_zone
   - zoned_info
-  - is_zoned_time
 
 - title: Weekdays
   contents:
   - weekday
+  - as_weekday
+  - is_weekday
   - weekday-encoding
   - weekday_factor
   - weekday-arithmetic
-  - is_weekday
-  - as_weekday
-
-- title: Arithmetic
-  contents:
-  - add_years
 
 - title: Locale
   contents:
@@ -138,3 +132,12 @@ reference:
 - title: Developer
   contents:
   - vec_arith.clock_year_month_day
+
+- title: Methods
+  contents:
+  - date-group
+  - posixt-group
+  - date-rounding
+  - posixt-rounding
+  - as-zoned-time-Date
+  - as-zoned-time-posixt
