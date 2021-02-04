@@ -261,7 +261,8 @@ as_zoned_sys_time_from_naive_time_with_reference_impl(const ClockDuration& x,
     ambiguous_val = parse_ambiguous_one(ambiguous_string[0]);
   }
   if (recycle_reference) {
-    reference_val = date::make_zoned(p_time_zone, date::sys_seconds{reference_duration[0]});
+    const date::sys_seconds reference_st = date::sys_seconds{reference_duration[0]};
+    reference_val = date::make_zoned(p_time_zone, reference_st);
   }
 
   for (r_ssize i = 0; i < size; ++i) {
@@ -280,10 +281,13 @@ as_zoned_sys_time_from_naive_time_with_reference_impl(const ClockDuration& x,
       ambiguous_val :
       parse_ambiguous_one(ambiguous_string[i]);
 
-    const date::zoned_seconds elt_reference_val =
-      recycle_reference ?
-      reference_val :
-      date::make_zoned(p_time_zone, date::sys_seconds{reference_duration[i]});
+    date::zoned_seconds elt_reference_val;
+    if (recycle_reference) {
+      elt_reference_val = reference_val;
+    } else {
+      const date::sys_seconds elt_reference_st = date::sys_seconds{reference_duration[i]};
+      elt_reference_val = date::make_zoned(p_time_zone, elt_reference_st);
+    }
 
     const Duration elt = x[i];
     const date::local_time<Duration> elt_lt{elt};
