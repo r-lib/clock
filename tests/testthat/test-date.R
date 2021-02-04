@@ -103,3 +103,15 @@ test_that("can round", {
   expect_identical(date_round(x, "week"), x[c(1, 1, 4, 4)])
   expect_identical(date_round(x, "week", n = 2), as.Date(c("1970-01-01", "1970-01-01", "1970-01-01", "1970-01-15")))
 })
+
+# ------------------------------------------------------------------------------
+# date_weekday_factor()
+
+test_that("can convert to a weekday factor", {
+  x <- as.Date("2019-01-01") + 0:6
+
+  expect_identical(
+    date_weekday_factor(x, labels = "fr", abbreviate = TRUE, encoding = "iso"),
+    weekday_factor(as_weekday(x), labels = "fr", abbreviate = TRUE, encoding = "iso"),
+  )
+})

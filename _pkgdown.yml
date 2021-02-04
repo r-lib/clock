@@ -12,6 +12,7 @@ reference:
   - date_group
   - date_leap_year
   - date-and-date-time-rounding
+  - date_weekday_factor
   - get_year.Date
   - get_year.POSIXt
   - set_year.Date

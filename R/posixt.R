@@ -774,3 +774,15 @@ validate_date_time_rounder_origin <- function(origin, zone) {
 
   origin
 }
+
+# ------------------------------------------------------------------------------
+
+#' @export
+date_weekday_factor.POSIXt <- function(x,
+                                       ...,
+                                       labels = "en",
+                                       abbreviate = FALSE,
+                                       encoding = "c") {
+  x <- as_weekday(x)
+  weekday_factor(x, ..., labels = labels, abbreviate = abbreviate, encoding = encoding)
+}

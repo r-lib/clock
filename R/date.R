@@ -669,3 +669,52 @@ validate_date_rounder_origin <- function(origin) {
   }
   origin
 }
+
+# ------------------------------------------------------------------------------
+
+#' Convert a date or date-time to a weekday factor
+#'
+#' `date_weekday_factor()` converts a date or date-time to an ordered factor
+#' with levels representing the weekday. This can be useful in combination with
+#' ggplot2, or for modeling.
+#'
+#' @inheritParams weekday_factor
+#'
+#' @param x `[Date / POSIXct / POSIXlt]`
+#'
+#'   A date or date-time vector.
+#'
+#' @return An ordered factor representing the weekdays.
+#'
+#' @export
+#' @examples
+#' x <- as.Date("2019-01-01") + 0:6
+#'
+#' # Default to Sunday -> Saturday
+#' date_weekday_factor(x)
+#'
+#' # ISO encoding is Monday -> Sunday
+#' date_weekday_factor(x, encoding = "iso")
+#'
+#' # With abbreviations
+#' date_weekday_factor(x, abbreviate = TRUE)
+#'
+#' # Or a different language
+#' date_weekday_factor(x, labels = "fr")
+date_weekday_factor <- function(x,
+                                ...,
+                                labels = "en",
+                                abbreviate = FALSE,
+                                encoding = "c") {
+  UseMethod("date_weekday_factor")
+}
+
+#' @export
+date_weekday_factor.Date <- function(x,
+                                     ...,
+                                     labels = "en",
+                                     abbreviate = FALSE,
+                                     encoding = "c") {
+  x <- as_weekday(x)
+  weekday_factor(x, ..., labels = labels, abbreviate = abbreviate, encoding = encoding)
+}
