@@ -27,6 +27,7 @@ test_that("can resolve ambiguous issues - character", {
   latest <- as_sys_time(year_month_day(1970, 10, 25, 06, 30, 00, 01, subsecond_precision = "millisecond"))
 
   expect_snapshot_error(as_zoned_time(x, zone))
+  expect_error(as_zoned_time(x, zone), class = "clock_error_ambiguous_time")
 
   expect_identical(
     as_zoned_time(x, zone, ambiguous = "earliest"),
@@ -104,6 +105,7 @@ test_that("can resolve nonexistent issues", {
   x <- as_naive_time(year_month_day(1970, 04, 26, 02, 30, 00))
 
   expect_snapshot_error(as_zoned_time(x, zone))
+  expect_error(as_zoned_time(x, zone), class = "clock_error_nonexistent_time")
 
   expect_identical(
     as_zoned_time(x, zone, nonexistent = "roll-forward"),

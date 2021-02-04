@@ -55,11 +55,10 @@ resolve_previous_subsecond() {
 inline
 void
 resolve_error(r_ssize i) {
-  std::string message =
-    std::string{"Invalid day found at location %td. "} +
-    "Resolve invalid day issues by specifying the `invalid` argument.";
-
-  clock_abort(message.c_str(), (ptrdiff_t) i + 1);
+  cpp11::writable::integers arg(1);
+  arg[0] = (int) i + 1;
+  auto stop = cpp11::package("clock")["stop_clock_invalid_date"];
+  stop(arg);
 }
 
 } // namespace detail
