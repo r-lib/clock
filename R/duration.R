@@ -566,8 +566,8 @@ vec_arith.numeric.clock_duration <- function(op, x, y, ...) {
 #' Arithmetic: duration
 #'
 #' @description
-#' The following arithmetic operations are available for use on
-#' durations.
+#' These are duration methods for the
+#' [arithmetic generics][clock-arithmetic].
 #'
 #' - `add_years()`
 #'

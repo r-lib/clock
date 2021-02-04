@@ -56,8 +56,8 @@ units of duration.}
 precision.
 }
 \description{
-The following arithmetic operations are available for use on
-durations.
+These are duration methods for the
+\link[=clock-arithmetic]{arithmetic generics}.
 \itemize{
 \item \code{add_years()}
 \item \code{add_quarters()}
