@@ -147,7 +147,7 @@ rounding up on ties.</p></li>
   n <span class='op'>=</span> <span class='fl'>1L</span>,
   origin <span class='op'>=</span> <span class='cn'>NULL</span>,
   nonexistent <span class='op'>=</span> <span class='st'>"error"</span>,
-  ambiguous <span class='op'>=</span> <span class='st'>"error"</span>
+  ambiguous <span class='op'>=</span> <span class='va'>x</span>
 <span class='op'>)</span>
 
 <span class='co'># S3 method for POSIXt</span>
@@ -158,7 +158,7 @@ rounding up on ties.</p></li>
   n <span class='op'>=</span> <span class='fl'>1L</span>,
   origin <span class='op'>=</span> <span class='cn'>NULL</span>,
   nonexistent <span class='op'>=</span> <span class='st'>"error"</span>,
-  ambiguous <span class='op'>=</span> <span class='st'>"error"</span>
+  ambiguous <span class='op'>=</span> <span class='va'>x</span>
 <span class='op'>)</span>
 
 <span class='co'># S3 method for POSIXt</span>
@@ -169,7 +169,7 @@ rounding up on ties.</p></li>
   n <span class='op'>=</span> <span class='fl'>1L</span>,
   origin <span class='op'>=</span> <span class='cn'>NULL</span>,
   nonexistent <span class='op'>=</span> <span class='st'>"error"</span>,
-  ambiguous <span class='op'>=</span> <span class='st'>"error"</span>
+  ambiguous <span class='op'>=</span> <span class='va'>x</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -228,15 +228,28 @@ recommended over shifting, as these two strategies maintain the
     </tr>
     <tr>
       <th>ambiguous</th>
-      <td><p><code>[character]</code></p>
-<p>One of the following ambiguous time resolution strategies:</p><ul>
+      <td><p><code>[character / zoned_time / POSIXct / list(2)]</code></p>
+<p>One of the following ambiguous time resolution strategies, allowed to be
+either length 1, or the same length as the input:</p><ul>
 <li><p><code>"earliest"</code>: Of the two possible times, choose the earliest one.</p></li>
 <li><p><code>"latest"</code>: Of the two possible times, choose the latest one.</p></li>
 <li><p><code>"NA"</code>: Replace ambiguous times with <code>NA</code>.</p></li>
 <li><p><code>"error"</code>: Error on ambiguous times.</p></li>
 </ul>
 
-<p>Allowed to be either length 1, or the same length as the input.</p></td>
+<p>Alternatively, <code>ambiguous</code> is allowed to be a zoned_time (or POSIXct) that
+is either length 1, or the same length as the input. If an ambiguous time
+is encountered, the zoned_time is consulted. If the zoned_time corresponds
+to a naive_time that is also ambiguous <em>and</em> uses the same daylight saving
+time transition point as the original ambiguous time, then the offset of
+the zoned_time is used to resolve the ambiguity. If the ambiguity cannot be
+resolved by consulting the zoned_time, then this method falls back to
+<code>"error"</code>.</p>
+<p>Finally, <code>ambiguous</code> is allowed to be a list of size 2, where the first
+element of the list is a zoned_time (as described above), and the second
+element of the list is an ambiguous time resolution strategy to use when
+the ambiguous time cannot be resolved by consulting the zoned_time.
+Specifying a zoned_time on its own is identical to <code>list(&lt;zoned_time&gt;, "error")</code>.</p></td>
     </tr>
     </table>
 
