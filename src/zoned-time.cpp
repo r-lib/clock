@@ -252,7 +252,7 @@ as_zoned_sys_time_from_naive_time_with_reference_impl(const ClockDuration& x,
 
   enum nonexistent nonexistent_val;
   enum ambiguous ambiguous_val;
-  date::zoned_seconds reference_val;
+  date::zoned_time<std::chrono::seconds> reference_val;
 
   if (recycle_nonexistent) {
     nonexistent_val = parse_nonexistent_one(nonexistent_string[0]);
@@ -261,7 +261,8 @@ as_zoned_sys_time_from_naive_time_with_reference_impl(const ClockDuration& x,
     ambiguous_val = parse_ambiguous_one(ambiguous_string[0]);
   }
   if (recycle_reference) {
-    const date::sys_seconds reference_st = date::sys_seconds{reference_duration[0]};
+    const std::chrono::seconds reference_dur = reference_duration[0];
+    const date::sys_time<std::chrono::seconds> reference_st{reference_dur};
     reference_val = date::make_zoned(p_time_zone, reference_st);
   }
 
@@ -285,7 +286,8 @@ as_zoned_sys_time_from_naive_time_with_reference_impl(const ClockDuration& x,
     if (recycle_reference) {
       elt_reference_val = reference_val;
     } else {
-      const date::sys_seconds elt_reference_st = date::sys_seconds{reference_duration[i]};
+      const std::chrono::seconds elt_reference_dur = reference_duration[i];
+      const date::sys_time<std::chrono::seconds> elt_reference_st{elt_reference_dur};
       elt_reference_val = date::make_zoned(p_time_zone, elt_reference_st);
     }
 
