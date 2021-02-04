@@ -806,6 +806,16 @@ calendar_leap_year.clock_year_month_weekday <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+calendar_month_factor.clock_year_month_weekday <- function(x,
+                                                           ...,
+                                                           labels = "en",
+                                                           abbreviate = FALSE) {
+  calendar_month_factor_impl(x, labels, abbreviate, ...)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Grouping: year-month-weekday
 #'
 #' @description

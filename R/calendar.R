@@ -74,6 +74,86 @@ calendar_leap_year.clock_calendar <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' Convert a calendar to an ordered factor of month names
+#'
+#' @description
+#' `calendar_month_factor()` extracts the month values from a calendar and
+#' converts them to an ordered factor of month names. This can be useful in
+#' combination with ggplot2, or for modeling.
+#'
+#' This function is only relevant for calendar types that use a month field,
+#' i.e. [year_month_day()] and [year_month_weekday()]. The calendar type must
+#' have at least month precision.
+#'
+#' @inheritParams ellipsis::dots_empty
+#' @inheritParams clock_locale
+#'
+#' @param x `[calendar]`
+#'
+#'   A calendar vector.
+#'
+#' @param abbreviate `[logical(1)]`
+#'
+#'   If `TRUE`, the abbreviated month names from `labels` will be used.
+#'
+#'   If `FALSE`, the full month names from `labels` will be used.
+#'
+#' @return An ordered factor representing the months.
+#'
+#' @export
+#' @examples
+#' x <- year_month_day(2019, 1:12)
+#'
+#' calendar_month_factor(x)
+#' calendar_month_factor(x, abbreviate = TRUE)
+#' calendar_month_factor(x, labels = "fr")
+calendar_month_factor <- function(x,
+                                  ...,
+                                  labels = "en",
+                                  abbreviate = FALSE) {
+  UseMethod("calendar_month_factor")
+}
+
+#' @export
+calendar_month_factor.clock_calendar <- function(x,
+                                                 ...,
+                                                 labels = "en",
+                                                 abbreviate = FALSE) {
+  stop_clock_unsupported_calendar_op("calendar_month_factor")
+}
+
+calendar_month_factor_impl <- function(x, labels, abbreviate, ...) {
+  check_dots_empty()
+
+  if (calendar_precision(x) < PRECISION_MONTH) {
+    abort("`x` must have at least 'month' precision.")
+  }
+
+  if (is_character(labels)) {
+    labels <- clock_labels_lookup(labels)
+  }
+  if (!is_clock_labels(labels)) {
+    abort("`labels` must be a 'clock_labels' object.")
+  }
+
+  if (!is_bool(abbreviate)) {
+    abort("`abbreviate` must be `TRUE` or `FALSE`.")
+  }
+
+  if (abbreviate) {
+    labels <- labels$month_abbrev
+  } else {
+    labels <- labels$month
+  }
+
+  x <- get_month(x)
+  x <- labels[x]
+
+  factor(x, levels = labels, ordered = TRUE)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Group calendar components
 #'
 #' @description

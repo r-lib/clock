@@ -31,6 +31,16 @@ test_that("can widen to day", {
 })
 
 # ------------------------------------------------------------------------------
+# calendar_month_factor()
+
+test_that("can get a month factor", {
+  expect_identical(
+    calendar_month_factor(year_month_weekday(2019, 1:12)),
+    factor(month.name, levels = month.name, ordered = TRUE)
+  )
+})
+
+# ------------------------------------------------------------------------------
 # invalid_resolve()
 
 test_that("strict mode can be activated", {

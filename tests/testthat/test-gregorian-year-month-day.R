@@ -88,6 +88,45 @@ test_that("can widen to subsecond precision", {
 })
 
 # ------------------------------------------------------------------------------
+# calendar_month_factor()
+
+test_that("can get a month factor", {
+  expect_identical(
+    calendar_month_factor(year_month_day(2019, 1:12)),
+    factor(month.name, levels = month.name, ordered = TRUE)
+  )
+})
+
+test_that("can abbreviate month names", {
+  expect_identical(
+    calendar_month_factor(year_month_day(2019, 1:12), abbreviate = TRUE),
+    factor(month.abb, levels = month.abb, ordered = TRUE)
+  )
+})
+
+test_that("can adjust labels language", {
+  labels <- clock_labels_lookup("fr")$month
+  expect_identical(
+    calendar_month_factor(year_month_day(2019, 1:12), labels = "fr"),
+    factor(labels, levels = labels, ordered = TRUE)
+  )
+})
+
+test_that("requires month precision", {
+  expect_snapshot_error(calendar_month_factor(year_month_day(2019)))
+})
+
+test_that("`labels` is validated", {
+  expect_snapshot_error(calendar_month_factor(year_month_day(2019, 1), labels = 1))
+})
+
+test_that("`abbreviate` is validated", {
+  expect_snapshot_error(calendar_month_factor(year_month_day(2019, 1), abbreviate = "foo"))
+  expect_snapshot_error(calendar_month_factor(year_month_day(2019, 1), abbreviate = 1))
+  expect_snapshot_error(calendar_month_factor(year_month_day(2019, 1), abbreviate = c(TRUE, FALSE)))
+})
+
+# ------------------------------------------------------------------------------
 # invalid_resolve()
 
 test_that("strict mode can be activated", {

@@ -27,9 +27,10 @@ reference:
 - title: Calendars
   contents:
   - calendar_group
-  - calendar_leap_year
   - calendar_narrow
   - calendar_widen
+  - calendar_leap_year
+  - calendar_month_factor
   - get_year
   - set_year
 
