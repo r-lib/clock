@@ -11,6 +11,9 @@ as_naive_time.POSIXt <- function(x) {
 
 #' Convert to a zoned-time from a date-time
 #'
+#' @description
+#' This is a POSIXct/POSIXlt method for the [as_zoned_time()] generic.
+#'
 #' Converting from one of R's native date-time classes (POSIXct or POSIXlt)
 #' will retain the time zone of that object. There is no `zone` argument.
 #'
@@ -151,8 +154,7 @@ as.POSIXlt.clock_zoned_time <- function(x, ...) {
 #' Getters: date-time
 #'
 #' @description
-#' These functions are supported getters for date-time vectors, like POSIXct
-#' and POSIXlt.
+#' These are POSIXct/POSIXlt methods for the [getter generics][clock-getters].
 #'
 #' - `get_year()` returns the Gregorian year.
 #'
@@ -243,8 +245,7 @@ zoned_info.POSIXt <- function(x) {
 #' Setters: date-time
 #'
 #' @description
-#' These functions are supported setters for date-time vectors, like POSIXct
-#' and POSIXlt.
+#' These are POSIXct/POSIXlt methods for the [setter generics][clock-setters].
 #'
 #' - `set_year()` sets the year.
 #'
@@ -346,8 +347,8 @@ set_posixt_field_year_month_day <- function(x, value, invalid, nonexistent, ambi
 #' Arithmetic: date-time
 #'
 #' @description
-#' The following arithmetic operations are available for use on R's native
-#' date-time types, POSIXct and POSIXlt.
+#' These are POSIXct/POSIXlt methods for the
+#' [arithmetic generics][clock-arithmetic].
 #'
 #' Calendrical based arithmetic:
 #'
@@ -521,6 +522,8 @@ add_posixt_duration_sys_time_point <- function(x, n, add_fn, ...) {
 #' Group date-time components
 #'
 #' @description
+#' This is a POSIXct/POSIXlt method for the [date_group()] generic.
+#'
 #' `date_group()` groups by a single component of a date-time, such as month
 #' of the year, day of the month, or hour of the day.
 #'
@@ -603,6 +606,9 @@ date_leap_year.POSIXt <- function(x) {
 #' Rounding: date-time
 #'
 #' @description
+#' These are POSIXct/POSIXlt methods for the
+#' [rounding generics][date-and-date-time-rounding].
+#'
 #' - `date_floor()` rounds a date-time down to a multiple of
 #'   the specified `precision`.
 #'

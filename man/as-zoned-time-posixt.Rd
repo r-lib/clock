@@ -18,6 +18,8 @@ A date-time.}
 A zoned-time.
 }
 \description{
+This is a POSIXct/POSIXlt method for the \code{\link[=as_zoned_time]{as_zoned_time()}} generic.
+
 Converting from one of R's native date-time classes (POSIXct or POSIXlt)
 will retain the time zone of that object. There is no \code{zone} argument.
 }

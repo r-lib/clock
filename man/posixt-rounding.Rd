@@ -111,6 +111,8 @@ the ambiguous time cannot be resolved by consulting the zoned_time.
 Specifying a zoned_time on its own is identical to \verb{list(<zoned_time>, "error")}.}
 }
 \description{
+These are POSIXct/POSIXlt methods for the
+\link[=date-and-date-time-rounding]{rounding generics}.
 \itemize{
 \item \code{date_floor()} rounds a date-time down to a multiple of
 the specified \code{precision}.

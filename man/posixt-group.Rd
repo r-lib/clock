@@ -108,6 +108,8 @@ Specifying a zoned_time on its own is identical to \verb{list(<zoned_time>, "err
 \code{x}, grouped at \code{precision}.
 }
 \description{
+This is a POSIXct/POSIXlt method for the \code{\link[=date_group]{date_group()}} generic.
+
 \code{date_group()} groups by a single component of a date-time, such as month
 of the year, day of the month, or hour of the day.
 

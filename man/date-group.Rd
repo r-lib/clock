@@ -52,6 +52,8 @@ input.}
 \code{x}, grouped at \code{precision}.
 }
 \description{
+This is a Date method for the \code{\link[=date_group]{date_group()}} generic.
+
 \code{date_group()} groups by a single component of a Date, such as month
 of the year, or day of the month.
 

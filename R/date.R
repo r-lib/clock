@@ -13,6 +13,9 @@ as_naive_time.Date <- function(x) {
 
 #' Convert to a zoned-time from a date
 #'
+#' @description
+#' This is a Date method for the [as_zoned_time()] generic.
+#'
 #' Since R assumes that Dates are UTC, converting to a zoned-time returns
 #' a zoned-time with a UTC time zone. There is no `zone` argument.
 #'
@@ -90,7 +93,7 @@ as.Date.clock_zoned_time <- function(x, ...) {
 #' Getters: date
 #'
 #' @description
-#' These functions are supported getters for a Date vector.
+#' These are Date methods for the [getter generics][clock-getters].
 #'
 #' - `get_year()` returns the Gregorian year.
 #'
@@ -156,7 +159,7 @@ zoned_info.Date <- function(x) {
 #' Setters: date
 #'
 #' @description
-#' These functions are supported setters for a Date vector.
+#' These are Date methods for the [setter generics][clock-setters].
 #'
 #' - `set_year()` sets the year.
 #'
@@ -230,8 +233,8 @@ set_date_field_year_month_day <- function(x, value, invalid, set_fn, ...) {
 #' Arithmetic: date
 #'
 #' @description
-#' The following arithmetic operations are available for use on R's native
-#' Date type.
+#' These are Date methods for the
+#' [arithmetic generics][clock-arithmetic].
 #'
 #' Calendrical based arithmetic:
 #'
@@ -370,6 +373,8 @@ date_group <- function(x, precision, ..., n = 1L) {
 #' Group date components
 #'
 #' @description
+#' This is a Date method for the [date_group()] generic.
+#'
 #' `date_group()` groups by a single component of a Date, such as month
 #' of the year, or day of the month.
 #'
@@ -520,6 +525,9 @@ date_round <- function(x, precision, ..., n = 1L, origin = NULL) {
 #' Rounding: date
 #'
 #' @description
+#' These are Date methods for the
+#' [rounding generics][date-and-date-time-rounding].
+#'
 #' - `date_floor()` rounds a date down to a multiple of
 #'   the specified `precision`.
 #'

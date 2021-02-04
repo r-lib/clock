@@ -52,7 +52,7 @@ input.}
 \code{x} with the component set.
 }
 \description{
-These functions are supported setters for a Date vector.
+These are Date methods for the \link[=clock-setters]{setter generics}.
 \itemize{
 \item \code{set_year()} sets the year.
 \item \code{set_month()} sets the month of the year. Valid values are in the range

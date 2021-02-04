@@ -119,8 +119,8 @@ Specifying a zoned_time on its own is identical to \verb{list(<zoned_time>, "err
 \code{x} after performing the arithmetic.
 }
 \description{
-The following arithmetic operations are available for use on R's native
-date-time types, POSIXct and POSIXlt.
+These are POSIXct/POSIXlt methods for the
+\link[=clock-arithmetic]{arithmetic generics}.
 
 Calendrical based arithmetic:
 

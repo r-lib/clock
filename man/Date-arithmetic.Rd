@@ -58,8 +58,8 @@ input.}
 \code{x} after performing the arithmetic.
 }
 \description{
-The following arithmetic operations are available for use on R's native
-Date type.
+These are Date methods for the
+\link[=clock-arithmetic]{arithmetic generics}.
 
 Calendrical based arithmetic:
 

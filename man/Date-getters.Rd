@@ -22,7 +22,7 @@ A Date to get the component from.}
 The component.
 }
 \description{
-These functions are supported getters for a Date vector.
+These are Date methods for the \link[=clock-getters]{getter generics}.
 \itemize{
 \item \code{get_year()} returns the Gregorian year.
 \item \code{get_month()} returns the month of the year.

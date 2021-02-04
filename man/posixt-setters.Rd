@@ -141,8 +141,7 @@ Specifying a zoned_time on its own is identical to \verb{list(<zoned_time>, "err
 \code{x} with the component set.
 }
 \description{
-These functions are supported setters for date-time vectors, like POSIXct
-and POSIXlt.
+These are POSIXct/POSIXlt methods for the \link[=clock-setters]{setter generics}.
 \itemize{
 \item \code{set_year()} sets the year.
 \item \code{set_month()} sets the month of the year. Valid values are in the range

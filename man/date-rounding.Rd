@@ -38,6 +38,8 @@ An origin to start counting from. The default \code{origin} is
 implicitly \code{"1970-01-01"}.}
 }
 \description{
+These are Date methods for the
+\link[=date-and-date-time-rounding]{rounding generics}.
 \itemize{
 \item \code{date_floor()} rounds a date down to a multiple of
 the specified \code{precision}.

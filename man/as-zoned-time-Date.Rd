@@ -18,6 +18,8 @@ A Date.}
 A zoned-time.
 }
 \description{
+This is a Date method for the \code{\link[=as_zoned_time]{as_zoned_time()}} generic.
+
 Since R assumes that Dates are UTC, converting to a zoned-time returns
 a zoned-time with a UTC time zone. There is no \code{zone} argument.
 }
