@@ -100,7 +100,7 @@ get_naive_time_impl(const ClockDuration& x,
 
     Duration elt = x[i];
     date::sys_time<Duration> elt_st{elt};
-    date::zoned_time<Duration> elt_zt = date::make_zoned(p_time_zone, elt_st);
+    date::zoned_time<Duration> elt_zt{p_time_zone, elt_st};
     date::local_time<Duration> elt_lt = elt_zt.get_local_time();
     Duration elt_out = elt_lt.time_since_epoch();
     out.assign(elt_out, i);
@@ -185,10 +185,11 @@ as_zoned_sys_time_from_naive_time_impl(const ClockDuration& x,
 
     const Duration elt = x[i];
     const date::local_time<Duration> elt_lt{elt};
+    const date::local_info elt_info = p_time_zone->get_info(elt_lt);
 
     out.convert_local_to_sys_and_assign(
       elt_lt,
-      p_time_zone,
+      elt_info,
       elt_nonexistent_val,
       elt_ambiguous_val,
       i
@@ -225,6 +226,116 @@ as_zoned_sys_time_from_naive_time_cpp(cpp11::list_of<cpp11::integers> fields,
   case precision::millisecond: return as_zoned_sys_time_from_naive_time_impl(dmilli, p_time_zone, nonexistent_string, ambiguous_string);
   case precision::microsecond: return as_zoned_sys_time_from_naive_time_impl(dmicro, p_time_zone, nonexistent_string, ambiguous_string);
   case precision::nanosecond: return as_zoned_sys_time_from_naive_time_impl(dnano, p_time_zone, nonexistent_string, ambiguous_string);
+  default: clock_abort("Internal error: Should never be called.");
+  }
+}
+
+// -----------------------------------------------------------------------------
+
+template <class ClockDuration>
+static
+inline
+cpp11::writable::list
+as_zoned_sys_time_from_naive_time_with_reference_impl(const ClockDuration& x,
+                                                      const date::time_zone* p_time_zone,
+                                                      const cpp11::strings& nonexistent_string,
+                                                      const cpp11::strings& ambiguous_string,
+                                                      const rclock::duration::seconds& reference_duration) {
+  using Duration = typename ClockDuration::duration;
+
+  const r_ssize size = x.size();
+  ClockDuration out(size);
+
+  const bool recycle_nonexistent = clock_is_scalar(nonexistent_string);
+  const bool recycle_ambiguous = clock_is_scalar(ambiguous_string);
+  const bool recycle_reference = reference_duration.size() == 1;
+
+  enum nonexistent nonexistent_val;
+  enum ambiguous ambiguous_val;
+  date::zoned_seconds reference_val;
+
+  if (recycle_nonexistent) {
+    nonexistent_val = parse_nonexistent_one(nonexistent_string[0]);
+  }
+  if (recycle_ambiguous) {
+    ambiguous_val = parse_ambiguous_one(ambiguous_string[0]);
+  }
+  if (recycle_reference) {
+    reference_val = date::zoned_seconds(p_time_zone, date::sys_seconds{reference_duration[0]});
+  }
+
+  for (r_ssize i = 0; i < size; ++i) {
+    if (x.is_na(i)) {
+      out.assign_na(i);
+      continue;
+    }
+
+    const enum nonexistent elt_nonexistent_val =
+      recycle_nonexistent ?
+      nonexistent_val :
+      parse_nonexistent_one(nonexistent_string[i]);
+
+    const enum ambiguous elt_ambiguous_val =
+      recycle_ambiguous ?
+      ambiguous_val :
+      parse_ambiguous_one(ambiguous_string[i]);
+
+    const date::zoned_seconds elt_reference_val =
+      recycle_reference ?
+      reference_val :
+      date::zoned_seconds(p_time_zone, date::sys_seconds{reference_duration[i]});
+
+    const Duration elt = x[i];
+    const date::local_time<Duration> elt_lt{elt};
+    const date::local_info elt_info = p_time_zone->get_info(elt_lt);
+
+    out.convert_local_with_reference_to_sys_and_assign(
+      elt_lt,
+      elt_info,
+      elt_nonexistent_val,
+      elt_ambiguous_val,
+      elt_reference_val,
+      p_time_zone,
+      i
+    );
+  }
+
+  return out.to_list();
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+as_zoned_sys_time_from_naive_time_with_reference_cpp(cpp11::list_of<cpp11::integers> fields,
+                                                     const cpp11::integers& precision_int,
+                                                     const cpp11::strings& zone,
+                                                     const cpp11::strings& nonexistent_string,
+                                                     const cpp11::strings& ambiguous_string,
+                                                     cpp11::list_of<cpp11::integers> reference) {
+  using namespace rclock;
+
+  const cpp11::writable::strings zone_standard = zone_standardize(zone);
+  const std::string zone_name = cpp11::r_string(zone_standard[0]);
+  const date::time_zone* p_time_zone = zone_name_load(zone_name);
+
+  cpp11::integers ticks = duration::get_ticks(fields);
+  cpp11::integers ticks_of_day = duration::get_ticks_of_day(fields);
+  cpp11::integers ticks_of_second = duration::get_ticks_of_second(fields);
+
+  duration::seconds ds{ticks, ticks_of_day};
+  duration::milliseconds dmilli{ticks, ticks_of_day, ticks_of_second};
+  duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
+  duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
+
+  cpp11::integers reference_ticks = duration::get_ticks(reference);
+  cpp11::integers reference_ticks_of_day = duration::get_ticks_of_day(reference);
+
+  duration::seconds reference_duration{reference_ticks, reference_ticks_of_day};
+
+  switch (parse_precision(precision_int)) {
+  case precision::second: return as_zoned_sys_time_from_naive_time_with_reference_impl(ds, p_time_zone, nonexistent_string, ambiguous_string, reference_duration);
+  case precision::millisecond: return as_zoned_sys_time_from_naive_time_with_reference_impl(dmilli, p_time_zone, nonexistent_string, ambiguous_string, reference_duration);
+  case precision::microsecond: return as_zoned_sys_time_from_naive_time_with_reference_impl(dmicro, p_time_zone, nonexistent_string, ambiguous_string, reference_duration);
+  case precision::nanosecond: return as_zoned_sys_time_from_naive_time_with_reference_impl(dnano, p_time_zone, nonexistent_string, ambiguous_string, reference_duration);
   default: clock_abort("Internal error: Should never be called.");
   }
 }

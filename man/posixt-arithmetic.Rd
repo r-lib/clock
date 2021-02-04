@@ -12,14 +12,7 @@
 \alias{add_seconds.POSIXt}
 \title{Arithmetic: date-time}
 \usage{
-\method{add_years}{POSIXt}(
-  x,
-  n,
-  ...,
-  invalid = "error",
-  nonexistent = "error",
-  ambiguous = "error"
-)
+\method{add_years}{POSIXt}(x, n, ..., invalid = "error", nonexistent = "error", ambiguous = x)
 
 \method{add_quarters}{POSIXt}(
   x,
@@ -27,21 +20,14 @@
   ...,
   invalid = "error",
   nonexistent = "error",
-  ambiguous = "error"
+  ambiguous = x
 )
 
-\method{add_months}{POSIXt}(
-  x,
-  n,
-  ...,
-  invalid = "error",
-  nonexistent = "error",
-  ambiguous = "error"
-)
+\method{add_months}{POSIXt}(x, n, ..., invalid = "error", nonexistent = "error", ambiguous = x)
 
-\method{add_weeks}{POSIXt}(x, n, ..., nonexistent = "error", ambiguous = "error")
+\method{add_weeks}{POSIXt}(x, n, ..., nonexistent = "error", ambiguous = x)
 
-\method{add_days}{POSIXt}(x, n, ..., nonexistent = "error", ambiguous = "error")
+\method{add_days}{POSIXt}(x, n, ..., nonexistent = "error", ambiguous = x)
 
 \method{add_hours}{POSIXt}(x, n, ...)
 
@@ -100,9 +86,10 @@ Using either \code{"roll-forward"} or \code{"roll-backward"} is generally
 recommended over shifting, as these two strategies maintain the
 \emph{relative ordering} between elements of the input.}
 
-\item{ambiguous}{\verb{[character]}
+\item{ambiguous}{\verb{[character / zoned_time / POSIXct / list(2)]}
 
-One of the following ambiguous time resolution strategies:
+One of the following ambiguous time resolution strategies, allowed to be
+either length 1, or the same length as the input:
 \itemize{
 \item \code{"earliest"}: Of the two possible times, choose the earliest one.
 \item \code{"latest"}: Of the two possible times, choose the latest one.
@@ -110,7 +97,20 @@ One of the following ambiguous time resolution strategies:
 \item \code{"error"}: Error on ambiguous times.
 }
 
-Allowed to be either length 1, or the same length as the input.}
+Alternatively, \code{ambiguous} is allowed to be a zoned_time (or POSIXct) that
+is either length 1, or the same length as the input. If an ambiguous time
+is encountered, the zoned_time is consulted. If the zoned_time corresponds
+to a naive_time that is also ambiguous \emph{and} uses the same daylight saving
+time transition point as the original ambiguous time, then the offset of
+the zoned_time is used to resolve the ambiguity. If the ambiguity cannot be
+resolved by consulting the zoned_time, then this method falls back to
+\code{"error"}.
+
+Finally, \code{ambiguous} is allowed to be a list of size 2, where the first
+element of the list is a zoned_time (as described above), and the second
+element of the list is an ambiguous time resolution strategy to use when
+the ambiguous time cannot be resolved by consulting the zoned_time.
+Specifying a zoned_time on its own is identical to \verb{list(<zoned_time>, "error")}.}
 }
 \value{
 \code{x} after performing the arithmetic.

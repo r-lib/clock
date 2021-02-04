@@ -38,9 +38,10 @@ Using either \code{"roll-forward"} or \code{"roll-backward"} is generally
 recommended over shifting, as these two strategies maintain the
 \emph{relative ordering} between elements of the input.}
 
-\item{ambiguous}{\verb{[character]}
+\item{ambiguous}{\verb{[character / zoned_time / POSIXct / list(2)]}
 
-One of the following ambiguous time resolution strategies:
+One of the following ambiguous time resolution strategies, allowed to be
+either length 1, or the same length as the input:
 \itemize{
 \item \code{"earliest"}: Of the two possible times, choose the earliest one.
 \item \code{"latest"}: Of the two possible times, choose the latest one.
@@ -48,7 +49,20 @@ One of the following ambiguous time resolution strategies:
 \item \code{"error"}: Error on ambiguous times.
 }
 
-Allowed to be either length 1, or the same length as the input.}
+Alternatively, \code{ambiguous} is allowed to be a zoned_time (or POSIXct) that
+is either length 1, or the same length as the input. If an ambiguous time
+is encountered, the zoned_time is consulted. If the zoned_time corresponds
+to a naive_time that is also ambiguous \emph{and} uses the same daylight saving
+time transition point as the original ambiguous time, then the offset of
+the zoned_time is used to resolve the ambiguity. If the ambiguity cannot be
+resolved by consulting the zoned_time, then this method falls back to
+\code{"error"}.
+
+Finally, \code{ambiguous} is allowed to be a list of size 2, where the first
+element of the list is a zoned_time (as described above), and the second
+element of the list is an ambiguous time resolution strategy to use when
+the ambiguous time cannot be resolved by consulting the zoned_time.
+Specifying a zoned_time on its own is identical to \verb{list(<zoned_time>, "error")}.}
 }
 \value{
 A zoned-time vector.
@@ -95,6 +109,8 @@ time resolution strategies.
 }
 
 \examples{
+library(magrittr)
+
 x <- as_naive_time(year_month_day(2019, 1, 1))
 
 # Converting a naive-time to a zoned-time generally retains the
@@ -150,7 +166,68 @@ ambiguous_time <- as_naive_time(ambiguous_time)
 try(as_zoned_time(ambiguous_time, new_york))
 
 # Resolve this by specifying an ambiguous time resolution strategy
-as_zoned_time(ambiguous_time, new_york, ambiguous = "earliest")
-as_zoned_time(ambiguous_time, new_york, ambiguous = "latest")
-as_zoned_time(ambiguous_time, new_york, ambiguous = "NA")
+earliest <- as_zoned_time(ambiguous_time, new_york, ambiguous = "earliest")
+latest <- as_zoned_time(ambiguous_time, new_york, ambiguous = "latest")
+na <- as_zoned_time(ambiguous_time, new_york, ambiguous = "NA")
+earliest
+latest
+na
+
+# Now assume that you were given the following zoned-times, i.e.,
+# you didn't build them from scratch so you already know their otherwise
+# ambiguous offsets
+x <- c(earliest, latest)
+x
+
+# To set the seconds to 5 in both, you might try:
+x_naive <- x \%>\%
+  as_naive_time() \%>\%
+  as_year_month_day() \%>\%
+  set_second(5) \%>\%
+  as_naive_time()
+
+x_naive
+
+# But this fails because you've "lost" the information about which
+# offsets these ambiguous times started in
+try(as_zoned_time(x_naive, zoned_zone(x)))
+
+# To get around this, you can use that information by specifying
+# `ambiguous = x`, which will use the offset from `x` to resolve the
+# ambiguity in `x_naive` as long as `x` is also an ambiguous time with the
+# same daylight saving time transition point as `x_naive` (i.e. here
+# everything has a transition point of `"2020-11-01 01:00:00 EST"`).
+as_zoned_time(x_naive, zoned_zone(x), ambiguous = x)
+
+# Say you added one more time to `x` that would not be considered ambiguous
+# in naive-time
+x <- c(x, as_zoned_time(as_sys_time(latest) + 3600, zoned_zone(latest)))
+x
+
+# Imagine you want to floor this vector to a multiple of 2 hours, with
+# an origin of 1am that day. You can do this by subtracting the origin,
+# flooring, then adding it back
+origin <- as_duration(as_naive_time(year_month_day(2019, 11, 01, 01, 00, 00)))
+
+x_naive <- x \%>\%
+  as_naive_time() \%>\%
+  add_seconds(-origin) \%>\%
+  time_point_floor("hour", n = 2) \%>\%
+  add_seconds(origin)
+
+x_naive
+
+# You again have ambiguous naive-time points, so you might try using
+# `ambiguous = x`. It looks like this took care of the first two problems,
+# but we have an issue at location 3.
+try(as_zoned_time(x_naive, zoned_zone(x), ambiguous = x))
+
+# When we floored from 02:30:00 -> 01:00:00, we went from being
+# unambiguous -> ambiguous. In clock, this is something you must handle
+# explicitly, and cannot be handled by using information from `x`. You can
+# handle this while still retaining the behavior for the other two
+# time points that were ambiguous before and after the floor by passing a
+# list containing `x` and an ambiguous time resolution strategy to use
+# when information from `x` can't resolve ambiguities:
+as_zoned_time(x_naive, zoned_zone(x), ambiguous = list(x, "latest"))
 }
