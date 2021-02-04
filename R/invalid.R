@@ -23,7 +23,7 @@
 #'
 #'   A calendar vector.
 #'
-#' @param invalid `[character(1)]`
+#' @param invalid `[character(1) / NULL]`
 #'
 #'   One of the following invalid date resolution strategies:
 #'
@@ -49,6 +49,12 @@
 #'   Using either `"previous"` or `"next"` is generally recommended, as these
 #'   two strategies maintain the _relative ordering_ between elements of the
 #'   input.
+#'
+#'   If `NULL`, defaults to `"error"`.
+#'
+#'   If `getOption("clock.strict")` is `TRUE`, `invalid` must be supplied and
+#'   cannot be `NULL`. This is a convenient way to make production code robust
+#'   to invalid dates.
 #'
 #' @return
 #' - `invalid_detect()`: Returns a logical vector detecting invalid dates.
@@ -135,11 +141,21 @@ invalid_count.clock_calendar <- function(x) {
 
 #' @rdname clock-invalid
 #' @export
-invalid_resolve <- function(x, ..., invalid = "error") {
+invalid_resolve <- function(x, ..., invalid = NULL) {
   UseMethod("invalid_resolve")
 }
 
 #' @export
-invalid_resolve.clock_calendar <- function(x, ..., invalid = "error") {
+invalid_resolve.clock_calendar <- function(x, ..., invalid = NULL) {
   stop_clock_unsupported_calendar_op("invalid_resolve")
+}
+
+validate_invalid <- function(invalid) {
+  invalid <- strict_validate_invalid(invalid)
+
+  if (!is_string(invalid)) {
+    abort("`invalid` must be a character vector with length 1.")
+  }
+
+  invalid
 }

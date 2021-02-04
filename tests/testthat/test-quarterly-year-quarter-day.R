@@ -29,3 +29,11 @@ test_that("can widen to day", {
   expect_identical(calendar_widen(x, "day"), set_day(set_quarter(x, 1), 1))
   expect_identical(calendar_widen(y, "day"), set_day(y, 1))
 })
+
+# ------------------------------------------------------------------------------
+# invalid_resolve()
+
+test_that("strict mode can be activated", {
+  local_options(clock.strict = TRUE)
+  expect_snapshot_error(invalid_resolve(year_quarter_day(2019, 1, 1)))
+})

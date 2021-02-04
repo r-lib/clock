@@ -201,3 +201,20 @@ test_that("zone is validated", {
   expect_snapshot_error(as_zoned_time(naive_seconds(), "foo"))
   expect_snapshot_error(as_zoned_time(naive_seconds(), 1))
 })
+
+test_that("strict mode can be activated - nonexistent", {
+  local_options(clock.strict = TRUE)
+  zone <- "America/New_York"
+  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, ambiguous = "earliest"))
+})
+
+test_that("strict mode can be activated - ambiguous", {
+  zone <- "America/New_York"
+  zt <- as_zoned_time(naive_seconds(), zone)
+
+  local_options(clock.strict = TRUE)
+
+  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, nonexistent = "roll-forward"))
+  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, nonexistent = "roll-forward", ambiguous = zt))
+  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, nonexistent = "roll-forward", ambiguous = list(zt, NULL)))
+})

@@ -224,9 +224,10 @@ invalid_count.clock_year_month_weekday <- function(x) {
 }
 
 #' @export
-invalid_resolve.clock_year_month_weekday <- function(x, ..., invalid = "error") {
+invalid_resolve.clock_year_month_weekday <- function(x, ..., invalid = NULL) {
   check_dots_empty()
   precision <- calendar_precision(x)
+  invalid <- validate_invalid(invalid)
   fields <- invalid_resolve_year_month_weekday_cpp(x, precision, invalid)
   new_year_month_weekday_from_fields(fields, precision, names = names(x))
 }

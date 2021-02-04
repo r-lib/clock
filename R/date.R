@@ -207,17 +207,17 @@ NULL
 
 #' @rdname Date-setters
 #' @export
-set_year.Date <- function(x, value, ..., invalid = "error") {
+set_year.Date <- function(x, value, ..., invalid = NULL) {
   set_date_field_year_month_day(x, value, invalid, set_year, ...)
 }
 #' @rdname Date-setters
 #' @export
-set_month.Date <- function(x, value, ..., invalid = "error") {
+set_month.Date <- function(x, value, ..., invalid = NULL) {
   set_date_field_year_month_day(x, value, invalid, set_month, ...)
 }
 #' @rdname Date-setters
 #' @export
-set_day.Date <- function(x, value, ..., invalid = "error") {
+set_day.Date <- function(x, value, ..., invalid = NULL) {
   set_date_field_year_month_day(x, value, invalid, set_day, ...)
 }
 set_date_field_year_month_day <- function(x, value, invalid, set_fn, ...) {
@@ -298,17 +298,17 @@ NULL
 
 #' @rdname Date-arithmetic
 #' @export
-add_years.Date <- function(x, n, ..., invalid = "error") {
+add_years.Date <- function(x, n, ..., invalid = NULL) {
   add_date_duration_year_month_day(x, n, invalid, add_years, ...)
 }
 #' @rdname Date-arithmetic
 #' @export
-add_quarters.Date <- function(x, n, ..., invalid = "error") {
+add_quarters.Date <- function(x, n, ..., invalid = NULL) {
   add_date_duration_year_month_day(x, n, invalid, add_quarters, ...)
 }
 #' @rdname Date-arithmetic
 #' @export
-add_months.Date <- function(x, n, ..., invalid = "error") {
+add_months.Date <- function(x, n, ..., invalid = NULL) {
   add_date_duration_year_month_day(x, n, invalid, add_months, ...)
 }
 add_date_duration_year_month_day <- function(x, n, invalid, add_fn, ...) {
@@ -415,7 +415,7 @@ date_group <- function(x, precision, ..., n = 1L) {
 #'
 #' # Group by month
 #' date_group(x, "month")
-date_group.Date <- function(x, precision, ..., n = 1L, invalid = "error") {
+date_group.Date <- function(x, precision, ..., n = 1L, invalid = NULL) {
   x <- as_year_month_day(x)
   x <- calendar_group(x, precision, ..., n = n)
   x <- calendar_widen(x, "day")

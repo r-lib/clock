@@ -90,8 +90,8 @@ as_weekday.POSIXt <- function(x) {
 as.POSIXct.clock_calendar <- function(x,
                                       tz = "",
                                       ...,
-                                      nonexistent = "error",
-                                      ambiguous = "error") {
+                                      nonexistent = NULL,
+                                      ambiguous = NULL) {
   x <- as_naive_time(x)
   as.POSIXct(x, tz = tz, nonexistent = nonexistent, ambiguous = ambiguous)
 }
@@ -109,8 +109,8 @@ as.POSIXct.clock_sys_time <- function(x, tz = "", ...) {
 as.POSIXct.clock_naive_time <- function(x,
                                         tz = "",
                                         ...,
-                                        nonexistent = "error",
-                                        ambiguous = "error") {
+                                        nonexistent = NULL,
+                                        ambiguous = NULL) {
   x <- as_zoned_time(x, zone = tz, nonexistent = nonexistent, ambiguous = ambiguous)
   as.POSIXct(x)
 }
@@ -128,8 +128,8 @@ as.POSIXct.clock_zoned_time <- function(x, ...) {
 as.POSIXlt.clock_calendar <- function(x,
                                       tz = "",
                                       ...,
-                                      nonexistent = "error",
-                                      ambiguous = "error") {
+                                      nonexistent = NULL,
+                                      ambiguous = NULL) {
   x <- as.POSIXct(x, tz = tz, ..., nonexistent = nonexistent, ambiguous = ambiguous)
   as.POSIXlt(x)
 }
@@ -305,32 +305,32 @@ NULL
 
 #' @rdname posixt-setters
 #' @export
-set_year.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "error", ambiguous = x) {
+set_year.POSIXt <- function(x, value, ..., invalid = NULL, nonexistent = NULL, ambiguous = x) {
   set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_year, ...)
 }
 #' @rdname posixt-setters
 #' @export
-set_month.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "error", ambiguous = x) {
+set_month.POSIXt <- function(x, value, ..., invalid = NULL, nonexistent = NULL, ambiguous = x) {
   set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_month, ...)
 }
 #' @rdname posixt-setters
 #' @export
-set_day.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "error", ambiguous = x) {
+set_day.POSIXt <- function(x, value, ..., invalid = NULL, nonexistent = NULL, ambiguous = x) {
   set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_day, ...)
 }
 #' @rdname posixt-setters
 #' @export
-set_hour.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "error", ambiguous = x) {
+set_hour.POSIXt <- function(x, value, ..., invalid = NULL, nonexistent = NULL, ambiguous = x) {
   set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_hour, ...)
 }
 #' @rdname posixt-setters
 #' @export
-set_minute.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "error", ambiguous = x) {
+set_minute.POSIXt <- function(x, value, ..., invalid = NULL, nonexistent = NULL, ambiguous = x) {
   set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_minute, ...)
 }
 #' @rdname posixt-setters
 #' @export
-set_second.POSIXt <- function(x, value, ..., invalid = "error", nonexistent = "error", ambiguous = x) {
+set_second.POSIXt <- function(x, value, ..., invalid = NULL, nonexistent = NULL, ambiguous = x) {
   set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_second, ...)
 }
 set_posixt_field_year_month_day <- function(x, value, invalid, nonexistent, ambiguous, set_fn, ...) {
@@ -454,17 +454,17 @@ NULL
 
 #' @rdname posixt-arithmetic
 #' @export
-add_years.POSIXt <- function(x, n, ..., invalid = "error", nonexistent = "error", ambiguous = x) {
+add_years.POSIXt <- function(x, n, ..., invalid = NULL, nonexistent = NULL, ambiguous = x) {
   add_posixt_duration_year_month_day(x, n, invalid, nonexistent, ambiguous, add_years, ...)
 }
 #' @rdname posixt-arithmetic
 #' @export
-add_quarters.POSIXt <- function(x, n, ..., invalid = "error", nonexistent = "error", ambiguous = x) {
+add_quarters.POSIXt <- function(x, n, ..., invalid = NULL, nonexistent = NULL, ambiguous = x) {
   add_posixt_duration_year_month_day(x, n, invalid, nonexistent, ambiguous, add_quarters, ...)
 }
 #' @rdname posixt-arithmetic
 #' @export
-add_months.POSIXt <- function(x, n, ..., invalid = "error", nonexistent = "error", ambiguous = x) {
+add_months.POSIXt <- function(x, n, ..., invalid = NULL, nonexistent = NULL, ambiguous = x) {
   add_posixt_duration_year_month_day(x, n, invalid, nonexistent, ambiguous, add_months, ...)
 }
 add_posixt_duration_year_month_day <- function(x, n, invalid, nonexistent, ambiguous, add_fn, ...) {
@@ -478,12 +478,12 @@ add_posixt_duration_year_month_day <- function(x, n, invalid, nonexistent, ambig
 
 #' @rdname posixt-arithmetic
 #' @export
-add_weeks.POSIXt <- function(x, n, ..., nonexistent = "error", ambiguous = x) {
+add_weeks.POSIXt <- function(x, n, ..., nonexistent = NULL, ambiguous = x) {
   add_posixt_duration_naive_time_point(x, n, nonexistent, ambiguous, add_weeks, ...)
 }
 #' @rdname posixt-arithmetic
 #' @export
-add_days.POSIXt <- function(x, n, ..., nonexistent = "error", ambiguous = x) {
+add_days.POSIXt <- function(x, n, ..., nonexistent = NULL, ambiguous = x) {
   add_posixt_duration_naive_time_point(x, n, nonexistent, ambiguous, add_days, ...)
 }
 add_posixt_duration_naive_time_point <- function(x, n, nonexistent, ambiguous, add_fn, ...) {
@@ -582,8 +582,8 @@ date_group.POSIXt <- function(x,
                               precision,
                               ...,
                               n = 1L,
-                              invalid = "error",
-                              nonexistent = "error",
+                              invalid = NULL,
+                              nonexistent = NULL,
                               ambiguous = x) {
   force(ambiguous)
   zone <- zoned_zone(x)
@@ -691,7 +691,7 @@ date_floor.POSIXt <- function(x,
                               ...,
                               n = 1L,
                               origin = NULL,
-                              nonexistent = "error",
+                              nonexistent = NULL,
                               ambiguous = x) {
   date_time_rounder(x, precision, n, origin, nonexistent, ambiguous, time_point_floor, ...)
 }
@@ -703,7 +703,7 @@ date_ceiling.POSIXt <- function(x,
                                 ...,
                                 n = 1L,
                                 origin = NULL,
-                                nonexistent = "error",
+                                nonexistent = NULL,
                                 ambiguous = x) {
   date_time_rounder(x, precision, n, origin, nonexistent, ambiguous, time_point_ceiling, ...)
 }
@@ -715,7 +715,7 @@ date_round.POSIXt <- function(x,
                               ...,
                               n = 1L,
                               origin = NULL,
-                              nonexistent = "error",
+                              nonexistent = NULL,
                               ambiguous = x) {
   date_time_rounder(x, precision, n, origin, nonexistent, ambiguous, time_point_round, ...)
 }
