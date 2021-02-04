@@ -244,6 +244,101 @@ weekday_iso_encoding <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' Convert a weekday to an ordered factor
+#'
+#' `weekday_factor()` converts a weekday object to an ordered factor. This
+#' can be useful in combination with ggplot2, or for modeling.
+#'
+#' @inheritParams ellipsis::dots_empty
+#' @inheritParams weekday-encoding
+#' @inheritParams clock_locale
+#'
+#' @param abbreviate `[logical(1)]`
+#'
+#'   If `TRUE`, the abbreviated weekday names from `labels` will be used.
+#'
+#'   If `FALSE`, the full weekday names from `labels` will be used.
+#'
+#' @param encoding `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"c"`: Encode the weekdays as an ordered factor with levels from
+#'     Sunday -> Saturday.
+#'
+#'   - `"iso"`: Encode the weekdays as an ordered factor with levels from
+#'     Monday -> Sunday.
+#'
+#' @return An ordered factor representing the weekdays.
+#'
+#' @export
+#' @examples
+#' x <- weekday(0:6)
+#'
+#' # Default to Sunday -> Saturday
+#' weekday_factor(x)
+#'
+#' # ISO encoding is Monday -> Sunday
+#' weekday_factor(x, encoding = "iso")
+#'
+#' # With abbreviations
+#' weekday_factor(x, abbreviate = TRUE)
+#'
+#' # Or a different language
+#' weekday_factor(x, labels = "fr")
+weekday_factor <- function(x,
+                           ...,
+                           labels = "en",
+                           abbreviate = FALSE,
+                           encoding = "c") {
+  check_dots_empty()
+
+  if (!is_weekday(x)) {
+    abort("`x` must be a 'clock_weekday' object.")
+  }
+
+  if (is_character(labels)) {
+    labels <- clock_labels_lookup(labels)
+  }
+  if (!is_clock_labels(labels)) {
+    abort("`labels` must be a 'clock_labels' object.")
+  }
+
+  if (!is_bool(abbreviate)) {
+    abort("`abbreviate` must be `TRUE` or `FALSE`.")
+  }
+
+  if (abbreviate) {
+    labels <- labels$weekday_abbrev
+  } else {
+    labels <- labels$weekday
+  }
+
+  encoding <- validate_encoding(encoding)
+
+  if (encoding == "c") {
+    x <- weekday_c_encoding(x) + 1L
+  } else if (encoding == "iso") {
+    x <- weekday_iso_encoding(x)
+    labels <- c(labels[2:7], labels[1L])
+  } else {
+    abort("Internal error: Unknown encoding.")
+  }
+
+  x <- labels[x]
+
+  factor(x, levels = labels, ordered = TRUE)
+}
+
+validate_encoding <- function(encoding) {
+  if (!is_string(encoding, string = c("c", "iso"))) {
+    abort("`encoding` must be one of \"c\" or \"iso\".")
+  }
+  encoding
+}
+
+# ------------------------------------------------------------------------------
+
 #' @rdname clock-arith
 #' @method vec_arith clock_weekday
 #' @export

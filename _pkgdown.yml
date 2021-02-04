@@ -121,6 +121,7 @@ reference:
   contents:
   - weekday
   - weekday-encoding
+  - weekday_factor
   - weekday-arithmetic
   - is_weekday
   - as_weekday
