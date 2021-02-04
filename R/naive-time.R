@@ -151,7 +151,8 @@ as_sys_time.clock_naive_time <- function(x) {
 #'
 #' @param nonexistent `[character]`
 #'
-#'   One of the following nonexistent time resolution strategies:
+#'   One of the following nonexistent time resolution strategies, allowed to be
+#'   either length 1, or the same length as the input:
 #'
 #'   - `"roll-forward"`: The next valid instant in time.
 #'
@@ -166,8 +167,6 @@ as_sys_time.clock_naive_time <- function(x) {
 #'   - `"NA"`: Replace nonexistent times with `NA`.
 #'
 #'   - `"error"`: Error on nonexistent times.
-#'
-#'   Allowed to be either length 1, or the same length as the input.
 #'
 #'   Using either `"roll-forward"` or `"roll-backward"` is generally
 #'   recommended over shifting, as these two strategies maintain the

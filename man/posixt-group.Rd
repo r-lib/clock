@@ -57,7 +57,8 @@ Time of day is kept.
 
 \item{nonexistent}{\verb{[character]}
 
-One of the following nonexistent time resolution strategies:
+One of the following nonexistent time resolution strategies, allowed to be
+either length 1, or the same length as the input:
 \itemize{
 \item \code{"roll-forward"}: The next valid instant in time.
 \item \code{"roll-backward"}: The previous valid instant in time.
@@ -68,8 +69,6 @@ the daylight saving time gap.
 \item \code{"NA"}: Replace nonexistent times with \code{NA}.
 \item \code{"error"}: Error on nonexistent times.
 }
-
-Allowed to be either length 1, or the same length as the input.
 
 Using either \code{"roll-forward"} or \code{"roll-backward"} is generally
 recommended over shifting, as these two strategies maintain the
