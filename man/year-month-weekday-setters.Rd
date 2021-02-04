@@ -61,7 +61,8 @@ promote from month to day precision.}
 \code{x} with the component set.
 }
 \description{
-These functions are supported setters for a year-month-weekday vector.
+These are year-month-weekday methods for the
+\link[=clock-setters]{setter generics}.
 \itemize{
 \item \code{set_year()} sets the Gregorian year.
 \item \code{set_month()} sets the month of the year. Valid values are in the range

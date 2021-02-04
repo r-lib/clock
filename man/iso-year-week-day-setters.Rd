@@ -49,7 +49,8 @@ week of the current ISO year.}
 \code{x} with the component set.
 }
 \description{
-These functions are supported setters for a iso-year-week-day vector.
+These are iso-year-week-day methods for the
+\link[=clock-setters]{setter generics}.
 \itemize{
 \item \code{set_year()} sets the ISO year.
 \item \code{set_week()} sets the ISO week of the year. Valid values are in the range

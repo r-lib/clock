@@ -28,8 +28,8 @@ units of duration.}
 \code{x} after performing the arithmetic.
 }
 \description{
-The following arithmetic operations are available for use on
-year-quarter-day calendar vectors.
+These are year-quarter-day methods for the
+\link[=clock-arithmetic]{arithmetic generics}.
 \itemize{
 \item \code{add_years()}
 \item \code{add_quarters()}

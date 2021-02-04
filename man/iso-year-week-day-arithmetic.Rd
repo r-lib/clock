@@ -25,8 +25,8 @@ units of duration.}
 \code{x} after performing the arithmetic.
 }
 \description{
-The following arithmetic operations are available for use on
-iso-year-week-day calendar vectors.
+These are iso-year-week-day methods for the
+\link[=clock-arithmetic]{arithmetic generics}.
 \itemize{
 \item \code{add_years()}
 }

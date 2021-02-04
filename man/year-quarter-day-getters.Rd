@@ -40,7 +40,8 @@ A year-quarter-day to get the component from.}
 The component.
 }
 \description{
-These functions are supported getters for a year-quarter-day vector.
+These are year-quarter-day methods for the
+\link[=clock-getters]{getter generics}.
 \itemize{
 \item \code{get_year()} returns the fiscal year. Note that this can differ from the
 Gregorian year if \code{start != 1L}.

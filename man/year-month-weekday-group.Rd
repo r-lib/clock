@@ -36,6 +36,8 @@ A single positive integer specifying a multiple of \code{precision} to use.}
 \code{x} grouped at the specified \code{precision}.
 }
 \description{
+This is a year-month-weekday method for the \code{\link[=calendar_group]{calendar_group()}} generic.
+
 Grouping for a year-month-weekday object can be done at any precision except
 for \code{"day"}, as long as \code{x} is at least as precise as \code{precision}.
 }

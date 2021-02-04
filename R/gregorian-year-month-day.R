@@ -375,7 +375,7 @@ invalid_resolve.clock_year_month_day <- function(x, ..., invalid = "error") {
 #' Getters: year-month-day
 #'
 #' @description
-#' These functions are supported getters for a year-month-day vector.
+#' These are year-month-day methods for the [getter generics][clock-getters].
 #'
 #' - `get_year()` returns the Gregorian year.
 #'
@@ -474,7 +474,8 @@ get_nanosecond.clock_year_month_day <- function(x) {
 #' Setters: year-month-day
 #'
 #' @description
-#' These functions are supported setters for a year-month-day vector.
+#' These are year-month-day methods for the
+#' [setter generics][clock-setters].
 #'
 #' - `set_year()` sets the Gregorian year.
 #'
@@ -746,8 +747,8 @@ year_month_day_minus_year_month_day <- function(op, x, y, ...) {
 #' Arithmetic: year-month-day
 #'
 #' @description
-#' The following arithmetic operations are available for use on year-month-day
-#' calendar vectors.
+#' These are year-month-day methods for the
+#' [arithmetic generics][clock-arithmetic].
 #'
 #' - `add_years()`
 #'
@@ -896,6 +897,9 @@ calendar_leap_year.clock_year_month_day <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' Grouping: year-month-day
+#'
+#' @description
+#' This is a year-month-day method for the [calendar_group()] generic.
 #'
 #' Grouping for a year-month-day object can be done at any precision, as
 #' long as `x` is at least as precise as `precision`.

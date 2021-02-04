@@ -37,6 +37,8 @@ A single positive integer specifying a multiple of \code{precision} to use.}
 \code{x} grouped at the specified \code{precision}.
 }
 \description{
+This is a year-quarter-day method for the \code{\link[=calendar_group]{calendar_group()}} generic.
+
 Grouping for a year-quarter-day object can be done at any precision, as
 long as \code{x} is at least as precise as \code{precision}.
 }

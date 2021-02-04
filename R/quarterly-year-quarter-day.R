@@ -248,7 +248,8 @@ invalid_resolve.clock_year_quarter_day <- function(x, ..., invalid = "error") {
 #' Getters: year-quarter-day
 #'
 #' @description
-#' These functions are supported getters for a year-quarter-day vector.
+#' These are year-quarter-day methods for the
+#' [getter generics][clock-getters].
 #'
 #' - `get_year()` returns the fiscal year. Note that this can differ from the
 #'   Gregorian year if `start != 1L`.
@@ -354,7 +355,8 @@ get_nanosecond.clock_year_quarter_day <- function(x) {
 #' Setters: year-quarter-day
 #'
 #' @description
-#' These functions are supported setters for a year-quarter-day vector.
+#' These are year-quarter-day methods for the
+#' [setter generics][clock-setters].
 #'
 #' - `set_year()` sets the fiscal year.
 #'
@@ -644,8 +646,8 @@ year_quarter_day_minus_year_quarter_day <- function(op, x, y, ...) {
 #' Arithmetic: year-quarter-day
 #'
 #' @description
-#' The following arithmetic operations are available for use on
-#' year-quarter-day calendar vectors.
+#' These are year-quarter-day methods for the
+#' [arithmetic generics][clock-arithmetic].
 #'
 #' - `add_years()`
 #'
@@ -809,6 +811,9 @@ as_naive_time.clock_year_quarter_day <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' Grouping: year-quarter-day
+#'
+#' @description
+#' This is a year-quarter-day method for the [calendar_group()] generic.
 #'
 #' Grouping for a year-quarter-day object can be done at any precision, as
 #' long as `x` is at least as precise as `precision`.

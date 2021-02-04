@@ -236,7 +236,8 @@ invalid_resolve.clock_year_month_weekday <- function(x, ..., invalid = "error") 
 #' Getters: year-month-weekday
 #'
 #' @description
-#' These functions are supported getters for a year-month-weekday vector.
+#' These are year-month-weekday methods for the
+#' [getter generics][clock-getters].
 #'
 #' - `get_year()` returns the Gregorian year.
 #'
@@ -344,7 +345,8 @@ get_nanosecond.clock_year_month_weekday <- function(x) {
 #' Setters: year-month-weekday
 #'
 #' @description
-#' These functions are supported setters for a year-month-weekday vector.
+#' These are year-month-weekday methods for the
+#' [setter generics][clock-setters].
 #'
 #' - `set_year()` sets the Gregorian year.
 #'
@@ -664,8 +666,8 @@ year_month_weekday_minus_year_month_weekday <- function(op, x, y, ...) {
 #' Arithmetic: year-month-weekday
 #'
 #' @description
-#' The following arithmetic operations are available for use on
-#' year-month-weekday calendar vectors.
+#' These are year-month-weekday methods for the
+#' [arithmetic generics][clock-arithmetic].
 #'
 #' - `add_years()`
 #'
@@ -804,6 +806,9 @@ calendar_leap_year.clock_year_month_weekday <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' Grouping: year-month-weekday
+#'
+#' @description
+#' This is a year-month-weekday method for the [calendar_group()] generic.
 #'
 #' Grouping for a year-month-weekday object can be done at any precision except
 #' for `"day"`, as long as `x` is at least as precise as `precision`.

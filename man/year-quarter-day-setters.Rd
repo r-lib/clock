@@ -49,7 +49,8 @@ day of the current fiscal quarter.}
 \code{x} with the component set.
 }
 \description{
-These functions are supported setters for a year-quarter-day vector.
+These are year-quarter-day methods for the
+\link[=clock-setters]{setter generics}.
 \itemize{
 \item \code{set_year()} sets the fiscal year.
 \item \code{set_quarter()} sets the fiscal quarter of the year.

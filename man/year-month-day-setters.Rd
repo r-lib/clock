@@ -49,7 +49,8 @@ last day of the month.}
 \code{x} with the component set.
 }
 \description{
-These functions are supported setters for a year-month-day vector.
+These are year-month-day methods for the
+\link[=clock-setters]{setter generics}.
 \itemize{
 \item \code{set_year()} sets the Gregorian year.
 \item \code{set_month()} sets the month of the year. Valid values are in the range

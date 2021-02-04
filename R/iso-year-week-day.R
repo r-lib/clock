@@ -216,7 +216,8 @@ invalid_resolve.clock_iso_year_week_day <- function(x, ..., invalid = "error") {
 #' Getters: iso-year-week-day
 #'
 #' @description
-#' These functions are supported getters for a iso-year-week-day vector.
+#' These are iso-year-week-day methods for the
+#' [getter generics][clock-getters].
 #'
 #' - `get_year()` returns the ISO year. Note that this can differ from the
 #'   Gregorian year.
@@ -321,7 +322,8 @@ get_nanosecond.clock_iso_year_week_day <- function(x) {
 #' Setters: iso-year-week-day
 #'
 #' @description
-#' These functions are supported setters for a iso-year-week-day vector.
+#' These are iso-year-week-day methods for the
+#' [setter generics][clock-setters].
 #'
 #' - `set_year()` sets the ISO year.
 #'
@@ -584,8 +586,8 @@ iso_year_week_day_minus_iso_year_week_day <- function(op, x, y, ...) {
 #' Arithmetic: iso-year-week-day
 #'
 #' @description
-#' The following arithmetic operations are available for use on
-#' iso-year-week-day calendar vectors.
+#' These are iso-year-week-day methods for the
+#' [arithmetic generics][clock-arithmetic].
 #'
 #' - `add_years()`
 #'
@@ -690,6 +692,9 @@ as_naive_time.clock_iso_year_week_day <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' Grouping: iso-year-week-day
+#'
+#' @description
+#' This is a iso-year-week-day method for the [calendar_group()] generic.
 #'
 #' Grouping for a iso-year-week-day object can be done at any precision, as
 #' long as `x` is at least as precise as `precision`.

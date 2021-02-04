@@ -40,7 +40,8 @@ A iso-year-week-day to get the component from.}
 The component.
 }
 \description{
-These functions are supported getters for a iso-year-week-day vector.
+These are iso-year-week-day methods for the
+\link[=clock-getters]{getter generics}.
 \itemize{
 \item \code{get_year()} returns the ISO year. Note that this can differ from the
 Gregorian year.
