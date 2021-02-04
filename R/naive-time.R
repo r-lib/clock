@@ -151,7 +151,7 @@ as_sys_time.clock_naive_time <- function(x) {
 #'
 #'   The zone to convert to.
 #'
-#' @param nonexistent `[character]`
+#' @param nonexistent `[character / NULL]`
 #'
 #'   One of the following nonexistent time resolution strategies, allowed to be
 #'   either length 1, or the same length as the input:
@@ -174,7 +174,13 @@ as_sys_time.clock_naive_time <- function(x) {
 #'   recommended over shifting, as these two strategies maintain the
 #'   _relative ordering_ between elements of the input.
 #'
-#' @param ambiguous `[character / zoned_time / POSIXct / list(2)]`
+#'   If `NULL`, defaults to `"error"`.
+#'
+#'   If `getOption("clock.strict")` is `TRUE`, `nonexistent` must be supplied
+#'   and cannot be `NULL`. This is a convenient way to make production code
+#'   robust to nonexistent times.
+#'
+#' @param ambiguous `[character / zoned_time / POSIXct / list(2) / NULL]`
 #'
 #'   One of the following ambiguous time resolution strategies, allowed to be
 #'   either length 1, or the same length as the input:
@@ -194,14 +200,23 @@ as_sys_time.clock_naive_time <- function(x) {
 #'   time transition point as the original ambiguous time, then the offset of
 #'   the zoned_time is used to resolve the ambiguity. If the ambiguity cannot be
 #'   resolved by consulting the zoned_time, then this method falls back to
-#'   `"error"`.
+#'   `NULL`.
 #'
 #'   Finally, `ambiguous` is allowed to be a list of size 2, where the first
 #'   element of the list is a zoned_time (as described above), and the second
 #'   element of the list is an ambiguous time resolution strategy to use when
 #'   the ambiguous time cannot be resolved by consulting the zoned_time.
 #'   Specifying a zoned_time on its own is identical to `list(<zoned_time>,
-#'   "error")`.
+#'   NULL)`.
+#'
+#'   If `NULL`, defaults to `"error"`.
+#'
+#'   If `getOption("clock.strict")` is `TRUE`, `ambiguous` must be supplied and
+#'   cannot be `NULL`. Additionally, `ambiguous` cannot be specified as a
+#'   zoned_time on its own, as this implies `NULL` for ambiguous times that the
+#'   zoned_time cannot resolve. Instead, it must be specified as a list
+#'   alongside an ambiguous time resolution strategy as described above. This is
+#'   a convenient way to make production code robust to ambiguous times.
 #'
 #' @return A zoned-time vector.
 #'
@@ -332,8 +347,8 @@ as_sys_time.clock_naive_time <- function(x) {
 as_zoned_time.clock_naive_time <- function(x,
                                            zone,
                                            ...,
-                                           nonexistent = "error",
-                                           ambiguous = "error") {
+                                           nonexistent = NULL,
+                                           ambiguous = NULL) {
   zone <- zone_validate(zone)
 
   # Promote to at least seconds precision for `zoned_time`
@@ -363,6 +378,8 @@ as_zoned_time.clock_naive_time <- function(x,
 }
 
 validate_nonexistent <- function(nonexistent, size) {
+  nonexistent <- strict_validate_nonexistent(nonexistent)
+
   nonexistent_size <- vec_size(nonexistent)
 
   if (nonexistent_size != 1L && nonexistent_size != size) {
@@ -370,25 +387,36 @@ validate_nonexistent <- function(nonexistent, size) {
   }
 
   if (!is_character(nonexistent)) {
-    abort("`nonexistent` must be a character vector.")
+    abort("`nonexistent` must be a character vector, or `NULL`.")
   }
 
   nonexistent
 }
 
 validate_ambiguous <- function(ambiguous, size, zone) {
+  if (is_null(ambiguous)) {
+    ambiguous <- strict_validate_ambiguous(ambiguous)
+    return(list(method = "string", ambiguous = ambiguous))
+  }
+
   if (is_character(ambiguous)) {
     ambiguous <- validate_ambiguous_chr(ambiguous, size)
-    list(method = "string", ambiguous = ambiguous)
-  } else if (is_zoned_time(ambiguous) || inherits(ambiguous, "POSIXt")) {
-    reference <- validate_ambiguous_zoned(ambiguous, size, zone)
-    list(method = "reference", reference = reference, ambiguous = "error")
-  } else if (is_list(ambiguous)) {
-    result <- validate_ambiguous_list(ambiguous, size, zone)
-    list(method = "reference", reference = result$reference, ambiguous = result$ambiguous)
-  } else {
-    abort("`ambiguous` must be a character vector, a zoned-time, a POSIXct, or a list.")
+    return(list(method = "string", ambiguous = ambiguous))
   }
+
+  if (is_zoned_time(ambiguous) || inherits(ambiguous, "POSIXt")) {
+    # Implied `NULL`, to be validated by `strict_validate_ambiguous()`
+    ambiguous <- list(ambiguous, NULL)
+  }
+
+  if (is_list(ambiguous)) {
+    result <- validate_ambiguous_list(ambiguous, size, zone)
+    reference <- result$reference
+    ambiguous <- result$ambiguous
+    return(list(method = "reference", reference = reference, ambiguous = ambiguous))
+  }
+
+  abort("`ambiguous` must be a character vector, a zoned-time, a POSIXct, or a list.")
 }
 
 validate_ambiguous_chr <- function(ambiguous, size) {
@@ -429,16 +457,22 @@ validate_ambiguous_list <- function(ambiguous, size, zone) {
   }
 
   reference <- ambiguous[[1]]
-  ambiguous <- ambiguous[[2]]
 
   if (!is_zoned_time(reference) && !inherits(reference, "POSIXt")) {
     abort("The first element of a list `ambiguous` must be a zoned-time or POSIXt.")
   }
-  if (!is_character(ambiguous)) {
-    abort("The second element of a list `ambiguous` must be a character vector.")
-  }
 
   reference <- validate_ambiguous_zoned(reference, size, zone)
+
+  ambiguous <- ambiguous[[2]]
+
+  if (is_null(ambiguous)) {
+    ambiguous <- strict_validate_ambiguous(ambiguous)
+  }
+  if (!is_character(ambiguous)) {
+    abort("The second element of a list `ambiguous` must be a character vector, or `NULL`.")
+  }
+
   ambiguous <- validate_ambiguous_chr(ambiguous, size)
 
   list(reference = reference, ambiguous = ambiguous)

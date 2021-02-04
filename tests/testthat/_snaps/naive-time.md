@@ -40,7 +40,7 @@
 
 ---
 
-    The second element of a list `ambiguous` must be a character vector.
+    The second element of a list `ambiguous` must be a character vector, or `NULL`.
 
 ---
 
@@ -48,7 +48,7 @@
 
 # `nonexistent` is validated
 
-    `nonexistent` must be a character vector.
+    `nonexistent` must be a character vector, or `NULL`.
 
 ---
 
@@ -65,4 +65,20 @@
 ---
 
     Invalid input type, expected 'character' actual 'double'
+
+# strict mode can be activated - nonexistent
+
+    The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `nonexistent` must be set and cannot be left as `NULL`.
+
+# strict mode can be activated - ambiguous
+
+    The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `ambiguous` must be set and cannot be left as `NULL`. Additionally, `ambiguous` cannot be set to a zoned-time or POSIXct unless it is paired with an ambiguous time resolution strategy, like: `list(<zoned-time>, 'earliest')`.
+
+---
+
+    The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `ambiguous` must be set and cannot be left as `NULL`. Additionally, `ambiguous` cannot be set to a zoned-time or POSIXct unless it is paired with an ambiguous time resolution strategy, like: `list(<zoned-time>, 'earliest')`.
+
+---
+
+    The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `ambiguous` must be set and cannot be left as `NULL`. Additionally, `ambiguous` cannot be set to a zoned-time or POSIXct unless it is paired with an ambiguous time resolution strategy, like: `list(<zoned-time>, 'earliest')`.
 

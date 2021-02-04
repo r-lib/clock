@@ -13,7 +13,7 @@
   ...,
   n = 1L,
   origin = NULL,
-  nonexistent = "error",
+  nonexistent = NULL,
   ambiguous = x
 )
 
@@ -23,7 +23,7 @@
   ...,
   n = 1L,
   origin = NULL,
-  nonexistent = "error",
+  nonexistent = NULL,
   ambiguous = x
 )
 
@@ -33,7 +33,7 @@
   ...,
   n = 1L,
   origin = NULL,
-  nonexistent = "error",
+  nonexistent = NULL,
   ambiguous = x
 )
 }
@@ -65,7 +65,7 @@ An origin to start counting from. Must have exactly the same time
 zone as \code{x}. The default \code{origin} is implicitly midnight on \code{"1970-01-01"}
 in the time zone of \code{x}.}
 
-\item{nonexistent}{\verb{[character]}
+\item{nonexistent}{\verb{[character / NULL]}
 
 One of the following nonexistent time resolution strategies, allowed to be
 either length 1, or the same length as the input:
@@ -82,9 +82,15 @@ the daylight saving time gap.
 
 Using either \code{"roll-forward"} or \code{"roll-backward"} is generally
 recommended over shifting, as these two strategies maintain the
-\emph{relative ordering} between elements of the input.}
+\emph{relative ordering} between elements of the input.
 
-\item{ambiguous}{\verb{[character / zoned_time / POSIXct / list(2)]}
+If \code{NULL}, defaults to \code{"error"}.
+
+If \code{getOption("clock.strict")} is \code{TRUE}, \code{nonexistent} must be supplied
+and cannot be \code{NULL}. This is a convenient way to make production code
+robust to nonexistent times.}
+
+\item{ambiguous}{\verb{[character / zoned_time / POSIXct / list(2) / NULL]}
 
 One of the following ambiguous time resolution strategies, allowed to be
 either length 1, or the same length as the input:
@@ -102,13 +108,22 @@ to a naive_time that is also ambiguous \emph{and} uses the same daylight saving
 time transition point as the original ambiguous time, then the offset of
 the zoned_time is used to resolve the ambiguity. If the ambiguity cannot be
 resolved by consulting the zoned_time, then this method falls back to
-\code{"error"}.
+\code{NULL}.
 
 Finally, \code{ambiguous} is allowed to be a list of size 2, where the first
 element of the list is a zoned_time (as described above), and the second
 element of the list is an ambiguous time resolution strategy to use when
 the ambiguous time cannot be resolved by consulting the zoned_time.
-Specifying a zoned_time on its own is identical to \verb{list(<zoned_time>, "error")}.}
+Specifying a zoned_time on its own is identical to \verb{list(<zoned_time>, NULL)}.
+
+If \code{NULL}, defaults to \code{"error"}.
+
+If \code{getOption("clock.strict")} is \code{TRUE}, \code{ambiguous} must be supplied and
+cannot be \code{NULL}. Additionally, \code{ambiguous} cannot be specified as a
+zoned_time on its own, as this implies \code{NULL} for ambiguous times that the
+zoned_time cannot resolve. Instead, it must be specified as a list
+alongside an ambiguous time resolution strategy as described above. This is
+a convenient way to make production code robust to ambiguous times.}
 }
 \description{
 These are POSIXct/POSIXlt methods for the
