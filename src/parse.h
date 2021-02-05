@@ -1351,6 +1351,16 @@ from_stream(std::basic_istream<CharT, Traits>& is,
   return is;
 }
 
+static
+inline
+void
+fill_formats(const cpp11::strings& src, std::vector<const char*>& dest) {
+    const r_ssize size = src.size();
+    for (r_ssize i = 0; i < size; ++i) {
+        dest[i] = CHAR(src[i]);
+    }
+}
+
 } // namespace rclock
 
 #endif

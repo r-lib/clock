@@ -98,6 +98,48 @@ time_point_restore(SEXP x, SEXP to) {
 
 template <class ClockDuration, class Clock>
 static
+inline
+void
+parse_time_point_one(std::istringstream& stream,
+                     const char* elt,
+                     const std::vector<const char*>& fmts,
+                     const std::pair<const std::string*, const std::string*>& month_names_pair,
+                     const std::pair<const std::string*, const std::string*>& weekday_names_pair,
+                     const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+                     const char& dmark,
+                     const r_ssize& i,
+                     ClockDuration& out) {
+  using Duration = typename ClockDuration::duration;
+  const r_ssize size = fmts.size();
+
+  for (r_ssize j = 0; j < size; ++j) {
+    stream.clear();
+    stream.str(elt);
+
+    const char* fmt = fmts[j];
+    std::chrono::time_point<Clock, Duration> tp;
+
+    rclock::from_stream(
+      stream,
+      fmt,
+      month_names_pair,
+      weekday_names_pair,
+      ampm_names_pair,
+      dmark,
+      tp
+    );
+
+    if (!stream.fail()) {
+      out.assign(tp.time_since_epoch(), i);
+      return;
+    }
+  }
+
+  out.assign_na(i);
+}
+
+template <class ClockDuration, class Clock>
+static
 cpp11::writable::list
 parse_time_point_impl(const cpp11::strings& x,
                       const cpp11::strings& format,
@@ -109,13 +151,9 @@ parse_time_point_impl(const cpp11::strings& x,
                       const cpp11::strings& mark) {
   const r_ssize size = x.size();
   ClockDuration out(size);
-  using Duration = typename ClockDuration::duration;
 
-  if (!r_is_string(format)) {
-    clock_abort("`format` must be a single string.");
-  }
-  const SEXP format_sexp = format[0];
-  const char* format_char = CHAR(format_sexp);
+  std::vector<const char*> fmts(format.size());
+  rclock::fill_formats(format, fmts);
 
   char dmark;
   switch (parse_decimal_mark(mark)) {
@@ -156,27 +194,17 @@ parse_time_point_impl(const cpp11::strings& x,
 
     const char* elt_char = CHAR(elt);
 
-    stream.clear();
-    stream.str(elt_char);
-
-    std::chrono::time_point<Clock, Duration> tp;
-
-    rclock::from_stream(
+    parse_time_point_one<ClockDuration, Clock>(
       stream,
-      format_char,
+      elt_char,
+      fmts,
       month_names_pair,
       weekday_names_pair,
       ampm_names_pair,
       dmark,
-      tp
+      i,
+      out
     );
-
-    if (stream.fail()) {
-      out.assign_na(i);
-      continue;
-    }
-
-    out.assign(tp.time_since_epoch(), i);
   }
 
   return out.to_list();
