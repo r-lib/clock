@@ -249,7 +249,7 @@ units of duration.</p></td>
   <span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='fu'><a href='zoned-zone.html'>zoned_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>}</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Error : Nonexistent time due to daylight savings at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.</div><div class='input'>
+</div><div class='output co'>#&gt; Error : Nonexistent time due to daylight saving time at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.</div><div class='input'>
 <span class='co'># ...this time doesn't exist in that time zone! It is "nonexistent".</span>
 <span class='co'># You can resolve nonexistent times by setting the `nonexistent` argument</span>
 <span class='co'># when converting to zoned time. Let's roll forward to the next available</span>
