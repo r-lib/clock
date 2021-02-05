@@ -79,7 +79,7 @@
 <ul>
 <li><p>Provides a new family of orthogonal date-time classes (durations, time points, zoned times, and calendars) that partition responsibilities so that you only have to think about time zones when you need them.</p></li>
 <li><p>Implements a high level API for Date and POSIXct classes that lets you get productive quickly without having to learn the details of the underlying classes.</p></li>
-<li><p>Requires explicit handling of impossible dates (e.g. what date is one month after January 31st?) and ambiguous times (caused by daylight savings).</p></li>
+<li><p>Requires explicit handling of invalid dates (e.g. what date is one month after January 31st?) and nonexistent or ambiguous times (caused by daylight saving issues).</p></li>
 <li><p>Is built on the C++ <a href="https://github.com/HowardHinnant/date">date</a> library, which provides a correct and high-performance backend.</p></li>
 </ul>
 <p>There are four key classes in clock, inspired by the design of the C++ date and chrono libraries. Some types are more efficient than others at particular operations, and it is only when all 4 are taken as a whole do you get a complete date time library.</p>
