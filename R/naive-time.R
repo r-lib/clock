@@ -38,6 +38,27 @@ is_naive_time <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+parse_naive_time <- function(x,
+                             ...,
+                             format = NULL,
+                             precision = "second",
+                             locale = default_clock_locale()) {
+  precision <- validate_time_point_precision(precision)
+
+  fields <- parse_time_point(
+    x = x,
+    ...,
+    format = format,
+    precision = precision,
+    locale = locale,
+    clock = CLOCK_NAIVE
+  )
+
+  new_naive_time_from_fields(fields, precision, names(x))
+}
+
+# ------------------------------------------------------------------------------
+
 #' Convert to a naive-time
 #'
 #' @description

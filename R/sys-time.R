@@ -38,6 +38,27 @@ is_sys_time <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+parse_sys_time <- function(x,
+                           ...,
+                           format = NULL,
+                           precision = "second",
+                           locale = default_clock_locale()) {
+  precision <- validate_time_point_precision(precision)
+
+  fields <- parse_time_point(
+    x = x,
+    ...,
+    format = format,
+    precision = precision,
+    locale = locale,
+    clock = CLOCK_SYS
+  )
+
+  new_sys_time_from_fields(fields, precision, names(x))
+}
+
+# ------------------------------------------------------------------------------
+
 #' Convert to a sys-time
 #'
 #' @description
