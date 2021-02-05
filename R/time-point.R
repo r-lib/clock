@@ -29,7 +29,7 @@ time_point_duration <- function(x, retain_names = FALSE) {
 format.clock_time_point <- function(x,
                                     ...,
                                     format = NULL,
-                                    locale = default_clock_locale()) {
+                                    locale = clock_locale()) {
   if (!is_clock_locale(locale)) {
     abort("`locale` must be a 'clock_locale' object.")
   }

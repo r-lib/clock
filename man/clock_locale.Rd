@@ -2,12 +2,9 @@
 % Please edit documentation in R/clock-locale.R
 \name{clock_locale}
 \alias{clock_locale}
-\alias{default_clock_locale}
 \title{Create a clock locale}
 \usage{
 clock_locale(labels = "en", decimal_mark = ".")
-
-default_clock_locale()
 }
 \arguments{
 \item{labels}{\verb{[clock_labels / character(1)]}
@@ -25,12 +22,9 @@ Either \code{","} or \code{"."}.}
 A clock locale contains the information required to format and parse dates.
 The defaults have been chosen to match US English. A clock locale object can
 be provided to \code{format()} methods or parse functions (like
-\code{\link[=parse_year_month_day]{parse_year_month_day()}}) to override the defaults. Alternatively, set the
-\code{clock.default_clock_locale} global option to your preferred locale, and that
-will be used as the default instead.
+\code{\link[=parse_year_month_day]{parse_year_month_day()}}) to override the defaults.
 }
 \examples{
 clock_locale()
 clock_locale(labels = "fr")
-default_clock_locale()
 }

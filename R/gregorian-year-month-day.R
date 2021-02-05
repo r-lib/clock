@@ -195,8 +195,7 @@ vec_ptype_abbr.clock_year_month_day <- function(x, ...) {
 #'
 #' @param locale `[clock_locale]`
 #'
-#'   A locale object created by [clock_locale()]. Defaults to
-#'   [default_clock_locale()].
+#'   A locale object created by [clock_locale()].
 #'
 #' @return A year-month-day calendar vector. If a parsing fails, `NA` is
 #'   returned.
@@ -247,7 +246,7 @@ parse_year_month_day <- function(x,
                                  ...,
                                  format = NULL,
                                  precision = "day",
-                                 locale = default_clock_locale()) {
+                                 locale = clock_locale()) {
   check_dots_empty()
 
   if (!is_character(x)) {

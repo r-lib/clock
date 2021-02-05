@@ -118,7 +118,7 @@ is_weekday <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-format.clock_weekday <- function(x, ..., locale = default_clock_locale()) {
+format.clock_weekday <- function(x, ..., locale = clock_locale()) {
   if (!is_clock_locale(locale)) {
     abort("`locale` must be a 'clock_locale' object.")
   }

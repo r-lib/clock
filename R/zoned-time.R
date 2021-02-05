@@ -36,7 +36,7 @@ zoned_time_precision <- function(x) {
 format.clock_zoned_time <- function(x,
                                     ...,
                                     format = NULL,
-                                    locale = default_clock_locale(),
+                                    locale = clock_locale(),
                                     abbreviate_zone = FALSE) {
   if (!is_clock_locale(locale)) {
     abort("`locale` must be a 'clock_locale' object.")
@@ -90,7 +90,7 @@ parse_zoned_time <- function(x,
                              ...,
                              format = NULL,
                              precision = "second",
-                             locale = default_clock_locale()) {
+                             locale = clock_locale()) {
   check_dots_empty()
 
   precision <- validate_zoned_time_precision(precision)

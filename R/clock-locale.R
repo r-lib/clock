@@ -3,9 +3,7 @@
 #' A clock locale contains the information required to format and parse dates.
 #' The defaults have been chosen to match US English. A clock locale object can
 #' be provided to `format()` methods or parse functions (like
-#' [parse_year_month_day()]) to override the defaults. Alternatively, set the
-#' `clock.default_clock_locale` global option to your preferred locale, and that
-#' will be used as the default instead.
+#' [parse_year_month_day()]) to override the defaults.
 #'
 #' @param labels `[clock_labels / character(1)]`
 #'
@@ -22,7 +20,6 @@
 #' @examples
 #' clock_locale()
 #' clock_locale(labels = "fr")
-#' default_clock_locale()
 clock_locale <- function(labels = "en", decimal_mark = ".") {
   if (is_character(labels)) {
     labels <- clock_labels_lookup(labels)
@@ -37,22 +34,6 @@ clock_locale <- function(labels = "en", decimal_mark = ".") {
   }
 
   new_clock_locale(labels, decimal_mark)
-}
-
-#' @rdname clock_locale
-#' @export
-default_clock_locale <- function() {
-  loc <- getOption("clock.default_clock_locale", default = NULL)
-
-  if (is_null(loc)) {
-    loc <- clock_locale()
-  }
-
-  if (!is_clock_locale(loc)) {
-    abort("Default locale object must be a 'clock_locale'.")
-  }
-
-  loc
 }
 
 new_clock_locale <- function(labels, decimal_mark) {
