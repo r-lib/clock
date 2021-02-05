@@ -474,6 +474,123 @@ zoned_info_cpp(cpp11::list_of<cpp11::integers> fields,
 
 // -----------------------------------------------------------------------------
 
+static
+inline
+void
+finalize_parse_zone(const std::string& candidate,
+                    std::string& zone,
+                    const date::time_zone*& p_time_zone) {
+  try {
+    p_time_zone = date::locate_zone(candidate);
+    zone = candidate;
+  } catch (const std::runtime_error& error) {
+    std::string message{
+      "`%%Z` must be used, and must result in a valid time zone name, "
+      "not '" + candidate + "'."
+    };
+    clock_abort(message.c_str());
+  };
+}
+
+static
+inline
+void
+stop_heterogeneous_zones(const std::string& old_zone, const std::string& new_zone) {
+  std::string message{
+    "All elements of `x` must have the same time zone name. "
+    "Found different zone names of: '" + old_zone + "' and '" + new_zone + "'."
+  };
+  clock_abort(message.c_str());
+}
+
+template <class ClockDuration>
+static
+inline
+void
+parse_zoned_time_one(std::istringstream& stream,
+                     const char* elt,
+                     const std::vector<const char*>& fmts,
+                     const std::pair<const std::string*, const std::string*>& month_names_pair,
+                     const std::pair<const std::string*, const std::string*>& weekday_names_pair,
+                     const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+                     const char& dmark,
+                     const r_ssize& i,
+                     std::string& zone,
+                     const date::time_zone*& p_time_zone,
+                     ClockDuration& fields) {
+  using Duration = typename ClockDuration::duration;
+  static const std::chrono::minutes not_an_offset = std::chrono::minutes::min();
+
+  const r_ssize size = fmts.size();
+
+  for (r_ssize j = 0; j < size; ++j) {
+    stream.clear();
+    stream.str(elt);
+
+    const char* fmt = fmts[j];
+
+    date::local_time<Duration> lt;
+    std::string new_zone;
+    std::chrono::minutes offset{not_an_offset};
+
+    rclock::from_stream(
+      stream,
+      fmt,
+      month_names_pair,
+      weekday_names_pair,
+      ampm_names_pair,
+      dmark,
+      lt,
+      &new_zone,
+      &offset
+    );
+
+    if (stream.fail()) {
+      continue;
+    }
+
+    if (p_time_zone == NULL) {
+      finalize_parse_zone(new_zone, zone, p_time_zone);
+    } else if (new_zone != zone) {
+      stop_heterogeneous_zones(zone, new_zone);
+    }
+
+    if (offset == not_an_offset) {
+      clock_abort("`%%z` must be used, and must result in a valid offset from UTC.");
+    }
+
+    const date::local_info info = p_time_zone->get_info(lt);
+
+    switch (info.result) {
+    case date::local_info::nonexistent: {
+      continue;
+    }
+    case date::local_info::unique: {
+      if (offset == info.first.offset) {
+        break;
+      } else {
+        continue;
+      }
+    }
+    case date::local_info::ambiguous: {
+      if (offset == info.first.offset || offset == info.second.offset) {
+        break;
+      } else {
+        continue;
+      }
+    }
+    default: {
+      never_reached("parse_zoned_time_one");
+    }
+    }
+
+    fields.assign(lt.time_since_epoch() - offset, i);
+    return;
+  }
+
+  fields.assign_na(i);
+}
+
 template <class ClockDuration>
 cpp11::writable::list
 parse_zoned_time_impl(const cpp11::strings& x,
@@ -486,13 +603,9 @@ parse_zoned_time_impl(const cpp11::strings& x,
                       const cpp11::strings& mark) {
   const r_ssize size = x.size();
   ClockDuration fields(size);
-  using Duration = typename ClockDuration::duration;
 
-  if (!r_is_string(format)) {
-    clock_abort("`format` must be a single string.");
-  }
-  const SEXP format_sexp = format[0];
-  const char* format_char = CHAR(format_sexp);
+  std::vector<const char*> fmts(format.size());
+  rclock::fill_formats(format, fmts);
 
   char dmark;
   switch (parse_decimal_mark(mark)) {
@@ -522,6 +635,7 @@ parse_zoned_time_impl(const cpp11::strings& x,
   );
 
   std::string zone;
+  const date::time_zone* p_time_zone = NULL;
 
   std::istringstream stream;
 
@@ -535,55 +649,19 @@ parse_zoned_time_impl(const cpp11::strings& x,
 
     const char* elt_char = CHAR(elt);
 
-    stream.clear();
-    stream.str(elt_char);
-
-    date::local_time<Duration> elt_lt;
-    std::string elt_zone;
-    std::chrono::minutes elt_offset{std::chrono::minutes::min()};
-
-    rclock::from_stream(
+    parse_zoned_time_one(
       stream,
-      format_char,
+      elt_char,
+      fmts,
       month_names_pair,
       weekday_names_pair,
       ampm_names_pair,
       dmark,
-      elt_lt,
-      &elt_zone,
-      &elt_offset
+      i,
+      zone,
+      p_time_zone,
+      fields
     );
-
-    if (stream.fail()) {
-      fields.assign_na(i);
-      continue;
-    }
-
-    if (zone.empty()) {
-      // First time, load zone
-      try {
-        (void) date::locate_zone(elt_zone);
-        zone = elt_zone;
-      } catch (const std::runtime_error& error) {
-        std::string message =
-          "`%%Z` must be used, and must result in a valid time zone name, not '" + elt_zone + "'.";
-        clock_abort(message.c_str());
-      };
-    } else if (elt_zone != zone) {
-      std::string message =
-        std::string{"All elements of `x` must have the same time zone name. "} +
-        "Found different zone names of: '" +
-        zone + "' and '" + elt_zone +
-        "'.";
-
-      clock_abort(message.c_str());
-    }
-
-    if (elt_offset == std::chrono::minutes::min()) {
-      clock_abort("`%%z` must be used, and must result in a valid offset from UTC.");
-    }
-
-    fields.assign(elt_lt.time_since_epoch() - elt_offset, i);
   }
 
   cpp11::writable::strings out_zone(1);

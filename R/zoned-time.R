@@ -88,7 +88,7 @@ zoned_time_format <- function(print_zone_name) {
 
 parse_zoned_time <- function(x,
                              ...,
-                             format = "%Y-%m-%d %H:%M:%S%Ez[%Z]",
+                             format = NULL,
                              precision = "second",
                              locale = default_clock_locale()) {
   check_dots_empty()
@@ -97,6 +97,11 @@ parse_zoned_time <- function(x,
 
   if (!is_clock_locale(locale)) {
     abort("`locale` must be a 'clock_locale' object.")
+  }
+
+  if (is_null(format)) {
+    # Use both %z and %Z
+    format <- zoned_time_format(print_zone_name = TRUE)
   }
 
   labels <- locale$labels
