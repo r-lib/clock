@@ -344,6 +344,50 @@ set_posixt_field_year_month_day <- function(x, value, invalid, nonexistent, ambi
 
 # ------------------------------------------------------------------------------
 
+#' @method vec_arith.POSIXct clock_duration
+#' @export
+vec_arith.POSIXct.clock_duration <- function(op, x, y, ...) {
+  arith_posixt_and_duration(op, x, y, ...)
+}
+
+#' @method vec_arith.clock_duration POSIXct
+#' @export
+vec_arith.clock_duration.POSIXct <- function(op, x, y, ...) {
+  arith_duration_and_posixt(op, x, y, ...)
+}
+
+#' @method vec_arith.POSIXlt clock_duration
+#' @export
+vec_arith.POSIXlt.clock_duration <- function(op, x, y, ...) {
+  arith_posixt_and_duration(op, x, y, ...)
+}
+
+#' @method vec_arith.clock_duration POSIXlt
+#' @export
+vec_arith.clock_duration.POSIXlt <- function(op, x, y, ...) {
+  arith_duration_and_posixt(op, x, y, ...)
+}
+
+arith_posixt_and_duration <- function(op, x, y, ...) {
+  switch(
+    op,
+    "+" = add_duration(x, y),
+    "-" = add_duration(x, -y),
+    stop_incompatible_op(op, x, y, ...)
+  )
+}
+
+arith_duration_and_posixt <- function(op, x, y, ...) {
+  switch(
+    op,
+    "+" = add_duration(y, x, swapped = TRUE),
+    "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a POSIXct/POSIXlt from a duration.", ...),
+    stop_incompatible_op(op, x, y, ...)
+  )
+}
+
+# ------------------------------------------------------------------------------
+
 #' Arithmetic: date-time
 #'
 #' @description

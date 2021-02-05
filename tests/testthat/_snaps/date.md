@@ -34,3 +34,24 @@
 
     `origin` must have length 1.
 
+# <date> op <duration>
+
+    no applicable method for 'add_hours' applied to an object of class "Date"
+
+---
+
+    <date> * <duration<year>> is not permitted
+
+# <duration> op <date>
+
+    <duration<year>> - <date> is not permitted
+    Can't subtract a Date from a duration.
+
+---
+
+    no applicable method for 'add_hours' applied to an object of class "Date"
+
+---
+
+    <duration<year>> * <date> is not permitted
+

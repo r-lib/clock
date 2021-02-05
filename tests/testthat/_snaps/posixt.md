@@ -38,3 +38,45 @@
 
     `origin` must have the same time zone as `x`.
 
+# <posixt> op <duration>
+
+    no applicable method for 'add_milliseconds' applied to an object of class "c('POSIXct', 'POSIXt')"
+
+---
+
+    no applicable method for 'add_milliseconds' applied to an object of class "c('POSIXlt', 'POSIXt')"
+
+---
+
+    <datetime<America/New_York>> * <duration<year>> is not permitted
+
+---
+
+    <POSIXlt<America/New_York>> * <duration<year>> is not permitted
+
+# <duration> op <posixt>
+
+    <duration<year>> - <datetime<America/New_York>> is not permitted
+    Can't subtract a POSIXct/POSIXlt from a duration.
+
+---
+
+    <duration<year>> - <POSIXlt<America/New_York>> is not permitted
+    Can't subtract a POSIXct/POSIXlt from a duration.
+
+---
+
+    no applicable method for 'add_milliseconds' applied to an object of class "c('POSIXct', 'POSIXt')"
+
+---
+
+    no applicable method for 'add_milliseconds' applied to an object of class "c('POSIXlt', 'POSIXt')"
+
+---
+
+    <duration<year>> * <datetime<America/New_York>> is not permitted
+
+---
+
+    <duration<year>> * <POSIXlt<America/New_York>> is not permitted
+

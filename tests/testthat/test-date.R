@@ -127,3 +127,22 @@ test_that("can convert to a month factor", {
     calendar_month_factor(as_year_month_day(x), labels = "fr", abbreviate = TRUE),
   )
 })
+
+# ------------------------------------------------------------------------------
+# vec_arith()
+
+test_that("<date> op <duration>", {
+  expect_identical(vec_arith("+", new_date(0), duration_years(1)), new_date(365))
+  expect_identical(vec_arith("-", new_date(0), duration_years(1)), new_date(-365))
+
+  expect_snapshot_error(vec_arith("+", new_date(0), duration_hours(1)))
+  expect_snapshot_error(vec_arith("*", new_date(0), duration_years(1)))
+})
+
+test_that("<duration> op <date>", {
+  expect_identical(vec_arith("+", duration_years(1), new_date(0)), new_date(365))
+
+  expect_snapshot_error(vec_arith("-", duration_years(1), new_date(0)))
+  expect_snapshot_error(vec_arith("+", duration_hours(1), new_date(0)))
+  expect_snapshot_error(vec_arith("*", duration_years(1), new_date(0)))
+})

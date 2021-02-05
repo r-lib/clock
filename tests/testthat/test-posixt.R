@@ -155,3 +155,52 @@ test_that("can convert to a month factor", {
     calendar_month_factor(as_year_month_day(x), labels = "fr", abbreviate = TRUE),
   )
 })
+
+# ------------------------------------------------------------------------------
+# vec_arith()
+
+test_that("<posixt> op <duration>", {
+  zone <- "America/New_York"
+
+  new_posixlt <- function(x, zone) {
+    as.POSIXlt(new_datetime(x, zone))
+  }
+
+  expect_identical(vec_arith("+", new_datetime(0, zone), duration_years(1)), new_datetime(31536000, zone))
+  expect_identical(vec_arith("+", new_posixlt(0, zone), duration_years(1)), new_datetime(31536000, zone))
+
+  expect_identical(vec_arith("-", new_datetime(0, zone), duration_years(1)), new_datetime(-31536000, zone))
+  expect_identical(vec_arith("-", new_posixlt(0, zone), duration_years(1)), new_datetime(-31536000, zone))
+
+  expect_identical(vec_arith("+", new_datetime(0, zone), duration_seconds(1)), new_datetime(1, zone))
+  expect_identical(vec_arith("+", new_posixlt(0, zone), duration_seconds(1)), new_datetime(1, zone))
+
+  expect_snapshot_error(vec_arith("+", new_datetime(0, zone), duration_milliseconds(1)))
+  expect_snapshot_error(vec_arith("+", new_posixlt(0, zone), duration_milliseconds(1)))
+
+  expect_snapshot_error(vec_arith("*", new_datetime(0, zone), duration_years(1)))
+  expect_snapshot_error(vec_arith("*", new_posixlt(0, zone), duration_years(1)))
+})
+
+test_that("<duration> op <posixt>", {
+  zone <- "America/New_York"
+
+  new_posixlt <- function(x, zone) {
+    as.POSIXlt(new_datetime(x, zone))
+  }
+
+  expect_identical(vec_arith("+", duration_years(1), new_datetime(0, zone)), new_datetime(31536000, zone))
+  expect_identical(vec_arith("+", duration_years(1), new_posixlt(0, zone)), new_datetime(31536000, zone))
+
+  expect_identical(vec_arith("+", duration_seconds(1), new_datetime(0, zone)), new_datetime(1, zone))
+  expect_identical(vec_arith("+", duration_seconds(1), new_posixlt(0, zone)), new_datetime(1, zone))
+
+  expect_snapshot_error(vec_arith("-", duration_years(1), new_datetime(0, zone)))
+  expect_snapshot_error(vec_arith("-", duration_years(1), new_posixlt(0, zone)))
+
+  expect_snapshot_error(vec_arith("+", duration_milliseconds(1), new_datetime(0, zone)))
+  expect_snapshot_error(vec_arith("+", duration_milliseconds(1), new_posixlt(0, zone)))
+
+  expect_snapshot_error(vec_arith("*", duration_years(1), new_datetime(0, zone)))
+  expect_snapshot_error(vec_arith("*", duration_years(1), new_posixlt(0, zone)))
+})

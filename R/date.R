@@ -230,6 +230,38 @@ set_date_field_year_month_day <- function(x, value, invalid, set_fn, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' @method vec_arith.Date clock_duration
+#' @export
+vec_arith.Date.clock_duration <- function(op, x, y, ...) {
+  arith_date_and_duration(op, x, y, ...)
+}
+
+#' @method vec_arith.clock_duration Date
+#' @export
+vec_arith.clock_duration.Date <- function(op, x, y, ...) {
+  arith_duration_and_date(op, x, y, ...)
+}
+
+arith_date_and_duration <- function(op, x, y, ...) {
+  switch(
+    op,
+    "+" = add_duration(x, y),
+    "-" = add_duration(x, -y),
+    stop_incompatible_op(op, x, y, ...)
+  )
+}
+
+arith_duration_and_date <- function(op, x, y, ...) {
+  switch(
+    op,
+    "+" = add_duration(y, x, swapped = TRUE),
+    "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a Date from a duration.", ...),
+    stop_incompatible_op(op, x, y, ...)
+  )
+}
+
+# ------------------------------------------------------------------------------
+
 #' Arithmetic: date
 #'
 #' @description
