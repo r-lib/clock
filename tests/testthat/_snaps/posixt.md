@@ -1,6 +1,6 @@
 # can handle nonexistent times resulting from grouping
 
-    Nonexistent time due to daylight savings at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Nonexistent time due to daylight saving time at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 # can't group by finer precisions
 
@@ -12,7 +12,7 @@
 
 # flooring can handle nonexistent times
 
-    Nonexistent time due to daylight savings at location 2. Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Nonexistent time due to daylight saving time at location 2. Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 # `origin` is validated
 

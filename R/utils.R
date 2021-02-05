@@ -104,6 +104,33 @@ stop_clock_unsupported_time_point_op <- function(op) {
   stop_clock(message, "clock_error_unsupported_time_point_op")
 }
 
+# Thrown from C++
+stop_clock_invalid_date <- function(i) {
+  message <- paste0(
+    "Invalid date found at location ", i, ". ",
+    "Resolve invalid date issues by specifying the `invalid` argument."
+  )
+  stop_clock(message, "clock_error_invalid_date")
+}
+
+# Thrown from C++
+stop_clock_nonexistent_time <- function(i) {
+  message <- paste0(
+    "Nonexistent time due to daylight saving time at location ", i, ". ",
+    "Resolve nonexistent time issues by specifying the `nonexistent` argument."
+  )
+  stop_clock(message, "clock_error_nonexistent_time")
+}
+
+# Thrown from C++
+stop_clock_ambiguous_time <- function(i) {
+  message <- paste0(
+    "Ambiguous time due to daylight saving time at location ", i, ". ",
+    "Resolve ambiguous time issues by specifying the `ambiguous` argument."
+  )
+  stop_clock(message, "clock_error_ambiguous_time")
+}
+
 paste_class <- function(x) {
   out <- paste0(class(x), collapse = "/")
   paste0("<", out, ">")

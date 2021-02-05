@@ -133,3 +133,8 @@ test_that("strict mode can be activated", {
   local_options(clock.strict = TRUE)
   expect_snapshot_error(invalid_resolve(year_month_day(2019, 1, 1)))
 })
+
+test_that("throws known classed error", {
+  expect_snapshot_error(invalid_resolve(year_month_day(2019, 2, 31)))
+  expect_error(invalid_resolve(year_month_day(2019, 2, 31)), class = "clock_error_invalid_date")
+})

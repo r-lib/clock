@@ -22,3 +22,7 @@
 
     The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `invalid` must be set and cannot be left as `NULL`.
 
+# throws known classed error
+
+    Invalid date found at location 1. Resolve invalid date issues by specifying the `invalid` argument.
+
