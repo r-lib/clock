@@ -823,7 +823,8 @@ template <class Calendar>
 inline
 void
 year_month_day_from_stream(std::istringstream& stream,
-                           const char* format,
+                           const char* elt,
+                           const std::vector<const char*>& fmts,
                            const std::pair<const std::string*, const std::string*>& month_names_pair,
                            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
@@ -831,147 +832,290 @@ year_month_day_from_stream(std::istringstream& stream,
                            const r_ssize& i,
                            Calendar& out) {
   using Duration = typename Calendar::duration;
-  date::year_month_day ymd{};
-  date::hh_mm_ss<Duration> hms{};
-  rclock::from_stream(stream, format, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, ymd, hms);
-  if (stream.fail()) {
-    out.assign_na(i);
-  } else {
-    out.assign_year_month_day(ymd, i);
-    out.assign_hour(hms.hours(), i);
-    out.assign_minute(hms.minutes(), i);
-    out.assign_second(hms.seconds(), i);
-    out.assign_subsecond(hms.subseconds(), i);
+  const r_ssize size = fmts.size();
+
+  for (r_ssize j = 0; j < size; ++j) {
+    stream.clear();
+    stream.str(elt);
+
+    const char* fmt = fmts[j];
+    date::year_month_day ymd{};
+    date::hh_mm_ss<Duration> hms{};
+
+    rclock::from_stream(
+      stream,
+      fmt,
+      month_names_pair,
+      weekday_names_pair,
+      ampm_names_pair,
+      decimal_mark,
+      ymd,
+      hms
+    );
+
+    if (!stream.fail()) {
+      out.assign_year_month_day(ymd, i);
+      out.assign_hour(hms.hours(), i);
+      out.assign_minute(hms.minutes(), i);
+      out.assign_second(hms.seconds(), i);
+      out.assign_subsecond(hms.subseconds(), i);
+      return;
+    }
   }
+
+  out.assign_na(i);
 }
 
 template <>
 inline
 void
 year_month_day_from_stream(std::istringstream& stream,
-                           const char* format,
+                           const char* elt,
+                           const std::vector<const char*>& fmts,
                            const std::pair<const std::string*, const std::string*>& month_names_pair,
                            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
                            rclock::gregorian::y& out) {
-  date::year x{};
-  rclock::from_stream(stream, format, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, x);
-  if (stream.fail()) {
-    out.assign_na(i);
-  } else {
-    out.assign_year(x, i);
+  const r_ssize size = fmts.size();
+
+  for (r_ssize j = 0; j < size; ++j) {
+    stream.clear();
+    stream.str(elt);
+
+    const char* fmt = fmts[j];
+    date::year x{};
+
+    rclock::from_stream(
+      stream,
+      fmt,
+      month_names_pair,
+      weekday_names_pair,
+      ampm_names_pair,
+      decimal_mark,
+      x
+    );
+
+    if (!stream.fail()) {
+      out.assign_year(x, i);
+      return;
+    }
   }
+
+  out.assign_na(i);
 }
 
 template <>
 inline
 void
 year_month_day_from_stream(std::istringstream& stream,
-                           const char* format,
+                           const char* elt,
+                           const std::vector<const char*>& fmts,
                            const std::pair<const std::string*, const std::string*>& month_names_pair,
                            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
                            rclock::gregorian::ym& out) {
-  date::year_month x{};
-  rclock::from_stream(stream, format, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, x);
-  if (stream.fail()) {
-    out.assign_na(i);
-  } else {
-    out.assign_year_month(x, i);
+  const r_ssize size = fmts.size();
+
+  for (r_ssize j = 0; j < size; ++j) {
+    stream.clear();
+    stream.str(elt);
+
+    const char* fmt = fmts[j];
+    date::year_month x{};
+
+    rclock::from_stream(
+      stream,
+      fmt,
+      month_names_pair,
+      weekday_names_pair,
+      ampm_names_pair,
+      decimal_mark,
+      x
+    );
+
+    if (!stream.fail()) {
+      out.assign_year_month(x, i);
+      return;
+    }
   }
+
+  out.assign_na(i);
 }
 
 template <>
 inline
 void
 year_month_day_from_stream(std::istringstream& stream,
-                           const char* format,
+                           const char* elt,
+                           const std::vector<const char*>& fmts,
                            const std::pair<const std::string*, const std::string*>& month_names_pair,
                            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
                            rclock::gregorian::ymd& out) {
-  date::year_month_day x{};
-  rclock::from_stream(stream, format, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, x);
-  if (stream.fail()) {
-    out.assign_na(i);
-  } else {
-    out.assign_year_month_day(x, i);
+  const r_ssize size = fmts.size();
+
+  for (r_ssize j = 0; j < size; ++j) {
+    stream.clear();
+    stream.str(elt);
+
+    const char* fmt = fmts[j];
+    date::year_month_day x{};
+
+    rclock::from_stream(
+      stream,
+      fmt,
+      month_names_pair,
+      weekday_names_pair,
+      ampm_names_pair,
+      decimal_mark,
+      x
+    );
+
+    if (!stream.fail()) {
+      out.assign_year_month_day(x, i);
+      return;
+    }
   }
+
+  out.assign_na(i);
 }
 
 template <>
 inline
 void
 year_month_day_from_stream(std::istringstream& stream,
-                           const char* format,
+                           const char* elt,
+                           const std::vector<const char*>& fmts,
                            const std::pair<const std::string*, const std::string*>& month_names_pair,
                            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
                            rclock::gregorian::ymdh& out) {
-  date::year_month_day ymd{};
-  date::hh_mm_ss<std::chrono::seconds> hms{};
-  rclock::from_stream(stream, format, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, ymd, hms);
-  if (stream.fail()) {
-    out.assign_na(i);
-  } else {
-    out.assign_year_month_day(ymd, i);
-    out.assign_hour(hms.hours(), i);
+  const r_ssize size = fmts.size();
+
+  for (r_ssize j = 0; j < size; ++j) {
+    stream.clear();
+    stream.str(elt);
+
+    const char* fmt = fmts[j];
+    date::year_month_day ymd{};
+    date::hh_mm_ss<std::chrono::seconds> hms{};
+
+    rclock::from_stream(
+      stream,
+      fmt,
+      month_names_pair,
+      weekday_names_pair,
+      ampm_names_pair,
+      decimal_mark,
+      ymd,
+      hms
+    );
+
+    if (!stream.fail()) {
+      out.assign_year_month_day(ymd, i);
+      out.assign_hour(hms.hours(), i);
+      return;
+    }
   }
+
+  out.assign_na(i);
 }
 
 template <>
 inline
 void
 year_month_day_from_stream(std::istringstream& stream,
-                           const char* format,
+                           const char* elt,
+                           const std::vector<const char*>& fmts,
                            const std::pair<const std::string*, const std::string*>& month_names_pair,
                            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
                            rclock::gregorian::ymdhm& out) {
-  date::year_month_day ymd{};
-  date::hh_mm_ss<std::chrono::seconds> hms{};
-  rclock::from_stream(stream, format, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, ymd, hms);
-  if (stream.fail()) {
-    out.assign_na(i);
-  } else {
-    out.assign_year_month_day(ymd, i);
-    out.assign_hour(hms.hours(), i);
-    out.assign_minute(hms.minutes(), i);
+  const r_ssize size = fmts.size();
+
+  for (r_ssize j = 0; j < size; ++j) {
+    stream.clear();
+    stream.str(elt);
+
+    const char* fmt = fmts[j];
+    date::year_month_day ymd{};
+    date::hh_mm_ss<std::chrono::seconds> hms{};
+
+    rclock::from_stream(
+      stream,
+      fmt,
+      month_names_pair,
+      weekday_names_pair,
+      ampm_names_pair,
+      decimal_mark,
+      ymd,
+      hms
+    );
+
+    if (!stream.fail()) {
+      out.assign_year_month_day(ymd, i);
+      out.assign_hour(hms.hours(), i);
+      out.assign_minute(hms.minutes(), i);
+      return;
+    }
   }
+
+  out.assign_na(i);
 }
 
 template <>
 inline
 void
 year_month_day_from_stream(std::istringstream& stream,
-                           const char* format,
+                           const char* elt,
+                           const std::vector<const char*>& fmts,
                            const std::pair<const std::string*, const std::string*>& month_names_pair,
                            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
                            rclock::gregorian::ymdhms& out) {
-  date::year_month_day ymd{};
-  date::hh_mm_ss<std::chrono::seconds> hms{};
-  rclock::from_stream(stream, format, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, ymd, hms);
-  if (stream.fail()) {
-    out.assign_na(i);
-  } else {
-    out.assign_year_month_day(ymd, i);
-    out.assign_hour(hms.hours(), i);
-    out.assign_minute(hms.minutes(), i);
-    out.assign_second(hms.seconds(), i);
+  const r_ssize size = fmts.size();
+
+  for (r_ssize j = 0; j < size; ++j) {
+    stream.clear();
+    stream.str(elt);
+
+    const char* fmt = fmts[j];
+    date::year_month_day ymd{};
+    date::hh_mm_ss<std::chrono::seconds> hms{};
+
+    rclock::from_stream(
+      stream,
+      fmt,
+      month_names_pair,
+      weekday_names_pair,
+      ampm_names_pair,
+      decimal_mark,
+      ymd,
+      hms
+    );
+
+    if (!stream.fail()) {
+      out.assign_year_month_day(ymd, i);
+      out.assign_hour(hms.hours(), i);
+      out.assign_minute(hms.minutes(), i);
+      out.assign_second(hms.seconds(), i);
+      return;
+    }
   }
+
+  out.assign_na(i);
 }
 
 template <class Calendar>
@@ -988,11 +1132,8 @@ parse_year_month_day_impl(const cpp11::strings& x,
   const r_ssize size = x.size();
   Calendar out(size);
 
-  if (!r_is_string(format)) {
-    clock_abort("`format` must be a single string.");
-  }
-  const SEXP format_sexp = format[0];
-  const char* format_char = CHAR(format_sexp);
+  std::vector<const char*> fmts(format.size());
+  rclock::fill_formats(format, fmts);
 
   char dmark;
   switch (parse_decimal_mark(mark)) {
@@ -1033,12 +1174,10 @@ parse_year_month_day_impl(const cpp11::strings& x,
 
     const char* elt_char = CHAR(elt);
 
-    stream.clear();
-    stream.str(elt_char);
-
     year_month_day_from_stream(
       stream,
-      format_char,
+      elt_char,
+      fmts,
       month_names_pair,
       weekday_names_pair,
       ampm_names_pair,

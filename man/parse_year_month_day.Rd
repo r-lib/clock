@@ -19,9 +19,12 @@ A character vector to parse.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{format}{\verb{[NULL / character(1)]}
+\item{format}{\verb{[character / NULL]}
 
-A character format string.
+A format string.
+
+Multiple format strings can be supplied, and they will be tried in the
+order they are provided.
 
 If \code{NULL}, a default format string is chosen based on the \code{precision}.
 The default format string is chosen to parse the result of calling
@@ -67,6 +70,12 @@ x <- year_month_day(
 )
 
 parse_year_month_day(format(x), precision = "nanosecond")
+
+# Can parse using multiple format strings, which will be tried
+# in the order they are provided
+x <- c("2019-01-01", "2020-01-01", "2021/2/3")
+formats <- c("\%Y-\%m-\%d", "\%Y/\%m/\%d")
+parse_year_month_day(x, format = formats)
 
 # Can parse using other format tokens as well
 parse_year_month_day(
