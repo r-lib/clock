@@ -196,49 +196,51 @@ as_weekday.clock_calendar <- function(x) {
 
 #' Extract weekday encodings
 #'
-#' @description
-#' Given a weekday object, `x`:
+#' `weekday_encoding()` extracts out an integer encoding for the weekday.
 #'
-#' - `weekday_c_encoding()` returns the underlying C encoding, with a range
-#'   of `[0, 6]`, where 0 = Sunday, and 6 = Saturday.
-#'
-#' - `weekday_iso_encoding()` returns the underlying ISO encoding, with a
-#'   range of `[1, 7]`, where 1 = Monday, and 7 = Sunday.
+#' @inheritParams ellipsis::dots_empty
 #'
 #' @param x `[weekday]`
 #'
 #'   A weekday vector.
 #'
+#' @param encoding `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"c"`: Encode weekdays with a range of `[0, 6]`, where
+#'     0 = Sunday, and 6 = Saturday.
+#'
+#'   - `"iso"`: Encode weekdays with a range of `[1, 7]`, where
+#'     1 = Monday, and 7 = Sunday.
+#'
 #' @return An integer vector of encodings.
 #'
-#' @name weekday-encoding
-#'
+#' @export
 #' @examples
 #' # Here we supply a C encoding to `weekday()`
 #' x <- weekday(0:6)
 #' x
 #'
 #' # Notice that Sunday is the only day that is different
-#' weekday_c_encoding(x)
-#' weekday_iso_encoding(x)
-NULL
+#' weekday_encoding(x, encoding = "c")
+#' weekday_encoding(x, encoding = "iso")
+weekday_encoding <- function(x, ..., encoding = "c") {
+  check_dots_empty()
 
-#' @rdname weekday-encoding
-#' @export
-weekday_c_encoding <- function(x) {
   if (!is_weekday(x)) {
     abort("`x` must be a 'clock_weekday'.")
   }
 
-  unstructure(x)
-}
+  encoding <- validate_encoding(encoding)
 
-#' @rdname weekday-encoding
-#' @export
-weekday_iso_encoding <- function(x) {
-  x <- weekday_c_encoding(x)
-  zeros <- x == 0L
-  x[zeros] <- 7L
+  x <- unstructure(x)
+
+  if (encoding == "iso") {
+    zeros <- x == 0L
+    x[zeros] <- 7L
+  }
+
   x
 }
 
@@ -250,7 +252,7 @@ weekday_iso_encoding <- function(x) {
 #' can be useful in combination with ggplot2, or for modeling.
 #'
 #' @inheritParams ellipsis::dots_empty
-#' @inheritParams weekday-encoding
+#' @inheritParams weekday_encoding
 #' @inheritParams clock_locale
 #'
 #' @param abbreviate `[logical(1)]`
@@ -315,11 +317,11 @@ weekday_factor <- function(x,
   }
 
   encoding <- validate_encoding(encoding)
+  x <- weekday_encoding(x, encoding = encoding)
 
   if (encoding == "c") {
-    x <- weekday_c_encoding(x) + 1L
+    x <- x + 1L
   } else if (encoding == "iso") {
-    x <- weekday_iso_encoding(x)
     labels <- c(labels[2:7], labels[1L])
   } else {
     abort("Internal error: Unknown encoding.")
@@ -328,13 +330,6 @@ weekday_factor <- function(x,
   x <- labels[x]
 
   factor(x, levels = labels, ordered = TRUE)
-}
-
-validate_encoding <- function(encoding) {
-  if (!is_string(encoding, string = c("c", "iso"))) {
-    abort("`encoding` must be one of \"c\" or \"iso\".")
-  }
-  encoding
 }
 
 # ------------------------------------------------------------------------------
@@ -475,3 +470,11 @@ add_days.clock_weekday <- function(x, n, ...) {
   new_weekday(day)
 }
 
+# ------------------------------------------------------------------------------
+
+validate_encoding <- function(encoding) {
+  if (!is_string(encoding, string = c("c", "iso"))) {
+    abort("`encoding` must be one of \"c\" or \"iso\".")
+  }
+  encoding
+}

@@ -123,7 +123,7 @@ reference:
   - weekday
   - as_weekday
   - is_weekday
-  - weekday-encoding
+  - weekday_encoding
   - weekday_factor
   - weekday-arithmetic
 
