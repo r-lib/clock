@@ -126,12 +126,12 @@ parse_zoned_time <- function(x,
 
 #' @export
 vec_proxy.clock_zoned_time <- function(x, ...) {
-  .Call("_clock_clock_rcrd_proxy", x, PACKAGE = "clock")
+  .Call(`_clock_clock_rcrd_proxy`, x)
 }
 
 #' @export
 vec_restore.clock_zoned_time <- function(x, to, ...) {
-  .Call("_clock_zoned_time_restore", x, to, PACKAGE = "clock")
+  .Call(`_clock_zoned_time_restore`, x, to)
 }
 
 #' @export

@@ -2,12 +2,12 @@
 
 #' @export
 names.clock_rcrd <- function(x) {
-  .Call("_clock_clock_rcrd_names", x, PACKAGE = "clock")
+  .Call(`_clock_clock_rcrd_names`, x)
 }
 
 #' @export
 `names<-.clock_rcrd` <- function(x, value) {
-  .Call("_clock_clock_rcrd_set_names", x, value, PACKAGE = "clock")
+  .Call(`_clock_clock_rcrd_set_names`, x, value)
 }
 
 # ------------------------------------------------------------------------------

@@ -103,12 +103,12 @@ iso_year_week_day <- function(year,
 
 #' @export
 vec_proxy.clock_iso_year_week_day <- function(x, ...) {
-  .Call("_clock_clock_rcrd_proxy", x, PACKAGE = "clock")
+  .Call(`_clock_clock_rcrd_proxy`, x)
 }
 
 #' @export
 vec_restore.clock_iso_year_week_day <- function(x, to, ...) {
-  .Call("_clock_iso_year_week_day_restore", x, to, PACKAGE = "clock")
+  .Call(`_clock_iso_year_week_day_restore`, x, to)
 }
 
 #' @export
