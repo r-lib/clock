@@ -105,12 +105,12 @@ year_month_weekday <- function(year,
 
 #' @export
 vec_proxy.clock_year_month_weekday <- function(x, ...) {
-  .Call("_clock_clock_rcrd_proxy", x, PACKAGE = "clock")
+  .Call(`_clock_clock_rcrd_proxy`, x)
 }
 
 #' @export
 vec_restore.clock_year_month_weekday <- function(x, to, ...) {
-  .Call("_clock_year_month_weekday_restore", x, to, PACKAGE = "clock")
+  .Call(`_clock_year_month_weekday_restore`, x, to)
 }
 
 #' @export

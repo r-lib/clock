@@ -140,12 +140,12 @@ pillar_shaft.clock_time_point <- function(x, ...) {
 
 #' @export
 vec_proxy.clock_time_point <- function(x, ...) {
-  .Call("_clock_clock_rcrd_proxy", x, PACKAGE = "clock")
+  .Call(`_clock_clock_rcrd_proxy`, x)
 }
 
 #' @export
 vec_restore.clock_time_point <- function(x, to, ...) {
-  .Call("_clock_time_point_restore", x, to, PACKAGE = "clock")
+  .Call(`_clock_time_point_restore`, x, to)
 }
 
 #' @export
