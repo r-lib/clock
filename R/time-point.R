@@ -578,7 +578,7 @@ time_point_cast <- function(x, precision) {
 #' up to daily time points.
 #'
 #' It can also be useful for flooring by a set number of days (like 20) with
-#' respect to some origin. By default, the origin is `1970-01-01 00:00:00`.
+#' respect to some origin. By default, the origin is 1970-01-01 00:00:00.
 #'
 #' If you want to group by components, such as "day of the month", rather than
 #' by "n days", see [calendar_group()].
@@ -594,7 +594,7 @@ time_point_cast <- function(x, precision) {
 #' - `time_point_ceiling()` constructs intervals of \code{(lower, upper]} that
 #'   bound each element of `x`, then always chooses the _right-hand side_.
 #'
-#' As an easy example, consider `"2020-01-02 00:00:05"`.
+#' As an easy example, consider 2020-01-02 00:00:05.
 #'
 #' To floor this to the nearest day, the following interval is constructed,
 #' and the left-hand side is returned at day precision:
@@ -607,7 +607,7 @@ time_point_cast <- function(x, precision) {
 #' \code{(2020-01-02 00:00:00, 2020-01-03 00:00:00]}
 #'
 #' Here is another example, this time with a time point on a boundary,
-#' `"2020-01-02 00:00:00"`.
+#' 2020-01-02 00:00:00.
 #'
 #' To floor this to the nearest day, the following interval is constructed,
 #' and the left-hand side is returned at day precision:
@@ -628,6 +628,20 @@ time_point_cast <- function(x, precision) {
 #' @param n `[positive integer(1)]`
 #'
 #'   A positive integer specifying the multiple of `precision` to use.
+#'
+#' @param origin `[clock_sys_time(1) / clock_naive_time(1) / NULL]`
+#'
+#'   An origin to begin counting from. Mostly useful when `n > 1` and you
+#'   want to control how the rounding groups are created.
+#'
+#'   If `x` is a sys-time, `origin` must be a sys-time.
+#'
+#'   If `x` is a naive-time, `origin` must be a naive-time.
+#'
+#'   The precision of `origin` must be equally precise as or less
+#'   precise than `precision`.
+#'
+#'   If `NULL`, a default origin of midnight on 1970-01-01 is used.
 #'
 #' @name time-point-rounding
 #'
@@ -661,21 +675,21 @@ NULL
 
 #' @rdname time-point-rounding
 #' @export
-time_point_floor <- function(x, precision, ..., n = 1L) {
-  time_point_rounder(x, precision, n, duration_floor, ...)
+time_point_floor <- function(x, precision, ..., n = 1L, origin = NULL) {
+  time_point_rounder(x, precision, n, origin, duration_floor, ...)
 }
 #' @rdname time-point-rounding
 #' @export
-time_point_ceiling <- function(x, precision, ..., n = 1L) {
-  time_point_rounder(x, precision, n, duration_ceiling, ...)
+time_point_ceiling <- function(x, precision, ..., n = 1L, origin = NULL) {
+  time_point_rounder(x, precision, n, origin, duration_ceiling, ...)
 }
 #' @rdname time-point-rounding
 #' @export
-time_point_round <- function(x, precision, ..., n = 1L) {
-  time_point_rounder(x, precision, n, duration_round, ...)
+time_point_round <- function(x, precision, ..., n = 1L, origin = NULL) {
+  time_point_rounder(x, precision, n, origin, duration_round, ...)
 }
 
-time_point_rounder <- function(x, precision, n, duration_rounder, ...) {
+time_point_rounder <- function(x, precision, n, origin, duration_rounder, ...) {
   check_dots_empty()
 
   if (!is_time_point(x)) {
@@ -686,12 +700,45 @@ time_point_rounder <- function(x, precision, n, duration_rounder, ...) {
   precision <- validate_time_point_precision(precision)
 
   duration <- time_point_duration(x)
+
+  has_origin <- !is_null(origin)
+
+  if (has_origin) {
+    origin <- collect_time_point_rounder_origin(origin, x, precision)
+    duration <- duration - origin
+  }
+
   duration <- duration_rounder(duration, precision_string, n = n)
+
+  if (has_origin) {
+    duration <- duration + origin
+  }
 
   names <- clock_rcrd_names(x)
   clock <- time_point_clock(x)
 
   new_time_point_from_fields(duration, precision, clock, names)
+}
+
+collect_time_point_rounder_origin <- function(origin, x, precision) {
+  # Cast `origin` to a time point with the same clock as `x`,
+  # but with a precision of `precision`
+  to_names <- NULL
+  to <- duration_helper(integer(), precision)
+  to <- new_time_point_from_fields(to, precision, time_point_clock(x), to_names)
+
+  origin <- vec_cast(origin, to, x_arg = "origin")
+
+  if (vec_size(origin) != 1L) {
+    abort("`origin` must have length 1.")
+  }
+  if (is.na(origin)) {
+    abort("`origin` must not be `NA`.")
+  }
+
+  origin <- as_duration(origin)
+
+  origin
 }
 
 # ------------------------------------------------------------------------------

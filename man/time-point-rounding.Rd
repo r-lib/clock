@@ -7,11 +7,11 @@
 \alias{time_point_round}
 \title{Time point rounding}
 \usage{
-time_point_floor(x, precision, ..., n = 1L)
+time_point_floor(x, precision, ..., n = 1L, origin = NULL)
 
-time_point_ceiling(x, precision, ..., n = 1L)
+time_point_ceiling(x, precision, ..., n = 1L, origin = NULL)
 
-time_point_round(x, precision, ..., n = 1L)
+time_point_round(x, precision, ..., n = 1L, origin = NULL)
 }
 \arguments{
 \item{x}{\verb{[clock_sys_time / clock_naive_time]}
@@ -36,6 +36,20 @@ A time point precision. One of:
 \item{n}{\verb{[positive integer(1)]}
 
 A positive integer specifying the multiple of \code{precision} to use.}
+
+\item{origin}{\verb{[clock_sys_time(1) / clock_naive_time(1) / NULL]}
+
+An origin to begin counting from. Mostly useful when \code{n > 1} and you
+want to control how the rounding groups are created.
+
+If \code{x} is a sys-time, \code{origin} must be a sys-time.
+
+If \code{x} is a naive-time, \code{origin} must be a naive-time.
+
+The precision of \code{origin} must be equally precise as or less
+precise than \code{precision}.
+
+If \code{NULL}, a default origin of midnight on 1970-01-01 is used.}
 }
 \description{
 \itemize{
@@ -51,7 +65,7 @@ Rounding time points is mainly useful for rounding sub-daily time points
 up to daily time points.
 
 It can also be useful for flooring by a set number of days (like 20) with
-respect to some origin. By default, the origin is \verb{1970-01-01 00:00:00}.
+respect to some origin. By default, the origin is 1970-01-01 00:00:00.
 
 If you want to group by components, such as "day of the month", rather than
 by "n days", see \code{\link[=calendar_group]{calendar_group()}}.
@@ -68,7 +82,7 @@ bound each element of \code{x}, then always chooses the \emph{left-hand side}.
 bound each element of \code{x}, then always chooses the \emph{right-hand side}.
 }
 
-As an easy example, consider \code{"2020-01-02 00:00:05"}.
+As an easy example, consider 2020-01-02 00:00:05.
 
 To floor this to the nearest day, the following interval is constructed,
 and the left-hand side is returned at day precision:
@@ -81,7 +95,7 @@ is constructed, and the right-hand side is returned at day precision:
 \code{(2020-01-02 00:00:00, 2020-01-03 00:00:00]}
 
 Here is another example, this time with a time point on a boundary,
-\code{"2020-01-02 00:00:00"}.
+2020-01-02 00:00:00.
 
 To floor this to the nearest day, the following interval is constructed,
 and the left-hand side is returned at day precision:

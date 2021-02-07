@@ -24,7 +24,9 @@ One of:
 \itemize{
 \item \code{"week"}
 \item \code{"day"}
-}}
+}
+
+\code{"week"} is an alias for \code{"day"} with \code{n * 7}.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
@@ -35,7 +37,7 @@ A single positive integer specifying a multiple of \code{precision} to use.}
 \item{origin}{\verb{[Date(1) / NULL]}
 
 An origin to start counting from. The default \code{origin} is
-implicitly \code{"1970-01-01"}.}
+1970-01-01.}
 }
 \description{
 These are Date methods for the
@@ -54,11 +56,8 @@ You can group by irregular periods such as \code{"month"} or \code{"year"} by us
 \code{\link[=date_group]{date_group()}}.
 }
 \details{
-Rounding by \code{"week"} is a simple alias for rounding by \code{"day"} with 7 times
-as many days.
-
 When rounding by \code{"week"}, remember that the \code{origin} determines the "week
-start". By default, \code{"1970-01-01"} is the implicit origin, which is a
+start". By default, 1970-01-01 is the implicit origin, which is a
 Thursday. If you would like to round by weeks with a different week start,
 just supply an origin on the weekday you are interested in.
 }
@@ -77,7 +76,7 @@ date_group(x, "day", n = 2)
 y <- as.Date("2019-01-01") + 0:20
 y
 
-# Flooring by week uses an implicit `origin` of `"1970-01-01"`, which
+# Flooring by week uses an implicit `origin` of 1970-01-01, which
 # is a Thursday
 date_floor(y, "week")
 as_weekday(date_floor(y, "week"))

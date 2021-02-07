@@ -101,6 +101,14 @@ test_that("`origin` can be used", {
   expect_identical(date_floor(x, "day", n = 2, origin = origin), expect)
 })
 
+test_that("`origin` is floored to the precision of `precision` with a potential warning before rounding", {
+  origin <- as.POSIXct("1970-01-01 01:00:00", "America/New_York")
+  x <- as.POSIXct(c("1970-01-01 00:00:00", "1970-01-02 00:00:00"), "America/New_York")
+
+  expect_snapshot(date_floor(x, "day", origin = origin))
+  expect_warning(date_floor(x, "day", origin = origin), class = "clock_warning_invalid_rounding_origin")
+})
+
 test_that("`origin` is validated", {
   zone <- "America/New_York"
   x <- as.POSIXct("2019-01-01", zone)

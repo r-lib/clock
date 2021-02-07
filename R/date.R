@@ -509,7 +509,7 @@ date_leap_year.Date <- function(x) {
 #' These functions round the underlying duration itself, relative to an
 #' `origin`. For example, rounding to 15 hours will construct groups of
 #' 15 hours, starting from `origin`, which defaults to a naive time of
-#' `"1970-01-01 00:00:00"`.
+#' 1970-01-01 00:00:00.
 #'
 #' If you want to group by components, such as "day of the month", see
 #' [date_group()].
@@ -519,7 +519,7 @@ date_leap_year.Date <- function(x) {
 #' @param origin `[Date(1) / POSIXct(1) / POSIXlt(1) / NULL]`
 #'
 #'   An origin to start counting from. The default `origin` is
-#'   implicitly midnight on `"1970-01-01"` in the time zone of `x`.
+#'   midnight on 1970-01-01 in the time zone of `x`.
 #'
 #' @return `x` rounded to the specified `precision`.
 #'
@@ -574,11 +574,8 @@ date_round <- function(x, precision, ..., n = 1L, origin = NULL) {
 #' [date_group()].
 #'
 #' @details
-#' Rounding by `"week"` is a simple alias for rounding by `"day"` with 7 times
-#' as many days.
-#'
 #' When rounding by `"week"`, remember that the `origin` determines the "week
-#' start". By default, `"1970-01-01"` is the implicit origin, which is a
+#' start". By default, 1970-01-01 is the implicit origin, which is a
 #' Thursday. If you would like to round by weeks with a different week start,
 #' just supply an origin on the weekday you are interested in.
 #'
@@ -596,10 +593,12 @@ date_round <- function(x, precision, ..., n = 1L, origin = NULL) {
 #'
 #'   - `"day"`
 #'
+#'   `"week"` is an alias for `"day"` with `n * 7`.
+#'
 #' @param origin `[Date(1) / NULL]`
 #'
 #'   An origin to start counting from. The default `origin` is
-#'   implicitly `"1970-01-01"`.
+#'   1970-01-01.
 #'
 #' @name date-rounding
 #'
@@ -618,7 +617,7 @@ date_round <- function(x, precision, ..., n = 1L, origin = NULL) {
 #' y <- as.Date("2019-01-01") + 0:20
 #' y
 #'
-#' # Flooring by week uses an implicit `origin` of `"1970-01-01"`, which
+#' # Flooring by week uses an implicit `origin` of 1970-01-01, which
 #' # is a Thursday
 #' date_floor(y, "week")
 #' as_weekday(date_floor(y, "week"))
@@ -657,20 +656,11 @@ date_rounder <- function(x, precision, n, origin, time_point_rounder, ...) {
 
   x <- as_naive_time(x)
 
-  has_origin <- !is_null(origin)
-
-  if (has_origin) {
-    origin <- validate_date_rounder_origin(origin)
-    origin <- as_naive_time(origin)
-    origin <- as_duration(origin)
-    x <- x - origin
+  if (!is_null(origin)) {
+    origin <- collect_date_rounder_origin(origin)
   }
 
-  x <- time_point_rounder(x, precision, ..., n = n)
-
-  if (has_origin) {
-    x <- x + origin
-  }
+  x <- time_point_rounder(x, precision, ..., n = n, origin = origin)
 
   as.Date(x)
 }
@@ -689,7 +679,7 @@ tweak_date_rounder_precision <- function(precision, n) {
   list(precision = precision, n = n)
 }
 
-validate_date_rounder_origin <- function(origin) {
+collect_date_rounder_origin <- function(origin) {
   if (!inherits(origin, "Date")) {
     abort("`origin` must be a 'Date'.")
   }
@@ -699,6 +689,9 @@ validate_date_rounder_origin <- function(origin) {
   if (!is.finite(origin)) {
     abort("`origin` must not be `NA` or an infinite date.")
   }
+
+  origin <- as_naive_time(origin)
+
   origin
 }
 

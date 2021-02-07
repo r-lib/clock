@@ -51,7 +51,9 @@ One of:
 \item \code{"hour"}
 \item \code{"minute"}
 \item \code{"second"}
-}}
+}
+
+\code{"week"} is an alias for \code{"day"} with \code{n * 7}.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
@@ -61,9 +63,14 @@ A single positive integer specifying a multiple of \code{precision} to use.}
 
 \item{origin}{\verb{[POSIXct(1) / POSIXlt(1) / NULL]}
 
-An origin to start counting from. Must have exactly the same time
-zone as \code{x}. The default \code{origin} is implicitly midnight on \code{"1970-01-01"}
-in the time zone of \code{x}.}
+An origin to start counting from.
+
+\code{origin} must have exactly the same time zone as \code{x}.
+
+\code{origin} will be floored to \code{precision}. If information is lost when
+flooring, a warning will be thrown.
+
+If \code{NULL}, defaults to midnight on 1970-01-01 in the time zone of \code{x}.}
 
 \item{nonexistent}{\verb{[character / NULL]}
 
@@ -141,11 +148,8 @@ You can group by irregular periods such as \code{"month"} or \code{"year"} by us
 \code{\link[=date_group]{date_group()}}.
 }
 \details{
-Rounding by \code{"week"} is a simple alias for rounding by \code{"day"} with 7 times
-as many days.
-
 When rounding by \code{"week"}, remember that the \code{origin} determines the "week
-start". By default, \code{"1970-01-01"} is the implicit origin, which is a
+start". By default, 1970-01-01 is the implicit origin, which is a
 Thursday. If you would like to round by weeks with a different week start,
 just supply an origin on the weekday you are interested in.
 }
@@ -166,7 +170,7 @@ x <- as.POSIXct("1970-04-26 01:59:59", "America/New_York") + c(0, 1)
 x
 
 # Rounding is done in naive-time, which means that rounding by 2 hours
-# will attempt to generate a time of `"1970-04-26 02:00:00"`, which doesn't
+# will attempt to generate a time of 1970-04-26 02:00:00, which doesn't
 # exist in this time zone
 try(date_floor(x, "hour", n = 2))
 
