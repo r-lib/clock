@@ -666,11 +666,8 @@ date_leap_year.POSIXt <- function(x) {
 #' [date_group()].
 #'
 #' @details
-#' Rounding by `"week"` is a simple alias for rounding by `"day"` with 7 times
-#' as many days.
-#'
 #' When rounding by `"week"`, remember that the `origin` determines the "week
-#' start". By default, `"1970-01-01"` is the implicit origin, which is a
+#' start". By default, 1970-01-01 is the implicit origin, which is a
 #' Thursday. If you would like to round by weeks with a different week start,
 #' just supply an origin on the weekday you are interested in.
 #'
@@ -695,11 +692,18 @@ date_leap_year.POSIXt <- function(x) {
 #'
 #'   - `"second"`
 #'
+#'   `"week"` is an alias for `"day"` with `n * 7`.
+#'
 #' @param origin `[POSIXct(1) / POSIXlt(1) / NULL]`
 #'
-#'   An origin to start counting from. Must have exactly the same time
-#'   zone as `x`. The default `origin` is implicitly midnight on `"1970-01-01"`
-#'   in the time zone of `x`.
+#'   An origin to start counting from.
+#'
+#'   `origin` must have exactly the same time zone as `x`.
+#'
+#'   `origin` will be floored to `precision`. If information is lost when
+#'   flooring, a warning will be thrown.
+#'
+#'   If `NULL`, defaults to midnight on 1970-01-01 in the time zone of `x`.
 #'
 #' @name posixt-rounding
 #'
@@ -720,7 +724,7 @@ date_leap_year.POSIXt <- function(x) {
 #' x
 #'
 #' # Rounding is done in naive-time, which means that rounding by 2 hours
-#' # will attempt to generate a time of `"1970-04-26 02:00:00"`, which doesn't
+#' # will attempt to generate a time of 1970-04-26 02:00:00, which doesn't
 #' # exist in this time zone
 #' try(date_floor(x, "hour", n = 2))
 #'
@@ -780,25 +784,16 @@ date_time_rounder <- function(x,
 
   x <- as_naive_time(x)
 
-  has_origin <- !is_null(origin)
-
-  if (has_origin) {
-    origin <- validate_date_time_rounder_origin(origin, zone)
-    origin <- as_naive_time(origin)
-    origin <- as_duration(origin)
-    x <- x - origin
+  if (!is_null(origin)) {
+    origin <- collect_date_time_rounder_origin(origin, zone, precision)
   }
 
-  x <- time_point_rounder(x, precision, ..., n = n)
-
-  if (has_origin) {
-    x <- x + origin
-  }
+  x <- time_point_rounder(x, precision, ..., n = n, origin = origin)
 
   as.POSIXct(x, zone, nonexistent = nonexistent, ambiguous = ambiguous)
 }
 
-validate_date_time_rounder_origin <- function(origin, zone) {
+collect_date_time_rounder_origin <- function(origin, zone, precision) {
   if (!inherits(origin, "POSIXt")) {
     abort("`origin` must be a 'POSIXt'.")
   }
@@ -816,7 +811,27 @@ validate_date_time_rounder_origin <- function(origin, zone) {
     abort("`origin` must have the same time zone as `x`.")
   }
 
+  origin <- as_naive_time(origin)
+
+  # Floor to match the precision of `precision`
+  origin_old <- origin
+  origin <- time_point_floor(origin, precision)
+
+  # If we lost information while flooring, let the user know
+  if (origin_old != time_point_cast(origin, "second")) {
+    warn_clock_invalid_rounding_origin(precision)
+  }
+
   origin
+}
+
+warn_clock_invalid_rounding_origin <- function(precision) {
+  message <- paste0(
+    "`origin` has been floored from 'second' precision to '", precision, "' ",
+    "precision to match `precision`. This floor has lost information."
+  )
+
+  rlang::warn(message, class = "clock_warning_invalid_rounding_origin")
 }
 
 # ------------------------------------------------------------------------------

@@ -138,6 +138,12 @@ paste_class <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+warn_clock <- function(message, class = character()) {
+  rlang::warn(message, class = c(class, "clock_warning"))
+}
+
+# ------------------------------------------------------------------------------
+
 is_number <- function(x) {
   if (length(x) != 1L) {
     FALSE

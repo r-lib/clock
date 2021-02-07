@@ -14,6 +14,15 @@
 
     Nonexistent time due to daylight saving time at location 2. Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
+# `origin` is floored to the precision of `precision` with a potential warning before rounding
+
+    Code
+      date_floor(x, "day", origin = origin)
+    Warning <clock_warning_invalid_rounding_origin>
+      `origin` has been floored from 'second' precision to 'day' precision to match `precision`. This floor has lost information.
+    Output
+      [1] "1970-01-01 EST" "1970-01-02 EST"
+
 # `origin` is validated
 
     `origin` must be a 'POSIXt'.

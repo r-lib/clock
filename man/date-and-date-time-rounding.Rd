@@ -31,7 +31,7 @@ A single positive integer specifying a multiple of \code{precision} to use.}
 \item{origin}{\verb{[Date(1) / POSIXct(1) / POSIXlt(1) / NULL]}
 
 An origin to start counting from. The default \code{origin} is
-implicitly midnight on \code{"1970-01-01"} in the time zone of \code{x}.}
+midnight on 1970-01-01 in the time zone of \code{x}.}
 }
 \value{
 \code{x} rounded to the specified \code{precision}.
@@ -55,7 +55,7 @@ There are separate help pages for rounding dates and date-times:
 These functions round the underlying duration itself, relative to an
 \code{origin}. For example, rounding to 15 hours will construct groups of
 15 hours, starting from \code{origin}, which defaults to a naive time of
-\code{"1970-01-01 00:00:00"}.
+1970-01-01 00:00:00.
 
 If you want to group by components, such as "day of the month", see
 \code{\link[=date_group]{date_group()}}.
