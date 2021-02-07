@@ -142,16 +142,16 @@ rounding up on ties.</p></li>
 <p>Rounding time points is mainly useful for rounding sub-daily time points
 up to daily time points.</p>
 <p>It can also be useful for flooring by a set number of days (like 20) with
-respect to some origin. By default, the origin is <code>1970-01-01 00:00:00</code>.</p>
+respect to some origin. By default, the origin is 1970-01-01 00:00:00.</p>
 <p>If you want to group by components, such as "day of the month", rather than
 by "n days", see <code><a href='calendar_group.html'>calendar_group()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>time_point_floor</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>precision</span>, <span class='va'>...</span>, n <span class='op'>=</span> <span class='fl'>1L</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>time_point_floor</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>precision</span>, <span class='va'>...</span>, n <span class='op'>=</span> <span class='fl'>1L</span>, origin <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>time_point_ceiling</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>precision</span>, <span class='va'>...</span>, n <span class='op'>=</span> <span class='fl'>1L</span><span class='op'>)</span>
+<span class='fu'>time_point_ceiling</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>precision</span>, <span class='va'>...</span>, n <span class='op'>=</span> <span class='fl'>1L</span>, origin <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>time_point_round</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>precision</span>, <span class='va'>...</span>, n <span class='op'>=</span> <span class='fl'>1L</span><span class='op'>)</span></pre>
+<span class='fu'>time_point_round</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>precision</span>, <span class='va'>...</span>, n <span class='op'>=</span> <span class='fl'>1L</span>, origin <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -183,6 +183,17 @@ by "n days", see <code><a href='calendar_group.html'>calendar_group()</a></code>
       <td><p><code>[positive integer(1)]</code></p>
 <p>A positive integer specifying the multiple of <code>precision</code> to use.</p></td>
     </tr>
+    <tr>
+      <th>origin</th>
+      <td><p><code>[clock_sys_time(1) / clock_naive_time(1) / NULL]</code></p>
+<p>An origin to begin counting from. Mostly useful when <code>n &gt; 1</code> and you
+want to control how the rounding groups are created.</p>
+<p>If <code>x</code> is a sys-time, <code>origin</code> must be a sys-time.</p>
+<p>If <code>x</code> is a naive-time, <code>origin</code> must be a naive-time.</p>
+<p>The precision of <code>origin</code> must be equally precise as or less
+precise than <code>precision</code>.</p>
+<p>If <code>NULL</code>, a default origin of midnight on 1970-01-01 is used.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="boundary-handling"><a class="anchor" href="#boundary-handling"></a>Boundary Handling</h2>
@@ -198,7 +209,7 @@ bound each element of <code>x</code>, then always chooses the <em>left-hand side
 bound each element of <code>x</code>, then always chooses the <em>right-hand side</em>.</p></li>
 </ul>
 
-<p>As an easy example, consider <code>"2020-01-02 00:00:05"</code>.</p>
+<p>As an easy example, consider 2020-01-02 00:00:05.</p>
 <p>To floor this to the nearest day, the following interval is constructed,
 and the left-hand side is returned at day precision:</p>
 <p><code>[2020-01-02 00:00:00, 2020-01-03 00:00:00)</code></p>
@@ -206,7 +217,7 @@ and the left-hand side is returned at day precision:</p>
 is constructed, and the right-hand side is returned at day precision:</p>
 <p><code>(2020-01-02 00:00:00, 2020-01-03 00:00:00]</code></p>
 <p>Here is another example, this time with a time point on a boundary,
-<code>"2020-01-02 00:00:00"</code>.</p>
+2020-01-02 00:00:00.</p>
 <p>To floor this to the nearest day, the following interval is constructed,
 and the left-hand side is returned at day precision:</p>
 <p><code>[2020-01-02 00:00:00, 2020-01-03 00:00:00)</code></p>

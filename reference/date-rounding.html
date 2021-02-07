@@ -164,7 +164,9 @@ You can group by irregular periods such as <code>"month"</code> or <code>"year"<
 <p>One of:</p><ul>
 <li><p><code>"week"</code></p></li>
 <li><p><code>"day"</code></p></li>
-</ul></td>
+</ul>
+
+<p><code>"week"</code> is an alias for <code>"day"</code> with <code>n * 7</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -179,16 +181,14 @@ You can group by irregular periods such as <code>"month"</code> or <code>"year"<
       <th>origin</th>
       <td><p><code>[Date(1) / NULL]</code></p>
 <p>An origin to start counting from. The default <code>origin</code> is
-implicitly <code>"1970-01-01"</code>.</p></td>
+1970-01-01.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Rounding by <code>"week"</code> is a simple alias for rounding by <code>"day"</code> with 7 times
-as many days.</p>
-<p>When rounding by <code>"week"</code>, remember that the <code>origin</code> determines the "week
-start". By default, <code>"1970-01-01"</code> is the implicit origin, which is a
+    <p>When rounding by <code>"week"</code>, remember that the <code>origin</code> determines the "week
+start". By default, 1970-01-01 is the implicit origin, which is a
 Thursday. If you would like to round by weeks with a different week start,
 just supply an origin on the weekday you are interested in.</p>
 
@@ -214,7 +214,7 @@ just supply an origin on the weekday you are interested in.</p>
 #&gt; [11] "2019-01-11" "2019-01-12" "2019-01-13" "2019-01-14" "2019-01-15"
 #&gt; [16] "2019-01-16" "2019-01-17" "2019-01-18" "2019-01-19" "2019-01-20"
 #&gt; [21] "2019-01-21"</div><div class='input'>
-<span class='co'># Flooring by week uses an implicit `origin` of `"1970-01-01"`, which</span>
+<span class='co'># Flooring by week uses an implicit `origin` of 1970-01-01, which</span>
 <span class='co'># is a Thursday</span>
 <span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='st'>"week"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  [1] "2018-12-27" "2018-12-27" "2019-01-03" "2019-01-03" "2019-01-03"
