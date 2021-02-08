@@ -115,7 +115,7 @@ reference:
 - title: Zoned-time
   contents:
   - zoned_now
-  - as_zoned_time
+  - as_zoned
   - is_zoned_time
   - zoned_zone
   - zoned_info

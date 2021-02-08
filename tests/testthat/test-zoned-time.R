@@ -3,7 +3,7 @@
 test_that("can parse what we format with seconds precision zoned time", {
   zone <- "America/New_York"
 
-  x <- as_zoned_time(as_naive_time(year_month_day(2019, 1, 1)), zone)
+  x <- as_zoned(as_naive_time(year_month_day(2019, 1, 1)), zone)
 
   expect_identical(
     zoned_parse(format(x)),
@@ -20,15 +20,15 @@ test_that("can parse subsecond zoned time", {
 
   expect_identical(
     zoned_parse(x, precision = "millisecond"),
-    as_zoned_time(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123, subsecond_precision = "millisecond")), zone)
+    as_zoned(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123, subsecond_precision = "millisecond")), zone)
   )
   expect_identical(
     zoned_parse(y, precision = "microsecond"),
-    as_zoned_time(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123400, subsecond_precision = "microsecond")), zone)
+    as_zoned(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123400, subsecond_precision = "microsecond")), zone)
   )
   expect_identical(
     zoned_parse(z, precision = "nanosecond"),
-    as_zoned_time(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123456789, subsecond_precision = "nanosecond")), zone)
+    as_zoned(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123456789, subsecond_precision = "nanosecond")), zone)
   )
 })
 
@@ -47,7 +47,7 @@ test_that("multiple formats can be used", {
 
   expect_identical(
     zoned_parse(x, format = formats),
-    as_zoned_time(
+    as_zoned(
       as_naive_time(year_month_day(1970, 10, 25, 05, 30, c(00, 00))),
       zone
     )
@@ -61,7 +61,7 @@ test_that("cannot parse nonexistent time", {
 
   expect_identical(
     zoned_parse(x),
-    as_zoned_time(naive_seconds(NA), zone)
+    as_zoned(naive_seconds(NA), zone)
   )
 })
 
@@ -75,7 +75,7 @@ test_that("ambiguous times are resolved by the offset", {
 
   expect_identical(
     zoned_parse(x),
-    as_zoned_time(
+    as_zoned(
       as_naive_time(year_month_day(1970, 10, 25, 01, 30, c(00, 00))),
       zone,
       ambiguous = c("earliest", "latest")
@@ -91,7 +91,7 @@ test_that("offset must align with unique offset", {
 
   expect_identical(
     zoned_parse(x),
-    as_zoned_time(naive_seconds(NA), zone)
+    as_zoned(naive_seconds(NA), zone)
   )
 })
 
@@ -103,7 +103,7 @@ test_that("offset must align with one of two possible ambiguous offsets", {
 
   expect_identical(
     zoned_parse(x),
-    as_zoned_time(naive_seconds(NA), zone)
+    as_zoned(naive_seconds(NA), zone)
   )
 })
 

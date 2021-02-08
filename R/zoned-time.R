@@ -187,7 +187,7 @@ zoned_time_precision <- function(x) {
 #'
 #' @export
 #' @examples
-#' x <- as_zoned_time(
+#' x <- as_zoned(
 #'   as_naive_time(year_month_day(2019, 1, 1)),
 #'   "America/New_York"
 #' )
@@ -406,7 +406,7 @@ pillar_shaft.clock_zoned_time <- function(x, ...) {
 #' Convert to a zoned-time
 #'
 #' @description
-#' `as_zoned_time()` converts `x` to a zoned-time. You generally convert
+#' `as_zoned()` converts `x` to a zoned-time. You generally convert
 #' to a zoned time from either a sys-time or a naive time. Each are documented
 #' on their own page:
 #'
@@ -432,21 +432,21 @@ pillar_shaft.clock_zoned_time <- function(x, ...) {
 #' @export
 #' @examples
 #' x <- as.Date("2019-01-01")
-#' as_zoned_time(x)
+#' as_zoned(x)
 #'
 #' y <- as_naive_time(year_month_day(2019, 2, 1))
-#' as_zoned_time(y, zone = "America/New_York")
-as_zoned_time <- function(x, ...) {
-  UseMethod("as_zoned_time")
+#' as_zoned(y, zone = "America/New_York")
+as_zoned <- function(x, ...) {
+  UseMethod("as_zoned")
 }
 
 #' @export
-as_zoned_time.default <- function(x, ...) {
+as_zoned.default <- function(x, ...) {
   stop_clock_unsupported_conversion(x, "clock_zoned_time")
 }
 
 #' @export
-as_zoned_time.clock_zoned_time <- function(x, ...) {
+as_zoned.clock_zoned_time <- function(x, ...) {
   x
 }
 
@@ -527,7 +527,7 @@ zoned_now <- function(zone) {
 #' @name zoned-zone
 #'
 #' @examples
-#' x <- as_zoned_time(as_naive_time(year_month_day(2019, 1, 1)), "America/New_York")
+#' x <- as_zoned(as_naive_time(year_month_day(2019, 1, 1)), "America/New_York")
 #' x
 #'
 #' zoned_zone(x)
@@ -540,7 +540,7 @@ zoned_now <- function(zone) {
 #' # then convert back to a zoned time in the new time zone.
 #' nt <- as_naive_time(x)
 #' nt
-#' as_zoned_time(nt, "UTC")
+#' as_zoned(nt, "UTC")
 NULL
 
 #' @rdname zoned-zone
@@ -605,7 +605,7 @@ zoned_set_zone.clock_zoned_time <- function(x, zone) {
 #' @examples
 #' x <- year_month_day(2021, 03, 14, c(01, 03), c(59, 00), c(59, 00))
 #' x <- as_naive_time(x)
-#' x <- as_zoned_time(x, "America/New_York")
+#' x <- as_zoned(x, "America/New_York")
 #'
 #' # x[1] is in EST, x[2] is in EDT
 #' x

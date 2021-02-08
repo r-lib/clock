@@ -40,7 +40,7 @@ supported year value is returned for \code{end} (typically, a year value of
 \examples{
 x <- year_month_day(2021, 03, 14, c(01, 03), c(59, 00), c(59, 00))
 x <- as_naive_time(x)
-x <- as_zoned_time(x, "America/New_York")
+x <- as_zoned(x, "America/New_York")
 
 # x[1] is in EST, x[2] is in EDT
 x

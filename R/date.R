@@ -14,7 +14,7 @@ as_naive_time.Date <- function(x) {
 #' Convert to a zoned-time from a date
 #'
 #' @description
-#' This is a Date method for the [as_zoned_time()] generic.
+#' This is a Date method for the [as_zoned()] generic.
 #'
 #' Since R assumes that Dates are UTC, converting to a zoned-time returns
 #' a zoned-time with a UTC time zone. There is no `zone` argument.
@@ -31,11 +31,11 @@ as_naive_time.Date <- function(x) {
 #' @export
 #' @examples
 #' x <- as.Date("2019-01-01")
-#' as_zoned_time(x)
-as_zoned_time.Date <- function(x, ...) {
+#' as_zoned(x)
+as_zoned.Date <- function(x, ...) {
   check_dots_empty()
   x <- as_sys_time(x)
-  as_zoned_time(x, zone = "UTC")
+  as_zoned(x, zone = "UTC")
 }
 
 #' @export
@@ -814,7 +814,7 @@ date_format.Date <- function(x,
                              locale = clock_locale(),
                              abbreviate_zone = FALSE) {
   check_dots_empty()
-  x <- as_zoned_time(x)
+  x <- as_zoned(x)
   format(x, format = format, locale = locale, abbreviate_zone = abbreviate_zone)
 }
 
