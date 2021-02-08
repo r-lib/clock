@@ -348,8 +348,8 @@ time_point_restore <- function(x, to) {
   .Call(`_clock_time_point_restore`, x, to)
 }
 
-parse_time_point_cpp <- function(x, format, precision_int, clock_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {
-  .Call(`_clock_parse_time_point_cpp`, x, format, precision_int, clock_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark)
+time_point_parse_cpp <- function(x, format, precision_int, clock_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {
+  .Call(`_clock_time_point_parse_cpp`, x, format, precision_int, clock_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark)
 }
 
 clock_init_utils <- function() {

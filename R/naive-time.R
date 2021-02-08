@@ -45,7 +45,7 @@ naive_parse <- function(x,
                         locale = clock_locale()) {
   precision <- validate_time_point_precision(precision)
 
-  fields <- parse_time_point(
+  fields <- time_point_parse(
     x = x,
     ...,
     format = format,
