@@ -1,11 +1,11 @@
 # ------------------------------------------------------------------------------
-# parse_naive_time()
+# naive_parse()
 
 test_that("can parse day precision", {
   x <- c("2019-01-01", "2019-01-31")
 
   expect_identical(
-    parse_naive_time(x, precision = "day"),
+    naive_parse(x, precision = "day"),
     as_naive_time(year_month_day(2019, 1, c(1, 31)))
   )
 })
@@ -14,7 +14,7 @@ test_that("can parse second precision", {
   x <- c("2019-01-01 00:00:05", "2019-01-31 00:00:10")
 
   expect_identical(
-    parse_naive_time(x, precision = "second"),
+    naive_parse(x, precision = "second"),
     as_naive_time(year_month_day(2019, 1, c(1, 31), 00, 00, c(05, 10)))
   )
 })
@@ -27,15 +27,15 @@ test_that("can parse subsecond precision", {
   sec <- year_month_day(2019, 1, c(1, 31), 00, 00, c(05, 10))
 
   expect_identical(
-    parse_naive_time(x, precision = "millisecond"),
+    naive_parse(x, precision = "millisecond"),
     as_naive_time(set_millisecond(sec, c(123, 124)))
   )
   expect_identical(
-    parse_naive_time(y, precision = "microsecond"),
+    naive_parse(y, precision = "microsecond"),
     as_naive_time(set_microsecond(sec, c(123450, 124567)))
   )
   expect_identical(
-    parse_naive_time(z, precision = "nanosecond"),
+    naive_parse(z, precision = "nanosecond"),
     as_naive_time(set_nanosecond(sec, c(123456780, 124567899)))
   )
 })
@@ -45,15 +45,15 @@ test_that("parsing to a lower precision ignores higher precision info", {
   y <- "2019-01-01 01:00:00.12345"
 
   expect_identical(
-    parse_naive_time(x, precision = "day"),
+    naive_parse(x, precision = "day"),
     as_naive_time(year_month_day(2019, 1, 1))
   )
   expect_identical(
-    parse_naive_time(y, precision = "second"),
+    naive_parse(y, precision = "second"),
     as_naive_time(year_month_day(2019, 1, 1, 1, 0, 0))
   )
   expect_identical(
-    parse_naive_time(y, precision = "millisecond"),
+    naive_parse(y, precision = "millisecond"),
     as_naive_time(year_month_day(2019, 1, 1, 1, 0, 0, 123, subsecond_precision = "millisecond"))
   )
 })
@@ -62,14 +62,14 @@ test_that("parsing day components with second precision uses midnight as time", 
   x <- "2019/1/1"
 
   expect_identical(
-    parse_naive_time(x, format = "%Y/%m/%d", precision = "second"),
+    naive_parse(x, format = "%Y/%m/%d", precision = "second"),
     as_naive_time(year_month_day(2019, 1, 1, 0, 0, 0))
   )
 })
 
 test_that("cannot parse invalid dates", {
   x <- "2019-02-31"
-  expect_identical(parse_naive_time(x, precision = "day"), naive_days(NA))
+  expect_identical(naive_parse(x, precision = "day"), naive_days(NA))
 })
 
 test_that("can parse with multiple formats", {
@@ -77,7 +77,7 @@ test_that("can parse with multiple formats", {
   formats <- c("%Y-%m-%d", "%Y/%m/%d", "%B %d, %Y")
 
   expect_identical(
-    parse_naive_time(x, format = formats, precision = "day"),
+    naive_parse(x, format = formats, precision = "day"),
     as_naive_time(year_month_day(c(2019, 2020, 2019), 1, c(1, 2, 5)))
   )
 })
@@ -86,14 +86,14 @@ test_that("failure to parse results in NA", {
   x <- "2019-01-oh"
 
   expect_identical(
-    parse_naive_time(x, format = "%Y-%m-%d", precision = "day"),
+    naive_parse(x, format = "%Y-%m-%d", precision = "day"),
     naive_days(NA)
   )
 })
 
 test_that("names of input are kept", {
   x <- c(foo = "2019-01-01")
-  expect_named(parse_naive_time(x, precision = "day"), "foo")
+  expect_named(naive_parse(x, precision = "day"), "foo")
 })
 
 test_that("can use a different locale", {
@@ -101,11 +101,11 @@ test_that("can use a different locale", {
   y <- "2019-01-01 00:00:00,123456"
 
   expect_identical(
-    parse_naive_time(x, format = "%B %d, %Y", precision = "day", locale = clock_locale("fr")),
+    naive_parse(x, format = "%B %d, %Y", precision = "day", locale = clock_locale("fr")),
     as_naive_time(year_month_day(2019, 1, 1))
   )
   expect_identical(
-    parse_naive_time(y, precision = "microsecond", locale = clock_locale(decimal_mark = ",")),
+    naive_parse(y, precision = "microsecond", locale = clock_locale(decimal_mark = ",")),
     as_naive_time(year_month_day(2019, 1, 1, 0, 0, 0, 123456, subsecond_precision = "microsecond"))
   )
 })
@@ -115,11 +115,11 @@ test_that("%z is completely ignored, but is required to be parsed correctly if s
   y <- "2019-01-01 00:00:00"
 
   expect_identical(
-    parse_naive_time(x, format = "%Y-%m-%d %H:%M:%S%z"),
+    naive_parse(x, format = "%Y-%m-%d %H:%M:%S%z"),
     as_naive_time(year_month_day(2019, 1, 1, 0, 0, 0))
   )
   expect_identical(
-    parse_naive_time(y, format = "%Y-%m-%d %H:%M:%S%z"),
+    naive_parse(y, format = "%Y-%m-%d %H:%M:%S%z"),
     naive_seconds(NA)
   )
 })
@@ -128,7 +128,7 @@ test_that("%Z is completely ignored", {
   x <- "2019-01-01 00:00:00 America/New_York"
 
   expect_identical(
-    parse_naive_time(x, format = "%Y-%m-%d %H:%M:%S %Z"),
+    naive_parse(x, format = "%Y-%m-%d %H:%M:%S %Z"),
     as_naive_time(year_month_day(2019, 1, 1, 0, 0, 0))
   )
 })

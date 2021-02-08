@@ -80,7 +80,7 @@ time_point_precision_format <- function(precision) {
 
 # ------------------------------------------------------------------------------
 
-parse_time_point <- function(x,
+time_point_parse <- function(x,
                              ...,
                              format,
                              precision,
@@ -99,7 +99,7 @@ parse_time_point <- function(x,
   labels <- locale$labels
   mark <- locale$decimal_mark
 
-  parse_time_point_cpp(
+  time_point_parse_cpp(
     x,
     format,
     precision,

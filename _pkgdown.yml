@@ -41,7 +41,7 @@ reference:
   - year_month_day
   - as_year_month_day
   - is_year_month_day
-  - parse_year_month_day
+  - year_month_day_parse
   - calendar_group.clock_year_month_day
   - year-month-day-narrow
   - year-month-day-widen

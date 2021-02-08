@@ -3,7 +3,7 @@
 #' A clock locale contains the information required to format and parse dates.
 #' The defaults have been chosen to match US English. A clock locale object can
 #' be provided to `format()` methods or parse functions (like
-#' [parse_year_month_day()]) to override the defaults.
+#' [year_month_day_parse()]) to override the defaults.
 #'
 #' @param labels `[clock_labels / character(1)]`
 #'

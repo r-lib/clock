@@ -144,8 +144,8 @@ year_month_day_minus_year_month_day_cpp <- function(x, y, precision_int) {
   .Call(`_clock_year_month_day_minus_year_month_day_cpp`, x, y, precision_int)
 }
 
-parse_year_month_day_cpp <- function(x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {
-  .Call(`_clock_parse_year_month_day_cpp`, x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark)
+year_month_day_parse_cpp <- function(x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {
+  .Call(`_clock_year_month_day_parse_cpp`, x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark)
 }
 
 gregorian_leap_year_cpp <- function(year) {
@@ -348,8 +348,8 @@ time_point_restore <- function(x, to) {
   .Call(`_clock_time_point_restore`, x, to)
 }
 
-parse_time_point_cpp <- function(x, format, precision_int, clock_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {
-  .Call(`_clock_parse_time_point_cpp`, x, format, precision_int, clock_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark)
+time_point_parse_cpp <- function(x, format, precision_int, clock_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {
+  .Call(`_clock_time_point_parse_cpp`, x, format, precision_int, clock_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark)
 }
 
 clock_init_utils <- function() {
@@ -416,6 +416,6 @@ zoned_info_cpp <- function(fields, precision_int, zone) {
   .Call(`_clock_zoned_info_cpp`, fields, precision_int, zone)
 }
 
-parse_zoned_time_cpp <- function(x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {
-  .Call(`_clock_parse_zoned_time_cpp`, x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark)
+zoned_parse_cpp <- function(x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {
+  .Call(`_clock_zoned_parse_cpp`, x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark)
 }

@@ -167,7 +167,7 @@ vec_ptype_abbr.clock_year_month_day <- function(x, ...) {
 
 #' Parse into a year-month-day calendar
 #'
-#' `parse_year_month_day()` parses a character vector into a year-month-day
+#' `year_month_day_parse()` parses a character vector into a year-month-day
 #' calendar.
 #'
 #' @inheritParams ellipsis::dots_empty
@@ -205,15 +205,15 @@ vec_ptype_abbr.clock_year_month_day <- function(x, ...) {
 #' x <- "2019-01-01"
 #'
 #' # Default parses at day precision
-#' parse_year_month_day(x)
+#' year_month_day_parse(x)
 #'
 #' # Can parse at less precise precisions too
-#' parse_year_month_day(x, precision = "month")
-#' parse_year_month_day(x, precision = "year")
+#' year_month_day_parse(x, precision = "month")
+#' year_month_day_parse(x, precision = "year")
 #'
 #' # Even invalid dates can be round-tripped through format<->parse calls
 #' invalid <- year_month_day(2019, 2, 30)
-#' parse_year_month_day(format(invalid))
+#' year_month_day_parse(format(invalid))
 #'
 #' # Can parse with time of day
 #' x <- year_month_day(
@@ -221,28 +221,28 @@ vec_ptype_abbr.clock_year_month_day <- function(x, ...) {
 #'   subsecond_precision = "nanosecond"
 #' )
 #'
-#' parse_year_month_day(format(x), precision = "nanosecond")
+#' year_month_day_parse(format(x), precision = "nanosecond")
 #'
 #' # Can parse using multiple format strings, which will be tried
 #' # in the order they are provided
 #' x <- c("2019-01-01", "2020-01-01", "2021/2/3")
 #' formats <- c("%Y-%m-%d", "%Y/%m/%d")
-#' parse_year_month_day(x, format = formats)
+#' year_month_day_parse(x, format = formats)
 #'
 #' # Can parse using other format tokens as well
-#' parse_year_month_day(
+#' year_month_day_parse(
 #'   "January, 2019",
 #'   format = "%B, %Y",
 #'   precision = "month"
 #' )
 #'
 #' # Parsing a French year-month-day
-#' parse_year_month_day(
+#' year_month_day_parse(
 #'   "octobre 1, 2000",
 #'   format = "%B %d, %Y",
 #'   locale = clock_locale("fr")
 #' )
-parse_year_month_day <- function(x,
+year_month_day_parse <- function(x,
                                  ...,
                                  format = NULL,
                                  precision = "day",
@@ -269,7 +269,7 @@ parse_year_month_day <- function(x,
   labels <- locale$labels
   mark <- locale$decimal_mark
 
-  fields <- parse_year_month_day_cpp(
+  fields <- year_month_day_parse_cpp(
     x,
     format,
     precision,
