@@ -30,9 +30,9 @@ sys_seconds <- function(n = integer()) {
 #'
 #' @export
 #' @examples
-#' is_sys_time(1)
-#' is_sys_time(as_sys_time(duration_days(1)))
-is_sys_time <- function(x) {
+#' is_sys(1)
+#' is_sys(as_sys_time(duration_days(1)))
+is_sys <- function(x) {
   inherits(x, "clock_sys_time")
 }
 
