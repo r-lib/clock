@@ -22,7 +22,7 @@ Either \code{","} or \code{"."}.}
 A clock locale contains the information required to format and parse dates.
 The defaults have been chosen to match US English. A clock locale object can
 be provided to \code{format()} methods or parse functions (like
-\code{\link[=parse_year_month_day]{parse_year_month_day()}}) to override the defaults.
+\code{\link[=year_month_day_parse]{year_month_day_parse()}}) to override the defaults.
 }
 \examples{
 clock_locale()

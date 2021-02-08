@@ -144,8 +144,8 @@ year_month_day_minus_year_month_day_cpp <- function(x, y, precision_int) {
   .Call(`_clock_year_month_day_minus_year_month_day_cpp`, x, y, precision_int)
 }
 
-parse_year_month_day_cpp <- function(x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {
-  .Call(`_clock_parse_year_month_day_cpp`, x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark)
+year_month_day_parse_cpp <- function(x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {
+  .Call(`_clock_year_month_day_parse_cpp`, x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark)
 }
 
 gregorian_leap_year_cpp <- function(year) {
