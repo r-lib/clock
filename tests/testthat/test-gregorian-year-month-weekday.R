@@ -1,4 +1,15 @@
 # ------------------------------------------------------------------------------
+# as.character()
+
+test_that("as.character() works", {
+  x <- year_month_weekday(2019, 1)
+  y <- year_month_weekday(2019, 1, 2, 1)
+
+  expect_identical(as.character(x), format(x))
+  expect_identical(as.character(y), format(y))
+})
+
+# ------------------------------------------------------------------------------
 # calendar_narrow()
 
 test_that("can narrow to month", {

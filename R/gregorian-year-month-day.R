@@ -895,6 +895,11 @@ as_naive.clock_year_month_day <- function(x) {
   as_naive(as_sys(x))
 }
 
+#' @export
+as.character.clock_year_month_day <- function(x, ...) {
+  format(x)
+}
+
 # ------------------------------------------------------------------------------
 
 #' @export

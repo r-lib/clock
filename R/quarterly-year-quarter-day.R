@@ -809,6 +809,11 @@ as_naive.clock_year_quarter_day <- function(x) {
   as_naive(as_sys(x))
 }
 
+#' @export
+as.character.clock_year_quarter_day <- function(x, ...) {
+  format(x)
+}
+
 # ------------------------------------------------------------------------------
 
 #' Grouping: year-quarter-day

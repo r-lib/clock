@@ -1,4 +1,15 @@
 # ------------------------------------------------------------------------------
+# as.character()
+
+test_that("as.character() works", {
+  x <- year_month_day(2019, 1)
+  y <- year_month_day(2019, 1, 2)
+
+  expect_identical(as.character(x), format(x))
+  expect_identical(as.character(y), format(y))
+})
+
+# ------------------------------------------------------------------------------
 # year_month_day_parse()
 
 test_that("default parses at day precision with ISO format", {

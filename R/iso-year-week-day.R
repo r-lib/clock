@@ -690,6 +690,11 @@ as_naive.clock_iso_year_week_day <- function(x) {
   as_naive(as_sys(x))
 }
 
+#' @export
+as.character.clock_iso_year_week_day <- function(x, ...) {
+  format(x)
+}
+
 # ------------------------------------------------------------------------------
 
 #' Grouping: iso-year-week-day
