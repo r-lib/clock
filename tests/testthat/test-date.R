@@ -139,7 +139,7 @@ test_that("can format dates", {
     cat(date_format(x, format = format))
   )
   expect_snapshot_output(
-    cat(date_format(x, format = format, locale = clock_locale("ja")))
+    cat(date_format(x, format = format, locale = clock_locale("fr")))
   )
 })
 
