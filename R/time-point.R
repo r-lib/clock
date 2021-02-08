@@ -317,8 +317,8 @@ arith_numeric_and_time_point <- function(op, x, y, ...) {
 #' library(magrittr)
 #'
 #' # Say you started with this zoned time, and you want to add 1 day to it
-#' x <- as_naive_time(year_month_day(1970, 04, 25, 02, 30, 00))
-#' x <- as_zoned_time(x, "America/New_York")
+#' x <- as_naive(year_month_day(1970, 04, 25, 02, 30, 00))
+#' x <- as_zoned(x, "America/New_York")
 #' x
 #'
 #' # Note that there was a daylight saving time gap on 1970-04-26 where
@@ -329,24 +329,24 @@ arith_numeric_and_time_point <- function(op, x, y, ...) {
 #' # zoned time. If you sat still for exactly 86,400 seconds, this is the
 #' # time that you would see after daylight saving time adjusted the clock
 #' # (note that the hour field is shifted forward by the size of the gap)
-#' as_sys_time(x)
+#' as_sys(x)
 #'
 #' x %>%
-#'   as_sys_time() %>%
+#'   as_sys() %>%
 #'   add_days(1) %>%
-#'   as_zoned_time(zoned_zone(x))
+#'   as_zoned(zoned_zone(x))
 #'
 #' # Alternatively, you can add 1 day in "naive time". Naive time represents
 #' # a clock time with a yet-to-be-specified time zone. It tries to maintain
 #' # smaller units where possible, so adding 1 day would attempt to return
 #' # "1970-04-26T02:30:00" in the America/New_York time zone, but...
-#' as_naive_time(x)
+#' as_naive(x)
 #'
 #' try({
 #' x %>%
-#'   as_naive_time() %>%
+#'   as_naive() %>%
 #'   add_days(1) %>%
-#'   as_zoned_time(zoned_zone(x))
+#'   as_zoned(zoned_zone(x))
 #' })
 #'
 #' # ...this time doesn't exist in that time zone! It is "nonexistent".
@@ -354,9 +354,9 @@ arith_numeric_and_time_point <- function(op, x, y, ...) {
 #' # when converting to zoned time. Let's roll forward to the next available
 #' # moment in time.
 #' x %>%
-#'   as_naive_time() %>%
+#'   as_naive() %>%
 #'   add_days(1) %>%
-#'   as_zoned_time(zoned_zone(x), nonexistent = "roll-forward")
+#'   as_zoned(zoned_zone(x), nonexistent = "roll-forward")
 NULL
 
 #' @rdname time-point-arithmetic
@@ -530,7 +530,7 @@ as_weekday.clock_time_point <- function(x) {
 #' # Hour precision time points
 #' # One is pre-1970, one is post-1970
 #' x <- duration_hours(c(25, -25))
-#' x <- as_naive_time(x)
+#' x <- as_naive(x)
 #' x
 #'
 #' # Casting rounds the underlying duration towards 0
@@ -648,7 +648,7 @@ time_point_cast <- function(x, precision) {
 #' @examples
 #' library(magrittr)
 #'
-#' x <- as_naive_time(year_month_day(2019, 01, 01))
+#' x <- as_naive(year_month_day(2019, 01, 01))
 #' x <- add_days(x, 0:40)
 #' head(x)
 #'
@@ -659,7 +659,7 @@ time_point_cast <- function(x, precision) {
 #' # You can easily customize the origin by creating a duration out of the
 #' # origin date of interest...
 #' origin <- year_month_day(2019, 01, 01) %>%
-#'   as_naive_time() %>%
+#'   as_naive() %>%
 #'   as_duration()
 #'
 #' # Which you can subtract from, floor, and then add to your input
@@ -668,7 +668,7 @@ time_point_cast <- function(x, precision) {
 #' # For times on the boundary, floor and ceiling both return the input
 #' # at the new precision. Notice how the first element is on the boundary,
 #' # and the second is 1 second after the boundary.
-#' y <- as_naive_time(year_month_day(2020, 01, 02, 00, 00, c(00, 01)))
+#' y <- as_naive(year_month_day(2020, 01, 02, 00, 00, c(00, 01)))
 #' time_point_floor(y, "day")
 #' time_point_ceiling(y, "day")
 NULL

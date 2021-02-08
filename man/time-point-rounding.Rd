@@ -114,7 +114,7 @@ the input falls on a boundary then it will be returned as is.
 \examples{
 library(magrittr)
 
-x <- as_naive_time(year_month_day(2019, 01, 01))
+x <- as_naive(year_month_day(2019, 01, 01))
 x <- add_days(x, 0:40)
 head(x)
 
@@ -125,7 +125,7 @@ time_point_floor(x, "day", n = 20)
 # You can easily customize the origin by creating a duration out of the
 # origin date of interest...
 origin <- year_month_day(2019, 01, 01) \%>\%
-  as_naive_time() \%>\%
+  as_naive() \%>\%
   as_duration()
 
 # Which you can subtract from, floor, and then add to your input
@@ -134,7 +134,7 @@ time_point_floor(x - origin, "day", n = 20) + origin
 # For times on the boundary, floor and ceiling both return the input
 # at the new precision. Notice how the first element is on the boundary,
 # and the second is 1 second after the boundary.
-y <- as_naive_time(year_month_day(2020, 01, 02, 00, 00, c(00, 01)))
+y <- as_naive(year_month_day(2020, 01, 02, 00, 00, c(00, 01)))
 time_point_floor(y, "day")
 time_point_ceiling(y, "day")
 }

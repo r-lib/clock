@@ -102,10 +102,10 @@ reference:
 - title: Time points
   contents:
   - sys_now
-  - as_naive_time
-  - as_sys_time
-  - is_naive_time
-  - is_sys_time
+  - as_naive
+  - as_sys
+  - is_naive
+  - is_sys
   - time_point_cast
   - time-point-rounding
   - add_weeks.clock_time_point
@@ -115,8 +115,8 @@ reference:
 - title: Zoned-time
   contents:
   - zoned_now
-  - as_zoned_time
-  - is_zoned_time
+  - as_zoned
+  - is_zoned
   - zoned_zone
   - zoned_info
   - format.clock_zoned_time

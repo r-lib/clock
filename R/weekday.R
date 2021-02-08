@@ -26,7 +26,7 @@
 #'
 #' @export
 #' @examples
-#' x <- as_naive_time(year_month_day(2019, 01, 05))
+#' x <- as_naive(year_month_day(2019, 01, 05))
 #'
 #' # This is a Saturday!
 #' as_weekday(x)
@@ -172,7 +172,7 @@ vec_cast.clock_weekday.clock_weekday <- function(x, to, ...) {
 #'
 #' @export
 #' @examples
-#' x <- as_naive_time(year_month_day(2019, 01, 05))
+#' x <- as_naive(year_month_day(2019, 01, 05))
 #'
 #' # This is a Saturday!
 #' as_weekday(x)

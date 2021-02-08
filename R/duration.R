@@ -258,7 +258,7 @@ vec_cast.clock_duration.clock_duration <- function(x, to, ...) {
 #'
 #' @export
 #' @examples
-#' x <- as_sys_time(year_month_day(2019, 01, 01))
+#' x <- as_sys(year_month_day(2019, 01, 01))
 #'
 #' # The number of days since 1970-01-01 UTC
 #' as_duration(x)
@@ -280,7 +280,7 @@ as_duration.clock_duration <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-as_sys_time.clock_duration <- function(x) {
+as_sys.clock_duration <- function(x) {
   names <- clock_rcrd_names(x)
   precision <- duration_precision(x)
 
@@ -292,8 +292,8 @@ as_sys_time.clock_duration <- function(x) {
 }
 
 #' @export
-as_naive_time.clock_duration <- function(x) {
-  as_naive_time(as_sys_time(x))
+as_naive.clock_duration <- function(x) {
+  as_naive(as_sys(x))
 }
 
 #' @export
@@ -376,9 +376,9 @@ as.double.clock_duration <- function(x, ...) {
 #' # Flooring is generally more useful when working with time points,
 #' # note that the cast ends up rounding the pre-1970 date up to the next
 #' # day, while the post-1970 date is rounded down.
-#' as_sys_time(x)
-#' as_sys_time(cast)
-#' as_sys_time(floor)
+#' as_sys(x)
+#' as_sys(cast)
+#' as_sys(floor)
 #'
 #' # Casting to a more precise precision
 #' duration_cast(x, "millisecond")

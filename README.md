@@ -42,16 +42,16 @@ you get a complete date time library.
 -   A *time point* records an instant in time, like “1:24pm January 1st
     2015”. It combines a *duration* with a “clock” that defines when to
     start counting and what exactly to count. There are two important
-    types of time in clock: `sys_time` and `naive_time`. They’re
-    equivalent until you start working with zoned times.
+    types of time in clock: sys-time and naive-time. They’re equivalent
+    until you start working with zoned-times.
 
--   A *zoned time* is a time point paired with a time zone. You can
-    create them from either a `sys_time` or a `naive_time`, depending on
+-   A *zoned-time* is a time point paired with a time zone. You can
+    create them from either a sys-time or a naive-time, depending on
     whether you want to convert the time point from UTC (leaving the
     underlying duration unchanged, but changing the printed time), or
     declare that the time point is in a specific time zone (leaving the
-    printed time unchanged, but changing the underlying duration). Zoned
-    times are primarily needed for communication with humans.
+    printed time unchanged, but changing the underlying duration).
+    Zoned-times are primarily needed for communication with humans.
 
 -   A *calendar* represents a date using a combination of fields like
     year-month-day, year-month-weekday, year-quarter-day, or
