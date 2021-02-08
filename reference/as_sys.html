@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert to a duration — as_duration • clock</title>
+<title>Convert to a sys-time — as_sys • clock</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,24 @@
 
 
 
-<meta property="og:title" content="Convert to a duration — as_duration" />
-<meta property="og:description" content="You generally convert to a duration from either a sys-time or a naive-time.
-The precision of the input is retained in the returned duration." />
+<meta property="og:title" content="Convert to a sys-time — as_sys" />
+<meta property="og:description" content="as_sys() converts x to a sys-time.
+You can convert to a sys-time from any calendar type, as long as it has
+at least day precision. There also must not be any invalid dates. If invalid
+dates exist, they must first be resolved with invalid_resolve().
+Converting to a sys-time from a naive-time retains the printed time,
+but adds an assumption that the time should be interpreted in the UTC time
+zone.
+Converting to a sys-time from a zoned-time retains the underlying duration,
+but the printed time is the equivalent UTC time to whatever the zoned-time's
+zone happened to be.
+Converting to a sys-time from a duration just wraps the duration in a
+sys-time object, adding the assumption that the time should be interpreted
+in the UTC time zone. The duration must have at least day precision.
+There are convenience methods for converting to a sys-time from R's
+native date and date-time types. Like converting from a zoned-time, these
+retain the underlying duration, but will change the printed time if the
+zone was not already UTC." />
 
 
 
@@ -109,17 +124,32 @@ The precision of the input is retained in the returned duration." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert to a duration</h1>
-    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/duration.R'><code>R/duration.R</code></a></small>
-    <div class="hidden name"><code>as_duration.Rd</code></div>
+    <h1>Convert to a sys-time</h1>
+    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/sys-time.R'><code>R/sys-time.R</code></a></small>
+    <div class="hidden name"><code>as_sys.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>You generally convert to a duration from either a sys-time or a naive-time.
-The precision of the input is retained in the returned duration.</p>
+    <p><code>as_sys()</code> converts <code>x</code> to a sys-time.</p>
+<p>You can convert to a sys-time from any calendar type, as long as it has
+at least day precision. There also must not be any invalid dates. If invalid
+dates exist, they must first be resolved with <code><a href='clock-invalid.html'>invalid_resolve()</a></code>.</p>
+<p>Converting to a sys-time from a naive-time retains the printed time,
+but adds an assumption that the time should be interpreted in the UTC time
+zone.</p>
+<p>Converting to a sys-time from a zoned-time retains the underlying duration,
+but the printed time is the equivalent UTC time to whatever the zoned-time's
+zone happened to be.</p>
+<p>Converting to a sys-time from a duration just wraps the duration in a
+sys-time object, adding the assumption that the time should be interpreted
+in the UTC time zone. The duration must have at least day precision.</p>
+<p>There are convenience methods for converting to a sys-time from R's
+native date and date-time types. Like converting from a zoned-time, these
+retain the underlying duration, but will change the printed time if the
+zone was not already UTC.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_duration</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>as_sys</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -127,29 +157,37 @@ The precision of the input is retained in the returned duration.</p>
     <tr>
       <th>x</th>
       <td><p><code>[object]</code></p>
-<p>An object to convert to a duration.</p></td>
+<p>An object to convert to a sys-time.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A duration with the same precision as <code>x</code>.</p>
+    <p>A sys-time vector.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_sys.html'>as_sys</a></span><span class='op'>(</span><span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>01</span>, <span class='fl'>01</span><span class='op'>)</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span><span class='op'>)</span>
 
-<span class='co'># The number of days since 1970-01-01 UTC</span>
-<span class='fu'>as_duration</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;duration&lt;day&gt;[1]&gt;
-#&gt; [1] 17897</div><div class='input'>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>x</span> <span class='op'>+</span> <span class='fu'><a href='duration-helper.html'>duration_seconds</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
-<span class='va'>x</span>
+<span class='co'># Dates are assumed to be UTC, so the printed time is the same</span>
+<span class='fu'>as_sys</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;day&gt;[1]&gt;
+#&gt; [1] "2019-01-01"</div><div class='input'>
+<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"2019-01-01 01:00:00"</span>, tz <span class='op'>=</span> <span class='st'>"America/New_York"</span><span class='op'>)</span>
+
+<span class='co'># The sys time displays the equivalent time in UTC (5 hours ahead of</span>
+<span class='co'># America/New_York at this point in the year)</span>
+<span class='fu'>as_sys</span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;
-#&gt; [1] "2019-01-01 00:00:01"</div><div class='input'>
-<span class='co'># The number of seconds since 1970-01-01 00:00:00 UTC</span>
-<span class='fu'>as_duration</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;duration&lt;second&gt;[1]&gt;
-#&gt; [1] 1546300801</div></pre>
+#&gt; [1] "2019-01-01 06:00:00"</div><div class='input'>
+<span class='va'>ym</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>02</span><span class='op'>)</span>
+
+<span class='co'># A minimum of day precision is required</span>
+<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>as_sys</span><span class='op'>(</span><span class='va'>ym</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Error : Can't convert to a time point from a calendar with 'month' precision. A minimum of 'day' precision is required.</div><div class='input'>
+<span class='va'>ymd</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>ym</span>, <span class='fl'>10</span><span class='op'>)</span>
+<span class='fu'>as_sys</span><span class='op'>(</span><span class='va'>ymd</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;day&gt;[1]&gt;
+#&gt; [1] "2019-02-10"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

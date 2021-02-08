@@ -163,7 +163,7 @@ a conversion factor between the current precision and the new precision.</p>
     <pre class="examples"><div class='input'><span class='co'># Hour precision time points</span>
 <span class='co'># One is pre-1970, one is post-1970</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='duration-helper.html'>duration_hours</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>25</span>, <span class='op'>-</span><span class='fl'>25</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_naive.html'>as_naive</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 <span class='va'>x</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;hour&gt;[2]&gt;
 #&gt; [1] "1970-01-02 01" "1969-12-30 23"</div><div class='input'>
