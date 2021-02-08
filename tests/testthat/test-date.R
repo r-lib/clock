@@ -144,6 +144,24 @@ test_that("can format dates", {
 })
 
 # ------------------------------------------------------------------------------
+# date_zone()
+
+test_that("can get the zone of a Date", {
+  x <- as.Date("2019-01-01")
+
+  expect_identical(date_zone(x), "UTC")
+})
+
+# ------------------------------------------------------------------------------
+# date_set_zone()
+
+test_that("can't set the zone of a Date", {
+  x <- as.Date("2019-01-01")
+
+  expect_snapshot_error(date_set_zone(x, "America/New_York"))
+})
+
+# ------------------------------------------------------------------------------
 # vec_arith()
 
 test_that("<date> op <duration>", {

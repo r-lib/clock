@@ -222,20 +222,6 @@ get_posixt_field_year_month_day <- function(x, get_fn) {
 
 # ------------------------------------------------------------------------------
 
-#' @export
-zoned_zone.POSIXt <- function(x) {
-  zone_standardize(posixt_tzone(x))
-}
-
-#' @export
-zoned_set_zone.POSIXt <- function(x, zone) {
-  x <- to_posixct(x)
-  zone <- zone_validate(zone)
-  posixt_set_tzone(x, zone)
-}
-
-# ------------------------------------------------------------------------------
-
 #' Setters: date-time
 #'
 #' @description
@@ -624,7 +610,7 @@ date_group.POSIXt <- function(x,
                               nonexistent = NULL,
                               ambiguous = x) {
   force(ambiguous)
-  zone <- zoned_zone(x)
+  zone <- date_zone(x)
   x <- as_year_month_day(x)
   x <- calendar_group(x, precision, ..., n = n)
   x <- calendar_widen(x, "second")
@@ -774,7 +760,7 @@ date_time_rounder <- function(x,
   precision <- result$precision
   n <- result$n
 
-  zone <- zoned_zone(x)
+  zone <- date_zone(x)
 
   x <- as_naive_time(x)
 
@@ -801,7 +787,7 @@ collect_date_time_rounder_origin <- function(origin, zone, precision) {
     abort("`origin` must not be `NA` or an infinite date.")
   }
 
-  if (!identical(zoned_zone(origin), zone)) {
+  if (!identical(date_zone(origin), zone)) {
     abort("`origin` must have the same time zone as `x`.")
   }
 
@@ -862,4 +848,18 @@ date_format.POSIXt <- function(x,
   check_dots_empty()
   x <- as_zoned_time(x)
   format(x, format = format, locale = locale, abbreviate_zone = abbreviate_zone)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+date_zone.POSIXt <- function(x) {
+  zone_standardize(posixt_tzone(x))
+}
+
+#' @export
+date_set_zone.POSIXt <- function(x, zone) {
+  x <- to_posixct(x)
+  zone <- zone_validate(zone)
+  posixt_set_tzone(x, zone)
 }

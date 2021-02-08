@@ -13,6 +13,7 @@ reference:
   - date_leap_year
   - date-and-date-time-rounding
   - date_format
+  - date_zone
   - date_weekday_factor
   - date_month_factor
   - get_year.Date

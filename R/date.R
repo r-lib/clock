@@ -138,18 +138,6 @@ get_date_field_year_month_day <- function(x, get_fn) {
 
 # ------------------------------------------------------------------------------
 
-#' @export
-zoned_zone.Date <- function(x) {
-  "UTC"
-}
-
-#' @export
-zoned_set_zone.Date <- function(x, zone) {
-  abort("'Date' objects are required to be UTC.")
-}
-
-# ------------------------------------------------------------------------------
-
 #' Setters: date
 #'
 #' @description
@@ -828,4 +816,98 @@ date_format.Date <- function(x,
   check_dots_empty()
   x <- as_zoned_time(x)
   format(x, format = format, locale = locale, abbreviate_zone = abbreviate_zone)
+}
+
+# ------------------------------------------------------------------------------
+
+#' Get or set the time zone
+#'
+#' @description
+#' - `date_zone()` gets the time zone.
+#'
+#' - `date_set_zone()` sets the time zone. This retains the _underlying
+#' duration_, but changes the _printed time_ depending on the zone that is
+#' chosen.
+#'
+#' Note that attempting to call `date_set_zone()` on a Date is an error, as R
+#' assumes that Date objects are always UTC.
+#'
+#' @param x `[Date / POSIXct / POSIXlt]`
+#'
+#'   A date or date-time vector.
+#'
+#' @param zone `[character(1)]`
+#'
+#'   A valid time zone to switch to.
+#'
+#' @return
+#' - `date_zone()` returns a string containing the time zone.
+#'
+#' - `date_set_zone()` returns `x` with an altered printed time. The
+#' underlying duration is not changed.
+#'
+#' @name date-zone
+#'
+#' @examples
+#' library(magrittr)
+#'
+#' x <- as.Date("2019-01-01")
+#'
+#' # Dates are always UTC
+#' date_zone(x)
+#'
+#' # You can't change this!
+#' try(date_set_zone(x, "America/New_York"))
+#'
+#' x <- as.POSIXct("2019-01-02 01:30:00", tz = "America/New_York")
+#' x
+#'
+#' # If it is 1:30am in New York, what time is it in Los Angeles?
+#' # Same underlying duration, new printed time
+#' date_set_zone(x, "America/Los_Angeles")
+#'
+#' # If you want to retain the printed time, but change the underlying duration,
+#' # convert to a naive-time to drop the time zone, then convert back to a
+#' # date-time. Be aware that this requires that you handle daylight saving time
+#' # irregularities with the `nonexistent` and `ambiguous` arguments to
+#' # `as.POSIXct()`!
+#' x %>%
+#'   as_naive_time() %>%
+#'   as.POSIXct("America/Los_Angeles")
+#'
+#' y <- as.POSIXct("2021-03-28 03:30:00", "America/New_York")
+#' y
+#'
+#' y_nt <- as_naive_time(y)
+#' y_nt
+#'
+#' # Helsinki had a daylight saving time gap where they jumped from
+#' # 02:59:59 -> 04:00:00
+#' try(as.POSIXct(y_nt, "Europe/Helsinki"))
+#'
+#' as.POSIXct(y_nt, "Europe/Helsinki", nonexistent = "roll-forward")
+#' as.POSIXct(y_nt, "Europe/Helsinki", nonexistent = "roll-backward")
+NULL
+
+#' @rdname date-zone
+#' @export
+date_zone <- function(x) {
+  UseMethod("date_zone")
+}
+
+#' @rdname date-zone
+#' @export
+date_set_zone <- function(x, zone) {
+  UseMethod("date_set_zone")
+}
+
+
+#' @export
+date_zone.Date <- function(x) {
+  "UTC"
+}
+
+#' @export
+date_set_zone.Date <- function(x, zone) {
+  abort("'Date' objects are required to be UTC.")
 }

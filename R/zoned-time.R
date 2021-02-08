@@ -501,10 +501,10 @@ zoned_now <- function(zone) {
 
 # ------------------------------------------------------------------------------
 
-#' Retrieve or set the time zone
+#' Get or set the time zone
 #'
 #' @description
-#' `zoned_zone()` retrieves the time zone.
+#' `zoned_zone()` gets the time zone.
 #'
 #' `zoned_set_zone()` sets the time zone _without changing the
 #' underlying instant_. This means that the result will represent the equivalent
@@ -527,22 +527,18 @@ zoned_now <- function(zone) {
 #' @name zoned-zone
 #'
 #' @examples
-#' x <- as.POSIXct("2019-01-01 00:00:00", tz = "America/New_York")
+#' x <- as_zoned_time(as_naive_time(year_month_day(2019, 1, 1)), "America/New_York")
+#' x
 #'
 #' zoned_zone(x)
 #'
 #' # Equivalent UTC time
 #' zoned_set_zone(x, "UTC")
 #'
-#' y <- as_zoned_time(x)
-#'
-#' # With a zoned-time
-#' zoned_set_zone(y, "UTC")
-#'
-#' # To force a new time zone with the same wall time,
+#' # To force a new time zone with the same printed time,
 #' # convert to a naive time that has no implied time zone,
 #' # then convert back to a zoned time in the new time zone.
-#' nt <- as_naive_time(y)
+#' nt <- as_naive_time(x)
 #' nt
 #' as_zoned_time(nt, "UTC")
 NULL

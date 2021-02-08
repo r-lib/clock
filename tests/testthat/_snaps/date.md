@@ -110,6 +110,10 @@
     c: lun. déc. 31 00:00:00 2018
     %: %
 
+# can't set the zone of a Date
+
+    'Date' objects are required to be UTC.
+
 # <date> op <duration>
 
     no applicable method for 'add_hours' applied to an object of class "Date"
