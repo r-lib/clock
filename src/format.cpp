@@ -1000,14 +1000,14 @@ clock_to_stream(std::basic_ostream<CharT, Traits>& os,
                 const std::pair<const std::string*, const std::string*>& month_names_pair,
                 const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                 const std::pair<const std::string*, const std::string*>& ampm_names_pair,
-                const CharT* decimal_mark,
-                const std::string* abbrev = nullptr,
-                const std::chrono::seconds* offset_sec = nullptr)
+                const CharT* decimal_mark)
 {
   using CT = typename std::common_type<Duration, std::chrono::seconds>::type;
   auto ld = date::floor<date::days>(tp);
+  const std::string abbrev("UTC");
+  CONSTDATA std::chrono::seconds offset_sec{0};
   date::fields<CT> fds{date::year_month_day{ld}, date::hh_mm_ss<CT>{tp-date::sys_seconds{ld}}};
-  return clock_to_stream(os, fmt, fds, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, abbrev, offset_sec);
+  return clock_to_stream(os, fmt, fds, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, &abbrev, &offset_sec);
 }
 
 // -----------------------------------------------------------------------------
