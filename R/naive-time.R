@@ -425,7 +425,7 @@ validate_ambiguous <- function(ambiguous, size, zone) {
     return(list(method = "string", ambiguous = ambiguous))
   }
 
-  if (is_zoned_time(ambiguous) || inherits(ambiguous, "POSIXt")) {
+  if (is_zoned(ambiguous) || inherits(ambiguous, "POSIXt")) {
     # Implied `NULL`, to be validated by `strict_validate_ambiguous()`
     ambiguous <- list(ambiguous, NULL)
   }
@@ -479,7 +479,7 @@ validate_ambiguous_list <- function(ambiguous, size, zone) {
 
   reference <- ambiguous[[1]]
 
-  if (!is_zoned_time(reference) && !inherits(reference, "POSIXt")) {
+  if (!is_zoned(reference) && !inherits(reference, "POSIXt")) {
     abort("The first element of a list `ambiguous` must be a zoned-time or POSIXt.")
   }
 
