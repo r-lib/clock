@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 # sys_parse()
 
-# Note: Most tests are in `parse_naive_time()`. They share an implementation.
+# Note: Most tests are in `naive_parse()`. They share an implementation.
 
 test_that("can parse day precision", {
   x <- c("2019-01-01", "2019-01-31")
