@@ -6,7 +6,7 @@ test_that("can parse what we format with seconds precision zoned time", {
   x <- as_zoned_time(as_naive_time(year_month_day(2019, 1, 1)), zone)
 
   expect_identical(
-    parse_zoned_time(format(x)),
+    zoned_parse(format(x)),
     x
   )
 })
@@ -19,15 +19,15 @@ test_that("can parse subsecond zoned time", {
   z <- "2019-01-01 01:02:03.123456789-05:00[America/New_York]"
 
   expect_identical(
-    parse_zoned_time(x, precision = "millisecond"),
+    zoned_parse(x, precision = "millisecond"),
     as_zoned_time(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123, subsecond_precision = "millisecond")), zone)
   )
   expect_identical(
-    parse_zoned_time(y, precision = "microsecond"),
+    zoned_parse(y, precision = "microsecond"),
     as_zoned_time(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123400, subsecond_precision = "microsecond")), zone)
   )
   expect_identical(
-    parse_zoned_time(z, precision = "nanosecond"),
+    zoned_parse(z, precision = "nanosecond"),
     as_zoned_time(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123456789, subsecond_precision = "nanosecond")), zone)
   )
 })
@@ -46,7 +46,7 @@ test_that("multiple formats can be used", {
   )
 
   expect_identical(
-    parse_zoned_time(x, format = formats),
+    zoned_parse(x, format = formats),
     as_zoned_time(
       as_naive_time(year_month_day(1970, 10, 25, 05, 30, c(00, 00))),
       zone
@@ -60,7 +60,7 @@ test_that("cannot parse nonexistent time", {
   x <- "1970-04-26 02:30:00-05:00[America/New_York]"
 
   expect_identical(
-    parse_zoned_time(x),
+    zoned_parse(x),
     as_zoned_time(naive_seconds(NA), zone)
   )
 })
@@ -74,7 +74,7 @@ test_that("ambiguous times are resolved by the offset", {
   )
 
   expect_identical(
-    parse_zoned_time(x),
+    zoned_parse(x),
     as_zoned_time(
       as_naive_time(year_month_day(1970, 10, 25, 01, 30, c(00, 00))),
       zone,
@@ -90,7 +90,7 @@ test_that("offset must align with unique offset", {
   x <- "2019-01-01 01:02:03-03:00[America/New_York]"
 
   expect_identical(
-    parse_zoned_time(x),
+    zoned_parse(x),
     as_zoned_time(naive_seconds(NA), zone)
   )
 })
@@ -102,7 +102,7 @@ test_that("offset must align with one of two possible ambiguous offsets", {
   x <- "1970-10-25 01:30:00-03:00[America/New_York]"
 
   expect_identical(
-    parse_zoned_time(x),
+    zoned_parse(x),
     as_zoned_time(naive_seconds(NA), zone)
   )
 })
@@ -113,11 +113,11 @@ test_that("cannot have differing zone names", {
     "2019-01-01 01:02:03-08:00[America/Los_Angeles]"
   )
 
-  expect_snapshot_error(parse_zoned_time(x))
+  expect_snapshot_error(zoned_parse(x))
 })
 
 test_that("zone name must be valid", {
   x <- "2019-01-01 01:02:03-05:00[America/New_Yor]"
 
-  expect_snapshot_error(parse_zoned_time(x))
+  expect_snapshot_error(zoned_parse(x))
 })

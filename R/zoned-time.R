@@ -248,11 +248,11 @@ zoned_time_format <- function(print_zone_name) {
 
 # ------------------------------------------------------------------------------
 
-parse_zoned_time <- function(x,
-                             ...,
-                             format = NULL,
-                             precision = "second",
-                             locale = clock_locale()) {
+zoned_parse <- function(x,
+                        ...,
+                        format = NULL,
+                        precision = "second",
+                        locale = clock_locale()) {
   check_dots_empty()
 
   precision <- validate_zoned_time_precision(precision)
@@ -269,7 +269,7 @@ parse_zoned_time <- function(x,
   labels <- locale$labels
   mark <- locale$decimal_mark
 
-  result <- parse_zoned_time_cpp(
+  result <- zoned_parse_cpp(
     x,
     format,
     precision,

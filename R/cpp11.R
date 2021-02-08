@@ -416,6 +416,6 @@ zoned_info_cpp <- function(fields, precision_int, zone) {
   .Call(`_clock_zoned_info_cpp`, fields, precision_int, zone)
 }
 
-parse_zoned_time_cpp <- function(x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {
-  .Call(`_clock_parse_zoned_time_cpp`, x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark)
+zoned_parse_cpp <- function(x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {
+  .Call(`_clock_zoned_parse_cpp`, x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark)
 }
