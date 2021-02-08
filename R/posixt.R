@@ -856,3 +856,16 @@ date_month_factor.POSIXt <- function(x,
   x <- as_year_month_day(x)
   calendar_month_factor(x, ..., labels = labels, abbreviate = abbreviate)
 }
+
+# ------------------------------------------------------------------------------
+
+#' @export
+date_format.POSIXt <- function(x,
+                               ...,
+                               format = NULL,
+                               locale = clock_locale(),
+                               abbreviate_zone = FALSE) {
+  check_dots_empty()
+  x <- as_zoned_time(x)
+  format(x, format = format, locale = locale, abbreviate_zone = abbreviate_zone)
+}

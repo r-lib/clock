@@ -47,6 +47,82 @@
 
     `origin` must have the same time zone as `x`.
 
+# can format date-times
+
+    C: 20
+    y: 18
+    Y: 2018
+    b: Dec
+    h: Dec
+    B: December
+    m: 12
+    d: 31
+    a: Mon
+    A: Monday
+    w: 1
+    g: 19
+    G: 2019
+    V: 01
+    u: 1
+    U: 52
+    W: 53
+    j: 365
+    D: 12/31/18
+    x: 12/31/18
+    F: 2018-12-31
+    H: 23
+    I: 11
+    M: 59
+    S: 59
+    p: PM
+    R: 23:59
+    T: 23:59:59
+    X: 23:59:59
+    r: 11:59:59 PM
+    z: -0500
+    Ez: -05:00
+    Z: America/New_York
+    c: Mon Dec 31 23:59:59 2018
+    %: %
+
+---
+
+    C: 20
+    y: 18
+    Y: 2018
+    b: 12月
+    h: 12月
+    B: 12月
+    m: 12
+    d: 31
+    a: 月
+    A: 月曜日
+    w: 1
+    g: 19
+    G: 2019
+    V: 01
+    u: 1
+    U: 52
+    W: 53
+    j: 365
+    D: 12/31/18
+    x: 12/31/18
+    F: 2018-12-31
+    H: 23
+    I: 11
+    M: 59
+    S: 59
+    p: 午後
+    R: 23:59
+    T: 23:59:59
+    X: 23:59:59
+    r: 11:59:59 午後
+    z: -0500
+    Ez: -05:00
+    Z: America/New_York
+    c: 月 12月 31 23:59:59 2018
+    %: %
+
 # <posixt> op <duration>
 
     no applicable method for 'add_milliseconds' applied to an object of class "c('POSIXct', 'POSIXt')"

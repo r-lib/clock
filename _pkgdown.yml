@@ -12,6 +12,7 @@ reference:
   - date_group
   - date_leap_year
   - date-and-date-time-rounding
+  - date_format
   - date_weekday_factor
   - date_month_factor
   - get_year.Date
@@ -117,6 +118,7 @@ reference:
   - is_zoned_time
   - zoned_zone
   - zoned_info
+  - format.clock_zoned_time
 
 - title: Weekdays
   contents:
