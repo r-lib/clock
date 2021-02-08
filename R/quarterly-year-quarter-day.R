@@ -656,7 +656,7 @@ year_quarter_day_minus_year_quarter_day <- function(op, x, y, ...) {
 #'
 #' Notably, _you cannot add days to a year-quarter-day_. For day-based
 #' arithmetic, first convert to a time point with [as_naive()] or
-#' [as_sys_time()].
+#' [as_sys()].
 #'
 #' @details
 #' `x` and `n` are recycled against each other.
@@ -790,14 +790,14 @@ as_year_quarter_day.clock_year_quarter_day <- function(x, ..., start = NULL) {
     return(x)
   }
 
-  as_year_quarter_day(as_sys_time(x), start = start)
+  as_year_quarter_day(as_sys(x), start = start)
 }
 
 # ------------------------------------------------------------------------------
 
 #' @export
-as_sys_time.clock_year_quarter_day <- function(x) {
-  calendar_require_all_valid(x, "as_sys_time")
+as_sys.clock_year_quarter_day <- function(x) {
+  calendar_require_all_valid(x, "as_sys")
   start <- quarterly_start(x)
   precision <- calendar_precision(x)
   fields <- as_sys_time_year_quarter_day_cpp(x, precision, start)
@@ -806,7 +806,7 @@ as_sys_time.clock_year_quarter_day <- function(x) {
 
 #' @export
 as_naive.clock_year_quarter_day <- function(x) {
-  as_naive(as_sys_time(x))
+  as_naive(as_sys(x))
 }
 
 # ------------------------------------------------------------------------------

@@ -31,7 +31,7 @@ sys_seconds <- function(n = integer()) {
 #' @export
 #' @examples
 #' is_sys(1)
-#' is_sys(as_sys_time(duration_days(1)))
+#' is_sys(as_sys(duration_days(1)))
 is_sys <- function(x) {
   inherits(x, "clock_sys_time")
 }
@@ -62,7 +62,7 @@ sys_parse <- function(x,
 #' Convert to a sys-time
 #'
 #' @description
-#' `as_sys_time()` converts `x` to a sys-time.
+#' `as_sys()` converts `x` to a sys-time.
 #'
 #' You can convert to a sys-time from any calendar type, as long as it has
 #' at least day precision. There also must not be any invalid dates. If invalid
@@ -96,33 +96,33 @@ sys_parse <- function(x,
 #' x <- as.Date("2019-01-01")
 #'
 #' # Dates are assumed to be UTC, so the printed time is the same
-#' as_sys_time(x)
+#' as_sys(x)
 #'
 #' y <- as.POSIXct("2019-01-01 01:00:00", tz = "America/New_York")
 #'
 #' # The sys time displays the equivalent time in UTC (5 hours ahead of
 #' # America/New_York at this point in the year)
-#' as_sys_time(y)
+#' as_sys(y)
 #'
 #' ym <- year_month_day(2019, 02)
 #'
 #' # A minimum of day precision is required
-#' try(as_sys_time(ym))
+#' try(as_sys(ym))
 #'
 #' ymd <- set_day(ym, 10)
-#' as_sys_time(ymd)
-as_sys_time <- function(x) {
-  UseMethod("as_sys_time")
+#' as_sys(ymd)
+as_sys <- function(x) {
+  UseMethod("as_sys")
 }
 
 #' @export
-as_sys_time.clock_sys_time <- function(x) {
+as_sys.clock_sys_time <- function(x) {
   x
 }
 
 #' @export
-as_sys_time.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("as_sys_time")
+as_sys.clock_calendar <- function(x) {
+  stop_clock_unsupported_calendar_op("as_sys")
 }
 
 # ------------------------------------------------------------------------------
@@ -160,7 +160,7 @@ as_naive.clock_sys_time <- function(x) {
 #' @name as-zoned-time-sys-time
 #' @export
 #' @examples
-#' x <- as_sys_time(year_month_day(2019, 02, 01, 02, 30, 00))
+#' x <- as_sys(year_month_day(2019, 02, 01, 02, 30, 00))
 #' x
 #'
 #' # Since sys-time is interpreted as UTC, converting to a zoned-time with

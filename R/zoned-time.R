@@ -450,7 +450,7 @@ as_zoned.clock_zoned_time <- function(x, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
-as_sys_time.clock_zoned_time <- function(x) {
+as_sys.clock_zoned_time <- function(x) {
   names <- clock_rcrd_names(x)
   precision <- zoned_time_precision(x)
   new_sys_time_from_fields(x, precision, names)

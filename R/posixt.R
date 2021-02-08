@@ -1,7 +1,7 @@
 #' @export
-as_sys_time.POSIXt <- function(x) {
-  # The sys_time that would give the equivalent zoned time when a tz is attached
-  as_sys_time(as_zoned(x))
+as_sys.POSIXt <- function(x) {
+  # The sys-time that would give the equivalent zoned-time when a tz is attached
+  as_sys(as_zoned(x))
 }
 
 #' @export
@@ -118,7 +118,7 @@ as.POSIXct.clock_naive_time <- function(x,
 #' @export
 as.POSIXct.clock_zoned_time <- function(x, ...) {
   zone <- zoned_time_zone(x)
-  x <- as_sys_time(x)
+  x <- as_sys(x)
   as.POSIXct(x, tz = zone)
 }
 
@@ -536,7 +536,7 @@ add_seconds.POSIXt <- function(x, n, ...) {
 add_posixt_duration_sys_time_point <- function(x, n, add_fn, ...) {
   check_dots_empty()
   zone <- posixt_tzone(x)
-  x <- as_sys_time(x)
+  x <- as_sys(x)
   x <- add_fn(x, n)
   as.POSIXct(x, tz = zone)
 }

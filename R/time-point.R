@@ -329,10 +329,10 @@ arith_numeric_and_time_point <- function(op, x, y, ...) {
 #' # zoned time. If you sat still for exactly 86,400 seconds, this is the
 #' # time that you would see after daylight saving time adjusted the clock
 #' # (note that the hour field is shifted forward by the size of the gap)
-#' as_sys_time(x)
+#' as_sys(x)
 #'
 #' x %>%
-#'   as_sys_time() %>%
+#'   as_sys() %>%
 #'   add_days(1) %>%
 #'   as_zoned(zoned_zone(x))
 #'

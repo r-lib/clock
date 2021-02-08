@@ -103,7 +103,7 @@ reference:
   contents:
   - sys_now
   - as_naive
-  - as_sys_time
+  - as_sys
   - is_naive
   - is_sys
   - time_point_cast

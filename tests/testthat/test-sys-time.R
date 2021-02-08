@@ -8,7 +8,7 @@ test_that("can parse day precision", {
 
   expect_identical(
     sys_parse(x, precision = "day"),
-    as_sys_time(year_month_day(2019, 1, c(1, 31)))
+    as_sys(year_month_day(2019, 1, c(1, 31)))
   )
 })
 
@@ -18,10 +18,10 @@ test_that("%z shifts the result by the offset", {
 
   expect_identical(
     sys_parse(x, format = "%Y-%m-%d %H:%M:%S%z"),
-    as_sys_time(year_month_day(2018, 12, 31, 23, 0, 0))
+    as_sys(year_month_day(2018, 12, 31, 23, 0, 0))
   )
   expect_identical(
     sys_parse(y, format = "%Y-%m-%d %H:%M:%S%z"),
-    as_sys_time(year_month_day(2019, 1, 1, 1, 0, 0))
+    as_sys(year_month_day(2019, 1, 1, 1, 0, 0))
   )
 })

@@ -1,5 +1,5 @@
 #' @export
-as_sys_time.Date <- function(x) {
+as_sys.Date <- function(x) {
   names <- names(x)
   x <- unstructure(x)
   x <- duration_days(x)
@@ -8,7 +8,7 @@ as_sys_time.Date <- function(x) {
 
 #' @export
 as_naive.Date <- function(x) {
-  as_naive(as_sys_time(x))
+  as_naive(as_sys(x))
 }
 
 #' Convert to a zoned-time from a date
@@ -34,33 +34,33 @@ as_naive.Date <- function(x) {
 #' as_zoned(x)
 as_zoned.Date <- function(x, ...) {
   check_dots_empty()
-  x <- as_sys_time(x)
+  x <- as_sys(x)
   as_zoned(x, zone = "UTC")
 }
 
 #' @export
 as_year_month_day.Date <- function(x) {
-  as_year_month_day(as_sys_time(x))
+  as_year_month_day(as_sys(x))
 }
 
 #' @export
 as_year_month_weekday.Date <- function(x) {
-  as_year_month_weekday(as_sys_time(x))
+  as_year_month_weekday(as_sys(x))
 }
 
 #' @export
 as_year_quarter_day.Date <- function(x, ..., start = NULL) {
-  as_year_quarter_day(as_sys_time(x), ..., start = start)
+  as_year_quarter_day(as_sys(x), ..., start = start)
 }
 
 #' @export
 as_iso_year_week_day.Date <- function(x) {
-  as_iso_year_week_day(as_sys_time(x))
+  as_iso_year_week_day(as_sys(x))
 }
 
 #' @export
 as_weekday.Date <- function(x) {
-  as_weekday(as_sys_time(x))
+  as_weekday(as_sys(x))
 }
 
 # ------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ as_weekday.Date <- function(x) {
 
 #' @export
 as.Date.clock_calendar <- function(x, ...) {
-  as.Date(as_sys_time(x))
+  as.Date(as_sys(x))
 }
 
 #' @export
@@ -85,7 +85,7 @@ as.Date.clock_time_point <- function(x, ...) {
 
 #' @export
 as.Date.clock_zoned_time <- function(x, ...) {
-  as.Date(as_sys_time(x))
+  as.Date(as_sys(x))
 }
 
 # ------------------------------------------------------------------------------
@@ -345,7 +345,7 @@ add_days.Date <- function(x, n, ...) {
 }
 add_date_duration_time_point <- function(x, n, add_fn, ...) {
   check_dots_empty()
-  x <- as_sys_time(x)
+  x <- as_sys(x)
   x <- add_fn(x, n)
   as.Date(x)
 }

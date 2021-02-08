@@ -115,7 +115,7 @@ as_naive.clock_calendar <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-as_sys_time.clock_naive_time <- function(x) {
+as_sys.clock_naive_time <- function(x) {
   new_sys_time_from_fields(x, time_point_precision(x), clock_rcrd_names(x))
 }
 
@@ -336,7 +336,7 @@ as_sys_time.clock_naive_time <- function(x) {
 #'
 #' # Say you added one more time to `x` that would not be considered ambiguous
 #' # in naive-time
-#' x <- c(x, as_zoned(as_sys_time(latest) + 3600, zoned_zone(latest)))
+#' x <- c(x, as_zoned(as_sys(latest) + 3600, zoned_zone(latest)))
 #' x
 #'
 #' # Imagine you want to floor this vector to a multiple of 2 hours, with
@@ -465,7 +465,7 @@ validate_ambiguous_zoned <- function(ambiguous, size, zone) {
   }
 
   # Force seconds precision to avoid the need for C++ templating
-  sys_time <- as_sys_time(reference)
+  sys_time <- as_sys(reference)
   sys_time <- time_point_floor(sys_time, "second")
   reference <- as_zoned(sys_time, reference_zone)
 
