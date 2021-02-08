@@ -148,12 +148,6 @@ zoned_set_zone.Date <- function(x, zone) {
   abort("'Date' objects are required to be UTC.")
 }
 
-#' @export
-zoned_info.Date <- function(x) {
-  x <- as_zoned_time(x)
-  zoned_info(x)
-}
-
 # ------------------------------------------------------------------------------
 
 #' Setters: date

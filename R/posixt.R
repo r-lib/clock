@@ -234,12 +234,6 @@ zoned_set_zone.POSIXt <- function(x, zone) {
   posixt_set_tzone(x, zone)
 }
 
-#' @export
-zoned_info.POSIXt <- function(x) {
-  x <- as_zoned_time(x)
-  zoned_info(x)
-}
-
 # ------------------------------------------------------------------------------
 
 #' Setters: date-time
