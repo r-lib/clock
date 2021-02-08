@@ -41,7 +41,7 @@ a conversion factor between the current precision and the new precision.
 # Hour precision time points
 # One is pre-1970, one is post-1970
 x <- duration_hours(c(25, -25))
-x <- as_naive_time(x)
+x <- as_naive(x)
 x
 
 # Casting rounds the underlying duration towards 0

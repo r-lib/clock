@@ -6,7 +6,7 @@ test_that("can parse day precision", {
 
   expect_identical(
     naive_parse(x, precision = "day"),
-    as_naive_time(year_month_day(2019, 1, c(1, 31)))
+    as_naive(year_month_day(2019, 1, c(1, 31)))
   )
 })
 
@@ -15,7 +15,7 @@ test_that("can parse second precision", {
 
   expect_identical(
     naive_parse(x, precision = "second"),
-    as_naive_time(year_month_day(2019, 1, c(1, 31), 00, 00, c(05, 10)))
+    as_naive(year_month_day(2019, 1, c(1, 31), 00, 00, c(05, 10)))
   )
 })
 
@@ -28,15 +28,15 @@ test_that("can parse subsecond precision", {
 
   expect_identical(
     naive_parse(x, precision = "millisecond"),
-    as_naive_time(set_millisecond(sec, c(123, 124)))
+    as_naive(set_millisecond(sec, c(123, 124)))
   )
   expect_identical(
     naive_parse(y, precision = "microsecond"),
-    as_naive_time(set_microsecond(sec, c(123450, 124567)))
+    as_naive(set_microsecond(sec, c(123450, 124567)))
   )
   expect_identical(
     naive_parse(z, precision = "nanosecond"),
-    as_naive_time(set_nanosecond(sec, c(123456780, 124567899)))
+    as_naive(set_nanosecond(sec, c(123456780, 124567899)))
   )
 })
 
@@ -46,15 +46,15 @@ test_that("parsing to a lower precision ignores higher precision info", {
 
   expect_identical(
     naive_parse(x, precision = "day"),
-    as_naive_time(year_month_day(2019, 1, 1))
+    as_naive(year_month_day(2019, 1, 1))
   )
   expect_identical(
     naive_parse(y, precision = "second"),
-    as_naive_time(year_month_day(2019, 1, 1, 1, 0, 0))
+    as_naive(year_month_day(2019, 1, 1, 1, 0, 0))
   )
   expect_identical(
     naive_parse(y, precision = "millisecond"),
-    as_naive_time(year_month_day(2019, 1, 1, 1, 0, 0, 123, subsecond_precision = "millisecond"))
+    as_naive(year_month_day(2019, 1, 1, 1, 0, 0, 123, subsecond_precision = "millisecond"))
   )
 })
 
@@ -63,7 +63,7 @@ test_that("parsing day components with second precision uses midnight as time", 
 
   expect_identical(
     naive_parse(x, format = "%Y/%m/%d", precision = "second"),
-    as_naive_time(year_month_day(2019, 1, 1, 0, 0, 0))
+    as_naive(year_month_day(2019, 1, 1, 0, 0, 0))
   )
 })
 
@@ -78,7 +78,7 @@ test_that("can parse with multiple formats", {
 
   expect_identical(
     naive_parse(x, format = formats, precision = "day"),
-    as_naive_time(year_month_day(c(2019, 2020, 2019), 1, c(1, 2, 5)))
+    as_naive(year_month_day(c(2019, 2020, 2019), 1, c(1, 2, 5)))
   )
 })
 
@@ -102,11 +102,11 @@ test_that("can use a different locale", {
 
   expect_identical(
     naive_parse(x, format = "%B %d, %Y", precision = "day", locale = clock_locale("fr")),
-    as_naive_time(year_month_day(2019, 1, 1))
+    as_naive(year_month_day(2019, 1, 1))
   )
   expect_identical(
     naive_parse(y, precision = "microsecond", locale = clock_locale(decimal_mark = ",")),
-    as_naive_time(year_month_day(2019, 1, 1, 0, 0, 0, 123456, subsecond_precision = "microsecond"))
+    as_naive(year_month_day(2019, 1, 1, 0, 0, 0, 123456, subsecond_precision = "microsecond"))
   )
 })
 
@@ -116,7 +116,7 @@ test_that("%z is completely ignored, but is required to be parsed correctly if s
 
   expect_identical(
     naive_parse(x, format = "%Y-%m-%d %H:%M:%S%z"),
-    as_naive_time(year_month_day(2019, 1, 1, 0, 0, 0))
+    as_naive(year_month_day(2019, 1, 1, 0, 0, 0))
   )
   expect_identical(
     naive_parse(y, format = "%Y-%m-%d %H:%M:%S%z"),
@@ -129,7 +129,7 @@ test_that("%Z is completely ignored", {
 
   expect_identical(
     naive_parse(x, format = "%Y-%m-%d %H:%M:%S %Z"),
-    as_naive_time(year_month_day(2019, 1, 1, 0, 0, 0))
+    as_naive(year_month_day(2019, 1, 1, 0, 0, 0))
   )
 })
 
@@ -138,26 +138,26 @@ test_that("%Z is completely ignored", {
 
 test_that("can convert non-ambiguous/nonexistent times to zoned time", {
   zone <- "America/New_York"
-  x <- as_naive_time(year_month_day(2019, 1, 1))
+  x <- as_naive(year_month_day(2019, 1, 1))
   expect <- as_sys_time(year_month_day(2019, 1, 1, 5))
   expect_identical(as_zoned(x, zone), as_zoned(expect, zone))
 })
 
 test_that("sub daily time point precision is retained", {
   zone <- "America/New_York"
-  x <- as_naive_time(year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond"))
+  x <- as_naive(year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond"))
   expect_identical(zoned_time_precision(as_zoned(x, zone)), PRECISION_NANOSECOND)
 })
 
 test_that("day precision time point is promoted", {
   zone <- "America/New_York"
-  x <- as_naive_time(year_month_day(2019, 1, 1))
+  x <- as_naive(year_month_day(2019, 1, 1))
   expect_identical(zoned_time_precision(as_zoned(x, zone)), PRECISION_SECOND)
 })
 
 test_that("can resolve ambiguous issues - character", {
   zone <- "America/New_York"
-  x <- as_naive_time(year_month_day(1970, 10, 25, 01, 30, 00, 01, subsecond_precision = "millisecond"))
+  x <- as_naive(year_month_day(1970, 10, 25, 01, 30, 00, 01, subsecond_precision = "millisecond"))
   earliest <- as_sys_time(year_month_day(1970, 10, 25, 05, 30, 00, 01, subsecond_precision = "millisecond"))
   latest <- as_sys_time(year_month_day(1970, 10, 25, 06, 30, 00, 01, subsecond_precision = "millisecond"))
 
@@ -174,13 +174,13 @@ test_that("can resolve ambiguous issues - character", {
   )
   expect_identical(
     as_zoned(x, zone, ambiguous = "NA"),
-    as_zoned(as_naive_time(duration_milliseconds(NA)), zone)
+    as_zoned(as_naive(duration_milliseconds(NA)), zone)
   )
 })
 
 test_that("can resolve ambiguous issues - zoned-time", {
   zone <- "America/New_York"
-  nt <- as_naive_time(year_month_day(1970, 10, 25, 01, 30, c(00, 00)))
+  nt <- as_naive(year_month_day(1970, 10, 25, 01, 30, c(00, 00)))
   zt <- as_zoned(nt, zone, ambiguous = c("earliest", "latest"))
 
   expect_identical(
@@ -188,7 +188,7 @@ test_that("can resolve ambiguous issues - zoned-time", {
     zt
   )
 
-  nt <- as_naive_time(year_month_day(1970, 10, 25, c(01, 02), 30, 00))
+  nt <- as_naive(year_month_day(1970, 10, 25, c(01, 02), 30, 00))
   zt <- as_zoned(nt, zone, ambiguous = "earliest")
 
   expect_identical(
@@ -198,13 +198,13 @@ test_that("can resolve ambiguous issues - zoned-time", {
 
   # Issue at location 2 because zt[2] isn't ambiguous so we can't use offset
   # information from it
-  nt_tweaked <- as_naive_time(set_hour(as_year_month_day(nt), 1))
+  nt_tweaked <- as_naive(set_hour(as_year_month_day(nt), 1))
   expect_snapshot_error(as_zoned(nt_tweaked, zone, ambiguous = zt))
 
   # Jump from one ambiguous time to another. Still can't use offset info,
   # because the ambiguous time transitions are different.
   ymd <- year_month_day(1969, 10, 26, 01, 30, 00)
-  nt <- as_naive_time(ymd)
+  nt <- as_naive(ymd)
   zt <- as_zoned(nt, zone, ambiguous = "earliest")
   nt_tweaked <- nt + duration_days(364)
   expect_snapshot_error(as_zoned(nt_tweaked, zone, ambiguous = zt))
@@ -212,9 +212,9 @@ test_that("can resolve ambiguous issues - zoned-time", {
 
 test_that("can resolve ambiguous issues - list", {
   zone <- "America/New_York"
-  nt <- as_naive_time(year_month_day(1970, 10, 25, c(01, 01, 02), 30, 00))
+  nt <- as_naive(year_month_day(1970, 10, 25, c(01, 01, 02), 30, 00))
   zt <- as_zoned(nt, zone, ambiguous = c("earliest", "latest", "error"))
-  nt_tweaked <- as_naive_time(set_hour(as_year_month_day(nt), 1))
+  nt_tweaked <- as_naive(set_hour(as_year_month_day(nt), 1))
 
   # First two are resolved from consulting `zt`, otherwise resolved with "latest"
   expect_identical(
@@ -225,7 +225,7 @@ test_that("can resolve ambiguous issues - list", {
 
 test_that("zoned-time ambiguous argument is recycled", {
   zone <- "America/New_York"
-  nt <- as_naive_time(year_month_day(1970, 10, 25, 01, 30, 00))
+  nt <- as_naive(year_month_day(1970, 10, 25, 01, 30, 00))
   zt <- as_zoned(nt, zone, ambiguous = "earliest")
   nt_tweaked <- nt + duration_seconds(c(0, 1))
 
@@ -237,7 +237,7 @@ test_that("zoned-time ambiguous argument is recycled", {
 
 test_that("can resolve nonexistent issues", {
   zone <- "America/New_York"
-  x <- as_naive_time(year_month_day(1970, 04, 26, 02, 30, 00))
+  x <- as_naive(year_month_day(1970, 04, 26, 02, 30, 00))
 
   expect_snapshot_error(as_zoned(x, zone))
   expect_error(as_zoned(x, zone), class = "clock_error_nonexistent_time")
@@ -266,7 +266,7 @@ test_that("can resolve nonexistent issues", {
 
 test_that("nonexistent can be vectorized", {
   zone <- "America/New_York"
-  x <- as_naive_time(year_month_day(1970, 04, 26, 02, 00, c(00, 00)))
+  x <- as_naive(year_month_day(1970, 04, 26, 02, 00, c(00, 00)))
 
   expect_identical(
     as_zoned(x, zone, nonexistent = c("roll-forward", "roll-backward")),
@@ -276,7 +276,7 @@ test_that("nonexistent can be vectorized", {
 
 test_that("roll-backward uses precision to determine last moment in time", {
   zone <- "America/New_York"
-  w <- as_naive_time(year_month_day(1970, 04, 26, 02, 00, 00))
+  w <- as_naive(year_month_day(1970, 04, 26, 02, 00, 00))
   x <- w + duration_milliseconds(0)
   y <- w + duration_microseconds(0)
   z <- w + duration_nanoseconds(0)
@@ -301,7 +301,7 @@ test_that("roll-backward uses precision to determine last moment in time", {
 
 test_that("names are retained", {
   zone <- "America/New_York"
-  x <- as_naive_time(year_month_day(2019, 1, 1))
+  x <- as_naive(year_month_day(2019, 1, 1))
   x <- c(foo = x)
   expect_named(as_zoned(x, zone), "foo")
 })

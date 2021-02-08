@@ -5,8 +5,8 @@ as_sys_time.POSIXt <- function(x) {
 }
 
 #' @export
-as_naive_time.POSIXt <- function(x) {
-  as_naive_time(as_zoned(x))
+as_naive.POSIXt <- function(x) {
+  as_naive(as_zoned(x))
 }
 
 #' Convert to a zoned-time from a date-time
@@ -46,35 +46,35 @@ as_zoned.POSIXt <- function(x, ...) {
 #' @export
 as_year_month_day.POSIXt <- function(x) {
   # Assumes zoned -> naive -> calendar is what the user expects
-  x <- as_naive_time(x)
+  x <- as_naive(x)
   as_year_month_day(x)
 }
 
 #' @export
 as_year_month_weekday.POSIXt <- function(x) {
   # Assumes zoned -> naive -> calendar is what the user expects
-  x <- as_naive_time(x)
+  x <- as_naive(x)
   as_year_month_weekday(x)
 }
 
 #' @export
 as_year_quarter_day.POSIXt <- function(x, ..., start = NULL) {
   # Assumes zoned -> naive -> calendar is what the user expects
-  x <- as_naive_time(x)
+  x <- as_naive(x)
   as_year_quarter_day(x, ..., start = start)
 }
 
 #' @export
 as_iso_year_week_day.POSIXt <- function(x) {
   # Assumes zoned -> naive -> calendar is what the user expects
-  x <- as_naive_time(x)
+  x <- as_naive(x)
   as_iso_year_week_day(x)
 }
 
 #' @export
 as_weekday.POSIXt <- function(x) {
   # Assumes zoned -> naive is what the user expects
-  x <- as_naive_time(x)
+  x <- as_naive(x)
   as_weekday(x)
 }
 
@@ -92,7 +92,7 @@ as.POSIXct.clock_calendar <- function(x,
                                       ...,
                                       nonexistent = NULL,
                                       ambiguous = NULL) {
-  x <- as_naive_time(x)
+  x <- as_naive(x)
   as.POSIXct(x, tz = tz, nonexistent = nonexistent, ambiguous = ambiguous)
 }
 
@@ -435,7 +435,7 @@ arith_duration_and_posixt <- function(op, x, y, ...) {
 #' sys-time, so that is what clock converts to. If you disagree with this
 #' heuristic for any reason, you can take control and perform the conversions
 #' yourself. For example, you could convert the previous example to a
-#' naive-time instead of a sys-time manually with [as_naive_time()], add
+#' naive-time instead of a sys-time manually with [as_naive()], add
 #' 1 second giving `"2020-03-08 02:00:00"`, then convert back to a
 #' POSIXct/POSIXlt, dealing with the nonexistent time that get's created by
 #' using the `nonexistent` argument of `as.POSIXct()`.
@@ -513,7 +513,7 @@ add_days.POSIXt <- function(x, n, ..., nonexistent = NULL, ambiguous = x) {
 add_posixt_duration_naive_time_point <- function(x, n, nonexistent, ambiguous, add_fn, ...) {
   check_dots_empty()
   zone <- posixt_tzone(x)
-  x <- as_naive_time(x)
+  x <- as_naive(x)
   x <- add_fn(x, n)
   as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
 }
@@ -762,7 +762,7 @@ date_time_rounder <- function(x,
 
   zone <- date_zone(x)
 
-  x <- as_naive_time(x)
+  x <- as_naive(x)
 
   if (!is_null(origin)) {
     origin <- collect_date_time_rounder_origin(origin, zone, precision)
@@ -791,7 +791,7 @@ collect_date_time_rounder_origin <- function(origin, zone, precision) {
     abort("`origin` must have the same time zone as `x`.")
   }
 
-  origin <- as_naive_time(origin)
+  origin <- as_naive(origin)
 
   # Floor to match the precision of `precision`
   origin_old <- origin

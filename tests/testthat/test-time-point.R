@@ -62,8 +62,8 @@ test_that("rounding with `origin` requires same clock", {
 })
 
 test_that("`origin` can be cast to a more precise `precision`, but not to a less precise one", {
-  origin1 <- as_naive_time(duration_days(1))
-  origin2 <- as_naive_time(duration_milliseconds(0))
+  origin1 <- as_naive(duration_days(1))
+  origin2 <- as_naive(duration_milliseconds(0))
   x <- naive_seconds(0)
 
   expect_identical(

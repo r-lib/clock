@@ -766,7 +766,7 @@ year_month_day_minus_year_month_day <- function(op, x, y, ...) {
 #' - `add_months()`
 #'
 #' Notably, _you cannot add days to a year-month-day_. For day-based arithmetic,
-#' first convert to a time point with [as_naive_time()] or [as_sys_time()].
+#' first convert to a time point with [as_naive()] or [as_sys_time()].
 #'
 #' @details
 #' Adding a single quarter with `add_quarters()` is equivalent to adding
@@ -891,8 +891,8 @@ as_sys_time.clock_year_month_day <- function(x) {
 }
 
 #' @export
-as_naive_time.clock_year_month_day <- function(x) {
-  as_naive_time(as_sys_time(x))
+as_naive.clock_year_month_day <- function(x) {
+  as_naive(as_sys_time(x))
 }
 
 # ------------------------------------------------------------------------------
@@ -951,7 +951,7 @@ calendar_month_factor.clock_year_month_day <- function(x,
 #' @examples
 #' steps <- duration_days(seq(0, 100, by = 5))
 #' x <- year_month_day(2019, 1, 1)
-#' x <- as_naive_time(x) + steps
+#' x <- as_naive(x) + steps
 #' x <- as_year_month_day(x)
 #' x
 #'

@@ -98,7 +98,7 @@ invalid_resolve(invalid, invalid = "overflow")
 days <- get_day(invalid) - 1L
 invalid \%>\%
   set_day(1) \%>\%
-  as_naive_time() \%>\%
+  as_naive() \%>\%
   add_days(days) \%>\%
   as_year_quarter_day()
 }

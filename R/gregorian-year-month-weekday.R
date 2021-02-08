@@ -677,7 +677,7 @@ year_month_weekday_minus_year_month_weekday <- function(op, x, y, ...) {
 #' - `add_months()`
 #'
 #' Notably, _you cannot add days to a year-month-weekday_. For day-based
-#' arithmetic, first convert to a time point with [as_naive_time()] or
+#' arithmetic, first convert to a time point with [as_naive()] or
 #' [as_sys_time()].
 #'
 #' @details
@@ -792,8 +792,8 @@ as_sys_time.clock_year_month_weekday <- function(x) {
 }
 
 #' @export
-as_naive_time.clock_year_month_weekday <- function(x) {
-  as_naive_time(as_sys_time(x))
+as_naive.clock_year_month_weekday <- function(x) {
+  as_naive(as_sys_time(x))
 }
 
 # ------------------------------------------------------------------------------

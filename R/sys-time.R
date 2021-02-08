@@ -128,7 +128,7 @@ as_sys_time.clock_calendar <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-as_naive_time.clock_sys_time <- function(x) {
+as_naive.clock_sys_time <- function(x) {
   new_naive_time_from_fields(x, time_point_precision(x), clock_rcrd_names(x))
 }
 

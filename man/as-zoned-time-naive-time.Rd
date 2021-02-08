@@ -127,7 +127,7 @@ time resolution strategies.
 \examples{
 library(magrittr)
 
-x <- as_naive_time(year_month_day(2019, 1, 1))
+x <- as_naive(year_month_day(2019, 1, 1))
 
 # Converting a naive-time to a zoned-time generally retains the
 # printed time, while changing the underlying duration.
@@ -144,7 +144,7 @@ new_york <- "America/New_York"
 # naive-times don't exist in that time zone. By default, attempting to
 # convert it to a zoned time will result in an error.
 nonexistent_time <- year_month_day(2020, 03, 08, c(02, 03), c(45, 30), 00)
-nonexistent_time <- as_naive_time(nonexistent_time)
+nonexistent_time <- as_naive(nonexistent_time)
 try(as_zoned(nonexistent_time, new_york))
 
 # Resolve this by specifying a nonexistent time resolution strategy
@@ -178,7 +178,7 @@ new_york <- "America/New_York"
 # By default, attempting to convert it to a zoned time will result in an
 # error.
 ambiguous_time <- year_month_day(2020, 11, 01, 01, 30, 00)
-ambiguous_time <- as_naive_time(ambiguous_time)
+ambiguous_time <- as_naive(ambiguous_time)
 try(as_zoned(ambiguous_time, new_york))
 
 # Resolve this by specifying an ambiguous time resolution strategy
@@ -197,10 +197,10 @@ x
 
 # To set the seconds to 5 in both, you might try:
 x_naive <- x \%>\%
-  as_naive_time() \%>\%
+  as_naive() \%>\%
   as_year_month_day() \%>\%
   set_second(5) \%>\%
-  as_naive_time()
+  as_naive()
 
 x_naive
 
@@ -223,10 +223,10 @@ x
 # Imagine you want to floor this vector to a multiple of 2 hours, with
 # an origin of 1am that day. You can do this by subtracting the origin,
 # flooring, then adding it back
-origin <- as_duration(as_naive_time(year_month_day(2019, 11, 01, 01, 00, 00)))
+origin <- as_duration(as_naive(year_month_day(2019, 11, 01, 01, 00, 00)))
 
 x_naive <- x \%>\%
-  as_naive_time() \%>\%
+  as_naive() \%>\%
   add_seconds(-origin) \%>\%
   time_point_floor("hour", n = 2) \%>\%
   add_seconds(origin)

@@ -149,10 +149,7 @@ This function allows you to format a zoned-time using a flexible \code{format}
 string.
 }
 \examples{
-x <- as_zoned(
-  as_naive_time(year_month_day(2019, 1, 1)),
-  "America/New_York"
-)
+x <- as_zoned(as_naive(year_month_day(2019, 1, 1)), "America/New_York")
 
 format(x)
 format(x, format = "\%B \%d, \%Y")

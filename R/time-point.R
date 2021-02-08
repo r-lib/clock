@@ -317,7 +317,7 @@ arith_numeric_and_time_point <- function(op, x, y, ...) {
 #' library(magrittr)
 #'
 #' # Say you started with this zoned time, and you want to add 1 day to it
-#' x <- as_naive_time(year_month_day(1970, 04, 25, 02, 30, 00))
+#' x <- as_naive(year_month_day(1970, 04, 25, 02, 30, 00))
 #' x <- as_zoned(x, "America/New_York")
 #' x
 #'
@@ -340,11 +340,11 @@ arith_numeric_and_time_point <- function(op, x, y, ...) {
 #' # a clock time with a yet-to-be-specified time zone. It tries to maintain
 #' # smaller units where possible, so adding 1 day would attempt to return
 #' # "1970-04-26T02:30:00" in the America/New_York time zone, but...
-#' as_naive_time(x)
+#' as_naive(x)
 #'
 #' try({
 #' x %>%
-#'   as_naive_time() %>%
+#'   as_naive() %>%
 #'   add_days(1) %>%
 #'   as_zoned(zoned_zone(x))
 #' })
@@ -354,7 +354,7 @@ arith_numeric_and_time_point <- function(op, x, y, ...) {
 #' # when converting to zoned time. Let's roll forward to the next available
 #' # moment in time.
 #' x %>%
-#'   as_naive_time() %>%
+#'   as_naive() %>%
 #'   add_days(1) %>%
 #'   as_zoned(zoned_zone(x), nonexistent = "roll-forward")
 NULL
@@ -530,7 +530,7 @@ as_weekday.clock_time_point <- function(x) {
 #' # Hour precision time points
 #' # One is pre-1970, one is post-1970
 #' x <- duration_hours(c(25, -25))
-#' x <- as_naive_time(x)
+#' x <- as_naive(x)
 #' x
 #'
 #' # Casting rounds the underlying duration towards 0
@@ -648,7 +648,7 @@ time_point_cast <- function(x, precision) {
 #' @examples
 #' library(magrittr)
 #'
-#' x <- as_naive_time(year_month_day(2019, 01, 01))
+#' x <- as_naive(year_month_day(2019, 01, 01))
 #' x <- add_days(x, 0:40)
 #' head(x)
 #'
@@ -659,7 +659,7 @@ time_point_cast <- function(x, precision) {
 #' # You can easily customize the origin by creating a duration out of the
 #' # origin date of interest...
 #' origin <- year_month_day(2019, 01, 01) %>%
-#'   as_naive_time() %>%
+#'   as_naive() %>%
 #'   as_duration()
 #'
 #' # Which you can subtract from, floor, and then add to your input
@@ -668,7 +668,7 @@ time_point_cast <- function(x, precision) {
 #' # For times on the boundary, floor and ceiling both return the input
 #' # at the new precision. Notice how the first element is on the boundary,
 #' # and the second is 1 second after the boundary.
-#' y <- as_naive_time(year_month_day(2020, 01, 02, 00, 00, c(00, 01)))
+#' y <- as_naive(year_month_day(2020, 01, 02, 00, 00, c(00, 01)))
 #' time_point_floor(y, "day")
 #' time_point_ceiling(y, "day")
 NULL

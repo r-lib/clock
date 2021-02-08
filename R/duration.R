@@ -292,8 +292,8 @@ as_sys_time.clock_duration <- function(x) {
 }
 
 #' @export
-as_naive_time.clock_duration <- function(x) {
-  as_naive_time(as_sys_time(x))
+as_naive.clock_duration <- function(x) {
+  as_naive(as_sys_time(x))
 }
 
 #' @export
