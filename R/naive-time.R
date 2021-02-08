@@ -30,9 +30,9 @@ naive_seconds <- function(n = integer()) {
 #'
 #' @export
 #' @examples
-#' is_naive_time(1)
-#' is_naive_time(as_naive_time(duration_days(1)))
-is_naive_time <- function(x) {
+#' is_naive(1)
+#' is_naive(as_naive_time(duration_days(1)))
+is_naive <- function(x) {
   inherits(x, "clock_naive_time")
 }
 
