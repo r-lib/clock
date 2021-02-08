@@ -165,6 +165,21 @@ test_that("can convert to a month factor", {
 })
 
 # ------------------------------------------------------------------------------
+# date_format()
+
+test_that("can format date-times", {
+  x <- as.POSIXct("2018-12-31 23:59:59", "America/New_York")
+  format <- test_all_formats()
+
+  expect_snapshot_output(
+    cat(date_format(x, format = format))
+  )
+  expect_snapshot_output(
+    cat(date_format(x, format = format, locale = clock_locale("fr")))
+  )
+})
+
+# ------------------------------------------------------------------------------
 # vec_arith()
 
 test_that("<posixt> op <duration>", {

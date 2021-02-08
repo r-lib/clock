@@ -34,6 +34,82 @@
 
     `origin` must have length 1.
 
+# can format dates
+
+    C: 20
+    y: 18
+    Y: 2018
+    b: Dec
+    h: Dec
+    B: December
+    m: 12
+    d: 31
+    a: Mon
+    A: Monday
+    w: 1
+    g: 19
+    G: 2019
+    V: 01
+    u: 1
+    U: 52
+    W: 53
+    j: 365
+    D: 12/31/18
+    x: 12/31/18
+    F: 2018-12-31
+    H: 00
+    I: 12
+    M: 00
+    S: 00
+    p: AM
+    R: 00:00
+    T: 00:00:00
+    X: 00:00:00
+    r: 12:00:00 AM
+    z: +0000
+    Ez: +00:00
+    Z: UTC
+    c: Mon Dec 31 00:00:00 2018
+    %: %
+
+---
+
+    C: 20
+    y: 18
+    Y: 2018
+    b: déc.
+    h: déc.
+    B: décembre
+    m: 12
+    d: 31
+    a: lun.
+    A: lundi
+    w: 1
+    g: 19
+    G: 2019
+    V: 01
+    u: 1
+    U: 52
+    W: 53
+    j: 365
+    D: 12/31/18
+    x: 12/31/18
+    F: 2018-12-31
+    H: 00
+    I: 12
+    M: 00
+    S: 00
+    p: AM
+    R: 00:00
+    T: 00:00:00
+    X: 00:00:00
+    r: 12:00:00 AM
+    z: +0000
+    Ez: +00:00
+    Z: UTC
+    c: lun. déc. 31 00:00:00 2018
+    %: %
+
 # <date> op <duration>
 
     no applicable method for 'add_hours' applied to an object of class "Date"

@@ -129,6 +129,21 @@ test_that("can convert to a month factor", {
 })
 
 # ------------------------------------------------------------------------------
+# date_format()
+
+test_that("can format dates", {
+  x <- as.Date("2018-12-31")
+  format <- test_all_formats()
+
+  expect_snapshot_output(
+    cat(date_format(x, format = format))
+  )
+  expect_snapshot_output(
+    cat(date_format(x, format = format, locale = clock_locale("fr")))
+  )
+})
+
+# ------------------------------------------------------------------------------
 # vec_arith()
 
 test_that("<date> op <duration>", {

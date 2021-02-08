@@ -783,3 +783,55 @@ date_month_factor.Date <- function(x,
   x <- as_year_month_day(x)
   calendar_month_factor(x, ..., labels = labels, abbreviate = abbreviate)
 }
+
+# ------------------------------------------------------------------------------
+
+#' Formatting: date and date-time
+#'
+#' `date_format()` formats a date (Date) or date-time (POSIXct/POSIXlt) using
+#' a `format` string.
+#'
+#' @inheritParams format.clock_zoned_time
+#'
+#' @param x `[Date / POSIXct / POSIXlt]`
+#'
+#'   A date or date-time vector.
+#'
+#' @return A character vector of the formatted input.
+#'
+#' @export
+#' @examples
+#' x <- as.Date("2019-01-01")
+#'
+#' # Date objects are assumed to be UTC
+#' date_format(x, format = "%Y-%m-%d %z %Z")
+#'
+#' x <- as.POSIXct(
+#'   c("1970-04-26 01:30:00", "1970-04-26 03:30:00"),
+#'   tz = "America/New_York"
+#' )
+#'
+#' date_format(x, format = "%B %d, %Y %H:%M:%S")
+#'
+#' # By default, `%Z` uses the full zone name, but you can switch to the
+#' # abbreviated name
+#' date_format(x, format = "%z %Z")
+#' date_format(x, format = "%z %Z", abbreviate_zone = TRUE)
+date_format <- function(x,
+                        ...,
+                        format = NULL,
+                        locale = clock_locale(),
+                        abbreviate_zone = FALSE) {
+  UseMethod("date_format")
+}
+
+#' @export
+date_format.Date <- function(x,
+                             ...,
+                             format = NULL,
+                             locale = clock_locale(),
+                             abbreviate_zone = FALSE) {
+  check_dots_empty()
+  x <- as_zoned_time(x)
+  format(x, format = format, locale = locale, abbreviate_zone = abbreviate_zone)
+}
