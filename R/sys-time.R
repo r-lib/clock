@@ -185,6 +185,11 @@ as_zoned.clock_sys_time <- function(x, zone, ...) {
   new_zoned_time_from_fields(x, precision, zone, names)
 }
 
+#' @export
+as.character.clock_sys_time <- function(x, ...) {
+  format(x)
+}
+
 # ------------------------------------------------------------------------------
 
 #' What is the current sys-time?

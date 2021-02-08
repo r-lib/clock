@@ -1,4 +1,15 @@
 # ------------------------------------------------------------------------------
+# as.character()
+
+test_that("as.character() works", {
+  x <- as_sys(year_month_day(2019, 1, 1))
+  expect_identical(as.character(x), "2019-01-01")
+
+  x <- as_sys(year_month_day(2019, 1, 1, 1, 1))
+  expect_identical(as.character(x), "2019-01-01 01:01")
+})
+
+# ------------------------------------------------------------------------------
 # sys_parse()
 
 # Note: Most tests are in `naive_parse()`. They share an implementation.

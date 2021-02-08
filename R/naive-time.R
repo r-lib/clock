@@ -499,6 +499,12 @@ validate_ambiguous_list <- function(ambiguous, size, zone) {
   list(reference = reference, ambiguous = ambiguous)
 }
 
+
+#' @export
+as.character.clock_naive_time <- function(x, ...) {
+  format(x)
+}
+
 # ------------------------------------------------------------------------------
 
 #' @export

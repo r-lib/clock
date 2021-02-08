@@ -1,4 +1,15 @@
 # ------------------------------------------------------------------------------
+# as.character()
+
+test_that("as.character() works", {
+  x <- as_naive(year_month_day(2019, 1, 1))
+  expect_identical(as.character(x), "2019-01-01")
+
+  x <- as_naive(year_month_day(2019, 1, 1, 1, 1))
+  expect_identical(as.character(x), "2019-01-01 01:01")
+})
+
+# ------------------------------------------------------------------------------
 # naive_parse()
 
 test_that("can parse day precision", {

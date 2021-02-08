@@ -1,4 +1,14 @@
 # ------------------------------------------------------------------------------
+# as.character()
+
+test_that("as.character() works", {
+  expect <- "2019-01-01 01:02:03-05:00[America/New_York]"
+  x <- zoned_parse(expect)
+  expect_identical(as.character(x), expect)
+})
+
+# ------------------------------------------------------------------------------
+# zoned_parse()
 
 test_that("can parse what we format with seconds precision zoned time", {
   zone <- "America/New_York"

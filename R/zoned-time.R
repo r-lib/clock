@@ -465,6 +465,11 @@ as_naive.clock_zoned_time <- function(x) {
   new_naive_time_from_fields(fields, precision, names)
 }
 
+#' @export
+as.character.clock_zoned_time <- function(x, ...) {
+  format(x)
+}
+
 # ------------------------------------------------------------------------------
 
 #' What is the current zoned-time?
