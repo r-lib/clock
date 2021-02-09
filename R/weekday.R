@@ -118,14 +118,26 @@ is_weekday <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-format.clock_weekday <- function(x, ..., locale = clock_locale()) {
-  if (!is_clock_locale(locale)) {
-    abort("`locale` must be a 'clock_locale' object.")
+format.clock_weekday <- function(x, ..., labels = "en", abbreviate = TRUE) {
+  if (is_character(labels)) {
+    labels <- clock_labels_lookup(labels)
+  }
+  if (!is_clock_labels(labels)) {
+    abort("`labels` must be a 'clock_labels' object.")
   }
 
-  weekday_abbrev <- locale$labels$weekday_abbrev
+  if (!is_bool(abbreviate)) {
+    abort("`abbreviate` must be `TRUE` or `FALSE`.")
+  }
 
-  out <- format_weekday_cpp(x, weekday_abbrev)
+  if (abbreviate) {
+    labels <- labels$weekday_abbrev
+  } else {
+    labels <- labels$weekday
+  }
+
+  out <- format_weekday_cpp(x, labels)
+
   names(out) <- names(x)
 
   out

@@ -368,8 +368,8 @@ weekday_from_time_point_cpp <- function(x) {
   .Call(`_clock_weekday_from_time_point_cpp`, x)
 }
 
-format_weekday_cpp <- function(x, weekday_abbrev) {
-  .Call(`_clock_format_weekday_cpp`, x, weekday_abbrev)
+format_weekday_cpp <- function(x, labels) {
+  .Call(`_clock_format_weekday_cpp`, x, labels)
 }
 
 zone_standardize <- function(zone) {

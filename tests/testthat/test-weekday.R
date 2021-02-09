@@ -1,4 +1,29 @@
 # ------------------------------------------------------------------------------
+# format()
+
+test_that("format - can format() a weekday", {
+  expect_snapshot(format(weekday(0:6)))
+})
+
+test_that("format - can use full names", {
+  expect_snapshot(format(weekday(0:6), abbreviate = FALSE))
+})
+
+test_that("format - can use a different locale", {
+  expect_snapshot(format(weekday(0:6), labels = "fr", abbreviate = FALSE))
+})
+
+test_that("format - `labels` is validated", {
+  expect_snapshot_error(format(weekday(1), labels = 1))
+})
+
+test_that("format - `abbreviate` is validated", {
+  expect_snapshot_error(format(weekday(1), abbreviate = "foo"))
+  expect_snapshot_error(format(weekday(1), abbreviate = 1))
+  expect_snapshot_error(format(weekday(1), abbreviate = c(TRUE, FALSE)))
+})
+
+# ------------------------------------------------------------------------------
 # weekday_factor()
 
 test_that("can make a weekday factor sunday->saturday", {
