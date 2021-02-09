@@ -27,6 +27,10 @@
 
     Can't convert `origin` <datetime<America/New_York>> to <time_point<naive><day>>.
 
+# `by` must be at least 'week' precision (#120)
+
+    `by` must be at least 'week' precision.
+
 # can't mix clocks in seq()
 
     Can't convert `to` <time_point<naive><second>> to match type of `from` <time_point<sys><second>>.
@@ -35,4 +39,8 @@
 
     Can't convert `to` <time_point<naive><second>> to match type of `from` <time_point<naive><day>>.
     Can't cast to a less precise precision.
+
+# duration to add to a time-point must have at least week precision (#120)
+
+    `y` must be at least 'week' precision.
 

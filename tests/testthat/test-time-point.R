@@ -131,6 +131,15 @@ test_that("`by` can be a duration", {
   )
 })
 
+test_that("`by` must be at least 'week' precision (#120)", {
+  expect_identical(
+    seq(naive_seconds(0), by = duration_weeks(1), length.out = 2),
+    naive_seconds(0) + duration_weeks(c(0, 1))
+  )
+
+  expect_snapshot_error(seq(naive_seconds(0), by = duration_years(1), length.out = 2))
+})
+
 test_that("can't mix clocks in seq()", {
   expect_snapshot_error(seq(sys_seconds(0), to = naive_seconds(5), by = 1))
 })
@@ -151,3 +160,11 @@ test_that("can make nanosecond precision seqs", {
   expect_identical(seq(x, by = 2, length.out = 5), x + c(0, 2, 4, 6, 8))
   expect_identical(seq(x, y, by = 3), x + c(0, 3, 6, 9))
 })
+
+# ------------------------------------------------------------------------------
+# vec_arith()
+
+test_that("duration to add to a time-point must have at least week precision (#120)", {
+  expect_snapshot_error(naive_seconds(0) + duration_years(1))
+})
+

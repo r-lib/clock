@@ -43,7 +43,7 @@ sys_parse <- function(x,
                       format = NULL,
                       precision = "second",
                       locale = clock_locale()) {
-  precision <- validate_time_point_precision(precision)
+  precision <- validate_time_point_precision_string(precision)
 
   fields <- time_point_parse(
     x = x,
