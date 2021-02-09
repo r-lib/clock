@@ -863,3 +863,10 @@ date_set_zone.POSIXt <- function(x, zone) {
   zone <- zone_validate(zone)
   posixt_set_tzone(x, zone)
 }
+
+# ------------------------------------------------------------------------------
+
+date_time_parse <- function(x, ..., format = NULL, locale = clock_locale()) {
+  x <- zoned_parse(x, ..., format = format, precision = "second", locale = locale)
+  as.POSIXct(x)
+}

@@ -162,6 +162,16 @@ test_that("can't set the zone of a Date", {
 })
 
 # ------------------------------------------------------------------------------
+# date_parse()
+
+test_that("parsing with `%z` can shift the returned Date", {
+  expect_identical(
+    date_parse("2019-12-31 23:59:59-0500", format = "%Y-%m-%d %H:%M:%S%z"),
+    as.Date("2020-01-01")
+  )
+})
+
+# ------------------------------------------------------------------------------
 # vec_arith()
 
 test_that("<date> op <duration>", {

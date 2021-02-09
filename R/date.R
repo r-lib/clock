@@ -911,3 +911,10 @@ date_zone.Date <- function(x) {
 date_set_zone.Date <- function(x, zone) {
   abort("'Date' objects are required to be UTC.")
 }
+
+# ------------------------------------------------------------------------------
+
+date_parse <- function(x, ..., format = NULL, locale = clock_locale()) {
+  x <- sys_parse(x, ..., format = format, precision = "day", locale = locale)
+  as.Date(x)
+}

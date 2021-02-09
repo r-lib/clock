@@ -204,6 +204,16 @@ test_that("can set the zone of a POSIXt", {
 })
 
 # ------------------------------------------------------------------------------
+# date_time_parse()
+
+test_that("can parse into a POSIXct", {
+  expect_identical(
+    date_time_parse("2019-12-31 23:59:59-05:00[America/New_York]"),
+    as.POSIXct("2019-12-31 23:59:59", tz = "America/New_York")
+  )
+})
+
+# ------------------------------------------------------------------------------
 # vec_arith()
 
 test_that("<posixt> op <duration>", {
