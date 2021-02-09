@@ -164,7 +164,17 @@ test_that("seq(to, length.out) works", {
   expect_identical(seq(duration_years(0L), to = duration_years(4L), length.out = 1), duration_years(c(0L)))
   expect_identical(seq(duration_years(0L), to = duration_years(4L), length.out = 5), duration_years(c(0:4)))
 
+  expect_identical(seq(duration_years(0L), to = duration_years(-4L), length.out = 2), duration_years(c(0L, -4L)))
+  expect_identical(seq(duration_years(0L), to = duration_years(-6L), length.out = 3), duration_years(c(0L, -3L, -6L)))
+
   expect_identical(seq(duration_years(0L), to = duration_years(4L), along.with = 1:2), duration_years(c(0L, 4L)))
+})
+
+test_that("seq(to, length.out = 1) is special cased to return `from`", {
+  expect_identical(
+    seq(duration_years(1), duration_months(24), length.out = 1),
+    duration_months(12)
+  )
 })
 
 test_that("seq(by, length.out) works", {
@@ -176,4 +186,11 @@ test_that("seq(by, length.out) works", {
 
 test_that("common type of `from` and `to` is taken", {
   expect_identical(seq(duration_years(0), to = duration_months(5), by = 2), duration_months(c(0, 2, 4)))
+})
+
+test_that("special test to ensure we never lose precision (i.e. by trying to convert to double)", {
+  expect_identical(
+    seq(duration_nanoseconds(0), duration_years(10), length.out = 3),
+    duration_nanoseconds(0) + duration_years(c(0, 5, 10))
+  )
 })

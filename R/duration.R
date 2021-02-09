@@ -584,50 +584,17 @@ seq.clock_duration <- function(from,
 }
 
 duration_seq_to_by <- function(from, to, by) {
-  precision <- duration_precision(from)
-  zero <- duration_helper(0L, precision)
-
-  # Base seq() requires negative `by` when creating a decreasing seq, so this
-  # helps be compatible with that.
-  if (from > to && by > zero) {
-    abort("When `from` is greater than `to`, `by` must be negative.")
-  }
-  if (from < to && by < zero) {
-    abort("When `from` is less than `to`, `by` must be positive.")
-  }
-
   names <- NULL
+  precision <- duration_precision(from)
   fields <- duration_seq_to_by_cpp(from, precision, to, by)
   new_duration_from_fields(fields, precision, names)
 }
 
 duration_seq_to_lo <- function(from, to, length.out) {
-  start <- from
-
-  to <- to - from
-  # TODO: Will often generate `NA`
-  to <- as.integer(to)
-
-  from <- 0L
-
-  steps <- seq.int(from, to, length.out = length.out)
-
-  tryCatch(
-    expr = {
-      steps <- vec_cast(steps, integer())
-    },
-    vctrs_error_cast_lossy = function(cnd) {
-      message <- paste0(
-        "Usage of `length.out` or `along.with` must generate a non-fractional ",
-        "sequence between `from` and `to`."
-      )
-      abort(message)
-    }
-  )
-
-  steps <- duration_helper(steps, duration_precision(start))
-
-  start + steps
+  names <- NULL
+  precision <- duration_precision(from)
+  fields <- duration_seq_to_lo_cpp(from, precision, to, length.out)
+  new_duration_from_fields(fields, precision, names)
 }
 
 duration_seq_by_lo <- function(from, by, length.out) {

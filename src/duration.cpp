@@ -1320,6 +1320,15 @@ duration_seq_to_by_impl(const ClockDuration& from,
   const Duration end = to[0];
   const Duration step = by[0];
 
+  // Base seq() requires negative `by` when creating a decreasing seq, so this
+  // helps be compatible with that.
+  if (start > end && step > Duration{0}) {
+    clock_abort("When `from` is greater than `to`, `by` must be negative.");
+  }
+  if (start < end && step < Duration{0}) {
+    clock_abort("When `from` is less than `to`, `by` must be positive.");
+  }
+
   const r_ssize size = static_cast<r_ssize>((end - start) / step + 1);
 
   ClockDuration out(size);
@@ -1403,4 +1412,111 @@ duration_seq_to_by_cpp(cpp11::list_of<cpp11::integers> from,
   }
 
   never_reached("duration_seq_to_by_cpp");
+}
+
+template <class ClockDuration>
+static
+inline
+cpp11::writable::list
+duration_seq_to_lo_impl(const ClockDuration& from,
+                        const ClockDuration& to,
+                        const r_ssize& size) {
+  using Duration = typename ClockDuration::duration;
+  using Rep = typename Duration::rep;
+
+  ClockDuration out(size);
+
+  const Duration start = from[0];
+  const Duration end = to[0];
+
+  if (size == 1) {
+    // Avoid division by zero
+    out.assign(start, 0);
+    return out.to_list();
+  }
+
+  const Rep num = end.count() - start.count();
+  const Rep den = static_cast<Rep>(size - 1);
+
+  const Rep by = num / den;
+  const Rep rem = num % den;
+
+  if (rem != Rep{0}) {
+    clock_abort(
+      "Usage of `length.out` or `along.with` must generate a non-fractional "
+      "sequence between `from` and `to`."
+    );
+  }
+
+  const Duration step{by};
+
+  for (r_ssize i = 0; i < size; ++i) {
+    const Duration elt = start + step * i;
+    out.assign(elt, i);
+  }
+
+  return out.to_list();
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+duration_seq_to_lo_cpp(cpp11::list_of<cpp11::integers> from,
+                       const cpp11::integers& precision_int,
+                       cpp11::list_of<cpp11::integers> to,
+                       const cpp11::integers& length_out) {
+  using namespace rclock;
+
+  const cpp11::integers from_ticks = duration::get_ticks(from);
+  const cpp11::integers from_ticks_of_day = duration::get_ticks_of_day(from);
+  const cpp11::integers from_ticks_of_second = duration::get_ticks_of_second(from);
+
+  const duration::years from_dy{from_ticks};
+  const duration::quarters from_dq{from_ticks};
+  const duration::months from_dm{from_ticks};
+  const duration::weeks from_dw{from_ticks};
+  const duration::days from_dd{from_ticks};
+  const duration::hours from_dh{from_ticks, from_ticks_of_day};
+  const duration::minutes from_dmin{from_ticks, from_ticks_of_day};
+  const duration::seconds from_ds{from_ticks, from_ticks_of_day};
+  const duration::milliseconds from_dmilli{from_ticks, from_ticks_of_day, from_ticks_of_second};
+  const duration::microseconds from_dmicro{from_ticks, from_ticks_of_day, from_ticks_of_second};
+  const duration::nanoseconds from_dnano{from_ticks, from_ticks_of_day, from_ticks_of_second};
+
+  const cpp11::integers to_ticks = duration::get_ticks(to);
+  const cpp11::integers to_ticks_of_day = duration::get_ticks_of_day(to);
+  const cpp11::integers to_ticks_of_second = duration::get_ticks_of_second(to);
+
+  const duration::years to_dy{to_ticks};
+  const duration::quarters to_dq{to_ticks};
+  const duration::months to_dm{to_ticks};
+  const duration::weeks to_dw{to_ticks};
+  const duration::days to_dd{to_ticks};
+  const duration::hours to_dh{to_ticks, to_ticks_of_day};
+  const duration::minutes to_dmin{to_ticks, to_ticks_of_day};
+  const duration::seconds to_ds{to_ticks, to_ticks_of_day};
+  const duration::milliseconds to_dmilli{to_ticks, to_ticks_of_day, to_ticks_of_second};
+  const duration::microseconds to_dmicro{to_ticks, to_ticks_of_day, to_ticks_of_second};
+  const duration::nanoseconds to_dnano{to_ticks, to_ticks_of_day, to_ticks_of_second};
+
+  if (length_out.size() != 1) {
+    clock_abort("Internal error: `length_out` should have size 1.");
+  }
+
+  const r_ssize size = length_out[0];
+
+  switch (parse_precision(precision_int)) {
+  case precision::year: return duration_seq_to_lo_impl(from_dy, to_dy, size);
+  case precision::quarter: return duration_seq_to_lo_impl(from_dq, to_dq, size);
+  case precision::month: return duration_seq_to_lo_impl(from_dm, to_dm, size);
+  case precision::week: return duration_seq_to_lo_impl(from_dw, to_dw, size);
+  case precision::day: return duration_seq_to_lo_impl(from_dd, to_dd, size);
+  case precision::hour: return duration_seq_to_lo_impl(from_dh, to_dh, size);
+  case precision::minute: return duration_seq_to_lo_impl(from_dmin, to_dmin, size);
+  case precision::second: return duration_seq_to_lo_impl(from_ds, to_ds, size);
+  case precision::millisecond: return duration_seq_to_lo_impl(from_dmilli, to_dmilli, size);
+  case precision::microsecond: return duration_seq_to_lo_impl(from_dmicro, to_dmicro, size);
+  case precision::nanosecond: return duration_seq_to_lo_impl(from_dnano, to_dnano, size);
+  }
+
+  never_reached("duration_seq_to_lo_cpp");
 }
