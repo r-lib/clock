@@ -24,6 +24,14 @@ test_that("format - `abbreviate` is validated", {
 })
 
 # ------------------------------------------------------------------------------
+# as.character()
+
+test_that("as.character() works", {
+  x <- weekday(0:6)
+  expect_identical(as.character(x), format(x))
+})
+
+# ------------------------------------------------------------------------------
 # weekday_factor()
 
 test_that("can make a weekday factor sunday->saturday", {

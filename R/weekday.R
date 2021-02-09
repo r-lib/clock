@@ -206,6 +206,13 @@ as_weekday.clock_calendar <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+as.character.clock_weekday <- function(x, ...) {
+  format(x)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Extract weekday encodings
 #'
 #' `weekday_encoding()` extracts out an integer encoding for the weekday.
