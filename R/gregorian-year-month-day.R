@@ -1113,3 +1113,74 @@ calendar_widen.clock_year_month_day <- function(x, precision) {
 
   x
 }
+
+# ------------------------------------------------------------------------------
+
+#' Sequences: year-month-day
+#'
+#' @description
+#' This is a year-month-day method for the [seq()] generic.
+#'
+#' Sequences can only be generated for `"year"` and `"month"` precision
+#' year-month-day vectors.
+#'
+#' When calling `seq()`, exactly two of the following must be specified:
+#' - `to`
+#' - `by`
+#' - Either `length.out` or `along.with`
+#'
+#' @inheritParams seq.clock_duration
+#'
+#' @param from `[clock_year_month_day(1)]`
+#'
+#'   A `"year"` or `"month"` precision year-month-day to start the sequence
+#'   from.
+#'
+#'   `from` is always included in the result.
+#'
+#' @param to `[clock_year_month_day(1) / NULL]`
+#'
+#'   A `"year"` or `"month"` precision year-month-day to stop the sequence
+#'   at.
+#'
+#'   `to` is cast to the type of `from`.
+#'
+#'   `to` is only included in the result if the resulting sequence divides
+#'   the distance between `from` and `to` exactly.
+#'
+#' @return A sequence with the type of `from`.
+#'
+#' @export
+#' @examples
+#' # Monthly sequence
+#' x <- seq(year_month_day(2019, 1), year_month_day(2020, 12), by = 1)
+#' x
+#'
+#' # Which we can then set the day of to get a sequence of end-of-month values
+#' set_day(x, "last")
+#'
+#' # Daily sequences are not allowed. Use a naive-time for this instead.
+#' try(seq(year_month_day(2019, 1, 1), by = 2, length.out = 2))
+#' seq(as_naive(year_month_day(2019, 1, 1)), by = 2, length.out = 2)
+seq.clock_year_month_day <- function(from,
+                                     to = NULL,
+                                     by = NULL,
+                                     length.out = NULL,
+                                     along.with = NULL,
+                                     ...) {
+  precision <- calendar_precision(from)
+
+  if (precision > PRECISION_MONTH) {
+    abort("`from` must be 'year' or 'month' precision.")
+  }
+
+  seq_impl(
+    from = from,
+    to = to,
+    by = by,
+    length.out = length.out,
+    along.with = along.with,
+    precision = precision,
+    ...
+  )
+}

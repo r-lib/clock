@@ -94,3 +94,60 @@ test_that("`origin` can't be Date or POSIXt", {
   expect_snapshot_error(time_point_floor(x, "day", origin = origin2))
 })
 
+# ------------------------------------------------------------------------------
+# seq()
+
+test_that("seq(to, by) works", {
+  expect_identical(seq(sys_days(0L), to = sys_days(4L), by = 2), sys_days(c(0L, 2L, 4L)))
+  expect_identical(seq(sys_days(0L), to = sys_days(5L), by = 2), sys_days(c(0L, 2L, 4L)))
+
+  expect_identical(seq(sys_seconds(0L), to = sys_seconds(-4L), by = -2), sys_seconds(c(0L, -2L, -4L)))
+  expect_identical(seq(sys_seconds(0L), to = sys_seconds(-5L), by = -2), sys_seconds(c(0L, -2L, -4L)))
+})
+
+test_that("seq(to, length.out) works", {
+  expect_identical(seq(naive_days(0L), to = naive_days(4L), length.out = 2), naive_days(c(0L, 4L)))
+  expect_identical(seq(naive_days(0L), to = naive_days(4L), length.out = 1), naive_days(c(0L)))
+  expect_identical(seq(naive_days(0L), to = naive_days(4L), length.out = 5), naive_days(c(0:4)))
+
+  expect_identical(seq(naive_seconds(0L), to = naive_seconds(4L), along.with = 1:2), naive_seconds(c(0L, 4L)))
+})
+
+test_that("seq(by, length.out) works", {
+  expect_identical(seq(naive_seconds(0L), by = 2, length.out = 3), naive_seconds(c(0L, 2L, 4L)))
+  expect_identical(seq(naive_seconds(0L), by = -2, length.out = 3), naive_seconds(c(0L, -2L, -4L)))
+
+  expect_identical(seq(naive_seconds(0L), by = 2, along.with = 1:3), naive_seconds(c(0L, 2L, 4L)))
+})
+
+test_that("`by` can be a duration", {
+  expect_identical(
+    seq(naive_seconds(0), to = naive_seconds(1000), by = duration_minutes(1)),
+    seq(naive_seconds(0), to = naive_seconds(1000), by = 60)
+  )
+  expect_identical(
+    seq(as_naive(duration_nanoseconds(0)), to = as_naive(duration_nanoseconds(2e9)), by = duration_seconds(1)),
+    seq(as_naive(duration_nanoseconds(0)), to = as_naive(duration_nanoseconds(2e9)), by = 1e9)
+  )
+})
+
+test_that("can't mix clocks in seq()", {
+  expect_snapshot_error(seq(sys_seconds(0), to = naive_seconds(5), by = 1))
+})
+
+test_that("`to` is always cast to `from`", {
+  expect_identical(
+    seq(naive_seconds(0), to = naive_days(12), by = duration_days(2)),
+    seq(naive_seconds(0), to = naive_seconds(12 * 86400), by = 86400 * 2)
+  )
+
+  expect_snapshot_error(seq(naive_days(0), to = naive_seconds(5), by = 2))
+})
+
+test_that("can make nanosecond precision seqs", {
+  x <- as_naive(duration_nanoseconds(0))
+  y <- as_naive(duration_nanoseconds(10))
+
+  expect_identical(seq(x, by = 2, length.out = 5), x + c(0, 2, 4, 6, 8))
+  expect_identical(seq(x, y, by = 3), x + c(0, 3, 6, 9))
+})

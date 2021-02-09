@@ -496,6 +496,214 @@ duration_rounder <- function(x, precision, n, rounder, verb, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Sequences: duration
+#'
+#' @description
+#' This is a duration method for the [seq()] generic.
+#'
+#' Using `seq()` on duration objects always retains the type of `from`.
+#'
+#' When calling `seq()`, exactly two of the following must be specified:
+#' - `to`
+#' - `by`
+#' - Either `length.out` or `along.with`
+#'
+#' @inheritParams ellipsis::dots_empty
+#'
+#' @param from `[clock_duration(1)]`
+#'
+#'   A duration to start the sequence from.
+#'
+#'   `from` is always included in the result.
+#'
+#' @param to `[clock_duration(1) / NULL]`
+#'
+#'   A duration to stop the sequence at.
+#'
+#'   `to` is cast to the type of `from`.
+#'
+#'   `to` is only included in the result if the resulting sequence divides
+#'   the distance between `from` and `to` exactly.
+#'
+#' @param by `[integer(1) / clock_duration(1) / NULL]`
+#'
+#'   The unit to increment the sequence by.
+#'
+#'   If `to < from`, then `by` must be positive.
+#'
+#'   If `to > from`, then `by` must be negative.
+#'
+#'   If `by` is an integer, it is transformed into a duration with the
+#'   precision of `from`.
+#'
+#'   If `by` is a duration, it is cast to the type of `from`.
+#'
+#' @param length.out `[positive integer(1) / NULL]`
+#'
+#'   The length of the resulting sequence.
+#'
+#'   If specified, `along.with` must be `NULL`.
+#'
+#' @param along.with `[vector / NULL]`
+#'
+#'   A vector who's length determines the length of the resulting sequence.
+#'
+#'   Equivalent to `length.out = vec_size(along.with)`.
+#'
+#'   If specified, `length.out` must be `NULL`.
+#'
+#' @return A sequence with the type of `from`.
+#'
+#' @export
+#' @examples
+#' seq(duration_days(0), duration_days(100), by = 5)
+#'
+#' # Using a duration `by`. Note that `by` is cast to the type of `from`.
+#' seq(duration_days(0), duration_days(100), by = duration_weeks(1))
+#'
+#' # `to` is cast from 5 years to 60 months
+#' # `by` is cast from 1 quarter to 4 months
+#' seq(duration_months(0), duration_years(5), by = duration_quarters(1))
+#'
+#' seq(duration_days(20), by = 2, length.out = 5)
+seq.clock_duration <- function(from,
+                               to = NULL,
+                               by = NULL,
+                               length.out = NULL,
+                               along.with = NULL,
+                               ...) {
+  check_dots_empty()
+
+  vec_assert(from, size = 1L)
+  if (is.na(from)) {
+    abort("`from` can't be `NA`.")
+  }
+
+  has_to <- !is_null(to)
+  has_by <- !is_null(by)
+  has_lo <- !is_null(length.out)
+  has_aw <- !is_null(along.with)
+
+  if (has_aw) {
+    if (has_lo) {
+      abort("Can only specify one of `length.out` and `along.with`.")
+    } else {
+      has_lo <- TRUE
+      length.out <- vec_size(along.with)
+    }
+  }
+
+  n_has <- sum(has_to, has_by, has_lo)
+
+  if (n_has != 2L) {
+    message <- paste0(
+      "Must specify exactly two of:\n",
+      "- `to`\n",
+      "- `by`\n",
+      "- Either `length.out` or `along.with`"
+    )
+    abort(message)
+  }
+
+  if (has_to) {
+    to <- vec_cast(to, from, x_arg = "to", to_arg = "from")
+
+    vec_assert(to, size = 1L, arg = "to")
+    if (is.na(to)) {
+      abort("`to` can't be `NA`.")
+    }
+  }
+
+  if (has_by) {
+    precision <- duration_precision(from)
+    by <- duration_collect_by(by, precision)
+
+    vec_assert(by, size = 1L, arg = "by")
+    if (is.na(by)) {
+      abort("`by` can't be `NA`.")
+    }
+    if (by == duration_helper(0L, precision)) {
+      abort("`by` can't be `0`.")
+    }
+  }
+
+  if (has_lo) {
+    length.out <- vec_cast(length.out, integer(), x_arg = "length.out")
+
+    vec_assert(length.out, size = 1L, arg = "length.out")
+    if (is.na(length.out)) {
+      abort("`length.out` can't be `NA`.")
+    }
+    if (length.out < 0) {
+      abort("`length.out` can't be negative.")
+    }
+  }
+
+  if (has_to) {
+    if (has_by) {
+      duration_seq_to_by(from, to, by)
+    } else {
+      duration_seq_to_lo(from, to, length.out)
+    }
+  } else {
+    duration_seq_by_lo(from, by, length.out)
+  }
+}
+
+duration_seq_to_by <- function(from, to, by) {
+  names <- NULL
+  precision <- duration_precision(from)
+  fields <- duration_seq_to_by_cpp(from, precision, to, by)
+  new_duration_from_fields(fields, precision, names)
+}
+
+duration_seq_to_lo <- function(from, to, length.out) {
+  names <- NULL
+  precision <- duration_precision(from)
+  fields <- duration_seq_to_lo_cpp(from, precision, to, length.out)
+  new_duration_from_fields(fields, precision, names)
+}
+
+duration_seq_by_lo <- function(from, by, length.out) {
+  names <- NULL
+  precision <- duration_precision(from)
+  fields <- duration_seq_by_lo_cpp(from, precision, by, length.out)
+  new_duration_from_fields(fields, precision, names)
+}
+
+duration_collect_by <- function(by, precision) {
+  if (is_duration(by)) {
+    to <- duration_helper(integer(), precision)
+    vec_cast(by, to, x_arg = "by")
+  } else {
+    duration_helper(by, precision)
+  }
+}
+
+# Used by other methods that eventually call the duration seq() method
+seq_impl <- function(from, to, by, length.out, along.with, precision, ...) {
+  if (!is_null(to)) {
+    to <- vec_cast(to, from, x_arg = "to", to_arg = "from")
+    to <- to - from
+  }
+
+  start <- from
+  from <- duration_helper(0L, precision)
+
+  steps <- seq(
+    from = from,
+    to = to,
+    by = by,
+    length.out = length.out,
+    along.with = along.with,
+    ...
+  )
+
+  start + steps
+}
+
+# ------------------------------------------------------------------------------
+
 #' @export
 #' @method vec_arith clock_duration
 vec_arith.clock_duration <- function(op, x, y, ...) {

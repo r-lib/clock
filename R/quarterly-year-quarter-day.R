@@ -977,6 +977,73 @@ calendar_widen.clock_year_quarter_day <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Sequences: year-quarter-day
+#'
+#' @description
+#' This is a year-quarter-day method for the [seq()] generic.
+#'
+#' Sequences can only be generated for `"year"` and `"quarter"` precision
+#' year-quarter-day vectors.
+#'
+#' When calling `seq()`, exactly two of the following must be specified:
+#' - `to`
+#' - `by`
+#' - Either `length.out` or `along.with`
+#'
+#' @inheritParams seq.clock_duration
+#'
+#' @param from `[clock_year_quarter_day(1)]`
+#'
+#'   A `"year"` or `"quarter"` precision year-quarter-day to start the sequence
+#'   from.
+#'
+#'   `from` is always included in the result.
+#'
+#' @param to `[clock_year_quarter_day(1) / NULL]`
+#'
+#'   A `"year"` or `"quarter"` precision year-quarter-day to stop the sequence
+#'   at.
+#'
+#'   `to` is cast to the type of `from`.
+#'
+#'   `to` is only included in the result if the resulting sequence divides
+#'   the distance between `from` and `to` exactly.
+#'
+#' @return A sequence with the type of `from`.
+#'
+#' @export
+#' @examples
+#' # Quarterly sequence
+#' x <- seq(year_quarter_day(2020, 1), year_quarter_day(2026, 3), by = 2)
+#' x
+#'
+#' # Which we can then set the day of the quarter of
+#' set_day(x, "last")
+seq.clock_year_quarter_day <- function(from,
+                                       to = NULL,
+                                       by = NULL,
+                                       length.out = NULL,
+                                       along.with = NULL,
+                                       ...) {
+  precision <- calendar_precision(from)
+
+  if (precision > PRECISION_QUARTER) {
+    abort("`from` must be 'year' or 'quarter' precision.")
+  }
+
+  seq_impl(
+    from = from,
+    to = to,
+    by = by,
+    length.out = length.out,
+    along.with = along.with,
+    precision = precision,
+    ...
+  )
+}
+
+# ------------------------------------------------------------------------------
+
 quarterly_start <- function(x) {
   attr(x, "start", exact = TRUE)
 }

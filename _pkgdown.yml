@@ -46,6 +46,7 @@ reference:
   - calendar_group.clock_year_month_day
   - year-month-day-narrow
   - year-month-day-widen
+  - seq.clock_year_month_day
   - add_years.clock_year_month_day
   - get_year.clock_year_month_day
   - set_year.clock_year_month_day
@@ -58,6 +59,7 @@ reference:
   - calendar_group.clock_year_month_weekday
   - year-month-weekday-narrow
   - year-month-weekday-widen
+  - seq.clock_year_month_weekday
   - add_years.clock_year_month_weekday
   - get_year.clock_year_month_weekday
   - set_year.clock_year_month_weekday
@@ -70,6 +72,7 @@ reference:
   - calendar_group.clock_iso_year_week_day
   - iso-year-week-day-narrow
   - iso-year-week-day-widen
+  - seq.clock_iso_year_week_day
   - add_years.clock_iso_year_week_day
   - get_year.clock_iso_year_week_day
   - set_year.clock_iso_year_week_day
@@ -82,6 +85,7 @@ reference:
   - calendar_group.clock_year_quarter_day
   - year-quarter-day-narrow
   - year-quarter-day-widen
+  - seq.clock_year_quarter_day
   - add_years.clock_year_quarter_day
   - get_year.clock_year_quarter_day
   - set_year.clock_year_quarter_day
@@ -97,6 +101,7 @@ reference:
   - is_duration
   - duration_cast
   - duration-rounding
+  - seq.clock_duration
   - duration-arithmetic
 
 - title: Time points
@@ -108,6 +113,7 @@ reference:
   - is_sys
   - time_point_cast
   - time-point-rounding
+  - seq.clock_time_point
   - add_weeks.clock_time_point
   - as-zoned-time-naive-time
   - as-zoned-time-sys-time

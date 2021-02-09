@@ -241,6 +241,47 @@ test_that("`abbreviate` is validated", {
 })
 
 # ------------------------------------------------------------------------------
+# seq()
+
+test_that("only granular precisions are allowed", {
+  expect_snapshot_error(seq(year_month_day(2019, 1, 1), by = 1, length.out = 2))
+})
+
+test_that("seq(to, by) works", {
+  expect_identical(seq(year_month_day(2019, 1), to = year_month_day(2019, 6), by = 2), year_month_day(2019, c(1, 3, 5)))
+  expect_identical(seq(year_month_day(2019, 1), to = year_month_day(2019, 5), by = 2), year_month_day(2019, c(1, 3, 5)))
+
+  expect_identical(seq(year_month_day(2019, 1), to = year_month_day(2018, 9), by = -2), year_month_day(c(2019, 2018, 2018), c(1, 11, 9)))
+  expect_identical(seq(year_month_day(2019, 1), to = year_month_day(2018, 8), by = -2), year_month_day(c(2019, 2018, 2018), c(1, 11, 9)))
+})
+
+test_that("seq(to, length.out) works", {
+  expect_identical(seq(year_month_day(2019, 1), to = year_month_day(2019, 5), length.out = 2), year_month_day(2019, c(1, 5)))
+  expect_identical(seq(year_month_day(2019, 1), to = year_month_day(2019, 5), length.out = 1), year_month_day(2019, 1))
+  expect_identical(seq(year_month_day(2019, 1), to = year_month_day(2019, 5), length.out = 5), year_month_day(2019, 1:5))
+
+  expect_identical(seq(year_month_day(2019, 1), to = year_month_day(2019, 5), along.with = 1:2), year_month_day(2019, c(1, 5)))
+})
+
+test_that("seq(by, length.out) works", {
+  expect_identical(seq(year_month_day(2019, 1), by = 2, length.out = 3), year_month_day(2019, c(1, 3, 5)))
+  expect_identical(seq(year_month_day(2019, 1), by = -2, length.out = 3), year_month_day(c(2019, 2018, 2018), c(1, 11, 9)))
+
+  expect_identical(seq(year_month_day(2019, 1), by = 2, along.with = 1:3), year_month_day(2019, c(1, 3, 5)))
+})
+
+test_that("`by` can be a duration", {
+  expect_identical(
+    seq(year_month_day(2019, 1), to = year_month_day(2025, 5), by = duration_years(1)),
+    seq(year_month_day(2019, 1), to = year_month_day(2025, 5), by = 12)
+  )
+  expect_identical(
+    seq(year_month_day(2019, 3), by = duration_years(1), length.out = 5),
+    seq(year_month_day(2019, 3), by = 12, length.out = 5)
+  )
+})
+
+# ------------------------------------------------------------------------------
 # invalid_resolve()
 
 test_that("strict mode can be activated", {

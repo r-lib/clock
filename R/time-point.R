@@ -743,6 +743,82 @@ collect_time_point_rounder_origin <- function(origin, x, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Sequences: time points
+#'
+#' @description
+#' This is a time point method for the [seq()] generic. It works for sys-time
+#' and naive-time vectors.
+#'
+#' Sequences can be generated for all valid time point precisions (daily through
+#' nanosecond).
+#'
+#' When calling `seq()`, exactly two of the following must be specified:
+#' - `to`
+#' - `by`
+#' - Either `length.out` or `along.with`
+#'
+#' @inheritParams seq.clock_duration
+#'
+#' @param from `[clock_sys_time(1) / clock_naive_time(1)]`
+#'
+#'   A time point to start the sequence from.
+#'
+#'   `from` is always included in the result.
+#'
+#' @param to `[clock_sys_time(1) / clock_naive_time(1) / NULL]`
+#'
+#'   A time point to stop the sequence at.
+#'
+#'   `to` is cast to the type of `from`.
+#'
+#'   `to` is only included in the result if the resulting sequence divides
+#'   the distance between `from` and `to` exactly.
+#'
+#' @return A sequence with the type of `from`.
+#'
+#' @export
+#' @examples
+#' # Daily sequence
+#' seq(
+#'   as_naive(year_month_day(2019, 1, 1)),
+#'   as_naive(year_month_day(2019, 2, 4)),
+#'   by = 5
+#' )
+#'
+#' # Minutely sequence using minute precision naive-time
+#' x <- as_naive(year_month_day(2019, 1, 2, 3, 3))
+#' x
+#'
+#' seq(x, by = 4, length.out = 10)
+#'
+#' # You can use larger step sizes by using a duration-based `by`
+#' seq(x, by = duration_days(1), length.out = 5)
+#'
+#' # Nanosecond sequence
+#' from <- time_point_cast(as_naive(year_month_day(2019, 1, 1)), "nanosecond")
+#' to <- from + 100
+#' seq(from, to, by = 10)
+seq.clock_time_point <- function(from,
+                                 to = NULL,
+                                 by = NULL,
+                                 length.out = NULL,
+                                 along.with = NULL,
+                                 ...) {
+  precision <- time_point_precision(from)
+
+  seq_impl(
+    from = from,
+    to = to,
+    by = by,
+    length.out = length.out,
+    along.with = along.with,
+    precision = precision,
+    ...
+  )
+}
+
+# ------------------------------------------------------------------------------
+
 validate_time_point_precision <- function(precision) {
   precision <- validate_precision(precision)
 

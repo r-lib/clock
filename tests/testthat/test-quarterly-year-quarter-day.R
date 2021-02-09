@@ -42,6 +42,32 @@ test_that("can widen to day", {
 })
 
 # ------------------------------------------------------------------------------
+# seq()
+
+test_that("only granular precisions are allowed", {
+  expect_snapshot_error(seq(year_quarter_day(2019, 1, 1), by = 1, length.out = 2))
+})
+
+test_that("seq(to, by) works", {
+  expect_identical(seq(year_quarter_day(2019, 1), to = year_quarter_day(2020, 2), by = 2), year_quarter_day(c(2019, 2019, 2020), c(1, 3, 1)))
+  expect_identical(seq(year_quarter_day(2019, 1), to = year_quarter_day(2020, 1), by = 2), year_quarter_day(c(2019, 2019, 2020), c(1, 3, 1)))
+})
+
+test_that("seq(to, length.out) works", {
+  expect_identical(seq(year_quarter_day(2019, 1), to = year_quarter_day(2020, 2), length.out = 2), year_quarter_day(c(2019, 2020), c(1, 2)))
+  expect_identical(seq(year_quarter_day(2019, 1), to = year_quarter_day(2020, 2), length.out = 6), year_quarter_day(2019, 1) + 0:5)
+
+  expect_identical(seq(year_quarter_day(2019, 1), to = year_quarter_day(2020, 2), along.with = 1:2), year_quarter_day(c(2019, 2020), c(1, 2)))
+})
+
+test_that("seq(by, length.out) works", {
+  expect_identical(seq(year_quarter_day(2019, 1), by = 2, length.out = 3), year_quarter_day(2019, 1) + c(0, 2, 4))
+  expect_identical(seq(year_quarter_day(2019, 1), by = -2, length.out = 3), year_quarter_day(2019, 1) + c(0, -2, -4))
+
+  expect_identical(seq(year_quarter_day(2019, 1), by = 2, along.with = 1:3), year_quarter_day(2019, 1) + c(0, 2, 4))
+})
+
+# ------------------------------------------------------------------------------
 # invalid_resolve()
 
 test_that("strict mode can be activated", {
