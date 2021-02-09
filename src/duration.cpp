@@ -1219,3 +1219,90 @@ duration_as_double_cpp(cpp11::list_of<cpp11::integers> fields,
 
   never_reached("duration_as_double_cpp");
 }
+
+// -----------------------------------------------------------------------------
+
+template <class ClockDuration>
+static
+inline
+cpp11::writable::list
+duration_seq_by_lo_impl(const ClockDuration& from,
+                        const ClockDuration& by,
+                        const r_ssize size) {
+  ClockDuration out(size);
+
+  using Duration = typename ClockDuration::duration;
+
+  const Duration start = from[0];
+  const Duration step = by[0];
+
+  for (r_ssize i = 0; i < size; ++i) {
+    const Duration elt = start + step * i;
+    out.assign(elt, i);
+  }
+
+  return out.to_list();
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+duration_seq_by_lo_cpp(cpp11::list_of<cpp11::integers> from,
+                       const cpp11::integers& precision_int,
+                       cpp11::list_of<cpp11::integers> by,
+                       const cpp11::integers& length_out) {
+  using namespace rclock;
+
+  const cpp11::integers from_ticks = duration::get_ticks(from);
+  const cpp11::integers from_ticks_of_day = duration::get_ticks_of_day(from);
+  const cpp11::integers from_ticks_of_second = duration::get_ticks_of_second(from);
+
+  const duration::years from_dy{from_ticks};
+  const duration::quarters from_dq{from_ticks};
+  const duration::months from_dm{from_ticks};
+  const duration::weeks from_dw{from_ticks};
+  const duration::days from_dd{from_ticks};
+  const duration::hours from_dh{from_ticks, from_ticks_of_day};
+  const duration::minutes from_dmin{from_ticks, from_ticks_of_day};
+  const duration::seconds from_ds{from_ticks, from_ticks_of_day};
+  const duration::milliseconds from_dmilli{from_ticks, from_ticks_of_day, from_ticks_of_second};
+  const duration::microseconds from_dmicro{from_ticks, from_ticks_of_day, from_ticks_of_second};
+  const duration::nanoseconds from_dnano{from_ticks, from_ticks_of_day, from_ticks_of_second};
+
+  const cpp11::integers by_ticks = duration::get_ticks(by);
+  const cpp11::integers by_ticks_of_day = duration::get_ticks_of_day(by);
+  const cpp11::integers by_ticks_of_second = duration::get_ticks_of_second(by);
+
+  const duration::years by_dy{by_ticks};
+  const duration::quarters by_dq{by_ticks};
+  const duration::months by_dm{by_ticks};
+  const duration::weeks by_dw{by_ticks};
+  const duration::days by_dd{by_ticks};
+  const duration::hours by_dh{by_ticks, by_ticks_of_day};
+  const duration::minutes by_dmin{by_ticks, by_ticks_of_day};
+  const duration::seconds by_ds{by_ticks, by_ticks_of_day};
+  const duration::milliseconds by_dmilli{by_ticks, by_ticks_of_day, by_ticks_of_second};
+  const duration::microseconds by_dmicro{by_ticks, by_ticks_of_day, by_ticks_of_second};
+  const duration::nanoseconds by_dnano{by_ticks, by_ticks_of_day, by_ticks_of_second};
+
+  if (length_out.size() != 1) {
+    clock_abort("Internal error: `length_out` should have size 1.");
+  }
+
+  const r_ssize size = length_out[0];
+
+  switch (parse_precision(precision_int)) {
+  case precision::year: return duration_seq_by_lo_impl(from_dy, by_dy, size);
+  case precision::quarter: return duration_seq_by_lo_impl(from_dq, by_dq, size);
+  case precision::month: return duration_seq_by_lo_impl(from_dm, by_dm, size);
+  case precision::week: return duration_seq_by_lo_impl(from_dw, by_dw, size);
+  case precision::day: return duration_seq_by_lo_impl(from_dd, by_dd, size);
+  case precision::hour: return duration_seq_by_lo_impl(from_dh, by_dh, size);
+  case precision::minute: return duration_seq_by_lo_impl(from_dmin, by_dmin, size);
+  case precision::second: return duration_seq_by_lo_impl(from_ds, by_ds, size);
+  case precision::millisecond: return duration_seq_by_lo_impl(from_dmilli, by_dmilli, size);
+  case precision::microsecond: return duration_seq_by_lo_impl(from_dmicro, by_dmicro, size);
+  case precision::nanosecond: return duration_seq_by_lo_impl(from_dnano, by_dnano, size);
+  }
+
+  never_reached("duration_seq_by_lo_cpp");
+}

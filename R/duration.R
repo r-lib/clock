@@ -640,17 +640,10 @@ duration_seq_to_lo <- function(from, to, length.out) {
 }
 
 duration_seq_by_lo <- function(from, by, length.out) {
-  # TODO: Can generate `NA`
-  by <- as.integer(by)
-
-  start <- from
-
-  from <- 0L
-
-  steps <- seq.int(from, by = by, length.out = length.out)
-  steps <- duration_helper(steps, duration_precision(start))
-
-  start + steps
+  names <- NULL
+  precision <- duration_precision(from)
+  fields <- duration_seq_by_lo_cpp(from, precision, by, length.out)
+  new_duration_from_fields(fields, precision, names)
 }
 
 duration_collect_by <- function(by, precision) {
