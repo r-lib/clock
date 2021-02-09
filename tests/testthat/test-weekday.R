@@ -39,7 +39,7 @@ test_that("can make a weekday factor sunday->saturday", {
   x <- weekday(order)
   x <- weekday_factor(x)
 
-  levels <- clock_labels_lookup("en")$weekday
+  levels <- clock_labels_lookup("en")$weekday_abbrev
   data <- levels[order + 1L]
 
   expect_s3_class(x, "ordered")
@@ -52,7 +52,7 @@ test_that("can make a weekday factor monday->sunday", {
   x <- weekday(order)
   x <- weekday_factor(x, encoding = "iso")
 
-  levels <- clock_labels_lookup("en")$weekday
+  levels <- clock_labels_lookup("en")$weekday_abbrev
   data <- levels[order + 1L]
   levels <- levels[c(2:7, 1L)]
 
@@ -61,11 +61,11 @@ test_that("can make a weekday factor monday->sunday", {
   expect_identical(levels(x), levels)
 })
 
-test_that("can make a weekday factor with abbreviations", {
+test_that("can make a weekday factor with full names", {
   x <- weekday(6:0)
-  x <- weekday_factor(x, abbreviate = TRUE)
+  x <- weekday_factor(x, abbreviate = FALSE)
 
-  levels <- clock_labels_lookup("en")$weekday_abbrev
+  levels <- clock_labels_lookup("en")$weekday
 
   expect_identical(levels(x), levels)
 })
@@ -74,7 +74,7 @@ test_that("can make a weekday factor with alternate labels", {
   x <- weekday(6:0)
   x <- weekday_factor(x, labels = "fr")
 
-  levels <- clock_labels_lookup("fr")$weekday
+  levels <- clock_labels_lookup("fr")$weekday_abbrev
 
   expect_identical(levels(x), levels)
 })

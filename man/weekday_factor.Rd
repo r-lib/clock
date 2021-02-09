@@ -4,7 +4,7 @@
 \alias{weekday_factor}
 \title{Convert a weekday to an ordered factor}
 \usage{
-weekday_factor(x, ..., labels = "en", abbreviate = FALSE, encoding = "c")
+weekday_factor(x, ..., labels = "en", abbreviate = TRUE, encoding = "c")
 }
 \arguments{
 \item{x}{\verb{[weekday]}
@@ -51,8 +51,8 @@ weekday_factor(x)
 # ISO encoding is Monday -> Sunday
 weekday_factor(x, encoding = "iso")
 
-# With abbreviations
-weekday_factor(x, abbreviate = TRUE)
+# With full names
+weekday_factor(x, abbreviate = FALSE)
 
 # Or a different language
 weekday_factor(x, labels = "fr")

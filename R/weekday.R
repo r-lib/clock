@@ -302,15 +302,15 @@ weekday_encoding <- function(x, ..., encoding = "c") {
 #' # ISO encoding is Monday -> Sunday
 #' weekday_factor(x, encoding = "iso")
 #'
-#' # With abbreviations
-#' weekday_factor(x, abbreviate = TRUE)
+#' # With full names
+#' weekday_factor(x, abbreviate = FALSE)
 #'
 #' # Or a different language
 #' weekday_factor(x, labels = "fr")
 weekday_factor <- function(x,
                            ...,
                            labels = "en",
-                           abbreviate = FALSE,
+                           abbreviate = TRUE,
                            encoding = "c") {
   check_dots_empty()
 
