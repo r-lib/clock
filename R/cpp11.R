@@ -76,6 +76,10 @@ duration_seq_by_lo_cpp <- function(from, precision_int, by, length_out) {
   .Call(`_clock_duration_seq_by_lo_cpp`, from, precision_int, by, length_out)
 }
 
+duration_seq_to_by_cpp <- function(from, precision_int, to, by) {
+  .Call(`_clock_duration_seq_to_by_cpp`, from, precision_int, to, by)
+}
+
 precision_to_string <- function(precision_int) {
   .Call(`_clock_precision_to_string`, precision_int)
 }

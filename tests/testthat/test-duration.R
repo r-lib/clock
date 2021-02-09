@@ -149,6 +149,14 @@ test_that("seq(to, by = <duration>) works", {
     seq(duration_nanoseconds(0), by = duration_days(2), length.out = 5),
     duration_nanoseconds(0) + duration_days(c(0, 2, 4, 6, 8))
   )
+  expect_identical(
+    seq(duration_nanoseconds(0), to = duration_days(100000), by = duration_days(10000)),
+    duration_nanoseconds(0) + duration_days(seq(0L, 100000L, by = 10000L))
+  )
+  expect_identical(
+    seq(duration_nanoseconds(0), to = -duration_days(100000), by = -duration_days(10000)),
+    duration_nanoseconds(0) - duration_days(seq(0L, 100000L, by = 10000L))
+  )
 })
 
 test_that("seq(to, length.out) works", {

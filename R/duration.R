@@ -584,30 +584,21 @@ seq.clock_duration <- function(from,
 }
 
 duration_seq_to_by <- function(from, to, by) {
-  # TODO: Can generate `NA`
-  by <- as.integer(by)
+  precision <- duration_precision(from)
+  zero <- duration_helper(0L, precision)
 
   # Base seq() requires negative `by` when creating a decreasing seq, so this
   # helps be compatible with that.
-  if (from > to && by > 0L) {
+  if (from > to && by > zero) {
     abort("When `from` is greater than `to`, `by` must be negative.")
   }
-  if (from < to && by < 0L) {
+  if (from < to && by < zero) {
     abort("When `from` is less than `to`, `by` must be positive.")
   }
 
-  start <- from
-
-  to <- to - from
-  # TODO: Will often generate `NA`
-  to <- as.integer(to)
-
-  from <- 0L
-
-  steps <- seq.int(from, to, by = by)
-  steps <- duration_helper(steps, duration_precision(start))
-
-  start + steps
+  names <- NULL
+  fields <- duration_seq_to_by_cpp(from, precision, to, by)
+  new_duration_from_fields(fields, precision, names)
 }
 
 duration_seq_to_lo <- function(from, to, length.out) {
