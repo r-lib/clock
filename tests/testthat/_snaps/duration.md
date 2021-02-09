@@ -83,7 +83,21 @@
 
 ---
 
-    Can't convert `by` <character> to <integer>.
+    `by` can't be `0`.
+
+---
+
+    Can't convert `n` <character> to <integer>.
+
+# `by` must be castable to the common type of `from` and `to`
+
+    Can't convert `by` <duration<day>> to <duration<month>>.
+    Can't cast to a less precise precision.
+
+---
+
+    Can't convert `by` <duration<year>> to <duration<day>>.
+    Duration cast cannot be done exactly.
 
 # seq() validates `length.out`
 

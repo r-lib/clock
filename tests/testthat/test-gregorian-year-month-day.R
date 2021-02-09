@@ -270,6 +270,17 @@ test_that("seq(by, length.out) works", {
   expect_identical(seq(year_month_day(2019, 1), by = 2, along.with = 1:3), year_month_day(2019, c(1, 3, 5)))
 })
 
+test_that("`by` can be a duration", {
+  expect_identical(
+    seq(year_month_day(2019, 1), to = year_month_day(2025, 5), by = duration_years(1)),
+    seq(year_month_day(2019, 1), to = year_month_day(2025, 5), by = 12)
+  )
+  expect_identical(
+    seq(year_month_day(2019, 3), by = duration_years(1), length.out = 5),
+    seq(year_month_day(2019, 3), by = 12, length.out = 5)
+  )
+})
+
 # ------------------------------------------------------------------------------
 # invalid_resolve()
 

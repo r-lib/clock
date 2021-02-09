@@ -120,6 +120,17 @@ test_that("seq(by, length.out) works", {
   expect_identical(seq(naive_seconds(0L), by = 2, along.with = 1:3), naive_seconds(c(0L, 2L, 4L)))
 })
 
+test_that("`by` can be a duration", {
+  expect_identical(
+    seq(naive_seconds(0), to = naive_seconds(1000), by = duration_minutes(1)),
+    seq(naive_seconds(0), to = naive_seconds(1000), by = 60)
+  )
+  expect_identical(
+    seq(as_naive(duration_nanoseconds(0)), to = as_naive(duration_nanoseconds(2e9)), by = duration_seconds(1)),
+    seq(as_naive(duration_nanoseconds(0)), to = as_naive(duration_nanoseconds(2e9)), by = 1e9)
+  )
+})
+
 test_that("can make nanosecond precision seqs", {
   x <- as_naive(duration_nanoseconds(0))
   y <- as_naive(duration_nanoseconds(10))

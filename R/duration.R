@@ -548,13 +548,14 @@ seq.clock_duration <- function(from,
   }
 
   if (has_by) {
-    by <- vec_cast(by, integer(), x_arg = "by")
+    precision <- duration_precision(from)
+    by <- duration_collect_by(by, precision)
 
     vec_assert(by, size = 1L, arg = "by")
     if (is.na(by)) {
       abort("`by` can't be `NA`.")
     }
-    if (identical(by, 0L)) {
+    if (by == duration_helper(0L, precision)) {
       abort("`by` can't be `0`.")
     }
   }
@@ -583,6 +584,9 @@ seq.clock_duration <- function(from,
 }
 
 duration_seq_to_by <- function(from, to, by) {
+  # TODO: Can generate `NA`
+  by <- as.integer(by)
+
   # Base seq() requires negative `by` when creating a decreasing seq, so this
   # helps be compatible with that.
   if (from > to && by > 0L) {
@@ -636,6 +640,9 @@ duration_seq_to_lo <- function(from, to, length.out) {
 }
 
 duration_seq_by_lo <- function(from, by, length.out) {
+  # TODO: Can generate `NA`
+  by <- as.integer(by)
+
   start <- from
 
   from <- 0L
@@ -644,6 +651,15 @@ duration_seq_by_lo <- function(from, by, length.out) {
   steps <- duration_helper(steps, duration_precision(start))
 
   start + steps
+}
+
+duration_collect_by <- function(by, precision) {
+  if (is_duration(by)) {
+    to <- duration_helper(integer(), precision)
+    vec_cast(by, to, x_arg = "by")
+  } else {
+    duration_helper(by, precision)
+  }
 }
 
 # Used by other methods that eventually call the duration seq() method

@@ -90,7 +90,13 @@ test_that("seq() validates `by`", {
   expect_snapshot_error(seq(duration_years(1L), to = duration_years(1L), by = 1:2), class = "vctrs_error_assert_size")
   expect_snapshot_error(seq(duration_years(1L), to = duration_years(1L), by = NA_integer_))
   expect_snapshot_error(seq(duration_years(1L), to = duration_years(1L), by = 0))
+  expect_snapshot_error(seq(duration_years(1L), to = duration_years(1L), by = duration_years(0)))
   expect_snapshot_error(seq(duration_years(1L), to = duration_years(1L), by = "x"), class = "vctrs_error_incompatible_type")
+})
+
+test_that("`by` must be castable to the common type of `from` and `to`", {
+  expect_snapshot_error(seq(duration_years(0), to = duration_months(1), by = duration_days(1)))
+  expect_snapshot_error(seq(duration_days(0), to = duration_days(1), by = duration_years(1)))
 })
 
 test_that("seq() validates `length.out`", {
@@ -120,6 +126,25 @@ test_that("seq(to, by) works", {
 
   expect_identical(seq(duration_years(0L), to = duration_years(-4L), by = -2), duration_years(c(0L, -2L, -4L)))
   expect_identical(seq(duration_years(0L), to = duration_years(-5L), by = -2), duration_years(c(0L, -2L, -4L)))
+})
+
+test_that("seq(to, by = <duration>) works", {
+  expect_identical(
+    seq(duration_years(0), to = duration_years(4), by = duration_years(1)),
+    seq(duration_years(0), to = duration_years(4), by = 1)
+  )
+  expect_identical(
+    seq(duration_years(0), to = duration_months(24), by = duration_years(1)),
+    seq(duration_years(0), to = duration_months(24), by = 12)
+  )
+  expect_identical(
+    seq(duration_months(0), to = duration_months(20), by = duration_years(1)),
+    seq(duration_months(0), to = duration_months(20), by = 12)
+  )
+  expect_identical(
+    seq(duration_seconds(0), to = duration_seconds(1000), by = duration_minutes(2)),
+    seq(duration_seconds(0), to = duration_seconds(1000), by = 120)
+  )
 })
 
 test_that("seq(to, length.out) works", {
