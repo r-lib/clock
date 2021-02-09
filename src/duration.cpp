@@ -1330,6 +1330,7 @@ duration_seq_to_by_impl(const ClockDuration& from,
     clock_abort("When `from` is less than `to`, `by` must be positive.");
   }
 
+  // TODO: This can overflow with very far apart nanosecond durations
   const Rep num = end.count() - start.count();
   const Rep den = step.count();
   const Rep length_out = num / den + 1;
