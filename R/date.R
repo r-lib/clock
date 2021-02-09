@@ -918,3 +918,12 @@ date_parse <- function(x, ..., format = NULL, locale = clock_locale()) {
   x <- sys_parse(x, ..., format = format, precision = "day", locale = locale)
   as.Date(x)
 }
+
+# ------------------------------------------------------------------------------
+
+date_create <- function(year, month = 1L, day = 1L, ..., invalid = NULL) {
+  check_dots_empty()
+  x <- year_month_day(year, month, day)
+  x <- invalid_resolve(x, invalid = invalid)
+  as.Date(x)
+}

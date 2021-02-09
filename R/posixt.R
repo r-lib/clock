@@ -870,3 +870,22 @@ date_time_parse <- function(x, ..., format = NULL, locale = clock_locale()) {
   x <- zoned_parse(x, ..., format = format, precision = "second", locale = locale)
   as.POSIXct(x)
 }
+
+# ------------------------------------------------------------------------------
+
+date_time_create <- function(year,
+                             month = 1L,
+                             day = 1L,
+                             hour = 0L,
+                             minute = 0L,
+                             second = 0L,
+                             ...,
+                             zone,
+                             invalid = NULL,
+                             nonexistent = NULL,
+                             ambiguous = NULL) {
+  check_dots_empty()
+  x <- year_month_day(year, month, day, hour, minute, second)
+  x <- invalid_resolve(x, invalid = invalid)
+  as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
+}
