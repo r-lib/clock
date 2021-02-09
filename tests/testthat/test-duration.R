@@ -126,6 +126,9 @@ test_that("seq(to, by) works", {
 
   expect_identical(seq(duration_years(0L), to = duration_years(-4L), by = -2), duration_years(c(0L, -2L, -4L)))
   expect_identical(seq(duration_years(0L), to = duration_years(-5L), by = -2), duration_years(c(0L, -2L, -4L)))
+
+  expect_identical(seq(duration_years(4L), to = duration_years(0L), by = -2), duration_years(c(4L, 2L, 0L)))
+  expect_identical(seq(duration_years(4L), to = duration_years(-1L), by = -2), duration_years(c(4L, 2L, 0L)))
 })
 
 test_that("seq(to, by = <duration>) works", {

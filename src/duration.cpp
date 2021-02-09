@@ -1315,6 +1315,7 @@ duration_seq_to_by_impl(const ClockDuration& from,
                         const ClockDuration& to,
                         const ClockDuration& by) {
   using Duration = typename ClockDuration::duration;
+  using Rep = typename Duration::rep;
 
   const Duration start = from[0];
   const Duration end = to[0];
@@ -1329,7 +1330,11 @@ duration_seq_to_by_impl(const ClockDuration& from,
     clock_abort("When `from` is less than `to`, `by` must be positive.");
   }
 
-  const r_ssize size = static_cast<r_ssize>((end - start) / step + 1);
+  const Rep num = end.count() - start.count();
+  const Rep den = step.count();
+  const Rep length_out = num / den + 1;
+
+  const r_ssize size = static_cast<r_ssize>(length_out);
 
   ClockDuration out(size);
 
