@@ -855,7 +855,50 @@ calendar_widen.clock_iso_year_week_day <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Sequences: iso-year-week-day
+#'
+#' @description
+#' This is a iso-year-week-day method for the [seq()] generic.
+#'
+#' Sequences can only be generated for `"year"` precision
+#' iso-year-week-day vectors. If you need to generate week-based sequences,
+#' you'll have to convert to a time point first.
+#'
+#' When calling `seq()`, exactly two of the following must be specified:
+#' - `to`
+#' - `by`
+#' - Either `length.out` or `along.with`
+#'
+#' @inheritParams seq.clock_duration
+#'
+#' @param from `[clock_iso_year_week_day(1)]`
+#'
+#'   A `"year"` precision iso-year-week-day to start the sequence
+#'   from.
+#'
+#'   `from` is always included in the result.
+#'
+#' @param to `[clock_iso_year_week_day(1) / NULL]`
+#'
+#'   A `"year"` precision iso-year-week-day to stop the sequence
+#'   at.
+#'
+#'   `to` is cast to the type of `from`.
+#'
+#'   `to` is only included in the result if the resulting sequence divides
+#'   the distance between `from` and `to` exactly.
+#'
+#' @return A sequence with the type of `from`.
+#'
 #' @export
+#' @examples
+#' # Yearly sequence
+#' x <- seq(iso_year_week_day(2020), iso_year_week_day(2026), by = 2)
+#' x
+#'
+#' # Which we can then set the week of.
+#' # Some years have 53 ISO weeks, some have 52.
+#' set_week(x, "last")
 seq.clock_iso_year_week_day <- function(from,
                                         to = NULL,
                                         by = NULL,

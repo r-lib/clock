@@ -496,7 +496,76 @@ duration_rounder <- function(x, precision, n, rounder, verb, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Sequences: duration
+#'
+#' @description
+#' This is a duration method for the [seq()] generic.
+#'
+#' Using `seq()` on duration objects always retains the type of `from`.
+#'
+#' When calling `seq()`, exactly two of the following must be specified:
+#' - `to`
+#' - `by`
+#' - Either `length.out` or `along.with`
+#'
+#' @inheritParams ellipsis::dots_empty
+#'
+#' @param from `[clock_duration(1)]`
+#'
+#'   A duration to start the sequence from.
+#'
+#'   `from` is always included in the result.
+#'
+#' @param to `[clock_duration(1) / NULL]`
+#'
+#'   A duration to stop the sequence at.
+#'
+#'   `to` is cast to the type of `from`.
+#'
+#'   `to` is only included in the result if the resulting sequence divides
+#'   the distance between `from` and `to` exactly.
+#'
+#' @param by `[integer(1) / clock_duration(1) / NULL]`
+#'
+#'   The unit to increment the sequence by.
+#'
+#'   If `to < from`, then `by` must be positive.
+#'
+#'   If `to > from`, then `by` must be negative.
+#'
+#'   If `by` is an integer, it is transformed into a duration with the
+#'   precision of `from`.
+#'
+#'   If `by` is a duration, it is cast to the type of `from`.
+#'
+#' @param length.out `[positive integer(1) / NULL]`
+#'
+#'   The length of the resulting sequence.
+#'
+#'   If specified, `along.with` must be `NULL`.
+#'
+#' @param along.with `[vector / NULL]`
+#'
+#'   A vector who's length determines the length of the resulting sequence.
+#'
+#'   Equivalent to `length.out = vec_size(along.with)`.
+#'
+#'   If specified, `length.out` must be `NULL`.
+#'
+#' @return A sequence with the type of `from`.
+#'
 #' @export
+#' @examples
+#' seq(duration_days(0), duration_days(100), by = 5)
+#'
+#' # Using a duration `by`. Note that `by` is cast to the type of `from`.
+#' seq(duration_days(0), duration_days(100), by = duration_weeks(1))
+#'
+#' # `to` is cast from 5 years to 60 months
+#' # `by` is cast from 1 quarter to 4 months
+#' seq(duration_months(0), duration_years(5), by = duration_quarters(1))
+#'
+#' seq(duration_days(20), by = 2, length.out = 5)
 seq.clock_duration <- function(from,
                                to = NULL,
                                by = NULL,
@@ -614,6 +683,7 @@ duration_collect_by <- function(by, precision) {
 # Used by other methods that eventually call the duration seq() method
 seq_impl <- function(from, to, by, length.out, along.with, precision, ...) {
   if (!is_null(to)) {
+    to <- vec_cast(to, from, x_arg = "to", to_arg = "from")
     to <- to - from
   }
 

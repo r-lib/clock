@@ -131,6 +131,19 @@ test_that("`by` can be a duration", {
   )
 })
 
+test_that("can't mix clocks in seq()", {
+  expect_snapshot_error(seq(sys_seconds(0), to = naive_seconds(5), by = 1))
+})
+
+test_that("`to` is always cast to `from`", {
+  expect_identical(
+    seq(naive_seconds(0), to = naive_days(12), by = duration_days(2)),
+    seq(naive_seconds(0), to = naive_seconds(12 * 86400), by = 86400 * 2)
+  )
+
+  expect_snapshot_error(seq(naive_days(0), to = naive_seconds(5), by = 2))
+})
+
 test_that("can make nanosecond precision seqs", {
   x <- as_naive(duration_nanoseconds(0))
   y <- as_naive(duration_nanoseconds(10))

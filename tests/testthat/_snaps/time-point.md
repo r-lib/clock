@@ -27,3 +27,12 @@
 
     Can't convert `origin` <datetime<America/New_York>> to <time_point<naive><day>>.
 
+# can't mix clocks in seq()
+
+    Can't convert `to` <time_point<naive><second>> to match type of `from` <time_point<sys><second>>.
+
+# `to` is always cast to `from`
+
+    Can't convert `to` <time_point<naive><second>> to match type of `from` <time_point<naive><day>>.
+    Can't cast to a less precise precision.
+
