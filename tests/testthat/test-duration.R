@@ -94,8 +94,8 @@ test_that("seq() validates `by`", {
   expect_snapshot_error(seq(duration_years(1L), to = duration_years(1L), by = "x"), class = "vctrs_error_incompatible_type")
 })
 
-test_that("`by` must be castable to the common type of `from` and `to`", {
-  expect_snapshot_error(seq(duration_years(0), to = duration_months(1), by = duration_days(1)))
+test_that("`by` must be castable to the type of `from`", {
+  expect_snapshot_error(seq(duration_years(0), to = duration_years(1), by = duration_days(1)))
   expect_snapshot_error(seq(duration_days(0), to = duration_days(1), by = duration_years(1)))
 })
 
@@ -137,10 +137,6 @@ test_that("seq(to, by = <duration>) works", {
     seq(duration_years(0), to = duration_years(4), by = 1)
   )
   expect_identical(
-    seq(duration_years(0), to = duration_months(24), by = duration_years(1)),
-    seq(duration_years(0), to = duration_months(24), by = 12)
-  )
-  expect_identical(
     seq(duration_months(0), to = duration_months(20), by = duration_years(1)),
     seq(duration_months(0), to = duration_months(20), by = 12)
   )
@@ -175,8 +171,8 @@ test_that("seq(to, length.out) works", {
 
 test_that("seq(to, length.out = 1) is special cased to return `from`", {
   expect_identical(
-    seq(duration_years(1), duration_months(24), length.out = 1),
-    duration_months(12)
+    seq(duration_years(1), duration_years(5), length.out = 1),
+    duration_years(1)
   )
 })
 
@@ -187,8 +183,14 @@ test_that("seq(by, length.out) works", {
   expect_identical(seq(duration_years(0L), by = 2, along.with = 1:3), duration_years(c(0L, 2L, 4L)))
 })
 
-test_that("common type of `from` and `to` is taken", {
-  expect_identical(seq(duration_years(0), to = duration_months(5), by = 2), duration_months(c(0, 2, 4)))
+test_that("`to` is always cast to `from`", {
+  expect_identical(
+    seq(duration_months(0), to = duration_years(1), by = 2),
+    seq(duration_months(0), to = duration_months(12), by = 2)
+  )
+
+  expect_snapshot_error(seq(duration_days(0), to = duration_years(5), by = 2))
+  expect_snapshot_error(seq(duration_years(0), to = duration_months(5), by = 2))
 })
 
 test_that("special test to ensure we never lose precision (i.e. by trying to convert to double)", {

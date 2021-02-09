@@ -537,9 +537,7 @@ seq.clock_duration <- function(from,
   }
 
   if (has_to) {
-    args <- vec_cast_common(from = from, to = to)
-    from <- args$from
-    to <- args$to
+    to <- vec_cast(to, from, x_arg = "to", to_arg = "from")
 
     vec_assert(to, size = 1L, arg = "to")
     if (is.na(to)) {

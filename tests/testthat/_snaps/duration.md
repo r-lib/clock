@@ -58,12 +58,12 @@
 
 ---
 
-    Can't combine `from` <duration<year>> and `to` <double>.
+    Can't convert `to` <double> to match type of `from` <duration<year>>.
 
 ---
 
-    Can't combine `from` <duration<year>> and `to` <duration<day>>.
-    Duration common type would not generate a named duration type.
+    Can't convert `to` <duration<day>> to match type of `from` <duration<year>>.
+    Can't cast to a less precise precision.
 
 ---
 
@@ -89,9 +89,9 @@
 
     Can't convert `n` <character> to <integer>.
 
-# `by` must be castable to the common type of `from` and `to`
+# `by` must be castable to the type of `from`
 
-    Can't convert `by` <duration<day>> to <duration<month>>.
+    Can't convert `by` <duration<day>> to <duration<year>>.
     Can't cast to a less precise precision.
 
 ---
@@ -140,4 +140,14 @@
 ---
 
     Usage of `length.out` or `along.with` must generate a non-fractional sequence between `from` and `to`.
+
+# `to` is always cast to `from`
+
+    Can't convert `to` <duration<year>> to match type of `from` <duration<day>>.
+    Duration cast cannot be done exactly.
+
+---
+
+    Can't convert `to` <duration<month>> to match type of `from` <duration<year>>.
+    Can't cast to a less precise precision.
 
