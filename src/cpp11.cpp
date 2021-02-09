@@ -650,10 +650,10 @@ extern "C" SEXP _clock_weekday_from_time_point_cpp(SEXP x) {
   END_CPP11
 }
 // weekday.cpp
-cpp11::writable::strings format_weekday_cpp(const cpp11::integers& x, const cpp11::strings& weekday_abbrev);
-extern "C" SEXP _clock_format_weekday_cpp(SEXP x, SEXP weekday_abbrev) {
+cpp11::writable::strings format_weekday_cpp(const cpp11::integers& x, const cpp11::strings& labels);
+extern "C" SEXP _clock_format_weekday_cpp(SEXP x, SEXP labels) {
   BEGIN_CPP11
-    return cpp11::as_sexp(format_weekday_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(weekday_abbrev)));
+    return cpp11::as_sexp(format_weekday_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(labels)));
   END_CPP11
 }
 // zone.cpp

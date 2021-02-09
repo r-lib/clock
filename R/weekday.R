@@ -118,14 +118,26 @@ is_weekday <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-format.clock_weekday <- function(x, ..., locale = clock_locale()) {
-  if (!is_clock_locale(locale)) {
-    abort("`locale` must be a 'clock_locale' object.")
+format.clock_weekday <- function(x, ..., labels = "en", abbreviate = TRUE) {
+  if (is_character(labels)) {
+    labels <- clock_labels_lookup(labels)
+  }
+  if (!is_clock_labels(labels)) {
+    abort("`labels` must be a 'clock_labels' object.")
   }
 
-  weekday_abbrev <- locale$labels$weekday_abbrev
+  if (!is_bool(abbreviate)) {
+    abort("`abbreviate` must be `TRUE` or `FALSE`.")
+  }
 
-  out <- format_weekday_cpp(x, weekday_abbrev)
+  if (abbreviate) {
+    labels <- labels$weekday_abbrev
+  } else {
+    labels <- labels$weekday
+  }
+
+  out <- format_weekday_cpp(x, labels)
+
   names(out) <- names(x)
 
   out
@@ -190,6 +202,13 @@ as_weekday.clock_weekday <- function(x) {
 #' @export
 as_weekday.clock_calendar <- function(x) {
   abort("Can't extract the weekday from a calendar. Convert to a time point first.")
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+as.character.clock_weekday <- function(x, ...) {
+  format(x)
 }
 
 # ------------------------------------------------------------------------------
@@ -283,15 +302,15 @@ weekday_encoding <- function(x, ..., encoding = "c") {
 #' # ISO encoding is Monday -> Sunday
 #' weekday_factor(x, encoding = "iso")
 #'
-#' # With abbreviations
-#' weekday_factor(x, abbreviate = TRUE)
+#' # With full names
+#' weekday_factor(x, abbreviate = FALSE)
 #'
 #' # Or a different language
 #' weekday_factor(x, labels = "fr")
 weekday_factor <- function(x,
                            ...,
                            labels = "en",
-                           abbreviate = FALSE,
+                           abbreviate = TRUE,
                            encoding = "c") {
   check_dots_empty()
 
