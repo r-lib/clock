@@ -52,6 +52,18 @@ test_that("can get a month factor", {
 })
 
 # ------------------------------------------------------------------------------
+# seq()
+
+test_that("only granular precisions are allowed", {
+  expect_snapshot_error(seq(year_month_weekday(2019, 1, 1, 1), by = 1, length.out = 2))
+})
+
+# NOTE: Most tests are done by `year_month_day()` since they share an implementation
+test_that("can generate a sequence", {
+  expect_identical(seq(year_month_day(2019, 1), to = year_month_day(2019, 6), by = 2), year_month_day(2019, c(1, 3, 5)))
+})
+
+# ------------------------------------------------------------------------------
 # invalid_resolve()
 
 test_that("strict mode can be activated", {

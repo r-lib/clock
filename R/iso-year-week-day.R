@@ -852,3 +852,29 @@ calendar_widen.clock_iso_year_week_day <- function(x, precision) {
 
   x
 }
+
+# ------------------------------------------------------------------------------
+
+#' @export
+seq.clock_iso_year_week_day <- function(from,
+                                        to = NULL,
+                                        by = NULL,
+                                        length.out = NULL,
+                                        along.with = NULL,
+                                        ...) {
+  precision <- calendar_precision(from)
+
+  if (precision > PRECISION_YEAR) {
+    abort("`from` must be 'year' precision.")
+  }
+
+  seq_impl(
+    from = from,
+    to = to,
+    by = by,
+    length.out = length.out,
+    along.with = along.with,
+    precision = precision,
+    ...
+  )
+}

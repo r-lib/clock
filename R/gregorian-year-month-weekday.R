@@ -998,3 +998,15 @@ calendar_widen.clock_year_month_weekday <- function(x, precision) {
 
   x
 }
+
+# ------------------------------------------------------------------------------
+
+#' @export
+seq.clock_year_month_weekday <- function(from,
+                                         to = NULL,
+                                         by = NULL,
+                                         length.out = NULL,
+                                         along.with = NULL,
+                                         ...) {
+  seq.clock_year_month_day(from, to, by, length.out, along.with, ...)
+}

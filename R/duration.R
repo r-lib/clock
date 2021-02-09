@@ -497,6 +497,179 @@ duration_rounder <- function(x, precision, n, rounder, verb, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
+seq.clock_duration <- function(from,
+                               to = NULL,
+                               by = NULL,
+                               length.out = NULL,
+                               along.with = NULL,
+                               ...) {
+  check_dots_empty()
+
+  vec_assert(from, size = 1L)
+  if (is.na(from)) {
+    abort("`from` can't be `NA`.")
+  }
+
+  has_to <- !is_null(to)
+  has_by <- !is_null(by)
+  has_lo <- !is_null(length.out)
+  has_aw <- !is_null(along.with)
+
+  if (has_aw) {
+    if (has_lo) {
+      abort("Can only specify one of `length.out` and `along.with`.")
+    } else {
+      has_lo <- TRUE
+      length.out <- vec_size(along.with)
+    }
+  }
+
+  n_has <- sum(has_to, has_by, has_lo)
+
+  if (n_has != 2L) {
+    message <- paste0(
+      "Must specify exactly two of:\n",
+      "- `to`\n",
+      "- `by`\n",
+      "- Either `length.out` or `along.with`"
+    )
+    abort(message)
+  }
+
+  if (has_to) {
+    args <- vec_cast_common(from = from, to = to)
+    from <- args$from
+    to <- args$to
+
+    vec_assert(to, size = 1L, arg = "to")
+    if (is.na(to)) {
+      abort("`to` can't be `NA`.")
+    }
+  }
+
+  if (has_by) {
+    by <- vec_cast(by, integer(), x_arg = "by")
+
+    vec_assert(by, size = 1L, arg = "by")
+    if (is.na(by)) {
+      abort("`by` can't be `NA`.")
+    }
+    if (identical(by, 0L)) {
+      abort("`by` can't be `0`.")
+    }
+  }
+
+  if (has_lo) {
+    length.out <- vec_cast(length.out, integer(), x_arg = "length.out")
+
+    vec_assert(length.out, size = 1L, arg = "length.out")
+    if (is.na(length.out)) {
+      abort("`length.out` can't be `NA`.")
+    }
+    if (length.out < 0) {
+      abort("`length.out` can't be negative.")
+    }
+  }
+
+  if (has_to) {
+    if (has_by) {
+      duration_seq_to_by(from, to, by)
+    } else {
+      duration_seq_to_lo(from, to, length.out)
+    }
+  } else {
+    duration_seq_by_lo(from, by, length.out)
+  }
+}
+
+duration_seq_to_by <- function(from, to, by) {
+  # Base seq() requires negative `by` when creating a decreasing seq, so this
+  # helps be compatible with that.
+  if (from > to && by > 0L) {
+    abort("When `from` is greater than `to`, `by` must be negative.")
+  }
+  if (from < to && by < 0L) {
+    abort("When `from` is less than `to`, `by` must be positive.")
+  }
+
+  start <- from
+
+  to <- to - from
+  # TODO: Will often generate `NA`
+  to <- as.integer(to)
+
+  from <- 0L
+
+  steps <- seq.int(from, to, by = by)
+  steps <- duration_helper(steps, duration_precision(start))
+
+  start + steps
+}
+
+duration_seq_to_lo <- function(from, to, length.out) {
+  start <- from
+
+  to <- to - from
+  # TODO: Will often generate `NA`
+  to <- as.integer(to)
+
+  from <- 0L
+
+  steps <- seq.int(from, to, length.out = length.out)
+
+  tryCatch(
+    expr = {
+      steps <- vec_cast(steps, integer())
+    },
+    vctrs_error_cast_lossy = function(cnd) {
+      message <- paste0(
+        "Usage of `length.out` or `along.with` must generate a non-fractional ",
+        "sequence between `from` and `to`."
+      )
+      abort(message)
+    }
+  )
+
+  steps <- duration_helper(steps, duration_precision(start))
+
+  start + steps
+}
+
+duration_seq_by_lo <- function(from, by, length.out) {
+  start <- from
+
+  from <- 0L
+
+  steps <- seq.int(from, by = by, length.out = length.out)
+  steps <- duration_helper(steps, duration_precision(start))
+
+  start + steps
+}
+
+# Used by other methods that eventually call the duration seq() method
+seq_impl <- function(from, to, by, length.out, along.with, precision, ...) {
+  if (!is_null(to)) {
+    to <- to - from
+  }
+
+  start <- from
+  from <- duration_helper(0L, precision)
+
+  steps <- seq(
+    from = from,
+    to = to,
+    by = by,
+    length.out = length.out,
+    along.with = along.with,
+    ...
+  )
+
+  start + steps
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 #' @method vec_arith clock_duration
 vec_arith.clock_duration <- function(op, x, y, ...) {
   UseMethod("vec_arith.clock_duration", y)

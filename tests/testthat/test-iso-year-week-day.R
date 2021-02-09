@@ -42,6 +42,31 @@ test_that("can widen to day", {
 })
 
 # ------------------------------------------------------------------------------
+# seq()
+
+test_that("only year precision is allowed", {
+  expect_snapshot_error(seq(iso_year_week_day(2019, 1), by = 1, length.out = 2))
+})
+
+test_that("seq(to, by) works", {
+  expect_identical(seq(iso_year_week_day(2019), to = iso_year_week_day(2024), by = 2), iso_year_week_day(c(2019, 2021, 2023)))
+  expect_identical(seq(iso_year_week_day(2019), to = iso_year_week_day(2023), by = 2), iso_year_week_day(c(2019, 2021, 2023)))
+})
+
+test_that("seq(to, length.out) works", {
+  expect_identical(seq(iso_year_week_day(2019), to = iso_year_week_day(2024), length.out = 2), iso_year_week_day(c(2019, 2024)))
+  expect_identical(seq(iso_year_week_day(2019), to = iso_year_week_day(2024), length.out = 6), iso_year_week_day(2019:2024))
+
+  expect_identical(seq(iso_year_week_day(2019), to = iso_year_week_day(2024), along.with = 1:2), iso_year_week_day(c(2019, 2024)))
+})
+
+test_that("seq(by, length.out) works", {
+  expect_identical(seq(iso_year_week_day(2019), by = 2, length.out = 3), iso_year_week_day(c(2019, 2021, 2023)))
+
+  expect_identical(seq(iso_year_week_day(2019), by = 2, along.with = 1:3), iso_year_week_day(c(2019, 2021, 2023)))
+})
+
+# ------------------------------------------------------------------------------
 # invalid_resolve()
 
 test_that("strict mode can be activated", {

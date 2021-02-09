@@ -977,6 +977,32 @@ calendar_widen.clock_year_quarter_day <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+seq.clock_year_quarter_day <- function(from,
+                                       to = NULL,
+                                       by = NULL,
+                                       length.out = NULL,
+                                       along.with = NULL,
+                                       ...) {
+  precision <- calendar_precision(from)
+
+  if (precision > PRECISION_QUARTER) {
+    abort("`from` must be 'year' or 'quarter' precision.")
+  }
+
+  seq_impl(
+    from = from,
+    to = to,
+    by = by,
+    length.out = length.out,
+    along.with = along.with,
+    precision = precision,
+    ...
+  )
+}
+
+# ------------------------------------------------------------------------------
+
 quarterly_start <- function(x) {
   attr(x, "start", exact = TRUE)
 }

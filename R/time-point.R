@@ -743,6 +743,28 @@ collect_time_point_rounder_origin <- function(origin, x, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+seq.clock_time_point <- function(from,
+                                 to = NULL,
+                                 by = NULL,
+                                 length.out = NULL,
+                                 along.with = NULL,
+                                 ...) {
+  precision <- time_point_precision(from)
+
+  seq_impl(
+    from = from,
+    to = to,
+    by = by,
+    length.out = length.out,
+    along.with = along.with,
+    precision = precision,
+    ...
+  )
+}
+
+# ------------------------------------------------------------------------------
+
 validate_time_point_precision <- function(precision) {
   precision <- validate_precision(precision)
 

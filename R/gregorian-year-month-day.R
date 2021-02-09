@@ -1113,3 +1113,29 @@ calendar_widen.clock_year_month_day <- function(x, precision) {
 
   x
 }
+
+# ------------------------------------------------------------------------------
+
+#' @export
+seq.clock_year_month_day <- function(from,
+                                     to = NULL,
+                                     by = NULL,
+                                     length.out = NULL,
+                                     along.with = NULL,
+                                     ...) {
+  precision <- calendar_precision(from)
+
+  if (precision > PRECISION_MONTH) {
+    abort("`from` must be 'year' or 'month' precision.")
+  }
+
+  seq_impl(
+    from = from,
+    to = to,
+    by = by,
+    length.out = length.out,
+    along.with = along.with,
+    precision = precision,
+    ...
+  )
+}
