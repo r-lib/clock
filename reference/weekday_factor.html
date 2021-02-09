@@ -119,7 +119,7 @@ can be useful in combination with ggplot2, or for modeling." />
 can be useful in combination with ggplot2, or for modeling.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>weekday_factor</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, labels <span class='op'>=</span> <span class='st'>"en"</span>, abbreviate <span class='op'>=</span> <span class='cn'>FALSE</span>, encoding <span class='op'>=</span> <span class='st'>"c"</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>weekday_factor</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, labels <span class='op'>=</span> <span class='st'>"en"</span>, abbreviate <span class='op'>=</span> <span class='cn'>TRUE</span>, encoding <span class='op'>=</span> <span class='st'>"c"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,20 +167,20 @@ Monday -&gt; Sunday.</p></li>
 
 <span class='co'># Default to Sunday -&gt; Saturday</span>
 <span class='fu'>weekday_factor</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] Sunday    Monday    Tuesday   Wednesday Thursday  Friday    Saturday 
-#&gt; 7 Levels: Sunday &lt; Monday &lt; Tuesday &lt; Wednesday &lt; Thursday &lt; ... &lt; Saturday</div><div class='input'>
-<span class='co'># ISO encoding is Monday -&gt; Sunday</span>
-<span class='fu'>weekday_factor</span><span class='op'>(</span><span class='va'>x</span>, encoding <span class='op'>=</span> <span class='st'>"iso"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] Sunday    Monday    Tuesday   Wednesday Thursday  Friday    Saturday 
-#&gt; 7 Levels: Monday &lt; Tuesday &lt; Wednesday &lt; Thursday &lt; Friday &lt; ... &lt; Sunday</div><div class='input'>
-<span class='co'># With abbreviations</span>
-<span class='fu'>weekday_factor</span><span class='op'>(</span><span class='va'>x</span>, abbreviate <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] Sun Mon Tue Wed Thu Fri Sat
 #&gt; Levels: Sun &lt; Mon &lt; Tue &lt; Wed &lt; Thu &lt; Fri &lt; Sat</div><div class='input'>
+<span class='co'># ISO encoding is Monday -&gt; Sunday</span>
+<span class='fu'>weekday_factor</span><span class='op'>(</span><span class='va'>x</span>, encoding <span class='op'>=</span> <span class='st'>"iso"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] Sun Mon Tue Wed Thu Fri Sat
+#&gt; Levels: Mon &lt; Tue &lt; Wed &lt; Thu &lt; Fri &lt; Sat &lt; Sun</div><div class='input'>
+<span class='co'># With full names</span>
+<span class='fu'>weekday_factor</span><span class='op'>(</span><span class='va'>x</span>, abbreviate <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] Sunday    Monday    Tuesday   Wednesday Thursday  Friday    Saturday 
+#&gt; 7 Levels: Sunday &lt; Monday &lt; Tuesday &lt; Wednesday &lt; Thursday &lt; ... &lt; Saturday</div><div class='input'>
 <span class='co'># Or a different language</span>
 <span class='fu'>weekday_factor</span><span class='op'>(</span><span class='va'>x</span>, labels <span class='op'>=</span> <span class='st'>"fr"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] dimanche lundi    mardi    mercredi jeudi    vendredi samedi  
-#&gt; 7 Levels: dimanche &lt; lundi &lt; mardi &lt; mercredi &lt; jeudi &lt; ... &lt; samedi</div></pre>
+</div><div class='output co'>#&gt; [1] dim. lun. mar. mer. jeu. ven. sam.
+#&gt; Levels: dim. &lt; lun. &lt; mar. &lt; mer. &lt; jeu. &lt; ven. &lt; sam.</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
