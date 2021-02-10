@@ -177,19 +177,16 @@ rounding up on ties.</p></li>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>x</code> rounded to the <code>precision</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Duration rounding is most useful when rounding from sub-daily precisions up
-to daily precision, or when rounding monthly/quarterly precisions up to
-yearly precision. These durations are defined intuitively relative to
-each other.</p>
-<p>Be <em>extremely</em> careful when rounding sub-daily or daily precisions up to more
-granular precisions such as monthly or yearly. Durations are defined in terms
-of a number of seconds, and calendrical months and years cannot be broken
-down like that, since they are irregular periods of time (there aren't always
-30 days in a month, or 365 days in a year). Read the Internal Representation
-section of the documentation for <a href='duration-helper.html'>duration helpers</a> to
-learn more about how durations are defined.</p>
+    <p>You can floor calendrical durations to other calendrical durations, and
+chronological durations to other chronological durations, but you can't
+floor a chronological duration to a calendrical duration (such as flooring
+from day to month). For more information, see the documentation on the
+<a href='duration-helper.html'>duration helper</a> page.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='duration-helper.html'>duration_seconds</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>86399</span>, <span class='fl'>86401</span><span class='op'>)</span><span class='op'>)</span>
@@ -199,6 +196,10 @@ learn more about how durations are defined.</p>
 #&gt; [1] 0 1</div><div class='input'><span class='fu'>duration_ceiling</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;duration&lt;day&gt;[2]&gt;
 #&gt; [1] 1 2</div><div class='input'>
+<span class='co'># Can't floor from a chronological duration (seconds)</span>
+<span class='co'># to a calendrical duration (months)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>duration_floor</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"month"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Error : Can't floor from a chronological precision (second) to a calendrical precision (month).</div><div class='input'>
 <span class='co'># Every 2 days, using an origin of day 0</span>
 <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='duration-helper.html'>duration_seconds</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>86400</span>, <span class='fl'>86400</span> <span class='op'>*</span> <span class='fl'>2</span>, <span class='fl'>86400</span> <span class='op'>*</span> <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'>duration_floor</span><span class='op'>(</span><span class='va'>y</span>, <span class='st'>"day"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
@@ -214,7 +215,14 @@ learn more about how durations are defined.</p>
 <span class='va'>half_day_durations</span> <span class='op'>&lt;-</span> <span class='fu'><a href='duration-helper.html'>duration_seconds</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>half_day</span> <span class='op'>-</span> <span class='fl'>1</span>, <span class='va'>half_day</span>, <span class='va'>half_day</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'>duration_round</span><span class='op'>(</span><span class='va'>half_day_durations</span>, <span class='st'>"day"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;duration&lt;day&gt;[3]&gt;
-#&gt; [1] 0 1 1</div></pre>
+#&gt; [1] 0 1 1</div><div class='input'>
+<span class='co'># With larger units</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='duration-helper.html'>duration_months</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>15</span>, <span class='fl'>24</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>duration_floor</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"year"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;duration&lt;year&gt;[3]&gt;
+#&gt; [1] 0 1 2</div><div class='input'><span class='fu'>duration_floor</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"quarter"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;duration&lt;quarter&gt;[3]&gt;
+#&gt; [1] 0 5 8</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

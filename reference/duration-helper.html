@@ -41,7 +41,28 @@
 
 <meta property="og:title" content="Construct a duration — duration-helper" />
 <meta property="og:description" content="These helpers construct durations of the specified precision. Durations
-represent units of time in a specified precision." />
+represent units of time.
+Durations are separated into two categories:
+Calendrical
+year
+quarter
+month
+
+
+Chronological
+week
+day
+hour
+minute
+second
+millisecond
+microsecond
+nanosecond
+
+
+Calendrical durations are generally used when manipulating calendar types,
+like year-month-day. Chronological durations are generally used when
+working with time points, like sys-time or naive-time." />
 
 
 
@@ -116,7 +137,28 @@ represent units of time in a specified precision." />
 
     <div class="ref-description">
     <p>These helpers construct durations of the specified precision. Durations
-represent units of time in a specified precision.</p>
+represent units of time.</p>
+<p>Durations are separated into two categories:</p>
+<p><strong>Calendrical</strong></p><ul>
+<li><p>year</p></li>
+<li><p>quarter</p></li>
+<li><p>month</p></li>
+</ul>
+
+<p><strong>Chronological</strong></p><ul>
+<li><p>week</p></li>
+<li><p>day</p></li>
+<li><p>hour</p></li>
+<li><p>minute</p></li>
+<li><p>second</p></li>
+<li><p>millisecond</p></li>
+<li><p>microsecond</p></li>
+<li><p>nanosecond</p></li>
+</ul>
+
+<p>Calendrical durations are generally used when manipulating calendar types,
+like year-month-day. Chronological durations are generally used when
+working with time points, like sys-time or naive-time.</p>
     </div>
 
     <pre class="usage"><span class='fu'>duration_years</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>integer</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
@@ -180,6 +222,12 @@ average length of a proleptic Gregorian year, i.e. 365.2425 days.</p>
 <p>A duration of 1 month is defined as exactly 1/12 of a year.</p>
 <p>A duration of 1 quarter is defined as exactly 1/4 of a year.</p>
 <p>A duration of 1 week is defined as exactly 7 days.</p>
+<p>These conversions come into play when doing operations like adding or
+flooring durations. Generally, you add two calendrical durations together
+to get a new calendrical duration, rather than adding a calendrical and
+a chronological duration together. The one exception is <code><a href='duration_cast.html'>duration_cast()</a></code>,
+which can cast durations to any other precision, with a potential loss of
+information.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>duration_years</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>
