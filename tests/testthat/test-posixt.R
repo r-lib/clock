@@ -208,8 +208,49 @@ test_that("can set the zone of a POSIXt", {
 
 test_that("can parse into a POSIXct", {
   expect_identical(
-    date_time_parse("2019-12-31 23:59:59-05:00[America/New_York]"),
+    date_time_parse("2019-12-31 23:59:59", "America/New_York"),
     as.POSIXct("2019-12-31 23:59:59", tz = "America/New_York")
+  )
+})
+
+test_that("can resolve ambiguity and nonexistent times", {
+  expect_snapshot_error(date_time_parse("1970-04-26 02:30:00", "America/New_York"))
+
+  expect_identical(
+    date_time_parse("1970-04-26 02:30:00", "America/New_York", nonexistent = "roll-forward"),
+    date_time_parse("1970-04-26 03:00:00", "America/New_York")
+  )
+
+  expect_snapshot_error(date_time_parse("1970-10-25 01:30:00", "America/New_York"))
+
+  expect_identical(
+    date_time_parse("1970-10-25 01:30:00", "America/New_York", ambiguous = "earliest"),
+    add_seconds(date_time_parse("1970-10-25 00:30:00", "America/New_York"), 3600)
+  )
+  expect_identical(
+    date_time_parse("1970-10-25 01:30:00", "America/New_York", ambiguous = "latest"),
+    add_seconds(date_time_parse("1970-10-25 00:30:00", "America/New_York"), 7200)
+  )
+})
+
+# ------------------------------------------------------------------------------
+# date_time_complete_parse()
+
+test_that("can parse into a POSIXct", {
+  expect_identical(
+    date_time_complete_parse("2019-12-31 23:59:59-05:00[America/New_York]"),
+    as.POSIXct("2019-12-31 23:59:59", tz = "America/New_York")
+  )
+})
+
+test_that("ambiguity is resolved through the string", {
+  expect_identical(
+    date_time_complete_parse("1970-10-25 01:30:00-04:00[America/New_York]"),
+    add_seconds(date_time_parse("1970-10-25 00:30:00", "America/New_York"), 3600)
+  )
+  expect_identical(
+    date_time_complete_parse("1970-10-25 01:30:00-05:00[America/New_York]"),
+    add_seconds(date_time_parse("1970-10-25 00:30:00", "America/New_York"), 7200)
   )
 })
 

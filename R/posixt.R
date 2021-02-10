@@ -866,7 +866,109 @@ date_set_zone.POSIXt <- function(x, zone) {
 
 # ------------------------------------------------------------------------------
 
-date_time_parse <- function(x, ..., format = NULL, locale = clock_locale()) {
+#' Parsing: date-time
+#'
+#' @description
+#' `date_time_parse()` and `date_time_complete_parse()` are two parsers for
+#' parsing strings into POSIXct date-times.
+#'
+#' ## `date_time_parse()`
+#'
+#' `date_time_parse()` is useful for strings like `"2019-01-01 00:00:00"`, where
+#' the UTC offset and full time zone name are not present in the string. The
+#' string is first parsed as a naive-time without any time zone assumptions, and
+#' is then converted to a POSIXct with the supplied `zone`.
+#'
+#' Because converting from naive-time to POSIXct may result in nonexistent or
+#' ambiguous times due to daylight saving time, these must be resolved
+#' explicitly with the `nonexistent` and `ambiguous` arguments.
+#'
+#' `date_time_parse()` completely ignores the `%z` and `%Z` commands. The only
+#' time zone specific information that is used is the `zone`.
+#'
+#' The default `format` used is `"%Y-%m-%d %H:%M:%S"`.
+#'
+#' ## `date_time_complete_parse()`
+#'
+#' `date_time_complete_parse()` is useful for strings like `"2019-01-01
+#' 00:00:00-05:00[America/New_York]"`, where both the UTC offset and the full
+#' time zone name are present in the string. This is considered a "complete"
+#' date-time format, with no ambiguity.
+#'
+#' `date_time_complete_parse()` requires both the `%z` and `%Z` commands, which
+#' parse the offset from UTC and the full time zone name respectively. Requiring
+#' this information when parsing is the _only_ way to ensure that the parse is
+#' done unambiguously.
+#'
+#' The default `format` used is `"%Y-%m-%d %H:%M:%S%Ez[%Z]"`.
+#'
+#' @inheritParams zoned_parse
+#' @inheritParams as-zoned-time-naive-time
+#'
+#' @param zone `[character(1)]`
+#'
+#'   A valid time zone name to use with the resulting POSIXct.
+#'
+#' @return A POSIXct.
+#'
+#' @name date-time-parse
+#'
+#' @examples
+#' # Parse with a known `zone`, even though that information isn't in the string
+#' date_time_parse("2020-01-01 05:06:07", "America/New_York")
+#'
+#' # Same time as above, except this is a completely unambiguous parse that
+#' # doesn't require a `zone` argument, because the zone name and offset are
+#' # both present in the string
+#' date_time_complete_parse("2020-01-01 05:06:07-05:00[America/New_York]")
+#'
+#' # Only day components
+#' date_time_parse("2020-01-01", "America/New_York", format = "%Y-%m-%d")
+#'
+#' # `date_time_parse()` may have issues with ambiguous times due to daylight
+#' # saving time fallbacks. For example, there were two 1'oclock hours here:
+#' x <- date_time_parse("1970-10-25 00:59:59", "America/New_York")
+#'
+#' # First (earliest) 1'oclock hour
+#' add_seconds(x, 1)
+#' # Second (latest) 1'oclock hour
+#' add_seconds(x, 3601)
+#'
+#' # If you try to parse this ambiguous time directly, you'll get an error:
+#' ambiguous_time <- "1970-10-25 01:00:00"
+#' try(date_time_parse(ambiguous_time, "America/New_York"))
+#'
+#' # Resolve it by specifying whether you'd like to use the
+#' # `earliest` or `latest` of the two possible times
+#' date_time_parse(ambiguous_time, "America/New_York", ambiguous = "earliest")
+#' date_time_parse(ambiguous_time, "America/New_York", ambiguous = "latest")
+#'
+#' # `date_time_complete_parse()` doesn't have these issues, as it requires
+#' # that the offset and zone name are both in the string, which resolves
+#' # the ambiguity
+#' complete_times <- c(
+#'   "1970-10-25 01:00:00-04:00[America/New_York]",
+#'   "1970-10-25 01:00:00-05:00[America/New_York]"
+#' )
+#' date_time_complete_parse(complete_times)
+NULL
+
+#' @rdname date-time-parse
+#' @export
+date_time_parse <- function(x,
+                            zone,
+                            ...,
+                            format = NULL,
+                            locale = clock_locale(),
+                            nonexistent = NULL,
+                            ambiguous = NULL) {
+  x <- naive_parse(x, ..., format = format, precision = "second", locale = locale)
+  as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
+}
+
+#' @rdname date-time-parse
+#' @export
+date_time_complete_parse <- function(x, ..., format = NULL, locale = clock_locale()) {
   x <- zoned_parse(x, ..., format = format, precision = "second", locale = locale)
   as.POSIXct(x)
 }

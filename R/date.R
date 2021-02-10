@@ -914,6 +914,44 @@ date_set_zone.Date <- function(x, zone) {
 
 # ------------------------------------------------------------------------------
 
+#' Parsing: date
+#'
+#' @description
+#' `date_parse()` parses strings into a Date.
+#'
+#' The default `format` used is `"%Y-%m-%d"`.
+#'
+#' @details
+#' If the `%z` command is used, then the date-time string is interpreted as
+#' a naive-time, which is then shifted by the UTC offset found in `%z`. The
+#' returned Date can then validly be interpreted as UTC. Remember that in R,
+#' Date objects are assumed to be UTC, similar to a sys-time.
+#'
+#' _`date_parse()` ignores the `%Z` command._
+#'
+#' @inheritParams zoned_parse
+#'
+#' @return A Date.
+#'
+#' @export
+#' @examples
+#' date_parse("2020-01-01")
+#'
+#' date_parse(
+#'   "January 5, 2020",
+#'   format = "%B %d, %Y"
+#' )
+#'
+#' # With a different locale
+#' date_parse(
+#'   "janvier 5, 2020",
+#'   format = "%B %d, %Y",
+#'   locale = clock_locale("fr")
+#' )
+#'
+#' # A neat feature of `date_parse()` is the ability to parse
+#' # the ISO year-week-day format
+#' date_parse("2020-W01-2", format = "%G-W%V-%u")
 date_parse <- function(x, ..., format = NULL, locale = clock_locale()) {
   x <- sys_parse(x, ..., format = format, precision = "day", locale = locale)
   as.Date(x)

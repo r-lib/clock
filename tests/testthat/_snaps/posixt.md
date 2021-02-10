@@ -123,6 +123,14 @@
     c: lun. déc. 31 23:59:59 2018
     %: %
 
+# can resolve ambiguity and nonexistent times
+
+    Nonexistent time due to daylight saving time at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.
+
+---
+
+    Ambiguous time due to daylight saving time at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.
+
 # <posixt> op <duration>
 
     no applicable method for 'add_milliseconds' applied to an object of class "c('POSIXct', 'POSIXt')"
