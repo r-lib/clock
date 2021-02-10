@@ -42,5 +42,6 @@
 
 # duration to add to a time-point must have at least week precision (#120)
 
-    `y` must be at least 'week' precision.
+    Can't combine `x` <duration<second>> and `y` <duration<year>>.
+    Can't combine calendrical durations with chronological durations.
 

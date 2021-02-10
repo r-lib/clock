@@ -419,7 +419,6 @@ time_point_arith_duration <- function(x, n, precision_n, n_arg, names, duration_
   x <- time_point_duration(x)
 
   n <- duration_collect_n(n, precision_n)
-  validate_time_point_duration_op_precision(precision_n, n_arg)
 
   # Handles recycling and casting
   duration <- duration_fn(x = x, y = n, names = names)
