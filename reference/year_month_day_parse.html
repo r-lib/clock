@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Parse into a year-month-day calendar — year_month_day_parse • clock</title>
+<title>Parsing: year-month-day — year_month_day_parse • clock</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,10 @@
 
 
 
-<meta property="og:title" content="Parse into a year-month-day calendar — year_month_day_parse" />
-<meta property="og:description" content="year_month_day_parse() parses a character vector into a year-month-day
-calendar." />
+<meta property="og:title" content="Parsing: year-month-day — year_month_day_parse" />
+<meta property="og:description" content="year_month_day_parse() parses strings into a year-month-day.
+The default options assume x should be parsed at day precision, using a
+format string of &quot;%Y-%m-%d&quot;." />
 
 
 
@@ -109,14 +110,15 @@ calendar." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Parse into a year-month-day calendar</h1>
+    <h1>Parsing: year-month-day</h1>
     <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/gregorian-year-month-day.R'><code>R/gregorian-year-month-day.R</code></a></small>
     <div class="hidden name"><code>year_month_day_parse.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>year_month_day_parse()</code> parses a character vector into a year-month-day
-calendar.</p>
+    <p><code>year_month_day_parse()</code> parses strings into a year-month-day.</p>
+<p>The default options assume <code>x</code> should be parsed at day precision, using a
+<code>format</code> string of <code>"%Y-%m-%d"</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>year_month_day_parse</span><span class='op'>(</span>
@@ -142,19 +144,166 @@ calendar.</p>
     <tr>
       <th>format</th>
       <td><p><code>[character / NULL]</code></p>
-<p>A format string.</p>
-<p>Multiple format strings can be supplied, and they will be tried in the
-order they are provided.</p>
-<p>If <code>NULL</code>, a default format string is chosen based on the <code>precision</code>.
-The default format string is chosen to parse the result of calling
-<code><a href='https://rdrr.io/r/base/format.html'>format()</a></code> on a year-month-day object. For example, with
-<code>precision = "month"</code>, <code>format</code> would be set to <code>"%Y-%m</code>, and with
-<code>precision = "millisecond"</code> it would be set to <code>"%Y-%m-%d %H:%M:%S"</code>.</p></td>
+<p>A format string. A combination of the following commands, or <code>NULL</code>,
+in which case a default format string is used.</p>
+<p>A vector of multiple format strings can be supplied. They will be tried in
+the order they are provided.</p>
+<p><strong>Year</strong></p><ul>
+<li><p><code>%C</code>: The century as a decimal number. The modified command <code>%NC</code> where
+<code>N</code> is a positive decimal integer specifies the maximum number of
+characters to read. If not specified, the default is <code>2</code>. Leading zeroes
+are permitted but not required.</p></li>
+<li><p><code>%y</code>: The last two decimal digits of the year. If the century is not
+otherwise specified (e.g. with <code>%C</code>), values in the range <code>[69 - 99]</code> are
+presumed to refer to the years <code>[1969 - 1999]</code>, and values in the range
+<code>[00 - 68]</code> are presumed to refer to the years <code>[2000 - 2068]</code>. The
+modified command <code>%Ny</code>, where <code>N</code> is a positive decimal integer, specifies
+the maximum number of characters to read. If not specified, the default is
+<code>2</code>. Leading zeroes are permitted but not required.</p></li>
+<li><p><code>%Y</code>: The year as a decimal number. The modified command <code>%NY</code> where <code>N</code>
+is a positive decimal integer specifies the maximum number of characters to
+read. If not specified, the default is <code>4</code>. Leading zeroes are permitted
+but not required.</p></li>
+</ul>
+
+<p><strong>Month</strong></p><ul>
+<li><p><code>%b</code>, <code>%B</code>, <code>%h</code>: The <code>locale</code>'s full or abbreviated case-insensitive
+month name.</p></li>
+<li><p><code>%m</code>: The month as a decimal number. January is <code>1</code>. The modified command
+<code>%Nm</code> where <code>N</code> is a positive decimal integer specifies the maximum number
+of characters to read. If not specified, the default is <code>2</code>. Leading zeroes
+are permitted but not required.</p></li>
+</ul>
+
+<p><strong>Day</strong></p><ul>
+<li><p><code>%d</code>, <code>%e</code>: The day of the month as a decimal number. The modified
+command <code>%Nd</code> where <code>N</code> is a positive decimal integer specifies the maximum
+number of characters to read. If not specified, the default is <code>2</code>. Leading
+zeroes are permitted but not required.</p></li>
+</ul>
+
+<p><strong>Day of the week</strong></p><ul>
+<li><p><code>%a</code>, <code>%A</code>: The <code>locale</code>'s full or abbreviated case-insensitive weekday
+name.</p></li>
+<li><p><code>%w</code>: The weekday as a decimal number (<code>0-6</code>), where Sunday is <code>0</code>. The
+modified command <code>%Nw</code> where <code>N</code> is a positive decimal integer specifies
+the maximum number of characters to read. If not specified, the default is
+<code>1</code>. Leading zeroes are permitted but not required.</p></li>
+</ul>
+
+<p><strong>ISO 8601 week-based year</strong></p><ul>
+<li><p><code>%g</code>: The last two decimal digits of the ISO week-based year. The
+modified command <code>%Ng</code> where <code>N</code> is a positive decimal integer specifies
+the maximum number of characters to read. If not specified, the default is
+<code>2</code>. Leading zeroes are permitted but not required.</p></li>
+<li><p><code>%G</code>: The ISO week-based year as a decimal number. The modified command
+<code>%NG</code> where <code>N</code> is a positive decimal integer specifies the maximum number
+of characters to read. If not specified, the default is <code>4</code>. Leading zeroes
+are permitted but not required.</p></li>
+<li><p><code>%V</code>: The ISO week-based week number as a decimal number. The modified
+command <code>%NV</code> where <code>N</code> is a positive decimal integer specifies the maximum
+number of characters to read. If not specified, the default is <code>2</code>. Leading
+zeroes are permitted but not required.</p></li>
+<li><p><code>%u</code>: The ISO weekday as a decimal number (<code>1-7</code>), where Monday is <code>1</code>.
+The modified command <code>%Nu</code> where <code>N</code> is a positive decimal integer
+specifies the maximum number of characters to read. If not specified, the
+default is <code>1</code>. Leading zeroes are permitted but not required.</p></li>
+</ul>
+
+<p><strong>Week of the year</strong></p><ul>
+<li><p><code>%U</code>: The week number of the year as a decimal number. The first Sunday
+of the year is the first day of week <code>01</code>. Days of the same year prior to
+that are in week <code>00</code>. The modified command <code>%NU</code> where <code>N</code> is a positive
+decimal integer specifies the maximum number of characters to read. If not
+specified, the default is <code>2</code>. Leading zeroes are permitted but not
+required.</p></li>
+<li><p><code>%W</code>: The week number of the year as a decimal number. The first Monday
+of the year is the first day of week <code>01</code>. Days of the same year prior to
+that are in week <code>00</code>. The modified command <code>%NW</code> where <code>N</code> is a positive
+decimal integer specifies the maximum number of characters to read. If not
+specified, the default is <code>2</code>. Leading zeroes are permitted but not
+required.</p></li>
+</ul>
+
+<p><strong>Day of the year</strong></p><ul>
+<li><p><code>%j</code>: The day of the year as a decimal number. January 1 is <code>1</code>. The
+modified command <code>%Nj</code> where <code>N</code> is a positive decimal integer specifies
+the maximum number of characters to read. If not specified, the default is
+<code>3</code>. Leading zeroes are permitted but not required.</p></li>
+</ul>
+
+<p><strong>Date</strong></p><ul>
+<li><p><code>%D</code>, <code>%x</code>: Equivalent to <code>%m/%d/%y</code>.</p></li>
+<li><p><code>%F</code>: Equivalent to <code>%Y-%m-%d</code>. If modified with a width (like <code>%NF</code>),
+the width is applied to only <code>%Y</code>.</p></li>
+</ul>
+
+<p><strong>Time of day</strong></p><ul>
+<li><p><code>%H</code>: The hour (24-hour clock) as a decimal number. The modified command
+<code>%NH</code> where <code>N</code> is a positive decimal integer specifies the maximum number
+of characters to read. If not specified, the default is <code>2</code>. Leading zeroes
+are permitted but not required.</p></li>
+<li><p><code>%I</code>: The hour (12-hour clock) as a decimal number. The modified command
+<code>%NI</code> where <code>N</code> is a positive decimal integer specifies the maximum number
+of characters to read. If not specified, the default is <code>2</code>. Leading zeroes
+are permitted but not required.</p></li>
+<li><p><code>%M</code>: The minutes as a decimal number. The modified command <code>%NM</code> where
+<code>N</code> is a positive decimal integer specifies the maximum number of
+characters to read. If not specified, the default is <code>2</code>. Leading zeroes
+are permitted but not required.</p></li>
+<li><p><code>%S</code>: The seconds as a decimal number. The modified command <code>%NS</code> where
+<code>N</code> is a positive decimal integer specifies the maximum number of
+characters to read. If not specified, the default is determined by the
+precision that you are parsing at. If encountered, the <code>locale</code>
+determines the decimal point character. Leading zeroes are permitted but
+not required.</p></li>
+<li><p><code>%p</code>: The <code>locale</code>'s equivalent of the AM/PM designations associated with
+a 12-hour clock. The command <code>%I</code> must precede <code>%p</code> in the format string.</p></li>
+<li><p><code>%R</code>: Equivalent to <code>%H:%M</code>.</p></li>
+<li><p><code>%T</code>, <code>%X</code>: Equivalent to <code>%H:%M:%S</code>.</p></li>
+<li><p><code>%r</code>: Equivalent to <code>%I:%M:%S %p</code>.</p></li>
+</ul>
+
+<p><strong>Time zone</strong></p><ul>
+<li><p><code>%z</code>: The offset from UTC in the format <code>[+|-]hh[mm]</code>. For example
+<code>-0430</code> refers to 4 hours 30 minutes behind UTC. And <code>04</code> refers to 4 hours
+ahead of UTC. The modified command <code>%Ez</code> parses a <code><a href='https://rdrr.io/r/base/Colon.html'>:</a></code> between the hours and
+minutes and leading zeroes on the hour field are optional:
+<code>[+|-]h[h][:mm]</code>. For example <code>-04:30</code> refers to 4 hours 30 minutes behind
+UTC. And <code>4</code> refers to 4 hours ahead of UTC.</p></li>
+<li><p><code>%Z</code>:     The full time zone name. A single word is parsed. This word can
+only contain characters that are alphanumeric, or one of <code>'_'</code>, <code>'/'</code>,
+<code>'-'</code> or <code>'+'</code>.</p></li>
+</ul>
+
+<p><strong>Miscellaneous</strong></p><ul>
+<li><p><code>%c</code>: A date and time representation. Equivalent to
+<code>%a %b %d %H:%M:%S %Y</code>.</p></li>
+<li><p><code><a href='https://rdrr.io/r/base/Arithmetic.html'>%%</a></code>: A <code>%</code> character.</p></li>
+<li><p><code>%n</code>: Matches one white space character. <code>%n</code>, <code>%t</code>, and a space can be
+combined to match a wide range of white-space patterns. For example <code>"%n "</code>
+matches one or more white space characters, and <code>"%n%t%t"</code> matches one to
+three white space characters.</p></li>
+<li><p><code>%t</code>: Matches zero or one white space characters.</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>precision</th>
       <td><p><code>[character(1)]</code></p>
-<p>The precision of the resulting year-month-day.</p></td>
+<p>A precision for the resulting year-month-day. One of:</p><ul>
+<li><p><code>"year"</code></p></li>
+<li><p><code>"month"</code></p></li>
+<li><p><code>"day"</code></p></li>
+<li><p><code>"hour"</code></p></li>
+<li><p><code>"minute"</code></p></li>
+<li><p><code>"second"</code></p></li>
+<li><p><code>"millisecond"</code></p></li>
+<li><p><code>"microsecond"</code></p></li>
+<li><p><code>"nanosecond"</code></p></li>
+</ul>
+
+<p>Setting the <code>precision</code> determines how much information <code>%S</code> attempts
+to parse.</p></td>
     </tr>
     <tr>
       <th>locale</th>
@@ -167,6 +316,9 @@ The default format string is chosen to parse the result of calling
 
     <p>A year-month-day calendar vector. If a parsing fails, <code>NA</code> is
 returned.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><code>year_month_day_parse()</code> completely ignores the <code>%z</code> and <code>%Z</code> commands.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019-01-01"</span>
@@ -187,14 +339,12 @@ returned.</p>
 </div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=1][1]&gt;
 #&gt; [1] "2019-02-30"</div><div class='input'>
 <span class='co'># Can parse with time of day</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span>
-  <span class='fl'>2019</span>, <span class='fl'>01</span>, <span class='fl'>30</span>, <span class='fl'>02</span>, <span class='fl'>30</span>, <span class='fl'>00</span>, <span class='fl'>5000</span>,
-  subsecond_precision <span class='op'>=</span> <span class='st'>"nanosecond"</span>
+<span class='fu'>year_month_day_parse</span><span class='op'>(</span>
+  <span class='st'>"2019-01-30 02:30:00.123456789"</span>,
+  precision <span class='op'>=</span> <span class='st'>"nanosecond"</span>
 <span class='op'>)</span>
-
-<span class='fu'>year_month_day_parse</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, precision <span class='op'>=</span> <span class='st'>"nanosecond"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;year_month_day&lt;nanosecond&gt;[invalid=0][1]&gt;
-#&gt; [1] "2019-01-30 02:30:00.000005000"</div><div class='input'>
+#&gt; [1] "2019-01-30 02:30:00.123456789"</div><div class='input'>
 <span class='co'># Can parse using multiple format strings, which will be tried</span>
 <span class='co'># in the order they are provided</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span>, <span class='st'>"2020-01-01"</span>, <span class='st'>"2021/2/3"</span><span class='op'>)</span>
