@@ -1,10 +1,10 @@
 # can't round across common precision boundary
 
-    Can't ceiling from 'week' precision to 'month' precision.
+    Can't ceiling from a chronological precision (week) to a calendrical precision (month).
 
 ---
 
-    Can't floor from 'second' precision to 'year' precision.
+    Can't floor from a chronological precision (second) to a calendrical precision (year).
 
 # seq() validates from
 

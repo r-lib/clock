@@ -41,6 +41,9 @@ A precision. One of:
 
 A positive integer specifying the multiple of \code{precision} to use.}
 }
+\value{
+\code{x} rounded to the \code{precision}.
+}
 \description{
 \itemize{
 \item \code{duration_floor()} rounds a duration down to a multiple of the specified
@@ -52,18 +55,21 @@ rounding up on ties.
 }
 }
 \details{
-Durations can be separated into two groups for rounding purposes. You can
-round within these groups, but not across these groups:
-\itemize{
-\item year, quarter, month
-\item week, day, hour, minute, second, millisecond, microsecond, nanosecond
-}
+You can floor calendrical durations to other calendrical durations, and
+chronological durations to other chronological durations, but you can't
+floor a chronological duration to a calendrical duration (such as flooring
+from day to month). For more information, see the documentation on the
+\link[=duration-helper]{duration helper} page.
 }
 \examples{
 x <- duration_seconds(c(86399, 86401))
 
 duration_floor(x, "day")
 duration_ceiling(x, "day")
+
+# Can't floor from a chronological duration (seconds)
+# to a calendrical duration (months)
+try(duration_floor(x, "month"))
 
 # Every 2 days, using an origin of day 0
 y <- duration_seconds(c(0, 86400, 86400 * 2, 86400 * 3))

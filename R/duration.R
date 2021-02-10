@@ -437,11 +437,11 @@ duration_cast <- function(x, precision) {
 #'   rounding up on ties.
 #'
 #' @details
-#' Durations can be separated into two groups for rounding purposes. You can
-#' round within these groups, but not across these groups:
-#'
-#' - year, quarter, month
-#' - week, day, hour, minute, second, millisecond, microsecond, nanosecond
+#' You can floor calendrical durations to other calendrical durations, and
+#' chronological durations to other chronological durations, but you can't
+#' floor a chronological duration to a calendrical duration (such as flooring
+#' from day to month). For more information, see the documentation on the
+#' [duration helper][duration-helper] page.
 #'
 #' @inheritParams ellipsis::dots_empty
 #' @inheritParams duration_cast
@@ -450,6 +450,8 @@ duration_cast <- function(x, precision) {
 #'
 #'   A positive integer specifying the multiple of `precision` to use.
 #'
+#' @return `x` rounded to the `precision`.
+#'
 #' @name duration-rounding
 #'
 #' @examples
@@ -457,6 +459,10 @@ duration_cast <- function(x, precision) {
 #'
 #' duration_floor(x, "day")
 #' duration_ceiling(x, "day")
+#'
+#' # Can't floor from a chronological duration (seconds)
+#' # to a calendrical duration (months)
+#' try(duration_floor(x, "month"))
 #'
 #' # Every 2 days, using an origin of day 0
 #' y <- duration_seconds(c(0, 86400, 86400 * 2, 86400 * 3))
@@ -521,8 +527,8 @@ duration_rounder <- function(x, precision, n, rounder, verb, ...) {
     x_precision <- precision_to_string(x_precision)
     message <- paste0(
       "Can't ", verb, " from ",
-      "'", x_precision, "' precision to ",
-      "'", precision, "' precision."
+      "a chronological precision (", x_precision, ") to ",
+      "a calendrical precision (", precision, ")."
     )
     abort(message)
   }
