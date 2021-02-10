@@ -204,7 +204,7 @@ calendar_month_factor_impl <- function(x, labels, abbreviate, ...) {
 calendar_group <- function(x, precision, ..., n = 1L) {
   check_dots_empty()
 
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
 
   if (!calendar_is_valid_precision(x, precision)) {
     message <- paste0(
@@ -354,7 +354,7 @@ validate_calendar_group_n <- function(n) {
 #' # Or month precision
 #' calendar_narrow(x, "month")
 calendar_narrow <- function(x, precision) {
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
 
   if (!calendar_is_valid_precision(x, precision)) {
     message <- paste0(
@@ -464,7 +464,7 @@ calendar_narrow_time <- function(out_fields, out_precision, x_fields) {
 #' # Or second precision
 #' calendar_widen(x, "second")
 calendar_widen <- function(x, precision) {
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
 
   if (!calendar_is_valid_precision(x, precision)) {
     message <- paste0(
@@ -594,7 +594,7 @@ calendar_validate_subsecond_precision <- function(subsecond_precision) {
     abort("If `subsecond` is provided, `subsecond_precision` must be specified.")
   }
 
-  subsecond_precision <- validate_precision(subsecond_precision, "subsecond_precision")
+  subsecond_precision <- validate_precision_string(subsecond_precision, "subsecond_precision")
 
   if (!is_valid_subsecond_precision(subsecond_precision)) {
     abort("`subsecond_precision` must be a valid subsecond precision.")

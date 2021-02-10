@@ -417,7 +417,7 @@ duration_cast <- function(x, precision) {
     abort("`x` must be a duration.")
   }
   x_precision <- duration_precision(x)
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
   fields <- duration_cast_cpp(x, x_precision, precision)
   new_duration_from_fields(fields, precision, clock_rcrd_names(x))
 }
@@ -516,7 +516,7 @@ duration_rounder <- function(x, precision, n, rounder, verb, ...) {
     abort("`n` must be a positive number.")
   }
 
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
   x_precision <- duration_precision(x)
 
   if (x_precision < precision) {

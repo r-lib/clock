@@ -865,7 +865,7 @@ calendar_group.clock_year_quarter_day <- function(x, precision, ..., n = 1L) {
   n <- validate_calendar_group_n(n)
   x <- calendar_narrow(x, precision)
 
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
 
   if (precision == PRECISION_YEAR) {
     value <- get_year(x)
@@ -912,7 +912,7 @@ calendar_group.clock_year_quarter_day <- function(x, precision, ..., n = 1L) {
 #' # Narrow to quarter precision
 #' calendar_narrow(x, "quarter")
 calendar_narrow.clock_year_quarter_day <- function(x, precision) {
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
 
   start <- quarterly_start(x)
 
@@ -961,7 +961,7 @@ calendar_narrow.clock_year_quarter_day <- function(x, precision) {
 #' sec
 calendar_widen.clock_year_quarter_day <- function(x, precision) {
   x_precision <- calendar_precision(x)
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
 
   if (precision >= PRECISION_QUARTER && x_precision < PRECISION_QUARTER) {
     x <- set_quarter(x, 1L)

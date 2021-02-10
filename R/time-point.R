@@ -820,7 +820,7 @@ seq.clock_time_point <- function(from,
 # ------------------------------------------------------------------------------
 
 validate_time_point_precision_string <- function(precision) {
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
 
   if (!is_valid_time_point_precision(precision)) {
     abort("`precision` must be at least 'day' precision.")

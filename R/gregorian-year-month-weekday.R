@@ -868,7 +868,7 @@ calendar_group.clock_year_month_weekday <- function(x, precision, ..., n = 1L) {
   n <- validate_calendar_group_n(n)
   x <- calendar_narrow(x, precision)
 
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
 
   if (precision == PRECISION_YEAR) {
     value <- get_year(x)
@@ -916,7 +916,7 @@ calendar_group.clock_year_month_weekday <- function(x, precision, ..., n = 1L) {
 #' # Narrowed to month precision
 #' calendar_narrow(x, "month")
 calendar_narrow.clock_year_month_weekday <- function(x, precision) {
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
 
   out_fields <- list()
   x_fields <- unclass(x)
@@ -985,7 +985,7 @@ calendar_narrow.clock_year_month_weekday <- function(x, precision) {
 #' sec
 calendar_widen.clock_year_month_weekday <- function(x, precision) {
   x_precision <- calendar_precision(x)
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
 
   if (precision >= PRECISION_MONTH && x_precision < PRECISION_MONTH) {
     x <- set_month(x, 1L)

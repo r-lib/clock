@@ -253,7 +253,7 @@ year_month_day_parse <- function(x,
     abort("`x` must be a character vector.")
   }
 
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
   if (!year_month_day_is_valid_precision(precision)) {
     abort("`precision` must be a valid precision for 'year_month_day'.")
   }
@@ -980,7 +980,7 @@ calendar_group.clock_year_month_day <- function(x, precision, ..., n = 1L) {
   n <- validate_calendar_group_n(n)
   x <- calendar_narrow(x, precision)
 
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
 
   if (precision == PRECISION_YEAR) {
     value <- get_year(x)
@@ -1043,7 +1043,7 @@ calendar_group.clock_year_month_day <- function(x, precision, ..., n = 1L) {
 #' # narrowed to another subsecond precision
 #' try(calendar_narrow(micro, "millisecond"))
 calendar_narrow.clock_year_month_day <- function(x, precision) {
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
 
   out_fields <- list()
   x_fields <- unclass(x)
@@ -1100,7 +1100,7 @@ calendar_narrow.clock_year_month_day <- function(x, precision) {
 #' try(calendar_widen(milli, "microsecond"))
 calendar_widen.clock_year_month_day <- function(x, precision) {
   x_precision <- calendar_precision(x)
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
 
   if (precision >= PRECISION_MONTH && x_precision < PRECISION_MONTH) {
     x <- set_month(x, 1L)

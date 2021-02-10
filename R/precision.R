@@ -12,7 +12,7 @@ PRECISION_NANOSECOND = 10L
 
 # ------------------------------------------------------------------------------
 
-validate_precision <- function(precision, arg = "precision") {
+validate_precision_string <- function(precision, arg = "precision") {
   if (!is_string(precision)) {
     abort(paste0("`", arg, "` must be a string."))
   }

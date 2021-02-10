@@ -744,7 +744,7 @@ calendar_group.clock_iso_year_week_day <- function(x, precision, ..., n = 1L) {
   n <- validate_calendar_group_n(n)
   x <- calendar_narrow(x, precision)
 
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
 
   if (precision == PRECISION_YEAR) {
     value <- get_year(x)
@@ -791,7 +791,7 @@ calendar_group.clock_iso_year_week_day <- function(x, precision, ..., n = 1L) {
 #' # Narrowed to week precision
 #' calendar_narrow(x, "week")
 calendar_narrow.clock_iso_year_week_day <- function(x, precision) {
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
 
   out_fields <- list()
   x_fields <- unclass(x)
@@ -839,7 +839,7 @@ calendar_narrow.clock_iso_year_week_day <- function(x, precision) {
 #' sec
 calendar_widen.clock_iso_year_week_day <- function(x, precision) {
   x_precision <- calendar_precision(x)
-  precision <- validate_precision(precision)
+  precision <- validate_precision_string(precision)
 
   if (precision >= PRECISION_WEEK && x_precision < PRECISION_WEEK) {
     x <- set_week(x, 1L)

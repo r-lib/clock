@@ -252,7 +252,7 @@ zoned_parse <- function(x,
                         locale = clock_locale()) {
   check_dots_empty()
 
-  precision <- validate_zoned_time_precision(precision)
+  precision <- validate_zoned_time_precision_string(precision)
 
   if (!is_clock_locale(locale)) {
     abort("`locale` must be a 'clock_locale' object.")
@@ -652,8 +652,8 @@ zone_validate <- function(zone) {
 
 # ------------------------------------------------------------------------------
 
-validate_zoned_time_precision <- function(precision) {
-  precision <- validate_precision(precision)
+validate_zoned_time_precision_string <- function(precision) {
+  precision <- validate_precision_string(precision)
 
   if (!is_valid_zoned_time_precision(precision)) {
     abort("`precision` must be at least 'second' precision.")
