@@ -114,6 +114,15 @@
 
     'Date' objects are required to be UTC.
 
+# failure to parse throws a warning
+
+    Code
+      date_parse("foo")
+    Warning <clock_warning_parse_failures>
+      Failed to parse 1 string at location 1. Returning `NA` at that location.
+    Output
+      [1] NA
+
 # <date> op <duration>
 
     no applicable method for 'add_hours' applied to an object of class "Date"

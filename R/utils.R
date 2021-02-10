@@ -142,6 +142,25 @@ warn_clock <- function(message, class = character()) {
   rlang::warn(message, class = c(class, "clock_warning"))
 }
 
+# Thrown from C++
+warn_clock_parse_failures <- function(n, first) {
+  if (n == 0) {
+    abort("Internal error: warning thrown with zero parse failures.")
+  } else if (n == 1) {
+    message <- paste0(
+      "Failed to parse 1 string at location ", first, ". ",
+      "Returning `NA` at that location."
+    )
+  } else {
+    message <- paste0(
+      "Failed to parse ", n, " strings, beginning at location ", first, ". ",
+      "Returning `NA` at the locations where there were parse failures."
+    )
+  }
+
+  warn_clock(message, "clock_warning_parse_failures")
+}
+
 # ------------------------------------------------------------------------------
 
 is_number <- function(x) {

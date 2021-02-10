@@ -1,3 +1,23 @@
+# cannot parse invalid dates
+
+    Code
+      naive_parse(x, precision = "day")
+    Warning <clock_warning_parse_failures>
+      Failed to parse 1 string at location 1. Returning `NA` at that location.
+    Output
+      <time_point<naive><day>[1]>
+      [1] NA
+
+# failure to parse throws a warning
+
+    Code
+      naive_parse("foo")
+    Warning <clock_warning_parse_failures>
+      Failed to parse 1 string at location 1. Returning `NA` at that location.
+    Output
+      <time_point<naive><second>[1]>
+      [1] NA
+
 # can resolve ambiguous issues - character
 
     Ambiguous time due to daylight saving time at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.

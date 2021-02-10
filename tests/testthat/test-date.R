@@ -171,6 +171,11 @@ test_that("parsing with `%z` can shift the returned Date", {
   )
 })
 
+test_that("failure to parse throws a warning", {
+  expect_warning(date_parse("foo"), class = "clock_warning_parse_failures")
+  expect_snapshot(date_parse("foo"))
+})
+
 # ------------------------------------------------------------------------------
 # vec_arith()
 

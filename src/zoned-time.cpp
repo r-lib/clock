@@ -515,6 +515,7 @@ zoned_parse_one(std::istringstream& stream,
                 const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                 const char& dmark,
                 const r_ssize& i,
+                rclock::parse_failures& failures,
                 std::string& zone,
                 const date::time_zone*& p_time_zone,
                 ClockDuration& fields) {
@@ -588,6 +589,7 @@ zoned_parse_one(std::istringstream& stream,
     return;
   }
 
+  failures.write(i);
   fields.assign_na(i);
 }
 
@@ -634,6 +636,8 @@ zoned_parse_impl(const cpp11::strings& x,
     ampm_names
   );
 
+  rclock::parse_failures failures{};
+
   std::string zone;
   const date::time_zone* p_time_zone = NULL;
 
@@ -658,10 +662,15 @@ zoned_parse_impl(const cpp11::strings& x,
       ampm_names_pair,
       dmark,
       i,
+      failures,
       zone,
       p_time_zone,
       fields
     );
+  }
+
+  if (failures.any_failures()) {
+    failures.warn();
   }
 
   cpp11::writable::strings out_zone(1);

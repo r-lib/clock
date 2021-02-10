@@ -80,7 +80,13 @@ test_that("parsing day components with second precision uses midnight as time", 
 
 test_that("cannot parse invalid dates", {
   x <- "2019-02-31"
-  expect_identical(naive_parse(x, precision = "day"), naive_days(NA))
+
+  expect_identical(
+    expect_warning(naive_parse(x, precision = "day")),
+    naive_days(NA)
+  )
+
+  expect_snapshot(naive_parse(x, precision = "day"))
 })
 
 test_that("can parse with multiple formats", {
@@ -97,9 +103,14 @@ test_that("failure to parse results in NA", {
   x <- "2019-01-oh"
 
   expect_identical(
-    naive_parse(x, format = "%Y-%m-%d", precision = "day"),
+    expect_warning(naive_parse(x, format = "%Y-%m-%d", precision = "day")),
     naive_days(NA)
   )
+})
+
+test_that("failure to parse throws a warning", {
+  expect_warning(naive_parse("foo"), class = "clock_warning_parse_failures")
+  expect_snapshot(naive_parse("foo"))
 })
 
 test_that("names of input are kept", {
@@ -130,7 +141,7 @@ test_that("%z is completely ignored, but is required to be parsed correctly if s
     as_naive(year_month_day(2019, 1, 1, 0, 0, 0))
   )
   expect_identical(
-    naive_parse(y, format = "%Y-%m-%d %H:%M:%S%z"),
+    expect_warning(naive_parse(y, format = "%Y-%m-%d %H:%M:%S%z")),
     naive_seconds(NA)
   )
 })

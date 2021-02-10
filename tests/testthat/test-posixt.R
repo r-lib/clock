@@ -233,6 +233,11 @@ test_that("can resolve ambiguity and nonexistent times", {
   )
 })
 
+test_that("failure to parse throws a warning", {
+  expect_warning(date_time_parse("foo", "America/New_York"), class = "clock_warning_parse_failures")
+  expect_snapshot(date_time_parse("foo", "America/New_York"))
+})
+
 # ------------------------------------------------------------------------------
 # date_time_complete_parse()
 
@@ -252,6 +257,11 @@ test_that("ambiguity is resolved through the string", {
     date_time_complete_parse("1970-10-25 01:30:00-05:00[America/New_York]"),
     add_seconds(date_time_parse("1970-10-25 00:30:00", "America/New_York"), 7200)
   )
+})
+
+test_that("throws warning on failed parses", {
+  expect_warning(date_time_complete_parse("foo"), class = "clock_warning_parse_failures")
+  expect_snapshot(date_time_complete_parse("foo"))
 })
 
 # ------------------------------------------------------------------------------
