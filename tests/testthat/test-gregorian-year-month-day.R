@@ -82,9 +82,23 @@ test_that("failure to parse results in `NA`", {
   x <- "2020-01-ohno"
 
   expect_identical(
-    year_month_day_parse(x),
+    expect_warning(year_month_day_parse(x)),
     year_month_day(NA, NA, NA)
   )
+})
+
+test_that("failure to parse results in a warning", {
+  expect_warning(year_month_day_parse("foo", precision = "year"), class = "clock_warning_parse_failures")
+  expect_warning(year_month_day_parse("foo", precision = "month"), class = "clock_warning_parse_failures")
+  expect_warning(year_month_day_parse("foo", precision = "day"), class = "clock_warning_parse_failures")
+  expect_warning(year_month_day_parse("foo", precision = "hour"), class = "clock_warning_parse_failures")
+  expect_warning(year_month_day_parse("foo", precision = "minute"), class = "clock_warning_parse_failures")
+  expect_warning(year_month_day_parse("foo", precision = "second"), class = "clock_warning_parse_failures")
+  expect_warning(year_month_day_parse("foo", precision = "millisecond"), class = "clock_warning_parse_failures")
+  expect_warning(year_month_day_parse("foo", precision = "microsecond"), class = "clock_warning_parse_failures")
+  expect_warning(year_month_day_parse("foo", precision = "nanosecond"), class = "clock_warning_parse_failures")
+
+  expect_snapshot(year_month_day_parse("foo"))
 })
 
 test_that("can use a different locale", {

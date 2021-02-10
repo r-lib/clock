@@ -1,3 +1,13 @@
+# failure to parse results in a warning
+
+    Code
+      year_month_day_parse("foo")
+    Warning <clock_warning_parse_failures>
+      Failed to parse 1 string at location 1. Returning `NA` at that location.
+    Output
+      <year_month_day<day>[invalid=0][1]>
+      [1] NA
+
 # requires month precision
 
     `x` must have at least 'month' precision.

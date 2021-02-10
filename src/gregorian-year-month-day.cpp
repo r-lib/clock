@@ -830,6 +830,7 @@ year_month_day_from_stream(std::istringstream& stream,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
+                           rclock::parse_failures& failures,
                            Calendar& out) {
   using Duration = typename Calendar::duration;
   const r_ssize size = fmts.size();
@@ -863,6 +864,7 @@ year_month_day_from_stream(std::istringstream& stream,
     }
   }
 
+  failures.write(i);
   out.assign_na(i);
 }
 
@@ -877,6 +879,7 @@ year_month_day_from_stream(std::istringstream& stream,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
+                           rclock::parse_failures& failures,
                            rclock::gregorian::y& out) {
   const r_ssize size = fmts.size();
 
@@ -903,6 +906,7 @@ year_month_day_from_stream(std::istringstream& stream,
     }
   }
 
+  failures.write(i);
   out.assign_na(i);
 }
 
@@ -917,6 +921,7 @@ year_month_day_from_stream(std::istringstream& stream,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
+                           rclock::parse_failures& failures,
                            rclock::gregorian::ym& out) {
   const r_ssize size = fmts.size();
 
@@ -943,6 +948,7 @@ year_month_day_from_stream(std::istringstream& stream,
     }
   }
 
+  failures.write(i);
   out.assign_na(i);
 }
 
@@ -957,6 +963,7 @@ year_month_day_from_stream(std::istringstream& stream,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
+                           rclock::parse_failures& failures,
                            rclock::gregorian::ymd& out) {
   const r_ssize size = fmts.size();
 
@@ -983,6 +990,7 @@ year_month_day_from_stream(std::istringstream& stream,
     }
   }
 
+  failures.write(i);
   out.assign_na(i);
 }
 
@@ -997,6 +1005,7 @@ year_month_day_from_stream(std::istringstream& stream,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
+                           rclock::parse_failures& failures,
                            rclock::gregorian::ymdh& out) {
   const r_ssize size = fmts.size();
 
@@ -1026,6 +1035,7 @@ year_month_day_from_stream(std::istringstream& stream,
     }
   }
 
+  failures.write(i);
   out.assign_na(i);
 }
 
@@ -1040,6 +1050,7 @@ year_month_day_from_stream(std::istringstream& stream,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
+                           rclock::parse_failures& failures,
                            rclock::gregorian::ymdhm& out) {
   const r_ssize size = fmts.size();
 
@@ -1070,6 +1081,7 @@ year_month_day_from_stream(std::istringstream& stream,
     }
   }
 
+  failures.write(i);
   out.assign_na(i);
 }
 
@@ -1084,6 +1096,7 @@ year_month_day_from_stream(std::istringstream& stream,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
+                           rclock::parse_failures& failures,
                            rclock::gregorian::ymdhms& out) {
   const r_ssize size = fmts.size();
 
@@ -1115,6 +1128,7 @@ year_month_day_from_stream(std::istringstream& stream,
     }
   }
 
+  failures.write(i);
   out.assign_na(i);
 }
 
@@ -1162,6 +1176,8 @@ year_month_day_parse_impl(const cpp11::strings& x,
     ampm_names
   );
 
+  rclock::parse_failures failures{};
+
   std::istringstream stream;
 
   for (r_ssize i = 0; i < size; ++i) {
@@ -1183,8 +1199,13 @@ year_month_day_parse_impl(const cpp11::strings& x,
       ampm_names_pair,
       dmark,
       i,
+      failures,
       out
     );
+  }
+
+  if (failures.any_failures()) {
+    failures.warn();
   }
 
   return out.to_list();
