@@ -1,3 +1,11 @@
+# can't round across common precision boundary
+
+    Can't ceiling from 'week' precision to 'month' precision.
+
+---
+
+    Can't floor from 'second' precision to 'year' precision.
+
 # seq() validates from
 
     `from` must have size 1, not size 2.

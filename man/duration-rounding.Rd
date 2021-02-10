@@ -52,18 +52,12 @@ rounding up on ties.
 }
 }
 \details{
-Duration rounding is most useful when rounding from sub-daily precisions up
-to daily precision, or when rounding monthly/quarterly precisions up to
-yearly precision. These durations are defined intuitively relative to
-each other.
-
-Be \emph{extremely} careful when rounding sub-daily or daily precisions up to more
-granular precisions such as monthly or yearly. Durations are defined in terms
-of a number of seconds, and calendrical months and years cannot be broken
-down like that, since they are irregular periods of time (there aren't always
-30 days in a month, or 365 days in a year). Read the Internal Representation
-section of the documentation for \link[=duration-helper]{duration helpers} to
-learn more about how durations are defined.
+Durations can be separated into two groups for rounding purposes. You can
+round within these groups, but not across these groups:
+\itemize{
+\item year, quarter, month
+\item week, day, hour, minute, second, millisecond, microsecond, nanosecond
+}
 }
 \examples{
 x <- duration_seconds(c(86399, 86401))
@@ -83,4 +77,9 @@ duration_floor(y - origin, "day", n = 2) + origin
 half_day <- 86400 / 2
 half_day_durations <- duration_seconds(c(half_day - 1, half_day, half_day + 1))
 duration_round(half_day_durations, "day")
+
+# With larger units
+x <- duration_months(c(0, 15, 24))
+duration_floor(x, "year")
+duration_floor(x, "quarter")
 }

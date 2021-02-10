@@ -848,18 +848,12 @@ duration_rounding_switch(cpp11::list_of<cpp11::integers>& fields,
   }
   case precision::week: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(dw, n, type);
-    case precision::quarter: return duration_rounding_impl<duration::quarters>(dw, n, type);
-    case precision::month: return duration_rounding_impl<duration::months>(dw, n, type);
     case precision::week: return duration_rounding_impl<duration::weeks>(dw, n, type);
     default: clock_abort("Internal error: Invalid precision combination.");
     }
   }
   case precision::day: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(dd, n, type);
-    case precision::quarter: return duration_rounding_impl<duration::quarters>(dd, n, type);
-    case precision::month: return duration_rounding_impl<duration::months>(dd, n, type);
     case precision::week: return duration_rounding_impl<duration::weeks>(dd, n, type);
     case precision::day: return duration_rounding_impl<duration::days>(dd, n, type);
     default: clock_abort("Internal error: Invalid precision combination.");
@@ -867,9 +861,6 @@ duration_rounding_switch(cpp11::list_of<cpp11::integers>& fields,
   }
   case precision::hour: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(dh, n, type);
-    case precision::quarter: return duration_rounding_impl<duration::quarters>(dh, n, type);
-    case precision::month: return duration_rounding_impl<duration::months>(dh, n, type);
     case precision::week: return duration_rounding_impl<duration::weeks>(dh, n, type);
     case precision::day: return duration_rounding_impl<duration::days>(dh, n, type);
     case precision::hour: return duration_rounding_impl<duration::hours>(dh, n, type);
@@ -878,9 +869,6 @@ duration_rounding_switch(cpp11::list_of<cpp11::integers>& fields,
   }
   case precision::minute: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(dmin, n, type);
-    case precision::quarter: return duration_rounding_impl<duration::quarters>(dmin, n, type);
-    case precision::month: return duration_rounding_impl<duration::months>(dmin, n, type);
     case precision::week: return duration_rounding_impl<duration::weeks>(dmin, n, type);
     case precision::day: return duration_rounding_impl<duration::days>(dmin, n, type);
     case precision::hour: return duration_rounding_impl<duration::hours>(dmin, n, type);
@@ -890,9 +878,6 @@ duration_rounding_switch(cpp11::list_of<cpp11::integers>& fields,
   }
   case precision::second: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(ds, n, type);
-    case precision::quarter: return duration_rounding_impl<duration::quarters>(ds, n, type);
-    case precision::month: return duration_rounding_impl<duration::months>(ds, n, type);
     case precision::week: return duration_rounding_impl<duration::weeks>(ds, n, type);
     case precision::day: return duration_rounding_impl<duration::days>(ds, n, type);
     case precision::hour: return duration_rounding_impl<duration::hours>(ds, n, type);
@@ -903,9 +888,6 @@ duration_rounding_switch(cpp11::list_of<cpp11::integers>& fields,
   }
   case precision::millisecond: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(dmilli, n, type);
-    case precision::quarter: return duration_rounding_impl<duration::quarters>(dmilli, n, type);
-    case precision::month: return duration_rounding_impl<duration::months>(dmilli, n, type);
     case precision::week: return duration_rounding_impl<duration::weeks>(dmilli, n, type);
     case precision::day: return duration_rounding_impl<duration::days>(dmilli, n, type);
     case precision::hour: return duration_rounding_impl<duration::hours>(dmilli, n, type);
@@ -917,9 +899,6 @@ duration_rounding_switch(cpp11::list_of<cpp11::integers>& fields,
   }
   case precision::microsecond: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(dmicro, n, type);
-    case precision::quarter: return duration_rounding_impl<duration::quarters>(dmicro, n, type);
-    case precision::month: return duration_rounding_impl<duration::months>(dmicro, n, type);
     case precision::week: return duration_rounding_impl<duration::weeks>(dmicro, n, type);
     case precision::day: return duration_rounding_impl<duration::days>(dmicro, n, type);
     case precision::hour: return duration_rounding_impl<duration::hours>(dmicro, n, type);
@@ -932,9 +911,6 @@ duration_rounding_switch(cpp11::list_of<cpp11::integers>& fields,
   }
   case precision::nanosecond: {
     switch (precision_to_val) {
-    case precision::year: return duration_rounding_impl<duration::years>(dnano, n, type);
-    case precision::quarter: return duration_rounding_impl<duration::quarters>(dnano, n, type);
-    case precision::month: return duration_rounding_impl<duration::months>(dnano, n, type);
     case precision::week: return duration_rounding_impl<duration::weeks>(dnano, n, type);
     case precision::day: return duration_rounding_impl<duration::days>(dnano, n, type);
     case precision::hour: return duration_rounding_impl<duration::hours>(dnano, n, type);

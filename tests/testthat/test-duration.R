@@ -87,6 +87,11 @@ test_that("can't round to more precise precision", {
   expect_error(duration_floor(duration_seconds(1), "millisecond"), "more precise")
 })
 
+test_that("can't round across common precision boundary", {
+  expect_snapshot_error(duration_ceiling(duration_weeks(), "month"))
+  expect_snapshot_error(duration_floor(duration_seconds(), "year"))
+})
+
 test_that("input is validated", {
   expect_error(duration_floor(1, "year"), "must be a duration object")
   expect_error(duration_floor(duration_seconds(1), "foo"), "not recognized")

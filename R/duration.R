@@ -407,18 +407,11 @@ duration_cast <- function(x, precision) {
 #'   rounding up on ties.
 #'
 #' @details
-#' Duration rounding is most useful when rounding from sub-daily precisions up
-#' to daily precision, or when rounding monthly/quarterly precisions up to
-#' yearly precision. These durations are defined intuitively relative to
-#' each other.
+#' Durations can be separated into two groups for rounding purposes. You can
+#' round within these groups, but not across these groups:
 #'
-#' Be _extremely_ careful when rounding sub-daily or daily precisions up to more
-#' granular precisions such as monthly or yearly. Durations are defined in terms
-#' of a number of seconds, and calendrical months and years cannot be broken
-#' down like that, since they are irregular periods of time (there aren't always
-#' 30 days in a month, or 365 days in a year). Read the Internal Representation
-#' section of the documentation for [duration helpers][duration-helper] to
-#' learn more about how durations are defined.
+#' - year, quarter, month
+#' - week, day, hour, minute, second, millisecond, microsecond, nanosecond
 #'
 #' @inheritParams ellipsis::dots_empty
 #' @inheritParams duration_cast
@@ -447,6 +440,11 @@ duration_cast <- function(x, precision) {
 #' half_day <- 86400 / 2
 #' half_day_durations <- duration_seconds(c(half_day - 1, half_day, half_day + 1))
 #' duration_round(half_day_durations, "day")
+#'
+#' # With larger units
+#' x <- duration_months(c(0, 15, 24))
+#' duration_floor(x, "year")
+#' duration_floor(x, "quarter")
 NULL
 
 #' @rdname duration-rounding
@@ -487,6 +485,16 @@ duration_rounder <- function(x, precision, n, rounder, verb, ...) {
 
   if (x_precision < precision) {
     abort(paste0("Can't ", verb, " to a more precise precision."))
+  }
+  if (!duration_has_common_precision_cpp(x_precision, precision)) {
+    precision <- precision_to_string(precision)
+    x_precision <- precision_to_string(x_precision)
+    message <- paste0(
+      "Can't ", verb, " from ",
+      "'", x_precision, "' precision to ",
+      "'", precision, "' precision."
+    )
+    abort(message)
   }
 
   fields <- rounder(x, x_precision, precision, n)
