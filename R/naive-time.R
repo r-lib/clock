@@ -62,6 +62,8 @@ is_naive <- function(x) {
 #'
 #' @inheritParams sys_parse
 #'
+#' @return A naive-time.
+#'
 #' @export
 #' @examples
 #' naive_parse("2020-01-01 05:06:07")

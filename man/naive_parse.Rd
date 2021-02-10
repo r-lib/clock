@@ -194,6 +194,9 @@ to parse.}
 
 A locale object created from \code{\link[=clock_locale]{clock_locale()}}.}
 }
+\value{
+A naive-time.
+}
 \description{
 \code{naive_parse()} is a parser into a naive-time.
 

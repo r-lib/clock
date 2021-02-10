@@ -91,6 +91,8 @@ is_sys <- function(x) {
 #'   Setting the `precision` determines how much information `%S` attempts
 #'   to parse.
 #'
+#' @return A sys-time.
+#'
 #' @export
 #' @examples
 #' sys_parse("2020-01-01 05:06:07")

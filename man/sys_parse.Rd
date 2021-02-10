@@ -188,6 +188,9 @@ to parse.}
 
 A locale object created from \code{\link[=clock_locale]{clock_locale()}}.}
 }
+\value{
+A sys-time.
+}
 \description{
 \code{sys_parse()} is a parser into a sys-time.
 
