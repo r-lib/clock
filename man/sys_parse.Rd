@@ -13,10 +13,13 @@ A character vector to parse.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{format}{\verb{[character(1) / NULL]}
+\item{format}{\verb{[character / NULL]}
 
 A format string. A combination of the following commands, or \code{NULL},
 in which case a default format string is used.
+
+A vector of multiple format strings can be supplied. They will be tried in
+the order they are provided.
 
 \strong{Year}
 \itemize{
@@ -226,6 +229,13 @@ sys_parse("2020-01-01", precision = "day")
 
 # Nanosecond precision, but using a day based format
 sys_parse("2020-01-01", format = "\%Y-\%m-\%d", precision = "nanosecond")
+
+# Multiple format strings are allowed for heterogeneous times
+sys_parse(
+  c("2019-01-01", "2019/1/1"),
+  format = c("\%Y/\%m/\%d", "\%Y-\%m-\%d"),
+  precision = "day"
+)
 
 # The `\%z` command shifts the date-time by subtracting the UTC offset so
 # that the returned sys-time can be interpreted as UTC

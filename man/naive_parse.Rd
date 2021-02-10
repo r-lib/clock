@@ -19,10 +19,13 @@ A character vector to parse.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{format}{\verb{[character(1) / NULL]}
+\item{format}{\verb{[character / NULL]}
 
 A format string. A combination of the following commands, or \code{NULL},
 in which case a default format string is used.
+
+A vector of multiple format strings can be supplied. They will be tried in
+the order they are provided.
 
 \strong{Year}
 \itemize{

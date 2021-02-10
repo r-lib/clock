@@ -271,10 +271,13 @@ zoned_time_format <- function(print_zone_name) {
 #'
 #'   A character vector to parse.
 #'
-#' @param format `[character(1) / NULL]`
+#' @param format `[character / NULL]`
 #'
 #'   A format string. A combination of the following commands, or `NULL`,
 #'   in which case a default format string is used.
+#'
+#'   A vector of multiple format strings can be supplied. They will be tried in
+#'   the order they are provided.
 #'
 #'   **Year**
 #'

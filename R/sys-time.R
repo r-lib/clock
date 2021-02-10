@@ -103,6 +103,13 @@ is_sys <- function(x) {
 #' # Nanosecond precision, but using a day based format
 #' sys_parse("2020-01-01", format = "%Y-%m-%d", precision = "nanosecond")
 #'
+#' # Multiple format strings are allowed for heterogeneous times
+#' sys_parse(
+#'   c("2019-01-01", "2019/1/1"),
+#'   format = c("%Y/%m/%d", "%Y-%m-%d"),
+#'   precision = "day"
+#' )
+#'
 #' # The `%z` command shifts the date-time by subtracting the UTC offset so
 #' # that the returned sys-time can be interpreted as UTC
 #' sys_parse(
