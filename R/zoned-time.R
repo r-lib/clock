@@ -888,6 +888,63 @@ zoned_info.clock_zoned_time <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+add_years.clock_zoned_time <- function(x, n, ...) {
+  stop_clock_unsupported_zoned_time_op("add_years")
+}
+
+#' @export
+add_quarters.clock_zoned_time <- function(x, n, ...) {
+  stop_clock_unsupported_zoned_time_op("add_quarters")
+}
+
+#' @export
+add_months.clock_zoned_time <- function(x, n, ...) {
+  stop_clock_unsupported_zoned_time_op("add_months")
+}
+
+#' @export
+add_weeks.clock_zoned_time <- function(x, n, ...) {
+  stop_clock_unsupported_zoned_time_op("add_weeks")
+}
+
+#' @export
+add_days.clock_zoned_time <- function(x, n, ...) {
+  stop_clock_unsupported_zoned_time_op("add_days")
+}
+
+#' @export
+add_hours.clock_zoned_time <- function(x, n, ...) {
+  stop_clock_unsupported_zoned_time_op("add_hours")
+}
+
+#' @export
+add_minutes.clock_zoned_time <- function(x, n, ...) {
+  stop_clock_unsupported_zoned_time_op("add_minutes")
+}
+
+#' @export
+add_seconds.clock_zoned_time <- function(x, n, ...) {
+  stop_clock_unsupported_zoned_time_op("add_seconds")
+}
+
+#' @export
+add_milliseconds.clock_zoned_time <- function(x, n, ...) {
+  stop_clock_unsupported_zoned_time_op("add_milliseconds")
+}
+
+#' @export
+add_microseconds.clock_zoned_time <- function(x, n, ...) {
+  stop_clock_unsupported_zoned_time_op("add_microseconds")
+}
+
+#' @export
+add_nanoseconds.clock_zoned_time <- function(x, n, ...) {
+  stop_clock_unsupported_zoned_time_op("add_nanoseconds")
+}
+
+# ------------------------------------------------------------------------------
+
 zone_validate <- function(zone) {
   zone <- zone_standardize(zone)
 

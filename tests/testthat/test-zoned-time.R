@@ -140,3 +140,22 @@ test_that("zone name must be valid", {
 
   expect_snapshot_error(zoned_parse(x))
 })
+
+# ------------------------------------------------------------------------------
+# add_*()
+
+test_that("zoned-times don't support arithmetic", {
+  x <- as_zoned(as_naive(year_month_day(2019, 1, 1)), "America/New_York")
+
+  expect_snapshot_error(add_years(x, 1))
+  expect_snapshot_error(add_quarters(x, 1))
+  expect_snapshot_error(add_months(x, 1))
+  expect_snapshot_error(add_weeks(x, 1))
+  expect_snapshot_error(add_days(x, 1))
+  expect_snapshot_error(add_hours(x, 1))
+  expect_snapshot_error(add_minutes(x, 1))
+  expect_snapshot_error(add_seconds(x, 1))
+  expect_snapshot_error(add_milliseconds(x, 1))
+  expect_snapshot_error(add_microseconds(x, 1))
+  expect_snapshot_error(add_nanoseconds(x, 1))
+})

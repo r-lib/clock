@@ -36,3 +36,47 @@
 
     `%Z` must be used, and must result in a valid time zone name, not 'America/New_Yor'.
 
+# zoned-times don't support arithmetic
+
+    Zoned-times don't support `add_years()`.
+
+---
+
+    Zoned-times don't support `add_quarters()`.
+
+---
+
+    Zoned-times don't support `add_months()`.
+
+---
+
+    Zoned-times don't support `add_weeks()`.
+
+---
+
+    Zoned-times don't support `add_days()`.
+
+---
+
+    Zoned-times don't support `add_hours()`.
+
+---
+
+    Zoned-times don't support `add_minutes()`.
+
+---
+
+    Zoned-times don't support `add_seconds()`.
+
+---
+
+    Zoned-times don't support `add_milliseconds()`.
+
+---
+
+    Zoned-times don't support `add_microseconds()`.
+
+---
+
+    Zoned-times don't support `add_nanoseconds()`.
+

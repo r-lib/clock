@@ -104,6 +104,11 @@ stop_clock_unsupported_time_point_op <- function(op) {
   stop_clock(message, "clock_error_unsupported_time_point_op")
 }
 
+stop_clock_unsupported_zoned_time_op <- function(op) {
+  message <- paste0("Zoned-times don't support `", op, "()`.")
+  stop_clock(message, "clock_error_unsupported_zoned_time_op")
+}
+
 # Thrown from C++
 stop_clock_invalid_date <- function(i) {
   message <- paste0(
