@@ -21,7 +21,7 @@ library(fs)
 # Download this file and place it in `inst/tzdata` as `windowsZones.xml`.
 
 # Update the version!
-version <- "2020d"
+version <- "2021a"
 
 # ------------------------------------------------------------------------------
 # Download the time zone database
