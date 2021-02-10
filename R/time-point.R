@@ -806,11 +806,6 @@ seq.clock_time_point <- function(from,
                                  ...) {
   precision <- time_point_precision(from)
 
-  if (is_duration(by)) {
-    by_precision <- duration_precision(by)
-    validate_time_point_duration_op_precision(by_precision, arg = "by")
-  }
-
   seq_impl(
     from = from,
     to = to,
@@ -836,19 +831,4 @@ validate_time_point_precision_string <- function(precision) {
 
 is_valid_time_point_precision <- function(precision) {
   precision >= PRECISION_DAY
-}
-
-# Some operations combine a time point with a duration. These typically
-# work by extracting out the duration from the time point, and then calling
-# a duration specific function that works on two durations. Even though the
-# underlying duration function might allow things like
-# `duration<second> + duration<year>`, we don't want to allow
-# `time_point<second> + duration<year>`, as this just gives a confusing result.
-validate_time_point_duration_op_precision <- function(precision, arg = "precision") {
-  if (precision < PRECISION_WEEK) {
-    message <- paste0("`", arg, "` must be at least 'week' precision.")
-    abort(message)
-  }
-
-  precision
 }
