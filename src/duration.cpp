@@ -570,18 +570,39 @@ duration_scalar_divide_cpp(cpp11::list_of<cpp11::integers> x,
 
 /*
  * Restricts normal result returned by `std::common_type()` to only allow
- * common durations that result in a named duration type (year, month, ...).
- * For example, duration_common("year", "month") is allowed because month is
- * defined as 1/12 of a year. duration_common("year", "second") is allowed
- * because years are defined in terms of seconds. But
- * duration_common("year", "day") is not allowed because the greatest common
- * divisor between their ratios is 216, which would create an unnamed duration.
+ * combinations of:
+ *
+ * - year, quarter, month
+ * - week, day, hour, minute, second, microsecond, millisecond, nanosecond
+ *
+ * These two groups consist of durations that are intuitively defined relative
+ * to each other. They also separate how durations are interpreted in clock,
+ * the granular ones are calendrical (and are used with calendars), the precise
+ * ones are chronological (and are used with time points).
  */
 template <typename Duration1, typename Duration2>
 inline
 std::pair<enum precision, bool>
 duration_common_precision_impl() {
   using CT = typename std::common_type<Duration1, Duration2>::type;
+
+  const bool duration1_granular =
+    std::is_same<Duration1, date::years>::value ||
+    std::is_same<Duration1, quarterly::quarters>::value ||
+    std::is_same<Duration1, date::months>::value;
+
+  const bool duration2_granular =
+    std::is_same<Duration2, date::years>::value ||
+    std::is_same<Duration2, quarterly::quarters>::value ||
+    std::is_same<Duration2, date::months>::value;
+
+  // Duration combinations that cross the month/week boundary are invalid
+  if (duration1_granular && !duration2_granular) {
+    return std::make_pair(precision::year, false);
+  }
+  if (!duration1_granular && duration2_granular) {
+    return std::make_pair(precision::year, false);
+  }
 
   if (std::is_same<CT, date::years>::value) {
     return std::make_pair(precision::year, true);
@@ -606,7 +627,7 @@ duration_common_precision_impl() {
   } else if (std::is_same<CT, std::chrono::nanoseconds>::value) {
     return std::make_pair(precision::nanosecond, true);
   } else {
-    return std::make_pair(precision::year, false);
+    clock_abort("Internal error: Invalid combination of duration precisions.");
   }
 
   never_reached("duration_common_precision_impl");

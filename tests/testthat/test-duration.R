@@ -1,4 +1,44 @@
 # ------------------------------------------------------------------------------
+# duration_precision_common_cpp()
+
+test_that("correctly computes common duration precision", {
+  granular <- c(
+    PRECISION_YEAR,
+    PRECISION_QUARTER,
+    PRECISION_MONTH
+  )
+
+  precise <- c(
+    PRECISION_WEEK,
+    PRECISION_DAY,
+    PRECISION_HOUR,
+    PRECISION_MINUTE,
+    PRECISION_SECOND,
+    PRECISION_MILLISECOND,
+    PRECISION_MICROSECOND,
+    PRECISION_NANOSECOND
+  )
+
+  for (p1 in granular) {
+    for (p2 in granular) {
+      expect_identical(duration_precision_common_cpp(p1, p2), max(p1, p2))
+    }
+  }
+
+  for (p1 in precise) {
+    for (p2 in precise) {
+      expect_identical(duration_precision_common_cpp(p1, p2), max(p1, p2))
+    }
+  }
+
+  for (p1 in granular) {
+    for (p2 in precise) {
+      expect_identical(duration_precision_common_cpp(p1, p2), NA_integer_)
+    }
+  }
+})
+
+# ------------------------------------------------------------------------------
 # duration_floor() / _ceiling() / _round()
 
 test_that("floor rounds down", {
@@ -195,7 +235,7 @@ test_that("`to` is always cast to `from`", {
 
 test_that("special test to ensure we never lose precision (i.e. by trying to convert to double)", {
   expect_identical(
-    seq(duration_nanoseconds(0), duration_years(10), length.out = 3),
-    duration_nanoseconds(0) + duration_years(c(0, 5, 10))
+    seq(duration_nanoseconds(0), duration_cast(duration_years(10), "nanosecond"), length.out = 3),
+    duration_nanoseconds(0) + duration_cast(duration_years(c(0, 5, 10)), "nanosecond")
   )
 })
