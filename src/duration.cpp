@@ -572,7 +572,10 @@ duration_scalar_divide_cpp(cpp11::list_of<cpp11::integers> x,
  * Restricts normal result returned by `std::common_type()` to only allow
  * combinations of:
  *
+ * Calendrical durations:
  * - year, quarter, month
+ *
+ * Chronological durations:
  * - week, day, hour, minute, second, microsecond, millisecond, nanosecond
  *
  * These two groups consist of durations that are intuitively defined relative
@@ -586,21 +589,22 @@ std::pair<enum precision, bool>
 duration_common_precision_impl() {
   using CT = typename std::common_type<Duration1, Duration2>::type;
 
-  const bool duration1_granular =
+  const bool duration1_calendrical =
     std::is_same<Duration1, date::years>::value ||
     std::is_same<Duration1, quarterly::quarters>::value ||
     std::is_same<Duration1, date::months>::value;
 
-  const bool duration2_granular =
+  const bool duration2_calendrical =
     std::is_same<Duration2, date::years>::value ||
     std::is_same<Duration2, quarterly::quarters>::value ||
     std::is_same<Duration2, date::months>::value;
 
-  // Duration combinations that cross the month/week boundary are invalid
-  if (duration1_granular && !duration2_granular) {
+  // Duration combinations that cross the
+  // calendrical/chronological boundary are invalid
+  if (duration1_calendrical && !duration2_calendrical) {
     return std::make_pair(precision::year, false);
   }
-  if (!duration1_granular && duration2_granular) {
+  if (!duration1_calendrical && duration2_calendrical) {
     return std::make_pair(precision::year, false);
   }
 
