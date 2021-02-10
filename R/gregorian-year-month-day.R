@@ -165,33 +165,39 @@ vec_ptype_abbr.clock_year_month_day <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
-#' Parse into a year-month-day calendar
+#' Parsing: year-month-day
 #'
-#' `year_month_day_parse()` parses a character vector into a year-month-day
-#' calendar.
+#' @description
+#' `year_month_day_parse()` parses strings into a year-month-day.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' The default options assume `x` should be parsed at day precision, using a
+#' `format` string of `"%Y-%m-%d"`.
+#'
+#' @details
+#' `year_month_day_parse()` completely ignores the `%z` and `%Z` commands.
+#'
+#' @inheritParams zoned_parse
 #'
 #' @param x `[character]`
 #'
 #'   A character vector to parse.
 #'
-#' @param format `[character / NULL]`
-#'
-#'   A format string.
-#'
-#'   Multiple format strings can be supplied, and they will be tried in the
-#'   order they are provided.
-#'
-#'   If `NULL`, a default format string is chosen based on the `precision`.
-#'   The default format string is chosen to parse the result of calling
-#'   `format()` on a year-month-day object. For example, with
-#'   `precision = "month"`, `format` would be set to `"%Y-%m`, and with
-#'   `precision = "millisecond"` it would be set to `"%Y-%m-%d %H:%M:%S"`.
-#'
 #' @param precision `[character(1)]`
 #'
-#'   The precision of the resulting year-month-day.
+#'   A precision for the resulting year-month-day. One of:
+#'
+#'   - `"year"`
+#'   - `"month"`
+#'   - `"day"`
+#'   - `"hour"`
+#'   - `"minute"`
+#'   - `"second"`
+#'   - `"millisecond"`
+#'   - `"microsecond"`
+#'   - `"nanosecond"`
+#'
+#'   Setting the `precision` determines how much information `%S` attempts
+#'   to parse.
 #'
 #' @param locale `[clock_locale]`
 #'
@@ -216,12 +222,10 @@ vec_ptype_abbr.clock_year_month_day <- function(x, ...) {
 #' year_month_day_parse(format(invalid))
 #'
 #' # Can parse with time of day
-#' x <- year_month_day(
-#'   2019, 01, 30, 02, 30, 00, 5000,
-#'   subsecond_precision = "nanosecond"
+#' year_month_day_parse(
+#'   "2019-01-30 02:30:00.123456789",
+#'   precision = "nanosecond"
 #' )
-#'
-#' year_month_day_parse(format(x), precision = "nanosecond")
 #'
 #' # Can parse using multiple format strings, which will be tried
 #' # in the order they are provided

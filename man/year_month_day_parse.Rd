@@ -2,7 +2,7 @@
 % Please edit documentation in R/gregorian-year-month-day.R
 \name{year_month_day_parse}
 \alias{year_month_day_parse}
-\title{Parse into a year-month-day calendar}
+\title{Parsing: year-month-day}
 \usage{
 year_month_day_parse(
   x,
@@ -21,20 +21,179 @@ A character vector to parse.}
 
 \item{format}{\verb{[character / NULL]}
 
-A format string.
+A format string. A combination of the following commands, or \code{NULL},
+in which case a default format string is used.
 
-Multiple format strings can be supplied, and they will be tried in the
-order they are provided.
+A vector of multiple format strings can be supplied. They will be tried in
+the order they are provided.
 
-If \code{NULL}, a default format string is chosen based on the \code{precision}.
-The default format string is chosen to parse the result of calling
-\code{format()} on a year-month-day object. For example, with
-\code{precision = "month"}, \code{format} would be set to \verb{"\%Y-\%m}, and with
-\code{precision = "millisecond"} it would be set to \code{"\%Y-\%m-\%d \%H:\%M:\%S"}.}
+\strong{Year}
+\itemize{
+\item \verb{\%C}: The century as a decimal number. The modified command \verb{\%NC} where
+\code{N} is a positive decimal integer specifies the maximum number of
+characters to read. If not specified, the default is \code{2}. Leading zeroes
+are permitted but not required.
+\item \verb{\%y}: The last two decimal digits of the year. If the century is not
+otherwise specified (e.g. with \verb{\%C}), values in the range \verb{[69 - 99]} are
+presumed to refer to the years \verb{[1969 - 1999]}, and values in the range
+\verb{[00 - 68]} are presumed to refer to the years \verb{[2000 - 2068]}. The
+modified command \verb{\%Ny}, where \code{N} is a positive decimal integer, specifies
+the maximum number of characters to read. If not specified, the default is
+\code{2}. Leading zeroes are permitted but not required.
+\item \verb{\%Y}: The year as a decimal number. The modified command \verb{\%NY} where \code{N}
+is a positive decimal integer specifies the maximum number of characters to
+read. If not specified, the default is \code{4}. Leading zeroes are permitted
+but not required.
+}
+
+\strong{Month}
+\itemize{
+\item \verb{\%b}, \verb{\%B}, \verb{\%h}: The \code{locale}'s full or abbreviated case-insensitive
+month name.
+\item \verb{\%m}: The month as a decimal number. January is \code{1}. The modified command
+\verb{\%Nm} where \code{N} is a positive decimal integer specifies the maximum number
+of characters to read. If not specified, the default is \code{2}. Leading zeroes
+are permitted but not required.
+}
+
+\strong{Day}
+\itemize{
+\item \verb{\%d}, \verb{\%e}: The day of the month as a decimal number. The modified
+command \verb{\%Nd} where \code{N} is a positive decimal integer specifies the maximum
+number of characters to read. If not specified, the default is \code{2}. Leading
+zeroes are permitted but not required.
+}
+
+\strong{Day of the week}
+\itemize{
+\item \verb{\%a}, \verb{\%A}: The \code{locale}'s full or abbreviated case-insensitive weekday
+name.
+\item \verb{\%w}: The weekday as a decimal number (\code{0-6}), where Sunday is \code{0}. The
+modified command \verb{\%Nw} where \code{N} is a positive decimal integer specifies
+the maximum number of characters to read. If not specified, the default is
+\code{1}. Leading zeroes are permitted but not required.
+}
+
+\strong{ISO 8601 week-based year}
+\itemize{
+\item \verb{\%g}: The last two decimal digits of the ISO week-based year. The
+modified command \verb{\%Ng} where \code{N} is a positive decimal integer specifies
+the maximum number of characters to read. If not specified, the default is
+\code{2}. Leading zeroes are permitted but not required.
+\item \verb{\%G}: The ISO week-based year as a decimal number. The modified command
+\verb{\%NG} where \code{N} is a positive decimal integer specifies the maximum number
+of characters to read. If not specified, the default is \code{4}. Leading zeroes
+are permitted but not required.
+\item \verb{\%V}: The ISO week-based week number as a decimal number. The modified
+command \verb{\%NV} where \code{N} is a positive decimal integer specifies the maximum
+number of characters to read. If not specified, the default is \code{2}. Leading
+zeroes are permitted but not required.
+\item \verb{\%u}: The ISO weekday as a decimal number (\code{1-7}), where Monday is \code{1}.
+The modified command \verb{\%Nu} where \code{N} is a positive decimal integer
+specifies the maximum number of characters to read. If not specified, the
+default is \code{1}. Leading zeroes are permitted but not required.
+}
+
+\strong{Week of the year}
+\itemize{
+\item \verb{\%U}: The week number of the year as a decimal number. The first Sunday
+of the year is the first day of week \code{01}. Days of the same year prior to
+that are in week \code{00}. The modified command \verb{\%NU} where \code{N} is a positive
+decimal integer specifies the maximum number of characters to read. If not
+specified, the default is \code{2}. Leading zeroes are permitted but not
+required.
+\item \verb{\%W}: The week number of the year as a decimal number. The first Monday
+of the year is the first day of week \code{01}. Days of the same year prior to
+that are in week \code{00}. The modified command \verb{\%NW} where \code{N} is a positive
+decimal integer specifies the maximum number of characters to read. If not
+specified, the default is \code{2}. Leading zeroes are permitted but not
+required.
+}
+
+\strong{Day of the year}
+\itemize{
+\item \verb{\%j}: The day of the year as a decimal number. January 1 is \code{1}. The
+modified command \verb{\%Nj} where \code{N} is a positive decimal integer specifies
+the maximum number of characters to read. If not specified, the default is
+\code{3}. Leading zeroes are permitted but not required.
+}
+
+\strong{Date}
+\itemize{
+\item \verb{\%D}, \verb{\%x}: Equivalent to \verb{\%m/\%d/\%y}.
+\item \verb{\%F}: Equivalent to \verb{\%Y-\%m-\%d}. If modified with a width (like \verb{\%NF}),
+the width is applied to only \verb{\%Y}.
+}
+
+\strong{Time of day}
+\itemize{
+\item \verb{\%H}: The hour (24-hour clock) as a decimal number. The modified command
+\verb{\%NH} where \code{N} is a positive decimal integer specifies the maximum number
+of characters to read. If not specified, the default is \code{2}. Leading zeroes
+are permitted but not required.
+\item \verb{\%I}: The hour (12-hour clock) as a decimal number. The modified command
+\verb{\%NI} where \code{N} is a positive decimal integer specifies the maximum number
+of characters to read. If not specified, the default is \code{2}. Leading zeroes
+are permitted but not required.
+\item \verb{\%M}: The minutes as a decimal number. The modified command \verb{\%NM} where
+\code{N} is a positive decimal integer specifies the maximum number of
+characters to read. If not specified, the default is \code{2}. Leading zeroes
+are permitted but not required.
+\item \verb{\%S}: The seconds as a decimal number. The modified command \verb{\%NS} where
+\code{N} is a positive decimal integer specifies the maximum number of
+characters to read. If not specified, the default is determined by the
+precision that you are parsing at. If encountered, the \code{locale}
+determines the decimal point character. Leading zeroes are permitted but
+not required.
+\item \verb{\%p}: The \code{locale}'s equivalent of the AM/PM designations associated with
+a 12-hour clock. The command \verb{\%I} must precede \verb{\%p} in the format string.
+\item \verb{\%R}: Equivalent to \verb{\%H:\%M}.
+\item \verb{\%T}, \verb{\%X}: Equivalent to \verb{\%H:\%M:\%S}.
+\item \verb{\%r}: Equivalent to \verb{\%I:\%M:\%S \%p}.
+}
+
+\strong{Time zone}
+\itemize{
+\item \verb{\%z}: The offset from UTC in the format \verb{[+|-]hh[mm]}. For example
+\code{-0430} refers to 4 hours 30 minutes behind UTC. And \code{04} refers to 4 hours
+ahead of UTC. The modified command \verb{\%Ez} parses a \code{:} between the hours and
+minutes and leading zeroes on the hour field are optional:
+\verb{[+|-]h[h][:mm]}. For example \code{-04:30} refers to 4 hours 30 minutes behind
+UTC. And \code{4} refers to 4 hours ahead of UTC.
+\item \verb{\%Z}:     The full time zone name. A single word is parsed. This word can
+only contain characters that are alphanumeric, or one of \code{'_'}, \code{'/'},
+\code{'-'} or \code{'+'}.
+}
+
+\strong{Miscellaneous}
+\itemize{
+\item \verb{\%c}: A date and time representation. Equivalent to
+\verb{\%a \%b \%d \%H:\%M:\%S \%Y}.
+\item \code{\%\%}: A \verb{\%} character.
+\item \verb{\%n}: Matches one white space character. \verb{\%n}, \verb{\%t}, and a space can be
+combined to match a wide range of white-space patterns. For example \code{"\%n "}
+matches one or more white space characters, and \code{"\%n\%t\%t"} matches one to
+three white space characters.
+\item \verb{\%t}: Matches zero or one white space characters.
+}}
 
 \item{precision}{\verb{[character(1)]}
 
-The precision of the resulting year-month-day.}
+A precision for the resulting year-month-day. One of:
+\itemize{
+\item \code{"year"}
+\item \code{"month"}
+\item \code{"day"}
+\item \code{"hour"}
+\item \code{"minute"}
+\item \code{"second"}
+\item \code{"millisecond"}
+\item \code{"microsecond"}
+\item \code{"nanosecond"}
+}
+
+Setting the \code{precision} determines how much information \verb{\%S} attempts
+to parse.}
 
 \item{locale}{\verb{[clock_locale]}
 
@@ -45,8 +204,13 @@ A year-month-day calendar vector. If a parsing fails, \code{NA} is
 returned.
 }
 \description{
-\code{year_month_day_parse()} parses a character vector into a year-month-day
-calendar.
+\code{year_month_day_parse()} parses strings into a year-month-day.
+
+The default options assume \code{x} should be parsed at day precision, using a
+\code{format} string of \code{"\%Y-\%m-\%d"}.
+}
+\details{
+\code{year_month_day_parse()} completely ignores the \verb{\%z} and \verb{\%Z} commands.
 }
 \examples{
 x <- "2019-01-01"
@@ -63,12 +227,10 @@ invalid <- year_month_day(2019, 2, 30)
 year_month_day_parse(format(invalid))
 
 # Can parse with time of day
-x <- year_month_day(
-  2019, 01, 30, 02, 30, 00, 5000,
-  subsecond_precision = "nanosecond"
+year_month_day_parse(
+  "2019-01-30 02:30:00.123456789",
+  precision = "nanosecond"
 )
-
-year_month_day_parse(format(x), precision = "nanosecond")
 
 # Can parse using multiple format strings, which will be tried
 # in the order they are provided
