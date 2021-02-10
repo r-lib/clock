@@ -71,7 +71,7 @@
 ---
 
     Can't convert `to` <duration<day>> to match type of `from` <duration<year>>.
-    Can't cast to a less precise precision.
+    Can't cast between calendrical durations and chronological durations.
 
 ---
 
@@ -99,13 +99,18 @@
 
 # `by` must be castable to the type of `from`
 
-    Can't convert `by` <duration<day>> to <duration<year>>.
+    Can't convert `by` <duration<month>> to <duration<year>>.
     Can't cast to a less precise precision.
 
 ---
 
+    Can't convert `by` <duration<day>> to <duration<year>>.
+    Can't cast between calendrical durations and chronological durations.
+
+---
+
     Can't convert `by` <duration<year>> to <duration<day>>.
-    Duration cast cannot be done exactly.
+    Can't cast between calendrical durations and chronological durations.
 
 # seq() validates `length.out`
 
@@ -152,7 +157,7 @@
 # `to` is always cast to `from`
 
     Can't convert `to` <duration<year>> to match type of `from` <duration<day>>.
-    Duration cast cannot be done exactly.
+    Can't cast between calendrical durations and chronological durations.
 
 ---
 

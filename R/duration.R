@@ -228,7 +228,7 @@ vec_ptype2.clock_duration.clock_duration <- function(x, y, ...) {
       x = x,
       y = y,
       ...,
-      details = "Duration common type would not generate a named duration type."
+      details = "Can't combine calendrical durations with chronological durations."
     )
   }
 
@@ -248,15 +248,6 @@ vec_cast.clock_duration.clock_duration <- function(x, to, ...) {
     return(x)
   }
 
-  if (x_precision > to_precision) {
-    stop_incompatible_cast(
-      x = x,
-      to = to,
-      ...,
-      details = "Can't cast to a less precise precision."
-    )
-  }
-
   precision <- duration_precision_common_cpp(x_precision, to_precision)
 
   if (is.na(precision)) {
@@ -264,7 +255,16 @@ vec_cast.clock_duration.clock_duration <- function(x, to, ...) {
       x = x,
       to = to,
       ...,
-      details = "Duration cast cannot be done exactly."
+      details = "Can't cast between calendrical durations and chronological durations."
+    )
+  }
+
+  if (x_precision > to_precision) {
+    stop_incompatible_cast(
+      x = x,
+      to = to,
+      ...,
+      details = "Can't cast to a less precise precision."
     )
   }
 

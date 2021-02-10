@@ -140,6 +140,7 @@ test_that("seq() validates `by`", {
 })
 
 test_that("`by` must be castable to the type of `from`", {
+  expect_snapshot_error(seq(duration_years(0), to = duration_years(1), by = duration_months(1)))
   expect_snapshot_error(seq(duration_years(0), to = duration_years(1), by = duration_days(1)))
   expect_snapshot_error(seq(duration_days(0), to = duration_days(1), by = duration_years(1)))
 })
