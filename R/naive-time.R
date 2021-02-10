@@ -38,6 +38,42 @@ is_naive <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' Parsing: naive-time
+#'
+#' @description
+#' `naive_parse()` is a parser into a naive-time.
+#'
+#' `naive_parse()` is useful when you have date-time strings like:
+#' `"2020-01-01 01:04:30"`. If there is no attached UTC offset or time zone
+#' name, then parsing this string as a naive-time is your best option. If
+#' you know that this string should be interpreted in a specific time zone,
+#' parse as a naive-time, then use [as_zoned()].
+#'
+#' The default options assume that `x` should be parsed at second precision,
+#' using a `format` string of `"%Y-%m-%d %H:%M:%S"`.
+#'
+#' _`naive_parse()` ignores both the `%z` and `%Z` commands._
+#'
+#' If your date-time strings contain a full time zone name and a UTC offset, use
+#' [zoned_parse()].
+#'
+#' If your date-time strings contain a UTC offset, but not a full time zone
+#' name, use [sys_parse()].
+#'
+#' @inheritParams sys_parse
+#'
+#' @export
+#' @examples
+#' naive_parse("2020-01-01 05:06:07")
+#'
+#' # Day precision
+#' naive_parse("2020-01-01", precision = "day")
+#'
+#' # Nanosecond precision, but using a day based format
+#' naive_parse("2020-01-01", format = "%Y-%m-%d", precision = "nanosecond")
+#'
+#' # Remember that the `%z` and `%Z` commands are ignored entirely!
+#' naive_parse("2020-01-01 -4000 America/New_York", format = "%Y-%m-%d %z %Z")
 naive_parse <- function(x,
                         ...,
                         format = NULL,

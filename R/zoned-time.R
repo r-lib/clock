@@ -245,6 +245,252 @@ zoned_time_format <- function(print_zone_name) {
 
 # ------------------------------------------------------------------------------
 
+#' Parsing: zoned-time
+#'
+#' @description
+#' `zoned_parse()` is a very strict parser into a zoned-time. It requires that
+#' both the `%z` and `%Z` tokens are provided in the `format` string, which
+#' parse the offset from UTC and the full time zone name respectively. Requiring
+#' this information when parsing is the _only_ way to ensure that the parse
+#' is done unambiguously.
+#'
+#' The default options assume that `x` should be parsed at second precision,
+#' using a `format` string of `"%Y-%m-%d %H:%M:%S%Ez[%Z]"`.
+#'
+#' If your date-time strings contain an offset from UTC (like `-04:00`), but
+#' not the full time zone name, you might need [sys_parse()].
+#'
+#' If your date-time strings don't contain an offset from UTC or the full
+#' time zone name, you might need to use [naive_parse()]. From there, if you
+#' know the time zone that the date-times are supposed to be in, you can
+#' convert to a zoned-time with [as_zoned()].
+#'
+#' @inheritParams ellipsis::dots_empty
+#'
+#' @param x `[character]`
+#'
+#'   A character vector to parse.
+#'
+#' @param format `[character(1) / NULL]`
+#'
+#'   A format string. A combination of the following commands, or `NULL`,
+#'   in which case a default format string is used.
+#'
+#'   **Year**
+#'
+#'   - `%C`: The century as a decimal number. The modified command `%NC` where
+#'   `N` is a positive decimal integer specifies the maximum number of
+#'   characters to read. If not specified, the default is `2`. Leading zeroes
+#'   are permitted but not required.
+#'
+#'   - `%y`: The last two decimal digits of the year. If the century is not
+#'   otherwise specified (e.g. with `%C`), values in the range `[69 - 99]` are
+#'   presumed to refer to the years `[1969 - 1999]`, and values in the range
+#'   `[00 - 68]` are presumed to refer to the years `[2000 - 2068]`. The
+#'   modified command `%Ny`, where `N` is a positive decimal integer, specifies
+#'   the maximum number of characters to read. If not specified, the default is
+#'   `2`. Leading zeroes are permitted but not required.
+#'
+#'   - `%Y`: The year as a decimal number. The modified command `%NY` where `N`
+#'   is a positive decimal integer specifies the maximum number of characters to
+#'   read. If not specified, the default is `4`. Leading zeroes are permitted
+#'   but not required.
+#'
+#'   **Month**
+#'
+#'   - `%b`, `%B`, `%h`: The `locale`'s full or abbreviated case-insensitive
+#'   month name.
+#'
+#'   - `%m`: The month as a decimal number. January is `1`. The modified command
+#'   `%Nm` where `N` is a positive decimal integer specifies the maximum number
+#'   of characters to read. If not specified, the default is `2`. Leading zeroes
+#'   are permitted but not required.
+#'
+#'   **Day**
+#'
+#'   - `%d`, `%e`: The day of the month as a decimal number. The modified
+#'   command `%Nd` where `N` is a positive decimal integer specifies the maximum
+#'   number of characters to read. If not specified, the default is `2`. Leading
+#'   zeroes are permitted but not required.
+#'
+#'   **Day of the week**
+#'
+#'   - `%a`, `%A`: The `locale`'s full or abbreviated case-insensitive weekday
+#'   name.
+#'
+#'   - `%w`: The weekday as a decimal number (`0-6`), where Sunday is `0`. The
+#'   modified command `%Nw` where `N` is a positive decimal integer specifies
+#'   the maximum number of characters to read. If not specified, the default is
+#'   `1`. Leading zeroes are permitted but not required.
+#'
+#'   **ISO 8601 week-based year**
+#'
+#'   - `%g`: The last two decimal digits of the ISO week-based year. The
+#'   modified command `%Ng` where `N` is a positive decimal integer specifies
+#'   the maximum number of characters to read. If not specified, the default is
+#'   `2`. Leading zeroes are permitted but not required.
+#'
+#'   - `%G`: The ISO week-based year as a decimal number. The modified command
+#'   `%NG` where `N` is a positive decimal integer specifies the maximum number
+#'   of characters to read. If not specified, the default is `4`. Leading zeroes
+#'   are permitted but not required.
+#'
+#'   - `%V`: The ISO week-based week number as a decimal number. The modified
+#'   command `%NV` where `N` is a positive decimal integer specifies the maximum
+#'   number of characters to read. If not specified, the default is `2`. Leading
+#'   zeroes are permitted but not required.
+#'
+#'   - `%u`: The ISO weekday as a decimal number (`1-7`), where Monday is `1`.
+#'   The modified command `%Nu` where `N` is a positive decimal integer
+#'   specifies the maximum number of characters to read. If not specified, the
+#'   default is `1`. Leading zeroes are permitted but not required.
+#'
+#'   **Week of the year**
+#'
+#'   - `%U`: The week number of the year as a decimal number. The first Sunday
+#'   of the year is the first day of week `01`. Days of the same year prior to
+#'   that are in week `00`. The modified command `%NU` where `N` is a positive
+#'   decimal integer specifies the maximum number of characters to read. If not
+#'   specified, the default is `2`. Leading zeroes are permitted but not
+#'   required.
+#'
+#'   - `%W`: The week number of the year as a decimal number. The first Monday
+#'   of the year is the first day of week `01`. Days of the same year prior to
+#'   that are in week `00`. The modified command `%NW` where `N` is a positive
+#'   decimal integer specifies the maximum number of characters to read. If not
+#'   specified, the default is `2`. Leading zeroes are permitted but not
+#'   required.
+#'
+#'   **Day of the year**
+#'
+#'   - `%j`: The day of the year as a decimal number. January 1 is `1`. The
+#'   modified command `%Nj` where `N` is a positive decimal integer specifies
+#'   the maximum number of characters to read. If not specified, the default is
+#'   `3`. Leading zeroes are permitted but not required.
+#'
+#'   **Date**
+#'
+#'   - `%D`, `%x`: Equivalent to `%m/%d/%y`.
+#'
+#'   - `%F`: Equivalent to `%Y-%m-%d`. If modified with a width (like `%NF`),
+#'   the width is applied to only `%Y`.
+#'
+#'   **Time of day**
+#'
+#'   - `%H`: The hour (24-hour clock) as a decimal number. The modified command
+#'   `%NH` where `N` is a positive decimal integer specifies the maximum number
+#'   of characters to read. If not specified, the default is `2`. Leading zeroes
+#'   are permitted but not required.
+#'
+#'   - `%I`: The hour (12-hour clock) as a decimal number. The modified command
+#'   `%NI` where `N` is a positive decimal integer specifies the maximum number
+#'   of characters to read. If not specified, the default is `2`. Leading zeroes
+#'   are permitted but not required.
+#'
+#'   - `%M`: The minutes as a decimal number. The modified command `%NM` where
+#'   `N` is a positive decimal integer specifies the maximum number of
+#'   characters to read. If not specified, the default is `2`. Leading zeroes
+#'   are permitted but not required.
+#'
+#'   - `%S`: The seconds as a decimal number. The modified command `%NS` where
+#'   `N` is a positive decimal integer specifies the maximum number of
+#'   characters to read. If not specified, the default is determined by the
+#'   precision that you are parsing at. If encountered, the `locale`
+#'   determines the decimal point character. Leading zeroes are permitted but
+#'   not required.
+#'
+#'   - `%p`: The `locale`'s equivalent of the AM/PM designations associated with
+#'   a 12-hour clock. The command `%I` must precede `%p` in the format string.
+#'
+#'   - `%R`: Equivalent to `%H:%M`.
+#'
+#'   - `%T`, `%X`: Equivalent to `%H:%M:%S`.
+#'
+#'   - `%r`: Equivalent to `%I:%M:%S %p`.
+#'
+#'   **Time zone**
+#'
+#'   - `%z`: The offset from UTC in the format `[+|-]hh[mm]`. For example
+#'   `-0430` refers to 4 hours 30 minutes behind UTC. And `04` refers to 4 hours
+#'   ahead of UTC. The modified command `%Ez` parses a `:` between the hours and
+#'   minutes and leading zeroes on the hour field are optional:
+#'   `[+|-]h[h][:mm]`. For example `-04:30` refers to 4 hours 30 minutes behind
+#'   UTC. And `4` refers to 4 hours ahead of UTC.
+#'
+#'   - `%Z`: 	The full time zone name. A single word is parsed. This word can
+#'   only contain characters that are alphanumeric, or one of `'_'`, `'/'`,
+#'   `'-'` or `'+'`.
+#'
+#'   **Miscellaneous**
+#'
+#'   - `%c`: A date and time representation. Equivalent to
+#'   `%a %b %d %H:%M:%S %Y`.
+#'
+#'   - `%%`: A `%` character.
+#'
+#'   - `%n`: Matches one white space character. `%n`, `%t`, and a space can be
+#'   combined to match a wide range of white-space patterns. For example `"%n "`
+#'   matches one or more white space characters, and `"%n%t%t"` matches one to
+#'   three white space characters.
+#'
+#'   - `%t`: Matches zero or one white space characters.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   A precision for the resulting zoned-time. One of:
+#'
+#'   - `"second"`
+#'
+#'   - `"millisecond"`
+#'
+#'   - `"microsecond"`
+#'
+#'   - `"nanosecond"`
+#'
+#'   Setting the `precision` determines how much information `%S` attempts
+#'   to parse.
+#'
+#' @param locale `[clock_locale]`
+#'
+#'   A locale object created from [clock_locale()].
+#'
+#' @return A zoned-time.
+#'
+#' @export
+#' @examples
+#' zoned_parse("2019-01-01 01:02:03-05:00[America/New_York]")
+#'
+#' zoned_parse(
+#'   "January 21, 2019 -0500 America/New_York",
+#'   format = "%B %d, %Y %z %Z"
+#' )
+#'
+#' # Nanosecond precision
+#' x <- "2019/12/31 01:05:05.123456700-05:00[America/New_York]"
+#' zoned_parse(
+#'   x,
+#'   format = "%Y/%m/%d %H:%M:%S%Ez[%Z]",
+#'   precision = "nanosecond"
+#' )
+#'
+#' # The `%z` offset must correspond to the true offset that would be used
+#' # if the input was parsed as a naive-time and then converted to a zoned-time
+#' # with as_zoned(). For example, the time that was parsed above used an
+#' # offset of `-05:00`. We can confirm that this is correct with:
+#' as_zoned(as_naive(year_month_day(2019, 1, 1, 1, 2, 3)), "America/New_York")
+#'
+#' # So the following would not parse correctly
+#' zoned_parse("2019-01-01 01:02:03-04:00[America/New_York]")
+#'
+#' # `%z` is useful for breaking ties in otherwise ambiguous times. For example,
+#' # these two times are on either side of a daylight saving time fallback.
+#' # Without the `%z` offset, you wouldn't be able to tell them apart!
+#' x <- c(
+#'   "1970-10-25 01:30:00-04:00[America/New_York]",
+#'   "1970-10-25 01:30:00-05:00[America/New_York]"
+#' )
+#'
+#' zoned_parse(x)
 zoned_parse <- function(x,
                         ...,
                         format = NULL,
