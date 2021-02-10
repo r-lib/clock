@@ -164,3 +164,13 @@
     Can't convert `to` <duration<month>> to match type of `from` <duration<year>>.
     Can't cast to a less precise precision.
 
+# can't add chronological and calendrical durations
+
+    Can't combine `x` <duration<year>> and `y` <duration<second>>.
+    Can't combine calendrical durations with chronological durations.
+
+---
+
+    Can't combine `x` <duration<second>> and `y` <duration<year>>.
+    Can't combine calendrical durations with chronological durations.
+

@@ -245,3 +245,11 @@ test_that("special test to ensure we never lose precision (i.e. by trying to con
     duration_nanoseconds(0) + duration_cast(duration_years(c(0, 5, 10)), "nanosecond")
   )
 })
+
+# ------------------------------------------------------------------------------
+# add_*()
+
+test_that("can't add chronological and calendrical durations", {
+  expect_snapshot_error(add_seconds(duration_years(1), 1))
+  expect_snapshot_error(add_years(duration_seconds(1), 1))
+})
