@@ -2,7 +2,30 @@
 #'
 #' @description
 #' These helpers construct durations of the specified precision. Durations
-#' represent units of time in a specified precision.
+#' represent units of time.
+#'
+#' Durations are separated into two categories:
+#'
+#' **Calendrical**
+#'
+#' - year
+#' - quarter
+#' - month
+#'
+#' **Chronological**
+#'
+#' - week
+#' - day
+#' - hour
+#' - minute
+#' - second
+#' - millisecond
+#' - microsecond
+#' - nanosecond
+#'
+#' Calendrical durations are generally used when manipulating calendar types,
+#' like year-month-day. Chronological durations are generally used when
+#' working with time points, like sys-time or naive-time.
 #'
 #' @section Internal Representation:
 #'
@@ -40,6 +63,13 @@
 #' A duration of 1 quarter is defined as exactly 1/4 of a year.
 #'
 #' A duration of 1 week is defined as exactly 7 days.
+#'
+#' These conversions come into play when doing operations like adding or
+#' flooring durations. Generally, you add two calendrical durations together
+#' to get a new calendrical duration, rather than adding a calendrical and
+#' a chronological duration together. The one exception is [duration_cast()],
+#' which can cast durations to any other precision, with a potential loss of
+#' information.
 #'
 #' @param n `[integer]`
 #'
@@ -198,7 +228,7 @@ vec_ptype2.clock_duration.clock_duration <- function(x, y, ...) {
       x = x,
       y = y,
       ...,
-      details = "Duration common type would not generate a named duration type."
+      details = "Can't combine calendrical durations with chronological durations."
     )
   }
 
@@ -218,15 +248,6 @@ vec_cast.clock_duration.clock_duration <- function(x, to, ...) {
     return(x)
   }
 
-  if (x_precision > to_precision) {
-    stop_incompatible_cast(
-      x = x,
-      to = to,
-      ...,
-      details = "Can't cast to a less precise precision."
-    )
-  }
-
   precision <- duration_precision_common_cpp(x_precision, to_precision)
 
   if (is.na(precision)) {
@@ -234,7 +255,16 @@ vec_cast.clock_duration.clock_duration <- function(x, to, ...) {
       x = x,
       to = to,
       ...,
-      details = "Duration cast cannot be done exactly."
+      details = "Can't cast between calendrical durations and chronological durations."
+    )
+  }
+
+  if (x_precision > to_precision) {
+    stop_incompatible_cast(
+      x = x,
+      to = to,
+      ...,
+      details = "Can't cast to a less precise precision."
     )
   }
 
@@ -282,11 +312,11 @@ as_duration.clock_duration <- function(x) {
 #' @export
 as_sys.clock_duration <- function(x) {
   names <- clock_rcrd_names(x)
-  precision <- duration_precision(x)
 
-  if (precision < PRECISION_DAY) {
-    abort("`x` must have at least 'day' precision to convert to a time point.")
-  }
+  # Promote to at least day precision for sys-time
+  x <- vec_cast(x, vec_ptype2(x, duration_days()))
+
+  precision <- duration_precision(x)
 
   new_sys_time_from_fields(x, precision, names)
 }
@@ -407,18 +437,11 @@ duration_cast <- function(x, precision) {
 #'   rounding up on ties.
 #'
 #' @details
-#' Duration rounding is most useful when rounding from sub-daily precisions up
-#' to daily precision, or when rounding monthly/quarterly precisions up to
-#' yearly precision. These durations are defined intuitively relative to
-#' each other.
-#'
-#' Be _extremely_ careful when rounding sub-daily or daily precisions up to more
-#' granular precisions such as monthly or yearly. Durations are defined in terms
-#' of a number of seconds, and calendrical months and years cannot be broken
-#' down like that, since they are irregular periods of time (there aren't always
-#' 30 days in a month, or 365 days in a year). Read the Internal Representation
-#' section of the documentation for [duration helpers][duration-helper] to
-#' learn more about how durations are defined.
+#' You can floor calendrical durations to other calendrical durations, and
+#' chronological durations to other chronological durations, but you can't
+#' floor a chronological duration to a calendrical duration (such as flooring
+#' from day to month). For more information, see the documentation on the
+#' [duration helper][duration-helper] page.
 #'
 #' @inheritParams ellipsis::dots_empty
 #' @inheritParams duration_cast
@@ -427,6 +450,8 @@ duration_cast <- function(x, precision) {
 #'
 #'   A positive integer specifying the multiple of `precision` to use.
 #'
+#' @return `x` rounded to the `precision`.
+#'
 #' @name duration-rounding
 #'
 #' @examples
@@ -434,6 +459,10 @@ duration_cast <- function(x, precision) {
 #'
 #' duration_floor(x, "day")
 #' duration_ceiling(x, "day")
+#'
+#' # Can't floor from a chronological duration (seconds)
+#' # to a calendrical duration (months)
+#' try(duration_floor(x, "month"))
 #'
 #' # Every 2 days, using an origin of day 0
 #' y <- duration_seconds(c(0, 86400, 86400 * 2, 86400 * 3))
@@ -447,6 +476,11 @@ duration_cast <- function(x, precision) {
 #' half_day <- 86400 / 2
 #' half_day_durations <- duration_seconds(c(half_day - 1, half_day, half_day + 1))
 #' duration_round(half_day_durations, "day")
+#'
+#' # With larger units
+#' x <- duration_months(c(0, 15, 24))
+#' duration_floor(x, "year")
+#' duration_floor(x, "quarter")
 NULL
 
 #' @rdname duration-rounding
@@ -487,6 +521,16 @@ duration_rounder <- function(x, precision, n, rounder, verb, ...) {
 
   if (x_precision < precision) {
     abort(paste0("Can't ", verb, " to a more precise precision."))
+  }
+  if (!duration_has_common_precision_cpp(x_precision, precision)) {
+    precision <- precision_to_string(precision)
+    x_precision <- precision_to_string(x_precision)
+    message <- paste0(
+      "Can't ", verb, " from ",
+      "a chronological precision (", x_precision, ") to ",
+      "a calendrical precision (", precision, ")."
+    )
+    abort(message)
   }
 
   fields <- rounder(x, x_precision, precision, n)
@@ -805,17 +849,11 @@ vec_arith.numeric.clock_duration <- function(op, x, y, ...) {
 #' _more precise precision_ of the two durations.
 #'
 #' @details
-#' Duration arithmetic is most useful when adding sub-daily or daily
-#' precisions together, or when adding monthly/quarterly/yearly precisions to
-#' other durations of similar precisions.
-#'
-#' Be _extremely_ careful when adding sub-daily or daily precisions to less
-#' precise precisions, such as monthly or yearly. Durations are defined in terms
-#' of a number of seconds, and calendrical months and years cannot be broken
-#' down like that, since they are irregular periods of time (there aren't always
-#' 30 days in a month, or 365 days in a year). Read the Internal Representation
-#' section of the documentation for [duration helpers][duration-helper] to
-#' learn more about how durations are defined.
+#' You can add calendrical durations to other calendrical durations,
+#' and chronological durations to other chronological durations, but you can't
+#' add a chronological duration to a calendrical duration
+#' (such as adding days and months). For more information, see the
+#' documentation on the [duration helper][duration-helper] page.
 #'
 #' `x` and `n` are recycled against each other.
 #'
@@ -843,6 +881,10 @@ vec_arith.numeric.clock_duration <- function(op, x, y, ...) {
 #' # precision of the two back, which is seconds
 #' y <- duration_days(1)
 #' add_seconds(y, 5)
+#'
+#' # But you can't add a chronological duration (days) and
+#' # a calendrical duration (months)
+#' try(add_months(y, 1))
 #'
 #' # You can add years to a duration of months, which adds
 #' # an additional 12 months / year

@@ -78,17 +78,11 @@ added together, and the precision of the result is determined as the
 \emph{more precise precision} of the two durations.
 }
 \details{
-Duration arithmetic is most useful when adding sub-daily or daily
-precisions together, or when adding monthly/quarterly/yearly precisions to
-other durations of similar precisions.
-
-Be \emph{extremely} careful when adding sub-daily or daily precisions to less
-precise precisions, such as monthly or yearly. Durations are defined in terms
-of a number of seconds, and calendrical months and years cannot be broken
-down like that, since they are irregular periods of time (there aren't always
-30 days in a month, or 365 days in a year). Read the Internal Representation
-section of the documentation for \link[=duration-helper]{duration helpers} to
-learn more about how durations are defined.
+You can add calendrical durations to other calendrical durations,
+and chronological durations to other chronological durations, but you can't
+add a chronological duration to a calendrical duration
+(such as adding days and months). For more information, see the
+documentation on the \link[=duration-helper]{duration helper} page.
 
 \code{x} and \code{n} are recycled against each other.
 }
@@ -105,6 +99,10 @@ add_days(x, 1)
 # precision of the two back, which is seconds
 y <- duration_days(1)
 add_seconds(y, 5)
+
+# But you can't add a chronological duration (days) and
+# a calendrical duration (months)
+try(add_months(y, 1))
 
 # You can add years to a duration of months, which adds
 # an additional 12 months / year

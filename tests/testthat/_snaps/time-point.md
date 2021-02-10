@@ -27,9 +27,10 @@
 
     Can't convert `origin` <datetime<America/New_York>> to <time_point<naive><day>>.
 
-# `by` must be at least 'week' precision (#120)
+# can't mix chronological time points and calendrical durations
 
-    `by` must be at least 'week' precision.
+    Can't convert `by` <duration<year>> to <duration<second>>.
+    Can't cast between calendrical durations and chronological durations.
 
 # can't mix clocks in seq()
 
@@ -42,5 +43,6 @@
 
 # duration to add to a time-point must have at least week precision (#120)
 
-    `y` must be at least 'week' precision.
+    Can't combine `x` <duration<second>> and `y` <duration<year>>.
+    Can't combine calendrical durations with chronological durations.
 

@@ -227,8 +227,8 @@ arith_time_point_and_time_point <- function(op, x, y, ...) {
 arith_time_point_and_duration <- function(op, x, y, ...) {
   switch (
     op,
-    "+" = time_point_plus_duration(x, y, duration_precision(y), "y", names_common(x, y)),
-    "-" = time_point_minus_duration(x, y, duration_precision(y), "y", names_common(x, y)),
+    "+" = time_point_plus_duration(x, y, duration_precision(y), names_common(x, y)),
+    "-" = time_point_minus_duration(x, y, duration_precision(y), names_common(x, y)),
     stop_incompatible_op(op, x, y, ...)
   )
 }
@@ -236,7 +236,7 @@ arith_time_point_and_duration <- function(op, x, y, ...) {
 arith_duration_and_time_point <- function(op, x, y, ...) {
   switch (
     op,
-    "+" = time_point_plus_duration(y, x, duration_precision(x), "x", names_common(x, y)),
+    "+" = time_point_plus_duration(y, x, duration_precision(x), names_common(x, y)),
     "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a time point from a duration.", ...),
     stop_incompatible_op(op, x, y, ...)
   )
@@ -247,8 +247,8 @@ arith_time_point_and_numeric <- function(op, x, y, ...) {
 
   switch (
     op,
-    "+" = time_point_plus_duration(x, y, precision, "y", names_common(x, y)),
-    "-" = time_point_minus_duration(x, y, precision, "y", names_common(x, y)),
+    "+" = time_point_plus_duration(x, y, precision, names_common(x, y)),
+    "-" = time_point_minus_duration(x, y, precision, names_common(x, y)),
     stop_incompatible_op(op, x, y, ...)
   )
 }
@@ -258,7 +258,7 @@ arith_numeric_and_time_point <- function(op, x, y, ...) {
 
   switch (
     op,
-    "+" = time_point_plus_duration(y, x, precision, "x", names_common(x, y)),
+    "+" = time_point_plus_duration(y, x, precision, names_common(x, y)),
     "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a time point from a duration.", ...),
     stop_incompatible_op(op, x, y, ...)
   )
@@ -362,64 +362,63 @@ NULL
 #' @rdname time-point-arithmetic
 #' @export
 add_weeks.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, PRECISION_WEEK, "n", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_WEEK, names_common(x, n))
 }
 
 #' @rdname time-point-arithmetic
 #' @export
 add_days.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, PRECISION_DAY, "n", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_DAY, names_common(x, n))
 }
 
 #' @rdname time-point-arithmetic
 #' @export
 add_hours.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, PRECISION_HOUR, "n", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_HOUR, names_common(x, n))
 }
 
 #' @rdname time-point-arithmetic
 #' @export
 add_minutes.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, PRECISION_MINUTE, "n", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_MINUTE, names_common(x, n))
 }
 
 #' @rdname time-point-arithmetic
 #' @export
 add_seconds.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, PRECISION_SECOND, "n", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_SECOND, names_common(x, n))
 }
 
 #' @rdname time-point-arithmetic
 #' @export
 add_milliseconds.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, PRECISION_MILLISECOND, "n", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_MILLISECOND, names_common(x, n))
 }
 
 #' @rdname time-point-arithmetic
 #' @export
 add_microseconds.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, PRECISION_MICROSECOND, "n", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_MICROSECOND, names_common(x, n))
 }
 
 #' @rdname time-point-arithmetic
 #' @export
 add_nanoseconds.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, PRECISION_NANOSECOND, "n", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_NANOSECOND, names_common(x, n))
 }
 
-time_point_plus_duration <- function(x, n, precision_n, n_arg, names) {
-  time_point_arith_duration(x, n, precision_n, n_arg, names, duration_plus)
+time_point_plus_duration <- function(x, n, precision_n, names) {
+  time_point_arith_duration(x, n, precision_n, names, duration_plus)
 }
-time_point_minus_duration <- function(x, n, precision_n, n_arg, names) {
-  time_point_arith_duration(x, n, precision_n, n_arg, names, duration_minus)
+time_point_minus_duration <- function(x, n, precision_n, names) {
+  time_point_arith_duration(x, n, precision_n, names, duration_minus)
 }
 
-time_point_arith_duration <- function(x, n, precision_n, n_arg, names, duration_fn) {
+time_point_arith_duration <- function(x, n, precision_n, names, duration_fn) {
   clock <- time_point_clock(x)
   x <- time_point_duration(x)
 
   n <- duration_collect_n(n, precision_n)
-  validate_time_point_duration_op_precision(precision_n, n_arg)
 
   # Handles recycling and casting
   duration <- duration_fn(x = x, y = n, names = names)
@@ -807,11 +806,6 @@ seq.clock_time_point <- function(from,
                                  ...) {
   precision <- time_point_precision(from)
 
-  if (is_duration(by)) {
-    by_precision <- duration_precision(by)
-    validate_time_point_duration_op_precision(by_precision, arg = "by")
-  }
-
   seq_impl(
     from = from,
     to = to,
@@ -837,19 +831,4 @@ validate_time_point_precision_string <- function(precision) {
 
 is_valid_time_point_precision <- function(precision) {
   precision >= PRECISION_DAY
-}
-
-# Some operations combine a time point with a duration. These typically
-# work by extracting out the duration from the time point, and then calling
-# a duration specific function that works on two durations. Even though the
-# underlying duration function might allow things like
-# `duration<second> + duration<year>`, we don't want to allow
-# `time_point<second> + duration<year>`, as this just gives a confusing result.
-validate_time_point_duration_op_precision <- function(precision, arg = "precision") {
-  if (precision < PRECISION_WEEK) {
-    message <- paste0("`", arg, "` must be at least 'week' precision.")
-    abort(message)
-  }
-
-  precision
 }

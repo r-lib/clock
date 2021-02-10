@@ -131,12 +131,7 @@ test_that("`by` can be a duration", {
   )
 })
 
-test_that("`by` must be at least 'week' precision (#120)", {
-  expect_identical(
-    seq(naive_seconds(0), by = duration_weeks(1), length.out = 2),
-    naive_seconds(0) + duration_weeks(c(0, 1))
-  )
-
+test_that("can't mix chronological time points and calendrical durations", {
   expect_snapshot_error(seq(naive_seconds(0), by = duration_years(1), length.out = 2))
 })
 

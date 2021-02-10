@@ -41,6 +41,9 @@ A precision. One of:
 
 A positive integer specifying the multiple of \code{precision} to use.}
 }
+\value{
+\code{x} rounded to the \code{precision}.
+}
 \description{
 \itemize{
 \item \code{duration_floor()} rounds a duration down to a multiple of the specified
@@ -52,24 +55,21 @@ rounding up on ties.
 }
 }
 \details{
-Duration rounding is most useful when rounding from sub-daily precisions up
-to daily precision, or when rounding monthly/quarterly precisions up to
-yearly precision. These durations are defined intuitively relative to
-each other.
-
-Be \emph{extremely} careful when rounding sub-daily or daily precisions up to more
-granular precisions such as monthly or yearly. Durations are defined in terms
-of a number of seconds, and calendrical months and years cannot be broken
-down like that, since they are irregular periods of time (there aren't always
-30 days in a month, or 365 days in a year). Read the Internal Representation
-section of the documentation for \link[=duration-helper]{duration helpers} to
-learn more about how durations are defined.
+You can floor calendrical durations to other calendrical durations, and
+chronological durations to other chronological durations, but you can't
+floor a chronological duration to a calendrical duration (such as flooring
+from day to month). For more information, see the documentation on the
+\link[=duration-helper]{duration helper} page.
 }
 \examples{
 x <- duration_seconds(c(86399, 86401))
 
 duration_floor(x, "day")
 duration_ceiling(x, "day")
+
+# Can't floor from a chronological duration (seconds)
+# to a calendrical duration (months)
+try(duration_floor(x, "month"))
 
 # Every 2 days, using an origin of day 0
 y <- duration_seconds(c(0, 86400, 86400 * 2, 86400 * 3))
@@ -83,4 +83,9 @@ duration_floor(y - origin, "day", n = 2) + origin
 half_day <- 86400 / 2
 half_day_durations <- duration_seconds(c(half_day - 1, half_day, half_day + 1))
 duration_round(half_day_durations, "day")
+
+# With larger units
+x <- duration_months(c(0, 15, 24))
+duration_floor(x, "year")
+duration_floor(x, "quarter")
 }

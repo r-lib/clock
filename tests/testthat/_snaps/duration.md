@@ -1,3 +1,11 @@
+# can't round across common precision boundary
+
+    Can't ceiling from a chronological precision (week) to a calendrical precision (month).
+
+---
+
+    Can't floor from a chronological precision (second) to a calendrical precision (year).
+
 # seq() validates from
 
     `from` must have size 1, not size 2.
@@ -63,7 +71,7 @@
 ---
 
     Can't convert `to` <duration<day>> to match type of `from` <duration<year>>.
-    Can't cast to a less precise precision.
+    Can't cast between calendrical durations and chronological durations.
 
 ---
 
@@ -91,13 +99,18 @@
 
 # `by` must be castable to the type of `from`
 
-    Can't convert `by` <duration<day>> to <duration<year>>.
+    Can't convert `by` <duration<month>> to <duration<year>>.
     Can't cast to a less precise precision.
 
 ---
 
+    Can't convert `by` <duration<day>> to <duration<year>>.
+    Can't cast between calendrical durations and chronological durations.
+
+---
+
     Can't convert `by` <duration<year>> to <duration<day>>.
-    Duration cast cannot be done exactly.
+    Can't cast between calendrical durations and chronological durations.
 
 # seq() validates `length.out`
 
@@ -144,10 +157,30 @@
 # `to` is always cast to `from`
 
     Can't convert `to` <duration<year>> to match type of `from` <duration<day>>.
-    Duration cast cannot be done exactly.
+    Can't cast between calendrical durations and chronological durations.
 
 ---
 
     Can't convert `to` <duration<month>> to match type of `from` <duration<year>>.
     Can't cast to a less precise precision.
+
+# can't add chronological and calendrical durations
+
+    Can't combine `x` <duration<year>> and `y` <duration<second>>.
+    Can't combine calendrical durations with chronological durations.
+
+---
+
+    Can't combine `x` <duration<second>> and `y` <duration<year>>.
+    Can't combine calendrical durations with chronological durations.
+
+# can't convert calendrical duration to time point
+
+    Can't combine <duration<year>> and <duration<day>>.
+    Can't combine calendrical durations with chronological durations.
+
+---
+
+    Can't combine <duration<year>> and <duration<day>>.
+    Can't combine calendrical durations with chronological durations.
 

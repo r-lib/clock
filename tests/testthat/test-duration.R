@@ -1,4 +1,44 @@
 # ------------------------------------------------------------------------------
+# duration_precision_common_cpp()
+
+test_that("correctly computes common duration precision", {
+  granular <- c(
+    PRECISION_YEAR,
+    PRECISION_QUARTER,
+    PRECISION_MONTH
+  )
+
+  precise <- c(
+    PRECISION_WEEK,
+    PRECISION_DAY,
+    PRECISION_HOUR,
+    PRECISION_MINUTE,
+    PRECISION_SECOND,
+    PRECISION_MILLISECOND,
+    PRECISION_MICROSECOND,
+    PRECISION_NANOSECOND
+  )
+
+  for (p1 in granular) {
+    for (p2 in granular) {
+      expect_identical(duration_precision_common_cpp(p1, p2), max(p1, p2))
+    }
+  }
+
+  for (p1 in precise) {
+    for (p2 in precise) {
+      expect_identical(duration_precision_common_cpp(p1, p2), max(p1, p2))
+    }
+  }
+
+  for (p1 in granular) {
+    for (p2 in precise) {
+      expect_identical(duration_precision_common_cpp(p1, p2), NA_integer_)
+    }
+  }
+})
+
+# ------------------------------------------------------------------------------
 # duration_floor() / _ceiling() / _round()
 
 test_that("floor rounds down", {
@@ -45,6 +85,11 @@ test_that("round rounds to nearest, ties round up", {
 
 test_that("can't round to more precise precision", {
   expect_error(duration_floor(duration_seconds(1), "millisecond"), "more precise")
+})
+
+test_that("can't round across common precision boundary", {
+  expect_snapshot_error(duration_ceiling(duration_weeks(), "month"))
+  expect_snapshot_error(duration_floor(duration_seconds(), "year"))
 })
 
 test_that("input is validated", {
@@ -95,6 +140,7 @@ test_that("seq() validates `by`", {
 })
 
 test_that("`by` must be castable to the type of `from`", {
+  expect_snapshot_error(seq(duration_years(0), to = duration_years(1), by = duration_months(1)))
   expect_snapshot_error(seq(duration_years(0), to = duration_years(1), by = duration_days(1)))
   expect_snapshot_error(seq(duration_days(0), to = duration_days(1), by = duration_years(1)))
 })
@@ -195,7 +241,28 @@ test_that("`to` is always cast to `from`", {
 
 test_that("special test to ensure we never lose precision (i.e. by trying to convert to double)", {
   expect_identical(
-    seq(duration_nanoseconds(0), duration_years(10), length.out = 3),
-    duration_nanoseconds(0) + duration_years(c(0, 5, 10))
+    seq(duration_nanoseconds(0), duration_cast(duration_years(10), "nanosecond"), length.out = 3),
+    duration_nanoseconds(0) + duration_cast(duration_years(c(0, 5, 10)), "nanosecond")
   )
+})
+
+# ------------------------------------------------------------------------------
+# add_*()
+
+test_that("can't add chronological and calendrical durations", {
+  expect_snapshot_error(add_seconds(duration_years(1), 1))
+  expect_snapshot_error(add_years(duration_seconds(1), 1))
+})
+
+# ------------------------------------------------------------------------------
+# as_sys() / as_naive()
+
+test_that("can convert week precision duration to time point", {
+  expect_identical(as_sys(duration_weeks(c(0, 1))), sys_days(c(0, 7)))
+  expect_identical(as_naive(duration_weeks(c(0, 1))), naive_days(c(0, 7)))
+})
+
+test_that("can't convert calendrical duration to time point", {
+  expect_snapshot_error(as_sys(duration_years(0)))
+  expect_snapshot_error(as_naive(duration_years(0)))
 })
