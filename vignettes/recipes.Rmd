@@ -1,0 +1,135 @@
+---
+title: "Examples and Recipes"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Examples and Recipes}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(clock)
+library(magrittr)
+```
+
+This vignette shows common examples and recipes that might be useful when learning about clock. Where possible, both the high and low level API are shown.
+
+## The current local time
+
+`zoned_now()` returns the current time in a particular time zone. It will display up to nanosecond precision, but the exact amount is OS dependent (on a Mac this displays microsecond level information at nanosecond resolution).
+
+Using `""` as the time zone string will try and use whatever R thinks your local time zone is (i.e. from `Sys.timezone()`).
+
+```{r, eval=FALSE}
+zoned_now("")
+#> <zoned_time<nanosecond><America/New_York (current)>[1]>
+#> [1] "2021-02-10 15:54:29.875011000-05:00"
+```
+
+## The current time somewhere else
+
+Pass a time zone name to `zoned_now()` to get the current time somewhere else.
+
+```{r}
+zoned_now("Asia/Shanghai")
+#> <zoned_time<nanosecond><Asia/Shanghai>[1]>
+#> [1] "2021-02-11 04:54:29.875011000+08:00"
+```
+
+## Set a meeting across time zones
+
+Say you need to set a meeting with someone in Shanghai, but you live in New York. If you set a meeting for 9am, what time is that for them?
+
+```{r}
+my_time <- year_month_day(2019, 1, 30, 9) %>%
+  as_naive() %>%
+  as_zoned("America/New_York")
+
+my_time
+
+their_time <- zoned_set_zone(my_time, "Asia/Shanghai")
+
+their_time
+```
+
+With the high level API:
+
+```{r}
+my_time <- as.POSIXct(
+  "2019-01-30 09:00:00", 
+  "America/New_York"
+)
+
+date_set_zone(my_time, "Asia/Shanghai")
+```
+
+## Force a specific time zone
+
+Say you somehow wound up with this UTC time:
+
+```{r}
+utc_time <- year_month_day(1980, 1, 2, 2, 30, 50) %>%
+  as_naive() %>%
+  as_zoned("UTC")
+
+utc_time
+```
+
+You aren't sure why this is in UTC, since you know for a fact that the real time zone we should have interpreted this as is `"Europe/Moscow"`. In this case, you don't want the equivalent time in Moscow, which would change the printed time. Instead, you want to _force_ a particular time zone, retaining the printed time if possible.
+
+```{r}
+# Drop the time zone information, retaining printed time
+utc_time %>%
+  as_naive()
+
+# Add the correct time zone name back on, again retaining
+# the printed time
+utc_time %>%
+  as_naive() %>%
+  as_zoned("Europe/Moscow")
+```
+
+With the high level API:
+
+```{r}
+utc_time <- as.POSIXct("1980-01-02 02:30:50", "UTC")
+
+utc_time %>%
+  as_naive() %>%
+  as.POSIXct("Europe/Moscow")
+```
+
+Note that a conversion like this isn't always possible due to daylight saving time issues, in which case you might need to set the `nonexistent` and `ambiguous` arguments of `as_zoned()`.
+
+## Finding the next Monday (or Thursday)
+
+Given a particular day precision naive-time, how can you compute the next Monday?
+
+This is straightforward through the usage of the `weekday` type. It represents a single day of the week. Let's see the code first:
+
+```{r}
+next_weekday <- function(x, target) {
+  x + (target - as_weekday(x))
+}
+
+days <- as_naive(year_month_day(2019, c(1, 2), 1))
+
+# A Tuesday and a Friday
+as_weekday(days)
+
+monday <- weekday(1)
+
+next_weekday(days, monday)
+
+as_weekday(next_weekday(days, monday))
+```
+
