@@ -174,3 +174,13 @@
     Can't combine `x` <duration<second>> and `y` <duration<year>>.
     Can't combine calendrical durations with chronological durations.
 
+# can't convert calendrical duration to time point
+
+    Can't combine <duration<year>> and <duration<day>>.
+    Can't combine calendrical durations with chronological durations.
+
+---
+
+    Can't combine <duration<year>> and <duration<day>>.
+    Can't combine calendrical durations with chronological durations.
+

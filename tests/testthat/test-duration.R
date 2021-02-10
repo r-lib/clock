@@ -253,3 +253,16 @@ test_that("can't add chronological and calendrical durations", {
   expect_snapshot_error(add_seconds(duration_years(1), 1))
   expect_snapshot_error(add_years(duration_seconds(1), 1))
 })
+
+# ------------------------------------------------------------------------------
+# as_sys() / as_naive()
+
+test_that("can convert week precision duration to time point", {
+  expect_identical(as_sys(duration_weeks(c(0, 1))), sys_days(c(0, 7)))
+  expect_identical(as_naive(duration_weeks(c(0, 1))), naive_days(c(0, 7)))
+})
+
+test_that("can't convert calendrical duration to time point", {
+  expect_snapshot_error(as_sys(duration_years(0)))
+  expect_snapshot_error(as_naive(duration_years(0)))
+})

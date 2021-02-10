@@ -312,11 +312,11 @@ as_duration.clock_duration <- function(x) {
 #' @export
 as_sys.clock_duration <- function(x) {
   names <- clock_rcrd_names(x)
-  precision <- duration_precision(x)
 
-  if (precision < PRECISION_DAY) {
-    abort("`x` must have at least 'day' precision to convert to a time point.")
-  }
+  # Promote to at least day precision for sys-time
+  x <- vec_cast(x, vec_ptype2(x, duration_days()))
+
+  precision <- duration_precision(x)
 
   new_sys_time_from_fields(x, precision, names)
 }
