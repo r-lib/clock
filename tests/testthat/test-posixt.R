@@ -254,6 +254,11 @@ test_that("ambiguity is resolved through the string", {
   )
 })
 
+test_that("throws warning on failed parses", {
+  expect_warning(date_time_complete_parse("foo"), class = "clock_warning_parse_failures")
+  expect_snapshot(date_time_complete_parse("foo"))
+})
+
 # ------------------------------------------------------------------------------
 # vec_arith()
 
