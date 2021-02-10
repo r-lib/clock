@@ -359,7 +359,7 @@ to parse.</p></td>
 #&gt; [1] "2019-01-01 01:02:03-05:00"</div><div class='input'>
 <span class='co'># So the following would not parse correctly</span>
 <span class='fu'>zoned_parse</span><span class='op'>(</span><span class='st'>"2019-01-01 01:02:03-04:00[America/New_York]"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Failed to parse 1 string at location 1. Returning `NA` at that location.</span></div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
 #&gt; [1] NA</div><div class='input'>
 <span class='co'># `%z` is useful for breaking ties in otherwise ambiguous times. For example,</span>
 <span class='co'># these two times are on either side of a daylight saving time fallback.</span>
