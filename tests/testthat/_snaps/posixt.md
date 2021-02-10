@@ -131,6 +131,15 @@
 
     Ambiguous time due to daylight saving time at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
+# failure to parse throws a warning
+
+    Code
+      date_time_parse("foo", "America/New_York")
+    Warning <clock_warning_parse_failures>
+      Failed to parse 1 string at location 1. Returning `NA` at that location.
+    Output
+      [1] NA
+
 # throws warning on failed parses
 
     Code

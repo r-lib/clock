@@ -233,6 +233,11 @@ test_that("can resolve ambiguity and nonexistent times", {
   )
 })
 
+test_that("failure to parse throws a warning", {
+  expect_warning(date_time_parse("foo", "America/New_York"), class = "clock_warning_parse_failures")
+  expect_snapshot(date_time_parse("foo", "America/New_York"))
+})
+
 # ------------------------------------------------------------------------------
 # date_time_complete_parse()
 

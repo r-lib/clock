@@ -36,3 +36,8 @@ test_that("%z shifts the result by the offset", {
     as_sys(year_month_day(2019, 1, 1, 1, 0, 0))
   )
 })
+
+test_that("failure to parse throws a warning", {
+  expect_warning(sys_parse("foo"), class = "clock_warning_parse_failures")
+  expect_snapshot(sys_parse("foo"))
+})
