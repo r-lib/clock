@@ -111,6 +111,8 @@ reference:
   - as_sys
   - is_naive
   - is_sys
+  - naive_parse
+  - sys_parse
   - time_point_cast
   - time-point-rounding
   - seq.clock_time_point
@@ -123,6 +125,7 @@ reference:
   - zoned_now
   - as_zoned
   - is_zoned
+  - zoned_parse
   - zoned_zone
   - zoned_info
   - format.clock_zoned_time
