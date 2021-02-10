@@ -163,9 +163,11 @@ convert to a zoned-time with <code><a href='as_zoned.html'>as_zoned()</a></code>
     </tr>
     <tr>
       <th>format</th>
-      <td><p><code>[character(1) / NULL]</code></p>
+      <td><p><code>[character / NULL]</code></p>
 <p>A format string. A combination of the following commands, or <code>NULL</code>,
 in which case a default format string is used.</p>
+<p>A vector of multiple format strings can be supplied. They will be tried in
+the order they are provided.</p>
 <p><strong>Year</strong></p><ul>
 <li><p><code>%C</code>: The century as a decimal number. The modified command <code>%NC</code> where
 <code>N</code> is a positive decimal integer specifies the maximum number of

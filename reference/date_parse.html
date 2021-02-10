@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Parsing: sys-time — sys_parse • clock</title>
+<title>Parsing: date — date_parse • clock</title>
 
 
 <!-- jquery -->
@@ -39,26 +39,9 @@
 
 
 
-<meta property="og:title" content="Parsing: sys-time — sys_parse" />
-<meta property="og:description" content="sys_parse() is a parser into a sys-time.
-sys_parse() is useful when you have date-time strings like: &quot;2020-01-01 01:04:30-0400&quot;. If there is an attached UTC offset, but no time zone name,
-then parsing this string as a sys-time using the %z command to capture the
-offset is probably your best option. If you know that this string should be
-interpreted in a specific time zone, parse as a sys-time to get the UTC
-equivalent, then use as_zoned().
-The default options assume that x should be parsed at second precision,
-using a format string of &quot;%Y-%m-%d %H:%M:%S&quot;.
-sys_parse() is nearly equivalent to naive_parse(), except for the fact
-that the %z command is actually used. Using %z assumes that the rest of
-the date-time string should be interpreted as a naive-time, which is then
-shifted by the UTC offset found in %z. The returned time can then be
-validly interpreted as UTC.
-sys_parse() ignores the %Z command.
-If your date-time strings contain a full time zone name and a UTC offset, use
-zoned_parse().
-If your date-time strings don't contain an offset from UTC, you might
-consider using naive_parse(), since the resulting naive-time doesn't come
-with an assumption of a UTC time zone." />
+<meta property="og:title" content="Parsing: date — date_parse" />
+<meta property="og:description" content="date_parse() parses strings into a Date.
+The default format used is &quot;%Y-%m-%d&quot;." />
 
 
 
@@ -126,34 +109,17 @@ with an assumption of a UTC time zone." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Parsing: sys-time</h1>
-    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/sys-time.R'><code>R/sys-time.R</code></a></small>
-    <div class="hidden name"><code>sys_parse.Rd</code></div>
+    <h1>Parsing: date</h1>
+    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/date.R'><code>R/date.R</code></a></small>
+    <div class="hidden name"><code>date_parse.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>sys_parse()</code> is a parser into a sys-time.</p>
-<p><code>sys_parse()</code> is useful when you have date-time strings like: <code>"2020-01-01 01:04:30-0400"</code>. If there is an attached UTC offset, but no time zone name,
-then parsing this string as a sys-time using the <code>%z</code> command to capture the
-offset is probably your best option. If you know that this string should be
-interpreted in a specific time zone, parse as a sys-time to get the UTC
-equivalent, then use <code><a href='as_zoned.html'>as_zoned()</a></code>.</p>
-<p>The default options assume that <code>x</code> should be parsed at second precision,
-using a <code>format</code> string of <code>"%Y-%m-%d %H:%M:%S"</code>.</p>
-<p><code>sys_parse()</code> is nearly equivalent to <code><a href='naive_parse.html'>naive_parse()</a></code>, except for the fact
-that the <code>%z</code> command is actually used. Using <code>%z</code> assumes that the rest of
-the date-time string should be interpreted as a naive-time, which is then
-shifted by the UTC offset found in <code>%z</code>. The returned time can then be
-validly interpreted as UTC.</p>
-<p><em><code>sys_parse()</code> ignores the <code>%Z</code> command.</em></p>
-<p>If your date-time strings contain a full time zone name and a UTC offset, use
-<code><a href='zoned_parse.html'>zoned_parse()</a></code>.</p>
-<p>If your date-time strings don't contain an offset from UTC, you might
-consider using <code><a href='naive_parse.html'>naive_parse()</a></code>, since the resulting naive-time doesn't come
-with an assumption of a UTC time zone.</p>
+    <p><code>date_parse()</code> parses strings into a Date.</p>
+<p>The default <code>format</code> used is <code>"%Y-%m-%d"</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sys_parse</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, format <span class='op'>=</span> <span class='cn'>NULL</span>, precision <span class='op'>=</span> <span class='st'>"second"</span>, locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>date_parse</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, format <span class='op'>=</span> <span class='cn'>NULL</span>, locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -314,22 +280,6 @@ three white space characters.</p></li>
 </ul></td>
     </tr>
     <tr>
-      <th>precision</th>
-      <td><p><code>[character(1)]</code></p>
-<p>A precision for the resulting time point. One of:</p><ul>
-<li><p><code>"day"</code></p></li>
-<li><p><code>"hour"</code></p></li>
-<li><p><code>"minute"</code></p></li>
-<li><p><code>"second"</code></p></li>
-<li><p><code>"millisecond"</code></p></li>
-<li><p><code>"microsecond"</code></p></li>
-<li><p><code>"nanosecond"</code></p></li>
-</ul>
-
-<p>Setting the <code>precision</code> determines how much information <code>%S</code> attempts
-to parse.</p></td>
-    </tr>
-    <tr>
       <th>locale</th>
       <td><p><code>[clock_locale]</code></p>
 <p>A locale object created from <code><a href='clock_locale.html'>clock_locale()</a></code>.</p></td>
@@ -338,40 +288,34 @@ to parse.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A sys-time.</p>
+    <p>A Date.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>If the <code>%z</code> command is used, then the date-time string is interpreted as
+a naive-time, which is then shifted by the UTC offset found in <code>%z</code>. The
+returned Date can then validly be interpreted as UTC. Remember that in R,
+Date objects are assumed to be UTC, similar to a sys-time.</p>
+<p><em><code>date_parse()</code> ignores the <code>%Z</code> command.</em></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>sys_parse</span><span class='op'>(</span><span class='st'>"2020-01-01 05:06:07"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;
-#&gt; [1] "2020-01-01 05:06:07"</div><div class='input'>
-<span class='co'># Day precision</span>
-<span class='fu'>sys_parse</span><span class='op'>(</span><span class='st'>"2020-01-01"</span>, precision <span class='op'>=</span> <span class='st'>"day"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;day&gt;[1]&gt;
-#&gt; [1] "2020-01-01"</div><div class='input'>
-<span class='co'># Nanosecond precision, but using a day based format</span>
-<span class='fu'>sys_parse</span><span class='op'>(</span><span class='st'>"2020-01-01"</span>, format <span class='op'>=</span> <span class='st'>"%Y-%m-%d"</span>, precision <span class='op'>=</span> <span class='st'>"nanosecond"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;nanosecond&gt;[1]&gt;
-#&gt; [1] "2020-01-01 00:00:00.000000000"</div><div class='input'>
-<span class='co'># Multiple format strings are allowed for heterogeneous times</span>
-<span class='fu'>sys_parse</span><span class='op'>(</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span>, <span class='st'>"2019/1/1"</span><span class='op'>)</span>,
-  format <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"%Y/%m/%d"</span>, <span class='st'>"%Y-%m-%d"</span><span class='op'>)</span>,
-  precision <span class='op'>=</span> <span class='st'>"day"</span>
+    <pre class="examples"><div class='input'><span class='fu'>date_parse</span><span class='op'>(</span><span class='st'>"2020-01-01"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2020-01-01"</div><div class='input'>
+<span class='fu'>date_parse</span><span class='op'>(</span>
+  <span class='st'>"January 5, 2020"</span>,
+  format <span class='op'>=</span> <span class='st'>"%B %d, %Y"</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;day&gt;[2]&gt;
-#&gt; [1] "2019-01-01" "2019-01-01"</div><div class='input'>
-<span class='co'># The `%z` command shifts the date-time by subtracting the UTC offset so</span>
-<span class='co'># that the returned sys-time can be interpreted as UTC</span>
-<span class='fu'>sys_parse</span><span class='op'>(</span>
-  <span class='st'>"2020-01-01 02:00:00 -0400"</span>,
-  format <span class='op'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%S %z"</span>
+</div><div class='output co'>#&gt; [1] "2020-01-05"</div><div class='input'>
+<span class='co'># With a different locale</span>
+<span class='fu'>date_parse</span><span class='op'>(</span>
+  <span class='st'>"janvier 5, 2020"</span>,
+  format <span class='op'>=</span> <span class='st'>"%B %d, %Y"</span>,
+  locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='st'>"fr"</span><span class='op'>)</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;
-#&gt; [1] "2020-01-01 06:00:00"</div><div class='input'>
-<span class='co'># Remember that the `%Z` command is ignored entirely!</span>
-<span class='fu'>sys_parse</span><span class='op'>(</span><span class='st'>"2020-01-01 America/New_York"</span>, format <span class='op'>=</span> <span class='st'>"%Y-%m-%d %Z"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;
-#&gt; [1] "2020-01-01 00:00:00"</div></pre>
+</div><div class='output co'>#&gt; [1] "2020-01-05"</div><div class='input'>
+<span class='co'># A neat feature of `date_parse()` is the ability to parse</span>
+<span class='co'># the ISO year-week-day format</span>
+<span class='fu'>date_parse</span><span class='op'>(</span><span class='st'>"2020-W01-2"</span>, format <span class='op'>=</span> <span class='st'>"%G-W%V-%u"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2019-12-31"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

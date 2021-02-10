@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Parsing: sys-time — sys_parse • clock</title>
+<title>Parsing: date-time — date-time-parse • clock</title>
 
 
 <!-- jquery -->
@@ -39,26 +39,34 @@
 
 
 
-<meta property="og:title" content="Parsing: sys-time — sys_parse" />
-<meta property="og:description" content="sys_parse() is a parser into a sys-time.
-sys_parse() is useful when you have date-time strings like: &quot;2020-01-01 01:04:30-0400&quot;. If there is an attached UTC offset, but no time zone name,
-then parsing this string as a sys-time using the %z command to capture the
-offset is probably your best option. If you know that this string should be
-interpreted in a specific time zone, parse as a sys-time to get the UTC
-equivalent, then use as_zoned().
-The default options assume that x should be parsed at second precision,
-using a format string of &quot;%Y-%m-%d %H:%M:%S&quot;.
-sys_parse() is nearly equivalent to naive_parse(), except for the fact
-that the %z command is actually used. Using %z assumes that the rest of
-the date-time string should be interpreted as a naive-time, which is then
-shifted by the UTC offset found in %z. The returned time can then be
-validly interpreted as UTC.
-sys_parse() ignores the %Z command.
-If your date-time strings contain a full time zone name and a UTC offset, use
-zoned_parse().
-If your date-time strings don't contain an offset from UTC, you might
-consider using naive_parse(), since the resulting naive-time doesn't come
-with an assumption of a UTC time zone." />
+<meta property="og:title" content="Parsing: date-time — date-time-parse" />
+<meta property="og:description" content="date_time_parse() and date_time_complete_parse() are two parsers for
+parsing strings into POSIXct date-times.date_time_parse()
+
+
+date_time_parse() is useful for strings like &quot;2019-01-01 00:00:00&quot;, where
+the UTC offset and full time zone name are not present in the string. The
+string is first parsed as a naive-time without any time zone assumptions, and
+is then converted to a POSIXct with the supplied zone.
+Because converting from naive-time to POSIXct may result in nonexistent or
+ambiguous times due to daylight saving time, these must be resolved
+explicitly with the nonexistent and ambiguous arguments.
+date_time_parse() completely ignores the %z and %Z commands. The only
+time zone specific information that is used is the zone.
+The default format used is &quot;%Y-%m-%d %H:%M:%S&quot;.
+
+date_time_complete_parse()
+
+
+date_time_complete_parse() is useful for strings like &quot;2019-01-01 00:00:00-05:00[America/New_York]&quot;, where both the UTC offset and the full
+time zone name are present in the string. This is considered a &quot;complete&quot;
+date-time format, with no ambiguity.
+date_time_complete_parse() requires both the %z and %Z commands, which
+parse the offset from UTC and the full time zone name respectively. Requiring
+this information when parsing is the only way to ensure that the parse is
+done unambiguously.
+The default format used is &quot;%Y-%m-%d %H:%M:%S%Ez[%Z]&quot;.
+" />
 
 
 
@@ -126,34 +134,52 @@ with an assumption of a UTC time zone." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Parsing: sys-time</h1>
-    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/sys-time.R'><code>R/sys-time.R</code></a></small>
-    <div class="hidden name"><code>sys_parse.Rd</code></div>
+    <h1>Parsing: date-time</h1>
+    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/posixt.R'><code>R/posixt.R</code></a></small>
+    <div class="hidden name"><code>date-time-parse.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>sys_parse()</code> is a parser into a sys-time.</p>
-<p><code>sys_parse()</code> is useful when you have date-time strings like: <code>"2020-01-01 01:04:30-0400"</code>. If there is an attached UTC offset, but no time zone name,
-then parsing this string as a sys-time using the <code>%z</code> command to capture the
-offset is probably your best option. If you know that this string should be
-interpreted in a specific time zone, parse as a sys-time to get the UTC
-equivalent, then use <code><a href='as_zoned.html'>as_zoned()</a></code>.</p>
-<p>The default options assume that <code>x</code> should be parsed at second precision,
-using a <code>format</code> string of <code>"%Y-%m-%d %H:%M:%S"</code>.</p>
-<p><code>sys_parse()</code> is nearly equivalent to <code><a href='naive_parse.html'>naive_parse()</a></code>, except for the fact
-that the <code>%z</code> command is actually used. Using <code>%z</code> assumes that the rest of
-the date-time string should be interpreted as a naive-time, which is then
-shifted by the UTC offset found in <code>%z</code>. The returned time can then be
-validly interpreted as UTC.</p>
-<p><em><code>sys_parse()</code> ignores the <code>%Z</code> command.</em></p>
-<p>If your date-time strings contain a full time zone name and a UTC offset, use
-<code><a href='zoned_parse.html'>zoned_parse()</a></code>.</p>
-<p>If your date-time strings don't contain an offset from UTC, you might
-consider using <code><a href='naive_parse.html'>naive_parse()</a></code>, since the resulting naive-time doesn't come
-with an assumption of a UTC time zone.</p>
+    <p><code>date_time_parse()</code> and <code>date_time_complete_parse()</code> are two parsers for
+parsing strings into POSIXct date-times.</p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a><code>date_time_parse()</code></h3>
+
+
+<p><code>date_time_parse()</code> is useful for strings like <code>"2019-01-01 00:00:00"</code>, where
+the UTC offset and full time zone name are not present in the string. The
+string is first parsed as a naive-time without any time zone assumptions, and
+is then converted to a POSIXct with the supplied <code>zone</code>.</p>
+<p>Because converting from naive-time to POSIXct may result in nonexistent or
+ambiguous times due to daylight saving time, these must be resolved
+explicitly with the <code>nonexistent</code> and <code>ambiguous</code> arguments.</p>
+<p><code>date_time_parse()</code> completely ignores the <code>%z</code> and <code>%Z</code> commands. The only
+time zone specific information that is used is the <code>zone</code>.</p>
+<p>The default <code>format</code> used is <code>"%Y-%m-%d %H:%M:%S"</code>.</p>
+
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a><code>date_time_complete_parse()</code></h3>
+
+
+<p><code>date_time_complete_parse()</code> is useful for strings like <code>"2019-01-01 00:00:00-05:00[America/New_York]"</code>, where both the UTC offset and the full
+time zone name are present in the string. This is considered a "complete"
+date-time format, with no ambiguity.</p>
+<p><code>date_time_complete_parse()</code> requires both the <code>%z</code> and <code>%Z</code> commands, which
+parse the offset from UTC and the full time zone name respectively. Requiring
+this information when parsing is the <em>only</em> way to ensure that the parse is
+done unambiguously.</p>
+<p>The default <code>format</code> used is <code>"%Y-%m-%d %H:%M:%S%Ez[%Z]"</code>.</p>
+
     </div>
 
-    <pre class="usage"><span class='fu'>sys_parse</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, format <span class='op'>=</span> <span class='cn'>NULL</span>, precision <span class='op'>=</span> <span class='st'>"second"</span>, locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>date_time_parse</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>zone</span>,
+  <span class='va'>...</span>,
+  format <span class='op'>=</span> <span class='cn'>NULL</span>,
+  locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='op'>)</span>,
+  nonexistent <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ambiguous <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span>
+
+<span class='fu'>date_time_complete_parse</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, format <span class='op'>=</span> <span class='cn'>NULL</span>, locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -162,6 +188,11 @@ with an assumption of a UTC time zone.</p>
       <th>x</th>
       <td><p><code>[character]</code></p>
 <p>A character vector to parse.</p></td>
+    </tr>
+    <tr>
+      <th>zone</th>
+      <td><p><code>[character(1)]</code></p>
+<p>A valid time zone name to use with the resulting POSIXct.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -314,64 +345,110 @@ three white space characters.</p></li>
 </ul></td>
     </tr>
     <tr>
-      <th>precision</th>
-      <td><p><code>[character(1)]</code></p>
-<p>A precision for the resulting time point. One of:</p><ul>
-<li><p><code>"day"</code></p></li>
-<li><p><code>"hour"</code></p></li>
-<li><p><code>"minute"</code></p></li>
-<li><p><code>"second"</code></p></li>
-<li><p><code>"millisecond"</code></p></li>
-<li><p><code>"microsecond"</code></p></li>
-<li><p><code>"nanosecond"</code></p></li>
-</ul>
-
-<p>Setting the <code>precision</code> determines how much information <code>%S</code> attempts
-to parse.</p></td>
-    </tr>
-    <tr>
       <th>locale</th>
       <td><p><code>[clock_locale]</code></p>
 <p>A locale object created from <code><a href='clock_locale.html'>clock_locale()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>nonexistent</th>
+      <td><p><code>[character / NULL]</code></p>
+<p>One of the following nonexistent time resolution strategies, allowed to be
+either length 1, or the same length as the input:</p><ul>
+<li><p><code>"roll-forward"</code>: The next valid instant in time.</p></li>
+<li><p><code>"roll-backward"</code>: The previous valid instant in time.</p></li>
+<li><p><code>"shift-forward"</code>: Shift the nonexistent time forward by the size of
+the daylight saving time gap.</p></li>
+<li><p><code>"shift-backward</code>: Shift the nonexistent time backward by the size of
+the daylight saving time gap.</p></li>
+<li><p><code>"NA"</code>: Replace nonexistent times with <code>NA</code>.</p></li>
+<li><p><code>"error"</code>: Error on nonexistent times.</p></li>
+</ul>
+
+<p>Using either <code>"roll-forward"</code> or <code>"roll-backward"</code> is generally
+recommended over shifting, as these two strategies maintain the
+<em>relative ordering</em> between elements of the input.</p>
+<p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
+<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>nonexistent</code> must be supplied
+and cannot be <code>NULL</code>. This is a convenient way to make production code
+robust to nonexistent times.</p></td>
+    </tr>
+    <tr>
+      <th>ambiguous</th>
+      <td><p><code>[character / zoned_time / POSIXct / list(2) / NULL]</code></p>
+<p>One of the following ambiguous time resolution strategies, allowed to be
+either length 1, or the same length as the input:</p><ul>
+<li><p><code>"earliest"</code>: Of the two possible times, choose the earliest one.</p></li>
+<li><p><code>"latest"</code>: Of the two possible times, choose the latest one.</p></li>
+<li><p><code>"NA"</code>: Replace ambiguous times with <code>NA</code>.</p></li>
+<li><p><code>"error"</code>: Error on ambiguous times.</p></li>
+</ul>
+
+<p>Alternatively, <code>ambiguous</code> is allowed to be a zoned_time (or POSIXct) that
+is either length 1, or the same length as the input. If an ambiguous time
+is encountered, the zoned_time is consulted. If the zoned_time corresponds
+to a naive_time that is also ambiguous <em>and</em> uses the same daylight saving
+time transition point as the original ambiguous time, then the offset of
+the zoned_time is used to resolve the ambiguity. If the ambiguity cannot be
+resolved by consulting the zoned_time, then this method falls back to
+<code>NULL</code>.</p>
+<p>Finally, <code>ambiguous</code> is allowed to be a list of size 2, where the first
+element of the list is a zoned_time (as described above), and the second
+element of the list is an ambiguous time resolution strategy to use when
+the ambiguous time cannot be resolved by consulting the zoned_time.
+Specifying a zoned_time on its own is identical to <code>list(&lt;zoned_time&gt;, NULL)</code>.</p>
+<p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
+<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>ambiguous</code> must be supplied and
+cannot be <code>NULL</code>. Additionally, <code>ambiguous</code> cannot be specified as a
+zoned_time on its own, as this implies <code>NULL</code> for ambiguous times that the
+zoned_time cannot resolve. Instead, it must be specified as a list
+alongside an ambiguous time resolution strategy as described above. This is
+a convenient way to make production code robust to ambiguous times.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A sys-time.</p>
+    <p>A POSIXct.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>sys_parse</span><span class='op'>(</span><span class='st'>"2020-01-01 05:06:07"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;
-#&gt; [1] "2020-01-01 05:06:07"</div><div class='input'>
-<span class='co'># Day precision</span>
-<span class='fu'>sys_parse</span><span class='op'>(</span><span class='st'>"2020-01-01"</span>, precision <span class='op'>=</span> <span class='st'>"day"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;day&gt;[1]&gt;
-#&gt; [1] "2020-01-01"</div><div class='input'>
-<span class='co'># Nanosecond precision, but using a day based format</span>
-<span class='fu'>sys_parse</span><span class='op'>(</span><span class='st'>"2020-01-01"</span>, format <span class='op'>=</span> <span class='st'>"%Y-%m-%d"</span>, precision <span class='op'>=</span> <span class='st'>"nanosecond"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;nanosecond&gt;[1]&gt;
-#&gt; [1] "2020-01-01 00:00:00.000000000"</div><div class='input'>
-<span class='co'># Multiple format strings are allowed for heterogeneous times</span>
-<span class='fu'>sys_parse</span><span class='op'>(</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span>, <span class='st'>"2019/1/1"</span><span class='op'>)</span>,
-  format <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"%Y/%m/%d"</span>, <span class='st'>"%Y-%m-%d"</span><span class='op'>)</span>,
-  precision <span class='op'>=</span> <span class='st'>"day"</span>
+    <pre class="examples"><div class='input'><span class='co'># Parse with a known `zone`, even though that information isn't in the string</span>
+<span class='fu'>date_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01 05:06:07"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2020-01-01 05:06:07 EST"</div><div class='input'>
+<span class='co'># Same time as above, except this is a completely unambiguous parse that</span>
+<span class='co'># doesn't require a `zone` argument, because the zone name and offset are</span>
+<span class='co'># both present in the string</span>
+<span class='fu'>date_time_complete_parse</span><span class='op'>(</span><span class='st'>"2020-01-01 05:06:07-05:00[America/New_York]"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2020-01-01 05:06:07 EST"</div><div class='input'>
+<span class='co'># Only day components</span>
+<span class='fu'>date_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01"</span>, <span class='st'>"America/New_York"</span>, format <span class='op'>=</span> <span class='st'>"%Y-%m-%d"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2020-01-01 EST"</div><div class='input'>
+<span class='co'># `date_time_parse()` may have issues with ambiguous times due to daylight</span>
+<span class='co'># saving time fallbacks. For example, there were two 1'oclock hours here:</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>date_time_parse</span><span class='op'>(</span><span class='st'>"1970-10-25 00:59:59"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
+
+<span class='co'># First (earliest) 1'oclock hour</span>
+<span class='fu'><a href='clock-arithmetic.html'>add_seconds</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EDT"</div><div class='input'><span class='co'># Second (latest) 1'oclock hour</span>
+<span class='fu'><a href='clock-arithmetic.html'>add_seconds</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>3601</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EST"</div><div class='input'>
+<span class='co'># If you try to parse this ambiguous time directly, you'll get an error:</span>
+<span class='va'>ambiguous_time</span> <span class='op'>&lt;-</span> <span class='st'>"1970-10-25 01:00:00"</span>
+<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>date_time_parse</span><span class='op'>(</span><span class='va'>ambiguous_time</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Error : Ambiguous time due to daylight saving time at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.</div><div class='input'>
+<span class='co'># Resolve it by specifying whether you'd like to use the</span>
+<span class='co'># `earliest` or `latest` of the two possible times</span>
+<span class='fu'>date_time_parse</span><span class='op'>(</span><span class='va'>ambiguous_time</span>, <span class='st'>"America/New_York"</span>, ambiguous <span class='op'>=</span> <span class='st'>"earliest"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EDT"</div><div class='input'><span class='fu'>date_time_parse</span><span class='op'>(</span><span class='va'>ambiguous_time</span>, <span class='st'>"America/New_York"</span>, ambiguous <span class='op'>=</span> <span class='st'>"latest"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EST"</div><div class='input'>
+<span class='co'># `date_time_complete_parse()` doesn't have these issues, as it requires</span>
+<span class='co'># that the offset and zone name are both in the string, which resolves</span>
+<span class='co'># the ambiguity</span>
+<span class='va'>complete_times</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
+  <span class='st'>"1970-10-25 01:00:00-04:00[America/New_York]"</span>,
+  <span class='st'>"1970-10-25 01:00:00-05:00[America/New_York]"</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;day&gt;[2]&gt;
-#&gt; [1] "2019-01-01" "2019-01-01"</div><div class='input'>
-<span class='co'># The `%z` command shifts the date-time by subtracting the UTC offset so</span>
-<span class='co'># that the returned sys-time can be interpreted as UTC</span>
-<span class='fu'>sys_parse</span><span class='op'>(</span>
-  <span class='st'>"2020-01-01 02:00:00 -0400"</span>,
-  format <span class='op'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%S %z"</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;
-#&gt; [1] "2020-01-01 06:00:00"</div><div class='input'>
-<span class='co'># Remember that the `%Z` command is ignored entirely!</span>
-<span class='fu'>sys_parse</span><span class='op'>(</span><span class='st'>"2020-01-01 America/New_York"</span>, format <span class='op'>=</span> <span class='st'>"%Y-%m-%d %Z"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;
-#&gt; [1] "2020-01-01 00:00:00"</div></pre>
+<span class='fu'>date_time_complete_parse</span><span class='op'>(</span><span class='va'>complete_times</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EDT" "1970-10-25 01:00:00 EST"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
