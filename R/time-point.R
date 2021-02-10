@@ -227,8 +227,8 @@ arith_time_point_and_time_point <- function(op, x, y, ...) {
 arith_time_point_and_duration <- function(op, x, y, ...) {
   switch (
     op,
-    "+" = time_point_plus_duration(x, y, duration_precision(y), "y", names_common(x, y)),
-    "-" = time_point_minus_duration(x, y, duration_precision(y), "y", names_common(x, y)),
+    "+" = time_point_plus_duration(x, y, duration_precision(y), names_common(x, y)),
+    "-" = time_point_minus_duration(x, y, duration_precision(y), names_common(x, y)),
     stop_incompatible_op(op, x, y, ...)
   )
 }
@@ -236,7 +236,7 @@ arith_time_point_and_duration <- function(op, x, y, ...) {
 arith_duration_and_time_point <- function(op, x, y, ...) {
   switch (
     op,
-    "+" = time_point_plus_duration(y, x, duration_precision(x), "x", names_common(x, y)),
+    "+" = time_point_plus_duration(y, x, duration_precision(x), names_common(x, y)),
     "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a time point from a duration.", ...),
     stop_incompatible_op(op, x, y, ...)
   )
@@ -247,8 +247,8 @@ arith_time_point_and_numeric <- function(op, x, y, ...) {
 
   switch (
     op,
-    "+" = time_point_plus_duration(x, y, precision, "y", names_common(x, y)),
-    "-" = time_point_minus_duration(x, y, precision, "y", names_common(x, y)),
+    "+" = time_point_plus_duration(x, y, precision, names_common(x, y)),
+    "-" = time_point_minus_duration(x, y, precision, names_common(x, y)),
     stop_incompatible_op(op, x, y, ...)
   )
 }
@@ -258,7 +258,7 @@ arith_numeric_and_time_point <- function(op, x, y, ...) {
 
   switch (
     op,
-    "+" = time_point_plus_duration(y, x, precision, "x", names_common(x, y)),
+    "+" = time_point_plus_duration(y, x, precision, names_common(x, y)),
     "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a time point from a duration.", ...),
     stop_incompatible_op(op, x, y, ...)
   )
@@ -362,59 +362,59 @@ NULL
 #' @rdname time-point-arithmetic
 #' @export
 add_weeks.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, PRECISION_WEEK, "n", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_WEEK, names_common(x, n))
 }
 
 #' @rdname time-point-arithmetic
 #' @export
 add_days.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, PRECISION_DAY, "n", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_DAY, names_common(x, n))
 }
 
 #' @rdname time-point-arithmetic
 #' @export
 add_hours.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, PRECISION_HOUR, "n", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_HOUR, names_common(x, n))
 }
 
 #' @rdname time-point-arithmetic
 #' @export
 add_minutes.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, PRECISION_MINUTE, "n", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_MINUTE, names_common(x, n))
 }
 
 #' @rdname time-point-arithmetic
 #' @export
 add_seconds.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, PRECISION_SECOND, "n", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_SECOND, names_common(x, n))
 }
 
 #' @rdname time-point-arithmetic
 #' @export
 add_milliseconds.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, PRECISION_MILLISECOND, "n", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_MILLISECOND, names_common(x, n))
 }
 
 #' @rdname time-point-arithmetic
 #' @export
 add_microseconds.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, PRECISION_MICROSECOND, "n", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_MICROSECOND, names_common(x, n))
 }
 
 #' @rdname time-point-arithmetic
 #' @export
 add_nanoseconds.clock_time_point <- function(x, n, ...) {
-  time_point_plus_duration(x, n, PRECISION_NANOSECOND, "n", names_common(x, n))
+  time_point_plus_duration(x, n, PRECISION_NANOSECOND, names_common(x, n))
 }
 
-time_point_plus_duration <- function(x, n, precision_n, n_arg, names) {
-  time_point_arith_duration(x, n, precision_n, n_arg, names, duration_plus)
+time_point_plus_duration <- function(x, n, precision_n, names) {
+  time_point_arith_duration(x, n, precision_n, names, duration_plus)
 }
-time_point_minus_duration <- function(x, n, precision_n, n_arg, names) {
-  time_point_arith_duration(x, n, precision_n, n_arg, names, duration_minus)
+time_point_minus_duration <- function(x, n, precision_n, names) {
+  time_point_arith_duration(x, n, precision_n, names, duration_minus)
 }
 
-time_point_arith_duration <- function(x, n, precision_n, n_arg, names, duration_fn) {
+time_point_arith_duration <- function(x, n, precision_n, names, duration_fn) {
   clock <- time_point_clock(x)
   x <- time_point_duration(x)
 
