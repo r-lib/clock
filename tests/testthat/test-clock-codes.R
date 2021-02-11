@@ -28,8 +28,3 @@ test_that("codes are correct", {
   expect_identical(clock_codes$iso$saturday, 6L)
   expect_identical(clock_codes$iso$sunday, 7L)
 })
-
-test_that("can't add to environment or modify bindings", {
-  expect_snapshot_error(clock_codes$new <- 1)
-  expect_snapshot_error(clock_codes$friday <- 1)
-})
