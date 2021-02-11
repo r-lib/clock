@@ -23,7 +23,7 @@ clock is a new R package for working with date-time data. It:
 
 -   Requires explicit handling of invalid dates (e.g. what date is one
     month after January 31st?) and nonexistent or ambiguous times
-    (caused by daylight saving issues).
+    (caused by daylight saving time issues).
 
 -   Is built on the C++ [date](https://github.com/HowardHinnant/date)
     library, which provides a correct and high-performance backend.
