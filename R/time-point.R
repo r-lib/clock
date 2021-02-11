@@ -753,7 +753,7 @@ collect_time_point_rounder_origin <- function(origin, x, precision) {
 #'
 #' Weekday shifting is one of the easiest ways to floor by week while
 #' controlling what is considered the first day of the week. You can also
-#' accomplish this with the `origin` argument of `time_point_floor()`, but
+#' accomplish this with the `origin` argument of [time_point_floor()], but
 #' this is slightly easier.
 #'
 #' @inheritParams ellipsis::dots_empty
@@ -832,12 +832,12 @@ time_point_shift <- function(x,
 
   if (is_next(which)) {
     if (is_advance(boundary)) {
-      x <- x + 1L
+      x <- x + duration_days(1L)
     }
     x <- x + (target - as_weekday(x))
   } else {
     if (is_advance(boundary)) {
-      x <- x - 1L
+      x <- x - duration_days(1L)
     }
     x <- x - (as_weekday(x) - target)
   }

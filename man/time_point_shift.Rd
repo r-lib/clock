@@ -47,7 +47,7 @@ of the \code{target}.
 
 Weekday shifting is one of the easiest ways to floor by week while
 controlling what is considered the first day of the week. You can also
-accomplish this with the \code{origin} argument of \code{time_point_floor()}, but
+accomplish this with the \code{origin} argument of \code{\link[=time_point_floor]{time_point_floor()}}, but
 this is slightly easier.
 }
 \examples{
