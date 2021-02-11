@@ -146,6 +146,10 @@ reference:
   - clock_locale
   - clock_labels
 
+- title: Codes
+  contents:
+  - clock-codes
+
 - title: Developer
   contents:
   - vec_arith.clock_year_month_day
