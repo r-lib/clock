@@ -117,7 +117,7 @@ reference:
   - sys_parse
   - time_point_cast
   - time-point-rounding
-  - time_point_weekday_shift
+  - time_point_shift
   - seq.clock_time_point
   - add_weeks.clock_time_point
   - as-zoned-time-naive-time

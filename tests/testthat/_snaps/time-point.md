@@ -39,17 +39,17 @@
 
     `target` must be a 'clock_weekday'.
 
-# `to` is validated
+# `which` is validated
 
-    `to` must be either "next" or "previous".
-
----
-
-    `to` must be either "next" or "previous".
+    `which` must be either "next" or "previous".
 
 ---
 
-    `to` must be either "next" or "previous".
+    `which` must be either "next" or "previous".
+
+---
+
+    `which` must be either "next" or "previous".
 
 # `boundary` is validated
 

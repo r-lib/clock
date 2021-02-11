@@ -746,7 +746,7 @@ collect_time_point_rounder_origin <- function(origin, x, precision) {
 #' Shifting: time point
 #'
 #' @description
-#' `time_point_weekday_shift()` shifts `x` to the `target` weekday. You can
+#' `time_point_shift()` shifts `x` to the `target` weekday. You can
 #' shift to the next or previous weekday. If `x` is currently on the `target`
 #' weekday, you can choose to leave it alone or advance it to the next instance
 #' of the `target`.
@@ -768,7 +768,7 @@ collect_time_point_rounder_origin <- function(origin, x, precision) {
 #'
 #'   Generally this is length 1, but can also be the same length as `x`.
 #'
-#' @param to `[character(1)]`
+#' @param which `[character(1)]`
 #'
 #'   One of:
 #'
@@ -797,25 +797,25 @@ collect_time_point_rounder_origin <- function(origin, x, precision) {
 #' monday <- weekday(clock_weekdays$monday)
 #'
 #' # Shift to the next Monday
-#' time_point_weekday_shift(x, monday)
+#' time_point_shift(x, monday)
 #'
 #' # Shift to the previous Monday
 #' # This is an easy way to "floor by week" with a target weekday in mind
-#' time_point_weekday_shift(x, monday, to = "previous")
+#' time_point_shift(x, monday, which = "previous")
 #'
 #' # What about Tuesday?
 #' tuesday <- weekday(clock_weekdays$tuesday)
 #'
 #' # Notice that the day that was currently on a Tuesday was not shifted
-#' time_point_weekday_shift(x, tuesday)
+#' time_point_shift(x, tuesday)
 #'
 #' # You can force it to `"advance"`
-#' time_point_weekday_shift(x, tuesday, boundary = "advance")
-time_point_weekday_shift <- function(x,
-                                     target,
-                                     ...,
-                                     to = "next",
-                                     boundary = "keep") {
+#' time_point_shift(x, tuesday, boundary = "advance")
+time_point_shift <- function(x,
+                             target,
+                             ...,
+                             which = "next",
+                             boundary = "keep") {
   check_dots_empty()
 
   if (!is_time_point(x)) {
@@ -827,10 +827,10 @@ time_point_weekday_shift <- function(x,
 
   target <- vec_recycle(target, vec_size(x), x_arg = "target")
 
-  to <- validate_weekday_shift_to(to)
-  boundary <- validate_weekday_shift_boundary(boundary)
+  which <- validate_shift_which(which)
+  boundary <- validate_shift_boundary(boundary)
 
-  if (is_next(to)) {
+  if (is_next(which)) {
     if (is_advance(boundary)) {
       x <- x + 1L
     }
@@ -845,13 +845,13 @@ time_point_weekday_shift <- function(x,
   x
 }
 
-validate_weekday_shift_to <- function(to) {
-  if (!is_string(to, string = c("next", "previous"))) {
-    abort("`to` must be either \"next\" or \"previous\".")
+validate_shift_which <- function(which) {
+  if (!is_string(which, string = c("next", "previous"))) {
+    abort("`which` must be either \"next\" or \"previous\".")
   }
-  to
+  which
 }
-validate_weekday_shift_boundary <- function(boundary) {
+validate_shift_boundary <- function(boundary) {
   if (!is_string(boundary, string = c("keep", "advance"))) {
     abort("`boundary` must be either \"keep\" or \"advance\".")
   }
