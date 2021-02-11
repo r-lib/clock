@@ -109,40 +109,14 @@
 <code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
 <span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"DavisVaughan/clock"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="example" class="section level2">
+<div id="learning" class="section level2">
 <h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/DavisVaughan/clock">clock</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span></code></pre></div>
-<p>With clock, there is a high level API supporting Date and POSIXct. This is often the easiest way to begin using clock.</p>
-<p>For example, to add 5 days:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2019-05-01"</span><span class="op">)</span>
-
-<span class="fu"><a href="reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">5</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2019-05-06"</span></code></pre></div>
-<p>To add 5 hours:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-01 02:30:00"</span>, tz <span class="op">=</span> <span class="st">"America/New_York"</span><span class="op">)</span>
-
-<span class="fu"><a href="reference/clock-arithmetic.html">add_hours</a></span><span class="op">(</span><span class="va">y</span>, <span class="fl">5</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2019-01-01 07:30:00 EST"</span></code></pre></div>
-<p>To get the month:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/clock-getters.html">get_month</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; [1] 5</span>
-
-<span class="fu"><a href="reference/clock-getters.html">get_month</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1</span></code></pre></div>
-<p>To set the day:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2019-05-01" "2019-05-02" "2019-05-03" "2019-05-04" "2019-05-05"</span>
-
-<span class="co"># Last day in the month</span>
-<span class="fu"><a href="reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"last"</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2019-05-31"</span></code></pre></div>
+<a href="#learning" class="anchor"></a>Learning</h2>
+<p>With clock, there is a high-level API for manipulating R’s native date and date-time types (Date, POSIXct, and POSIXlt). This should allow you to quickly get productive with clock without having to learn many of the new types. An easy way to get an overview of this high-level API is by looking at the <a href="https://davisvaughan.github.io/clock/reference/index.html#section-high-level-api">High Level API</a> section of the pkgdown reference page.</p>
+<p>After working with the high-level API, you might want to take a look at clock’s vignettes:</p>
+<ul>
+<li><a href="https://davisvaughan.github.io/clock/articles/faq.html">Frequently Asked Questions</a></li>
+</ul>
 </div>
 <div id="acknowledgements" class="section level2">
 <h2 class="hasAnchor">
