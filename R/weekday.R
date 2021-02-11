@@ -213,9 +213,9 @@ as.character.clock_weekday <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
-#' Extract weekday encodings
+#' Extract underlying weekday codes
 #'
-#' `weekday_encoding()` extracts out an integer encoding for the weekday.
+#' `weekday_code()` extracts out the integer code for the weekday.
 #'
 #' @inheritParams weekday
 #'
@@ -223,7 +223,7 @@ as.character.clock_weekday <- function(x, ...) {
 #'
 #'   A weekday vector.
 #'
-#' @return An integer vector of encodings.
+#' @return An integer vector of codes.
 #'
 #' @export
 #' @examples
@@ -232,9 +232,9 @@ as.character.clock_weekday <- function(x, ...) {
 #' x
 #'
 #' # We can extract out the codes using different encodings
-#' weekday_encoding(x, encoding = "western")
-#' weekday_encoding(x, encoding = "iso")
-weekday_encoding <- function(x, ..., encoding = "western") {
+#' weekday_code(x, encoding = "western")
+#' weekday_code(x, encoding = "iso")
+weekday_code <- function(x, ..., encoding = "western") {
   check_dots_empty()
 
   if (!is_weekday(x)) {
@@ -259,7 +259,7 @@ weekday_encoding <- function(x, ..., encoding = "western") {
 #' `weekday_factor()` converts a weekday object to an ordered factor. This
 #' can be useful in combination with ggplot2, or for modeling.
 #'
-#' @inheritParams weekday_encoding
+#' @inheritParams weekday_code
 #' @inheritParams clock_locale
 #'
 #' @param abbreviate `[logical(1)]`
@@ -324,7 +324,7 @@ weekday_factor <- function(x,
   }
 
   encoding <- validate_encoding(encoding)
-  x <- weekday_encoding(x, encoding = encoding)
+  x <- weekday_code(x, encoding = encoding)
 
   if (is_iso_encoding(encoding)) {
     labels <- c(labels[2:7], labels[1L])

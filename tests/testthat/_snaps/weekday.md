@@ -36,6 +36,22 @@
 
     `abbreviate` must be `TRUE` or `FALSE`.
 
+# validates `x`
+
+    `x` must be a 'clock_weekday'.
+
+# weekday_code - `encoding` is validated
+
+    `encoding` must be one of "western" or "iso".
+
+---
+
+    `encoding` must be one of "western" or "iso".
+
+---
+
+    `encoding` must be one of "western" or "iso".
+
 # `x` is validated
 
     `x` must be a 'clock_weekday' object.

@@ -137,7 +137,7 @@ reference:
   - weekday
   - as_weekday
   - is_weekday
-  - weekday_encoding
+  - weekday_code
   - weekday_factor
   - weekday-arithmetic
 

@@ -36,6 +36,35 @@ test_that("as.character() works with NA", {
 })
 
 # ------------------------------------------------------------------------------
+# weekday_code()
+
+test_that("can get the western code", {
+  expect_identical(weekday_code(weekday(1:7)), 1:7)
+})
+
+test_that("can get the ISO code", {
+  expect_identical(weekday_code(weekday(1:7), encoding = "iso"), c(7L, 1:6))
+})
+
+test_that("names are not retained", {
+  expect_named(weekday_code(c(foo = weekday(1))), NULL)
+})
+
+test_that("NA passes through", {
+  expect_identical(weekday_code(weekday(NA)), NA_integer_)
+})
+
+test_that("validates `x`", {
+  expect_snapshot_error(weekday_code(1))
+})
+
+test_that("weekday_code - `encoding` is validated", {
+  expect_snapshot_error(weekday_code(weekday(1), encoding = "foo"))
+  expect_snapshot_error(weekday_code(weekday(1), encoding = 1))
+  expect_snapshot_error(weekday_code(weekday(1), encoding = c("western", "iso")))
+})
+
+# ------------------------------------------------------------------------------
 # weekday_factor()
 
 test_that("can make a weekday factor sunday->saturday", {
