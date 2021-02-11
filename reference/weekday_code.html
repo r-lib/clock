@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Arithmetic: weekday — weekday-arithmetic • clock</title>
+<title>Extract underlying weekday codes — weekday_code • clock</title>
 
 
 <!-- jquery -->
@@ -39,14 +39,8 @@
 
 
 
-<meta property="og:title" content="Arithmetic: weekday — weekday-arithmetic" />
-<meta property="og:description" content="These are weekday methods for the
-arithmetic generics.
-add_days()
-
-
-Also check out the examples on the weekday() page for more advanced
-usage." />
+<meta property="og:title" content="Extract underlying weekday codes — weekday_code" />
+<meta property="og:description" content="weekday_code() extracts out the integer code for the weekday." />
 
 
 
@@ -126,64 +120,54 @@ usage." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Arithmetic: weekday</h1>
+    <h1>Extract underlying weekday codes</h1>
     <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/weekday.R'><code>R/weekday.R</code></a></small>
-    <div class="hidden name"><code>weekday-arithmetic.Rd</code></div>
+    <div class="hidden name"><code>weekday_code.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>These are weekday methods for the
-<a href='clock-arithmetic.html'>arithmetic generics</a>.</p><ul>
-<li><p><code><a href='clock-arithmetic.html'>add_days()</a></code></p></li>
-</ul>
-
-<p>Also check out the examples on the <code><a href='weekday.html'>weekday()</a></code> page for more advanced
-usage.</p>
+    <p><code>weekday_code()</code> extracts out the integer code for the weekday.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for clock_weekday</span>
-<span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>weekday_code</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, encoding <span class='op'>=</span> <span class='st'>"western"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><code>[clock_weekday]</code></p>
+      <td><p><code>[weekday]</code></p>
 <p>A weekday vector.</p></td>
-    </tr>
-    <tr>
-      <th>n</th>
-      <td><p><code>[integer / clock_duration]</code></p>
-<p>An integer vector to be converted to a duration, or a duration
-corresponding to the arithmetic function being used. This corresponds
-to the number of duration units to add. <code>n</code> may be negative to subtract
-units of duration.</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>These dots are for future extensions and must be empty.</p></td>
     </tr>
+    <tr>
+      <th>encoding</th>
+      <td><p><code>[character(1)]</code></p>
+<p>One of:</p><ul>
+<li><p><code>"western"</code>: Encode weekdays assuming <code>1 == Sunday</code> and <code>7 == Saturday</code>.</p></li>
+<li><p><code>"iso"</code>: Encode weekdays assuming <code>1 == Monday</code> and <code>7 == Sunday</code>. This
+is in line with the ISO standard.</p></li>
+</ul></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>x</code> after performing the arithmetic.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><code>x</code> and <code>n</code> are recycled against each other.</p>
+    <p>An integer vector of codes.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>saturday</span> <span class='op'>&lt;-</span> <span class='fl'>7</span>
-<span class='va'>saturday</span> <span class='op'>&lt;-</span> <span class='fu'><a href='weekday.html'>weekday</a></span><span class='op'>(</span><span class='va'>saturday</span><span class='op'>)</span>
-<span class='va'>saturday</span>
-</div><div class='output co'>#&gt; &lt;weekday[1]&gt;
-#&gt; [1] Sat</div><div class='input'>
-<span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='va'>saturday</span>, <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;weekday[1]&gt;
-#&gt; [1] Sun</div><div class='input'><span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='va'>saturday</span>, <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;weekday[1]&gt;
-#&gt; [1] Mon</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># Here we supply a western encoding to `weekday()`</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='weekday.html'>weekday</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span><span class='op'>)</span>
+<span class='va'>x</span>
+</div><div class='output co'>#&gt; &lt;weekday[7]&gt;
+#&gt; [1] Sun Mon Tue Wed Thu Fri Sat</div><div class='input'>
+<span class='co'># We can extract out the codes using different encodings</span>
+<span class='fu'>weekday_code</span><span class='op'>(</span><span class='va'>x</span>, encoding <span class='op'>=</span> <span class='st'>"western"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1 2 3 4 5 6 7</div><div class='input'><span class='fu'>weekday_code</span><span class='op'>(</span><span class='va'>x</span>, encoding <span class='op'>=</span> <span class='st'>"iso"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 7 1 2 3 4 5 6</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

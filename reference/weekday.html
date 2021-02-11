@@ -137,24 +137,29 @@ See the examples." />
 See the examples.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>weekday</span><span class='op'>(</span>day <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>integer</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>weekday</span><span class='op'>(</span>code <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>integer</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>...</span>, encoding <span class='op'>=</span> <span class='st'>"western"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>day</th>
+      <th>code</th>
       <td><p><code>[integer]</code></p>
-<p>The values for <code>day</code> can be provided as:</p><ul>
-<li><p>Integers between <code>[0, 6]</code>, with 0 = Sunday and 6 = Saturday. This is
-known as <em>C encoding</em>.</p></li>
-<li><p>Integers between <code>[1, 7]</code>, with 1 = Monday and 7 = Sunday. This is
-known as <em>ISO encoding</em>.</p></li>
-</ul>
-
-<p>Because the only value that differs in the two encodings is Sunday (it
-is a 0 in C encoding, but a 7 in ISO encoding), you can supply either
-encoding as <code>day</code>, as long as you don't mix 0's with 7's.</p></td>
+<p>Integer codes between <code>[1, 7]</code> representing days of the week. The
+interpretation of these values depends on <code>encoding</code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>These dots are for future extensions and must be empty.</p></td>
+    </tr>
+    <tr>
+      <th>encoding</th>
+      <td><p><code>[character(1)]</code></p>
+<p>One of:</p><ul>
+<li><p><code>"western"</code>: Encode weekdays assuming <code>1 == Sunday</code> and <code>7 == Saturday</code>.</p></li>
+<li><p><code>"iso"</code>: Encode weekdays assuming <code>1 == Monday</code> and <code>7 == Sunday</code>. This
+is in line with the ISO standard.</p></li>
+</ul></td>
     </tr>
     </table>
 
@@ -170,7 +175,7 @@ encoding as <code>day</code>, as long as you don't mix 0's with 7's.</p></td>
 </div><div class='output co'>#&gt; &lt;weekday[1]&gt;
 #&gt; [1] Sat</div><div class='input'>
 <span class='co'># Adjust to the next Wednesday</span>
-<span class='va'>wednesday</span> <span class='op'>&lt;-</span> <span class='fu'>weekday</span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span>
+<span class='va'>wednesday</span> <span class='op'>&lt;-</span> <span class='fu'>weekday</span><span class='op'>(</span><span class='fl'>4</span><span class='op'>)</span>
 
 <span class='co'># This returns the number of days until the next Wednesday using</span>
 <span class='co'># circular arithmetic</span>
@@ -185,17 +190,23 @@ encoding as <code>day</code>, as long as you don't mix 0's with 7's.</p></td>
 </div><div class='output co'>#&gt; &lt;weekday[1]&gt;
 #&gt; [1] Wed</div><div class='input'>
 <span class='co'># What about the previous Tuesday?</span>
-<span class='va'>tuesday</span> <span class='op'>&lt;-</span> <span class='fu'>weekday</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>tuesday</span> <span class='op'>&lt;-</span> <span class='fu'>weekday</span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span>
 <span class='va'>x</span> <span class='op'>-</span> <span class='op'>(</span><span class='fu'><a href='as_weekday.html'>as_weekday</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>-</span> <span class='va'>tuesday</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[1]&gt;
 #&gt; [1] "2019-01-01"</div><div class='input'>
 <span class='co'># What about the next Saturday?</span>
 <span class='co'># With an additional condition that if today is a Saturday,</span>
 <span class='co'># then advance to the next one.</span>
-<span class='va'>saturday</span> <span class='op'>&lt;-</span> <span class='fu'>weekday</span><span class='op'>(</span><span class='fl'>6</span><span class='op'>)</span>
+<span class='va'>saturday</span> <span class='op'>&lt;-</span> <span class='fu'>weekday</span><span class='op'>(</span><span class='fl'>7</span><span class='op'>)</span>
 <span class='va'>x</span> <span class='op'>+</span> <span class='fl'>1L</span> <span class='op'>+</span> <span class='op'>(</span><span class='va'>saturday</span> <span class='op'>-</span> <span class='fu'><a href='as_weekday.html'>as_weekday</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>+</span> <span class='fl'>1L</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[1]&gt;
-#&gt; [1] "2019-01-12"</div></pre>
+#&gt; [1] "2019-01-12"</div><div class='input'>
+<span class='co'># You can supply an ISO coding for `code` as well, where 1 == Monday.</span>
+<span class='fu'>weekday</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span>, encoding <span class='op'>=</span> <span class='st'>"western"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;weekday[7]&gt;
+#&gt; [1] Sun Mon Tue Wed Thu Fri Sat</div><div class='input'><span class='fu'>weekday</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span>, encoding <span class='op'>=</span> <span class='st'>"iso"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;weekday[7]&gt;
+#&gt; [1] Mon Tue Wed Thu Fri Sat Sun</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
