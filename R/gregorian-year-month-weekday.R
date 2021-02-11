@@ -29,11 +29,9 @@
 #'
 #' @export
 #' @examples
-#' friday <- 6
-#'
 #' # All Fridays in January, 2019
 #' # Note that there was no 5th Friday in January
-#' x <- year_month_weekday(2019, 1, friday, 1:5)
+#' x <- year_month_weekday(2019, clock_codes$january, clock_codes$friday, 1:5)
 #' x
 #'
 #' invalid_detect(x)
@@ -260,7 +258,10 @@ invalid_resolve.clock_year_month_weekday <- function(x, ..., invalid = NULL) {
 #'
 #' @name year-month-weekday-getters
 #' @examples
-#' x <- year_month_weekday(2019, 1, 2:5, 1:4)
+#' monday <- clock_codes$monday
+#' thursday <- clock_codes$thursday
+#'
+#' x <- year_month_weekday(2019, 1, monday:thursday, 1:4)
 #' x
 #'
 #' # Gets the weekday, 1 = Sunday, 7 = Saturday
@@ -395,12 +396,12 @@ get_nanosecond.clock_year_month_weekday <- function(x) {
 #'
 #' # Setting the weekday on a month precision year-month-weekday requires
 #' # also setting the `index` to fully specify the day information
-#' x <- set_day(x, 1, index = 1)
+#' x <- set_day(x, clock_codes$sunday, index = 1)
 #' x
 #'
 #' # Once you have at least day precision, you can set the weekday and
 #' # the index separately
-#' set_day(x, 2)
+#' set_day(x, clock_codes$monday)
 #' set_index(x, 3)
 #'
 #' # Set to the "last" instance of the corresponding weekday in this month
@@ -697,10 +698,8 @@ year_month_weekday_minus_year_month_weekday <- function(op, x, y, ...) {
 #' @name year-month-weekday-arithmetic
 #'
 #' @examples
-#' friday <- 6L
-#'
 #' # 2nd Friday in January, 2019
-#' x <- year_month_weekday(2019, 1, friday, 2)
+#' x <- year_month_weekday(2019, 1, clock_codes$friday, 2)
 #' x
 #'
 #' add_months(x, 1:5)
@@ -859,7 +858,7 @@ calendar_month_factor.clock_year_month_weekday <- function(x,
 #'
 #' @export
 #' @examples
-#' x <- year_month_weekday(2019, 1:12, 1, 1, 00, 05, 05)
+#' x <- year_month_weekday(2019, 1:12, clock_codes$sunday, 1, 00, 05, 05)
 #' x
 #'
 #' # Group by 3 months - drops more precise components!
@@ -1042,8 +1041,7 @@ calendar_widen.clock_year_month_weekday <- function(x, precision) {
 #' x
 #'
 #' # Which we can then set the indexed weekday of
-#' sunday <- 1L
-#' set_day(x, sunday, index = "last")
+#' set_day(x, clock_codes$sunday, index = "last")
 seq.clock_year_month_weekday <- function(from,
                                          to = NULL,
                                          by = NULL,

@@ -82,12 +82,12 @@ set_year(x, 2020:2022)
 
 # Setting the weekday on a month precision year-month-weekday requires
 # also setting the `index` to fully specify the day information
-x <- set_day(x, 1, index = 1)
+x <- set_day(x, clock_codes$sunday, index = 1)
 x
 
 # Once you have at least day precision, you can set the weekday and
 # the index separately
-set_day(x, 2)
+set_day(x, clock_codes$monday)
 set_index(x, 3)
 
 # Set to the "last" instance of the corresponding weekday in this month
