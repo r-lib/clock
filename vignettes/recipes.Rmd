@@ -118,21 +118,44 @@ my_time %>%
 
 ## Finding the next Monday (or Thursday)
 
-Given a particular day precision naive-time, how can you compute the next Monday?
-
-This can be accomplished with the `weekday` type. It represents a single day of the week and implements _circular arithmetic_. Let's see the code first:
+Given a particular day precision naive-time, how can you compute the next Monday? This is very easily accomplished with `time_point_shift()`. It takes a time point vector and a "target" weekday, and shifts the time points to that target weekday.
 
 ```{r}
-next_weekday <- function(x, target) {
-  x + (target - as_weekday(x))
-}
-
 days <- as_naive(year_month_day(2019, c(1, 2), 1))
 
 # A Tuesday and a Friday
 as_weekday(days)
 
 monday <- weekday(clock_weekdays$monday)
+
+time_point_shift(days, monday)
+
+as_weekday(time_point_shift(days, monday))
+```
+
+You can also shift to the previous instance of the target weekday:
+
+```{r}
+time_point_shift(days, monday, which = "previous")
+```
+
+If you happen to already be on the target weekday, the default behavior returns the input unchanged. However, you can also chose to advance to the next instance of the target.
+
+```{r}
+tuesday <- weekday(clock_weekdays$tuesday)
+
+time_point_shift(days, tuesday)
+time_point_shift(days, tuesday, boundary = "advance")
+```
+
+While `time_point_shift()` is built in to clock, it can be useful to discuss the arithmetic going on in the underlying weekday type which powers this function. To do so, we will build some parts of `time_point_shift()` from scratch.
+
+The weekday type represents a single day of the week and implements _circular arithmetic_. Let's see the code for a simple version of `time_point_shift()` that just shifts to the next target weekday:
+
+```{r}
+next_weekday <- function(x, target) {
+  x + (target - as_weekday(x))
+}
 
 next_weekday(days, monday)
 
@@ -151,7 +174,7 @@ Which can be added to our day precision `days` vector to get the date of the nex
 days + (monday - as_weekday(days))
 ```
 
-The current implementation will return the input if it is already on the target weekday. If you wanted to advance that by a week anyways, you could implement `next_weekday()` as:
+The current implementation will return the input if it is already on the target weekday. To use the `boundary = "advance"` behavior, you could implement `next_weekday()` as:
 
 ```{r}
 next_weekday2 <- function(x, target) {
@@ -167,27 +190,25 @@ next_weekday2(a_monday, monday)
 
 ### High level API
 
-Due to limitations of S3 dispatch, we have to use `add_days()` rather than `+` when adding our duration of days to Date and POSIXct types.
+In the high level API, you can use `date_shift()`:
 
 ```{r}
-next_weekday <- function(x, target) {
-  add_days(x, target - as_weekday(x))
-}
-
 monday <- weekday(clock_weekdays$monday)
 
 x <- as.Date(c("2019-01-01", "2019-02-01"))
-next_weekday(x, monday)
+
+date_shift(x, monday)
 
 # With a date-time
 y <- as.POSIXct(
   c("2019-01-01 02:30:30", "2019-02-01 05:20:22"), 
   "America/New_York"
 )
-next_weekday(y, monday)
+
+date_shift(y, monday)
 ```
 
-Note that adding weekdays to a POSIXct could generate nonexistent or ambiguous times due to daylight saving time, which would have to be handled by supplying `nonexistent` and `ambiguous` arguments to `add_days()`.
+Note that adding weekdays to a POSIXct could generate nonexistent or ambiguous times due to daylight saving time, which would have to be handled by supplying `nonexistent` and `ambiguous` arguments to `date_shift()`.
 
 ## Generate sequences of dates and date-times
 
