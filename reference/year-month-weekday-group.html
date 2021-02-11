@@ -179,7 +179,7 @@ two day fields, the weekday and the index, and there is no clear way to
 define how to group by that.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_weekday.html'>year_month_weekday</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>00</span>, <span class='fl'>05</span>, <span class='fl'>05</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_weekday.html'>year_month_weekday</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span>, <span class='va'>clock_codes</span><span class='op'>$</span><span class='va'>sunday</span>, <span class='fl'>1</span>, <span class='fl'>00</span>, <span class='fl'>05</span>, <span class='fl'>05</span><span class='op'>)</span>
 <span class='va'>x</span>
 </div><div class='output co'>#&gt; &lt;year_month_weekday&lt;second&gt;[invalid=0][12]&gt;
 #&gt;  [1] "2019-01-Sun[1] 00:05:05" "2019-02-Sun[1] 00:05:05"
