@@ -85,6 +85,9 @@ section of the pkgdown reference page.
 After working with the high-level API, you might want to take a look at
 clock’s vignettes:
 
+-   [Examples and
+    Recipes](https://davisvaughan.github.io/clock/articles/recipes.html)
+
 -   [Frequently Asked
     Questions](https://davisvaughan.github.io/clock/articles/faq.html)
 

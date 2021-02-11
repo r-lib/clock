@@ -57,6 +57,8 @@ With clock, there is a high-level API for manipulating R's native date and date-
 
 After working with the high-level API, you might want to take a look at clock's vignettes:
 
+- [Examples and Recipes](https://davisvaughan.github.io/clock/articles/recipes.html)
+
 - [Frequently Asked Questions](https://davisvaughan.github.io/clock/articles/faq.html)
 
 ## Acknowledgements
