@@ -72,54 +72,21 @@ You can install the development version of clock with:
 remotes::install_github("DavisVaughan/clock")
 ```
 
-## Example
+## Learning
 
-``` r
-library(clock)
-library(magrittr)
-```
+With clock, there is a high-level API for manipulating R’s native date
+and date-time types (Date, POSIXct, and POSIXlt). This should allow you
+to quickly get productive with clock without having to learn many of the
+new types. An easy way to get an overview of this high-level API is by
+looking at the [High Level
+API](https://davisvaughan.github.io/clock/reference/index.html#section-high-level-api)
+section of the pkgdown reference page.
 
-With clock, there is a high level API supporting Date and POSIXct. This
-is often the easiest way to begin using clock.
+After working with the high-level API, you might want to take a look at
+clock’s vignettes:
 
-For example, to add 5 days:
-
-``` r
-x <- as.Date("2019-05-01")
-
-add_days(x, 5)
-#> [1] "2019-05-06"
-```
-
-To add 5 hours:
-
-``` r
-y <- as.POSIXct("2019-01-01 02:30:00", tz = "America/New_York")
-
-add_hours(y, 5)
-#> [1] "2019-01-01 07:30:00 EST"
-```
-
-To get the month:
-
-``` r
-get_month(x)
-#> [1] 5
-
-get_month(y)
-#> [1] 1
-```
-
-To set the day:
-
-``` r
-set_day(x, 1:5)
-#> [1] "2019-05-01" "2019-05-02" "2019-05-03" "2019-05-04" "2019-05-05"
-
-# Last day in the month
-set_day(x, "last")
-#> [1] "2019-05-31"
-```
+-   [Frequently Asked
+    Questions](https://davisvaughan.github.io/clock/articles/faq.html)
 
 ## Acknowledgements
 
