@@ -51,7 +51,7 @@ Adding a single quarter with \code{add_quarters()} is equivalent to adding
 }
 \examples{
 # 2nd Friday in January, 2019
-x <- year_month_weekday(2019, 1, clock_codes$friday, 2)
+x <- year_month_weekday(2019, 1, clock_weekdays$friday, 2)
 x
 
 add_months(x, 1:5)

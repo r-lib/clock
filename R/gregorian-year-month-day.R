@@ -64,7 +64,7 @@
 #' year_month_day(2020, 1:12)
 #'
 #' # The most common use case involves year, month, and day fields
-#' x <- year_month_day(2020, clock_codes$january, 1:5)
+#' x <- year_month_day(2020, clock_months$january, 1:5)
 #' x
 #'
 #' # Precision can go all the way out to nanosecond

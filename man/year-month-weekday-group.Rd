@@ -47,7 +47,7 @@ two day fields, the weekday and the index, and there is no clear way to
 define how to group by that.
 }
 \examples{
-x <- year_month_weekday(2019, 1:12, clock_codes$sunday, 1, 00, 05, 05)
+x <- year_month_weekday(2019, 1:12, clock_weekdays$sunday, 1, 00, 05, 05)
 x
 
 # Group by 3 months - drops more precise components!

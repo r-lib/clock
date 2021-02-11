@@ -38,7 +38,7 @@ usage.
 \code{x} and \code{n} are recycled against each other.
 }
 \examples{
-saturday <- weekday(clock_codes$saturday)
+saturday <- weekday(clock_weekdays$saturday)
 saturday
 
 add_days(saturday, 1)

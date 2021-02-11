@@ -36,7 +36,7 @@
 #' x
 #'
 #' # 2nd day of the first ISO week in multiple years
-#' iso_days <- set_day(x, clock_codes$iso$tuesday)
+#' iso_days <- set_day(x, clock_iso_weekdays$tuesday)
 #' iso_days
 #'
 #' # What year-month-day is this?

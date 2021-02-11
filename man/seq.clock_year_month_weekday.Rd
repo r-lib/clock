@@ -75,5 +75,5 @@ x <- seq(year_month_weekday(2019, 1), year_month_weekday(2020, 12), by = 1)
 x
 
 # Which we can then set the indexed weekday of
-set_day(x, clock_codes$sunday, index = "last")
+set_day(x, clock_weekdays$sunday, index = "last")
 }
