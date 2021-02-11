@@ -215,7 +215,7 @@ fields after the first <code>NULL</code> field are used.</p>
 </div><div class='output co'>#&gt; &lt;iso_year_week_day&lt;week&gt;[invalid=0][7]&gt;
 #&gt; [1] "2019-W01" "2020-W01" "2021-W01" "2022-W01" "2023-W01" "2024-W01" "2025-W01"</div><div class='input'>
 <span class='co'># 2nd day of the first ISO week in multiple years</span>
-<span class='va'>iso_days</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>clock_codes</span><span class='op'>$</span><span class='va'>iso</span><span class='op'>$</span><span class='va'>tuesday</span><span class='op'>)</span>
+<span class='va'>iso_days</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>clock_iso_weekdays</span><span class='op'>$</span><span class='va'>tuesday</span><span class='op'>)</span>
 <span class='va'>iso_days</span>
 </div><div class='output co'>#&gt; &lt;iso_year_week_day&lt;day&gt;[invalid=0][7]&gt;
 #&gt; [1] "2019-W01-2" "2020-W01-2" "2021-W01-2" "2022-W01-2" "2023-W01-2"

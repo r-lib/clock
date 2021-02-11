@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Arithmetic: weekday — weekday-arithmetic • clock</title>
+<title>Integer codes — clock-codes • clock</title>
 
 
 <!-- jquery -->
@@ -39,14 +39,52 @@
 
 
 
-<meta property="og:title" content="Arithmetic: weekday — weekday-arithmetic" />
-<meta property="og:description" content="These are weekday methods for the
-arithmetic generics.
-add_days()
+<meta property="og:title" content="Integer codes — clock-codes" />
+<meta property="og:description" content="Objects with useful mappings from month names and weekday names
+to integer codes.Month codes (clock_months)
 
 
-Also check out the examples on the weekday() page for more advanced
-usage." />
+january == 1
+february == 2
+march == 3
+april == 4
+may == 5
+june == 6
+july == 7
+august == 8
+september == 9
+october == 10
+november == 11
+december == 12
+
+
+
+Weekday codes (clock_weekdays)
+
+
+sunday == 1
+monday == 2
+tuesday == 3
+wednesday == 4
+thursday == 5
+friday == 6
+saturday == 7
+
+
+
+ISO weekday codes (clock_iso_weekdays)
+
+
+monday == 1
+tuesday == 2
+wednesday == 3
+thursday == 4
+friday == 5
+saturday == 6
+sunday == 7
+
+
+" />
 
 
 
@@ -126,63 +164,92 @@ usage." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Arithmetic: weekday</h1>
-    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/weekday.R'><code>R/weekday.R</code></a></small>
-    <div class="hidden name"><code>weekday-arithmetic.Rd</code></div>
+    <h1>Integer codes</h1>
+    <small class="dont-index">Source: <a href='https://github.com/DavisVaughan/clock/blob/master/R/clock-codes.R'><code>R/clock-codes.R</code></a></small>
+    <div class="hidden name"><code>clock-codes.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>These are weekday methods for the
-<a href='clock-arithmetic.html'>arithmetic generics</a>.</p><ul>
-<li><p><code><a href='clock-arithmetic.html'>add_days()</a></code></p></li>
+    <p>Objects with useful mappings from month names and weekday names
+to integer codes.</p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Month codes (<code>clock_months</code>)</h3>
+
+<ul>
+<li><p><code>january == 1</code></p></li>
+<li><p><code>february == 2</code></p></li>
+<li><p><code>march == 3</code></p></li>
+<li><p><code>april == 4</code></p></li>
+<li><p><code>may == 5</code></p></li>
+<li><p><code>june == 6</code></p></li>
+<li><p><code>july == 7</code></p></li>
+<li><p><code>august == 8</code></p></li>
+<li><p><code>september == 9</code></p></li>
+<li><p><code>october == 10</code></p></li>
+<li><p><code>november == 11</code></p></li>
+<li><p><code>december == 12</code></p></li>
 </ul>
 
-<p>Also check out the examples on the <code><a href='weekday.html'>weekday()</a></code> page for more advanced
-usage.</p>
+
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Weekday codes (<code>clock_weekdays</code>)</h3>
+
+<ul>
+<li><p><code>sunday == 1</code></p></li>
+<li><p><code>monday == 2</code></p></li>
+<li><p><code>tuesday == 3</code></p></li>
+<li><p><code>wednesday == 4</code></p></li>
+<li><p><code>thursday == 5</code></p></li>
+<li><p><code>friday == 6</code></p></li>
+<li><p><code>saturday == 7</code></p></li>
+</ul>
+
+
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>ISO weekday codes (<code>clock_iso_weekdays</code>)</h3>
+
+<ul>
+<li><p><code>monday == 1</code></p></li>
+<li><p><code>tuesday == 2</code></p></li>
+<li><p><code>wednesday == 3</code></p></li>
+<li><p><code>thursday == 4</code></p></li>
+<li><p><code>friday == 5</code></p></li>
+<li><p><code>saturday == 6</code></p></li>
+<li><p><code>sunday == 7</code></p></li>
+</ul>
+
+
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for clock_weekday</span>
-<span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='va'>clock_months</span>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p><code>[clock_weekday]</code></p>
-<p>A weekday vector.</p></td>
-    </tr>
-    <tr>
-      <th>n</th>
-      <td><p><code>[integer / clock_duration]</code></p>
-<p>An integer vector to be converted to a duration, or a duration
-corresponding to the arithmetic function being used. This corresponds
-to the number of duration units to add. <code>n</code> may be negative to subtract
-units of duration.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>These dots are for future extensions and must be empty.</p></td>
-    </tr>
-    </table>
+<span class='va'>clock_weekdays</span>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+<span class='va'>clock_iso_weekdays</span></pre>
 
-    <p><code>x</code> after performing the arithmetic.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>x</code> and <code>n</code> are recycled against each other.</p>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    
+<ul>
+<li><p><code>clock_months</code>: An environment containing month codes.</p></li>
+</ul>
+
+<ul>
+<li><p><code>clock_weekdays</code>: An environment containing weekday codes.</p></li>
+</ul>
+
+<ul>
+<li><p><code>clock_iso_weekdays</code>: An environment containing ISO weekday codes.</p></li>
+</ul>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>saturday</span> <span class='op'>&lt;-</span> <span class='fu'><a href='weekday.html'>weekday</a></span><span class='op'>(</span><span class='va'>clock_weekdays</span><span class='op'>$</span><span class='va'>saturday</span><span class='op'>)</span>
-<span class='va'>saturday</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='weekday.html'>weekday</a></span><span class='op'>(</span><span class='va'>clock_weekdays</span><span class='op'>$</span><span class='va'>wednesday</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;weekday[1]&gt;
-#&gt; [1] Sat</div><div class='input'>
-<span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='va'>saturday</span>, <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;weekday[1]&gt;
-#&gt; [1] Sun</div><div class='input'><span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='va'>saturday</span>, <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;weekday[1]&gt;
-#&gt; [1] Mon</div></pre>
+#&gt; [1] Wed</div><div class='input'>
+<span class='fu'><a href='year_month_weekday.html'>year_month_weekday</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='va'>clock_months</span><span class='op'>$</span><span class='va'>april</span>, <span class='va'>clock_weekdays</span><span class='op'>$</span><span class='va'>monday</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[invalid=0][4]&gt;
+#&gt; [1] "2019-04-Mon[1]" "2019-04-Mon[2]" "2019-04-Mon[3]" "2019-04-Mon[4]"</div><div class='input'>
+<span class='fu'><a href='iso_year_week_day.html'>iso_year_week_day</a></span><span class='op'>(</span><span class='fl'>2020</span>, <span class='fl'>52</span>, <span class='va'>clock_iso_weekdays</span><span class='op'>$</span><span class='va'>thursday</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;iso_year_week_day&lt;day&gt;[invalid=0][1]&gt;
+#&gt; [1] "2020-W52-4"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -175,7 +175,7 @@ is in line with the ISO standard.</p></li>
 </div><div class='output co'>#&gt; &lt;weekday[1]&gt;
 #&gt; [1] Sat</div><div class='input'>
 <span class='co'># Adjust to the next Wednesday</span>
-<span class='va'>wednesday</span> <span class='op'>&lt;-</span> <span class='fu'>weekday</span><span class='op'>(</span><span class='va'>clock_codes</span><span class='op'>$</span><span class='va'>wednesday</span><span class='op'>)</span>
+<span class='va'>wednesday</span> <span class='op'>&lt;-</span> <span class='fu'>weekday</span><span class='op'>(</span><span class='va'>clock_weekdays</span><span class='op'>$</span><span class='va'>wednesday</span><span class='op'>)</span>
 
 <span class='co'># This returns the number of days until the next Wednesday using</span>
 <span class='co'># circular arithmetic</span>
@@ -190,14 +190,14 @@ is in line with the ISO standard.</p></li>
 </div><div class='output co'>#&gt; &lt;weekday[1]&gt;
 #&gt; [1] Wed</div><div class='input'>
 <span class='co'># What about the previous Tuesday?</span>
-<span class='va'>tuesday</span> <span class='op'>&lt;-</span> <span class='fu'>weekday</span><span class='op'>(</span><span class='va'>clock_codes</span><span class='op'>$</span><span class='va'>tuesday</span><span class='op'>)</span>
+<span class='va'>tuesday</span> <span class='op'>&lt;-</span> <span class='fu'>weekday</span><span class='op'>(</span><span class='va'>clock_weekdays</span><span class='op'>$</span><span class='va'>tuesday</span><span class='op'>)</span>
 <span class='va'>x</span> <span class='op'>-</span> <span class='op'>(</span><span class='fu'><a href='as_weekday.html'>as_weekday</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>-</span> <span class='va'>tuesday</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[1]&gt;
 #&gt; [1] "2019-01-01"</div><div class='input'>
 <span class='co'># What about the next Saturday?</span>
 <span class='co'># With an additional condition that if today is a Saturday,</span>
 <span class='co'># then advance to the next one.</span>
-<span class='va'>saturday</span> <span class='op'>&lt;-</span> <span class='fu'>weekday</span><span class='op'>(</span><span class='va'>clock_codes</span><span class='op'>$</span><span class='va'>saturday</span><span class='op'>)</span>
+<span class='va'>saturday</span> <span class='op'>&lt;-</span> <span class='fu'>weekday</span><span class='op'>(</span><span class='va'>clock_weekdays</span><span class='op'>$</span><span class='va'>saturday</span><span class='op'>)</span>
 <span class='va'>x</span> <span class='op'>+</span> <span class='fl'>1L</span> <span class='op'>+</span> <span class='op'>(</span><span class='va'>saturday</span> <span class='op'>-</span> <span class='fu'><a href='as_weekday.html'>as_weekday</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>+</span> <span class='fl'>1L</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[1]&gt;
 #&gt; [1] "2019-01-12"</div><div class='input'>
