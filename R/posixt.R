@@ -975,6 +975,61 @@ date_time_complete_parse <- function(x, ..., format = NULL, locale = clock_local
 
 # ------------------------------------------------------------------------------
 
+#' Shifting: date and date-time
+#'
+#' @description
+#' `date_shift()` shifts `x` to the `target` weekday. You can shift to the next
+#' or previous weekday. If `x` is currently on the `target` weekday, you can
+#' choose to leave it alone or advance it to the next instance of the `target`.
+#'
+#' Shifting with date-times retains the time of day where possible. Be aware
+#' that you can run into daylight saving time issues if you shift into a
+#' daylight saving time gap or fallback period.
+#'
+#' @inheritParams time_point_shift
+#' @inheritParams as-zoned-time-naive-time
+#'
+#' @param x `[POSIXct / POSIXlt]`
+#'
+#'   A date-time vector.
+#'
+#' @return `x` shifted to the `target` weekday.
+#'
+#' @name posixt-shifting
+#'
+#' @export
+#' @examples
+#' tuesday <- weekday(clock_weekdays$tuesday)
+#'
+#' x <- as.POSIXct("1970-04-22 02:30:00", "America/New_York")
+#'
+#' # Shift to the next Tuesday
+#' date_shift(x, tuesday)
+#'
+#' # Be aware that you can run into daylight saving time issues!
+#' # Here we shift directly into a daylight saving time gap
+#' # from 01:59:59 -> 03:00:00
+#' sunday <- weekday(clock_weekdays$sunday)
+#' try(date_shift(x, sunday))
+#'
+#' # You can resolve this with the `nonexistent` argument
+#' date_shift(x, sunday, nonexistent = "roll-forward")
+date_shift.POSIXt <- function(x,
+                              target,
+                              ...,
+                              which = "next",
+                              boundary = "keep",
+                              nonexistent = NULL,
+                              ambiguous = x) {
+  force(ambiguous)
+  zone <- date_zone(x)
+  x <- as_naive(x)
+  x <- time_point_shift(x, target, ..., which = which, boundary = boundary)
+  as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
+}
+
+# ------------------------------------------------------------------------------
+
 date_time_create <- function(year,
                              month = 1L,
                              day = 1L,

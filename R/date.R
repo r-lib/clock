@@ -959,6 +959,108 @@ date_parse <- function(x, ..., format = NULL, locale = clock_locale()) {
 
 # ------------------------------------------------------------------------------
 
+#' Shifting: date and date-time
+#'
+#' @description
+#' `date_shift()` shifts `x` to the `target` weekday. You can shift to the next
+#' or previous weekday. If `x` is currently on the `target` weekday, you can
+#' choose to leave it alone or advance it to the next instance of the `target`.
+#'
+#' There are separate help pages for shifting dates and date-times:
+#'
+#' - [dates (Date)][date-shifting]
+#'
+#' - [date-times (POSIXct/POSIXlt)][posixt-shifting]
+#'
+#' @inheritParams time_point_shift
+#'
+#' @param x `[Date / POSIXct / POSIXlt]`
+#'
+#'   A date or date-time vector.
+#'
+#' @return `x` shifted to the `target` weekday.
+#'
+#' @name date-and-date-time-shifting
+#'
+#' @export
+#' @examples
+#' # See the type specific documentation for more examples
+#'
+#' x <- as.Date("2019-01-01") + 0:1
+#'
+#' # A Tuesday and Wednesday
+#' as_weekday(x)
+#'
+#' monday <- weekday(clock_weekdays$monday)
+#'
+#' # Shift to the next Monday
+#' date_shift(x, monday)
+date_shift <- function(x,
+                       target,
+                       ...,
+                       which = "next",
+                       boundary = "keep") {
+  UseMethod("date_shift")
+}
+
+#' Shifting: date
+#'
+#' @description
+#' `date_shift()` shifts `x` to the `target` weekday. You can shift to the next
+#' or previous weekday. If `x` is currently on the `target` weekday, you can
+#' choose to leave it alone or advance it to the next instance of the `target`.
+#'
+#' Weekday shifting is one of the easiest ways to floor by week while
+#' controlling what is considered the first day of the week. You can also
+#' accomplish this with the `origin` argument of [date_floor()], but this is
+#' slightly easier.
+#'
+#' @inheritParams time_point_shift
+#'
+#' @param x `[Date]`
+#'
+#'   A date vector.
+#'
+#' @return `x` shifted to the `target` weekday.
+#'
+#' @name date-shifting
+#'
+#' @export
+#' @examples
+#' x <- as.Date("2019-01-01") + 0:1
+#'
+#' # A Tuesday and Wednesday
+#' as_weekday(x)
+#'
+#' monday <- weekday(clock_weekdays$monday)
+#'
+#' # Shift to the next Monday
+#' date_shift(x, monday)
+#'
+#' # Shift to the previous Monday
+#' # This is an easy way to "floor by week" with a target weekday in mind
+#' date_shift(x, monday, which = "previous")
+#'
+#' # What about Tuesday?
+#' tuesday <- weekday(clock_weekdays$tuesday)
+#'
+#' # Notice that the day that was currently on a Tuesday was not shifted
+#' date_shift(x, tuesday)
+#'
+#' # You can force it to `"advance"`
+#' date_shift(x, tuesday, boundary = "advance")
+date_shift.Date <- function(x,
+                            target,
+                            ...,
+                            which = "next",
+                            boundary = "keep") {
+  x <- as_naive(x)
+  x <- time_point_shift(x, target, ..., which = which, boundary = boundary)
+  as.Date(x)
+}
+
+# ------------------------------------------------------------------------------
+
 date_create <- function(year, month = 1L, day = 1L, ..., invalid = NULL) {
   check_dots_empty()
   x <- year_month_day(year, month, day)

@@ -12,6 +12,7 @@ reference:
   - date_group
   - date_leap_year
   - date-and-date-time-rounding
+  - date-and-date-time-shifting
   - date_format
   - date_parse
   - date-time-parse
@@ -161,5 +162,7 @@ reference:
   - posixt-group
   - date-rounding
   - posixt-rounding
+  - date-shifting
+  - posixt-shifting
   - as-zoned-time-Date
   - as-zoned-time-posixt

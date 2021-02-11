@@ -181,6 +181,30 @@ test_that("failure to parse throws a warning", {
 })
 
 # ------------------------------------------------------------------------------
+# date_shift()
+
+test_that("can shift dates", {
+  x <- date_parse("2019-01-01")
+  x <- x + c(0, 1)
+
+  monday <- weekday(clock_weekdays$monday)
+  tuesday <- weekday(clock_weekdays$tuesday)
+
+  expect_identical(
+    date_shift(x, monday),
+    add_days(x, c(6, 5))
+  )
+  expect_identical(
+    date_shift(x, monday, which = "previous"),
+    add_days(x, c(-1, -2))
+  )
+  expect_identical(
+    date_shift(x, tuesday, boundary = "advance"),
+    add_days(x, c(7, 6))
+  )
+})
+
+# ------------------------------------------------------------------------------
 # vec_arith()
 
 test_that("<date> op <duration>", {
