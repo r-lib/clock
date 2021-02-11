@@ -84,11 +84,9 @@ Fields are collected in order until the first \code{NULL} field is located. No
 fields after the first \code{NULL} field are used.
 }
 \examples{
-friday <- 6
-
 # All Fridays in January, 2019
 # Note that there was no 5th Friday in January
-x <- year_month_weekday(2019, 1, friday, 1:5)
+x <- year_month_weekday(2019, clock_codes$january, clock_codes$friday, 1:5)
 x
 
 invalid_detect(x)

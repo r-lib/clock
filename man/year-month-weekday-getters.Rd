@@ -56,7 +56,10 @@ weekday is the n-th instance of that weekday in the current month.
 }
 }
 \examples{
-x <- year_month_weekday(2019, 1, 2:5, 1:4)
+monday <- clock_codes$monday
+thursday <- clock_codes$thursday
+
+x <- year_month_weekday(2019, 1, monday:thursday, 1:4)
 x
 
 # Gets the weekday, 1 = Sunday, 7 = Saturday

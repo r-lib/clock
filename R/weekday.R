@@ -34,7 +34,7 @@
 #' as_weekday(x)
 #'
 #' # Adjust to the next Wednesday
-#' wednesday <- weekday(4)
+#' wednesday <- weekday(clock_codes$wednesday)
 #'
 #' # This returns the number of days until the next Wednesday using
 #' # circular arithmetic
@@ -47,13 +47,13 @@
 #' as_weekday(x_next_wednesday)
 #'
 #' # What about the previous Tuesday?
-#' tuesday <- weekday(3)
+#' tuesday <- weekday(clock_codes$tuesday)
 #' x - (as_weekday(x) - tuesday)
 #'
 #' # What about the next Saturday?
 #' # With an additional condition that if today is a Saturday,
 #' # then advance to the next one.
-#' saturday <- weekday(7)
+#' saturday <- weekday(clock_codes$saturday)
 #' x + 1L + (saturday - as_weekday(x + 1L))
 #'
 #' # You can supply an ISO coding for `code` as well, where 1 == Monday.
@@ -448,8 +448,7 @@ weekday_minus_weekday <- function(op, x, y, ...) {
 #' @name weekday-arithmetic
 #'
 #' @examples
-#' saturday <- 7
-#' saturday <- weekday(saturday)
+#' saturday <- weekday(clock_codes$saturday)
 #' saturday
 #'
 #' add_days(saturday, 1)
