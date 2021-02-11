@@ -8,19 +8,21 @@
 #' "previous Tuesday" from a sys-time or naive-time easy to compute.
 #' See the examples.
 #'
+#' @inheritParams ellipsis::dots_empty
+#'
 #' @param day `[integer]`
 #'
-#'   The values for `day` can be provided as:
+#'   Integer codes between `[1, 7]` representing days of the week. The
+#'   interpretation of these values depends on `encoding`.
 #'
-#'   - Integers between `[0, 6]`, with 0 = Sunday and 6 = Saturday. This is
-#'     known as _C encoding_.
+#' @param encoding `[character(1)]`
 #'
-#'   - Integers between `[1, 7]`, with 1 = Monday and 7 = Sunday. This is
-#'     known as _ISO encoding_.
+#'   One of:
 #'
-#'   Because the only value that differs in the two encodings is Sunday (it
-#'   is a 0 in C encoding, but a 7 in ISO encoding), you can supply either
-#'   encoding as `day`, as long as you don't mix 0's with 7's.
+#'   - `"western"`: Encode weekdays assuming `1 == Sunday` and `7 == Saturday`.
+#'
+#'   - `"iso"`: Encode weekdays assuming `1 == Monday` and `7 == Sunday`. This
+#'   is in line with the ISO standard.
 #'
 #' @return A weekday vector.
 #'
@@ -32,7 +34,7 @@
 #' as_weekday(x)
 #'
 #' # Adjust to the next Wednesday
-#' wednesday <- weekday(3)
+#' wednesday <- weekday(4)
 #'
 #' # This returns the number of days until the next Wednesday using
 #' # circular arithmetic
@@ -45,38 +47,36 @@
 #' as_weekday(x_next_wednesday)
 #'
 #' # What about the previous Tuesday?
-#' tuesday <- weekday(2)
+#' tuesday <- weekday(3)
 #' x - (as_weekday(x) - tuesday)
 #'
 #' # What about the next Saturday?
 #' # With an additional condition that if today is a Saturday,
 #' # then advance to the next one.
-#' saturday <- weekday(6)
+#' saturday <- weekday(7)
 #' x + 1L + (saturday - as_weekday(x + 1L))
-weekday <- function(day = integer()) {
+#'
+#' # You can supply an ISO coding for `day` as well, where 1 == Monday.
+#' weekday(1:7, encoding = "western")
+#' weekday(1:7, encoding = "iso")
+weekday <- function(day = integer(), ..., encoding = "western") {
+  check_dots_empty()
+
   # No other helpers retain names, so we don't here either
   day <- unname(day)
   day <- vec_cast(day, integer(), x_arg = "day")
 
-  oob <- (day > 7L | day < 0L) & (!is.na(day))
+  oob <- (day > 7L | day < 1L) & (!is.na(day))
   if (any(oob)) {
-    message <- paste0("`day` must be in range of [0, 7].")
+    message <- paste0("`day` must be in range of [1, 7].")
     abort(message)
   }
 
-  zeros <- day == 0L
-  sevens <- day == 7L
+  encoding <- validate_encoding(encoding)
 
-  has_zeros <- any(zeros, na.rm = TRUE)
-  has_sevens <- any(sevens, na.rm = TRUE)
-
-  if (has_zeros && has_sevens) {
-    abort("`day` can't contain both 0 and 7.")
-  }
-
-  # Store as C encoding
-  if (has_sevens) {
-    day[sevens] <- 0L
+  # Store as western encoding
+  if (is_iso_encoding(encoding)) {
+    day <- reencode_iso_to_western(day)
   }
 
   new_weekday(day)
@@ -217,34 +217,24 @@ as.character.clock_weekday <- function(x, ...) {
 #'
 #' `weekday_encoding()` extracts out an integer encoding for the weekday.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams weekday
 #'
 #' @param x `[weekday]`
 #'
 #'   A weekday vector.
 #'
-#' @param encoding `[character(1)]`
-#'
-#'   One of:
-#'
-#'   - `"c"`: Encode weekdays with a range of `[0, 6]`, where
-#'     0 = Sunday, and 6 = Saturday.
-#'
-#'   - `"iso"`: Encode weekdays with a range of `[1, 7]`, where
-#'     1 = Monday, and 7 = Sunday.
-#'
 #' @return An integer vector of encodings.
 #'
 #' @export
 #' @examples
-#' # Here we supply a C encoding to `weekday()`
-#' x <- weekday(0:6)
+#' # Here we supply a western encoding to `weekday()`
+#' x <- weekday(1:7)
 #' x
 #'
-#' # Notice that Sunday is the only day that is different
-#' weekday_encoding(x, encoding = "c")
+#' # We can extract out the codes using different encodings
+#' weekday_encoding(x, encoding = "western")
 #' weekday_encoding(x, encoding = "iso")
-weekday_encoding <- function(x, ..., encoding = "c") {
+weekday_encoding <- function(x, ..., encoding = "western") {
   check_dots_empty()
 
   if (!is_weekday(x)) {
@@ -255,9 +245,8 @@ weekday_encoding <- function(x, ..., encoding = "c") {
 
   x <- unstructure(x)
 
-  if (encoding == "iso") {
-    zeros <- x == 0L
-    x[zeros] <- 7L
+  if (is_iso_encoding(encoding)) {
+    x <- reencode_western_to_iso(x)
   }
 
   x
@@ -270,7 +259,6 @@ weekday_encoding <- function(x, ..., encoding = "c") {
 #' `weekday_factor()` converts a weekday object to an ordered factor. This
 #' can be useful in combination with ggplot2, or for modeling.
 #'
-#' @inheritParams ellipsis::dots_empty
 #' @inheritParams weekday_encoding
 #' @inheritParams clock_locale
 #'
@@ -284,7 +272,7 @@ weekday_encoding <- function(x, ..., encoding = "c") {
 #'
 #'   One of:
 #'
-#'   - `"c"`: Encode the weekdays as an ordered factor with levels from
+#'   - `"western"`: Encode the weekdays as an ordered factor with levels from
 #'     Sunday -> Saturday.
 #'
 #'   - `"iso"`: Encode the weekdays as an ordered factor with levels from
@@ -294,7 +282,7 @@ weekday_encoding <- function(x, ..., encoding = "c") {
 #'
 #' @export
 #' @examples
-#' x <- weekday(0:6)
+#' x <- weekday(1:7)
 #'
 #' # Default to Sunday -> Saturday
 #' weekday_factor(x)
@@ -311,7 +299,7 @@ weekday_factor <- function(x,
                            ...,
                            labels = "en",
                            abbreviate = TRUE,
-                           encoding = "c") {
+                           encoding = "western") {
   check_dots_empty()
 
   if (!is_weekday(x)) {
@@ -338,12 +326,8 @@ weekday_factor <- function(x,
   encoding <- validate_encoding(encoding)
   x <- weekday_encoding(x, encoding = encoding)
 
-  if (encoding == "c") {
-    x <- x + 1L
-  } else if (encoding == "iso") {
+  if (is_iso_encoding(encoding)) {
     labels <- c(labels[2:7], labels[1L])
-  } else {
-    abort("Internal error: Unknown encoding.")
   }
 
   x <- labels[x]
@@ -464,7 +448,7 @@ weekday_minus_weekday <- function(op, x, y, ...) {
 #' @name weekday-arithmetic
 #'
 #' @examples
-#' saturday <- 6
+#' saturday <- 7
 #' saturday <- weekday(saturday)
 #' saturday
 #'
@@ -492,8 +476,24 @@ add_days.clock_weekday <- function(x, n, ...) {
 # ------------------------------------------------------------------------------
 
 validate_encoding <- function(encoding) {
-  if (!is_string(encoding, string = c("c", "iso"))) {
-    abort("`encoding` must be one of \"c\" or \"iso\".")
+  if (!is_string(encoding, string = c("western", "iso"))) {
+    abort("`encoding` must be one of \"western\" or \"iso\".")
   }
   encoding
+}
+
+is_iso_encoding <- function(encoding) {
+  identical(encoding, "iso")
+}
+
+reencode_iso_to_western <- function(day) {
+  day <- day + 1L
+  day[day == 8L] <- 1L
+  day
+}
+
+reencode_western_to_iso <- function(day) {
+  day <- day - 1L
+  day[day == 0L] <- 7L
+  day
 }

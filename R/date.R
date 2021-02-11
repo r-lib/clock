@@ -703,16 +703,16 @@ collect_date_rounder_origin <- function(origin) {
 #' # ISO encoding is Monday -> Sunday
 #' date_weekday_factor(x, encoding = "iso")
 #'
-#' # With abbreviations
-#' date_weekday_factor(x, abbreviate = TRUE)
+#' # With full names
+#' date_weekday_factor(x, abbreviate = FALSE)
 #'
 #' # Or a different language
 #' date_weekday_factor(x, labels = "fr")
 date_weekday_factor <- function(x,
                                 ...,
                                 labels = "en",
-                                abbreviate = FALSE,
-                                encoding = "c") {
+                                abbreviate = TRUE,
+                                encoding = "western") {
   UseMethod("date_weekday_factor")
 }
 
@@ -720,8 +720,8 @@ date_weekday_factor <- function(x,
 date_weekday_factor.Date <- function(x,
                                      ...,
                                      labels = "en",
-                                     abbreviate = FALSE,
-                                     encoding = "c") {
+                                     abbreviate = TRUE,
+                                     encoding = "western") {
   x <- as_weekday(x)
   weekday_factor(x, ..., labels = labels, abbreviate = abbreviate, encoding = encoding)
 }

@@ -4,22 +4,24 @@
 \alias{weekday}
 \title{Construct a weekday vector}
 \usage{
-weekday(day = integer())
+weekday(day = integer(), ..., encoding = "western")
 }
 \arguments{
 \item{day}{\verb{[integer]}
 
-The values for \code{day} can be provided as:
-\itemize{
-\item Integers between \verb{[0, 6]}, with 0 = Sunday and 6 = Saturday. This is
-known as \emph{C encoding}.
-\item Integers between \verb{[1, 7]}, with 1 = Monday and 7 = Sunday. This is
-known as \emph{ISO encoding}.
-}
+Integer codes between \verb{[1, 7]} representing days of the week. The
+interpretation of these values depends on \code{encoding}.}
 
-Because the only value that differs in the two encodings is Sunday (it
-is a 0 in C encoding, but a 7 in ISO encoding), you can supply either
-encoding as \code{day}, as long as you don't mix 0's with 7's.}
+\item{...}{These dots are for future extensions and must be empty.}
+
+\item{encoding}{\verb{[character(1)]}
+
+One of:
+\itemize{
+\item \code{"western"}: Encode weekdays assuming \code{1 == Sunday} and \code{7 == Saturday}.
+\item \code{"iso"}: Encode weekdays assuming \code{1 == Monday} and \code{7 == Sunday}. This
+is in line with the ISO standard.
+}}
 }
 \value{
 A weekday vector.
@@ -39,7 +41,7 @@ x <- as_naive(year_month_day(2019, 01, 05))
 as_weekday(x)
 
 # Adjust to the next Wednesday
-wednesday <- weekday(3)
+wednesday <- weekday(4)
 
 # This returns the number of days until the next Wednesday using
 # circular arithmetic
@@ -52,12 +54,16 @@ x_next_wednesday <- x + (wednesday - as_weekday(x))
 as_weekday(x_next_wednesday)
 
 # What about the previous Tuesday?
-tuesday <- weekday(2)
+tuesday <- weekday(3)
 x - (as_weekday(x) - tuesday)
 
 # What about the next Saturday?
 # With an additional condition that if today is a Saturday,
 # then advance to the next one.
-saturday <- weekday(6)
+saturday <- weekday(7)
 x + 1L + (saturday - as_weekday(x + 1L))
+
+# You can supply an ISO coding for `day` as well, where 1 == Monday.
+weekday(1:7, encoding = "western")
+weekday(1:7, encoding = "iso")
 }

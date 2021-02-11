@@ -4,7 +4,7 @@
 \alias{weekday_encoding}
 \title{Extract weekday encodings}
 \usage{
-weekday_encoding(x, ..., encoding = "c")
+weekday_encoding(x, ..., encoding = "western")
 }
 \arguments{
 \item{x}{\verb{[weekday]}
@@ -17,10 +17,9 @@ A weekday vector.}
 
 One of:
 \itemize{
-\item \code{"c"}: Encode weekdays with a range of \verb{[0, 6]}, where
-0 = Sunday, and 6 = Saturday.
-\item \code{"iso"}: Encode weekdays with a range of \verb{[1, 7]}, where
-1 = Monday, and 7 = Sunday.
+\item \code{"western"}: Encode weekdays assuming \code{1 == Sunday} and \code{7 == Saturday}.
+\item \code{"iso"}: Encode weekdays assuming \code{1 == Monday} and \code{7 == Sunday}. This
+is in line with the ISO standard.
 }}
 }
 \value{
@@ -30,11 +29,11 @@ An integer vector of encodings.
 \code{weekday_encoding()} extracts out an integer encoding for the weekday.
 }
 \examples{
-# Here we supply a C encoding to `weekday()`
-x <- weekday(0:6)
+# Here we supply a western encoding to `weekday()`
+x <- weekday(1:7)
 x
 
-# Notice that Sunday is the only day that is different
-weekday_encoding(x, encoding = "c")
+# We can extract out the codes using different encodings
+weekday_encoding(x, encoding = "western")
 weekday_encoding(x, encoding = "iso")
 }

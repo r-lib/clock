@@ -38,7 +38,7 @@ usage.
 \code{x} and \code{n} are recycled against each other.
 }
 \examples{
-saturday <- 6
+saturday <- 7
 saturday <- weekday(saturday)
 saturday
 

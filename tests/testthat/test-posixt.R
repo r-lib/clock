@@ -3,8 +3,8 @@
 
 test_that("can convert to weekday", {
   x <- as.POSIXct("2019-01-01", tz = "America/New_York")
-  expect_identical(as_weekday(x), weekday(2L))
-  expect_identical(as_weekday(as.POSIXlt(x)), weekday(2L))
+  expect_identical(as_weekday(x), weekday(3L))
+  expect_identical(as_weekday(as.POSIXlt(x)), weekday(3L))
 })
 
 test_that("converting to weekday retains names", {
@@ -147,8 +147,12 @@ test_that("can convert to a weekday factor", {
   x <- as.POSIXct("2019-01-01", tz = "America/New_York") + 0:6
 
   expect_identical(
-    date_weekday_factor(x, labels = "fr", abbreviate = TRUE, encoding = "iso"),
-    weekday_factor(as_weekday(x), labels = "fr", abbreviate = TRUE, encoding = "iso"),
+    date_weekday_factor(x),
+    weekday_factor(as_weekday(x)),
+  )
+  expect_identical(
+    date_weekday_factor(x, labels = "fr", abbreviate = FALSE, encoding = "iso"),
+    weekday_factor(as_weekday(x), labels = "fr", abbreviate = FALSE, encoding = "iso"),
   )
 })
 
