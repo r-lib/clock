@@ -1,6 +1,20 @@
 #include "duration.h"
 #include "get.h"
 
+static
+inline
+unsigned
+reencode_western_to_c(const unsigned& x) {
+  return x - 1;
+}
+
+static
+inline
+unsigned
+reencode_c_to_western(const unsigned& x) {
+  return x + 1;
+}
+
 [[cpp11::register]]
 cpp11::writable::integers
 weekday_add_days_cpp(const cpp11::integers& x,
@@ -20,9 +34,9 @@ weekday_add_days_cpp(const cpp11::integers& x,
       continue;
     }
 
-    const unsigned weekday = static_cast<unsigned>(elt);
+    const unsigned weekday = reencode_western_to_c(static_cast<unsigned>(elt));
     const date::weekday out_elt = date::weekday{weekday} + d[i];
-    out[i] = out_elt.c_encoding();
+    out[i] = static_cast<int>(reencode_c_to_western(out_elt.c_encoding()));
   }
 
   return out;
@@ -43,10 +57,10 @@ weekday_minus_weekday_cpp(const cpp11::integers& x, const cpp11::integers& y) {
       continue;
     }
 
-    const unsigned x_weekday = static_cast<unsigned>(x_elt);
-    const unsigned y_weekday = static_cast<unsigned>(y_elt);
+    const unsigned x_weekday = reencode_western_to_c(static_cast<unsigned>(x_elt));
+    const unsigned y_weekday = reencode_western_to_c(static_cast<unsigned>(y_elt));
 
-    date::days out_elt = date::weekday{x_weekday} - date::weekday{y_weekday};
+    const date::days out_elt = date::weekday{x_weekday} - date::weekday{y_weekday};
 
     out.assign(out_elt, i);
   }
@@ -68,9 +82,9 @@ weekday_from_time_point_cpp(cpp11::list_of<cpp11::integers> x) {
       continue;
     }
 
-    date::sys_days sd{d[i]};
-    date::weekday weekday{sd};
-    out[i] = weekday.c_encoding();
+    const date::sys_days sd{d[i]};
+    const date::weekday weekday{sd};
+    out[i] = static_cast<int>(reencode_c_to_western(weekday.c_encoding()));
   }
 
   return out;
@@ -96,7 +110,7 @@ format_weekday_cpp(const cpp11::integers& x, const cpp11::strings& labels) {
   cpp11::writable::strings out(size);
 
   for (r_ssize i = 0; i < size; ++i) {
-    // Stored in C encoding [0, 6] => [Sun, Sat]
+    // Stored in Western encoding [1, 7] => [Sun, Sat]
     const int elt = x[i];
 
     if (elt == r_int_na) {
@@ -104,7 +118,7 @@ format_weekday_cpp(const cpp11::integers& x, const cpp11::strings& labels) {
       continue;
     }
 
-    SET_STRING_ELT(out, i, abbreviations[elt]);
+    SET_STRING_ELT(out, i, abbreviations[elt - 1]);
   }
 
   return out;

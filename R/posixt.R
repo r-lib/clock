@@ -820,8 +820,8 @@ warn_clock_invalid_rounding_origin <- function(precision) {
 date_weekday_factor.POSIXt <- function(x,
                                        ...,
                                        labels = "en",
-                                       abbreviate = FALSE,
-                                       encoding = "c") {
+                                       abbreviate = TRUE,
+                                       encoding = "western") {
   x <- as_weekday(x)
   weekday_factor(x, ..., labels = labels, abbreviate = abbreviate, encoding = encoding)
 }

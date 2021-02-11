@@ -4,7 +4,13 @@
 \alias{date_weekday_factor}
 \title{Convert a date or date-time to a weekday factor}
 \usage{
-date_weekday_factor(x, ..., labels = "en", abbreviate = FALSE, encoding = "c")
+date_weekday_factor(
+  x,
+  ...,
+  labels = "en",
+  abbreviate = TRUE,
+  encoding = "western"
+)
 }
 \arguments{
 \item{x}{\verb{[Date / POSIXct / POSIXlt]}
@@ -29,7 +35,7 @@ If \code{FALSE}, the full weekday names from \code{labels} will be used.}
 
 One of:
 \itemize{
-\item \code{"c"}: Encode the weekdays as an ordered factor with levels from
+\item \code{"western"}: Encode the weekdays as an ordered factor with levels from
 Sunday -> Saturday.
 \item \code{"iso"}: Encode the weekdays as an ordered factor with levels from
 Monday -> Sunday.
@@ -52,8 +58,8 @@ date_weekday_factor(x)
 # ISO encoding is Monday -> Sunday
 date_weekday_factor(x, encoding = "iso")
 
-# With abbreviations
-date_weekday_factor(x, abbreviate = TRUE)
+# With full names
+date_weekday_factor(x, abbreviate = FALSE)
 
 # Or a different language
 date_weekday_factor(x, labels = "fr")

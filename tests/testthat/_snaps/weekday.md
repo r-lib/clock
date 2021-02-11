@@ -1,14 +1,14 @@
 # format - can format() a weekday
 
     Code
-      format(weekday(0:6))
+      format(weekday(1:7))
     Output
       [1] "Sun" "Mon" "Tue" "Wed" "Thu" "Fri" "Sat"
 
 # format - can use full names
 
     Code
-      format(weekday(0:6), abbreviate = FALSE)
+      format(weekday(1:7), abbreviate = FALSE)
     Output
       [1] "Sunday"    "Monday"    "Tuesday"   "Wednesday" "Thursday"  "Friday"   
       [7] "Saturday" 
@@ -16,7 +16,7 @@
 # format - can use a different locale
 
     Code
-      format(weekday(0:6), labels = "fr", abbreviate = FALSE)
+      format(weekday(1:7), labels = "fr", abbreviate = FALSE)
     Output
       [1] "dimanche" "lundi"    "mardi"    "mercredi" "jeudi"    "vendredi" "samedi"  
 
@@ -36,6 +36,22 @@
 
     `abbreviate` must be `TRUE` or `FALSE`.
 
+# validates `x`
+
+    `x` must be a 'clock_weekday'.
+
+# weekday_code - `encoding` is validated
+
+    `encoding` must be one of "western" or "iso".
+
+---
+
+    `encoding` must be one of "western" or "iso".
+
+---
+
+    `encoding` must be one of "western" or "iso".
+
 # `x` is validated
 
     `x` must be a 'clock_weekday' object.
@@ -46,15 +62,15 @@
 
 # `encoding` is validated
 
-    `encoding` must be one of "c" or "iso".
+    `encoding` must be one of "western" or "iso".
 
 ---
 
-    `encoding` must be one of "c" or "iso".
+    `encoding` must be one of "western" or "iso".
 
 ---
 
-    `encoding` must be one of "c" or "iso".
+    `encoding` must be one of "western" or "iso".
 
 # `abbreviate` is validated
 

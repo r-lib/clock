@@ -4,7 +4,7 @@
 \alias{weekday_factor}
 \title{Convert a weekday to an ordered factor}
 \usage{
-weekday_factor(x, ..., labels = "en", abbreviate = TRUE, encoding = "c")
+weekday_factor(x, ..., labels = "en", abbreviate = TRUE, encoding = "western")
 }
 \arguments{
 \item{x}{\verb{[weekday]}
@@ -29,7 +29,7 @@ If \code{FALSE}, the full weekday names from \code{labels} will be used.}
 
 One of:
 \itemize{
-\item \code{"c"}: Encode the weekdays as an ordered factor with levels from
+\item \code{"western"}: Encode the weekdays as an ordered factor with levels from
 Sunday -> Saturday.
 \item \code{"iso"}: Encode the weekdays as an ordered factor with levels from
 Monday -> Sunday.
@@ -43,7 +43,7 @@ An ordered factor representing the weekdays.
 can be useful in combination with ggplot2, or for modeling.
 }
 \examples{
-x <- weekday(0:6)
+x <- weekday(1:7)
 
 # Default to Sunday -> Saturday
 weekday_factor(x)
