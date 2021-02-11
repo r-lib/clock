@@ -269,6 +269,38 @@ test_that("throws warning on failed parses", {
 })
 
 # ------------------------------------------------------------------------------
+# date_shift()
+
+test_that("can shift date times", {
+  x <- date_time_parse("2019-01-01 01:30:35", "America/New_York")
+  x <- x + c(0, 1)
+
+  monday <- weekday(clock_weekdays$monday)
+  tuesday <- weekday(clock_weekdays$tuesday)
+
+  expect_identical(
+    date_shift(x, monday),
+    add_days(x, 6)
+  )
+  expect_identical(
+    date_shift(x, monday, which = "previous"),
+    add_days(x, -1)
+  )
+  expect_identical(
+    date_shift(x, tuesday, boundary = "advance"),
+    add_days(x, 7)
+  )
+})
+
+test_that("`ambiguous = x` retains the offset of `x` if applicable", {
+  x <- date_time_parse("1970-10-25 01:30:00", "America/New_York", ambiguous = "earliest")
+  x <- x + c(0, 3600)
+
+  expect_snapshot_error(date_shift(x, as_weekday(x), ambiguous = "error"))
+  expect_identical(date_shift(x, as_weekday(x)), x)
+})
+
+# ------------------------------------------------------------------------------
 # vec_arith()
 
 test_that("<posixt> op <duration>", {
