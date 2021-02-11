@@ -10,7 +10,7 @@
 #'
 #' @inheritParams ellipsis::dots_empty
 #'
-#' @param day `[integer]`
+#' @param code `[integer]`
 #'
 #'   Integer codes between `[1, 7]` representing days of the week. The
 #'   interpretation of these values depends on `encoding`.
@@ -56,19 +56,19 @@
 #' saturday <- weekday(7)
 #' x + 1L + (saturday - as_weekday(x + 1L))
 #'
-#' # You can supply an ISO coding for `day` as well, where 1 == Monday.
+#' # You can supply an ISO coding for `code` as well, where 1 == Monday.
 #' weekday(1:7, encoding = "western")
 #' weekday(1:7, encoding = "iso")
-weekday <- function(day = integer(), ..., encoding = "western") {
+weekday <- function(code = integer(), ..., encoding = "western") {
   check_dots_empty()
 
   # No other helpers retain names, so we don't here either
-  day <- unname(day)
-  day <- vec_cast(day, integer(), x_arg = "day")
+  code <- unname(code)
+  code <- vec_cast(code, integer(), x_arg = "code")
 
-  oob <- (day > 7L | day < 1L) & (!is.na(day))
+  oob <- (code > 7L | code < 1L) & (!is.na(code))
   if (any(oob)) {
-    message <- paste0("`day` must be in range of [1, 7].")
+    message <- paste0("`code` must be in range of [1, 7].")
     abort(message)
   }
 
@@ -76,19 +76,19 @@ weekday <- function(day = integer(), ..., encoding = "western") {
 
   # Store as western encoding
   if (is_iso_encoding(encoding)) {
-    day <- reencode_iso_to_western(day)
+    code <- reencode_iso_to_western(code)
   }
 
-  new_weekday(day)
+  new_weekday(code)
 }
 
-new_weekday <- function(day = integer(), ..., class = NULL) {
-  if (!is_integer(day)) {
-    abort("`day` must be an integer vector.")
+new_weekday <- function(code = integer(), ..., class = NULL) {
+  if (!is_integer(code)) {
+    abort("`code` must be an integer vector.")
   }
 
   new_vctr(
-    day,
+    code,
     ...,
     class = c(class, "clock_weekday"),
     inherit_base_type = FALSE
@@ -467,10 +467,10 @@ add_days.clock_weekday <- function(x, n, ...) {
 
   names <- names_common(x, n)
 
-  day <- weekday_add_days_cpp(x, n)
-  names(day) <- names
+  code <- weekday_add_days_cpp(x, n)
+  names(code) <- names
 
-  new_weekday(day)
+  new_weekday(code)
 }
 
 # ------------------------------------------------------------------------------
@@ -486,14 +486,14 @@ is_iso_encoding <- function(encoding) {
   identical(encoding, "iso")
 }
 
-reencode_iso_to_western <- function(day) {
-  day <- day + 1L
-  day[day == 8L] <- 1L
-  day
+reencode_iso_to_western <- function(code) {
+  code <- code + 1L
+  code[code == 8L] <- 1L
+  code
 }
 
-reencode_western_to_iso <- function(day) {
-  day <- day - 1L
-  day[day == 0L] <- 7L
-  day
+reencode_western_to_iso <- function(code) {
+  code <- code - 1L
+  code[code == 0L] <- 7L
+  code
 }

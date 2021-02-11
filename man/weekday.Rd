@@ -4,10 +4,10 @@
 \alias{weekday}
 \title{Construct a weekday vector}
 \usage{
-weekday(day = integer(), ..., encoding = "western")
+weekday(code = integer(), ..., encoding = "western")
 }
 \arguments{
-\item{day}{\verb{[integer]}
+\item{code}{\verb{[integer]}
 
 Integer codes between \verb{[1, 7]} representing days of the week. The
 interpretation of these values depends on \code{encoding}.}
@@ -63,7 +63,7 @@ x - (as_weekday(x) - tuesday)
 saturday <- weekday(7)
 x + 1L + (saturday - as_weekday(x + 1L))
 
-# You can supply an ISO coding for `day` as well, where 1 == Monday.
+# You can supply an ISO coding for `code` as well, where 1 == Monday.
 weekday(1:7, encoding = "western")
 weekday(1:7, encoding = "iso")
 }
