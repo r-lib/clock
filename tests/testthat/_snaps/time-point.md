@@ -27,6 +27,42 @@
 
     Can't convert `origin` <datetime<America/New_York>> to <time_point<naive><day>>.
 
+# `target` is recycled to size of `x`
+
+    Can't recycle `target` (size 2) to size 1.
+
+# `x` is validated
+
+    `x` must be a 'clock_time_point'.
+
+# `target` is validated
+
+    `target` must be a 'clock_weekday'.
+
+# `to` is validated
+
+    `to` must be either "next" or "previous".
+
+---
+
+    `to` must be either "next" or "previous".
+
+---
+
+    `to` must be either "next" or "previous".
+
+# `boundary` is validated
+
+    `boundary` must be either "keep" or "advance".
+
+---
+
+    `boundary` must be either "keep" or "advance".
+
+---
+
+    `boundary` must be either "keep" or "advance".
+
 # can't mix chronological time points and calendrical durations
 
     Can't convert `by` <duration<year>> to <duration<second>>.

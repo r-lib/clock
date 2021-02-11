@@ -95,6 +95,90 @@ test_that("`origin` can't be Date or POSIXt", {
 })
 
 # ------------------------------------------------------------------------------
+# time_point_weekday_shift()
+
+test_that("can shift to next weekday", {
+  expect_identical(
+    time_point_weekday_shift(
+      naive_days(0:1),
+      weekday(clock_weekdays$sunday)
+    ),
+    naive_days(c(3, 3))
+  )
+})
+
+test_that("can shift to next if on the boundary", {
+  naive_sunday <- naive_days(3)
+  sunday <- weekday(clock_weekdays$sunday)
+
+  expect_identical(
+    time_point_weekday_shift(naive_sunday, sunday),
+    naive_sunday
+  )
+  expect_identical(
+    time_point_weekday_shift(naive_sunday, sunday, boundary = "advance"),
+    naive_sunday + 7
+  )
+})
+
+test_that("can shift to previous weekday", {
+  expect_identical(
+    time_point_weekday_shift(
+      naive_days(0:1),
+      weekday(clock_weekdays$sunday),
+      to = "previous"
+    ),
+    naive_days(c(-4, -4))
+  )
+})
+
+test_that("can shift to previous weekday if on boundary", {
+  naive_sunday <- naive_days(3)
+  sunday <- weekday(clock_weekdays$sunday)
+
+  expect_identical(
+    time_point_weekday_shift(naive_sunday, sunday, to = "previous"),
+    naive_sunday
+  )
+  expect_identical(
+    time_point_weekday_shift(naive_sunday, sunday, to = "previous", boundary = "advance"),
+    naive_sunday - 7
+  )
+})
+
+test_that("`target` is recycled to size of `x`", {
+  expect_identical(
+    time_point_weekday_shift(
+      sys_days(0:1),
+      weekday(1:2)
+    ),
+    sys_days(3:4)
+  )
+
+  expect_snapshot_error(time_point_weekday_shift(sys_days(0), weekday(1:2)))
+})
+
+test_that("`x` is validated", {
+  expect_snapshot_error(time_point_weekday_shift(1))
+})
+
+test_that("`target` is validated", {
+  expect_snapshot_error(time_point_weekday_shift(sys_days(0), 1))
+})
+
+test_that("`to` is validated", {
+  expect_snapshot_error(time_point_weekday_shift(sys_days(), weekday(), to = 1))
+  expect_snapshot_error(time_point_weekday_shift(sys_days(), weekday(), to = "foo"))
+  expect_snapshot_error(time_point_weekday_shift(sys_days(), weekday(), to = c("next", "previous")))
+})
+
+test_that("`boundary` is validated", {
+  expect_snapshot_error(time_point_weekday_shift(sys_days(), weekday(), boundary = 1))
+  expect_snapshot_error(time_point_weekday_shift(sys_days(), weekday(), boundary = "foo"))
+  expect_snapshot_error(time_point_weekday_shift(sys_days(), weekday(), boundary = c("keep", "advance")))
+})
+
+# ------------------------------------------------------------------------------
 # seq()
 
 test_that("seq(to, by) works", {
