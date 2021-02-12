@@ -15,8 +15,8 @@ Provides a comprehensive library for date-time manipulations
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/DavisVaughan/clock}
-  \item Report bugs at \url{https://github.com/DavisVaughan/clock/issues}
+  \item \url{https://github.com/r-lib/clock}
+  \item Report bugs at \url{https://github.com/r-lib/clock/issues}
 }
 
 }

@@ -14,8 +14,8 @@ Description: Provides a comprehensive library for date-time manipulations
     that the complexities of time zones are only considered when they are
     really needed.
 License: MIT + file LICENSE
-URL: https://github.com/DavisVaughan/clock
-BugReports: https://github.com/DavisVaughan/clock/issues
+URL: https://github.com/r-lib/clock
+BugReports: https://github.com/r-lib/clock/issues
 Depends: 
     R (>= 3.3)
 Imports: 

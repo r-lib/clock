@@ -6,8 +6,8 @@
 <!-- badges: start -->
 
 [![Codecov test
-coverage](https://codecov.io/gh/DavisVaughan/clock/branch/master/graph/badge.svg)](https://codecov.io/gh/DavisVaughan/clock?branch=master)
-[![R-CMD-check](https://github.com/DavisVaughan/clock/workflows/R-CMD-check/badge.svg)](https://github.com/DavisVaughan/clock/actions)
+coverage](https://codecov.io/gh/r-lib/clock/branch/master/graph/badge.svg)](https://codecov.io/gh/r-lib/clock?branch=master)
+[![R-CMD-check](https://github.com/r-lib/clock/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/clock/actions)
 <!-- badges: end -->
 
 clock is a new R package for working with date-time data. It:
@@ -69,7 +69,7 @@ You can install the development version of clock with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("DavisVaughan/clock")
+remotes::install_github("r-lib/clock")
 ```
 
 ## Learning
@@ -79,17 +79,17 @@ and date-time types (Date, POSIXct, and POSIXlt). This should allow you
 to quickly get productive with clock without having to learn many of the
 new types. An easy way to get an overview of this high-level API is by
 looking at the [High Level
-API](https://davisvaughan.github.io/clock/reference/index.html#section-high-level-api)
+API](https://r-lib.github.io/clock/reference/index.html#section-high-level-api)
 section of the pkgdown reference page.
 
 After working with the high-level API, you might want to take a look at
 clock’s vignettes:
 
 -   [Examples and
-    Recipes](https://davisvaughan.github.io/clock/articles/recipes.html)
+    Recipes](https://r-lib.github.io/clock/articles/recipes.html)
 
 -   [Frequently Asked
-    Questions](https://davisvaughan.github.io/clock/articles/faq.html)
+    Questions](https://r-lib.github.io/clock/articles/faq.html)
 
 ## Acknowledgements
 
