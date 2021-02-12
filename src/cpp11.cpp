@@ -678,13 +678,6 @@ extern "C" SEXP _clock_format_weekday_cpp(SEXP x, SEXP labels) {
   END_CPP11
 }
 // zone.cpp
-cpp11::writable::strings zone_standardize(const cpp11::strings& zone);
-extern "C" SEXP _clock_zone_standardize(SEXP zone) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(zone_standardize(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone)));
-  END_CPP11
-}
-// zone.cpp
 cpp11::writable::logicals zone_is_valid(const cpp11::strings& zone);
 extern "C" SEXP _clock_zone_is_valid(SEXP zone) {
   BEGIN_CPP11
@@ -868,7 +861,6 @@ extern SEXP _clock_year_quarter_day_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP, SE
 extern SEXP _clock_year_quarter_day_restore(SEXP, SEXP);
 extern SEXP _clock_zone_current();
 extern SEXP _clock_zone_is_valid(SEXP);
-extern SEXP _clock_zone_standardize(SEXP);
 extern SEXP _clock_zoned_info_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_zoned_parse_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_zoned_time_restore(SEXP, SEXP);
@@ -978,7 +970,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_year_quarter_day_restore",                             (DL_FUNC) &_clock_year_quarter_day_restore,                              2},
     {"_clock_zone_current",                                         (DL_FUNC) &_clock_zone_current,                                          0},
     {"_clock_zone_is_valid",                                        (DL_FUNC) &_clock_zone_is_valid,                                         1},
-    {"_clock_zone_standardize",                                     (DL_FUNC) &_clock_zone_standardize,                                      1},
     {"_clock_zoned_info_cpp",                                       (DL_FUNC) &_clock_zoned_info_cpp,                                        3},
     {"_clock_zoned_parse_cpp",                                      (DL_FUNC) &_clock_zoned_parse_cpp,                                       9},
     {"_clock_zoned_time_restore",                                   (DL_FUNC) &_clock_zoned_time_restore,                                    2},

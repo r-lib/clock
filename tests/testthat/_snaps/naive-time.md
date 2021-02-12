@@ -84,7 +84,7 @@
 
 ---
 
-    Invalid input type, expected 'character' actual 'double'
+    `zone` must be a single string.
 
 # strict mode can be activated - nonexistent
 

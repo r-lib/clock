@@ -98,7 +98,7 @@ as.POSIXct.clock_calendar <- function(x,
 
 #' @export
 as.POSIXct.clock_sys_time <- function(x, tz = "", ...) {
-  zone <- zone_standardize(tz)
+  zone <- zone_validate(tz)
   x <- time_point_cast(x, "second")
   seconds <- to_sys_seconds_from_sys_duration_fields_cpp(x)
   names(seconds) <- clock_rcrd_names(x)
@@ -854,7 +854,7 @@ date_format.POSIXt <- function(x,
 
 #' @export
 date_zone.POSIXt <- function(x) {
-  zone_standardize(posixt_tzone(x))
+  posixt_tzone(x)
 }
 
 #' @export

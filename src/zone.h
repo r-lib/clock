@@ -2,8 +2,16 @@
 #define CLOCK_ZONE_H
 
 #include "clock.h"
+#include "utils.h"
 
-cpp11::writable::strings zone_standardize(const cpp11::strings& zone);
+static
+inline
+void
+zone_size_validate(const cpp11::strings& zone) {
+  if (zone.size() != 1) {
+    clock_abort("`zone` must be a single string.");
+  }
+}
 
 std::string zone_name_current();
 

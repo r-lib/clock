@@ -24,24 +24,14 @@
  * https://github.com/google/cctz/issues/46
  * https://github.com/tidyverse/lubridate/blob/b9025e6d5152f9da3857d7ef18f2571d3d861bae/src/update.cpp#L49
  */
-// [[ include("zone.h") ]]
-[[cpp11::register]]
-cpp11::writable::strings zone_standardize(const cpp11::strings& zone) {
-  if (zone.size() == 0) {
-    clock_abort("`zone` size must be at least 1.");
-  }
-
-  cpp11::writable::strings out(zone[0]);
-
-  return out;
-}
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
 cpp11::writable::logicals zone_is_valid(const cpp11::strings& zone) {
-  cpp11::writable::strings zone_standard = zone_standardize(zone);
-  cpp11::r_string zone_name_r(zone_standard[0]);
+  zone_size_validate(zone);
+
+  cpp11::r_string zone_name_r(zone[0]);
   std::string zone_name(zone_name_r);
 
   // Local time

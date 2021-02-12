@@ -946,7 +946,9 @@ add_nanoseconds.clock_zoned_time <- function(x, n, ...) {
 # ------------------------------------------------------------------------------
 
 zone_validate <- function(zone) {
-  zone <- zone_standardize(zone)
+  if (!is_string(zone)) {
+    abort("`zone` must be a single string.")
+  }
 
   if (!zone_is_valid(zone)) {
     message <- paste0("'", zone, "' is not a known time zone.")
