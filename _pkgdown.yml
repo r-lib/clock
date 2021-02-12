@@ -9,7 +9,8 @@ reference:
     date and date-time types, Date, POSIXct, and POSIXlt. If you are new to
     clock, this is the best place to start.
   contents:
-  - date-and-date-time-building
+  - date_build
+  - date_time_build
   - date_group
   - date-and-date-time-rounding
   - date-and-date-time-shifting
