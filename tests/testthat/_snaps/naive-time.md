@@ -86,6 +86,10 @@
 
     `zone` must be a single string.
 
+---
+
+    `zone` must be a single string.
+
 # strict mode can be activated - nonexistent
 
     The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `nonexistent` must be set and cannot be left as `NULL`.
