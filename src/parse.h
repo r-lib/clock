@@ -18,37 +18,47 @@ read_seconds(std::basic_istream<CharT, Traits>& is,
              unsigned m = 1,
              unsigned M = 10)
 {
-    unsigned count = 0;
-    auto decimal_point = Traits::to_int_type(decimal_mark);
-    std::string buf;
-    while (true)
+  unsigned count = 0;
+  unsigned fcount = 0;
+  unsigned long long i = 0;
+  unsigned long long f = 0;
+  bool parsing_fraction = false;
+  auto decimal_point = Traits::to_int_type(decimal_mark);
+  while (true)
+  {
+    auto ic = is.peek();
+    if (Traits::eq_int_type(ic, Traits::eof()))
+      break;
+    if (Traits::eq_int_type(ic, decimal_point))
     {
-        auto ic = is.peek();
-        if (Traits::eq_int_type(ic, Traits::eof()))
-            break;
-        if (Traits::eq_int_type(ic, decimal_point))
-        {
-            buf += '.';
-            decimal_point = Traits::eof();
-            is.get();
-        }
-        else
-        {
-            auto c = static_cast<char>(Traits::to_char_type(ic));
-            if (!('0' <= c && c <= '9'))
-                break;
-            buf += c;
-            (void)is.get();
-        }
-        if (++count == M)
-            break;
+      decimal_point = Traits::eof();
+      parsing_fraction = true;
     }
-    if (count < m)
+    else
     {
-        is.setstate(std::ios::failbit);
-        return 0;
+      auto c = static_cast<char>(Traits::to_char_type(ic));
+      if (!('0' <= c && c <= '9'))
+        break;
+      if (!parsing_fraction)
+      {
+        i = 10*i + static_cast<unsigned>(c - '0');
+      }
+      else
+      {
+        f = 10*f + static_cast<unsigned>(c - '0');
+        ++fcount;
+      }
     }
-    return std::stold(buf);
+    (void)is.get();
+    if (++count == M)
+      break;
+  }
+  if (count < m)
+  {
+    is.setstate(std::ios::failbit);
+    return 0;
+  }
+  return i + f/std::pow(10.L, fcount);
 }
 
 // Takes the `read()` variant for rld, removes the Args..., and
@@ -590,7 +600,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                         int tp = not_a_ampm;
                         auto nm = ampm_names_pair;
                         auto i = date::detail::scan_keyword(is, nm.first, nm.second) - nm.first;
-                        tp = i;
+                        tp = static_cast<decltype(tp)>(i);
                         checked_set(p, tp, not_a_ampm, is);
                     }
                     else
