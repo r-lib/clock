@@ -605,10 +605,10 @@ calendar_validate_subsecond_precision <- function(subsecond_precision) {
 
 # ------------------------------------------------------------------------------
 
-calendar_require_all_valid <- function(x, fn) {
+calendar_require_all_valid <- function(x) {
   if (invalid_any(x)) {
     message <- paste0(
-      "`", fn, "()` requires that all calendar dates are valid. ",
+      "Conversion from a calendar requires that all dates are valid. ",
       "Resolve invalid dates by calling `invalid_resolve()`."
     )
     abort(message)

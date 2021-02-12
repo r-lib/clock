@@ -797,7 +797,7 @@ as_year_quarter_day.clock_year_quarter_day <- function(x, ..., start = NULL) {
 
 #' @export
 as_sys.clock_year_quarter_day <- function(x) {
-  calendar_require_all_valid(x, "as_sys")
+  calendar_require_all_valid(x)
   start <- quarterly_start(x)
   precision <- calendar_precision(x)
   fields <- as_sys_time_year_quarter_day_cpp(x, precision, start)

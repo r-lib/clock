@@ -1,4 +1,11 @@
 # ------------------------------------------------------------------------------
+# as.Date()
+
+test_that("invalid dates must be resolved when converting to a Date", {
+  expect_snapshot_error(as.Date(year_month_day(2019, 2, 31)))
+})
+
+# ------------------------------------------------------------------------------
 # as_weekday()
 
 test_that("can convert to weekday", {

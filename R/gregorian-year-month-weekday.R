@@ -789,7 +789,7 @@ as_year_month_weekday.clock_year_month_weekday <- function(x) {
 
 #' @export
 as_sys.clock_year_month_weekday <- function(x) {
-  calendar_require_all_valid(x, "as_sys")
+  calendar_require_all_valid(x)
   precision <- calendar_precision(x)
   fields <- as_sys_time_year_month_weekday_cpp(x, precision)
   new_sys_time_from_fields(fields, precision, clock_rcrd_names(x))

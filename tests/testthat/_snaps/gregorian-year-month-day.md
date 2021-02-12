@@ -30,6 +30,18 @@
 
     [1] "ymd<day>[i=1]"
 
+# invalid dates must be resolved when converting to another calendar
+
+    Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
+
+# invalid dates must be resolved when converting to a sys-time
+
+    Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
+
+# invalid dates must be resolved when converting to a naive-time
+
+    Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
+
 # failure to parse results in a warning
 
     Code

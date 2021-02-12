@@ -19,6 +19,27 @@ test_that("abbreviated ptype is correct", {
 })
 
 # ------------------------------------------------------------------------------
+# as_year_quarter_day()
+
+test_that("invalid dates must be resolved when converting to another calendar", {
+  expect_snapshot_error(as_year_quarter_day(year_month_day(2019, 2, 31)))
+})
+
+# ------------------------------------------------------------------------------
+# as_sys()
+
+test_that("invalid dates must be resolved when converting to a sys-time", {
+  expect_snapshot_error(as_sys(year_month_day(2019, 2, 31)))
+})
+
+# ------------------------------------------------------------------------------
+# as_naive()
+
+test_that("invalid dates must be resolved when converting to a naive-time", {
+  expect_snapshot_error(as_naive(year_month_day(2019, 2, 31)))
+})
+
+# ------------------------------------------------------------------------------
 # as.character()
 
 test_that("as.character() works", {

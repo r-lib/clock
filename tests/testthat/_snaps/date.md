@@ -1,3 +1,7 @@
+# invalid dates must be resolved when converting to a Date
+
+    Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
+
 # can't group by finer precisions
 
     Can't group at a precision (hour) that is more precise than `x` (day).
