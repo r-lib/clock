@@ -261,4 +261,55 @@ naive_parse(
 options(old)
 ```
 
+## Why doesn't this work with data.table?
 
+If you try to put any of the major clock types into a data.table, you will probably see this error message:
+
+```{r, eval=FALSE}
+library(data.table)
+
+data.table(x = year_month_day(2019, 1, 1))
+#> Error in dimnames(x) <- dn : 
+#>   length of 'dimnames' [1] not equal to array extent
+```
+
+You won't see this issue when working with data.frames or tibbles.
+
+As of now, data.table doesn't support the concept of _record types_. These are implemented as a list of vectors of equal length, that together represent a single idea. The `length()` of these types should be taken from the length of the vectors, not the length of the list. If you unclass any of the clock types, you'll see that they are implemented in this way:
+
+```{r}
+ymdh <- year_month_day(2019, 1, 1:2, 1)
+
+unclass(ymdh)
+
+unclass(as_naive(ymdh))
+```
+
+I find that record types are extremely useful data structures for building upon R's basic atomic types in ways that otherwise couldn't be done. They allow calendar types to hold information about each component, enabling instant access for retrieval, modification, and grouping. They also allow calendars to represent invalid dates, such as `2019-02-31`, without any issues. Time points use them to store up to nanosecond precision date-times, which are really C++ `int64_t` types that don't nicely fit into any R atomic type (I am aware of the bit64 package, and made a conscious decision to implement as a record type instead. This partly had to do with how NA values are handled).
+
+The idea of a record type actually isn't new. R's own POSIXlt type is a record type:
+
+```{r}
+x <- as.POSIXct("2019-01-01", "America/New_York")
+
+# POSIXct is implemented as a double
+unclass(x)
+
+# POSIXlt is a record type
+unclass(as.POSIXlt(x))
+```
+
+data.table doesn't truly support POSIXlt either. Instead, you get a warning about them converting it to a POSIXct.
+
+```{r, eval=FALSE}
+data.table(x = as.POSIXlt("2019-01-01", "America/New_York"))
+#>             x
+#> 1: 2019-01-01
+#> Warning message:
+#> In as.data.table.list(x, keep.rownames = keep.rownames, check.names = check.names,  :
+#>   POSIXlt column type detected and converted to POSIXct. We do not recommend use of POSIXlt at all because it uses 40 bytes to store one date.
+```
+
+It was previously a bit difficult to create record types in R because there were few examples and no resources to build on. In vctrs, we've added a `vctrs_rcrd` type that serves as a base to build new record types on. Many S3 methods have been written for `vctrs_rcrd`s in a way that should work for any type that builds on top of it, giving you a lot of scaffolding for free.
+
+I am hopeful that as more record types make their way into the R ecosystem built on this common foundation, it might be possible for data.table to enable this as an approved type in their package.
