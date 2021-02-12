@@ -149,6 +149,10 @@
     Output
       [1] NA
 
+# `ambiguous = x` retains the offset of `x` if applicable
+
+    Ambiguous time due to daylight saving time at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.
+
 # <posixt> op <duration>
 
     no applicable method for 'add_milliseconds' applied to an object of class "c('POSIXct', 'POSIXt')"
