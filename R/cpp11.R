@@ -384,10 +384,6 @@ format_weekday_cpp <- function(x, labels) {
   .Call(`_clock_format_weekday_cpp`, x, labels)
 }
 
-zone_standardize <- function(zone) {
-  .Call(`_clock_zone_standardize`, zone)
-}
-
 zone_is_valid <- function(zone) {
   .Call(`_clock_zone_is_valid`, zone)
 }

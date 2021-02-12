@@ -359,6 +359,7 @@ test_that("`nonexistent` is validated", {
 test_that("zone is validated", {
   expect_snapshot_error(as_zoned(naive_seconds(), "foo"))
   expect_snapshot_error(as_zoned(naive_seconds(), 1))
+  expect_snapshot_error(as_zoned(naive_seconds(), c("America/New_York", "EST", "EDT")))
 })
 
 test_that("strict mode can be activated - nonexistent", {

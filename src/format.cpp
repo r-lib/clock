@@ -1158,8 +1158,8 @@ cpp11::writable::strings format_zoned_time_impl(const ClockDuration& cd,
   const std::string string_format(format[0]);
   const char* c_format = string_format.c_str();
 
-  const cpp11::writable::strings zone_standard = zone_standardize(zone);
-  const std::string zone_name = cpp11::r_string(zone_standard[0]);
+  zone_size_validate(zone);
+  const std::string zone_name = cpp11::r_string(zone[0]);
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
   // Default printable zone name to full provided zone name

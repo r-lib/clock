@@ -117,8 +117,8 @@ get_naive_time_cpp(cpp11::list_of<cpp11::integers> fields,
                    const cpp11::strings& zone) {
   using namespace rclock;
 
-  const cpp11::writable::strings zone_standard = zone_standardize(zone);
-  const std::string zone_name = cpp11::r_string(zone_standard[0]);
+  zone_size_validate(zone);
+  const std::string zone_name = cpp11::r_string(zone[0]);
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
   cpp11::integers ticks = duration::get_ticks(fields);
@@ -208,8 +208,8 @@ as_zoned_sys_time_from_naive_time_cpp(cpp11::list_of<cpp11::integers> fields,
                                       const cpp11::strings& ambiguous_string) {
   using namespace rclock;
 
-  const cpp11::writable::strings zone_standard = zone_standardize(zone);
-  const std::string zone_name = cpp11::r_string(zone_standard[0]);
+  zone_size_validate(zone);
+  const std::string zone_name = cpp11::r_string(zone[0]);
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
   cpp11::integers ticks = duration::get_ticks(fields);
@@ -313,8 +313,8 @@ as_zoned_sys_time_from_naive_time_with_reference_cpp(cpp11::list_of<cpp11::integ
                                                      cpp11::list_of<cpp11::integers> reference) {
   using namespace rclock;
 
-  const cpp11::writable::strings zone_standard = zone_standardize(zone);
-  const std::string zone_name = cpp11::r_string(zone_standard[0]);
+  zone_size_validate(zone);
+  const std::string zone_name = cpp11::r_string(zone[0]);
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
   cpp11::integers ticks = duration::get_ticks(fields);
@@ -450,8 +450,8 @@ zoned_info_cpp(cpp11::list_of<cpp11::integers> fields,
                const cpp11::strings& zone) {
   using namespace rclock;
 
-  const cpp11::writable::strings zone_standard = zone_standardize(zone);
-  const std::string zone_name = cpp11::r_string(zone_standard[0]);
+  zone_size_validate(zone);
+  const std::string zone_name = cpp11::r_string(zone[0]);
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
   const cpp11::integers ticks = duration::get_ticks(fields);
