@@ -2661,7 +2661,7 @@ get_version()
         in >> version;
         return version;
     }
-    return version;
+    return "unknown";
 }
 
 static
@@ -2772,6 +2772,7 @@ init_tzdb()
                 strcmp(d->d_name, "iso3166.tab")  == 0      ||
                 strcmp(d->d_name, "right")        == 0      ||
                 strcmp(d->d_name, "+VERSION")     == 0      ||
+                strcmp(d->d_name, "version")      == 0      ||
                 strcmp(d->d_name, "zone.tab")     == 0      ||
                 strcmp(d->d_name, "zone1970.tab") == 0      ||
                 strcmp(d->d_name, "tzdata.zi")    == 0      ||
