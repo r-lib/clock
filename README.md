@@ -75,15 +75,18 @@ remotes::install_github("r-lib/clock")
 ## Learning
 
 With clock, there is a high-level API for manipulating R’s native date
-and date-time types (Date, POSIXct, and POSIXlt). This should allow you
-to quickly get productive with clock without having to learn many of the
-new types. An easy way to get an overview of this high-level API is by
+and date-time types (Date, POSIXct, and POSIXlt), as well as a low-level
+API for more advanced date-time manipulations. The high-level API should
+allow you to quickly get productive with clock without having to learn
+many of the new types. An easy way to get an overview of this is by
 looking at the [High Level
 API](https://r-lib.github.io/clock/reference/index.html#section-high-level-api)
 section of the pkgdown reference page.
 
-After working with the high-level API, you might want to take a look at
-clock’s vignettes:
+You’ll also want to take a look at clock’s vignettes. The first one
+focuses on how to use that high-level API:
+
+-   [Getting Started](https://r-lib.github.io/clock/articles/clock.html)
 
 -   [Examples and
     Recipes](https://r-lib.github.io/clock/articles/recipes.html)
