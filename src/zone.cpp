@@ -8,25 +8,6 @@
 
 // -----------------------------------------------------------------------------
 
-/*
- * Standardize an R time zone attribute
- *
- * This is slightly different from the lubridate version. For POSIXlt objects,
- * the time zone attribute might be a character vector of length 3.
- * If the first element is `""` (which happens on a Mac with
- * `as.POSIXlt(Sys.time())`), then lubridate will look to the second element
- * and will use that as the time zone. I think this is incorrect, because those
- * are always time zone abbreviations, and will fail to load because they
- * aren't true time zone names. I think that is the reason Vitalie opened
- * this issue, and the reason for the time zone map in lubridate. This function
- * works more like `lubridate:::tz.POSIXt()` which just takes the first element
- * of the tzone attribute.
- * https://github.com/google/cctz/issues/46
- * https://github.com/tidyverse/lubridate/blob/b9025e6d5152f9da3857d7ef18f2571d3d861bae/src/update.cpp#L49
- */
-
-// -----------------------------------------------------------------------------
-
 [[cpp11::register]]
 cpp11::writable::logicals zone_is_valid(const cpp11::strings& zone) {
   zone_size_validate(zone);

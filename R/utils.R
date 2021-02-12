@@ -75,11 +75,57 @@ set_attributes <- function(x, attributes) {
 # ------------------------------------------------------------------------------
 
 posixt_tzone <- function(x) {
-  attr(x, "tzone", exact = TRUE) %||% ""
+  tzone <- attr(x, "tzone", exact = TRUE)
+  posixt_tzone_standardize(tzone)
 }
 posixt_set_tzone <- function(x, tzone) {
   attr(x, "tzone") <- tzone
   x
+}
+
+# Standardize an R time zone attribute
+#
+# This is slightly different from the lubridate version. For POSIXlt objects,
+# the time zone attribute might be a character vector of length 3. If the first
+# element is `""` (which happens on a Mac with `as.POSIXlt(Sys.time())`), then
+# lubridate will look to the second element and will use that as the time zone.
+# I think this is incorrect, because those are always time zone abbreviations,
+# and will fail to load because they aren't true time zone names. I think that
+# is the reason Vitalie opened the issue noted below, and the reason for the
+# time zone map in lubridate. This function works more like
+# `lubridate:::tz.POSIXt()` which just takes the first element of the tzone
+# attribute. https://github.com/google/cctz/issues/46
+# https://github.com/tidyverse/lubridate/blob
+posixt_tzone_standardize <- function(tzone) {
+  if (is_null(tzone)) {
+    # Like `Sys.time()`
+    return("")
+  }
+
+  if (!is_character(tzone)) {
+    abort("A POSIXt time zone should either be a character vector or `NULL`.")
+  }
+
+  n <- length(tzone)
+
+  if (n == 0L) {
+    warning(paste0(
+      "POSIXt input had a corrupt time zone attribute of `character(0)`. ",
+      "Defaulting to the current zone by assuming the zone is `\"\"`."
+    ))
+    return("")
+  }
+
+  if (n == 1L) {
+    return(tzone)
+  }
+
+  # Otherwise `n > 1`, likely `n == 3` for a POSIXt with time zone
+  # abbreviations. The first element is either a full time zone name, or `""`,
+  # so we use that
+  tzone <- tzone[[1]]
+
+  tzone
 }
 
 # ------------------------------------------------------------------------------
