@@ -127,6 +127,10 @@
     Output
       [1] NA
 
+# can handle invalid dates
+
+    Invalid date found at location 2. Resolve invalid date issues by specifying the `invalid` argument.
+
 # <date> op <duration>
 
     no applicable method for 'add_hours' applied to an object of class "Date"

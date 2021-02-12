@@ -301,6 +301,57 @@ test_that("`ambiguous = x` retains the offset of `x` if applicable", {
 })
 
 # ------------------------------------------------------------------------------
+# date_time_build()
+
+test_that("can build a POSIXct", {
+  zone <- "America/New_York"
+
+  expect_identical(date_time_build(2019, zone = zone), as.POSIXct("2019-01-01", tz = zone))
+  expect_identical(date_time_build(2020, 2, 3, 4, 5, 6, zone = zone), as.POSIXct("2020-02-03 04:05:06", tz = zone))
+})
+
+test_that("`zone` is required", {
+  expect_snapshot_error(date_time_build(2019))
+})
+
+test_that("can handle invalid dates", {
+  zone <- "America/New_York"
+
+  expect_snapshot_error(date_time_build(2019, 1:12, 31, zone = zone))
+
+  expect_identical(
+    date_time_build(2019, 1:12, 31, zone = zone, invalid = "previous-day"),
+    date_time_build(2019, 1:12, "last", zone = zone)
+  )
+})
+
+test_that("can handle nonexistent times", {
+  zone <- "America/New_York"
+
+  expect_snapshot_error(date_time_build(1970, 4, 26, 2, 30, zone = zone))
+
+  expect_identical(
+    date_time_build(1970, 4, 26, 2, 30, zone = zone, nonexistent = "roll-forward"),
+    date_time_build(1970, 4, 26, 3, zone = zone)
+  )
+})
+
+test_that("can handle ambiguous times", {
+  zone <- "America/New_York"
+
+  expect_snapshot_error(date_time_build(1970, 10, 25, 1, 30, zone = zone))
+
+  expect_identical(
+    date_time_build(1970, 10, 25, 1, 30, zone = zone, ambiguous = "earliest"),
+    date_time_complete_parse("1970-10-25 01:30:00-04:00[America/New_York]")
+  )
+  expect_identical(
+    date_time_build(1970, 10, 25, 1, 30, zone = zone, ambiguous = "latest"),
+    date_time_complete_parse("1970-10-25 01:30:00-05:00[America/New_York]")
+  )
+})
+
+# ------------------------------------------------------------------------------
 # vec_arith()
 
 test_that("<posixt> op <duration>", {

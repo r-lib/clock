@@ -153,6 +153,22 @@
 
     Ambiguous time due to daylight saving time at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
+# `zone` is required
+
+    `zone` is a required argument to `date_time_build()`.
+
+# can handle invalid dates
+
+    Invalid date found at location 2. Resolve invalid date issues by specifying the `invalid` argument.
+
+# can handle nonexistent times
+
+    Nonexistent time due to daylight saving time at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.
+
+# can handle ambiguous times
+
+    Ambiguous time due to daylight saving time at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.
+
 # <posixt> op <duration>
 
     no applicable method for 'add_milliseconds' applied to an object of class "c('POSIXct', 'POSIXt')"

@@ -212,6 +212,23 @@ test_that("can shift dates", {
 })
 
 # ------------------------------------------------------------------------------
+# date_build()
+
+test_that("can build a Date", {
+  expect_identical(date_build(2019), as.Date("2019-01-01"))
+  expect_identical(date_build(2020, 2, 3), as.Date("2020-02-03"))
+})
+
+test_that("can handle invalid dates", {
+  expect_snapshot_error(date_build(2019, 1:12, 31))
+
+  expect_identical(
+    date_build(2019, 1:12, 31, invalid = "previous"),
+    date_build(2019, 1:12, "last")
+  )
+})
+
+# ------------------------------------------------------------------------------
 # vec_arith()
 
 test_that("<date> op <duration>", {

@@ -1061,7 +1061,95 @@ date_shift.Date <- function(x,
 
 # ------------------------------------------------------------------------------
 
-date_create <- function(year, month = 1L, day = 1L, ..., invalid = NULL) {
+#' Building: date and date-time
+#'
+#' @description
+#' - `date_build()` builds a Date from it's individual components.
+#'
+#' - `date_time_build()` builds a POSIXct from it's individual components.
+#'
+#' To build a POSIXct, it is required that you specify the `zone`.
+#'
+#' @details
+#' Components are recycled against each other.
+#'
+#' @inheritParams invalid_resolve
+#' @inheritParams as-zoned-time-naive-time
+#'
+#' @param year `[integer]`
+#'
+#'   The year. Values `[-9999, 9999]` are allowed.
+#'
+#' @param month `[integer]`
+#'
+#'   The month. Values `[1, 12]` are allowed.
+#'
+#' @param day `[integer / "last"]`
+#'
+#'   The day of the month. Values `[1, 31]` are allowed.
+#'
+#'   If `"last"`, then the last day of the month is returned.
+#'
+#' @param hour `[integer]`
+#'
+#'   The hour. Values `[0, 23]` are allowed.
+#'
+#' @param minute `[integer]`
+#'
+#'   The minute. Values `[0, 59]` are allowed.
+#'
+#' @param second `[integer]`
+#'
+#'   The second. Values `[0, 59]` are allowed.
+#'
+#' @param zone `[character(1)]`
+#'
+#'   A valid time zone name.
+#'
+#'   This argument is required for generating a POSIXct, and must be specified
+#'   by name.
+#'
+#' @return
+#' - `date_build()` returns a Date.
+#'
+#' - `date_time_build()` returns a POSIXct.
+#'
+#' @name date-and-date-time-building
+#'
+#' @examples
+#' date_build(2019)
+#' date_build(2019, 1:3)
+#'
+#' # Generating invalid dates will trigger an error
+#' try(date_build(2019, 1:12, 31))
+#'
+#' # You can resolve this with `invalid`
+#' date_build(2019, 1:12, 31, invalid = "previous")
+#'
+#' # But this particular case (the last day of the month) is better
+#' # specified as:
+#' date_build(2019, 1:12, "last")
+#'
+#' # The zone argument to `date_time_build()` is required!
+#' # clock always requires you to be explicit about your choice of `zone`.
+#' try(date_time_build(2020))
+#'
+#' date_time_build(2020, zone = "America/New_York")
+#'
+#' # Nonexistent time due to daylight saving time gap from 01:59:59 -> 03:00:00
+#' try(date_time_build(1970, 4, 26, 1:12, 30, zone = "America/New_York"))
+#'
+#' # Resolve with a nonexistent time resolution strategy
+#' date_time_build(
+#'   1970, 4, 26, 1:12, 30,
+#'   zone = "America/New_York",
+#'   nonexistent = "roll-forward"
+#' )
+NULL
+
+#' @rdname date-and-date-time-building
+#' @export
+date_build <- function(year, month = 1L, day = 1L, ..., invalid = NULL) {
   check_dots_empty()
   x <- year_month_day(year, month, day)
   x <- invalid_resolve(x, invalid = invalid)
