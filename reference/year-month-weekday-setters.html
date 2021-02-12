@@ -224,25 +224,25 @@ promote from month to day precision.</p></td>
     <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_weekday.html'>year_month_weekday</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>
 
 <span class='fu'><a href='clock-setters.html'>set_year</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>2020</span><span class='op'>:</span><span class='fl'>2022</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;month&gt;[invalid=0][3]&gt;
+</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;month&gt;[3]&gt;
 #&gt; [1] "2020-01" "2021-02" "2022-03"</div><div class='input'>
 <span class='co'># Setting the weekday on a month precision year-month-weekday requires</span>
 <span class='co'># also setting the `index` to fully specify the day information</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>clock_weekdays</span><span class='op'>$</span><span class='va'>sunday</span>, index <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 <span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[invalid=0][3]&gt;
+</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[3]&gt;
 #&gt; [1] "2019-01-Sun[1]" "2019-02-Sun[1]" "2019-03-Sun[1]"</div><div class='input'>
 <span class='co'># Once you have at least day precision, you can set the weekday and</span>
 <span class='co'># the index separately</span>
 <span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>clock_weekdays</span><span class='op'>$</span><span class='va'>monday</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[invalid=0][3]&gt;
+</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[3]&gt;
 #&gt; [1] "2019-01-Mon[1]" "2019-02-Mon[1]" "2019-03-Mon[1]"</div><div class='input'><span class='fu'><a href='clock-setters.html'>set_index</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>3</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[invalid=0][3]&gt;
+</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[3]&gt;
 #&gt; [1] "2019-01-Sun[3]" "2019-02-Sun[3]" "2019-03-Sun[3]"</div><div class='input'>
 <span class='co'># Set to the "last" instance of the corresponding weekday in this month</span>
 <span class='co'># (Note that some months have 4 Sundays, and others have 5)</span>
 <span class='fu'><a href='clock-setters.html'>set_index</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"last"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[invalid=0][3]&gt;
+</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[3]&gt;
 #&gt; [1] "2019-01-Sun[4]" "2019-02-Sun[4]" "2019-03-Sun[5]"</div><div class='input'>
 <span class='co'># Set to an invalid index</span>
 <span class='co'># January and February of 2019 don't have 5 Sundays!</span>
@@ -252,14 +252,14 @@ promote from month to day precision.</p></td>
 #&gt; [1] "2019-01-Sun[5]" "2019-02-Sun[5]" "2019-03-Sun[5]"</div><div class='input'>
 <span class='co'># Resolve the invalid dates by choosing the previous/next valid moment</span>
 <span class='fu'><a href='clock-invalid.html'>invalid_resolve</a></span><span class='op'>(</span><span class='va'>invalid</span>, invalid <span class='op'>=</span> <span class='st'>"previous"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[invalid=0][3]&gt;
+</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[3]&gt;
 #&gt; [1] "2019-01-Thu[5]" "2019-02-Thu[4]" "2019-03-Sun[5]"</div><div class='input'><span class='fu'><a href='clock-invalid.html'>invalid_resolve</a></span><span class='op'>(</span><span class='va'>invalid</span>, invalid <span class='op'>=</span> <span class='st'>"next"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[invalid=0][3]&gt;
+</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[3]&gt;
 #&gt; [1] "2019-02-Fri[1]" "2019-03-Fri[1]" "2019-03-Sun[5]"</div><div class='input'>
 <span class='co'># You can also "overflow" the index. This keeps the weekday, but resets</span>
 <span class='co'># the index to 1 and increments the month value by 1.</span>
 <span class='fu'><a href='clock-invalid.html'>invalid_resolve</a></span><span class='op'>(</span><span class='va'>invalid</span>, invalid <span class='op'>=</span> <span class='st'>"overflow"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[invalid=0][3]&gt;
+</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[3]&gt;
 #&gt; [1] "2019-02-Sun[1]" "2019-03-Sun[1]" "2019-03-Sun[5]"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

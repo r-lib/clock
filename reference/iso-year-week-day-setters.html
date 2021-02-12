@@ -210,7 +210,7 @@ week of the current ISO year.</p></td>
 <span class='co'># (Note that some ISO weeks have 52 weeks, and others have 53)</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-setters.html'>set_week</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"last"</span><span class='op'>)</span>
 <span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;iso_year_week_day&lt;week&gt;[invalid=0][5]&gt;
+</div><div class='output co'>#&gt; &lt;iso_year_week_day&lt;week&gt;[5]&gt;
 #&gt; [1] "2019-W52" "2020-W53" "2021-W52" "2022-W52" "2023-W52"</div><div class='input'>
 <span class='co'># Set to an invalid week</span>
 <span class='va'>invalid</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-setters.html'>set_week</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>53</span><span class='op'>)</span>
@@ -223,9 +223,9 @@ week of the current ISO year.</p></td>
 #&gt; [1] "2019-W53" "2021-W53" "2022-W53" "2023-W53"</div><div class='input'>
 <span class='co'># Resolve the invalid dates by choosing the previous/next valid moment</span>
 <span class='fu'><a href='clock-invalid.html'>invalid_resolve</a></span><span class='op'>(</span><span class='va'>invalid</span>, invalid <span class='op'>=</span> <span class='st'>"previous"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;iso_year_week_day&lt;week&gt;[invalid=0][5]&gt;
+</div><div class='output co'>#&gt; &lt;iso_year_week_day&lt;week&gt;[5]&gt;
 #&gt; [1] "2019-W52" "2020-W53" "2021-W52" "2022-W52" "2023-W52"</div><div class='input'><span class='fu'><a href='clock-invalid.html'>invalid_resolve</a></span><span class='op'>(</span><span class='va'>invalid</span>, invalid <span class='op'>=</span> <span class='st'>"next"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;iso_year_week_day&lt;week&gt;[invalid=0][5]&gt;
+</div><div class='output co'>#&gt; &lt;iso_year_week_day&lt;week&gt;[5]&gt;
 #&gt; [1] "2020-W01" "2020-W53" "2022-W01" "2023-W01" "2024-W01"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

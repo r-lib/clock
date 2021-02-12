@@ -207,12 +207,12 @@ precision of <code>from</code>.</p>
     <pre class="examples"><div class='input'><span class='co'># Quarterly sequence</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='year_quarter_day.html'>year_quarter_day</a></span><span class='op'>(</span><span class='fl'>2020</span>, <span class='fl'>1</span><span class='op'>)</span>, <span class='fu'><a href='year_quarter_day.html'>year_quarter_day</a></span><span class='op'>(</span><span class='fl'>2026</span>, <span class='fl'>3</span><span class='op'>)</span>, by <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
 <span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;quarter&gt;[invalid=0][14]&gt;
+</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;quarter&gt;[14]&gt;
 #&gt;  [1] "2020-Q1" "2020-Q3" "2021-Q1" "2021-Q3" "2022-Q1" "2022-Q3" "2023-Q1"
 #&gt;  [8] "2023-Q3" "2024-Q1" "2024-Q3" "2025-Q1" "2025-Q3" "2026-Q1" "2026-Q3"</div><div class='input'>
 <span class='co'># Which we can then set the day of the quarter of</span>
 <span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"last"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[invalid=0][14]&gt;
+</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[14]&gt;
 #&gt;  [1] "2020-Q1-91" "2020-Q3-92" "2021-Q1-90" "2021-Q3-92" "2022-Q1-90"
 #&gt;  [6] "2022-Q3-92" "2023-Q1-90" "2023-Q3-92" "2024-Q1-91" "2024-Q3-92"
 #&gt; [11] "2025-Q1-90" "2025-Q3-92" "2026-Q1-90" "2026-Q3-92"</div></pre>

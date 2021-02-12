@@ -155,15 +155,15 @@ year-month-day.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># From Date</span>
 <span class='fu'>as_year_month_day</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][1]&gt;
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[1]&gt;
 #&gt; [1] "2019-01-01"</div><div class='input'>
 <span class='co'># From POSIXct, which assumes that the naive time is what should be converted</span>
 <span class='fu'>as_year_month_day</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"2019-01-01 02:30:30"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;second&gt;[invalid=0][1]&gt;
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;second&gt;[1]&gt;
 #&gt; [1] "2019-01-01 02:30:30"</div><div class='input'>
 <span class='co'># From other calendars</span>
 <span class='fu'>as_year_month_day</span><span class='op'>(</span><span class='fu'><a href='year_quarter_day.html'>year_quarter_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, quarter <span class='op'>=</span> <span class='fl'>2</span>, day <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][1]&gt;
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[1]&gt;
 #&gt; [1] "2019-05-20"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

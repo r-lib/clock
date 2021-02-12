@@ -208,21 +208,21 @@ day of the current fiscal quarter.</p></td>
 <span class='co'># Quarter precision vector</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_quarter_day.html'>year_quarter_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>
 <span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;quarter&gt;[invalid=0][4]&gt;
+</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;quarter&gt;[4]&gt;
 #&gt; [1] "2019-Q1" "2019-Q2" "2019-Q3" "2019-Q4"</div><div class='input'>
 <span class='co'># Promote to day precision by setting the day</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>1</span><span class='op'>)</span>
 <span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[invalid=0][4]&gt;
+</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[4]&gt;
 #&gt; [1] "2019-Q1-01" "2019-Q2-01" "2019-Q3-01" "2019-Q4-01"</div><div class='input'>
 <span class='co'># Or set to the last day of the quarter</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"last"</span><span class='op'>)</span>
 <span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[invalid=0][4]&gt;
+</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[4]&gt;
 #&gt; [1] "2019-Q1-90" "2019-Q2-91" "2019-Q3-92" "2019-Q4-92"</div><div class='input'>
 <span class='co'># What year-month-day is this?</span>
 <span class='fu'><a href='as_year_month_day.html'>as_year_month_day</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][4]&gt;
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[4]&gt;
 #&gt; [1] "2019-03-31" "2019-06-30" "2019-09-30" "2019-12-31"</div><div class='input'>
 <span class='co'># Set to an invalid day of the quarter</span>
 <span class='co'># (not all quarters have 92 days)</span>
@@ -236,14 +236,14 @@ day of the current fiscal quarter.</p></td>
 #&gt; [1] "2019-Q1-92" "2019-Q2-92"</div><div class='input'>
 <span class='co'># Resolve the invalid dates by choosing the previous/next valid moment</span>
 <span class='fu'><a href='clock-invalid.html'>invalid_resolve</a></span><span class='op'>(</span><span class='va'>invalid</span>, invalid <span class='op'>=</span> <span class='st'>"previous"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[invalid=0][4]&gt;
+</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[4]&gt;
 #&gt; [1] "2019-Q1-90" "2019-Q2-91" "2019-Q3-92" "2019-Q4-92"</div><div class='input'><span class='fu'><a href='clock-invalid.html'>invalid_resolve</a></span><span class='op'>(</span><span class='va'>invalid</span>, invalid <span class='op'>=</span> <span class='st'>"next"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[invalid=0][4]&gt;
+</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[4]&gt;
 #&gt; [1] "2019-Q2-01" "2019-Q3-01" "2019-Q3-92" "2019-Q4-92"</div><div class='input'>
 <span class='co'># Or resolve by "overflowing" by the number of days that you have</span>
 <span class='co'># gone past the last valid day</span>
 <span class='fu'><a href='clock-invalid.html'>invalid_resolve</a></span><span class='op'>(</span><span class='va'>invalid</span>, invalid <span class='op'>=</span> <span class='st'>"overflow"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[invalid=0][4]&gt;
+</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[4]&gt;
 #&gt; [1] "2019-Q2-02" "2019-Q3-01" "2019-Q3-92" "2019-Q4-92"</div><div class='input'>
 <span class='co'># This is similar to</span>
 <span class='va'>days</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-getters.html'>get_day</a></span><span class='op'>(</span><span class='va'>invalid</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>1L</span>
@@ -252,7 +252,7 @@ day of the current fiscal quarter.</p></td>
   <span class='fu'><a href='as_naive.html'>as_naive</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='va'>days</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='as_year_quarter_day.html'>as_year_quarter_day</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[invalid=0][4]&gt;
+</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[4]&gt;
 #&gt; [1] "2019-Q2-02" "2019-Q3-01" "2019-Q3-92" "2019-Q4-92"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

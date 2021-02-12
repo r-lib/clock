@@ -303,7 +303,7 @@
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ym</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">2</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="va">ym</span>
-<span class="co">#&gt; &lt;year_month_day&lt;month&gt;[invalid=0][10]&gt;</span>
+<span class="co">#&gt; &lt;year_month_day&lt;month&gt;[10]&gt;</span>
 <span class="co">#&gt;  [1] "2019-01" "2019-03" "2019-05" "2019-07" "2019-09" "2019-11" "2020-01"</span>
 <span class="co">#&gt;  [8] "2020-03" "2020-05" "2020-07"</span></code></pre></div>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
@@ -311,12 +311,12 @@
 <p>This allows you to generate sequences of year-months or year-quarters without having to worry about the day of the month/quarter becoming invalid. You can set the day of the results to get to a day precision calendar. For example, to get the last days of the month/quarter for this sequence:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="va">ym</span>, <span class="st">"last"</span><span class="op">)</span>
-<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][10]&gt;</span>
+<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[10]&gt;</span>
 <span class="co">#&gt;  [1] "2019-01-31" "2019-03-31" "2019-05-31" "2019-07-31" "2019-09-30"</span>
 <span class="co">#&gt;  [6] "2019-11-30" "2020-01-31" "2020-03-31" "2020-05-31" "2020-07-31"</span>
 
 <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="va">yq</span>, <span class="st">"last"</span><span class="op">)</span>
-<span class="co">#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[invalid=0][10]&gt;</span>
+<span class="co">#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[10]&gt;</span>
 <span class="co">#&gt;  [1] "2019-Q1-90" "2019-Q3-92" "2020-Q1-91" "2020-Q3-92" "2021-Q1-90"</span>
 <span class="co">#&gt;  [6] "2021-Q3-92" "2022-Q1-90" "2022-Q3-92" "2023-Q1-90" "2023-Q3-92"</span></code></pre></div>
 <p>You won’t be able to generate day precision sequences with calendars. Instead, you should use a time point.</p>
@@ -360,12 +360,12 @@
 <code class="sourceCode R"><span class="va">ymd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_year_month_day.html">as_year_month_day</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ymd</span><span class="op">)</span>
-<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][6]&gt;</span>
+<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[6]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-01" "2019-01-21" "2019-02-10" "2019-03-02" "2019-03-22"</span>
 <span class="co">#&gt; [6] "2019-04-11"</span>
 
 <span class="fu"><a href="../reference/calendar_group.html">calendar_group</a></span><span class="op">(</span><span class="va">ymd</span>, <span class="st">"month"</span><span class="op">)</span>
-<span class="co">#&gt; &lt;year_month_day&lt;month&gt;[invalid=0][19]&gt;</span>
+<span class="co">#&gt; &lt;year_month_day&lt;month&gt;[19]&gt;</span>
 <span class="co">#&gt;  [1] "2019-01" "2019-01" "2019-02" "2019-03" "2019-03" "2019-04" "2019-05"</span>
 <span class="co">#&gt;  [8] "2019-05" "2019-06" "2019-06" "2019-07" "2019-08" "2019-08" "2019-09"</span>
 <span class="co">#&gt; [15] "2019-10" "2019-10" "2019-11" "2019-12" "2019-12"</span></code></pre></div>
@@ -374,25 +374,25 @@
 <code class="sourceCode R"><span class="va">yqd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_year_quarter_day.html">as_year_quarter_day</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">yqd</span><span class="op">)</span>
-<span class="co">#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[invalid=0][6]&gt;</span>
+<span class="co">#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[6]&gt;</span>
 <span class="co">#&gt; [1] "2019-Q1-01" "2019-Q1-21" "2019-Q1-41" "2019-Q1-61" "2019-Q1-81"</span>
 <span class="co">#&gt; [6] "2019-Q2-11"</span>
 
 <span class="fu"><a href="../reference/calendar_group.html">calendar_group</a></span><span class="op">(</span><span class="va">yqd</span>, <span class="st">"quarter"</span><span class="op">)</span>
-<span class="co">#&gt; &lt;year_quarter_day&lt;January&gt;&lt;quarter&gt;[invalid=0][19]&gt;</span>
+<span class="co">#&gt; &lt;year_quarter_day&lt;January&gt;&lt;quarter&gt;[19]&gt;</span>
 <span class="co">#&gt;  [1] "2019-Q1" "2019-Q1" "2019-Q1" "2019-Q1" "2019-Q1" "2019-Q2" "2019-Q2"</span>
 <span class="co">#&gt;  [8] "2019-Q2" "2019-Q2" "2019-Q2" "2019-Q3" "2019-Q3" "2019-Q3" "2019-Q3"</span>
 <span class="co">#&gt; [15] "2019-Q4" "2019-Q4" "2019-Q4" "2019-Q4" "2019-Q4"</span></code></pre></div>
 <p>If you need to group by a multiple of months / quarters, you can do that too:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/calendar_group.html">calendar_group</a></span><span class="op">(</span><span class="va">ymd</span>, <span class="st">"month"</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-<span class="co">#&gt; &lt;year_month_day&lt;month&gt;[invalid=0][19]&gt;</span>
+<span class="co">#&gt; &lt;year_month_day&lt;month&gt;[19]&gt;</span>
 <span class="co">#&gt;  [1] "2019-01" "2019-01" "2019-01" "2019-03" "2019-03" "2019-03" "2019-05"</span>
 <span class="co">#&gt;  [8] "2019-05" "2019-05" "2019-05" "2019-07" "2019-07" "2019-07" "2019-09"</span>
 <span class="co">#&gt; [15] "2019-09" "2019-09" "2019-11" "2019-11" "2019-11"</span>
 
 <span class="fu"><a href="../reference/calendar_group.html">calendar_group</a></span><span class="op">(</span><span class="va">yqd</span>, <span class="st">"quarter"</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-<span class="co">#&gt; &lt;year_quarter_day&lt;January&gt;&lt;quarter&gt;[invalid=0][19]&gt;</span>
+<span class="co">#&gt; &lt;year_quarter_day&lt;January&gt;&lt;quarter&gt;[19]&gt;</span>
 <span class="co">#&gt;  [1] "2019-Q1" "2019-Q1" "2019-Q1" "2019-Q1" "2019-Q1" "2019-Q1" "2019-Q1"</span>
 <span class="co">#&gt;  [8] "2019-Q1" "2019-Q1" "2019-Q1" "2019-Q3" "2019-Q3" "2019-Q3" "2019-Q3"</span>
 <span class="co">#&gt; [15] "2019-Q3" "2019-Q3" "2019-Q3" "2019-Q3" "2019-Q3"</span></code></pre></div>

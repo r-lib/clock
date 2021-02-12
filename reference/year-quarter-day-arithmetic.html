@@ -186,24 +186,24 @@ units of duration.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_quarter_day.html'>year_quarter_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>
 <span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;quarter&gt;[invalid=0][3]&gt;
+</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;quarter&gt;[3]&gt;
 #&gt; [1] "2019-Q1" "2019-Q2" "2019-Q3"</div><div class='input'>
 <span class='fu'><a href='clock-arithmetic.html'>add_quarters</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;quarter&gt;[invalid=0][3]&gt;
+</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;quarter&gt;[3]&gt;
 #&gt; [1] "2019-Q3" "2019-Q4" "2020-Q1"</div><div class='input'>
 <span class='co'># Make the fiscal year start in March</span>
 <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_quarter_day.html'>year_quarter_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, <span class='fl'>1</span>, start <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
 <span class='va'>y</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;March&gt;&lt;day&gt;[invalid=0][2]&gt;
+</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;March&gt;&lt;day&gt;[2]&gt;
 #&gt; [1] "2019-Q1-01" "2019-Q2-01"</div><div class='input'>
 <span class='fu'><a href='clock-arithmetic.html'>add_quarters</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;March&gt;&lt;day&gt;[invalid=0][2]&gt;
+</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;March&gt;&lt;day&gt;[2]&gt;
 #&gt; [1] "2019-Q2-01" "2019-Q3-01"</div><div class='input'>
 <span class='co'># What year-month-day does this correspond to?</span>
 <span class='co'># Note that the fiscal year doesn't necessarily align with the Gregorian</span>
 <span class='co'># year!</span>
 <span class='fu'><a href='as_year_month_day.html'>as_year_month_day</a></span><span class='op'>(</span><span class='fu'><a href='clock-arithmetic.html'>add_quarters</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][2]&gt;
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[2]&gt;
 #&gt; [1] "2018-06-01" "2018-09-01"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

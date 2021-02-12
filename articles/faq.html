@@ -103,7 +103,7 @@
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][1]&gt;</span>
+<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-02-05"</span></code></pre></div>
 <p>That you should also be able to do:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -115,7 +115,7 @@
   <span class="fu"><a href="../reference/as_naive.html">as_naive</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/as_year_month_day.html">as_year_month_day</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][1]&gt;</span>
+<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-06"</span></code></pre></div>
 <p>The first reason for this is performance. A year-month-day is a <em>field</em> type, implemented as multiple parallel vectors holding the year, month, day, and all other components separately. There are two ways that day based arithmetic could be implemented for this:</p>
 <ul>
@@ -133,7 +133,7 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">odd_dates</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-invalid.html">invalid_resolve</a></span><span class="op">(</span>invalid <span class="op">=</span> <span class="st">"next"</span><span class="op">)</span>
-<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][4]&gt;</span>
+<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[4]&gt;</span>
 <span class="co">#&gt; [1] "2019-02-28" "2019-03-01" "2019-03-01" "2019-03-01"</span>
 
 <span class="va">odd_dates</span> <span class="op">%&gt;%</span>
@@ -145,7 +145,7 @@
 
 <span class="va">odd_dates</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-invalid.html">invalid_resolve</a></span><span class="op">(</span>invalid <span class="op">=</span> <span class="st">"overflow"</span><span class="op">)</span>
-<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[invalid=0][4]&gt;</span>
+<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[4]&gt;</span>
 <span class="co">#&gt; [1] "2019-02-28" "2019-03-01" "2019-03-02" "2019-03-03"</span>
 
 <span class="va">odd_dates</span> <span class="op">%&gt;%</span>
@@ -323,6 +323,107 @@
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Reset old options</span>
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span><span class="va">old</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="why-doesnt-this-work-with-data-table" class="section level2">
+<h2 class="hasAnchor">
+<a href="#why-doesnt-this-work-with-data-table" class="anchor"></a>Why doesn’t this work with data.table?</h2>
+<p>If you try to put any of the major clock types into a data.table, you will probably see this error message:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">data.table</span><span class="op">)</span>
+
+<span class="fu">data.table</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Error in dimnames(x) &lt;- dn : </span>
+<span class="co">#&gt;   length of 'dimnames' [1] not equal to array extent</span></code></pre></div>
+<p>You won’t see this issue when working with data.frames or tibbles.</p>
+<p>As of now, data.table doesn’t support the concept of <em>record types</em>. These are implemented as a list of vectors of equal length, that together represent a single idea. The <code><a href="https://rdrr.io/r/base/length.html">length()</a></code> of these types should be taken from the length of the vectors, not the length of the list. If you unclass any of the clock types, you’ll see that they are implemented in this way:</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ymdh</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/class.html">unclass</a></span><span class="op">(</span><span class="va">ymdh</span><span class="op">)</span>
+<span class="co">#&gt; $year</span>
+<span class="co">#&gt; [1] 2019 2019</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $month</span>
+<span class="co">#&gt; [1] 1 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $day</span>
+<span class="co">#&gt; [1] 1 2</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $hour</span>
+<span class="co">#&gt; [1] 1 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; attr(,"precision")</span>
+<span class="co">#&gt; [1] 5</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/class.html">unclass</a></span><span class="op">(</span><span class="fu"><a href="../reference/as_naive.html">as_naive</a></span><span class="op">(</span><span class="va">ymdh</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; $ticks</span>
+<span class="co">#&gt; [1] 17897 17898</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $ticks_of_day</span>
+<span class="co">#&gt; [1] 1 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; attr(,"precision")</span>
+<span class="co">#&gt; [1] 5</span>
+<span class="co">#&gt; attr(,"clock")</span>
+<span class="co">#&gt; [1] 1</span></code></pre></div>
+<p>I find that record types are extremely useful data structures for building upon R’s basic atomic types in ways that otherwise couldn’t be done. They allow calendar types to hold information about each component, enabling instant access for retrieval, modification, and grouping. They also allow calendars to represent invalid dates, such as <code>2019-02-31</code>, without any issues. Time points use them to store up to nanosecond precision date-times, which are really C++ <code>int64_t</code> types that don’t nicely fit into any R atomic type (I am aware of the bit64 package, and made a conscious decision to implement as a record type instead. This partly had to do with how NA values are handled).</p>
+<p>The idea of a record type actually isn’t new. R’s own POSIXlt type is a record type:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-01"</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
+
+<span class="co"># POSIXct is implemented as a double</span>
+<span class="fu"><a href="https://rdrr.io/r/base/class.html">unclass</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="co">#&gt; [1] 1546318800</span>
+<span class="co">#&gt; attr(,"tzone")</span>
+<span class="co">#&gt; [1] "America/New_York"</span>
+
+<span class="co"># POSIXlt is a record type</span>
+<span class="fu"><a href="https://rdrr.io/r/base/class.html">unclass</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXlt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; $sec</span>
+<span class="co">#&gt; [1] 0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $min</span>
+<span class="co">#&gt; [1] 0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $hour</span>
+<span class="co">#&gt; [1] 0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $mday</span>
+<span class="co">#&gt; [1] 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $mon</span>
+<span class="co">#&gt; [1] 0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $year</span>
+<span class="co">#&gt; [1] 119</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $wday</span>
+<span class="co">#&gt; [1] 2</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $yday</span>
+<span class="co">#&gt; [1] 0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $isdst</span>
+<span class="co">#&gt; [1] 0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $zone</span>
+<span class="co">#&gt; [1] "EST"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $gmtoff</span>
+<span class="co">#&gt; [1] -18000</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; attr(,"tzone")</span>
+<span class="co">#&gt; [1] "America/New_York" "EST"              "EDT"</span></code></pre></div>
+<p>data.table doesn’t truly support POSIXlt either. Instead, you get a warning about them converting it to a POSIXct.</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">data.table</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXlt</a></span><span class="op">(</span><span class="st">"2019-01-01"</span>, <span class="st">"America/New_York"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt;             x</span>
+<span class="co">#&gt; 1: 2019-01-01</span>
+<span class="co">#&gt; Warning message:</span>
+<span class="co">#&gt; In as.data.table.list(x, keep.rownames = keep.rownames, check.names = check.names,  :</span>
+<span class="co">#&gt;   POSIXlt column type detected and converted to POSIXct. We do not recommend use of POSIXlt at all because it uses 40 bytes to store one date.</span></code></pre></div>
+<p>It was previously a bit difficult to create record types in R because there were few examples and no resources to build on. In vctrs, we’ve added a <code>vctrs_rcrd</code> type that serves as a base to build new record types on. Many S3 methods have been written for <code>vctrs_rcrd</code>s in a way that should work for any type that builds on top of it, giving you a lot of scaffolding for free.</p>
+<p>I am hopeful that as more record types make their way into the R ecosystem built on this common foundation, it might be possible for data.table to enable this as an approved type in their package.</p>
 </div>
   </div>
 
