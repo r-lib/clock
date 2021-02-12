@@ -1,3 +1,35 @@
+# full ptype is correct
+
+    [1] "year_month_day<year>"
+
+---
+
+    [1] "year_month_day<day>"
+
+---
+
+    [1] "year_month_day<nanosecond>"
+
+---
+
+    [1] "year_month_day<day>[invalid=1]"
+
+# abbreviated ptype is correct
+
+    [1] "ymd<year>"
+
+---
+
+    [1] "ymd<day>"
+
+---
+
+    [1] "ymd<nano>"
+
+---
+
+    [1] "ymd<day>[i=1]"
+
 # failure to parse results in a warning
 
     Code
@@ -5,7 +37,7 @@
     Warning <clock_warning_parse_failures>
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output
-      <year_month_day<day>[invalid=0][1]>
+      <year_month_day<day>[1]>
       [1] NA
 
 # requires month precision

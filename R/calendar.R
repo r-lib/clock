@@ -623,7 +623,14 @@ calendar_ptype_full <- function(x, class) {
   count <- invalid_count(x)
   precision <- calendar_precision(x)
   precision <- precision_to_string(precision)
-  paste0(class, "<", precision, ">[invalid=", count, "]")
+
+  out <- paste0(class, "<", precision, ">")
+
+  if (count != 0L) {
+    out <- paste0(out, "[invalid=", count, "]")
+  }
+
+  out
 }
 
 calendar_ptype_abbr <- function(x, abbr) {
@@ -631,7 +638,14 @@ calendar_ptype_abbr <- function(x, abbr) {
   precision <- calendar_precision(x)
   precision <- precision_to_string(precision)
   precision <- precision_abbr(precision)
-  paste0(abbr, "<", precision, ">[i=", count, "]")
+
+  out <- paste0(abbr, "<", precision, ">")
+
+  if (count != 0L) {
+    out <- paste0(out, "[i=", count, "]")
+  }
+
+  out
 }
 
 # ------------------------------------------------------------------------------

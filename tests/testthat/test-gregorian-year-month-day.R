@@ -1,4 +1,24 @@
 # ------------------------------------------------------------------------------
+# vec_ptype_full()
+
+test_that("full ptype is correct", {
+  expect_snapshot_output(vec_ptype_full(year_month_day(2019)))
+  expect_snapshot_output(vec_ptype_full(year_month_day(2019, 1, 1)))
+  expect_snapshot_output(vec_ptype_full(year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond")))
+  expect_snapshot_output(vec_ptype_full(year_month_day(2019, 2, 31)))
+})
+
+# ------------------------------------------------------------------------------
+# vec_ptype_abbr()
+
+test_that("abbreviated ptype is correct", {
+  expect_snapshot_output(vec_ptype_abbr(year_month_day(2019)))
+  expect_snapshot_output(vec_ptype_abbr(year_month_day(2019, 1, 1)))
+  expect_snapshot_output(vec_ptype_abbr(year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond")))
+  expect_snapshot_output(vec_ptype_abbr(year_month_day(2019, 2, 31)))
+})
+
+# ------------------------------------------------------------------------------
 # as.character()
 
 test_that("as.character() works", {
