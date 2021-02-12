@@ -1061,7 +1061,47 @@ date_shift.Date <- function(x,
 
 # ------------------------------------------------------------------------------
 
-date_create <- function(year, month = 1L, day = 1L, ..., invalid = NULL) {
+#' Building: date
+#'
+#' @description
+#' `date_build()` builds a Date from it's individual components.
+#'
+#' @details
+#' Components are recycled against each other.
+#'
+#' @inheritParams invalid_resolve
+#'
+#' @param year `[integer]`
+#'
+#'   The year. Values `[-9999, 9999]` are allowed.
+#'
+#' @param month `[integer]`
+#'
+#'   The month. Values `[1, 12]` are allowed.
+#'
+#' @param day `[integer / "last"]`
+#'
+#'   The day of the month. Values `[1, 31]` are allowed.
+#'
+#'   If `"last"`, then the last day of the month is returned.
+#'
+#' @return A Date.
+#'
+#' @export
+#' @examples
+#' date_build(2019)
+#' date_build(2019, 1:3)
+#'
+#' # Generating invalid dates will trigger an error
+#' try(date_build(2019, 1:12, 31))
+#'
+#' # You can resolve this with `invalid`
+#' date_build(2019, 1:12, 31, invalid = "previous")
+#'
+#' # But this particular case (the last day of the month) is better
+#' # specified as:
+#' date_build(2019, 1:12, "last")
+date_build <- function(year, month = 1L, day = 1L, ..., invalid = NULL) {
   check_dots_empty()
   x <- year_month_day(year, month, day)
   x <- invalid_resolve(x, invalid = invalid)

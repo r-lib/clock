@@ -9,8 +9,9 @@ reference:
     date and date-time types, Date, POSIXct, and POSIXlt. If you are new to
     clock, this is the best place to start.
   contents:
+  - date_build
+  - date_time_build
   - date_group
-  - date_leap_year
   - date-and-date-time-rounding
   - date-and-date-time-shifting
   - date_format
@@ -19,6 +20,7 @@ reference:
   - date_zone
   - date_weekday_factor
   - date_month_factor
+  - date_leap_year
   - get_year.Date
   - get_year.POSIXt
   - set_year.Date
