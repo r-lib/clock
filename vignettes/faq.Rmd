@@ -263,7 +263,7 @@ options(old)
 
 ## Why doesn't this work with data.table?
 
-If you try to put any of the major clock types into a data.table, you will probably see this error message:
+While the entire high-level API for R's native date (Date) and date-time (POSIXct) types will work fine with data.table, if you try to put any of the major clock types into a data.table, you will probably see this error message:
 
 ```{r, eval=FALSE}
 library(data.table)
@@ -285,7 +285,7 @@ unclass(ymdh)
 unclass(as_naive(ymdh))
 ```
 
-I find that record types are extremely useful data structures for building upon R's basic atomic types in ways that otherwise couldn't be done. They allow calendar types to hold information about each component, enabling instant access for retrieval, modification, and grouping. They also allow calendars to represent invalid dates, such as `2019-02-31`, without any issues. Time points use them to store up to nanosecond precision date-times, which are really C++ `int64_t` types that don't nicely fit into any R atomic type (I am aware of the bit64 package, and made a conscious decision to implement as a record type instead. This partly had to do with how NA values are handled).
+I find that record types are extremely useful data structures for building upon R's basic atomic types in ways that otherwise couldn't be done. They allow calendar types to hold information about each component, enabling instant access for retrieval, modification, and grouping. They also allow calendars to represent invalid dates, such as `2019-02-31`, without any issues. Time points use them to store up to nanosecond precision date-times, which are really C++ `int64_t` types that don't nicely fit into any R atomic type (I am aware of the bit64 package, and made a conscious decision to implement as a record type instead. This partly had to do with how missing values are handled, and how that integrates with vctrs).
 
 The idea of a record type actually isn't new. R's own POSIXlt type is a record type:
 
@@ -299,7 +299,7 @@ unclass(x)
 unclass(as.POSIXlt(x))
 ```
 
-data.table doesn't truly support POSIXlt either. Instead, you get a warning about them converting it to a POSIXct.
+data.table doesn't truly support POSIXlt either. Instead, you get a warning about them converting it to a POSIXct. This is pretty reasonable considering their focus on performance.
 
 ```{r, eval=FALSE}
 data.table(x = as.POSIXlt("2019-01-01", "America/New_York"))
