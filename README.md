@@ -83,10 +83,12 @@ looking at the [High Level
 API](https://r-lib.github.io/clock/reference/index.html#section-high-level-api)
 section of the pkgdown reference page.
 
-You’ll also want to take a look at clock’s vignettes. The first one
-focuses on how to use that high-level API:
+You’ll also want to take a look at clock’s vignettes:
 
 -   [Getting Started](https://r-lib.github.io/clock/articles/clock.html)
+
+-   [Motivations for
+    clock](https://r-lib.github.io/clock/articles/articles/motivations.html)
 
 -   [Examples and
     Recipes](https://r-lib.github.io/clock/articles/recipes.html)
