@@ -90,6 +90,75 @@ test_that("seq(by, length.out) works", {
 })
 
 # ------------------------------------------------------------------------------
+# add_*()
+
+test_that("can add quarters", {
+  expect_identical(year_quarter_day(2019, 1, 1) + duration_quarters(1), year_quarter_day(2019, 2, 1))
+  expect_identical(year_quarter_day(2019, 1, 1) + duration_quarters(5), year_quarter_day(2020, 2, 1))
+
+  expect_identical(year_quarter_day(2019, 1, 1, start = 2) + duration_quarters(5), year_quarter_day(2020, 2, 1, start = 2))
+})
+
+# ------------------------------------------------------------------------------
+# miscellaneous
+
+test_that("can roundtrip to naive-time with any `start`", {
+  x <- seq(
+    as_naive(year_month_day(-9999, 1, 1)),
+    as_naive(year_month_day(9999, 12, 31)),
+    by = 1
+  )
+
+  for (start in seq_len(12)) {
+    expect_identical(x, as_naive(as_year_quarter_day(x, start = start)))
+  }
+})
+
+test_that("can generate correct last days of the quarter with any `start`", {
+  start <- 1L
+
+  expect_identical(
+    as.Date(year_quarter_day(2019, 1:4, "last", start = 1)),
+    as.Date(year_month_day(2019, c(3, 6, 9, 12), "last"))
+  )
+  expect_identical(
+    as.Date(year_quarter_day(2019, 1:4, "last", start = 2)),
+    as.Date(year_month_day(c(2018, 2018, 2018, 2019), c(4, 7, 10, 1), "last"))
+  )
+  expect_identical(
+    as.Date(year_quarter_day(2019, 1:4, "last", start = 3)),
+    as.Date(year_month_day(c(2018, 2018, 2018, 2019), c(5, 8, 11, 2), "last"))
+  )
+  # ..., 4, 5, 6, 7, 8, 9, ...
+  expect_identical(
+    as.Date(year_quarter_day(2019, 1:4, "last", start = 10)),
+    as.Date(year_month_day(c(2018, 2019, 2019, 2019), c(12, 3, 6, 9), "last"))
+  )
+  expect_identical(
+    as.Date(year_quarter_day(2019, 1:4, "last", start = 11)),
+    as.Date(year_month_day(2019, c(1, 4, 7, 10), "last"))
+  )
+  expect_identical(
+    as.Date(year_quarter_day(2019, 1:4, "last", start = 12)),
+    as.Date(year_month_day(2019, c(2, 5, 8, 11), "last"))
+  )
+
+  # Leap year!
+  expect_identical(
+    as.Date(year_quarter_day(2020, 1:4, "last", start = 1)),
+    as.Date(year_month_day(2020, c(3, 6, 9, 12), "last"))
+  )
+  expect_identical(
+    as.Date(year_quarter_day(2020, 1:4, "last", start = 2)),
+    as.Date(year_month_day(c(2019, 2019, 2019, 2020), c(4, 7, 10, 1), "last"))
+  )
+  expect_identical(
+    as.Date(year_quarter_day(2020, 1:4, "last", start = 3)),
+    as.Date(year_month_day(c(2019, 2019, 2019, 2020), c(5, 8, 11, 2), "last"))
+  )
+})
+
+# ------------------------------------------------------------------------------
 # invalid_resolve()
 
 test_that("strict mode can be activated", {
