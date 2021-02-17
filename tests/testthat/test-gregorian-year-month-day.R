@@ -168,6 +168,17 @@ test_that("parsing NA returns NA", {
 })
 
 # ------------------------------------------------------------------------------
+# calendar_group()
+
+test_that("works with negative years", {
+  year <- c(-2, -1, 0, 1, 2)
+  x <- year_month_day(year, 1, 1)
+
+  expect_identical(calendar_group(x, "year"), year_month_day(year))
+  expect_identical(calendar_group(x, "year", n = 2), year_month_day(c(-2, -2, 0, 0, 2)))
+})
+
+# ------------------------------------------------------------------------------
 # calendar_narrow()
 
 test_that("can narrow to month", {
