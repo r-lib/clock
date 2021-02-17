@@ -4,7 +4,7 @@
 \name{clock-package}
 \alias{clock}
 \alias{clock-package}
-\title{clock: Durations, Time Points, Zoned Times, and Calendars}
+\title{clock: A Date-Time Library}
 \description{
 Provides a comprehensive library for date-time manipulations
     using a new family of orthogonal date-time classes (durations, time
