@@ -1,5 +1,5 @@
 Package: clock
-Title: Durations, Time Points, Zoned Times, and Calendars
+Title: A Date-Time Library
 Version: 0.0.0.9000
 Authors@R: 
     c(person(given = "Davis",
