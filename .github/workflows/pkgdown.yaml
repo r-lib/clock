@@ -38,6 +38,11 @@ jobs:
           install.packages("pkgdown", type = "binary")
         shell: Rscript {0}
 
+      - name: Install article dependencies
+        run: |
+          install.packages("lubridate", type = "binary")
+        shell: Rscript {0}
+
       - name: Install package
         run: R CMD INSTALL .
 
