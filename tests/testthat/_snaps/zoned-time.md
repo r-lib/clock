@@ -1,3 +1,82 @@
+# normal print method works
+
+    Code
+      x
+    Output
+      <zoned_time<second><America/New_York>[5]>
+      [1] "2018-12-31 19:00:00-05:00" "2019-01-31 19:00:00-05:00"
+      [3] "2019-02-28 19:00:00-05:00" "2019-03-31 20:00:00-04:00"
+      [5] "2019-04-30 20:00:00-04:00"
+
+# can limit with `max`
+
+    Code
+      print(x, max = 2)
+    Output
+      <zoned_time<second><America/New_York>[5]>
+      [1] "2018-12-31 19:00:00-05:00" "2019-01-31 19:00:00-05:00"
+      Reached `max` or `getOption('max.print')`. Omitted 3 values.
+
+---
+
+    Code
+      print(x, max = 4)
+    Output
+      <zoned_time<second><America/New_York>[5]>
+      [1] "2018-12-31 19:00:00-05:00" "2019-01-31 19:00:00-05:00"
+      [3] "2019-02-28 19:00:00-05:00" "2019-03-31 20:00:00-04:00"
+      Reached `max` or `getOption('max.print')`. Omitted 1 value.
+
+---
+
+    Code
+      print(x, max = 5)
+    Output
+      <zoned_time<second><America/New_York>[5]>
+      [1] "2018-12-31 19:00:00-05:00" "2019-01-31 19:00:00-05:00"
+      [3] "2019-02-28 19:00:00-05:00" "2019-03-31 20:00:00-04:00"
+      [5] "2019-04-30 20:00:00-04:00"
+
+---
+
+    Code
+      print(x, max = 6)
+    Output
+      <zoned_time<second><America/New_York>[5]>
+      [1] "2018-12-31 19:00:00-05:00" "2019-01-31 19:00:00-05:00"
+      [3] "2019-02-28 19:00:00-05:00" "2019-03-31 20:00:00-04:00"
+      [5] "2019-04-30 20:00:00-04:00"
+
+# `max` defaults to `getOption('max.print')` but can be overridden
+
+    Code
+      x
+    Output
+      <zoned_time<second><America/New_York>[5]>
+      [1] "2018-12-31 19:00:00-05:00" "2019-01-31 19:00:00-05:00"
+      [3] "2019-02-28 19:00:00-05:00"
+      Reached `max` or `getOption('max.print')`. Omitted 2 values.
+
+---
+
+    Code
+      print(x, max = 4)
+    Output
+      <zoned_time<second><America/New_York>[5]>
+      [1] "2018-12-31 19:00:00-05:00" "2019-01-31 19:00:00-05:00"
+      [3] "2019-02-28 19:00:00-05:00" "2019-03-31 20:00:00-04:00"
+      Reached `max` or `getOption('max.print')`. Omitted 1 value.
+
+---
+
+    Code
+      print(x, max = 5)
+    Output
+      <zoned_time<second><America/New_York>[5]>
+      [1] "2018-12-31 19:00:00-05:00" "2019-01-31 19:00:00-05:00"
+      [3] "2019-02-28 19:00:00-05:00" "2019-03-31 20:00:00-04:00"
+      [5] "2019-04-30 20:00:00-04:00"
+
 # cannot parse nonexistent time
 
     Code

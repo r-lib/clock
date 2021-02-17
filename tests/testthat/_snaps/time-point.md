@@ -1,3 +1,71 @@
+# normal print method works
+
+    Code
+      x
+    Output
+      <time_point<sys><day>[5]>
+      [1] "2019-01-01" "2019-02-01" "2019-03-01" "2019-04-01" "2019-05-01"
+
+# can limit with `max`
+
+    Code
+      print(x, max = 2)
+    Output
+      <time_point<sys><day>[5]>
+      [1] "2019-01-01" "2019-02-01"
+      Reached `max` or `getOption('max.print')`. Omitted 3 values.
+
+---
+
+    Code
+      print(x, max = 4)
+    Output
+      <time_point<sys><day>[5]>
+      [1] "2019-01-01" "2019-02-01" "2019-03-01" "2019-04-01"
+      Reached `max` or `getOption('max.print')`. Omitted 1 value.
+
+---
+
+    Code
+      print(x, max = 5)
+    Output
+      <time_point<sys><day>[5]>
+      [1] "2019-01-01" "2019-02-01" "2019-03-01" "2019-04-01" "2019-05-01"
+
+---
+
+    Code
+      print(x, max = 6)
+    Output
+      <time_point<sys><day>[5]>
+      [1] "2019-01-01" "2019-02-01" "2019-03-01" "2019-04-01" "2019-05-01"
+
+# `max` defaults to `getOption('max.print')` but can be overridden
+
+    Code
+      x
+    Output
+      <time_point<naive><day>[5]>
+      [1] "2019-01-01" "2019-02-01" "2019-03-01"
+      Reached `max` or `getOption('max.print')`. Omitted 2 values.
+
+---
+
+    Code
+      print(x, max = 4)
+    Output
+      <time_point<naive><day>[5]>
+      [1] "2019-01-01" "2019-02-01" "2019-03-01" "2019-04-01"
+      Reached `max` or `getOption('max.print')`. Omitted 1 value.
+
+---
+
+    Code
+      print(x, max = 5)
+    Output
+      <time_point<naive><day>[5]>
+      [1] "2019-01-01" "2019-02-01" "2019-03-01" "2019-04-01" "2019-05-01"
+
 # cannot floor to more precise precision
 
     Can't floor to a more precise precision.

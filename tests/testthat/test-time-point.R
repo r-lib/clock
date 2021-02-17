@@ -1,4 +1,33 @@
 # ------------------------------------------------------------------------------
+# print() / obj_print_data() / obj_print_footer()
+
+test_that("normal print method works", {
+  x <- as_sys(year_month_day(2019, 1:5, 1))
+  expect_snapshot(x)
+})
+
+test_that("can limit with `max`", {
+  x <- as_sys(year_month_day(2019, 1:5, 1))
+
+  expect_snapshot(print(x, max = 2))
+  expect_snapshot(print(x, max = 4))
+
+  # no footer if length >= max
+  expect_snapshot(print(x, max = 5))
+  expect_snapshot(print(x, max = 6))
+})
+
+test_that("`max` defaults to `getOption('max.print')` but can be overridden", {
+  local_options(max.print = 3)
+
+  x <- as_naive(year_month_day(2019, 1:5, 1))
+
+  expect_snapshot(x)
+  expect_snapshot(print(x, max = 4))
+  expect_snapshot(print(x, max = 5))
+})
+
+# ------------------------------------------------------------------------------
 # format()
 
 test_that("naive-time doesn't allow `%z` or `%Z`", {

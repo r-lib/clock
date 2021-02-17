@@ -1,4 +1,42 @@
 # ------------------------------------------------------------------------------
+# print() / obj_print_data() / obj_print_footer()
+
+test_that("normal print method works", {
+  x <- year_month_day(2019, 1:5)
+  expect_snapshot(x)
+})
+
+test_that("can limit with `max`", {
+  x <- year_month_day(2019, 1:5)
+
+  expect_snapshot(print(x, max = 2))
+  expect_snapshot(print(x, max = 4))
+
+  # no footer if length >= max
+  expect_snapshot(print(x, max = 5))
+  expect_snapshot(print(x, max = 6))
+})
+
+test_that("`max` defaults to `getOption('max.print')` but can be overridden", {
+  local_options(max.print = 3)
+
+  x <- year_month_day(2019, 1:5)
+
+  expect_snapshot(x)
+  expect_snapshot(print(x, max = 4))
+  expect_snapshot(print(x, max = 5))
+})
+
+test_that("`max` is validated", {
+  x <- year_month_day(2019)
+
+  expect_snapshot_error(print(x, max = -1))
+  expect_snapshot_error(print(x, max = c(1, 2)))
+  expect_snapshot_error(print(x, max = NA_integer_))
+  expect_snapshot_error(print(x, max = "foo"))
+})
+
+# ------------------------------------------------------------------------------
 # calendar_group()
 
 test_that("group: `precision` is validated", {

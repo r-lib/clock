@@ -1,3 +1,87 @@
+# normal print method works
+
+    Code
+      x
+    Output
+      <year_month_day<month>[5]>
+      [1] "2019-01" "2019-02" "2019-03" "2019-04" "2019-05"
+
+# can limit with `max`
+
+    Code
+      print(x, max = 2)
+    Output
+      <year_month_day<month>[5]>
+      [1] "2019-01" "2019-02"
+      Reached `max` or `getOption('max.print')`. Omitted 3 values.
+
+---
+
+    Code
+      print(x, max = 4)
+    Output
+      <year_month_day<month>[5]>
+      [1] "2019-01" "2019-02" "2019-03" "2019-04"
+      Reached `max` or `getOption('max.print')`. Omitted 1 value.
+
+---
+
+    Code
+      print(x, max = 5)
+    Output
+      <year_month_day<month>[5]>
+      [1] "2019-01" "2019-02" "2019-03" "2019-04" "2019-05"
+
+---
+
+    Code
+      print(x, max = 6)
+    Output
+      <year_month_day<month>[5]>
+      [1] "2019-01" "2019-02" "2019-03" "2019-04" "2019-05"
+
+# `max` defaults to `getOption('max.print')` but can be overridden
+
+    Code
+      x
+    Output
+      <year_month_day<month>[5]>
+      [1] "2019-01" "2019-02" "2019-03"
+      Reached `max` or `getOption('max.print')`. Omitted 2 values.
+
+---
+
+    Code
+      print(x, max = 4)
+    Output
+      <year_month_day<month>[5]>
+      [1] "2019-01" "2019-02" "2019-03" "2019-04"
+      Reached `max` or `getOption('max.print')`. Omitted 1 value.
+
+---
+
+    Code
+      print(x, max = 5)
+    Output
+      <year_month_day<month>[5]>
+      [1] "2019-01" "2019-02" "2019-03" "2019-04" "2019-05"
+
+# `max` is validated
+
+    `max` must be a positive number.
+
+---
+
+    `max` must be a single number, or `NULL`.
+
+---
+
+    `max` must be a single number, or `NULL`.
+
+---
+
+    Can't convert `max` <character> to <integer>.
+
 # group: `precision` is validated
 
     `precision` not recognized.
