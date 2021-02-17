@@ -214,6 +214,64 @@ warn_clock_parse_failures <- function(n, first) {
 
 # ------------------------------------------------------------------------------
 
+max_collect <- function(max) {
+  if (is_null(max)) {
+    max <- getOption("max.print", default = 1000L)
+  }
+
+  max <- vec_cast(max, integer(), x_arg = "max")
+
+  if (!is_number(max)) {
+    abort("`max` must be a single number, or `NULL`.")
+  }
+  if (max <= 0L) {
+    abort("`max` must be a positive number.")
+  }
+
+  max
+}
+
+max_slice <- function(x, max) {
+  if (max < vec_size(x)) {
+    vec_slice(x, seq_len(max))
+  } else {
+    x
+  }
+}
+
+clock_print <- function(x, max) {
+  max <- max_collect(max)
+  obj_print(x, max = max)
+  invisible(x)
+}
+
+clock_print_footer <- function(x, max) {
+  size <- vec_size(x)
+
+  if (max >= size) {
+    return(invisible(x))
+  }
+
+  n_omitted <- size - max
+
+  if (n_omitted == 1L) {
+    entry <- " entry."
+  } else {
+    entry <- " entries."
+  }
+
+  cat(
+    "Reached `max` or `getOption('max.print')`. ",
+    "Omitted ", n_omitted, entry,
+    "\n",
+    sep = ""
+  )
+
+  invisible(x)
+}
+
+# ------------------------------------------------------------------------------
+
 is_number <- function(x) {
   if (length(x) != 1L) {
     FALSE
