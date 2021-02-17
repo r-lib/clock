@@ -25,7 +25,7 @@ library(rlang)
 
 # Motivations
 
-R has always had strong date and date-time capabilities. The Date, POSIXct, and POSIXlt classes provide a powerful foundation to build on, and the R community has done just that. [lubridate](https://lubridate.tidyverse.org/), [zoo](https://cran.r-project.org/web/packages/zoo/index.html), and [tsibble](https://cran.r-project.org/web/packages/tsibble/index.html) are just a few of the popular packages that have extended R's native date-time capabilities.
+R has always had strong date and date-time capabilities. The Date, POSIXct, and POSIXlt classes provide a powerful foundation to build on, and the R community has done just that. [lubridate](https://lubridate.tidyverse.org/), [zoo](https://CRAN.R-project.org/package=zoo), and [tsibble](https://CRAN.R-project.org/package=tsibble) are just a few of the popular packages that have extended R's native date-time capabilities.
 
 So, why clock?
 

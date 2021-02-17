@@ -75,4 +75,4 @@ The ideas used to build clock have come from a number of places:
 
 - The [nanotime](https://github.com/eddelbuettel/nanotime) package was the first to implement a nanosecond resolution time type for R.
 
-- The [zoo](https://cran.r-project.org/web/packages/zoo/index.html) package was the first to implement year-month and year-quarter types, and has functioned as a very successful time series infrastructure package for many years.
+- The [zoo](https://CRAN.R-project.org/package=zoo) package was the first to implement year-month and year-quarter types, and has functioned as a very successful time series infrastructure package for many years.
