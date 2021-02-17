@@ -626,18 +626,32 @@ vec_cast.clock_zoned_time.clock_zoned_time <- function(x, to, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+print.clock_zoned_time <- function(x, ..., max = NULL) {
+  clock_print(x, max)
+}
+
 # - Pass through internal option to not print zone name
 # - Unlike vctrs, don't use `print(quote = FALSE)` since we want to match base R
 #' @export
-obj_print_data.clock_zoned_time <- function(x, ...) {
-  if (vec_size(x) == 0L) {
+obj_print_data.clock_zoned_time <- function(x, ..., max) {
+  if (vec_is_empty(x)) {
     return(invisible(x))
   }
 
+  x <- max_slice(x, max)
+
   out <- format(x, print_zone_name = FALSE)
-  print(out)
+
+  # Pass `max` to avoid base R's default footer
+  print(out, max = max)
 
   invisible(x)
+}
+
+#' @export
+obj_print_footer.clock_zoned_time <- function(x, ..., max) {
+  clock_print_footer(x, max)
 }
 
 # Align left to match pillar_shaft.Date
