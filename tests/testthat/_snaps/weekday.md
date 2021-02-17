@@ -84,3 +84,19 @@
 
     `abbreviate` must be `TRUE` or `FALSE`.
 
+# can't compare or order weekdays (#153)
+
+    Can't compare or order values of the 'clock_weekday' type, as this type does not specify a 'first' day of the week.
+
+---
+
+    Can't compare or order values of the 'clock_weekday' type, as this type does not specify a 'first' day of the week.
+
+---
+
+    Can't compare or order values of the 'clock_weekday' type, as this type does not specify a 'first' day of the week.
+
+---
+
+    Can't compare or order values of the 'clock_weekday' type, as this type does not specify a 'first' day of the week.
+

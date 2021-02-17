@@ -162,3 +162,14 @@ test_that("subtraction respects NA", {
     duration_days(c(NA, NA))
   )
 })
+
+# ------------------------------------------------------------------------------
+# vec_proxy_compare()
+
+test_that("can't compare or order weekdays (#153)", {
+  expect_snapshot_error(weekday(1) < weekday(2))
+  expect_snapshot_error(min(weekday(1)))
+
+  expect_snapshot_error(xtfrm(weekday(1:2)))
+  expect_snapshot_error(vec_order(weekday(1:2)))
+})

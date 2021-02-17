@@ -169,6 +169,16 @@ vec_cast.clock_weekday.clock_weekday <- function(x, to, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+vec_proxy_compare.clock_weekday <- function(x, ...) {
+  abort(paste0(
+    "Can't compare or order values of the 'clock_weekday' type, ",
+    "as this type does not specify a 'first' day of the week."
+  ))
+}
+
+# ------------------------------------------------------------------------------
+
 #' Convert to a weekday
 #'
 #' `as_weekday()` converts to a weekday type. This is normally useful for
