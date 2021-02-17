@@ -15,7 +15,7 @@
     Output
       <zoned_time<second><America/New_York>[5]>
       [1] "2018-12-31 19:00:00-05:00" "2019-01-31 19:00:00-05:00"
-      Reached `max` or `getOption('max.print')`. Omitted 3 entries.
+      Reached `max` or `getOption('max.print')`. Omitted 3 values.
 
 ---
 
@@ -25,7 +25,7 @@
       <zoned_time<second><America/New_York>[5]>
       [1] "2018-12-31 19:00:00-05:00" "2019-01-31 19:00:00-05:00"
       [3] "2019-02-28 19:00:00-05:00" "2019-03-31 20:00:00-04:00"
-      Reached `max` or `getOption('max.print')`. Omitted 1 entry.
+      Reached `max` or `getOption('max.print')`. Omitted 1 value.
 
 ---
 
@@ -55,7 +55,7 @@
       <zoned_time<second><America/New_York>[5]>
       [1] "2018-12-31 19:00:00-05:00" "2019-01-31 19:00:00-05:00"
       [3] "2019-02-28 19:00:00-05:00"
-      Reached `max` or `getOption('max.print')`. Omitted 2 entries.
+      Reached `max` or `getOption('max.print')`. Omitted 2 values.
 
 ---
 
@@ -65,7 +65,7 @@
       <zoned_time<second><America/New_York>[5]>
       [1] "2018-12-31 19:00:00-05:00" "2019-01-31 19:00:00-05:00"
       [3] "2019-02-28 19:00:00-05:00" "2019-03-31 20:00:00-04:00"
-      Reached `max` or `getOption('max.print')`. Omitted 1 entry.
+      Reached `max` or `getOption('max.print')`. Omitted 1 value.
 
 ---
 

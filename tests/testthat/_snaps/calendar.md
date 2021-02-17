@@ -13,7 +13,7 @@
     Output
       <year_month_day<month>[5]>
       [1] "2019-01" "2019-02"
-      Reached `max` or `getOption('max.print')`. Omitted 3 entries.
+      Reached `max` or `getOption('max.print')`. Omitted 3 values.
 
 ---
 
@@ -22,7 +22,7 @@
     Output
       <year_month_day<month>[5]>
       [1] "2019-01" "2019-02" "2019-03" "2019-04"
-      Reached `max` or `getOption('max.print')`. Omitted 1 entry.
+      Reached `max` or `getOption('max.print')`. Omitted 1 value.
 
 ---
 
@@ -47,7 +47,7 @@
     Output
       <year_month_day<month>[5]>
       [1] "2019-01" "2019-02" "2019-03"
-      Reached `max` or `getOption('max.print')`. Omitted 2 entries.
+      Reached `max` or `getOption('max.print')`. Omitted 2 values.
 
 ---
 
@@ -56,7 +56,7 @@
     Output
       <year_month_day<month>[5]>
       [1] "2019-01" "2019-02" "2019-03" "2019-04"
-      Reached `max` or `getOption('max.print')`. Omitted 1 entry.
+      Reached `max` or `getOption('max.print')`. Omitted 1 value.
 
 ---
 

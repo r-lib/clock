@@ -255,14 +255,14 @@ clock_print_footer <- function(x, max) {
   n_omitted <- size - max
 
   if (n_omitted == 1L) {
-    entry <- " entry."
+    value <- " value."
   } else {
-    entry <- " entries."
+    value <- " values."
   }
 
   cat(
     "Reached `max` or `getOption('max.print')`. ",
-    "Omitted ", n_omitted, entry,
+    "Omitted ", n_omitted, value,
     "\n",
     sep = ""
   )
