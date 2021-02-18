@@ -465,6 +465,11 @@ a convenient way to make production code robust to ambiguous times.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A POSIXct.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>If <code>date_time_parse_complete()</code> is given input that is length zero, all
+<code>NA</code>s, or completely fails to parse, then no time zone will be able to be
+determined. In that case, the result will use <code>"UTC"</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Parse with a known `zone`, even though that information isn't in the string</span>

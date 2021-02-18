@@ -402,7 +402,10 @@ to parse.</p></td>
     <p>A zoned-time.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>If your date-time strings contain time zone offsets (like <code>-04:00</code>), but
+    <p>If <code>zoned_parse_complete()</code> is given input that is length zero, all <code>NA</code>s, or
+completely fails to parse, then no time zone will be able to be determined.
+In that case, the result will use <code>"UTC"</code>.</p>
+<p>If your date-time strings contain time zone offsets (like <code>-04:00</code>), but
 not the full time zone name, you might need <code><a href='sys_parse.html'>sys_parse()</a></code>.</p>
 <p>If your date-time strings don't contain time zone offsets or the full
 time zone name, you might need to use <code><a href='naive_parse.html'>naive_parse()</a></code>. From there, if you
