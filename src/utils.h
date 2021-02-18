@@ -131,27 +131,46 @@ static inline bool clock_is_string(const cpp11::sexp& x) {
 
 // -----------------------------------------------------------------------------
 
-static int64_t r_int64_na = INT64_MIN;
+// Max - If int64_t is a long long, this converts `9223372036854775807` ->
+// `9223372036854775808` as that is the next possible value representable as a
+// double.
+//
+// Min - This should let `-9223372036854775808` remain as is, as it is
+// directly representable as a double.
+//
+// Practically this just forces us to use `x >= INT64_MAX_AS_DOUBLE` rather
+// than just `>`, as you can't ever have a double value right on `INT64_MAX`.
+static const double INT64_MAX_AS_DOUBLE = static_cast<double>(INT64_MAX);
+static const double INT64_MIN_AS_DOUBLE = static_cast<double>(INT64_MIN);
 
-static inline int64_t as_int64(double x) {
-  if (r_dbl_is_missing(x)) {
-    return r_int64_na;
-  }
+static
+inline
+bool
+clock_dbl_is_oob_for_int64(double x) {
+  return x >= INT64_MAX_AS_DOUBLE || x < INT64_MIN_AS_DOUBLE;
+}
 
-  // Floor to get rid of fractional seconds. This is the most consistent way
-  // to drop them to pretend like they don't exist. Using `floor()`
-  // to round towards negative infinity is the correct thing to do with
-  // pre 1970 (i.e. negative) times. For example:
-  // unclass(as.POSIXct("1969-12-31 23:59:59.9999", "UTC"))
-  // [1] -0.0001000000000033196556615
-  // Truncating to 0 gives 1970-01-01. Flooring to -1 gives 1969-12-31 23:59:59,
-  // i.e. the "correct" result if we are ignoring fractional seconds.
+/*
+ * Floor to get rid of fractional seconds. This is the most consistent way to
+ * drop them to pretend like they don't exist. Using `floor()` to round towards
+ * negative infinity is the correct thing to do with pre 1970 (i.e. negative)
+ * times.
+ *
+ * For example:
+ *
+ * unclass(as.POSIXct("1969-12-31 23:59:59.9999", "UTC"))
+ * [1] -0.0001000000000033196556615
+ *
+ * Truncating to 0 gives 1970-01-01.
+ *
+ * Flooring to -1 gives 1969-12-31 23:59:59, i.e. the "correct" result if we are
+ * ignoring fractional seconds.
+ */
+static
+inline
+int64_t
+clock_dbl_as_int64(double x) {
   x = std::floor(x);
-
-  if (x > INT64_MAX || x < INT64_MIN) {
-    return r_int64_na;
-  }
-
   return static_cast<int64_t>(x);
 }
 

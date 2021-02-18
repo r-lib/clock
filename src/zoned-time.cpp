@@ -351,15 +351,18 @@ to_sys_duration_fields_from_sys_seconds_cpp(const cpp11::doubles& seconds) {
   for (r_ssize i = 0; i < size; ++i) {
     // Assume seconds precision!
     double elt_seconds = seconds[i];
-    int64_t elt = as_int64(elt_seconds);
 
-    if (elt == r_int64_na) {
+    if (r_dbl_is_missing(elt_seconds)) {
+      out.assign_na(i);
+      continue;
+    }
+    if (clock_dbl_is_oob_for_int64(elt_seconds)) {
       out.assign_na(i);
       continue;
     }
 
+    int64_t elt = clock_dbl_as_int64(elt_seconds);
     std::chrono::seconds elt_sec{elt};
-
     out.assign(elt_sec, i);
   }
 
