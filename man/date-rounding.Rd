@@ -39,6 +39,9 @@ A single positive integer specifying a multiple of \code{precision} to use.}
 An origin to start counting from. The default \code{origin} is
 1970-01-01.}
 }
+\value{
+\code{x} rounded to the specified \code{precision}.
+}
 \description{
 These are Date methods for the
 \link[=date-and-date-time-rounding]{rounding generics}.

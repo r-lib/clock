@@ -51,6 +51,9 @@ precise than \code{precision}.
 
 If \code{NULL}, a default origin of midnight on 1970-01-01 is used.}
 }
+\value{
+\code{x} rounded to the new \code{precision}.
+}
 \description{
 \itemize{
 \item \code{time_point_floor()} rounds a sys-time or naive-time down to a multiple of

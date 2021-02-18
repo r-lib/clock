@@ -582,6 +582,8 @@ date_round <- function(x, precision, ..., n = 1L, origin = NULL) {
 #'   An origin to start counting from. The default `origin` is
 #'   1970-01-01.
 #'
+#' @return `x` rounded to the specified `precision`.
+#'
 #' @name date-rounding
 #'
 #' @examples

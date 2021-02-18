@@ -37,6 +37,9 @@ A BCP 47 locale, generally constructed from a two or three
 digit language code. See \code{clock_labels_languages()} for a complete list of
 available locales.}
 }
+\value{
+A \code{"clock_labels"} object.
+}
 \description{
 When parsing and formatting dates, you often need to know how weekdays of
 the week and months are represented as text. These functions allow you

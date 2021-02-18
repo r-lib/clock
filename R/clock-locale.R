@@ -16,6 +16,8 @@
 #'   Symbol used for the decimal place when formatting sub-second date-times.
 #'   Either `","` or `"."`.
 #'
+#' @return A `"clock_locale"` object.
+#'
 #' @export
 #' @examples
 #' clock_locale()

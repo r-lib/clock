@@ -18,6 +18,9 @@ AM/PM names. Either the language code as string (passed on to
 Symbol used for the decimal place when formatting sub-second date-times.
 Either \code{","} or \code{"."}.}
 }
+\value{
+A \code{"clock_locale"} object.
+}
 \description{
 A clock locale contains the information required to format and parse dates.
 The defaults have been chosen to match US English. A clock locale object can

@@ -391,6 +391,8 @@ as.double.clock_duration <- function(x, ...) {
 #'
 #'   - `"nanosecond"`
 #'
+#' @return `x` cast to the new `precision`.
+#'
 #' @export
 #' @examples
 #' x <- duration_seconds(c(86401, -86401))

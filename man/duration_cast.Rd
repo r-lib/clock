@@ -28,6 +28,9 @@ A precision. One of:
 \item \code{"nanosecond"}
 }}
 }
+\value{
+\code{x} cast to the new \code{precision}.
+}
 \description{
 Casting is one way to change a duration's precision.
 

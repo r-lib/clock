@@ -685,6 +685,8 @@ date_leap_year.POSIXt <- function(x) {
 #'
 #'   If `NULL`, defaults to midnight on 1970-01-01 in the time zone of `x`.
 #'
+#' @return `x` rounded to the specified `precision`.
+#'
 #' @name posixt-rounding
 #'
 #' @examples

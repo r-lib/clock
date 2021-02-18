@@ -539,6 +539,8 @@ as_weekday.clock_time_point <- function(x) {
 #'
 #'   - `"nanosecond"`
 #'
+#' @return `x` cast to the new `precision`.
+#'
 #' @export
 #' @examples
 #' # Hour precision time points
@@ -656,6 +658,8 @@ time_point_cast <- function(x, precision) {
 #'   precise than `precision`.
 #'
 #'   If `NULL`, a default origin of midnight on 1970-01-01 is used.
+#'
+#' @return `x` rounded to the new `precision`.
 #'
 #' @name time-point-rounding
 #'

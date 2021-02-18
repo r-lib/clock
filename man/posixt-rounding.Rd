@@ -132,6 +132,9 @@ zoned_time cannot resolve. Instead, it must be specified as a list
 alongside an ambiguous time resolution strategy as described above. This is
 a convenient way to make production code robust to ambiguous times.}
 }
+\value{
+\code{x} rounded to the specified \code{precision}.
+}
 \description{
 These are POSIXct/POSIXlt methods for the
 \link[=date-and-date-time-rounding]{rounding generics}.

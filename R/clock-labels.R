@@ -27,6 +27,8 @@
 #'
 #'   Names used for AM and PM.
 #'
+#' @return A `"clock_labels"` object.
+#'
 #' @export
 #' @examples
 #' clock_labels_lookup("en")
