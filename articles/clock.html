@@ -182,10 +182,11 @@
 <div id="parsing-date-times" class="section level3">
 <h3 class="hasAnchor">
 <a href="#parsing-date-times" class="anchor"></a>Parsing date-times</h3>
-<p>You have two options when parsing date-times:</p>
+<p>You have three options when parsing date-times:</p>
 <ul>
 <li><p>With strings like <code>"2020-01-01 01:02:03"</code> where there is no time zone offset or full (not abbreviated!) time zone name, use <code><a href="../reference/date-time-parse.html">date_time_parse()</a></code>.</p></li>
-<li><p>With strings like <code>"2020-01-01 01:02:03-05:00[America/New_York]"</code> where there is both a time zone offset and time zone name present in the string, use <code><a href="../reference/date-time-parse.html">date_time_complete_parse()</a></code>.</p></li>
+<li><p>With strings like <code>"2020-01-01 01:02:03-05:00[America/New_York]"</code> where there is both a time zone offset and time zone name present in the string, use <code><a href="../reference/date-time-parse.html">date_time_parse_complete()</a></code>.</p></li>
+<li><p>With strings like <code>"2020-01-01 01:02:03 EST"</code> where there is a time zone abbreviation in the string, use <code><a href="../reference/date-time-parse.html">date_time_parse_abbrev()</a></code>.</p></li>
 </ul>
 <p><code><a href="../reference/date-time-parse.html">date_time_parse()</a></code> requires a <code>zone</code> argument, and will ignore any other zone information in the string (i.e. if you tried to specify <code>%z</code> and <code>%Z</code>). The default format string is <code>"%Y-%m-%d %H:%M:%S"</code>.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -214,13 +215,39 @@
 <span class="co">#&gt; [1] "2020-11-01 01:30:00 EDT"</span>
 <span class="fu"><a href="../reference/date-time-parse.html">date_time_parse</a></span><span class="op">(</span><span class="st">"2020-11-01 01:30:00"</span>, <span class="va">zone</span>, ambiguous <span class="op">=</span> <span class="st">"latest"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-11-01 01:30:00 EST"</span></code></pre></div>
-<p><code><a href="../reference/date-time-parse.html">date_time_complete_parse()</a></code> doesn’t have a <code>zone</code> argument, and doesn’t require <code>ambiguous</code> or <code>nonexistent</code> arguments, since it assumes that the string you are providing is completely unambiguous. The only way this is possible is by having both a time zone offset, specified by <code>%z</code>, and a full time zone name, specified by <code>%Z</code>, in the string.</p>
-<p>The following is an example of an “extended” ISO 8601 format used by Java 8’s time library to specify complete date-time strings. This is something that <code><a href="../reference/date-time-parse.html">date_time_complete_parse()</a></code> can parse. The default format string follows this extended format, and is <code>"%Y-%m-%d %H:%M:%S%z[%Z]"</code>.</p>
+<p><code><a href="../reference/date-time-parse.html">date_time_parse_complete()</a></code> doesn’t have a <code>zone</code> argument, and doesn’t require <code>ambiguous</code> or <code>nonexistent</code> arguments, since it assumes that the string you are providing is completely unambiguous. The only way this is possible is by having both a time zone offset, specified by <code>%z</code>, and a full time zone name, specified by <code>%Z</code>, in the string.</p>
+<p>The following is an example of an “extended” ISO 8601 format used by Java 8’s time library to specify complete date-time strings. This is something that <code><a href="../reference/date-time-parse.html">date_time_parse_complete()</a></code> can parse. The default format string follows this extended format, and is <code>"%Y-%m-%d %H:%M:%S%z[%Z]"</code>.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"2020-01-01 01:02:03-05:00[America/New_York]"</span>
 
-<span class="fu"><a href="../reference/date-time-parse.html">date_time_complete_parse</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="fu"><a href="../reference/date-time-parse.html">date_time_parse_complete</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-01-01 01:02:03 EST"</span></code></pre></div>
+<p><code><a href="../reference/date-time-parse.html">date_time_parse_abbrev()</a></code> is useful when your date-time strings contain a time zone abbreviation rather than a time zone offset or full time zone name.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"2020-01-01 01:02:03 EST"</span>
+
+<span class="fu"><a href="../reference/date-time-parse.html">date_time_parse_abbrev</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
+<span class="co">#&gt; [1] "2020-01-01 01:02:03 EST"</span></code></pre></div>
+<p>The string is first parsed as a naive time without considering the abbreviation, and is then converted to a zoned-time using the supplied <code>zone</code>. If an ambiguous time is parsed, the abbreviation is used to resolve the ambiguity.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+  <span class="st">"1970-10-25 01:30:00 EDT"</span>,
+  <span class="st">"1970-10-25 01:30:00 EST"</span>
+<span class="op">)</span>
+
+<span class="fu"><a href="../reference/date-time-parse.html">date_time_parse_abbrev</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
+<span class="co">#&gt; [1] "1970-10-25 01:30:00 EDT" "1970-10-25 01:30:00 EST"</span></code></pre></div>
+<p>You might be wondering why you need to supply <code>zone</code> at all. Isn’t the abbreviation enough? Unfortunately, multiple countries use the same time zone abbreviations, even though they have different time zones. This means that, in many cases, the abbreviation alone is ambiguous. For example, both India and Israel use <code>IST</code> for their standard times.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"1970-01-01 02:30:30 IST"</span>
+
+<span class="co"># IST = India Standard Time</span>
+<span class="fu"><a href="../reference/date-time-parse.html">date_time_parse_abbrev</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"Asia/Kolkata"</span><span class="op">)</span>
+<span class="co">#&gt; [1] "1970-01-01 02:30:30 IST"</span>
+
+<span class="co"># IST = Israel Standard Time</span>
+<span class="fu"><a href="../reference/date-time-parse.html">date_time_parse_abbrev</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"Asia/Jerusalem"</span><span class="op">)</span>
+<span class="co">#&gt; [1] "1970-01-01 02:30:30 IST"</span></code></pre></div>
 </div>
 </div>
 <div id="grouping-rounding-and-shifting" class="section level2">
@@ -236,7 +263,7 @@
 <h3 class="hasAnchor">
 <a href="#grouping" class="anchor"></a>Grouping</h3>
 <p>Grouping allows you to summarize a component of a date or date-time <em>within</em> other components. An example of this is grouping by day of the month, which summarizes the day component <em>within</em> the current year-month.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">20</span><span class="op">)</span>, <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="va">x</span>
 <span class="co">#&gt;  [1] "2019-01-20" "2019-01-21" "2019-01-22" "2019-01-23" "2019-01-24"</span>
@@ -252,14 +279,14 @@
 <span class="co">#&gt; [16] "2019-02-01" "2019-02-01"</span></code></pre></div>
 <p>The thing to note about grouping by day of the month is that at the end of each month, the groups restart. So this created groups for January of <code>[1, 5], [6, 10], [11, 15], [16, 20], [21, 25], [26, 30], [31]</code>.</p>
 <p>You can also group by month or year:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/date_group.html">date_group</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"month"</span><span class="op">)</span>
 <span class="co">#&gt;  [1] "2019-01-01" "2019-01-01" "2019-01-01" "2019-01-01" "2019-01-01"</span>
 <span class="co">#&gt;  [6] "2019-01-01" "2019-01-01" "2019-01-01" "2019-01-01" "2019-01-01"</span>
 <span class="co">#&gt; [11] "2019-01-01" "2019-01-01" "2019-02-01" "2019-02-01" "2019-02-01"</span>
 <span class="co">#&gt; [16] "2019-02-01" "2019-02-01"</span></code></pre></div>
 <p>This also works with date-times, adding the ability to group by hour of the day, minute of the hour, and second of the minute.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>
   <span class="fu"><a href="../reference/date_time_build.html">date_time_build</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">55</span>, zone <span class="op">=</span> <span class="st">"UTC"</span><span class="op">)</span>,
   <span class="fu"><a href="../reference/date_time_build.html">date_time_build</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">15</span>, zone <span class="op">=</span> <span class="st">"UTC"</span><span class="op">)</span>,
@@ -286,11 +313,11 @@
 <a href="#rounding" class="anchor"></a>Rounding</h3>
 <p>While grouping is useful for summarizing <em>within</em> a component, rounding is useful for summarizing <em>across</em> components. It is great for summarizing by, say, a rolling set of 60 days.</p>
 <p>Rounding operates on the underlying count that makes up your date or date-time. To see what I mean by this, try unclassing a date:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">unclass</a></span><span class="op">(</span><span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] 18262</span></code></pre></div>
 <p>This is a count of days since the <em>origin</em> that R uses, 1970-01-01, which is considered day 0. If you were to floor by 60 days, this would bundle <code>[1970-01-01, 1970-03-02), [1970-03-02, 1970-05-01)</code>, and so on. Equivalently, it bundles counts of <code>[0, 60), [60, 120)</code>, etc.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">1970</span>, <span class="fl">01</span>, <span class="fl">01</span><span class="op">)</span>, <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">1970</span>, <span class="fl">05</span>, <span class="fl">10</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/date-and-date-time-rounding.html">date_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"day"</span>, n <span class="op">=</span> <span class="fl">60</span><span class="op">)</span>
@@ -300,12 +327,12 @@
 <span class="co">#&gt; [1] "1970-01-01" "1970-03-02" "1970-03-02" "1970-03-02" "1970-05-01"</span>
 <span class="co">#&gt; [6] "1970-05-01" "1970-05-01"</span></code></pre></div>
 <p>If you prefer a different origin, you can supply a Date <code>origin</code> to <code><a href="../reference/date-and-date-time-rounding.html">date_floor()</a></code>, which determines what “day 0” is considered to be. This can be useful for grouping by multiple weeks if you want to control what is considered the start of the week. Since 1970-01-01 is a Thursday, flooring by 2 weeks would normally generate all Thursdays:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="fu"><a href="../reference/date-and-date-time-rounding.html">date_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"week"</span>, n <span class="op">=</span> <span class="fl">14</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; &lt;weekday[7]&gt;</span>
 <span class="co">#&gt; [1] Thu Thu Thu Thu Thu Thu Thu</span></code></pre></div>
 <p>To change this you can supply an <code>origin</code> on the weekday that you’d like to be considered the first day of the week.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sunday</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">1970</span>, <span class="fl">01</span>, <span class="fl">04</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/date-and-date-time-rounding.html">date_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"week"</span>, n <span class="op">=</span> <span class="fl">14</span>, origin <span class="op">=</span> <span class="va">sunday</span><span class="op">)</span>
@@ -322,7 +349,7 @@
 <a href="#shifting" class="anchor"></a>Shifting</h3>
 <p><code><a href="../reference/date-and-date-time-shifting.html">date_shift()</a></code> allows you to target a weekday, and then shift a vector of dates forward or backward to the next instance of that target. It requires using one of the new types in clock, <em>weekday</em>, which is supplied as the target.</p>
 <p>For example, to shift to the next Tuesday:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span>
 
 <span class="co"># Wednesday / Thursday</span>
@@ -343,7 +370,7 @@
 <span class="fu"><a href="../reference/date-and-date-time-shifting.html">date_shift</a></span><span class="op">(</span><span class="va">x</span>, target <span class="op">=</span> <span class="va">tuesday</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-01-07" "2020-01-07"</span></code></pre></div>
 <p>Shifting to the <em>previous</em> day of the week is a nice way to floor by 1 week. It allows you to control the start of the week in a way that is slightly easier than using <code><a href="../reference/date-and-date-time-rounding.html">date_floor(origin = )</a></code>.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">1970</span>, <span class="fl">01</span>, <span class="fl">01</span><span class="op">)</span>, <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">1970</span>, <span class="fl">01</span>, <span class="st">"last"</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/date-and-date-time-shifting.html">date_shift</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">tuesday</span>, which <span class="op">=</span> <span class="st">"previous"</span><span class="op">)</span>
@@ -356,19 +383,19 @@
 <h2 class="hasAnchor">
 <a href="#arithmetic" class="anchor"></a>Arithmetic</h2>
 <p>You can do arithmetic with dates and date-times using the family of <code>add_*()</code> functions. With dates, you can add years, months, and days. With date-times, you can additionally add hours, minutes, and seconds.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/clock-arithmetic.html">add_years</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2021-01-01" "2022-01-01" "2023-01-01" "2024-01-01" "2025-01-01"</span></code></pre></div>
 <p>One of the neat parts about clock is that it requires you to be explicit about how you want to handle invalid dates when doing arithmetic. What is 1 month after January 31st? If you try and create this date, you’ll get an error.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">1</span>, <span class="fl">31</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; Error: Invalid date found at location 1. Resolve invalid date issues by specifying the `invalid` argument.</span></code></pre></div>
 <p>clock gives you the power to handle this through the <code>invalid</code> option:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># The previous valid moment in time</span>
 <span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, invalid <span class="op">=</span> <span class="st">"previous"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-02-29"</span>
@@ -386,19 +413,19 @@
 <span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, invalid <span class="op">=</span> <span class="st">"NA"</span><span class="op">)</span>
 <span class="co">#&gt; [1] NA</span></code></pre></div>
 <p>As a teaser, the low level library has a <em>calendar</em> type named year-month-day that powers this operation. It actually gives you <em>more</em> flexibility, allowing <code>"2020-02-31"</code> to exist in the wild:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ymd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_year_month_day.html">as_year_month_day</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/duration-helper.html">duration_months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="va">ymd</span>
 <span class="co">#&gt; &lt;year_month_day&lt;day&gt;[invalid=1][1]&gt;</span>
 <span class="co">#&gt; [1] "2020-02-31"</span></code></pre></div>
 <p>You can use <code><a href="../reference/clock-invalid.html">invalid_resolve(invalid =)</a></code> to resolve this like you did in <code><a href="../reference/clock-arithmetic.html">add_months()</a></code>, or you can let it hang around if you expect other operations to make it “valid” again.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Adding 1 more month makes it valid again</span>
 <span class="va">ymd</span> <span class="op">+</span> <span class="fu"><a href="../reference/duration-helper.html">duration_months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; &lt;year_month_day&lt;day&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2020-03-31"</span></code></pre></div>
 <p>When working with date-times, you can additionally add hours, minutes, and seconds.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_time_build.html">date_time_build</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">30</span>, zone <span class="op">=</span> <span class="st">"America/New_York"</span><span class="op">)</span>
 
 <span class="va">x</span> <span class="op">%&gt;%</span>
@@ -407,7 +434,7 @@
 <span class="co">#&gt; [1] "2020-01-02 04:30:00 EST" "2020-01-02 05:30:00 EST"</span>
 <span class="co">#&gt; [3] "2020-01-02 06:30:00 EST" "2020-01-02 07:30:00 EST"</span></code></pre></div>
 <p>When adding units of time to a POSIXct, you have to be very careful with daylight saving time issues. clock tries to help you out by letting you know when you run into an issue:</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_time_build.html">date_time_build</a></span><span class="op">(</span><span class="fl">1970</span>, <span class="fl">04</span>, <span class="fl">25</span>, <span class="fl">02</span>, <span class="fl">30</span>, <span class="fl">00</span>, zone <span class="op">=</span> <span class="st">"America/New_York"</span><span class="op">)</span>
 <span class="va">x</span>
 <span class="co">#&gt; [1] "1970-04-25 02:30:00 EST"</span>
@@ -416,7 +443,7 @@
 <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.</span></code></pre></div>
 <p>You can solve this using the <code>nonexistent</code> argument to control how these times should be handled.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Roll forward to the next valid moment in time</span>
 <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"roll-forward"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "1970-04-26 03:00:00 EDT"</span>
@@ -440,7 +467,7 @@
 <h2 class="hasAnchor">
 <a href="#getting-and-setting" class="anchor"></a>Getting and setting</h2>
 <p>clock provides a family of getters and setters for working with dates and date-times. You can get and set the year, month, or day of a date.</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/clock-getters.html">get_year</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
@@ -455,7 +482,7 @@
   <span class="fu"><a href="../reference/clock-setters.html">set_month</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2019-10-22"</span></code></pre></div>
 <p>As you might expect by now, setting the date to an invalid date requires you to explicitly handle this:</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">31</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-setters.html">set_month</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>
@@ -466,7 +493,7 @@
   <span class="fu"><a href="../reference/clock-setters.html">set_month</a></span><span class="op">(</span><span class="fl">4</span>, invalid <span class="op">=</span> <span class="st">"previous"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2019-04-30"</span></code></pre></div>
 <p>You can additionally set the hour, minute, and second of a POSIXct.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_time_build.html">date_time_build</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, zone <span class="op">=</span> <span class="st">"America/New_York"</span><span class="op">)</span>
 <span class="va">x</span>
 <span class="co">#&gt; [1] "2020-01-02 03:00:00 EST"</span>

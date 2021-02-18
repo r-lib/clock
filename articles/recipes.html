@@ -560,7 +560,7 @@
 <a href="#when-is-the-next-daylight-saving-time-event" class="anchor"></a>When is the next daylight saving time event?</h2>
 <p>Given a particular zoned-time, when will it next be affected by daylight saving time? For this, we can use a relatively low level helper, <code><a href="../reference/zoned_info.html">zoned_info()</a></code>. It returns a data frame of information about the current daylight saving time transition points, along with information about the offset, the current time zone abbreviation, and whether or not daylight saving time is currently active or not.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/zoned_parse.html">zoned_parse</a></span><span class="op">(</span><span class="st">"2019-01-01 00:00:00-05:00[America/New_York]"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/zoned-parsing.html">zoned_parse_complete</a></span><span class="op">(</span><span class="st">"2019-01-01 00:00:00-05:00[America/New_York]"</span><span class="op">)</span>
 
 <span class="va">info</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/zoned_info.html">zoned_info</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 

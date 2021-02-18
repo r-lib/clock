@@ -40,8 +40,9 @@
 
 
 <meta property="og:title" content="Parsing: date-time — date-time-parse" />
-<meta property="og:description" content="date_time_parse() and date_time_complete_parse() are two parsers for
-parsing strings into POSIXct date-times.date_time_parse()
+<meta property="og:description" content="There are three parsers for parsing strings into POSIXct date-times,
+date_time_parse(), date_time_parse_complete(), and
+date_time_parse_abbrev().date_time_parse()
 
 
 date_time_parse() is useful for strings like &quot;2019-01-01 00:00:00&quot;, where
@@ -55,17 +56,32 @@ date_time_parse() completely ignores the %z and %Z commands. The only
 time zone specific information that is used is the zone.
 The default format used is &quot;%Y-%m-%d %H:%M:%S&quot;.
 
-date_time_complete_parse()
+date_time_parse_complete()
 
 
-date_time_complete_parse() is useful for strings like &quot;2019-01-01 00:00:00-05:00[America/New_York]&quot;, where both the UTC offset and the full
-time zone name are present in the string. This is considered a &quot;complete&quot;
-date-time format, with no ambiguity.
-date_time_complete_parse() requires both the %z and %Z commands, which
-parse the offset from UTC and the full time zone name respectively. Requiring
-this information when parsing is the only way to ensure that the parse is
-done unambiguously.
+date_time_parse_complete() is a parser for complete date-time strings,
+like &quot;2019-01-01 00:00:00-05:00[America/New_York]&quot;. A complete date-time
+string has both the time zone offset and full time zone name in the string,
+which is the only way for the string itself to contain all of the information
+required to construct a zoned-time. Because of this,
+date_time_parse_complete() requires both the %z and %Z commands to be
+supplied in the format string.
 The default format used is &quot;%Y-%m-%d %H:%M:%S%Ez[%Z]&quot;.
+
+date_time_parse_abbrev()
+
+
+date_time_parse_abbrev() is a parser for date-time strings containing only
+a time zone abbreviation, like &quot;2019-01-01 00:00:00 EST&quot;. The time zone
+abbreviation is not enough to identify the full time zone name that the
+date-time belongs to, so the full time zone name must be supplied as the
+zone argument. However, the time zone abbreviation can help with resolving
+ambiguity around daylight saving time fallbacks.
+For date_time_parse_abbrev(), %Z must be supplied and is interpreted as
+the time zone abbreviation rather than the full time zone name.
+If used, the %z command must parse correctly, but its value will be
+completely ignored.
+The default format used is &quot;%Y-%m-%d %H:%M:%S %Z&quot;.
 " />
 
 
@@ -161,8 +177,9 @@ The default format used is &quot;%Y-%m-%d %H:%M:%S%Ez[%Z]&quot;.
     </div>
 
     <div class="ref-description">
-    <p><code>date_time_parse()</code> and <code>date_time_complete_parse()</code> are two parsers for
-parsing strings into POSIXct date-times.</p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a><code>date_time_parse()</code></h3>
+    <p>There are three parsers for parsing strings into POSIXct date-times,
+<code>date_time_parse()</code>, <code>date_time_parse_complete()</code>, and
+<code>date_time_parse_abbrev()</code>.</p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>date_time_parse()</h3>
 
 
 <p><code>date_time_parse()</code> is useful for strings like <code>"2019-01-01 00:00:00"</code>, where
@@ -176,17 +193,32 @@ explicitly with the <code>nonexistent</code> and <code>ambiguous</code> argument
 time zone specific information that is used is the <code>zone</code>.</p>
 <p>The default <code>format</code> used is <code>"%Y-%m-%d %H:%M:%S"</code>.</p>
 
-<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a><code>date_time_complete_parse()</code></h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>date_time_parse_complete()</h3>
 
 
-<p><code>date_time_complete_parse()</code> is useful for strings like <code>"2019-01-01 00:00:00-05:00[America/New_York]"</code>, where both the UTC offset and the full
-time zone name are present in the string. This is considered a "complete"
-date-time format, with no ambiguity.</p>
-<p><code>date_time_complete_parse()</code> requires both the <code>%z</code> and <code>%Z</code> commands, which
-parse the offset from UTC and the full time zone name respectively. Requiring
-this information when parsing is the <em>only</em> way to ensure that the parse is
-done unambiguously.</p>
+<p><code>date_time_parse_complete()</code> is a parser for <em>complete</em> date-time strings,
+like <code>"2019-01-01 00:00:00-05:00[America/New_York]"</code>. A complete date-time
+string has both the time zone offset and full time zone name in the string,
+which is the only way for the string itself to contain all of the information
+required to construct a zoned-time. Because of this,
+<code>date_time_parse_complete()</code> requires both the <code>%z</code> and <code>%Z</code> commands to be
+supplied in the <code>format</code> string.</p>
 <p>The default <code>format</code> used is <code>"%Y-%m-%d %H:%M:%S%Ez[%Z]"</code>.</p>
+
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>date_time_parse_abbrev()</h3>
+
+
+<p><code>date_time_parse_abbrev()</code> is a parser for date-time strings containing only
+a time zone abbreviation, like <code>"2019-01-01 00:00:00 EST"</code>. The time zone
+abbreviation is not enough to identify the full time zone name that the
+date-time belongs to, so the full time zone name must be supplied as the
+<code>zone</code> argument. However, the time zone abbreviation can help with resolving
+ambiguity around daylight saving time fallbacks.</p>
+<p>For <code>date_time_parse_abbrev()</code>, <code>%Z</code> must be supplied and is interpreted as
+the time zone abbreviation rather than the full time zone name.</p>
+<p>If used, the <code>%z</code> command must parse correctly, but its value will be
+completely ignored.</p>
+<p>The default <code>format</code> used is <code>"%Y-%m-%d %H:%M:%S %Z"</code>.</p>
 
     </div>
 
@@ -200,7 +232,9 @@ done unambiguously.</p>
   ambiguous <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
 
-<span class='fu'>date_time_complete_parse</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, format <span class='op'>=</span> <span class='cn'>NULL</span>, locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
+<span class='fu'>date_time_parse_complete</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, format <span class='op'>=</span> <span class='cn'>NULL</span>, locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'>date_time_parse_abbrev</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>zone</span>, <span class='va'>...</span>, format <span class='op'>=</span> <span class='cn'>NULL</span>, locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -213,7 +247,7 @@ done unambiguously.</p>
     <tr>
       <th>zone</th>
       <td><p><code>[character(1)]</code></p>
-<p>A valid time zone name to use with the resulting POSIXct.</p></td>
+<p>A full time zone name.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -349,9 +383,10 @@ ahead of UTC. The modified command <code>%Ez</code> parses a <code><a href='http
 minutes and leading zeroes on the hour field are optional:
 <code>[+|-]h[h][:mm]</code>. For example <code>-04:30</code> refers to 4 hours 30 minutes behind
 UTC. And <code>4</code> refers to 4 hours ahead of UTC.</p></li>
-<li><p><code>%Z</code>:     The full time zone name. A single word is parsed. This word can
-only contain characters that are alphanumeric, or one of <code>'_'</code>, <code>'/'</code>,
-<code>'-'</code> or <code>'+'</code>.</p></li>
+<li><p><code>%Z</code>: The full time zone name or the time zone abbreviation, depending on
+the function being used. A single word is parsed. This word can only
+contain characters that are alphanumeric, or one of <code>'_'</code>, <code>'/'</code>, <code>'-'</code> or
+<code>'+'</code>.</p></li>
 </ul>
 
 <p><strong>Miscellaneous</strong></p><ul>
@@ -438,7 +473,7 @@ a convenient way to make production code robust to ambiguous times.</p></td>
 <span class='co'># Same time as above, except this is a completely unambiguous parse that</span>
 <span class='co'># doesn't require a `zone` argument, because the zone name and offset are</span>
 <span class='co'># both present in the string</span>
-<span class='fu'>date_time_complete_parse</span><span class='op'>(</span><span class='st'>"2020-01-01 05:06:07-05:00[America/New_York]"</span><span class='op'>)</span>
+<span class='fu'>date_time_parse_complete</span><span class='op'>(</span><span class='st'>"2020-01-01 05:06:07-05:00[America/New_York]"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "2020-01-01 05:06:07 EST"</div><div class='input'>
 <span class='co'># Only day components</span>
 <span class='fu'>date_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01"</span>, <span class='st'>"America/New_York"</span>, format <span class='op'>=</span> <span class='st'>"%Y-%m-%d"</span><span class='op'>)</span>
@@ -461,14 +496,22 @@ a convenient way to make production code robust to ambiguous times.</p></td>
 <span class='fu'>date_time_parse</span><span class='op'>(</span><span class='va'>ambiguous_time</span>, <span class='st'>"America/New_York"</span>, ambiguous <span class='op'>=</span> <span class='st'>"earliest"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EDT"</div><div class='input'><span class='fu'>date_time_parse</span><span class='op'>(</span><span class='va'>ambiguous_time</span>, <span class='st'>"America/New_York"</span>, ambiguous <span class='op'>=</span> <span class='st'>"latest"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EST"</div><div class='input'>
-<span class='co'># `date_time_complete_parse()` doesn't have these issues, as it requires</span>
+<span class='co'># `date_time_parse_complete()` doesn't have these issues, as it requires</span>
 <span class='co'># that the offset and zone name are both in the string, which resolves</span>
 <span class='co'># the ambiguity</span>
 <span class='va'>complete_times</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
   <span class='st'>"1970-10-25 01:00:00-04:00[America/New_York]"</span>,
   <span class='st'>"1970-10-25 01:00:00-05:00[America/New_York]"</span>
 <span class='op'>)</span>
-<span class='fu'>date_time_complete_parse</span><span class='op'>(</span><span class='va'>complete_times</span><span class='op'>)</span>
+<span class='fu'>date_time_parse_complete</span><span class='op'>(</span><span class='va'>complete_times</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EDT" "1970-10-25 01:00:00 EST"</div><div class='input'>
+<span class='co'># `date_time_parse_abbrev()` also doesn't have these issues, since it</span>
+<span class='co'># uses the time zone abbreviation name to resolve the ambiguity</span>
+<span class='va'>abbrev_times</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
+  <span class='st'>"1970-10-25 01:00:00 EDT"</span>,
+  <span class='st'>"1970-10-25 01:00:00 EST"</span>
+<span class='op'>)</span>
+<span class='fu'>date_time_parse_abbrev</span><span class='op'>(</span><span class='va'>abbrev_times</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EDT" "1970-10-25 01:00:00 EST"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
