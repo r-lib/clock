@@ -115,6 +115,20 @@
 
     `%Z` must be used, and must result in a valid time zone name, not 'America/New_Yor'.
 
+# abbreviation must match the one implied from naive + time zone name lookup
+
+    Code
+      zoned_parse_abbrev(x, "America/New_York")
+    Warning <clock_warning_parse_failures>
+      Failed to parse 1 string at location 1. Returning `NA` at that location.
+    Output
+      <zoned_time<second><America/New_York>[1]>
+      [1] NA
+
+# %Z must be used
+
+    `%Z` must be used and must result in a time zone abbreviation.
+
 # zoned-times don't support arithmetic
 
     Zoned-times don't support `add_years()`.
