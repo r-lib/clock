@@ -511,7 +511,6 @@ static
 inline
 void
 zoned_parse_complete_one(std::istringstream& stream,
-                         const char* elt,
                          const std::vector<const char*>& fmts,
                          const std::pair<const std::string*, const std::string*>& month_names_pair,
                          const std::pair<const std::string*, const std::string*>& weekday_names_pair,
@@ -529,7 +528,7 @@ zoned_parse_complete_one(std::istringstream& stream,
 
   for (r_ssize j = 0; j < size; ++j) {
     stream.clear();
-    stream.str(elt);
+    stream.seekg(0);
 
     const char* fmt = fmts[j];
 
@@ -654,11 +653,10 @@ zoned_parse_complete_impl(const cpp11::strings& x,
       continue;
     }
 
-    const char* elt_char = CHAR(elt);
+    stream.str(CHAR(elt));
 
     zoned_parse_complete_one(
       stream,
-      elt_char,
       fmts,
       month_names_pair,
       weekday_names_pair,
@@ -723,7 +721,6 @@ static
 inline
 void
 zoned_parse_abbrev_one(std::istringstream& stream,
-                       const char* elt,
                        const std::vector<const char*>& fmts,
                        const std::pair<const std::string*, const std::string*>& month_names_pair,
                        const std::pair<const std::string*, const std::string*>& weekday_names_pair,
@@ -739,7 +736,7 @@ zoned_parse_abbrev_one(std::istringstream& stream,
 
   for (r_ssize j = 0; j < size; ++j) {
     stream.clear();
-    stream.str(elt);
+    stream.seekg(0);
 
     const char* fmt = fmts[j];
 
@@ -864,11 +861,10 @@ zoned_parse_abbrev_impl(const cpp11::strings& x,
       continue;
     }
 
-    const char* elt_char = CHAR(elt);
+    stream.str(CHAR(elt));
 
     zoned_parse_abbrev_one(
       stream,
-      elt_char,
       fmts,
       month_names_pair,
       weekday_names_pair,
