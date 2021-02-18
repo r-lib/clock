@@ -243,29 +243,55 @@ test_that("failure to parse throws a warning", {
 })
 
 # ------------------------------------------------------------------------------
-# date_time_complete_parse()
+# date_time_parse_complete()
 
 test_that("can parse into a POSIXct", {
   expect_identical(
-    date_time_complete_parse("2019-12-31 23:59:59-05:00[America/New_York]"),
+    date_time_parse_complete("2019-12-31 23:59:59-05:00[America/New_York]"),
     as.POSIXct("2019-12-31 23:59:59", tz = "America/New_York")
   )
 })
 
 test_that("ambiguity is resolved through the string", {
   expect_identical(
-    date_time_complete_parse("1970-10-25 01:30:00-04:00[America/New_York]"),
+    date_time_parse_complete("1970-10-25 01:30:00-04:00[America/New_York]"),
     add_seconds(date_time_parse("1970-10-25 00:30:00", "America/New_York"), 3600)
   )
   expect_identical(
-    date_time_complete_parse("1970-10-25 01:30:00-05:00[America/New_York]"),
+    date_time_parse_complete("1970-10-25 01:30:00-05:00[America/New_York]"),
     add_seconds(date_time_parse("1970-10-25 00:30:00", "America/New_York"), 7200)
   )
 })
 
 test_that("throws warning on failed parses", {
-  expect_warning(date_time_complete_parse("foo"), class = "clock_warning_parse_failures")
-  expect_snapshot(date_time_complete_parse("foo"))
+  expect_warning(date_time_parse_complete("foo"), class = "clock_warning_parse_failures")
+  expect_snapshot(date_time_parse_complete("foo"))
+})
+
+# ------------------------------------------------------------------------------
+# date_time_parse_abbrev()
+
+test_that("can parse into a POSIXct using the abbrev", {
+  expect_identical(
+    date_time_parse_abbrev("2019-01-01 01:02:03 EST", "America/New_York"),
+    as.POSIXct(as_naive(year_month_day(2019, 1, 1, 1, 2, 3)), "America/New_York")
+  )
+})
+
+test_that("ambiguity is resolved through the string", {
+  expect_identical(
+    date_time_parse_abbrev("1970-10-25 01:30:00 EDT", "America/New_York"),
+    add_seconds(date_time_parse("1970-10-25 00:30:00", "America/New_York"), 3600)
+  )
+  expect_identical(
+    date_time_parse_abbrev("1970-10-25 01:30:00 EST", "America/New_York"),
+    add_seconds(date_time_parse("1970-10-25 00:30:00", "America/New_York"), 7200)
+  )
+})
+
+test_that("abbrev - throws warning on failed parses", {
+  expect_warning(date_time_parse_abbrev("foo", "America/New_York"), class = "clock_warning_parse_failures")
+  expect_snapshot(date_time_parse_abbrev("foo", "America/New_York"))
 })
 
 # ------------------------------------------------------------------------------
@@ -343,11 +369,11 @@ test_that("can handle ambiguous times", {
 
   expect_identical(
     date_time_build(1970, 10, 25, 1, 30, zone = zone, ambiguous = "earliest"),
-    date_time_complete_parse("1970-10-25 01:30:00-04:00[America/New_York]")
+    date_time_parse_complete("1970-10-25 01:30:00-04:00[America/New_York]")
   )
   expect_identical(
     date_time_build(1970, 10, 25, 1, 30, zone = zone, ambiguous = "latest"),
-    date_time_complete_parse("1970-10-25 01:30:00-05:00[America/New_York]")
+    date_time_parse_complete("1970-10-25 01:30:00-05:00[America/New_York]")
   )
 })
 
