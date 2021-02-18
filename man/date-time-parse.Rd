@@ -4,6 +4,7 @@
 \alias{date-time-parse}
 \alias{date_time_parse}
 \alias{date_time_complete_parse}
+\alias{date_time_parse_abbrev}
 \title{Parsing: date-time}
 \usage{
 date_time_parse(
@@ -17,6 +18,8 @@ date_time_parse(
 )
 
 date_time_complete_parse(x, ..., format = NULL, locale = clock_locale())
+
+date_time_parse_abbrev(x, zone, ..., format = NULL, locale = clock_locale())
 }
 \arguments{
 \item{x}{\verb{[character]}
@@ -25,7 +28,7 @@ A character vector to parse.}
 
 \item{zone}{\verb{[character(1)]}
 
-A valid time zone name to use with the resulting POSIXct.}
+A full time zone name.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
@@ -256,9 +259,10 @@ a convenient way to make production code robust to ambiguous times.}
 A POSIXct.
 }
 \description{
-\code{date_time_parse()} and \code{date_time_complete_parse()} are two parsers for
-parsing strings into POSIXct date-times.
-\subsection{\code{date_time_parse()}}{
+There are three parsers for parsing strings into POSIXct date-times,
+\code{date_time_parse()}, \code{date_time_complete_parse()}, and
+\code{date_time_parse_abbrev()}.
+\subsection{date_time_parse()}{
 
 \code{date_time_parse()} is useful for strings like \code{"2019-01-01 00:00:00"}, where
 the UTC offset and full time zone name are not present in the string. The
@@ -275,18 +279,35 @@ time zone specific information that is used is the \code{zone}.
 The default \code{format} used is \code{"\%Y-\%m-\%d \%H:\%M:\%S"}.
 }
 
-\subsection{\code{date_time_complete_parse()}}{
+\subsection{date_time_complete_parse()}{
 
-\code{date_time_complete_parse()} is useful for strings like \code{"2019-01-01 00:00:00-05:00[America/New_York]"}, where both the UTC offset and the full
-time zone name are present in the string. This is considered a "complete"
-date-time format, with no ambiguity.
-
-\code{date_time_complete_parse()} requires both the \verb{\%z} and \verb{\%Z} commands, which
-parse the offset from UTC and the full time zone name respectively. Requiring
-this information when parsing is the \emph{only} way to ensure that the parse is
-done unambiguously.
+\code{date_time_complete_parse()} is a parser for \emph{complete} date-time strings,
+like \code{"2019-01-01 00:00:00-05:00[America/New_York]"}. A complete date-time
+string has both the time zone offset and full time zone name in the string,
+which is the only way for the string itself to contain all of the information
+required to construct a zoned-time. Because of this,
+\code{date_time_complete_parse()} requires both the \verb{\%z} and \verb{\%Z} commands to be
+supplied in the \code{format} string.
 
 The default \code{format} used is \code{"\%Y-\%m-\%d \%H:\%M:\%S\%Ez[\%Z]"}.
+}
+
+\subsection{date_time_parse_abbrev()}{
+
+\code{date_time_parse_abbrev()} is a parser for date-time strings containing only
+a time zone abbreviation, like \code{"2019-01-01 00:00:00 EST"}. The time zone
+abbreviation is not enough to identify the full time zone name that the
+date-time belongs to, so the full time zone name must be supplied as the
+\code{zone} argument. However, the time zone abbreviation can help with resolving
+ambiguity around daylight saving time fallbacks.
+
+For \code{date_time_parse_abbrev()}, \verb{\%Z} must be supplied and is interpreted as
+the time zone abbreviation rather than the full time zone name.
+
+If used, the \verb{\%z} command must parse correctly, but its value will be
+completely ignored.
+
+The default \code{format} used is \code{"\%Y-\%m-\%d \%H:\%M:\%S \%Z"}.
 }
 }
 \examples{
@@ -327,4 +348,12 @@ complete_times <- c(
   "1970-10-25 01:00:00-05:00[America/New_York]"
 )
 date_time_complete_parse(complete_times)
+
+# `date_time_parse_abbrev()` also doesn't have these issues, since it
+# uses the time zone abbreviation name to resolve the ambiguity
+abbrev_times <- c(
+  "1970-10-25 01:00:00 EDT",
+  "1970-10-25 01:00:00 EST"
+)
+date_time_parse_abbrev(abbrev_times, "America/New_York")
 }

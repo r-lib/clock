@@ -149,6 +149,15 @@
     Output
       [1] NA
 
+# abbrev - throws warning on failed parses
+
+    Code
+      date_time_parse_abbrev("foo", "America/New_York")
+    Warning <clock_warning_parse_failures>
+      Failed to parse 1 string at location 1. Returning `NA` at that location.
+    Output
+      [1] NA
+
 # `ambiguous = x` retains the offset of `x` if applicable
 
     Ambiguous time due to daylight saving time at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.
