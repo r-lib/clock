@@ -131,7 +131,7 @@ reference:
   - zoned_now
   - as_zoned
   - is_zoned
-  - zoned_parse
+  - zoned-parsing
   - zoned_zone
   - zoned_info
   - format.clock_zoned_time

@@ -248,19 +248,45 @@ zoned_time_format <- function(print_zone_name) {
 #' Parsing: zoned-time
 #'
 #' @description
-#' `zoned_parse()` is a very strict parser into a zoned-time. It requires that
-#' both the `%z` and `%Z` tokens are provided in the `format` string, which
-#' parse the offset from UTC and the full time zone name respectively. Requiring
-#' this information when parsing is the _only_ way to ensure that the parse
-#' is done unambiguously.
+#' There are two parsers into a zoned-time, `zoned_parse()` and
+#' `zoned_parse_abbrev()`.
+#'
+#' ## zoned_parse()
+#'
+#' `zoned_parse()` is a parser for _complete_ date-time strings, like
+#' `"2019-01-01 00:00:00-05:00[America/New_York]"`. A complete date-time string
+#' has both the time zone offset and full time zone name in the string, which is
+#' the only way for the string itself to contain all of the information required
+#' to construct a zoned-time. Because of this, `zoned_parse()` requires both the
+#' `%z` and `%Z` commands to be supplied in the `format` string.
 #'
 #' The default options assume that `x` should be parsed at second precision,
 #' using a `format` string of `"%Y-%m-%d %H:%M:%S%Ez[%Z]"`.
 #'
-#' If your date-time strings contain an offset from UTC (like `-04:00`), but
+#' ## zoned_parse_abbrev()
+#'
+#' `zoned_parse_abbrev()` is a parser for date-time strings containing only a
+#' time zone abbreviation, like `"2019-01-01 00:00:00 EST"`. The time zone
+#' abbreviation is not enough to identify the full time zone name that the
+#' date-time belongs to, so the full time zone name must be supplied as the
+#' `zone` argument. However, the time zone abbreviation can help with resolving
+#' ambiguity around daylight saving time fallbacks.
+#'
+#' For `zoned_parse_abbrev()`, `%Z` must be supplied and is interpreted as the
+#' time zone abbreviation rather than the full time zone name.
+#'
+#' If used, the `%z` command must parse correctly, but its value will be
+#' completely ignored.
+#'
+#' The default options assume that `x` should be parsed at second precision,
+#' using a `format` string of `"%Y-%m-%d %H:%M:%S %Z"`. This default format
+#' generally matches what R prints out by default for POSIXct objects.
+#'
+#' @details
+#' If your date-time strings contain time zone offsets (like `-04:00`), but
 #' not the full time zone name, you might need [sys_parse()].
 #'
-#' If your date-time strings don't contain an offset from UTC or the full
+#' If your date-time strings don't contain time zone offsets or the full
 #' time zone name, you might need to use [naive_parse()]. From there, if you
 #' know the time zone that the date-times are supposed to be in, you can
 #' convert to a zoned-time with [as_zoned()].
@@ -270,6 +296,10 @@ zoned_time_format <- function(print_zone_name) {
 #' @param x `[character]`
 #'
 #'   A character vector to parse.
+#'
+#' @param zone `[character(1)]`
+#'
+#'   A full time zone name.
 #'
 #' @param format `[character / NULL]`
 #'
@@ -420,9 +450,10 @@ zoned_time_format <- function(print_zone_name) {
 #'   `[+|-]h[h][:mm]`. For example `-04:30` refers to 4 hours 30 minutes behind
 #'   UTC. And `4` refers to 4 hours ahead of UTC.
 #'
-#'   - `%Z`: 	The full time zone name. A single word is parsed. This word can
-#'   only contain characters that are alphanumeric, or one of `'_'`, `'/'`,
-#'   `'-'` or `'+'`.
+#'   - `%Z`: The full time zone name or the time zone abbreviation, depending on
+#'   the function being used. A single word is parsed. This word can only
+#'   contain characters that are alphanumeric, or one of `'_'`, `'/'`, `'-'` or
+#'   `'+'`.
 #'
 #'   **Miscellaneous**
 #'
@@ -459,7 +490,8 @@ zoned_time_format <- function(print_zone_name) {
 #'
 #' @return A zoned-time.
 #'
-#' @export
+#' @name zoned-parsing
+#'
 #' @examples
 #' zoned_parse("2019-01-01 01:02:03-05:00[America/New_York]")
 #'
@@ -494,6 +526,31 @@ zoned_time_format <- function(print_zone_name) {
 #' )
 #'
 #' zoned_parse(x)
+#'
+#' # If you have date-time strings with time zone abbreviations,
+#' # `zoned_parse_abbrev()` should be able to help. The `zone` must be
+#' # provided, because multiple countries may use the same time zone
+#' # abbreviation. For example:
+#' x <- "1970-01-01 02:30:30 IST"
+#'
+#' # IST = India Standard Time
+#' zoned_parse_abbrev(x, "Asia/Kolkata")
+#'
+#' # IST = Israel Standard Time
+#' zoned_parse_abbrev(x, "Asia/Jerusalem")
+#'
+#' # The time zone abbreviation is mainly useful for resolving ambiguity
+#' # around daylight saving time fallbacks. Without the abbreviation, these
+#' # date-times would be ambiguous.
+#' x <- c(
+#'   "1970-10-25 01:30:00 EDT",
+#'   "1970-10-25 01:30:00 EST"
+#' )
+#' zoned_parse_abbrev(x, "America/New_York")
+NULL
+
+#' @rdname zoned-parsing
+#' @export
 zoned_parse <- function(x,
                         ...,
                         format = NULL,
@@ -530,8 +587,8 @@ zoned_parse <- function(x,
   new_zoned_time_from_fields(result$fields, precision, result$zone, names(x))
 }
 
-# ------------------------------------------------------------------------------
-
+#' @rdname zoned-parsing
+#' @export
 zoned_parse_abbrev <- function(x,
                                zone,
                                ...,

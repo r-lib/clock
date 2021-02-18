@@ -902,7 +902,7 @@ date_set_zone.POSIXt <- function(x, zone) {
 #'
 #' The default `format` used is `"%Y-%m-%d %H:%M:%S%Ez[%Z]"`.
 #'
-#' @inheritParams zoned_parse
+#' @inheritParams zoned-parsing
 #' @inheritParams as-zoned-time-naive-time
 #'
 #' @param zone `[character(1)]`

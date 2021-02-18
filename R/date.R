@@ -929,7 +929,7 @@ date_set_zone.Date <- function(x, zone) {
 #'
 #' _`date_parse()` ignores the `%Z` command._
 #'
-#' @inheritParams zoned_parse
+#' @inheritParams zoned-parsing
 #'
 #' @return A Date.
 #'

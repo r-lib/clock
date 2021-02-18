@@ -170,9 +170,10 @@ ahead of UTC. The modified command \verb{\%Ez} parses a \code{:} between the hou
 minutes and leading zeroes on the hour field are optional:
 \verb{[+|-]h[h][:mm]}. For example \code{-04:30} refers to 4 hours 30 minutes behind
 UTC. And \code{4} refers to 4 hours ahead of UTC.
-\item \verb{\%Z}:     The full time zone name. A single word is parsed. This word can
-only contain characters that are alphanumeric, or one of \code{'_'}, \code{'/'},
-\code{'-'} or \code{'+'}.
+\item \verb{\%Z}: The full time zone name or the time zone abbreviation, depending on
+the function being used. A single word is parsed. This word can only
+contain characters that are alphanumeric, or one of \code{'_'}, \code{'/'}, \code{'-'} or
+\code{'+'}.
 }
 
 \strong{Miscellaneous}

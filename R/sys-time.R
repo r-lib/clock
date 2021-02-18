@@ -68,7 +68,7 @@ is_sys <- function(x) {
 #' consider using [naive_parse()], since the resulting naive-time doesn't come
 #' with an assumption of a UTC time zone.
 #'
-#' @inheritParams zoned_parse
+#' @inheritParams zoned-parsing
 #'
 #' @param precision `[character(1)]`
 #'

@@ -176,7 +176,7 @@ vec_ptype_abbr.clock_year_month_day <- function(x, ...) {
 #' @details
 #' `year_month_day_parse()` completely ignores the `%z` and `%Z` commands.
 #'
-#' @inheritParams zoned_parse
+#' @inheritParams zoned-parsing
 #'
 #' @param x `[character]`
 #'
