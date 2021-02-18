@@ -283,6 +283,10 @@ zoned_time_format <- function(print_zone_name) {
 #' generally matches what R prints out by default for POSIXct objects.
 #'
 #' @details
+#' If `zoned_parse_complete()` is given input that is length zero, all `NA`s, or
+#' completely fails to parse, then no time zone will be able to be determined.
+#' In that case, the result will use `"UTC"`.
+#'
 #' If your date-time strings contain time zone offsets (like `-04:00`), but
 #' not the full time zone name, you might need [sys_parse()].
 #'

@@ -170,6 +170,31 @@ test_that("zone name must be valid", {
   expect_snapshot_error(zoned_parse_complete(x))
 })
 
+test_that("empty input uses UTC time zone (#162)", {
+  expect_identical(
+    zoned_parse_complete(character()),
+    as_zoned(naive_seconds(), "UTC")
+  )
+  expect_identical(
+    zoned_parse_complete(character(), precision = "nanosecond"),
+    as_zoned(as_naive(duration_nanoseconds()), "UTC")
+  )
+})
+
+test_that("all `NA`s uses UTC time zone (#162)", {
+  expect_identical(
+    zoned_parse_complete(c(NA_character_, NA_character_)),
+    as_zoned(naive_seconds(c(NA, NA)), "UTC")
+  )
+})
+
+test_that("all failures uses UTC time zone (#162)", {
+  expect_identical(
+    expect_warning(zoned_parse_complete(c("foo", "bar"))),
+    as_zoned(naive_seconds(c(NA, NA)), "UTC")
+  )
+})
+
 # ------------------------------------------------------------------------------
 # zoned_parse_abbrev()
 

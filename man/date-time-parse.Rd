@@ -310,6 +310,11 @@ completely ignored.
 The default \code{format} used is \code{"\%Y-\%m-\%d \%H:\%M:\%S \%Z"}.
 }
 }
+\details{
+If \code{date_time_parse_complete()} is given input that is length zero, all
+\code{NA}s, or completely fails to parse, then no time zone will be able to be
+determined. In that case, the result will use \code{"UTC"}.
+}
 \examples{
 # Parse with a known `zone`, even though that information isn't in the string
 date_time_parse("2020-01-01 05:06:07", "America/New_York")

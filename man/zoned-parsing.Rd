@@ -250,6 +250,10 @@ generally matches what R prints out by default for POSIXct objects.
 }
 }
 \details{
+If \code{zoned_parse_complete()} is given input that is length zero, all \code{NA}s, or
+completely fails to parse, then no time zone will be able to be determined.
+In that case, the result will use \code{"UTC"}.
+
 If your date-time strings contain time zone offsets (like \code{-04:00}), but
 not the full time zone name, you might need \code{\link[=sys_parse]{sys_parse()}}.
 

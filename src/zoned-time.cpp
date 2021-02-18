@@ -673,6 +673,13 @@ zoned_parse_complete_impl(const cpp11::strings& x,
     failures.warn();
   }
 
+  if (zone.empty()) {
+    // In the case of all failures, all NAs, or empty input, there will
+    // be no way to determine a time zone.
+    // In those cases, we default to UTC.
+    zone = "UTC";
+  }
+
   cpp11::writable::strings out_zone(1);
   out_zone[0] = zone;
 

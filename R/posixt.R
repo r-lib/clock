@@ -920,6 +920,11 @@ date_set_zone.POSIXt <- function(x, zone) {
 #'
 #' The default `format` used is `"%Y-%m-%d %H:%M:%S %Z"`.
 #'
+#' @details
+#' If `date_time_parse_complete()` is given input that is length zero, all
+#' `NA`s, or completely fails to parse, then no time zone will be able to be
+#' determined. In that case, the result will use `"UTC"`.
+#'
 #' @inheritParams zoned-parsing
 #' @inheritParams as-zoned-time-naive-time
 #'
