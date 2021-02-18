@@ -532,6 +532,46 @@ zoned_parse <- function(x,
 
 # ------------------------------------------------------------------------------
 
+zoned_parse_abbrev <- function(x,
+                               zone,
+                               ...,
+                               format = NULL,
+                               precision = "second",
+                               locale = clock_locale()) {
+  check_dots_empty()
+
+  precision <- validate_zoned_time_precision_string(precision)
+
+  if (!is_clock_locale(locale)) {
+    abort("`locale` must be a 'clock_locale' object.")
+  }
+
+  if (is_null(format)) {
+    # Like what R POSIXct prints
+    format <- "%Y-%m-%d %H:%M:%S %Z"
+  }
+
+  labels <- locale$labels
+  mark <- locale$decimal_mark
+
+  fields <- zoned_parse_abbrev_cpp(
+    x,
+    zone,
+    format,
+    precision,
+    labels$month,
+    labels$month_abbrev,
+    labels$weekday,
+    labels$weekday_abbrev,
+    labels$am_pm,
+    mark
+  )
+
+  new_zoned_time_from_fields(fields, precision, zone, names(x))
+}
+
+# ------------------------------------------------------------------------------
+
 #' @export
 vec_proxy.clock_zoned_time <- function(x, ...) {
   .Call(`_clock_clock_rcrd_proxy`, x)
