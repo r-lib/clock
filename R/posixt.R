@@ -870,7 +870,7 @@ date_set_zone.POSIXt <- function(x, zone) {
 #'
 #' @description
 #' There are three parsers for parsing strings into POSIXct date-times,
-#' `date_time_parse()`, `date_time_complete_parse()`, and
+#' `date_time_parse()`, `date_time_parse_complete()`, and
 #' `date_time_parse_abbrev()`.
 #'
 #' ## date_time_parse()
@@ -889,14 +889,14 @@ date_set_zone.POSIXt <- function(x, zone) {
 #'
 #' The default `format` used is `"%Y-%m-%d %H:%M:%S"`.
 #'
-#' ## date_time_complete_parse()
+#' ## date_time_parse_complete()
 #'
-#' `date_time_complete_parse()` is a parser for _complete_ date-time strings,
+#' `date_time_parse_complete()` is a parser for _complete_ date-time strings,
 #' like `"2019-01-01 00:00:00-05:00[America/New_York]"`. A complete date-time
 #' string has both the time zone offset and full time zone name in the string,
 #' which is the only way for the string itself to contain all of the information
 #' required to construct a zoned-time. Because of this,
-#' `date_time_complete_parse()` requires both the `%z` and `%Z` commands to be
+#' `date_time_parse_complete()` requires both the `%z` and `%Z` commands to be
 #' supplied in the `format` string.
 #'
 #' The default `format` used is `"%Y-%m-%d %H:%M:%S%Ez[%Z]"`.
@@ -932,7 +932,7 @@ date_set_zone.POSIXt <- function(x, zone) {
 #' # Same time as above, except this is a completely unambiguous parse that
 #' # doesn't require a `zone` argument, because the zone name and offset are
 #' # both present in the string
-#' date_time_complete_parse("2020-01-01 05:06:07-05:00[America/New_York]")
+#' date_time_parse_complete("2020-01-01 05:06:07-05:00[America/New_York]")
 #'
 #' # Only day components
 #' date_time_parse("2020-01-01", "America/New_York", format = "%Y-%m-%d")
@@ -955,14 +955,14 @@ date_set_zone.POSIXt <- function(x, zone) {
 #' date_time_parse(ambiguous_time, "America/New_York", ambiguous = "earliest")
 #' date_time_parse(ambiguous_time, "America/New_York", ambiguous = "latest")
 #'
-#' # `date_time_complete_parse()` doesn't have these issues, as it requires
+#' # `date_time_parse_complete()` doesn't have these issues, as it requires
 #' # that the offset and zone name are both in the string, which resolves
 #' # the ambiguity
 #' complete_times <- c(
 #'   "1970-10-25 01:00:00-04:00[America/New_York]",
 #'   "1970-10-25 01:00:00-05:00[America/New_York]"
 #' )
-#' date_time_complete_parse(complete_times)
+#' date_time_parse_complete(complete_times)
 #'
 #' # `date_time_parse_abbrev()` also doesn't have these issues, since it
 #' # uses the time zone abbreviation name to resolve the ambiguity
@@ -988,7 +988,7 @@ date_time_parse <- function(x,
 
 #' @rdname date-time-parse
 #' @export
-date_time_complete_parse <- function(x, ..., format = NULL, locale = clock_locale()) {
+date_time_parse_complete <- function(x, ..., format = NULL, locale = clock_locale()) {
   x <- zoned_parse_complete(x, ..., format = format, precision = "second", locale = locale)
   as.POSIXct(x)
 }

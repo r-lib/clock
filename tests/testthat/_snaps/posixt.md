@@ -143,7 +143,7 @@
 # throws warning on failed parses
 
     Code
-      date_time_complete_parse("foo")
+      date_time_parse_complete("foo")
     Warning <clock_warning_parse_failures>
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output
