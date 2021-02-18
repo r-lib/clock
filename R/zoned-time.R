@@ -248,17 +248,17 @@ zoned_time_format <- function(print_zone_name) {
 #' Parsing: zoned-time
 #'
 #' @description
-#' There are two parsers into a zoned-time, `zoned_parse()` and
+#' There are two parsers into a zoned-time, `zoned_parse_complete()` and
 #' `zoned_parse_abbrev()`.
 #'
-#' ## zoned_parse()
+#' ## zoned_parse_complete()
 #'
-#' `zoned_parse()` is a parser for _complete_ date-time strings, like
+#' `zoned_parse_complete()` is a parser for _complete_ date-time strings, like
 #' `"2019-01-01 00:00:00-05:00[America/New_York]"`. A complete date-time string
 #' has both the time zone offset and full time zone name in the string, which is
 #' the only way for the string itself to contain all of the information required
-#' to construct a zoned-time. Because of this, `zoned_parse()` requires both the
-#' `%z` and `%Z` commands to be supplied in the `format` string.
+#' to construct a zoned-time. Because of this, `zoned_parse_complete()` requires
+#' both the `%z` and `%Z` commands to be supplied in the `format` string.
 #'
 #' The default options assume that `x` should be parsed at second precision,
 #' using a `format` string of `"%Y-%m-%d %H:%M:%S%Ez[%Z]"`.
@@ -493,16 +493,16 @@ zoned_time_format <- function(print_zone_name) {
 #' @name zoned-parsing
 #'
 #' @examples
-#' zoned_parse("2019-01-01 01:02:03-05:00[America/New_York]")
+#' zoned_parse_complete("2019-01-01 01:02:03-05:00[America/New_York]")
 #'
-#' zoned_parse(
+#' zoned_parse_complete(
 #'   "January 21, 2019 -0500 America/New_York",
 #'   format = "%B %d, %Y %z %Z"
 #' )
 #'
 #' # Nanosecond precision
 #' x <- "2019/12/31 01:05:05.123456700-05:00[America/New_York]"
-#' zoned_parse(
+#' zoned_parse_complete(
 #'   x,
 #'   format = "%Y/%m/%d %H:%M:%S%Ez[%Z]",
 #'   precision = "nanosecond"
@@ -515,7 +515,7 @@ zoned_time_format <- function(print_zone_name) {
 #' as_zoned(as_naive(year_month_day(2019, 1, 1, 1, 2, 3)), "America/New_York")
 #'
 #' # So the following would not parse correctly
-#' zoned_parse("2019-01-01 01:02:03-04:00[America/New_York]")
+#' zoned_parse_complete("2019-01-01 01:02:03-04:00[America/New_York]")
 #'
 #' # `%z` is useful for breaking ties in otherwise ambiguous times. For example,
 #' # these two times are on either side of a daylight saving time fallback.
@@ -525,7 +525,7 @@ zoned_time_format <- function(print_zone_name) {
 #'   "1970-10-25 01:30:00-05:00[America/New_York]"
 #' )
 #'
-#' zoned_parse(x)
+#' zoned_parse_complete(x)
 #'
 #' # If you have date-time strings with time zone abbreviations,
 #' # `zoned_parse_abbrev()` should be able to help. The `zone` must be
@@ -551,11 +551,11 @@ NULL
 
 #' @rdname zoned-parsing
 #' @export
-zoned_parse <- function(x,
-                        ...,
-                        format = NULL,
-                        precision = "second",
-                        locale = clock_locale()) {
+zoned_parse_complete <- function(x,
+                                 ...,
+                                 format = NULL,
+                                 precision = "second",
+                                 locale = clock_locale()) {
   check_dots_empty()
 
   precision <- validate_zoned_time_precision_string(precision)
@@ -572,7 +572,7 @@ zoned_parse <- function(x,
   labels <- locale$labels
   mark <- locale$decimal_mark
 
-  result <- zoned_parse_cpp(
+  result <- zoned_parse_complete_cpp(
     x,
     format,
     precision,

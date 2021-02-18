@@ -216,7 +216,8 @@ validly interpreted as UTC.
 \emph{\code{sys_parse()} ignores the \verb{\%Z} command.}
 
 If your date-time strings contain a full time zone name and a UTC offset, use
-\code{\link[=zoned_parse]{zoned_parse()}}.
+\code{\link[=zoned_parse_complete]{zoned_parse_complete()}}. If they contain a time zone abbreviation, use
+\code{\link[=zoned_parse_abbrev]{zoned_parse_abbrev()}}.
 
 If your date-time strings don't contain an offset from UTC, you might
 consider using \code{\link[=naive_parse]{naive_parse()}}, since the resulting naive-time doesn't come

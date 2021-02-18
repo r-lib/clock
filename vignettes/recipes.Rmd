@@ -432,7 +432,7 @@ day_of_year(x)
 Given a particular zoned-time, when will it next be affected by daylight saving time? For this, we can use a relatively low level helper, `zoned_info()`. It returns a data frame of information about the current daylight saving time transition points, along with information about the offset, the current time zone abbreviation, and whether or not daylight saving time is currently active or not.
 
 ```{r}
-x <- zoned_parse("2019-01-01 00:00:00-05:00[America/New_York]")
+x <- zoned_parse_complete("2019-01-01 00:00:00-05:00[America/New_York]")
 
 info <- zoned_info(x)
 

@@ -32,12 +32,12 @@ test_that("`max` defaults to `getOption('max.print')` but can be overridden", {
 
 test_that("as.character() works", {
   expect <- "2019-01-01 01:02:03-05:00[America/New_York]"
-  x <- zoned_parse(expect)
+  x <- zoned_parse_complete(expect)
   expect_identical(as.character(x), expect)
 })
 
 # ------------------------------------------------------------------------------
-# zoned_parse()
+# zoned_parse_complete()
 
 test_that("can parse what we format with seconds precision zoned time", {
   zone <- "America/New_York"
@@ -45,7 +45,7 @@ test_that("can parse what we format with seconds precision zoned time", {
   x <- as_zoned(as_naive(year_month_day(2019, 1, 1)), zone)
 
   expect_identical(
-    zoned_parse(format(x)),
+    zoned_parse_complete(format(x)),
     x
   )
 })
@@ -58,15 +58,15 @@ test_that("can parse subsecond zoned time", {
   z <- "2019-01-01 01:02:03.123456789-05:00[America/New_York]"
 
   expect_identical(
-    zoned_parse(x, precision = "millisecond"),
+    zoned_parse_complete(x, precision = "millisecond"),
     as_zoned(as_naive(year_month_day(2019, 1, 1, 1, 2, 3, 123, subsecond_precision = "millisecond")), zone)
   )
   expect_identical(
-    zoned_parse(y, precision = "microsecond"),
+    zoned_parse_complete(y, precision = "microsecond"),
     as_zoned(as_naive(year_month_day(2019, 1, 1, 1, 2, 3, 123400, subsecond_precision = "microsecond")), zone)
   )
   expect_identical(
-    zoned_parse(z, precision = "nanosecond"),
+    zoned_parse_complete(z, precision = "nanosecond"),
     as_zoned(as_naive(year_month_day(2019, 1, 1, 1, 2, 3, 123456789, subsecond_precision = "nanosecond")), zone)
   )
 })
@@ -85,7 +85,7 @@ test_that("multiple formats can be used", {
   )
 
   expect_identical(
-    zoned_parse(x, format = formats),
+    zoned_parse_complete(x, format = formats),
     as_zoned(
       as_naive(year_month_day(1970, 10, 25, 05, 30, c(00, 00))),
       zone
@@ -99,11 +99,11 @@ test_that("cannot parse nonexistent time", {
   x <- "1970-04-26 02:30:00-05:00[America/New_York]"
 
   expect_identical(
-    expect_warning(zoned_parse(x)),
+    expect_warning(zoned_parse_complete(x)),
     as_zoned(naive_seconds(NA), zone)
   )
 
-  expect_snapshot(zoned_parse(x))
+  expect_snapshot(zoned_parse_complete(x))
 })
 
 test_that("ambiguous times are resolved by the offset", {
@@ -115,7 +115,7 @@ test_that("ambiguous times are resolved by the offset", {
   )
 
   expect_identical(
-    zoned_parse(x),
+    zoned_parse_complete(x),
     as_zoned(
       as_naive(year_month_day(1970, 10, 25, 01, 30, c(00, 00))),
       zone,
@@ -131,11 +131,11 @@ test_that("offset must align with unique offset", {
   x <- "2019-01-01 01:02:03-03:00[America/New_York]"
 
   expect_identical(
-    expect_warning(zoned_parse(x)),
+    expect_warning(zoned_parse_complete(x)),
     as_zoned(naive_seconds(NA), zone)
   )
 
-  expect_snapshot(zoned_parse(x))
+  expect_snapshot(zoned_parse_complete(x))
 })
 
 test_that("offset must align with one of two possible ambiguous offsets", {
@@ -148,11 +148,11 @@ test_that("offset must align with one of two possible ambiguous offsets", {
   )
 
   expect_identical(
-    expect_warning(zoned_parse(x)),
+    expect_warning(zoned_parse_complete(x)),
     as_zoned(naive_seconds(c(NA, NA)), zone)
   )
 
-  expect_snapshot(zoned_parse(x))
+  expect_snapshot(zoned_parse_complete(x))
 })
 
 test_that("cannot have differing zone names", {
@@ -161,13 +161,13 @@ test_that("cannot have differing zone names", {
     "2019-01-01 01:02:03-08:00[America/Los_Angeles]"
   )
 
-  expect_snapshot_error(zoned_parse(x))
+  expect_snapshot_error(zoned_parse_complete(x))
 })
 
 test_that("zone name must be valid", {
   x <- "2019-01-01 01:02:03-05:00[America/New_Yor]"
 
-  expect_snapshot_error(zoned_parse(x))
+  expect_snapshot_error(zoned_parse_complete(x))
 })
 
 # ------------------------------------------------------------------------------
@@ -176,18 +176,18 @@ test_that("zone name must be valid", {
 test_that("can parse with abbreviation and zone name", {
   expect_identical(
     zoned_parse_abbrev("2019-01-01 01:02:03 EST", "America/New_York"),
-    zoned_parse("2019-01-01 01:02:03-05:00[America/New_York]")
+    zoned_parse_complete("2019-01-01 01:02:03-05:00[America/New_York]")
   )
 })
 
 test_that("can parse when abbreviation is an offset", {
   expect_identical(
     zoned_parse_abbrev("2019-01-01 01:02:03 +11", "Australia/Lord_Howe"),
-    zoned_parse("2019-01-01 01:02:03+11:00[Australia/Lord_Howe]")
+    zoned_parse_complete("2019-01-01 01:02:03+11:00[Australia/Lord_Howe]")
   )
   expect_identical(
     zoned_parse_abbrev("2019-10-01 01:02:03 +1030", "Australia/Lord_Howe"),
-    zoned_parse("2019-10-01 01:02:03+10:30[Australia/Lord_Howe]")
+    zoned_parse_complete("2019-10-01 01:02:03+10:30[Australia/Lord_Howe]")
   )
 })
 
@@ -215,7 +215,7 @@ test_that("abbreviation is used to resolve ambiguity", {
 
   expect_identical(
     zoned_parse_abbrev(x, "America/New_York"),
-    zoned_parse(expect)
+    zoned_parse_complete(expect)
   )
 })
 
@@ -256,7 +256,7 @@ test_that("%Z must be used", {
 })
 
 test_that("%z can be parsed (but is ignored really)", {
-  expect <- zoned_parse("1970-01-01 00:00:00-05:00[America/New_York]")
+  expect <- zoned_parse_complete("1970-01-01 00:00:00-05:00[America/New_York]")
   x <- "1970-01-01 00:00:00-05:00 EST"
 
   expect_identical(
@@ -266,7 +266,7 @@ test_that("%z can be parsed (but is ignored really)", {
 })
 
 test_that("%z that is incorrect technically slips through unnoticed", {
-  expect <- zoned_parse("1970-01-01 00:00:00-05:00[America/New_York]")
+  expect <- zoned_parse_complete("1970-01-01 00:00:00-05:00[America/New_York]")
   x <- "1970-01-01 00:00:00-02:00 EST"
 
   expect_identical(
