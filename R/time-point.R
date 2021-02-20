@@ -162,11 +162,6 @@ vec_restore.clock_time_point <- function(x, to, ...) {
   .Call(`_clock_time_point_restore`, x, to)
 }
 
-#' @export
-vec_proxy_equal.clock_time_point <- function(x, ...) {
-  clock_rcrd_proxy_equal(x)
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export

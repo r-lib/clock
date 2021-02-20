@@ -37,9 +37,3 @@ names.clock_rcrd <- function(x) {
 
   vec_slice(x, i)
 }
-
-# ------------------------------------------------------------------------------
-
-clock_rcrd_proxy_equal <- function(x) {
-  new_data_frame(x)
-}

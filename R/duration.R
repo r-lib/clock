@@ -205,11 +205,6 @@ vec_restore.clock_duration <- function(x, to, ...) {
   .Call(`_clock_duration_restore`, x, to)
 }
 
-#' @export
-vec_proxy_equal.clock_duration <- function(x, ...) {
-  clock_rcrd_proxy_equal(x)
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export

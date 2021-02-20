@@ -117,11 +117,6 @@ vec_restore.clock_year_month_weekday <- function(x, to, ...) {
 }
 
 #' @export
-vec_proxy_equal.clock_year_month_weekday <- function(x, ...) {
-  clock_rcrd_proxy_equal(x)
-}
-
-#' @export
 vec_proxy_compare.clock_year_month_weekday <- function(x, ...) {
   precision <- calendar_precision(x)
 
@@ -136,7 +131,7 @@ vec_proxy_compare.clock_year_month_weekday <- function(x, ...) {
   }
 
   # Year / month year-month-weekday precision can be compared without ambiguity
-  clock_rcrd_proxy_equal(x)
+  vec_proxy(x)
 }
 
 # ------------------------------------------------------------------------------

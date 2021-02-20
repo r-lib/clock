@@ -128,11 +128,6 @@ vec_restore.clock_year_quarter_day <- function(x, to, ...) {
   .Call(`_clock_year_quarter_day_restore`, x, to)
 }
 
-#' @export
-vec_proxy_equal.clock_year_quarter_day <- function(x, ...) {
-  clock_rcrd_proxy_equal(x)
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export

@@ -139,11 +139,6 @@ vec_restore.clock_year_month_day <- function(x, to, ...) {
   .Call(`_clock_year_month_day_restore`, x, to)
 }
 
-#' @export
-vec_proxy_equal.clock_year_month_day <- function(x, ...) {
-  clock_rcrd_proxy_equal(x)
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export

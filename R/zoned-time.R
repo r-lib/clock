@@ -633,6 +633,9 @@ zoned_parse_abbrev <- function(x,
 
 # ------------------------------------------------------------------------------
 
+# ptype2 / cast will prevent zoned times with different zones from being
+# compared, so the equality proxy doesn't need to worry about the `zone`.
+
 #' @export
 vec_proxy.clock_zoned_time <- function(x, ...) {
   .Call(`_clock_clock_rcrd_proxy`, x)
@@ -641,13 +644,6 @@ vec_proxy.clock_zoned_time <- function(x, ...) {
 #' @export
 vec_restore.clock_zoned_time <- function(x, to, ...) {
   .Call(`_clock_zoned_time_restore`, x, to)
-}
-
-#' @export
-vec_proxy_equal.clock_zoned_time <- function(x, ...) {
-  # ptype2 / cast will prevent zoned times with different zones from being
-  # compared, so the equality proxy doesn't need to worry about zone.
-  clock_rcrd_proxy_equal(x)
 }
 
 # ------------------------------------------------------------------------------

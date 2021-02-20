@@ -111,11 +111,6 @@ vec_restore.clock_iso_year_week_day <- function(x, to, ...) {
   .Call(`_clock_iso_year_week_day_restore`, x, to)
 }
 
-#' @export
-vec_proxy_equal.clock_iso_year_week_day <- function(x, ...) {
-  clock_rcrd_proxy_equal(x)
-}
-
 # ------------------------------------------------------------------------------
 
 #' @export
