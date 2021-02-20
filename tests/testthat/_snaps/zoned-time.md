@@ -1,3 +1,8 @@
+# can't compare zoned-times with different zones
+
+    Can't combine `..1` <zoned_time<second><America/New_York>> and `..2` <zoned_time<second><UTC>>.
+    Zones can't differ.
+
 # normal print method works
 
     Code

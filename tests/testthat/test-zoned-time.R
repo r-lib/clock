@@ -1,4 +1,23 @@
 # ------------------------------------------------------------------------------
+# vec_proxy_compare()
+
+# Really testing `vec_proxy()` and `vec_ptype2()` / `vec_cast()`
+
+test_that("can't compare zoned-times with different zones", {
+  x <- as_zoned(sys_days(0), "America/New_York")
+  y <- as_zoned(sys_days(0), "UTC")
+
+  expect_snapshot_error(x > y)
+})
+
+test_that("can compare zoned-times with same zone", {
+  x <- as_zoned(sys_days(0:1), "America/New_York")
+
+  expect_false(x[1] > x[2])
+  expect_true(x[1] < x[2])
+})
+
+# ------------------------------------------------------------------------------
 # print() / obj_print_data() / obj_print_footer()
 
 test_that("normal print method works", {
