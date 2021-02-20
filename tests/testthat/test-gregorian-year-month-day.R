@@ -47,6 +47,30 @@ test_that("NA values propagate", {
   expect_identical(is.na(x), c(TRUE, FALSE, TRUE))
 })
 
+test_that("names of `year` are not retained", {
+  expect_named(year_month_day(c(x = 1)), NULL)
+})
+
+# ------------------------------------------------------------------------------
+# vec_proxy() / vec_restore()
+
+test_that("proxy is a data frame", {
+  expect_identical(vec_proxy(year_month_day(2019)), data_frame(year = 2019L))
+  expect_identical(vec_proxy(year_month_day(2019, 1)), data_frame(year = 2019L, month = 1L))
+})
+
+test_that("proxy has names on `year`", {
+  x <- set_names(year_month_day(2019, 1, 1), "nm")
+  year <- vec_proxy(x)$year
+  expect_named(year, "nm")
+})
+
+test_that("restore works", {
+  to <- year_month_day(2019, 1:5)
+  proxy <- vec_slice(vec_proxy(to), 1:2)
+  expect_identical(vec_restore(proxy, to), year_month_day(2019, 1:2))
+})
+
 # ------------------------------------------------------------------------------
 # vec_ptype_full()
 
