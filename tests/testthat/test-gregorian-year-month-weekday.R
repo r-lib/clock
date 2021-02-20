@@ -74,6 +74,27 @@ test_that("restore works", {
 })
 
 # ------------------------------------------------------------------------------
+# vec_proxy_compare()
+
+test_that("can compare with year / month precision", {
+  expect_identical(
+    year_month_weekday(2019) > year_month_weekday(2018:2020),
+    c(TRUE, FALSE, FALSE)
+  )
+  expect_identical(
+    year_month_weekday(2019, 2) > year_month_weekday(2019, 1:3),
+    c(TRUE, FALSE, FALSE)
+  )
+})
+
+test_that("cannot compare / sort with day precision or finer", {
+  x <- year_month_weekday(2019, 1, 1, 1)
+
+  expect_snapshot_error(x > x)
+  expect_snapshot_error(vec_order(x))
+})
+
+# ------------------------------------------------------------------------------
 # vec_ptype_full()
 
 test_that("full ptype is correct", {

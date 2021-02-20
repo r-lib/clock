@@ -42,6 +42,14 @@
 
     `subsecond` must be within the range of [0, 999999999], not 1000000000.
 
+# cannot compare / sort with day precision or finer
+
+    'year_month_weekday' types with a precision of >= 'day' cannot be trivially compared or ordered. Convert to 'year_month_day' to compare using day-of-month values.
+
+---
+
+    'year_month_weekday' types with a precision of >= 'day' cannot be trivially compared or ordered. Convert to 'year_month_day' to compare using day-of-month values.
+
 # full ptype is correct
 
     [1] "year_month_weekday<year>"
