@@ -1,3 +1,39 @@
+# validates value ranges
+
+    `year` must be within the range of [-9999, 9999], not 50000.
+
+---
+
+    `month` must be within the range of [1, 12], not 13.
+
+---
+
+    `day` must be within the range of [1, 31], not 32.
+
+---
+
+    `hour` must be within the range of [0, 23], not 24.
+
+---
+
+    `minute` must be within the range of [0, 59], not 60.
+
+---
+
+    `second` must be within the range of [0, 59], not 60.
+
+---
+
+    `subsecond` must be within the range of [0, 999], not 1000.
+
+---
+
+    `subsecond` must be within the range of [0, 999999], not 1000000.
+
+---
+
+    `subsecond` must be within the range of [0, 999999999], not 1000000000.
+
 # full ptype is correct
 
     [1] "year_month_day<year>"

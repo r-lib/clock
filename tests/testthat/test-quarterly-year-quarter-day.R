@@ -1,4 +1,53 @@
 # ------------------------------------------------------------------------------
+# year_quarter_day()
+
+test_that("helper can create different precisions", {
+  x <- year_quarter_day(2019, 1:2)
+  expect_identical(get_year(x), c(2019L, 2019L))
+  expect_identical(get_quarter(x), 1:2)
+
+  x <- year_quarter_day(2019, 1:2, 3)
+  expect_identical(get_day(x), c(3L, 3L))
+})
+
+test_that("can create subsecond precision calendars", {
+  x <- year_quarter_day(2019, 1, 1, 0, 0, 0, 1, subsecond_precision = "millisecond")
+  expect_identical(get_millisecond(x), 1L)
+
+  x <- year_quarter_day(2019, 1, 1, 0, 0, 0, 1, subsecond_precision = "microsecond")
+  expect_identical(get_microsecond(x), 1L)
+
+  x <- year_quarter_day(2019, 1, 1, 0, 0, 0, 1, subsecond_precision = "nanosecond")
+  expect_identical(get_nanosecond(x), 1L)
+})
+
+test_that("validates value ranges", {
+  expect_snapshot_error(year_quarter_day(50000))
+  expect_snapshot_error(year_quarter_day(2020, 5))
+  expect_snapshot_error(year_quarter_day(2020, 1, 93))
+  expect_snapshot_error(year_quarter_day(2020, 1, 1, 24))
+  expect_snapshot_error(year_quarter_day(2020, 1, 1, 1, 60))
+  expect_snapshot_error(year_quarter_day(2020, 1, 1, 1, 1, 60))
+  expect_snapshot_error(year_quarter_day(2020, 1, 1, 1, 1, 1, 1000, subsecond_precision = "millisecond"))
+  expect_snapshot_error(year_quarter_day(2020, 1, 1, 1, 1, 1, 1000000, subsecond_precision = "microsecond"))
+  expect_snapshot_error(year_quarter_day(2020, 1, 1, 1, 1, 1, 1000000000, subsecond_precision = "nanosecond"))
+})
+
+test_that("can get the last day of the quarter", {
+  x <- year_quarter_day(2019, 1:2, "last")
+  expect_identical(get_day(x), c(90L, 91L))
+})
+
+test_that("ignores values past first `NULL`", {
+  expect_identical(year_quarter_day(2019, day = 2), year_quarter_day(2019))
+})
+
+test_that("NA values propagate", {
+  x <- year_quarter_day(2019, 1:3, c(NA, 2, 3), c(3, 4, NA))
+  expect_identical(is.na(x), c(TRUE, FALSE, TRUE))
+})
+
+# ------------------------------------------------------------------------------
 # vec_ptype_full()
 
 test_that("full ptype is correct", {

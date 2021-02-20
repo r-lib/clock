@@ -1,3 +1,39 @@
+# validates value ranges
+
+    `year` must be within the range of [-9999, 9999], not 50000.
+
+---
+
+    `week` must be within the range of [1, 53], not 54.
+
+---
+
+    `day` must be within the range of [1, 7], not 8.
+
+---
+
+    `hour` must be within the range of [0, 23], not 24.
+
+---
+
+    `minute` must be within the range of [0, 59], not 60.
+
+---
+
+    `second` must be within the range of [0, 59], not 60.
+
+---
+
+    `subsecond` must be within the range of [0, 999], not 1000.
+
+---
+
+    `subsecond` must be within the range of [0, 999999], not 1000000.
+
+---
+
+    `subsecond` must be within the range of [0, 999999999], not 1000000000.
+
 # full ptype is correct
 
     [1] "iso_year_week_day<year>"
