@@ -352,6 +352,10 @@ sys_now_cpp <- function() {
   .Call(`_clock_sys_now_cpp`)
 }
 
+sys_info_cpp <- function(fields, precision_int, zone) {
+  .Call(`_clock_sys_info_cpp`, fields, precision_int, zone)
+}
+
 new_time_point_from_fields <- function(fields, precision_int, clock_int, names) {
   .Call(`_clock_new_time_point_from_fields`, fields, precision_int, clock_int, names)
 }

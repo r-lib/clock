@@ -298,6 +298,30 @@ sys_now <- function() {
 
 # ------------------------------------------------------------------------------
 
+sys_info <- function(x, zone) {
+  if (!is_sys(x)) {
+    abort("`x` must be a sys-time.")
+  }
+
+  names <- NULL
+  precision <- time_point_precision(x)
+
+  # Recycle `x` to the common size. `zone` is recycled internally as required,
+  # which is more efficient than reloading the time zone repeatedly.
+  size <- vec_size_common(x = x, zone = zone)
+  x <- vec_recycle(x, size)
+
+  out <- sys_info_cpp(x, precision, zone)
+
+  out[["begin"]] <- new_sys_time_from_fields(out[["begin"]], PRECISION_SECOND, names)
+  out[["end"]] <- new_sys_time_from_fields(out[["end"]], PRECISION_SECOND, names)
+  out[["offset"]] <- new_duration_from_fields(out[["offset"]], PRECISION_SECOND, names)
+
+  new_data_frame(out)
+}
+
+# ------------------------------------------------------------------------------
+
 #' @export
 vec_ptype2.clock_sys_time.clock_sys_time <- function(x, y, ...) {
   ptype2_time_point_and_time_point(x, y, ...)

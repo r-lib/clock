@@ -621,6 +621,13 @@ extern "C" SEXP _clock_sys_now_cpp() {
     return cpp11::as_sexp(sys_now_cpp());
   END_CPP11
 }
+// sys-time.cpp
+cpp11::writable::list sys_info_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::strings& zone);
+extern "C" SEXP _clock_sys_info_cpp(SEXP fields, SEXP precision_int, SEXP zone) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(sys_info_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone)));
+  END_CPP11
+}
 // time-point.cpp
 SEXP new_time_point_from_fields(SEXP fields, const cpp11::integers& precision_int, const cpp11::integers& clock_int, SEXP names);
 extern "C" SEXP _clock_new_time_point_from_fields(SEXP fields, SEXP precision_int, SEXP clock_int, SEXP names) {
@@ -848,6 +855,7 @@ extern SEXP _clock_set_field_year_month_weekday_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_set_field_year_month_weekday_last_cpp(SEXP, SEXP);
 extern SEXP _clock_set_field_year_quarter_day_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_set_field_year_quarter_day_last_cpp(SEXP, SEXP, SEXP);
+extern SEXP _clock_sys_info_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_sys_now_cpp();
 extern SEXP _clock_time_point_parse_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_time_point_restore(SEXP, SEXP);
@@ -958,6 +966,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_set_field_year_month_weekday_last_cpp",                (DL_FUNC) &_clock_set_field_year_month_weekday_last_cpp,                 2},
     {"_clock_set_field_year_quarter_day_cpp",                       (DL_FUNC) &_clock_set_field_year_quarter_day_cpp,                        5},
     {"_clock_set_field_year_quarter_day_last_cpp",                  (DL_FUNC) &_clock_set_field_year_quarter_day_last_cpp,                   3},
+    {"_clock_sys_info_cpp",                                         (DL_FUNC) &_clock_sys_info_cpp,                                          3},
     {"_clock_sys_now_cpp",                                          (DL_FUNC) &_clock_sys_now_cpp,                                           0},
     {"_clock_time_point_parse_cpp",                                 (DL_FUNC) &_clock_time_point_parse_cpp,                                 10},
     {"_clock_time_point_restore",                                   (DL_FUNC) &_clock_time_point_restore,                                    2},
