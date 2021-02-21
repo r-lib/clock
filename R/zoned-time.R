@@ -984,17 +984,12 @@ zoned_info <- function(x) {
 
 #' @export
 zoned_info.clock_zoned_time <- function(x) {
-  names <- NULL
   zone <- zoned_time_zone(x)
-  precision <- zoned_time_precision(x)
-
-  out <- zoned_info_cpp(x, precision, zone)
-
-  out[["begin"]] <- new_zoned_time_from_fields(out[["begin"]], PRECISION_SECOND, zone, names)
-  out[["end"]] <- new_zoned_time_from_fields(out[["end"]], PRECISION_SECOND, zone, names)
-  out[["offset"]] <- new_duration_from_fields(out[["offset"]], PRECISION_SECOND, names)
-
-  new_data_frame(out)
+  x <- as_sys(x)
+  out <- sys_info(x, zone)
+  out[["begin"]] <- as_zoned(out[["begin"]], zone)
+  out[["end"]] <- as_zoned(out[["end"]], zone)
+  out
 }
 
 # ------------------------------------------------------------------------------

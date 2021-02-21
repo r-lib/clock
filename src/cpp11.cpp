@@ -748,13 +748,6 @@ extern "C" SEXP _clock_to_sys_seconds_from_sys_duration_fields_cpp(SEXP fields) 
   END_CPP11
 }
 // zoned-time.cpp
-cpp11::writable::list zoned_info_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::strings& zone);
-extern "C" SEXP _clock_zoned_info_cpp(SEXP fields, SEXP precision_int, SEXP zone) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(zoned_info_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone)));
-  END_CPP11
-}
-// zoned-time.cpp
 cpp11::writable::list zoned_parse_complete_cpp(const cpp11::strings& x, const cpp11::strings& format, const cpp11::integers& precision_int, const cpp11::strings& month, const cpp11::strings& month_abbrev, const cpp11::strings& weekday, const cpp11::strings& weekday_abbrev, const cpp11::strings& am_pm, const cpp11::strings& mark);
 extern "C" SEXP _clock_zoned_parse_complete_cpp(SEXP x, SEXP format, SEXP precision_int, SEXP month, SEXP month_abbrev, SEXP weekday, SEXP weekday_abbrev, SEXP am_pm, SEXP mark) {
   BEGIN_CPP11
@@ -876,7 +869,6 @@ extern SEXP _clock_year_quarter_day_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP, SE
 extern SEXP _clock_year_quarter_day_restore(SEXP, SEXP);
 extern SEXP _clock_zone_current();
 extern SEXP _clock_zone_is_valid(SEXP);
-extern SEXP _clock_zoned_info_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_zoned_parse_abbrev_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_zoned_parse_complete_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_zoned_time_restore(SEXP, SEXP);
@@ -987,7 +979,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_year_quarter_day_restore",                             (DL_FUNC) &_clock_year_quarter_day_restore,                              2},
     {"_clock_zone_current",                                         (DL_FUNC) &_clock_zone_current,                                          0},
     {"_clock_zone_is_valid",                                        (DL_FUNC) &_clock_zone_is_valid,                                         1},
-    {"_clock_zoned_info_cpp",                                       (DL_FUNC) &_clock_zoned_info_cpp,                                        3},
     {"_clock_zoned_parse_abbrev_cpp",                               (DL_FUNC) &_clock_zoned_parse_abbrev_cpp,                               10},
     {"_clock_zoned_parse_complete_cpp",                             (DL_FUNC) &_clock_zoned_parse_complete_cpp,                              9},
     {"_clock_zoned_time_restore",                                   (DL_FUNC) &_clock_zoned_time_restore,                                    2},
