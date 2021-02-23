@@ -558,28 +558,27 @@
 <div id="when-is-the-next-daylight-saving-time-event" class="section level2">
 <h2 class="hasAnchor">
 <a href="#when-is-the-next-daylight-saving-time-event" class="anchor"></a>When is the next daylight saving time event?</h2>
-<p>Given a particular zoned-time, when will it next be affected by daylight saving time? For this, we can use a relatively low level helper, <code><a href="../reference/zoned_info.html">zoned_info()</a></code>. It returns a data frame of information about the current daylight saving time transition points, along with information about the offset, the current time zone abbreviation, and whether or not daylight saving time is currently active or not.</p>
+<p>Given a particular zoned-time, when will it next be affected by daylight saving time? For this, we can use a relatively low level helper, <code><a href="../reference/sys_info.html">sys_info()</a></code>. It returns a data frame of information about the current daylight saving time transition points, along with information about the offset, the current time zone abbreviation, and whether or not daylight saving time is currently active or not.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/zoned-parsing.html">zoned_parse_complete</a></span><span class="op">(</span><span class="st">"2019-01-01 00:00:00-05:00[America/New_York]"</span><span class="op">)</span>
 
-<span class="va">info</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/zoned_info.html">zoned_info</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="va">info</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sys_info.html">sys_info</a></span><span class="op">(</span><span class="fu"><a href="../reference/as_sys.html">as_sys</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="../reference/zoned-zone.html">zoned_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># Beginning of the current DST range</span>
-<span class="va">info</span><span class="op">$</span><span class="va">begin</span>
+<span class="fu"><a href="../reference/as_zoned.html">as_zoned</a></span><span class="op">(</span><span class="va">info</span><span class="op">$</span><span class="va">begin</span>, <span class="fu"><a href="../reference/zoned-zone.html">zoned_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2018-11-04 01:00:00-05:00"</span>
 
 <span class="co"># Beginning of the next DST range</span>
-<span class="va">info</span><span class="op">$</span><span class="va">end</span>
+<span class="fu"><a href="../reference/as_zoned.html">as_zoned</a></span><span class="op">(</span><span class="va">info</span><span class="op">$</span><span class="va">end</span>, <span class="fu"><a href="../reference/zoned-zone.html">zoned_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-03-10 03:00:00-04:00"</span></code></pre></div>
 <p>So on 2018-11-04 at (the second) 1 o’clock hour, daylight saving time was turned off. On 2019-03-10 at 3 o’clock, daylight saving time will be considered on again. This is the next moment in time right after a daylight saving time gap of 1 hour, which you can see by subtracting 1 second (in sys-time):</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Last moment in time in the current DST range</span>
 <span class="va">info</span><span class="op">$</span><span class="va">end</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/as_sys.html">as_sys</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/as_zoned.html">as_zoned</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_zone</a></span><span class="op">(</span><span class="va">info</span><span class="op">$</span><span class="va">end</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/as_zoned.html">as_zoned</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-03-10 01:59:59-05:00"</span></code></pre></div>
 </div>
