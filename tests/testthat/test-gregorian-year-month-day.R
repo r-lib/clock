@@ -33,6 +33,14 @@ test_that("validates value ranges", {
   expect_snapshot_error(year_month_day(2020, 1, 1, 1, 1, 1, 1000000000, subsecond_precision = "nanosecond"))
 })
 
+test_that("can create a date at the boundary", {
+  x <- year_month_day(32767, 12, 31)
+  expect_identical(get_year(x), 32767L)
+
+  x <- year_month_day(-32767, 1, 1)
+  expect_identical(get_year(x), -32767L)
+})
+
 test_that("can get the last day of the month", {
   x <- year_month_day(2019, 1:2, "last")
   expect_identical(get_day(x), c(31L, 28L))

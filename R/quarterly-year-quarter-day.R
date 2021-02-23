@@ -15,7 +15,7 @@
 #'
 #' @param year `[integer]`
 #'
-#'   The fiscal year. Values `[-9999, 9999]` are allowed.
+#'   The fiscal year. Values `[-32767, 32767]` are generally allowed.
 #'
 #' @param quarter `[integer / NULL]`
 #'

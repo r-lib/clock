@@ -7,8 +7,10 @@
 
 // Gregorian / general
 static inline void check_range_year(const int& value, const char* arg) {
-  if (value > 9999 || value < -9999) {
-    clock_abort("`%s` must be within the range of [-9999, 9999], not %i.", arg, value);
+  static const int max = static_cast<int>(date::year::max());
+  static const int min = static_cast<int>(date::year::min());
+  if (value > max || value < min) {
+    clock_abort("`%s` must be within the range of [%i, %i], not %i.", arg, min, max, value);
   }
 }
 static inline void check_range_month(const int& value, const char* arg) {

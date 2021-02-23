@@ -19,7 +19,7 @@ iso_year_week_day(
 \arguments{
 \item{year}{\verb{[integer]}
 
-The ISO year. Values \verb{[-9999, 9999]} are allowed.}
+The ISO year. Values \verb{[-32767, 32767]} are generally allowed.}
 
 \item{week}{\verb{[integer / "last" / NULL]}
 
