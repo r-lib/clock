@@ -390,7 +390,6 @@ sys_info <- function(x, zone) {
     abort("`x` must be a sys-time.")
   }
 
-  names <- NULL
   precision <- time_point_precision(x)
 
   # Recycle `x` to the common size. `zone` is recycled internally as required,
@@ -398,13 +397,19 @@ sys_info <- function(x, zone) {
   size <- vec_size_common(x = x, zone = zone)
   x <- vec_recycle(x, size)
 
-  out <- sys_info_cpp(x, precision, zone)
+  fields <- sys_info_cpp(x, precision, zone)
 
-  out[["begin"]] <- new_sys_time_from_fields(out[["begin"]], PRECISION_SECOND, names)
-  out[["end"]] <- new_sys_time_from_fields(out[["end"]], PRECISION_SECOND, names)
-  out[["offset"]] <- new_duration_from_fields(out[["offset"]], PRECISION_SECOND, names)
+  new_sys_info_from_fields(fields)
+}
 
-  new_data_frame(out)
+new_sys_info_from_fields <- function(fields) {
+  names <- NULL
+
+  fields[["begin"]] <- new_sys_time_from_fields(fields[["begin"]], PRECISION_SECOND, names)
+  fields[["end"]] <- new_sys_time_from_fields(fields[["end"]], PRECISION_SECOND, names)
+  fields[["offset"]] <- new_duration_from_fields(fields[["offset"]], PRECISION_SECOND, names)
+
+  new_data_frame(fields)
 }
 
 # ------------------------------------------------------------------------------
