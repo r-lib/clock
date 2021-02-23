@@ -1,4 +1,105 @@
 # ------------------------------------------------------------------------------
+# naive_info()
+
+test_that("naive-info returns the right structure", {
+  info <- naive_info(naive_days(0), "America/New_York")
+
+  expect_type(info$type, "character")
+  expect_s3_class(info$first, "data.frame")
+  expect_s3_class(info$second, "data.frame")
+})
+
+test_that("unique info works", {
+  info <- naive_info(naive_days(0), "America/New_York")
+  na_sys_info <- sys_info(sys_days(NA), "America/New_York")
+
+  expect_identical(info$type, "unique")
+  expect_identical(info$second, na_sys_info)
+
+  begin <- as_sys(year_month_day(1969, 10, 26, 06, 00, 00))
+  end <- as_sys(year_month_day(1970, 4, 26, 7, 0, 0))
+  offset <- duration_seconds(-18000)
+
+  expect_identical(info$first$begin, begin)
+  expect_identical(info$first$end, end)
+  expect_identical(info$first$offset, offset)
+  expect_identical(info$first$dst, FALSE)
+  expect_identical(info$first$abbreviation, "EST")
+})
+
+test_that("nonexistent info works", {
+  x <- as_naive(year_month_day(1970, 4, 26, 2, 30, 00))
+  info <- naive_info(x, "America/New_York")
+
+  expect_identical(info$type, "nonexistent")
+
+  begin <- as_sys(year_month_day(1969, 10, 26, 06, 00, 00))
+  end <- as_sys(year_month_day(1970, 4, 26, 7, 0, 0))
+  offset <- duration_seconds(-18000)
+
+  expect_identical(info$first$begin, begin)
+  expect_identical(info$first$end, end)
+  expect_identical(info$first$offset, offset)
+  expect_identical(info$first$dst, FALSE)
+  expect_identical(info$first$abbreviation, "EST")
+
+  begin <- as_sys(year_month_day(1970, 4, 26, 7, 0, 0))
+  end <- as_sys(year_month_day(1970, 10, 25, 6, 0, 0))
+  offset <- duration_seconds(-14400)
+
+  expect_identical(info$second$begin, begin)
+  expect_identical(info$second$end, end)
+  expect_identical(info$second$offset, offset)
+  expect_identical(info$second$dst, TRUE)
+  expect_identical(info$second$abbreviation, "EDT")
+})
+
+test_that("ambiguous info works", {
+  x <- as_naive(year_month_day(1970, 10, 25, 1, 30, 00))
+  info <- naive_info(x, "America/New_York")
+
+  expect_identical(info$type, "ambiguous")
+
+  begin <- as_sys(year_month_day(1970, 4, 26, 7, 0, 0))
+  end <- as_sys(year_month_day(1970, 10, 25, 6, 0, 0))
+  offset <- duration_seconds(-14400)
+
+  expect_identical(info$first$begin, begin)
+  expect_identical(info$first$end, end)
+  expect_identical(info$first$offset, offset)
+  expect_identical(info$first$dst, TRUE)
+  expect_identical(info$first$abbreviation, "EDT")
+
+  begin <- as_sys(year_month_day(1970, 10, 25, 6, 0, 0))
+  end <- as_sys(year_month_day(1971, 4, 25, 7, 0, 0))
+  offset <- duration_seconds(-18000)
+
+  expect_identical(info$second$begin, begin)
+  expect_identical(info$second$end, end)
+  expect_identical(info$second$offset, offset)
+  expect_identical(info$second$dst, FALSE)
+  expect_identical(info$second$abbreviation, "EST")
+})
+
+test_that("all rows are NA when x is NA", {
+  info <- naive_info(naive_days(NA), "UTC")
+  na_sys_info <- sys_info(sys_days(NA), "UTC")
+  df <- data_frame(type = NA_character_, first = na_sys_info, second = na_sys_info)
+  expect_identical(info, df)
+})
+
+test_that("x must be naive", {
+  expect_snapshot_error(naive_info(sys_days(0), "UTC"))
+})
+
+test_that("zone is vectorized and recycled against x", {
+  info <- naive_info(naive_days(0), c("UTC", "America/New_York"))
+  expect_identical(nrow(info), 2L)
+
+  expect_snapshot_error(naive_info(naive_days(0:3), c("UTC", "America/New_York")))
+})
+
+# ------------------------------------------------------------------------------
 # as.character()
 
 test_that("as.character() works", {

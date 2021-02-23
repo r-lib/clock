@@ -118,6 +118,8 @@ reference:
   - is_sys
   - naive_parse
   - sys_parse
+  - naive_info
+  - sys_info
   - time_point_cast
   - time-point-rounding
   - time_point_shift
@@ -133,7 +135,6 @@ reference:
   - is_zoned
   - zoned-parsing
   - zoned_zone
-  - zoned_info
   - format.clock_zoned_time
 
 - title: Weekdays

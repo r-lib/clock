@@ -280,6 +280,10 @@ iso_year_week_day_minus_iso_year_week_day_cpp <- function(x, y, precision_int) {
   .Call(`_clock_iso_year_week_day_minus_iso_year_week_day_cpp`, x, y, precision_int)
 }
 
+naive_info_cpp <- function(fields, precision_int, zone) {
+  .Call(`_clock_naive_info_cpp`, fields, precision_int, zone)
+}
+
 new_year_quarter_day_from_fields <- function(fields, precision_int, start, names) {
   .Call(`_clock_new_year_quarter_day_from_fields`, fields, precision_int, start, names)
 }
@@ -352,6 +356,10 @@ sys_now_cpp <- function() {
   .Call(`_clock_sys_now_cpp`)
 }
 
+sys_info_cpp <- function(fields, precision_int, zone) {
+  .Call(`_clock_sys_info_cpp`, fields, precision_int, zone)
+}
+
 new_time_point_from_fields <- function(fields, precision_int, clock_int, names) {
   .Call(`_clock_new_time_point_from_fields`, fields, precision_int, clock_int, names)
 }
@@ -418,10 +426,6 @@ to_sys_duration_fields_from_sys_seconds_cpp <- function(seconds) {
 
 to_sys_seconds_from_sys_duration_fields_cpp <- function(fields) {
   .Call(`_clock_to_sys_seconds_from_sys_duration_fields_cpp`, fields)
-}
-
-zoned_info_cpp <- function(fields, precision_int, zone) {
-  .Call(`_clock_zoned_info_cpp`, fields, precision_int, zone)
 }
 
 zoned_parse_complete_cpp <- function(x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {

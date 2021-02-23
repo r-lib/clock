@@ -13,6 +13,70 @@ test_that("returns a single sys-time", {
 })
 
 # ------------------------------------------------------------------------------
+# sys_info()
+
+test_that("can lookup sys-info", {
+  # One in EST, one in EDT
+  x <- year_month_day(2021, 03, 14, c(01, 03), c(59, 00), c(59, 00))
+  x <- as_naive(x)
+  x <- as_zoned(x, "America/New_York")
+
+  info <- sys_info(as_sys(x), zoned_zone(x))
+
+  beginend1 <- as_sys(c(
+    year_month_day(2020, 11, 1, 6, 0, 0),
+    year_month_day(2021, 03, 14, 7, 0, 0)
+  ))
+  beginend2 <- as_sys(c(
+    year_month_day(2021, 03, 14, 7, 0, 0),
+    year_month_day(2021, 11, 7, 6, 0, 0)
+  ))
+
+  expect_identical(info$begin, c(beginend1[1], beginend2[1]))
+  expect_identical(info$end, c(beginend1[2], beginend2[2]))
+
+  expect_identical(info$offset, duration_seconds(c(-18000, -14400)))
+  expect_identical(info$dst, c(FALSE, TRUE))
+  expect_identical(info$abbreviation, c("EST", "EDT"))
+})
+
+test_that("`zone` is vectorized and recycled against `x`", {
+  zones <- c("America/New_York", "Australia/Lord_Howe")
+  x <- as_sys(year_month_day(2019, 1, 1))
+
+  info <- sys_info(x, zones)
+
+  naive_times <- c(
+    as_naive(as_zoned(x, zones[1])),
+    as_naive(as_zoned(x, zones[2]))
+  )
+
+  expect_identical(as_naive(x + info$offset), naive_times)
+
+  # DST is dependent on the time zone
+  expect_identical(info$dst, c(FALSE, TRUE))
+
+  expect_identical(info$abbreviation, c("EST", "+11"))
+})
+
+test_that("very old times are looked up correctly", {
+  x <- year_month_day(1800, 01, 01)
+  x <- as_sys(x)
+
+  info <- sys_info(x, "America/New_York")
+
+  end <- as_sys(year_month_day(1883, 11, 18, 17, 00, 00))
+  offset <- duration_seconds(-17762)
+  dst <- FALSE
+  abbreviation <- "LMT"
+
+  expect_identical(info$end, end)
+  expect_identical(info$offset, offset)
+  expect_identical(info$dst, dst)
+  expect_identical(info$abbreviation, abbreviation)
+})
+
+# ------------------------------------------------------------------------------
 # as.character()
 
 test_that("as.character() works", {

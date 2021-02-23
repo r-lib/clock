@@ -298,6 +298,124 @@ sys_now <- function() {
 
 # ------------------------------------------------------------------------------
 
+#' Info: sys-time
+#'
+#' @description
+#' `sys_info()` retrieves a set of low-level information generally not required
+#' for most date-time manipulations. It returns a data frame with the following
+#' columns:
+#'
+#' - `begin`, `end`: Second precision sys-times specifying the range of the
+#' current daylight saving time rule. The range is a half-open interval of
+#' `[begin, end)`.
+#'
+#' - `offset`: A second precision `duration` specifying the offset from UTC.
+#'
+#' - `dst`: A logical vector specifying if daylight saving time is currently
+#' active.
+#'
+#' - `abbreviation`: The time zone abbreviation in use throughout this `begin`
+#' to `end` range.
+#'
+#' @details
+#' If there have never been any daylight saving time transitions, the minimum
+#' supported year value is returned for `begin` (typically, a year value of
+#' `-32767`).
+#'
+#' If daylight saving time is no longer used in a time zone, the maximum
+#' supported year value is returned for `end` (typically, a year value of
+#' `32767`).
+#'
+#' The `offset` is the bridge between sys-time and naive-time for the `zone`
+#' being used. The relationship of the three values is:
+#'
+#' ```
+#' offset = naive_time - sys_time
+#' ```
+#'
+#' @param x `[clock_sys_time]`
+#'
+#'   A sys-time.
+#'
+#' @param zone `[character]`
+#'
+#'   A valid time zone name.
+#'
+#'   Unlike most functions in clock, in `sys_info()` `zone` is vectorized
+#'   and is recycled against `x`.
+#'
+#' @return A data frame of low level information.
+#'
+#' @export
+#' @examples
+#' library(vctrs)
+#'
+#' x <- year_month_day(2021, 03, 14, c(01, 03), c(59, 00), c(59, 00))
+#' x <- as_naive(x)
+#' x <- as_zoned(x, "America/New_York")
+#'
+#' # x[1] is in EST, x[2] is in EDT
+#' x
+#'
+#' x_sys <- as_sys(x)
+#'
+#' info <- sys_info(x_sys, zoned_zone(x))
+#' info
+#'
+#' # Convert `begin` and `end` to zoned-times to see the previous and
+#' # next daylight saving time transitions
+#' data_frame(
+#'   x = x,
+#'   begin = as_zoned(info$begin, zoned_zone(x)),
+#'   end = as_zoned(info$end, zoned_zone(x))
+#' )
+#'
+#' # `end` can be used to iterate through daylight saving time transitions
+#' # by repeatedly calling `sys_info()`
+#' sys_info(info$end, zoned_zone(x))
+#'
+#' # Multiple `zone`s can be supplied to look up daylight saving time
+#' # information in different time zones
+#' zones <- c("America/New_York", "America/Los_Angeles")
+#'
+#' info2 <- sys_info(x_sys[1], zones)
+#' info2
+#'
+#' # The offset can be used to display the naive-time (i.e. the printed time)
+#' # in both of those time zones
+#' data_frame(
+#'   zone = zones,
+#'   naive_time = x_sys[1] + info2$offset
+#' )
+sys_info <- function(x, zone) {
+  if (!is_sys(x)) {
+    abort("`x` must be a sys-time.")
+  }
+
+  precision <- time_point_precision(x)
+
+  # Recycle `x` to the common size. `zone` is recycled internally as required,
+  # which is more efficient than reloading the time zone repeatedly.
+  size <- vec_size_common(x = x, zone = zone)
+  x <- vec_recycle(x, size)
+
+  fields <- sys_info_cpp(x, precision, zone)
+
+  new_sys_info_from_fields(fields)
+}
+
+new_sys_info_from_fields <- function(fields) {
+  names <- NULL
+
+  fields[["begin"]] <- new_sys_time_from_fields(fields[["begin"]], PRECISION_SECOND, names)
+  fields[["end"]] <- new_sys_time_from_fields(fields[["end"]], PRECISION_SECOND, names)
+  fields[["offset"]] <- new_duration_from_fields(fields[["offset"]], PRECISION_SECOND, names)
+
+  new_data_frame(fields)
+}
+
+# ------------------------------------------------------------------------------
+
 #' @export
 vec_ptype2.clock_sys_time.clock_sys_time <- function(x, y, ...) {
   ptype2_time_point_and_time_point(x, y, ...)
