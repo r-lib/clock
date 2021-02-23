@@ -14,7 +14,7 @@
 #'
 #' @param year `[integer]`
 #'
-#'   The ISO year. Values `[-9999, 9999]` are allowed.
+#'   The ISO year. Values `[-32767, 32767]` are generally allowed.
 #'
 #' @param week `[integer / "last" / NULL]`
 #'

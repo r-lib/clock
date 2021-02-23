@@ -21,7 +21,7 @@ date_time_build(
 \arguments{
 \item{year}{\verb{[integer]}
 
-The year. Values \verb{[-9999, 9999]} are allowed.}
+The year. Values \verb{[-32767, 32767]} are generally allowed.}
 
 \item{month}{\verb{[integer]}
 

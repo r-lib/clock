@@ -20,7 +20,7 @@ year_quarter_day(
 \arguments{
 \item{year}{\verb{[integer]}
 
-The fiscal year. Values \verb{[-9999, 9999]} are allowed.}
+The fiscal year. Values \verb{[-32767, 32767]} are generally allowed.}
 
 \item{quarter}{\verb{[integer / NULL]}
 

@@ -1,6 +1,6 @@
 # validates value ranges
 
-    `year` must be within the range of [-9999, 9999], not 50000.
+    `year` must be within the range of [-32767, 32767], not 50000.
 
 ---
 

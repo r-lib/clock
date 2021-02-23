@@ -1079,7 +1079,7 @@ date_shift.POSIXt <- function(x,
 #'
 #' @param year `[integer]`
 #'
-#'   The year. Values `[-9999, 9999]` are allowed.
+#'   The year. Values `[-32767, 32767]` are generally allowed.
 #'
 #' @param month `[integer]`
 #'
