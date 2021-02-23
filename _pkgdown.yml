@@ -134,7 +134,6 @@ reference:
   - is_zoned
   - zoned-parsing
   - zoned_zone
-  - zoned_info
   - format.clock_zoned_time
 
 - title: Weekdays
