@@ -4,6 +4,20 @@
 
 #include "cpp11/declarations.hpp"
 
+// database.cpp
+cpp11::writable::strings zone_database_version_cpp();
+extern "C" SEXP _clock_zone_database_version_cpp() {
+  BEGIN_CPP11
+    return cpp11::as_sexp(zone_database_version_cpp());
+  END_CPP11
+}
+// database.cpp
+cpp11::writable::strings zone_database_names_cpp();
+extern "C" SEXP _clock_zone_database_names_cpp() {
+  BEGIN_CPP11
+    return cpp11::as_sexp(zone_database_names_cpp());
+  END_CPP11
+}
 // duration.cpp
 SEXP new_duration_from_fields(SEXP fields, const cpp11::integers& precision_int, SEXP names);
 extern "C" SEXP _clock_new_duration_from_fields(SEXP fields, SEXP precision_int, SEXP names) {
@@ -876,6 +890,8 @@ extern SEXP _clock_year_quarter_day_minus_year_quarter_day_cpp(SEXP, SEXP, SEXP,
 extern SEXP _clock_year_quarter_day_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_year_quarter_day_restore(SEXP, SEXP);
 extern SEXP _clock_zone_current();
+extern SEXP _clock_zone_database_names_cpp();
+extern SEXP _clock_zone_database_version_cpp();
 extern SEXP _clock_zone_is_valid(SEXP);
 extern SEXP _clock_zoned_parse_abbrev_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_zoned_parse_complete_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -987,6 +1003,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_year_quarter_day_plus_duration_cpp",                   (DL_FUNC) &_clock_year_quarter_day_plus_duration_cpp,                    5},
     {"_clock_year_quarter_day_restore",                             (DL_FUNC) &_clock_year_quarter_day_restore,                              2},
     {"_clock_zone_current",                                         (DL_FUNC) &_clock_zone_current,                                          0},
+    {"_clock_zone_database_names_cpp",                              (DL_FUNC) &_clock_zone_database_names_cpp,                               0},
+    {"_clock_zone_database_version_cpp",                            (DL_FUNC) &_clock_zone_database_version_cpp,                             0},
     {"_clock_zone_is_valid",                                        (DL_FUNC) &_clock_zone_is_valid,                                         1},
     {"_clock_zoned_parse_abbrev_cpp",                               (DL_FUNC) &_clock_zoned_parse_abbrev_cpp,                               10},
     {"_clock_zoned_parse_complete_cpp",                             (DL_FUNC) &_clock_zoned_parse_complete_cpp,                              9},
