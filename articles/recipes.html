@@ -555,11 +555,130 @@
 <span class="co">#&gt; Time difference of 185 days</span></code></pre></div>
 </div>
 </div>
+<div id="converting-a-time-zone-abbreviation-into-a-time-zone-name" class="section level2">
+<h2 class="hasAnchor">
+<a href="#converting-a-time-zone-abbreviation-into-a-time-zone-name" class="anchor"></a>Converting a time zone abbreviation into a time zone name</h2>
+<p>It is possible that you might run into date-time strings of the form <code>"2020-10-25 01:30:00 IST"</code>, which contain a time zone <em>abbreviation</em> rather than a full time zone name. Because time zone maintainers change the abbreviation they use throughout time, and because multiple time zones sometimes use the same abbreviation, it is generally impossible to parse strings of this form without more information. That said, if you know what time zone this abbreviation goes with, you can parse this time with <code><a href="../reference/zoned-parsing.html">zoned_parse_abbrev()</a></code>, supplying the <code>zone</code>.</p>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"2020-10-25 01:30:00 IST"</span>
+
+<span class="fu"><a href="../reference/zoned-parsing.html">zoned_parse_abbrev</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"Asia/Kolkata"</span><span class="op">)</span>
+<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Asia/Kolkata&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] "2020-10-25 01:30:00+05:30"</span>
+<span class="fu"><a href="../reference/zoned-parsing.html">zoned_parse_abbrev</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"Asia/Jerusalem"</span><span class="op">)</span>
+<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Asia/Jerusalem&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] "2020-10-25 01:30:00+02:00"</span></code></pre></div>
+<p>If you <em>don’t</em> know what time zone this abbreviation goes with, then generally you are out of luck. However, there are low-level tools in this library that can help you generate a list of <em>possible</em> zoned-times this could map to.</p>
+<p>Assuming that <code>x</code> is a naive-time with its corresponding time zone abbreviation attached, the first thing to do is to parse this string as a naive-time.</p>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/naive_parse.html">naive_parse</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="va">x</span>
+<span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] "2020-10-25 01:30:00"</span></code></pre></div>
+<p>Next, we’ll develop a function that attempts to turn this naive-time into a zoned-time, iterating through all of the time zone names available in the time zone database. These time zone names are accessible through <code><a href="../reference/zone-database.html">zone_database_names()</a></code>. By using the low-level <code><a href="../reference/naive_info.html">naive_info()</a></code>, rather than <code><a href="../reference/as_zoned.html">as_zoned()</a></code>, to lookup zone specific information, we’ll also get back information about the UTC offset and time zone abbreviation that is currently in use. By matching this abbreviation against our input abbreviation, we can generate a list of zoned-times that use the abbreviation we care about at that particular instance in time.</p>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">naive_find_by_abbrev</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">abbrev</span><span class="op">)</span> <span class="op">{</span>
+  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="../reference/is_naive.html">is_naive</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+    <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"`x` must be a naive-time."</span><span class="op">)</span>
+  <span class="op">}</span>
+  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">1L</span><span class="op">)</span> <span class="op">{</span>
+    <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"`x` must be length 1."</span><span class="op">)</span>
+  <span class="op">}</span>
+  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/scalar-type-predicates.html">is_string</a></span><span class="op">(</span><span class="va">abbrev</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+    <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"`abbrev` must be a single string."</span><span class="op">)</span>
+  <span class="op">}</span>
+  
+  <span class="va">zones</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/zone-database.html">zone_database_names</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="va">info</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/naive_info.html">naive_info</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">zones</span><span class="op">)</span>
+  <span class="va">info</span><span class="op">$</span><span class="va">zones</span> <span class="op">&lt;-</span> <span class="va">zones</span>
+  
+  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+    <span class="fu">compute_uniques</span><span class="op">(</span><span class="va">x</span>, <span class="va">info</span>, <span class="va">abbrev</span><span class="op">)</span>,
+    <span class="fu">compute_ambiguous</span><span class="op">(</span><span class="va">x</span>, <span class="va">info</span>, <span class="va">abbrev</span><span class="op">)</span>
+  <span class="op">)</span>
+<span class="op">}</span>
+
+<span class="va">compute_uniques</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">info</span>, <span class="va">abbrev</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">info</span> <span class="op">&lt;-</span> <span class="va">info</span><span class="op">[</span><span class="va">info</span><span class="op">$</span><span class="va">type</span> <span class="op">==</span> <span class="st">"unique"</span>,<span class="op">]</span>
+  
+  <span class="co"># If the abbreviation of the unique time matches the input `abbrev`,</span>
+  <span class="co"># then that candidate zone should be in the output</span>
+  <span class="va">matches</span> <span class="op">&lt;-</span> <span class="va">info</span><span class="op">$</span><span class="va">first</span><span class="op">$</span><span class="va">abbreviation</span> <span class="op">==</span> <span class="va">abbrev</span>
+  <span class="va">zones</span> <span class="op">&lt;-</span> <span class="va">info</span><span class="op">$</span><span class="va">zones</span><span class="op">[</span><span class="va">matches</span><span class="op">]</span>
+  
+  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">zones</span>, <span class="va">as_zoned</span>, x <span class="op">=</span> <span class="va">x</span><span class="op">)</span>
+<span class="op">}</span>
+
+<span class="va">compute_ambiguous</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">info</span>, <span class="va">abbrev</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">info</span> <span class="op">&lt;-</span> <span class="va">info</span><span class="op">[</span><span class="va">info</span><span class="op">$</span><span class="va">type</span> <span class="op">==</span> <span class="st">"ambiguous"</span>,<span class="op">]</span>
+
+  <span class="co"># Of the two possible times,</span>
+  <span class="co"># does the abbreviation of the earliest match the input `abbrev`?</span>
+  <span class="va">matches</span> <span class="op">&lt;-</span> <span class="va">info</span><span class="op">$</span><span class="va">first</span><span class="op">$</span><span class="va">abbreviation</span> <span class="op">==</span> <span class="va">abbrev</span>
+  <span class="va">zones</span> <span class="op">&lt;-</span> <span class="va">info</span><span class="op">$</span><span class="va">zones</span><span class="op">[</span><span class="va">matches</span><span class="op">]</span>
+  
+  <span class="va">earliest</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">zones</span>, <span class="va">as_zoned</span>, x <span class="op">=</span> <span class="va">x</span>, ambiguous <span class="op">=</span> <span class="st">"earliest"</span><span class="op">)</span>
+  
+  <span class="co"># Of the two possible times,</span>
+  <span class="co"># does the abbreviation of the latest match the input `abbrev`?</span>
+  <span class="va">matches</span> <span class="op">&lt;-</span> <span class="va">info</span><span class="op">$</span><span class="va">second</span><span class="op">$</span><span class="va">abbreviation</span> <span class="op">==</span> <span class="va">abbrev</span>
+  <span class="va">zones</span> <span class="op">&lt;-</span> <span class="va">info</span><span class="op">$</span><span class="va">zones</span><span class="op">[</span><span class="va">matches</span><span class="op">]</span>
+  
+  <span class="va">latest</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">zones</span>, <span class="va">as_zoned</span>, x <span class="op">=</span> <span class="va">x</span>, ambiguous <span class="op">=</span> <span class="st">"latest"</span><span class="op">)</span>
+  
+  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">earliest</span>, <span class="va">latest</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">candidates</span> <span class="op">&lt;-</span> <span class="fu">naive_find_by_abbrev</span><span class="op">(</span><span class="va">x</span>, <span class="st">"IST"</span><span class="op">)</span>
+<span class="va">candidates</span>
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Asia/Calcutta&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] "2020-10-25 01:30:00+05:30"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]</span>
+<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Asia/Kolkata&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] "2020-10-25 01:30:00+05:30"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[3]]</span>
+<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Eire&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] "2020-10-25 01:30:00+01:00"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[4]]</span>
+<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Europe/Dublin&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] "2020-10-25 01:30:00+01:00"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[5]]</span>
+<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Asia/Jerusalem&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] "2020-10-25 01:30:00+02:00"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[6]]</span>
+<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Asia/Tel_Aviv&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] "2020-10-25 01:30:00+02:00"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[7]]</span>
+<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Israel&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] "2020-10-25 01:30:00+02:00"</span></code></pre></div>
+<p>While it looks like we got 7 candidates, in reality we only have 3. Asia/Kolkata, Europe/Dublin, and Asia/Jerusalem are our 3 candidates. The others are aliases of those 3 that have been retired but are kept for backwards compatibility.</p>
+<p>Looking at the code, there are two ways to add a candidate time zone name to the list.</p>
+<p>If there is a unique mapping from <code>{naive-time, zone}</code> to <code>sys-time</code>, then we check if the abbreviation that goes with that unique mapping matches our input abbreviation. If so, then we convert <code>x</code> to a zoned-time with that time zone.</p>
+<p>If there is an ambiguous mapping from <code>{naive-time, zone}</code> to <code>sys-time</code>, which is due to a daylight saving fallback, then we check the abbreviation of both the <em>earliest</em> and <em>latest</em> possible times. If either matches, then we convert <code>x</code> to a zoned-time using that time zone and the information about which of the two ambiguous times were used.</p>
+<p>This example is particularly interesting, since each of the 3 candidates came from a different path. The Asia/Kolkata one is unique, the Europe/Dublin one is ambiguous but the earliest was chosen, and the Asia/Jerusalem one is ambiguous but the latest was chosen:</p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/as_zoned.html">as_zoned</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"Asia/Kolkata"</span><span class="op">)</span>
+<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Asia/Kolkata&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] "2020-10-25 01:30:00+05:30"</span>
+<span class="fu"><a href="../reference/as_zoned.html">as_zoned</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"Europe/Dublin"</span>, ambiguous <span class="op">=</span> <span class="st">"earliest"</span><span class="op">)</span>
+<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Europe/Dublin&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] "2020-10-25 01:30:00+01:00"</span>
+<span class="fu"><a href="../reference/as_zoned.html">as_zoned</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"Asia/Jerusalem"</span>, ambiguous <span class="op">=</span> <span class="st">"latest"</span><span class="op">)</span>
+<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Asia/Jerusalem&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] "2020-10-25 01:30:00+02:00"</span></code></pre></div>
+</div>
 <div id="when-is-the-next-daylight-saving-time-event" class="section level2">
 <h2 class="hasAnchor">
 <a href="#when-is-the-next-daylight-saving-time-event" class="anchor"></a>When is the next daylight saving time event?</h2>
 <p>Given a particular zoned-time, when will it next be affected by daylight saving time? For this, we can use a relatively low level helper, <code><a href="../reference/sys_info.html">sys_info()</a></code>. It returns a data frame of information about the current daylight saving time transition points, along with information about the offset, the current time zone abbreviation, and whether or not daylight saving time is currently active or not.</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/zoned-parsing.html">zoned_parse_complete</a></span><span class="op">(</span><span class="st">"2019-01-01 00:00:00-05:00[America/New_York]"</span><span class="op">)</span>
 
 <span class="va">info</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sys_info.html">sys_info</a></span><span class="op">(</span><span class="fu"><a href="../reference/as_sys.html">as_sys</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="../reference/zoned-zone.html">zoned_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
@@ -574,7 +693,7 @@
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-03-10 03:00:00-04:00"</span></code></pre></div>
 <p>So on 2018-11-04 at (the second) 1 o’clock hour, daylight saving time was turned off. On 2019-03-10 at 3 o’clock, daylight saving time will be considered on again. This is the next moment in time right after a daylight saving time gap of 1 hour, which you can see by subtracting 1 second (in sys-time):</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Last moment in time in the current DST range</span>
 <span class="va">info</span><span class="op">$</span><span class="va">end</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
