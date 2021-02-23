@@ -427,6 +427,103 @@ day_of_year <- function(x) {
 day_of_year(x)
 ```
 
+## Converting a time zone abbreviation into a time zone name
+
+It is possible that you might run into date-time strings of the form `"2020-10-25 01:30:00 IST"`, which contain a time zone _abbreviation_ rather than a full time zone name. Because time zone maintainers change the abbreviation they use throughout time, and because multiple time zones sometimes use the same abbreviation, it is generally impossible to parse strings of this form without more information. That said, if you know what time zone this abbreviation goes with, you can parse this time with `zoned_parse_abbrev()`, supplying the `zone`.
+
+```{r}
+x <- "2020-10-25 01:30:00 IST"
+
+zoned_parse_abbrev(x, "Asia/Kolkata")
+zoned_parse_abbrev(x, "Asia/Jerusalem")
+```
+
+If you _don't_ know what time zone this abbreviation goes with, then generally you are out of luck. However, there are low-level tools in this library that can help you generate a list of _possible_ zoned-times this could map to.
+
+Assuming that `x` is a naive-time with its corresponding time zone abbreviation attached, the first thing to do is to parse this string as a naive-time.
+
+```{r}
+x <- naive_parse(x)
+x
+```
+
+Next, we'll develop a function that attempts to turn this naive-time into a zoned-time, iterating through all of the time zone names available in the time zone database. These time zone names are accessible through `zone_database_names()`. By using the low-level `naive_info()`, rather than `as_zoned()`, to lookup zone specific information, we'll also get back information about the UTC offset and time zone abbreviation that is currently in use. By matching this abbreviation against our input abbreviation, we can generate a list of zoned-times that use the abbreviation we care about at that particular instance in time.
+
+```{r}
+naive_find_by_abbrev <- function(x, abbrev) {
+  if (!is_naive(x)) {
+    abort("`x` must be a naive-time.")
+  }
+  if (length(x) != 1L) {
+    abort("`x` must be length 1.")
+  }
+  if (!rlang::is_string(abbrev)) {
+    abort("`abbrev` must be a single string.")
+  }
+  
+  zones <- zone_database_names()
+  info <- naive_info(x, zones)
+  info$zones <- zones
+  
+  c(
+    compute_uniques(x, info, abbrev),
+    compute_ambiguous(x, info, abbrev)
+  )
+}
+
+compute_uniques <- function(x, info, abbrev) {
+  info <- info[info$type == "unique",]
+  
+  # If the abbreviation of the unique time matches the input `abbrev`,
+  # then that candidate zone should be in the output
+  matches <- info$first$abbreviation == abbrev
+  zones <- info$zones[matches]
+  
+  lapply(zones, as_zoned, x = x)
+}
+
+compute_ambiguous <- function(x, info, abbrev) {
+  info <- info[info$type == "ambiguous",]
+
+  # Of the two possible times,
+  # does the abbreviation of the earliest match the input `abbrev`?
+  matches <- info$first$abbreviation == abbrev
+  zones <- info$zones[matches]
+  
+  earliest <- lapply(zones, as_zoned, x = x, ambiguous = "earliest")
+  
+  # Of the two possible times,
+  # does the abbreviation of the latest match the input `abbrev`?
+  matches <- info$second$abbreviation == abbrev
+  zones <- info$zones[matches]
+  
+  latest <- lapply(zones, as_zoned, x = x, ambiguous = "latest")
+  
+  c(earliest, latest)
+}
+```
+
+```{r}
+candidates <- naive_find_by_abbrev(x, "IST")
+candidates
+```
+
+While it looks like we got 7 candidates, in reality we only have 3. Asia/Kolkata, Europe/Dublin, and Asia/Jerusalem are our 3 candidates. The others are aliases of those 3 that have been retired but are kept for backwards compatibility.
+
+Looking at the code, there are two ways to add a candidate time zone name to the list.
+
+If there is a unique mapping from `{naive-time, zone}` to `sys-time`,  then we check if the abbreviation that goes with that unique mapping matches our input abbreviation. If so, then we convert `x` to a zoned-time with that time zone.
+
+If there is an ambiguous mapping from `{naive-time, zone}` to `sys-time`, which is due to a daylight saving fallback, then we check the abbreviation of both the _earliest_ and _latest_ possible times. If either matches, then we convert `x` to a zoned-time using that time zone and the information about which of the two ambiguous times were used.
+
+This example is particularly interesting, since each of the 3 candidates came from a different path. The Asia/Kolkata one is unique, the Europe/Dublin one is ambiguous but the earliest was chosen, and the Asia/Jerusalem one is ambiguous but the latest was chosen:
+
+```{r}
+as_zoned(x, "Asia/Kolkata")
+as_zoned(x, "Europe/Dublin", ambiguous = "earliest")
+as_zoned(x, "Asia/Jerusalem", ambiguous = "latest")
+```
+
 ## When is the next daylight saving time event?
 
 Given a particular zoned-time, when will it next be affected by daylight saving time? For this, we can use a relatively low level helper, `sys_info()`. It returns a data frame of information about the current daylight saving time transition points, along with information about the offset, the current time zone abbreviation, and whether or not daylight saving time is currently active or not.
