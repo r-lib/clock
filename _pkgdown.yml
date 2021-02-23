@@ -118,6 +118,7 @@ reference:
   - is_sys
   - naive_parse
   - sys_parse
+  - naive_info
   - sys_info
   - time_point_cast
   - time-point-rounding
