@@ -1,3 +1,11 @@
+# x must be naive
+
+    `x` must be a naive-time.
+
+# zone is vectorized and recycled against x
+
+    Can't recycle `x` (size 4) to match `zone` (size 2).
+
 # cannot parse invalid dates
 
     Code

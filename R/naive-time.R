@@ -546,6 +546,156 @@ as.character.clock_naive_time <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Info: naive-time
+#'
+#' @description
+#' `naive_info()` retrieves a set of low-level information generally not
+#' required for most date-time manipulations. It is used implicitly
+#' by `as_zoned()` when converting from a naive-time.
+#'
+#' It returns a data frame with the following columns:
+#'
+#' - `type`: A character vector containing one of:
+#'
+#'   - `"unique"`: The naive-time maps uniquely to a zoned-time that can be
+#'   created with `zone`.
+#'
+#'   - `"nonexistent"`: The naive-time does not exist as a zoned-time that can be
+#'   created with `zone`.
+#'
+#'   - `"ambiguous"`: The naive-time exists twice as a zoned-time that can be
+#'   created with `zone`.
+#'
+#' - `first`: A [sys_info()] data frame.
+#'
+#' - `second`: A [sys_info()] data frame.
+#'
+#' ## `type == "unique"`
+#'
+#' - `first` will be filled out with sys-info representing daylight saving time
+#' information for that time point in `zone`.
+#'
+#' - `second` will contain only `NA` values, as there is no ambiguity to
+#' represent information for.
+#'
+#' ## `type == "nonexistent"`
+#'
+#' - `first` will be filled out with the sys-info that ends just prior to `x`.
+#'
+#' - `second` will be filled out with the sys-info that begins just after `x`.
+#'
+#' ## `type == "ambiguous"`
+#'
+#' - `first` will be filled out with the sys-info that ends just after `x`.
+#'
+#' - `second` will be filled out with the sys-info that starts just before `x`.
+#'
+#' @details
+#' If the tibble package is installed, it is recommended to convert the output
+#' to a tibble with `as_tibble()`, as that will print the df-cols much nicer.
+#'
+#' @param x `[clock_naive_time]`
+#'
+#'   A naive-time.
+#'
+#' @param zone `[character]`
+#'
+#'   A valid time zone name.
+#'
+#'   Unlike most functions in clock, in `naive_info()` `zone` is vectorized
+#'   and is recycled against `x`.
+#'
+#' @return A data frame of low level information.
+#'
+#' @export
+#' @examples
+#' x <- year_month_day(1970, 04, 26, 02, 30, 00)
+#' x <- as_naive(x)
+#'
+#' # Maps uniquely to a time in London
+#' naive_info(x, "Europe/London")
+#'
+#' # This naive-time never existed in New York!
+#' # A DST gap jumped the time from 01:59:59 -> 03:00:00,
+#' # skipping the 2 o'clock hour
+#' zone <- "America/New_York"
+#' info <- naive_info(x, zone)
+#' info
+#'
+#' # You can recreate various `nonexistent` strategies with this info
+#' as_zoned(x, zone, nonexistent = "roll-forward")
+#' as_zoned(info$first$end, zone)
+#'
+#' as_zoned(x, zone, nonexistent = "roll-backward")
+#' as_zoned(info$first$end - 1, zone)
+#'
+#' as_zoned(x, zone, nonexistent = "shift-forward")
+#' as_zoned(as_sys(x) - info$first$offset, zone)
+#'
+#' as_zoned(x, zone, nonexistent = "shift-backward")
+#' as_zoned(as_sys(x) - info$second$offset, zone)
+#'
+#' # ---------------------------------------------------------------------------
+#' # Normalizing to UTC
+#'
+#' # Imagine you had the following printed times, and knowledge that they
+#' # are to be interpreted as in the corresponding time zones
+#' df <- data.frame(
+#'   x = c("2020-01-05 02:30:00", "2020-06-03 12:20:05"),
+#'   zone = c("America/Los_Angeles", "Europe/London"),
+#'   stringsAsFactors = FALSE
+#' )
+#'
+#' # The times are assumed to be naive-times, i.e. if you lived in the `zone`
+#' # at the moment the time was recorded, then you would have seen that time
+#' # printed on the clock. Currently, these are strings. To convert them to
+#' # a time based type, you'll have to acknowledge that R only lets you have
+#' # 1 time zone in a vector of date-times at a time. So you'll need to
+#' # normalize these naive-times. The easiest thing to normalize them to
+#' # is UTC.
+#' df$naive <- naive_parse(df$x)
+#'
+#' # Get info about the naive times using a vector of zones
+#' info <- naive_info(df$naive, df$zone)
+#' info
+#'
+#' # We'll assume that some system generated these naive-times with no
+#' # chance of them ever being nonexistent or ambiguous. So now all we have
+#' # to do is use the offset to convert the naive-time to a sys-time. The
+#' # relationship used is:
+#' # offset = naive_time - sys_time
+#' df$sys <- as_sys(df$naive) - info$first$offset
+#' df
+#'
+#' # At this point, both times are in UTC. From here, you can convert them
+#' # both to either America/Los_Angeles or Europe/London as required.
+#' as_zoned(df$sys, "America/Los_Angeles")
+#' as_zoned(df$sys, "Europe/London")
+naive_info <- function(x, zone) {
+  if (!is_naive(x)) {
+    abort("`x` must be a naive-time.")
+  }
+
+  precision <- time_point_precision(x)
+
+  # Recycle `x` to the common size. `zone` is recycled internally as required,
+  # which is more efficient than reloading the time zone repeatedly.
+  size <- vec_size_common(x = x, zone = zone)
+  x <- vec_recycle(x, size)
+
+  fields <- naive_info_cpp(x, precision, zone)
+
+  new_naive_info_from_fields(fields)
+}
+
+new_naive_info_from_fields <- function(fields) {
+  fields[["first"]] <- new_sys_info_from_fields(fields[["first"]])
+  fields[["second"]] <- new_sys_info_from_fields(fields[["second"]])
+  new_data_frame(fields)
+}
+
+# ------------------------------------------------------------------------------
+
 #' @export
 vec_ptype2.clock_naive_time.clock_naive_time <- function(x, y, ...) {
   ptype2_time_point_and_time_point(x, y, ...)

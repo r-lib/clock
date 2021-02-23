@@ -280,6 +280,10 @@ iso_year_week_day_minus_iso_year_week_day_cpp <- function(x, y, precision_int) {
   .Call(`_clock_iso_year_week_day_minus_iso_year_week_day_cpp`, x, y, precision_int)
 }
 
+naive_info_cpp <- function(fields, precision_int, zone) {
+  .Call(`_clock_naive_info_cpp`, fields, precision_int, zone)
+}
+
 new_year_quarter_day_from_fields <- function(fields, precision_int, start, names) {
   .Call(`_clock_new_year_quarter_day_from_fields`, fields, precision_int, start, names)
 }
