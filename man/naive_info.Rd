@@ -40,7 +40,7 @@ created with \code{zone}.
 \item \code{first}: A \code{\link[=sys_info]{sys_info()}} data frame.
 \item \code{second}: A \code{\link[=sys_info]{sys_info()}} data frame.
 }
-\subsection{\code{type == "unique"}}{
+\subsection{type == "unique"}{
 \itemize{
 \item \code{first} will be filled out with sys-info representing daylight saving time
 information for that time point in \code{zone}.
@@ -49,14 +49,14 @@ represent information for.
 }
 }
 
-\subsection{\code{type == "nonexistent"}}{
+\subsection{type == "nonexistent"}{
 \itemize{
 \item \code{first} will be filled out with the sys-info that ends just prior to \code{x}.
 \item \code{second} will be filled out with the sys-info that begins just after \code{x}.
 }
 }
 
-\subsection{\code{type == "ambiguous"}}{
+\subsection{type == "ambiguous"}{
 \itemize{
 \item \code{first} will be filled out with the sys-info that ends just after \code{x}.
 \item \code{second} will be filled out with the sys-info that starts just before \code{x}.

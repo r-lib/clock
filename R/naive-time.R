@@ -570,7 +570,7 @@ as.character.clock_naive_time <- function(x, ...) {
 #'
 #' - `second`: A [sys_info()] data frame.
 #'
-#' ## `type == "unique"`
+#' ## type == "unique"
 #'
 #' - `first` will be filled out with sys-info representing daylight saving time
 #' information for that time point in `zone`.
@@ -578,13 +578,13 @@ as.character.clock_naive_time <- function(x, ...) {
 #' - `second` will contain only `NA` values, as there is no ambiguity to
 #' represent information for.
 #'
-#' ## `type == "nonexistent"`
+#' ## type == "nonexistent"
 #'
 #' - `first` will be filled out with the sys-info that ends just prior to `x`.
 #'
 #' - `second` will be filled out with the sys-info that begins just after `x`.
 #'
-#' ## `type == "ambiguous"`
+#' ## type == "ambiguous"
 #'
 #' - `first` will be filled out with the sys-info that ends just after `x`.
 #'
