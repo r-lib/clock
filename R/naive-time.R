@@ -609,6 +609,8 @@ as.character.clock_naive_time <- function(x, ...) {
 #'
 #' @export
 #' @examples
+#' library(vctrs)
+#'
 #' x <- year_month_day(1970, 04, 26, 02, 30, 00)
 #' x <- as_naive(x)
 #'
@@ -640,10 +642,9 @@ as.character.clock_naive_time <- function(x, ...) {
 #'
 #' # Imagine you had the following printed times, and knowledge that they
 #' # are to be interpreted as in the corresponding time zones
-#' df <- data.frame(
+#' df <- data_frame(
 #'   x = c("2020-01-05 02:30:00", "2020-06-03 12:20:05"),
-#'   zone = c("America/Los_Angeles", "Europe/London"),
-#'   stringsAsFactors = FALSE
+#'   zone = c("America/Los_Angeles", "Europe/London")
 #' )
 #'
 #' # The times are assumed to be naive-times, i.e. if you lived in the `zone`

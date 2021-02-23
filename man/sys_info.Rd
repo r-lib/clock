@@ -50,6 +50,8 @@ being used. The relationship of the three values is:\preformatted{offset = naive
 }
 }
 \examples{
+library(vctrs)
+
 x <- year_month_day(2021, 03, 14, c(01, 03), c(59, 00), c(59, 00))
 x <- as_naive(x)
 x <- as_zoned(x, "America/New_York")
@@ -64,7 +66,7 @@ info
 
 # Convert `begin` and `end` to zoned-times to see the previous and
 # next daylight saving time transitions
-data.frame(
+data_frame(
   x = x,
   begin = as_zoned(info$begin, zoned_zone(x)),
   end = as_zoned(info$end, zoned_zone(x))
@@ -83,7 +85,7 @@ info2
 
 # The offset can be used to display the naive-time (i.e. the printed time)
 # in both of those time zones
-data.frame(
+data_frame(
   zone = zones,
   naive_time = x_sys[1] + info2$offset
 )

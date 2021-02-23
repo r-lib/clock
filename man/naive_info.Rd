@@ -68,6 +68,8 @@ If the tibble package is installed, it is recommended to convert the output
 to a tibble with \code{as_tibble()}, as that will print the df-cols much nicer.
 }
 \examples{
+library(vctrs)
+
 x <- year_month_day(1970, 04, 26, 02, 30, 00)
 x <- as_naive(x)
 
@@ -99,10 +101,9 @@ as_zoned(as_sys(x) - info$second$offset, zone)
 
 # Imagine you had the following printed times, and knowledge that they
 # are to be interpreted as in the corresponding time zones
-df <- data.frame(
+df <- data_frame(
   x = c("2020-01-05 02:30:00", "2020-06-03 12:20:05"),
-  zone = c("America/Los_Angeles", "Europe/London"),
-  stringsAsFactors = FALSE
+  zone = c("America/Los_Angeles", "Europe/London")
 )
 
 # The times are assumed to be naive-times, i.e. if you lived in the `zone`
