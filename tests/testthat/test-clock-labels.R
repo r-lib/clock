@@ -29,6 +29,20 @@ test_that("input is validated", {
   expect_snapshot_error(clock_labels(months, months, weekdays, weekdays, "x"))
 })
 
+test_that("custom labels are converted to UTF-8 upon entry", {
+  labels <- clock_labels_lookup("fr")
+  month <- iconv(labels$month, "UTF-8", "latin1")
+
+  labels <- clock_labels(month, month, labels$weekday, labels$weekday, labels$am_pm)
+
+  # French February can be marked as latin1
+  before <- month[2]
+  after <- labels$month[2]
+
+  expect_identical(Encoding(before), "latin1")
+  expect_identical(Encoding(after), "UTF-8")
+})
+
 # ------------------------------------------------------------------------------
 # clock_labels_lookup()
 
