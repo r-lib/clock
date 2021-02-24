@@ -4,13 +4,13 @@
 \name{clock-package}
 \alias{clock}
 \alias{clock-package}
-\title{clock: A Date-Time Library}
+\title{clock: Date-Time Types and Tools}
 \description{
-Provides a comprehensive library for date-time manipulations
-    using a new family of orthogonal date-time classes (durations, time
-    points, zoned times, and calendars) that partition responsibilities so
-    that the complexities of time zones are only considered when they are
-    really needed.
+Provides a comprehensive library for date-time
+    manipulations using a new family of orthogonal date-time classes
+    (durations, time points, zoned-times, and calendars) that partition
+    responsibilities so that the complexities of time zones are only
+    considered when they are really needed.
 }
 \seealso{
 Useful links:
@@ -26,6 +26,7 @@ Useful links:
 Other contributors:
 \itemize{
   \item RStudio [copyright holder]
+  \item Howard Hinnant (Author of the included date library) [copyright holder]
 }
 
 }
