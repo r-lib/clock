@@ -4797,10 +4797,7 @@ scan_keyword(std::basic_istream<CharT, Traits>& is, FwdIter kb, FwdIter ke)
             is.setstate(std::ios::eofbit);
             break;
         }
-        // clock-edit-start
-        // Note: Casting to unsigned char first is recommended by `toupper()`
         auto c = static_cast<char>(toupper(static_cast<unsigned char>(ic)));
-        // clock-edit-stop
         bool consume = false;
         // For each keyword which might match, see if the indx character is c
         // If a match if found, consume c
@@ -4813,9 +4810,7 @@ scan_keyword(std::basic_istream<CharT, Traits>& is, FwdIter kb, FwdIter ke)
         {
             if (*st == might_match)
             {
-                // clock-edit-start
                 if (c == static_cast<char>(toupper(static_cast<unsigned char>((*ky)[indx]))))
-                // clock-edit-stop
                 {
                     consume = true;
                     if (ky->size() == indx+1)
