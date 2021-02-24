@@ -7,7 +7,7 @@ Authors@R:
              role = c("aut", "cre"),
              email = "davis@rstudio.com"),
       person(given = "RStudio",
-             role = "cph"),
+             role = c("cph", "fnd")),
       person(given = "Howard",
              family = "Hinnant",
              role = "cph",
