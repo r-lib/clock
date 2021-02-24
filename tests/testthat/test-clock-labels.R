@@ -31,7 +31,7 @@ test_that("input is validated", {
 
 test_that("custom labels are converted to UTF-8 upon entry", {
   labels <- clock_labels_lookup("fr")
-  month <- iconv(labels$month, "UTF-8", "latin1")
+  month <- iconv(labels$month, from = "UTF-8", to = "latin1")
 
   labels <- clock_labels(month, month, labels$weekday, labels$weekday, labels$am_pm)
 

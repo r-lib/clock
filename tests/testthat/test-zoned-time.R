@@ -215,8 +215,8 @@ test_that("all failures uses UTC time zone (#162)", {
 })
 
 test_that("`x` is translated to UTF-8", {
-  x <- "2019-février-01 01:02:03-05:00[America/New_York]"
-  x <- iconv(x, to = "latin1")
+  x <- "2019-f\u00E9vrier-01 01:02:03-05:00[America/New_York]"
+  x <- iconv(x, from = "UTF-8", to = "latin1")
 
   locale <- clock_locale("fr")
   format <- "%Y-%B-%d %H:%M:%S%Ez[%Z]"
@@ -374,8 +374,8 @@ test_that("NA parses correctly", {
 })
 
 test_that("`x` is translated to UTF-8", {
-  x <- "2019-février-01 01:02:03-05:00[EST]"
-  x <- iconv(x, to = "latin1")
+  x <- "2019-f\u00E9vrier-01 01:02:03-05:00[EST]"
+  x <- iconv(x, from = "UTF-8", to = "latin1")
 
   locale <- clock_locale("fr")
   format <- "%Y-%B-%d %H:%M:%S%Ez[%Z]"

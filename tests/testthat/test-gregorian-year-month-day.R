@@ -252,10 +252,10 @@ test_that("can use a different locale with UTF-8 strings", {
 })
 
 test_that("`format` argument is translated to UTF-8", {
-  x <- enc2utf8("fév 2019-05-19")
+  x <- "f\u00E9v 2019-05-19"
 
-  format <- "fév %Y-%m-%d"
-  format <- iconv(format, to = "latin1")
+  format <- "f\u00E9v %Y-%m-%d"
+  format <- iconv(format, from = "UTF-8", to = "latin1")
 
   expect_identical(Encoding(x), "UTF-8")
   expect_identical(Encoding(format), "latin1")
@@ -267,8 +267,8 @@ test_that("`format` argument is translated to UTF-8", {
 })
 
 test_that("`x` is translated to UTF-8", {
-  x <- "2019-février-01"
-  x <- iconv(x, to = "latin1")
+  x <- "2019-f\u00E9vrier-01"
+  x <- iconv(x, from = "UTF-8", to = "latin1")
 
   locale <- clock_locale("fr")
   format <- "%Y-%B-%d"
