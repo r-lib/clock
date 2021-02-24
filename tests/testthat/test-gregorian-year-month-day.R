@@ -237,6 +237,20 @@ test_that("can use a different locale", {
   )
 })
 
+test_that("can use a different locale with UTF-8 strings", {
+  x <- c("1月 01 2019", "3月 05 2020")
+  y <- "ለካቲት 01 2019"
+
+  expect_identical(
+    year_month_day_parse(x, format = "%B %d %Y", locale = clock_locale("ja")),
+    year_month_day(c(2019, 2020), c(1, 3), c(1, 5))
+  )
+  expect_identical(
+    year_month_day_parse(y, format = "%B %d %Y", locale = clock_locale("ti")),
+    year_month_day(2019, 2, 1)
+  )
+})
+
 test_that("parsing NA returns NA", {
   expect_identical(
     year_month_day_parse(NA_character_),
