@@ -12,11 +12,11 @@ Authors@R:
              family = "Hinnant",
              role = "cph",
              comment = "Author of the included date library"))
-Description: Provides a comprehensive library for date-time manipulations
-    using a new family of orthogonal date-time classes (durations, time
-    points, zoned-times, and calendars) that partition responsibilities so
-    that the complexities of time zones are only considered when they are
-    really needed.
+Description: Provides a comprehensive library for date-time
+    manipulations using a new family of orthogonal date-time classes
+    (durations, time points, zoned-times, and calendars) that partition
+    responsibilities so that the complexities of time zones are only
+    considered when they are really needed.
 License: MIT + file LICENSE
 URL: https://github.com/r-lib/clock
 BugReports: https://github.com/r-lib/clock/issues
@@ -38,11 +38,11 @@ LinkingTo:
     cpp11 (>= 0.2.6)
 VignetteBuilder: 
     knitr
+Remotes:
+    r-lib/vctrs
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 SystemRequirements: C++11
-Remotes:
-    r-lib/vctrs
