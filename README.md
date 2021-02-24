@@ -13,7 +13,7 @@ coverage](https://codecov.io/gh/r-lib/clock/branch/master/graph/badge.svg)](http
 clock is a new R package for working with date-time data. It:
 
 -   Provides a new family of orthogonal date-time classes (durations,
-    time points, zoned times, and calendars) that partition
+    time points, zoned-times, and calendars) that partition
     responsibilities so that you only have to think about time zones
     when you need them.
 
