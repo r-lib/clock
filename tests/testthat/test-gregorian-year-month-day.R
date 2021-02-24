@@ -251,6 +251,37 @@ test_that("can use a different locale with UTF-8 strings", {
   )
 })
 
+test_that("`format` argument is translated to UTF-8", {
+  x <- "f\u00E9v 2019-05-19"
+
+  format <- "f\u00E9v %Y-%m-%d"
+  format <- iconv(format, from = "UTF-8", to = "latin1")
+
+  expect_identical(Encoding(x), "UTF-8")
+  expect_identical(Encoding(format), "latin1")
+
+  expect_identical(
+    year_month_day_parse(x, format = format),
+    year_month_day(2019, 5, 19)
+  )
+})
+
+test_that("`x` is translated to UTF-8", {
+  x <- "2019-f\u00E9vrier-01"
+  x <- iconv(x, from = "UTF-8", to = "latin1")
+
+  locale <- clock_locale("fr")
+  format <- "%Y-%B-%d"
+
+  expect_identical(Encoding(x), "latin1")
+  expect_identical(Encoding(locale$labels$month[2]), "UTF-8")
+
+  expect_identical(
+    year_month_day_parse(x, format = format, locale = locale),
+    year_month_day(2019, 2, 1)
+  )
+})
+
 test_that("parsing NA returns NA", {
   expect_identical(
     year_month_day_parse(NA_character_),

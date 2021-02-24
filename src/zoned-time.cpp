@@ -429,7 +429,7 @@ static
 inline
 void
 zoned_parse_complete_one(std::istringstream& stream,
-                         const std::vector<const char*>& fmts,
+                         const std::vector<std::string>& fmts,
                          const std::pair<const std::string*, const std::string*>& month_names_pair,
                          const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                          const std::pair<const std::string*, const std::string*>& ampm_names_pair,
@@ -448,7 +448,7 @@ zoned_parse_complete_one(std::istringstream& stream,
     stream.clear();
     stream.seekg(0);
 
-    const char* fmt = fmts[j];
+    const char* fmt = fmts[j].c_str();
 
     date::local_time<Duration> lt;
     std::string new_zone;
@@ -526,7 +526,7 @@ zoned_parse_complete_impl(const cpp11::strings& x,
   const r_ssize size = x.size();
   ClockDuration fields(size);
 
-  std::vector<const char*> fmts(format.size());
+  std::vector<std::string> fmts(format.size());
   rclock::fill_formats(format, fmts);
 
   char dmark;
@@ -563,6 +563,8 @@ zoned_parse_complete_impl(const cpp11::strings& x,
 
   std::istringstream stream;
 
+  void* vmax = vmaxget();
+
   for (r_ssize i = 0; i < size; ++i) {
     const SEXP elt = x[i];
 
@@ -571,7 +573,9 @@ zoned_parse_complete_impl(const cpp11::strings& x,
       continue;
     }
 
-    stream.str(CHAR(elt));
+    const char* p_elt = Rf_translateCharUTF8(elt);
+
+    stream.str(p_elt);
 
     zoned_parse_complete_one(
       stream,
@@ -587,6 +591,8 @@ zoned_parse_complete_impl(const cpp11::strings& x,
       fields
     );
   }
+
+  vmaxset(vmax);
 
   if (failures.any_failures()) {
     failures.warn();
@@ -639,7 +645,7 @@ static
 inline
 void
 zoned_parse_abbrev_one(std::istringstream& stream,
-                       const std::vector<const char*>& fmts,
+                       const std::vector<std::string>& fmts,
                        const std::pair<const std::string*, const std::string*>& month_names_pair,
                        const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                        const std::pair<const std::string*, const std::string*>& ampm_names_pair,
@@ -656,7 +662,7 @@ zoned_parse_abbrev_one(std::istringstream& stream,
     stream.clear();
     stream.seekg(0);
 
-    const char* fmt = fmts[j];
+    const char* fmt = fmts[j].c_str();
 
     date::local_time<Duration> lt;
     std::string parsed_abbrev;
@@ -737,7 +743,7 @@ zoned_parse_abbrev_impl(const cpp11::strings& x,
   const r_ssize size = x.size();
   ClockDuration fields(size);
 
-  std::vector<const char*> fmts(format.size());
+  std::vector<std::string> fmts(format.size());
   rclock::fill_formats(format, fmts);
 
   char dmark;
@@ -771,6 +777,8 @@ zoned_parse_abbrev_impl(const cpp11::strings& x,
 
   std::istringstream stream;
 
+  void* vmax = vmaxget();
+
   for (r_ssize i = 0; i < size; ++i) {
     const SEXP elt = x[i];
 
@@ -779,7 +787,9 @@ zoned_parse_abbrev_impl(const cpp11::strings& x,
       continue;
     }
 
-    stream.str(CHAR(elt));
+    const char* p_elt = Rf_translateCharUTF8(elt);
+
+    stream.str(p_elt);
 
     zoned_parse_abbrev_one(
       stream,
@@ -794,6 +804,8 @@ zoned_parse_abbrev_impl(const cpp11::strings& x,
       fields
     );
   }
+
+  vmaxset(vmax);
 
   if (failures.any_failures()) {
     failures.warn();

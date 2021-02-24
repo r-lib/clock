@@ -101,7 +101,7 @@ static
 inline
 void
 time_point_parse_one(std::istringstream& stream,
-                     const std::vector<const char*>& fmts,
+                     const std::vector<std::string>& fmts,
                      const std::pair<const std::string*, const std::string*>& month_names_pair,
                      const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                      const std::pair<const std::string*, const std::string*>& ampm_names_pair,
@@ -116,7 +116,7 @@ time_point_parse_one(std::istringstream& stream,
     stream.clear();
     stream.seekg(0);
 
-    const char* fmt = fmts[j];
+    const char* fmt = fmts[j].c_str();
     std::chrono::time_point<Clock, Duration> tp;
 
     rclock::from_stream(
@@ -153,7 +153,7 @@ time_point_parse_impl(const cpp11::strings& x,
   const r_ssize size = x.size();
   ClockDuration out(size);
 
-  std::vector<const char*> fmts(format.size());
+  std::vector<std::string> fmts(format.size());
   rclock::fill_formats(format, fmts);
 
   char dmark;
@@ -187,6 +187,8 @@ time_point_parse_impl(const cpp11::strings& x,
 
   std::istringstream stream;
 
+  void* vmax = vmaxget();
+
   for (r_ssize i = 0; i < size; ++i) {
     const SEXP elt = x[i];
 
@@ -195,7 +197,9 @@ time_point_parse_impl(const cpp11::strings& x,
       continue;
     }
 
-    stream.str(CHAR(elt));
+    const char* p_elt = Rf_translateCharUTF8(elt);
+
+    stream.str(p_elt);
 
     time_point_parse_one<ClockDuration, Clock>(
       stream,
@@ -209,6 +213,8 @@ time_point_parse_impl(const cpp11::strings& x,
       out
     );
   }
+
+  vmaxset(vmax);
 
   if (failures.any_failures()) {
     failures.warn();

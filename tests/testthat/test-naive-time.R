@@ -233,6 +233,22 @@ test_that("can use a different locale", {
   )
 })
 
+test_that("`x` is translated to UTF-8", {
+  x <- "f\u00E9vrier 05, 2019"
+  x <- iconv(x, from = "UTF-8", to = "latin1")
+
+  locale <- clock_locale("fr")
+  format <- "%B %d, %Y"
+
+  expect_identical(Encoding(x[1]), "latin1")
+  expect_identical(Encoding(locale$labels$month[2]), "UTF-8")
+
+  expect_identical(
+    naive_parse(x, format = format, precision = "day", locale = locale),
+    as_naive(year_month_day(2019, 2, 5))
+  )
+})
+
 test_that("%z is completely ignored, but is required to be parsed correctly if specified", {
   x <- "2019-01-01 00:00:00+0100"
   y <- "2019-01-01 00:00:00"
