@@ -7,7 +7,11 @@ Authors@R:
              role = c("aut", "cre"),
              email = "davis@rstudio.com"),
       person(given = "RStudio",
-             role = "cph"))
+             role = "cph"),
+      person(given = "Howard",
+             family = "Hinnant",
+             role = "cph",
+             comment = "Author of the included date library"))
 Description: Provides a comprehensive library for date-time manipulations
     using a new family of orthogonal date-time classes (durations, time
     points, zoned-times, and calendars) that partition responsibilities so
