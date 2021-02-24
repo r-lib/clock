@@ -187,6 +187,8 @@ time_point_parse_impl(const cpp11::strings& x,
 
   std::istringstream stream;
 
+  void* vmax = vmaxget();
+
   for (r_ssize i = 0; i < size; ++i) {
     const SEXP elt = x[i];
 
@@ -195,7 +197,9 @@ time_point_parse_impl(const cpp11::strings& x,
       continue;
     }
 
-    stream.str(CHAR(elt));
+    const char* p_elt = Rf_translateCharUTF8(elt);
+
+    stream.str(p_elt);
 
     time_point_parse_one<ClockDuration, Clock>(
       stream,
@@ -209,6 +213,8 @@ time_point_parse_impl(const cpp11::strings& x,
       out
     );
   }
+
+  vmaxset(vmax);
 
   if (failures.any_failures()) {
     failures.warn();

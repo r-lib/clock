@@ -563,6 +563,8 @@ zoned_parse_complete_impl(const cpp11::strings& x,
 
   std::istringstream stream;
 
+  void* vmax = vmaxget();
+
   for (r_ssize i = 0; i < size; ++i) {
     const SEXP elt = x[i];
 
@@ -571,7 +573,9 @@ zoned_parse_complete_impl(const cpp11::strings& x,
       continue;
     }
 
-    stream.str(CHAR(elt));
+    const char* p_elt = Rf_translateCharUTF8(elt);
+
+    stream.str(p_elt);
 
     zoned_parse_complete_one(
       stream,
@@ -587,6 +591,8 @@ zoned_parse_complete_impl(const cpp11::strings& x,
       fields
     );
   }
+
+  vmaxset(vmax);
 
   if (failures.any_failures()) {
     failures.warn();
@@ -771,6 +777,8 @@ zoned_parse_abbrev_impl(const cpp11::strings& x,
 
   std::istringstream stream;
 
+  void* vmax = vmaxget();
+
   for (r_ssize i = 0; i < size; ++i) {
     const SEXP elt = x[i];
 
@@ -779,7 +787,9 @@ zoned_parse_abbrev_impl(const cpp11::strings& x,
       continue;
     }
 
-    stream.str(CHAR(elt));
+    const char* p_elt = Rf_translateCharUTF8(elt);
+
+    stream.str(p_elt);
 
     zoned_parse_abbrev_one(
       stream,
@@ -794,6 +804,8 @@ zoned_parse_abbrev_impl(const cpp11::strings& x,
       fields
     );
   }
+
+  vmaxset(vmax);
 
   if (failures.any_failures()) {
     failures.warn();

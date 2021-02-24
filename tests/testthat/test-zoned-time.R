@@ -214,6 +214,22 @@ test_that("all failures uses UTC time zone (#162)", {
   )
 })
 
+test_that("`x` is translated to UTF-8", {
+  x <- "2019-février-01 01:02:03-05:00[America/New_York]"
+  x <- iconv(x, to = "latin1")
+
+  locale <- clock_locale("fr")
+  format <- "%Y-%B-%d %H:%M:%S%Ez[%Z]"
+
+  expect_identical(Encoding(x), "latin1")
+  expect_identical(Encoding(locale$labels$month[2]), "UTF-8")
+
+  expect_identical(
+    zoned_parse_complete(x, format = format, locale = locale),
+    as_zoned(as_naive(year_month_day(2019, 2, 1, 1, 2, 3)), "America/New_York")
+  )
+})
+
 # ------------------------------------------------------------------------------
 # zoned_parse_abbrev()
 
@@ -354,6 +370,22 @@ test_that("NA parses correctly", {
   expect_identical(
     zoned_parse_abbrev(NA_character_, "America/New_York", precision = "nanosecond"),
     as_zoned(as_sys(duration_nanoseconds(NA)), "America/New_York")
+  )
+})
+
+test_that("`x` is translated to UTF-8", {
+  x <- "2019-février-01 01:02:03-05:00[EST]"
+  x <- iconv(x, to = "latin1")
+
+  locale <- clock_locale("fr")
+  format <- "%Y-%B-%d %H:%M:%S%Ez[%Z]"
+
+  expect_identical(Encoding(x), "latin1")
+  expect_identical(Encoding(locale$labels$month[2]), "UTF-8")
+
+  expect_identical(
+    zoned_parse_abbrev(x, "America/New_York", format = format, locale = locale),
+    as_zoned(as_naive(year_month_day(2019, 2, 1, 1, 2, 3)), "America/New_York")
   )
 })
 
