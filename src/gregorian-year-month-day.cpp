@@ -823,7 +823,7 @@ template <class Calendar>
 inline
 void
 year_month_day_from_stream(std::istringstream& stream,
-                           const std::vector<const char*>& fmts,
+                           const std::vector<std::string>& fmts,
                            const std::pair<const std::string*, const std::string*>& month_names_pair,
                            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
@@ -838,7 +838,7 @@ year_month_day_from_stream(std::istringstream& stream,
     stream.clear();
     stream.seekg(0);
 
-    const char* fmt = fmts[j];
+    const char* fmt = fmts[j].c_str();
     date::year_month_day ymd{};
     date::hh_mm_ss<Duration> hms{};
 
@@ -871,7 +871,7 @@ template <>
 inline
 void
 year_month_day_from_stream(std::istringstream& stream,
-                           const std::vector<const char*>& fmts,
+                           const std::vector<std::string>& fmts,
                            const std::pair<const std::string*, const std::string*>& month_names_pair,
                            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
@@ -885,7 +885,7 @@ year_month_day_from_stream(std::istringstream& stream,
     stream.clear();
     stream.seekg(0);
 
-    const char* fmt = fmts[j];
+    const char* fmt = fmts[j].c_str();
     date::year x{};
 
     rclock::from_stream(
@@ -912,7 +912,7 @@ template <>
 inline
 void
 year_month_day_from_stream(std::istringstream& stream,
-                           const std::vector<const char*>& fmts,
+                           const std::vector<std::string>& fmts,
                            const std::pair<const std::string*, const std::string*>& month_names_pair,
                            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
@@ -926,7 +926,7 @@ year_month_day_from_stream(std::istringstream& stream,
     stream.clear();
     stream.seekg(0);
 
-    const char* fmt = fmts[j];
+    const char* fmt = fmts[j].c_str();
     date::year_month x{};
 
     rclock::from_stream(
@@ -953,7 +953,7 @@ template <>
 inline
 void
 year_month_day_from_stream(std::istringstream& stream,
-                           const std::vector<const char*>& fmts,
+                           const std::vector<std::string>& fmts,
                            const std::pair<const std::string*, const std::string*>& month_names_pair,
                            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
@@ -967,7 +967,7 @@ year_month_day_from_stream(std::istringstream& stream,
     stream.clear();
     stream.seekg(0);
 
-    const char* fmt = fmts[j];
+    const char* fmt = fmts[j].c_str();
     date::year_month_day x{};
 
     rclock::from_stream(
@@ -994,7 +994,7 @@ template <>
 inline
 void
 year_month_day_from_stream(std::istringstream& stream,
-                           const std::vector<const char*>& fmts,
+                           const std::vector<std::string>& fmts,
                            const std::pair<const std::string*, const std::string*>& month_names_pair,
                            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
@@ -1008,7 +1008,7 @@ year_month_day_from_stream(std::istringstream& stream,
     stream.clear();
     stream.seekg(0);
 
-    const char* fmt = fmts[j];
+    const char* fmt = fmts[j].c_str();
     date::year_month_day ymd{};
     date::hh_mm_ss<std::chrono::seconds> hms{};
 
@@ -1038,7 +1038,7 @@ template <>
 inline
 void
 year_month_day_from_stream(std::istringstream& stream,
-                           const std::vector<const char*>& fmts,
+                           const std::vector<std::string>& fmts,
                            const std::pair<const std::string*, const std::string*>& month_names_pair,
                            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
@@ -1052,7 +1052,7 @@ year_month_day_from_stream(std::istringstream& stream,
     stream.clear();
     stream.seekg(0);
 
-    const char* fmt = fmts[j];
+    const char* fmt = fmts[j].c_str();
     date::year_month_day ymd{};
     date::hh_mm_ss<std::chrono::seconds> hms{};
 
@@ -1083,7 +1083,7 @@ template <>
 inline
 void
 year_month_day_from_stream(std::istringstream& stream,
-                           const std::vector<const char*>& fmts,
+                           const std::vector<std::string>& fmts,
                            const std::pair<const std::string*, const std::string*>& month_names_pair,
                            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
@@ -1097,7 +1097,7 @@ year_month_day_from_stream(std::istringstream& stream,
     stream.clear();
     stream.seekg(0);
 
-    const char* fmt = fmts[j];
+    const char* fmt = fmts[j].c_str();
     date::year_month_day ymd{};
     date::hh_mm_ss<std::chrono::seconds> hms{};
 
@@ -1139,7 +1139,7 @@ year_month_day_parse_impl(const cpp11::strings& x,
   const r_ssize size = x.size();
   Calendar out(size);
 
-  std::vector<const char*> fmts(format.size());
+  std::vector<std::string> fmts(format.size());
   rclock::fill_formats(format, fmts);
 
   char dmark;
