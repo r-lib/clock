@@ -1,5 +1,5 @@
 Package: clock
-Title: A Date-Time Library
+Title: Date-Time Types and Tools
 Version: 0.0.0.9000
 Authors@R: 
     c(person(given = "Davis",
@@ -10,7 +10,7 @@ Authors@R:
              role = "cph"))
 Description: Provides a comprehensive library for date-time manipulations
     using a new family of orthogonal date-time classes (durations, time
-    points, zoned times, and calendars) that partition responsibilities so
+    points, zoned-times, and calendars) that partition responsibilities so
     that the complexities of time zones are only considered when they are
     really needed.
 License: MIT + file LICENSE
