@@ -176,6 +176,33 @@ is_year_quarter_day <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
+vec_ptype.clock_year_quarter_day <- function(x, ...) {
+  names <- NULL
+  precision <- calendar_precision(x)
+  start <- quarterly_start(x)
+
+  f <- integer()
+
+  fields <- switch(
+    precision + 1L,
+    list(year = f),
+    list(year = f, quarter = f),
+    abort("Internal error: Invalid precision"),
+    abort("Internal error: Invalid precision"),
+    list(year = f, quarter = f, day = f),
+    list(year = f, quarter = f, day = f, hour = f),
+    list(year = f, quarter = f, day = f, hour = f, minute = f),
+    list(year = f, quarter = f, day = f, hour = f, minute = f, second = f),
+    list(year = f, quarter = f, day = f, hour = f, minute = f, second = f, subsecond = f),
+    list(year = f, quarter = f, day = f, hour = f, minute = f, second = f, subsecond = f),
+    list(year = f, quarter = f, day = f, hour = f, minute = f, second = f, subsecond = f),
+    abort("Internal error: Invalid precision.")
+  )
+
+  new_year_quarter_day_from_fields(fields, precision, start, names)
+}
+
+#' @export
 vec_ptype2.clock_year_quarter_day.clock_year_quarter_day <- function(x, y, ...) {
   if (quarterly_start(x) != quarterly_start(y)) {
     stop_incompatible_type(x, y, ..., details = "Can't combine quarterly types with different `start`s.")
