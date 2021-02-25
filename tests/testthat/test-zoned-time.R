@@ -407,3 +407,28 @@ test_that("zoned-times don't support arithmetic", {
   expect_snapshot_error(add_microseconds(x, 1))
   expect_snapshot_error(add_nanoseconds(x, 1))
 })
+
+# ------------------------------------------------------------------------------
+# vec_ptype()
+
+test_that("ptype is correct", {
+  zones <- c("UTC", "America/New_York", "")
+
+  for (zone in zones) {
+    for (precision in precision_names()) {
+      precision <- validate_precision_string(precision)
+
+      if (precision < PRECISION_SECOND) {
+        next
+      }
+
+      x <- duration_helper(0L, precision)
+      x <- as_zoned(as_naive(x), zone)
+
+      ptype <- duration_helper(integer(), precision)
+      ptype <- as_zoned(as_naive(ptype), zone)
+
+      expect_identical(vec_ptype(x), ptype)
+    }
+  }
+})
