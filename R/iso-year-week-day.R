@@ -153,6 +153,25 @@ is_iso_year_week_day <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
+vec_ptype.clock_iso_year_week_day <- function(x, ...) {
+  switch(
+    calendar_precision(x) + 1L,
+    clock_empty_iso_year_week_day_year,
+    abort("Internal error: Invalid precision"),
+    abort("Internal error: Invalid precision"),
+    clock_empty_iso_year_week_day_week,
+    clock_empty_iso_year_week_day_day,
+    clock_empty_iso_year_week_day_hour,
+    clock_empty_iso_year_week_day_minute,
+    clock_empty_iso_year_week_day_second,
+    clock_empty_iso_year_week_day_millisecond,
+    clock_empty_iso_year_week_day_microsecond,
+    clock_empty_iso_year_week_day_nanosecond,
+    abort("Internal error: Invalid precision.")
+  )
+}
+
+#' @export
 vec_ptype2.clock_iso_year_week_day.clock_iso_year_week_day <- function(x, y, ...) {
   ptype2_calendar_and_calendar(x, y, ...)
 }
@@ -915,4 +934,22 @@ seq.clock_iso_year_week_day <- function(from,
     precision = precision,
     ...
   )
+}
+
+# ------------------------------------------------------------------------------
+
+clock_init_iso_year_week_day_utils <- function(env) {
+  year <- iso_year_week_day(integer())
+
+  assign("clock_empty_iso_year_week_day_year", year, envir = env)
+  assign("clock_empty_iso_year_week_day_week", calendar_widen(year, "week"), envir = env)
+  assign("clock_empty_iso_year_week_day_day", calendar_widen(year, "day"), envir = env)
+  assign("clock_empty_iso_year_week_day_hour", calendar_widen(year, "hour"), envir = env)
+  assign("clock_empty_iso_year_week_day_minute", calendar_widen(year, "minute"), envir = env)
+  assign("clock_empty_iso_year_week_day_second", calendar_widen(year, "second"), envir = env)
+  assign("clock_empty_iso_year_week_day_millisecond", calendar_widen(year, "millisecond"), envir = env)
+  assign("clock_empty_iso_year_week_day_microsecond", calendar_widen(year, "microsecond"), envir = env)
+  assign("clock_empty_iso_year_week_day_nanosecond", calendar_widen(year, "nanosecond"), envir = env)
+
+  invisible(NULL)
 }
