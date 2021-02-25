@@ -417,6 +417,25 @@ new_sys_info_from_fields <- function(fields) {
 # ------------------------------------------------------------------------------
 
 #' @export
+vec_ptype.clock_sys_time <- function(x, ...) {
+  switch(
+    time_point_precision(x) + 1L,
+    abort("Internal error: Invalid precision"),
+    abort("Internal error: Invalid precision"),
+    abort("Internal error: Invalid precision"),
+    abort("Internal error: Invalid precision"),
+    clock_empty_sys_time_day,
+    clock_empty_sys_time_hour,
+    clock_empty_sys_time_minute,
+    clock_empty_sys_time_second,
+    clock_empty_sys_time_millisecond,
+    clock_empty_sys_time_microsecond,
+    clock_empty_sys_time_nanosecond,
+    abort("Internal error: Invalid precision.")
+  )
+}
+
+#' @export
 vec_ptype2.clock_sys_time.clock_sys_time <- function(x, y, ...) {
   ptype2_time_point_and_time_point(x, y, ...)
 }
@@ -471,3 +490,18 @@ vec_arith.numeric.clock_sys_time <- function(op, x, y, ...) {
   arith_numeric_and_time_point(op, x, y, ...)
 }
 
+# ------------------------------------------------------------------------------
+
+clock_init_sys_time_utils <- function(env) {
+  day <- as_sys(year_month_day(integer(), integer(), integer()))
+
+  assign("clock_empty_sys_time_day", day, envir = env)
+  assign("clock_empty_sys_time_hour", time_point_cast(day, "hour"), envir = env)
+  assign("clock_empty_sys_time_minute", time_point_cast(day, "minute"), envir = env)
+  assign("clock_empty_sys_time_second", time_point_cast(day, "second"), envir = env)
+  assign("clock_empty_sys_time_millisecond", time_point_cast(day, "millisecond"), envir = env)
+  assign("clock_empty_sys_time_microsecond", time_point_cast(day, "microsecond"), envir = env)
+  assign("clock_empty_sys_time_nanosecond", time_point_cast(day, "nanosecond"), envir = env)
+
+  invisible(NULL)
+}

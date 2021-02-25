@@ -119,3 +119,22 @@ test_that("failure to parse throws a warning", {
   expect_warning(sys_parse("foo"), class = "clock_warning_parse_failures")
   expect_snapshot(sys_parse("foo"))
 })
+
+# ------------------------------------------------------------------------------
+# vec_ptype()
+
+test_that("ptype is correct", {
+  base <- sys_days(0)
+  ptype <- sys_days(integer())
+
+  for (precision in precision_names()) {
+    if (validate_precision_string(precision) < PRECISION_DAY) {
+      next
+    }
+
+    x <- time_point_cast(base, precision)
+    expect <- time_point_cast(ptype, precision)
+
+    expect_identical(vec_ptype(x), expect)
+  }
+})

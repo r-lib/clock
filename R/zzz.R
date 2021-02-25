@@ -12,6 +12,8 @@
   clock_init_year_month_day_utils(clock_ns)
   clock_init_year_month_weekday_utils(clock_ns)
   clock_init_iso_year_week_day_utils(clock_ns)
+  clock_init_sys_time_utils(clock_ns)
+  clock_init_naive_time_utils(clock_ns)
 
   vctrs::s3_register("pillar::pillar_shaft", "clock_calendar", pillar_shaft.clock_calendar)
   vctrs::s3_register("pillar::pillar_shaft", "clock_time_point", pillar_shaft.clock_time_point)
