@@ -60,6 +60,25 @@ test_that("names of `year` are not retained", {
 })
 
 # ------------------------------------------------------------------------------
+# vec_ptype()
+
+test_that("ptype is correct", {
+  base <- year_month_day(1)
+  ptype <- year_month_day(integer())
+
+  for (precision in precision_names()) {
+    if (precision == "quarter" || precision == "week") {
+      next
+    }
+
+    x <- calendar_widen(base, precision)
+    expect <- calendar_widen(ptype, precision)
+
+    expect_identical(vec_ptype(x), expect)
+  }
+})
+
+# ------------------------------------------------------------------------------
 # vec_proxy() / vec_restore()
 
 test_that("proxy is a data frame", {
