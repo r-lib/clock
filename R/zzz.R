@@ -15,6 +15,7 @@
   clock_init_sys_time_utils(clock_ns)
   clock_init_naive_time_utils(clock_ns)
   clock_init_zoned_time_utils(clock_ns)
+  clock_init_weekday_utils(clock_ns)
 
   vctrs::s3_register("pillar::pillar_shaft", "clock_calendar", pillar_shaft.clock_calendar)
   vctrs::s3_register("pillar::pillar_shaft", "clock_time_point", pillar_shaft.clock_time_point)
