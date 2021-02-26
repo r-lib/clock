@@ -138,6 +138,25 @@ is_year_day <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
+vec_ptype.clock_year_day <- function(x, ...) {
+  switch(
+    calendar_precision(x) + 1L,
+    clock_empty_year_day_year,
+    abort("Internal error: Invalid precision"),
+    abort("Internal error: Invalid precision"),
+    abort("Internal error: Invalid precision"),
+    clock_empty_year_day_day,
+    clock_empty_year_day_hour,
+    clock_empty_year_day_minute,
+    clock_empty_year_day_second,
+    clock_empty_year_day_millisecond,
+    clock_empty_year_day_microsecond,
+    clock_empty_year_day_nanosecond,
+    abort("Internal error: Invalid precision.")
+  )
+}
+
+#' @export
 vec_ptype2.clock_year_day.clock_year_day <- function(x, y, ...) {
   ptype2_calendar_and_calendar(x, y, ...)
 }
@@ -902,4 +921,21 @@ seq.clock_year_day <- function(from,
     precision = precision,
     ...
   )
+}
+
+# ------------------------------------------------------------------------------
+
+clock_init_year_day_utils <- function(env) {
+  year <- year_day(integer())
+
+  assign("clock_empty_year_day_year", year, envir = env)
+  assign("clock_empty_year_day_day", calendar_widen(year, "day"), envir = env)
+  assign("clock_empty_year_day_hour", calendar_widen(year, "hour"), envir = env)
+  assign("clock_empty_year_day_minute", calendar_widen(year, "minute"), envir = env)
+  assign("clock_empty_year_day_second", calendar_widen(year, "second"), envir = env)
+  assign("clock_empty_year_day_millisecond", calendar_widen(year, "millisecond"), envir = env)
+  assign("clock_empty_year_day_microsecond", calendar_widen(year, "microsecond"), envir = env)
+  assign("clock_empty_year_day_nanosecond", calendar_widen(year, "nanosecond"), envir = env)
+
+  invisible(NULL)
 }
