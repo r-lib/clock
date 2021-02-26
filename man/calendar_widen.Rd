@@ -29,6 +29,7 @@ can widen to:
 \item \link[=year-month-weekday-widen]{year-month-weekday}
 \item \link[=iso-year-week-day-widen]{iso-year-week-day}
 \item \link[=year-quarter-day-widen]{year-quarter-day}
+\item \link[=year-day-widen]{year-day}
 }
 }
 \details{

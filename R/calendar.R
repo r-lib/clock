@@ -64,7 +64,8 @@ cast_calendar_to_calendar <- function(x, to, ...) {
 #'
 #' `calendar_leap_year()` detects if the year is a leap year according to
 #' the Gregorian calendar. It is only relevant for calendar types that use
-#' a Gregorian year, i.e. [year_month_day()] and [year_month_weekday()].
+#' a Gregorian year, i.e. [year_month_day()], [year_month_weekday()], and
+#' [year_day()].
 #'
 #' @param x `[calendar]`
 #'
@@ -187,6 +188,8 @@ calendar_month_factor_impl <- function(x, labels, abbreviate, ...) {
 #' - [iso-year-week-day][iso-year-week-day-group]
 #'
 #' - [year-quarter-day][year-quarter-day-group]
+#'
+#' - [year-day][year-day-group]
 #'
 #' @inheritParams ellipsis::dots_empty
 #'
@@ -343,6 +346,8 @@ validate_calendar_group_n <- function(n) {
 #'
 #' - [year-quarter-day][year-quarter-day-narrow]
 #'
+#' - [year-day][year-day-narrow]
+#'
 #' @details
 #' A subsecond precision `x` cannot be narrowed to another subsecond precision.
 #' You cannot narrow from, say, `"nanosecond"` to `"millisecond"` precision.
@@ -446,6 +451,8 @@ calendar_narrow_time <- function(out_fields, out_precision, x_fields) {
 #' - [iso-year-week-day][iso-year-week-day-widen]
 #'
 #' - [year-quarter-day][year-quarter-day-widen]
+#'
+#' - [year-day][year-day-widen]
 #'
 #' @details
 #' A subsecond precision `x` cannot be widened. You cannot widen from, say,
@@ -731,6 +738,11 @@ as_year_month_weekday.clock_calendar <- function(x) {
 #' @export
 as_iso_year_week_day.clock_calendar <- function(x) {
   as_iso_year_week_day(as_sys(x))
+}
+
+#' @export
+as_year_day.clock_calendar <- function(x) {
+  as_year_day(as_sys(x))
 }
 
 #' @export

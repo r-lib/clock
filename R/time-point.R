@@ -488,6 +488,13 @@ as_iso_year_week_day.clock_time_point <- function(x) {
 }
 
 #' @export
+as_year_day.clock_time_point <- function(x) {
+  precision <- time_point_precision(x)
+  fields <- as_year_day_from_sys_time_cpp(x, precision)
+  new_year_day_from_fields(fields, precision, names = names(x))
+}
+
+#' @export
 as_weekday.clock_time_point <- function(x) {
   x <- time_point_cast(x, "day")
   day <- weekday_from_time_point_cpp(x)

@@ -18,7 +18,8 @@ year, \code{FALSE} if not in a leap year, and \code{NA} if \code{x} is \code{NA}
 \description{
 \code{calendar_leap_year()} detects if the year is a leap year according to
 the Gregorian calendar. It is only relevant for calendar types that use
-a Gregorian year, i.e. \code{\link[=year_month_day]{year_month_day()}} and \code{\link[=year_month_weekday]{year_month_weekday()}}.
+a Gregorian year, i.e. \code{\link[=year_month_day]{year_month_day()}}, \code{\link[=year_month_weekday]{year_month_weekday()}}, and
+\code{\link[=year_day]{year_day()}}.
 }
 \examples{
 x <- year_month_day(c(2019:2024, NA))

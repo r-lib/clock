@@ -16,6 +16,8 @@
 #'
 #' - [iso-year-week-day][iso-year-week-day-arithmetic]
 #'
+#' - [year-day][year-day-arithmetic]
+#'
 #' Time points, such as naive-times and sys-times, are efficient at arithmetic
 #' with regular, well-defined units of time, such as days, hours, seconds,
 #' or nanoseconds.

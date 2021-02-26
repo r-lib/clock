@@ -59,6 +59,11 @@ as_iso_year_week_day.Date <- function(x) {
 }
 
 #' @export
+as_year_day.Date <- function(x) {
+  as_year_day(as_sys(x))
+}
+
+#' @export
 as_weekday.Date <- function(x) {
   as_weekday(as_sys(x))
 }

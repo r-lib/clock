@@ -13,6 +13,8 @@
 #'
 #' - [year-quarter-day][year-quarter-day-getters]
 #'
+#' - [year-day][year-day-getters]
+#'
 #' There are also convenience methods for extracting certain components
 #' directly from R's native date and date-time types.
 #'

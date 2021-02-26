@@ -13,6 +13,8 @@
 #'
 #' - [year-quarter-day][year-quarter-day-setters]
 #'
+#' - [year-day][year-day-setters]
+#'
 #' There are also convenience methods for setting certain components
 #' directly on R's native date and date-time types.
 #'
