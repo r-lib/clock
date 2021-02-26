@@ -66,6 +66,7 @@ month, quarters, or years.
 \item \link[=year-month-weekday-arithmetic]{year-month-weekday}
 \item \link[=year-quarter-day-arithmetic]{year-quarter-day}
 \item \link[=iso-year-week-day-arithmetic]{iso-year-week-day}
+\item \link[=year-day-arithmetic]{year-day}
 }
 
 Time points, such as naive-times and sys-times, are efficient at arithmetic

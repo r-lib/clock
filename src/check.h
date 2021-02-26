@@ -90,4 +90,11 @@ static inline void check_range_weekday_index(const int& value, const char* arg) 
   }
 }
 
+// Ordinal
+static inline void check_range_ordinal_day(const int& value, const char* arg) {
+  if (value > 366 || value < 1) {
+    clock_abort("`%s` must be within the range of [1, 366], not %i.", arg, value);
+  }
+}
+
 #endif

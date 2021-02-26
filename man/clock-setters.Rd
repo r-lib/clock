@@ -63,6 +63,7 @@ their own help page:
 \item \link[=year-month-weekday-setters]{year-month-weekday}
 \item \link[=iso-year-week-day-setters]{iso-year-week-day}
 \item \link[=year-quarter-day-setters]{year-quarter-day}
+\item \link[=year-day-setters]{year-day}
 }
 
 There are also convenience methods for setting certain components

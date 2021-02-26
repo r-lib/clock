@@ -399,18 +399,15 @@ date_floor(x, "week", n = 2, origin = origin)
 
 ## Day of the year
 
-There is currently no year-day calendar type in clock. That said, you can still compute the day of the year using a helper like:
+To get the day of the year, convert to the year-day calendar type and extract the day with `get_day()`.
 
 ```{r}
 x <- year_month_day(2019, clock_months$july, 4)
 
-day_of_year <- function(x) {
-  year <- get_year(x)
-  first <- year_month_day(year, 1, 1)
-  as_naive(x) - as_naive(first) + duration_days(1L)
-}
+yd <- as_year_day(x)
+yd
 
-day_of_year(x)
+get_day(yd)
 ```
 
 ### High level API
@@ -418,13 +415,9 @@ day_of_year(x)
 ```{r}
 x <- as.Date("2019-07-04")
 
-day_of_year <- function(x) {
-  year <- get_year(x)
-  first <- year_month_day(year, 1, 1)
-  x - as.Date(first) + 1L
-}
-
-day_of_year(x)
+x %>%
+  as_year_day() %>%
+  get_day()
 ```
 
 ## Converting a time zone abbreviation into a time zone name

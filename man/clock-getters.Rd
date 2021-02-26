@@ -57,6 +57,7 @@ their own help page:
 \item \link[=year-month-weekday-getters]{year-month-weekday}
 \item \link[=iso-year-week-day-getters]{iso-year-week-day}
 \item \link[=year-quarter-day-getters]{year-quarter-day}
+\item \link[=year-day-getters]{year-day}
 }
 
 There are also convenience methods for extracting certain components

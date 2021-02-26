@@ -108,6 +108,62 @@ format_zoned_time_cpp <- function(fields, zone, abbreviate_zone, format, precisi
   .Call(`_clock_format_zoned_time_cpp`, fields, zone, abbreviate_zone, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark)
 }
 
+new_year_day_from_fields <- function(fields, precision_int, names) {
+  .Call(`_clock_new_year_day_from_fields`, fields, precision_int, names)
+}
+
+year_day_restore <- function(x, to) {
+  .Call(`_clock_year_day_restore`, x, to)
+}
+
+collect_year_day_fields <- function(fields, precision_int) {
+  .Call(`_clock_collect_year_day_fields`, fields, precision_int)
+}
+
+format_year_day_cpp <- function(fields, precision_int) {
+  .Call(`_clock_format_year_day_cpp`, fields, precision_int)
+}
+
+invalid_detect_year_day_cpp <- function(fields, precision_int) {
+  .Call(`_clock_invalid_detect_year_day_cpp`, fields, precision_int)
+}
+
+invalid_any_year_day_cpp <- function(fields, precision_int) {
+  .Call(`_clock_invalid_any_year_day_cpp`, fields, precision_int)
+}
+
+invalid_count_year_day_cpp <- function(fields, precision_int) {
+  .Call(`_clock_invalid_count_year_day_cpp`, fields, precision_int)
+}
+
+invalid_resolve_year_day_cpp <- function(fields, precision_int, invalid_string) {
+  .Call(`_clock_invalid_resolve_year_day_cpp`, fields, precision_int, invalid_string)
+}
+
+set_field_year_day_cpp <- function(fields, value, precision_fields, precision_value) {
+  .Call(`_clock_set_field_year_day_cpp`, fields, value, precision_fields, precision_value)
+}
+
+set_field_year_day_last_cpp <- function(fields, precision_fields) {
+  .Call(`_clock_set_field_year_day_last_cpp`, fields, precision_fields)
+}
+
+year_day_plus_duration_cpp <- function(fields, fields_n, precision_fields, precision_n) {
+  .Call(`_clock_year_day_plus_duration_cpp`, fields, fields_n, precision_fields, precision_n)
+}
+
+as_sys_time_year_day_cpp <- function(fields, precision_int) {
+  .Call(`_clock_as_sys_time_year_day_cpp`, fields, precision_int)
+}
+
+as_year_day_from_sys_time_cpp <- function(fields, precision_int) {
+  .Call(`_clock_as_year_day_from_sys_time_cpp`, fields, precision_int)
+}
+
+year_day_minus_year_day_cpp <- function(x, y, precision_int) {
+  .Call(`_clock_year_day_minus_year_day_cpp`, x, y, precision_int)
+}
+
 new_year_month_day_from_fields <- function(fields, precision_int, names) {
   .Call(`_clock_new_year_month_day_from_fields`, fields, precision_int, names)
 }

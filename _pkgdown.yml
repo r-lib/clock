@@ -95,6 +95,19 @@ reference:
   - get_year.clock_year_quarter_day
   - set_year.clock_year_quarter_day
 
+- title: Year-day
+  contents:
+  - year_day
+  - as_year_day
+  - is_year_day
+  - calendar_group.clock_year_day
+  - year-day-narrow
+  - year-day-widen
+  - seq.clock_year_day
+  - add_years.clock_year_day
+  - get_year.clock_year_day
+  - set_year.clock_year_day
+
 - title: Invalid dates
   contents:
   - invalid_resolve
