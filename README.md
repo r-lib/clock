@@ -10,7 +10,10 @@ coverage](https://codecov.io/gh/r-lib/clock/branch/master/graph/badge.svg)](http
 [![R-CMD-check](https://github.com/r-lib/clock/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/clock/actions)
 <!-- badges: end -->
 
-clock is a new R package for working with date-time data. It:
+clock is an R package for working with date-times. It is packed with
+features, including tools for: parsing, formatting, arithmetic,
+rounding, and extraction/updating of individual components.
+Additionally, it:
 
 -   Provides a new family of orthogonal date-time classes (durations,
     time points, zoned-times, and calendars) that partition
