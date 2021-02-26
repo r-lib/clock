@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Support for vctrs arithmetic — vec_arith.clock_year_day • clock</title>
+<title>Convert to year-day — as_year_day • clock</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="Support for vctrs arithmetic — vec_arith.clock_year_day" />
-<meta property="og:description" content="Support for vctrs arithmetic" />
+<meta property="og:title" content="Convert to year-day — as_year_day" />
+<meta property="og:description" content="as_year_day() converts a vector to the year-day calendar.
+Time points, Dates, POSIXct, and other calendars can all be converted to
+year-day." />
 
 
 
@@ -129,70 +131,46 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Support for vctrs arithmetic</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/clock/blob/master/R/gregorian-year-day.R'><code>R/gregorian-year-day.R</code></a>, <a href='https://github.com/r-lib/clock/blob/master/R/gregorian-year-month-day.R'><code>R/gregorian-year-month-day.R</code></a>, <a href='https://github.com/r-lib/clock/blob/master/R/gregorian-year-month-weekday.R'><code>R/gregorian-year-month-weekday.R</code></a>, and 5 more</small>
-    <div class="hidden name"><code>clock-arith.Rd</code></div>
+    <h1>Convert to year-day</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/clock/blob/master/R/gregorian-year-day.R'><code>R/gregorian-year-day.R</code></a></small>
+    <div class="hidden name"><code>as_year_day.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Support for vctrs arithmetic</p>
+    <p><code>as_year_day()</code> converts a vector to the year-day calendar.
+Time points, Dates, POSIXct, and other calendars can all be converted to
+year-day.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for clock_year_day</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for clock_year_month_day</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for clock_year_month_weekday</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for clock_iso_year_week_day</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for clock_naive_time</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for clock_year_quarter_day</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for clock_sys_time</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for clock_weekday</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>as_year_day</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>op</th>
-      <td><p>An arithmetic operator as a string</p></td>
-    </tr>
-    <tr>
       <th>x</th>
-      <td><p>A pair of vectors. For <code><a href='https://rdrr.io/r/base/Logic.html'>!</a></code>, unary <code><a href='https://rdrr.io/r/base/Arithmetic.html'>+</a></code> and unary <code><a href='https://rdrr.io/r/base/Arithmetic.html'>-</a></code>, <code>y</code> will be
-a sentinel object of class <code>MISSING</code>, as created by <code>MISSING()</code>.</p></td>
-    </tr>
-    <tr>
-      <th>y</th>
-      <td><p>A pair of vectors. For <code><a href='https://rdrr.io/r/base/Logic.html'>!</a></code>, unary <code><a href='https://rdrr.io/r/base/Arithmetic.html'>+</a></code> and unary <code><a href='https://rdrr.io/r/base/Arithmetic.html'>-</a></code>, <code>y</code> will be
-a sentinel object of class <code>MISSING</code>, as created by <code>MISSING()</code>.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>These dots are for future extensions and must be empty.</p></td>
+      <td><p><code>[vector]</code></p>
+<p>A vector to convert to year-day.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The result of the arithmetic operation.</p>
+    <p>A year-day vector.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>vctrs</span><span class='fu'>::</span><span class='fu'><a href='https://vctrs.r-lib.org/reference/vec_arith.html'>vec_arith</a></span><span class='op'>(</span><span class='st'>"+"</span>, <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;year&gt;[1]&gt;
-#&gt; [1] "2020"</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># From Date</span>
+<span class='fu'>as_year_day</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-05-01"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_day&lt;day&gt;[1]&gt;
+#&gt; [1] "2019-121"</div><div class='input'>
+<span class='co'># From POSIXct, which assumes that the naive time is what should be converted</span>
+<span class='fu'>as_year_day</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"2019-05-01 02:30:30"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_day&lt;second&gt;[1]&gt;
+#&gt; [1] "2019-121 02:30:30"</div><div class='input'>
+<span class='co'># From other calendars</span>
+<span class='fu'>as_year_day</span><span class='op'>(</span><span class='fu'><a href='year_quarter_day.html'>year_quarter_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, quarter <span class='op'>=</span> <span class='fl'>2</span>, day <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_day&lt;day&gt;[1]&gt;
+#&gt; [1] "2019-140"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

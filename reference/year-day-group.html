@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Support for vctrs arithmetic — vec_arith.clock_year_day • clock</title>
+<title>Grouping: year-day — year-day-group • clock</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="Support for vctrs arithmetic — vec_arith.clock_year_day" />
-<meta property="og:description" content="Support for vctrs arithmetic" />
+<meta property="og:title" content="Grouping: year-day — year-day-group" />
+<meta property="og:description" content="This is a year-day method for the calendar_group() generic.
+Grouping for a year-day object can be done at any precision, as
+long as x is at least as precise as precision." />
 
 
 
@@ -129,70 +131,73 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Support for vctrs arithmetic</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/clock/blob/master/R/gregorian-year-day.R'><code>R/gregorian-year-day.R</code></a>, <a href='https://github.com/r-lib/clock/blob/master/R/gregorian-year-month-day.R'><code>R/gregorian-year-month-day.R</code></a>, <a href='https://github.com/r-lib/clock/blob/master/R/gregorian-year-month-weekday.R'><code>R/gregorian-year-month-weekday.R</code></a>, and 5 more</small>
-    <div class="hidden name"><code>clock-arith.Rd</code></div>
+    <h1>Grouping: year-day</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/clock/blob/master/R/gregorian-year-day.R'><code>R/gregorian-year-day.R</code></a></small>
+    <div class="hidden name"><code>year-day-group.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Support for vctrs arithmetic</p>
+    <p>This is a year-day method for the <code><a href='calendar_group.html'>calendar_group()</a></code> generic.</p>
+<p>Grouping for a year-day object can be done at any precision, as
+long as <code>x</code> is at least as precise as <code>precision</code>.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for clock_year_day</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for clock_year_month_day</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for clock_year_month_weekday</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for clock_iso_year_week_day</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for clock_naive_time</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for clock_year_quarter_day</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for clock_sys_time</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for clock_weekday</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'><a href='calendar_group.html'>calendar_group</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>precision</span>, <span class='va'>...</span>, n <span class='op'>=</span> <span class='fl'>1L</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>op</th>
-      <td><p>An arithmetic operator as a string</p></td>
-    </tr>
-    <tr>
       <th>x</th>
-      <td><p>A pair of vectors. For <code><a href='https://rdrr.io/r/base/Logic.html'>!</a></code>, unary <code><a href='https://rdrr.io/r/base/Arithmetic.html'>+</a></code> and unary <code><a href='https://rdrr.io/r/base/Arithmetic.html'>-</a></code>, <code>y</code> will be
-a sentinel object of class <code>MISSING</code>, as created by <code>MISSING()</code>.</p></td>
+      <td><p><code>[clock_year_day]</code></p>
+<p>A year-day vector.</p></td>
     </tr>
     <tr>
-      <th>y</th>
-      <td><p>A pair of vectors. For <code><a href='https://rdrr.io/r/base/Logic.html'>!</a></code>, unary <code><a href='https://rdrr.io/r/base/Arithmetic.html'>+</a></code> and unary <code><a href='https://rdrr.io/r/base/Arithmetic.html'>-</a></code>, <code>y</code> will be
-a sentinel object of class <code>MISSING</code>, as created by <code>MISSING()</code>.</p></td>
+      <th>precision</th>
+      <td><p><code>[character(1)]</code></p>
+<p>One of:</p><ul>
+<li><p><code>"year"</code></p></li>
+<li><p><code>"day"</code></p></li>
+<li><p><code>"hour"</code></p></li>
+<li><p><code>"minute"</code></p></li>
+<li><p><code>"second"</code></p></li>
+<li><p><code>"millisecond"</code></p></li>
+<li><p><code>"microsecond"</code></p></li>
+<li><p><code>"nanosecond"</code></p></li>
+</ul></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>These dots are for future extensions and must be empty.</p></td>
     </tr>
+    <tr>
+      <th>n</th>
+      <td><p><code>[positive integer(1)]</code></p>
+<p>A single positive integer specifying a multiple of <code>precision</code> to use.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The result of the arithmetic operation.</p>
+    <p><code>x</code> grouped at the specified <code>precision</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>vctrs</span><span class='fu'>::</span><span class='fu'><a href='https://vctrs.r-lib.org/reference/vec_arith.html'>vec_arith</a></span><span class='op'>(</span><span class='st'>"+"</span>, <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;year&gt;[1]&gt;
-#&gt; [1] "2020"</div></pre>
+    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='as_naive.html'>as_naive</a></span><span class='op'>(</span><span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>, by <span class='op'>=</span> <span class='fl'>5</span>, length.out <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_year_day.html'>as_year_day</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+<span class='va'>x</span>
+</div><div class='output co'>#&gt; &lt;year_day&lt;day&gt;[20]&gt;
+#&gt;  [1] "2019-001" "2019-006" "2019-011" "2019-016" "2019-021" "2019-026"
+#&gt;  [7] "2019-031" "2019-036" "2019-041" "2019-046" "2019-051" "2019-056"
+#&gt; [13] "2019-061" "2019-066" "2019-071" "2019-076" "2019-081" "2019-086"
+#&gt; [19] "2019-091" "2019-096"</div><div class='input'>
+<span class='co'># Group by day of the current year</span>
+<span class='fu'><a href='calendar_group.html'>calendar_group</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span>, n <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_day&lt;day&gt;[20]&gt;
+#&gt;  [1] "2019-001" "2019-001" "2019-001" "2019-001" "2019-021" "2019-021"
+#&gt;  [7] "2019-021" "2019-021" "2019-041" "2019-041" "2019-041" "2019-041"
+#&gt; [13] "2019-061" "2019-061" "2019-061" "2019-061" "2019-081" "2019-081"
+#&gt; [19] "2019-081" "2019-081"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

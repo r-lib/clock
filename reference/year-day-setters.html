@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Support for vctrs arithmetic — vec_arith.clock_year_day • clock</title>
+<title>Setters: year-day — year-day-setters • clock</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,15 @@
 
 
 
-<meta property="og:title" content="Support for vctrs arithmetic — vec_arith.clock_year_day" />
-<meta property="og:description" content="Support for vctrs arithmetic" />
+<meta property="og:title" content="Setters: year-day — year-day-setters" />
+<meta property="og:description" content="These are year-day methods for the
+setter generics.
+set_year() sets the Gregorian year.
+set_day() sets the day of the year. Valid values are in the range
+of [1, 366].
+There are sub-daily setters for setting more precise components.
+
+" />
 
 
 
@@ -129,55 +136,60 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Support for vctrs arithmetic</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/clock/blob/master/R/gregorian-year-day.R'><code>R/gregorian-year-day.R</code></a>, <a href='https://github.com/r-lib/clock/blob/master/R/gregorian-year-month-day.R'><code>R/gregorian-year-month-day.R</code></a>, <a href='https://github.com/r-lib/clock/blob/master/R/gregorian-year-month-weekday.R'><code>R/gregorian-year-month-weekday.R</code></a>, and 5 more</small>
-    <div class="hidden name"><code>clock-arith.Rd</code></div>
+    <h1>Setters: year-day</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/clock/blob/master/R/gregorian-year-day.R'><code>R/gregorian-year-day.R</code></a></small>
+    <div class="hidden name"><code>year-day-setters.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Support for vctrs arithmetic</p>
+    <p>These are year-day methods for the
+<a href='clock-setters.html'>setter generics</a>.</p><ul>
+<li><p><code><a href='clock-setters.html'>set_year()</a></code> sets the Gregorian year.</p></li>
+<li><p><code><a href='clock-setters.html'>set_day()</a></code> sets the day of the year. Valid values are in the range
+of <code>[1, 366]</code>.</p></li>
+<li><p>There are sub-daily setters for setting more precise components.</p></li>
+</ul>
+
     </div>
 
     <pre class="usage"><span class='co'># S3 method for clock_year_day</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'><a href='clock-setters.html'>set_year</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>value</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='co'># S3 method for clock_year_month_day</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='co'># S3 method for clock_year_day</span>
+<span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>value</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='co'># S3 method for clock_year_month_weekday</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='co'># S3 method for clock_year_day</span>
+<span class='fu'><a href='clock-setters.html'>set_hour</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>value</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='co'># S3 method for clock_iso_year_week_day</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='co'># S3 method for clock_year_day</span>
+<span class='fu'><a href='clock-setters.html'>set_minute</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>value</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='co'># S3 method for clock_naive_time</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='co'># S3 method for clock_year_day</span>
+<span class='fu'><a href='clock-setters.html'>set_second</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>value</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='co'># S3 method for clock_year_quarter_day</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='co'># S3 method for clock_year_day</span>
+<span class='fu'><a href='clock-setters.html'>set_millisecond</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>value</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='co'># S3 method for clock_sys_time</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='co'># S3 method for clock_year_day</span>
+<span class='fu'><a href='clock-setters.html'>set_microsecond</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>value</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='co'># S3 method for clock_weekday</span>
-<span class='fu'>vec_arith</span><span class='op'>(</span><span class='va'>op</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='co'># S3 method for clock_year_day</span>
+<span class='fu'><a href='clock-setters.html'>set_nanosecond</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>value</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>op</th>
-      <td><p>An arithmetic operator as a string</p></td>
-    </tr>
-    <tr>
       <th>x</th>
-      <td><p>A pair of vectors. For <code><a href='https://rdrr.io/r/base/Logic.html'>!</a></code>, unary <code><a href='https://rdrr.io/r/base/Arithmetic.html'>+</a></code> and unary <code><a href='https://rdrr.io/r/base/Arithmetic.html'>-</a></code>, <code>y</code> will be
-a sentinel object of class <code>MISSING</code>, as created by <code>MISSING()</code>.</p></td>
+      <td><p><code>[clock_year_day]</code></p>
+<p>A year-day vector.</p></td>
     </tr>
     <tr>
-      <th>y</th>
-      <td><p>A pair of vectors. For <code><a href='https://rdrr.io/r/base/Logic.html'>!</a></code>, unary <code><a href='https://rdrr.io/r/base/Arithmetic.html'>+</a></code> and unary <code><a href='https://rdrr.io/r/base/Arithmetic.html'>-</a></code>, <code>y</code> will be
-a sentinel object of class <code>MISSING</code>, as created by <code>MISSING()</code>.</p></td>
+      <th>value</th>
+      <td><p><code>[integer / "last"]</code></p>
+<p>The value to set the component to.</p>
+<p>For <code><a href='clock-setters.html'>set_day()</a></code>, this can also be <code>"last"</code> to set the day to the
+last day of the year.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -187,12 +199,31 @@ a sentinel object of class <code>MISSING</code>, as created by <code>MISSING()</
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The result of the arithmetic operation.</p>
+    <p><code>x</code> with the component set.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>vctrs</span><span class='fu'>::</span><span class='fu'><a href='https://vctrs.r-lib.org/reference/vec_arith.html'>vec_arith</a></span><span class='op'>(</span><span class='st'>"+"</span>, <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;year&gt;[1]&gt;
-#&gt; [1] "2020"</div></pre>
+    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_day.html'>year_day</a></span><span class='op'>(</span><span class='fl'>2019</span><span class='op'>)</span>
+
+<span class='co'># Set the day</span>
+<span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>12</span><span class='op'>:</span><span class='fl'>14</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_day&lt;day&gt;[3]&gt;
+#&gt; [1] "2019-012" "2019-013" "2019-014"</div><div class='input'>
+<span class='co'># Set to the "last" day of the year</span>
+<span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"last"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_day&lt;day&gt;[1]&gt;
+#&gt; [1] "2019-365"</div><div class='input'>
+<span class='co'># Set to an invalid day of the year</span>
+<span class='va'>invalid</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>366</span><span class='op'>)</span>
+<span class='va'>invalid</span>
+</div><div class='output co'>#&gt; &lt;year_day&lt;day&gt;[invalid=1][1]&gt;
+#&gt; [1] "2019-366"</div><div class='input'>
+<span class='co'># Then resolve the invalid day by choosing the next valid day</span>
+<span class='fu'><a href='clock-invalid.html'>invalid_resolve</a></span><span class='op'>(</span><span class='va'>invalid</span>, invalid <span class='op'>=</span> <span class='st'>"next"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;year_day&lt;day&gt;[1]&gt;
+#&gt; [1] "2020-001"</div><div class='input'>
+<span class='co'># Cannot set a component two levels more precise than where you currently are</span>
+<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='clock-setters.html'>set_hour</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Error : `set_hour()` requires a minimum precision of 'day'.</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
