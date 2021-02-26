@@ -40,7 +40,7 @@ There are four key classes in clock, inspired by the design of the C++ date and 
 
 - A _zoned-time_ is a time point paired with a time zone. You can create them from either a sys-time or a naive-time, depending on whether you want to convert the time point from UTC (leaving the underlying duration unchanged, but changing the printed time), or declare that the time point is in a specific time zone (leaving the printed time unchanged, but changing the underlying duration). Zoned-times are primarily needed for communication with humans.
 
-- A _calendar_ represents a date using a combination of fields like year-month-day, year-month-weekday, year-quarter-day, or iso-year-week-day, along with hour/minute/second fields to represent time within a day (so they’re similar to R’s POSIXlt). Calendar objects are extremely efficient at arithmetic involving irregular periods such as months, quarters, and years and at getting and setting specified components. A calendar can represent invalid dates (like 2020-02-31) which only need to be resolved when converting back to a time point.
+- A _calendar_ represents a date using a combination of fields like year-month-day, year-month-weekday, year-quarter-day, year-day, or iso-year-week-day, along with hour/minute/second fields to represent time within a day (so they’re similar to R’s POSIXlt). Calendar objects are extremely efficient at arithmetic involving irregular periods such as months, quarters, and years and at getting and setting specified components. A calendar can represent invalid dates (like 2020-02-31) which only need to be resolved when converting back to a time point.
 
 ## Installation
 

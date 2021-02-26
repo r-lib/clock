@@ -54,7 +54,7 @@ you get a complete date time library.
     Zoned-times are primarily needed for communication with humans.
 
 -   A *calendar* represents a date using a combination of fields like
-    year-month-day, year-month-weekday, year-quarter-day, or
+    year-month-day, year-month-weekday, year-quarter-day, year-day, or
     iso-year-week-day, along with hour/minute/second fields to represent
     time within a day (so they’re similar to R’s POSIXlt). Calendar
     objects are extremely efficient at arithmetic involving irregular
