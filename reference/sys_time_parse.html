@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Parsing: zoned-time — zoned-parsing • clock</title>
+<title>Parsing: sys-time — sys_time_parse • clock</title>
 
 
 <!-- jquery -->
@@ -39,38 +39,28 @@
 
 
 
-<meta property="og:title" content="Parsing: zoned-time — zoned-parsing" />
-<meta property="og:description" content="There are two parsers into a zoned-time, zoned_time_parse_complete() and
-zoned_time_parse_abbrev().zoned_time_parse_complete()
-
-
-zoned_time_parse_complete() is a parser for complete date-time strings,
-like &quot;2019-01-01 00:00:00-05:00[America/New_York]&quot;. A complete date-time
-string has both the time zone offset and full time zone name in the string,
-which is the only way for the string itself to contain all of the information
-required to construct a zoned-time. Because of this,
-zoned_time_parse_complete() requires both the %z and %Z commands to be
-supplied in the format string.
+<meta property="og:title" content="Parsing: sys-time — sys_time_parse" />
+<meta property="og:description" content="sys_time_parse() is a parser into a sys-time.
+sys_time_parse() is useful when you have date-time strings like:
+&quot;2020-01-01 01:04:30-0400&quot;. If there is an attached UTC offset, but no time
+zone name, then parsing this string as a sys-time using the %z command to
+capture the offset is probably your best option. If you know that this string
+should be interpreted in a specific time zone, parse as a sys-time to get the
+UTC equivalent, then use as_zoned_time().
 The default options assume that x should be parsed at second precision,
-using a format string of &quot;%Y-%m-%d %H:%M:%S%Ez[%Z]&quot;.
-
-zoned_time_parse_abbrev()
-
-
-zoned_time_parse_abbrev() is a parser for date-time strings containing only
-a time zone abbreviation, like &quot;2019-01-01 00:00:00 EST&quot;. The time zone
-abbreviation is not enough to identify the full time zone name that the
-date-time belongs to, so the full time zone name must be supplied as the
-zone argument. However, the time zone abbreviation can help with resolving
-ambiguity around daylight saving time fallbacks.
-For zoned_time_parse_abbrev(), %Z must be supplied and is interpreted as
-the time zone abbreviation rather than the full time zone name.
-If used, the %z command must parse correctly, but its value will be
-completely ignored.
-The default options assume that x should be parsed at second precision,
-using a format string of &quot;%Y-%m-%d %H:%M:%S %Z&quot;. This default format
-generally matches what R prints out by default for POSIXct objects.
-" />
+using a format string of &quot;%Y-%m-%d %H:%M:%S&quot;.
+sys_time_parse() is nearly equivalent to naive_time_parse(), except for
+the fact that the %z command is actually used. Using %z assumes that the
+rest of the date-time string should be interpreted as a naive-time, which is
+then shifted by the UTC offset found in %z. The returned time can then be
+validly interpreted as UTC.
+sys_time_parse() ignores the %Z command.
+If your date-time strings contain a full time zone name and a UTC offset, use
+zoned_time_parse_complete(). If they contain a time zone abbreviation, use
+zoned_time_parse_abbrev().
+If your date-time strings don't contain an offset from UTC, you might
+consider using naive_time_parse(), since the resulting naive-time doesn't
+come with an assumption of a UTC time zone." />
 
 
 
@@ -159,56 +149,37 @@ generally matches what R prints out by default for POSIXct objects.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Parsing: zoned-time</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/clock/blob/master/R/zoned-time.R'><code>R/zoned-time.R</code></a></small>
-    <div class="hidden name"><code>zoned-parsing.Rd</code></div>
+    <h1>Parsing: sys-time</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/clock/blob/master/R/sys-time.R'><code>R/sys-time.R</code></a></small>
+    <div class="hidden name"><code>sys_time_parse.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>There are two parsers into a zoned-time, <code>zoned_time_parse_complete()</code> and
-<code>zoned_time_parse_abbrev()</code>.</p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>zoned_time_parse_complete()</h3>
-
-
-<p><code>zoned_time_parse_complete()</code> is a parser for <em>complete</em> date-time strings,
-like <code>"2019-01-01 00:00:00-05:00[America/New_York]"</code>. A complete date-time
-string has both the time zone offset and full time zone name in the string,
-which is the only way for the string itself to contain all of the information
-required to construct a zoned-time. Because of this,
-<code>zoned_time_parse_complete()</code> requires both the <code>%z</code> and <code>%Z</code> commands to be
-supplied in the <code>format</code> string.</p>
+    <p><code>sys_time_parse()</code> is a parser into a sys-time.</p>
+<p><code>sys_time_parse()</code> is useful when you have date-time strings like:
+<code>"2020-01-01 01:04:30-0400"</code>. If there is an attached UTC offset, but no time
+zone name, then parsing this string as a sys-time using the <code>%z</code> command to
+capture the offset is probably your best option. If you know that this string
+should be interpreted in a specific time zone, parse as a sys-time to get the
+UTC equivalent, then use <code><a href='as_zoned_time.html'>as_zoned_time()</a></code>.</p>
 <p>The default options assume that <code>x</code> should be parsed at second precision,
-using a <code>format</code> string of <code>"%Y-%m-%d %H:%M:%S%Ez[%Z]"</code>.</p>
-
-<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>zoned_time_parse_abbrev()</h3>
-
-
-<p><code>zoned_time_parse_abbrev()</code> is a parser for date-time strings containing only
-a time zone abbreviation, like <code>"2019-01-01 00:00:00 EST"</code>. The time zone
-abbreviation is not enough to identify the full time zone name that the
-date-time belongs to, so the full time zone name must be supplied as the
-<code>zone</code> argument. However, the time zone abbreviation can help with resolving
-ambiguity around daylight saving time fallbacks.</p>
-<p>For <code>zoned_time_parse_abbrev()</code>, <code>%Z</code> must be supplied and is interpreted as
-the time zone abbreviation rather than the full time zone name.</p>
-<p>If used, the <code>%z</code> command must parse correctly, but its value will be
-completely ignored.</p>
-<p>The default options assume that <code>x</code> should be parsed at second precision,
-using a <code>format</code> string of <code>"%Y-%m-%d %H:%M:%S %Z"</code>. This default format
-generally matches what R prints out by default for POSIXct objects.</p>
-
+using a <code>format</code> string of <code>"%Y-%m-%d %H:%M:%S"</code>.</p>
+<p><code>sys_time_parse()</code> is nearly equivalent to <code><a href='naive_time_parse.html'>naive_time_parse()</a></code>, except for
+the fact that the <code>%z</code> command is actually used. Using <code>%z</code> assumes that the
+rest of the date-time string should be interpreted as a naive-time, which is
+then shifted by the UTC offset found in <code>%z</code>. The returned time can then be
+validly interpreted as UTC.</p>
+<p><em><code>sys_time_parse()</code> ignores the <code>%Z</code> command.</em></p>
+<p>If your date-time strings contain a full time zone name and a UTC offset, use
+<code><a href='zoned-parsing.html'>zoned_time_parse_complete()</a></code>. If they contain a time zone abbreviation, use
+<code><a href='zoned-parsing.html'>zoned_time_parse_abbrev()</a></code>.</p>
+<p>If your date-time strings don't contain an offset from UTC, you might
+consider using <code><a href='naive_time_parse.html'>naive_time_parse()</a></code>, since the resulting naive-time doesn't
+come with an assumption of a UTC time zone.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>zoned_time_parse_complete</span><span class='op'>(</span>
+    <pre class="usage"><span class='fu'>sys_time_parse</span><span class='op'>(</span>
   <span class='va'>x</span>,
-  <span class='va'>...</span>,
-  format <span class='op'>=</span> <span class='cn'>NULL</span>,
-  precision <span class='op'>=</span> <span class='st'>"second"</span>,
-  locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='fu'>zoned_time_parse_abbrev</span><span class='op'>(</span>
-  <span class='va'>x</span>,
-  <span class='va'>zone</span>,
   <span class='va'>...</span>,
   format <span class='op'>=</span> <span class='cn'>NULL</span>,
   precision <span class='op'>=</span> <span class='st'>"second"</span>,
@@ -377,7 +348,10 @@ three white space characters.</p></li>
     <tr>
       <th>precision</th>
       <td><p><code>[character(1)]</code></p>
-<p>A precision for the resulting zoned-time. One of:</p><ul>
+<p>A precision for the resulting time point. One of:</p><ul>
+<li><p><code>"day"</code></p></li>
+<li><p><code>"hour"</code></p></li>
+<li><p><code>"minute"</code></p></li>
 <li><p><code>"second"</code></p></li>
 <li><p><code>"millisecond"</code></p></li>
 <li><p><code>"microsecond"</code></p></li>
@@ -392,97 +366,44 @@ to parse.</p></td>
       <td><p><code>[clock_locale]</code></p>
 <p>A locale object created from <code><a href='clock_locale.html'>clock_locale()</a></code>.</p></td>
     </tr>
-    <tr>
-      <th>zone</th>
-      <td><p><code>[character(1)]</code></p>
-<p>A full time zone name.</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A zoned-time.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>If <code>zoned_time_parse_complete()</code> is given input that is length zero, all
-<code>NA</code>s, or completely fails to parse, then no time zone will be able to be
-determined. In that case, the result will use <code>"UTC"</code>.</p>
-<p>If your date-time strings contain time zone offsets (like <code>-04:00</code>), but
-not the full time zone name, you might need <code><a href='sys_time_parse.html'>sys_time_parse()</a></code>.</p>
-<p>If your date-time strings don't contain time zone offsets or the full time
-zone name, you might need to use <code><a href='naive_time_parse.html'>naive_time_parse()</a></code>. From there, if you
-know the time zone that the date-times are supposed to be in, you can convert
-to a zoned-time with <code><a href='as_zoned_time.html'>as_zoned_time()</a></code>.</p>
+    <p>A sys-time.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span>
-
-<span class='fu'>zoned_time_parse_complete</span><span class='op'>(</span><span class='st'>"2019-01-01 01:02:03-05:00[America/New_York]"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "2019-01-01 01:02:03-05:00"</div><div class='input'>
-<span class='fu'>zoned_time_parse_complete</span><span class='op'>(</span>
-  <span class='st'>"January 21, 2019 -0500 America/New_York"</span>,
-  format <span class='op'>=</span> <span class='st'>"%B %d, %Y %z %Z"</span>
+    <pre class="examples"><div class='input'><span class='fu'>sys_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01 05:06:07"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;
+#&gt; [1] "2020-01-01 05:06:07"</div><div class='input'>
+<span class='co'># Day precision</span>
+<span class='fu'>sys_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01"</span>, precision <span class='op'>=</span> <span class='st'>"day"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;day&gt;[1]&gt;
+#&gt; [1] "2020-01-01"</div><div class='input'>
+<span class='co'># Nanosecond precision, but using a day based format</span>
+<span class='fu'>sys_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01"</span>, format <span class='op'>=</span> <span class='st'>"%Y-%m-%d"</span>, precision <span class='op'>=</span> <span class='st'>"nanosecond"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;nanosecond&gt;[1]&gt;
+#&gt; [1] "2020-01-01 00:00:00.000000000"</div><div class='input'>
+<span class='co'># Multiple format strings are allowed for heterogeneous times</span>
+<span class='fu'>sys_time_parse</span><span class='op'>(</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span>, <span class='st'>"2019/1/1"</span><span class='op'>)</span>,
+  format <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"%Y/%m/%d"</span>, <span class='st'>"%Y-%m-%d"</span><span class='op'>)</span>,
+  precision <span class='op'>=</span> <span class='st'>"day"</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "2019-01-21 00:00:00-05:00"</div><div class='input'>
-<span class='co'># Nanosecond precision</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019/12/31 01:05:05.123456700-05:00[America/New_York]"</span>
-<span class='fu'>zoned_time_parse_complete</span><span class='op'>(</span>
-  <span class='va'>x</span>,
-  format <span class='op'>=</span> <span class='st'>"%Y/%m/%d %H:%M:%S%Ez[%Z]"</span>,
-  precision <span class='op'>=</span> <span class='st'>"nanosecond"</span>
+</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;day&gt;[2]&gt;
+#&gt; [1] "2019-01-01" "2019-01-01"</div><div class='input'>
+<span class='co'># The `%z` command shifts the date-time by subtracting the UTC offset so</span>
+<span class='co'># that the returned sys-time can be interpreted as UTC</span>
+<span class='fu'>sys_time_parse</span><span class='op'>(</span>
+  <span class='st'>"2020-01-01 02:00:00 -0400"</span>,
+  format <span class='op'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%S %z"</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;nanosecond&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "2019-12-31 01:05:05.123456700-05:00"</div><div class='input'>
-<span class='co'># The `%z` offset must correspond to the true offset that would be used</span>
-<span class='co'># if the input was parsed as a naive-time and then converted to a zoned-time</span>
-<span class='co'># with `as_zoned_time()`. For example, the time that was parsed above used an</span>
-<span class='co'># offset of `-05:00`. We can confirm that this is correct with:</span>
-<span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='st'>"America/New_York"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "2019-01-01 01:02:03-05:00"</div><div class='input'>
-<span class='co'># So the following would not parse correctly</span>
-<span class='fu'>zoned_time_parse_complete</span><span class='op'>(</span><span class='st'>"2019-01-01 01:02:03-04:00[America/New_York]"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Failed to parse 1 string at location 1. Returning `NA` at that location.</span></div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] NA</div><div class='input'>
-<span class='co'># `%z` is useful for breaking ties in otherwise ambiguous times. For example,</span>
-<span class='co'># these two times are on either side of a daylight saving time fallback.</span>
-<span class='co'># Without the `%z` offset, you wouldn't be able to tell them apart!</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-  <span class='st'>"1970-10-25 01:30:00-04:00[America/New_York]"</span>,
-  <span class='st'>"1970-10-25 01:30:00-05:00[America/New_York]"</span>
-<span class='op'>)</span>
-
-<span class='fu'>zoned_time_parse_complete</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;
-#&gt; [1] "1970-10-25 01:30:00-04:00" "1970-10-25 01:30:00-05:00"</div><div class='input'>
-<span class='co'># If you have date-time strings with time zone abbreviations,</span>
-<span class='co'># `zoned_time_parse_abbrev()` should be able to help. The `zone` must be</span>
-<span class='co'># provided, because multiple countries may use the same time zone</span>
-<span class='co'># abbreviation. For example:</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"1970-01-01 02:30:30 IST"</span>
-
-<span class='co'># IST = India Standard Time</span>
-<span class='fu'>zoned_time_parse_abbrev</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"Asia/Kolkata"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;Asia/Kolkata&gt;[1]&gt;
-#&gt; [1] "1970-01-01 02:30:30+05:30"</div><div class='input'>
-<span class='co'># IST = Israel Standard Time</span>
-<span class='fu'>zoned_time_parse_abbrev</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"Asia/Jerusalem"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;Asia/Jerusalem&gt;[1]&gt;
-#&gt; [1] "1970-01-01 02:30:30+02:00"</div><div class='input'>
-<span class='co'># The time zone abbreviation is mainly useful for resolving ambiguity</span>
-<span class='co'># around daylight saving time fallbacks. Without the abbreviation, these</span>
-<span class='co'># date-times would be ambiguous.</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-  <span class='st'>"1970-10-25 01:30:00 EDT"</span>,
-  <span class='st'>"1970-10-25 01:30:00 EST"</span>
-<span class='op'>)</span>
-<span class='fu'>zoned_time_parse_abbrev</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;
-#&gt; [1] "1970-10-25 01:30:00-04:00" "1970-10-25 01:30:00-05:00"</div></pre>
+</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;
+#&gt; [1] "2020-01-01 06:00:00"</div><div class='input'>
+<span class='co'># Remember that the `%Z` command is ignored entirely!</span>
+<span class='fu'>sys_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01 America/New_York"</span>, format <span class='op'>=</span> <span class='st'>"%Y-%m-%d %Z"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;
+#&gt; [1] "2020-01-01 00:00:00"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

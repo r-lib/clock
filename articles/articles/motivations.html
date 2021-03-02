@@ -333,13 +333,13 @@
 <p>If for any reason you want the <code>+ seconds()</code> behavior, you can manually take control by converting to naive-time, adding the units of time there, and then converting back to POSIXct.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../../reference/as_naive.html">as_naive</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="../../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.</span>
 
 <span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../../reference/as_naive.html">as_naive</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="../../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, nonexistent <span class="op">=</span> <span class="st">"roll-forward"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-03-08 03:00:00 EDT"</span></code></pre></div>
@@ -424,7 +424,7 @@
 <p>Notice that if we converted two of these dates to naive-time, and then tried to convert them back to POSIXct, they would have been considered ambiguous.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../../reference/as_naive.html">as_naive</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="../../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Error: Ambiguous time due to daylight saving time at location 2. Resolve ambiguous time issues by specifying the `ambiguous` argument.</span></code></pre></div>
 <p><code><a href="../../reference/date-and-date-time-rounding.html">date_floor()</a></code> works by flooring while in naive-time, but somehow this still produces the results you probably expected, with the two 1 o’clock hours being kept in separate groups:</p>
@@ -488,7 +488,7 @@
 <p>The previous section was entirely focused on issues that might arise when working with POSIXct and time zones. If you don’t require the complexity of time zones, you can use a naive-time. Naive-times are a type of time point that have a yet-to-be-specified time zone. The other type of time point in clock is a sys-time, which is interpreted as having a UTC time zone attached to it. If you aren’t using time zones at all, naive-times and sys-times are equivalent, and even use the same date algorithms under the hood.</p>
 <p>Unlike our ambiguous time examples from before, since naive-times don’t have any implied time zone, there is no repeated 1 o’clock hour.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/naive_parse.html">naive_parse</a></span><span class="op">(</span><span class="st">"2020-11-01 00:30:00"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/naive_time_parse.html">naive_time_parse</a></span><span class="op">(</span><span class="st">"2020-11-01 00:30:00"</span><span class="op">)</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/clock-arithmetic.html">add_hours</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">0</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
 <span class="va">x</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[6]&gt;</span>
@@ -513,18 +513,18 @@
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2020-11-01 00:30:00"</span>
 
-<span class="fu"><a href="../../reference/as_zoned.html">as_zoned</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
+<span class="fu"><a href="../../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2020-11-01 00:30:00-04:00"</span></code></pre></div>
 <p>Sys-time is interpreted as being UTC. Converting it to a zoned-time will keep the underlying duration, but will change the printed time.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x_sys</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/as_sys.html">as_sys</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">x_sys</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
 <span class="va">x_sys</span>
 <span class="co">#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2020-11-01 00:30:00"</span>
 
 <span class="co"># Subtract 4 hours to print the America/New_York time</span>
-<span class="fu"><a href="../../reference/as_zoned.html">as_zoned</a></span><span class="op">(</span><span class="va">x_sys</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
+<span class="fu"><a href="../../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x_sys</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2020-10-31 20:30:00-04:00"</span></code></pre></div>
 <p>Converting from sys-time to zoned-time won’t ever have any issues with nonexistent or ambiguous times, but converting from naive-time might. Remember that there were two 1 o’clock hours on this day in the America/New_York time zone.</p>
@@ -533,10 +533,10 @@
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;</span>
 <span class="co">#&gt; [1] "2020-11-01 00:30:00" "2020-11-01 01:30:00"</span>
 
-<span class="fu"><a href="../../reference/as_zoned.html">as_zoned</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
+<span class="fu"><a href="../../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
 <span class="co">#&gt; Error: Ambiguous time due to daylight saving time at location 2. Resolve ambiguous time issues by specifying the `ambiguous` argument.</span>
 
-<span class="fu"><a href="../../reference/as_zoned.html">as_zoned</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"America/New_York"</span>, ambiguous <span class="op">=</span> <span class="st">"earliest"</span><span class="op">)</span>
+<span class="fu"><a href="../../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"America/New_York"</span>, ambiguous <span class="op">=</span> <span class="st">"earliest"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;</span>
 <span class="co">#&gt; [1] "2020-11-01 00:30:00-04:00" "2020-11-01 01:30:00-04:00"</span></code></pre></div>
 <p>In the low-level API, converting from naive-time to zoned-time is actually the <em>only</em> place where the <code>nonexistent</code> and <code>ambiguous</code> arguments are used. This limits how often you have to think about daylight saving time, ideally helping you avoid as many subtle bugs as possible. In the high-level API for POSIXct, these arguments are forced to bubble up in more places. This trades the user benefit of being able to work directly on R’s native date-time types for the side-effect of potentially having to deal with these issues in more places.</p>
@@ -594,7 +594,7 @@
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="va">ymd</span><span class="op">)</span>
 <span class="co">#&gt; Error: Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.</span>
-<span class="fu"><a href="../../reference/as_naive.html">as_naive</a></span><span class="op">(</span><span class="va">ymd</span><span class="op">)</span>
+<span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">ymd</span><span class="op">)</span>
 <span class="co">#&gt; Error: Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.</span>
 <span class="fu"><a href="../../reference/as_year_month_weekday.html">as_year_month_weekday</a></span><span class="op">(</span><span class="va">ymd</span><span class="op">)</span>
 <span class="co">#&gt; Error: Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.</span></code></pre></div>
@@ -650,7 +650,7 @@
 <span class="co">#&gt; [33] "2019-11-Fri[5]" "2019-12-Fri[1]" "2019-12-Fri[3]" "2019-12-Tue[5]"</span></code></pre></div>
 <p>If you didn’t want to meet on Saturday or Sunday, you could convert to a naive-time and <em>shift</em> any Saturdays or Sundays to the previous Friday.</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">meetings_naive</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/as_naive.html">as_naive</a></span><span class="op">(</span><span class="va">meetings_valid</span><span class="op">)</span> 
+<code class="sourceCode R"><span class="va">meetings_naive</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">meetings_valid</span><span class="op">)</span> 
 <span class="va">meetings_wday</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="va">meetings_naive</span><span class="op">)</span>
 
 <span class="va">meetings_wday</span>
@@ -710,20 +710,20 @@
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ym</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
 
-<span class="fu"><a href="../../reference/as_naive.html">as_naive</a></span><span class="op">(</span><span class="va">ym</span><span class="op">)</span>
+<span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">ym</span><span class="op">)</span>
 <span class="co">#&gt; Error: Can't convert to a time point from a calendar with 'month' precision. A minimum of 'day' precision is required.</span>
 
 <span class="co"># You might want the first of the month</span>
 <span class="va">ym</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../../reference/as_naive.html">as_naive</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[3]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-01" "2019-02-01" "2019-03-01"</span>
 
 <span class="co"># Or the last</span>
 <span class="va">ym</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="st">"last"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../../reference/as_naive.html">as_naive</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[3]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-31" "2019-02-28" "2019-03-31"</span></code></pre></div>
 <p>This range assumption is all throughout clock. For example, grouping a day precision iso-year-week-day by weeks returns a week precision calendar.</p>
@@ -739,11 +739,11 @@
 <a href="#time-points" class="anchor"></a>Time points</h3>
 <p>Time points, such as naive-time and sys-time, can vary in precision from day to nanosecond.</p>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../../reference/as_naive.html">as_naive</a></span><span class="op">(</span><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-02"</span>
 
-<span class="fu"><a href="../../reference/as_sys.html">as_sys</a></span><span class="op">(</span><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span>
+<span class="fu"><a href="../../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span>
   <span class="fl">2019</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">30</span>, <span class="fl">35</span>, <span class="fl">123</span>, 
   subsecond_precision <span class="op">=</span> <span class="st">"millisecond"</span>
 <span class="op">)</span><span class="op">)</span>
@@ -751,11 +751,11 @@
 <span class="co">#&gt; [1] "2019-02-03 01:30:35.123"</span></code></pre></div>
 <p>Unlike calendars, a time point at say, second precision, is considered equivalent to a time point at millisecond precision with millisecond information set to 0.</p>
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/as_sys.html">as_sys</a></span><span class="op">(</span><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">sec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span>
   <span class="fl">2019</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">30</span>, <span class="fl">35</span>
 <span class="op">)</span><span class="op">)</span>
 
-<span class="va">milli</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/as_sys.html">as_sys</a></span><span class="op">(</span><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span>
+<span class="va">milli</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span>
   <span class="fl">2019</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">30</span>, <span class="fl">35</span>, <span class="fl">0</span>, 
   subsecond_precision <span class="op">=</span> <span class="st">"millisecond"</span>
 <span class="op">)</span><span class="op">)</span>
@@ -764,7 +764,7 @@
 <span class="co">#&gt; [1] TRUE</span></code></pre></div>
 <p>This allows time points to naturally promote upwards to a more precise precision when doing arithmetic with them:</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../../reference/as_naive.html">as_naive</a></span><span class="op">(</span><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../../reference/duration-helper.html">duration_nanoseconds</a></span><span class="op">(</span><span class="fl">25</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../../reference/duration-helper.html">duration_nanoseconds</a></span><span class="op">(</span><span class="fl">25</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;nanosecond&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-02 00:00:00.000000025"</span></code></pre></div>
 </div>

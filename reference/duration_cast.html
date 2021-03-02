@@ -204,11 +204,11 @@ durations).</p>
 <span class='co'># Flooring is generally more useful when working with time points,</span>
 <span class='co'># note that the cast ends up rounding the pre-1970 date up to the next</span>
 <span class='co'># day, while the post-1970 date is rounded down.</span>
-<span class='fu'><a href='as_sys.html'>as_sys</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+<span class='fu'><a href='as_sys_time.html'>as_sys_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[2]&gt;
-#&gt; [1] "1970-01-02 00:00:01" "1969-12-30 23:59:59"</div><div class='input'><span class='fu'><a href='as_sys.html'>as_sys</a></span><span class='op'>(</span><span class='va'>cast</span><span class='op'>)</span>
+#&gt; [1] "1970-01-02 00:00:01" "1969-12-30 23:59:59"</div><div class='input'><span class='fu'><a href='as_sys_time.html'>as_sys_time</a></span><span class='op'>(</span><span class='va'>cast</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;day&gt;[2]&gt;
-#&gt; [1] "1970-01-02" "1969-12-31"</div><div class='input'><span class='fu'><a href='as_sys.html'>as_sys</a></span><span class='op'>(</span><span class='va'>floor</span><span class='op'>)</span>
+#&gt; [1] "1970-01-02" "1969-12-31"</div><div class='input'><span class='fu'><a href='as_sys_time.html'>as_sys_time</a></span><span class='op'>(</span><span class='va'>floor</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;day&gt;[2]&gt;
 #&gt; [1] "1970-01-02" "1969-12-30"</div><div class='input'>
 <span class='co'># Casting to a more precise precision</span>
