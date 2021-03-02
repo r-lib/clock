@@ -492,8 +492,8 @@ to_sys_seconds_from_sys_duration_fields_cpp <- function(fields) {
   .Call(`_clock_to_sys_seconds_from_sys_duration_fields_cpp`, fields)
 }
 
-zoned_parse_complete_cpp <- function(x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {
-  .Call(`_clock_zoned_parse_complete_cpp`, x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark)
+zoned_time_parse_complete_cpp <- function(x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {
+  .Call(`_clock_zoned_time_parse_complete_cpp`, x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark)
 }
 
 zoned_parse_abbrev_cpp <- function(x, zone, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {

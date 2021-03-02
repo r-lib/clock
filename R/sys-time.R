@@ -62,7 +62,7 @@ is_sys_time <- function(x) {
 #' _`sys_time_parse()` ignores the `%Z` command._
 #'
 #' If your date-time strings contain a full time zone name and a UTC offset, use
-#' [zoned_parse_complete()]. If they contain a time zone abbreviation, use
+#' [zoned_time_parse_complete()]. If they contain a time zone abbreviation, use
 #' [zoned_parse_abbrev()].
 #'
 #' If your date-time strings don't contain an offset from UTC, you might

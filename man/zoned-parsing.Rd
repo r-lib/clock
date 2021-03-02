@@ -2,11 +2,11 @@
 % Please edit documentation in R/zoned-time.R
 \name{zoned-parsing}
 \alias{zoned-parsing}
-\alias{zoned_parse_complete}
+\alias{zoned_time_parse_complete}
 \alias{zoned_parse_abbrev}
 \title{Parsing: zoned-time}
 \usage{
-zoned_parse_complete(
+zoned_time_parse_complete(
   x,
   ...,
   format = NULL,
@@ -214,16 +214,17 @@ A full time zone name.}
 A zoned-time.
 }
 \description{
-There are two parsers into a zoned-time, \code{zoned_parse_complete()} and
+There are two parsers into a zoned-time, \code{zoned_time_parse_complete()} and
 \code{zoned_parse_abbrev()}.
-\subsection{zoned_parse_complete()}{
+\subsection{zoned_time_parse_complete()}{
 
-\code{zoned_parse_complete()} is a parser for \emph{complete} date-time strings, like
-\code{"2019-01-01 00:00:00-05:00[America/New_York]"}. A complete date-time string
-has both the time zone offset and full time zone name in the string, which is
-the only way for the string itself to contain all of the information required
-to construct a zoned-time. Because of this, \code{zoned_parse_complete()} requires
-both the \verb{\%z} and \verb{\%Z} commands to be supplied in the \code{format} string.
+\code{zoned_time_parse_complete()} is a parser for \emph{complete} date-time strings,
+like \code{"2019-01-01 00:00:00-05:00[America/New_York]"}. A complete date-time
+string has both the time zone offset and full time zone name in the string,
+which is the only way for the string itself to contain all of the information
+required to construct a zoned-time. Because of this,
+\code{zoned_time_parse_complete()} requires both the \verb{\%z} and \verb{\%Z} commands to be
+supplied in the \code{format} string.
 
 The default options assume that \code{x} should be parsed at second precision,
 using a \code{format} string of \code{"\%Y-\%m-\%d \%H:\%M:\%S\%Ez[\%Z]"}.
@@ -250,9 +251,9 @@ generally matches what R prints out by default for POSIXct objects.
 }
 }
 \details{
-If \code{zoned_parse_complete()} is given input that is length zero, all \code{NA}s, or
-completely fails to parse, then no time zone will be able to be determined.
-In that case, the result will use \code{"UTC"}.
+If \code{zoned_time_parse_complete()} is given input that is length zero, all
+\code{NA}s, or completely fails to parse, then no time zone will be able to be
+determined. In that case, the result will use \code{"UTC"}.
 
 If your date-time strings contain time zone offsets (like \code{-04:00}), but
 not the full time zone name, you might need \code{\link[=sys_time_parse]{sys_time_parse()}}.
@@ -265,16 +266,16 @@ to a zoned-time with \code{\link[=as_zoned]{as_zoned()}}.
 \examples{
 library(magrittr)
 
-zoned_parse_complete("2019-01-01 01:02:03-05:00[America/New_York]")
+zoned_time_parse_complete("2019-01-01 01:02:03-05:00[America/New_York]")
 
-zoned_parse_complete(
+zoned_time_parse_complete(
   "January 21, 2019 -0500 America/New_York",
   format = "\%B \%d, \%Y \%z \%Z"
 )
 
 # Nanosecond precision
 x <- "2019/12/31 01:05:05.123456700-05:00[America/New_York]"
-zoned_parse_complete(
+zoned_time_parse_complete(
   x,
   format = "\%Y/\%m/\%d \%H:\%M:\%S\%Ez[\%Z]",
   precision = "nanosecond"
@@ -289,7 +290,7 @@ year_month_day(2019, 1, 1, 1, 2, 3) \%>\%
   as_zoned("America/New_York")
 
 # So the following would not parse correctly
-zoned_parse_complete("2019-01-01 01:02:03-04:00[America/New_York]")
+zoned_time_parse_complete("2019-01-01 01:02:03-04:00[America/New_York]")
 
 # `\%z` is useful for breaking ties in otherwise ambiguous times. For example,
 # these two times are on either side of a daylight saving time fallback.
@@ -299,7 +300,7 @@ x <- c(
   "1970-10-25 01:30:00-05:00[America/New_York]"
 )
 
-zoned_parse_complete(x)
+zoned_time_parse_complete(x)
 
 # If you have date-time strings with time zone abbreviations,
 # `zoned_parse_abbrev()` should be able to help. The `zone` must be

@@ -55,7 +55,7 @@ is_naive_time <- function(x) {
 #' _`naive_time_parse()` ignores both the `%z` and `%Z` commands._
 #'
 #' If your date-time strings contain a full time zone name and a UTC offset, use
-#' [zoned_parse_complete()]. If they contain a time zone abbreviation, use
+#' [zoned_time_parse_complete()]. If they contain a time zone abbreviation, use
 #' [zoned_parse_abbrev()].
 #'
 #' If your date-time strings contain a UTC offset, but not a full time zone
