@@ -3,12 +3,12 @@
 \name{zoned-zone}
 \alias{zoned-zone}
 \alias{zoned_time_zone}
-\alias{zoned_set_zone}
+\alias{zoned_time_set_zone}
 \title{Get or set the time zone}
 \usage{
 zoned_time_zone(x)
 
-zoned_set_zone(x, zone)
+zoned_time_set_zone(x, zone)
 }
 \arguments{
 \item{x}{\verb{[zoned_time / Date / POSIXt]}
@@ -22,13 +22,13 @@ A valid time zone to switch to.}
 \value{
 \code{zoned_time_zone()} returns a string containing the time zone.
 
-\code{zoned_set_zone()} returns \code{x} with an altered time zone attribute. The
+\code{zoned_time_set_zone()} returns \code{x} with an altered time zone attribute. The
 underlying instant is \emph{not} changed.
 }
 \description{
 \code{zoned_time_zone()} gets the time zone.
 
-\code{zoned_set_zone()} sets the time zone \emph{without changing the
+\code{zoned_time_set_zone()} sets the time zone \emph{without changing the
 underlying instant}. This means that the result will represent the equivalent
 time in the new time zone.
 }
@@ -39,7 +39,7 @@ x
 zoned_time_zone(x)
 
 # Equivalent UTC time
-zoned_set_zone(x, "UTC")
+zoned_time_set_zone(x, "UTC")
 
 # To force a new time zone with the same printed time,
 # convert to a naive time that has no implied time zone,

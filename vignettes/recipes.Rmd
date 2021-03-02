@@ -58,7 +58,7 @@ my_time <- year_month_day(2019, 1, 30, 9) %>%
 
 my_time
 
-their_time <- zoned_set_zone(my_time, "Asia/Shanghai")
+their_time <- zoned_time_set_zone(my_time, "Asia/Shanghai")
 
 their_time
 ```
@@ -102,7 +102,7 @@ Note that a conversion like this isn't always possible due to daylight saving ti
 What time would this have been for you in New York?
 
 ```{r}
-zoned_set_zone(their_9am, "America/New_York")
+zoned_time_set_zone(their_9am, "America/New_York")
 ```
 
 ### High level API

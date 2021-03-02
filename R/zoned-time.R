@@ -898,7 +898,7 @@ zoned_time_now <- function(zone) {
 #' @description
 #' `zoned_time_zone()` gets the time zone.
 #'
-#' `zoned_set_zone()` sets the time zone _without changing the
+#' `zoned_time_set_zone()` sets the time zone _without changing the
 #' underlying instant_. This means that the result will represent the equivalent
 #' time in the new time zone.
 #'
@@ -913,7 +913,7 @@ zoned_time_now <- function(zone) {
 #' @return
 #' `zoned_time_zone()` returns a string containing the time zone.
 #'
-#' `zoned_set_zone()` returns `x` with an altered time zone attribute. The
+#' `zoned_time_set_zone()` returns `x` with an altered time zone attribute. The
 #' underlying instant is _not_ changed.
 #'
 #' @name zoned-zone
@@ -925,7 +925,7 @@ zoned_time_now <- function(zone) {
 #' zoned_time_zone(x)
 #'
 #' # Equivalent UTC time
-#' zoned_set_zone(x, "UTC")
+#' zoned_time_set_zone(x, "UTC")
 #'
 #' # To force a new time zone with the same printed time,
 #' # convert to a naive time that has no implied time zone,
@@ -948,12 +948,12 @@ zoned_time_zone.clock_zoned_time <- function(x) {
 
 #' @rdname zoned-zone
 #' @export
-zoned_set_zone <- function(x, zone) {
-  UseMethod("zoned_set_zone")
+zoned_time_set_zone <- function(x, zone) {
+  UseMethod("zoned_time_set_zone")
 }
 
 #' @export
-zoned_set_zone.clock_zoned_time <- function(x, zone) {
+zoned_time_set_zone.clock_zoned_time <- function(x, zone) {
   zone <- zone_validate(zone)
   zoned_time_set_zone_attribute(x, zone)
 }
