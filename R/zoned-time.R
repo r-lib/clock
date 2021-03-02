@@ -187,7 +187,8 @@ zoned_time_precision_attribute <- function(x) {
 #'
 #' @export
 #' @examples
-#' x <- as_zoned(as_naive_time(year_month_day(2019, 1, 1)), "America/New_York")
+#' x <- year_month_day(2019, 1, 1)
+#' x <- as_zoned_time(as_naive_time(x), "America/New_York")
 #'
 #' format(x)
 #' format(x, format = "%B %d, %Y")
@@ -294,7 +295,7 @@ zoned_time_format <- function(print_zone_name) {
 #' If your date-time strings don't contain time zone offsets or the full time
 #' zone name, you might need to use [naive_time_parse()]. From there, if you
 #' know the time zone that the date-times are supposed to be in, you can convert
-#' to a zoned-time with [as_zoned()].
+#' to a zoned-time with [as_zoned_time()].
 #'
 #' @inheritParams ellipsis::dots_empty
 #'
@@ -517,11 +518,11 @@ zoned_time_format <- function(print_zone_name) {
 #'
 #' # The `%z` offset must correspond to the true offset that would be used
 #' # if the input was parsed as a naive-time and then converted to a zoned-time
-#' # with as_zoned(). For example, the time that was parsed above used an
+#' # with `as_zoned_time()`. For example, the time that was parsed above used an
 #' # offset of `-05:00`. We can confirm that this is correct with:
 #' year_month_day(2019, 1, 1, 1, 2, 3) %>%
 #'   as_naive_time() %>%
-#'   as_zoned("America/New_York")
+#'   as_zoned_time("America/New_York")
 #'
 #' # So the following would not parse correctly
 #' zoned_time_parse_complete("2019-01-01 01:02:03-04:00[America/New_York]")
@@ -793,7 +794,7 @@ pillar_shaft.clock_zoned_time <- function(x, ...) {
 #' Convert to a zoned-time
 #'
 #' @description
-#' `as_zoned()` converts `x` to a zoned-time. You generally convert
+#' `as_zoned_time()` converts `x` to a zoned-time. You generally convert
 #' to a zoned time from either a sys-time or a naive time. Each are documented
 #' on their own page:
 #'
@@ -819,21 +820,21 @@ pillar_shaft.clock_zoned_time <- function(x, ...) {
 #' @export
 #' @examples
 #' x <- as.Date("2019-01-01")
-#' as_zoned(x)
+#' as_zoned_time(x)
 #'
 #' y <- as_naive_time(year_month_day(2019, 2, 1))
-#' as_zoned(y, zone = "America/New_York")
-as_zoned <- function(x, ...) {
-  UseMethod("as_zoned")
+#' as_zoned_time(y, zone = "America/New_York")
+as_zoned_time <- function(x, ...) {
+  UseMethod("as_zoned_time")
 }
 
 #' @export
-as_zoned.default <- function(x, ...) {
+as_zoned_time.default <- function(x, ...) {
   stop_clock_unsupported_conversion(x, "clock_zoned_time")
 }
 
 #' @export
-as_zoned.clock_zoned_time <- function(x, ...) {
+as_zoned_time.clock_zoned_time <- function(x, ...) {
   x
 }
 
@@ -919,7 +920,8 @@ zoned_time_now <- function(zone) {
 #' @name zoned-zone
 #'
 #' @examples
-#' x <- as_zoned(as_naive_time(year_month_day(2019, 1, 1)), "America/New_York")
+#' x <- year_month_day(2019, 1, 1)
+#' x <- as_zoned_time(as_naive_time(x), "America/New_York")
 #' x
 #'
 #' zoned_time_zone(x)
@@ -932,7 +934,7 @@ zoned_time_now <- function(zone) {
 #' # then convert back to a zoned time in the new time zone.
 #' nt <- as_naive_time(x)
 #' nt
-#' as_zoned(nt, "UTC")
+#' as_zoned_time(nt, "UTC")
 NULL
 
 #' @rdname zoned-zone
@@ -1049,10 +1051,10 @@ is_valid_zoned_time_precision <- function(precision) {
 # ------------------------------------------------------------------------------
 
 clock_init_zoned_time_utils <- function(env) {
-  assign("clock_empty_zoned_time_utc_second", as_zoned(as_sys_time(duration_seconds()), "UTC"), envir = env)
-  assign("clock_empty_zoned_time_utc_millisecond", as_zoned(as_sys_time(duration_milliseconds()), "UTC"), envir = env)
-  assign("clock_empty_zoned_time_utc_microsecond", as_zoned(as_sys_time(duration_microseconds()), "UTC"), envir = env)
-  assign("clock_empty_zoned_time_utc_nanosecond", as_zoned(as_sys_time(duration_nanoseconds()), "UTC"), envir = env)
+  assign("clock_empty_zoned_time_utc_second", as_zoned_time(as_sys_time(duration_seconds()), "UTC"), envir = env)
+  assign("clock_empty_zoned_time_utc_millisecond", as_zoned_time(as_sys_time(duration_milliseconds()), "UTC"), envir = env)
+  assign("clock_empty_zoned_time_utc_microsecond", as_zoned_time(as_sys_time(duration_microseconds()), "UTC"), envir = env)
+  assign("clock_empty_zoned_time_utc_nanosecond", as_zoned_time(as_sys_time(duration_nanoseconds()), "UTC"), envir = env)
 
   invisible(NULL)
 }

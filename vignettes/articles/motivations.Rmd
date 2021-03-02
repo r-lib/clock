@@ -453,7 +453,7 @@ The difference between naive-time and sys-time is only important when you are wo
 ```{r}
 x[1]
 
-as_zoned(x[1], "America/New_York")
+as_zoned_time(x[1], "America/New_York")
 ```
 
 Sys-time is interpreted as being UTC. Converting it to a zoned-time will keep the underlying duration, but will change the printed time.
@@ -463,7 +463,7 @@ x_sys <- as_sys_time(x[1])
 x_sys
 
 # Subtract 4 hours to print the America/New_York time
-as_zoned(x_sys, "America/New_York")
+as_zoned_time(x_sys, "America/New_York")
 ```
 
 Converting from sys-time to zoned-time won't ever have any issues with nonexistent or ambiguous times, but converting from naive-time might. Remember that there were two 1 o'clock hours on this day in the America/New_York time zone.
@@ -471,9 +471,9 @@ Converting from sys-time to zoned-time won't ever have any issues with nonexiste
 ```{r, error=TRUE}
 x[1:2]
 
-as_zoned(x[1:2], "America/New_York")
+as_zoned_time(x[1:2], "America/New_York")
 
-as_zoned(x[1:2], "America/New_York", ambiguous = "earliest")
+as_zoned_time(x[1:2], "America/New_York", ambiguous = "earliest")
 ```
 
 In the low-level API, converting from naive-time to zoned-time is actually the *only* place where the `nonexistent` and `ambiguous` arguments are used. This limits how often you have to think about daylight saving time, ideally helping you avoid as many subtle bugs as possible. In the high-level API for POSIXct, these arguments are forced to bubble up in more places. This trades the user benefit of being able to work directly on R's native date-time types for the side-effect of potentially having to deal with these issues in more places.

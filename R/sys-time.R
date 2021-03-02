@@ -48,7 +48,7 @@ is_sys_time <- function(x) {
 #' zone name, then parsing this string as a sys-time using the `%z` command to
 #' capture the offset is probably your best option. If you know that this string
 #' should be interpreted in a specific time zone, parse as a sys-time to get the
-#' UTC equivalent, then use [as_zoned()].
+#' UTC equivalent, then use [as_zoned_time()].
 #'
 #' The default options assume that `x` should be parsed at second precision,
 #' using a `format` string of `"%Y-%m-%d %H:%M:%S"`.
@@ -217,7 +217,7 @@ as_naive_time.clock_sys_time <- function(x) {
 #' Convert to a zoned-time from a sys-time
 #'
 #' @description
-#' This is a sys-time method for the [as_zoned()] generic.
+#' This is a sys-time method for the [as_zoned_time()] generic.
 #'
 #' Converting to a zoned-time from a sys-time retains the underlying duration,
 #' but changes the printed time, depending on the `zone` that you choose.
@@ -247,15 +247,15 @@ as_naive_time.clock_sys_time <- function(x) {
 #'
 #' # Since sys-time is interpreted as UTC, converting to a zoned-time with
 #' # a zone of UTC retains the printed time
-#' x_utc <- as_zoned(x, "UTC")
+#' x_utc <- as_zoned_time(x, "UTC")
 #' x_utc
 #'
 #' # Converting to a different zone results in a different printed time,
 #' # which corresponds to the exact same point in time, just in a different
 #' # part of the work
-#' x_ny <- as_zoned(x, "America/New_York")
+#' x_ny <- as_zoned_time(x, "America/New_York")
 #' x_ny
-as_zoned.clock_sys_time <- function(x, zone, ...) {
+as_zoned_time.clock_sys_time <- function(x, zone, ...) {
   zone <- zone_validate(zone)
 
   # Promote to at least seconds precision for `zoned_time`
@@ -352,7 +352,7 @@ sys_time_now <- function() {
 #'
 #' x <- year_month_day(2021, 03, 14, c(01, 03), c(59, 00), c(59, 00))
 #' x <- as_naive_time(x)
-#' x <- as_zoned(x, "America/New_York")
+#' x <- as_zoned_time(x, "America/New_York")
 #'
 #' # x[1] is in EST, x[2] is in EDT
 #' x
@@ -366,8 +366,8 @@ sys_time_now <- function() {
 #' # next daylight saving time transitions
 #' data_frame(
 #'   x = x,
-#'   begin = as_zoned(info$begin, zoned_time_zone(x)),
-#'   end = as_zoned(info$end, zoned_time_zone(x))
+#'   begin = as_zoned_time(info$begin, zoned_time_zone(x)),
+#'   end = as_zoned_time(info$end, zoned_time_zone(x))
 #' )
 #'
 #' # `end` can be used to iterate through daylight saving time transitions

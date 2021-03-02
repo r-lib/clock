@@ -208,7 +208,7 @@ A naive-time.
 \code{"2020-01-01 01:04:30"}. If there is no attached UTC offset or time zone
 name, then parsing this string as a naive-time is your best option. If
 you know that this string should be interpreted in a specific time zone,
-parse as a naive-time, then use \code{\link[=as_zoned]{as_zoned()}}.
+parse as a naive-time, then use \code{\link[=as_zoned_time]{as_zoned_time()}}.
 
 The default options assume that \code{x} should be parsed at second precision,
 using a \code{format} string of \code{"\%Y-\%m-\%d \%H:\%M:\%S"}.

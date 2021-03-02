@@ -261,7 +261,7 @@ not the full time zone name, you might need \code{\link[=sys_time_parse]{sys_tim
 If your date-time strings don't contain time zone offsets or the full time
 zone name, you might need to use \code{\link[=naive_time_parse]{naive_time_parse()}}. From there, if you
 know the time zone that the date-times are supposed to be in, you can convert
-to a zoned-time with \code{\link[=as_zoned]{as_zoned()}}.
+to a zoned-time with \code{\link[=as_zoned_time]{as_zoned_time()}}.
 }
 \examples{
 library(magrittr)
@@ -283,11 +283,11 @@ zoned_time_parse_complete(
 
 # The `\%z` offset must correspond to the true offset that would be used
 # if the input was parsed as a naive-time and then converted to a zoned-time
-# with as_zoned(). For example, the time that was parsed above used an
+# with `as_zoned_time()`. For example, the time that was parsed above used an
 # offset of `-05:00`. We can confirm that this is correct with:
 year_month_day(2019, 1, 1, 1, 2, 3) \%>\%
   as_naive_time() \%>\%
-  as_zoned("America/New_York")
+  as_zoned_time("America/New_York")
 
 # So the following would not parse correctly
 zoned_time_parse_complete("2019-01-01 01:02:03-04:00[America/New_York]")

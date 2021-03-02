@@ -120,12 +120,12 @@ Because of this, you have to extract out the relevant time point that you care a
 x %>%
   as_naive_time() %>%
   add_seconds(1) %>%
-  as_zoned(zoned_time_zone(x))
+  as_zoned_time(zoned_time_zone(x))
 
 x %>%
   as_sys_time() %>%
   add_seconds(1) %>%
-  as_zoned(zoned_time_zone(x))
+  as_zoned_time(zoned_time_zone(x))
 ```
 
 But not always! When daylight saving time is involved, the choice of sys-time or naive-time matters. Let's try adding 30 minutes:
@@ -138,12 +138,12 @@ But not always! When daylight saving time is involved, the choice of sys-time or
 x %>%
   as_naive_time() %>%
   add_minutes(30) %>%
-  as_zoned(zoned_time_zone(x))
+  as_zoned_time(zoned_time_zone(x))
 
 x %>%
   as_sys_time() %>%
   add_minutes(30) %>%
-  as_zoned(zoned_time_zone(x))
+  as_zoned_time(zoned_time_zone(x))
 ```
 
 When adding to the naive-time, we got an error. With the sys-time, everything seems okay. What happened?
@@ -167,13 +167,13 @@ x %>%
   add_minutes(30)
 ```
 
-Finally, we convert back to zoned-time. If possible, this tries to keep the printed time, and just attaches the relevant time zone onto it. However, in this case that isn't possible, since 2 o'clock didn't exist in this time zone! This _nonexistent time_ must be handled explicitly by setting the `nonexistent` argument of `as_zoned()`. We can choose from a variety of strategies to handle nonexistent times, but here we just roll forward to the next valid moment in time.
+Finally, we convert back to zoned-time. If possible, this tries to keep the printed time, and just attaches the relevant time zone onto it. However, in this case that isn't possible, since 2 o'clock didn't exist in this time zone! This _nonexistent time_ must be handled explicitly by setting the `nonexistent` argument of `as_zoned_time()`. We can choose from a variety of strategies to handle nonexistent times, but here we just roll forward to the next valid moment in time.
 
 ```{r}
 x %>%
   as_naive_time() %>%
   add_minutes(30) %>%
-  as_zoned(zoned_time_zone(x), nonexistent = "roll-forward")
+  as_zoned_time(zoned_time_zone(x), nonexistent = "roll-forward")
 ```
 
 As a general rule, it often makes the most sense to add:
@@ -253,7 +253,7 @@ naive_time_parse(
   c("2019-01-01 01:00:00.1", "2019-01-01 01:00:00.3"), 
   precision = "millisecond"
 ) %>%
-  as_zoned("America/New_York")
+  as_zoned_time("America/New_York")
 ```
 
 ```{r}

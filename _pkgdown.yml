@@ -144,7 +144,7 @@ reference:
 - title: Zoned-time
   contents:
   - zoned_time_now
-  - as_zoned
+  - as_zoned_time
   - is_zoned_time
   - zoned-parsing
   - zoned_time_zone

@@ -2,10 +2,10 @@
 % Please edit documentation in R/sys-time.R
 \name{as-zoned-time-sys-time}
 \alias{as-zoned-time-sys-time}
-\alias{as_zoned.clock_sys_time}
+\alias{as_zoned_time.clock_sys_time}
 \title{Convert to a zoned-time from a sys-time}
 \usage{
-\method{as_zoned}{clock_sys_time}(x, zone, ...)
+\method{as_zoned_time}{clock_sys_time}(x, zone, ...)
 }
 \arguments{
 \item{x}{\verb{[clock_sys_time]}
@@ -22,7 +22,7 @@ The zone to convert to.}
 A zoned-time vector.
 }
 \description{
-This is a sys-time method for the \code{\link[=as_zoned]{as_zoned()}} generic.
+This is a sys-time method for the \code{\link[=as_zoned_time]{as_zoned_time()}} generic.
 
 Converting to a zoned-time from a sys-time retains the underlying duration,
 but changes the printed time, depending on the \code{zone} that you choose.
@@ -38,12 +38,12 @@ x
 
 # Since sys-time is interpreted as UTC, converting to a zoned-time with
 # a zone of UTC retains the printed time
-x_utc <- as_zoned(x, "UTC")
+x_utc <- as_zoned_time(x, "UTC")
 x_utc
 
 # Converting to a different zone results in a different printed time,
 # which corresponds to the exact same point in time, just in a different
 # part of the work
-x_ny <- as_zoned(x, "America/New_York")
+x_ny <- as_zoned_time(x, "America/New_York")
 x_ny
 }

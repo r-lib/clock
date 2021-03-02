@@ -2,10 +2,10 @@
 % Please edit documentation in R/date.R
 \name{as-zoned-time-Date}
 \alias{as-zoned-time-Date}
-\alias{as_zoned.Date}
+\alias{as_zoned_time.Date}
 \title{Convert to a zoned-time from a date}
 \usage{
-\method{as_zoned}{Date}(x, ...)
+\method{as_zoned_time}{Date}(x, ...)
 }
 \arguments{
 \item{x}{\verb{[Date]}
@@ -18,12 +18,12 @@ A Date.}
 A zoned-time.
 }
 \description{
-This is a Date method for the \code{\link[=as_zoned]{as_zoned()}} generic.
+This is a Date method for the \code{\link[=as_zoned_time]{as_zoned_time()}} generic.
 
 Since R assumes that Dates are UTC, converting to a zoned-time returns
 a zoned-time with a UTC time zone. There is no \code{zone} argument.
 }
 \examples{
 x <- as.Date("2019-01-01")
-as_zoned(x)
+as_zoned_time(x)
 }

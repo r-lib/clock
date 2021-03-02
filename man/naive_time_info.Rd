@@ -24,7 +24,7 @@ A data frame of low level information.
 \description{
 \code{naive_time_info()} retrieves a set of low-level information generally not
 required for most date-time manipulations. It is used implicitly
-by \code{as_zoned()} when converting from a naive-time.
+by \code{as_zoned_time()} when converting from a naive-time.
 
 It returns a data frame with the following columns:
 \itemize{
@@ -84,17 +84,17 @@ info <- naive_time_info(x, zone)
 info
 
 # You can recreate various `nonexistent` strategies with this info
-as_zoned(x, zone, nonexistent = "roll-forward")
-as_zoned(info$first$end, zone)
+as_zoned_time(x, zone, nonexistent = "roll-forward")
+as_zoned_time(info$first$end, zone)
 
-as_zoned(x, zone, nonexistent = "roll-backward")
-as_zoned(info$first$end - 1, zone)
+as_zoned_time(x, zone, nonexistent = "roll-backward")
+as_zoned_time(info$first$end - 1, zone)
 
-as_zoned(x, zone, nonexistent = "shift-forward")
-as_zoned(as_sys_time(x) - info$first$offset, zone)
+as_zoned_time(x, zone, nonexistent = "shift-forward")
+as_zoned_time(as_sys_time(x) - info$first$offset, zone)
 
-as_zoned(x, zone, nonexistent = "shift-backward")
-as_zoned(as_sys_time(x) - info$second$offset, zone)
+as_zoned_time(x, zone, nonexistent = "shift-backward")
+as_zoned_time(as_sys_time(x) - info$second$offset, zone)
 
 # ---------------------------------------------------------------------------
 # Normalizing to UTC
@@ -129,6 +129,6 @@ df
 
 # At this point, both times are in UTC. From here, you can convert them
 # both to either America/Los_Angeles or Europe/London as required.
-as_zoned(df$sys, "America/Los_Angeles")
-as_zoned(df$sys, "Europe/London")
+as_zoned_time(df$sys, "America/Los_Angeles")
+as_zoned_time(df$sys, "Europe/London")
 }

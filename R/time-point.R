@@ -327,7 +327,7 @@ arith_numeric_and_time_point <- function(op, x, y, ...) {
 #'
 #' # Say you started with this zoned time, and you want to add 1 day to it
 #' x <- as_naive_time(year_month_day(1970, 04, 25, 02, 30, 00))
-#' x <- as_zoned(x, "America/New_York")
+#' x <- as_zoned_time(x, "America/New_York")
 #' x
 #'
 #' # Note that there was a daylight saving time gap on 1970-04-26 where
@@ -343,7 +343,7 @@ arith_numeric_and_time_point <- function(op, x, y, ...) {
 #' x %>%
 #'   as_sys_time() %>%
 #'   add_days(1) %>%
-#'   as_zoned(zoned_time_zone(x))
+#'   as_zoned_time(zoned_time_zone(x))
 #'
 #' # Alternatively, you can add 1 day in "naive time". Naive time represents
 #' # a clock time with a yet-to-be-specified time zone. It tries to maintain
@@ -355,7 +355,7 @@ arith_numeric_and_time_point <- function(op, x, y, ...) {
 #' x %>%
 #'   as_naive_time() %>%
 #'   add_days(1) %>%
-#'   as_zoned(zoned_time_zone(x))
+#'   as_zoned_time(zoned_time_zone(x))
 #' })
 #'
 #' # ...this time doesn't exist in that time zone! It is "nonexistent".
@@ -365,7 +365,7 @@ arith_numeric_and_time_point <- function(op, x, y, ...) {
 #' x %>%
 #'   as_naive_time() %>%
 #'   add_days(1) %>%
-#'   as_zoned(zoned_time_zone(x), nonexistent = "roll-forward")
+#'   as_zoned_time(zoned_time_zone(x), nonexistent = "roll-forward")
 NULL
 
 #' @rdname time-point-arithmetic

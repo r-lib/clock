@@ -209,7 +209,7 @@ A sys-time.
 zone name, then parsing this string as a sys-time using the \verb{\%z} command to
 capture the offset is probably your best option. If you know that this string
 should be interpreted in a specific time zone, parse as a sys-time to get the
-UTC equivalent, then use \code{\link[=as_zoned]{as_zoned()}}.
+UTC equivalent, then use \code{\link[=as_zoned_time]{as_zoned_time()}}.
 
 The default options assume that \code{x} should be parsed at second precision,
 using a \code{format} string of \code{"\%Y-\%m-\%d \%H:\%M:\%S"}.

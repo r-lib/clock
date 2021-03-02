@@ -4,14 +4,14 @@
 # Really testing `vec_proxy()` and `vec_ptype2()` / `vec_cast()`
 
 test_that("can't compare zoned-times with different zones", {
-  x <- as_zoned(sys_days(0), "America/New_York")
-  y <- as_zoned(sys_days(0), "UTC")
+  x <- as_zoned_time(sys_days(0), "America/New_York")
+  y <- as_zoned_time(sys_days(0), "UTC")
 
   expect_snapshot_error(x > y)
 })
 
 test_that("can compare zoned-times with same zone", {
-  x <- as_zoned(sys_days(0:1), "America/New_York")
+  x <- as_zoned_time(sys_days(0:1), "America/New_York")
 
   expect_false(x[1] > x[2])
   expect_true(x[1] < x[2])
@@ -21,12 +21,12 @@ test_that("can compare zoned-times with same zone", {
 # print() / obj_print_data() / obj_print_footer()
 
 test_that("normal print method works", {
-  x <- as_zoned(as_sys_time(year_month_day(2019, 1:5, 1)), "America/New_York")
+  x <- as_zoned_time(as_sys_time(year_month_day(2019, 1:5, 1)), "America/New_York")
   expect_snapshot(x)
 })
 
 test_that("can limit with `max`", {
-  x <- as_zoned(as_sys_time(year_month_day(2019, 1:5, 1)), "America/New_York")
+  x <- as_zoned_time(as_sys_time(year_month_day(2019, 1:5, 1)), "America/New_York")
 
   expect_snapshot(print(x, max = 2))
   expect_snapshot(print(x, max = 4))
@@ -39,7 +39,7 @@ test_that("can limit with `max`", {
 test_that("`max` defaults to `getOption('max.print')` but can be overridden", {
   local_options(max.print = 3)
 
-  x <- as_zoned(as_sys_time(year_month_day(2019, 1:5, 1)), "America/New_York")
+  x <- as_zoned_time(as_sys_time(year_month_day(2019, 1:5, 1)), "America/New_York")
 
   expect_snapshot(x)
   expect_snapshot(print(x, max = 4))
@@ -61,7 +61,7 @@ test_that("as.character() works", {
 test_that("can parse what we format with seconds precision zoned time", {
   zone <- "America/New_York"
 
-  x <- as_zoned(as_naive_time(year_month_day(2019, 1, 1)), zone)
+  x <- as_zoned_time(as_naive_time(year_month_day(2019, 1, 1)), zone)
 
   expect_identical(
     zoned_time_parse_complete(format(x)),
@@ -78,15 +78,15 @@ test_that("can parse subsecond zoned time", {
 
   expect_identical(
     zoned_time_parse_complete(x, precision = "millisecond"),
-    as_zoned(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123, subsecond_precision = "millisecond")), zone)
+    as_zoned_time(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123, subsecond_precision = "millisecond")), zone)
   )
   expect_identical(
     zoned_time_parse_complete(y, precision = "microsecond"),
-    as_zoned(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123400, subsecond_precision = "microsecond")), zone)
+    as_zoned_time(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123400, subsecond_precision = "microsecond")), zone)
   )
   expect_identical(
     zoned_time_parse_complete(z, precision = "nanosecond"),
-    as_zoned(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123456789, subsecond_precision = "nanosecond")), zone)
+    as_zoned_time(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123456789, subsecond_precision = "nanosecond")), zone)
   )
 })
 
@@ -105,7 +105,7 @@ test_that("multiple formats can be used", {
 
   expect_identical(
     zoned_time_parse_complete(x, format = formats),
-    as_zoned(
+    as_zoned_time(
       as_naive_time(year_month_day(1970, 10, 25, 05, 30, c(00, 00))),
       zone
     )
@@ -119,7 +119,7 @@ test_that("cannot parse nonexistent time", {
 
   expect_identical(
     expect_warning(zoned_time_parse_complete(x)),
-    as_zoned(naive_seconds(NA), zone)
+    as_zoned_time(naive_seconds(NA), zone)
   )
 
   expect_snapshot(zoned_time_parse_complete(x))
@@ -135,7 +135,7 @@ test_that("ambiguous times are resolved by the offset", {
 
   expect_identical(
     zoned_time_parse_complete(x),
-    as_zoned(
+    as_zoned_time(
       as_naive_time(year_month_day(1970, 10, 25, 01, 30, c(00, 00))),
       zone,
       ambiguous = c("earliest", "latest")
@@ -151,7 +151,7 @@ test_that("offset must align with unique offset", {
 
   expect_identical(
     expect_warning(zoned_time_parse_complete(x)),
-    as_zoned(naive_seconds(NA), zone)
+    as_zoned_time(naive_seconds(NA), zone)
   )
 
   expect_snapshot(zoned_time_parse_complete(x))
@@ -168,7 +168,7 @@ test_that("offset must align with one of two possible ambiguous offsets", {
 
   expect_identical(
     expect_warning(zoned_time_parse_complete(x)),
-    as_zoned(naive_seconds(c(NA, NA)), zone)
+    as_zoned_time(naive_seconds(c(NA, NA)), zone)
   )
 
   expect_snapshot(zoned_time_parse_complete(x))
@@ -192,25 +192,25 @@ test_that("zone name must be valid", {
 test_that("empty input uses UTC time zone (#162)", {
   expect_identical(
     zoned_time_parse_complete(character()),
-    as_zoned(naive_seconds(), "UTC")
+    as_zoned_time(naive_seconds(), "UTC")
   )
   expect_identical(
     zoned_time_parse_complete(character(), precision = "nanosecond"),
-    as_zoned(as_naive_time(duration_nanoseconds()), "UTC")
+    as_zoned_time(as_naive_time(duration_nanoseconds()), "UTC")
   )
 })
 
 test_that("all `NA`s uses UTC time zone (#162)", {
   expect_identical(
     zoned_time_parse_complete(c(NA_character_, NA_character_)),
-    as_zoned(naive_seconds(c(NA, NA)), "UTC")
+    as_zoned_time(naive_seconds(c(NA, NA)), "UTC")
   )
 })
 
 test_that("all failures uses UTC time zone (#162)", {
   expect_identical(
     expect_warning(zoned_time_parse_complete(c("foo", "bar"))),
-    as_zoned(naive_seconds(c(NA, NA)), "UTC")
+    as_zoned_time(naive_seconds(c(NA, NA)), "UTC")
   )
 })
 
@@ -226,7 +226,7 @@ test_that("`x` is translated to UTF-8", {
 
   expect_identical(
     zoned_time_parse_complete(x, format = format, locale = locale),
-    as_zoned(as_naive_time(year_month_day(2019, 2, 1, 1, 2, 3)), "America/New_York")
+    as_zoned_time(as_naive_time(year_month_day(2019, 2, 1, 1, 2, 3)), "America/New_York")
   )
 })
 
@@ -254,11 +254,11 @@ test_that("can parse when abbreviation is an offset", {
 test_that("can parse at more precise precisions", {
   expect_identical(
     zoned_time_parse_abbrev("2019-01-01 01:02:03.123 EST", "America/New_York", precision = "millisecond"),
-    as_zoned(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123, subsecond_precision = "millisecond")), "America/New_York")
+    as_zoned_time(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123, subsecond_precision = "millisecond")), "America/New_York")
   )
   expect_identical(
     zoned_time_parse_abbrev("2019-01-01 01:02:03.123456 EST", "America/New_York", precision = "nanosecond"),
-    as_zoned(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123456000, subsecond_precision = "nanosecond")), "America/New_York")
+    as_zoned_time(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123456000, subsecond_precision = "nanosecond")), "America/New_York")
   )
 })
 
@@ -284,7 +284,7 @@ test_that("nonexistent times are NAs", {
     expect_warning(
       zoned_time_parse_abbrev("1970-04-26 02:30:00 EST", "America/New_York")
     ),
-    as_zoned(sys_seconds(NA), "America/New_York")
+    as_zoned_time(sys_seconds(NA), "America/New_York")
   )
 })
 
@@ -293,7 +293,7 @@ test_that("abbreviation must match the one implied from naive + time zone name l
 
   expect_identical(
     expect_warning(zoned_time_parse_abbrev(x, "America/New_York")),
-    as_zoned(sys_days(NA), "America/New_York")
+    as_zoned_time(sys_days(NA), "America/New_York")
   )
 
   # Should be EST
@@ -301,7 +301,7 @@ test_that("abbreviation must match the one implied from naive + time zone name l
 
   expect_identical(
     expect_warning(zoned_time_parse_abbrev(x, "America/New_York")),
-    as_zoned(sys_days(NA), "America/New_York")
+    as_zoned_time(sys_days(NA), "America/New_York")
   )
 
   expect_snapshot(zoned_time_parse_abbrev(x, "America/New_York"))
@@ -336,7 +336,7 @@ test_that("%z that is incorrect technically slips through unnoticed", {
 })
 
 test_that("%z must parse correctly if included", {
-  expect <- as_zoned(sys_days(NA), "America/New_York")
+  expect <- as_zoned_time(sys_days(NA), "America/New_York")
   x <- "1970-01-01 00:00:00-0a:00 EST"
 
   expect_identical(
@@ -351,7 +351,7 @@ test_that("multiple formats can be attempted", {
   x <- c("1970-01-01 EST", "1970-01-01 05:06:07 EST")
   formats <- c("%Y-%m-%d %H:%M:%S %Z", "%Y-%m-%d %Z")
 
-  expect <- as_zoned(
+  expect <- as_zoned_time(
     as_naive_time(year_month_day(1970, 1, 1, c(0, 5), c(0, 6), c(0, 7))),
     "America/New_York"
   )
@@ -365,11 +365,11 @@ test_that("multiple formats can be attempted", {
 test_that("NA parses correctly", {
   expect_identical(
     zoned_time_parse_abbrev(NA_character_, "America/New_York"),
-    as_zoned(sys_seconds(NA), "America/New_York")
+    as_zoned_time(sys_seconds(NA), "America/New_York")
   )
   expect_identical(
     zoned_time_parse_abbrev(NA_character_, "America/New_York", precision = "nanosecond"),
-    as_zoned(as_sys_time(duration_nanoseconds(NA)), "America/New_York")
+    as_zoned_time(as_sys_time(duration_nanoseconds(NA)), "America/New_York")
   )
 })
 
@@ -385,7 +385,7 @@ test_that("`x` is translated to UTF-8", {
 
   expect_identical(
     zoned_time_parse_abbrev(x, "America/New_York", format = format, locale = locale),
-    as_zoned(as_naive_time(year_month_day(2019, 2, 1, 1, 2, 3)), "America/New_York")
+    as_zoned_time(as_naive_time(year_month_day(2019, 2, 1, 1, 2, 3)), "America/New_York")
   )
 })
 
@@ -393,7 +393,7 @@ test_that("`x` is translated to UTF-8", {
 # add_*()
 
 test_that("zoned-times don't support arithmetic", {
-  x <- as_zoned(as_naive_time(year_month_day(2019, 1, 1)), "America/New_York")
+  x <- as_zoned_time(as_naive_time(year_month_day(2019, 1, 1)), "America/New_York")
 
   expect_snapshot_error(add_years(x, 1))
   expect_snapshot_error(add_quarters(x, 1))
@@ -423,10 +423,10 @@ test_that("ptype is correct", {
       }
 
       x <- duration_helper(0L, precision)
-      x <- as_zoned(as_naive_time(x), zone)
+      x <- as_zoned_time(as_naive_time(x), zone)
 
       ptype <- duration_helper(integer(), precision)
-      ptype <- as_zoned(as_naive_time(ptype), zone)
+      ptype <- as_zoned_time(as_naive_time(ptype), zone)
 
       expect_identical(vec_ptype(x), ptype)
     }

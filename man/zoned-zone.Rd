@@ -33,7 +33,8 @@ underlying instant}. This means that the result will represent the equivalent
 time in the new time zone.
 }
 \examples{
-x <- as_zoned(as_naive_time(year_month_day(2019, 1, 1)), "America/New_York")
+x <- year_month_day(2019, 1, 1)
+x <- as_zoned_time(as_naive_time(x), "America/New_York")
 x
 
 zoned_time_zone(x)
@@ -46,5 +47,5 @@ zoned_time_set_zone(x, "UTC")
 # then convert back to a zoned time in the new time zone.
 nt <- as_naive_time(x)
 nt
-as_zoned(nt, "UTC")
+as_zoned_time(nt, "UTC")
 }

@@ -2,10 +2,10 @@
 % Please edit documentation in R/posixt.R
 \name{as-zoned-time-posixt}
 \alias{as-zoned-time-posixt}
-\alias{as_zoned.POSIXt}
+\alias{as_zoned_time.POSIXt}
 \title{Convert to a zoned-time from a date-time}
 \usage{
-\method{as_zoned}{POSIXt}(x, ...)
+\method{as_zoned_time}{POSIXt}(x, ...)
 }
 \arguments{
 \item{x}{\verb{[POSIXct / POSIXlt]}
@@ -18,12 +18,12 @@ A date-time.}
 A zoned-time.
 }
 \description{
-This is a POSIXct/POSIXlt method for the \code{\link[=as_zoned]{as_zoned()}} generic.
+This is a POSIXct/POSIXlt method for the \code{\link[=as_zoned_time]{as_zoned_time()}} generic.
 
 Converting from one of R's native date-time classes (POSIXct or POSIXlt)
 will retain the time zone of that object. There is no \code{zone} argument.
 }
 \examples{
 x <- as.POSIXct("2019-01-01", tz = "America/New_York")
-as_zoned(x)
+as_zoned_time(x)
 }

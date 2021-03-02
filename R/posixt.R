@@ -1,18 +1,18 @@
 #' @export
 as_sys_time.POSIXt <- function(x) {
   # The sys-time that would give the equivalent zoned-time when a tz is attached
-  as_sys_time(as_zoned(x))
+  as_sys_time(as_zoned_time(x))
 }
 
 #' @export
 as_naive_time.POSIXt <- function(x) {
-  as_naive_time(as_zoned(x))
+  as_naive_time(as_zoned_time(x))
 }
 
 #' Convert to a zoned-time from a date-time
 #'
 #' @description
-#' This is a POSIXct/POSIXlt method for the [as_zoned()] generic.
+#' This is a POSIXct/POSIXlt method for the [as_zoned_time()] generic.
 #'
 #' Converting from one of R's native date-time classes (POSIXct or POSIXlt)
 #' will retain the time zone of that object. There is no `zone` argument.
@@ -29,8 +29,8 @@ as_naive_time.POSIXt <- function(x) {
 #' @export
 #' @examples
 #' x <- as.POSIXct("2019-01-01", tz = "America/New_York")
-#' as_zoned(x)
-as_zoned.POSIXt <- function(x, ...) {
+#' as_zoned_time(x)
+as_zoned_time.POSIXt <- function(x, ...) {
   check_dots_empty()
 
   x <- to_posixct(x)
@@ -118,7 +118,7 @@ as.POSIXct.clock_naive_time <- function(x,
                                         ...,
                                         nonexistent = NULL,
                                         ambiguous = NULL) {
-  x <- as_zoned(x, zone = tz, nonexistent = nonexistent, ambiguous = ambiguous)
+  x <- as_zoned_time(x, zone = tz, nonexistent = nonexistent, ambiguous = ambiguous)
   as.POSIXct(x)
 }
 
@@ -855,7 +855,7 @@ date_format.POSIXt <- function(x,
                                locale = clock_locale(),
                                abbreviate_zone = FALSE) {
   check_dots_empty()
-  x <- as_zoned(x)
+  x <- as_zoned_time(x)
   format(x, format = format, locale = locale, abbreviate_zone = abbreviate_zone)
 }
 
