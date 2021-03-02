@@ -288,7 +288,7 @@ zoned_time_format <- function(print_zone_name) {
 #' In that case, the result will use `"UTC"`.
 #'
 #' If your date-time strings contain time zone offsets (like `-04:00`), but
-#' not the full time zone name, you might need [sys_parse()].
+#' not the full time zone name, you might need [sys_time_parse()].
 #'
 #' If your date-time strings don't contain time zone offsets or the full
 #' time zone name, you might need to use [naive_parse()]. From there, if you

@@ -41,25 +41,25 @@ is_sys_time <- function(x) {
 #' Parsing: sys-time
 #'
 #' @description
-#' `sys_parse()` is a parser into a sys-time.
+#' `sys_time_parse()` is a parser into a sys-time.
 #'
-#' `sys_parse()` is useful when you have date-time strings like: `"2020-01-01
-#' 01:04:30-0400"`. If there is an attached UTC offset, but no time zone name,
-#' then parsing this string as a sys-time using the `%z` command to capture the
-#' offset is probably your best option. If you know that this string should be
-#' interpreted in a specific time zone, parse as a sys-time to get the UTC
-#' equivalent, then use [as_zoned()].
+#' `sys_time_parse()` is useful when you have date-time strings like:
+#' `"2020-01-01 01:04:30-0400"`. If there is an attached UTC offset, but no time
+#' zone name, then parsing this string as a sys-time using the `%z` command to
+#' capture the offset is probably your best option. If you know that this string
+#' should be interpreted in a specific time zone, parse as a sys-time to get the
+#' UTC equivalent, then use [as_zoned()].
 #'
 #' The default options assume that `x` should be parsed at second precision,
 #' using a `format` string of `"%Y-%m-%d %H:%M:%S"`.
 #'
-#' `sys_parse()` is nearly equivalent to [naive_parse()], except for the fact
-#' that the `%z` command is actually used. Using `%z` assumes that the rest of
-#' the date-time string should be interpreted as a naive-time, which is then
+#' `sys_time_parse()` is nearly equivalent to [naive_parse()], except for the
+#' fact that the `%z` command is actually used. Using `%z` assumes that the rest
+#' of the date-time string should be interpreted as a naive-time, which is then
 #' shifted by the UTC offset found in `%z`. The returned time can then be
 #' validly interpreted as UTC.
 #'
-#' _`sys_parse()` ignores the `%Z` command._
+#' _`sys_time_parse()` ignores the `%Z` command._
 #'
 #' If your date-time strings contain a full time zone name and a UTC offset, use
 #' [zoned_parse_complete()]. If they contain a time zone abbreviation, use
@@ -96,16 +96,16 @@ is_sys_time <- function(x) {
 #'
 #' @export
 #' @examples
-#' sys_parse("2020-01-01 05:06:07")
+#' sys_time_parse("2020-01-01 05:06:07")
 #'
 #' # Day precision
-#' sys_parse("2020-01-01", precision = "day")
+#' sys_time_parse("2020-01-01", precision = "day")
 #'
 #' # Nanosecond precision, but using a day based format
-#' sys_parse("2020-01-01", format = "%Y-%m-%d", precision = "nanosecond")
+#' sys_time_parse("2020-01-01", format = "%Y-%m-%d", precision = "nanosecond")
 #'
 #' # Multiple format strings are allowed for heterogeneous times
-#' sys_parse(
+#' sys_time_parse(
 #'   c("2019-01-01", "2019/1/1"),
 #'   format = c("%Y/%m/%d", "%Y-%m-%d"),
 #'   precision = "day"
@@ -113,18 +113,18 @@ is_sys_time <- function(x) {
 #'
 #' # The `%z` command shifts the date-time by subtracting the UTC offset so
 #' # that the returned sys-time can be interpreted as UTC
-#' sys_parse(
+#' sys_time_parse(
 #'   "2020-01-01 02:00:00 -0400",
 #'   format = "%Y-%m-%d %H:%M:%S %z"
 #' )
 #'
 #' # Remember that the `%Z` command is ignored entirely!
-#' sys_parse("2020-01-01 America/New_York", format = "%Y-%m-%d %Z")
-sys_parse <- function(x,
-                      ...,
-                      format = NULL,
-                      precision = "second",
-                      locale = clock_locale()) {
+#' sys_time_parse("2020-01-01 America/New_York", format = "%Y-%m-%d %Z")
+sys_time_parse <- function(x,
+                           ...,
+                           format = NULL,
+                           precision = "second",
+                           locale = clock_locale()) {
   precision <- validate_time_point_precision_string(precision)
 
   fields <- time_point_parse(

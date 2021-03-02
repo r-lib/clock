@@ -255,7 +255,7 @@ completely fails to parse, then no time zone will be able to be determined.
 In that case, the result will use \code{"UTC"}.
 
 If your date-time strings contain time zone offsets (like \code{-04:00}), but
-not the full time zone name, you might need \code{\link[=sys_parse]{sys_parse()}}.
+not the full time zone name, you might need \code{\link[=sys_time_parse]{sys_time_parse()}}.
 
 If your date-time strings don't contain time zone offsets or the full
 time zone name, you might need to use \code{\link[=naive_parse]{naive_parse()}}. From there, if you

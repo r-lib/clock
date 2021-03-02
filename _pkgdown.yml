@@ -130,7 +130,7 @@ reference:
   - is_naive
   - is_sys_time
   - naive_parse
-  - sys_parse
+  - sys_time_parse
   - naive_info
   - sys_info
   - time_point_cast

@@ -88,7 +88,7 @@ test_that("as.character() works", {
 })
 
 # ------------------------------------------------------------------------------
-# sys_parse()
+# sys_time_parse()
 
 # Note: Most tests are in `naive_parse()`. They share an implementation.
 
@@ -96,7 +96,7 @@ test_that("can parse day precision", {
   x <- c("2019-01-01", "2019-01-31")
 
   expect_identical(
-    sys_parse(x, precision = "day"),
+    sys_time_parse(x, precision = "day"),
     as_sys(year_month_day(2019, 1, c(1, 31)))
   )
 })
@@ -106,18 +106,18 @@ test_that("%z shifts the result by the offset", {
   y <- "2019-01-01 00:00:00-0100"
 
   expect_identical(
-    sys_parse(x, format = "%Y-%m-%d %H:%M:%S%z"),
+    sys_time_parse(x, format = "%Y-%m-%d %H:%M:%S%z"),
     as_sys(year_month_day(2018, 12, 31, 23, 0, 0))
   )
   expect_identical(
-    sys_parse(y, format = "%Y-%m-%d %H:%M:%S%z"),
+    sys_time_parse(y, format = "%Y-%m-%d %H:%M:%S%z"),
     as_sys(year_month_day(2019, 1, 1, 1, 0, 0))
   )
 })
 
 test_that("failure to parse throws a warning", {
-  expect_warning(sys_parse("foo"), class = "clock_warning_parse_failures")
-  expect_snapshot(sys_parse("foo"))
+  expect_warning(sys_time_parse("foo"), class = "clock_warning_parse_failures")
+  expect_snapshot(sys_time_parse("foo"))
 })
 
 # ------------------------------------------------------------------------------

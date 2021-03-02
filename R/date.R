@@ -960,7 +960,7 @@ date_set_zone.Date <- function(x, zone) {
 #' # the ISO year-week-day format
 #' date_parse("2020-W01-2", format = "%G-W%V-%u")
 date_parse <- function(x, ..., format = NULL, locale = clock_locale()) {
-  x <- sys_parse(x, ..., format = format, precision = "day", locale = locale)
+  x <- sys_time_parse(x, ..., format = format, precision = "day", locale = locale)
   as.Date(x)
 }
 

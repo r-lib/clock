@@ -59,9 +59,9 @@ is_naive <- function(x) {
 #' [zoned_parse_abbrev()].
 #'
 #' If your date-time strings contain a UTC offset, but not a full time zone
-#' name, use [sys_parse()].
+#' name, use [sys_time_parse()].
 #'
-#' @inheritParams sys_parse
+#' @inheritParams sys_time_parse
 #'
 #' @return A naive-time.
 #'

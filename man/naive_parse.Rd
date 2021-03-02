@@ -220,7 +220,7 @@ If your date-time strings contain a full time zone name and a UTC offset, use
 \code{\link[=zoned_parse_abbrev]{zoned_parse_abbrev()}}.
 
 If your date-time strings contain a UTC offset, but not a full time zone
-name, use \code{\link[=sys_parse]{sys_parse()}}.
+name, use \code{\link[=sys_time_parse]{sys_time_parse()}}.
 }
 \examples{
 naive_parse("2020-01-01 05:06:07")
