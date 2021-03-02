@@ -61,20 +61,20 @@ x
 
 x_sys <- as_sys_time(x)
 
-info <- sys_time_info(x_sys, zoned_zone(x))
+info <- sys_time_info(x_sys, zoned_time_zone(x))
 info
 
 # Convert `begin` and `end` to zoned-times to see the previous and
 # next daylight saving time transitions
 data_frame(
   x = x,
-  begin = as_zoned(info$begin, zoned_zone(x)),
-  end = as_zoned(info$end, zoned_zone(x))
+  begin = as_zoned(info$begin, zoned_time_zone(x)),
+  end = as_zoned(info$end, zoned_time_zone(x))
 )
 
 # `end` can be used to iterate through daylight saving time transitions
 # by repeatedly calling `sys_time_info()`
-sys_time_info(info$end, zoned_zone(x))
+sys_time_info(info$end, zoned_time_zone(x))
 
 # Multiple `zone`s can be supplied to look up daylight saving time
 # information in different time zones

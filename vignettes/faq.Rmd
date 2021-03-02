@@ -109,7 +109,7 @@ as_naive_time(x)
 # The equivalent time in UTC
 as_sys_time(x)
 
-zoned_zone(x)
+zoned_time_zone(x)
 ```
 
 Calling `add_days()` on a zoned-time is then an ambiguous operation. Should we add to the sys-time or the naive-time that is contained in the zoned-time? The answer changes depending on the scenario.
@@ -120,12 +120,12 @@ Because of this, you have to extract out the relevant time point that you care a
 x %>%
   as_naive_time() %>%
   add_seconds(1) %>%
-  as_zoned(zoned_zone(x))
+  as_zoned(zoned_time_zone(x))
 
 x %>%
   as_sys_time() %>%
   add_seconds(1) %>%
-  as_zoned(zoned_zone(x))
+  as_zoned(zoned_time_zone(x))
 ```
 
 But not always! When daylight saving time is involved, the choice of sys-time or naive-time matters. Let's try adding 30 minutes:
@@ -138,12 +138,12 @@ But not always! When daylight saving time is involved, the choice of sys-time or
 x %>%
   as_naive_time() %>%
   add_minutes(30) %>%
-  as_zoned(zoned_zone(x))
+  as_zoned(zoned_time_zone(x))
 
 x %>%
   as_sys_time() %>%
   add_minutes(30) %>%
-  as_zoned(zoned_zone(x))
+  as_zoned(zoned_time_zone(x))
 ```
 
 When adding to the naive-time, we got an error. With the sys-time, everything seems okay. What happened?
@@ -173,7 +173,7 @@ Finally, we convert back to zoned-time. If possible, this tries to keep the prin
 x %>%
   as_naive_time() %>%
   add_minutes(30) %>%
-  as_zoned(zoned_zone(x), nonexistent = "roll-forward")
+  as_zoned(zoned_time_zone(x), nonexistent = "roll-forward")
 ```
 
 As a general rule, it often makes the most sense to add:

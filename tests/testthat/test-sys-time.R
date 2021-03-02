@@ -21,7 +21,7 @@ test_that("can lookup sys-info", {
   x <- as_naive_time(x)
   x <- as_zoned(x, "America/New_York")
 
-  info <- sys_time_info(as_sys_time(x), zoned_zone(x))
+  info <- sys_time_info(as_sys_time(x), zoned_time_zone(x))
 
   beginend1 <- as_sys_time(c(
     year_month_day(2020, 11, 1, 6, 0, 0),

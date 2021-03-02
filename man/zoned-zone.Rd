@@ -2,11 +2,11 @@
 % Please edit documentation in R/zoned-time.R
 \name{zoned-zone}
 \alias{zoned-zone}
-\alias{zoned_zone}
+\alias{zoned_time_zone}
 \alias{zoned_set_zone}
 \title{Get or set the time zone}
 \usage{
-zoned_zone(x)
+zoned_time_zone(x)
 
 zoned_set_zone(x, zone)
 }
@@ -20,13 +20,13 @@ A zoned time to get or set the time zone of.}
 A valid time zone to switch to.}
 }
 \value{
-\code{zoned_zone()} returns a string containing the time zone.
+\code{zoned_time_zone()} returns a string containing the time zone.
 
 \code{zoned_set_zone()} returns \code{x} with an altered time zone attribute. The
 underlying instant is \emph{not} changed.
 }
 \description{
-\code{zoned_zone()} gets the time zone.
+\code{zoned_time_zone()} gets the time zone.
 
 \code{zoned_set_zone()} sets the time zone \emph{without changing the
 underlying instant}. This means that the result will represent the equivalent
@@ -36,7 +36,7 @@ time in the new time zone.
 x <- as_zoned(as_naive_time(year_month_day(2019, 1, 1)), "America/New_York")
 x
 
-zoned_zone(x)
+zoned_time_zone(x)
 
 # Equivalent UTC time
 zoned_set_zone(x, "UTC")

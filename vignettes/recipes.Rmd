@@ -524,13 +524,13 @@ Given a particular zoned-time, when will it next be affected by daylight saving 
 ```{r}
 x <- zoned_time_parse_complete("2019-01-01 00:00:00-05:00[America/New_York]")
 
-info <- sys_time_info(as_sys_time(x), zoned_zone(x))
+info <- sys_time_info(as_sys_time(x), zoned_time_zone(x))
 
 # Beginning of the current DST range
-as_zoned(info$begin, zoned_zone(x))
+as_zoned(info$begin, zoned_time_zone(x))
 
 # Beginning of the next DST range
-as_zoned(info$end, zoned_zone(x))
+as_zoned(info$end, zoned_time_zone(x))
 ```
 
 So on 2018-11-04 at (the second) 1 o'clock hour, daylight saving time was turned off. On 2019-03-10 at 3 o'clock, daylight saving time will be considered on again. This is the next moment in time right after a daylight saving time gap of 1 hour, which you can see by subtracting 1 second (in sys-time):
@@ -539,7 +539,7 @@ So on 2018-11-04 at (the second) 1 o'clock hour, daylight saving time was turned
 # Last moment in time in the current DST range
 info$end %>%
   add_seconds(-1) %>%
-  as_zoned(zoned_zone(x))
+  as_zoned(zoned_time_zone(x))
 ```
 
 

@@ -206,18 +206,18 @@ x_naive
 
 # But this fails because you've "lost" the information about which
 # offsets these ambiguous times started in
-try(as_zoned(x_naive, zoned_zone(x)))
+try(as_zoned(x_naive, zoned_time_zone(x)))
 
 # To get around this, you can use that information by specifying
 # `ambiguous = x`, which will use the offset from `x` to resolve the
 # ambiguity in `x_naive` as long as `x` is also an ambiguous time with the
 # same daylight saving time transition point as `x_naive` (i.e. here
 # everything has a transition point of `"2020-11-01 01:00:00 EST"`).
-as_zoned(x_naive, zoned_zone(x), ambiguous = x)
+as_zoned(x_naive, zoned_time_zone(x), ambiguous = x)
 
 # Say you added one more time to `x` that would not be considered ambiguous
 # in naive-time
-x <- c(x, as_zoned(as_sys_time(latest) + 3600, zoned_zone(latest)))
+x <- c(x, as_zoned(as_sys_time(latest) + 3600, zoned_time_zone(latest)))
 x
 
 # Imagine you want to floor this vector to a multiple of 2 hours, with
@@ -238,7 +238,7 @@ x_naive
 # You again have ambiguous naive-time points, so you might try using
 # `ambiguous = x`. It looks like this took care of the first two problems,
 # but we have an issue at location 3.
-try(as_zoned(x_naive, zoned_zone(x), ambiguous = x))
+try(as_zoned(x_naive, zoned_time_zone(x), ambiguous = x))
 
 # When we floored from 02:30:00 -> 01:00:00, we went from being
 # unambiguous -> ambiguous. In clock, this is something you must handle
@@ -247,5 +247,5 @@ try(as_zoned(x_naive, zoned_zone(x), ambiguous = x))
 # time points that were ambiguous before and after the floor by passing a
 # list containing `x` and an ambiguous time resolution strategy to use
 # when information from `x` can't resolve ambiguities:
-as_zoned(x_naive, zoned_zone(x), ambiguous = list(x, "latest"))
+as_zoned(x_naive, zoned_time_zone(x), ambiguous = list(x, "latest"))
 }

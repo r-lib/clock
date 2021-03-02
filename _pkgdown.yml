@@ -147,7 +147,7 @@ reference:
   - as_zoned
   - is_zoned_time
   - zoned-parsing
-  - zoned_zone
+  - zoned_time_zone
   - format.clock_zoned_time
 
 - title: Weekdays

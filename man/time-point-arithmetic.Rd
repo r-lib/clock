@@ -95,7 +95,7 @@ as_sys_time(x)
 x \%>\%
   as_sys_time() \%>\%
   add_days(1) \%>\%
-  as_zoned(zoned_zone(x))
+  as_zoned(zoned_time_zone(x))
 
 # Alternatively, you can add 1 day in "naive time". Naive time represents
 # a clock time with a yet-to-be-specified time zone. It tries to maintain
@@ -107,7 +107,7 @@ try({
 x \%>\%
   as_naive_time() \%>\%
   add_days(1) \%>\%
-  as_zoned(zoned_zone(x))
+  as_zoned(zoned_time_zone(x))
 })
 
 # ...this time doesn't exist in that time zone! It is "nonexistent".
@@ -117,5 +117,5 @@ x \%>\%
 x \%>\%
   as_naive_time() \%>\%
   add_days(1) \%>\%
-  as_zoned(zoned_zone(x), nonexistent = "roll-forward")
+  as_zoned(zoned_time_zone(x), nonexistent = "roll-forward")
 }
