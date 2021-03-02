@@ -444,7 +444,7 @@ Next, we'll develop a function that attempts to turn this naive-time into a zone
 
 ```{r}
 naive_find_by_abbrev <- function(x, abbrev) {
-  if (!is_naive(x)) {
+  if (!is_naive_time(x)) {
     abort("`x` must be a naive-time.")
   }
   if (length(x) != 1L) {

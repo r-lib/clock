@@ -30,9 +30,9 @@ naive_seconds <- function(n = integer()) {
 #'
 #' @export
 #' @examples
-#' is_naive(1)
-#' is_naive(as_naive(duration_days(1)))
-is_naive <- function(x) {
+#' is_naive_time(1)
+#' is_naive_time(as_naive(duration_days(1)))
+is_naive_time <- function(x) {
   inherits(x, "clock_naive_time")
 }
 
@@ -673,7 +673,7 @@ as.character.clock_naive_time <- function(x, ...) {
 #' as_zoned(df$sys, "America/Los_Angeles")
 #' as_zoned(df$sys, "Europe/London")
 naive_info <- function(x, zone) {
-  if (!is_naive(x)) {
+  if (!is_naive_time(x)) {
     abort("`x` must be a naive-time.")
   }
 

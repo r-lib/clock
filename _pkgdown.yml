@@ -127,7 +127,7 @@ reference:
   - sys_time_now
   - as_naive
   - as_sys_time
-  - is_naive
+  - is_naive_time
   - is_sys_time
   - naive_parse
   - sys_time_parse
