@@ -19,5 +19,5 @@ This function determines if the input is a zoned-time object.
 }
 \examples{
 is_zoned_time(1)
-is_zoned_time(zoned_now("America/New_York"))
+is_zoned_time(zoned_time_now("America/New_York"))
 }

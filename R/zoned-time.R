@@ -11,7 +11,7 @@
 #' @export
 #' @examples
 #' is_zoned_time(1)
-#' is_zoned_time(zoned_now("America/New_York"))
+#' is_zoned_time(zoned_time_now("America/New_York"))
 is_zoned_time <- function(x) {
   inherits(x, "clock_zoned_time")
 }
@@ -865,7 +865,7 @@ as.character.clock_zoned_time <- function(x, ...) {
 #' What is the current zoned-time?
 #'
 #' @description
-#' `zoned_now()` returns the current time in the corresponding `zone`. It
+#' `zoned_time_now()` returns the current time in the corresponding `zone`. It
 #' is a wrapper around [sys_time_now()] that attaches the time zone.
 #'
 #' @details
@@ -882,8 +882,8 @@ as.character.clock_zoned_time <- function(x, ...) {
 #'
 #' @export
 #' @examples
-#' x <- zoned_now("America/New_York")
-zoned_now <- function(zone) {
+#' x <- zoned_time_now("America/New_York")
+zoned_time_now <- function(zone) {
   names <- NULL
   sys_time <- sys_time_now()
   precision <- time_point_precision(sys_time)

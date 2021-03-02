@@ -143,7 +143,7 @@ reference:
 
 - title: Zoned-time
   contents:
-  - zoned_now
+  - zoned_time_now
   - as_zoned
   - is_zoned_time
   - zoned-parsing
