@@ -608,10 +608,10 @@ extern "C" SEXP _clock_iso_year_week_day_minus_iso_year_week_day_cpp(SEXP x, SEX
   END_CPP11
 }
 // naive-time.cpp
-cpp11::writable::list naive_info_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::strings& zone);
-extern "C" SEXP _clock_naive_info_cpp(SEXP fields, SEXP precision_int, SEXP zone) {
+cpp11::writable::list naive_time_info_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::strings& zone);
+extern "C" SEXP _clock_naive_time_info_cpp(SEXP fields, SEXP precision_int, SEXP zone) {
   BEGIN_CPP11
-    return cpp11::as_sexp(naive_info_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone)));
+    return cpp11::as_sexp(naive_time_info_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
@@ -959,7 +959,7 @@ extern SEXP _clock_invalid_resolve_year_quarter_day_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_iso_year_week_day_minus_iso_year_week_day_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_iso_year_week_day_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_iso_year_week_day_restore(SEXP, SEXP);
-extern SEXP _clock_naive_info_cpp(SEXP, SEXP, SEXP);
+extern SEXP _clock_naive_time_info_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_new_duration_from_fields(SEXP, SEXP, SEXP);
 extern SEXP _clock_new_iso_year_week_day_from_fields(SEXP, SEXP, SEXP);
 extern SEXP _clock_new_time_point_from_fields(SEXP, SEXP, SEXP, SEXP);
@@ -1086,7 +1086,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_iso_year_week_day_minus_iso_year_week_day_cpp",        (DL_FUNC) &_clock_iso_year_week_day_minus_iso_year_week_day_cpp,         3},
     {"_clock_iso_year_week_day_plus_duration_cpp",                  (DL_FUNC) &_clock_iso_year_week_day_plus_duration_cpp,                   4},
     {"_clock_iso_year_week_day_restore",                            (DL_FUNC) &_clock_iso_year_week_day_restore,                             2},
-    {"_clock_naive_info_cpp",                                       (DL_FUNC) &_clock_naive_info_cpp,                                        3},
+    {"_clock_naive_time_info_cpp",                                  (DL_FUNC) &_clock_naive_time_info_cpp,                                   3},
     {"_clock_new_duration_from_fields",                             (DL_FUNC) &_clock_new_duration_from_fields,                              3},
     {"_clock_new_iso_year_week_day_from_fields",                    (DL_FUNC) &_clock_new_iso_year_week_day_from_fields,                     3},
     {"_clock_new_time_point_from_fields",                           (DL_FUNC) &_clock_new_time_point_from_fields,                            4},

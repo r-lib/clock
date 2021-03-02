@@ -131,7 +131,7 @@ reference:
   - is_sys_time
   - naive_time_parse
   - sys_time_parse
-  - naive_info
+  - naive_time_info
   - sys_time_info
   - time_point_cast
   - time-point-rounding

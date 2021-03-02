@@ -1,8 +1,8 @@
 # ------------------------------------------------------------------------------
-# naive_info()
+# naive_time_info()
 
-test_that("naive-info returns the right structure", {
-  info <- naive_info(naive_days(0), "America/New_York")
+test_that("naive-time-info returns the right structure", {
+  info <- naive_time_info(naive_days(0), "America/New_York")
 
   expect_type(info$type, "character")
   expect_s3_class(info$first, "data.frame")
@@ -10,7 +10,7 @@ test_that("naive-info returns the right structure", {
 })
 
 test_that("unique info works", {
-  info <- naive_info(naive_days(0), "America/New_York")
+  info <- naive_time_info(naive_days(0), "America/New_York")
   na_sys_info <- sys_time_info(sys_days(NA), "America/New_York")
 
   expect_identical(info$type, "unique")
@@ -29,7 +29,7 @@ test_that("unique info works", {
 
 test_that("nonexistent info works", {
   x <- as_naive_time(year_month_day(1970, 4, 26, 2, 30, 00))
-  info <- naive_info(x, "America/New_York")
+  info <- naive_time_info(x, "America/New_York")
 
   expect_identical(info$type, "nonexistent")
 
@@ -56,7 +56,7 @@ test_that("nonexistent info works", {
 
 test_that("ambiguous info works", {
   x <- as_naive_time(year_month_day(1970, 10, 25, 1, 30, 00))
-  info <- naive_info(x, "America/New_York")
+  info <- naive_time_info(x, "America/New_York")
 
   expect_identical(info$type, "ambiguous")
 
@@ -82,21 +82,21 @@ test_that("ambiguous info works", {
 })
 
 test_that("all rows are NA when x is NA", {
-  info <- naive_info(naive_days(NA), "UTC")
+  info <- naive_time_info(naive_days(NA), "UTC")
   na_sys_info <- sys_time_info(sys_days(NA), "UTC")
   df <- data_frame(type = NA_character_, first = na_sys_info, second = na_sys_info)
   expect_identical(info, df)
 })
 
 test_that("x must be naive", {
-  expect_snapshot_error(naive_info(sys_days(0), "UTC"))
+  expect_snapshot_error(naive_time_info(sys_days(0), "UTC"))
 })
 
 test_that("zone is vectorized and recycled against x", {
-  info <- naive_info(naive_days(0), c("UTC", "America/New_York"))
+  info <- naive_time_info(naive_days(0), c("UTC", "America/New_York"))
   expect_identical(nrow(info), 2L)
 
-  expect_snapshot_error(naive_info(naive_days(0:3), c("UTC", "America/New_York")))
+  expect_snapshot_error(naive_time_info(naive_days(0:3), c("UTC", "America/New_York")))
 })
 
 # ------------------------------------------------------------------------------

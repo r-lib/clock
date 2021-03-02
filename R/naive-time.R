@@ -554,7 +554,7 @@ as.character.clock_naive_time <- function(x, ...) {
 #' Info: naive-time
 #'
 #' @description
-#' `naive_info()` retrieves a set of low-level information generally not
+#' `naive_time_info()` retrieves a set of low-level information generally not
 #' required for most date-time manipulations. It is used implicitly
 #' by `as_zoned()` when converting from a naive-time.
 #'
@@ -607,7 +607,7 @@ as.character.clock_naive_time <- function(x, ...) {
 #'
 #'   A valid time zone name.
 #'
-#'   Unlike most functions in clock, in `naive_info()` `zone` is vectorized
+#'   Unlike most functions in clock, in `naive_time_info()` `zone` is vectorized
 #'   and is recycled against `x`.
 #'
 #' @return A data frame of low level information.
@@ -620,13 +620,13 @@ as.character.clock_naive_time <- function(x, ...) {
 #' x <- as_naive_time(x)
 #'
 #' # Maps uniquely to a time in London
-#' naive_info(x, "Europe/London")
+#' naive_time_info(x, "Europe/London")
 #'
 #' # This naive-time never existed in New York!
 #' # A DST gap jumped the time from 01:59:59 -> 03:00:00,
 #' # skipping the 2 o'clock hour
 #' zone <- "America/New_York"
-#' info <- naive_info(x, zone)
+#' info <- naive_time_info(x, zone)
 #' info
 #'
 #' # You can recreate various `nonexistent` strategies with this info
@@ -662,7 +662,7 @@ as.character.clock_naive_time <- function(x, ...) {
 #' df$naive <- naive_time_parse(df$x)
 #'
 #' # Get info about the naive times using a vector of zones
-#' info <- naive_info(df$naive, df$zone)
+#' info <- naive_time_info(df$naive, df$zone)
 #' info
 #'
 #' # We'll assume that some system generated these naive-times with no
@@ -677,7 +677,7 @@ as.character.clock_naive_time <- function(x, ...) {
 #' # both to either America/Los_Angeles or Europe/London as required.
 #' as_zoned(df$sys, "America/Los_Angeles")
 #' as_zoned(df$sys, "Europe/London")
-naive_info <- function(x, zone) {
+naive_time_info <- function(x, zone) {
   if (!is_naive_time(x)) {
     abort("`x` must be a naive-time.")
   }
@@ -689,12 +689,12 @@ naive_info <- function(x, zone) {
   size <- vec_size_common(x = x, zone = zone)
   x <- vec_recycle(x, size)
 
-  fields <- naive_info_cpp(x, precision, zone)
+  fields <- naive_time_info_cpp(x, precision, zone)
 
-  new_naive_info_from_fields(fields)
+  new_naive_time_info_from_fields(fields)
 }
 
-new_naive_info_from_fields <- function(fields) {
+new_naive_time_info_from_fields <- function(fields) {
   fields[["first"]] <- new_sys_time_info_from_fields(fields[["first"]])
   fields[["second"]] <- new_sys_time_info_from_fields(fields[["second"]])
   new_data_frame(fields)
