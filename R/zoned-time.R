@@ -18,15 +18,15 @@ is_zoned <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-zoned_time_zone <- function(x) {
+zoned_time_zone_attribute <- function(x) {
   attr(x, "zone", exact = TRUE)
 }
-zoned_time_set_zone <- function(x, zone) {
+zoned_time_set_zone_attribute <- function(x, zone) {
   attr(x, "zone") <- zone
   x
 }
 
-zoned_time_precision <- function(x) {
+zoned_time_precision_attribute <- function(x) {
   attr(x, "precision", exact = TRUE)
 }
 
@@ -201,8 +201,8 @@ format.clock_zoned_time <- function(x,
     abort("`locale` must be a 'clock_locale' object.")
   }
 
-  zone <- zoned_time_zone(x)
-  precision <- zoned_time_precision(x)
+  zone <- zoned_time_zone_attribute(x)
+  precision <- zoned_time_precision_attribute(x)
 
   if (is_null(format)) {
     # Collect internal option
@@ -654,16 +654,16 @@ vec_restore.clock_zoned_time <- function(x, to, ...) {
 
 #' @export
 vec_ptype_full.clock_zoned_time <- function(x, ...) {
-  zone <- zone_pretty(zoned_time_zone(x))
-  precision <- zoned_time_precision(x)
+  zone <- zone_pretty(zoned_time_zone_attribute(x))
+  precision <- zoned_time_precision_attribute(x)
   precision <- precision_to_string(precision)
   paste0("zoned_time<", precision, "><", zone, ">")
 }
 
 #' @export
 vec_ptype_abbr.clock_zoned_time <- function(x, ...) {
-  zone <- zone_pretty(zoned_time_zone(x))
-  precision <- zoned_time_precision(x)
+  zone <- zone_pretty(zoned_time_zone_attribute(x))
+  precision <- zoned_time_precision_attribute(x)
   precision <- precision_to_string(precision)
   precision <- precision_abbr(precision)
   paste0("zt<", precision, "><", zone, ">")
@@ -681,10 +681,10 @@ zone_pretty <- function(zone) {
 
 #' @export
 vec_ptype.clock_zoned_time <- function(x, ...) {
-  zone <- zoned_time_zone(x)
+  zone <- zoned_time_zone_attribute(x)
 
   ptype_utc <- switch(
-    zoned_time_precision(x) + 1L,
+    zoned_time_precision_attribute(x) + 1L,
     abort("Internal error: Invalid precision"),
     abort("Internal error: Invalid precision"),
     abort("Internal error: Invalid precision"),
@@ -699,22 +699,22 @@ vec_ptype.clock_zoned_time <- function(x, ...) {
     abort("Internal error: Invalid precision.")
   )
 
-  ptype <- zoned_time_set_zone(ptype_utc, zone)
+  ptype <- zoned_time_set_zone_attribute(ptype_utc, zone)
 
   ptype
 }
 
 #' @export
 vec_ptype2.clock_zoned_time.clock_zoned_time <- function(x, y, ...) {
-  x_zone <- zoned_time_zone(x)
-  y_zone <- zoned_time_zone(y)
+  x_zone <- zoned_time_zone_attribute(x)
+  y_zone <- zoned_time_zone_attribute(y)
 
   if (x_zone != y_zone) {
     stop_incompatible_type(x, y, ..., details = "Zones can't differ.")
   }
 
-  x_precision <- zoned_time_precision(x)
-  y_precision <- zoned_time_precision(y)
+  x_precision <- zoned_time_precision_attribute(x)
+  y_precision <- zoned_time_precision_attribute(y)
 
   if (x_precision >= y_precision) {
     x
@@ -725,15 +725,15 @@ vec_ptype2.clock_zoned_time.clock_zoned_time <- function(x, y, ...) {
 
 #' @export
 vec_cast.clock_zoned_time.clock_zoned_time <- function(x, to, ...) {
-  x_zone <- zoned_time_zone(x)
-  to_zone <- zoned_time_zone(to)
+  x_zone <- zoned_time_zone_attribute(x)
+  to_zone <- zoned_time_zone_attribute(to)
 
   if (x_zone != to_zone) {
     stop_incompatible_cast(x, to, ..., details = "Zones can't differ.")
   }
 
-  x_precision <- zoned_time_precision(x)
-  to_precision <- zoned_time_precision(to)
+  x_precision <- zoned_time_precision_attribute(x)
+  to_precision <- zoned_time_precision_attribute(to)
 
   if (x_precision == to_precision) {
     return(x)
@@ -841,15 +841,15 @@ as_zoned.clock_zoned_time <- function(x, ...) {
 #' @export
 as_sys_time.clock_zoned_time <- function(x) {
   names <- clock_rcrd_names(x)
-  precision <- zoned_time_precision(x)
+  precision <- zoned_time_precision_attribute(x)
   new_sys_time_from_fields(x, precision, names)
 }
 
 #' @export
 as_naive_time.clock_zoned_time <- function(x) {
   names <- clock_rcrd_names(x)
-  zone <- zoned_time_zone(x)
-  precision <- zoned_time_precision(x)
+  zone <- zoned_time_zone_attribute(x)
+  precision <- zoned_time_precision_attribute(x)
   fields <- get_naive_time_cpp(x, precision, zone)
   new_naive_time_from_fields(fields, precision, names)
 }
@@ -942,7 +942,7 @@ zoned_zone <- function(x) {
 
 #' @export
 zoned_zone.clock_zoned_time <- function(x) {
-  zoned_time_zone(x)
+  zoned_time_zone_attribute(x)
 }
 
 #' @rdname zoned-zone
@@ -954,7 +954,7 @@ zoned_set_zone <- function(x, zone) {
 #' @export
 zoned_set_zone.clock_zoned_time <- function(x, zone) {
   zone <- zone_validate(zone)
-  zoned_time_set_zone(x, zone)
+  zoned_time_set_zone_attribute(x, zone)
 }
 
 # ------------------------------------------------------------------------------

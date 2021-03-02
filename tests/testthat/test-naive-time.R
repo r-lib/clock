@@ -285,13 +285,13 @@ test_that("can convert non-ambiguous/nonexistent times to zoned time", {
 test_that("sub daily time point precision is retained", {
   zone <- "America/New_York"
   x <- as_naive_time(year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond"))
-  expect_identical(zoned_time_precision(as_zoned(x, zone)), PRECISION_NANOSECOND)
+  expect_identical(zoned_time_precision_attribute(as_zoned(x, zone)), PRECISION_NANOSECOND)
 })
 
 test_that("day precision time point is promoted", {
   zone <- "America/New_York"
   x <- as_naive_time(year_month_day(2019, 1, 1))
-  expect_identical(zoned_time_precision(as_zoned(x, zone)), PRECISION_SECOND)
+  expect_identical(zoned_time_precision_attribute(as_zoned(x, zone)), PRECISION_SECOND)
 })
 
 test_that("can resolve ambiguous issues - character", {

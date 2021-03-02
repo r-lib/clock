@@ -499,7 +499,7 @@ validate_ambiguous_zoned <- function(ambiguous, size, zone) {
   reference <- as_zoned(ambiguous)
 
   reference_size <- vec_size(reference)
-  reference_zone <- zoned_time_zone(reference)
+  reference_zone <- zoned_time_zone_attribute(reference)
 
   if (reference_size != 1L && reference_size != size) {
     abort(paste0("A zoned-time or POSIXct `ambiguous` must have length 1, or ", size, "."))

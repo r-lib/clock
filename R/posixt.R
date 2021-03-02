@@ -124,7 +124,7 @@ as.POSIXct.clock_naive_time <- function(x,
 
 #' @export
 as.POSIXct.clock_zoned_time <- function(x, ...) {
-  zone <- zoned_time_zone(x)
+  zone <- zoned_time_zone_attribute(x)
   x <- as_sys_time(x)
   as.POSIXct(x, tz = zone)
 }
