@@ -123,16 +123,21 @@ reference:
   - duration-arithmetic
 
 - title: Time points
+- subtitle: Sys-time
   contents:
-  - sys_time_now
-  - as_naive_time
   - as_sys_time
-  - is_naive_time
   - is_sys_time
-  - naive_time_parse
   - sys_time_parse
-  - naive_time_info
   - sys_time_info
+  - sys_time_now
+- subtitle: Naive-time
+  contents:
+  - as_naive_time
+  - is_naive_time
+  - naive_time_parse
+  - naive_time_info
+- subtitle: Manipulation
+  contents:
   - time_point_cast
   - time-point-rounding
   - time_point_shift
