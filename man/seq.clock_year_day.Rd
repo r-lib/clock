@@ -76,5 +76,5 @@ set_day(x, "last")
 
 # Daily sequences are not allowed. Use a naive-time for this instead.
 try(seq(year_day(2019, 1), by = 2, length.out = 2))
-as_year_day(seq(as_naive(year_day(2019, 1)), by = 2, length.out = 2))
+as_year_day(seq(as_naive_time(year_day(2019, 1)), by = 2, length.out = 2))
 }

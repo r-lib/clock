@@ -19,7 +19,7 @@ You generally convert to a duration from either a sys-time or a naive-time.
 The precision of the input is retained in the returned duration.
 }
 \examples{
-x <- as_sys(year_month_day(2019, 01, 01))
+x <- as_sys_time(year_month_day(2019, 01, 01))
 
 # The number of days since 1970-01-01 UTC
 as_duration(x)

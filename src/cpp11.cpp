@@ -608,10 +608,10 @@ extern "C" SEXP _clock_iso_year_week_day_minus_iso_year_week_day_cpp(SEXP x, SEX
   END_CPP11
 }
 // naive-time.cpp
-cpp11::writable::list naive_info_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::strings& zone);
-extern "C" SEXP _clock_naive_info_cpp(SEXP fields, SEXP precision_int, SEXP zone) {
+cpp11::writable::list naive_time_info_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::strings& zone);
+extern "C" SEXP _clock_naive_time_info_cpp(SEXP fields, SEXP precision_int, SEXP zone) {
   BEGIN_CPP11
-    return cpp11::as_sexp(naive_info_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone)));
+    return cpp11::as_sexp(naive_time_info_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
@@ -734,17 +734,17 @@ extern "C" SEXP _clock_clock_rcrd_set_names(SEXP x, SEXP names) {
   END_CPP11
 }
 // sys-time.cpp
-cpp11::writable::list sys_now_cpp();
-extern "C" SEXP _clock_sys_now_cpp() {
+cpp11::writable::list sys_time_now_cpp();
+extern "C" SEXP _clock_sys_time_now_cpp() {
   BEGIN_CPP11
-    return cpp11::as_sexp(sys_now_cpp());
+    return cpp11::as_sexp(sys_time_now_cpp());
   END_CPP11
 }
 // sys-time.cpp
-cpp11::writable::list sys_info_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::strings& zone);
-extern "C" SEXP _clock_sys_info_cpp(SEXP fields, SEXP precision_int, SEXP zone) {
+cpp11::writable::list sys_time_info_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::strings& zone);
+extern "C" SEXP _clock_sys_time_info_cpp(SEXP fields, SEXP precision_int, SEXP zone) {
   BEGIN_CPP11
-    return cpp11::as_sexp(sys_info_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone)));
+    return cpp11::as_sexp(sys_time_info_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone)));
   END_CPP11
 }
 // time-point.cpp
@@ -867,17 +867,17 @@ extern "C" SEXP _clock_to_sys_seconds_from_sys_duration_fields_cpp(SEXP fields) 
   END_CPP11
 }
 // zoned-time.cpp
-cpp11::writable::list zoned_parse_complete_cpp(const cpp11::strings& x, const cpp11::strings& format, const cpp11::integers& precision_int, const cpp11::strings& month, const cpp11::strings& month_abbrev, const cpp11::strings& weekday, const cpp11::strings& weekday_abbrev, const cpp11::strings& am_pm, const cpp11::strings& mark);
-extern "C" SEXP _clock_zoned_parse_complete_cpp(SEXP x, SEXP format, SEXP precision_int, SEXP month, SEXP month_abbrev, SEXP weekday, SEXP weekday_abbrev, SEXP am_pm, SEXP mark) {
+cpp11::writable::list zoned_time_parse_complete_cpp(const cpp11::strings& x, const cpp11::strings& format, const cpp11::integers& precision_int, const cpp11::strings& month, const cpp11::strings& month_abbrev, const cpp11::strings& weekday, const cpp11::strings& weekday_abbrev, const cpp11::strings& am_pm, const cpp11::strings& mark);
+extern "C" SEXP _clock_zoned_time_parse_complete_cpp(SEXP x, SEXP format, SEXP precision_int, SEXP month, SEXP month_abbrev, SEXP weekday, SEXP weekday_abbrev, SEXP am_pm, SEXP mark) {
   BEGIN_CPP11
-    return cpp11::as_sexp(zoned_parse_complete_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month_abbrev), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(weekday), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(weekday_abbrev), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(am_pm), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mark)));
+    return cpp11::as_sexp(zoned_time_parse_complete_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month_abbrev), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(weekday), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(weekday_abbrev), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(am_pm), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mark)));
   END_CPP11
 }
 // zoned-time.cpp
-cpp11::writable::list zoned_parse_abbrev_cpp(const cpp11::strings& x, const cpp11::strings& zone, const cpp11::strings& format, const cpp11::integers& precision_int, const cpp11::strings& month, const cpp11::strings& month_abbrev, const cpp11::strings& weekday, const cpp11::strings& weekday_abbrev, const cpp11::strings& am_pm, const cpp11::strings& mark);
-extern "C" SEXP _clock_zoned_parse_abbrev_cpp(SEXP x, SEXP zone, SEXP format, SEXP precision_int, SEXP month, SEXP month_abbrev, SEXP weekday, SEXP weekday_abbrev, SEXP am_pm, SEXP mark) {
+cpp11::writable::list zoned_time_parse_abbrev_cpp(const cpp11::strings& x, const cpp11::strings& zone, const cpp11::strings& format, const cpp11::integers& precision_int, const cpp11::strings& month, const cpp11::strings& month_abbrev, const cpp11::strings& weekday, const cpp11::strings& weekday_abbrev, const cpp11::strings& am_pm, const cpp11::strings& mark);
+extern "C" SEXP _clock_zoned_time_parse_abbrev_cpp(SEXP x, SEXP zone, SEXP format, SEXP precision_int, SEXP month, SEXP month_abbrev, SEXP weekday, SEXP weekday_abbrev, SEXP am_pm, SEXP mark) {
   BEGIN_CPP11
-    return cpp11::as_sexp(zoned_parse_abbrev_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month_abbrev), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(weekday), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(weekday_abbrev), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(am_pm), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mark)));
+    return cpp11::as_sexp(zoned_time_parse_abbrev_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(x), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(format), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(month_abbrev), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(weekday), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(weekday_abbrev), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(am_pm), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(mark)));
   END_CPP11
 }
 
@@ -959,7 +959,7 @@ extern SEXP _clock_invalid_resolve_year_quarter_day_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_iso_year_week_day_minus_iso_year_week_day_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_iso_year_week_day_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_iso_year_week_day_restore(SEXP, SEXP);
-extern SEXP _clock_naive_info_cpp(SEXP, SEXP, SEXP);
+extern SEXP _clock_naive_time_info_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_new_duration_from_fields(SEXP, SEXP, SEXP);
 extern SEXP _clock_new_iso_year_week_day_from_fields(SEXP, SEXP, SEXP);
 extern SEXP _clock_new_time_point_from_fields(SEXP, SEXP, SEXP, SEXP);
@@ -979,8 +979,8 @@ extern SEXP _clock_set_field_year_month_weekday_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_set_field_year_month_weekday_last_cpp(SEXP, SEXP);
 extern SEXP _clock_set_field_year_quarter_day_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_set_field_year_quarter_day_last_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_sys_info_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_sys_now_cpp();
+extern SEXP _clock_sys_time_info_cpp(SEXP, SEXP, SEXP);
+extern SEXP _clock_sys_time_now_cpp();
 extern SEXP _clock_time_point_parse_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_time_point_restore(SEXP, SEXP);
 extern SEXP _clock_to_sys_duration_fields_from_sys_seconds_cpp(SEXP);
@@ -1005,8 +1005,8 @@ extern SEXP _clock_zone_current();
 extern SEXP _clock_zone_database_names_cpp();
 extern SEXP _clock_zone_database_version_cpp();
 extern SEXP _clock_zone_is_valid(SEXP);
-extern SEXP _clock_zoned_parse_abbrev_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_zoned_parse_complete_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_zoned_time_parse_abbrev_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _clock_zoned_time_parse_complete_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_zoned_time_restore(SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
@@ -1086,7 +1086,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_iso_year_week_day_minus_iso_year_week_day_cpp",        (DL_FUNC) &_clock_iso_year_week_day_minus_iso_year_week_day_cpp,         3},
     {"_clock_iso_year_week_day_plus_duration_cpp",                  (DL_FUNC) &_clock_iso_year_week_day_plus_duration_cpp,                   4},
     {"_clock_iso_year_week_day_restore",                            (DL_FUNC) &_clock_iso_year_week_day_restore,                             2},
-    {"_clock_naive_info_cpp",                                       (DL_FUNC) &_clock_naive_info_cpp,                                        3},
+    {"_clock_naive_time_info_cpp",                                  (DL_FUNC) &_clock_naive_time_info_cpp,                                   3},
     {"_clock_new_duration_from_fields",                             (DL_FUNC) &_clock_new_duration_from_fields,                              3},
     {"_clock_new_iso_year_week_day_from_fields",                    (DL_FUNC) &_clock_new_iso_year_week_day_from_fields,                     3},
     {"_clock_new_time_point_from_fields",                           (DL_FUNC) &_clock_new_time_point_from_fields,                            4},
@@ -1106,8 +1106,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_set_field_year_month_weekday_last_cpp",                (DL_FUNC) &_clock_set_field_year_month_weekday_last_cpp,                 2},
     {"_clock_set_field_year_quarter_day_cpp",                       (DL_FUNC) &_clock_set_field_year_quarter_day_cpp,                        5},
     {"_clock_set_field_year_quarter_day_last_cpp",                  (DL_FUNC) &_clock_set_field_year_quarter_day_last_cpp,                   3},
-    {"_clock_sys_info_cpp",                                         (DL_FUNC) &_clock_sys_info_cpp,                                          3},
-    {"_clock_sys_now_cpp",                                          (DL_FUNC) &_clock_sys_now_cpp,                                           0},
+    {"_clock_sys_time_info_cpp",                                    (DL_FUNC) &_clock_sys_time_info_cpp,                                     3},
+    {"_clock_sys_time_now_cpp",                                     (DL_FUNC) &_clock_sys_time_now_cpp,                                      0},
     {"_clock_time_point_parse_cpp",                                 (DL_FUNC) &_clock_time_point_parse_cpp,                                 10},
     {"_clock_time_point_restore",                                   (DL_FUNC) &_clock_time_point_restore,                                    2},
     {"_clock_to_sys_duration_fields_from_sys_seconds_cpp",          (DL_FUNC) &_clock_to_sys_duration_fields_from_sys_seconds_cpp,           1},
@@ -1132,8 +1132,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_zone_database_names_cpp",                              (DL_FUNC) &_clock_zone_database_names_cpp,                               0},
     {"_clock_zone_database_version_cpp",                            (DL_FUNC) &_clock_zone_database_version_cpp,                             0},
     {"_clock_zone_is_valid",                                        (DL_FUNC) &_clock_zone_is_valid,                                         1},
-    {"_clock_zoned_parse_abbrev_cpp",                               (DL_FUNC) &_clock_zoned_parse_abbrev_cpp,                               10},
-    {"_clock_zoned_parse_complete_cpp",                             (DL_FUNC) &_clock_zoned_parse_complete_cpp,                              9},
+    {"_clock_zoned_time_parse_abbrev_cpp",                          (DL_FUNC) &_clock_zoned_time_parse_abbrev_cpp,                          10},
+    {"_clock_zoned_time_parse_complete_cpp",                        (DL_FUNC) &_clock_zoned_time_parse_complete_cpp,                         9},
     {"_clock_zoned_time_restore",                                   (DL_FUNC) &_clock_zoned_time_restore,                                    2},
     {NULL, NULL, 0}
 };

@@ -2,12 +2,12 @@
 # print() / obj_print_data() / obj_print_footer()
 
 test_that("normal print method works", {
-  x <- as_sys(year_month_day(2019, 1:5, 1))
+  x <- as_sys_time(year_month_day(2019, 1:5, 1))
   expect_snapshot(x)
 })
 
 test_that("can limit with `max`", {
-  x <- as_sys(year_month_day(2019, 1:5, 1))
+  x <- as_sys_time(year_month_day(2019, 1:5, 1))
 
   expect_snapshot(print(x, max = 2))
   expect_snapshot(print(x, max = 4))
@@ -20,7 +20,7 @@ test_that("can limit with `max`", {
 test_that("`max` defaults to `getOption('max.print')` but can be overridden", {
   local_options(max.print = 3)
 
-  x <- as_naive(year_month_day(2019, 1:5, 1))
+  x <- as_naive_time(year_month_day(2019, 1:5, 1))
 
   expect_snapshot(x)
   expect_snapshot(print(x, max = 4))
@@ -91,8 +91,8 @@ test_that("rounding with `origin` requires same clock", {
 })
 
 test_that("`origin` can be cast to a more precise `precision`, but not to a less precise one", {
-  origin1 <- as_naive(duration_days(1))
-  origin2 <- as_naive(duration_milliseconds(0))
+  origin1 <- as_naive_time(duration_days(1))
+  origin2 <- as_naive_time(duration_milliseconds(0))
   x <- naive_seconds(0)
 
   expect_identical(
@@ -239,8 +239,8 @@ test_that("`by` can be a duration", {
     seq(naive_seconds(0), to = naive_seconds(1000), by = 60)
   )
   expect_identical(
-    seq(as_naive(duration_nanoseconds(0)), to = as_naive(duration_nanoseconds(2e9)), by = duration_seconds(1)),
-    seq(as_naive(duration_nanoseconds(0)), to = as_naive(duration_nanoseconds(2e9)), by = 1e9)
+    seq(as_naive_time(duration_nanoseconds(0)), to = as_naive_time(duration_nanoseconds(2e9)), by = duration_seconds(1)),
+    seq(as_naive_time(duration_nanoseconds(0)), to = as_naive_time(duration_nanoseconds(2e9)), by = 1e9)
   )
 })
 
@@ -262,8 +262,8 @@ test_that("`to` is always cast to `from`", {
 })
 
 test_that("can make nanosecond precision seqs", {
-  x <- as_naive(duration_nanoseconds(0))
-  y <- as_naive(duration_nanoseconds(10))
+  x <- as_naive_time(duration_nanoseconds(0))
+  y <- as_naive_time(duration_nanoseconds(10))
 
   expect_identical(seq(x, by = 2, length.out = 5), x + c(0, 2, 4, 6, 8))
   expect_identical(seq(x, y, by = 3), x + c(0, 3, 6, 9))

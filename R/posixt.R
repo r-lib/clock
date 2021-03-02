@@ -1,18 +1,18 @@
 #' @export
-as_sys.POSIXt <- function(x) {
+as_sys_time.POSIXt <- function(x) {
   # The sys-time that would give the equivalent zoned-time when a tz is attached
-  as_sys(as_zoned(x))
+  as_sys_time(as_zoned_time(x))
 }
 
 #' @export
-as_naive.POSIXt <- function(x) {
-  as_naive(as_zoned(x))
+as_naive_time.POSIXt <- function(x) {
+  as_naive_time(as_zoned_time(x))
 }
 
 #' Convert to a zoned-time from a date-time
 #'
 #' @description
-#' This is a POSIXct/POSIXlt method for the [as_zoned()] generic.
+#' This is a POSIXct/POSIXlt method for the [as_zoned_time()] generic.
 #'
 #' Converting from one of R's native date-time classes (POSIXct or POSIXlt)
 #' will retain the time zone of that object. There is no `zone` argument.
@@ -29,8 +29,8 @@ as_naive.POSIXt <- function(x) {
 #' @export
 #' @examples
 #' x <- as.POSIXct("2019-01-01", tz = "America/New_York")
-#' as_zoned(x)
-as_zoned.POSIXt <- function(x, ...) {
+#' as_zoned_time(x)
+as_zoned_time.POSIXt <- function(x, ...) {
   check_dots_empty()
 
   x <- to_posixct(x)
@@ -46,42 +46,42 @@ as_zoned.POSIXt <- function(x, ...) {
 #' @export
 as_year_month_day.POSIXt <- function(x) {
   # Assumes zoned -> naive -> calendar is what the user expects
-  x <- as_naive(x)
+  x <- as_naive_time(x)
   as_year_month_day(x)
 }
 
 #' @export
 as_year_month_weekday.POSIXt <- function(x) {
   # Assumes zoned -> naive -> calendar is what the user expects
-  x <- as_naive(x)
+  x <- as_naive_time(x)
   as_year_month_weekday(x)
 }
 
 #' @export
 as_year_quarter_day.POSIXt <- function(x, ..., start = NULL) {
   # Assumes zoned -> naive -> calendar is what the user expects
-  x <- as_naive(x)
+  x <- as_naive_time(x)
   as_year_quarter_day(x, ..., start = start)
 }
 
 #' @export
 as_iso_year_week_day.POSIXt <- function(x) {
   # Assumes zoned -> naive -> calendar is what the user expects
-  x <- as_naive(x)
+  x <- as_naive_time(x)
   as_iso_year_week_day(x)
 }
 
 #' @export
 as_year_day.POSIXt <- function(x) {
   # Assumes zoned -> naive -> calendar is what the user expects
-  x <- as_naive(x)
+  x <- as_naive_time(x)
   as_year_day(x)
 }
 
 #' @export
 as_weekday.POSIXt <- function(x) {
   # Assumes zoned -> naive is what the user expects
-  x <- as_naive(x)
+  x <- as_naive_time(x)
   as_weekday(x)
 }
 
@@ -99,7 +99,7 @@ as.POSIXct.clock_calendar <- function(x,
                                       ...,
                                       nonexistent = NULL,
                                       ambiguous = NULL) {
-  x <- as_naive(x)
+  x <- as_naive_time(x)
   as.POSIXct(x, tz = tz, nonexistent = nonexistent, ambiguous = ambiguous)
 }
 
@@ -118,14 +118,14 @@ as.POSIXct.clock_naive_time <- function(x,
                                         ...,
                                         nonexistent = NULL,
                                         ambiguous = NULL) {
-  x <- as_zoned(x, zone = tz, nonexistent = nonexistent, ambiguous = ambiguous)
+  x <- as_zoned_time(x, zone = tz, nonexistent = nonexistent, ambiguous = ambiguous)
   as.POSIXct(x)
 }
 
 #' @export
 as.POSIXct.clock_zoned_time <- function(x, ...) {
-  zone <- zoned_time_zone(x)
-  x <- as_sys(x)
+  zone <- zoned_time_zone_attribute(x)
+  x <- as_sys_time(x)
   as.POSIXct(x, tz = zone)
 }
 
@@ -442,7 +442,7 @@ arith_duration_and_posixt <- function(op, x, y, ...) {
 #' sys-time, so that is what clock converts to. If you disagree with this
 #' heuristic for any reason, you can take control and perform the conversions
 #' yourself. For example, you could convert the previous example to a
-#' naive-time instead of a sys-time manually with [as_naive()], add
+#' naive-time instead of a sys-time manually with [as_naive_time()], add
 #' 1 second giving `"2020-03-08 02:00:00"`, then convert back to a
 #' POSIXct/POSIXlt, dealing with the nonexistent time that get's created by
 #' using the `nonexistent` argument of `as.POSIXct()`.
@@ -520,7 +520,7 @@ add_days.POSIXt <- function(x, n, ..., nonexistent = NULL, ambiguous = x) {
 add_posixt_duration_naive_time_point <- function(x, n, nonexistent, ambiguous, add_fn, ...) {
   check_dots_empty()
   zone <- posixt_tzone(x)
-  x <- as_naive(x)
+  x <- as_naive_time(x)
   x <- add_fn(x, n)
   as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
 }
@@ -543,7 +543,7 @@ add_seconds.POSIXt <- function(x, n, ...) {
 add_posixt_duration_sys_time_point <- function(x, n, add_fn, ...) {
   check_dots_empty()
   zone <- posixt_tzone(x)
-  x <- as_sys(x)
+  x <- as_sys_time(x)
   x <- add_fn(x, n)
   as.POSIXct(x, tz = zone)
 }
@@ -771,7 +771,7 @@ date_time_rounder <- function(x,
 
   zone <- date_zone(x)
 
-  x <- as_naive(x)
+  x <- as_naive_time(x)
 
   if (!is_null(origin)) {
     origin <- collect_date_time_rounder_origin(origin, zone, precision)
@@ -800,7 +800,7 @@ collect_date_time_rounder_origin <- function(origin, zone, precision) {
     abort("`origin` must have the same time zone as `x`.")
   }
 
-  origin <- as_naive(origin)
+  origin <- as_naive_time(origin)
 
   # Floor to match the precision of `precision`
   origin_old <- origin
@@ -855,7 +855,7 @@ date_format.POSIXt <- function(x,
                                locale = clock_locale(),
                                abbreviate_zone = FALSE) {
   check_dots_empty()
-  x <- as_zoned(x)
+  x <- as_zoned_time(x)
   format(x, format = format, locale = locale, abbreviate_zone = abbreviate_zone)
 }
 
@@ -996,21 +996,21 @@ date_time_parse <- function(x,
                             locale = clock_locale(),
                             nonexistent = NULL,
                             ambiguous = NULL) {
-  x <- naive_parse(x, ..., format = format, precision = "second", locale = locale)
+  x <- naive_time_parse(x, ..., format = format, precision = "second", locale = locale)
   as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
 }
 
 #' @rdname date-time-parse
 #' @export
 date_time_parse_complete <- function(x, ..., format = NULL, locale = clock_locale()) {
-  x <- zoned_parse_complete(x, ..., format = format, precision = "second", locale = locale)
+  x <- zoned_time_parse_complete(x, ..., format = format, precision = "second", locale = locale)
   as.POSIXct(x)
 }
 
 #' @rdname date-time-parse
 #' @export
 date_time_parse_abbrev <- function(x, zone, ..., format = NULL, locale = clock_locale()) {
-  x <- zoned_parse_abbrev(x, zone, ..., format = format, precision = "second", locale = locale)
+  x <- zoned_time_parse_abbrev(x, zone, ..., format = format, precision = "second", locale = locale)
   as.POSIXct(x)
 }
 
@@ -1064,7 +1064,7 @@ date_shift.POSIXt <- function(x,
                               ambiguous = x) {
   force(ambiguous)
   zone <- date_zone(x)
-  x <- as_naive(x)
+  x <- as_naive_time(x)
   x <- time_point_shift(x, target, ..., which = which, boundary = boundary)
   as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
 }

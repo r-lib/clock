@@ -30,9 +30,9 @@ sys_seconds <- function(n = integer()) {
 #'
 #' @export
 #' @examples
-#' is_sys(1)
-#' is_sys(as_sys(duration_days(1)))
-is_sys <- function(x) {
+#' is_sys_time(1)
+#' is_sys_time(as_sys_time(duration_days(1)))
+is_sys_time <- function(x) {
   inherits(x, "clock_sys_time")
 }
 
@@ -41,33 +41,33 @@ is_sys <- function(x) {
 #' Parsing: sys-time
 #'
 #' @description
-#' `sys_parse()` is a parser into a sys-time.
+#' `sys_time_parse()` is a parser into a sys-time.
 #'
-#' `sys_parse()` is useful when you have date-time strings like: `"2020-01-01
-#' 01:04:30-0400"`. If there is an attached UTC offset, but no time zone name,
-#' then parsing this string as a sys-time using the `%z` command to capture the
-#' offset is probably your best option. If you know that this string should be
-#' interpreted in a specific time zone, parse as a sys-time to get the UTC
-#' equivalent, then use [as_zoned()].
+#' `sys_time_parse()` is useful when you have date-time strings like:
+#' `"2020-01-01 01:04:30-0400"`. If there is an attached UTC offset, but no time
+#' zone name, then parsing this string as a sys-time using the `%z` command to
+#' capture the offset is probably your best option. If you know that this string
+#' should be interpreted in a specific time zone, parse as a sys-time to get the
+#' UTC equivalent, then use [as_zoned_time()].
 #'
 #' The default options assume that `x` should be parsed at second precision,
 #' using a `format` string of `"%Y-%m-%d %H:%M:%S"`.
 #'
-#' `sys_parse()` is nearly equivalent to [naive_parse()], except for the fact
-#' that the `%z` command is actually used. Using `%z` assumes that the rest of
-#' the date-time string should be interpreted as a naive-time, which is then
-#' shifted by the UTC offset found in `%z`. The returned time can then be
+#' `sys_time_parse()` is nearly equivalent to [naive_time_parse()], except for
+#' the fact that the `%z` command is actually used. Using `%z` assumes that the
+#' rest of the date-time string should be interpreted as a naive-time, which is
+#' then shifted by the UTC offset found in `%z`. The returned time can then be
 #' validly interpreted as UTC.
 #'
-#' _`sys_parse()` ignores the `%Z` command._
+#' _`sys_time_parse()` ignores the `%Z` command._
 #'
 #' If your date-time strings contain a full time zone name and a UTC offset, use
-#' [zoned_parse_complete()]. If they contain a time zone abbreviation, use
-#' [zoned_parse_abbrev()].
+#' [zoned_time_parse_complete()]. If they contain a time zone abbreviation, use
+#' [zoned_time_parse_abbrev()].
 #'
 #' If your date-time strings don't contain an offset from UTC, you might
-#' consider using [naive_parse()], since the resulting naive-time doesn't come
-#' with an assumption of a UTC time zone.
+#' consider using [naive_time_parse()], since the resulting naive-time doesn't
+#' come with an assumption of a UTC time zone.
 #'
 #' @inheritParams zoned-parsing
 #'
@@ -96,16 +96,16 @@ is_sys <- function(x) {
 #'
 #' @export
 #' @examples
-#' sys_parse("2020-01-01 05:06:07")
+#' sys_time_parse("2020-01-01 05:06:07")
 #'
 #' # Day precision
-#' sys_parse("2020-01-01", precision = "day")
+#' sys_time_parse("2020-01-01", precision = "day")
 #'
 #' # Nanosecond precision, but using a day based format
-#' sys_parse("2020-01-01", format = "%Y-%m-%d", precision = "nanosecond")
+#' sys_time_parse("2020-01-01", format = "%Y-%m-%d", precision = "nanosecond")
 #'
 #' # Multiple format strings are allowed for heterogeneous times
-#' sys_parse(
+#' sys_time_parse(
 #'   c("2019-01-01", "2019/1/1"),
 #'   format = c("%Y/%m/%d", "%Y-%m-%d"),
 #'   precision = "day"
@@ -113,18 +113,18 @@ is_sys <- function(x) {
 #'
 #' # The `%z` command shifts the date-time by subtracting the UTC offset so
 #' # that the returned sys-time can be interpreted as UTC
-#' sys_parse(
+#' sys_time_parse(
 #'   "2020-01-01 02:00:00 -0400",
 #'   format = "%Y-%m-%d %H:%M:%S %z"
 #' )
 #'
 #' # Remember that the `%Z` command is ignored entirely!
-#' sys_parse("2020-01-01 America/New_York", format = "%Y-%m-%d %Z")
-sys_parse <- function(x,
-                      ...,
-                      format = NULL,
-                      precision = "second",
-                      locale = clock_locale()) {
+#' sys_time_parse("2020-01-01 America/New_York", format = "%Y-%m-%d %Z")
+sys_time_parse <- function(x,
+                           ...,
+                           format = NULL,
+                           precision = "second",
+                           locale = clock_locale()) {
   precision <- validate_time_point_precision_string(precision)
 
   fields <- time_point_parse(
@@ -144,7 +144,7 @@ sys_parse <- function(x,
 #' Convert to a sys-time
 #'
 #' @description
-#' `as_sys()` converts `x` to a sys-time.
+#' `as_sys_time()` converts `x` to a sys-time.
 #'
 #' You can convert to a sys-time from any calendar type, as long as it has
 #' at least day precision. There also must not be any invalid dates. If invalid
@@ -178,46 +178,46 @@ sys_parse <- function(x,
 #' x <- as.Date("2019-01-01")
 #'
 #' # Dates are assumed to be UTC, so the printed time is the same
-#' as_sys(x)
+#' as_sys_time(x)
 #'
 #' y <- as.POSIXct("2019-01-01 01:00:00", tz = "America/New_York")
 #'
 #' # The sys time displays the equivalent time in UTC (5 hours ahead of
 #' # America/New_York at this point in the year)
-#' as_sys(y)
+#' as_sys_time(y)
 #'
 #' ym <- year_month_day(2019, 02)
 #'
 #' # A minimum of day precision is required
-#' try(as_sys(ym))
+#' try(as_sys_time(ym))
 #'
 #' ymd <- set_day(ym, 10)
-#' as_sys(ymd)
-as_sys <- function(x) {
-  UseMethod("as_sys")
+#' as_sys_time(ymd)
+as_sys_time <- function(x) {
+  UseMethod("as_sys_time")
 }
 
 #' @export
-as_sys.clock_sys_time <- function(x) {
+as_sys_time.clock_sys_time <- function(x) {
   x
 }
 
 #' @export
-as_sys.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("as_sys")
+as_sys_time.clock_calendar <- function(x) {
+  stop_clock_unsupported_calendar_op("as_sys_time")
 }
 
 # ------------------------------------------------------------------------------
 
 #' @export
-as_naive.clock_sys_time <- function(x) {
+as_naive_time.clock_sys_time <- function(x) {
   new_naive_time_from_fields(x, time_point_precision(x), clock_rcrd_names(x))
 }
 
 #' Convert to a zoned-time from a sys-time
 #'
 #' @description
-#' This is a sys-time method for the [as_zoned()] generic.
+#' This is a sys-time method for the [as_zoned_time()] generic.
 #'
 #' Converting to a zoned-time from a sys-time retains the underlying duration,
 #' but changes the printed time, depending on the `zone` that you choose.
@@ -242,20 +242,20 @@ as_naive.clock_sys_time <- function(x) {
 #' @name as-zoned-time-sys-time
 #' @export
 #' @examples
-#' x <- as_sys(year_month_day(2019, 02, 01, 02, 30, 00))
+#' x <- as_sys_time(year_month_day(2019, 02, 01, 02, 30, 00))
 #' x
 #'
 #' # Since sys-time is interpreted as UTC, converting to a zoned-time with
 #' # a zone of UTC retains the printed time
-#' x_utc <- as_zoned(x, "UTC")
+#' x_utc <- as_zoned_time(x, "UTC")
 #' x_utc
 #'
 #' # Converting to a different zone results in a different printed time,
 #' # which corresponds to the exact same point in time, just in a different
 #' # part of the work
-#' x_ny <- as_zoned(x, "America/New_York")
+#' x_ny <- as_zoned_time(x, "America/New_York")
 #' x_ny
-as_zoned.clock_sys_time <- function(x, zone, ...) {
+as_zoned_time.clock_sys_time <- function(x, zone, ...) {
   zone <- zone_validate(zone)
 
   # Promote to at least seconds precision for `zoned_time`
@@ -277,7 +277,7 @@ as.character.clock_sys_time <- function(x, ...) {
 #' What is the current sys-time?
 #'
 #' @description
-#' `sys_now()` returns the current time in UTC.
+#' `sys_time_now()` returns the current time in UTC.
 #'
 #' @details
 #' The time is returned with a nanosecond precision, but the actual amount
@@ -289,10 +289,10 @@ as.character.clock_sys_time <- function(x, ...) {
 #'
 #' @export
 #' @examples
-#' x <- sys_now()
-sys_now <- function() {
+#' x <- sys_time_now()
+sys_time_now <- function() {
   names <- NULL
-  fields <- sys_now_cpp()
+  fields <- sys_time_now_cpp()
   new_sys_time_from_fields(fields, PRECISION_NANOSECOND, names)
 }
 
@@ -301,9 +301,9 @@ sys_now <- function() {
 #' Info: sys-time
 #'
 #' @description
-#' `sys_info()` retrieves a set of low-level information generally not required
-#' for most date-time manipulations. It returns a data frame with the following
-#' columns:
+#' `sys_time_info()` retrieves a set of low-level information generally not
+#' required for most date-time manipulations. It returns a data frame with the
+#' following columns:
 #'
 #' - `begin`, `end`: Second precision sys-times specifying the range of the
 #' current daylight saving time rule. The range is a half-open interval of
@@ -341,7 +341,7 @@ sys_now <- function() {
 #'
 #'   A valid time zone name.
 #'
-#'   Unlike most functions in clock, in `sys_info()` `zone` is vectorized
+#'   Unlike most functions in clock, in `sys_time_info()` `zone` is vectorized
 #'   and is recycled against `x`.
 #'
 #' @return A data frame of low level information.
@@ -351,34 +351,34 @@ sys_now <- function() {
 #' library(vctrs)
 #'
 #' x <- year_month_day(2021, 03, 14, c(01, 03), c(59, 00), c(59, 00))
-#' x <- as_naive(x)
-#' x <- as_zoned(x, "America/New_York")
+#' x <- as_naive_time(x)
+#' x <- as_zoned_time(x, "America/New_York")
 #'
 #' # x[1] is in EST, x[2] is in EDT
 #' x
 #'
-#' x_sys <- as_sys(x)
+#' x_sys <- as_sys_time(x)
 #'
-#' info <- sys_info(x_sys, zoned_zone(x))
+#' info <- sys_time_info(x_sys, zoned_time_zone(x))
 #' info
 #'
 #' # Convert `begin` and `end` to zoned-times to see the previous and
 #' # next daylight saving time transitions
 #' data_frame(
 #'   x = x,
-#'   begin = as_zoned(info$begin, zoned_zone(x)),
-#'   end = as_zoned(info$end, zoned_zone(x))
+#'   begin = as_zoned_time(info$begin, zoned_time_zone(x)),
+#'   end = as_zoned_time(info$end, zoned_time_zone(x))
 #' )
 #'
 #' # `end` can be used to iterate through daylight saving time transitions
-#' # by repeatedly calling `sys_info()`
-#' sys_info(info$end, zoned_zone(x))
+#' # by repeatedly calling `sys_time_info()`
+#' sys_time_info(info$end, zoned_time_zone(x))
 #'
 #' # Multiple `zone`s can be supplied to look up daylight saving time
 #' # information in different time zones
 #' zones <- c("America/New_York", "America/Los_Angeles")
 #'
-#' info2 <- sys_info(x_sys[1], zones)
+#' info2 <- sys_time_info(x_sys[1], zones)
 #' info2
 #'
 #' # The offset can be used to display the naive-time (i.e. the printed time)
@@ -387,8 +387,8 @@ sys_now <- function() {
 #'   zone = zones,
 #'   naive_time = x_sys[1] + info2$offset
 #' )
-sys_info <- function(x, zone) {
-  if (!is_sys(x)) {
+sys_time_info <- function(x, zone) {
+  if (!is_sys_time(x)) {
     abort("`x` must be a sys-time.")
   }
 
@@ -399,12 +399,12 @@ sys_info <- function(x, zone) {
   size <- vec_size_common(x = x, zone = zone)
   x <- vec_recycle(x, size)
 
-  fields <- sys_info_cpp(x, precision, zone)
+  fields <- sys_time_info_cpp(x, precision, zone)
 
-  new_sys_info_from_fields(fields)
+  new_sys_time_info_from_fields(fields)
 }
 
-new_sys_info_from_fields <- function(fields) {
+new_sys_time_info_from_fields <- function(fields) {
   names <- NULL
 
   fields[["begin"]] <- new_sys_time_from_fields(fields[["begin"]], PRECISION_SECOND, names)
@@ -493,7 +493,7 @@ vec_arith.numeric.clock_sys_time <- function(op, x, y, ...) {
 # ------------------------------------------------------------------------------
 
 clock_init_sys_time_utils <- function(env) {
-  day <- as_sys(year_month_day(integer(), integer(), integer()))
+  day <- as_sys_time(year_month_day(integer(), integer(), integer()))
 
   assign("clock_empty_sys_time_day", day, envir = env)
   assign("clock_empty_sys_time_hour", time_point_cast(day, "hour"), envir = env)

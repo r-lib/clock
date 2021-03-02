@@ -30,9 +30,9 @@ naive_seconds <- function(n = integer()) {
 #'
 #' @export
 #' @examples
-#' is_naive(1)
-#' is_naive(as_naive(duration_days(1)))
-is_naive <- function(x) {
+#' is_naive_time(1)
+#' is_naive_time(as_naive_time(duration_days(1)))
+is_naive_time <- function(x) {
   inherits(x, "clock_naive_time")
 }
 
@@ -41,47 +41,50 @@ is_naive <- function(x) {
 #' Parsing: naive-time
 #'
 #' @description
-#' `naive_parse()` is a parser into a naive-time.
+#' `naive_time_parse()` is a parser into a naive-time.
 #'
-#' `naive_parse()` is useful when you have date-time strings like:
+#' `naive_time_parse()` is useful when you have date-time strings like:
 #' `"2020-01-01 01:04:30"`. If there is no attached UTC offset or time zone
 #' name, then parsing this string as a naive-time is your best option. If
 #' you know that this string should be interpreted in a specific time zone,
-#' parse as a naive-time, then use [as_zoned()].
+#' parse as a naive-time, then use [as_zoned_time()].
 #'
 #' The default options assume that `x` should be parsed at second precision,
 #' using a `format` string of `"%Y-%m-%d %H:%M:%S"`.
 #'
-#' _`naive_parse()` ignores both the `%z` and `%Z` commands._
+#' _`naive_time_parse()` ignores both the `%z` and `%Z` commands._
 #'
 #' If your date-time strings contain a full time zone name and a UTC offset, use
-#' [zoned_parse_complete()]. If they contain a time zone abbreviation, use
-#' [zoned_parse_abbrev()].
+#' [zoned_time_parse_complete()]. If they contain a time zone abbreviation, use
+#' [zoned_time_parse_abbrev()].
 #'
 #' If your date-time strings contain a UTC offset, but not a full time zone
-#' name, use [sys_parse()].
+#' name, use [sys_time_parse()].
 #'
-#' @inheritParams sys_parse
+#' @inheritParams sys_time_parse
 #'
 #' @return A naive-time.
 #'
 #' @export
 #' @examples
-#' naive_parse("2020-01-01 05:06:07")
+#' naive_time_parse("2020-01-01 05:06:07")
 #'
 #' # Day precision
-#' naive_parse("2020-01-01", precision = "day")
+#' naive_time_parse("2020-01-01", precision = "day")
 #'
 #' # Nanosecond precision, but using a day based format
-#' naive_parse("2020-01-01", format = "%Y-%m-%d", precision = "nanosecond")
+#' naive_time_parse("2020-01-01", format = "%Y-%m-%d", precision = "nanosecond")
 #'
 #' # Remember that the `%z` and `%Z` commands are ignored entirely!
-#' naive_parse("2020-01-01 -4000 America/New_York", format = "%Y-%m-%d %z %Z")
-naive_parse <- function(x,
-                        ...,
-                        format = NULL,
-                        precision = "second",
-                        locale = clock_locale()) {
+#' naive_time_parse(
+#'   "2020-01-01 -4000 America/New_York",
+#'   format = "%Y-%m-%d %z %Z"
+#' )
+naive_time_parse <- function(x,
+                             ...,
+                             format = NULL,
+                             precision = "second",
+                             locale = clock_locale()) {
   precision <- validate_time_point_precision_string(precision)
 
   fields <- time_point_parse(
@@ -101,7 +104,7 @@ naive_parse <- function(x,
 #' Convert to a naive-time
 #'
 #' @description
-#' `as_naive()` converts `x` to a naive-time.
+#' `as_naive_time()` converts `x` to a naive-time.
 #'
 #' You can convert to a naive-time from any calendar type, as long as it has
 #' at least day precision. There also must not be any invalid dates. If invalid
@@ -128,40 +131,40 @@ naive_parse <- function(x,
 #' @export
 #' @examples
 #' x <- as.Date("2019-01-01")
-#' as_naive(x)
+#' as_naive_time(x)
 #'
 #' ym <- year_month_day(2019, 02)
 #'
 #' # A minimum of day precision is required
-#' try(as_naive(ym))
+#' try(as_naive_time(ym))
 #'
 #' ymd <- set_day(ym, 10)
-#' as_naive(ymd)
-as_naive <- function(x) {
-  UseMethod("as_naive")
+#' as_naive_time(ymd)
+as_naive_time <- function(x) {
+  UseMethod("as_naive_time")
 }
 
 #' @export
-as_naive.clock_naive_time <- function(x) {
+as_naive_time.clock_naive_time <- function(x) {
   x
 }
 
 #' @export
-as_naive.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("as_naive")
+as_naive_time.clock_calendar <- function(x) {
+  stop_clock_unsupported_calendar_op("as_naive_time")
 }
 
 # ------------------------------------------------------------------------------
 
 #' @export
-as_sys.clock_naive_time <- function(x) {
+as_sys_time.clock_naive_time <- function(x) {
   new_sys_time_from_fields(x, time_point_precision(x), clock_rcrd_names(x))
 }
 
 #' Convert to a zoned-time from a naive-time
 #'
 #' @description
-#' This is a naive-time method for the [as_zoned()] generic.
+#' This is a naive-time method for the [as_zoned_time()] generic.
 #'
 #' Converting to a zoned-time from a naive-time retains the printed time,
 #' but changes the underlying duration, depending on the `zone` that you choose.
@@ -285,12 +288,12 @@ as_sys.clock_naive_time <- function(x) {
 #' @examples
 #' library(magrittr)
 #'
-#' x <- as_naive(year_month_day(2019, 1, 1))
+#' x <- as_naive_time(year_month_day(2019, 1, 1))
 #'
 #' # Converting a naive-time to a zoned-time generally retains the
 #' # printed time, while changing the underlying duration.
-#' as_zoned(x, "America/New_York")
-#' as_zoned(x, "America/Los_Angeles")
+#' as_zoned_time(x, "America/New_York")
+#' as_zoned_time(x, "America/Los_Angeles")
 #'
 #' # ---------------------------------------------------------------------------
 #' # Nonexistent time:
@@ -302,23 +305,28 @@ as_sys.clock_naive_time <- function(x) {
 #' # naive-times don't exist in that time zone. By default, attempting to
 #' # convert it to a zoned time will result in an error.
 #' nonexistent_time <- year_month_day(2020, 03, 08, c(02, 03), c(45, 30), 00)
-#' nonexistent_time <- as_naive(nonexistent_time)
-#' try(as_zoned(nonexistent_time, new_york))
+#' nonexistent_time <- as_naive_time(nonexistent_time)
+#' try(as_zoned_time(nonexistent_time, new_york))
 #'
 #' # Resolve this by specifying a nonexistent time resolution strategy
-#' as_zoned(nonexistent_time, new_york, nonexistent = "roll-forward")
-#' as_zoned(nonexistent_time, new_york, nonexistent = "roll-backward")
+#' as_zoned_time(nonexistent_time, new_york, nonexistent = "roll-forward")
+#' as_zoned_time(nonexistent_time, new_york, nonexistent = "roll-backward")
 #'
 #' # Note that rolling backwards will choose the last possible moment in
 #' # time at the current precision of the input
 #' nonexistent_nanotime <- time_point_cast(nonexistent_time, "nanosecond")
 #' nonexistent_nanotime
-#' as_zoned(nonexistent_nanotime, new_york, nonexistent = "roll-backward")
+#' as_zoned_time(nonexistent_nanotime, new_york, nonexistent = "roll-backward")
 #'
 #' # A word of caution - Shifting does not guarantee that the relative ordering
 #' # of the input is maintained
-#' shifted <- as_zoned(nonexistent_time, new_york, nonexistent = "shift-forward")
+#' shifted <- as_zoned_time(
+#'   nonexistent_time,
+#'   new_york,
+#'   nonexistent = "shift-forward"
+#' )
 #' shifted
+#'
 #' # 02:45:00 < 03:30:00
 #' nonexistent_time[1] < nonexistent_time[2]
 #' # 03:45:00 > 03:30:00 (relative ordering is lost)
@@ -336,13 +344,13 @@ as_sys.clock_naive_time <- function(x) {
 #' # By default, attempting to convert it to a zoned time will result in an
 #' # error.
 #' ambiguous_time <- year_month_day(2020, 11, 01, 01, 30, 00)
-#' ambiguous_time <- as_naive(ambiguous_time)
-#' try(as_zoned(ambiguous_time, new_york))
+#' ambiguous_time <- as_naive_time(ambiguous_time)
+#' try(as_zoned_time(ambiguous_time, new_york))
 #'
 #' # Resolve this by specifying an ambiguous time resolution strategy
-#' earliest <- as_zoned(ambiguous_time, new_york, ambiguous = "earliest")
-#' latest <- as_zoned(ambiguous_time, new_york, ambiguous = "latest")
-#' na <- as_zoned(ambiguous_time, new_york, ambiguous = "NA")
+#' earliest <- as_zoned_time(ambiguous_time, new_york, ambiguous = "earliest")
+#' latest <- as_zoned_time(ambiguous_time, new_york, ambiguous = "latest")
+#' na <- as_zoned_time(ambiguous_time, new_york, ambiguous = "NA")
 #' earliest
 #' latest
 #' na
@@ -355,36 +363,38 @@ as_sys.clock_naive_time <- function(x) {
 #'
 #' # To set the seconds to 5 in both, you might try:
 #' x_naive <- x %>%
-#'   as_naive() %>%
+#'   as_naive_time() %>%
 #'   as_year_month_day() %>%
 #'   set_second(5) %>%
-#'   as_naive()
+#'   as_naive_time()
 #'
 #' x_naive
 #'
 #' # But this fails because you've "lost" the information about which
 #' # offsets these ambiguous times started in
-#' try(as_zoned(x_naive, zoned_zone(x)))
+#' try(as_zoned_time(x_naive, zoned_time_zone(x)))
 #'
 #' # To get around this, you can use that information by specifying
 #' # `ambiguous = x`, which will use the offset from `x` to resolve the
 #' # ambiguity in `x_naive` as long as `x` is also an ambiguous time with the
 #' # same daylight saving time transition point as `x_naive` (i.e. here
 #' # everything has a transition point of `"2020-11-01 01:00:00 EST"`).
-#' as_zoned(x_naive, zoned_zone(x), ambiguous = x)
+#' as_zoned_time(x_naive, zoned_time_zone(x), ambiguous = x)
 #'
 #' # Say you added one more time to `x` that would not be considered ambiguous
 #' # in naive-time
-#' x <- c(x, as_zoned(as_sys(latest) + 3600, zoned_zone(latest)))
+#' x <- c(x, as_zoned_time(as_sys_time(latest) + 3600, zoned_time_zone(latest)))
 #' x
 #'
 #' # Imagine you want to floor this vector to a multiple of 2 hours, with
 #' # an origin of 1am that day. You can do this by subtracting the origin,
 #' # flooring, then adding it back
-#' origin <- as_duration(as_naive(year_month_day(2019, 11, 01, 01, 00, 00)))
+#' origin <- year_month_day(2019, 11, 01, 01, 00, 00) %>%
+#'   as_naive_time() %>%
+#'   as_duration()
 #'
 #' x_naive <- x %>%
-#'   as_naive() %>%
+#'   as_naive_time() %>%
 #'   add_seconds(-origin) %>%
 #'   time_point_floor("hour", n = 2) %>%
 #'   add_seconds(origin)
@@ -394,7 +404,7 @@ as_sys.clock_naive_time <- function(x) {
 #' # You again have ambiguous naive-time points, so you might try using
 #' # `ambiguous = x`. It looks like this took care of the first two problems,
 #' # but we have an issue at location 3.
-#' try(as_zoned(x_naive, zoned_zone(x), ambiguous = x))
+#' try(as_zoned_time(x_naive, zoned_time_zone(x), ambiguous = x))
 #'
 #' # When we floored from 02:30:00 -> 01:00:00, we went from being
 #' # unambiguous -> ambiguous. In clock, this is something you must handle
@@ -403,12 +413,12 @@ as_sys.clock_naive_time <- function(x) {
 #' # time points that were ambiguous before and after the floor by passing a
 #' # list containing `x` and an ambiguous time resolution strategy to use
 #' # when information from `x` can't resolve ambiguities:
-#' as_zoned(x_naive, zoned_zone(x), ambiguous = list(x, "latest"))
-as_zoned.clock_naive_time <- function(x,
-                                      zone,
-                                      ...,
-                                      nonexistent = NULL,
-                                      ambiguous = NULL) {
+#' as_zoned_time(x_naive, zoned_time_zone(x), ambiguous = list(x, "latest"))
+as_zoned_time.clock_naive_time <- function(x,
+                                           zone,
+                                           ...,
+                                           nonexistent = NULL,
+                                           ambiguous = NULL) {
   zone <- zone_validate(zone)
 
   # Promote to at least seconds precision for `zoned_time`
@@ -464,7 +474,7 @@ validate_ambiguous <- function(ambiguous, size, zone) {
     return(list(method = "string", ambiguous = ambiguous))
   }
 
-  if (is_zoned(ambiguous) || inherits(ambiguous, "POSIXt")) {
+  if (is_zoned_time(ambiguous) || inherits(ambiguous, "POSIXt")) {
     # Implied `NULL`, to be validated by `strict_validate_ambiguous()`
     ambiguous <- list(ambiguous, NULL)
   }
@@ -491,10 +501,10 @@ validate_ambiguous_chr <- function(ambiguous, size) {
 
 validate_ambiguous_zoned <- function(ambiguous, size, zone) {
   # POSIXt -> zoned_time
-  reference <- as_zoned(ambiguous)
+  reference <- as_zoned_time(ambiguous)
 
   reference_size <- vec_size(reference)
-  reference_zone <- zoned_time_zone(reference)
+  reference_zone <- zoned_time_zone_attribute(reference)
 
   if (reference_size != 1L && reference_size != size) {
     abort(paste0("A zoned-time or POSIXct `ambiguous` must have length 1, or ", size, "."))
@@ -504,9 +514,9 @@ validate_ambiguous_zoned <- function(ambiguous, size, zone) {
   }
 
   # Force seconds precision to avoid the need for C++ templating
-  sys_time <- as_sys(reference)
+  sys_time <- as_sys_time(reference)
   sys_time <- time_point_floor(sys_time, "second")
-  reference <- as_zoned(sys_time, reference_zone)
+  reference <- as_zoned_time(sys_time, reference_zone)
 
   reference
 }
@@ -518,7 +528,7 @@ validate_ambiguous_list <- function(ambiguous, size, zone) {
 
   reference <- ambiguous[[1]]
 
-  if (!is_zoned(reference) && !inherits(reference, "POSIXt")) {
+  if (!is_zoned_time(reference) && !inherits(reference, "POSIXt")) {
     abort("The first element of a list `ambiguous` must be a zoned-time or POSIXt.")
   }
 
@@ -549,9 +559,9 @@ as.character.clock_naive_time <- function(x, ...) {
 #' Info: naive-time
 #'
 #' @description
-#' `naive_info()` retrieves a set of low-level information generally not
+#' `naive_time_info()` retrieves a set of low-level information generally not
 #' required for most date-time manipulations. It is used implicitly
-#' by `as_zoned()` when converting from a naive-time.
+#' by `as_zoned_time()` when converting from a naive-time.
 #'
 #' It returns a data frame with the following columns:
 #'
@@ -560,15 +570,15 @@ as.character.clock_naive_time <- function(x, ...) {
 #'   - `"unique"`: The naive-time maps uniquely to a zoned-time that can be
 #'   created with `zone`.
 #'
-#'   - `"nonexistent"`: The naive-time does not exist as a zoned-time that can be
-#'   created with `zone`.
+#'   - `"nonexistent"`: The naive-time does not exist as a zoned-time that can
+#'   be created with `zone`.
 #'
 #'   - `"ambiguous"`: The naive-time exists twice as a zoned-time that can be
 #'   created with `zone`.
 #'
-#' - `first`: A [sys_info()] data frame.
+#' - `first`: A [sys_time_info()] data frame.
 #'
-#' - `second`: A [sys_info()] data frame.
+#' - `second`: A [sys_time_info()] data frame.
 #'
 #' ## type == "unique"
 #'
@@ -602,7 +612,7 @@ as.character.clock_naive_time <- function(x, ...) {
 #'
 #'   A valid time zone name.
 #'
-#'   Unlike most functions in clock, in `naive_info()` `zone` is vectorized
+#'   Unlike most functions in clock, in `naive_time_info()` `zone` is vectorized
 #'   and is recycled against `x`.
 #'
 #' @return A data frame of low level information.
@@ -612,30 +622,30 @@ as.character.clock_naive_time <- function(x, ...) {
 #' library(vctrs)
 #'
 #' x <- year_month_day(1970, 04, 26, 02, 30, 00)
-#' x <- as_naive(x)
+#' x <- as_naive_time(x)
 #'
 #' # Maps uniquely to a time in London
-#' naive_info(x, "Europe/London")
+#' naive_time_info(x, "Europe/London")
 #'
 #' # This naive-time never existed in New York!
 #' # A DST gap jumped the time from 01:59:59 -> 03:00:00,
 #' # skipping the 2 o'clock hour
 #' zone <- "America/New_York"
-#' info <- naive_info(x, zone)
+#' info <- naive_time_info(x, zone)
 #' info
 #'
 #' # You can recreate various `nonexistent` strategies with this info
-#' as_zoned(x, zone, nonexistent = "roll-forward")
-#' as_zoned(info$first$end, zone)
+#' as_zoned_time(x, zone, nonexistent = "roll-forward")
+#' as_zoned_time(info$first$end, zone)
 #'
-#' as_zoned(x, zone, nonexistent = "roll-backward")
-#' as_zoned(info$first$end - 1, zone)
+#' as_zoned_time(x, zone, nonexistent = "roll-backward")
+#' as_zoned_time(info$first$end - 1, zone)
 #'
-#' as_zoned(x, zone, nonexistent = "shift-forward")
-#' as_zoned(as_sys(x) - info$first$offset, zone)
+#' as_zoned_time(x, zone, nonexistent = "shift-forward")
+#' as_zoned_time(as_sys_time(x) - info$first$offset, zone)
 #'
-#' as_zoned(x, zone, nonexistent = "shift-backward")
-#' as_zoned(as_sys(x) - info$second$offset, zone)
+#' as_zoned_time(x, zone, nonexistent = "shift-backward")
+#' as_zoned_time(as_sys_time(x) - info$second$offset, zone)
 #'
 #' # ---------------------------------------------------------------------------
 #' # Normalizing to UTC
@@ -654,10 +664,10 @@ as.character.clock_naive_time <- function(x, ...) {
 #' # 1 time zone in a vector of date-times at a time. So you'll need to
 #' # normalize these naive-times. The easiest thing to normalize them to
 #' # is UTC.
-#' df$naive <- naive_parse(df$x)
+#' df$naive <- naive_time_parse(df$x)
 #'
 #' # Get info about the naive times using a vector of zones
-#' info <- naive_info(df$naive, df$zone)
+#' info <- naive_time_info(df$naive, df$zone)
 #' info
 #'
 #' # We'll assume that some system generated these naive-times with no
@@ -665,15 +675,15 @@ as.character.clock_naive_time <- function(x, ...) {
 #' # to do is use the offset to convert the naive-time to a sys-time. The
 #' # relationship used is:
 #' # offset = naive_time - sys_time
-#' df$sys <- as_sys(df$naive) - info$first$offset
+#' df$sys <- as_sys_time(df$naive) - info$first$offset
 #' df
 #'
 #' # At this point, both times are in UTC. From here, you can convert them
 #' # both to either America/Los_Angeles or Europe/London as required.
-#' as_zoned(df$sys, "America/Los_Angeles")
-#' as_zoned(df$sys, "Europe/London")
-naive_info <- function(x, zone) {
-  if (!is_naive(x)) {
+#' as_zoned_time(df$sys, "America/Los_Angeles")
+#' as_zoned_time(df$sys, "Europe/London")
+naive_time_info <- function(x, zone) {
+  if (!is_naive_time(x)) {
     abort("`x` must be a naive-time.")
   }
 
@@ -684,14 +694,14 @@ naive_info <- function(x, zone) {
   size <- vec_size_common(x = x, zone = zone)
   x <- vec_recycle(x, size)
 
-  fields <- naive_info_cpp(x, precision, zone)
+  fields <- naive_time_info_cpp(x, precision, zone)
 
-  new_naive_info_from_fields(fields)
+  new_naive_time_info_from_fields(fields)
 }
 
-new_naive_info_from_fields <- function(fields) {
-  fields[["first"]] <- new_sys_info_from_fields(fields[["first"]])
-  fields[["second"]] <- new_sys_info_from_fields(fields[["second"]])
+new_naive_time_info_from_fields <- function(fields) {
+  fields[["first"]] <- new_sys_time_info_from_fields(fields[["first"]])
+  fields[["second"]] <- new_sys_time_info_from_fields(fields[["second"]])
   new_data_frame(fields)
 }
 
@@ -774,7 +784,7 @@ vec_arith.numeric.clock_naive_time <- function(op, x, y, ...) {
 # ------------------------------------------------------------------------------
 
 clock_init_naive_time_utils <- function(env) {
-  day <- as_naive(year_month_day(integer(), integer(), integer()))
+  day <- as_naive_time(year_month_day(integer(), integer(), integer()))
 
   assign("clock_empty_naive_time_day", day, envir = env)
   assign("clock_empty_naive_time_hour", time_point_cast(day, "hour"), envir = env)

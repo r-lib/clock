@@ -2,11 +2,11 @@
 % Please edit documentation in R/zoned-time.R
 \name{zoned-parsing}
 \alias{zoned-parsing}
-\alias{zoned_parse_complete}
-\alias{zoned_parse_abbrev}
+\alias{zoned_time_parse_complete}
+\alias{zoned_time_parse_abbrev}
 \title{Parsing: zoned-time}
 \usage{
-zoned_parse_complete(
+zoned_time_parse_complete(
   x,
   ...,
   format = NULL,
@@ -14,7 +14,7 @@ zoned_parse_complete(
   locale = clock_locale()
 )
 
-zoned_parse_abbrev(
+zoned_time_parse_abbrev(
   x,
   zone,
   ...,
@@ -214,32 +214,33 @@ A full time zone name.}
 A zoned-time.
 }
 \description{
-There are two parsers into a zoned-time, \code{zoned_parse_complete()} and
-\code{zoned_parse_abbrev()}.
-\subsection{zoned_parse_complete()}{
+There are two parsers into a zoned-time, \code{zoned_time_parse_complete()} and
+\code{zoned_time_parse_abbrev()}.
+\subsection{zoned_time_parse_complete()}{
 
-\code{zoned_parse_complete()} is a parser for \emph{complete} date-time strings, like
-\code{"2019-01-01 00:00:00-05:00[America/New_York]"}. A complete date-time string
-has both the time zone offset and full time zone name in the string, which is
-the only way for the string itself to contain all of the information required
-to construct a zoned-time. Because of this, \code{zoned_parse_complete()} requires
-both the \verb{\%z} and \verb{\%Z} commands to be supplied in the \code{format} string.
+\code{zoned_time_parse_complete()} is a parser for \emph{complete} date-time strings,
+like \code{"2019-01-01 00:00:00-05:00[America/New_York]"}. A complete date-time
+string has both the time zone offset and full time zone name in the string,
+which is the only way for the string itself to contain all of the information
+required to construct a zoned-time. Because of this,
+\code{zoned_time_parse_complete()} requires both the \verb{\%z} and \verb{\%Z} commands to be
+supplied in the \code{format} string.
 
 The default options assume that \code{x} should be parsed at second precision,
 using a \code{format} string of \code{"\%Y-\%m-\%d \%H:\%M:\%S\%Ez[\%Z]"}.
 }
 
-\subsection{zoned_parse_abbrev()}{
+\subsection{zoned_time_parse_abbrev()}{
 
-\code{zoned_parse_abbrev()} is a parser for date-time strings containing only a
-time zone abbreviation, like \code{"2019-01-01 00:00:00 EST"}. The time zone
+\code{zoned_time_parse_abbrev()} is a parser for date-time strings containing only
+a time zone abbreviation, like \code{"2019-01-01 00:00:00 EST"}. The time zone
 abbreviation is not enough to identify the full time zone name that the
 date-time belongs to, so the full time zone name must be supplied as the
 \code{zone} argument. However, the time zone abbreviation can help with resolving
 ambiguity around daylight saving time fallbacks.
 
-For \code{zoned_parse_abbrev()}, \verb{\%Z} must be supplied and is interpreted as the
-time zone abbreviation rather than the full time zone name.
+For \code{zoned_time_parse_abbrev()}, \verb{\%Z} must be supplied and is interpreted as
+the time zone abbreviation rather than the full time zone name.
 
 If used, the \verb{\%z} command must parse correctly, but its value will be
 completely ignored.
@@ -250,29 +251,31 @@ generally matches what R prints out by default for POSIXct objects.
 }
 }
 \details{
-If \code{zoned_parse_complete()} is given input that is length zero, all \code{NA}s, or
-completely fails to parse, then no time zone will be able to be determined.
-In that case, the result will use \code{"UTC"}.
+If \code{zoned_time_parse_complete()} is given input that is length zero, all
+\code{NA}s, or completely fails to parse, then no time zone will be able to be
+determined. In that case, the result will use \code{"UTC"}.
 
 If your date-time strings contain time zone offsets (like \code{-04:00}), but
-not the full time zone name, you might need \code{\link[=sys_parse]{sys_parse()}}.
+not the full time zone name, you might need \code{\link[=sys_time_parse]{sys_time_parse()}}.
 
-If your date-time strings don't contain time zone offsets or the full
-time zone name, you might need to use \code{\link[=naive_parse]{naive_parse()}}. From there, if you
-know the time zone that the date-times are supposed to be in, you can
-convert to a zoned-time with \code{\link[=as_zoned]{as_zoned()}}.
+If your date-time strings don't contain time zone offsets or the full time
+zone name, you might need to use \code{\link[=naive_time_parse]{naive_time_parse()}}. From there, if you
+know the time zone that the date-times are supposed to be in, you can convert
+to a zoned-time with \code{\link[=as_zoned_time]{as_zoned_time()}}.
 }
 \examples{
-zoned_parse_complete("2019-01-01 01:02:03-05:00[America/New_York]")
+library(magrittr)
 
-zoned_parse_complete(
+zoned_time_parse_complete("2019-01-01 01:02:03-05:00[America/New_York]")
+
+zoned_time_parse_complete(
   "January 21, 2019 -0500 America/New_York",
   format = "\%B \%d, \%Y \%z \%Z"
 )
 
 # Nanosecond precision
 x <- "2019/12/31 01:05:05.123456700-05:00[America/New_York]"
-zoned_parse_complete(
+zoned_time_parse_complete(
   x,
   format = "\%Y/\%m/\%d \%H:\%M:\%S\%Ez[\%Z]",
   precision = "nanosecond"
@@ -280,12 +283,14 @@ zoned_parse_complete(
 
 # The `\%z` offset must correspond to the true offset that would be used
 # if the input was parsed as a naive-time and then converted to a zoned-time
-# with as_zoned(). For example, the time that was parsed above used an
+# with `as_zoned_time()`. For example, the time that was parsed above used an
 # offset of `-05:00`. We can confirm that this is correct with:
-as_zoned(as_naive(year_month_day(2019, 1, 1, 1, 2, 3)), "America/New_York")
+year_month_day(2019, 1, 1, 1, 2, 3) \%>\%
+  as_naive_time() \%>\%
+  as_zoned_time("America/New_York")
 
 # So the following would not parse correctly
-zoned_parse_complete("2019-01-01 01:02:03-04:00[America/New_York]")
+zoned_time_parse_complete("2019-01-01 01:02:03-04:00[America/New_York]")
 
 # `\%z` is useful for breaking ties in otherwise ambiguous times. For example,
 # these two times are on either side of a daylight saving time fallback.
@@ -295,19 +300,19 @@ x <- c(
   "1970-10-25 01:30:00-05:00[America/New_York]"
 )
 
-zoned_parse_complete(x)
+zoned_time_parse_complete(x)
 
 # If you have date-time strings with time zone abbreviations,
-# `zoned_parse_abbrev()` should be able to help. The `zone` must be
+# `zoned_time_parse_abbrev()` should be able to help. The `zone` must be
 # provided, because multiple countries may use the same time zone
 # abbreviation. For example:
 x <- "1970-01-01 02:30:30 IST"
 
 # IST = India Standard Time
-zoned_parse_abbrev(x, "Asia/Kolkata")
+zoned_time_parse_abbrev(x, "Asia/Kolkata")
 
 # IST = Israel Standard Time
-zoned_parse_abbrev(x, "Asia/Jerusalem")
+zoned_time_parse_abbrev(x, "Asia/Jerusalem")
 
 # The time zone abbreviation is mainly useful for resolving ambiguity
 # around daylight saving time fallbacks. Without the abbreviation, these
@@ -316,5 +321,5 @@ x <- c(
   "1970-10-25 01:30:00 EDT",
   "1970-10-25 01:30:00 EST"
 )
-zoned_parse_abbrev(x, "America/New_York")
+zoned_time_parse_abbrev(x, "America/New_York")
 }

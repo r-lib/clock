@@ -27,22 +27,22 @@ Many of these examples are adapted from the date C++ library's [Examples and Rec
 
 ## The current local time
 
-`zoned_now()` returns the current time in a particular time zone. It will display up to nanosecond precision, but the exact amount is OS dependent (on a Mac this displays microsecond level information at nanosecond resolution).
+`zoned_time_now()` returns the current time in a particular time zone. It will display up to nanosecond precision, but the exact amount is OS dependent (on a Mac this displays microsecond level information at nanosecond resolution).
 
 Using `""` as the time zone string will try and use whatever R thinks your local time zone is (i.e. from `Sys.timezone()`).
 
 ```{r, eval=FALSE}
-zoned_now("")
+zoned_time_now("")
 #> <zoned_time<nanosecond><America/New_York (current)>[1]>
 #> [1] "2021-02-10 15:54:29.875011000-05:00"
 ```
 
 ## The current time somewhere else
 
-Pass a time zone name to `zoned_now()` to get the current time somewhere else.
+Pass a time zone name to `zoned_time_now()` to get the current time somewhere else.
 
 ```{r, eval=FALSE}
-zoned_now("Asia/Shanghai")
+zoned_time_now("Asia/Shanghai")
 #> <zoned_time<nanosecond><Asia/Shanghai>[1]>
 #> [1] "2021-02-11 04:54:29.875011000+08:00"
 ```
@@ -53,12 +53,12 @@ Say you need to set a meeting with someone in Shanghai, but you live in New York
 
 ```{r}
 my_time <- year_month_day(2019, 1, 30, 9) %>%
-  as_naive() %>%
-  as_zoned("America/New_York")
+  as_naive_time() %>%
+  as_zoned_time("America/New_York")
 
 my_time
 
-their_time <- zoned_set_zone(my_time, "Asia/Shanghai")
+their_time <- zoned_time_set_zone(my_time, "Asia/Shanghai")
 
 their_time
 ```
@@ -79,30 +79,30 @@ The first step to solve this is to force `my_time` to have the same printed time
 
 ```{r}
 my_time <- year_month_day(2019, 1, 30, 9) %>%
-  as_naive() %>%
-  as_zoned("America/New_York")
+  as_naive_time() %>%
+  as_zoned_time("America/New_York")
 
 my_time
 
 # Drop the time zone information, retaining the printed time
 my_time %>%
-  as_naive()
+  as_naive_time()
 
 # Add the correct time zone name back on,
 # again retaining the printed time
 their_9am <- my_time %>%
-  as_naive() %>%
-  as_zoned("Asia/Shanghai")
+  as_naive_time() %>%
+  as_zoned_time("Asia/Shanghai")
 
 their_9am
 ```
 
-Note that a conversion like this isn't always possible due to daylight saving time issues, in which case you might need to set the `nonexistent` and `ambiguous` arguments of `as_zoned()`.
+Note that a conversion like this isn't always possible due to daylight saving time issues, in which case you might need to set the `nonexistent` and `ambiguous` arguments of `as_zoned_time()`.
 
 What time would this have been for you in New York?
 
 ```{r}
-zoned_set_zone(their_9am, "America/New_York")
+zoned_time_set_zone(their_9am, "America/New_York")
 ```
 
 ### High level API
@@ -111,7 +111,7 @@ zoned_set_zone(their_9am, "America/New_York")
 my_time <- as.POSIXct("2019-01-30 09:00:00", "America/New_York")
 
 my_time %>%
-  as_naive() %>%
+  as_naive_time() %>%
   as.POSIXct("Asia/Shanghai") %>%
   date_set_zone("America/New_York")
 ```
@@ -121,7 +121,7 @@ my_time %>%
 Given a particular day precision naive-time, how can you compute the next Monday? This is very easily accomplished with `time_point_shift()`. It takes a time point vector and a "target" weekday, and shifts the time points to that target weekday.
 
 ```{r}
-days <- as_naive(year_month_day(2019, c(1, 2), 1))
+days <- as_naive_time(year_month_day(2019, c(1, 2), 1))
 
 # A Tuesday and a Friday
 as_weekday(days)
@@ -182,7 +182,7 @@ next_weekday2 <- function(x, target) {
   x + (target - as_weekday(x))
 }
 
-a_monday <- as_naive(year_month_day(2018, 12, 31))
+a_monday <- as_naive_time(year_month_day(2018, 12, 31))
 as_weekday(a_monday)
 
 next_weekday2(a_monday, monday)
@@ -240,8 +240,8 @@ set_day(yq, "last")
 You won't be able to generate day precision sequences with calendars. Instead, you should use a time point.
 
 ```{r}
-from <- as_naive(year_month_day(2019, 1, 1))
-to <- as_naive(year_month_day(2019, 5, 15))
+from <- as_naive_time(year_month_day(2019, 1, 1))
+to <- as_naive_time(year_month_day(2019, 5, 15))
 
 seq(from, to, by = 20)
 ```
@@ -249,8 +249,8 @@ seq(from, to, by = 20)
 If you use an integer `by` value, it is interpreted as a duration at the same precision as `from`. You can also use a duration object that can be cast to the same precision as `from`. For example, to generate a sequence spaced out by 90 minutes for these second precision end points:
 
 ```{r}
-from <- as_naive(year_month_day(2019, 1, 1, 2, 30, 00))
-to <- as_naive(year_month_day(2019, 1, 1, 12, 30, 00))
+from <- as_naive_time(year_month_day(2019, 1, 1, 2, 30, 00))
+to <- as_naive_time(year_month_day(2019, 1, 1, 12, 30, 00))
 
 seq(from, to, by = duration_minutes(90))
 ```
@@ -260,8 +260,8 @@ seq(from, to, by = duration_minutes(90))
 When working on a data analysis, you might be required to summarize certain metrics at a monthly or quarterly level. With `calendar_group()`, you can easily summarize at the granular precision that you care about. Take this vector of day precision naive-times in 2019:
 
 ```{r}
-from <- as_naive(year_month_day(2019, 1, 1))
-to <- as_naive(year_month_day(2019, 12, 31))
+from <- as_naive_time(year_month_day(2019, 1, 1))
+to <- as_naive_time(year_month_day(2019, 12, 31))
 
 x <- seq(from, to, by = duration_days(20))
 
@@ -335,8 +335,8 @@ x %>%
 While `calendar_group()` can group by "component", it isn't useful for bundling together sets of time points that can cross month/year boundaries, like "60 days" of data. For that, you are better off _flooring_ by rolling sets of 60 days.
 
 ```{r}
-from <- as_naive(year_month_day(2019, 1, 1))
-to <- as_naive(year_month_day(2019, 12, 31))
+from <- as_naive_time(year_month_day(2019, 1, 1))
+to <- as_naive_time(year_month_day(2019, 12, 31))
 
 x <- seq(from, to, by = duration_days(20))
 ```
@@ -356,7 +356,7 @@ The 60 day counter starts here, which means that any times between `[1970-01-01,
 If you would like to change this origin, you can provide a time point to start counting from with the `origin` argument. This is mostly useful if you are flooring by weeks and you want to change the day of the week that the count starts on. Since 1970-01-01 is a Thursday, flooring by 14 days defaults to returning all Thursdays.
 
 ```{r}
-x <- seq(as_naive(year_month_day(2019, 1, 1)), by = 3, length.out = 10)
+x <- seq(as_naive_time(year_month_day(2019, 1, 1)), by = 3, length.out = 10)
 x
 
 thursdays <- time_point_floor(x, "day", n = 14)
@@ -368,7 +368,7 @@ as_weekday(thursdays)
 You can use `origin` to change this to floor to Mondays.
 
 ```{r}
-origin <- as_naive(year_month_day(2018, 12, 31))
+origin <- as_naive_time(year_month_day(2018, 12, 31))
 as_weekday(origin)
 
 mondays <- time_point_floor(x, "day", n = 14, origin = origin)
@@ -422,13 +422,13 @@ x %>%
 
 ## Converting a time zone abbreviation into a time zone name
 
-It is possible that you might run into date-time strings of the form `"2020-10-25 01:30:00 IST"`, which contain a time zone _abbreviation_ rather than a full time zone name. Because time zone maintainers change the abbreviation they use throughout time, and because multiple time zones sometimes use the same abbreviation, it is generally impossible to parse strings of this form without more information. That said, if you know what time zone this abbreviation goes with, you can parse this time with `zoned_parse_abbrev()`, supplying the `zone`.
+It is possible that you might run into date-time strings of the form `"2020-10-25 01:30:00 IST"`, which contain a time zone _abbreviation_ rather than a full time zone name. Because time zone maintainers change the abbreviation they use throughout time, and because multiple time zones sometimes use the same abbreviation, it is generally impossible to parse strings of this form without more information. That said, if you know what time zone this abbreviation goes with, you can parse this time with `zoned_time_parse_abbrev()`, supplying the `zone`.
 
 ```{r}
 x <- "2020-10-25 01:30:00 IST"
 
-zoned_parse_abbrev(x, "Asia/Kolkata")
-zoned_parse_abbrev(x, "Asia/Jerusalem")
+zoned_time_parse_abbrev(x, "Asia/Kolkata")
+zoned_time_parse_abbrev(x, "Asia/Jerusalem")
 ```
 
 If you _don't_ know what time zone this abbreviation goes with, then generally you are out of luck. However, there are low-level tools in this library that can help you generate a list of _possible_ zoned-times this could map to.
@@ -436,15 +436,15 @@ If you _don't_ know what time zone this abbreviation goes with, then generally y
 Assuming that `x` is a naive-time with its corresponding time zone abbreviation attached, the first thing to do is to parse this string as a naive-time.
 
 ```{r}
-x <- naive_parse(x)
+x <- naive_time_parse(x)
 x
 ```
 
-Next, we'll develop a function that attempts to turn this naive-time into a zoned-time, iterating through all of the time zone names available in the time zone database. These time zone names are accessible through `zone_database_names()`. By using the low-level `naive_info()`, rather than `as_zoned()`, to lookup zone specific information, we'll also get back information about the UTC offset and time zone abbreviation that is currently in use. By matching this abbreviation against our input abbreviation, we can generate a list of zoned-times that use the abbreviation we care about at that particular instance in time.
+Next, we'll develop a function that attempts to turn this naive-time into a zoned-time, iterating through all of the time zone names available in the time zone database. These time zone names are accessible through `zone_database_names()`. By using the low-level `naive_time_info()`, rather than `as_zoned_time()`, to lookup zone specific information, we'll also get back information about the UTC offset and time zone abbreviation that is currently in use. By matching this abbreviation against our input abbreviation, we can generate a list of zoned-times that use the abbreviation we care about at that particular instance in time.
 
 ```{r}
 naive_find_by_abbrev <- function(x, abbrev) {
-  if (!is_naive(x)) {
+  if (!is_naive_time(x)) {
     abort("`x` must be a naive-time.")
   }
   if (length(x) != 1L) {
@@ -455,7 +455,7 @@ naive_find_by_abbrev <- function(x, abbrev) {
   }
   
   zones <- zone_database_names()
-  info <- naive_info(x, zones)
+  info <- naive_time_info(x, zones)
   info$zones <- zones
   
   c(
@@ -472,7 +472,7 @@ compute_uniques <- function(x, info, abbrev) {
   matches <- info$first$abbreviation == abbrev
   zones <- info$zones[matches]
   
-  lapply(zones, as_zoned, x = x)
+  lapply(zones, as_zoned_time, x = x)
 }
 
 compute_ambiguous <- function(x, info, abbrev) {
@@ -483,14 +483,14 @@ compute_ambiguous <- function(x, info, abbrev) {
   matches <- info$first$abbreviation == abbrev
   zones <- info$zones[matches]
   
-  earliest <- lapply(zones, as_zoned, x = x, ambiguous = "earliest")
+  earliest <- lapply(zones, as_zoned_time, x = x, ambiguous = "earliest")
   
   # Of the two possible times,
   # does the abbreviation of the latest match the input `abbrev`?
   matches <- info$second$abbreviation == abbrev
   zones <- info$zones[matches]
   
-  latest <- lapply(zones, as_zoned, x = x, ambiguous = "latest")
+  latest <- lapply(zones, as_zoned_time, x = x, ambiguous = "latest")
   
   c(earliest, latest)
 }
@@ -512,25 +512,25 @@ If there is an ambiguous mapping from `{naive-time, zone}` to `sys-time`, which 
 This example is particularly interesting, since each of the 3 candidates came from a different path. The Asia/Kolkata one is unique, the Europe/Dublin one is ambiguous but the earliest was chosen, and the Asia/Jerusalem one is ambiguous but the latest was chosen:
 
 ```{r}
-as_zoned(x, "Asia/Kolkata")
-as_zoned(x, "Europe/Dublin", ambiguous = "earliest")
-as_zoned(x, "Asia/Jerusalem", ambiguous = "latest")
+as_zoned_time(x, "Asia/Kolkata")
+as_zoned_time(x, "Europe/Dublin", ambiguous = "earliest")
+as_zoned_time(x, "Asia/Jerusalem", ambiguous = "latest")
 ```
 
 ## When is the next daylight saving time event?
 
-Given a particular zoned-time, when will it next be affected by daylight saving time? For this, we can use a relatively low level helper, `sys_info()`. It returns a data frame of information about the current daylight saving time transition points, along with information about the offset, the current time zone abbreviation, and whether or not daylight saving time is currently active or not.
+Given a particular zoned-time, when will it next be affected by daylight saving time? For this, we can use a relatively low level helper, `sys_time_info()`. It returns a data frame of information about the current daylight saving time transition points, along with information about the offset, the current time zone abbreviation, and whether or not daylight saving time is currently active or not.
 
 ```{r}
-x <- zoned_parse_complete("2019-01-01 00:00:00-05:00[America/New_York]")
+x <- zoned_time_parse_complete("2019-01-01 00:00:00-05:00[America/New_York]")
 
-info <- sys_info(as_sys(x), zoned_zone(x))
+info <- sys_time_info(as_sys_time(x), zoned_time_zone(x))
 
 # Beginning of the current DST range
-as_zoned(info$begin, zoned_zone(x))
+as_zoned_time(info$begin, zoned_time_zone(x))
 
 # Beginning of the next DST range
-as_zoned(info$end, zoned_zone(x))
+as_zoned_time(info$end, zoned_time_zone(x))
 ```
 
 So on 2018-11-04 at (the second) 1 o'clock hour, daylight saving time was turned off. On 2019-03-10 at 3 o'clock, daylight saving time will be considered on again. This is the next moment in time right after a daylight saving time gap of 1 hour, which you can see by subtracting 1 second (in sys-time):
@@ -539,7 +539,7 @@ So on 2018-11-04 at (the second) 1 o'clock hour, daylight saving time was turned
 # Last moment in time in the current DST range
 info$end %>%
   add_seconds(-1) %>%
-  as_zoned(zoned_zone(x))
+  as_zoned_time(zoned_time_zone(x))
 ```
 
 

@@ -10,23 +10,23 @@
 #'
 #' @export
 #' @examples
-#' is_zoned(1)
-#' is_zoned(zoned_now("America/New_York"))
-is_zoned <- function(x) {
+#' is_zoned_time(1)
+#' is_zoned_time(zoned_time_now("America/New_York"))
+is_zoned_time <- function(x) {
   inherits(x, "clock_zoned_time")
 }
 
 # ------------------------------------------------------------------------------
 
-zoned_time_zone <- function(x) {
+zoned_time_zone_attribute <- function(x) {
   attr(x, "zone", exact = TRUE)
 }
-zoned_time_set_zone <- function(x, zone) {
+zoned_time_set_zone_attribute <- function(x, zone) {
   attr(x, "zone") <- zone
   x
 }
 
-zoned_time_precision <- function(x) {
+zoned_time_precision_attribute <- function(x) {
   attr(x, "precision", exact = TRUE)
 }
 
@@ -187,7 +187,8 @@ zoned_time_precision <- function(x) {
 #'
 #' @export
 #' @examples
-#' x <- as_zoned(as_naive(year_month_day(2019, 1, 1)), "America/New_York")
+#' x <- year_month_day(2019, 1, 1)
+#' x <- as_zoned_time(as_naive_time(x), "America/New_York")
 #'
 #' format(x)
 #' format(x, format = "%B %d, %Y")
@@ -201,8 +202,8 @@ format.clock_zoned_time <- function(x,
     abort("`locale` must be a 'clock_locale' object.")
   }
 
-  zone <- zoned_time_zone(x)
-  precision <- zoned_time_precision(x)
+  zone <- zoned_time_zone_attribute(x)
+  precision <- zoned_time_precision_attribute(x)
 
   if (is_null(format)) {
     # Collect internal option
@@ -248,32 +249,33 @@ zoned_time_format <- function(print_zone_name) {
 #' Parsing: zoned-time
 #'
 #' @description
-#' There are two parsers into a zoned-time, `zoned_parse_complete()` and
-#' `zoned_parse_abbrev()`.
+#' There are two parsers into a zoned-time, `zoned_time_parse_complete()` and
+#' `zoned_time_parse_abbrev()`.
 #'
-#' ## zoned_parse_complete()
+#' ## zoned_time_parse_complete()
 #'
-#' `zoned_parse_complete()` is a parser for _complete_ date-time strings, like
-#' `"2019-01-01 00:00:00-05:00[America/New_York]"`. A complete date-time string
-#' has both the time zone offset and full time zone name in the string, which is
-#' the only way for the string itself to contain all of the information required
-#' to construct a zoned-time. Because of this, `zoned_parse_complete()` requires
-#' both the `%z` and `%Z` commands to be supplied in the `format` string.
+#' `zoned_time_parse_complete()` is a parser for _complete_ date-time strings,
+#' like `"2019-01-01 00:00:00-05:00[America/New_York]"`. A complete date-time
+#' string has both the time zone offset and full time zone name in the string,
+#' which is the only way for the string itself to contain all of the information
+#' required to construct a zoned-time. Because of this,
+#' `zoned_time_parse_complete()` requires both the `%z` and `%Z` commands to be
+#' supplied in the `format` string.
 #'
 #' The default options assume that `x` should be parsed at second precision,
 #' using a `format` string of `"%Y-%m-%d %H:%M:%S%Ez[%Z]"`.
 #'
-#' ## zoned_parse_abbrev()
+#' ## zoned_time_parse_abbrev()
 #'
-#' `zoned_parse_abbrev()` is a parser for date-time strings containing only a
-#' time zone abbreviation, like `"2019-01-01 00:00:00 EST"`. The time zone
+#' `zoned_time_parse_abbrev()` is a parser for date-time strings containing only
+#' a time zone abbreviation, like `"2019-01-01 00:00:00 EST"`. The time zone
 #' abbreviation is not enough to identify the full time zone name that the
 #' date-time belongs to, so the full time zone name must be supplied as the
 #' `zone` argument. However, the time zone abbreviation can help with resolving
 #' ambiguity around daylight saving time fallbacks.
 #'
-#' For `zoned_parse_abbrev()`, `%Z` must be supplied and is interpreted as the
-#' time zone abbreviation rather than the full time zone name.
+#' For `zoned_time_parse_abbrev()`, `%Z` must be supplied and is interpreted as
+#' the time zone abbreviation rather than the full time zone name.
 #'
 #' If used, the `%z` command must parse correctly, but its value will be
 #' completely ignored.
@@ -283,17 +285,17 @@ zoned_time_format <- function(print_zone_name) {
 #' generally matches what R prints out by default for POSIXct objects.
 #'
 #' @details
-#' If `zoned_parse_complete()` is given input that is length zero, all `NA`s, or
-#' completely fails to parse, then no time zone will be able to be determined.
-#' In that case, the result will use `"UTC"`.
+#' If `zoned_time_parse_complete()` is given input that is length zero, all
+#' `NA`s, or completely fails to parse, then no time zone will be able to be
+#' determined. In that case, the result will use `"UTC"`.
 #'
 #' If your date-time strings contain time zone offsets (like `-04:00`), but
-#' not the full time zone name, you might need [sys_parse()].
+#' not the full time zone name, you might need [sys_time_parse()].
 #'
-#' If your date-time strings don't contain time zone offsets or the full
-#' time zone name, you might need to use [naive_parse()]. From there, if you
-#' know the time zone that the date-times are supposed to be in, you can
-#' convert to a zoned-time with [as_zoned()].
+#' If your date-time strings don't contain time zone offsets or the full time
+#' zone name, you might need to use [naive_time_parse()]. From there, if you
+#' know the time zone that the date-times are supposed to be in, you can convert
+#' to a zoned-time with [as_zoned_time()].
 #'
 #' @inheritParams ellipsis::dots_empty
 #'
@@ -497,16 +499,18 @@ zoned_time_format <- function(print_zone_name) {
 #' @name zoned-parsing
 #'
 #' @examples
-#' zoned_parse_complete("2019-01-01 01:02:03-05:00[America/New_York]")
+#' library(magrittr)
 #'
-#' zoned_parse_complete(
+#' zoned_time_parse_complete("2019-01-01 01:02:03-05:00[America/New_York]")
+#'
+#' zoned_time_parse_complete(
 #'   "January 21, 2019 -0500 America/New_York",
 #'   format = "%B %d, %Y %z %Z"
 #' )
 #'
 #' # Nanosecond precision
 #' x <- "2019/12/31 01:05:05.123456700-05:00[America/New_York]"
-#' zoned_parse_complete(
+#' zoned_time_parse_complete(
 #'   x,
 #'   format = "%Y/%m/%d %H:%M:%S%Ez[%Z]",
 #'   precision = "nanosecond"
@@ -514,12 +518,14 @@ zoned_time_format <- function(print_zone_name) {
 #'
 #' # The `%z` offset must correspond to the true offset that would be used
 #' # if the input was parsed as a naive-time and then converted to a zoned-time
-#' # with as_zoned(). For example, the time that was parsed above used an
+#' # with `as_zoned_time()`. For example, the time that was parsed above used an
 #' # offset of `-05:00`. We can confirm that this is correct with:
-#' as_zoned(as_naive(year_month_day(2019, 1, 1, 1, 2, 3)), "America/New_York")
+#' year_month_day(2019, 1, 1, 1, 2, 3) %>%
+#'   as_naive_time() %>%
+#'   as_zoned_time("America/New_York")
 #'
 #' # So the following would not parse correctly
-#' zoned_parse_complete("2019-01-01 01:02:03-04:00[America/New_York]")
+#' zoned_time_parse_complete("2019-01-01 01:02:03-04:00[America/New_York]")
 #'
 #' # `%z` is useful for breaking ties in otherwise ambiguous times. For example,
 #' # these two times are on either side of a daylight saving time fallback.
@@ -529,19 +535,19 @@ zoned_time_format <- function(print_zone_name) {
 #'   "1970-10-25 01:30:00-05:00[America/New_York]"
 #' )
 #'
-#' zoned_parse_complete(x)
+#' zoned_time_parse_complete(x)
 #'
 #' # If you have date-time strings with time zone abbreviations,
-#' # `zoned_parse_abbrev()` should be able to help. The `zone` must be
+#' # `zoned_time_parse_abbrev()` should be able to help. The `zone` must be
 #' # provided, because multiple countries may use the same time zone
 #' # abbreviation. For example:
 #' x <- "1970-01-01 02:30:30 IST"
 #'
 #' # IST = India Standard Time
-#' zoned_parse_abbrev(x, "Asia/Kolkata")
+#' zoned_time_parse_abbrev(x, "Asia/Kolkata")
 #'
 #' # IST = Israel Standard Time
-#' zoned_parse_abbrev(x, "Asia/Jerusalem")
+#' zoned_time_parse_abbrev(x, "Asia/Jerusalem")
 #'
 #' # The time zone abbreviation is mainly useful for resolving ambiguity
 #' # around daylight saving time fallbacks. Without the abbreviation, these
@@ -550,16 +556,16 @@ zoned_time_format <- function(print_zone_name) {
 #'   "1970-10-25 01:30:00 EDT",
 #'   "1970-10-25 01:30:00 EST"
 #' )
-#' zoned_parse_abbrev(x, "America/New_York")
+#' zoned_time_parse_abbrev(x, "America/New_York")
 NULL
 
 #' @rdname zoned-parsing
 #' @export
-zoned_parse_complete <- function(x,
-                                 ...,
-                                 format = NULL,
-                                 precision = "second",
-                                 locale = clock_locale()) {
+zoned_time_parse_complete <- function(x,
+                                      ...,
+                                      format = NULL,
+                                      precision = "second",
+                                      locale = clock_locale()) {
   check_dots_empty()
 
   precision <- validate_zoned_time_precision_string(precision)
@@ -576,7 +582,7 @@ zoned_parse_complete <- function(x,
   labels <- locale$labels
   mark <- locale$decimal_mark
 
-  result <- zoned_parse_complete_cpp(
+  result <- zoned_time_parse_complete_cpp(
     x,
     format,
     precision,
@@ -593,12 +599,12 @@ zoned_parse_complete <- function(x,
 
 #' @rdname zoned-parsing
 #' @export
-zoned_parse_abbrev <- function(x,
-                               zone,
-                               ...,
-                               format = NULL,
-                               precision = "second",
-                               locale = clock_locale()) {
+zoned_time_parse_abbrev <- function(x,
+                                    zone,
+                                    ...,
+                                    format = NULL,
+                                    precision = "second",
+                                    locale = clock_locale()) {
   check_dots_empty()
 
   precision <- validate_zoned_time_precision_string(precision)
@@ -615,7 +621,7 @@ zoned_parse_abbrev <- function(x,
   labels <- locale$labels
   mark <- locale$decimal_mark
 
-  fields <- zoned_parse_abbrev_cpp(
+  fields <- zoned_time_parse_abbrev_cpp(
     x,
     zone,
     format,
@@ -650,16 +656,16 @@ vec_restore.clock_zoned_time <- function(x, to, ...) {
 
 #' @export
 vec_ptype_full.clock_zoned_time <- function(x, ...) {
-  zone <- zone_pretty(zoned_time_zone(x))
-  precision <- zoned_time_precision(x)
+  zone <- zone_pretty(zoned_time_zone_attribute(x))
+  precision <- zoned_time_precision_attribute(x)
   precision <- precision_to_string(precision)
   paste0("zoned_time<", precision, "><", zone, ">")
 }
 
 #' @export
 vec_ptype_abbr.clock_zoned_time <- function(x, ...) {
-  zone <- zone_pretty(zoned_time_zone(x))
-  precision <- zoned_time_precision(x)
+  zone <- zone_pretty(zoned_time_zone_attribute(x))
+  precision <- zoned_time_precision_attribute(x)
   precision <- precision_to_string(precision)
   precision <- precision_abbr(precision)
   paste0("zt<", precision, "><", zone, ">")
@@ -677,10 +683,10 @@ zone_pretty <- function(zone) {
 
 #' @export
 vec_ptype.clock_zoned_time <- function(x, ...) {
-  zone <- zoned_time_zone(x)
+  zone <- zoned_time_zone_attribute(x)
 
   ptype_utc <- switch(
-    zoned_time_precision(x) + 1L,
+    zoned_time_precision_attribute(x) + 1L,
     abort("Internal error: Invalid precision"),
     abort("Internal error: Invalid precision"),
     abort("Internal error: Invalid precision"),
@@ -695,22 +701,22 @@ vec_ptype.clock_zoned_time <- function(x, ...) {
     abort("Internal error: Invalid precision.")
   )
 
-  ptype <- zoned_time_set_zone(ptype_utc, zone)
+  ptype <- zoned_time_set_zone_attribute(ptype_utc, zone)
 
   ptype
 }
 
 #' @export
 vec_ptype2.clock_zoned_time.clock_zoned_time <- function(x, y, ...) {
-  x_zone <- zoned_time_zone(x)
-  y_zone <- zoned_time_zone(y)
+  x_zone <- zoned_time_zone_attribute(x)
+  y_zone <- zoned_time_zone_attribute(y)
 
   if (x_zone != y_zone) {
     stop_incompatible_type(x, y, ..., details = "Zones can't differ.")
   }
 
-  x_precision <- zoned_time_precision(x)
-  y_precision <- zoned_time_precision(y)
+  x_precision <- zoned_time_precision_attribute(x)
+  y_precision <- zoned_time_precision_attribute(y)
 
   if (x_precision >= y_precision) {
     x
@@ -721,15 +727,15 @@ vec_ptype2.clock_zoned_time.clock_zoned_time <- function(x, y, ...) {
 
 #' @export
 vec_cast.clock_zoned_time.clock_zoned_time <- function(x, to, ...) {
-  x_zone <- zoned_time_zone(x)
-  to_zone <- zoned_time_zone(to)
+  x_zone <- zoned_time_zone_attribute(x)
+  to_zone <- zoned_time_zone_attribute(to)
 
   if (x_zone != to_zone) {
     stop_incompatible_cast(x, to, ..., details = "Zones can't differ.")
   }
 
-  x_precision <- zoned_time_precision(x)
-  to_precision <- zoned_time_precision(to)
+  x_precision <- zoned_time_precision_attribute(x)
+  to_precision <- zoned_time_precision_attribute(to)
 
   if (x_precision == to_precision) {
     return(x)
@@ -788,7 +794,7 @@ pillar_shaft.clock_zoned_time <- function(x, ...) {
 #' Convert to a zoned-time
 #'
 #' @description
-#' `as_zoned()` converts `x` to a zoned-time. You generally convert
+#' `as_zoned_time()` converts `x` to a zoned-time. You generally convert
 #' to a zoned time from either a sys-time or a naive time. Each are documented
 #' on their own page:
 #'
@@ -814,38 +820,38 @@ pillar_shaft.clock_zoned_time <- function(x, ...) {
 #' @export
 #' @examples
 #' x <- as.Date("2019-01-01")
-#' as_zoned(x)
+#' as_zoned_time(x)
 #'
-#' y <- as_naive(year_month_day(2019, 2, 1))
-#' as_zoned(y, zone = "America/New_York")
-as_zoned <- function(x, ...) {
-  UseMethod("as_zoned")
+#' y <- as_naive_time(year_month_day(2019, 2, 1))
+#' as_zoned_time(y, zone = "America/New_York")
+as_zoned_time <- function(x, ...) {
+  UseMethod("as_zoned_time")
 }
 
 #' @export
-as_zoned.default <- function(x, ...) {
+as_zoned_time.default <- function(x, ...) {
   stop_clock_unsupported_conversion(x, "clock_zoned_time")
 }
 
 #' @export
-as_zoned.clock_zoned_time <- function(x, ...) {
+as_zoned_time.clock_zoned_time <- function(x, ...) {
   x
 }
 
 # ------------------------------------------------------------------------------
 
 #' @export
-as_sys.clock_zoned_time <- function(x) {
+as_sys_time.clock_zoned_time <- function(x) {
   names <- clock_rcrd_names(x)
-  precision <- zoned_time_precision(x)
+  precision <- zoned_time_precision_attribute(x)
   new_sys_time_from_fields(x, precision, names)
 }
 
 #' @export
-as_naive.clock_zoned_time <- function(x) {
+as_naive_time.clock_zoned_time <- function(x) {
   names <- clock_rcrd_names(x)
-  zone <- zoned_time_zone(x)
-  precision <- zoned_time_precision(x)
+  zone <- zoned_time_zone_attribute(x)
+  precision <- zoned_time_precision_attribute(x)
   fields <- get_naive_time_cpp(x, precision, zone)
   new_naive_time_from_fields(fields, precision, names)
 }
@@ -860,8 +866,8 @@ as.character.clock_zoned_time <- function(x, ...) {
 #' What is the current zoned-time?
 #'
 #' @description
-#' `zoned_now()` returns the current time in the corresponding `zone`. It
-#' is a wrapper around [sys_now()] that attaches the time zone.
+#' `zoned_time_now()` returns the current time in the corresponding `zone`. It
+#' is a wrapper around [sys_time_now()] that attaches the time zone.
 #'
 #' @details
 #' The time is returned with a nanosecond precision, but the actual amount
@@ -877,10 +883,10 @@ as.character.clock_zoned_time <- function(x, ...) {
 #'
 #' @export
 #' @examples
-#' x <- zoned_now("America/New_York")
-zoned_now <- function(zone) {
+#' x <- zoned_time_now("America/New_York")
+zoned_time_now <- function(zone) {
   names <- NULL
-  sys_time <- sys_now()
+  sys_time <- sys_time_now()
   precision <- time_point_precision(sys_time)
   zone <- zone_validate(zone)
   new_zoned_time_from_fields(sys_time, precision, zone, names)
@@ -891,9 +897,9 @@ zoned_now <- function(zone) {
 #' Get or set the time zone
 #'
 #' @description
-#' `zoned_zone()` gets the time zone.
+#' `zoned_time_zone()` gets the time zone.
 #'
-#' `zoned_set_zone()` sets the time zone _without changing the
+#' `zoned_time_set_zone()` sets the time zone _without changing the
 #' underlying instant_. This means that the result will represent the equivalent
 #' time in the new time zone.
 #'
@@ -906,51 +912,52 @@ zoned_now <- function(zone) {
 #'   A valid time zone to switch to.
 #'
 #' @return
-#' `zoned_zone()` returns a string containing the time zone.
+#' `zoned_time_zone()` returns a string containing the time zone.
 #'
-#' `zoned_set_zone()` returns `x` with an altered time zone attribute. The
+#' `zoned_time_set_zone()` returns `x` with an altered time zone attribute. The
 #' underlying instant is _not_ changed.
 #'
 #' @name zoned-zone
 #'
 #' @examples
-#' x <- as_zoned(as_naive(year_month_day(2019, 1, 1)), "America/New_York")
+#' x <- year_month_day(2019, 1, 1)
+#' x <- as_zoned_time(as_naive_time(x), "America/New_York")
 #' x
 #'
-#' zoned_zone(x)
+#' zoned_time_zone(x)
 #'
 #' # Equivalent UTC time
-#' zoned_set_zone(x, "UTC")
+#' zoned_time_set_zone(x, "UTC")
 #'
 #' # To force a new time zone with the same printed time,
 #' # convert to a naive time that has no implied time zone,
 #' # then convert back to a zoned time in the new time zone.
-#' nt <- as_naive(x)
+#' nt <- as_naive_time(x)
 #' nt
-#' as_zoned(nt, "UTC")
+#' as_zoned_time(nt, "UTC")
 NULL
 
 #' @rdname zoned-zone
 #' @export
-zoned_zone <- function(x) {
-  UseMethod("zoned_zone")
+zoned_time_zone <- function(x) {
+  UseMethod("zoned_time_zone")
 }
 
 #' @export
-zoned_zone.clock_zoned_time <- function(x) {
-  zoned_time_zone(x)
+zoned_time_zone.clock_zoned_time <- function(x) {
+  zoned_time_zone_attribute(x)
 }
 
 #' @rdname zoned-zone
 #' @export
-zoned_set_zone <- function(x, zone) {
-  UseMethod("zoned_set_zone")
+zoned_time_set_zone <- function(x, zone) {
+  UseMethod("zoned_time_set_zone")
 }
 
 #' @export
-zoned_set_zone.clock_zoned_time <- function(x, zone) {
+zoned_time_set_zone.clock_zoned_time <- function(x, zone) {
   zone <- zone_validate(zone)
-  zoned_time_set_zone(x, zone)
+  zoned_time_set_zone_attribute(x, zone)
 }
 
 # ------------------------------------------------------------------------------
@@ -1044,10 +1051,10 @@ is_valid_zoned_time_precision <- function(precision) {
 # ------------------------------------------------------------------------------
 
 clock_init_zoned_time_utils <- function(env) {
-  assign("clock_empty_zoned_time_utc_second", as_zoned(as_sys(duration_seconds()), "UTC"), envir = env)
-  assign("clock_empty_zoned_time_utc_millisecond", as_zoned(as_sys(duration_milliseconds()), "UTC"), envir = env)
-  assign("clock_empty_zoned_time_utc_microsecond", as_zoned(as_sys(duration_microseconds()), "UTC"), envir = env)
-  assign("clock_empty_zoned_time_utc_nanosecond", as_zoned(as_sys(duration_nanoseconds()), "UTC"), envir = env)
+  assign("clock_empty_zoned_time_utc_second", as_zoned_time(as_sys_time(duration_seconds()), "UTC"), envir = env)
+  assign("clock_empty_zoned_time_utc_millisecond", as_zoned_time(as_sys_time(duration_milliseconds()), "UTC"), envir = env)
+  assign("clock_empty_zoned_time_utc_microsecond", as_zoned_time(as_sys_time(duration_microseconds()), "UTC"), envir = env)
+  assign("clock_empty_zoned_time_utc_nanosecond", as_zoned_time(as_sys_time(duration_nanoseconds()), "UTC"), envir = env)
 
   invisible(NULL)
 }

@@ -8,8 +8,7 @@ template <class ClockDuration>
 static
 inline
 cpp11::writable::list
-naive_info_impl(const ClockDuration& x,
-                const cpp11::strings& zone) {
+naive_time_info_impl(const ClockDuration& x, const cpp11::strings& zone) {
   const r_ssize size = x.size();
   using Duration = typename ClockDuration::duration;
 
@@ -77,7 +76,7 @@ naive_info_impl(const ClockDuration& x,
     case date::local_info::unique: SET_STRING_ELT(type, i, type_unique); break;
     case date::local_info::nonexistent: SET_STRING_ELT(type, i, type_nonexistent); break;
     case date::local_info::ambiguous: SET_STRING_ELT(type, i, type_ambiguous); break;
-    default: never_reached("naive_info_impl");
+    default: never_reached("naive_time_info_impl");
     }
 
     first_begin.assign(first.begin.time_since_epoch(), i);
@@ -140,9 +139,9 @@ naive_info_impl(const ClockDuration& x,
 
 [[cpp11::register]]
 cpp11::writable::list
-naive_info_cpp(cpp11::list_of<cpp11::integers> fields,
-               const cpp11::integers& precision_int,
-               const cpp11::strings& zone) {
+naive_time_info_cpp(cpp11::list_of<cpp11::integers> fields,
+                    const cpp11::integers& precision_int,
+                    const cpp11::strings& zone) {
   using namespace rclock;
 
   const cpp11::integers ticks = duration::get_ticks(fields);
@@ -156,11 +155,11 @@ naive_info_cpp(cpp11::list_of<cpp11::integers> fields,
   const duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
   switch (parse_precision(precision_int)) {
-  case precision::day: return naive_info_impl(dd, zone);
-  case precision::second: return naive_info_impl(ds, zone);
-  case precision::millisecond: return naive_info_impl(dmilli, zone);
-  case precision::microsecond: return naive_info_impl(dmicro, zone);
-  case precision::nanosecond: return naive_info_impl(dnano, zone);
+  case precision::day: return naive_time_info_impl(dd, zone);
+  case precision::second: return naive_time_info_impl(ds, zone);
+  case precision::millisecond: return naive_time_info_impl(dmilli, zone);
+  case precision::microsecond: return naive_time_info_impl(dmicro, zone);
+  case precision::nanosecond: return naive_time_info_impl(dnano, zone);
   default: clock_abort("Internal error: Should never be called.");
   }
 }

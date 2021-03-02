@@ -124,15 +124,15 @@ reference:
 
 - title: Time points
   contents:
-  - sys_now
-  - as_naive
-  - as_sys
-  - is_naive
-  - is_sys
-  - naive_parse
-  - sys_parse
-  - naive_info
-  - sys_info
+  - sys_time_now
+  - as_naive_time
+  - as_sys_time
+  - is_naive_time
+  - is_sys_time
+  - naive_time_parse
+  - sys_time_parse
+  - naive_time_info
+  - sys_time_info
   - time_point_cast
   - time-point-rounding
   - time_point_shift
@@ -143,11 +143,11 @@ reference:
 
 - title: Zoned-time
   contents:
-  - zoned_now
-  - as_zoned
-  - is_zoned
+  - zoned_time_now
+  - as_zoned_time
+  - is_zoned_time
   - zoned-parsing
-  - zoned_zone
+  - zoned_time_zone
   - format.clock_zoned_time
 
 - title: Weekdays

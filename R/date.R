@@ -1,5 +1,5 @@
 #' @export
-as_sys.Date <- function(x) {
+as_sys_time.Date <- function(x) {
   names <- names(x)
   x <- unstructure(x)
   x <- duration_days(x)
@@ -7,14 +7,14 @@ as_sys.Date <- function(x) {
 }
 
 #' @export
-as_naive.Date <- function(x) {
-  as_naive(as_sys(x))
+as_naive_time.Date <- function(x) {
+  as_naive_time(as_sys_time(x))
 }
 
 #' Convert to a zoned-time from a date
 #'
 #' @description
-#' This is a Date method for the [as_zoned()] generic.
+#' This is a Date method for the [as_zoned_time()] generic.
 #'
 #' Since R assumes that Dates are UTC, converting to a zoned-time returns
 #' a zoned-time with a UTC time zone. There is no `zone` argument.
@@ -31,41 +31,41 @@ as_naive.Date <- function(x) {
 #' @export
 #' @examples
 #' x <- as.Date("2019-01-01")
-#' as_zoned(x)
-as_zoned.Date <- function(x, ...) {
+#' as_zoned_time(x)
+as_zoned_time.Date <- function(x, ...) {
   check_dots_empty()
-  x <- as_sys(x)
-  as_zoned(x, zone = "UTC")
+  x <- as_sys_time(x)
+  as_zoned_time(x, zone = "UTC")
 }
 
 #' @export
 as_year_month_day.Date <- function(x) {
-  as_year_month_day(as_sys(x))
+  as_year_month_day(as_sys_time(x))
 }
 
 #' @export
 as_year_month_weekday.Date <- function(x) {
-  as_year_month_weekday(as_sys(x))
+  as_year_month_weekday(as_sys_time(x))
 }
 
 #' @export
 as_year_quarter_day.Date <- function(x, ..., start = NULL) {
-  as_year_quarter_day(as_sys(x), ..., start = start)
+  as_year_quarter_day(as_sys_time(x), ..., start = start)
 }
 
 #' @export
 as_iso_year_week_day.Date <- function(x) {
-  as_iso_year_week_day(as_sys(x))
+  as_iso_year_week_day(as_sys_time(x))
 }
 
 #' @export
 as_year_day.Date <- function(x) {
-  as_year_day(as_sys(x))
+  as_year_day(as_sys_time(x))
 }
 
 #' @export
 as_weekday.Date <- function(x) {
-  as_weekday(as_sys(x))
+  as_weekday(as_sys_time(x))
 }
 
 # ------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ as_weekday.Date <- function(x) {
 
 #' @export
 as.Date.clock_calendar <- function(x, ...) {
-  as.Date(as_sys(x))
+  as.Date(as_sys_time(x))
 }
 
 #' @export
@@ -90,7 +90,7 @@ as.Date.clock_time_point <- function(x, ...) {
 
 #' @export
 as.Date.clock_zoned_time <- function(x, ...) {
-  as.Date(as_sys(x))
+  as.Date(as_sys_time(x))
 }
 
 # ------------------------------------------------------------------------------
@@ -350,7 +350,7 @@ add_days.Date <- function(x, n, ...) {
 }
 add_date_duration_time_point <- function(x, n, add_fn, ...) {
   check_dots_empty()
-  x <- as_sys(x)
+  x <- as_sys_time(x)
   x <- add_fn(x, n)
   as.Date(x)
 }
@@ -643,7 +643,7 @@ date_rounder <- function(x, precision, n, origin, time_point_rounder, ...) {
   precision <- result$precision
   n <- result$n
 
-  x <- as_naive(x)
+  x <- as_naive_time(x)
 
   if (!is_null(origin)) {
     origin <- collect_date_rounder_origin(origin)
@@ -679,7 +679,7 @@ collect_date_rounder_origin <- function(origin) {
     abort("`origin` must not be `NA` or an infinite date.")
   }
 
-  origin <- as_naive(origin)
+  origin <- as_naive_time(origin)
 
   origin
 }
@@ -821,7 +821,7 @@ date_format.Date <- function(x,
                              locale = clock_locale(),
                              abbreviate_zone = FALSE) {
   check_dots_empty()
-  x <- as_zoned(x)
+  x <- as_zoned_time(x)
   format(x, format = format, locale = locale, abbreviate_zone = abbreviate_zone)
 }
 
@@ -879,13 +879,13 @@ date_format.Date <- function(x,
 #' # irregularities with the `nonexistent` and `ambiguous` arguments to
 #' # `as.POSIXct()`!
 #' x %>%
-#'   as_naive() %>%
+#'   as_naive_time() %>%
 #'   as.POSIXct("America/Los_Angeles")
 #'
 #' y <- as.POSIXct("2021-03-28 03:30:00", "America/New_York")
 #' y
 #'
-#' y_nt <- as_naive(y)
+#' y_nt <- as_naive_time(y)
 #' y_nt
 #'
 #' # Helsinki had a daylight saving time gap where they jumped from
@@ -960,7 +960,7 @@ date_set_zone.Date <- function(x, zone) {
 #' # the ISO year-week-day format
 #' date_parse("2020-W01-2", format = "%G-W%V-%u")
 date_parse <- function(x, ..., format = NULL, locale = clock_locale()) {
-  x <- sys_parse(x, ..., format = format, precision = "day", locale = locale)
+  x <- sys_time_parse(x, ..., format = format, precision = "day", locale = locale)
   as.Date(x)
 }
 
@@ -1061,7 +1061,7 @@ date_shift.Date <- function(x,
                             ...,
                             which = "next",
                             boundary = "keep") {
-  x <- as_naive(x)
+  x <- as_naive_time(x)
   x <- time_point_shift(x, target, ..., which = which, boundary = boundary)
   as.Date(x)
 }

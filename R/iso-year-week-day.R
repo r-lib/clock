@@ -608,7 +608,7 @@ iso_year_week_day_minus_iso_year_week_day <- function(op, x, y, ...) {
 #'
 #' You cannot add weeks or days to an iso-year-week-day calendar. Adding
 #' days is much more efficiently done by converting to a time point first
-#' by using [as_naive()] or [as_sys()]. Adding weeks is equally
+#' by using [as_naive_time()] or [as_sys_time()]. Adding weeks is equally
 #' as efficient as adding 7 days. Additionally, adding weeks to an invalid
 #' iso-year-week object containing `iso_year_week_day(2019, 53)` would be
 #' undefined, as the 53rd ISO week of 2019 doesn't exist to begin with.
@@ -692,7 +692,7 @@ as_iso_year_week_day.clock_iso_year_week_day <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-as_sys.clock_iso_year_week_day <- function(x) {
+as_sys_time.clock_iso_year_week_day <- function(x) {
   calendar_require_all_valid(x)
   precision <- calendar_precision(x)
   fields <- as_sys_time_iso_year_week_day_cpp(x, precision)
@@ -700,8 +700,8 @@ as_sys.clock_iso_year_week_day <- function(x) {
 }
 
 #' @export
-as_naive.clock_iso_year_week_day <- function(x) {
-  as_naive(as_sys(x))
+as_naive_time.clock_iso_year_week_day <- function(x) {
+  as_naive_time(as_sys_time(x))
 }
 
 #' @export

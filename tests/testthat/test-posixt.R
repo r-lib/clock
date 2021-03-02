@@ -274,7 +274,7 @@ test_that("throws warning on failed parses", {
 test_that("can parse into a POSIXct using the abbrev", {
   expect_identical(
     date_time_parse_abbrev("2019-01-01 01:02:03 EST", "America/New_York"),
-    as.POSIXct(as_naive(year_month_day(2019, 1, 1, 1, 2, 3)), "America/New_York")
+    as.POSIXct(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3)), "America/New_York")
   )
 })
 

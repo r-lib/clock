@@ -42,7 +42,7 @@ Grouping for a year-day object can be done at any precision, as
 long as \code{x} is at least as precise as \code{precision}.
 }
 \examples{
-x <- seq(as_naive(year_month_day(2019, 1, 1)), by = 5, length.out = 20)
+x <- seq(as_naive_time(year_month_day(2019, 1, 1)), by = 5, length.out = 20)
 x <- as_year_day(x)
 x
 

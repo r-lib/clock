@@ -344,8 +344,8 @@ iso_year_week_day_minus_iso_year_week_day_cpp <- function(x, y, precision_int) {
   .Call(`_clock_iso_year_week_day_minus_iso_year_week_day_cpp`, x, y, precision_int)
 }
 
-naive_info_cpp <- function(fields, precision_int, zone) {
-  .Call(`_clock_naive_info_cpp`, fields, precision_int, zone)
+naive_time_info_cpp <- function(fields, precision_int, zone) {
+  .Call(`_clock_naive_time_info_cpp`, fields, precision_int, zone)
 }
 
 new_year_quarter_day_from_fields <- function(fields, precision_int, start, names) {
@@ -416,12 +416,12 @@ clock_rcrd_set_names <- function(x, names) {
   .Call(`_clock_clock_rcrd_set_names`, x, names)
 }
 
-sys_now_cpp <- function() {
-  .Call(`_clock_sys_now_cpp`)
+sys_time_now_cpp <- function() {
+  .Call(`_clock_sys_time_now_cpp`)
 }
 
-sys_info_cpp <- function(fields, precision_int, zone) {
-  .Call(`_clock_sys_info_cpp`, fields, precision_int, zone)
+sys_time_info_cpp <- function(fields, precision_int, zone) {
+  .Call(`_clock_sys_time_info_cpp`, fields, precision_int, zone)
 }
 
 new_time_point_from_fields <- function(fields, precision_int, clock_int, names) {
@@ -492,10 +492,10 @@ to_sys_seconds_from_sys_duration_fields_cpp <- function(fields) {
   .Call(`_clock_to_sys_seconds_from_sys_duration_fields_cpp`, fields)
 }
 
-zoned_parse_complete_cpp <- function(x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {
-  .Call(`_clock_zoned_parse_complete_cpp`, x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark)
+zoned_time_parse_complete_cpp <- function(x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {
+  .Call(`_clock_zoned_time_parse_complete_cpp`, x, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark)
 }
 
-zoned_parse_abbrev_cpp <- function(x, zone, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {
-  .Call(`_clock_zoned_parse_abbrev_cpp`, x, zone, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark)
+zoned_time_parse_abbrev_cpp <- function(x, zone, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark) {
+  .Call(`_clock_zoned_time_parse_abbrev_cpp`, x, zone, format, precision_int, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark)
 }

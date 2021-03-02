@@ -79,5 +79,5 @@ set_day(x, "last")
 
 # Daily sequences are not allowed. Use a naive-time for this instead.
 try(seq(year_month_day(2019, 1, 1), by = 2, length.out = 2))
-seq(as_naive(year_month_day(2019, 1, 1)), by = 2, length.out = 2)
+seq(as_naive_time(year_month_day(2019, 1, 1)), by = 2, length.out = 2)
 }

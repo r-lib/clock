@@ -125,17 +125,17 @@ test_that("invalid dates must be resolved when converting to another calendar", 
 })
 
 # ------------------------------------------------------------------------------
-# as_sys()
+# as_sys_time()
 
 test_that("invalid dates must be resolved when converting to a sys-time", {
-  expect_snapshot_error(as_sys(year_day(2019, 366)))
+  expect_snapshot_error(as_sys_time(year_day(2019, 366)))
 })
 
 # ------------------------------------------------------------------------------
-# as_naive()
+# as_naive_time()
 
 test_that("invalid dates must be resolved when converting to a naive-time", {
-  expect_snapshot_error(as_naive(year_day(2019, 366)))
+  expect_snapshot_error(as_naive_time(year_day(2019, 366)))
 })
 
 # ------------------------------------------------------------------------------
@@ -291,12 +291,12 @@ test_that("seq(by, length.out) works", {
 
 test_that("can roundtrip to naive-time", {
   x <- seq(
-    as_naive(year_month_day(-9999, 1, 1)),
-    as_naive(year_month_day(9999, 12, 31)),
+    as_naive_time(year_month_day(-9999, 1, 1)),
+    as_naive_time(year_month_day(9999, 12, 31)),
     by = 1
   )
 
-  expect_identical(x, as_naive(as_year_day(x)))
+  expect_identical(x, as_naive_time(as_year_day(x)))
 })
 
 # ------------------------------------------------------------------------------
