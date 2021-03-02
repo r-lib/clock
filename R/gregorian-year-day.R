@@ -561,7 +561,7 @@ year_day_minus_year_day <- function(op, x, y, ...) {
 #' - `add_years()`
 #'
 #' Notably, _you cannot add days to a year-day_. For day-based arithmetic,
-#' first convert to a time point with [as_naive()] or [as_sys()].
+#' first convert to a time point with [as_naive()] or [as_sys_time()].
 #'
 #' @details
 #' `x` and `n` are recycled against each other.
@@ -663,7 +663,7 @@ as_year_day.clock_year_day <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-as_sys.clock_year_day <- function(x) {
+as_sys_time.clock_year_day <- function(x) {
   calendar_require_all_valid(x)
   precision <- calendar_precision(x)
   fields <- as_sys_time_year_day_cpp(x, precision)
@@ -672,7 +672,7 @@ as_sys.clock_year_day <- function(x) {
 
 #' @export
 as_naive.clock_year_day <- function(x) {
-  as_naive(as_sys(x))
+  as_naive(as_sys_time(x))
 }
 
 #' @export

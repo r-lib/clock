@@ -62,9 +62,9 @@ floor
 # Flooring is generally more useful when working with time points,
 # note that the cast ends up rounding the pre-1970 date up to the next
 # day, while the post-1970 date is rounded down.
-as_sys(x)
-as_sys(cast)
-as_sys(floor)
+as_sys_time(x)
+as_sys_time(cast)
+as_sys_time(floor)
 
 # Casting to a more precise precision
 duration_cast(x, "millisecond")

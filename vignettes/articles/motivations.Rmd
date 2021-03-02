@@ -459,7 +459,7 @@ as_zoned(x[1], "America/New_York")
 Sys-time is interpreted as being UTC. Converting it to a zoned-time will keep the underlying duration, but will change the printed time.
 
 ```{r}
-x_sys <- as_sys(x[1])
+x_sys <- as_sys_time(x[1])
 x_sys
 
 # Subtract 4 hours to print the America/New_York time
@@ -642,7 +642,7 @@ Time points, such as naive-time and sys-time, can vary in precision from day to 
 ```{r}
 as_naive(year_month_day(2019, 1, 2))
 
-as_sys(year_month_day(
+as_sys_time(year_month_day(
   2019, 2, 3, 1, 30, 35, 123, 
   subsecond_precision = "millisecond"
 ))
@@ -651,11 +651,11 @@ as_sys(year_month_day(
 Unlike calendars, a time point at say, second precision, is considered equivalent to a time point at millisecond precision with millisecond information set to 0.
 
 ```{r}
-sec <- as_sys(year_month_day(
+sec <- as_sys_time(year_month_day(
   2019, 2, 3, 1, 30, 35
 ))
 
-milli <- as_sys(year_month_day(
+milli <- as_sys_time(year_month_day(
   2019, 2, 3, 1, 30, 35, 0, 
   subsecond_precision = "millisecond"
 ))

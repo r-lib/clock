@@ -524,7 +524,7 @@ Given a particular zoned-time, when will it next be affected by daylight saving 
 ```{r}
 x <- zoned_parse_complete("2019-01-01 00:00:00-05:00[America/New_York]")
 
-info <- sys_info(as_sys(x), zoned_zone(x))
+info <- sys_info(as_sys_time(x), zoned_zone(x))
 
 # Beginning of the current DST range
 as_zoned(info$begin, zoned_zone(x))

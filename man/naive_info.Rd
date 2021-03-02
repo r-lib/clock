@@ -91,10 +91,10 @@ as_zoned(x, zone, nonexistent = "roll-backward")
 as_zoned(info$first$end - 1, zone)
 
 as_zoned(x, zone, nonexistent = "shift-forward")
-as_zoned(as_sys(x) - info$first$offset, zone)
+as_zoned(as_sys_time(x) - info$first$offset, zone)
 
 as_zoned(x, zone, nonexistent = "shift-backward")
-as_zoned(as_sys(x) - info$second$offset, zone)
+as_zoned(as_sys_time(x) - info$second$offset, zone)
 
 # ---------------------------------------------------------------------------
 # Normalizing to UTC
@@ -124,7 +124,7 @@ info
 # to do is use the offset to convert the naive-time to a sys-time. The
 # relationship used is:
 # offset = naive_time - sys_time
-df$sys <- as_sys(df$naive) - info$first$offset
+df$sys <- as_sys_time(df$naive) - info$first$offset
 df
 
 # At this point, both times are in UTC. From here, you can convert them

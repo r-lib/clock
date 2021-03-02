@@ -217,7 +217,7 @@ as_zoned(x_naive, zoned_zone(x), ambiguous = x)
 
 # Say you added one more time to `x` that would not be considered ambiguous
 # in naive-time
-x <- c(x, as_zoned(as_sys(latest) + 3600, zoned_zone(latest)))
+x <- c(x, as_zoned(as_sys_time(latest) + 3600, zoned_zone(latest)))
 x
 
 # Imagine you want to floor this vector to a multiple of 2 hours, with

@@ -2,12 +2,12 @@
 # print() / obj_print_data() / obj_print_footer()
 
 test_that("normal print method works", {
-  x <- as_sys(year_month_day(2019, 1:5, 1))
+  x <- as_sys_time(year_month_day(2019, 1:5, 1))
   expect_snapshot(x)
 })
 
 test_that("can limit with `max`", {
-  x <- as_sys(year_month_day(2019, 1:5, 1))
+  x <- as_sys_time(year_month_day(2019, 1:5, 1))
 
   expect_snapshot(print(x, max = 2))
   expect_snapshot(print(x, max = 4))

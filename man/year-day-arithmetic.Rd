@@ -32,7 +32,7 @@ These are year-day methods for the
 }
 
 Notably, \emph{you cannot add days to a year-day}. For day-based arithmetic,
-first convert to a time point with \code{\link[=as_naive]{as_naive()}} or \code{\link[=as_sys]{as_sys()}}.
+first convert to a time point with \code{\link[=as_naive]{as_naive()}} or \code{\link[=as_sys_time]{as_sys_time()}}.
 }
 \details{
 \code{x} and \code{n} are recycled against each other.

@@ -40,7 +40,7 @@ These are year-month-day methods for the
 }
 
 Notably, \emph{you cannot add days to a year-month-day}. For day-based arithmetic,
-first convert to a time point with \code{\link[=as_naive]{as_naive()}} or \code{\link[=as_sys]{as_sys()}}.
+first convert to a time point with \code{\link[=as_naive]{as_naive()}} or \code{\link[=as_sys_time]{as_sys_time()}}.
 }
 \details{
 Adding a single quarter with \code{add_quarters()} is equivalent to adding

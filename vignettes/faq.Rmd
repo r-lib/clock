@@ -107,7 +107,7 @@ x
 as_naive(x)
 
 # The equivalent time in UTC
-as_sys(x)
+as_sys_time(x)
 
 zoned_zone(x)
 ```
@@ -123,7 +123,7 @@ x %>%
   as_zoned(zoned_zone(x))
 
 x %>%
-  as_sys() %>%
+  as_sys_time() %>%
   add_seconds(1) %>%
   as_zoned(zoned_zone(x))
 ```
@@ -141,7 +141,7 @@ x %>%
   as_zoned(zoned_zone(x))
 
 x %>%
-  as_sys() %>%
+  as_sys_time() %>%
   add_minutes(30) %>%
   as_zoned(zoned_zone(x))
 ```

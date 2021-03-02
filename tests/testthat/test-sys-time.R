@@ -21,13 +21,13 @@ test_that("can lookup sys-info", {
   x <- as_naive(x)
   x <- as_zoned(x, "America/New_York")
 
-  info <- sys_info(as_sys(x), zoned_zone(x))
+  info <- sys_info(as_sys_time(x), zoned_zone(x))
 
-  beginend1 <- as_sys(c(
+  beginend1 <- as_sys_time(c(
     year_month_day(2020, 11, 1, 6, 0, 0),
     year_month_day(2021, 03, 14, 7, 0, 0)
   ))
-  beginend2 <- as_sys(c(
+  beginend2 <- as_sys_time(c(
     year_month_day(2021, 03, 14, 7, 0, 0),
     year_month_day(2021, 11, 7, 6, 0, 0)
   ))
@@ -42,7 +42,7 @@ test_that("can lookup sys-info", {
 
 test_that("`zone` is vectorized and recycled against `x`", {
   zones <- c("America/New_York", "Australia/Lord_Howe")
-  x <- as_sys(year_month_day(2019, 1, 1))
+  x <- as_sys_time(year_month_day(2019, 1, 1))
 
   info <- sys_info(x, zones)
 
@@ -61,11 +61,11 @@ test_that("`zone` is vectorized and recycled against `x`", {
 
 test_that("very old times are looked up correctly", {
   x <- year_month_day(1800, 01, 01)
-  x <- as_sys(x)
+  x <- as_sys_time(x)
 
   info <- sys_info(x, "America/New_York")
 
-  end <- as_sys(year_month_day(1883, 11, 18, 17, 00, 00))
+  end <- as_sys_time(year_month_day(1883, 11, 18, 17, 00, 00))
   offset <- duration_seconds(-17762)
   dst <- FALSE
   abbreviation <- "LMT"
@@ -80,10 +80,10 @@ test_that("very old times are looked up correctly", {
 # as.character()
 
 test_that("as.character() works", {
-  x <- as_sys(year_month_day(2019, 1, 1))
+  x <- as_sys_time(year_month_day(2019, 1, 1))
   expect_identical(as.character(x), "2019-01-01")
 
-  x <- as_sys(year_month_day(2019, 1, 1, 1, 1))
+  x <- as_sys_time(year_month_day(2019, 1, 1, 1, 1))
   expect_identical(as.character(x), "2019-01-01 01:01")
 })
 
@@ -97,7 +97,7 @@ test_that("can parse day precision", {
 
   expect_identical(
     sys_time_parse(x, precision = "day"),
-    as_sys(year_month_day(2019, 1, c(1, 31)))
+    as_sys_time(year_month_day(2019, 1, c(1, 31)))
   )
 })
 
@@ -107,11 +107,11 @@ test_that("%z shifts the result by the offset", {
 
   expect_identical(
     sys_time_parse(x, format = "%Y-%m-%d %H:%M:%S%z"),
-    as_sys(year_month_day(2018, 12, 31, 23, 0, 0))
+    as_sys_time(year_month_day(2018, 12, 31, 23, 0, 0))
   )
   expect_identical(
     sys_time_parse(y, format = "%Y-%m-%d %H:%M:%S%z"),
-    as_sys(year_month_day(2019, 1, 1, 1, 0, 0))
+    as_sys_time(year_month_day(2019, 1, 1, 1, 0, 0))
   )
 })
 

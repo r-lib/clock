@@ -33,7 +33,7 @@ If you want to retain the printed time, try converting to a zoned-time
 with a yet-to-be-determined time zone.
 }
 \examples{
-x <- as_sys(year_month_day(2019, 02, 01, 02, 30, 00))
+x <- as_sys_time(year_month_day(2019, 02, 01, 02, 30, 00))
 x
 
 # Since sys-time is interpreted as UTC, converting to a zoned-time with

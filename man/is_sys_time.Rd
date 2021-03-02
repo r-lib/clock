@@ -19,5 +19,5 @@ This function determines if the input is a sys-time object.
 }
 \examples{
 is_sys_time(1)
-is_sys_time(as_sys(duration_days(1)))
+is_sys_time(as_sys_time(duration_days(1)))
 }

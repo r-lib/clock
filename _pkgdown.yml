@@ -126,7 +126,7 @@ reference:
   contents:
   - sys_now
   - as_naive
-  - as_sys
+  - as_sys_time
   - is_naive
   - is_sys_time
   - naive_parse

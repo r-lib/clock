@@ -835,7 +835,7 @@ as_zoned.clock_zoned_time <- function(x, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
-as_sys.clock_zoned_time <- function(x) {
+as_sys_time.clock_zoned_time <- function(x) {
   names <- clock_rcrd_names(x)
   precision <- zoned_time_precision(x)
   new_sys_time_from_fields(x, precision, names)
@@ -1044,10 +1044,10 @@ is_valid_zoned_time_precision <- function(precision) {
 # ------------------------------------------------------------------------------
 
 clock_init_zoned_time_utils <- function(env) {
-  assign("clock_empty_zoned_time_utc_second", as_zoned(as_sys(duration_seconds()), "UTC"), envir = env)
-  assign("clock_empty_zoned_time_utc_millisecond", as_zoned(as_sys(duration_milliseconds()), "UTC"), envir = env)
-  assign("clock_empty_zoned_time_utc_microsecond", as_zoned(as_sys(duration_microseconds()), "UTC"), envir = env)
-  assign("clock_empty_zoned_time_utc_nanosecond", as_zoned(as_sys(duration_nanoseconds()), "UTC"), envir = env)
+  assign("clock_empty_zoned_time_utc_second", as_zoned(as_sys_time(duration_seconds()), "UTC"), envir = env)
+  assign("clock_empty_zoned_time_utc_millisecond", as_zoned(as_sys_time(duration_milliseconds()), "UTC"), envir = env)
+  assign("clock_empty_zoned_time_utc_microsecond", as_zoned(as_sys_time(duration_microseconds()), "UTC"), envir = env)
+  assign("clock_empty_zoned_time_utc_nanosecond", as_zoned(as_sys_time(duration_nanoseconds()), "UTC"), envir = env)
 
   invisible(NULL)
 }

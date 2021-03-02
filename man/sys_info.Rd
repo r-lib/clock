@@ -59,7 +59,7 @@ x <- as_zoned(x, "America/New_York")
 # x[1] is in EST, x[2] is in EDT
 x
 
-x_sys <- as_sys(x)
+x_sys <- as_sys_time(x)
 
 info <- sys_info(x_sys, zoned_zone(x))
 info

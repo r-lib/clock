@@ -21,12 +21,12 @@ test_that("can compare zoned-times with same zone", {
 # print() / obj_print_data() / obj_print_footer()
 
 test_that("normal print method works", {
-  x <- as_zoned(as_sys(year_month_day(2019, 1:5, 1)), "America/New_York")
+  x <- as_zoned(as_sys_time(year_month_day(2019, 1:5, 1)), "America/New_York")
   expect_snapshot(x)
 })
 
 test_that("can limit with `max`", {
-  x <- as_zoned(as_sys(year_month_day(2019, 1:5, 1)), "America/New_York")
+  x <- as_zoned(as_sys_time(year_month_day(2019, 1:5, 1)), "America/New_York")
 
   expect_snapshot(print(x, max = 2))
   expect_snapshot(print(x, max = 4))
@@ -39,7 +39,7 @@ test_that("can limit with `max`", {
 test_that("`max` defaults to `getOption('max.print')` but can be overridden", {
   local_options(max.print = 3)
 
-  x <- as_zoned(as_sys(year_month_day(2019, 1:5, 1)), "America/New_York")
+  x <- as_zoned(as_sys_time(year_month_day(2019, 1:5, 1)), "America/New_York")
 
   expect_snapshot(x)
   expect_snapshot(print(x, max = 4))
@@ -369,7 +369,7 @@ test_that("NA parses correctly", {
   )
   expect_identical(
     zoned_parse_abbrev(NA_character_, "America/New_York", precision = "nanosecond"),
-    as_zoned(as_sys(duration_nanoseconds(NA)), "America/New_York")
+    as_zoned(as_sys_time(duration_nanoseconds(NA)), "America/New_York")
   )
 })
 

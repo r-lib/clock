@@ -16,8 +16,8 @@ test_that("unique info works", {
   expect_identical(info$type, "unique")
   expect_identical(info$second, na_sys_info)
 
-  begin <- as_sys(year_month_day(1969, 10, 26, 06, 00, 00))
-  end <- as_sys(year_month_day(1970, 4, 26, 7, 0, 0))
+  begin <- as_sys_time(year_month_day(1969, 10, 26, 06, 00, 00))
+  end <- as_sys_time(year_month_day(1970, 4, 26, 7, 0, 0))
   offset <- duration_seconds(-18000)
 
   expect_identical(info$first$begin, begin)
@@ -33,8 +33,8 @@ test_that("nonexistent info works", {
 
   expect_identical(info$type, "nonexistent")
 
-  begin <- as_sys(year_month_day(1969, 10, 26, 06, 00, 00))
-  end <- as_sys(year_month_day(1970, 4, 26, 7, 0, 0))
+  begin <- as_sys_time(year_month_day(1969, 10, 26, 06, 00, 00))
+  end <- as_sys_time(year_month_day(1970, 4, 26, 7, 0, 0))
   offset <- duration_seconds(-18000)
 
   expect_identical(info$first$begin, begin)
@@ -43,8 +43,8 @@ test_that("nonexistent info works", {
   expect_identical(info$first$dst, FALSE)
   expect_identical(info$first$abbreviation, "EST")
 
-  begin <- as_sys(year_month_day(1970, 4, 26, 7, 0, 0))
-  end <- as_sys(year_month_day(1970, 10, 25, 6, 0, 0))
+  begin <- as_sys_time(year_month_day(1970, 4, 26, 7, 0, 0))
+  end <- as_sys_time(year_month_day(1970, 10, 25, 6, 0, 0))
   offset <- duration_seconds(-14400)
 
   expect_identical(info$second$begin, begin)
@@ -60,8 +60,8 @@ test_that("ambiguous info works", {
 
   expect_identical(info$type, "ambiguous")
 
-  begin <- as_sys(year_month_day(1970, 4, 26, 7, 0, 0))
-  end <- as_sys(year_month_day(1970, 10, 25, 6, 0, 0))
+  begin <- as_sys_time(year_month_day(1970, 4, 26, 7, 0, 0))
+  end <- as_sys_time(year_month_day(1970, 10, 25, 6, 0, 0))
   offset <- duration_seconds(-14400)
 
   expect_identical(info$first$begin, begin)
@@ -70,8 +70,8 @@ test_that("ambiguous info works", {
   expect_identical(info$first$dst, TRUE)
   expect_identical(info$first$abbreviation, "EDT")
 
-  begin <- as_sys(year_month_day(1970, 10, 25, 6, 0, 0))
-  end <- as_sys(year_month_day(1971, 4, 25, 7, 0, 0))
+  begin <- as_sys_time(year_month_day(1970, 10, 25, 6, 0, 0))
+  end <- as_sys_time(year_month_day(1971, 4, 25, 7, 0, 0))
   offset <- duration_seconds(-18000)
 
   expect_identical(info$second$begin, begin)
@@ -278,7 +278,7 @@ test_that("%Z is completely ignored", {
 test_that("can convert non-ambiguous/nonexistent times to zoned time", {
   zone <- "America/New_York"
   x <- as_naive(year_month_day(2019, 1, 1))
-  expect <- as_sys(year_month_day(2019, 1, 1, 5))
+  expect <- as_sys_time(year_month_day(2019, 1, 1, 5))
   expect_identical(as_zoned(x, zone), as_zoned(expect, zone))
 })
 
@@ -297,8 +297,8 @@ test_that("day precision time point is promoted", {
 test_that("can resolve ambiguous issues - character", {
   zone <- "America/New_York"
   x <- as_naive(year_month_day(1970, 10, 25, 01, 30, 00, 01, subsecond_precision = "millisecond"))
-  earliest <- as_sys(year_month_day(1970, 10, 25, 05, 30, 00, 01, subsecond_precision = "millisecond"))
-  latest <- as_sys(year_month_day(1970, 10, 25, 06, 30, 00, 01, subsecond_precision = "millisecond"))
+  earliest <- as_sys_time(year_month_day(1970, 10, 25, 05, 30, 00, 01, subsecond_precision = "millisecond"))
+  latest <- as_sys_time(year_month_day(1970, 10, 25, 06, 30, 00, 01, subsecond_precision = "millisecond"))
 
   expect_snapshot_error(as_zoned(x, zone))
   expect_error(as_zoned(x, zone), class = "clock_error_ambiguous_time")

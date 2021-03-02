@@ -126,10 +126,10 @@ test_that("invalid dates must be resolved when converting to another calendar", 
 })
 
 # ------------------------------------------------------------------------------
-# as_sys()
+# as_sys_time()
 
 test_that("invalid dates must be resolved when converting to a sys-time", {
-  expect_snapshot_error(as_sys(year_month_day(2019, 2, 31)))
+  expect_snapshot_error(as_sys_time(year_month_day(2019, 2, 31)))
 })
 
 # ------------------------------------------------------------------------------
