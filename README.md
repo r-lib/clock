@@ -83,21 +83,21 @@ API for more advanced date-time manipulations. The high-level API should
 allow you to quickly get productive with clock without having to learn
 many of the new types. An easy way to get an overview of this is by
 looking at the [High Level
-API](https://r-lib.github.io/clock/reference/index.html#section-high-level-api)
+API](https://clock.r-lib.org/reference/index.html#section-high-level-api)
 section of the pkgdown reference page.
 
 You’ll also want to take a look at clock’s vignettes:
 
--   [Getting Started](https://r-lib.github.io/clock/articles/clock.html)
+-   [Getting Started](https://clock.r-lib.org/articles/clock.html)
 
 -   [Motivations for
-    clock](https://r-lib.github.io/clock/articles/articles/motivations.html)
+    clock](https://clock.r-lib.org/articles/articles/motivations.html)
 
 -   [Examples and
-    Recipes](https://r-lib.github.io/clock/articles/recipes.html)
+    Recipes](https://clock.r-lib.org/articles/recipes.html)
 
 -   [Frequently Asked
-    Questions](https://r-lib.github.io/clock/articles/faq.html)
+    Questions](https://clock.r-lib.org/articles/faq.html)
 
 ## Acknowledgements
 
