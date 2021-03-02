@@ -124,7 +124,7 @@ reference:
 
 - title: Time points
   contents:
-  - sys_now
+  - sys_time_now
   - as_naive
   - as_sys_time
   - is_naive

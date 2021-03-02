@@ -16,7 +16,7 @@ A zoned-time of the current time.
 }
 \description{
 \code{zoned_now()} returns the current time in the corresponding \code{zone}. It
-is a wrapper around \code{\link[=sys_now]{sys_now()}} that attaches the time zone.
+is a wrapper around \code{\link[=sys_time_now]{sys_time_now()}} that attaches the time zone.
 }
 \details{
 The time is returned with a nanosecond precision, but the actual amount

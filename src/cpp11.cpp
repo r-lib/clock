@@ -734,10 +734,10 @@ extern "C" SEXP _clock_clock_rcrd_set_names(SEXP x, SEXP names) {
   END_CPP11
 }
 // sys-time.cpp
-cpp11::writable::list sys_now_cpp();
-extern "C" SEXP _clock_sys_now_cpp() {
+cpp11::writable::list sys_time_now_cpp();
+extern "C" SEXP _clock_sys_time_now_cpp() {
   BEGIN_CPP11
-    return cpp11::as_sexp(sys_now_cpp());
+    return cpp11::as_sexp(sys_time_now_cpp());
   END_CPP11
 }
 // sys-time.cpp
@@ -980,7 +980,7 @@ extern SEXP _clock_set_field_year_month_weekday_last_cpp(SEXP, SEXP);
 extern SEXP _clock_set_field_year_quarter_day_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_set_field_year_quarter_day_last_cpp(SEXP, SEXP, SEXP);
 extern SEXP _clock_sys_info_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_sys_now_cpp();
+extern SEXP _clock_sys_time_now_cpp();
 extern SEXP _clock_time_point_parse_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_time_point_restore(SEXP, SEXP);
 extern SEXP _clock_to_sys_duration_fields_from_sys_seconds_cpp(SEXP);
@@ -1107,7 +1107,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_set_field_year_quarter_day_cpp",                       (DL_FUNC) &_clock_set_field_year_quarter_day_cpp,                        5},
     {"_clock_set_field_year_quarter_day_last_cpp",                  (DL_FUNC) &_clock_set_field_year_quarter_day_last_cpp,                   3},
     {"_clock_sys_info_cpp",                                         (DL_FUNC) &_clock_sys_info_cpp,                                          3},
-    {"_clock_sys_now_cpp",                                          (DL_FUNC) &_clock_sys_now_cpp,                                           0},
+    {"_clock_sys_time_now_cpp",                                     (DL_FUNC) &_clock_sys_time_now_cpp,                                      0},
     {"_clock_time_point_parse_cpp",                                 (DL_FUNC) &_clock_time_point_parse_cpp,                                 10},
     {"_clock_time_point_restore",                                   (DL_FUNC) &_clock_time_point_restore,                                    2},
     {"_clock_to_sys_duration_fields_from_sys_seconds_cpp",          (DL_FUNC) &_clock_to_sys_duration_fields_from_sys_seconds_cpp,           1},

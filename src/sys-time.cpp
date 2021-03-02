@@ -4,7 +4,7 @@
 
 [[cpp11::register]]
 cpp11::writable::list
-sys_now_cpp() {
+sys_time_now_cpp() {
   using namespace std::chrono;
 
   typename system_clock::time_point tp = system_clock::now();

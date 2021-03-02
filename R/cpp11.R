@@ -416,8 +416,8 @@ clock_rcrd_set_names <- function(x, names) {
   .Call(`_clock_clock_rcrd_set_names`, x, names)
 }
 
-sys_now_cpp <- function() {
-  .Call(`_clock_sys_now_cpp`)
+sys_time_now_cpp <- function() {
+  .Call(`_clock_sys_time_now_cpp`)
 }
 
 sys_info_cpp <- function(fields, precision_int, zone) {

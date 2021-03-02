@@ -277,7 +277,7 @@ as.character.clock_sys_time <- function(x, ...) {
 #' What is the current sys-time?
 #'
 #' @description
-#' `sys_now()` returns the current time in UTC.
+#' `sys_time_now()` returns the current time in UTC.
 #'
 #' @details
 #' The time is returned with a nanosecond precision, but the actual amount
@@ -289,10 +289,10 @@ as.character.clock_sys_time <- function(x, ...) {
 #'
 #' @export
 #' @examples
-#' x <- sys_now()
-sys_now <- function() {
+#' x <- sys_time_now()
+sys_time_now <- function() {
   names <- NULL
-  fields <- sys_now_cpp()
+  fields <- sys_time_now_cpp()
   new_sys_time_from_fields(fields, PRECISION_NANOSECOND, names)
 }
 

@@ -1,13 +1,13 @@
 # ------------------------------------------------------------------------------
-# sys_now()
+# sys_time_now()
 
 test_that("returns nanosecond precision", {
-  x <- sys_now()
+  x <- sys_time_now()
   expect_identical(time_point_precision(x), PRECISION_NANOSECOND)
 })
 
 test_that("returns a single sys-time", {
-  x <- sys_now()
+  x <- sys_time_now()
   expect_length(x, 1L)
   expect_s3_class(x, "clock_sys_time")
 })

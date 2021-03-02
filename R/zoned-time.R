@@ -861,7 +861,7 @@ as.character.clock_zoned_time <- function(x, ...) {
 #'
 #' @description
 #' `zoned_now()` returns the current time in the corresponding `zone`. It
-#' is a wrapper around [sys_now()] that attaches the time zone.
+#' is a wrapper around [sys_time_now()] that attaches the time zone.
 #'
 #' @details
 #' The time is returned with a nanosecond precision, but the actual amount
@@ -880,7 +880,7 @@ as.character.clock_zoned_time <- function(x, ...) {
 #' x <- zoned_now("America/New_York")
 zoned_now <- function(zone) {
   names <- NULL
-  sys_time <- sys_now()
+  sys_time <- sys_time_now()
   precision <- time_point_precision(sys_time)
   zone <- zone_validate(zone)
   new_zoned_time_from_fields(sys_time, precision, zone, names)
