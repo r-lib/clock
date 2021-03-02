@@ -53,7 +53,7 @@ being used. The relationship of the three values is:\preformatted{offset = naive
 library(vctrs)
 
 x <- year_month_day(2021, 03, 14, c(01, 03), c(59, 00), c(59, 00))
-x <- as_naive(x)
+x <- as_naive_time(x)
 x <- as_zoned(x, "America/New_York")
 
 # x[1] is in EST, x[2] is in EDT

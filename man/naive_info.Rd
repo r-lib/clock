@@ -71,7 +71,7 @@ to a tibble with \code{as_tibble()}, as that will print the df-cols much nicer.
 library(vctrs)
 
 x <- year_month_day(1970, 04, 26, 02, 30, 00)
-x <- as_naive(x)
+x <- as_naive_time(x)
 
 # Maps uniquely to a time in London
 naive_info(x, "Europe/London")

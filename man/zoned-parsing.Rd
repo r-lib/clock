@@ -263,6 +263,8 @@ know the time zone that the date-times are supposed to be in, you can convert
 to a zoned-time with \code{\link[=as_zoned]{as_zoned()}}.
 }
 \examples{
+library(magrittr)
+
 zoned_parse_complete("2019-01-01 01:02:03-05:00[America/New_York]")
 
 zoned_parse_complete(
@@ -282,7 +284,9 @@ zoned_parse_complete(
 # if the input was parsed as a naive-time and then converted to a zoned-time
 # with as_zoned(). For example, the time that was parsed above used an
 # offset of `-05:00`. We can confirm that this is correct with:
-as_zoned(as_naive(year_month_day(2019, 1, 1, 1, 2, 3)), "America/New_York")
+year_month_day(2019, 1, 1, 1, 2, 3) \%>\%
+  as_naive_time() \%>\%
+  as_zoned("America/New_York")
 
 # So the following would not parse correctly
 zoned_parse_complete("2019-01-01 01:02:03-04:00[America/New_York]")

@@ -71,13 +71,13 @@ When calling \code{seq()}, exactly two of the following must be specified:
 \examples{
 # Daily sequence
 seq(
-  as_naive(year_month_day(2019, 1, 1)),
-  as_naive(year_month_day(2019, 2, 4)),
+  as_naive_time(year_month_day(2019, 1, 1)),
+  as_naive_time(year_month_day(2019, 2, 4)),
   by = 5
 )
 
 # Minutely sequence using minute precision naive-time
-x <- as_naive(year_month_day(2019, 1, 2, 3, 3))
+x <- as_naive_time(year_month_day(2019, 1, 2, 3, 3))
 x
 
 seq(x, by = 4, length.out = 10)
@@ -86,7 +86,8 @@ seq(x, by = 4, length.out = 10)
 seq(x, by = duration_days(1), length.out = 5)
 
 # Nanosecond sequence
-from <- time_point_cast(as_naive(year_month_day(2019, 1, 1)), "nanosecond")
+from <- as_naive_time(year_month_day(2019, 1, 1))
+from <- time_point_cast(from, "nanosecond")
 to <- from + 100
 seq(from, to, by = 10)
 }

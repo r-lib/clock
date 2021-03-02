@@ -28,7 +28,7 @@
 #'
 #' @export
 #' @examples
-#' x <- as_naive(year_month_day(2019, 01, 05))
+#' x <- as_naive_time(year_month_day(2019, 01, 05))
 #'
 #' # This is a Saturday!
 #' as_weekday(x)
@@ -199,7 +199,7 @@ vec_proxy_compare.clock_weekday <- function(x, ...) {
 #'
 #' @export
 #' @examples
-#' x <- as_naive(year_month_day(2019, 01, 05))
+#' x <- as_naive_time(year_month_day(2019, 01, 05))
 #'
 #' # This is a Saturday!
 #' as_weekday(x)

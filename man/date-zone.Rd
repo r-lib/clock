@@ -61,13 +61,13 @@ date_set_zone(x, "America/Los_Angeles")
 # irregularities with the `nonexistent` and `ambiguous` arguments to
 # `as.POSIXct()`!
 x \%>\%
-  as_naive() \%>\%
+  as_naive_time() \%>\%
   as.POSIXct("America/Los_Angeles")
 
 y <- as.POSIXct("2021-03-28 03:30:00", "America/New_York")
 y
 
-y_nt <- as_naive(y)
+y_nt <- as_naive_time(y)
 y_nt
 
 # Helsinki had a daylight saving time gap where they jumped from

@@ -36,6 +36,6 @@ native R date and date-time types:
 x <- as.Date("2019-01-01")
 as_zoned(x)
 
-y <- as_naive(year_month_day(2019, 2, 1))
+y <- as_naive_time(year_month_day(2019, 2, 1))
 as_zoned(y, zone = "America/New_York")
 }

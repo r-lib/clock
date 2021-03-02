@@ -192,13 +192,13 @@ test_that("can add quarters", {
 
 test_that("can roundtrip to naive-time with any `start`", {
   x <- seq(
-    as_naive(year_month_day(-9999, 1, 1)),
-    as_naive(year_month_day(9999, 12, 31)),
+    as_naive_time(year_month_day(-9999, 1, 1)),
+    as_naive_time(year_month_day(9999, 12, 31)),
     by = 1
   )
 
   for (start in seq_len(12)) {
-    expect_identical(x, as_naive(as_year_quarter_day(x, start = start)))
+    expect_identical(x, as_naive_time(as_year_quarter_day(x, start = start)))
   }
 })
 

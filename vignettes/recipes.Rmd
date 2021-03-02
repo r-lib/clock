@@ -53,7 +53,7 @@ Say you need to set a meeting with someone in Shanghai, but you live in New York
 
 ```{r}
 my_time <- year_month_day(2019, 1, 30, 9) %>%
-  as_naive() %>%
+  as_naive_time() %>%
   as_zoned("America/New_York")
 
 my_time
@@ -79,19 +79,19 @@ The first step to solve this is to force `my_time` to have the same printed time
 
 ```{r}
 my_time <- year_month_day(2019, 1, 30, 9) %>%
-  as_naive() %>%
+  as_naive_time() %>%
   as_zoned("America/New_York")
 
 my_time
 
 # Drop the time zone information, retaining the printed time
 my_time %>%
-  as_naive()
+  as_naive_time()
 
 # Add the correct time zone name back on,
 # again retaining the printed time
 their_9am <- my_time %>%
-  as_naive() %>%
+  as_naive_time() %>%
   as_zoned("Asia/Shanghai")
 
 their_9am
@@ -111,7 +111,7 @@ zoned_set_zone(their_9am, "America/New_York")
 my_time <- as.POSIXct("2019-01-30 09:00:00", "America/New_York")
 
 my_time %>%
-  as_naive() %>%
+  as_naive_time() %>%
   as.POSIXct("Asia/Shanghai") %>%
   date_set_zone("America/New_York")
 ```
@@ -121,7 +121,7 @@ my_time %>%
 Given a particular day precision naive-time, how can you compute the next Monday? This is very easily accomplished with `time_point_shift()`. It takes a time point vector and a "target" weekday, and shifts the time points to that target weekday.
 
 ```{r}
-days <- as_naive(year_month_day(2019, c(1, 2), 1))
+days <- as_naive_time(year_month_day(2019, c(1, 2), 1))
 
 # A Tuesday and a Friday
 as_weekday(days)
@@ -182,7 +182,7 @@ next_weekday2 <- function(x, target) {
   x + (target - as_weekday(x))
 }
 
-a_monday <- as_naive(year_month_day(2018, 12, 31))
+a_monday <- as_naive_time(year_month_day(2018, 12, 31))
 as_weekday(a_monday)
 
 next_weekday2(a_monday, monday)
@@ -240,8 +240,8 @@ set_day(yq, "last")
 You won't be able to generate day precision sequences with calendars. Instead, you should use a time point.
 
 ```{r}
-from <- as_naive(year_month_day(2019, 1, 1))
-to <- as_naive(year_month_day(2019, 5, 15))
+from <- as_naive_time(year_month_day(2019, 1, 1))
+to <- as_naive_time(year_month_day(2019, 5, 15))
 
 seq(from, to, by = 20)
 ```
@@ -249,8 +249,8 @@ seq(from, to, by = 20)
 If you use an integer `by` value, it is interpreted as a duration at the same precision as `from`. You can also use a duration object that can be cast to the same precision as `from`. For example, to generate a sequence spaced out by 90 minutes for these second precision end points:
 
 ```{r}
-from <- as_naive(year_month_day(2019, 1, 1, 2, 30, 00))
-to <- as_naive(year_month_day(2019, 1, 1, 12, 30, 00))
+from <- as_naive_time(year_month_day(2019, 1, 1, 2, 30, 00))
+to <- as_naive_time(year_month_day(2019, 1, 1, 12, 30, 00))
 
 seq(from, to, by = duration_minutes(90))
 ```
@@ -260,8 +260,8 @@ seq(from, to, by = duration_minutes(90))
 When working on a data analysis, you might be required to summarize certain metrics at a monthly or quarterly level. With `calendar_group()`, you can easily summarize at the granular precision that you care about. Take this vector of day precision naive-times in 2019:
 
 ```{r}
-from <- as_naive(year_month_day(2019, 1, 1))
-to <- as_naive(year_month_day(2019, 12, 31))
+from <- as_naive_time(year_month_day(2019, 1, 1))
+to <- as_naive_time(year_month_day(2019, 12, 31))
 
 x <- seq(from, to, by = duration_days(20))
 
@@ -335,8 +335,8 @@ x %>%
 While `calendar_group()` can group by "component", it isn't useful for bundling together sets of time points that can cross month/year boundaries, like "60 days" of data. For that, you are better off _flooring_ by rolling sets of 60 days.
 
 ```{r}
-from <- as_naive(year_month_day(2019, 1, 1))
-to <- as_naive(year_month_day(2019, 12, 31))
+from <- as_naive_time(year_month_day(2019, 1, 1))
+to <- as_naive_time(year_month_day(2019, 12, 31))
 
 x <- seq(from, to, by = duration_days(20))
 ```
@@ -356,7 +356,7 @@ The 60 day counter starts here, which means that any times between `[1970-01-01,
 If you would like to change this origin, you can provide a time point to start counting from with the `origin` argument. This is mostly useful if you are flooring by weeks and you want to change the day of the week that the count starts on. Since 1970-01-01 is a Thursday, flooring by 14 days defaults to returning all Thursdays.
 
 ```{r}
-x <- seq(as_naive(year_month_day(2019, 1, 1)), by = 3, length.out = 10)
+x <- seq(as_naive_time(year_month_day(2019, 1, 1)), by = 3, length.out = 10)
 x
 
 thursdays <- time_point_floor(x, "day", n = 14)
@@ -368,7 +368,7 @@ as_weekday(thursdays)
 You can use `origin` to change this to floor to Mondays.
 
 ```{r}
-origin <- as_naive(year_month_day(2018, 12, 31))
+origin <- as_naive_time(year_month_day(2018, 12, 31))
 as_weekday(origin)
 
 mondays <- time_point_floor(x, "day", n = 14, origin = origin)

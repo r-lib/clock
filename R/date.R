@@ -7,8 +7,8 @@ as_sys_time.Date <- function(x) {
 }
 
 #' @export
-as_naive.Date <- function(x) {
-  as_naive(as_sys_time(x))
+as_naive_time.Date <- function(x) {
+  as_naive_time(as_sys_time(x))
 }
 
 #' Convert to a zoned-time from a date
@@ -643,7 +643,7 @@ date_rounder <- function(x, precision, n, origin, time_point_rounder, ...) {
   precision <- result$precision
   n <- result$n
 
-  x <- as_naive(x)
+  x <- as_naive_time(x)
 
   if (!is_null(origin)) {
     origin <- collect_date_rounder_origin(origin)
@@ -679,7 +679,7 @@ collect_date_rounder_origin <- function(origin) {
     abort("`origin` must not be `NA` or an infinite date.")
   }
 
-  origin <- as_naive(origin)
+  origin <- as_naive_time(origin)
 
   origin
 }
@@ -879,13 +879,13 @@ date_format.Date <- function(x,
 #' # irregularities with the `nonexistent` and `ambiguous` arguments to
 #' # `as.POSIXct()`!
 #' x %>%
-#'   as_naive() %>%
+#'   as_naive_time() %>%
 #'   as.POSIXct("America/Los_Angeles")
 #'
 #' y <- as.POSIXct("2021-03-28 03:30:00", "America/New_York")
 #' y
 #'
-#' y_nt <- as_naive(y)
+#' y_nt <- as_naive_time(y)
 #' y_nt
 #'
 #' # Helsinki had a daylight saving time gap where they jumped from
@@ -1061,7 +1061,7 @@ date_shift.Date <- function(x,
                             ...,
                             which = "next",
                             boundary = "keep") {
-  x <- as_naive(x)
+  x <- as_naive_time(x)
   x <- time_point_shift(x, target, ..., which = which, boundary = boundary)
   as.Date(x)
 }

@@ -41,7 +41,7 @@ Generally, calendars don't support day based arithmetic, nor do they support ari
 
 ```{r}
 x %>%
-  as_naive() %>%
+  as_naive_time() %>%
   add_days(1) %>%
   as_year_month_day()
 ```
@@ -69,7 +69,7 @@ odd_dates %>%
 
 odd_dates %>%
   invalid_resolve(invalid = "next") %>%
-  as_naive() %>%
+  as_naive_time() %>%
   add_days(2)
 
 odd_dates %>%
@@ -77,7 +77,7 @@ odd_dates %>%
 
 odd_dates %>%
   invalid_resolve(invalid = "overflow") %>%
-  as_naive() %>%
+  as_naive_time() %>%
   add_days(2)
 ```
 
@@ -104,7 +104,7 @@ In clock, you can't do much with zoned-times directly. The best way to understan
 x
 
 # The printed time with no time zone info
-as_naive(x)
+as_naive_time(x)
 
 # The equivalent time in UTC
 as_sys_time(x)
@@ -118,7 +118,7 @@ Because of this, you have to extract out the relevant time point that you care a
 
 ```{r}
 x %>%
-  as_naive() %>%
+  as_naive_time() %>%
   add_seconds(1) %>%
   as_zoned(zoned_zone(x))
 
@@ -136,7 +136,7 @@ But not always! When daylight saving time is involved, the choice of sys-time or
 # skipping the 2 o'clock hour entirely
 
 x %>%
-  as_naive() %>%
+  as_naive_time() %>%
   add_minutes(30) %>%
   as_zoned(zoned_zone(x))
 
@@ -156,14 +156,14 @@ The naive-time scenario makes more sense if you break down the steps. First, we 
 x
 
 x %>%
-  as_naive()
+  as_naive_time()
 ```
 
 We add 30 minutes to this. Because we don't have any time zone information, this lands us at 2 o'clock, which isn't an issue when working with naive-time:
 
 ```{r}
 x %>%
-  as_naive() %>%
+  as_naive_time() %>%
   add_minutes(30)
 ```
 
@@ -171,7 +171,7 @@ Finally, we convert back to zoned-time. If possible, this tries to keep the prin
 
 ```{r}
 x %>%
-  as_naive() %>%
+  as_naive_time() %>%
   add_minutes(30) %>%
   as_zoned(zoned_zone(x), nonexistent = "roll-forward")
 ```
@@ -202,7 +202,7 @@ x
 It looks like there is some fractional second information here, but converting it to naive-time drops it:
 
 ```{r}
-as_naive(x)
+as_naive_time(x)
 ```
 
 This is purposeful. clock treats POSIXct as a _second precision_ data type. The reason for this has to do with the fact that POSIXct is implemented as a vector of doubles, which have a limit to how precisely they can store information. For example, try parsing a slightly smaller or larger fractional second:
@@ -282,7 +282,7 @@ ymdh <- year_month_day(2019, 1, 1:2, 1)
 
 unclass(ymdh)
 
-unclass(as_naive(ymdh))
+unclass(as_naive_time(ymdh))
 ```
 
 I find that record types are extremely useful data structures for building upon R's basic atomic types in ways that otherwise couldn't be done. They allow calendar types to hold information about each component, enabling instant access for retrieval, modification, and grouping. They also allow calendars to represent invalid dates, such as `2019-02-31`, without any issues. Time points use them to store up to nanosecond precision date-times, which are really C++ `int64_t` types that don't nicely fit into any R atomic type (I am aware of the bit64 package, and made a conscious decision to implement as a record type instead. This partly had to do with how missing values are handled, and how that integrates with vctrs).

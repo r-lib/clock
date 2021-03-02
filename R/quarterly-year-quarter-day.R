@@ -445,7 +445,7 @@ get_nanosecond.clock_year_quarter_day <- function(x) {
 #' days <- get_day(invalid) - 1L
 #' invalid %>%
 #'   set_day(1) %>%
-#'   as_naive() %>%
+#'   as_naive_time() %>%
 #'   add_days(days) %>%
 #'   as_year_quarter_day()
 NULL
@@ -677,7 +677,7 @@ year_quarter_day_minus_year_quarter_day <- function(op, x, y, ...) {
 #' - `add_quarters()`
 #'
 #' Notably, _you cannot add days to a year-quarter-day_. For day-based
-#' arithmetic, first convert to a time point with [as_naive()] or
+#' arithmetic, first convert to a time point with [as_naive_time()] or
 #' [as_sys_time()].
 #'
 #' @details
@@ -827,8 +827,8 @@ as_sys_time.clock_year_quarter_day <- function(x) {
 }
 
 #' @export
-as_naive.clock_year_quarter_day <- function(x) {
-  as_naive(as_sys_time(x))
+as_naive_time.clock_year_quarter_day <- function(x) {
+  as_naive_time(as_sys_time(x))
 }
 
 #' @export

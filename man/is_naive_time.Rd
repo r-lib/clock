@@ -19,5 +19,5 @@ This function determines if the input is a naive-time object.
 }
 \examples{
 is_naive_time(1)
-is_naive_time(as_naive(duration_days(1)))
+is_naive_time(as_naive_time(duration_days(1)))
 }

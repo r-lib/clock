@@ -78,7 +78,7 @@ or years, convert to a calendar type with a converter like
 library(magrittr)
 
 # Say you started with this zoned time, and you want to add 1 day to it
-x <- as_naive(year_month_day(1970, 04, 25, 02, 30, 00))
+x <- as_naive_time(year_month_day(1970, 04, 25, 02, 30, 00))
 x <- as_zoned(x, "America/New_York")
 x
 
@@ -101,11 +101,11 @@ x \%>\%
 # a clock time with a yet-to-be-specified time zone. It tries to maintain
 # smaller units where possible, so adding 1 day would attempt to return
 # "1970-04-26T02:30:00" in the America/New_York time zone, but...
-as_naive(x)
+as_naive_time(x)
 
 try({
 x \%>\%
-  as_naive() \%>\%
+  as_naive_time() \%>\%
   add_days(1) \%>\%
   as_zoned(zoned_zone(x))
 })
@@ -115,7 +115,7 @@ x \%>\%
 # when converting to zoned time. Let's roll forward to the next available
 # moment in time.
 x \%>\%
-  as_naive() \%>\%
+  as_naive_time() \%>\%
   add_days(1) \%>\%
   as_zoned(zoned_zone(x), nonexistent = "roll-forward")
 }

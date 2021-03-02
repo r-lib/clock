@@ -31,7 +31,7 @@ naive_seconds <- function(n = integer()) {
 #' @export
 #' @examples
 #' is_naive_time(1)
-#' is_naive_time(as_naive(duration_days(1)))
+#' is_naive_time(as_naive_time(duration_days(1)))
 is_naive_time <- function(x) {
   inherits(x, "clock_naive_time")
 }
@@ -104,7 +104,7 @@ naive_time_parse <- function(x,
 #' Convert to a naive-time
 #'
 #' @description
-#' `as_naive()` converts `x` to a naive-time.
+#' `as_naive_time()` converts `x` to a naive-time.
 #'
 #' You can convert to a naive-time from any calendar type, as long as it has
 #' at least day precision. There also must not be any invalid dates. If invalid
@@ -131,27 +131,27 @@ naive_time_parse <- function(x,
 #' @export
 #' @examples
 #' x <- as.Date("2019-01-01")
-#' as_naive(x)
+#' as_naive_time(x)
 #'
 #' ym <- year_month_day(2019, 02)
 #'
 #' # A minimum of day precision is required
-#' try(as_naive(ym))
+#' try(as_naive_time(ym))
 #'
 #' ymd <- set_day(ym, 10)
-#' as_naive(ymd)
-as_naive <- function(x) {
-  UseMethod("as_naive")
+#' as_naive_time(ymd)
+as_naive_time <- function(x) {
+  UseMethod("as_naive_time")
 }
 
 #' @export
-as_naive.clock_naive_time <- function(x) {
+as_naive_time.clock_naive_time <- function(x) {
   x
 }
 
 #' @export
-as_naive.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("as_naive")
+as_naive_time.clock_calendar <- function(x) {
+  stop_clock_unsupported_calendar_op("as_naive_time")
 }
 
 # ------------------------------------------------------------------------------
@@ -288,7 +288,7 @@ as_sys_time.clock_naive_time <- function(x) {
 #' @examples
 #' library(magrittr)
 #'
-#' x <- as_naive(year_month_day(2019, 1, 1))
+#' x <- as_naive_time(year_month_day(2019, 1, 1))
 #'
 #' # Converting a naive-time to a zoned-time generally retains the
 #' # printed time, while changing the underlying duration.
@@ -305,7 +305,7 @@ as_sys_time.clock_naive_time <- function(x) {
 #' # naive-times don't exist in that time zone. By default, attempting to
 #' # convert it to a zoned time will result in an error.
 #' nonexistent_time <- year_month_day(2020, 03, 08, c(02, 03), c(45, 30), 00)
-#' nonexistent_time <- as_naive(nonexistent_time)
+#' nonexistent_time <- as_naive_time(nonexistent_time)
 #' try(as_zoned(nonexistent_time, new_york))
 #'
 #' # Resolve this by specifying a nonexistent time resolution strategy
@@ -339,7 +339,7 @@ as_sys_time.clock_naive_time <- function(x) {
 #' # By default, attempting to convert it to a zoned time will result in an
 #' # error.
 #' ambiguous_time <- year_month_day(2020, 11, 01, 01, 30, 00)
-#' ambiguous_time <- as_naive(ambiguous_time)
+#' ambiguous_time <- as_naive_time(ambiguous_time)
 #' try(as_zoned(ambiguous_time, new_york))
 #'
 #' # Resolve this by specifying an ambiguous time resolution strategy
@@ -358,10 +358,10 @@ as_sys_time.clock_naive_time <- function(x) {
 #'
 #' # To set the seconds to 5 in both, you might try:
 #' x_naive <- x %>%
-#'   as_naive() %>%
+#'   as_naive_time() %>%
 #'   as_year_month_day() %>%
 #'   set_second(5) %>%
-#'   as_naive()
+#'   as_naive_time()
 #'
 #' x_naive
 #'
@@ -384,10 +384,12 @@ as_sys_time.clock_naive_time <- function(x) {
 #' # Imagine you want to floor this vector to a multiple of 2 hours, with
 #' # an origin of 1am that day. You can do this by subtracting the origin,
 #' # flooring, then adding it back
-#' origin <- as_duration(as_naive(year_month_day(2019, 11, 01, 01, 00, 00)))
+#' origin <- year_month_day(2019, 11, 01, 01, 00, 00) %>%
+#'   as_naive_time() %>%
+#'   as_duration()
 #'
 #' x_naive <- x %>%
-#'   as_naive() %>%
+#'   as_naive_time() %>%
 #'   add_seconds(-origin) %>%
 #'   time_point_floor("hour", n = 2) %>%
 #'   add_seconds(origin)
@@ -615,7 +617,7 @@ as.character.clock_naive_time <- function(x, ...) {
 #' library(vctrs)
 #'
 #' x <- year_month_day(1970, 04, 26, 02, 30, 00)
-#' x <- as_naive(x)
+#' x <- as_naive_time(x)
 #'
 #' # Maps uniquely to a time in London
 #' naive_info(x, "Europe/London")
@@ -777,7 +779,7 @@ vec_arith.numeric.clock_naive_time <- function(op, x, y, ...) {
 # ------------------------------------------------------------------------------
 
 clock_init_naive_time_utils <- function(env) {
-  day <- as_naive(year_month_day(integer(), integer(), integer()))
+  day <- as_naive_time(year_month_day(integer(), integer(), integer()))
 
   assign("clock_empty_naive_time_day", day, envir = env)
   assign("clock_empty_naive_time_hour", time_point_cast(day, "hour"), envir = env)

@@ -51,7 +51,7 @@ accomplish this with the \code{origin} argument of \code{\link[=time_point_floor
 this is slightly easier.
 }
 \examples{
-x <- as_naive(year_month_day(2019, 1, 1:2))
+x <- as_naive_time(year_month_day(2019, 1, 1:2))
 
 # A Tuesday and Wednesday
 as_weekday(x)

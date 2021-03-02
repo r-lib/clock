@@ -561,7 +561,7 @@ year_day_minus_year_day <- function(op, x, y, ...) {
 #' - `add_years()`
 #'
 #' Notably, _you cannot add days to a year-day_. For day-based arithmetic,
-#' first convert to a time point with [as_naive()] or [as_sys_time()].
+#' first convert to a time point with [as_naive_time()] or [as_sys_time()].
 #'
 #' @details
 #' `x` and `n` are recycled against each other.
@@ -671,8 +671,8 @@ as_sys_time.clock_year_day <- function(x) {
 }
 
 #' @export
-as_naive.clock_year_day <- function(x) {
-  as_naive(as_sys_time(x))
+as_naive_time.clock_year_day <- function(x) {
+  as_naive_time(as_sys_time(x))
 }
 
 #' @export
@@ -723,7 +723,7 @@ calendar_leap_year.clock_year_day <- function(x) {
 #'
 #' @export
 #' @examples
-#' x <- seq(as_naive(year_month_day(2019, 1, 1)), by = 5, length.out = 20)
+#' x <- seq(as_naive_time(year_month_day(2019, 1, 1)), by = 5, length.out = 20)
 #' x <- as_year_day(x)
 #' x
 #'
@@ -899,7 +899,7 @@ calendar_widen.clock_year_day <- function(x, precision) {
 #'
 #' # Daily sequences are not allowed. Use a naive-time for this instead.
 #' try(seq(year_day(2019, 1), by = 2, length.out = 2))
-#' as_year_day(seq(as_naive(year_day(2019, 1)), by = 2, length.out = 2))
+#' as_year_day(seq(as_naive_time(year_day(2019, 1)), by = 2, length.out = 2))
 seq.clock_year_day <- function(from,
                                to = NULL,
                                by = NULL,

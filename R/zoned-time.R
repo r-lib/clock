@@ -187,7 +187,7 @@ zoned_time_precision <- function(x) {
 #'
 #' @export
 #' @examples
-#' x <- as_zoned(as_naive(year_month_day(2019, 1, 1)), "America/New_York")
+#' x <- as_zoned(as_naive_time(year_month_day(2019, 1, 1)), "America/New_York")
 #'
 #' format(x)
 #' format(x, format = "%B %d, %Y")
@@ -497,6 +497,8 @@ zoned_time_format <- function(print_zone_name) {
 #' @name zoned-parsing
 #'
 #' @examples
+#' library(magrittr)
+#'
 #' zoned_parse_complete("2019-01-01 01:02:03-05:00[America/New_York]")
 #'
 #' zoned_parse_complete(
@@ -516,7 +518,9 @@ zoned_time_format <- function(print_zone_name) {
 #' # if the input was parsed as a naive-time and then converted to a zoned-time
 #' # with as_zoned(). For example, the time that was parsed above used an
 #' # offset of `-05:00`. We can confirm that this is correct with:
-#' as_zoned(as_naive(year_month_day(2019, 1, 1, 1, 2, 3)), "America/New_York")
+#' year_month_day(2019, 1, 1, 1, 2, 3) %>%
+#'   as_naive_time() %>%
+#'   as_zoned("America/New_York")
 #'
 #' # So the following would not parse correctly
 #' zoned_parse_complete("2019-01-01 01:02:03-04:00[America/New_York]")
@@ -816,7 +820,7 @@ pillar_shaft.clock_zoned_time <- function(x, ...) {
 #' x <- as.Date("2019-01-01")
 #' as_zoned(x)
 #'
-#' y <- as_naive(year_month_day(2019, 2, 1))
+#' y <- as_naive_time(year_month_day(2019, 2, 1))
 #' as_zoned(y, zone = "America/New_York")
 as_zoned <- function(x, ...) {
   UseMethod("as_zoned")
@@ -842,7 +846,7 @@ as_sys_time.clock_zoned_time <- function(x) {
 }
 
 #' @export
-as_naive.clock_zoned_time <- function(x) {
+as_naive_time.clock_zoned_time <- function(x) {
   names <- clock_rcrd_names(x)
   zone <- zoned_time_zone(x)
   precision <- zoned_time_precision(x)
@@ -914,7 +918,7 @@ zoned_now <- function(zone) {
 #' @name zoned-zone
 #'
 #' @examples
-#' x <- as_zoned(as_naive(year_month_day(2019, 1, 1)), "America/New_York")
+#' x <- as_zoned(as_naive_time(year_month_day(2019, 1, 1)), "America/New_York")
 #' x
 #'
 #' zoned_zone(x)
@@ -925,7 +929,7 @@ zoned_now <- function(zone) {
 #' # To force a new time zone with the same printed time,
 #' # convert to a naive time that has no implied time zone,
 #' # then convert back to a zoned time in the new time zone.
-#' nt <- as_naive(x)
+#' nt <- as_naive_time(x)
 #' nt
 #' as_zoned(nt, "UTC")
 NULL

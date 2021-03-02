@@ -45,7 +45,7 @@ long as \code{x} is at least as precise as \code{precision}.
 \examples{
 steps <- duration_days(seq(0, 100, by = 5))
 x <- year_month_day(2019, 1, 1)
-x <- as_naive(x) + steps
+x <- as_naive_time(x) + steps
 x <- as_year_month_day(x)
 x
 

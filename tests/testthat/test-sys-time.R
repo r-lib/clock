@@ -18,7 +18,7 @@ test_that("returns a single sys-time", {
 test_that("can lookup sys-info", {
   # One in EST, one in EDT
   x <- year_month_day(2021, 03, 14, c(01, 03), c(59, 00), c(59, 00))
-  x <- as_naive(x)
+  x <- as_naive_time(x)
   x <- as_zoned(x, "America/New_York")
 
   info <- sys_time_info(as_sys_time(x), zoned_zone(x))
@@ -47,11 +47,11 @@ test_that("`zone` is vectorized and recycled against `x`", {
   info <- sys_time_info(x, zones)
 
   naive_times <- c(
-    as_naive(as_zoned(x, zones[1])),
-    as_naive(as_zoned(x, zones[2]))
+    as_naive_time(as_zoned(x, zones[1])),
+    as_naive_time(as_zoned(x, zones[2]))
   )
 
-  expect_identical(as_naive(x + info$offset), naive_times)
+  expect_identical(as_naive_time(x + info$offset), naive_times)
 
   # DST is dependent on the time zone
   expect_identical(info$dst, c(FALSE, TRUE))

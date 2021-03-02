@@ -133,10 +133,10 @@ test_that("invalid dates must be resolved when converting to a sys-time", {
 })
 
 # ------------------------------------------------------------------------------
-# as_naive()
+# as_naive_time()
 
 test_that("invalid dates must be resolved when converting to a naive-time", {
-  expect_snapshot_error(as_naive(year_month_day(2019, 2, 31)))
+  expect_snapshot_error(as_naive_time(year_month_day(2019, 2, 31)))
 })
 
 # ------------------------------------------------------------------------------
