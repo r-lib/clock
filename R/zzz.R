@@ -3,7 +3,7 @@
 .onLoad <- function(libname, pkgname) {
   clock_init_utils()
 
-  tzdata <- system.file("tzdata", package = "clock", mustWork = TRUE)
+  tzdata <- tzdb::tzdb_path(type = "text")
   clock_set_install(tzdata)
 
   vctrs::s3_register("pillar::pillar_shaft", "clock_calendar", pillar_shaft.clock_calendar)

@@ -1,12 +1,7 @@
 --------------------------------------------------------------------------------
 Updating `clock` dependencies
 
-1. Update the version in `update-database.R`.
+1. Run `update-date-library.R` to update the headers and `tz.cpp` in `src/`.
 
-2. Run `update-database.R` to update `inst/tzdata/` and
-   `inst/tzdata/windowsZones.xml`.
-
-3. Run `update-date-library.R` to update the headers and `tz.cpp` in `src/`.
-
-4. Go back through `tz.cpp` and comment out all uses to `std::cerr()`, which
+2. Go back through `tz.cpp` and comment out all uses to `std::cerr()`, which
    R CMD Check doesn't like. And ensure that any custom additions are kept.
