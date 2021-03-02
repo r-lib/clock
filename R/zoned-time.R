@@ -10,9 +10,9 @@
 #'
 #' @export
 #' @examples
-#' is_zoned(1)
-#' is_zoned(zoned_now("America/New_York"))
-is_zoned <- function(x) {
+#' is_zoned_time(1)
+#' is_zoned_time(zoned_now("America/New_York"))
+is_zoned_time <- function(x) {
   inherits(x, "clock_zoned_time")
 }
 

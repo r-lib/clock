@@ -145,7 +145,7 @@ reference:
   contents:
   - zoned_now
   - as_zoned
-  - is_zoned
+  - is_zoned_time
   - zoned-parsing
   - zoned_zone
   - format.clock_zoned_time
