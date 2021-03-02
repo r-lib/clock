@@ -128,7 +128,7 @@ reference:
   - as_naive
   - as_sys
   - is_naive
-  - is_sys
+  - is_sys_time
   - naive_parse
   - sys_parse
   - naive_info

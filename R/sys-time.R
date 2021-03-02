@@ -30,9 +30,9 @@ sys_seconds <- function(n = integer()) {
 #'
 #' @export
 #' @examples
-#' is_sys(1)
-#' is_sys(as_sys(duration_days(1)))
-is_sys <- function(x) {
+#' is_sys_time(1)
+#' is_sys_time(as_sys(duration_days(1)))
+is_sys_time <- function(x) {
   inherits(x, "clock_sys_time")
 }
 
@@ -388,7 +388,7 @@ sys_now <- function() {
 #'   naive_time = x_sys[1] + info2$offset
 #' )
 sys_info <- function(x, zone) {
-  if (!is_sys(x)) {
+  if (!is_sys_time(x)) {
     abort("`x` must be a sys-time.")
   }
 
