@@ -113,7 +113,7 @@ df <- data_frame(
 # 1 time zone in a vector of date-times at a time. So you'll need to
 # normalize these naive-times. The easiest thing to normalize them to
 # is UTC.
-df$naive <- naive_parse(df$x)
+df$naive <- naive_time_parse(df$x)
 
 # Get info about the naive times using a vector of zones
 info <- naive_info(df$naive, df$zone)

@@ -41,9 +41,9 @@ is_naive_time <- function(x) {
 #' Parsing: naive-time
 #'
 #' @description
-#' `naive_parse()` is a parser into a naive-time.
+#' `naive_time_parse()` is a parser into a naive-time.
 #'
-#' `naive_parse()` is useful when you have date-time strings like:
+#' `naive_time_parse()` is useful when you have date-time strings like:
 #' `"2020-01-01 01:04:30"`. If there is no attached UTC offset or time zone
 #' name, then parsing this string as a naive-time is your best option. If
 #' you know that this string should be interpreted in a specific time zone,
@@ -52,7 +52,7 @@ is_naive_time <- function(x) {
 #' The default options assume that `x` should be parsed at second precision,
 #' using a `format` string of `"%Y-%m-%d %H:%M:%S"`.
 #'
-#' _`naive_parse()` ignores both the `%z` and `%Z` commands._
+#' _`naive_time_parse()` ignores both the `%z` and `%Z` commands._
 #'
 #' If your date-time strings contain a full time zone name and a UTC offset, use
 #' [zoned_parse_complete()]. If they contain a time zone abbreviation, use
@@ -67,21 +67,24 @@ is_naive_time <- function(x) {
 #'
 #' @export
 #' @examples
-#' naive_parse("2020-01-01 05:06:07")
+#' naive_time_parse("2020-01-01 05:06:07")
 #'
 #' # Day precision
-#' naive_parse("2020-01-01", precision = "day")
+#' naive_time_parse("2020-01-01", precision = "day")
 #'
 #' # Nanosecond precision, but using a day based format
-#' naive_parse("2020-01-01", format = "%Y-%m-%d", precision = "nanosecond")
+#' naive_time_parse("2020-01-01", format = "%Y-%m-%d", precision = "nanosecond")
 #'
 #' # Remember that the `%z` and `%Z` commands are ignored entirely!
-#' naive_parse("2020-01-01 -4000 America/New_York", format = "%Y-%m-%d %z %Z")
-naive_parse <- function(x,
-                        ...,
-                        format = NULL,
-                        precision = "second",
-                        locale = clock_locale()) {
+#' naive_time_parse(
+#'   "2020-01-01 -4000 America/New_York",
+#'   format = "%Y-%m-%d %z %Z"
+#' )
+naive_time_parse <- function(x,
+                             ...,
+                             format = NULL,
+                             precision = "second",
+                             locale = clock_locale()) {
   precision <- validate_time_point_precision_string(precision)
 
   fields <- time_point_parse(
@@ -654,7 +657,7 @@ as.character.clock_naive_time <- function(x, ...) {
 #' # 1 time zone in a vector of date-times at a time. So you'll need to
 #' # normalize these naive-times. The easiest thing to normalize them to
 #' # is UTC.
-#' df$naive <- naive_parse(df$x)
+#' df$naive <- naive_time_parse(df$x)
 #'
 #' # Get info about the naive times using a vector of zones
 #' info <- naive_info(df$naive, df$zone)

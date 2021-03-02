@@ -90,7 +90,7 @@ test_that("as.character() works", {
 # ------------------------------------------------------------------------------
 # sys_time_parse()
 
-# Note: Most tests are in `naive_parse()`. They share an implementation.
+# Note: Most tests are in `naive_time_parse()`. They share an implementation.
 
 test_that("can parse day precision", {
   x <- c("2019-01-01", "2019-01-31")

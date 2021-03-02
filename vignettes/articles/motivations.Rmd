@@ -432,7 +432,7 @@ The previous section was entirely focused on issues that might arise when workin
 Unlike our ambiguous time examples from before, since naive-times don't have any implied time zone, there is no repeated 1 o'clock hour.
 
 ```{r}
-x <- naive_parse("2020-11-01 00:30:00")
+x <- naive_time_parse("2020-11-01 00:30:00")
 x <- add_hours(x, 0:5)
 x
 ```

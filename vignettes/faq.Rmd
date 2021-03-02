@@ -249,7 +249,7 @@ year_2050 + five_microseconds
 Because of these issues, clock treats POSIXct as a second precision data type, dropping all other information. Instead, you should parse directly into a subsecond clock type:
 
 ```{r}
-naive_parse(
+naive_time_parse(
   c("2019-01-01 01:00:00.1", "2019-01-01 01:00:00.3"), 
   precision = "millisecond"
 ) %>%

@@ -214,10 +214,10 @@ UTC equivalent, then use \code{\link[=as_zoned]{as_zoned()}}.
 The default options assume that \code{x} should be parsed at second precision,
 using a \code{format} string of \code{"\%Y-\%m-\%d \%H:\%M:\%S"}.
 
-\code{sys_time_parse()} is nearly equivalent to \code{\link[=naive_parse]{naive_parse()}}, except for the
-fact that the \verb{\%z} command is actually used. Using \verb{\%z} assumes that the rest
-of the date-time string should be interpreted as a naive-time, which is then
-shifted by the UTC offset found in \verb{\%z}. The returned time can then be
+\code{sys_time_parse()} is nearly equivalent to \code{\link[=naive_time_parse]{naive_time_parse()}}, except for
+the fact that the \verb{\%z} command is actually used. Using \verb{\%z} assumes that the
+rest of the date-time string should be interpreted as a naive-time, which is
+then shifted by the UTC offset found in \verb{\%z}. The returned time can then be
 validly interpreted as UTC.
 
 \emph{\code{sys_time_parse()} ignores the \verb{\%Z} command.}
@@ -227,8 +227,8 @@ If your date-time strings contain a full time zone name and a UTC offset, use
 \code{\link[=zoned_parse_abbrev]{zoned_parse_abbrev()}}.
 
 If your date-time strings don't contain an offset from UTC, you might
-consider using \code{\link[=naive_parse]{naive_parse()}}, since the resulting naive-time doesn't come
-with an assumption of a UTC time zone.
+consider using \code{\link[=naive_time_parse]{naive_time_parse()}}, since the resulting naive-time doesn't
+come with an assumption of a UTC time zone.
 }
 \examples{
 sys_time_parse("2020-01-01 05:06:07")

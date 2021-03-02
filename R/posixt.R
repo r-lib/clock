@@ -996,7 +996,7 @@ date_time_parse <- function(x,
                             locale = clock_locale(),
                             nonexistent = NULL,
                             ambiguous = NULL) {
-  x <- naive_parse(x, ..., format = format, precision = "second", locale = locale)
+  x <- naive_time_parse(x, ..., format = format, precision = "second", locale = locale)
   as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
 }
 

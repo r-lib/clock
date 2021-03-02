@@ -257,10 +257,10 @@ In that case, the result will use \code{"UTC"}.
 If your date-time strings contain time zone offsets (like \code{-04:00}), but
 not the full time zone name, you might need \code{\link[=sys_time_parse]{sys_time_parse()}}.
 
-If your date-time strings don't contain time zone offsets or the full
-time zone name, you might need to use \code{\link[=naive_parse]{naive_parse()}}. From there, if you
-know the time zone that the date-times are supposed to be in, you can
-convert to a zoned-time with \code{\link[=as_zoned]{as_zoned()}}.
+If your date-time strings don't contain time zone offsets or the full time
+zone name, you might need to use \code{\link[=naive_time_parse]{naive_time_parse()}}. From there, if you
+know the time zone that the date-times are supposed to be in, you can convert
+to a zoned-time with \code{\link[=as_zoned]{as_zoned()}}.
 }
 \examples{
 zoned_parse_complete("2019-01-01 01:02:03-05:00[America/New_York]")

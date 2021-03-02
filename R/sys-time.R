@@ -53,10 +53,10 @@ is_sys_time <- function(x) {
 #' The default options assume that `x` should be parsed at second precision,
 #' using a `format` string of `"%Y-%m-%d %H:%M:%S"`.
 #'
-#' `sys_time_parse()` is nearly equivalent to [naive_parse()], except for the
-#' fact that the `%z` command is actually used. Using `%z` assumes that the rest
-#' of the date-time string should be interpreted as a naive-time, which is then
-#' shifted by the UTC offset found in `%z`. The returned time can then be
+#' `sys_time_parse()` is nearly equivalent to [naive_time_parse()], except for
+#' the fact that the `%z` command is actually used. Using `%z` assumes that the
+#' rest of the date-time string should be interpreted as a naive-time, which is
+#' then shifted by the UTC offset found in `%z`. The returned time can then be
 #' validly interpreted as UTC.
 #'
 #' _`sys_time_parse()` ignores the `%Z` command._
@@ -66,8 +66,8 @@ is_sys_time <- function(x) {
 #' [zoned_parse_abbrev()].
 #'
 #' If your date-time strings don't contain an offset from UTC, you might
-#' consider using [naive_parse()], since the resulting naive-time doesn't come
-#' with an assumption of a UTC time zone.
+#' consider using [naive_time_parse()], since the resulting naive-time doesn't
+#' come with an assumption of a UTC time zone.
 #'
 #' @inheritParams zoned-parsing
 #'

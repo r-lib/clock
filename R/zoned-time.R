@@ -290,10 +290,10 @@ zoned_time_format <- function(print_zone_name) {
 #' If your date-time strings contain time zone offsets (like `-04:00`), but
 #' not the full time zone name, you might need [sys_time_parse()].
 #'
-#' If your date-time strings don't contain time zone offsets or the full
-#' time zone name, you might need to use [naive_parse()]. From there, if you
-#' know the time zone that the date-times are supposed to be in, you can
-#' convert to a zoned-time with [as_zoned()].
+#' If your date-time strings don't contain time zone offsets or the full time
+#' zone name, you might need to use [naive_time_parse()]. From there, if you
+#' know the time zone that the date-times are supposed to be in, you can convert
+#' to a zoned-time with [as_zoned()].
 #'
 #' @inheritParams ellipsis::dots_empty
 #'

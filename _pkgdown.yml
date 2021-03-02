@@ -129,7 +129,7 @@ reference:
   - as_sys_time
   - is_naive_time
   - is_sys_time
-  - naive_parse
+  - naive_time_parse
   - sys_time_parse
   - naive_info
   - sys_time_info

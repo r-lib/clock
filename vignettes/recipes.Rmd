@@ -436,7 +436,7 @@ If you _don't_ know what time zone this abbreviation goes with, then generally y
 Assuming that `x` is a naive-time with its corresponding time zone abbreviation attached, the first thing to do is to parse this string as a naive-time.
 
 ```{r}
-x <- naive_parse(x)
+x <- naive_time_parse(x)
 x
 ```
 
