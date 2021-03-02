@@ -173,3 +173,10 @@ test_that("can't compare or order weekdays (#153)", {
   expect_snapshot_error(xtfrm(weekday(1:2)))
   expect_snapshot_error(vec_order(weekday(1:2)))
 })
+
+# ------------------------------------------------------------------------------
+# vec_ptype()
+
+test_that("ptype is correct", {
+  expect_identical(vec_ptype(weekday(1:7)), weekday(integer()))
+})

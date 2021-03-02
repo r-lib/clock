@@ -62,3 +62,19 @@ precision_common2 <- function(x, y) {
     y
   }
 }
+
+precision_names <- function() {
+  c(
+    "year",
+    "quarter",
+    "month",
+    "week",
+    "day",
+    "hour",
+    "minute",
+    "second",
+    "millisecond",
+    "microsecond",
+    "nanosecond"
+  )
+}

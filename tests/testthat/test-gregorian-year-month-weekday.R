@@ -54,6 +54,25 @@ test_that("NA values propagate", {
 })
 
 # ------------------------------------------------------------------------------
+# vec_ptype()
+
+test_that("ptype is correct", {
+  base <- year_month_weekday(1)
+  ptype <- year_month_weekday(integer())
+
+  for (precision in precision_names()) {
+    if (precision == "quarter" || precision == "week") {
+      next
+    }
+
+    x <- calendar_widen(base, precision)
+    expect <- calendar_widen(ptype, precision)
+
+    expect_identical(vec_ptype(x), expect)
+  }
+})
+
+# ------------------------------------------------------------------------------
 # vec_proxy() / vec_restore()
 
 test_that("proxy is a data frame", {

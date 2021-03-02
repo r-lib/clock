@@ -495,3 +495,22 @@ test_that("strict mode can be activated - ambiguous", {
   expect_snapshot_error(as_zoned(naive_seconds(), zone, nonexistent = "roll-forward", ambiguous = zt))
   expect_snapshot_error(as_zoned(naive_seconds(), zone, nonexistent = "roll-forward", ambiguous = list(zt, NULL)))
 })
+
+# ------------------------------------------------------------------------------
+# vec_ptype()
+
+test_that("ptype is correct", {
+  base <- naive_days(0)
+  ptype <- naive_days(integer())
+
+  for (precision in precision_names()) {
+    if (validate_precision_string(precision) < PRECISION_DAY) {
+      next
+    }
+
+    x <- time_point_cast(base, precision)
+    expect <- time_point_cast(ptype, precision)
+
+    expect_identical(vec_ptype(x), expect)
+  }
+})

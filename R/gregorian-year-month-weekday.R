@@ -176,6 +176,25 @@ is_year_month_weekday <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
+vec_ptype.clock_year_month_weekday <- function(x, ...) {
+  switch(
+    calendar_precision(x) + 1L,
+    clock_empty_year_month_weekday_year,
+    abort("Internal error: Invalid precision"),
+    clock_empty_year_month_weekday_month,
+    abort("Internal error: Invalid precision"),
+    clock_empty_year_month_weekday_day,
+    clock_empty_year_month_weekday_hour,
+    clock_empty_year_month_weekday_minute,
+    clock_empty_year_month_weekday_second,
+    clock_empty_year_month_weekday_millisecond,
+    clock_empty_year_month_weekday_microsecond,
+    clock_empty_year_month_weekday_nanosecond,
+    abort("Internal error: Invalid precision.")
+  )
+}
+
+#' @export
 vec_ptype2.clock_year_month_weekday.clock_year_month_weekday <- function(x, y, ...) {
   ptype2_calendar_and_calendar(x, y, ...)
 }
@@ -1049,4 +1068,22 @@ seq.clock_year_month_weekday <- function(from,
                                          along.with = NULL,
                                          ...) {
   seq.clock_year_month_day(from, to, by, length.out, along.with, ...)
+}
+
+# ------------------------------------------------------------------------------
+
+clock_init_year_month_weekday_utils <- function(env) {
+  year <- year_month_weekday(integer())
+
+  assign("clock_empty_year_month_weekday_year", year, envir = env)
+  assign("clock_empty_year_month_weekday_month", calendar_widen(year, "month"), envir = env)
+  assign("clock_empty_year_month_weekday_day", calendar_widen(year, "day"), envir = env)
+  assign("clock_empty_year_month_weekday_hour", calendar_widen(year, "hour"), envir = env)
+  assign("clock_empty_year_month_weekday_minute", calendar_widen(year, "minute"), envir = env)
+  assign("clock_empty_year_month_weekday_second", calendar_widen(year, "second"), envir = env)
+  assign("clock_empty_year_month_weekday_millisecond", calendar_widen(year, "millisecond"), envir = env)
+  assign("clock_empty_year_month_weekday_microsecond", calendar_widen(year, "microsecond"), envir = env)
+  assign("clock_empty_year_month_weekday_nanosecond", calendar_widen(year, "nanosecond"), envir = env)
+
+  invisible(NULL)
 }

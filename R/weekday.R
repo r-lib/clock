@@ -158,6 +158,11 @@ vec_ptype_abbr.clock_weekday <- function(x, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
+vec_ptype.clock_weekday <- function(x, ...) {
+  clock_empty_weekday
+}
+
+#' @export
 vec_ptype2.clock_weekday.clock_weekday <- function(x, y, ...) {
   x
 }
@@ -505,4 +510,12 @@ reencode_western_to_iso <- function(code) {
   code <- code - 1L
   code[code == 0L] <- 7L
   code
+}
+
+# ------------------------------------------------------------------------------
+
+clock_init_weekday_utils <- function(env) {
+  assign("clock_empty_weekday", weekday(integer()), envir = env)
+
+  invisible(NULL)
 }

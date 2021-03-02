@@ -676,6 +676,31 @@ zone_pretty <- function(zone) {
 # ------------------------------------------------------------------------------
 
 #' @export
+vec_ptype.clock_zoned_time <- function(x, ...) {
+  zone <- zoned_time_zone(x)
+
+  ptype_utc <- switch(
+    zoned_time_precision(x) + 1L,
+    abort("Internal error: Invalid precision"),
+    abort("Internal error: Invalid precision"),
+    abort("Internal error: Invalid precision"),
+    abort("Internal error: Invalid precision"),
+    abort("Internal error: Invalid precision"),
+    abort("Internal error: Invalid precision"),
+    abort("Internal error: Invalid precision"),
+    clock_empty_zoned_time_utc_second,
+    clock_empty_zoned_time_utc_millisecond,
+    clock_empty_zoned_time_utc_microsecond,
+    clock_empty_zoned_time_utc_nanosecond,
+    abort("Internal error: Invalid precision.")
+  )
+
+  ptype <- zoned_time_set_zone(ptype_utc, zone)
+
+  ptype
+}
+
+#' @export
 vec_ptype2.clock_zoned_time.clock_zoned_time <- function(x, y, ...) {
   x_zone <- zoned_time_zone(x)
   y_zone <- zoned_time_zone(y)
@@ -1014,4 +1039,15 @@ validate_zoned_time_precision_string <- function(precision) {
 
 is_valid_zoned_time_precision <- function(precision) {
   precision >= PRECISION_SECOND
+}
+
+# ------------------------------------------------------------------------------
+
+clock_init_zoned_time_utils <- function(env) {
+  assign("clock_empty_zoned_time_utc_second", as_zoned(as_sys(duration_seconds()), "UTC"), envir = env)
+  assign("clock_empty_zoned_time_utc_millisecond", as_zoned(as_sys(duration_milliseconds()), "UTC"), envir = env)
+  assign("clock_empty_zoned_time_utc_microsecond", as_zoned(as_sys(duration_microseconds()), "UTC"), envir = env)
+  assign("clock_empty_zoned_time_utc_nanosecond", as_zoned(as_sys(duration_nanoseconds()), "UTC"), envir = env)
+
+  invisible(NULL)
 }
