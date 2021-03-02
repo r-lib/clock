@@ -644,16 +644,16 @@ template <class ClockDuration>
 static
 inline
 void
-zoned_parse_abbrev_one(std::istringstream& stream,
-                       const std::vector<std::string>& fmts,
-                       const std::pair<const std::string*, const std::string*>& month_names_pair,
-                       const std::pair<const std::string*, const std::string*>& weekday_names_pair,
-                       const std::pair<const std::string*, const std::string*>& ampm_names_pair,
-                       const char& dmark,
-                       const r_ssize& i,
-                       rclock::parse_failures& failures,
-                       const date::time_zone*& p_time_zone,
-                       ClockDuration& fields) {
+zoned_time_parse_abbrev_one(std::istringstream& stream,
+                            const std::vector<std::string>& fmts,
+                            const std::pair<const std::string*, const std::string*>& month_names_pair,
+                            const std::pair<const std::string*, const std::string*>& weekday_names_pair,
+                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
+                            const char& dmark,
+                            const r_ssize& i,
+                            rclock::parse_failures& failures,
+                            const date::time_zone*& p_time_zone,
+                            ClockDuration& fields) {
   using Duration = typename ClockDuration::duration;
 
   const r_ssize size = fmts.size();
@@ -717,7 +717,7 @@ zoned_parse_abbrev_one(std::istringstream& stream,
       }
     }
     default: {
-      never_reached("zoned_parse_abbrev_one");
+      never_reached("zoned_time_parse_abbrev_one");
     }
     }
 
@@ -731,15 +731,15 @@ zoned_parse_abbrev_one(std::istringstream& stream,
 
 template <class ClockDuration>
 cpp11::writable::list
-zoned_parse_abbrev_impl(const cpp11::strings& x,
-                        const date::time_zone*& p_time_zone,
-                        const cpp11::strings& format,
-                        const cpp11::strings& month,
-                        const cpp11::strings& month_abbrev,
-                        const cpp11::strings& weekday,
-                        const cpp11::strings& weekday_abbrev,
-                        const cpp11::strings& am_pm,
-                        const cpp11::strings& mark) {
+zoned_time_parse_abbrev_impl(const cpp11::strings& x,
+                             const date::time_zone*& p_time_zone,
+                             const cpp11::strings& format,
+                             const cpp11::strings& month,
+                             const cpp11::strings& month_abbrev,
+                             const cpp11::strings& weekday,
+                             const cpp11::strings& weekday_abbrev,
+                             const cpp11::strings& am_pm,
+                             const cpp11::strings& mark) {
   const r_ssize size = x.size();
   ClockDuration fields(size);
 
@@ -791,7 +791,7 @@ zoned_parse_abbrev_impl(const cpp11::strings& x,
 
     stream.str(p_elt);
 
-    zoned_parse_abbrev_one(
+    zoned_time_parse_abbrev_one(
       stream,
       fmts,
       month_names_pair,
@@ -816,16 +816,16 @@ zoned_parse_abbrev_impl(const cpp11::strings& x,
 
 [[cpp11::register]]
 cpp11::writable::list
-zoned_parse_abbrev_cpp(const cpp11::strings& x,
-                       const cpp11::strings& zone,
-                       const cpp11::strings& format,
-                       const cpp11::integers& precision_int,
-                       const cpp11::strings& month,
-                       const cpp11::strings& month_abbrev,
-                       const cpp11::strings& weekday,
-                       const cpp11::strings& weekday_abbrev,
-                       const cpp11::strings& am_pm,
-                       const cpp11::strings& mark) {
+zoned_time_parse_abbrev_cpp(const cpp11::strings& x,
+                            const cpp11::strings& zone,
+                            const cpp11::strings& format,
+                            const cpp11::integers& precision_int,
+                            const cpp11::strings& month,
+                            const cpp11::strings& month_abbrev,
+                            const cpp11::strings& weekday,
+                            const cpp11::strings& weekday_abbrev,
+                            const cpp11::strings& am_pm,
+                            const cpp11::strings& mark) {
   using namespace rclock;
 
   zone_size_validate(zone);
@@ -833,10 +833,10 @@ zoned_parse_abbrev_cpp(const cpp11::strings& x,
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
   switch (parse_precision(precision_int)) {
-  case precision::second: return zoned_parse_abbrev_impl<duration::seconds>(x, p_time_zone, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark);
-  case precision::millisecond: return zoned_parse_abbrev_impl<duration::milliseconds>(x, p_time_zone, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark);
-  case precision::microsecond: return zoned_parse_abbrev_impl<duration::microseconds>(x, p_time_zone, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark);
-  case precision::nanosecond: return zoned_parse_abbrev_impl<duration::nanoseconds>(x, p_time_zone, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark);
-  default: never_reached("zoned_parse_abbrev_cpp");
+  case precision::second: return zoned_time_parse_abbrev_impl<duration::seconds>(x, p_time_zone, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark);
+  case precision::millisecond: return zoned_time_parse_abbrev_impl<duration::milliseconds>(x, p_time_zone, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark);
+  case precision::microsecond: return zoned_time_parse_abbrev_impl<duration::microseconds>(x, p_time_zone, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark);
+  case precision::nanosecond: return zoned_time_parse_abbrev_impl<duration::nanoseconds>(x, p_time_zone, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, mark);
+  default: never_reached("zoned_time_parse_abbrev_cpp");
   }
 }

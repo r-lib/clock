@@ -3,7 +3,7 @@
 \name{zoned-parsing}
 \alias{zoned-parsing}
 \alias{zoned_time_parse_complete}
-\alias{zoned_parse_abbrev}
+\alias{zoned_time_parse_abbrev}
 \title{Parsing: zoned-time}
 \usage{
 zoned_time_parse_complete(
@@ -14,7 +14,7 @@ zoned_time_parse_complete(
   locale = clock_locale()
 )
 
-zoned_parse_abbrev(
+zoned_time_parse_abbrev(
   x,
   zone,
   ...,
@@ -215,7 +215,7 @@ A zoned-time.
 }
 \description{
 There are two parsers into a zoned-time, \code{zoned_time_parse_complete()} and
-\code{zoned_parse_abbrev()}.
+\code{zoned_time_parse_abbrev()}.
 \subsection{zoned_time_parse_complete()}{
 
 \code{zoned_time_parse_complete()} is a parser for \emph{complete} date-time strings,
@@ -230,17 +230,17 @@ The default options assume that \code{x} should be parsed at second precision,
 using a \code{format} string of \code{"\%Y-\%m-\%d \%H:\%M:\%S\%Ez[\%Z]"}.
 }
 
-\subsection{zoned_parse_abbrev()}{
+\subsection{zoned_time_parse_abbrev()}{
 
-\code{zoned_parse_abbrev()} is a parser for date-time strings containing only a
-time zone abbreviation, like \code{"2019-01-01 00:00:00 EST"}. The time zone
+\code{zoned_time_parse_abbrev()} is a parser for date-time strings containing only
+a time zone abbreviation, like \code{"2019-01-01 00:00:00 EST"}. The time zone
 abbreviation is not enough to identify the full time zone name that the
 date-time belongs to, so the full time zone name must be supplied as the
 \code{zone} argument. However, the time zone abbreviation can help with resolving
 ambiguity around daylight saving time fallbacks.
 
-For \code{zoned_parse_abbrev()}, \verb{\%Z} must be supplied and is interpreted as the
-time zone abbreviation rather than the full time zone name.
+For \code{zoned_time_parse_abbrev()}, \verb{\%Z} must be supplied and is interpreted as
+the time zone abbreviation rather than the full time zone name.
 
 If used, the \verb{\%z} command must parse correctly, but its value will be
 completely ignored.
@@ -303,16 +303,16 @@ x <- c(
 zoned_time_parse_complete(x)
 
 # If you have date-time strings with time zone abbreviations,
-# `zoned_parse_abbrev()` should be able to help. The `zone` must be
+# `zoned_time_parse_abbrev()` should be able to help. The `zone` must be
 # provided, because multiple countries may use the same time zone
 # abbreviation. For example:
 x <- "1970-01-01 02:30:30 IST"
 
 # IST = India Standard Time
-zoned_parse_abbrev(x, "Asia/Kolkata")
+zoned_time_parse_abbrev(x, "Asia/Kolkata")
 
 # IST = Israel Standard Time
-zoned_parse_abbrev(x, "Asia/Jerusalem")
+zoned_time_parse_abbrev(x, "Asia/Jerusalem")
 
 # The time zone abbreviation is mainly useful for resolving ambiguity
 # around daylight saving time fallbacks. Without the abbreviation, these
@@ -321,5 +321,5 @@ x <- c(
   "1970-10-25 01:30:00 EDT",
   "1970-10-25 01:30:00 EST"
 )
-zoned_parse_abbrev(x, "America/New_York")
+zoned_time_parse_abbrev(x, "America/New_York")
 }

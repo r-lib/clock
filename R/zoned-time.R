@@ -249,7 +249,7 @@ zoned_time_format <- function(print_zone_name) {
 #'
 #' @description
 #' There are two parsers into a zoned-time, `zoned_time_parse_complete()` and
-#' `zoned_parse_abbrev()`.
+#' `zoned_time_parse_abbrev()`.
 #'
 #' ## zoned_time_parse_complete()
 #'
@@ -264,17 +264,17 @@ zoned_time_format <- function(print_zone_name) {
 #' The default options assume that `x` should be parsed at second precision,
 #' using a `format` string of `"%Y-%m-%d %H:%M:%S%Ez[%Z]"`.
 #'
-#' ## zoned_parse_abbrev()
+#' ## zoned_time_parse_abbrev()
 #'
-#' `zoned_parse_abbrev()` is a parser for date-time strings containing only a
-#' time zone abbreviation, like `"2019-01-01 00:00:00 EST"`. The time zone
+#' `zoned_time_parse_abbrev()` is a parser for date-time strings containing only
+#' a time zone abbreviation, like `"2019-01-01 00:00:00 EST"`. The time zone
 #' abbreviation is not enough to identify the full time zone name that the
 #' date-time belongs to, so the full time zone name must be supplied as the
 #' `zone` argument. However, the time zone abbreviation can help with resolving
 #' ambiguity around daylight saving time fallbacks.
 #'
-#' For `zoned_parse_abbrev()`, `%Z` must be supplied and is interpreted as the
-#' time zone abbreviation rather than the full time zone name.
+#' For `zoned_time_parse_abbrev()`, `%Z` must be supplied and is interpreted as
+#' the time zone abbreviation rather than the full time zone name.
 #'
 #' If used, the `%z` command must parse correctly, but its value will be
 #' completely ignored.
@@ -537,16 +537,16 @@ zoned_time_format <- function(print_zone_name) {
 #' zoned_time_parse_complete(x)
 #'
 #' # If you have date-time strings with time zone abbreviations,
-#' # `zoned_parse_abbrev()` should be able to help. The `zone` must be
+#' # `zoned_time_parse_abbrev()` should be able to help. The `zone` must be
 #' # provided, because multiple countries may use the same time zone
 #' # abbreviation. For example:
 #' x <- "1970-01-01 02:30:30 IST"
 #'
 #' # IST = India Standard Time
-#' zoned_parse_abbrev(x, "Asia/Kolkata")
+#' zoned_time_parse_abbrev(x, "Asia/Kolkata")
 #'
 #' # IST = Israel Standard Time
-#' zoned_parse_abbrev(x, "Asia/Jerusalem")
+#' zoned_time_parse_abbrev(x, "Asia/Jerusalem")
 #'
 #' # The time zone abbreviation is mainly useful for resolving ambiguity
 #' # around daylight saving time fallbacks. Without the abbreviation, these
@@ -555,7 +555,7 @@ zoned_time_format <- function(print_zone_name) {
 #'   "1970-10-25 01:30:00 EDT",
 #'   "1970-10-25 01:30:00 EST"
 #' )
-#' zoned_parse_abbrev(x, "America/New_York")
+#' zoned_time_parse_abbrev(x, "America/New_York")
 NULL
 
 #' @rdname zoned-parsing
@@ -598,12 +598,12 @@ zoned_time_parse_complete <- function(x,
 
 #' @rdname zoned-parsing
 #' @export
-zoned_parse_abbrev <- function(x,
-                               zone,
-                               ...,
-                               format = NULL,
-                               precision = "second",
-                               locale = clock_locale()) {
+zoned_time_parse_abbrev <- function(x,
+                                    zone,
+                                    ...,
+                                    format = NULL,
+                                    precision = "second",
+                                    locale = clock_locale()) {
   check_dots_empty()
 
   precision <- validate_zoned_time_precision_string(precision)
@@ -620,7 +620,7 @@ zoned_parse_abbrev <- function(x,
   labels <- locale$labels
   mark <- locale$decimal_mark
 
-  fields <- zoned_parse_abbrev_cpp(
+  fields <- zoned_time_parse_abbrev_cpp(
     x,
     zone,
     format,

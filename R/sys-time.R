@@ -63,7 +63,7 @@ is_sys_time <- function(x) {
 #'
 #' If your date-time strings contain a full time zone name and a UTC offset, use
 #' [zoned_time_parse_complete()]. If they contain a time zone abbreviation, use
-#' [zoned_parse_abbrev()].
+#' [zoned_time_parse_abbrev()].
 #'
 #' If your date-time strings don't contain an offset from UTC, you might
 #' consider using [naive_time_parse()], since the resulting naive-time doesn't

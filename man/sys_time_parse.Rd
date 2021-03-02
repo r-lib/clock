@@ -224,7 +224,7 @@ validly interpreted as UTC.
 
 If your date-time strings contain a full time zone name and a UTC offset, use
 \code{\link[=zoned_time_parse_complete]{zoned_time_parse_complete()}}. If they contain a time zone abbreviation, use
-\code{\link[=zoned_parse_abbrev]{zoned_parse_abbrev()}}.
+\code{\link[=zoned_time_parse_abbrev]{zoned_time_parse_abbrev()}}.
 
 If your date-time strings don't contain an offset from UTC, you might
 consider using \code{\link[=naive_time_parse]{naive_time_parse()}}, since the resulting naive-time doesn't

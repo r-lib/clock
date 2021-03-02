@@ -123,7 +123,7 @@
 # abbreviation must match the one implied from naive + time zone name lookup
 
     Code
-      zoned_parse_abbrev(x, "America/New_York")
+      zoned_time_parse_abbrev(x, "America/New_York")
     Warning <clock_warning_parse_failures>
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output

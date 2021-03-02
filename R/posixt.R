@@ -1010,7 +1010,7 @@ date_time_parse_complete <- function(x, ..., format = NULL, locale = clock_local
 #' @rdname date-time-parse
 #' @export
 date_time_parse_abbrev <- function(x, zone, ..., format = NULL, locale = clock_locale()) {
-  x <- zoned_parse_abbrev(x, zone, ..., format = format, precision = "second", locale = locale)
+  x <- zoned_time_parse_abbrev(x, zone, ..., format = format, precision = "second", locale = locale)
   as.POSIXct(x)
 }
 

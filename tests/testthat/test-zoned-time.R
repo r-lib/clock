@@ -231,33 +231,33 @@ test_that("`x` is translated to UTF-8", {
 })
 
 # ------------------------------------------------------------------------------
-# zoned_parse_abbrev()
+# zoned_time_parse_abbrev()
 
 test_that("can parse with abbreviation and zone name", {
   expect_identical(
-    zoned_parse_abbrev("2019-01-01 01:02:03 EST", "America/New_York"),
+    zoned_time_parse_abbrev("2019-01-01 01:02:03 EST", "America/New_York"),
     zoned_time_parse_complete("2019-01-01 01:02:03-05:00[America/New_York]")
   )
 })
 
 test_that("can parse when abbreviation is an offset", {
   expect_identical(
-    zoned_parse_abbrev("2019-01-01 01:02:03 +11", "Australia/Lord_Howe"),
+    zoned_time_parse_abbrev("2019-01-01 01:02:03 +11", "Australia/Lord_Howe"),
     zoned_time_parse_complete("2019-01-01 01:02:03+11:00[Australia/Lord_Howe]")
   )
   expect_identical(
-    zoned_parse_abbrev("2019-10-01 01:02:03 +1030", "Australia/Lord_Howe"),
+    zoned_time_parse_abbrev("2019-10-01 01:02:03 +1030", "Australia/Lord_Howe"),
     zoned_time_parse_complete("2019-10-01 01:02:03+10:30[Australia/Lord_Howe]")
   )
 })
 
 test_that("can parse at more precise precisions", {
   expect_identical(
-    zoned_parse_abbrev("2019-01-01 01:02:03.123 EST", "America/New_York", precision = "millisecond"),
+    zoned_time_parse_abbrev("2019-01-01 01:02:03.123 EST", "America/New_York", precision = "millisecond"),
     as_zoned(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123, subsecond_precision = "millisecond")), "America/New_York")
   )
   expect_identical(
-    zoned_parse_abbrev("2019-01-01 01:02:03.123456 EST", "America/New_York", precision = "nanosecond"),
+    zoned_time_parse_abbrev("2019-01-01 01:02:03.123456 EST", "America/New_York", precision = "nanosecond"),
     as_zoned(as_naive_time(year_month_day(2019, 1, 1, 1, 2, 3, 123456000, subsecond_precision = "nanosecond")), "America/New_York")
   )
 })
@@ -274,7 +274,7 @@ test_that("abbreviation is used to resolve ambiguity", {
   )
 
   expect_identical(
-    zoned_parse_abbrev(x, "America/New_York"),
+    zoned_time_parse_abbrev(x, "America/New_York"),
     zoned_time_parse_complete(expect)
   )
 })
@@ -282,7 +282,7 @@ test_that("abbreviation is used to resolve ambiguity", {
 test_that("nonexistent times are NAs", {
   expect_identical(
     expect_warning(
-      zoned_parse_abbrev("1970-04-26 02:30:00 EST", "America/New_York")
+      zoned_time_parse_abbrev("1970-04-26 02:30:00 EST", "America/New_York")
     ),
     as_zoned(sys_seconds(NA), "America/New_York")
   )
@@ -292,7 +292,7 @@ test_that("abbreviation must match the one implied from naive + time zone name l
   x <- "1970-01-01 00:00:00 FOOBAR"
 
   expect_identical(
-    expect_warning(zoned_parse_abbrev(x, "America/New_York")),
+    expect_warning(zoned_time_parse_abbrev(x, "America/New_York")),
     as_zoned(sys_days(NA), "America/New_York")
   )
 
@@ -300,18 +300,18 @@ test_that("abbreviation must match the one implied from naive + time zone name l
   x <- "1970-01-01 00:00:00 EDT"
 
   expect_identical(
-    expect_warning(zoned_parse_abbrev(x, "America/New_York")),
+    expect_warning(zoned_time_parse_abbrev(x, "America/New_York")),
     as_zoned(sys_days(NA), "America/New_York")
   )
 
-  expect_snapshot(zoned_parse_abbrev(x, "America/New_York"))
+  expect_snapshot(zoned_time_parse_abbrev(x, "America/New_York"))
 })
 
 test_that("%Z must be used", {
   x <- "1970-01-01"
 
   expect_snapshot_error(
-    zoned_parse_abbrev(x, "America/New_York", format = "%Y-%m-%d")
+    zoned_time_parse_abbrev(x, "America/New_York", format = "%Y-%m-%d")
   )
 })
 
@@ -320,7 +320,7 @@ test_that("%z can be parsed (but is ignored really)", {
   x <- "1970-01-01 00:00:00-05:00 EST"
 
   expect_identical(
-    zoned_parse_abbrev(x, "America/New_York", format = "%Y-%m-%d %H:%M:%S%Ez %Z"),
+    zoned_time_parse_abbrev(x, "America/New_York", format = "%Y-%m-%d %H:%M:%S%Ez %Z"),
     expect
   )
 })
@@ -330,7 +330,7 @@ test_that("%z that is incorrect technically slips through unnoticed", {
   x <- "1970-01-01 00:00:00-02:00 EST"
 
   expect_identical(
-    zoned_parse_abbrev(x, "America/New_York", format = "%Y-%m-%d %H:%M:%S%Ez %Z"),
+    zoned_time_parse_abbrev(x, "America/New_York", format = "%Y-%m-%d %H:%M:%S%Ez %Z"),
     expect
   )
 })
@@ -341,7 +341,7 @@ test_that("%z must parse correctly if included", {
 
   expect_identical(
     expect_warning(
-      zoned_parse_abbrev(x, "America/New_York", format = "%Y-%m-%d %H:%M:%S%Ez %Z")
+      zoned_time_parse_abbrev(x, "America/New_York", format = "%Y-%m-%d %H:%M:%S%Ez %Z")
     ),
     expect
   )
@@ -357,18 +357,18 @@ test_that("multiple formats can be attempted", {
   )
 
   expect_identical(
-    zoned_parse_abbrev(x, "America/New_York", format = formats),
+    zoned_time_parse_abbrev(x, "America/New_York", format = formats),
     expect
   )
 })
 
 test_that("NA parses correctly", {
   expect_identical(
-    zoned_parse_abbrev(NA_character_, "America/New_York"),
+    zoned_time_parse_abbrev(NA_character_, "America/New_York"),
     as_zoned(sys_seconds(NA), "America/New_York")
   )
   expect_identical(
-    zoned_parse_abbrev(NA_character_, "America/New_York", precision = "nanosecond"),
+    zoned_time_parse_abbrev(NA_character_, "America/New_York", precision = "nanosecond"),
     as_zoned(as_sys_time(duration_nanoseconds(NA)), "America/New_York")
   )
 })
@@ -384,7 +384,7 @@ test_that("`x` is translated to UTF-8", {
   expect_identical(Encoding(locale$labels$month[2]), "UTF-8")
 
   expect_identical(
-    zoned_parse_abbrev(x, "America/New_York", format = format, locale = locale),
+    zoned_time_parse_abbrev(x, "America/New_York", format = format, locale = locale),
     as_zoned(as_naive_time(year_month_day(2019, 2, 1, 1, 2, 3)), "America/New_York")
   )
 })

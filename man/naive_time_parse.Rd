@@ -217,7 +217,7 @@ using a \code{format} string of \code{"\%Y-\%m-\%d \%H:\%M:\%S"}.
 
 If your date-time strings contain a full time zone name and a UTC offset, use
 \code{\link[=zoned_time_parse_complete]{zoned_time_parse_complete()}}. If they contain a time zone abbreviation, use
-\code{\link[=zoned_parse_abbrev]{zoned_parse_abbrev()}}.
+\code{\link[=zoned_time_parse_abbrev]{zoned_time_parse_abbrev()}}.
 
 If your date-time strings contain a UTC offset, but not a full time zone
 name, use \code{\link[=sys_time_parse]{sys_time_parse()}}.

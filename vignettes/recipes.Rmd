@@ -422,13 +422,13 @@ x %>%
 
 ## Converting a time zone abbreviation into a time zone name
 
-It is possible that you might run into date-time strings of the form `"2020-10-25 01:30:00 IST"`, which contain a time zone _abbreviation_ rather than a full time zone name. Because time zone maintainers change the abbreviation they use throughout time, and because multiple time zones sometimes use the same abbreviation, it is generally impossible to parse strings of this form without more information. That said, if you know what time zone this abbreviation goes with, you can parse this time with `zoned_parse_abbrev()`, supplying the `zone`.
+It is possible that you might run into date-time strings of the form `"2020-10-25 01:30:00 IST"`, which contain a time zone _abbreviation_ rather than a full time zone name. Because time zone maintainers change the abbreviation they use throughout time, and because multiple time zones sometimes use the same abbreviation, it is generally impossible to parse strings of this form without more information. That said, if you know what time zone this abbreviation goes with, you can parse this time with `zoned_time_parse_abbrev()`, supplying the `zone`.
 
 ```{r}
 x <- "2020-10-25 01:30:00 IST"
 
-zoned_parse_abbrev(x, "Asia/Kolkata")
-zoned_parse_abbrev(x, "Asia/Jerusalem")
+zoned_time_parse_abbrev(x, "Asia/Kolkata")
+zoned_time_parse_abbrev(x, "Asia/Jerusalem")
 ```
 
 If you _don't_ know what time zone this abbreviation goes with, then generally you are out of luck. However, there are low-level tools in this library that can help you generate a list of _possible_ zoned-times this could map to.
