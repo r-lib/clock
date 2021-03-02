@@ -301,9 +301,9 @@ sys_time_now <- function() {
 #' Info: sys-time
 #'
 #' @description
-#' `sys_info()` retrieves a set of low-level information generally not required
-#' for most date-time manipulations. It returns a data frame with the following
-#' columns:
+#' `sys_time_info()` retrieves a set of low-level information generally not
+#' required for most date-time manipulations. It returns a data frame with the
+#' following columns:
 #'
 #' - `begin`, `end`: Second precision sys-times specifying the range of the
 #' current daylight saving time rule. The range is a half-open interval of
@@ -341,7 +341,7 @@ sys_time_now <- function() {
 #'
 #'   A valid time zone name.
 #'
-#'   Unlike most functions in clock, in `sys_info()` `zone` is vectorized
+#'   Unlike most functions in clock, in `sys_time_info()` `zone` is vectorized
 #'   and is recycled against `x`.
 #'
 #' @return A data frame of low level information.
@@ -359,7 +359,7 @@ sys_time_now <- function() {
 #'
 #' x_sys <- as_sys_time(x)
 #'
-#' info <- sys_info(x_sys, zoned_zone(x))
+#' info <- sys_time_info(x_sys, zoned_zone(x))
 #' info
 #'
 #' # Convert `begin` and `end` to zoned-times to see the previous and
@@ -371,14 +371,14 @@ sys_time_now <- function() {
 #' )
 #'
 #' # `end` can be used to iterate through daylight saving time transitions
-#' # by repeatedly calling `sys_info()`
-#' sys_info(info$end, zoned_zone(x))
+#' # by repeatedly calling `sys_time_info()`
+#' sys_time_info(info$end, zoned_zone(x))
 #'
 #' # Multiple `zone`s can be supplied to look up daylight saving time
 #' # information in different time zones
 #' zones <- c("America/New_York", "America/Los_Angeles")
 #'
-#' info2 <- sys_info(x_sys[1], zones)
+#' info2 <- sys_time_info(x_sys[1], zones)
 #' info2
 #'
 #' # The offset can be used to display the naive-time (i.e. the printed time)
@@ -387,7 +387,7 @@ sys_time_now <- function() {
 #'   zone = zones,
 #'   naive_time = x_sys[1] + info2$offset
 #' )
-sys_info <- function(x, zone) {
+sys_time_info <- function(x, zone) {
   if (!is_sys_time(x)) {
     abort("`x` must be a sys-time.")
   }
@@ -399,12 +399,12 @@ sys_info <- function(x, zone) {
   size <- vec_size_common(x = x, zone = zone)
   x <- vec_recycle(x, size)
 
-  fields <- sys_info_cpp(x, precision, zone)
+  fields <- sys_time_info_cpp(x, precision, zone)
 
-  new_sys_info_from_fields(fields)
+  new_sys_time_info_from_fields(fields)
 }
 
-new_sys_info_from_fields <- function(fields) {
+new_sys_time_info_from_fields <- function(fields) {
   names <- NULL
 
   fields[["begin"]] <- new_sys_time_from_fields(fields[["begin"]], PRECISION_SECOND, names)

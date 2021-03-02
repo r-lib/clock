@@ -11,7 +11,7 @@ test_that("naive-info returns the right structure", {
 
 test_that("unique info works", {
   info <- naive_info(naive_days(0), "America/New_York")
-  na_sys_info <- sys_info(sys_days(NA), "America/New_York")
+  na_sys_info <- sys_time_info(sys_days(NA), "America/New_York")
 
   expect_identical(info$type, "unique")
   expect_identical(info$second, na_sys_info)
@@ -83,7 +83,7 @@ test_that("ambiguous info works", {
 
 test_that("all rows are NA when x is NA", {
   info <- naive_info(naive_days(NA), "UTC")
-  na_sys_info <- sys_info(sys_days(NA), "UTC")
+  na_sys_info <- sys_time_info(sys_days(NA), "UTC")
   df <- data_frame(type = NA_character_, first = na_sys_info, second = na_sys_info)
   expect_identical(info, df)
 })

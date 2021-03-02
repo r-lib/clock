@@ -29,8 +29,7 @@ template <class ClockDuration>
 static
 inline
 cpp11::writable::list
-sys_info_impl(const ClockDuration& x,
-              const cpp11::strings& zone) {
+sys_time_info_impl(const ClockDuration& x, const cpp11::strings& zone) {
   const r_ssize size = x.size();
   using Duration = typename ClockDuration::duration;
 
@@ -90,9 +89,9 @@ sys_info_impl(const ClockDuration& x,
 
 [[cpp11::register]]
 cpp11::writable::list
-sys_info_cpp(cpp11::list_of<cpp11::integers> fields,
-             const cpp11::integers& precision_int,
-             const cpp11::strings& zone) {
+sys_time_info_cpp(cpp11::list_of<cpp11::integers> fields,
+                  const cpp11::integers& precision_int,
+                  const cpp11::strings& zone) {
   using namespace rclock;
 
   const cpp11::integers ticks = duration::get_ticks(fields);
@@ -106,11 +105,11 @@ sys_info_cpp(cpp11::list_of<cpp11::integers> fields,
   const duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
 
   switch (parse_precision(precision_int)) {
-  case precision::day: return sys_info_impl(dd, zone);
-  case precision::second: return sys_info_impl(ds, zone);
-  case precision::millisecond: return sys_info_impl(dmilli, zone);
-  case precision::microsecond: return sys_info_impl(dmicro, zone);
-  case precision::nanosecond: return sys_info_impl(dnano, zone);
+  case precision::day: return sys_time_info_impl(dd, zone);
+  case precision::second: return sys_time_info_impl(ds, zone);
+  case precision::millisecond: return sys_time_info_impl(dmilli, zone);
+  case precision::microsecond: return sys_time_info_impl(dmicro, zone);
+  case precision::nanosecond: return sys_time_info_impl(dnano, zone);
   default: clock_abort("Internal error: Should never be called.");
   }
 }

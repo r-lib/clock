@@ -32,13 +32,13 @@ It returns a data frame with the following columns:
 \itemize{
 \item \code{"unique"}: The naive-time maps uniquely to a zoned-time that can be
 created with \code{zone}.
-\item \code{"nonexistent"}: The naive-time does not exist as a zoned-time that can be
-created with \code{zone}.
+\item \code{"nonexistent"}: The naive-time does not exist as a zoned-time that can
+be created with \code{zone}.
 \item \code{"ambiguous"}: The naive-time exists twice as a zoned-time that can be
 created with \code{zone}.
 }
-\item \code{first}: A \code{\link[=sys_info]{sys_info()}} data frame.
-\item \code{second}: A \code{\link[=sys_info]{sys_info()}} data frame.
+\item \code{first}: A \code{\link[=sys_time_info]{sys_time_info()}} data frame.
+\item \code{second}: A \code{\link[=sys_time_info]{sys_time_info()}} data frame.
 }
 \subsection{type == "unique"}{
 \itemize{

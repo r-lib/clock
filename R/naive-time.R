@@ -560,15 +560,15 @@ as.character.clock_naive_time <- function(x, ...) {
 #'   - `"unique"`: The naive-time maps uniquely to a zoned-time that can be
 #'   created with `zone`.
 #'
-#'   - `"nonexistent"`: The naive-time does not exist as a zoned-time that can be
-#'   created with `zone`.
+#'   - `"nonexistent"`: The naive-time does not exist as a zoned-time that can
+#'   be created with `zone`.
 #'
 #'   - `"ambiguous"`: The naive-time exists twice as a zoned-time that can be
 #'   created with `zone`.
 #'
-#' - `first`: A [sys_info()] data frame.
+#' - `first`: A [sys_time_info()] data frame.
 #'
-#' - `second`: A [sys_info()] data frame.
+#' - `second`: A [sys_time_info()] data frame.
 #'
 #' ## type == "unique"
 #'
@@ -690,8 +690,8 @@ naive_info <- function(x, zone) {
 }
 
 new_naive_info_from_fields <- function(fields) {
-  fields[["first"]] <- new_sys_info_from_fields(fields[["first"]])
-  fields[["second"]] <- new_sys_info_from_fields(fields[["second"]])
+  fields[["first"]] <- new_sys_time_info_from_fields(fields[["first"]])
+  fields[["second"]] <- new_sys_time_info_from_fields(fields[["second"]])
   new_data_frame(fields)
 }
 

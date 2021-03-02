@@ -13,7 +13,7 @@ test_that("returns a single sys-time", {
 })
 
 # ------------------------------------------------------------------------------
-# sys_info()
+# sys_time_info()
 
 test_that("can lookup sys-info", {
   # One in EST, one in EDT
@@ -21,7 +21,7 @@ test_that("can lookup sys-info", {
   x <- as_naive(x)
   x <- as_zoned(x, "America/New_York")
 
-  info <- sys_info(as_sys_time(x), zoned_zone(x))
+  info <- sys_time_info(as_sys_time(x), zoned_zone(x))
 
   beginend1 <- as_sys_time(c(
     year_month_day(2020, 11, 1, 6, 0, 0),
@@ -44,7 +44,7 @@ test_that("`zone` is vectorized and recycled against `x`", {
   zones <- c("America/New_York", "Australia/Lord_Howe")
   x <- as_sys_time(year_month_day(2019, 1, 1))
 
-  info <- sys_info(x, zones)
+  info <- sys_time_info(x, zones)
 
   naive_times <- c(
     as_naive(as_zoned(x, zones[1])),
@@ -63,7 +63,7 @@ test_that("very old times are looked up correctly", {
   x <- year_month_day(1800, 01, 01)
   x <- as_sys_time(x)
 
-  info <- sys_info(x, "America/New_York")
+  info <- sys_time_info(x, "America/New_York")
 
   end <- as_sys_time(year_month_day(1883, 11, 18, 17, 00, 00))
   offset <- duration_seconds(-17762)

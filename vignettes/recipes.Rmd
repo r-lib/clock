@@ -519,12 +519,12 @@ as_zoned(x, "Asia/Jerusalem", ambiguous = "latest")
 
 ## When is the next daylight saving time event?
 
-Given a particular zoned-time, when will it next be affected by daylight saving time? For this, we can use a relatively low level helper, `sys_info()`. It returns a data frame of information about the current daylight saving time transition points, along with information about the offset, the current time zone abbreviation, and whether or not daylight saving time is currently active or not.
+Given a particular zoned-time, when will it next be affected by daylight saving time? For this, we can use a relatively low level helper, `sys_time_info()`. It returns a data frame of information about the current daylight saving time transition points, along with information about the offset, the current time zone abbreviation, and whether or not daylight saving time is currently active or not.
 
 ```{r}
 x <- zoned_parse_complete("2019-01-01 00:00:00-05:00[America/New_York]")
 
-info <- sys_info(as_sys_time(x), zoned_zone(x))
+info <- sys_time_info(as_sys_time(x), zoned_zone(x))
 
 # Beginning of the current DST range
 as_zoned(info$begin, zoned_zone(x))

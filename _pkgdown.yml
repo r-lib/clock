@@ -132,7 +132,7 @@ reference:
   - naive_parse
   - sys_time_parse
   - naive_info
-  - sys_info
+  - sys_time_info
   - time_point_cast
   - time-point-rounding
   - time_point_shift
