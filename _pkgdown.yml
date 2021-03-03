@@ -122,6 +122,7 @@ reference:
   - is_duration
   - duration_cast
   - duration-rounding
+  - duration_precision
   - seq.clock_duration
   - duration-arithmetic
 
@@ -144,6 +145,7 @@ reference:
   - time_point_cast
   - time-point-rounding
   - time_point_shift
+  - time_point_precision
   - seq.clock_time_point
   - add_weeks.clock_time_point
   - as-zoned-time-naive-time
