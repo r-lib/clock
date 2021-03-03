@@ -5,7 +5,7 @@ is_time_point <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-time_point_clock <- function(x) {
+time_point_clock_attribute <- function(x) {
   attr(x, "clock", exact = TRUE)
 }
 
@@ -34,7 +34,7 @@ format.clock_time_point <- function(x,
     abort("`locale` must be a 'clock_locale' object.")
   }
 
-  clock <- time_point_clock(x)
+  clock <- time_point_clock_attribute(x)
   precision <- time_point_precision(x)
 
   if (is_null(format)) {
@@ -166,7 +166,7 @@ vec_restore.clock_time_point <- function(x, to, ...) {
 
 #' @export
 vec_ptype_full.clock_time_point <- function(x, ...) {
-  clock <- time_point_clock(x)
+  clock <- time_point_clock_attribute(x)
   clock <- clock_to_string(clock)
   precision <- time_point_precision(x)
   precision <- precision_to_string(precision)
@@ -175,7 +175,7 @@ vec_ptype_full.clock_time_point <- function(x, ...) {
 
 #' @export
 vec_ptype_abbr.clock_time_point <- function(x, ...) {
-  clock <- time_point_clock(x)
+  clock <- time_point_clock_attribute(x)
   clock <- clock_to_string(clock)
   precision <- time_point_precision(x)
   precision <- precision_to_string(precision)
@@ -210,7 +210,7 @@ cast_time_point_to_time_point <- function(x, to, ...) {
   fields <- duration_cast_cpp(x, x_precision, to_precision)
 
   names <- clock_rcrd_names(x)
-  clock <- time_point_clock(x)
+  clock <- time_point_clock_attribute(x)
 
   new_time_point_from_fields(fields, to_precision, clock, names)
 }
@@ -424,7 +424,7 @@ time_point_minus_duration <- function(x, n, precision_n, names) {
 }
 
 time_point_arith_duration <- function(x, n, precision_n, names, duration_fn) {
-  clock <- time_point_clock(x)
+  clock <- time_point_clock_attribute(x)
   x <- time_point_duration(x)
 
   n <- duration_collect_n(n, precision_n)
@@ -575,7 +575,7 @@ time_point_cast <- function(x, precision) {
   fields <- duration_cast_cpp(x, x_precision, precision)
 
   names <- clock_rcrd_names(x)
-  clock <- time_point_clock(x)
+  clock <- time_point_clock_attribute(x)
 
   new_time_point_from_fields(fields, precision, clock, names)
 }
@@ -735,7 +735,7 @@ time_point_rounder <- function(x, precision, n, origin, duration_rounder, ...) {
   }
 
   names <- clock_rcrd_names(x)
-  clock <- time_point_clock(x)
+  clock <- time_point_clock_attribute(x)
 
   new_time_point_from_fields(duration, precision, clock, names)
 }
@@ -745,7 +745,7 @@ collect_time_point_rounder_origin <- function(origin, x, precision) {
   # but with a precision of `precision`
   to_names <- NULL
   to <- duration_helper(integer(), precision)
-  to <- new_time_point_from_fields(to, precision, time_point_clock(x), to_names)
+  to <- new_time_point_from_fields(to, precision, time_point_clock_attribute(x), to_names)
 
   origin <- vec_cast(origin, to, x_arg = "origin")
 
