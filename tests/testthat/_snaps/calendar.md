@@ -130,3 +130,7 @@
 
     Can't widen a subsecond precision `x` (millisecond) to another subsecond precision (microsecond).
 
+# precision: can only be called on calendars
+
+    no applicable method for 'calendar_precision' applied to an object of class "c('clock_sys_time', 'clock_time_point', 'clock_rcrd', 'vctrs_rcrd', 'vctrs_vctr')"
+

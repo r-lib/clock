@@ -39,6 +39,7 @@ reference:
   - calendar_group
   - calendar_narrow
   - calendar_widen
+  - calendar_precision
   - calendar_leap_year
   - calendar_month_factor
   - get_year

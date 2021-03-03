@@ -556,6 +556,35 @@ calendar_widen_time <- function(x, x_precision, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Precision: calendar
+#'
+#' `calendar_precision()` extracts the precision from a calendar object. It
+#' returns the precision as a single string.
+#'
+#' @param x `[clock_calendar]`
+#'
+#'   A calendar.
+#'
+#' @return A single string holding the precision of the calendar.
+#'
+#' @export
+#' @examples
+#' calendar_precision(year_month_day(2019))
+#' calendar_precision(year_month_day(2019, 1, 1))
+#' calendar_precision(year_quarter_day(2019, 3))
+calendar_precision <- function(x) {
+  UseMethod("calendar_precision")
+}
+
+#' @export
+calendar_precision.clock_calendar <- function(x) {
+  precision <- calendar_precision_attribute(x)
+  precision <- precision_to_string(precision)
+  precision
+}
+
+# ------------------------------------------------------------------------------
+
 # Internal generic
 calendar_name <- function(x) {
   UseMethod("calendar_name")

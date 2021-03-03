@@ -110,3 +110,16 @@ test_that("widen: can widen subsecond precision to the same subsecond precision"
   x <- year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "millisecond")
   expect_identical(calendar_widen(x, "millisecond"), x)
 })
+
+# ------------------------------------------------------------------------------
+# calendar_precision()
+
+test_that("precision: can get the precision", {
+  expect_identical(calendar_precision(year_month_day(2019, 1)), "month")
+  expect_identical(calendar_precision(year_day(2019, 100)), "day")
+  expect_identical(calendar_precision(year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond")), "nanosecond")
+})
+
+test_that("precision: can only be called on calendars", {
+  expect_snapshot_error(calendar_precision(sys_days(0)))
+})
