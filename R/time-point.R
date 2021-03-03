@@ -236,8 +236,8 @@ arith_time_point_and_time_point <- function(op, x, y, ...) {
 arith_time_point_and_duration <- function(op, x, y, ...) {
   switch (
     op,
-    "+" = time_point_plus_duration(x, y, duration_precision(y), names_common(x, y)),
-    "-" = time_point_minus_duration(x, y, duration_precision(y), names_common(x, y)),
+    "+" = time_point_plus_duration(x, y, duration_precision_attribute(y), names_common(x, y)),
+    "-" = time_point_minus_duration(x, y, duration_precision_attribute(y), names_common(x, y)),
     stop_incompatible_op(op, x, y, ...)
   )
 }
@@ -245,7 +245,7 @@ arith_time_point_and_duration <- function(op, x, y, ...) {
 arith_duration_and_time_point <- function(op, x, y, ...) {
   switch (
     op,
-    "+" = time_point_plus_duration(y, x, duration_precision(x), names_common(x, y)),
+    "+" = time_point_plus_duration(y, x, duration_precision_attribute(x), names_common(x, y)),
     "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a time point from a duration.", ...),
     stop_incompatible_op(op, x, y, ...)
   )
@@ -433,7 +433,7 @@ time_point_arith_duration <- function(x, n, precision_n, names, duration_fn) {
   duration <- duration_fn(x = x, y = n, names = names)
 
   names <- clock_rcrd_names(duration)
-  precision <- duration_precision(duration)
+  precision <- duration_precision_attribute(duration)
 
   new_time_point_from_fields(duration, precision, clock, names)
 }

@@ -243,7 +243,7 @@ add_duration <- function(x, duration, ..., swapped = FALSE) {
     names(x) <- names_common(duration, x)
   }
 
-  precision <- duration_precision(duration)
+  precision <- duration_precision_attribute(duration)
   precision <- precision_to_string(precision)
 
   switch (
