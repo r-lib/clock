@@ -67,6 +67,9 @@
     <loc>https://clock.r-lib.org/reference/calendar_narrow.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/calendar_precision.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/calendar_widen.html</loc>
   </url>
   <url>
@@ -152,6 +155,9 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/duration_cast.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/reference/duration_precision.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/format.clock_zoned_time.html</loc>
@@ -271,6 +277,9 @@
     <loc>https://clock.r-lib.org/reference/time_point_cast.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/time_point_precision.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/time_point_shift.html</loc>
   </url>
   <url>
@@ -383,6 +392,9 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/zoned_time_now.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/reference/zoned_time_precision.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/articles/articles/motivations.html</loc>
