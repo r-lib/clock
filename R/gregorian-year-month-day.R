@@ -143,7 +143,7 @@ vec_restore.clock_year_month_day <- function(x, to, ...) {
 
 #' @export
 format.clock_year_month_day <- function(x, ...) {
-  out <- format_year_month_day_cpp(x, calendar_precision(x))
+  out <- format_year_month_day_cpp(x, calendar_precision_attribute(x))
   names(out) <- names(x)
   out
 }
@@ -326,7 +326,7 @@ is_year_month_day <- function(x) {
 #' @export
 vec_ptype.clock_year_month_day <- function(x, ...) {
   switch(
-    calendar_precision(x) + 1L,
+    calendar_precision_attribute(x) + 1L,
     clock_empty_year_month_day_year,
     abort("Internal error: Invalid precision"),
     clock_empty_year_month_day_month,
@@ -375,23 +375,23 @@ year_month_day_is_valid_precision <- function(precision) {
 
 #' @export
 invalid_detect.clock_year_month_day <- function(x) {
-  invalid_detect_year_month_day_cpp(x, calendar_precision(x))
+  invalid_detect_year_month_day_cpp(x, calendar_precision_attribute(x))
 }
 
 #' @export
 invalid_any.clock_year_month_day <- function(x) {
-  invalid_any_year_month_day_cpp(x, calendar_precision(x))
+  invalid_any_year_month_day_cpp(x, calendar_precision_attribute(x))
 }
 
 #' @export
 invalid_count.clock_year_month_day <- function(x) {
-  invalid_count_year_month_day_cpp(x, calendar_precision(x))
+  invalid_count_year_month_day_cpp(x, calendar_precision_attribute(x))
 }
 
 #' @export
 invalid_resolve.clock_year_month_day <- function(x, ..., invalid = NULL) {
   check_dots_empty()
-  precision <- calendar_precision(x)
+  precision <- calendar_precision_attribute(x)
   invalid <- validate_invalid(invalid)
   fields <- invalid_resolve_year_month_day_cpp(x, precision, invalid)
   new_year_month_day_from_fields(fields, precision, names(x))
@@ -626,7 +626,7 @@ set_field_year_month_day <- function(x, value, component) {
     return(set_field_year_month_day_last(x))
   }
 
-  precision_fields <- calendar_precision(x)
+  precision_fields <- calendar_precision_attribute(x)
   precision_value <- year_month_day_component_to_precision(component)
   precision_out <- precision_common2(precision_fields, precision_value)
 
@@ -644,7 +644,7 @@ set_field_year_month_day <- function(x, value, component) {
 }
 
 set_field_year_month_day_last <- function(x) {
-  precision_fields <- calendar_precision(x)
+  precision_fields <- calendar_precision_attribute(x)
   precision_out <- precision_common2(precision_fields, PRECISION_DAY)
 
   result <- set_field_year_month_day_last_cpp(x, precision_fields)
@@ -758,7 +758,7 @@ year_month_day_minus_year_month_day <- function(op, x, y, ...) {
 
   names <- names_common(x, y)
 
-  precision <- calendar_precision(x)
+  precision <- calendar_precision_attribute(x)
 
   if (precision > PRECISION_MONTH) {
     stop_incompatible_op(op, x, y, ...)
@@ -847,7 +847,7 @@ add_months.clock_year_month_day <- function(x, n, ...) {
 }
 
 year_month_day_plus_duration <- function(x, n, precision_n) {
-  precision_fields <- calendar_precision(x)
+  precision_fields <- calendar_precision_attribute(x)
 
   n <- duration_collect_n(n, precision_n)
   args <- vec_recycle_common(x = x, n = n)
@@ -903,7 +903,7 @@ as_year_month_day.clock_year_month_day <- function(x) {
 #' @export
 as_sys_time.clock_year_month_day <- function(x) {
   calendar_require_all_valid(x)
-  precision <- calendar_precision(x)
+  precision <- calendar_precision_attribute(x)
   fields <- as_sys_time_year_month_day_cpp(x, precision)
   new_sys_time_from_fields(fields, precision, clock_rcrd_names(x))
 }
@@ -1117,7 +1117,7 @@ calendar_narrow.clock_year_month_day <- function(x, precision) {
 #' # be widened again
 #' try(calendar_widen(milli, "microsecond"))
 calendar_widen.clock_year_month_day <- function(x, precision) {
-  x_precision <- calendar_precision(x)
+  x_precision <- calendar_precision_attribute(x)
   precision <- validate_precision_string(precision)
 
   if (precision >= PRECISION_MONTH && x_precision < PRECISION_MONTH) {
@@ -1186,7 +1186,7 @@ seq.clock_year_month_day <- function(from,
                                      length.out = NULL,
                                      along.with = NULL,
                                      ...) {
-  precision <- calendar_precision(from)
+  precision <- calendar_precision_attribute(from)
 
   if (precision > PRECISION_MONTH) {
     abort("`from` must be 'year' or 'month' precision.")

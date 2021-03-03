@@ -178,3 +178,7 @@
 
     Zoned-times don't support `add_nanoseconds()`.
 
+# precision: can only be called on zoned-times
+
+    `x` must be a 'clock_zoned_time'.
+

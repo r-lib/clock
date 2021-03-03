@@ -115,7 +115,7 @@ vec_restore.clock_iso_year_week_day <- function(x, to, ...) {
 
 #' @export
 format.clock_iso_year_week_day <- function(x, ...) {
-  out <- format_iso_year_week_day_cpp(x, calendar_precision(x))
+  out <- format_iso_year_week_day_cpp(x, calendar_precision_attribute(x))
   names(out) <- names(x)
   out
 }
@@ -155,7 +155,7 @@ is_iso_year_week_day <- function(x) {
 #' @export
 vec_ptype.clock_iso_year_week_day <- function(x, ...) {
   switch(
-    calendar_precision(x) + 1L,
+    calendar_precision_attribute(x) + 1L,
     clock_empty_iso_year_week_day_year,
     abort("Internal error: Invalid precision"),
     abort("Internal error: Invalid precision"),
@@ -204,23 +204,23 @@ iso_year_week_day_is_valid_precision <- function(precision) {
 
 #' @export
 invalid_detect.clock_iso_year_week_day <- function(x) {
-  invalid_detect_iso_year_week_day_cpp(x, calendar_precision(x))
+  invalid_detect_iso_year_week_day_cpp(x, calendar_precision_attribute(x))
 }
 
 #' @export
 invalid_any.clock_iso_year_week_day <- function(x) {
-  invalid_any_iso_year_week_day_cpp(x, calendar_precision(x))
+  invalid_any_iso_year_week_day_cpp(x, calendar_precision_attribute(x))
 }
 
 #' @export
 invalid_count.clock_iso_year_week_day <- function(x) {
-  invalid_count_iso_year_week_day_cpp(x, calendar_precision(x))
+  invalid_count_iso_year_week_day_cpp(x, calendar_precision_attribute(x))
 }
 
 #' @export
 invalid_resolve.clock_iso_year_week_day <- function(x, ..., invalid = NULL) {
   check_dots_empty()
-  precision <- calendar_precision(x)
+  precision <- calendar_precision_attribute(x)
   invalid <- validate_invalid(invalid)
   fields <- invalid_resolve_iso_year_week_day_cpp(x, precision, invalid)
   new_iso_year_week_day_from_fields(fields, precision, names = names(x))
@@ -463,7 +463,7 @@ set_field_iso_year_week_day <- function(x, value, component) {
     return(set_field_iso_year_week_day_last(x))
   }
 
-  precision_fields <- calendar_precision(x)
+  precision_fields <- calendar_precision_attribute(x)
   precision_value <- iso_year_week_day_component_to_precision(component)
   precision_out <- precision_common2(precision_fields, precision_value)
 
@@ -481,7 +481,7 @@ set_field_iso_year_week_day <- function(x, value, component) {
 }
 
 set_field_iso_year_week_day_last <- function(x) {
-  precision_fields <- calendar_precision(x)
+  precision_fields <- calendar_precision_attribute(x)
   precision_out <- precision_common2(precision_fields, PRECISION_WEEK)
 
   result <- set_field_iso_year_week_day_last_cpp(x, precision_fields)
@@ -585,7 +585,7 @@ iso_year_week_day_minus_iso_year_week_day <- function(op, x, y, ...) {
 
   names <- names_common(x, y)
 
-  precision <- calendar_precision(x)
+  precision <- calendar_precision_attribute(x)
 
   if (precision > PRECISION_YEAR) {
     stop_incompatible_op(op, x, y, ...)
@@ -638,7 +638,7 @@ add_years.clock_iso_year_week_day <- function(x, n, ...) {
 }
 
 iso_year_week_day_plus_duration <- function(x, n, precision_n) {
-  precision_fields <- calendar_precision(x)
+  precision_fields <- calendar_precision_attribute(x)
 
   n <- duration_collect_n(n, precision_n)
   args <- vec_recycle_common(x = x, n = n)
@@ -694,7 +694,7 @@ as_iso_year_week_day.clock_iso_year_week_day <- function(x) {
 #' @export
 as_sys_time.clock_iso_year_week_day <- function(x) {
   calendar_require_all_valid(x)
-  precision <- calendar_precision(x)
+  precision <- calendar_precision_attribute(x)
   fields <- as_sys_time_iso_year_week_day_cpp(x, precision)
   new_sys_time_from_fields(fields, precision, clock_rcrd_names(x))
 }
@@ -852,7 +852,7 @@ calendar_narrow.clock_iso_year_week_day <- function(x, precision) {
 #' sec <- calendar_widen(x, "second")
 #' sec
 calendar_widen.clock_iso_year_week_day <- function(x, precision) {
-  x_precision <- calendar_precision(x)
+  x_precision <- calendar_precision_attribute(x)
   precision <- validate_precision_string(precision)
 
   if (precision >= PRECISION_WEEK && x_precision < PRECISION_WEEK) {
@@ -919,7 +919,7 @@ seq.clock_iso_year_week_day <- function(from,
                                         length.out = NULL,
                                         along.with = NULL,
                                         ...) {
-  precision <- calendar_precision(from)
+  precision <- calendar_precision_attribute(from)
 
   if (precision > PRECISION_YEAR) {
     abort("`from` must be 'year' precision.")

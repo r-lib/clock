@@ -3,7 +3,7 @@
 
 test_that("returns nanosecond precision", {
   x <- sys_time_now()
-  expect_identical(time_point_precision(x), PRECISION_NANOSECOND)
+  expect_identical(time_point_precision_attribute(x), PRECISION_NANOSECOND)
 })
 
 test_that("returns a single sys-time", {

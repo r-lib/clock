@@ -43,7 +43,7 @@ pillar_shaft.clock_calendar <- function(x, ...) {
 # that to just one day.
 
 ptype2_calendar_and_calendar <- function(x, y, ...) {
-  if (calendar_precision(x) == calendar_precision(y)) {
+  if (calendar_precision_attribute(x) == calendar_precision_attribute(y)) {
     x
   } else {
     stop_incompatible_type(x, y, ..., details = "Can't combine calendars with different precisions.")
@@ -51,7 +51,7 @@ ptype2_calendar_and_calendar <- function(x, y, ...) {
 }
 
 cast_calendar_to_calendar <- function(x, to, ...) {
-  if (calendar_precision(x) == calendar_precision(to)) {
+  if (calendar_precision_attribute(x) == calendar_precision_attribute(to)) {
     x
   } else {
     stop_incompatible_cast(x, to, ..., details = "Can't cast between calendars with different precisions.")
@@ -140,7 +140,7 @@ calendar_month_factor.clock_calendar <- function(x,
 calendar_month_factor_impl <- function(x, labels, abbreviate, ...) {
   check_dots_empty()
 
-  if (calendar_precision(x) < PRECISION_MONTH) {
+  if (calendar_precision_attribute(x) < PRECISION_MONTH) {
     abort("`x` must have at least 'month' precision.")
   }
 
@@ -230,7 +230,7 @@ calendar_group <- function(x, precision, ..., n = 1L) {
     abort(message)
   }
 
-  x_precision <- calendar_precision(x)
+  x_precision <- calendar_precision_attribute(x)
 
   if (precision > x_precision) {
     precision <- precision_to_string(precision)
@@ -382,7 +382,7 @@ calendar_narrow <- function(x, precision) {
     abort(message)
   }
 
-  x_precision <- calendar_precision(x)
+  x_precision <- calendar_precision_attribute(x)
 
   if (precision > x_precision) {
     precision <- precision_to_string(precision)
@@ -494,7 +494,7 @@ calendar_widen <- function(x, precision) {
     abort(message)
   }
 
-  x_precision <- calendar_precision(x)
+  x_precision <- calendar_precision_attribute(x)
 
   if (x_precision > precision) {
     precision <- precision_to_string(precision)
@@ -556,6 +556,35 @@ calendar_widen_time <- function(x, x_precision, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Precision: calendar
+#'
+#' `calendar_precision()` extracts the precision from a calendar object. It
+#' returns the precision as a single string.
+#'
+#' @param x `[clock_calendar]`
+#'
+#'   A calendar.
+#'
+#' @return A single string holding the precision of the calendar.
+#'
+#' @export
+#' @examples
+#' calendar_precision(year_month_day(2019))
+#' calendar_precision(year_month_day(2019, 1, 1))
+#' calendar_precision(year_quarter_day(2019, 3))
+calendar_precision <- function(x) {
+  UseMethod("calendar_precision")
+}
+
+#' @export
+calendar_precision.clock_calendar <- function(x) {
+  precision <- calendar_precision_attribute(x)
+  precision <- precision_to_string(precision)
+  precision
+}
+
+# ------------------------------------------------------------------------------
+
 # Internal generic
 calendar_name <- function(x) {
   UseMethod("calendar_name")
@@ -570,7 +599,7 @@ calendar_is_valid_precision <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
-calendar_precision <- function(x) {
+calendar_precision_attribute <- function(x) {
   attr(x, "precision", exact = TRUE)
 }
 
@@ -585,7 +614,7 @@ calendar_require_minimum_precision <- function(x, precision, fn) {
   invisible(x)
 }
 calendar_has_minimum_precision <- function(x, precision) {
-  calendar_precision(x) >= precision
+  calendar_precision_attribute(x) >= precision
 }
 
 calendar_require_precision <- function(x, precision, fn) {
@@ -599,14 +628,14 @@ calendar_require_precision <- function(x, precision, fn) {
 calendar_require_any_of_precisions <- function(x, precisions, fn) {
   results <- vapply(precisions, calendar_has_precision, FUN.VALUE = logical(1), x = x)
   if (!any(results)) {
-    precision_string <- precision_to_string(calendar_precision(x))
+    precision_string <- precision_to_string(calendar_precision_attribute(x))
     msg <- paste0("`", fn, "()` does not support a precision of '", precision_string, "'.")
     abort(msg)
   }
   invisible(x)
 }
 calendar_has_precision <- function(x, precision) {
-  calendar_precision(x) == precision
+  calendar_precision_attribute(x) == precision
 }
 
 # For use in calendar constructor helpers
@@ -642,7 +671,7 @@ calendar_require_all_valid <- function(x) {
 
 calendar_ptype_full <- function(x, class) {
   count <- invalid_count(x)
-  precision <- calendar_precision(x)
+  precision <- calendar_precision_attribute(x)
   precision <- precision_to_string(precision)
 
   out <- paste0(class, "<", precision, ">")
@@ -656,7 +685,7 @@ calendar_ptype_full <- function(x, class) {
 
 calendar_ptype_abbr <- function(x, abbr) {
   count <- invalid_count(x)
-  precision <- calendar_precision(x)
+  precision <- calendar_precision_attribute(x)
   precision <- precision_to_string(precision)
   precision <- precision_abbr(precision)
 
@@ -708,8 +737,8 @@ arith_duration_and_calendar <- function(op, x, y, ...) {
 arith_calendar_and_numeric <- function(op, x, y, ...) {
   switch (
     op,
-    "+" = add_duration(x, duration_helper(y, calendar_precision(x), retain_names = TRUE)),
-    "-" = add_duration(x, duration_helper(-y, calendar_precision(x), retain_names = TRUE)),
+    "+" = add_duration(x, duration_helper(y, calendar_precision_attribute(x), retain_names = TRUE)),
+    "-" = add_duration(x, duration_helper(-y, calendar_precision_attribute(x), retain_names = TRUE)),
     stop_incompatible_op(op, x, y, ...)
   )
 }
@@ -717,7 +746,7 @@ arith_calendar_and_numeric <- function(op, x, y, ...) {
 arith_numeric_and_calendar <- function(op, x, y, ...) {
   switch (
     op,
-    "+" = add_duration(y, duration_helper(x, calendar_precision(y), retain_names = TRUE), swapped = TRUE),
+    "+" = add_duration(y, duration_helper(x, calendar_precision_attribute(y), retain_names = TRUE), swapped = TRUE),
     "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a calendar from a duration.", ...),
     stop_incompatible_op(op, x, y, ...)
   )

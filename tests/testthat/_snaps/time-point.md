@@ -150,3 +150,7 @@
     Can't combine `x` <duration<second>> and `y` <duration<year>>.
     Can't combine calendrical durations with chronological durations.
 
+# precision: can only be called on time points
+
+    `x` must be a 'clock_time_point'.
+

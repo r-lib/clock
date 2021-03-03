@@ -887,7 +887,7 @@ as.character.clock_zoned_time <- function(x, ...) {
 zoned_time_now <- function(zone) {
   names <- NULL
   sys_time <- sys_time_now()
-  precision <- time_point_precision(sys_time)
+  precision <- time_point_precision_attribute(sys_time)
   zone <- zone_validate(zone)
   new_zoned_time_from_fields(sys_time, precision, zone, names)
 }
@@ -958,6 +958,31 @@ zoned_time_set_zone <- function(x, zone) {
 zoned_time_set_zone.clock_zoned_time <- function(x, zone) {
   zone <- zone_validate(zone)
   zoned_time_set_zone_attribute(x, zone)
+}
+
+# ------------------------------------------------------------------------------
+
+#' Precision: zoned-time
+#'
+#' `zoned_time_precision()` extracts the precision from a zoned-time. It
+#' returns the precision as a single string.
+#'
+#' @param x `[clock_zoned_time]`
+#'
+#'   A zoned-time.
+#'
+#' @return A single string holding the precision of the zoned-time.
+#'
+#' @export
+#' @examples
+#' zoned_time_precision(zoned_time_now("America/New_York"))
+zoned_time_precision <- function(x) {
+  if (!is_zoned_time(x)) {
+    abort("`x` must be a 'clock_zoned_time'.")
+  }
+  precision <- zoned_time_precision_attribute(x)
+  precision <- precision_to_string(precision)
+  precision
 }
 
 # ------------------------------------------------------------------------------

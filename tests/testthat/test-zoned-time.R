@@ -432,3 +432,16 @@ test_that("ptype is correct", {
     }
   }
 })
+
+# ------------------------------------------------------------------------------
+# zoned_time_precision()
+
+test_that("precision: can get the precision", {
+  zone <- "America/New_York"
+  expect_identical(zoned_time_precision(as_zoned_time(as_naive_time(duration_seconds(2:5)), zone)), "second")
+  expect_identical(zoned_time_precision(as_zoned_time(as_naive_time(duration_nanoseconds(2:5)), zone)), "nanosecond")
+})
+
+test_that("precision: can only be called on zoned-times", {
+  expect_snapshot_error(zoned_time_precision(duration_days()))
+})

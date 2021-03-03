@@ -118,7 +118,7 @@ vec_restore.clock_year_month_weekday <- function(x, to, ...) {
 
 #' @export
 vec_proxy_compare.clock_year_month_weekday <- function(x, ...) {
-  precision <- calendar_precision(x)
+  precision <- calendar_precision_attribute(x)
 
   if (precision >= PRECISION_DAY) {
     # See issue #32
@@ -138,7 +138,7 @@ vec_proxy_compare.clock_year_month_weekday <- function(x, ...) {
 
 #' @export
 format.clock_year_month_weekday <- function(x, ...) {
-  out <- format_year_month_weekday_cpp(x, calendar_precision(x))
+  out <- format_year_month_weekday_cpp(x, calendar_precision_attribute(x))
   names(out) <- names(x)
   out
 }
@@ -178,7 +178,7 @@ is_year_month_weekday <- function(x) {
 #' @export
 vec_ptype.clock_year_month_weekday <- function(x, ...) {
   switch(
-    calendar_precision(x) + 1L,
+    calendar_precision_attribute(x) + 1L,
     clock_empty_year_month_weekday_year,
     abort("Internal error: Invalid precision"),
     clock_empty_year_month_weekday_month,
@@ -227,23 +227,23 @@ year_month_weekday_is_valid_precision <- function(precision) {
 
 #' @export
 invalid_detect.clock_year_month_weekday <- function(x) {
-  invalid_detect_year_month_weekday_cpp(x, calendar_precision(x))
+  invalid_detect_year_month_weekday_cpp(x, calendar_precision_attribute(x))
 }
 
 #' @export
 invalid_any.clock_year_month_weekday <- function(x) {
-  invalid_any_year_month_weekday_cpp(x, calendar_precision(x))
+  invalid_any_year_month_weekday_cpp(x, calendar_precision_attribute(x))
 }
 
 #' @export
 invalid_count.clock_year_month_weekday <- function(x) {
-  invalid_count_year_month_weekday_cpp(x, calendar_precision(x))
+  invalid_count_year_month_weekday_cpp(x, calendar_precision_attribute(x))
 }
 
 #' @export
 invalid_resolve.clock_year_month_weekday <- function(x, ..., invalid = NULL) {
   check_dots_empty()
-  precision <- calendar_precision(x)
+  precision <- calendar_precision_attribute(x)
   invalid <- validate_invalid(invalid)
   fields <- invalid_resolve_year_month_weekday_cpp(x, precision, invalid)
   new_year_month_weekday_from_fields(fields, precision, names = names(x))
@@ -463,7 +463,7 @@ set_day.clock_year_month_weekday <- function(x, value, ..., index = NULL) {
   calendar_require_minimum_precision(x, PRECISION_MONTH, "set_day")
 
   has_index <- !is_null(index)
-  precision <- calendar_precision(x)
+  precision <- calendar_precision_attribute(x)
 
   if (precision == PRECISION_MONTH) {
     if (!has_index) {
@@ -546,7 +546,7 @@ set_field_year_month_weekday <- function(x, value, component) {
     return(set_field_year_month_weekday_last(x))
   }
 
-  precision_fields <- calendar_precision(x)
+  precision_fields <- calendar_precision_attribute(x)
   precision_value <- year_month_weekday_component_to_precision(component)
   precision_out <- precision_common2(precision_fields, precision_value)
 
@@ -566,7 +566,7 @@ set_field_year_month_weekday <- function(x, value, component) {
 set_field_year_month_weekday_last <- function(x) {
   # We require 'day' precision to set the `index` at all, so no
   # need to find a common precision here
-  precision_fields <- calendar_precision(x)
+  precision_fields <- calendar_precision_attribute(x)
 
   result <- set_field_year_month_weekday_last_cpp(x, precision_fields)
   fields <- result$fields
@@ -671,7 +671,7 @@ year_month_weekday_minus_year_month_weekday <- function(op, x, y, ...) {
 
   names <- names_common(x, y)
 
-  precision <- calendar_precision(x)
+  precision <- calendar_precision_attribute(x)
 
   if (precision > PRECISION_MONTH) {
     stop_incompatible_op(op, x, y, ...)
@@ -748,7 +748,7 @@ add_months.clock_year_month_weekday <- function(x, n, ...) {
 }
 
 year_month_weekday_plus_duration <- function(x, n, precision_n) {
-  precision_fields <- calendar_precision(x)
+  precision_fields <- calendar_precision_attribute(x)
 
   n <- duration_collect_n(n, precision_n)
   args <- vec_recycle_common(x = x, n = n)
@@ -804,7 +804,7 @@ as_year_month_weekday.clock_year_month_weekday <- function(x) {
 #' @export
 as_sys_time.clock_year_month_weekday <- function(x) {
   calendar_require_all_valid(x)
-  precision <- calendar_precision(x)
+  precision <- calendar_precision_attribute(x)
   fields <- as_sys_time_year_month_weekday_cpp(x, precision)
   new_sys_time_from_fields(fields, precision, clock_rcrd_names(x))
 }
@@ -1002,7 +1002,7 @@ calendar_narrow.clock_year_month_weekday <- function(x, precision) {
 #' sec <- calendar_widen(x, "second")
 #' sec
 calendar_widen.clock_year_month_weekday <- function(x, precision) {
-  x_precision <- calendar_precision(x)
+  x_precision <- calendar_precision_attribute(x)
   precision <- validate_precision_string(precision)
 
   if (precision >= PRECISION_MONTH && x_precision < PRECISION_MONTH) {

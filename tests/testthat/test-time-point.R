@@ -276,3 +276,14 @@ test_that("duration to add to a time-point must have at least week precision (#1
   expect_snapshot_error(naive_seconds(0) + duration_years(1))
 })
 
+# ------------------------------------------------------------------------------
+# time_point_precision()
+
+test_that("precision: can get the precision", {
+  expect_identical(time_point_precision(as_naive_time(duration_days(2:5))), "day")
+  expect_identical(time_point_precision(as_naive_time(duration_nanoseconds(2:5))), "nanosecond")
+})
+
+test_that("precision: can only be called on time points", {
+  expect_snapshot_error(time_point_precision(duration_days()))
+})

@@ -184,3 +184,7 @@
     Can't combine <duration<year>> and <duration<day>>.
     Can't combine calendrical durations with chronological durations.
 
+# precision: can only be called on durations
+
+    `x` must be a 'clock_duration'.
+

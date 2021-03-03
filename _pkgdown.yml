@@ -39,6 +39,7 @@ reference:
   - calendar_group
   - calendar_narrow
   - calendar_widen
+  - calendar_precision
   - calendar_leap_year
   - calendar_month_factor
   - get_year
@@ -121,6 +122,7 @@ reference:
   - is_duration
   - duration_cast
   - duration-rounding
+  - duration_precision
   - seq.clock_duration
   - duration-arithmetic
 
@@ -143,6 +145,7 @@ reference:
   - time_point_cast
   - time-point-rounding
   - time_point_shift
+  - time_point_precision
   - seq.clock_time_point
   - add_weeks.clock_time_point
   - as-zoned-time-naive-time
@@ -150,11 +153,12 @@ reference:
 
 - title: Zoned-time
   contents:
-  - zoned_time_now
   - as_zoned_time
   - is_zoned_time
   - zoned-parsing
+  - zoned_time_now
   - zoned_time_zone
+  - zoned_time_precision
   - format.clock_zoned_time
 
 - title: Weekdays

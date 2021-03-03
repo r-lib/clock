@@ -161,7 +161,7 @@ duration_helper <- function(n, precision, ..., retain_names = FALSE) {
 
 #' @export
 format.clock_duration <- function(x, ...) {
-  out <- format_duration_cpp(x, duration_precision(x))
+  out <- format_duration_cpp(x, duration_precision_attribute(x))
   names(out) <- names(x)
   out
 }
@@ -180,14 +180,14 @@ obj_print_data.clock_duration <- function(x, ...) {
 
 #' @export
 vec_ptype_full.clock_duration <- function(x, ...) {
-  precision <- duration_precision(x)
+  precision <- duration_precision_attribute(x)
   precision <- precision_to_string(precision)
   paste0("duration<", precision, ">")
 }
 
 #' @export
 vec_ptype_abbr.clock_duration <- function(x, ...) {
-  precision <- duration_precision(x)
+  precision <- duration_precision_attribute(x)
   precision <- precision_to_string(precision)
   precision <- precision_abbr(precision)
   paste0("dur<", precision, ">")
@@ -209,8 +209,8 @@ vec_restore.clock_duration <- function(x, to, ...) {
 
 #' @export
 vec_ptype2.clock_duration.clock_duration <- function(x, y, ...) {
-  x_precision <- duration_precision(x)
-  y_precision <- duration_precision(y)
+  x_precision <- duration_precision_attribute(x)
+  y_precision <- duration_precision_attribute(y)
 
   if (x_precision == y_precision) {
     return(x)
@@ -236,8 +236,8 @@ vec_ptype2.clock_duration.clock_duration <- function(x, y, ...) {
 
 #' @export
 vec_cast.clock_duration.clock_duration <- function(x, to, ...) {
-  x_precision <- duration_precision(x)
-  to_precision <- duration_precision(to)
+  x_precision <- duration_precision_attribute(x)
+  to_precision <- duration_precision_attribute(to)
 
   if (x_precision == to_precision) {
     return(x)
@@ -311,7 +311,7 @@ as_sys_time.clock_duration <- function(x) {
   # Promote to at least day precision for sys-time
   x <- vec_cast(x, vec_ptype2(x, duration_days()))
 
-  precision <- duration_precision(x)
+  precision <- duration_precision_attribute(x)
 
   new_sys_time_from_fields(x, precision, names)
 }
@@ -323,14 +323,14 @@ as_naive_time.clock_duration <- function(x) {
 
 #' @export
 as.integer.clock_duration <- function(x, ...) {
-  out <- duration_as_integer_cpp(x, duration_precision(x))
+  out <- duration_as_integer_cpp(x, duration_precision_attribute(x))
   names(out) <- names(x)
   out
 }
 
 #' @export
 as.double.clock_duration <- function(x, ...) {
-  out <- duration_as_double_cpp(x, duration_precision(x))
+  out <- duration_as_double_cpp(x, duration_precision_attribute(x))
   names(out) <- names(x)
   out
 }
@@ -413,7 +413,7 @@ duration_cast <- function(x, precision) {
   if (!is_duration(x)) {
     abort("`x` must be a duration.")
   }
-  x_precision <- duration_precision(x)
+  x_precision <- duration_precision_attribute(x)
   precision <- validate_precision_string(precision)
   fields <- duration_cast_cpp(x, x_precision, precision)
   new_duration_from_fields(fields, precision, clock_rcrd_names(x))
@@ -514,7 +514,7 @@ duration_rounder <- function(x, precision, n, rounder, verb, ...) {
   }
 
   precision <- validate_precision_string(precision)
-  x_precision <- duration_precision(x)
+  x_precision <- duration_precision_attribute(x)
 
   if (x_precision < precision) {
     abort(paste0("Can't ", verb, " to a more precise precision."))
@@ -656,7 +656,7 @@ seq.clock_duration <- function(from,
   }
 
   if (has_by) {
-    precision <- duration_precision(from)
+    precision <- duration_precision_attribute(from)
     by <- duration_collect_by(by, precision)
 
     vec_assert(by, size = 1L, arg = "by")
@@ -693,21 +693,21 @@ seq.clock_duration <- function(from,
 
 duration_seq_to_by <- function(from, to, by) {
   names <- NULL
-  precision <- duration_precision(from)
+  precision <- duration_precision_attribute(from)
   fields <- duration_seq_to_by_cpp(from, precision, to, by)
   new_duration_from_fields(fields, precision, names)
 }
 
 duration_seq_to_lo <- function(from, to, length.out) {
   names <- NULL
-  precision <- duration_precision(from)
+  precision <- duration_precision_attribute(from)
   fields <- duration_seq_to_lo_cpp(from, precision, to, length.out)
   new_duration_from_fields(fields, precision, names)
 }
 
 duration_seq_by_lo <- function(from, by, length.out) {
   names <- NULL
-  precision <- duration_precision(from)
+  precision <- duration_precision_attribute(from)
   fields <- duration_seq_by_lo_cpp(from, precision, by, length.out)
   new_duration_from_fields(fields, precision, names)
 }
@@ -992,7 +992,7 @@ duration_arith <- function(x, y, names, fn) {
   y <- args$y
   names <- args$names
 
-  precision <- duration_precision(x)
+  precision <- duration_precision_attribute(x)
 
   fields <- fn(x, y, precision)
 
@@ -1011,7 +1011,7 @@ duration_scalar_arith <- function(x, y, names, fn) {
     abort("`x` must be a 'duration' object.")
   }
 
-  precision <- duration_precision(x)
+  precision <- duration_precision_attribute(x)
 
   y <- vec_cast(y, integer(), x_arg = "y")
 
@@ -1034,7 +1034,7 @@ names_common <- function(x, y) {
 }
 
 duration_unary_minus <- function(x) {
-  precision <- duration_precision(x)
+  precision <- duration_precision_attribute(x)
   fields <- duration_unary_minus_cpp(x, precision)
   new_duration_from_fields(fields, precision, names(x))
 }
@@ -1060,12 +1060,39 @@ is_duration <- function(x) {
 }
 
 is_duration_with_precision <- function(x, precision) {
-  is_duration(x) && duration_precision(x) == precision
+  is_duration(x) && duration_precision_attribute(x) == precision
 }
 
 # ------------------------------------------------------------------------------
 
+#' Precision: duration
+#'
+#' `duration_precision()` extracts the precision from a duration object. It
+#' returns the precision as a single string.
+#'
+#' @param x `[clock_duration]`
+#'
+#'   A duration.
+#'
+#' @return A single string holding the precision of the duration.
+#'
+#' @export
+#' @examples
+#' duration_precision(duration_seconds(1))
+#' duration_precision(duration_nanoseconds(2))
+#' duration_precision(duration_quarters(1:5))
 duration_precision <- function(x) {
+  if (!is_duration(x)) {
+    abort("`x` must be a 'clock_duration'.")
+  }
+  precision <- duration_precision_attribute(x)
+  precision <- precision_to_string(precision)
+  precision
+}
+
+# ------------------------------------------------------------------------------
+
+duration_precision_attribute <- function(x) {
   attr(x, "precision", exact = TRUE)
 }
 
