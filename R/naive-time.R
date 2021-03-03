@@ -158,7 +158,7 @@ as_naive_time.clock_calendar <- function(x) {
 
 #' @export
 as_sys_time.clock_naive_time <- function(x) {
-  new_sys_time_from_fields(x, time_point_precision(x), clock_rcrd_names(x))
+  new_sys_time_from_fields(x, time_point_precision_attribute(x), clock_rcrd_names(x))
 }
 
 #' Convert to a zoned-time from a naive-time
@@ -425,7 +425,7 @@ as_zoned_time.clock_naive_time <- function(x,
   x <- vec_cast(x, vec_ptype2(x, naive_seconds()))
 
   size <- vec_size(x)
-  precision <- time_point_precision(x)
+  precision <- time_point_precision_attribute(x)
   names <- clock_rcrd_names(x)
 
   nonexistent <- validate_nonexistent(nonexistent, size)
@@ -687,7 +687,7 @@ naive_time_info <- function(x, zone) {
     abort("`x` must be a naive-time.")
   }
 
-  precision <- time_point_precision(x)
+  precision <- time_point_precision_attribute(x)
 
   # Recycle `x` to the common size. `zone` is recycled internally as required,
   # which is more efficient than reloading the time zone repeatedly.
@@ -710,7 +710,7 @@ new_naive_time_info_from_fields <- function(fields) {
 #' @export
 vec_ptype.clock_naive_time <- function(x, ...) {
   switch(
-    time_point_precision(x) + 1L,
+    time_point_precision_attribute(x) + 1L,
     abort("Internal error: Invalid precision"),
     abort("Internal error: Invalid precision"),
     abort("Internal error: Invalid precision"),

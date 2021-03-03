@@ -9,7 +9,7 @@ time_point_clock_attribute <- function(x) {
   attr(x, "clock", exact = TRUE)
 }
 
-time_point_precision <- function(x) {
+time_point_precision_attribute <- function(x) {
   attr(x, "precision", exact = TRUE)
 }
 
@@ -19,7 +19,7 @@ time_point_duration <- function(x, retain_names = FALSE) {
   } else {
     names <- NULL
   }
-  precision <- time_point_precision(x)
+  precision <- time_point_precision_attribute(x)
   new_duration_from_fields(x, precision, names)
 }
 
@@ -35,7 +35,7 @@ format.clock_time_point <- function(x,
   }
 
   clock <- time_point_clock_attribute(x)
-  precision <- time_point_precision(x)
+  precision <- time_point_precision_attribute(x)
 
   if (is_null(format)) {
     format <- time_point_precision_format(precision)
@@ -168,7 +168,7 @@ vec_restore.clock_time_point <- function(x, to, ...) {
 vec_ptype_full.clock_time_point <- function(x, ...) {
   clock <- time_point_clock_attribute(x)
   clock <- clock_to_string(clock)
-  precision <- time_point_precision(x)
+  precision <- time_point_precision_attribute(x)
   precision <- precision_to_string(precision)
   paste0("time_point<", clock, "><", precision, ">")
 }
@@ -177,7 +177,7 @@ vec_ptype_full.clock_time_point <- function(x, ...) {
 vec_ptype_abbr.clock_time_point <- function(x, ...) {
   clock <- time_point_clock_attribute(x)
   clock <- clock_to_string(clock)
-  precision <- time_point_precision(x)
+  precision <- time_point_precision_attribute(x)
   precision <- precision_to_string(precision)
   precision <- precision_abbr(precision)
   paste0("tp<", clock, "><", precision, ">")
@@ -187,7 +187,7 @@ vec_ptype_abbr.clock_time_point <- function(x, ...) {
 
 # Caller guarantees that clocks are identical
 ptype2_time_point_and_time_point <- function(x, y, ...) {
-  if (time_point_precision(x) >= time_point_precision(y)) {
+  if (time_point_precision_attribute(x) >= time_point_precision_attribute(y)) {
     x
   } else {
     y
@@ -196,8 +196,8 @@ ptype2_time_point_and_time_point <- function(x, y, ...) {
 
 # Caller guarantees that clocks are identical
 cast_time_point_to_time_point <- function(x, to, ...) {
-  x_precision <- time_point_precision(x)
-  to_precision <- time_point_precision(to)
+  x_precision <- time_point_precision_attribute(x)
+  to_precision <- time_point_precision_attribute(to)
 
   if (x_precision == to_precision) {
     return(x)
@@ -252,7 +252,7 @@ arith_duration_and_time_point <- function(op, x, y, ...) {
 }
 
 arith_time_point_and_numeric <- function(op, x, y, ...) {
-  precision <- time_point_precision(x)
+  precision <- time_point_precision_attribute(x)
 
   switch (
     op,
@@ -263,7 +263,7 @@ arith_time_point_and_numeric <- function(op, x, y, ...) {
 }
 
 arith_numeric_and_time_point <- function(op, x, y, ...) {
-  precision <- time_point_precision(y)
+  precision <- time_point_precision_attribute(y)
 
   switch (
     op,
@@ -459,14 +459,14 @@ as_duration.clock_time_point <- function(x) {
 
 #' @export
 as_year_month_day.clock_time_point <- function(x) {
-  precision <- time_point_precision(x)
+  precision <- time_point_precision_attribute(x)
   fields <- as_year_month_day_from_sys_time_cpp(x, precision)
   new_year_month_day_from_fields(fields, precision, names = names(x))
 }
 
 #' @export
 as_year_month_weekday.clock_time_point <- function(x) {
-  precision <- time_point_precision(x)
+  precision <- time_point_precision_attribute(x)
   fields <- as_year_month_weekday_from_sys_time_cpp(x, precision)
   new_year_month_weekday_from_fields(fields, precision, names = names(x))
 }
@@ -474,7 +474,7 @@ as_year_month_weekday.clock_time_point <- function(x) {
 #' @export
 as_year_quarter_day.clock_time_point <- function(x, ..., start = NULL) {
   check_dots_empty()
-  precision <- time_point_precision(x)
+  precision <- time_point_precision_attribute(x)
   start <- quarterly_validate_start(start)
   fields <- as_year_quarter_day_from_sys_time_cpp(x, precision, start)
   new_year_quarter_day_from_fields(fields, precision, start, names = names(x))
@@ -482,14 +482,14 @@ as_year_quarter_day.clock_time_point <- function(x, ..., start = NULL) {
 
 #' @export
 as_iso_year_week_day.clock_time_point <- function(x) {
-  precision <- time_point_precision(x)
+  precision <- time_point_precision_attribute(x)
   fields <- as_iso_year_week_day_from_sys_time_cpp(x, precision)
   new_iso_year_week_day_from_fields(fields, precision, names = names(x))
 }
 
 #' @export
 as_year_day.clock_time_point <- function(x) {
-  precision <- time_point_precision(x)
+  precision <- time_point_precision_attribute(x)
   fields <- as_year_day_from_sys_time_cpp(x, precision)
   new_year_day_from_fields(fields, precision, names = names(x))
 }
@@ -569,7 +569,7 @@ time_point_cast <- function(x, precision) {
     abort("`x` must be a 'time_point'.")
   }
 
-  x_precision <- time_point_precision(x)
+  x_precision <- time_point_precision_attribute(x)
   precision <- validate_time_point_precision_string(precision)
 
   fields <- duration_cast_cpp(x, x_precision, precision)
@@ -949,7 +949,7 @@ seq.clock_time_point <- function(from,
                                  length.out = NULL,
                                  along.with = NULL,
                                  ...) {
-  precision <- time_point_precision(from)
+  precision <- time_point_precision_attribute(from)
 
   seq_impl(
     from = from,

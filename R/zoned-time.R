@@ -887,7 +887,7 @@ as.character.clock_zoned_time <- function(x, ...) {
 zoned_time_now <- function(zone) {
   names <- NULL
   sys_time <- sys_time_now()
-  precision <- time_point_precision(sys_time)
+  precision <- time_point_precision_attribute(sys_time)
   zone <- zone_validate(zone)
   new_zoned_time_from_fields(sys_time, precision, zone, names)
 }
