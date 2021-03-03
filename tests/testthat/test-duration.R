@@ -266,3 +266,16 @@ test_that("can't convert calendrical duration to time point", {
   expect_snapshot_error(as_sys_time(duration_years(0)))
   expect_snapshot_error(as_naive_time(duration_years(0)))
 })
+
+# ------------------------------------------------------------------------------
+# duration_precision()
+
+test_that("precision: can get the precision", {
+  expect_identical(duration_precision(duration_months(2:5)), "month")
+  expect_identical(duration_precision(duration_days(1)), "day")
+  expect_identical(duration_precision(duration_nanoseconds(5:6)), "nanosecond")
+})
+
+test_that("precision: can only be called on durations", {
+  expect_snapshot_error(duration_precision(sys_days(0)))
+})

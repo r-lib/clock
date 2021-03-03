@@ -1065,6 +1065,33 @@ is_duration_with_precision <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Precision: duration
+#'
+#' `duration_precision()` extracts the precision from a duration object. It
+#' returns the precision as a single string.
+#'
+#' @param x `[clock_duration]`
+#'
+#'   A duration.
+#'
+#' @return A single string holding the precision of the duration.
+#'
+#' @export
+#' @examples
+#' duration_precision(duration_seconds(1))
+#' duration_precision(duration_nanoseconds(2))
+#' duration_precision(duration_quarters(1:5))
+duration_precision <- function(x) {
+  if (!is_duration(x)) {
+    abort("`x` must be a 'clock_duration'.")
+  }
+  precision <- duration_precision_attribute(x)
+  precision <- precision_to_string(precision)
+  precision
+}
+
+# ------------------------------------------------------------------------------
+
 duration_precision_attribute <- function(x) {
   attr(x, "precision", exact = TRUE)
 }
