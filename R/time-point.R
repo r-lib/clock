@@ -964,6 +964,32 @@ seq.clock_time_point <- function(from,
 
 # ------------------------------------------------------------------------------
 
+#' Precision: time point
+#'
+#' `time_point_precision()` extracts the precision from a time point, such
+#' as a sys-time or naive-time. It returns the precision as a single string.
+#'
+#' @param x `[clock_time_point]`
+#'
+#'   A time point.
+#'
+#' @return A single string holding the precision of the time point.
+#'
+#' @export
+#' @examples
+#' time_point_precision(sys_time_now())
+#' time_point_precision(as_naive_time(duration_days(1)))
+time_point_precision <- function(x) {
+  if (!is_time_point(x)) {
+    abort("`x` must be a 'clock_time_point'.")
+  }
+  precision <- time_point_precision_attribute(x)
+  precision <- precision_to_string(precision)
+  precision
+}
+
+# ------------------------------------------------------------------------------
+
 validate_time_point_precision_string <- function(precision) {
   precision <- validate_precision_string(precision)
 
