@@ -98,10 +98,10 @@
 <a href="#clock" class="anchor"></a>clock</h1></div>
 <!-- badges: start -->
 
-<p>clock is an R package for working with date-times. It is packed with features, including tools for: parsing, formatting, arithmetic, rounding, and extraction/updating of individual components. Additionally, it:</p>
+<p>clock is an R package for working with date-times. It is packed with features, including utilities for: parsing, formatting, arithmetic, rounding, and extraction/updating of individual components. In addition to these tools for manipulating date-times, clock provides entirely new date-time types which are structured to reduce the agony of working with time zones as much as possible. At a high-level, clock:</p>
 <ul>
-<li><p>Provides a new family of orthogonal date-time classes (durations, time points, zoned-times, and calendars) that partition responsibilities so that you only have to think about time zones when you need them.</p></li>
-<li><p>Implements a high level API for Date and POSIXct classes that lets you get productive quickly without having to learn the details of the underlying classes.</p></li>
+<li><p>Provides a new family of date-time classes (durations, time points, zoned-times, and calendars) that partition responsibilities so that you only have to think about time zones when you need them.</p></li>
+<li><p>Implements a high level API for R’s native date (Date) and date-time (POSIXct) classes that lets you get productive quickly without having to learn the details of clock’s new date-time types.</p></li>
 <li><p>Requires explicit handling of invalid dates (e.g. what date is one month after January 31st?) and nonexistent or ambiguous times (caused by daylight saving time issues).</p></li>
 <li><p>Is built on the C++ <a href="https://github.com/HowardHinnant/date">date</a> library, which provides a correct and high-performance backend.</p></li>
 </ul>
