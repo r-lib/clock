@@ -27,7 +27,7 @@ Depends:
 Imports: 
     ellipsis,
     rlang,
-    tzdb,
+    tzdb (>= 0.1.0),
     vctrs (>= 0.3.6.9000)
 Suggests: 
     covr,
@@ -42,7 +42,6 @@ LinkingTo:
 VignetteBuilder: 
     knitr
 Remotes:
-    r-lib/tzdb,
     r-lib/vctrs#1322
 Config/testthat/edition: 3
 Encoding: UTF-8
