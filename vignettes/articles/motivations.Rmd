@@ -510,8 +510,6 @@ The structure of calendar types also enables a unique feature among date-time li
 
 ```{r}
 ymd <- year_month_day(2019, 3, c(30, 31)) + duration_months(1)
-
-# `invalid=1` tells you that you've created 1 invalid date
 ymd
 ```
 
@@ -549,6 +547,8 @@ grid <- expand.grid(
 meetings <- year_month_weekday(grid$year, grid$month, grid$day, grid$index)
 
 meetings
+
+meetings[invalid_detect(meetings)]
 ```
 
 The year-month-weekday calendar allows us to quickly generate these dates. We can see that we've generated 8 invalid dates - some months don't have a 5th Friday.

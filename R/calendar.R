@@ -670,32 +670,16 @@ calendar_require_all_valid <- function(x) {
 # ------------------------------------------------------------------------------
 
 calendar_ptype_full <- function(x, class) {
-  count <- invalid_count(x)
   precision <- calendar_precision_attribute(x)
   precision <- precision_to_string(precision)
-
-  out <- paste0(class, "<", precision, ">")
-
-  if (count != 0L) {
-    out <- paste0(out, "[invalid=", count, "]")
-  }
-
-  out
+  paste0(class, "<", precision, ">")
 }
 
 calendar_ptype_abbr <- function(x, abbr) {
-  count <- invalid_count(x)
   precision <- calendar_precision_attribute(x)
   precision <- precision_to_string(precision)
   precision <- precision_abbr(precision)
-
-  out <- paste0(abbr, "<", precision, ">")
-
-  if (count != 0L) {
-    out <- paste0(out, "[i=", count, "]")
-  }
-
-  out
+  paste0(abbr, "<", precision, ">")
 }
 
 # ------------------------------------------------------------------------------

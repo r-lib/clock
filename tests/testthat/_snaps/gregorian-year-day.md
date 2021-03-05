@@ -44,7 +44,7 @@
 
 ---
 
-    [1] "year_day<day>[invalid=1]"
+    [1] "year_day<day>"
 
 # abbreviated ptype is correct
 
@@ -60,7 +60,7 @@
 
 ---
 
-    [1] "yd<day>[i=1]"
+    [1] "yd<day>"
 
 # invalid dates must be resolved when converting to another calendar
 
