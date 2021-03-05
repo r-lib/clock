@@ -254,7 +254,7 @@ promote from month to day precision.</p></td>
 <span class='co'># January and February of 2019 don't have 5 Sundays!</span>
 <span class='va'>invalid</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-setters.html'>set_index</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>5</span><span class='op'>)</span>
 <span class='va'>invalid</span>
-</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[invalid=2][3]&gt;
+</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[3]&gt;
 #&gt; [1] "2019-01-Sun[5]" "2019-02-Sun[5]" "2019-03-Sun[5]"</div><div class='input'>
 <span class='co'># Resolve the invalid dates by choosing the previous/next valid moment</span>
 <span class='fu'><a href='clock-invalid.html'>invalid_resolve</a></span><span class='op'>(</span><span class='va'>invalid</span>, invalid <span class='op'>=</span> <span class='st'>"previous"</span><span class='op'>)</span>

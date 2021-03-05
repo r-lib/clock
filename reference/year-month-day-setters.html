@@ -222,7 +222,7 @@ last day of the month.</p></td>
 <span class='co'># Set to an invalid day of the month</span>
 <span class='va'>invalid</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>31</span><span class='op'>)</span>
 <span class='va'>invalid</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=1][3]&gt;
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[3]&gt;
 #&gt; [1] "2019-01-31" "2019-02-31" "2019-03-31"</div><div class='input'>
 <span class='co'># Then resolve the invalid day by choosing the next valid day</span>
 <span class='fu'><a href='clock-invalid.html'>invalid_resolve</a></span><span class='op'>(</span><span class='va'>invalid</span>, invalid <span class='op'>=</span> <span class='st'>"next"</span><span class='op'>)</span>

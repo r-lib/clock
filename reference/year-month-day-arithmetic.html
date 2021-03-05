@@ -205,7 +205,7 @@ units of duration.</p></td>
 <span class='co'># Adding 1 month to `y` generates an invalid date</span>
 <span class='va'>y_plus</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-arithmetic.html'>add_months</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span>
 <span class='va'>y_plus</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[invalid=1][2]&gt;
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[2]&gt;
 #&gt; [1] "2019-02-31" "2019-03-31"</div><div class='input'>
 <span class='co'># Invalid dates are fine, as long as they are eventually resolved</span>
 <span class='co'># by either manually resolving, or by calling `invalid_resolve()`</span>

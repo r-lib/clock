@@ -416,7 +416,7 @@
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ymd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_year_month_day.html">as_year_month_day</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/duration-helper.html">duration_months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="va">ymd</span>
-<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[invalid=1][1]&gt;</span>
+<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2020-02-31"</span></code></pre></div>
 <p>You can use <code><a href="../reference/clock-invalid.html">invalid_resolve(invalid =)</a></code> to resolve this like you did in <code><a href="../reference/clock-arithmetic.html">add_months()</a></code>, or you can let it hang around if you expect other operations to make it “valid” again.</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">

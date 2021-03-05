@@ -219,7 +219,7 @@ data analysis. See the examples for more information.</p>
     <pre class="examples"><div class='input'><span class='co'># Invalid date</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>04</span>, <span class='fl'>30</span><span class='op'>:</span><span class='fl'>31</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='fl'>30</span>, <span class='fl'>00</span><span class='op'>)</span>
 <span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;second&gt;[invalid=1][2]&gt;
+</div><div class='output co'>#&gt; &lt;year_month_day&lt;second&gt;[2]&gt;
 #&gt; [1] "2019-04-30 03:30:00" "2019-04-31 02:30:00"</div><div class='input'>
 <span class='fu'>invalid_detect</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] FALSE  TRUE</div><div class='input'>
@@ -242,7 +242,7 @@ data analysis. See the examples for more information.</p>
 </div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_quarter_day.html'>year_quarter_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>90</span><span class='op'>:</span><span class='fl'>92</span><span class='op'>)</span>
 <span class='va'>y</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[invalid=2][3]&gt;
+</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[3]&gt;
 #&gt; [1] "2019-Q1-90" "2019-Q1-91" "2019-Q1-92"</div><div class='input'>
 <span class='co'># Overflow rolls forward by the number of days between `y` and the previous</span>
 <span class='co'># valid date</span>
