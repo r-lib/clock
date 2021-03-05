@@ -64,7 +64,7 @@
 
 ---
 
-    [1] "year_month_weekday<day>[invalid=1]"
+    [1] "year_month_weekday<day>"
 
 # abbreviated ptype is correct
 
@@ -80,7 +80,7 @@
 
 ---
 
-    [1] "ymw<day>[i=1]"
+    [1] "ymw<day>"
 
 # only granular precisions are allowed
 

@@ -52,7 +52,7 @@
 
 ---
 
-    [1] "year_quarter_day<January><day>[invalid=1]"
+    [1] "year_quarter_day<January><day>"
 
 # abbreviated ptype is correct
 
@@ -72,7 +72,7 @@
 
 ---
 
-    [1] "yqd<Jan><day>[i=1]"
+    [1] "yqd<Jan><day>"
 
 # only granular precisions are allowed
 

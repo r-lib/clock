@@ -48,7 +48,7 @@
 
 ---
 
-    [1] "iso_year_week_day<week>[invalid=1]"
+    [1] "iso_year_week_day<week>"
 
 # abbreviated ptype is correct
 
@@ -64,7 +64,7 @@
 
 ---
 
-    [1] "iso_ywd<week>[i=1]"
+    [1] "iso_ywd<week>"
 
 # only year precision is allowed
 
