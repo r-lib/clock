@@ -10,9 +10,9 @@ Provides a comprehensive library for date-time
     manipulations using a new family of orthogonal date-time classes
     (durations, time points, zoned-times, and calendars) that partition
     responsibilities so that the complexities of time zones are only
-    considered when they are really needed. Capabilities include: date-time
-    parsing, formatting, arithmetic, extraction and updating of components,
-    and rounding.
+    considered when they are really needed. Capabilities include:
+    date-time parsing, formatting, arithmetic, extraction and updating of
+    components, and rounding.
 }
 \seealso{
 Useful links:
@@ -27,8 +27,8 @@ Useful links:
 
 Other contributors:
 \itemize{
-  \item RStudio [copyright holder, funder]
   \item Howard Hinnant (Author of the included date library) [copyright holder]
+  \item RStudio [copyright holder, funder]
 }
 
 }
