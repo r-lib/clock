@@ -6,6 +6,8 @@
 \alias{clock-package}
 \title{clock: Date-Time Types and Tools}
 \description{
+\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+
 Provides a comprehensive library for date-time
     manipulations using a new family of orthogonal date-time classes
     (durations, time points, zoned-times, and calendars) that partition
