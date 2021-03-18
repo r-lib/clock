@@ -12,4 +12,4 @@
 
 ## 0.1.0 Submission
 
-This is the first release of clock.
+This is the first release of clock. There are no references that I would like to include with the package.
