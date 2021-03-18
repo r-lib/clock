@@ -6,6 +6,26 @@ test_that("invalid dates must be resolved when converting to a Date", {
 })
 
 # ------------------------------------------------------------------------------
+# as_sys_time()
+
+test_that("converting to sys-time floors fractional dates (#191)", {
+  x <- new_date(c(-0.5, 1.5))
+  y <- new_date(c(-1, 1))
+
+  expect_identical(as_sys_time(x), as_sys_time(y))
+  expect_identical(as.Date(as_sys_time(x)), y)
+})
+
+test_that("converting to sys-time works with integer storage dates", {
+  # These can occur from `seq.Date(from, to, length.out)`
+  x <- structure(1L, class = "Date")
+  y <- new_date(1)
+
+  expect_identical(as_sys_time(x), as_sys_time(y))
+  expect_identical(as.Date(as_sys_time(x)), y)
+})
+
+# ------------------------------------------------------------------------------
 # as_weekday()
 
 test_that("can convert to weekday", {

@@ -2,6 +2,9 @@
 as_sys_time.Date <- function(x) {
   names <- names(x)
   x <- unstructure(x)
+  if (is.double(x)) {
+    x <- floor(x)
+  }
   x <- duration_days(x)
   new_sys_time_from_fields(x, PRECISION_DAY, names)
 }
