@@ -69,7 +69,14 @@ you get a complete date time library.
 
 ## Installation
 
-You can install the development version of clock with:
+Install the released version from [CRAN](https://CRAN.R-project.org)
+with:
+
+``` r
+install.packages("clock")
+```
+
+Install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("remotes")
