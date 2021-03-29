@@ -197,7 +197,7 @@ heuristic for any reason, you can take control and perform the conversions
 yourself. For example, you could convert the previous example to a
 naive-time instead of a sys-time manually with \code{\link[=as_naive_time]{as_naive_time()}}, add
 1 second giving \code{"2020-03-08 02:00:00"}, then convert back to a
-POSIXct/POSIXlt, dealing with the nonexistent time that get's created by
+POSIXct/POSIXlt, dealing with the nonexistent time that gets created by
 using the \code{nonexistent} argument of \code{as.POSIXct()}.
 }
 \examples{
