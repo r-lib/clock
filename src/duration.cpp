@@ -1140,7 +1140,10 @@ inline
 cpp11::writable::doubles
 duration_as_double_impl(const ClockDuration& x) {
   // Usually 2^53 - 1
-  static int64_t DOUBLE_MAX_NO_LOSS = static_cast<int64_t>(pow(FLT_RADIX, DBL_MANT_DIG) - 1);
+  // Pass `double`s to `pow()` for Solaris, where `pow(int, int)` is undefined
+  static double DOUBLE_FLT_RADIX = static_cast<double>(FLT_RADIX);
+  static double DOUBLE_DBL_MANT_DIG = static_cast<double>(DBL_MANT_DIG);
+  static int64_t DOUBLE_MAX_NO_LOSS = static_cast<int64_t>(std::pow(DOUBLE_FLT_RADIX, DOUBLE_DBL_MANT_DIG) - 1);
   static int64_t DOUBLE_MIN_NO_LOSS = -DOUBLE_MAX_NO_LOSS;
 
   const r_ssize size = x.size();
