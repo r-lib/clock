@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# clock <a href='http://clock.r-lib.org/'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# clock <a href='https://clock.r-lib.org/'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
 
@@ -69,7 +69,14 @@ you get a complete date time library.
 
 ## Installation
 
-You can install the development version of clock with:
+Install the released version from [CRAN](https://CRAN.R-project.org)
+with:
+
+``` r
+install.packages("clock")
+```
+
+Install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("remotes")

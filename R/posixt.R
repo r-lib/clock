@@ -444,7 +444,7 @@ arith_duration_and_posixt <- function(op, x, y, ...) {
 #' yourself. For example, you could convert the previous example to a
 #' naive-time instead of a sys-time manually with [as_naive_time()], add
 #' 1 second giving `"2020-03-08 02:00:00"`, then convert back to a
-#' POSIXct/POSIXlt, dealing with the nonexistent time that get's created by
+#' POSIXct/POSIXlt, dealing with the nonexistent time that gets created by
 #' using the `nonexistent` argument of `as.POSIXct()`.
 #'
 #' @inheritParams add_years
