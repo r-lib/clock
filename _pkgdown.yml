@@ -197,3 +197,8 @@ reference:
   - posixt-shifting
   - as-zoned-time-Date
   - as-zoned-time-posixt
+
+news:
+  releases:
+  - text: "Version 0.1.0"
+    href: https://www.tidyverse.org/blog/2021/03/clock-0-1-0/
