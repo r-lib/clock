@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -108,7 +108,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/clock">clock</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span></code></pre></div>
-<p>The goal of this vignette is to introduce you to clock’s high-level API, which works directly on R’s built-in date-time types, Date and POSIXct. For an overview of all of the functionality in the high-level API, check out the pkgdown reference section, <a href="https://r-lib.github.io/clock/reference/index.html#section-high-level-api">High Level API</a>. One thing you should immediately notice is that every function specific to R’s date and date-time types are prefixed with <code>date_*()</code>. There are also additional functions for arithmetic (<code>add_*()</code>) and getting (<code>get_*()</code>) or setting (<code>set_*()</code>) components that are also used by other types in clock.</p>
+<p>The goal of this vignette is to introduce you to clock’s high-level API, which works directly on R’s built-in date-time types, Date and POSIXct. For an overview of all of the functionality in the high-level API, check out the pkgdown reference section, <a href="https://clock.r-lib.org/reference/index.html#section-high-level-api">High Level API</a>. One thing you should immediately notice is that every function specific to R’s date and date-time types are prefixed with <code>date_*()</code>. There are also additional functions for arithmetic (<code>add_*()</code>) and getting (<code>get_*()</code>) or setting (<code>set_*()</code>) components that are also used by other types in clock.</p>
 <p>As you’ll quickly see in this vignette, one of the main goals of clock is to guard you, the user, from unexpected issues caused by frustrating date manipulation concepts like invalid dates and daylight saving time. It does this by letting you know as soon as one of these issues happens, giving you the power to handle it explicitly with one of a number of different resolution strategies.</p>
 <div id="building" class="section level2">
 <h2 class="hasAnchor">
