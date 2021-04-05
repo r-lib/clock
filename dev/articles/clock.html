@@ -138,7 +138,8 @@
 <p>If you happen to specify an <em>invalid date</em>, you’ll get an error message:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">12</span>, <span class="fl">31</span><span class="op">)</span>
-<span class="co">#&gt; Error: Invalid date found at location 2. Resolve invalid date issues by specifying the `invalid` argument.</span></code></pre></div>
+<span class="co">#&gt; Error: Invalid date found at location 2.</span>
+<span class="co">#&gt; ℹ Resolve invalid date issues by specifying the `invalid` argument.</span></code></pre></div>
 <p>One way to resolve this is by specifying an invalid date resolution strategy using the <code>invalid</code> argument. There are multiple options, but in this case we’ll ask for the invalid dates to be set to the previous valid moment in time.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">12</span>, <span class="fl">31</span>, invalid <span class="op">=</span> <span class="st">"previous"</span><span class="op">)</span>
@@ -161,7 +162,8 @@
 <p>If you “build” a time that doesn’t exist, you’ll get an error. For example, on March 8th, 2020, there was a daylight saving time gap of 1 hour in the America/New_York time zone that took us from <code>01:59:59</code> directly to <code>03:00:00</code>, skipping the 2 o’clock hour entirely. Let’s “accidentally” create a time in that gap:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/date_time_build.html">date_time_build</a></span><span class="op">(</span><span class="fl">2019</span><span class="op">:</span><span class="fl">2021</span>, <span class="fl">3</span>, <span class="fl">8</span>, <span class="fl">2</span>, <span class="fl">30</span>, zone <span class="op">=</span> <span class="st">"America/New_York"</span><span class="op">)</span>
-<span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 2. Resolve nonexistent time issues by specifying the `nonexistent` argument.</span></code></pre></div>
+<span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 2.</span>
+<span class="co">#&gt; ℹ Resolve nonexistent time issues by specifying the `nonexistent` argument.</span></code></pre></div>
 <p>To resolve this issue, we can specify a nonexistent time resolution strategy through the <code>nonexistent</code> argument. There are a number of options, including rolling forward or backward to the next or previous valid moments in time:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">zone</span> <span class="op">&lt;-</span> <span class="st">"America/New_York"</span>
@@ -231,7 +233,8 @@
 <p>The following string doesn’t include any information about which of these two 1 o’clocks it belongs to, so it is considered <em>ambiguous</em>. Ambiguous times will error when parsing:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/date-time-parse.html">date_time_parse</a></span><span class="op">(</span><span class="st">"2020-11-01 01:30:00"</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
-<span class="co">#&gt; Error: Ambiguous time due to daylight saving time at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.</span></code></pre></div>
+<span class="co">#&gt; Error: Ambiguous time due to daylight saving time at location 1.</span>
+<span class="co">#&gt; ℹ Resolve ambiguous time issues by specifying the `ambiguous` argument.</span></code></pre></div>
 <p>To fix that, you can specify an ambiguous time resolution strategy with the <code>ambiguous</code> argument.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">zone</span> <span class="op">&lt;-</span> <span class="st">"America/New_York"</span>
@@ -418,7 +421,8 @@
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">1</span>, <span class="fl">31</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; Error: Invalid date found at location 1. Resolve invalid date issues by specifying the `invalid` argument.</span></code></pre></div>
+<span class="co">#&gt; Error: Invalid date found at location 1.</span>
+<span class="co">#&gt; ℹ Resolve invalid date issues by specifying the `invalid` argument.</span></code></pre></div>
 <p>clock gives you the power to handle this through the <code>invalid</code> option:</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># The previous valid moment in time</span>
@@ -466,7 +470,8 @@
 
 <span class="co"># Daylight saving time gap on the 26th between 01:59:59 -&gt; 03:00:00</span>
 <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.</span></code></pre></div>
+<span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 1.</span>
+<span class="co">#&gt; ℹ Resolve nonexistent time issues by specifying the `nonexistent` argument.</span></code></pre></div>
 <p>You can solve this using the <code>nonexistent</code> argument to control how these times should be handled.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Roll forward to the next valid moment in time</span>
@@ -511,7 +516,8 @@
 <code class="sourceCode R"><span class="va">x</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">31</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-setters.html">set_month</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>
-<span class="co">#&gt; Error: Invalid date found at location 1. Resolve invalid date issues by specifying the `invalid` argument.</span>
+<span class="co">#&gt; Error: Invalid date found at location 1.</span>
+<span class="co">#&gt; ℹ Resolve invalid date issues by specifying the `invalid` argument.</span>
 
 <span class="va">x</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">31</span><span class="op">)</span> <span class="op">%&gt;%</span>

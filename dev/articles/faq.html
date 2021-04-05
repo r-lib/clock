@@ -246,7 +246,8 @@
   <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-arithmetic.html">add_minutes</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.</span>
+<span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 1.</span>
+<span class="co">#&gt; ℹ Resolve nonexistent time issues by specifying the `nonexistent` argument.</span>
 
 <span class="va">x</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
