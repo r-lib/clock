@@ -40,7 +40,8 @@
 
 # can resolve nonexistent issues
 
-    Nonexistent time due to daylight saving time at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Nonexistent time due to daylight saving time at location 1.
+    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 # `ambiguous` is validated
 

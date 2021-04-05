@@ -169,10 +169,13 @@ stop_clock_invalid_date <- function(i) {
 
 # Thrown from C++
 stop_clock_nonexistent_time <- function(i) {
-  message <- paste0(
-    "Nonexistent time due to daylight saving time at location ", i, ". ",
-    "Resolve nonexistent time issues by specifying the `nonexistent` argument."
+  header <- paste0(
+    "Nonexistent time due to daylight saving time at location ", i, "."
   )
+  bullet <- format_error_bullets(
+    c(i = "Resolve nonexistent time issues by specifying the `nonexistent` argument.")
+  )
+  message <- paste0(header, "\n", bullet)
   stop_clock(message, "clock_error_nonexistent_time")
 }
 

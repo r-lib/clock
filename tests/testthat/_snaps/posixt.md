@@ -1,6 +1,7 @@
 # can handle nonexistent times resulting from grouping
 
-    Nonexistent time due to daylight saving time at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Nonexistent time due to daylight saving time at location 1.
+    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 # can't group by finer precisions
 
@@ -12,7 +13,8 @@
 
 # flooring can handle nonexistent times
 
-    Nonexistent time due to daylight saving time at location 2. Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Nonexistent time due to daylight saving time at location 2.
+    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 # `origin` is floored to the precision of `precision` with a potential warning before rounding
 
@@ -125,7 +127,8 @@
 
 # can resolve ambiguity and nonexistent times
 
-    Nonexistent time due to daylight saving time at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Nonexistent time due to daylight saving time at location 1.
+    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 ---
 
@@ -173,7 +176,8 @@
 
 # can handle nonexistent times
 
-    Nonexistent time due to daylight saving time at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Nonexistent time due to daylight saving time at location 1.
+    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 # can handle ambiguous times
 
