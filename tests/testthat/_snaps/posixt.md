@@ -132,7 +132,8 @@
 
 ---
 
-    Ambiguous time due to daylight saving time at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Ambiguous time due to daylight saving time at location 1.
+    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 # failure to parse throws a warning
 
@@ -163,7 +164,8 @@
 
 # `ambiguous = x` retains the offset of `x` if applicable
 
-    Ambiguous time due to daylight saving time at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Ambiguous time due to daylight saving time at location 1.
+    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 # `zone` is required
 
@@ -181,7 +183,8 @@
 
 # can handle ambiguous times
 
-    Ambiguous time due to daylight saving time at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Ambiguous time due to daylight saving time at location 1.
+    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 # <posixt> op <duration>
 

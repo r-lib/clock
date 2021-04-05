@@ -181,10 +181,13 @@ stop_clock_nonexistent_time <- function(i) {
 
 # Thrown from C++
 stop_clock_ambiguous_time <- function(i) {
-  message <- paste0(
-    "Ambiguous time due to daylight saving time at location ", i, ". ",
-    "Resolve ambiguous time issues by specifying the `ambiguous` argument."
+  header <- paste0(
+    "Ambiguous time due to daylight saving time at location ", i, "."
   )
+  bullet <- format_error_bullets(
+    c(i = "Resolve ambiguous time issues by specifying the `ambiguous` argument.")
+  )
+  message <- paste0(header, "\n", bullet)
   stop_clock(message, "clock_error_ambiguous_time")
 }
 
