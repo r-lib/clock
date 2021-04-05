@@ -1,13 +1,10 @@
 ## R CMD check results
 
-0 errors | 0 warnings | 2 notes
+0 errors | 0 warnings | 0 notes
 
-* This is a new release.
+## 0.1.1 Submission
 
-* checking installed package size ... NOTE
-    installed size is  7.8Mb
-    sub-directories of 1Mb or more:
-      libs   5.6Mb
+This is a patch release to fix the error on CRAN's Solaris build.
 
 ## 0.1.0 Submission
 
