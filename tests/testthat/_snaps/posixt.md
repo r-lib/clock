@@ -168,7 +168,8 @@
 
 # can handle invalid dates
 
-    Invalid date found at location 2. Resolve invalid date issues by specifying the `invalid` argument.
+    Invalid date found at location 2.
+    i Resolve invalid date issues by specifying the `invalid` argument.
 
 # can handle nonexistent times
 

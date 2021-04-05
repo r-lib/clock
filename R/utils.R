@@ -157,10 +157,13 @@ stop_clock_unsupported_zoned_time_op <- function(op) {
 
 # Thrown from C++
 stop_clock_invalid_date <- function(i) {
-  message <- paste0(
-    "Invalid date found at location ", i, ". ",
-    "Resolve invalid date issues by specifying the `invalid` argument."
+  header <- paste0(
+    "Invalid date found at location ", i, "."
   )
+  bullet <- format_error_bullets(
+    c(i = "Resolve invalid date issues by specifying the `invalid` argument.")
+  )
+  message <- paste0(header, "\n", bullet)
   stop_clock(message, "clock_error_invalid_date")
 }
 
