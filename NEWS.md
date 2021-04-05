@@ -1,4 +1,4 @@
-# clock (development version)
+# clock 0.1.1
 
 * Errors resulting from invalid dates or nonexistent/ambiguous times are now
   a little nicer to read through the usage of an info bullet (#200).
