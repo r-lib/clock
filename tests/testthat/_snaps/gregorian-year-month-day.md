@@ -118,5 +118,6 @@
 
 # throws known classed error
 
-    Invalid date found at location 1. Resolve invalid date issues by specifying the `invalid` argument.
+    Invalid date found at location 1.
+    i Resolve invalid date issues by specifying the `invalid` argument.
 

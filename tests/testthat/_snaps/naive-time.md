@@ -28,19 +28,23 @@
 
 # can resolve ambiguous issues - character
 
-    Ambiguous time due to daylight saving time at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Ambiguous time due to daylight saving time at location 1.
+    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 # can resolve ambiguous issues - zoned-time
 
-    Ambiguous time due to daylight saving time at location 2. Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Ambiguous time due to daylight saving time at location 2.
+    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 ---
 
-    Ambiguous time due to daylight saving time at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Ambiguous time due to daylight saving time at location 1.
+    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 # can resolve nonexistent issues
 
-    Nonexistent time due to daylight saving time at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Nonexistent time due to daylight saving time at location 1.
+    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 # `ambiguous` is validated
 

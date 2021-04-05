@@ -157,28 +157,37 @@ stop_clock_unsupported_zoned_time_op <- function(op) {
 
 # Thrown from C++
 stop_clock_invalid_date <- function(i) {
-  message <- paste0(
-    "Invalid date found at location ", i, ". ",
-    "Resolve invalid date issues by specifying the `invalid` argument."
+  header <- paste0(
+    "Invalid date found at location ", i, "."
   )
+  bullet <- format_error_bullets(
+    c(i = "Resolve invalid date issues by specifying the `invalid` argument.")
+  )
+  message <- paste0(header, "\n", bullet)
   stop_clock(message, "clock_error_invalid_date")
 }
 
 # Thrown from C++
 stop_clock_nonexistent_time <- function(i) {
-  message <- paste0(
-    "Nonexistent time due to daylight saving time at location ", i, ". ",
-    "Resolve nonexistent time issues by specifying the `nonexistent` argument."
+  header <- paste0(
+    "Nonexistent time due to daylight saving time at location ", i, "."
   )
+  bullet <- format_error_bullets(
+    c(i = "Resolve nonexistent time issues by specifying the `nonexistent` argument.")
+  )
+  message <- paste0(header, "\n", bullet)
   stop_clock(message, "clock_error_nonexistent_time")
 }
 
 # Thrown from C++
 stop_clock_ambiguous_time <- function(i) {
-  message <- paste0(
-    "Ambiguous time due to daylight saving time at location ", i, ". ",
-    "Resolve ambiguous time issues by specifying the `ambiguous` argument."
+  header <- paste0(
+    "Ambiguous time due to daylight saving time at location ", i, "."
   )
+  bullet <- format_error_bullets(
+    c(i = "Resolve ambiguous time issues by specifying the `ambiguous` argument.")
+  )
+  message <- paste0(header, "\n", bullet)
   stop_clock(message, "clock_error_ambiguous_time")
 }
 

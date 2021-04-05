@@ -1,6 +1,7 @@
 # can handle nonexistent times resulting from grouping
 
-    Nonexistent time due to daylight saving time at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Nonexistent time due to daylight saving time at location 1.
+    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 # can't group by finer precisions
 
@@ -12,7 +13,8 @@
 
 # flooring can handle nonexistent times
 
-    Nonexistent time due to daylight saving time at location 2. Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Nonexistent time due to daylight saving time at location 2.
+    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 # `origin` is floored to the precision of `precision` with a potential warning before rounding
 
@@ -125,11 +127,13 @@
 
 # can resolve ambiguity and nonexistent times
 
-    Nonexistent time due to daylight saving time at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Nonexistent time due to daylight saving time at location 1.
+    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 ---
 
-    Ambiguous time due to daylight saving time at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Ambiguous time due to daylight saving time at location 1.
+    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 # failure to parse throws a warning
 
@@ -160,7 +164,8 @@
 
 # `ambiguous = x` retains the offset of `x` if applicable
 
-    Ambiguous time due to daylight saving time at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Ambiguous time due to daylight saving time at location 1.
+    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 # `zone` is required
 
@@ -168,15 +173,18 @@
 
 # can handle invalid dates
 
-    Invalid date found at location 2. Resolve invalid date issues by specifying the `invalid` argument.
+    Invalid date found at location 2.
+    i Resolve invalid date issues by specifying the `invalid` argument.
 
 # can handle nonexistent times
 
-    Nonexistent time due to daylight saving time at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Nonexistent time due to daylight saving time at location 1.
+    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 # can handle ambiguous times
 
-    Ambiguous time due to daylight saving time at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Ambiguous time due to daylight saving time at location 1.
+    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 # <posixt> op <duration>
 
