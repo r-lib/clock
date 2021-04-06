@@ -72,32 +72,32 @@ as_zoned_time.Date <- function(x,
 
 #' @export
 as_year_month_day.Date <- function(x) {
-  as_year_month_day(as_sys_time(x))
+  as_year_month_day(as_naive_time(x))
 }
 
 #' @export
 as_year_month_weekday.Date <- function(x) {
-  as_year_month_weekday(as_sys_time(x))
+  as_year_month_weekday(as_naive_time(x))
 }
 
 #' @export
 as_year_quarter_day.Date <- function(x, ..., start = NULL) {
-  as_year_quarter_day(as_sys_time(x), ..., start = start)
+  as_year_quarter_day(as_naive_time(x), ..., start = start)
 }
 
 #' @export
 as_iso_year_week_day.Date <- function(x) {
-  as_iso_year_week_day(as_sys_time(x))
+  as_iso_year_week_day(as_naive_time(x))
 }
 
 #' @export
 as_year_day.Date <- function(x) {
-  as_year_day(as_sys_time(x))
+  as_year_day(as_naive_time(x))
 }
 
 #' @export
 as_weekday.Date <- function(x) {
-  as_weekday(as_sys_time(x))
+  as_weekday(as_naive_time(x))
 }
 
 # ------------------------------------------------------------------------------
@@ -107,7 +107,7 @@ as_weekday.Date <- function(x) {
 
 #' @export
 as.Date.clock_calendar <- function(x, ...) {
-  as.Date(as_sys_time(x))
+  as.Date(as_naive_time(x))
 }
 
 #' @export
