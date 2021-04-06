@@ -419,6 +419,8 @@ as_zoned_time.clock_naive_time <- function(x,
                                            ...,
                                            nonexistent = NULL,
                                            ambiguous = NULL) {
+  check_dots_empty()
+
   zone <- zone_validate(zone)
 
   # Promote to at least seconds precision for `zoned_time`

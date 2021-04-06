@@ -8,3 +8,13 @@
       <time_point<sys><second>[1]>
       [1] NA
 
+# empty dots are checked
+
+    `...` is not empty.
+    
+    We detected these problematic arguments:
+    * `..1`
+    
+    These dots only exist to allow future extensions and should be empty.
+    Did you misspecify an argument?
+

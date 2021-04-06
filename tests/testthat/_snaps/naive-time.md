@@ -118,3 +118,13 @@
 
     The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `ambiguous` must be set and cannot be left as `NULL`. Additionally, `ambiguous` cannot be set to a zoned-time or POSIXct unless it is paired with an ambiguous time resolution strategy, like: `list(<zoned-time>, 'earliest')`.
 
+# empty dots are checked
+
+    `...` is not empty.
+    
+    We detected these problematic arguments:
+    * `..1`
+    
+    These dots only exist to allow future extensions and should be empty.
+    Did you misspecify an argument?
+

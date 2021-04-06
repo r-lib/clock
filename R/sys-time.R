@@ -256,6 +256,8 @@ as_naive_time.clock_sys_time <- function(x) {
 #' x_ny <- as_zoned_time(x, "America/New_York")
 #' x_ny
 as_zoned_time.clock_sys_time <- function(x, zone, ...) {
+  check_dots_empty()
+
   zone <- zone_validate(zone)
 
   # Promote to at least seconds precision for `zoned_time`
