@@ -19,10 +19,19 @@ as_naive_time.Date <- function(x) {
 #' @description
 #' This is a Date method for the [as_zoned_time()] generic.
 #'
-#' Since R assumes that Dates are UTC, converting to a zoned-time returns
-#' a zoned-time with a UTC time zone. There is no `zone` argument.
+#' clock assumes that Dates are _naive_ date-time types. Like naive-times, they
+#' have a yet-to-be-specified time zone. This method allows you to specify that
+#' time zone, keeping the printed time. If possible, the time will be set to
+#' midnight (see Details for the rare case in which this is not possible).
+#'
+#' @details
+#' In the rare instance that the specified time zone does not contain a
+#' date-time at midnight due to daylight saving time, `nonexistent` can be used
+#' to resolve the issue. Similarly, if there are two possible midnight times due
+#' to a daylight saving time fallback, `ambiguous` can be used.
 #'
 #' @inheritParams ellipsis::dots_empty
+#' @inheritParams as-zoned-time-naive-time
 #'
 #' @param x `[Date]`
 #'
@@ -34,11 +43,31 @@ as_naive_time.Date <- function(x) {
 #' @export
 #' @examples
 #' x <- as.Date("2019-01-01")
-#' as_zoned_time(x)
-as_zoned_time.Date <- function(x, ...) {
-  check_dots_empty()
-  x <- as_sys_time(x)
-  as_zoned_time(x, zone = "UTC")
+#'
+#' # The resulting zoned-times have the same printed time, but are in
+#' # different time zones
+#' as_zoned_time(x, "UTC")
+#' as_zoned_time(x, "America/New_York")
+#'
+#' # Converting Date -> zoned-time is the same as naive-time -> zoned-time
+#' x <- as_naive_time(year_month_day(2019, 1, 1))
+#' as_zoned_time(x, "America/New_York")
+#'
+#' # In Asia/Beirut, there was a DST gap from
+#' # 2021-03-27 23:59:59 -> 2021-03-28 01:00:00,
+#' # skipping the 0th hour entirely. This means there is no midnight value.
+#' x <- as.Date("2021-03-28")
+#' try(as_zoned_time(x, "Asia/Beirut"))
+#'
+#' # To resolve this, set a `nonexistent` time resolution strategy
+#' as_zoned_time(x, "Asia/Beirut", nonexistent = "roll-forward")
+as_zoned_time.Date <- function(x,
+                               zone,
+                               ...,
+                               nonexistent = NULL,
+                               ambiguous = NULL) {
+  x <- as_naive_time(x)
+  as_zoned_time(x, zone = zone, ..., nonexistent = nonexistent, ambiguous = ambiguous)
 }
 
 #' @export

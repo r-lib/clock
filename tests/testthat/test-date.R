@@ -26,6 +26,47 @@ test_that("converting to sys-time works with integer storage dates", {
 })
 
 # ------------------------------------------------------------------------------
+# as_zoned_time()
+
+test_that("Dates are assumed to be naive", {
+  x <- new_date(0)
+  nt <- as_naive_time(year_month_day(1970, 1, 1))
+
+  expect_identical(as_zoned_time(x, "UTC"), as_zoned_time(nt, "UTC"))
+  expect_identical(as_zoned_time(x, "America/New_York"), as_zoned_time(nt, "America/New_York"))
+})
+
+test_that("can resolve nonexistent midnight issues", {
+  # In Asia/Beirut, DST gap from 2021-03-27 23:59:59 -> 2021-03-28 01:00:00
+  zone <- "Asia/Beirut"
+  x <- as.Date("2021-03-28")
+
+  expect_snapshot_error(as_zoned_time(x, zone), class = "clock_error_nonexistent_time")
+
+  expect_identical(
+    as_zoned_time(x, zone, nonexistent = "roll-forward"),
+    as_zoned_time(as_naive_time(year_month_day(2021, 03, 28, 1)), zone)
+  )
+})
+
+test_that("can resolve ambiguous midnight issues", {
+  # In Asia/Amman, DST fallback from 2021-10-29 00:59:59 -> 2021-10-29 00:00:00
+  zone <- "Asia/Amman"
+  x <- as.Date("2021-10-29")
+
+  expect_snapshot_error(as_zoned_time(x, zone), class = "clock_error_ambiguous_time")
+
+  expect_identical(
+    as_zoned_time(x, zone, ambiguous = "earliest"),
+    zoned_time_parse_complete("2021-10-29 00:00:00+03:00[Asia/Amman]")
+  )
+  expect_identical(
+    as_zoned_time(x, zone, ambiguous = "latest"),
+    zoned_time_parse_complete("2021-10-29 00:00:00+02:00[Asia/Amman]")
+  )
+})
+
+# ------------------------------------------------------------------------------
 # as_weekday()
 
 test_that("can convert to weekday", {

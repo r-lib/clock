@@ -2,6 +2,16 @@
 
     Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
 
+# can resolve nonexistent midnight issues
+
+    Nonexistent time due to daylight saving time at location 1.
+    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
+
+# can resolve ambiguous midnight issues
+
+    Ambiguous time due to daylight saving time at location 1.
+    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+
 # can't group by finer precisions
 
     Can't group at a precision (hour) that is more precise than `x` (day).
