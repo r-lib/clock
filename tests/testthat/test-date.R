@@ -303,6 +303,20 @@ test_that("can handle invalid dates", {
 })
 
 # ------------------------------------------------------------------------------
+# date_zone()
+
+test_that("cannot get the zone of a Date", {
+  expect_snapshot_error(date_zone(new_date(0)))
+})
+
+# ------------------------------------------------------------------------------
+# date_set_zone()
+
+test_that("cannot set the zone of a Date", {
+  expect_snapshot_error(date_set_zone(new_date(0), "UTC"))
+})
+
+# ------------------------------------------------------------------------------
 # vec_arith()
 
 test_that("<date> op <duration>", {

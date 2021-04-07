@@ -125,14 +125,6 @@
     Ez: -05:00
     Z: America/New_York
 
-# cannot get the zone of a Date
-
-    `x` must be a 'POSIXct' or 'POSIXlt'.
-
-# cannot set the zone of a Date
-
-    `x` must be a 'POSIXct' or 'POSIXlt'.
-
 # can resolve ambiguity and nonexistent times
 
     Nonexistent time due to daylight saving time at location 1.

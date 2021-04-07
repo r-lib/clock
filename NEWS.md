@@ -5,12 +5,8 @@
   UTC (#203). This generally aligns better with how users think Date should
   work. This resulted in the following changes:
   
-  * `date_zone()` has been renamed to `date_time_zone()`, as it no longer
-    applies to Dates.
-  
-  * `date_set_zone()` has been renamed to `date_time_set_zone()`. It previously
-    always errored with Dates, but with the renaming of `date_zone()`, it makes
-    more sense for this to be renamed as well.
+  * `date_zone()` now errors with Date input, as naive-times do not have a
+    specified time zone.
     
   * `date_parse()` now parses into a naive-time, rather than a sys-time, before
     converting to Date. This means that `%z` and `%Z` are now completely

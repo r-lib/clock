@@ -19,7 +19,7 @@ reference:
   - date_format
   - date_parse
   - date-time-parse
-  - date-time-zone
+  - date-zone
   - date_weekday_factor
   - date_month_factor
   - date_leap_year

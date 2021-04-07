@@ -885,6 +885,18 @@ date_format.Date <- function(x,
 
 # ------------------------------------------------------------------------------
 
+#' @export
+date_zone.Date <- function(x) {
+  abort("Can't get the zone of a 'Date'.")
+}
+
+#' @export
+date_set_zone.Date <- function(x, zone) {
+  abort("Can't set the zone of a 'Date'.")
+}
+
+# ------------------------------------------------------------------------------
+
 #' Parsing: date
 #'
 #' @description

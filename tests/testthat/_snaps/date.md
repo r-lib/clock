@@ -132,6 +132,14 @@
     Invalid date found at location 2.
     i Resolve invalid date issues by specifying the `invalid` argument.
 
+# cannot get the zone of a Date
+
+    Can't get the zone of a 'Date'.
+
+# cannot set the zone of a Date
+
+    Can't set the zone of a 'Date'.
+
 # <date> op <duration>
 
     no applicable method for 'add_hours' applied to an object of class "Date"
