@@ -162,6 +162,16 @@
 <a href="#clock-development-version" class="anchor"></a>clock (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li>
+<p>clock now interprets R’s Date class as <em>naive-time</em> rather than <em>sys-time</em>. This means that it no longer assumes that Date has an implied time zone of UTC (<a href='https://github.com/r-lib/clock/issues/203'>#203</a>). This generally aligns better with how users think Date should work. This resulted in the following changes:</p>
+<ul>
+<li><p><code><a href="../reference/date-zone.html">date_zone()</a></code> now errors with Date input, as naive-times do not have a specified time zone.</p></li>
+<li><p><code><a href="../reference/date_parse.html">date_parse()</a></code> now parses into a naive-time, rather than a sys-time, before converting to Date. This means that <code>%z</code> and <code>%Z</code> are now completely ignored.</p></li>
+<li><p>The Date method for <code><a href="../reference/date_format.html">date_format()</a></code> now uses the naive-time <code><a href="https://rdrr.io/r/base/format.html">format()</a></code> method rather than the zoned-time one. This means that <code>%z</code> and <code>%Z</code> are no longer valid format commands.</p></li>
+<li><p>The zoned-time method for <code><a href="https://rdrr.io/r/base/as.Date.html">as.Date()</a></code> now converts to Date through an intermediate naive-time, rather than a sys-time. This means that the printed date will always be retained, which is generally what is expected.</p></li>
+<li><p>The Date method for <code><a href="../reference/as_zoned_time.html">as_zoned_time()</a></code> now converts to zoned-time through an intermediate naive-time, rather than a sys-time. This means that the printed date will always attempt to be retained, if possible, which is generally what is expected. In the rare case that daylight saving time makes a direct conversion impossible, <code>nonexistent</code> and <code>ambiguous</code> can be used to resolve any issues.</p></li>
+</ul>
+</li>
 <li><p>Errors resulting from invalid dates or nonexistent/ambiguous times are now a little nicer to read through the usage of an info bullet (<a href='https://github.com/r-lib/clock/issues/200'>#200</a>).</p></li>
 <li><p>Fixed a Solaris ambiguous behavior issue from calling <code>pow(int, int)</code>.</p></li>
 <li><p>Linking against cpp11 0.2.7 is now required to fix a rare memory leak issue.</p></li>

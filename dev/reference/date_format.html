@@ -48,7 +48,12 @@
 
 <meta property="og:title" content="Formatting: date and date-time — date_format" />
 <meta property="og:description" content="date_format() formats a date (Date) or date-time (POSIXct/POSIXlt) using
-a format string." />
+a format string.
+There are separate help pages for formatting dates and date-times:
+dates (Date)
+date-times (POSIXct/POSIXlt)
+
+" />
 <meta property="og:image" content="https://clock.r-lib.org/logo.png" />
 
 
@@ -163,15 +168,14 @@ a format string." />
     <div class="ref-description">
     <p><code>date_format()</code> formats a date (Date) or date-time (POSIXct/POSIXlt) using
 a <code>format</code> string.</p>
+<p>There are separate help pages for formatting dates and date-times:</p><ul>
+<li><p><a href='date-formatting.html'>dates (Date)</a></p></li>
+<li><p><a href='posixt-formatting.html'>date-times (POSIXct/POSIXlt)</a></p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>date_format</span><span class='op'>(</span>
-  <span class='va'>x</span>,
-  <span class='va'>...</span>,
-  format <span class='op'>=</span> <span class='cn'>NULL</span>,
-  locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='op'>)</span>,
-  abbreviate_zone <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>date_format</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -183,122 +187,7 @@ a <code>format</code> string.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p><code>[dots]</code></p>
-<p>Not used, but no error will be thrown if not empty to remain compatible
-with usage of the <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code> generic.</p></td>
-    </tr>
-    <tr>
-      <th>format</th>
-      <td><p><code>[character(1) / NULL]</code></p>
-<p>A format string. A combination of:</p>
-<p><strong>Year</strong></p><ul>
-<li><p><code>%C</code>: The year divided by 100 using floored division. If the result
-is a single decimal digit, it is prefixed with <code>0</code>.</p></li>
-<li><p><code>%y</code>: The last two decimal digits of the year. If the result is a single
-digit it is prefixed by <code>0</code>.</p></li>
-<li><p><code>%Y</code>: The year as a decimal number. If the result is less than four
-digits it is left-padded with <code>0</code> to four digits.</p></li>
-</ul>
-
-<p><strong>Month</strong></p><ul>
-<li><p><code>%b</code>, <code>%h</code>: The <code>locale</code>'s abbreviated month name.</p></li>
-<li><p><code>%B</code>: The <code>locale</code>'s full month name.</p></li>
-<li><p><code>%m</code>: The month as a decimal number. January is <code>01</code>. If the result is a
-single digit, it is prefixed with <code>0</code>.</p></li>
-</ul>
-
-<p><strong>Day</strong></p><ul>
-<li><p><code>%d</code>: The day of month as a decimal number. If the result is a single
-decimal digit, it is prefixed with <code>0</code>.</p></li>
-</ul>
-
-<p><strong>Day of the week</strong></p><ul>
-<li><p><code>%a</code>: The <code>locale</code>'s abbreviated weekday name.</p></li>
-<li><p><code>%A</code>: The <code>locale</code>'s full weekday name.</p></li>
-<li><p><code>%w</code>: The weekday as a decimal number (<code>0-6</code>), where Sunday is <code>0</code>.</p></li>
-</ul>
-
-<p><strong>ISO 8601 week-based year</strong></p><ul>
-<li><p><code>%g</code>: The last two decimal digits of the ISO week-based year. If the
-result is a single digit it is prefixed by <code>0</code>.</p></li>
-<li><p><code>%G</code>: The ISO week-based year as a decimal number. If the result is less
-than four digits it is left-padded with <code>0</code> to four digits.</p></li>
-<li><p><code>%V</code>: The ISO week-based week number as a decimal number. If the result
-is a single digit, it is prefixed with <code>0</code>.</p></li>
-<li><p><code>%u</code>: The ISO weekday as a decimal number (<code>1-7</code>), where Monday is <code>1</code>.</p></li>
-</ul>
-
-<p><strong>Week of the year</strong></p><ul>
-<li><p><code>%U</code>: The week number of the year as a decimal number. The first Sunday
-of the year is the first day of week <code>01</code>. Days of the same year prior to
-that are in week <code>00</code>. If the result is a single digit, it is prefixed with
-<code>0</code>.</p></li>
-<li><p><code>%W</code>: The week number of the year as a decimal number. The first Monday
-of the year is the first day of week <code>01</code>. Days of the same year prior to
-that are in week <code>00</code>. If the result is a single digit, it is prefixed with
-<code>0</code>.</p></li>
-</ul>
-
-<p><strong>Day of the year</strong></p><ul>
-<li><p><code>%j</code>: The day of the year as a decimal number. January 1 is <code>001</code>. If the
-result is less than three digits, it is left-padded with <code>0</code> to three
-digits.</p></li>
-</ul>
-
-<p><strong>Date</strong></p><ul>
-<li><p><code>%D</code>, <code>%x</code>: Equivalent to <code>%m/%d/%y</code>.</p></li>
-<li><p><code>%F</code>: Equivalent to <code>%Y-%m-%d</code>.</p></li>
-</ul>
-
-<p><strong>Time of day</strong></p><ul>
-<li><p><code>%H</code>: The hour (24-hour clock) as a decimal number. If the result is a
-single digit, it is prefixed with <code>0</code>.</p></li>
-<li><p><code>%I</code>: The hour (12-hour clock) as a decimal number. If the result is a
-single digit, it is prefixed with <code>0</code>.</p></li>
-<li><p><code>%M</code>: The minute as a decimal number. If the result is a single digit, it
-is prefixed with <code>0</code>.</p></li>
-<li><p><code>%S</code>: Seconds as a decimal number. Fractional seconds are printed at the
-precision of the input. The character for the decimal point is localized
-according to <code>locale</code>.</p></li>
-<li><p><code>%p</code>: The <code>locale</code>'s equivalent of the AM/PM designations associated with
-a 12-hour clock.</p></li>
-<li><p><code>%R</code>: Equivalent to <code>%H:%M</code>.</p></li>
-<li><p><code>%T</code>, <code>%X</code>: Equivalent to <code>%H:%M:%S</code>.</p></li>
-<li><p><code>%r</code>: Nearly equivalent to <code>%I:%M:%S %p</code>, but seconds are always printed
-at second precision.</p></li>
-</ul>
-
-<p><strong>Time zone</strong></p><ul>
-<li><p><code>%z</code>: The offset from UTC in the ISO 8601 format. For example <code>-0430</code>
-refers to 4 hours 30 minutes behind UTC. If the offset is zero, <code>+0000</code> is
-used. The modified command <code>%Ez</code> inserts a <code><a href='https://rdrr.io/r/base/Colon.html'>:</a></code> between the hour and
-minutes, like <code>-04:30</code>.</p></li>
-<li><p><code>%Z</code>: The full time zone name. If <code>abbreviate_zone</code> is <code>TRUE</code>, the time
-zone abbreviation.</p></li>
-</ul>
-
-<p><strong>Miscellaneous</strong></p><ul>
-<li><p><code>%c</code>: A date and time representation. Similar to, but not exactly the
-same as, <code>%a %b %d %H:%M:%S %Y</code>.</p></li>
-<li><p><code><a href='https://rdrr.io/r/base/Arithmetic.html'>%%</a></code>: A <code>%</code> character.</p></li>
-<li><p><code>%n</code>: A newline character.</p></li>
-<li><p><code>%t</code>: A horizontal-tab character.</p></li>
-</ul>
-
-<p>If <code>NULL</code>, a default format of <code>"%Y-%m-%d %H:%M:%S%Ez[%Z]"</code> is used.
-This maximizes the chance for constructing a string that can be
-reproducibly parsed into a valid zoned-time.</p></td>
-    </tr>
-    <tr>
-      <th>locale</th>
-      <td><p><code>[clock_locale]</code></p>
-<p>A locale object created from <code><a href='clock_locale.html'>clock_locale()</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>abbreviate_zone</th>
-      <td><p><code>[logical(1)]</code></p>
-<p>If <code>TRUE</code>, <code>%Z</code> returns an abbreviated time zone name.</p>
-<p>If <code>FALSE</code>, <code>%Z</code> returns the full time zone name.</p></td>
+      <td><p>These dots are for future extensions and must be empty.</p></td>
     </tr>
     </table>
 
@@ -307,23 +196,11 @@ reproducibly parsed into a valid zoned-time.</p></td>
     <p>A character vector of the formatted input.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='co'># See method specific documentation for more examples</span>
 
-<span class='co'># Date objects are assumed to be UTC</span>
-<span class='fu'>date_format</span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='st'>"%Y-%m-%d %z %Z"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2019-01-01 +0000 UTC"</div><div class='input'>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1970-04-26 01:30:00"</span>, <span class='st'>"1970-04-26 03:30:00"</span><span class='op'>)</span>,
-  tz <span class='op'>=</span> <span class='st'>"America/New_York"</span>
-<span class='op'>)</span>
-
-<span class='fu'>date_format</span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='st'>"%B %d, %Y %H:%M:%S"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "April 26, 1970 01:30:00" "April 26, 1970 03:30:00"</div><div class='input'>
-<span class='co'># By default, `%Z` uses the full zone name, but you can switch to the</span>
-<span class='co'># abbreviated name</span>
-<span class='fu'>date_format</span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='st'>"%z %Z"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "-0500 America/New_York" "-0400 America/New_York"</div><div class='input'><span class='fu'>date_format</span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='st'>"%z %Z"</span>, abbreviate_zone <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "-0500 EST" "-0400 EDT"</div></pre>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span><span class='op'>)</span>
+<span class='fu'>date_format</span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='st'>"year: %Y, month: %m, day: %d"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "year: 2019, month: 01, day: 01"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

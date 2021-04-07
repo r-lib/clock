@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Formatting: zoned-time — format.clock_zoned_time • clock</title>
+<title>Formatting: date — date-formatting • clock</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,13 +46,10 @@
 
 
 
-<meta property="og:title" content="Formatting: zoned-time — format.clock_zoned_time" />
-<meta property="og:description" content="This is a zoned-time method for the format() generic.
-This function allows you to format a zoned-time using a flexible format
-string.
-If format is NULL, a default format of &quot;%Y-%m-%d %H:%M:%S%Ez[%Z]&quot; is
-used. This maximizes the chance for constructing a string that can be
-reproducibly parsed into a valid zoned-time." />
+<meta property="og:title" content="Formatting: date — date-formatting" />
+<meta property="og:description" content="This is a Date method for the date_format() generic.
+date_format() formats a date (Date) using a format string.
+If format is NULL, a default format of &quot;%Y-%m-%d&quot; is used." />
 <meta property="og:image" content="https://clock.r-lib.org/logo.png" />
 
 
@@ -159,36 +156,31 @@ reproducibly parsed into a valid zoned-time." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Formatting: zoned-time</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/clock/blob/master/R/zoned-time.R'><code>R/zoned-time.R</code></a></small>
-    <div class="hidden name"><code>format.clock_zoned_time.Rd</code></div>
+    <h1>Formatting: date</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/clock/blob/master/R/date.R'><code>R/date.R</code></a></small>
+    <div class="hidden name"><code>date-formatting.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This is a zoned-time method for the <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code> generic.</p>
-<p>This function allows you to format a zoned-time using a flexible <code>format</code>
-string.</p>
-<p>If <code>format</code> is <code>NULL</code>, a default format of <code>"%Y-%m-%d %H:%M:%S%Ez[%Z]"</code> is
-used. This maximizes the chance for constructing a string that can be
-reproducibly parsed into a valid zoned-time.</p>
+    <p>This is a Date method for the <code><a href='date_format.html'>date_format()</a></code> generic.</p>
+<p><code><a href='date_format.html'>date_format()</a></code> formats a date (Date) using a <code>format</code> string.</p>
+<p>If <code>format</code> is <code>NULL</code>, a default format of <code>"%Y-%m-%d"</code> is used.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for clock_zoned_time</span>
-<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, format <span class='op'>=</span> <span class='cn'>NULL</span>, locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='op'>)</span>, abbreviate_zone <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='co'># S3 method for Date</span>
+<span class='fu'><a href='date_format.html'>date_format</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, format <span class='op'>=</span> <span class='cn'>NULL</span>, locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><code>[clock_zoned_time]</code></p>
-<p>A zoned-time.</p></td>
+      <td><p><code>[Date]</code></p>
+<p>A date vector.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p><code>[dots]</code></p>
-<p>Not used, but no error will be thrown if not empty to remain compatible
-with usage of the <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code> generic.</p></td>
+      <td><p>These dots are for future extensions and must be empty.</p></td>
     </tr>
     <tr>
       <th>format</th>
@@ -295,26 +287,29 @@ same as, <code>%a %b %d %H:%M:%S %Y</code>.</p></li>
       <td><p><code>[clock_locale]</code></p>
 <p>A locale object created from <code><a href='clock_locale.html'>clock_locale()</a></code>.</p></td>
     </tr>
-    <tr>
-      <th>abbreviate_zone</th>
-      <td><p><code>[logical(1)]</code></p>
-<p>If <code>TRUE</code>, <code>%Z</code> returns an abbreviated time zone name.</p>
-<p>If <code>FALSE</code>, <code>%Z</code> returns the full time zone name.</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A character vector of the formatted input.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Because a Date is considered to be a <em>naive</em> type in clock, meaning that
+it currently has no implied time zone, using the <code>%z</code> or <code>%Z</code> format commands
+is not allowed and will result in <code>NA</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2019-01-01 00:00:00-05:00[America/New_York]"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='st'>"%B %d, %Y"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "January 01, 2019"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='st'>"%B %d, %Y"</span>, locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='st'>"fr"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "janvier 01, 2019"</div></pre>
+<span class='co'># Default</span>
+<span class='fu'><a href='date_format.html'>date_format</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2019-01-01"</div><div class='input'>
+<span class='fu'><a href='date_format.html'>date_format</a></span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='st'>"year: %Y, month: %m, day: %d"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "year: 2019, month: 01, day: 01"</div><div class='input'>
+<span class='co'># With different locales</span>
+<span class='fu'><a href='date_format.html'>date_format</a></span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='st'>"%A, %B %d, %Y"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "Tuesday, January 01, 2019"</div><div class='input'><span class='fu'><a href='date_format.html'>date_format</a></span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='st'>"%A, %B %d, %Y"</span>, locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='st'>"fr"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "mardi, janvier 01, 2019"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
