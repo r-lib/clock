@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • clock</title>
+<title>Current date and date-time — date-today • clock</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,7 +46,14 @@
 
 
 
-<meta property="og:title" content="Changelog" />
+<meta property="og:title" content="Current date and date-time — date-today" />
+<meta property="og:description" content="
+
+date_today() returns the current date in the specified zone as a Date.
+date_now() returns the current date-time in the specified zone as a
+POSIXct.
+
+" />
 <meta property="og:image" content="https://clock.r-lib.org/logo.png" />
 
 
@@ -66,7 +73,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -153,54 +160,66 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/r-lib/clock/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+    <h1>Current date and date-time</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/clock/blob/master/R/date.R'><code>R/date.R</code></a>, <a href='https://github.com/r-lib/clock/blob/master/R/posixt.R'><code>R/posixt.R</code></a></small>
+    <div class="hidden name"><code>date-today.Rd</code></div>
     </div>
 
-    <div id="clock-development-version" class="section level1">
-<h1 class="page-header" data-toc-text="development version">
-<a href="#clock-development-version" class="anchor"></a>clock (development version)<small> Unreleased </small>
-</h1>
+    <div class="ref-description">
+    
 <ul>
-<li>
-<p>clock now interprets R’s Date class as <em>naive-time</em> rather than <em>sys-time</em>. This means that it no longer assumes that Date has an implied time zone of UTC (<a href='https://github.com/r-lib/clock/issues/203'>#203</a>). This generally aligns better with how users think Date should work. This resulted in the following changes:</p>
-<ul>
-<li><p><code><a href="../reference/date-zone.html">date_zone()</a></code> now errors with Date input, as naive-times do not have a specified time zone.</p></li>
-<li><p><code><a href="../reference/date_parse.html">date_parse()</a></code> now parses into a naive-time, rather than a sys-time, before converting to Date. This means that <code>%z</code> and <code>%Z</code> are now completely ignored.</p></li>
-<li><p>The Date method for <code><a href="../reference/date_format.html">date_format()</a></code> now uses the naive-time <code><a href="https://rdrr.io/r/base/format.html">format()</a></code> method rather than the zoned-time one. This means that <code>%z</code> and <code>%Z</code> are no longer valid format commands.</p></li>
-<li><p>The zoned-time method for <code><a href="https://rdrr.io/r/base/as.Date.html">as.Date()</a></code> now converts to Date through an intermediate naive-time, rather than a sys-time. This means that the printed date will always be retained, which is generally what is expected.</p></li>
-<li><p>The Date method for <code><a href="../reference/as_zoned_time.html">as_zoned_time()</a></code> now converts to zoned-time through an intermediate naive-time, rather than a sys-time. This means that the printed date will always attempt to be retained, if possible, which is generally what is expected. In the rare case that daylight saving time makes a direct conversion impossible, <code>nonexistent</code> and <code>ambiguous</code> can be used to resolve any issues.</p></li>
+<li><p><code>date_today()</code> returns the current date in the specified <code>zone</code> as a Date.</p></li>
+<li><p><code>date_now()</code> returns the current date-time in the specified <code>zone</code> as a
+POSIXct.</p></li>
 </ul>
-</li>
-<li>
-<p>Added two new convenient helpers (<a href='https://github.com/r-lib/clock/issues/197'>#197</a>):</p>
-<ul>
-<li><p><code><a href="../reference/date-today.html">date_today()</a></code> for getting the current date (Date)</p></li>
-<li><p><code><a href="../reference/date-today.html">date_now()</a></code> for getting the current date-time (POSIXct)</p></li>
-</ul>
-</li>
-<li><p>Fixed a bug where converting from a time point to a Date or POSIXct could round incorrectly (<a href='https://github.com/r-lib/clock/issues/205'>#205</a>).</p></li>
-<li><p>Errors resulting from invalid dates or nonexistent/ambiguous times are now a little nicer to read through the usage of an info bullet (<a href='https://github.com/r-lib/clock/issues/200'>#200</a>).</p></li>
-<li><p>Fixed a Solaris ambiguous behavior issue from calling <code>pow(int, int)</code>.</p></li>
-<li><p>Linking against cpp11 0.2.7 is now required to fix a rare memory leak issue.</p></li>
-</ul>
-</div>
-    <div id="clock-010" class="section level1">
-<h1 class="page-header" data-toc-text="0.1.0">
-<a href="#clock-010" class="anchor"></a>clock 0.1.0<small> 2021-03-31 </small>
-</h1>
-<ul>
-<li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
-</ul>
-</div>
-  </div>
 
+    </div>
+
+    <pre class="usage"><span class='fu'>date_today</span><span class='op'>(</span><span class='va'>zone</span><span class='op'>)</span>
+
+<span class='fu'>date_now</span><span class='op'>(</span><span class='va'>zone</span><span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>zone</th>
+      <td><p><code>[character(1)]</code></p>
+<p>A time zone to get the current time for.</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    
+<ul>
+<li><p><code>date_today()</code> a single Date.</p></li>
+<li><p><code>date_now()</code> a single POSIXct.</p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>clock assumes that Date is a <em>naive</em> type, like naive-time. This means that
+<code>date_today()</code> first looks up the current date-time in the specified <code>zone</code>,
+then converts that to a Date, retaining the printed time while dropping any
+information about that time zone.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># Current date in the local time zone</span>
+<span class='fu'>date_today</span><span class='op'>(</span><span class='st'>""</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2021-04-07"</div><div class='input'>
+<span class='co'># Current date in a specified time zone</span>
+<span class='fu'>date_today</span><span class='op'>(</span><span class='st'>"Europe/London"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2021-04-07"</div><div class='input'>
+<span class='co'># Current date-time in that same time zone</span>
+<span class='fu'>date_now</span><span class='op'>(</span><span class='st'>"Europe/London"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2021-04-07 21:40:44 BST"</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
-
 </div>
 
 
