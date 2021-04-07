@@ -172,6 +172,7 @@
 <li><p>The Date method for <code><a href="../reference/as_zoned_time.html">as_zoned_time()</a></code> now converts to zoned-time through an intermediate naive-time, rather than a sys-time. This means that the printed date will always attempt to be retained, if possible, which is generally what is expected. In the rare case that daylight saving time makes a direct conversion impossible, <code>nonexistent</code> and <code>ambiguous</code> can be used to resolve any issues.</p></li>
 </ul>
 </li>
+<li><p>Fixed a bug where converting from a time point to a Date or POSIXct could round incorrectly (<a href='https://github.com/r-lib/clock/issues/205'>#205</a>).</p></li>
 <li><p>Errors resulting from invalid dates or nonexistent/ambiguous times are now a little nicer to read through the usage of an info bullet (<a href='https://github.com/r-lib/clock/issues/200'>#200</a>).</p></li>
 <li><p>Fixed a Solaris ambiguous behavior issue from calling <code>pow(int, int)</code>.</p></li>
 <li><p>Linking against cpp11 0.2.7 is now required to fix a rare memory leak issue.</p></li>
