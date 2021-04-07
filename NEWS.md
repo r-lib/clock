@@ -38,6 +38,9 @@
 
 * Errors resulting from invalid dates or nonexistent/ambiguous times are now
   a little nicer to read through the usage of an info bullet (#200).
+  
+* Formatting a naive-time with `%Z` or `%z` now warns that there were
+  format failures (#204).
 
 * Fixed a Solaris ambiguous behavior issue from calling `pow(int, int)`.
 

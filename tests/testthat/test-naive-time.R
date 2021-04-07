@@ -273,6 +273,27 @@ test_that("%Z is completely ignored", {
 })
 
 # ------------------------------------------------------------------------------
+# format()
+
+test_that("`%Z` generates format warnings (#204)", {
+  x <- naive_seconds(0)
+
+  expect_warning(format(x, format = "%Z"), class = "clock_warning_format_failures")
+
+  expect_snapshot(format(x, format = "%Z"))
+  expect_snapshot(format(c(x, x), format = "%Z"))
+})
+
+test_that("`%z` generates format warnings (#204)", {
+  x <- naive_seconds(0)
+
+  expect_warning(format(x, format = "%z"), class = "clock_warning_format_failures")
+
+  expect_snapshot(format(x, format = "%z"))
+  expect_snapshot(format(c(x, x), format = "%z"))
+})
+
+# ------------------------------------------------------------------------------
 # as_zoned_time()
 
 test_that("can convert non-ambiguous/nonexistent times to zoned time", {
