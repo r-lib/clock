@@ -81,11 +81,11 @@
     T: 23:59:59
     X: 23:59:59
     r: 11:59:59 PM
+    c: Mon Dec 31 23:59:59 2018
+    %: %
     z: -0500
     Ez: -05:00
     Z: America/New_York
-    c: Mon Dec 31 23:59:59 2018
-    %: %
 
 ---
 
@@ -119,11 +119,11 @@
     T: 23:59:59
     X: 23:59:59
     r: 11:59:59 PM
+    c: lun. déc. 31 23:59:59 2018
+    %: %
     z: -0500
     Ez: -05:00
     Z: America/New_York
-    c: lun. déc. 31 23:59:59 2018
-    %: %
 
 # can resolve ambiguity and nonexistent times
 

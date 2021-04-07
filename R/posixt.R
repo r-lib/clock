@@ -848,7 +848,45 @@ date_month_factor.POSIXt <- function(x,
 
 # ------------------------------------------------------------------------------
 
+#' Formatting: date-time
+#'
+#' @description
+#' This is a POSIXct method for the [date_format()] generic.
+#'
+#' `date_format()` formats a date-time (POSIXct) using a `format` string.
+#'
+#' If `format` is `NULL`, a default format of `"%Y-%m-%d %H:%M:%S%Ez[%Z]"` is
+#' used. This maximizes the chance for constructing a string that can be
+#' reproducibly parsed into a valid date-time using
+#' [date_time_parse_complete()].
+#'
+#' @inheritParams ellipsis::dots_empty
+#' @inheritParams format.clock_zoned_time
+#'
+#' @param x `[POSIXct / POSIXlt]`
+#'
+#'   A date-time vector.
+#'
+#' @return A character vector of the formatted input.
+#'
+#' @name posixt-formatting
+#'
 #' @export
+#' @examples
+#' x <- date_time_parse(
+#'   c("1970-04-26 01:30:00", "1970-04-26 03:30:00"),
+#'   zone = "America/New_York"
+#' )
+#'
+#' # Default
+#' date_format(x)
+#'
+#' date_format(x, format = "%B %d, %Y %H:%M:%S")
+#'
+#' # By default, `%Z` uses the full zone name, but you can switch to the
+#' # abbreviated name
+#' date_format(x, format = "%z %Z")
+#' date_format(x, format = "%z %Z", abbreviate_zone = TRUE)
 date_format.POSIXt <- function(x,
                                ...,
                                format = NULL,

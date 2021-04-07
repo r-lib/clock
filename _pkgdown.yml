@@ -191,6 +191,8 @@ reference:
   contents:
   - date-group
   - posixt-group
+  - date-formatting
+  - posixt-formatting
   - date-rounding
   - posixt-rounding
   - date-shifting

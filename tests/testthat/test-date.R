@@ -212,7 +212,7 @@ test_that("can convert to a month factor", {
 
 test_that("can format dates", {
   x <- as.Date("2018-12-31")
-  format <- test_all_formats()
+  format <- test_all_formats(zone = FALSE)
 
   expect_snapshot_output(
     cat(date_format(x, format = format))
@@ -220,6 +220,13 @@ test_that("can format dates", {
   expect_snapshot_output(
     cat(date_format(x, format = format, locale = clock_locale("fr")))
   )
+})
+
+test_that("formatting Dates with `%z` or `%Z` returns NA", {
+  x <- as.Date("2018-01-01")
+
+  expect_identical(date_format(x, format = "%z"), NA_character_)
+  expect_identical(date_format(x, format = "%Z"), NA_character_)
 })
 
 # ------------------------------------------------------------------------------

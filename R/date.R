@@ -809,10 +809,17 @@ date_month_factor.Date <- function(x,
 
 #' Formatting: date and date-time
 #'
+#' @description
 #' `date_format()` formats a date (Date) or date-time (POSIXct/POSIXlt) using
 #' a `format` string.
 #'
-#' @inheritParams format.clock_zoned_time
+#' There are separate help pages for formatting dates and date-times:
+#'
+#' - [dates (Date)][date-formatting]
+#'
+#' - [date-times (POSIXct/POSIXlt)][posixt-formatting]
+#'
+#' @inheritParams ellipsis::dots_empty
 #'
 #' @param x `[Date / POSIXct / POSIXlt]`
 #'
@@ -822,39 +829,58 @@ date_month_factor.Date <- function(x,
 #'
 #' @export
 #' @examples
+#' # See method specific documentation for more examples
+#'
 #' x <- as.Date("2019-01-01")
-#'
-#' # Date objects are assumed to be UTC
-#' date_format(x, format = "%Y-%m-%d %z %Z")
-#'
-#' x <- as.POSIXct(
-#'   c("1970-04-26 01:30:00", "1970-04-26 03:30:00"),
-#'   tz = "America/New_York"
-#' )
-#'
-#' date_format(x, format = "%B %d, %Y %H:%M:%S")
-#'
-#' # By default, `%Z` uses the full zone name, but you can switch to the
-#' # abbreviated name
-#' date_format(x, format = "%z %Z")
-#' date_format(x, format = "%z %Z", abbreviate_zone = TRUE)
-date_format <- function(x,
-                        ...,
-                        format = NULL,
-                        locale = clock_locale(),
-                        abbreviate_zone = FALSE) {
+#' date_format(x, format = "year: %Y, month: %m, day: %d")
+date_format <- function(x, ...) {
   UseMethod("date_format")
 }
 
+#' Formatting: date
+#'
+#' @description
+#' This is a Date method for the [date_format()] generic.
+#'
+#' `date_format()` formats a date (Date) using a `format` string.
+#'
+#' If `format` is `NULL`, a default format of `"%Y-%m-%d"` is used.
+#'
+#' @details
+#' Because a Date is considered to be a _naive_ type in clock, meaning that
+#' is currently has no implied time zone, using the `%z` or `%Z` format commands
+#' are not allowed and will result in `NA`.
+#'
+#' @inheritParams ellipsis::dots_empty
+#' @inheritParams format.clock_zoned_time
+#'
+#' @param x `[Date]`
+#'
+#'   A date vector.
+#'
+#' @return A character vector of the formatted input.
+#'
+#' @name date-formatting
+#'
 #' @export
+#' @examples
+#' x <- as.Date("2019-01-01")
+#'
+#' # Default
+#' date_format(x)
+#'
+#' date_format(x, format = "year: %Y, month: %m, day: %d")
+#'
+#' # With different locales
+#' date_format(x, format = "%A, %B %d, %Y")
+#' date_format(x, format = "%A, %B %d, %Y", locale = clock_locale("fr"))
 date_format.Date <- function(x,
                              ...,
                              format = NULL,
-                             locale = clock_locale(),
-                             abbreviate_zone = FALSE) {
+                             locale = clock_locale()) {
   check_dots_empty()
-  x <- as_zoned_time(x)
-  format(x, format = format, locale = locale, abbreviate_zone = abbreviate_zone)
+  x <- as_naive_time(x)
+  format(x, format = format, locale = locale)
 }
 
 # ------------------------------------------------------------------------------
