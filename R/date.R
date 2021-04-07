@@ -113,7 +113,7 @@ as.Date.clock_calendar <- function(x, ...) {
 #' @export
 as.Date.clock_time_point <- function(x, ...) {
   names <- clock_rcrd_names(x)
-  x <- time_point_cast(x, "day")
+  x <- time_point_floor(x, "day")
   x <- field_ticks(x)
   x <- as.double(x)
   names(x) <- names
