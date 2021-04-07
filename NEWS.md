@@ -27,6 +27,12 @@
     a direct conversion impossible, `nonexistent` and `ambiguous` can be used
     to resolve any issues.
 
+* Added two new convenient helpers (#197):
+
+  * `date_today()` for getting the current date (Date)
+  
+  * `date_now()` for getting the current date-time (POSIXct)
+
 * Fixed a bug where converting from a time point to a Date or POSIXct could
   round incorrectly (#205).
 

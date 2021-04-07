@@ -312,6 +312,15 @@ test_that("can handle invalid dates", {
 })
 
 # ------------------------------------------------------------------------------
+# date_today()
+
+test_that("can get the current date", {
+  x <- date_today("America/New_York")
+  expect_length(x, 1)
+  expect_s3_class(x, "Date")
+})
+
+# ------------------------------------------------------------------------------
 # date_zone()
 
 test_that("cannot get the zone of a Date", {

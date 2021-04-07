@@ -13,6 +13,7 @@ reference:
   contents:
   - date_build
   - date_time_build
+  - date-today
   - date_group
   - date-and-date-time-rounding
   - date-and-date-time-shifting

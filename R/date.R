@@ -1086,3 +1086,45 @@ date_build <- function(year, month = 1L, day = 1L, ..., invalid = NULL) {
   x <- invalid_resolve(x, invalid = invalid)
   as.Date(x)
 }
+
+# ------------------------------------------------------------------------------
+
+#' Current date and date-time
+#'
+#' @description
+#' - `date_today()` returns the current date in the specified `zone` as a Date.
+#'
+#' - `date_now()` returns the current date-time in the specified `zone` as a
+#' POSIXct.
+#'
+#' @details
+#' clock assumes that Date is a _naive_ type, like naive-time. This means that
+#' `date_today()` first looks up the current date-time in the specified `zone`,
+#' then converts that to a Date, retaining the printed time while dropping any
+#' information about that time zone.
+#'
+#' @inheritParams zoned_time_now
+#'
+#' @return
+#' - `date_today()` a single Date.
+#'
+#' - `date_now()` a single POSIXct.
+#'
+#' @name date-today
+#'
+#' @examples
+#' # Current date in the local time zone
+#' date_today("")
+#'
+#' # Current date in a specified time zone
+#' date_today("Europe/London")
+#'
+#' # Current date-time in that same time zone
+#' date_now("Europe/London")
+NULL
+
+#' @rdname date-today
+#' @export
+date_today <- function(zone) {
+  as.Date(zoned_time_now(zone))
+}
