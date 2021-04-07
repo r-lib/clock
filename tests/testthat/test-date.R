@@ -12,6 +12,15 @@ test_that("conversion from zoned-time uses naive-time as an intermediate", {
   expect_identical(as.Date(x), as.Date("2019-12-31"))
 })
 
+test_that("casting to Date floors components more precise than days (#205)", {
+  x <- naive_time_parse("1969-01-01 13", precision = "hour")
+
+  expect_identical(
+    as.Date(x),
+    date_build(1969, 1, 1)
+  )
+})
+
 # ------------------------------------------------------------------------------
 # as_sys_time()
 

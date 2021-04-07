@@ -27,6 +27,9 @@
     a direct conversion impossible, `nonexistent` and `ambiguous` can be used
     to resolve any issues.
 
+* Fixed a bug where converting from a time point to a Date or POSIXct could
+  round incorrectly (#205).
+
 * Errors resulting from invalid dates or nonexistent/ambiguous times are now
   a little nicer to read through the usage of an info bullet (#200).
 
