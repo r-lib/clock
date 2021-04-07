@@ -382,7 +382,7 @@ add_days.Date <- function(x, n, ...) {
 }
 add_date_duration_time_point <- function(x, n, add_fn, ...) {
   check_dots_empty()
-  x <- as_sys_time(x)
+  x <- as_naive_time(x)
   x <- add_fn(x, n)
   as.Date(x)
 }
