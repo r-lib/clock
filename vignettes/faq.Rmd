@@ -261,6 +261,50 @@ naive_time_parse(
 options(old)
 ```
 
+## What is the time zone of Date?
+
+In clock, R's native Date type is actually assumed to be _naive_, i.e. clock assumes that there is a yet-to-be-specified time zone, like with a naive-time. The other possibility is to assume that Date is UTC (like sys-time), but it is often more intuitive for Dates to be naive when manipulating them and converting them to zoned-time or POSIXct.
+
+R does not consistently treat Dates as naive or UTC. Instead it switches between them, depending on the function.
+
+For example, the Date method of `as.POSIXct()` does not expose a `tz` argument. Instead, it assumes that Date is UTC, and that the result should be shown in local time (as defined by `Sys.timezone()`). This often results in confusing behavior, such as:
+
+```{r}
+x <- as.Date("2019-01-01")
+x
+
+withr::with_timezone("America/New_York", {
+  print(as.POSIXct(x))
+})
+```
+
+With clock, converting to zoned-time from Date will always assume that Date is naive, which will keep the printed date (if possible) and show it in the `zone` you specified.
+
+```{r}
+as_zoned_time(x, "UTC")
+
+as_zoned_time(x, "America/New_York")
+
+as_zoned_time(x, "Europe/London")
+```
+
+On the other hand, the POSIXct method for `as.Date()` treats Date as a naive type. This is probably what you want, and this example just shows the inconsistency. It is a bit hard to see this, because the `tz` argument of the method defaults to `"UTC"`, but if you set the `tz` argument to the zone of your input, it becomes clear:
+
+```{r}
+x <- as.POSIXct("2019-01-01 23:00:00", "America/New_York")
+
+as.Date(x, tz = date_zone(x))
+```
+
+If this assumed that Date was UTC, then it would have resulted in something like:
+
+```{r}
+utc <- date_set_zone(x, "UTC")
+utc
+
+as.Date(utc, tz = date_zone(utc))
+```
+
 ## Why doesn't this work with data.table?
 
 While the entire high-level API for R's native date (Date) and date-time (POSIXct) types will work fine with data.table, if you try to put any of the major clock types into a data.table, you will probably see this error message:
