@@ -185,12 +185,8 @@ A Date.
 The default \code{format} used is \code{"\%Y-\%m-\%d"}.
 }
 \details{
-If the \verb{\%z} command is used, then the date-time string is interpreted as
-a naive-time, which is then shifted by the UTC offset found in \verb{\%z}. The
-returned Date can then validly be interpreted as UTC. Remember that in R,
-Date objects are assumed to be UTC, similar to a sys-time.
-
-\emph{\code{date_parse()} ignores the \verb{\%Z} command.}
+\emph{\code{date_parse()} ignores both the \verb{\%z} and \verb{\%Z} commands,} as clock treats
+Date as a \emph{naive} type, with a yet-to-be-specified time zone.
 }
 \examples{
 date_parse("2020-01-01")

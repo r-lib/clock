@@ -893,12 +893,8 @@ date_format.Date <- function(x,
 #' The default `format` used is `"%Y-%m-%d"`.
 #'
 #' @details
-#' If the `%z` command is used, then the date-time string is interpreted as
-#' a naive-time, which is then shifted by the UTC offset found in `%z`. The
-#' returned Date can then validly be interpreted as UTC. Remember that in R,
-#' Date objects are assumed to be UTC, similar to a sys-time.
-#'
-#' _`date_parse()` ignores the `%Z` command._
+#' _`date_parse()` ignores both the `%z` and `%Z` commands,_ as clock treats
+#' Date as a _naive_ type, with a yet-to-be-specified time zone.
 #'
 #' @inheritParams zoned-parsing
 #'
@@ -924,7 +920,7 @@ date_format.Date <- function(x,
 #' # the ISO year-week-day format
 #' date_parse("2020-W01-2", format = "%G-W%V-%u")
 date_parse <- function(x, ..., format = NULL, locale = clock_locale()) {
-  x <- sys_time_parse(x, ..., format = format, precision = "day", locale = locale)
+  x <- naive_time_parse(x, ..., format = format, precision = "day", locale = locale)
   as.Date(x)
 }
 

@@ -232,9 +232,26 @@ test_that("formatting Dates with `%z` or `%Z` returns NA", {
 # ------------------------------------------------------------------------------
 # date_parse()
 
-test_that("parsing with `%z` can shift the returned Date", {
+test_that("`%z` and `%Z` commands are ignored", {
   expect_identical(
-    date_parse("2019-12-31 23:59:59-0500", format = "%Y-%m-%d %H:%M:%S%z"),
+    date_parse("2019-12-31 11:59:59-0500", format = "%Y-%m-%d %H:%M:%S%z"),
+    as.Date("2019-12-31")
+  )
+  expect_identical(
+    date_parse("2019-12-31 11:59:59[America/New_York]", format = "%Y-%m-%d %H:%M:%S[%Z]"),
+    as.Date("2019-12-31")
+  )
+})
+
+# TODO: We probably don't want this:
+# https://github.com/HowardHinnant/date/issues/657
+test_that("parsing into a less precise time point rounds rather than floors", {
+  expect_identical(
+    date_parse("2019-12-31 11:59:59", format = "%Y-%m-%d %H:%M:%S"),
+    as.Date("2019-12-31")
+  )
+  expect_identical(
+    date_parse("2019-12-31 12:00:00", format = "%Y-%m-%d %H:%M:%S"),
     as.Date("2020-01-01")
   )
 })
