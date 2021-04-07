@@ -122,7 +122,7 @@ as.Date.clock_time_point <- function(x, ...) {
 
 #' @export
 as.Date.clock_zoned_time <- function(x, ...) {
-  as.Date(as_sys_time(x))
+  as.Date(as_naive_time(x))
 }
 
 # ------------------------------------------------------------------------------

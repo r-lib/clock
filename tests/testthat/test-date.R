@@ -5,6 +5,13 @@ test_that("invalid dates must be resolved when converting to a Date", {
   expect_snapshot_error(as.Date(year_month_day(2019, 2, 31)))
 })
 
+test_that("conversion from zoned-time uses naive-time as an intermediate", {
+  x <- as_naive_time(year_month_day(2019, 12, 31, 23, 30, 00))
+  x <- as_zoned_time(x, "America/New_York")
+
+  expect_identical(as.Date(x), as.Date("2019-12-31"))
+})
+
 # ------------------------------------------------------------------------------
 # as_sys_time()
 
