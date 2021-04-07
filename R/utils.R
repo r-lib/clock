@@ -208,7 +208,7 @@ warn_clock <- function(message, class = character()) {
 # Thrown from C++
 warn_clock_parse_failures <- function(n, first) {
   if (n == 0) {
-    abort("Internal error: warning thrown with zero parse failures.")
+    abort("Internal error: warning thrown with zero failures.")
   } else if (n == 1) {
     message <- paste0(
       "Failed to parse 1 string at location ", first, ". ",
@@ -222,6 +222,25 @@ warn_clock_parse_failures <- function(n, first) {
   }
 
   warn_clock(message, "clock_warning_parse_failures")
+}
+
+# Thrown from C++
+warn_clock_format_failures <- function(n, first) {
+  if (n == 0) {
+    abort("Internal error: warning thrown with zero failures.")
+  } else if (n == 1) {
+    message <- paste0(
+      "Failed to format 1 string at location ", first, ". ",
+      "Returning `NA` at that location."
+    )
+  } else {
+    message <- paste0(
+      "Failed to format ", n, " strings, beginning at location ", first, ". ",
+      "Returning `NA` at the locations where there were format failures."
+    )
+  }
+
+  warn_clock(message, "clock_warning_format_failures")
 }
 
 # ------------------------------------------------------------------------------

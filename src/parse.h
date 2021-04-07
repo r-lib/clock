@@ -81,60 +81,6 @@ read(std::basic_istream<CharT, Traits>& is,
 
 namespace rclock {
 
-class parse_failures {
-private:
-    r_ssize n_;
-    r_ssize first_;
-
-public:
-    CONSTCD11 parse_failures() NOEXCEPT;
-
-    void write(r_ssize i);
-    CONSTCD11 bool any_failures() const NOEXCEPT;
-    void warn() const;
-};
-
-CONSTCD11
-inline
-parse_failures::parse_failures() NOEXCEPT
-    : n_(0),
-      first_(0)
-    {}
-
-inline
-void
-parse_failures::write(r_ssize i) {
-    if (n_ == 0) {
-        first_ = i;
-    }
-    ++n_;
-}
-
-CONSTCD11
-inline
-bool
-parse_failures::any_failures() const NOEXCEPT {
-    return n_ > 0;
-}
-
-inline
-void
-parse_failures::warn() const {
-    cpp11::writable::integers n(1);
-    cpp11::writable::integers first(1);
-    n[0] = (int) n_;
-    first[0] = (int) first_ + 1;
-    auto r_warn = cpp11::package("clock")["warn_clock_parse_failures"];
-    r_warn(n, first);
-}
-
-} // namespace rclock
-
-
-// -----------------------------------------------------------------------------
-
-namespace rclock {
-
 template <class CharT, class Traits, class Duration, class Alloc = std::allocator<CharT>>
 std::basic_istream<CharT, Traits>&
 from_stream(std::basic_istream<CharT, Traits>& is,
