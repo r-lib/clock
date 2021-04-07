@@ -26,6 +26,42 @@
       <time_point<naive><second>[1]>
       [1] NA
 
+# `%Z` generates format warnings (#204)
+
+    Code
+      format(x, format = "%Z")
+    Warning <clock_warning_format_failures>
+      Failed to format 1 string at location 1. Returning `NA` at that location.
+    Output
+      [1] NA
+
+---
+
+    Code
+      format(c(x, x), format = "%Z")
+    Warning <clock_warning_format_failures>
+      Failed to format 2 strings, beginning at location 1. Returning `NA` at the locations where there were format failures.
+    Output
+      [1] NA NA
+
+# `%z` generates format warnings (#204)
+
+    Code
+      format(x, format = "%z")
+    Warning <clock_warning_format_failures>
+      Failed to format 1 string at location 1. Returning `NA` at that location.
+    Output
+      [1] NA
+
+---
+
+    Code
+      format(c(x, x), format = "%z")
+    Warning <clock_warning_format_failures>
+      Failed to format 2 strings, beginning at location 1. Returning `NA` at the locations where there were format failures.
+    Output
+      [1] NA NA
+
 # can resolve ambiguous issues - character
 
     Ambiguous time due to daylight saving time at location 1.

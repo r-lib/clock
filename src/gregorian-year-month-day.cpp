@@ -5,6 +5,7 @@
 #include "enums.h"
 #include "get.h"
 #include "parse.h"
+#include "failure.h"
 #include "locale.h"
 #include "rcrd.h"
 
@@ -829,7 +830,7 @@ year_month_day_from_stream(std::istringstream& stream,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
-                           rclock::parse_failures& failures,
+                           rclock::failures& fail,
                            Calendar& out) {
   using Duration = typename Calendar::duration;
   const r_ssize size = fmts.size();
@@ -863,7 +864,7 @@ year_month_day_from_stream(std::istringstream& stream,
     }
   }
 
-  failures.write(i);
+  fail.write(i);
   out.assign_na(i);
 }
 
@@ -877,7 +878,7 @@ year_month_day_from_stream(std::istringstream& stream,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
-                           rclock::parse_failures& failures,
+                           rclock::failures& fail,
                            rclock::gregorian::y& out) {
   const r_ssize size = fmts.size();
 
@@ -904,7 +905,7 @@ year_month_day_from_stream(std::istringstream& stream,
     }
   }
 
-  failures.write(i);
+  fail.write(i);
   out.assign_na(i);
 }
 
@@ -918,7 +919,7 @@ year_month_day_from_stream(std::istringstream& stream,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
-                           rclock::parse_failures& failures,
+                           rclock::failures& fail,
                            rclock::gregorian::ym& out) {
   const r_ssize size = fmts.size();
 
@@ -945,7 +946,7 @@ year_month_day_from_stream(std::istringstream& stream,
     }
   }
 
-  failures.write(i);
+  fail.write(i);
   out.assign_na(i);
 }
 
@@ -959,7 +960,7 @@ year_month_day_from_stream(std::istringstream& stream,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
-                           rclock::parse_failures& failures,
+                           rclock::failures& fail,
                            rclock::gregorian::ymd& out) {
   const r_ssize size = fmts.size();
 
@@ -986,7 +987,7 @@ year_month_day_from_stream(std::istringstream& stream,
     }
   }
 
-  failures.write(i);
+  fail.write(i);
   out.assign_na(i);
 }
 
@@ -1000,7 +1001,7 @@ year_month_day_from_stream(std::istringstream& stream,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
-                           rclock::parse_failures& failures,
+                           rclock::failures& fail,
                            rclock::gregorian::ymdh& out) {
   const r_ssize size = fmts.size();
 
@@ -1030,7 +1031,7 @@ year_month_day_from_stream(std::istringstream& stream,
     }
   }
 
-  failures.write(i);
+  fail.write(i);
   out.assign_na(i);
 }
 
@@ -1044,7 +1045,7 @@ year_month_day_from_stream(std::istringstream& stream,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
-                           rclock::parse_failures& failures,
+                           rclock::failures& fail,
                            rclock::gregorian::ymdhm& out) {
   const r_ssize size = fmts.size();
 
@@ -1075,7 +1076,7 @@ year_month_day_from_stream(std::istringstream& stream,
     }
   }
 
-  failures.write(i);
+  fail.write(i);
   out.assign_na(i);
 }
 
@@ -1089,7 +1090,7 @@ year_month_day_from_stream(std::istringstream& stream,
                            const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                            const char& decimal_mark,
                            const r_ssize& i,
-                           rclock::parse_failures& failures,
+                           rclock::failures& fail,
                            rclock::gregorian::ymdhms& out) {
   const r_ssize size = fmts.size();
 
@@ -1121,7 +1122,7 @@ year_month_day_from_stream(std::istringstream& stream,
     }
   }
 
-  failures.write(i);
+  fail.write(i);
   out.assign_na(i);
 }
 
@@ -1169,7 +1170,7 @@ year_month_day_parse_impl(const cpp11::strings& x,
     ampm_names
   );
 
-  rclock::parse_failures failures{};
+  rclock::failures fail{};
 
   std::istringstream stream;
 
@@ -1195,15 +1196,15 @@ year_month_day_parse_impl(const cpp11::strings& x,
       ampm_names_pair,
       dmark,
       i,
-      failures,
+      fail,
       out
     );
   }
 
   vmaxset(vmax);
 
-  if (failures.any_failures()) {
-    failures.warn();
+  if (fail.any_failures()) {
+    fail.warn_parse();
   }
 
   return out.to_list();

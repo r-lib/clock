@@ -4,6 +4,7 @@
 #include "rcrd.h"
 #include "duration.h"
 #include "parse.h"
+#include "failure.h"
 #include "locale.h"
 #include <sstream>
 
@@ -107,7 +108,7 @@ time_point_parse_one(std::istringstream& stream,
                      const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                      const char& dmark,
                      const r_ssize& i,
-                     rclock::parse_failures& failures,
+                     rclock::failures& fail,
                      ClockDuration& out) {
   using Duration = typename ClockDuration::duration;
   const r_ssize size = fmts.size();
@@ -135,7 +136,7 @@ time_point_parse_one(std::istringstream& stream,
     }
   }
 
-  failures.write(i);
+  fail.write(i);
   out.assign_na(i);
 }
 
@@ -183,7 +184,7 @@ time_point_parse_impl(const cpp11::strings& x,
     ampm_names
   );
 
-  rclock::parse_failures failures{};
+  rclock::failures fail{};
 
   std::istringstream stream;
 
@@ -209,15 +210,15 @@ time_point_parse_impl(const cpp11::strings& x,
       ampm_names_pair,
       dmark,
       i,
-      failures,
+      fail,
       out
     );
   }
 
   vmaxset(vmax);
 
-  if (failures.any_failures()) {
-    failures.warn();
+  if (fail.any_failures()) {
+    fail.warn_parse();
   }
 
   return out.to_list();

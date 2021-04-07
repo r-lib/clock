@@ -5,6 +5,7 @@
 #include "rcrd.h"
 #include "zone.h"
 #include "parse.h"
+#include "failure.h"
 #include "locale.h"
 
 // -----------------------------------------------------------------------------
@@ -435,7 +436,7 @@ zoned_time_parse_complete_one(std::istringstream& stream,
                               const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                               const char& dmark,
                               const r_ssize& i,
-                              rclock::parse_failures& failures,
+                              rclock::failures& fail,
                               std::string& zone,
                               const date::time_zone*& p_time_zone,
                               ClockDuration& fields) {
@@ -509,7 +510,7 @@ zoned_time_parse_complete_one(std::istringstream& stream,
     return;
   }
 
-  failures.write(i);
+  fail.write(i);
   fields.assign_na(i);
 }
 
@@ -556,7 +557,7 @@ zoned_time_parse_complete_impl(const cpp11::strings& x,
     ampm_names
   );
 
-  rclock::parse_failures failures{};
+  rclock::failures fail{};
 
   std::string zone;
   const date::time_zone* p_time_zone = NULL;
@@ -585,7 +586,7 @@ zoned_time_parse_complete_impl(const cpp11::strings& x,
       ampm_names_pair,
       dmark,
       i,
-      failures,
+      fail,
       zone,
       p_time_zone,
       fields
@@ -594,8 +595,8 @@ zoned_time_parse_complete_impl(const cpp11::strings& x,
 
   vmaxset(vmax);
 
-  if (failures.any_failures()) {
-    failures.warn();
+  if (fail.any_failures()) {
+    fail.warn_parse();
   }
 
   if (zone.empty()) {
@@ -651,7 +652,7 @@ zoned_time_parse_abbrev_one(std::istringstream& stream,
                             const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                             const char& dmark,
                             const r_ssize& i,
-                            rclock::parse_failures& failures,
+                            rclock::failures& fail,
                             const date::time_zone*& p_time_zone,
                             ClockDuration& fields) {
   using Duration = typename ClockDuration::duration;
@@ -725,7 +726,7 @@ zoned_time_parse_abbrev_one(std::istringstream& stream,
     return;
   }
 
-  failures.write(i);
+  fail.write(i);
   fields.assign_na(i);
 }
 
@@ -773,7 +774,7 @@ zoned_time_parse_abbrev_impl(const cpp11::strings& x,
     ampm_names
   );
 
-  rclock::parse_failures failures{};
+  rclock::failures fail{};
 
   std::istringstream stream;
 
@@ -799,7 +800,7 @@ zoned_time_parse_abbrev_impl(const cpp11::strings& x,
       ampm_names_pair,
       dmark,
       i,
-      failures,
+      fail,
       p_time_zone,
       fields
     );
@@ -807,8 +808,8 @@ zoned_time_parse_abbrev_impl(const cpp11::strings& x,
 
   vmaxset(vmax);
 
-  if (failures.any_failures()) {
-    failures.warn();
+  if (fail.any_failures()) {
+    fail.warn_parse();
   }
 
   return fields.to_list();

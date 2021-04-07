@@ -231,11 +231,14 @@ test_that("can format dates", {
   )
 })
 
-test_that("formatting Dates with `%z` or `%Z` returns NA", {
+test_that("formatting Dates with `%z` or `%Z` returns NA with a warning", {
   x <- as.Date("2018-01-01")
 
-  expect_identical(date_format(x, format = "%z"), NA_character_)
-  expect_identical(date_format(x, format = "%Z"), NA_character_)
+  expect_warning(date_format(x, format = "%z"), class = "clock_warning_format_failures")
+  expect_snapshot(date_format(x, format = "%z"))
+
+  expect_warning(date_format(x, format = "%Z"), class = "clock_warning_format_failures")
+  expect_snapshot(date_format(x, format = "%Z"))
 })
 
 # ------------------------------------------------------------------------------

@@ -118,6 +118,24 @@
     c: lun. déc. 31 00:00:00 2018
     %: %
 
+# formatting Dates with `%z` or `%Z` returns NA with a warning
+
+    Code
+      date_format(x, format = "%z")
+    Warning <clock_warning_format_failures>
+      Failed to format 1 string at location 1. Returning `NA` at that location.
+    Output
+      [1] NA
+
+---
+
+    Code
+      date_format(x, format = "%Z")
+    Warning <clock_warning_format_failures>
+      Failed to format 1 string at location 1. Returning `NA` at that location.
+    Output
+      [1] NA
+
 # failure to parse throws a warning
 
     Code

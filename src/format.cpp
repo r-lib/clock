@@ -6,6 +6,7 @@
 #include "check.h"
 #include "zone.h"
 #include "locale.h"
+#include "failure.h"
 #include <sstream>
 #include <locale>
 
@@ -1059,6 +1060,8 @@ cpp11::writable::strings format_time_point_impl(const ClockDuration& cd,
   std::string decimal_mark_string = decimal_mark[0];
   const char* decimal_mark_char = decimal_mark_string.c_str();
 
+  rclock::failures fail{};
+
   for (r_ssize i = 0; i < size; ++i) {
     if (cd.is_na(i)) {
       SET_STRING_ELT(out, i, r_chr_na);
@@ -1082,12 +1085,17 @@ cpp11::writable::strings format_time_point_impl(const ClockDuration& cd,
     );
 
     if (stream.fail()) {
+      fail.write(i);
       SET_STRING_ELT(out, i, r_chr_na);
       continue;
     }
 
     std::string str = stream.str();
     SET_STRING_ELT(out, i, Rf_mkCharLenCE(str.c_str(), str.size(), CE_UTF8));
+  }
+
+  if (fail.any_failures()) {
+    fail.warn_format();
   }
 
   return out;
@@ -1192,6 +1200,8 @@ cpp11::writable::strings format_zoned_time_impl(const ClockDuration& cd,
   const std::string decimal_mark_string = decimal_mark[0];
   const char* decimal_mark_char = decimal_mark_string.c_str();
 
+  rclock::failures fail{};
+
   for (r_ssize i = 0; i < size; ++i) {
     if (cd.is_na(i)) {
       SET_STRING_ELT(out, i, r_chr_na);
@@ -1227,12 +1237,17 @@ cpp11::writable::strings format_zoned_time_impl(const ClockDuration& cd,
     );
 
     if (stream.fail()) {
+      fail.write(i);
       SET_STRING_ELT(out, i, r_chr_na);
       continue;
     }
 
     std::string str = stream.str();
     SET_STRING_ELT(out, i, Rf_mkCharLenCE(str.c_str(), str.size(), CE_UTF8));
+  }
+
+  if (fail.any_failures()) {
+    fail.warn_format();
   }
 
   return out;
