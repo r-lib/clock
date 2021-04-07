@@ -121,6 +121,13 @@ test_that("failure to parse throws a warning", {
 })
 
 # ------------------------------------------------------------------------------
+# as_zoned_time()
+
+test_that("empty dots are checked", {
+  expect_snapshot_error(as_zoned_time(sys_seconds(), "UTC", 123))
+})
+
+# ------------------------------------------------------------------------------
 # vec_ptype()
 
 test_that("ptype is correct", {

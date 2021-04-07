@@ -848,7 +848,45 @@ date_month_factor.POSIXt <- function(x,
 
 # ------------------------------------------------------------------------------
 
+#' Formatting: date-time
+#'
+#' @description
+#' This is a POSIXct method for the [date_format()] generic.
+#'
+#' `date_format()` formats a date-time (POSIXct) using a `format` string.
+#'
+#' If `format` is `NULL`, a default format of `"%Y-%m-%d %H:%M:%S%Ez[%Z]"` is
+#' used. This maximizes the chance for constructing a string that can be
+#' reproducibly parsed into a valid date-time using
+#' [date_time_parse_complete()].
+#'
+#' @inheritParams ellipsis::dots_empty
+#' @inheritParams format.clock_zoned_time
+#'
+#' @param x `[POSIXct / POSIXlt]`
+#'
+#'   A date-time vector.
+#'
+#' @return A character vector of the formatted input.
+#'
+#' @name posixt-formatting
+#'
 #' @export
+#' @examples
+#' x <- date_time_parse(
+#'   c("1970-04-26 01:30:00", "1970-04-26 03:30:00"),
+#'   zone = "America/New_York"
+#' )
+#'
+#' # Default
+#' date_format(x)
+#'
+#' date_format(x, format = "%B %d, %Y %H:%M:%S")
+#'
+#' # By default, `%Z` uses the full zone name, but you can switch to the
+#' # abbreviated name
+#' date_format(x, format = "%z %Z")
+#' date_format(x, format = "%z %Z", abbreviate_zone = TRUE)
 date_format.POSIXt <- function(x,
                                ...,
                                format = NULL,
@@ -861,9 +899,91 @@ date_format.POSIXt <- function(x,
 
 # ------------------------------------------------------------------------------
 
+#' Get or set the time zone
+#'
+#' @description
+#' - `date_zone()` gets the time zone.
+#'
+#' - `date_set_zone()` sets the time zone. This retains the _underlying
+#' duration_, but changes the _printed time_ depending on the zone that is
+#' chosen.
+#'
+#' @details
+#' This function is only valid for date-times, as clock treats R's Date class as
+#' a _naive_ type, which always has a yet-to-be-specified time zone.
+#'
+#' @param x `[POSIXct / POSIXlt]`
+#'
+#'   A date-time vector.
+#'
+#' @param zone `[character(1)]`
+#'
+#'   A valid time zone to switch to.
+#'
+#' @return
+#' - `date_zone()` returns a string containing the time zone.
+#'
+#' - `date_set_zone()` returns `x` with an altered printed time. The
+#' underlying duration is not changed.
+#'
+#' @name date-zone
+#'
+#' @examples
+#' library(magrittr)
+#'
+#' # Cannot set or get the zone of Date.
+#' # clock assumes that Dates are naive types, like naive-time.
+#' x <- as.Date("2019-01-01")
+#' try(date_zone(x))
+#' try(date_set_zone(x, "America/New_York"))
+#'
+#' x <- as.POSIXct("2019-01-02 01:30:00", tz = "America/New_York")
+#' x
+#'
+#' date_zone(x)
+#'
+#' # If it is 1:30am in New York, what time is it in Los Angeles?
+#' # Same underlying duration, new printed time
+#' date_set_zone(x, "America/Los_Angeles")
+#'
+#' # If you want to retain the printed time, but change the underlying duration,
+#' # convert to a naive-time to drop the time zone, then convert back to a
+#' # date-time. Be aware that this requires that you handle daylight saving time
+#' # irregularities with the `nonexistent` and `ambiguous` arguments to
+#' # `as.POSIXct()`!
+#' x %>%
+#'   as_naive_time() %>%
+#'   as.POSIXct("America/Los_Angeles")
+#'
+#' y <- as.POSIXct("2021-03-28 03:30:00", "America/New_York")
+#' y
+#'
+#' y_nt <- as_naive_time(y)
+#' y_nt
+#'
+#' # Helsinki had a daylight saving time gap where they jumped from
+#' # 02:59:59 -> 04:00:00
+#' try(as.POSIXct(y_nt, "Europe/Helsinki"))
+#'
+#' as.POSIXct(y_nt, "Europe/Helsinki", nonexistent = "roll-forward")
+#' as.POSIXct(y_nt, "Europe/Helsinki", nonexistent = "roll-backward")
+NULL
+
+#' @rdname date-zone
+#' @export
+date_zone <- function(x) {
+  UseMethod("date_zone")
+}
+
 #' @export
 date_zone.POSIXt <- function(x) {
   posixt_tzone(x)
+}
+
+#' @rdname date-zone
+#' @export
+date_set_zone <- function(x, zone) {
+  UseMethod("date_set_zone")
 }
 
 #' @export

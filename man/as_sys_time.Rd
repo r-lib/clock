@@ -41,8 +41,10 @@ zone was not already UTC.
 \examples{
 x <- as.Date("2019-01-01")
 
-# Dates are assumed to be UTC, so the printed time is the same
+# Dates are assumed to be naive, so the printed time is the same whether
+# we convert it to sys-time or naive-time
 as_sys_time(x)
+as_naive_time(x)
 
 y <- as.POSIXct("2019-01-01 01:00:00", tz = "America/New_York")
 

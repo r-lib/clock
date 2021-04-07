@@ -19,7 +19,7 @@ reference:
   - date_format
   - date_parse
   - date-time-parse
-  - date_zone
+  - date-zone
   - date_weekday_factor
   - date_month_factor
   - date_leap_year
@@ -191,6 +191,8 @@ reference:
   contents:
   - date-group
   - posixt-group
+  - date-formatting
+  - posixt-formatting
   - date-rounding
   - posixt-rounding
   - date-shifting

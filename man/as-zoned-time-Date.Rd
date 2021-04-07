@@ -5,14 +5,78 @@
 \alias{as_zoned_time.Date}
 \title{Convert to a zoned-time from a date}
 \usage{
-\method{as_zoned_time}{Date}(x, ...)
+\method{as_zoned_time}{Date}(x, zone, ..., nonexistent = NULL, ambiguous = NULL)
 }
 \arguments{
 \item{x}{\verb{[Date]}
 
 A Date.}
 
+\item{zone}{\verb{[character(1)]}
+
+The zone to convert to.}
+
 \item{...}{These dots are for future extensions and must be empty.}
+
+\item{nonexistent}{\verb{[character / NULL]}
+
+One of the following nonexistent time resolution strategies, allowed to be
+either length 1, or the same length as the input:
+\itemize{
+\item \code{"roll-forward"}: The next valid instant in time.
+\item \code{"roll-backward"}: The previous valid instant in time.
+\item \code{"shift-forward"}: Shift the nonexistent time forward by the size of
+the daylight saving time gap.
+\item \verb{"shift-backward}: Shift the nonexistent time backward by the size of
+the daylight saving time gap.
+\item \code{"NA"}: Replace nonexistent times with \code{NA}.
+\item \code{"error"}: Error on nonexistent times.
+}
+
+Using either \code{"roll-forward"} or \code{"roll-backward"} is generally
+recommended over shifting, as these two strategies maintain the
+\emph{relative ordering} between elements of the input.
+
+If \code{NULL}, defaults to \code{"error"}.
+
+If \code{getOption("clock.strict")} is \code{TRUE}, \code{nonexistent} must be supplied
+and cannot be \code{NULL}. This is a convenient way to make production code
+robust to nonexistent times.}
+
+\item{ambiguous}{\verb{[character / zoned_time / POSIXct / list(2) / NULL]}
+
+One of the following ambiguous time resolution strategies, allowed to be
+either length 1, or the same length as the input:
+\itemize{
+\item \code{"earliest"}: Of the two possible times, choose the earliest one.
+\item \code{"latest"}: Of the two possible times, choose the latest one.
+\item \code{"NA"}: Replace ambiguous times with \code{NA}.
+\item \code{"error"}: Error on ambiguous times.
+}
+
+Alternatively, \code{ambiguous} is allowed to be a zoned_time (or POSIXct) that
+is either length 1, or the same length as the input. If an ambiguous time
+is encountered, the zoned_time is consulted. If the zoned_time corresponds
+to a naive_time that is also ambiguous \emph{and} uses the same daylight saving
+time transition point as the original ambiguous time, then the offset of
+the zoned_time is used to resolve the ambiguity. If the ambiguity cannot be
+resolved by consulting the zoned_time, then this method falls back to
+\code{NULL}.
+
+Finally, \code{ambiguous} is allowed to be a list of size 2, where the first
+element of the list is a zoned_time (as described above), and the second
+element of the list is an ambiguous time resolution strategy to use when
+the ambiguous time cannot be resolved by consulting the zoned_time.
+Specifying a zoned_time on its own is identical to \verb{list(<zoned_time>, NULL)}.
+
+If \code{NULL}, defaults to \code{"error"}.
+
+If \code{getOption("clock.strict")} is \code{TRUE}, \code{ambiguous} must be supplied and
+cannot be \code{NULL}. Additionally, \code{ambiguous} cannot be specified as a
+zoned_time on its own, as this implies \code{NULL} for ambiguous times that the
+zoned_time cannot resolve. Instead, it must be specified as a list
+alongside an ambiguous time resolution strategy as described above. This is
+a convenient way to make production code robust to ambiguous times.}
 }
 \value{
 A zoned-time.
@@ -20,10 +84,35 @@ A zoned-time.
 \description{
 This is a Date method for the \code{\link[=as_zoned_time]{as_zoned_time()}} generic.
 
-Since R assumes that Dates are UTC, converting to a zoned-time returns
-a zoned-time with a UTC time zone. There is no \code{zone} argument.
+clock assumes that Dates are \emph{naive} date-time types. Like naive-times, they
+have a yet-to-be-specified time zone. This method allows you to specify that
+time zone, keeping the printed time. If possible, the time will be set to
+midnight (see Details for the rare case in which this is not possible).
+}
+\details{
+In the rare instance that the specified time zone does not contain a
+date-time at midnight due to daylight saving time, \code{nonexistent} can be used
+to resolve the issue. Similarly, if there are two possible midnight times due
+to a daylight saving time fallback, \code{ambiguous} can be used.
 }
 \examples{
 x <- as.Date("2019-01-01")
-as_zoned_time(x)
+
+# The resulting zoned-times have the same printed time, but are in
+# different time zones
+as_zoned_time(x, "UTC")
+as_zoned_time(x, "America/New_York")
+
+# Converting Date -> zoned-time is the same as naive-time -> zoned-time
+x <- as_naive_time(year_month_day(2019, 1, 1))
+as_zoned_time(x, "America/New_York")
+
+# In Asia/Beirut, there was a DST gap from
+# 2021-03-27 23:59:59 -> 2021-03-28 01:00:00,
+# skipping the 0th hour entirely. This means there is no midnight value.
+x <- as.Date("2021-03-28")
+try(as_zoned_time(x, "Asia/Beirut"))
+
+# To resolve this, set a `nonexistent` time resolution strategy
+as_zoned_time(x, "Asia/Beirut", nonexistent = "roll-forward")
 }

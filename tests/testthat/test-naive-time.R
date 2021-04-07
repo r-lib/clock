@@ -496,6 +496,10 @@ test_that("strict mode can be activated - ambiguous", {
   expect_snapshot_error(as_zoned_time(naive_seconds(), zone, nonexistent = "roll-forward", ambiguous = list(zt, NULL)))
 })
 
+test_that("empty dots are checked", {
+  expect_snapshot_error(as_zoned_time(naive_seconds(), "UTC", "roll-forward"))
+})
+
 # ------------------------------------------------------------------------------
 # vec_ptype()
 

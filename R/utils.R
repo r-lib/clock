@@ -8,6 +8,9 @@ to_posixct <- function(x) {
   }
 }
 
+is_POSIXt <- function(x) {
+  inherits(x, "POSIXt")
+}
 is_POSIXct <- function(x) {
   inherits(x, "POSIXct")
 }

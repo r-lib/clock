@@ -19,10 +19,19 @@ as_naive_time.Date <- function(x) {
 #' @description
 #' This is a Date method for the [as_zoned_time()] generic.
 #'
-#' Since R assumes that Dates are UTC, converting to a zoned-time returns
-#' a zoned-time with a UTC time zone. There is no `zone` argument.
+#' clock assumes that Dates are _naive_ date-time types. Like naive-times, they
+#' have a yet-to-be-specified time zone. This method allows you to specify that
+#' time zone, keeping the printed time. If possible, the time will be set to
+#' midnight (see Details for the rare case in which this is not possible).
+#'
+#' @details
+#' In the rare instance that the specified time zone does not contain a
+#' date-time at midnight due to daylight saving time, `nonexistent` can be used
+#' to resolve the issue. Similarly, if there are two possible midnight times due
+#' to a daylight saving time fallback, `ambiguous` can be used.
 #'
 #' @inheritParams ellipsis::dots_empty
+#' @inheritParams as-zoned-time-naive-time
 #'
 #' @param x `[Date]`
 #'
@@ -34,41 +43,61 @@ as_naive_time.Date <- function(x) {
 #' @export
 #' @examples
 #' x <- as.Date("2019-01-01")
-#' as_zoned_time(x)
-as_zoned_time.Date <- function(x, ...) {
-  check_dots_empty()
-  x <- as_sys_time(x)
-  as_zoned_time(x, zone = "UTC")
+#'
+#' # The resulting zoned-times have the same printed time, but are in
+#' # different time zones
+#' as_zoned_time(x, "UTC")
+#' as_zoned_time(x, "America/New_York")
+#'
+#' # Converting Date -> zoned-time is the same as naive-time -> zoned-time
+#' x <- as_naive_time(year_month_day(2019, 1, 1))
+#' as_zoned_time(x, "America/New_York")
+#'
+#' # In Asia/Beirut, there was a DST gap from
+#' # 2021-03-27 23:59:59 -> 2021-03-28 01:00:00,
+#' # skipping the 0th hour entirely. This means there is no midnight value.
+#' x <- as.Date("2021-03-28")
+#' try(as_zoned_time(x, "Asia/Beirut"))
+#'
+#' # To resolve this, set a `nonexistent` time resolution strategy
+#' as_zoned_time(x, "Asia/Beirut", nonexistent = "roll-forward")
+as_zoned_time.Date <- function(x,
+                               zone,
+                               ...,
+                               nonexistent = NULL,
+                               ambiguous = NULL) {
+  x <- as_naive_time(x)
+  as_zoned_time(x, zone = zone, ..., nonexistent = nonexistent, ambiguous = ambiguous)
 }
 
 #' @export
 as_year_month_day.Date <- function(x) {
-  as_year_month_day(as_sys_time(x))
+  as_year_month_day(as_naive_time(x))
 }
 
 #' @export
 as_year_month_weekday.Date <- function(x) {
-  as_year_month_weekday(as_sys_time(x))
+  as_year_month_weekday(as_naive_time(x))
 }
 
 #' @export
 as_year_quarter_day.Date <- function(x, ..., start = NULL) {
-  as_year_quarter_day(as_sys_time(x), ..., start = start)
+  as_year_quarter_day(as_naive_time(x), ..., start = start)
 }
 
 #' @export
 as_iso_year_week_day.Date <- function(x) {
-  as_iso_year_week_day(as_sys_time(x))
+  as_iso_year_week_day(as_naive_time(x))
 }
 
 #' @export
 as_year_day.Date <- function(x) {
-  as_year_day(as_sys_time(x))
+  as_year_day(as_naive_time(x))
 }
 
 #' @export
 as_weekday.Date <- function(x) {
-  as_weekday(as_sys_time(x))
+  as_weekday(as_naive_time(x))
 }
 
 # ------------------------------------------------------------------------------
@@ -78,7 +107,7 @@ as_weekday.Date <- function(x) {
 
 #' @export
 as.Date.clock_calendar <- function(x, ...) {
-  as.Date(as_sys_time(x))
+  as.Date(as_naive_time(x))
 }
 
 #' @export
@@ -93,7 +122,7 @@ as.Date.clock_time_point <- function(x, ...) {
 
 #' @export
 as.Date.clock_zoned_time <- function(x, ...) {
-  as.Date(as_sys_time(x))
+  as.Date(as_naive_time(x))
 }
 
 # ------------------------------------------------------------------------------
@@ -353,7 +382,7 @@ add_days.Date <- function(x, n, ...) {
 }
 add_date_duration_time_point <- function(x, n, add_fn, ...) {
   check_dots_empty()
-  x <- as_sys_time(x)
+  x <- as_naive_time(x)
   x <- add_fn(x, n)
   as.Date(x)
 }
@@ -780,10 +809,17 @@ date_month_factor.Date <- function(x,
 
 #' Formatting: date and date-time
 #'
+#' @description
 #' `date_format()` formats a date (Date) or date-time (POSIXct/POSIXlt) using
 #' a `format` string.
 #'
-#' @inheritParams format.clock_zoned_time
+#' There are separate help pages for formatting dates and date-times:
+#'
+#' - [dates (Date)][date-formatting]
+#'
+#' - [date-times (POSIXct/POSIXlt)][posixt-formatting]
+#'
+#' @inheritParams ellipsis::dots_empty
 #'
 #' @param x `[Date / POSIXct / POSIXlt]`
 #'
@@ -793,133 +829,70 @@ date_month_factor.Date <- function(x,
 #'
 #' @export
 #' @examples
+#' # See method specific documentation for more examples
+#'
 #' x <- as.Date("2019-01-01")
-#'
-#' # Date objects are assumed to be UTC
-#' date_format(x, format = "%Y-%m-%d %z %Z")
-#'
-#' x <- as.POSIXct(
-#'   c("1970-04-26 01:30:00", "1970-04-26 03:30:00"),
-#'   tz = "America/New_York"
-#' )
-#'
-#' date_format(x, format = "%B %d, %Y %H:%M:%S")
-#'
-#' # By default, `%Z` uses the full zone name, but you can switch to the
-#' # abbreviated name
-#' date_format(x, format = "%z %Z")
-#' date_format(x, format = "%z %Z", abbreviate_zone = TRUE)
-date_format <- function(x,
-                        ...,
-                        format = NULL,
-                        locale = clock_locale(),
-                        abbreviate_zone = FALSE) {
+#' date_format(x, format = "year: %Y, month: %m, day: %d")
+date_format <- function(x, ...) {
   UseMethod("date_format")
 }
 
+#' Formatting: date
+#'
+#' @description
+#' This is a Date method for the [date_format()] generic.
+#'
+#' `date_format()` formats a date (Date) using a `format` string.
+#'
+#' If `format` is `NULL`, a default format of `"%Y-%m-%d"` is used.
+#'
+#' @details
+#' Because a Date is considered to be a _naive_ type in clock, meaning that
+#' it currently has no implied time zone, using the `%z` or `%Z` format commands
+#' is not allowed and will result in `NA`.
+#'
+#' @inheritParams ellipsis::dots_empty
+#' @inheritParams format.clock_zoned_time
+#'
+#' @param x `[Date]`
+#'
+#'   A date vector.
+#'
+#' @return A character vector of the formatted input.
+#'
+#' @name date-formatting
+#'
 #' @export
+#' @examples
+#' x <- as.Date("2019-01-01")
+#'
+#' # Default
+#' date_format(x)
+#'
+#' date_format(x, format = "year: %Y, month: %m, day: %d")
+#'
+#' # With different locales
+#' date_format(x, format = "%A, %B %d, %Y")
+#' date_format(x, format = "%A, %B %d, %Y", locale = clock_locale("fr"))
 date_format.Date <- function(x,
                              ...,
                              format = NULL,
-                             locale = clock_locale(),
-                             abbreviate_zone = FALSE) {
+                             locale = clock_locale()) {
   check_dots_empty()
-  x <- as_zoned_time(x)
-  format(x, format = format, locale = locale, abbreviate_zone = abbreviate_zone)
+  x <- as_naive_time(x)
+  format(x, format = format, locale = locale)
 }
 
 # ------------------------------------------------------------------------------
 
-#' Get or set the time zone
-#'
-#' @description
-#' - `date_zone()` gets the time zone.
-#'
-#' - `date_set_zone()` sets the time zone. This retains the _underlying
-#' duration_, but changes the _printed time_ depending on the zone that is
-#' chosen.
-#'
-#' Note that attempting to call `date_set_zone()` on a Date is an error, as R
-#' assumes that Date objects are always UTC.
-#'
-#' @param x `[Date / POSIXct / POSIXlt]`
-#'
-#'   A date or date-time vector.
-#'
-#' @param zone `[character(1)]`
-#'
-#'   A valid time zone to switch to.
-#'
-#' @return
-#' - `date_zone()` returns a string containing the time zone.
-#'
-#' - `date_set_zone()` returns `x` with an altered printed time. The
-#' underlying duration is not changed.
-#'
-#' @name date-zone
-#'
-#' @examples
-#' library(magrittr)
-#'
-#' x <- as.Date("2019-01-01")
-#'
-#' # Dates are always UTC
-#' date_zone(x)
-#'
-#' # You can't change this!
-#' try(date_set_zone(x, "America/New_York"))
-#'
-#' x <- as.POSIXct("2019-01-02 01:30:00", tz = "America/New_York")
-#' x
-#'
-#' # If it is 1:30am in New York, what time is it in Los Angeles?
-#' # Same underlying duration, new printed time
-#' date_set_zone(x, "America/Los_Angeles")
-#'
-#' # If you want to retain the printed time, but change the underlying duration,
-#' # convert to a naive-time to drop the time zone, then convert back to a
-#' # date-time. Be aware that this requires that you handle daylight saving time
-#' # irregularities with the `nonexistent` and `ambiguous` arguments to
-#' # `as.POSIXct()`!
-#' x %>%
-#'   as_naive_time() %>%
-#'   as.POSIXct("America/Los_Angeles")
-#'
-#' y <- as.POSIXct("2021-03-28 03:30:00", "America/New_York")
-#' y
-#'
-#' y_nt <- as_naive_time(y)
-#' y_nt
-#'
-#' # Helsinki had a daylight saving time gap where they jumped from
-#' # 02:59:59 -> 04:00:00
-#' try(as.POSIXct(y_nt, "Europe/Helsinki"))
-#'
-#' as.POSIXct(y_nt, "Europe/Helsinki", nonexistent = "roll-forward")
-#' as.POSIXct(y_nt, "Europe/Helsinki", nonexistent = "roll-backward")
-NULL
-
-#' @rdname date-zone
-#' @export
-date_zone <- function(x) {
-  UseMethod("date_zone")
-}
-
-#' @rdname date-zone
-#' @export
-date_set_zone <- function(x, zone) {
-  UseMethod("date_set_zone")
-}
-
-
 #' @export
 date_zone.Date <- function(x) {
-  "UTC"
+  abort("Can't get the zone of a 'Date'.")
 }
 
 #' @export
 date_set_zone.Date <- function(x, zone) {
-  abort("'Date' objects are required to be UTC.")
+  abort("Can't set the zone of a 'Date'.")
 }
 
 # ------------------------------------------------------------------------------
@@ -932,12 +905,8 @@ date_set_zone.Date <- function(x, zone) {
 #' The default `format` used is `"%Y-%m-%d"`.
 #'
 #' @details
-#' If the `%z` command is used, then the date-time string is interpreted as
-#' a naive-time, which is then shifted by the UTC offset found in `%z`. The
-#' returned Date can then validly be interpreted as UTC. Remember that in R,
-#' Date objects are assumed to be UTC, similar to a sys-time.
-#'
-#' _`date_parse()` ignores the `%Z` command._
+#' _`date_parse()` ignores both the `%z` and `%Z` commands,_ as clock treats
+#' Date as a _naive_ type, with a yet-to-be-specified time zone.
 #'
 #' @inheritParams zoned-parsing
 #'
@@ -963,7 +932,7 @@ date_set_zone.Date <- function(x, zone) {
 #' # the ISO year-week-day format
 #' date_parse("2020-W01-2", format = "%G-W%V-%u")
 date_parse <- function(x, ..., format = NULL, locale = clock_locale()) {
-  x <- sys_time_parse(x, ..., format = format, precision = "day", locale = locale)
+  x <- naive_time_parse(x, ..., format = format, precision = "day", locale = locale)
   as.Date(x)
 }
 

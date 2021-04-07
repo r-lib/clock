@@ -1,5 +1,32 @@
 # clock (development version)
 
+* clock now interprets R's Date class as _naive-time_ rather than _sys-time_.
+  This means that it no longer assumes that Date has an implied time zone of
+  UTC (#203). This generally aligns better with how users think Date should
+  work. This resulted in the following changes:
+  
+  * `date_zone()` now errors with Date input, as naive-times do not have a
+    specified time zone.
+    
+  * `date_parse()` now parses into a naive-time, rather than a sys-time, before
+    converting to Date. This means that `%z` and `%Z` are now completely
+    ignored.
+    
+  * The Date method for `date_format()` now uses the naive-time `format()`
+    method rather than the zoned-time one. This means that `%z` and `%Z` are
+    no longer valid format commands.
+    
+  * The zoned-time method for `as.Date()` now converts to Date through an
+    intermediate naive-time, rather than a sys-time. This means that the
+    printed date will always be retained, which is generally what is expected.
+    
+  * The Date method for `as_zoned_time()` now converts to zoned-time through
+    an intermediate naive-time, rather than a sys-time. This means that the
+    printed date will always attempt to be retained, if possible, which is
+    generally what is expected. In the rare case that daylight saving time makes
+    a direct conversion impossible, `nonexistent` and `ambiguous` can be used
+    to resolve any issues.
+
 * Errors resulting from invalid dates or nonexistent/ambiguous times are now
   a little nicer to read through the usage of an info bullet (#200).
 

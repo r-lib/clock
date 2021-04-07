@@ -5,6 +5,13 @@ test_that("invalid dates must be resolved when converting to a Date", {
   expect_snapshot_error(as.Date(year_month_day(2019, 2, 31)))
 })
 
+test_that("conversion from zoned-time uses naive-time as an intermediate", {
+  x <- as_naive_time(year_month_day(2019, 12, 31, 23, 30, 00))
+  x <- as_zoned_time(x, "America/New_York")
+
+  expect_identical(as.Date(x), as.Date("2019-12-31"))
+})
+
 # ------------------------------------------------------------------------------
 # as_sys_time()
 
@@ -23,6 +30,47 @@ test_that("converting to sys-time works with integer storage dates", {
 
   expect_identical(as_sys_time(x), as_sys_time(y))
   expect_identical(as.Date(as_sys_time(x)), y)
+})
+
+# ------------------------------------------------------------------------------
+# as_zoned_time()
+
+test_that("Dates are assumed to be naive", {
+  x <- new_date(0)
+  nt <- as_naive_time(year_month_day(1970, 1, 1))
+
+  expect_identical(as_zoned_time(x, "UTC"), as_zoned_time(nt, "UTC"))
+  expect_identical(as_zoned_time(x, "America/New_York"), as_zoned_time(nt, "America/New_York"))
+})
+
+test_that("can resolve nonexistent midnight issues", {
+  # In Asia/Beirut, DST gap from 2021-03-27 23:59:59 -> 2021-03-28 01:00:00
+  zone <- "Asia/Beirut"
+  x <- as.Date("2021-03-28")
+
+  expect_snapshot_error(as_zoned_time(x, zone), class = "clock_error_nonexistent_time")
+
+  expect_identical(
+    as_zoned_time(x, zone, nonexistent = "roll-forward"),
+    as_zoned_time(as_naive_time(year_month_day(2021, 03, 28, 1)), zone)
+  )
+})
+
+test_that("can resolve ambiguous midnight issues", {
+  # In Asia/Amman, DST fallback from 2021-10-29 00:59:59 -> 2021-10-29 00:00:00
+  zone <- "Asia/Amman"
+  x <- as.Date("2021-10-29")
+
+  expect_snapshot_error(as_zoned_time(x, zone), class = "clock_error_ambiguous_time")
+
+  expect_identical(
+    as_zoned_time(x, zone, ambiguous = "earliest"),
+    zoned_time_parse_complete("2021-10-29 00:00:00+03:00[Asia/Amman]")
+  )
+  expect_identical(
+    as_zoned_time(x, zone, ambiguous = "latest"),
+    zoned_time_parse_complete("2021-10-29 00:00:00+02:00[Asia/Amman]")
+  )
 })
 
 # ------------------------------------------------------------------------------
@@ -164,7 +212,7 @@ test_that("can convert to a month factor", {
 
 test_that("can format dates", {
   x <- as.Date("2018-12-31")
-  format <- test_all_formats()
+  format <- test_all_formats(zone = FALSE)
 
   expect_snapshot_output(
     cat(date_format(x, format = format))
@@ -174,30 +222,36 @@ test_that("can format dates", {
   )
 })
 
-# ------------------------------------------------------------------------------
-# date_zone()
+test_that("formatting Dates with `%z` or `%Z` returns NA", {
+  x <- as.Date("2018-01-01")
 
-test_that("can get the zone of a Date", {
-  x <- as.Date("2019-01-01")
-
-  expect_identical(date_zone(x), "UTC")
-})
-
-# ------------------------------------------------------------------------------
-# date_set_zone()
-
-test_that("can't set the zone of a Date", {
-  x <- as.Date("2019-01-01")
-
-  expect_snapshot_error(date_set_zone(x, "America/New_York"))
+  expect_identical(date_format(x, format = "%z"), NA_character_)
+  expect_identical(date_format(x, format = "%Z"), NA_character_)
 })
 
 # ------------------------------------------------------------------------------
 # date_parse()
 
-test_that("parsing with `%z` can shift the returned Date", {
+test_that("`%z` and `%Z` commands are ignored", {
   expect_identical(
-    date_parse("2019-12-31 23:59:59-0500", format = "%Y-%m-%d %H:%M:%S%z"),
+    date_parse("2019-12-31 11:59:59-0500", format = "%Y-%m-%d %H:%M:%S%z"),
+    as.Date("2019-12-31")
+  )
+  expect_identical(
+    date_parse("2019-12-31 11:59:59[America/New_York]", format = "%Y-%m-%d %H:%M:%S[%Z]"),
+    as.Date("2019-12-31")
+  )
+})
+
+# TODO: We probably don't want this:
+# https://github.com/HowardHinnant/date/issues/657
+test_that("parsing into a less precise time point rounds rather than floors", {
+  expect_identical(
+    date_parse("2019-12-31 11:59:59", format = "%Y-%m-%d %H:%M:%S"),
+    as.Date("2019-12-31")
+  )
+  expect_identical(
+    date_parse("2019-12-31 12:00:00", format = "%Y-%m-%d %H:%M:%S"),
     as.Date("2020-01-01")
   )
 })
@@ -246,6 +300,20 @@ test_that("can handle invalid dates", {
     date_build(2019, 1:12, 31, invalid = "previous"),
     date_build(2019, 1:12, "last")
   )
+})
+
+# ------------------------------------------------------------------------------
+# date_zone()
+
+test_that("cannot get the zone of a Date", {
+  expect_snapshot_error(date_zone(new_date(0)))
+})
+
+# ------------------------------------------------------------------------------
+# date_set_zone()
+
+test_that("cannot set the zone of a Date", {
+  expect_snapshot_error(date_set_zone(new_date(0), "UTC"))
 })
 
 # ------------------------------------------------------------------------------

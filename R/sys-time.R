@@ -177,8 +177,10 @@ sys_time_parse <- function(x,
 #' @examples
 #' x <- as.Date("2019-01-01")
 #'
-#' # Dates are assumed to be UTC, so the printed time is the same
+#' # Dates are assumed to be naive, so the printed time is the same whether
+#' # we convert it to sys-time or naive-time
 #' as_sys_time(x)
+#' as_naive_time(x)
 #'
 #' y <- as.POSIXct("2019-01-01 01:00:00", tz = "America/New_York")
 #'
@@ -256,6 +258,8 @@ as_naive_time.clock_sys_time <- function(x) {
 #' x_ny <- as_zoned_time(x, "America/New_York")
 #' x_ny
 as_zoned_time.clock_sys_time <- function(x, zone, ...) {
+  check_dots_empty()
+
   zone <- zone_validate(zone)
 
   # Promote to at least seconds precision for `zoned_time`
