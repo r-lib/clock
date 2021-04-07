@@ -118,10 +118,6 @@
     c: lun. déc. 31 00:00:00 2018
     %: %
 
-# can't set the zone of a Date
-
-    'Date' objects are required to be UTC.
-
 # failure to parse throws a warning
 
     Code
