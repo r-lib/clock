@@ -1,4 +1,16 @@
 # ------------------------------------------------------------------------------
+# as.POSIXct()
+
+test_that("casting to POSIXct floors components more precise than seconds (#205)", {
+  x <- naive_time_parse("1969-01-01 01:01:01.678", precision = "millisecond")
+
+  expect_identical(
+    as.POSIXct(x, "America/New_York"),
+    date_time_parse("1969-01-01 01:01:01", "America/New_York")
+  )
+})
+
+# ------------------------------------------------------------------------------
 # as_weekday()
 
 test_that("can convert to weekday", {

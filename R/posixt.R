@@ -106,7 +106,7 @@ as.POSIXct.clock_calendar <- function(x,
 #' @export
 as.POSIXct.clock_sys_time <- function(x, tz = "", ...) {
   zone <- zone_validate(tz)
-  x <- time_point_cast(x, "second")
+  x <- time_point_floor(x, "second")
   seconds <- to_sys_seconds_from_sys_duration_fields_cpp(x)
   names(seconds) <- clock_rcrd_names(x)
   new_datetime(seconds, zone)
