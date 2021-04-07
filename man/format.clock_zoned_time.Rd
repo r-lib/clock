@@ -18,7 +18,10 @@ with usage of the \code{format()} generic.}
 
 \item{format}{\verb{[character(1) / NULL]}
 
-A format string. A combination of:
+If \code{NULL}, a default format is used, which depends on the type of the
+input.
+
+Otherwise, a format string which is a combination of:
 
 \strong{Year}
 \itemize{
@@ -123,11 +126,7 @@ same as, \verb{\%a \%b \%d \%H:\%M:\%S \%Y}.
 \item \code{\%\%}: A \verb{\%} character.
 \item \verb{\%n}: A newline character.
 \item \verb{\%t}: A horizontal-tab character.
-}
-
-If \code{NULL}, a default format of \code{"\%Y-\%m-\%d \%H:\%M:\%S\%Ez[\%Z]"} is used.
-This maximizes the chance for constructing a string that can be
-reproducibly parsed into a valid zoned-time.}
+}}
 
 \item{locale}{\verb{[clock_locale]}
 
@@ -147,6 +146,10 @@ This is a zoned-time method for the \code{\link[=format]{format()}} generic.
 
 This function allows you to format a zoned-time using a flexible \code{format}
 string.
+
+If \code{format} is \code{NULL}, a default format of \code{"\%Y-\%m-\%d \%H:\%M:\%S\%Ez[\%Z]"} is
+used. This maximizes the chance for constructing a string that can be
+reproducibly parsed into a valid zoned-time.
 }
 \examples{
 x <- year_month_day(2019, 1, 1)

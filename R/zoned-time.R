@@ -40,6 +40,10 @@ zoned_time_precision_attribute <- function(x) {
 #' This function allows you to format a zoned-time using a flexible `format`
 #' string.
 #'
+#' If `format` is `NULL`, a default format of `"%Y-%m-%d %H:%M:%S%Ez[%Z]"` is
+#' used. This maximizes the chance for constructing a string that can be
+#' reproducibly parsed into a valid zoned-time.
+#'
 #' @param x `[clock_zoned_time]`
 #'
 #'   A zoned-time.
@@ -51,7 +55,10 @@ zoned_time_precision_attribute <- function(x) {
 #'
 #' @param format `[character(1) / NULL]`
 #'
-#'   A format string. A combination of:
+#'   If `NULL`, a default format is used, which depends on the type of the
+#'   input.
+#'
+#'   Otherwise, a format string which is a combination of:
 #'
 #'   **Year**
 #'
@@ -168,10 +175,6 @@ zoned_time_precision_attribute <- function(x) {
 #'   - `%n`: A newline character.
 #'
 #'   - `%t`: A horizontal-tab character.
-#'
-#'   If `NULL`, a default format of `"%Y-%m-%d %H:%M:%S%Ez[%Z]"` is used.
-#'   This maximizes the chance for constructing a string that can be
-#'   reproducibly parsed into a valid zoned-time.
 #'
 #' @param locale `[clock_locale]`
 #'
