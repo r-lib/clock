@@ -184,18 +184,22 @@ test_that("can format date-times", {
 })
 
 # ------------------------------------------------------------------------------
-# date_zone()
+# date_time_zone()
 
 test_that("can get the zone of a POSIXt", {
   ct <- as.POSIXct("2019-01-01", "America/New_York")
   lt <- as.POSIXlt(ct)
 
-  expect_identical(date_zone(ct), "America/New_York")
-  expect_identical(date_zone(lt), "America/New_York")
+  expect_identical(date_time_zone(ct), "America/New_York")
+  expect_identical(date_time_zone(lt), "America/New_York")
+})
+
+test_that("cannot get the zone of a Date", {
+  expect_snapshot_error(date_time_zone(new_date(0)))
 })
 
 # ------------------------------------------------------------------------------
-# date_set_zone()
+# date_time_set_zone()
 
 test_that("can set the zone of a POSIXt", {
   ct <- as.POSIXct("2019-01-01", "America/New_York")
@@ -203,8 +207,12 @@ test_that("can set the zone of a POSIXt", {
 
   expect <- as.POSIXct("2018-12-31 21:00:00", "America/Los_Angeles")
 
-  expect_identical(date_set_zone(ct, "America/Los_Angeles"), expect)
-  expect_identical(date_set_zone(lt, "America/Los_Angeles"), expect)
+  expect_identical(date_time_set_zone(ct, "America/Los_Angeles"), expect)
+  expect_identical(date_time_set_zone(lt, "America/Los_Angeles"), expect)
+})
+
+test_that("cannot set the zone of a Date", {
+  expect_snapshot_error(date_time_set_zone(new_date(0), "UTC"))
 })
 
 # ------------------------------------------------------------------------------

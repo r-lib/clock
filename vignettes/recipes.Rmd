@@ -68,7 +68,7 @@ their_time
 ```{r}
 my_time <- as.POSIXct("2019-01-30 09:00:00", "America/New_York")
 
-date_set_zone(my_time, "Asia/Shanghai")
+date_time_set_zone(my_time, "Asia/Shanghai")
 ```
 
 ## Force a specific time zone
@@ -113,7 +113,7 @@ my_time <- as.POSIXct("2019-01-30 09:00:00", "America/New_York")
 my_time %>%
   as_naive_time() %>%
   as.POSIXct("Asia/Shanghai") %>%
-  date_set_zone("America/New_York")
+  date_time_set_zone("America/New_York")
 ```
 
 ## Finding the next Monday (or Thursday)

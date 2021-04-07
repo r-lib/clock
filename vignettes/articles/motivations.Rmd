@@ -271,12 +271,12 @@ If for any reason you want the `+ seconds()` behavior, you can manually take con
 x %>%
   as_naive_time() %>%
   add_seconds(1) %>%
-  as.POSIXct(date_zone(x))
+  as.POSIXct(date_time_zone(x))
 
 x %>%
   as_naive_time() %>%
   add_seconds(1) %>%
-  as.POSIXct(date_zone(x), nonexistent = "roll-forward")
+  as.POSIXct(date_time_zone(x), nonexistent = "roll-forward")
 ```
 
 ### Ambiguous time
@@ -363,7 +363,7 @@ Notice that if we converted two of these dates to naive-time, and then tried to 
 ```{r, error=TRUE}
 x %>%
   as_naive_time() %>%
-  as.POSIXct(date_zone(x))
+  as.POSIXct(date_time_zone(x))
 ```
 
 `date_floor()` works by flooring while in naive-time, but somehow this still produces the results you probably expected, with the two 1 o'clock hours being kept in separate groups:
