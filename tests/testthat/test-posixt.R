@@ -390,6 +390,15 @@ test_that("can handle ambiguous times", {
 })
 
 # ------------------------------------------------------------------------------
+# date_now()
+
+test_that("can get the current date-time", {
+  x <- date_now("America/New_York")
+  expect_length(x, 1)
+  expect_s3_class(x, "POSIXct")
+})
+
+# ------------------------------------------------------------------------------
 # vec_arith()
 
 test_that("<posixt> op <duration>", {

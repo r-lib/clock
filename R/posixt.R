@@ -1276,3 +1276,11 @@ date_time_build <- function(year,
   x <- invalid_resolve(x, invalid = invalid)
   as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
 }
+
+# ------------------------------------------------------------------------------
+
+#' @rdname date-today
+#' @export
+date_now <- function(zone) {
+  as.POSIXct(zoned_time_now(zone))
+}
