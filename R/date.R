@@ -848,8 +848,8 @@ date_format <- function(x, ...) {
 #'
 #' @details
 #' Because a Date is considered to be a _naive_ type in clock, meaning that
-#' is currently has no implied time zone, using the `%z` or `%Z` format commands
-#' are not allowed and will result in `NA`.
+#' it currently has no implied time zone, using the `%z` or `%Z` format commands
+#' is not allowed and will result in `NA`.
 #'
 #' @inheritParams ellipsis::dots_empty
 #' @inheritParams format.clock_zoned_time

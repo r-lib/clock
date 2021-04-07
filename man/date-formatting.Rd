@@ -142,8 +142,8 @@ If \code{format} is \code{NULL}, a default format of \code{"\%Y-\%m-\%d"} is use
 }
 \details{
 Because a Date is considered to be a \emph{naive} type in clock, meaning that
-is currently has no implied time zone, using the \verb{\%z} or \verb{\%Z} format commands
-are not allowed and will result in \code{NA}.
+it currently has no implied time zone, using the \verb{\%z} or \verb{\%Z} format commands
+is not allowed and will result in \code{NA}.
 }
 \examples{
 x <- as.Date("2019-01-01")
