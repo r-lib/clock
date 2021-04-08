@@ -28,22 +28,6 @@ test_that("`max` defaults to `getOption('max.print')` but can be overridden", {
 })
 
 # ------------------------------------------------------------------------------
-# format()
-
-test_that("naive-time doesn't allow `%z` or `%Z`", {
-  x <- naive_seconds(0)
-  expect_identical(format(x, format = "%z"), NA_character_)
-  expect_identical(format(x, format = "%Z"), NA_character_)
-})
-
-test_that("sys-time allows `%z` and `%Z`", {
-  x <- sys_seconds(0)
-  expect_identical(format(x, format = "%z"), "+0000")
-  expect_identical(format(x, format = "%Ez"), "+00:00")
-  expect_identical(format(x, format = "%Z"), "UTC")
-})
-
-# ------------------------------------------------------------------------------
 # time_point_floor() / _ceiling() / _round()
 
 test_that("can round to less precise precision", {

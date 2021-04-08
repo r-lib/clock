@@ -121,6 +121,16 @@ test_that("failure to parse throws a warning", {
 })
 
 # ------------------------------------------------------------------------------
+# format()
+
+test_that("allows `%z` and `%Z`", {
+  x <- sys_seconds(0)
+  expect_identical(format(x, format = "%z"), "+0000")
+  expect_identical(format(x, format = "%Ez"), "+00:00")
+  expect_identical(format(x, format = "%Z"), "UTC")
+})
+
+# ------------------------------------------------------------------------------
 # as_zoned_time()
 
 test_that("empty dots are checked", {
