@@ -312,6 +312,24 @@ test_that("parsing NA returns NA", {
   )
 })
 
+test_that("parsing doesn't round parsed components more precise than the resulting container (#207)", {
+  # With year-month-day, only the year/month/day components are extracted at the end,
+  # the hour component isn't touched
+  expect_identical(
+    year_month_day_parse("2019-12-31 12", format = "%Y-%m-%d %H", precision = "day"),
+    year_month_day(2019, 12, 31)
+  )
+})
+
+test_that("parsing rounds parsed subsecond components more precise than the resulting container (#207)", {
+  # Requesting `%7S` parses the full `01.1238`, and the `1238` portion is rounded up immediately
+  # after parsing the `%S` command, not at the very end
+  expect_identical(
+    year_month_day_parse("2019-01-01 01:01:01.1238", format = "%Y-%m-%d %H:%M:%7S", precision = "millisecond"),
+    year_month_day(2019, 1, 1, 1, 1, 1, 124, subsecond_precision = "millisecond")
+  )
+})
+
 # ------------------------------------------------------------------------------
 # calendar_group()
 

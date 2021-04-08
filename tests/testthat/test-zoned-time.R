@@ -230,6 +230,34 @@ test_that("`x` is translated to UTF-8", {
   )
 })
 
+test_that("leftover subseconds result in a parse failure", {
+  x <- "2019-01-01 01:01:01.1238-05:00[America/New_York]"
+
+  # This is fine
+  expect_identical(
+    zoned_time_parse_complete(x, precision = "microsecond"),
+    as_zoned_time(as_naive_time(year_month_day(2019, 1, 1, 1, 1, 1, 123800, subsecond_precision = "microsecond")), "America/New_York")
+  )
+
+  # This defaults to `%6S`, which parses `01.123` then stops,
+  # leaving a `8` for `%z` to parse, resulting in a failure. Because everything
+  # fails, we get a UTC time zone.
+  expect_identical(
+    expect_warning(zoned_time_parse_complete(x, precision = "millisecond"), class = "clock_warning_parse_failures"),
+    as_zoned_time(naive_seconds(NA) + duration_milliseconds(NA), zone = "UTC")
+  )
+})
+
+test_that("parsing rounds parsed subsecond components more precise than the resulting container (#207)", {
+  x <- "2019-01-01 01:01:01.1238-05:00[America/New_York]"
+
+  # Requesting `%7S` parses the full `01.1238`, and the `1238` portion is rounded up
+  expect_identical(
+    zoned_time_parse_complete(x, precision = "millisecond", format = "%Y-%m-%d %H:%M:%7S%Ez[%Z]"),
+    as_zoned_time(as_naive_time(year_month_day(2019, 1, 1, 1, 1, 1, 124, subsecond_precision = "millisecond")), "America/New_York")
+  )
+})
+
 # ------------------------------------------------------------------------------
 # zoned_time_parse_abbrev()
 

@@ -187,6 +187,10 @@ The default \code{format} used is \code{"\%Y-\%m-\%d"}.
 \details{
 \emph{\code{date_parse()} ignores both the \verb{\%z} and \verb{\%Z} commands,} as clock treats
 Date as a \emph{naive} type, with a yet-to-be-specified time zone.
+
+If parsing a string with sub-daily components, such as hours, minutes or
+seconds, note that the conversion to Date will round those components to
+the nearest day. See the examples for a way to control this.
 }
 \examples{
 date_parse("2020-01-01")
@@ -206,4 +210,27 @@ date_parse(
 # A neat feature of `date_parse()` is the ability to parse
 # the ISO year-week-day format
 date_parse("2020-W01-2", format = "\%G-W\%V-\%u")
+
+# ---------------------------------------------------------------------------
+# Rounding of sub-daily components
+
+# Note that rounding a string with time components will round them to the
+# nearest day if you try and parse them
+x <- c("2019-01-01 11", "2019-01-01 12")
+
+# Hour 12 rounds up to the next day
+date_parse(x, format = "\%Y-\%m-\%d \%H")
+
+# If you don't like this, one option is to just not parse the time component
+date_parse(x, format = "\%Y-\%m-\%d")
+
+# A more general option is to parse the full string as a naive-time,
+# then round manually
+nt <- naive_time_parse(x, format = "\%Y-\%m-\%d \%H", precision = "hour")
+nt
+
+nt <- time_point_floor(nt, "day")
+nt
+
+as.Date(nt)
 }
