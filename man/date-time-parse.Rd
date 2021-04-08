@@ -314,6 +314,10 @@ The default \code{format} used is \code{"\%Y-\%m-\%d \%H:\%M:\%S \%Z"}.
 If \code{date_time_parse_complete()} is given input that is length zero, all
 \code{NA}s, or completely fails to parse, then no time zone will be able to be
 determined. In that case, the result will use \code{"UTC"}.
+
+If manually parsing sub-second components, be aware that they will be
+automatically rounded to the nearest second when converting them to POSIXct.
+See the examples for a way to control this.
 }
 \examples{
 # Parse with a known `zone`, even though that information isn't in the string
@@ -361,4 +365,28 @@ abbrev_times <- c(
   "1970-10-25 01:00:00 EST"
 )
 date_time_parse_abbrev(abbrev_times, "America/New_York")
+
+# ---------------------------------------------------------------------------
+# Rounding of sub-second components
+
+# Generally, if you have a string with sub-second components, they will
+# be ignored when parsing into a date-time
+x <- c("2019-01-01 00:00:01.1", "2019-01-01 00:00:01.7")
+
+date_time_parse(x, "America/New_York")
+
+# If you manually try and parse those sub-second components with `\%4S` to
+# read the 2 seconds, 1 decimal point, and 1 fractional component, the
+# fractional component will be rounded to the nearest second
+date_time_parse(x, "America/New_York", format = "\%Y-\%m-\%d \%H:\%M:\%4S")
+
+# If you don't like this, parse the full string as a naive-time,
+# then round manually and convert to a POSIXct
+nt <- naive_time_parse(x, format = "\%Y-\%m-\%d \%H:\%M:\%S", precision = "millisecond")
+nt
+
+nt <- time_point_floor(nt, "second")
+nt
+
+as.POSIXct(nt, "America/New_York")
 }
