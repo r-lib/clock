@@ -255,9 +255,7 @@ test_that("`%z` and `%Z` commands are ignored", {
   )
 })
 
-# TODO: We probably don't want this:
-# https://github.com/HowardHinnant/date/issues/657
-test_that("parsing into a less precise time point rounds rather than floors", {
+test_that("parsing into a date if you requested to parse time components rounds the time (#207)", {
   expect_identical(
     date_parse("2019-12-31 11:59:59", format = "%Y-%m-%d %H:%M:%S"),
     as.Date("2019-12-31")
