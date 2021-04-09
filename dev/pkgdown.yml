@@ -6,7 +6,7 @@ articles:
   clock: clock.html
   faq: faq.html
   recipes: recipes.html
-last_built: 2021-04-08T16:51Z
+last_built: 2021-04-09T21:44Z
 urls:
   reference: https://clock.r-lib.org/reference
   article: https://clock.r-lib.org/articles
