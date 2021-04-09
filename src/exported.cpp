@@ -5,24 +5,16 @@
 
 // -----------------------------------------------------------------------------
 
-struct rclock::time_zone
+const date::time_zone*
 clock_zone_name_load(const std::string& zone_name) {
-  const date::time_zone* p_time_zone = zone_name_load(zone_name);
-
-  const struct rclock::time_zone zone {
-    static_cast<const void*>(p_time_zone)
-  };
-
-  return zone;
+  return zone_name_load(zone_name);
 }
 
 // -----------------------------------------------------------------------------
 
 struct rclock::sys_result
 clock_local_to_sys(const date::local_seconds& lt,
-                   const struct rclock::time_zone& zone) {
-  const date::time_zone* p_time_zone = static_cast<const date::time_zone*>(zone.p_time_zone);
-
+                   const date::time_zone* p_time_zone) {
   const date::local_info info = p_time_zone->get_info(lt);
 
   struct rclock::sys_result out;

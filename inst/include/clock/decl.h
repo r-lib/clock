@@ -7,10 +7,6 @@
 
 namespace rclock {
 
-struct time_zone {
-  const void* p_time_zone;
-};
-
 struct sys_result {
   date::sys_seconds st;
   bool ok;
