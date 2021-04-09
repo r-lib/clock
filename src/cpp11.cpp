@@ -1139,8 +1139,11 @@ static const R_CallMethodDef CallEntries[] = {
 };
 }
 
+void export_clock_callables(DllInfo* dll);
+
 extern "C" void R_init_clock(DllInfo* dll){
   R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
   R_useDynamicSymbols(dll, FALSE);
+  export_clock_callables(dll);
   R_forceSymbols(dll, TRUE);
 }
