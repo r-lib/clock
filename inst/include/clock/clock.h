@@ -6,23 +6,11 @@
 #include <chrono>
 #include <string>
 
+#include <date/date.h>
+
 #include "decl.h"
 
 namespace rclock {
-
-static
-inline
-std::chrono::seconds
-build(short year,
-      unsigned month,
-      unsigned day,
-      unsigned hour,
-      unsigned minute,
-      unsigned second) {
-  typedef std::chrono::seconds fn_t(short, unsigned, unsigned, unsigned, unsigned, unsigned);
-  static fn_t *fn = (fn_t*) R_GetCCallable("clock", "clock_build");
-  return fn(year, month, day, hour, minute, second);
-}
 
 static
 inline
@@ -36,11 +24,11 @@ zone_name_load(const std::string& zone_name) {
 static
 inline
 struct sys_result
-naive_to_sys(const std::chrono::seconds& naive,
+local_to_sys(const date::local_seconds& lt,
              const struct time_zone& zone) {
-  typedef struct sys_result fn_t(const std::chrono::seconds&, const struct time_zone&);
-  static fn_t *fn = (fn_t*) R_GetCCallable("clock", "clock_naive_to_sys");
-  return fn(naive, zone);
+  typedef struct sys_result fn_t(const date::local_seconds&, const struct time_zone&);
+  static fn_t *fn = (fn_t*) R_GetCCallable("clock", "clock_local_to_sys");
+  return fn(lt, zone);
 }
 
 } // namespace rclock
