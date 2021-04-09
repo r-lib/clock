@@ -1,13 +1,12 @@
 #include "clock.h"
-#include "zone.h"
 #include "clock/decl.h"
 #include <R_ext/Rdynload.h> // For DllInfo on R 3.3
 
 // -----------------------------------------------------------------------------
 
 const date::time_zone*
-clock_zone_name_load(const std::string& zone_name) {
-  return zone_name_load(zone_name);
+clock_locate_zone(const std::string& zone_name) {
+  return date::locate_zone(zone_name);
 }
 
 // -----------------------------------------------------------------------------
@@ -45,6 +44,6 @@ clock_local_to_sys(const date::local_seconds& lt,
 
 [[cpp11::init]]
 void export_clock_callables(DllInfo* dll){
-  R_RegisterCCallable("clock", "clock_zone_name_load", (DL_FUNC)clock_zone_name_load);
-  R_RegisterCCallable("clock", "clock_local_to_sys",   (DL_FUNC)clock_local_to_sys);
+  R_RegisterCCallable("clock", "clock_locate_zone",  (DL_FUNC)clock_locate_zone);
+  R_RegisterCCallable("clock", "clock_local_to_sys", (DL_FUNC)clock_local_to_sys);
 }

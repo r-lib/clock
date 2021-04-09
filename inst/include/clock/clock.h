@@ -16,9 +16,9 @@ namespace rclock {
 static
 inline
 const date::time_zone*
-zone_name_load(const std::string& zone_name) {
+locate_zone(const std::string& zone_name) {
   typedef const date::time_zone* fn_t(const std::string&);
-  static fn_t *fn = (fn_t*) R_GetCCallable("clock", "clock_zone_name_load");
+  static fn_t *fn = (fn_t*) R_GetCCallable("clock", "clock_locate_zone");
   return fn(zone_name);
 }
 
