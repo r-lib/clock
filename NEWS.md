@@ -1,4 +1,4 @@
-# clock (development version)
+# clock 0.2.0
 
 * clock now interprets R's Date class as _naive-time_ rather than _sys-time_.
   This means that it no longer assumes that Date has an implied time zone of
@@ -30,7 +30,9 @@
 * New `as_date()` and `as_date_time()` for converting to Date and POSIXct
   respectively. Unlike `as.Date()` and `as.POSIXct()`, these functions always
   treat Date as a naive-time type, which results in more consistent and
-  intuitive conversions (#209).
+  intuitive conversions. Note that `as_date()` does conflict with
+  `lubridate::as_date()`, and the lubridate version handles Dates differently
+  (#209).
 
 * Added two new convenient helpers (#197):
 
