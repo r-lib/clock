@@ -24,6 +24,8 @@ reference:
   - date_weekday_factor
   - date_month_factor
   - date_leap_year
+  - as_date
+  - as_date_time
   - get_year.Date
   - get_year.POSIXt
   - set_year.Date

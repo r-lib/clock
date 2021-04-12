@@ -27,6 +27,11 @@
     a direct conversion impossible, `nonexistent` and `ambiguous` can be used
     to resolve any issues.
 
+* New `as_date()` and `as_date_time()` for converting to Date and POSIXct
+  respectively. Unlike `as.Date()` and `as.POSIXct()`, these functions always
+  treat Date as a naive-time type, which results in more consistent and
+  intuitive conversions (#209).
+
 * Added two new convenient helpers (#197):
 
   * `date_today()` for getting the current date (Date)

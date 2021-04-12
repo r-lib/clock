@@ -127,6 +127,72 @@ as.Date.clock_zoned_time <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Convert to a date
+#'
+#' @description
+#' `as_date()` is a generic function that converts its input to a date (Date).
+#'
+#' There are methods for converting date-times (POSIXct), calendars,
+#' time points, and zoned-times to dates.
+#'
+#' @details
+#' Note that clock always assumes that R's Date class is naive, so converting
+#' a POSIXct to a Date will always retain the printed year, month, and day
+#' value.
+#'
+#' @param x `[vector]`
+#'
+#'   A vector.
+#'
+#' @export
+#' @examples
+#' x <- date_time_parse("2019-01-01 23:02:03", "America/New_York")
+#'
+#' # R's `as.Date.POSIXct()` method defaults to changing the printed time
+#' # to UTC before converting, which can result in odd conversions like this:
+#' as.Date(x)
+#'
+#' # `as_date()` will never change the printed time before converting
+#' as_date(x)
+#'
+#' # Can also convert from other clock types
+#' as_date(year_month_day(2019, 2, 5))
+as_date <- function(x) {
+  UseMethod("as_date")
+}
+
+#' @rdname as_date
+#' @export
+as_date.Date <- function(x) {
+  date_standardize(x)
+}
+
+#' @rdname as_date
+#' @export
+as_date.POSIXt <- function(x) {
+  as.Date(as_naive_time(x))
+}
+
+#' @rdname as_date
+#' @export
+as_date.clock_calendar <- function(x) {
+  as.Date(x)
+}
+
+#' @rdname as_date
+#' @export
+as_date.clock_time_point <- function(x) {
+  as.Date(x)
+}
+
+#' @rdname as_date
+#' @export
+as_date.clock_zoned_time <- function(x) {
+  as.Date(x)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Getters: date
 #'
 #' @description
