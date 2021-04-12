@@ -48,8 +48,10 @@
 
 <meta property="og:title" content="Convert to a zoned-time from a date — as-zoned-time-Date" />
 <meta property="og:description" content="This is a Date method for the as_zoned_time() generic.
-Since R assumes that Dates are UTC, converting to a zoned-time returns
-a zoned-time with a UTC time zone. There is no zone argument." />
+clock assumes that Dates are naive date-time types. Like naive-times, they
+have a yet-to-be-specified time zone. This method allows you to specify that
+time zone, keeping the printed time. If possible, the time will be set to
+midnight (see Details for the rare case in which this is not possible)." />
 <meta property="og:image" content="https://clock.r-lib.org/logo.png" />
 
 
@@ -82,7 +84,7 @@ a zoned-time with a UTC time zone. There is no zone argument." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -118,6 +120,23 @@ a zoned-time with a UTC time zone. There is no zone argument." />
     </li>
   </ul>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Releases</li>
+    <li>
+      <a href="https://www.tidyverse.org/blog/2021/03/clock-0-1-0/">Version 0.1.0</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="../news/index.html">Changelog</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -146,12 +165,14 @@ a zoned-time with a UTC time zone. There is no zone argument." />
 
     <div class="ref-description">
     <p>This is a Date method for the <code><a href='as_zoned_time.html'>as_zoned_time()</a></code> generic.</p>
-<p>Since R assumes that Dates are UTC, converting to a zoned-time returns
-a zoned-time with a UTC time zone. There is no <code>zone</code> argument.</p>
+<p>clock assumes that Dates are <em>naive</em> date-time types. Like naive-times, they
+have a yet-to-be-specified time zone. This method allows you to specify that
+time zone, keeping the printed time. If possible, the time will be set to
+midnight (see Details for the rare case in which this is not possible).</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for Date</span>
-<span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>zone</span>, <span class='va'>...</span>, nonexistent <span class='op'>=</span> <span class='cn'>NULL</span>, ambiguous <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -162,20 +183,107 @@ a zoned-time with a UTC time zone. There is no <code>zone</code> argument.</p>
 <p>A Date.</p></td>
     </tr>
     <tr>
+      <th>zone</th>
+      <td><p><code>[character(1)]</code></p>
+<p>The zone to convert to.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>These dots are for future extensions and must be empty.</p></td>
+    </tr>
+    <tr>
+      <th>nonexistent</th>
+      <td><p><code>[character / NULL]</code></p>
+<p>One of the following nonexistent time resolution strategies, allowed to be
+either length 1, or the same length as the input:</p><ul>
+<li><p><code>"roll-forward"</code>: The next valid instant in time.</p></li>
+<li><p><code>"roll-backward"</code>: The previous valid instant in time.</p></li>
+<li><p><code>"shift-forward"</code>: Shift the nonexistent time forward by the size of
+the daylight saving time gap.</p></li>
+<li><p><code>"shift-backward</code>: Shift the nonexistent time backward by the size of
+the daylight saving time gap.</p></li>
+<li><p><code>"NA"</code>: Replace nonexistent times with <code>NA</code>.</p></li>
+<li><p><code>"error"</code>: Error on nonexistent times.</p></li>
+</ul>
+
+<p>Using either <code>"roll-forward"</code> or <code>"roll-backward"</code> is generally
+recommended over shifting, as these two strategies maintain the
+<em>relative ordering</em> between elements of the input.</p>
+<p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
+<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>nonexistent</code> must be supplied
+and cannot be <code>NULL</code>. This is a convenient way to make production code
+robust to nonexistent times.</p></td>
+    </tr>
+    <tr>
+      <th>ambiguous</th>
+      <td><p><code>[character / zoned_time / POSIXct / list(2) / NULL]</code></p>
+<p>One of the following ambiguous time resolution strategies, allowed to be
+either length 1, or the same length as the input:</p><ul>
+<li><p><code>"earliest"</code>: Of the two possible times, choose the earliest one.</p></li>
+<li><p><code>"latest"</code>: Of the two possible times, choose the latest one.</p></li>
+<li><p><code>"NA"</code>: Replace ambiguous times with <code>NA</code>.</p></li>
+<li><p><code>"error"</code>: Error on ambiguous times.</p></li>
+</ul>
+
+<p>Alternatively, <code>ambiguous</code> is allowed to be a zoned_time (or POSIXct) that
+is either length 1, or the same length as the input. If an ambiguous time
+is encountered, the zoned_time is consulted. If the zoned_time corresponds
+to a naive_time that is also ambiguous <em>and</em> uses the same daylight saving
+time transition point as the original ambiguous time, then the offset of
+the zoned_time is used to resolve the ambiguity. If the ambiguity cannot be
+resolved by consulting the zoned_time, then this method falls back to
+<code>NULL</code>.</p>
+<p>Finally, <code>ambiguous</code> is allowed to be a list of size 2, where the first
+element of the list is a zoned_time (as described above), and the second
+element of the list is an ambiguous time resolution strategy to use when
+the ambiguous time cannot be resolved by consulting the zoned_time.
+Specifying a zoned_time on its own is identical to <code>list(&lt;zoned_time&gt;, NULL)</code>.</p>
+<p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
+<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>ambiguous</code> must be supplied and
+cannot be <code>NULL</code>. Additionally, <code>ambiguous</code> cannot be specified as a
+zoned_time on its own, as this implies <code>NULL</code> for ambiguous times that the
+zoned_time cannot resolve. Instead, it must be specified as a list
+alongside an ambiguous time resolution strategy as described above. This is
+a convenient way to make production code robust to ambiguous times.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A zoned-time.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>In the rare instance that the specified time zone does not contain a
+date-time at midnight due to daylight saving time, <code>nonexistent</code> can be used
+to resolve the issue. Similarly, if there are two possible midnight times due
+to a daylight saving time fallback, <code>ambiguous</code> can be used.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span><span class='op'>)</span>
-<span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># The resulting zoned-times have the same printed time, but are in</span>
+<span class='co'># different time zones</span>
+<span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"UTC"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;UTC&gt;[1]&gt;
-#&gt; [1] "2019-01-01 00:00:00+00:00"</div></pre>
+#&gt; [1] "2019-01-01 00:00:00+00:00"</div><div class='input'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
+#&gt; [1] "2019-01-01 00:00:00-05:00"</div><div class='input'>
+<span class='co'># Converting Date -&gt; zoned-time is the same as naive-time -&gt; zoned-time</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
+#&gt; [1] "2019-01-01 00:00:00-05:00"</div><div class='input'>
+<span class='co'># In Asia/Beirut, there was a DST gap from</span>
+<span class='co'># 2021-03-27 23:59:59 -&gt; 2021-03-28 01:00:00,</span>
+<span class='co'># skipping the 0th hour entirely. This means there is no midnight value.</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2021-03-28"</span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"Asia/Beirut"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Error : Nonexistent time due to daylight saving time at location 1.
+#&gt; <span style='color: #0000BB;'>ℹ</span><span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</div><div class='input'>
+<span class='co'># To resolve this, set a `nonexistent` time resolution strategy</span>
+<span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"Asia/Beirut"</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-forward"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;Asia/Beirut&gt;[1]&gt;
+#&gt; [1] "2021-03-28 01:00:00+03:00"</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

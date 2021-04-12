@@ -25,6 +25,12 @@
     <loc>https://clock.r-lib.org/reference/as-zoned-time-sys-time.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/as_date.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/reference/as_date_time.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/as_duration.html</loc>
   </url>
   <url>
@@ -106,6 +112,9 @@
     <loc>https://clock.r-lib.org/reference/date-and-date-time-shifting.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/date-formatting.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/date-group.html</loc>
   </url>
   <url>
@@ -116,6 +125,9 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/date-time-parse.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/reference/date-today.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/date-zone.html</loc>
@@ -221,6 +233,9 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/posixt-arithmetic.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/reference/posixt-formatting.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/posixt-getters.html</loc>

@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -71,6 +71,23 @@
     </li>
     <li>
       <a href="../../articles/recipes.html">Examples and Recipes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li class="dropdown-header">Releases</li>
+    <li>
+      <a href="https://www.tidyverse.org/blog/2021/03/clock-0-1-0/">Version 0.1.0</a>
+    </li>
+    <li class="divider">
+    <li>
+      <a href="../../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
@@ -165,7 +182,8 @@
 <p>In clock, invalid dates must be handled explicitly as they occur. The default behavior raises an error.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; Error: Invalid date found at location 2. Resolve invalid date issues by specifying the `invalid` argument.</span></code></pre></div>
+<span class="co">#&gt; Error: Invalid date found at location 2.</span>
+<span class="co">#&gt; ℹ Resolve invalid date issues by specifying the `invalid` argument.</span></code></pre></div>
 <p>You can handle these issues with an <em>invalid date resolution strategy</em>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Previous moment in time</span>
@@ -286,7 +304,8 @@
 <p>clock allows you to do all of these things. By default, nonexistent times result in an error.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 2. Resolve nonexistent time issues by specifying the `nonexistent` argument.</span></code></pre></div>
+<span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 2.</span>
+<span class="co">#&gt; ℹ Resolve nonexistent time issues by specifying the `nonexistent` argument.</span></code></pre></div>
 <p>Solve these issues with a <em>nonexistent time resolution strategy</em>:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 02:30:00 -&gt; 03:00:00</span>
@@ -343,7 +362,8 @@
   <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="../../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.</span>
+<span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 1.</span>
+<span class="co">#&gt; ℹ Resolve nonexistent time issues by specifying the `nonexistent` argument.</span>
 
 <span class="va">x</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -373,7 +393,8 @@
 
 <span class="co"># Which of the two 1 o'clocks are we talking about? It is ambiguous!</span>
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; Error: Ambiguous time due to daylight saving time at location 1. Resolve ambiguous time issues by specifying the `ambiguous` argument.</span></code></pre></div>
+<span class="co">#&gt; Error: Ambiguous time due to daylight saving time at location 1.</span>
+<span class="co">#&gt; ℹ Resolve ambiguous time issues by specifying the `ambiguous` argument.</span></code></pre></div>
 <p>You can handle these by setting an <em>ambiguous time resolution strategy</em>:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># The 1 o'clock that is earliest in the timeline</span>
@@ -433,7 +454,8 @@
 <code class="sourceCode R"><span class="va">x</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="../../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error: Ambiguous time due to daylight saving time at location 2. Resolve ambiguous time issues by specifying the `ambiguous` argument.</span></code></pre></div>
+<span class="co">#&gt; Error: Ambiguous time due to daylight saving time at location 2.</span>
+<span class="co">#&gt; ℹ Resolve ambiguous time issues by specifying the `ambiguous` argument.</span></code></pre></div>
 <p><code><a href="../../reference/date-and-date-time-rounding.html">date_floor()</a></code> works by flooring while in naive-time, but somehow this still produces the results you probably expected, with the two 1 o’clock hours being kept in separate groups:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/date-and-date-time-rounding.html">date_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"hour"</span><span class="op">)</span>
@@ -453,7 +475,8 @@
 <span class="co">#&gt; [1] "2020-11-01 01:00:00 EDT"</span>
 
 <span class="fu"><a href="../../reference/date-and-date-time-rounding.html">date_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"hour"</span>, n <span class="op">=</span> <span class="fl">2</span>, origin <span class="op">=</span> <span class="va">origin</span><span class="op">)</span>
-<span class="co">#&gt; Error: Ambiguous time due to daylight saving time at location 4. Resolve ambiguous time issues by specifying the `ambiguous` argument.</span></code></pre></div>
+<span class="co">#&gt; Error: Ambiguous time due to daylight saving time at location 4.</span>
+<span class="co">#&gt; ℹ Resolve ambiguous time issues by specifying the `ambiguous` argument.</span></code></pre></div>
 <p>It seems that we have an ambiguous time issue at location 4, the <code>02:30:00</code> time. Flooring this to every two hours with an origin of 1 o’clock places it in the <code>01:00:00</code> group, but trying to convert that back to POSIXct fails. Unlike when flooring by a single hour, here we have an original time that would <em>not</em> have been considered ambiguous if converted to naive-time and back (bullet point 1 above). This implies that we cannot use information from <code>ambiguous</code> to resolve this new ambiguity.</p>
 <p>To solve this, ideally we’d be able to manually fix the ambiguity that <code>02:30:00</code> introduced while maintaining the automatic ambiguity resolution behavior for the <code>01:30:00 EDT</code> and <code>01:30:00 EST</code> date-times. To handle both of these issues at once, you can supply a list for <code>ambiguous</code> where the first element is <code>x</code> and the second is an ambiguous time resolution strategy to use when <code>x</code> isn’t enough to solve the ambiguity.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
@@ -480,7 +503,8 @@
 
 <span class="co"># Got new production data. Oh no!</span>
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; Error: Invalid date found at location 2. Resolve invalid date issues by specifying the `invalid` argument.</span></code></pre></div>
+<span class="co">#&gt; Error: Invalid date found at location 2.</span>
+<span class="co">#&gt; ℹ Resolve invalid date issues by specifying the `invalid` argument.</span></code></pre></div>
 <p>To balance the usefulness of clock in interactive development with the strict requirements of production, you can set the <code>clock.strict</code> global option to <code>TRUE</code> to turn <code>invalid</code>, <code>nonexistent</code>, and <code>ambiguous</code> from optional arguments into required ones.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rlang.r-lib.org/reference/local_options.html">with_options</a></span><span class="op">(</span>clock.strict <span class="op">=</span> <span class="cn">TRUE</span>, .expr <span class="op">=</span> <span class="op">{</span>
@@ -541,7 +565,8 @@
 <span class="co">#&gt; [1] "2020-11-01 00:30:00" "2020-11-01 01:30:00"</span>
 
 <span class="fu"><a href="../../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
-<span class="co">#&gt; Error: Ambiguous time due to daylight saving time at location 2. Resolve ambiguous time issues by specifying the `ambiguous` argument.</span>
+<span class="co">#&gt; Error: Ambiguous time due to daylight saving time at location 2.</span>
+<span class="co">#&gt; ℹ Resolve ambiguous time issues by specifying the `ambiguous` argument.</span>
 
 <span class="fu"><a href="../../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"America/New_York"</span>, ambiguous <span class="op">=</span> <span class="st">"earliest"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;</span>

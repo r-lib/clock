@@ -48,7 +48,8 @@
 
 <meta property="og:title" content="Convert to a duration — as_duration" />
 <meta property="og:description" content="You generally convert to a duration from either a sys-time or a naive-time.
-The precision of the input is retained in the returned duration." />
+The precision of the input is retained in the returned duration.
+To round an existing duration to another precision, see duration_floor()." />
 <meta property="og:image" content="https://clock.r-lib.org/logo.png" />
 
 
@@ -81,7 +82,7 @@ The precision of the input is retained in the returned duration." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -117,6 +118,23 @@ The precision of the input is retained in the returned duration." />
     </li>
   </ul>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Releases</li>
+    <li>
+      <a href="https://www.tidyverse.org/blog/2021/03/clock-0-1-0/">Version 0.1.0</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="../news/index.html">Changelog</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -146,6 +164,7 @@ The precision of the input is retained in the returned duration." />
     <div class="ref-description">
     <p>You generally convert to a duration from either a sys-time or a naive-time.
 The precision of the input is retained in the returned duration.</p>
+<p>To round an existing duration to another precision, see <code><a href='duration-rounding.html'>duration_floor()</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>as_duration</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>

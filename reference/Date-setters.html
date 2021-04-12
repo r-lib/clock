@@ -87,7 +87,7 @@ of [1, 31].
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -120,6 +120,23 @@ of [1, 31].
     </li>
     <li>
       <a href="../articles/recipes.html">Examples and Recipes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Releases</li>
+    <li>
+      <a href="https://www.tidyverse.org/blog/2021/03/clock-0-1-0/">Version 0.1.0</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
@@ -231,13 +248,14 @@ to invalid dates.</p></td>
 <span class='co'># You cannot set a Date to an invalid day like you can with</span>
 <span class='co'># a year-month-day. Instead, the default strategy is to error.</span>
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>31</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Error : Invalid date found at location 1. Resolve invalid date issues by specifying the `invalid` argument.</div><div class='input'><span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='fu'><a href='as_year_month_day.html'>as_year_month_day</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, <span class='fl'>31</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Error : Invalid date found at location 1.
+#&gt; <span style='color: #0000BB;'>ℹ</span><span> Resolve invalid date issues by specifying the `invalid` argument.</div><div class='input'><span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='fu'><a href='as_year_month_day.html'>as_year_month_day</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, <span class='fl'>31</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[1]&gt;
 #&gt; [1] "2019-02-31"</div><div class='input'>
 <span class='co'># You can resolve these issues while setting the day by specifying</span>
 <span class='co'># an invalid date resolution strategy with `invalid`</span>
 <span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>31</span>, invalid <span class='op'>=</span> <span class='st'>"previous"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2019-02-28"</div></pre>
+</div><div class='output co'>#&gt; [1] "2019-02-28"</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

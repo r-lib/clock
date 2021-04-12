@@ -49,7 +49,10 @@
 <meta property="og:title" content="Formatting: zoned-time — format.clock_zoned_time" />
 <meta property="og:description" content="This is a zoned-time method for the format() generic.
 This function allows you to format a zoned-time using a flexible format
-string." />
+string.
+If format is NULL, a default format of &quot;%Y-%m-%d %H:%M:%S%Ez[%Z]&quot; is
+used. This maximizes the chance for constructing a string that can be
+reproducibly parsed into a valid zoned-time." />
 <meta property="og:image" content="https://clock.r-lib.org/logo.png" />
 
 
@@ -82,7 +85,7 @@ string." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -118,6 +121,23 @@ string." />
     </li>
   </ul>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Releases</li>
+    <li>
+      <a href="https://www.tidyverse.org/blog/2021/03/clock-0-1-0/">Version 0.1.0</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="../news/index.html">Changelog</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -148,6 +168,9 @@ string." />
     <p>This is a zoned-time method for the <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code> generic.</p>
 <p>This function allows you to format a zoned-time using a flexible <code>format</code>
 string.</p>
+<p>If <code>format</code> is <code>NULL</code>, a default format of <code>"%Y-%m-%d %H:%M:%S%Ez[%Z]"</code> is
+used. This maximizes the chance for constructing a string that can be
+reproducibly parsed into a valid zoned-time.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for clock_zoned_time</span>
@@ -170,7 +193,9 @@ with usage of the <code><a href='https://rdrr.io/r/base/format.html'>format()</a
     <tr>
       <th>format</th>
       <td><p><code>[character(1) / NULL]</code></p>
-<p>A format string. A combination of:</p>
+<p>If <code>NULL</code>, a default format is used, which depends on the type of the
+input.</p>
+<p>Otherwise, a format string which is a combination of:</p>
 <p><strong>Year</strong></p><ul>
 <li><p><code>%C</code>: The year divided by 100 using floored division. If the result
 is a single decimal digit, it is prefixed with <code>0</code>.</p></li>
@@ -263,11 +288,7 @@ same as, <code>%a %b %d %H:%M:%S %Y</code>.</p></li>
 <li><p><code><a href='https://rdrr.io/r/base/Arithmetic.html'>%%</a></code>: A <code>%</code> character.</p></li>
 <li><p><code>%n</code>: A newline character.</p></li>
 <li><p><code>%t</code>: A horizontal-tab character.</p></li>
-</ul>
-
-<p>If <code>NULL</code>, a default format of <code>"%Y-%m-%d %H:%M:%S%Ez[%Z]"</code> is used.
-This maximizes the chance for constructing a string that can be
-reproducibly parsed into a valid zoned-time.</p></td>
+</ul></td>
     </tr>
     <tr>
       <th>locale</th>

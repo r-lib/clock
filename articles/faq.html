@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -71,6 +71,23 @@
     </li>
     <li>
       <a href="../articles/recipes.html">Examples and Recipes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li class="dropdown-header">Releases</li>
+    <li>
+      <a href="https://www.tidyverse.org/blog/2021/03/clock-0-1-0/">Version 0.1.0</a>
+    </li>
+    <li class="divider">
+    <li>
+      <a href="../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
@@ -228,7 +245,8 @@
   <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-arithmetic.html">add_minutes</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 1. Resolve nonexistent time issues by specifying the `nonexistent` argument.</span>
+<span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 1.</span>
+<span class="co">#&gt; ℹ Resolve nonexistent time issues by specifying the `nonexistent` argument.</span>
 
 <span class="va">x</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -337,11 +355,54 @@
 <code class="sourceCode R"><span class="co"># Reset old options</span>
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span><span class="va">old</span><span class="op">)</span></code></pre></div>
 </div>
+<div id="what-is-the-time-zone-of-date" class="section level2">
+<h2 class="hasAnchor">
+<a href="#what-is-the-time-zone-of-date" class="anchor"></a>What is the time zone of Date?</h2>
+<p>In clock, R’s native Date type is actually assumed to be <em>naive</em>, i.e. clock assumes that there is a yet-to-be-specified time zone, like with a naive-time. The other possibility is to assume that Date is UTC (like sys-time), but it is often more intuitive for Dates to be naive when manipulating them and converting them to zoned-time or POSIXct.</p>
+<p>R does not consistently treat Dates as naive or UTC. Instead it switches between them, depending on the function.</p>
+<p>For example, the Date method of <code><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct()</a></code> does not expose a <code>tz</code> argument. Instead, it assumes that Date is UTC, and that the result should be shown in local time (as defined by <code><a href="https://rdrr.io/r/base/timezones.html">Sys.timezone()</a></code>). This often results in confusing behavior, such as:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2019-01-01"</span><span class="op">)</span>
+<span class="va">x</span>
+<span class="co">#&gt; [1] "2019-01-01"</span>
+
+<span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_timezone.html">with_timezone</a></span><span class="op">(</span><span class="st">"America/New_York"</span>, <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span><span class="op">)</span>
+<span class="co">#&gt; [1] "2018-12-31 19:00:00 EST"</span></code></pre></div>
+<p>With clock, converting to zoned-time from Date will always assume that Date is naive, which will keep the printed date (if possible) and show it in the <code>zone</code> you specified.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"UTC"</span><span class="op">)</span>
+<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;UTC&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] "2019-01-01 00:00:00+00:00"</span>
+
+<span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
+<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] "2019-01-01 00:00:00-05:00"</span>
+
+<span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"Europe/London"</span><span class="op">)</span>
+<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Europe/London&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] "2019-01-01 00:00:00+00:00"</span></code></pre></div>
+<p>On the other hand, the POSIXct method for <code><a href="https://rdrr.io/r/base/as.Date.html">as.Date()</a></code> treats Date as a naive type. This is probably what you want, and this example just shows the inconsistency. It is a bit hard to see this, because the <code>tz</code> argument of the method defaults to <code>"UTC"</code>, but if you set the <code>tz</code> argument to the zone of your input, it becomes clear:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-01 23:00:00"</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="va">x</span>, tz <span class="op">=</span> <span class="fu"><a href="../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] "2019-01-01"</span></code></pre></div>
+<p>If this assumed that Date was UTC, then it would have resulted in something like:</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">utc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date-zone.html">date_set_zone</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"UTC"</span><span class="op">)</span>
+<span class="va">utc</span>
+<span class="co">#&gt; [1] "2019-01-02 04:00:00 UTC"</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="va">utc</span>, tz <span class="op">=</span> <span class="fu"><a href="../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">utc</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] "2019-01-02"</span></code></pre></div>
+</div>
 <div id="why-doesnt-this-work-with-data-table" class="section level2">
 <h2 class="hasAnchor">
 <a href="#why-doesnt-this-work-with-data-table" class="anchor"></a>Why doesn’t this work with data.table?</h2>
 <p>While the entire high-level API for R’s native date (Date) and date-time (POSIXct) types will work fine with data.table, if you try to put any of the major clock types into a data.table, you will probably see this error message:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">data.table</span><span class="op">)</span>
 
 <span class="fu">data.table</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
@@ -349,7 +410,7 @@
 <span class="co">#&gt;   length of 'dimnames' [1] not equal to array extent</span></code></pre></div>
 <p>You won’t see this issue when working with data.frames or tibbles.</p>
 <p>As of now, data.table doesn’t support the concept of <em>record types</em>. These are implemented as a list of vectors of equal length, that together represent a single idea. The <code><a href="https://rdrr.io/r/base/length.html">length()</a></code> of these types should be taken from the length of the vectors, not the length of the list. If you unclass any of the clock types, you’ll see that they are implemented in this way:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ymdh</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">unclass</a></span><span class="op">(</span><span class="va">ymdh</span><span class="op">)</span>
@@ -381,7 +442,7 @@
 <span class="co">#&gt; [1] 1</span></code></pre></div>
 <p>I find that record types are extremely useful data structures for building upon R’s basic atomic types in ways that otherwise couldn’t be done. They allow calendar types to hold information about each component, enabling instant access for retrieval, modification, and grouping. They also allow calendars to represent invalid dates, such as <code>2019-02-31</code>, without any issues. Time points use them to store up to nanosecond precision date-times, which are really C++ <code>int64_t</code> types that don’t nicely fit into any R atomic type (I am aware of the bit64 package, and made a conscious decision to implement as a record type instead. This partly had to do with how missing values are handled, and how that integrates with vctrs).</p>
 <p>The idea of a record type actually isn’t new. R’s own POSIXlt type is a record type:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-01"</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
 
 <span class="co"># POSIXct is implemented as a double</span>
@@ -428,7 +489,7 @@
 <span class="co">#&gt; attr(,"tzone")</span>
 <span class="co">#&gt; [1] "America/New_York" "EST"              "EDT"</span></code></pre></div>
 <p>data.table doesn’t truly support POSIXlt either. Instead, you get a warning about them converting it to a POSIXct. This is pretty reasonable considering their focus on performance.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">data.table</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXlt</a></span><span class="op">(</span><span class="st">"2019-01-01"</span>, <span class="st">"America/New_York"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;             x</span>
 <span class="co">#&gt; 1: 2019-01-01</span>
