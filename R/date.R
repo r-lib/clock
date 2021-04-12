@@ -135,10 +135,17 @@ as.Date.clock_zoned_time <- function(x, ...) {
 #' There are methods for converting date-times (POSIXct), calendars,
 #' time points, and zoned-times to dates.
 #'
+#' For converting to a date-time, see [as_date_time()].
+#'
 #' @details
 #' Note that clock always assumes that R's Date class is naive, so converting
 #' a POSIXct to a Date will always retain the printed year, month, and day
 #' value.
+#'
+#' This is not a drop-in replacement for `as.Date()`, as it only converts a
+#' limited set of types to Date. For parsing characters as dates, see
+#' [date_parse()]. For converting numerics to dates, see [vctrs::new_date()] or
+#' continue to use `as.Date()`.
 #'
 #' @param x `[vector]`
 #'

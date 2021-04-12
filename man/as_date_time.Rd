@@ -101,6 +101,8 @@ a convenient way to make production code robust to ambiguous times.}
 
 There are methods for converting dates (Date), calendars, time points, and
 zoned-times to date-times.
+
+For converting to a date, see \code{\link[=as_date]{as_date()}}.
 }
 \details{
 Note that clock always assumes that R's Date class is naive, so converting
@@ -109,6 +111,11 @@ and day. Where possible, the resulting time will be at midnight (\code{00:00:00}
 but in some rare cases this is not possible due to daylight saving time. If
 that issue ever arises, an error will be thrown, which can be resolved by
 explicitly supplying \code{nonexistent} or \code{ambiguous}.
+
+This is not a drop-in replacement for \code{as.POSIXct()}, as it only converts a
+limited set of types to POSIXct. For parsing characters as date-times, see
+\code{\link[=date_time_parse]{date_time_parse()}}. For converting numerics to date-times, see
+\code{\link[vctrs:new_date]{vctrs::new_datetime()}} or continue to use \code{as.POSIXct()}.
 }
 \examples{
 x <- as.Date("2019-01-01")

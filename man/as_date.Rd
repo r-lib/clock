@@ -31,11 +31,18 @@ A vector.}
 
 There are methods for converting date-times (POSIXct), calendars,
 time points, and zoned-times to dates.
+
+For converting to a date-time, see \code{\link[=as_date_time]{as_date_time()}}.
 }
 \details{
 Note that clock always assumes that R's Date class is naive, so converting
 a POSIXct to a Date will always retain the printed year, month, and day
 value.
+
+This is not a drop-in replacement for \code{as.Date()}, as it only converts a
+limited set of types to Date. For parsing characters as dates, see
+\code{\link[=date_parse]{date_parse()}}. For converting numerics to dates, see \code{\link[vctrs:new_date]{vctrs::new_date()}} or
+continue to use \code{as.Date()}.
 }
 \examples{
 x <- date_time_parse("2019-01-01 23:02:03", "America/New_York")

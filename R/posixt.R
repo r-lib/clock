@@ -167,6 +167,8 @@ as.POSIXlt.clock_zoned_time <- function(x, ...) {
 #' There are methods for converting dates (Date), calendars, time points, and
 #' zoned-times to date-times.
 #'
+#' For converting to a date, see [as_date()].
+#'
 #' @details
 #' Note that clock always assumes that R's Date class is naive, so converting
 #' a Date to a POSIXct will always attempt to retain the printed year, month,
@@ -174,6 +176,11 @@ as.POSIXlt.clock_zoned_time <- function(x, ...) {
 #' but in some rare cases this is not possible due to daylight saving time. If
 #' that issue ever arises, an error will be thrown, which can be resolved by
 #' explicitly supplying `nonexistent` or `ambiguous`.
+#'
+#' This is not a drop-in replacement for `as.POSIXct()`, as it only converts a
+#' limited set of types to POSIXct. For parsing characters as date-times, see
+#' [date_time_parse()]. For converting numerics to date-times, see
+#' [vctrs::new_datetime()] or continue to use `as.POSIXct()`.
 #'
 #' @inheritParams as-zoned-time-naive-time
 #'
