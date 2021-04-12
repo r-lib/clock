@@ -17,6 +17,8 @@ A duration with the same precision as \code{x}.
 \description{
 You generally convert to a duration from either a sys-time or a naive-time.
 The precision of the input is retained in the returned duration.
+
+To round an existing duration to another precision, see \code{\link[=duration_floor]{duration_floor()}}.
 }
 \examples{
 x <- as_sys_time(year_month_day(2019, 01, 01))

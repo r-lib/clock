@@ -272,8 +272,11 @@ vec_cast.clock_duration.clock_duration <- function(x, to, ...) {
 
 #' Convert to a duration
 #'
+#' @description
 #' You generally convert to a duration from either a sys-time or a naive-time.
 #' The precision of the input is retained in the returned duration.
+#'
+#' To round an existing duration to another precision, see [duration_floor()].
 #'
 #' @param x `[object]`
 #'
