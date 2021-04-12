@@ -158,6 +158,109 @@ as.POSIXlt.clock_zoned_time <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' Convert to a date-time
+#'
+#' @description
+#' `as_date_time()` is a generic function that converts its input to a date-time
+#' (POSIXct).
+#'
+#' There are methods for converting dates (Date), calendars, time points, and
+#' zoned-times to date-times.
+#'
+#' @details
+#' Note that clock always assumes that R's Date class is naive, so converting
+#' a Date to a POSIXct will always attempt to retain the printed year, month,
+#' and day. Where possible, the resulting time will be at midnight (`00:00:00`),
+#' but in some rare cases this is not possible due to daylight saving time. If
+#' that issue ever arises, an error will be thrown, which can be resolved by
+#' explicitly supplying `nonexistent` or `ambiguous`.
+#'
+#' @inheritParams as-zoned-time-naive-time
+#'
+#' @param x `[vector]`
+#'
+#'   A vector.
+#'
+#' @export
+#' @examples
+#' x <- as.Date("2019-01-01")
+#'
+#' # `as.POSIXct()` will always treat Date as UTC, but will show the result
+#' # of the conversion in your system time zone, which can be somewhat confusing
+#' if (rlang::is_installed("withr")) {
+#'   withr::with_timezone("UTC", print(as.POSIXct(x)))
+#'   withr::with_timezone("Europe/Paris", print(as.POSIXct(x)))
+#'   withr::with_timezone("America/New_York", print(as.POSIXct(x)))
+#' }
+#'
+#' # `as_date_time()` will treat Date as naive, which means that the original
+#' # printed date will attempt to be kept wherever possible, no matter the
+#' # time zone. The time will be set to midnight.
+#' as_date_time(x, "UTC")
+#' as_date_time(x, "Europe/Paris")
+#' as_date_time(x, "America/New_York")
+#'
+#' # In some rare cases, this is not possible.
+#' # For example, in Asia/Beirut, there was a DST gap from
+#' # 2021-03-27 23:59:59 -> 2021-03-28 01:00:00,
+#' # skipping the 0th hour entirely.
+#' x <- as.Date("2021-03-28")
+#' try(as_date_time(x, "Asia/Beirut"))
+#'
+#' # To resolve this, set a `nonexistent` time resolution strategy
+#' as_date_time(x, "Asia/Beirut", nonexistent = "roll-forward")
+#'
+#'
+#' # You can also convert to date-time from other clock types
+#' as_date_time(year_month_day(2019, 2, 3, 03), "America/New_York")
+as_date_time <- function(x, ...) {
+  UseMethod("as_date_time")
+}
+
+#' @rdname as_date_time
+#' @export
+as_date_time.POSIXt <- function(x, ...) {
+  check_dots_empty()
+  to_posixct(x)
+}
+
+#' @rdname as_date_time
+#' @export
+as_date_time.Date <- function(x, zone, ..., nonexistent = NULL, ambiguous = NULL) {
+  check_dots_empty()
+  as.POSIXct(as_naive_time(x), tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
+}
+
+#' @rdname as_date_time
+#' @export
+as_date_time.clock_calendar <- function(x, zone, ..., nonexistent = NULL, ambiguous = NULL) {
+  check_dots_empty()
+  as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
+}
+
+#' @rdname as_date_time
+#' @export
+as_date_time.clock_sys_time <- function(x, zone, ...) {
+  check_dots_empty()
+  as.POSIXct(x, tz = zone)
+}
+
+#' @rdname as_date_time
+#' @export
+as_date_time.clock_naive_time <- function(x, zone, ..., nonexistent = NULL, ambiguous = NULL) {
+  check_dots_empty()
+  as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
+}
+
+#' @rdname as_date_time
+#' @export
+as_date_time.clock_zoned_time <- function(x, ...) {
+  check_dots_empty()
+  as.POSIXct(x)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Getters: date-time
 #'
 #' @description

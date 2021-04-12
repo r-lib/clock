@@ -1,4 +1,91 @@
 # ------------------------------------------------------------------------------
+# as_date_time()
+
+test_that("can convert POSIXct -> POSIXct", {
+  x <- new_datetime(0, tzone = "America/New_York")
+  expect_identical(as_date_time(x), x)
+})
+
+test_that("can convert POSIXlt -> POSIXct", {
+  expect <- new_datetime(0, tzone = "America/New_York")
+  x <- as.POSIXlt(expect)
+  expect_identical(as_date_time(x), expect)
+})
+
+test_that("integer POSIXct are normalized to double", {
+  x <- 0L
+  class(x) <- c("POSIXct", "POSIXt")
+  attr(x, "tzone") <- "America/New_York"
+
+  expect <- new_datetime(0, tzone = "America/New_York")
+
+  expect_identical(as_date_time(x), expect)
+})
+
+test_that("can't accidentally supply `zone` to reinterpret date-time in new zone", {
+  expect_snapshot_error(as_date_time(new_datetime(0), zone = "America/New_York"))
+})
+
+test_that("can convert Date -> POSIXct (Date assumed to be naive)", {
+  x <- date_parse("2019-01-01")
+
+  expect_identical(as_date_time(x, "America/New_York"), date_time_parse("2019-01-01 00:00:00", "America/New_York"))
+  expect_identical(as_date_time(x, "Europe/London"), date_time_parse("2019-01-01 00:00:00", "Europe/London"))
+})
+
+test_that("can convert calendar -> POSIXct", {
+  zone <- "America/New_York"
+  expect_identical(as_date_time(year_month_day(1970, 1, 2), zone), new_datetime(104400, zone))
+  expect_identical(as_date_time(year_quarter_day(1970, 1, 2), zone), new_datetime(104400, zone))
+})
+
+test_that("can convert sys-time -> POSIXct", {
+  expect_identical(as_date_time(sys_seconds(0), "UTC"), new_datetime(0, "UTC"))
+  expect_identical(as_date_time(sys_seconds(0), "America/New_York"), new_datetime(0, "America/New_York"))
+})
+
+test_that("can convert naive-time -> POSIXct", {
+  expect_identical(as_date_time(naive_seconds(0), "UTC"), new_datetime(0, "UTC"))
+  expect_identical(as_date_time(naive_seconds(0), "America/New_York"), new_datetime(18000, "America/New_York"))
+})
+
+test_that("can convert zoned-time -> POSIXct", {
+  x <- as_zoned_time(naive_time_parse("2019-01-01 23:02:03"), "America/New_York")
+  expect <- date_time_parse("2019-01-01 23:02:03", "America/New_York")
+  expect_identical(as_date_time(x), expect)
+})
+
+test_that("can resolve nonexistent midnight issues for Date -> POSIXct", {
+  # In Asia/Beirut, DST gap from 2021-03-27 23:59:59 -> 2021-03-28 01:00:00
+  zone <- "Asia/Beirut"
+  x <- as.Date("2021-03-28")
+
+  expect_snapshot_error(as_date_time(x, zone), class = "clock_error_nonexistent_time")
+
+  expect_identical(
+    as_date_time(x, zone, nonexistent = "roll-forward"),
+    as_date_time(as_naive_time(year_month_day(2021, 03, 28, 1)), zone)
+  )
+})
+
+test_that("can resolve ambiguous midnight issues for Date -> POSIXct", {
+  # In Asia/Amman, DST fallback from 2021-10-29 00:59:59 -> 2021-10-29 00:00:00
+  zone <- "Asia/Amman"
+  x <- as.Date("2021-10-29")
+
+  expect_snapshot_error(as_date_time(x, zone), class = "clock_error_ambiguous_time")
+
+  expect_identical(
+    as_date_time(x, zone, ambiguous = "earliest"),
+    date_time_parse_complete("2021-10-29 00:00:00+03:00[Asia/Amman]")
+  )
+  expect_identical(
+    as_date_time(x, zone, ambiguous = "latest"),
+    date_time_parse_complete("2021-10-29 00:00:00+02:00[Asia/Amman]")
+  )
+})
+
+# ------------------------------------------------------------------------------
 # as.POSIXct()
 
 test_that("casting to POSIXct floors components more precise than seconds (#205)", {

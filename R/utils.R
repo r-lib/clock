@@ -33,6 +33,18 @@ to_posixct_from_posixlt <- function(x) {
   as.POSIXct.POSIXlt(x)
 }
 
+date_standardize <- function(x) {
+  if (identical(typeof(x), "double")) {
+    return(x)
+  }
+
+  # Convert somewhat rare integer Date to double.
+  # Preserves names.
+  storage.mode(x) <- "double"
+
+  x
+}
+
 # ------------------------------------------------------------------------------
 
 ones_along <- function(x, na_propagate = FALSE) {

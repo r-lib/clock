@@ -1,3 +1,23 @@
+# can't accidentally supply `zone` to reinterpret date-time in new zone
+
+    `...` is not empty.
+    
+    We detected these problematic arguments:
+    * `zone`
+    
+    These dots only exist to allow future extensions and should be empty.
+    Did you misspecify an argument?
+
+# can resolve nonexistent midnight issues for Date -> POSIXct
+
+    Nonexistent time due to daylight saving time at location 1.
+    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
+
+# can resolve ambiguous midnight issues for Date -> POSIXct
+
+    Ambiguous time due to daylight saving time at location 1.
+    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+
 # can handle nonexistent times resulting from grouping
 
     Nonexistent time due to daylight saving time at location 1.

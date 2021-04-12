@@ -1,4 +1,48 @@
 # ------------------------------------------------------------------------------
+# as_date()
+
+test_that("can convert Date -> Date", {
+  expect_identical(as_date(new_date(0)), new_date(0))
+})
+
+test_that("integer Dates are normalized to double", {
+  # seq.Date() can make these
+  x <- 0L
+  class(x) <- "Date"
+
+  expect_identical(as_date(x), new_date(0))
+})
+
+test_that("can convert POSIXct / POSIXlt -> Date (Date assumed to be naive)", {
+  ct <- date_time_parse("2019-01-01 23:00:00", "America/New_York")
+  lt <- as.POSIXlt(ct)
+
+  expect <- date_parse("2019-01-01")
+
+  expect_identical(as_date(ct), expect)
+  expect_identical(as_date(lt), expect)
+})
+
+test_that("can convert calendar -> Date", {
+  expect_identical(as_date(year_month_day(1970, 1, 2)), new_date(1))
+  expect_identical(as_date(year_quarter_day(1970, 1, 2)), new_date(1))
+})
+
+test_that("can convert sys-time -> Date", {
+  expect_identical(as_date(sys_seconds(0)), new_date(0))
+})
+
+test_that("can convert naive-time -> Date", {
+  expect_identical(as_date(naive_seconds(0)), new_date(0))
+})
+
+test_that("can convert zoned-time -> Date", {
+  x <- as_zoned_time(naive_time_parse("2019-01-01 23:02:03"), "America/New_York")
+  expect <- date_parse("2019-01-01")
+  expect_identical(as_date(x), expect)
+})
+
+# ------------------------------------------------------------------------------
 # as.Date()
 
 test_that("invalid dates must be resolved when converting to a Date", {
