@@ -26,6 +26,9 @@ as_date(x)
 
 A vector.}
 }
+\value{
+A date with the same length as \code{x}.
+}
 \description{
 \code{as_date()} is a generic function that converts its input to a date (Date).
 

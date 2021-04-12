@@ -188,6 +188,8 @@ as.POSIXlt.clock_zoned_time <- function(x, ...) {
 #'
 #'   A vector.
 #'
+#' @return A date-time with the same length as `x`.
+#'
 #' @export
 #' @examples
 #' x <- as.Date("2019-01-01")

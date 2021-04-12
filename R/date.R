@@ -151,6 +151,8 @@ as.Date.clock_zoned_time <- function(x, ...) {
 #'
 #'   A vector.
 #'
+#' @return A date with the same length as `x`.
+#'
 #' @export
 #' @examples
 #' x <- date_time_parse("2019-01-01 23:02:03", "America/New_York")

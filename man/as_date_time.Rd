@@ -95,6 +95,9 @@ zoned_time cannot resolve. Instead, it must be specified as a list
 alongside an ambiguous time resolution strategy as described above. This is
 a convenient way to make production code robust to ambiguous times.}
 }
+\value{
+A date-time with the same length as \code{x}.
+}
 \description{
 \code{as_date_time()} is a generic function that converts its input to a date-time
 (POSIXct).
