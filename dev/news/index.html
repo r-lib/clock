@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.0.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.0.9000</span>
       </span>
     </div>
 
@@ -161,6 +161,11 @@
 <h1 class="page-header" data-toc-text="development version">
 <a href="#clock-development-version" class="anchor"></a>clock (development version)<small> Unreleased </small>
 </h1>
+</div>
+    <div id="clock-020" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.0">
+<a href="#clock-020" class="anchor"></a>clock 0.2.0<small> 2021-04-12 </small>
+</h1>
 <ul>
 <li>
 <p>clock now interprets R’s Date class as <em>naive-time</em> rather than <em>sys-time</em>. This means that it no longer assumes that Date has an implied time zone of UTC (<a href='https://github.com/r-lib/clock/issues/203'>#203</a>). This generally aligns better with how users think Date should work. This resulted in the following changes:</p>
@@ -172,6 +177,7 @@
 <li><p>The Date method for <code><a href="../reference/as_zoned_time.html">as_zoned_time()</a></code> now converts to zoned-time through an intermediate naive-time, rather than a sys-time. This means that the printed date will always attempt to be retained, if possible, which is generally what is expected. In the rare case that daylight saving time makes a direct conversion impossible, <code>nonexistent</code> and <code>ambiguous</code> can be used to resolve any issues.</p></li>
 </ul>
 </li>
+<li><p>New <code><a href="../reference/as_date.html">as_date()</a></code> and <code><a href="../reference/as_date_time.html">as_date_time()</a></code> for converting to Date and POSIXct respectively. Unlike <code><a href="https://rdrr.io/r/base/as.Date.html">as.Date()</a></code> and <code><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct()</a></code>, these functions always treat Date as a naive-time type, which results in more consistent and intuitive conversions. Note that <code><a href="../reference/as_date.html">as_date()</a></code> does conflict with <code><a href="http://lubridate.tidyverse.org/reference/as_date.html">lubridate::as_date()</a></code>, and the lubridate version handles Dates differently (<a href='https://github.com/r-lib/clock/issues/209'>#209</a>).</p></li>
 <li>
 <p>Added two new convenient helpers (<a href='https://github.com/r-lib/clock/issues/197'>#197</a>):</p>
 <ul>

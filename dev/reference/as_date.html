@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Date and date-time rounding — date-and-date-time-rounding • clock</title>
+<title>Convert to a date — as_date • clock</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,28 +46,11 @@
 
 
 
-<meta property="og:title" content="Date and date-time rounding — date-and-date-time-rounding" />
-<meta property="og:description" content="
-
-date_floor() rounds a date or date-time down to a multiple of
-the specified precision.
-date_ceiling() rounds a date or date-time up to a multiple of
-the specified precision.
-date_round() rounds up or down depending on what is closer,
-rounding up on ties.
-
-
-There are separate help pages for rounding dates and date-times:
-dates (Date)
-date-times (POSIXct/POSIXlt)
-
-
-These functions round the underlying duration itself, relative to an
-origin. For example, rounding to 15 hours will construct groups of
-15 hours, starting from origin, which defaults to a naive time of
-1970-01-01 00:00:00.
-If you want to group by components, such as &quot;day of the month&quot;, see
-date_group()." />
+<meta property="og:title" content="Convert to a date — as_date" />
+<meta property="og:description" content="as_date() is a generic function that converts its input to a date (Date).
+There are methods for converting date-times (POSIXct), calendars,
+time points, and zoned-times to dates.
+For converting to a date-time, see as_date_time()." />
 <meta property="og:image" content="https://clock.r-lib.org/logo.png" />
 
 
@@ -174,87 +157,71 @@ date_group()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Date and date-time rounding</h1>
+    <h1>Convert to a date</h1>
     <small class="dont-index">Source: <a href='https://github.com/r-lib/clock/blob/master/R/date.R'><code>R/date.R</code></a></small>
-    <div class="hidden name"><code>date-and-date-time-rounding.Rd</code></div>
+    <div class="hidden name"><code>as_date.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-<ul>
-<li><p><code>date_floor()</code> rounds a date or date-time down to a multiple of
-the specified <code>precision</code>.</p></li>
-<li><p><code>date_ceiling()</code> rounds a date or date-time up to a multiple of
-the specified <code>precision</code>.</p></li>
-<li><p><code>date_round()</code> rounds up or down depending on what is closer,
-rounding up on ties.</p></li>
-</ul>
-
-<p>There are separate help pages for rounding dates and date-times:</p><ul>
-<li><p><a href='date-rounding.html'>dates (Date)</a></p></li>
-<li><p><a href='posixt-rounding.html'>date-times (POSIXct/POSIXlt)</a></p></li>
-</ul>
-
-<p>These functions round the underlying duration itself, relative to an
-<code>origin</code>. For example, rounding to 15 hours will construct groups of
-15 hours, starting from <code>origin</code>, which defaults to a naive time of
-1970-01-01 00:00:00.</p>
-<p>If you want to group by components, such as "day of the month", see
-<code><a href='date_group.html'>date_group()</a></code>.</p>
+    <p><code>as_date()</code> is a generic function that converts its input to a date (Date).</p>
+<p>There are methods for converting date-times (POSIXct), calendars,
+time points, and zoned-times to dates.</p>
+<p>For converting to a date-time, see <code><a href='as_date_time.html'>as_date_time()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>date_floor</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>precision</span>, <span class='va'>...</span>, n <span class='op'>=</span> <span class='fl'>1L</span>, origin <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>as_date</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
-<span class='fu'>date_ceiling</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>precision</span>, <span class='va'>...</span>, n <span class='op'>=</span> <span class='fl'>1L</span>, origin <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+<span class='co'># S3 method for Date</span>
+<span class='fu'>as_date</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
-<span class='fu'>date_round</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>precision</span>, <span class='va'>...</span>, n <span class='op'>=</span> <span class='fl'>1L</span>, origin <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+<span class='co'># S3 method for POSIXt</span>
+<span class='fu'>as_date</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># S3 method for clock_calendar</span>
+<span class='fu'>as_date</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># S3 method for clock_time_point</span>
+<span class='fu'>as_date</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># S3 method for clock_zoned_time</span>
+<span class='fu'>as_date</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><code>[Date / POSIXct / POSIXlt]</code></p>
-<p>A date or date-time vector.</p></td>
-    </tr>
-    <tr>
-      <th>precision</th>
-      <td><p><code>[character(1)]</code></p>
-<p>A precision. Allowed precisions are dependent on the input used.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>These dots are for future extensions and must be empty.</p></td>
-    </tr>
-    <tr>
-      <th>n</th>
-      <td><p><code>[positive integer(1)]</code></p>
-<p>A single positive integer specifying a multiple of <code>precision</code> to use.</p></td>
-    </tr>
-    <tr>
-      <th>origin</th>
-      <td><p><code>[Date(1) / POSIXct(1) / POSIXlt(1) / NULL]</code></p>
-<p>An origin to start counting from. The default <code>origin</code> is
-midnight on 1970-01-01 in the time zone of <code>x</code>.</p></td>
+      <td><p><code>[vector]</code></p>
+<p>A vector.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>x</code> rounded to the specified <code>precision</code>.</p>
+    <p>A date with the same length as <code>x</code>.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Note that clock always assumes that R's Date class is naive, so converting
+a POSIXct to a Date will always retain the printed year, month, and day
+value.</p>
+<p>This is not a drop-in replacement for <code><a href='https://rdrr.io/r/base/as.Date.html'>as.Date()</a></code>, as it only converts a
+limited set of types to Date. For parsing characters as dates, see
+<code><a href='date_parse.html'>date_parse()</a></code>. For converting numerics to dates, see <code><a href='https://vctrs.r-lib.org/reference/new_date.html'>vctrs::new_date()</a></code> or
+continue to use <code><a href='https://rdrr.io/r/base/as.Date.html'>as.Date()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># See the type specific documentation for more examples</span>
+    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='date-time-parse.html'>date_time_parse</a></span><span class='op'>(</span><span class='st'>"2019-01-01 23:02:03"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
 
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-03-31"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>5</span>
-<span class='va'>x</span>
-</div><div class='output co'>#&gt; [1] "2019-03-31" "2019-04-01" "2019-04-02" "2019-04-03" "2019-04-04"
-#&gt; [6] "2019-04-05"</div><div class='input'>
-<span class='co'># Flooring by 2 days, note that this is not tied to the current month,</span>
-<span class='co'># and instead counts from the specified `origin`.</span>
-<span class='fu'>date_floor</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2019-03-31" "2019-03-31" "2019-04-02" "2019-04-02" "2019-04-04"
-#&gt; [6] "2019-04-04"</div></pre>
+<span class='co'># R's `as.Date.POSIXct()` method defaults to changing the printed time</span>
+<span class='co'># to UTC before converting, which can result in odd conversions like this:</span>
+<span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2019-01-02"</div><div class='input'>
+<span class='co'># `as_date()` will never change the printed time before converting</span>
+<span class='fu'>as_date</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2019-01-01"</div><div class='input'>
+<span class='co'># Can also convert from other clock types</span>
+<span class='fu'>as_date</span><span class='op'>(</span><span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>2</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2019-02-05"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

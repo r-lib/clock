@@ -25,6 +25,12 @@
     <loc>https://clock.r-lib.org/reference/as-zoned-time-sys-time.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/as_date.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/reference/as_date_time.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/as_duration.html</loc>
   </url>
   <url>
