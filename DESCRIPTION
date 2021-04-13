@@ -19,7 +19,7 @@ Description: Provides a comprehensive library for date-time manipulations
     really needed. Capabilities include: date-time parsing, formatting,
     arithmetic, extraction and updating of components, and rounding.
 License: MIT + file LICENSE
-URL: https://github.com/r-lib/clock
+URL: https://clock.r-lib.org, https://github.com/r-lib/clock
 BugReports: https://github.com/r-lib/clock/issues
 Depends: 
     R (>= 3.3)
