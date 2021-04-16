@@ -1211,7 +1211,7 @@ cpp11::writable::strings format_zoned_time_impl(const ClockDuration& cd,
     const Duration duration = cd[i];
     const date::sys_time<Duration> stp{duration};
 
-    const date::sys_info info = p_time_zone->get_info(stp);
+    const date::sys_info info = rclock::get_info(stp, p_time_zone);
 
     const std::chrono::seconds offset = info.offset;
 

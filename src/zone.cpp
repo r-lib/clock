@@ -21,7 +21,7 @@ cpp11::writable::logicals zone_is_valid(const cpp11::strings& zone) {
   }
 
   try {
-    date::locate_zone(zone_name);
+    zones::locate_zone(zone_name);
     return cpp11::writable::logicals({cpp11::r_bool(true)});
   } catch (const std::runtime_error& error) {
     return cpp11::writable::logicals({cpp11::r_bool(false)});
@@ -55,7 +55,7 @@ const date::time_zone* zone_name_load(const std::string& zone_name) {
 
 const date::time_zone* zone_name_load_try(const std::string& zone_name) {
   try {
-    return date::locate_zone(zone_name);
+    return zones::locate_zone(zone_name);
   } catch (const std::runtime_error& error) {
     clock_abort("'%s' not found in the timezone database.", zone_name.c_str());
   };

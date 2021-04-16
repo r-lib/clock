@@ -4,20 +4,6 @@
 
 #include "cpp11/declarations.hpp"
 
-// database.cpp
-cpp11::writable::strings zone_database_version_cpp();
-extern "C" SEXP _clock_zone_database_version_cpp() {
-  BEGIN_CPP11
-    return cpp11::as_sexp(zone_database_version_cpp());
-  END_CPP11
-}
-// database.cpp
-cpp11::writable::strings zone_database_names_cpp();
-extern "C" SEXP _clock_zone_database_names_cpp() {
-  BEGIN_CPP11
-    return cpp11::as_sexp(zone_database_names_cpp());
-  END_CPP11
-}
 // duration.cpp
 SEXP new_duration_from_fields(SEXP fields, const cpp11::integers& precision_int, SEXP names);
 extern "C" SEXP _clock_new_duration_from_fields(SEXP fields, SEXP precision_int, SEXP names) {
@@ -501,14 +487,6 @@ extern "C" SEXP _clock_year_month_weekday_minus_year_month_weekday_cpp(SEXP x, S
     return cpp11::as_sexp(year_month_weekday_minus_year_month_weekday_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(y), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int)));
   END_CPP11
 }
-// install.cpp
-void clock_set_install(const cpp11::strings& path);
-extern "C" SEXP _clock_clock_set_install(SEXP path) {
-  BEGIN_CPP11
-    clock_set_install(cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(path));
-    return R_NilValue;
-  END_CPP11
-}
 // iso-year-week-day.cpp
 SEXP new_iso_year_week_day_from_fields(SEXP fields, const cpp11::integers& precision_int, SEXP names);
 extern "C" SEXP _clock_new_iso_year_week_day_from_fields(SEXP fields, SEXP precision_int, SEXP names) {
@@ -899,7 +877,6 @@ extern SEXP _clock_clock_init_utils();
 extern SEXP _clock_clock_rcrd_names(SEXP);
 extern SEXP _clock_clock_rcrd_proxy(SEXP);
 extern SEXP _clock_clock_rcrd_set_names(SEXP, SEXP);
-extern SEXP _clock_clock_set_install(SEXP);
 extern SEXP _clock_clock_to_string(SEXP);
 extern SEXP _clock_collect_iso_year_week_day_fields(SEXP, SEXP);
 extern SEXP _clock_collect_year_day_fields(SEXP, SEXP);
@@ -1002,8 +979,6 @@ extern SEXP _clock_year_quarter_day_minus_year_quarter_day_cpp(SEXP, SEXP, SEXP,
 extern SEXP _clock_year_quarter_day_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_year_quarter_day_restore(SEXP, SEXP);
 extern SEXP _clock_zone_current();
-extern SEXP _clock_zone_database_names_cpp();
-extern SEXP _clock_zone_database_version_cpp();
 extern SEXP _clock_zone_is_valid(SEXP);
 extern SEXP _clock_zoned_time_parse_abbrev_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _clock_zoned_time_parse_complete_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -1026,7 +1001,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_clock_rcrd_names",                                     (DL_FUNC) &_clock_clock_rcrd_names,                                      1},
     {"_clock_clock_rcrd_proxy",                                     (DL_FUNC) &_clock_clock_rcrd_proxy,                                      1},
     {"_clock_clock_rcrd_set_names",                                 (DL_FUNC) &_clock_clock_rcrd_set_names,                                  2},
-    {"_clock_clock_set_install",                                    (DL_FUNC) &_clock_clock_set_install,                                     1},
     {"_clock_clock_to_string",                                      (DL_FUNC) &_clock_clock_to_string,                                       1},
     {"_clock_collect_iso_year_week_day_fields",                     (DL_FUNC) &_clock_collect_iso_year_week_day_fields,                      2},
     {"_clock_collect_year_day_fields",                              (DL_FUNC) &_clock_collect_year_day_fields,                               2},
@@ -1129,8 +1103,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_year_quarter_day_plus_duration_cpp",                   (DL_FUNC) &_clock_year_quarter_day_plus_duration_cpp,                    5},
     {"_clock_year_quarter_day_restore",                             (DL_FUNC) &_clock_year_quarter_day_restore,                              2},
     {"_clock_zone_current",                                         (DL_FUNC) &_clock_zone_current,                                          0},
-    {"_clock_zone_database_names_cpp",                              (DL_FUNC) &_clock_zone_database_names_cpp,                               0},
-    {"_clock_zone_database_version_cpp",                            (DL_FUNC) &_clock_zone_database_version_cpp,                             0},
     {"_clock_zone_is_valid",                                        (DL_FUNC) &_clock_zone_is_valid,                                         1},
     {"_clock_zoned_time_parse_abbrev_cpp",                          (DL_FUNC) &_clock_zoned_time_parse_abbrev_cpp,                          10},
     {"_clock_zoned_time_parse_complete_cpp",                        (DL_FUNC) &_clock_zoned_time_parse_complete_cpp,                         9},
@@ -1139,11 +1111,8 @@ static const R_CallMethodDef CallEntries[] = {
 };
 }
 
-void export_clock_callables(DllInfo* dll);
-
 extern "C" void R_init_clock(DllInfo* dll){
   R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
   R_useDynamicSymbols(dll, FALSE);
-  export_clock_callables(dll);
   R_forceSymbols(dll, TRUE);
 }

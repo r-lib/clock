@@ -2,6 +2,10 @@
 
 * New `date_seq()` for generating date and date-time sequences (#218).
 
+* clock now uses the zones package to access the date library's API. This
+  means that the experimental API that was to be used for vroom has been
+  removed in favor of using the one exposed in zones.
+
 # clock 0.2.0
 
 * clock now interprets R's Date class as _naive-time_ rather than _sys-time_.

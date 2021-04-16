@@ -1,7 +1,0 @@
---------------------------------------------------------------------------------
-Updating `clock` dependencies
-
-1. Run `update-date-library.R` to update the headers and `tz.cpp` in `src/`.
-
-2. Go back through `tz.cpp` and comment out all uses to `std::cerr()`, which
-   R CMD Check doesn't like. And ensure that any custom additions are kept.

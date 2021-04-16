@@ -1,6 +1,7 @@
 #include "duration.h"
 #include "get.h"
 #include "zone.h"
+#include "utils.h"
 
 // -----------------------------------------------------------------------------
 
@@ -67,7 +68,7 @@ naive_time_info_impl(const ClockDuration& x, const cpp11::strings& zone) {
     }
 
     const date::local_time<Duration> elt{x[i]};
-    const date::local_info info = p_time_zone_elt->get_info(elt);
+    const date::local_info info = rclock::get_info(elt, p_time_zone_elt);
 
     const date::sys_info first = info.first;
     const date::sys_info second = info.second;

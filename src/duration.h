@@ -144,7 +144,7 @@ public:
                                                       const date::local_info& info,
                                                       const enum nonexistent& nonexistent_val,
                                                       const enum ambiguous& ambiguous_val,
-                                                      const date::zoned_seconds& reference,
+                                                      const date::sys_seconds& reference,
                                                       const date::time_zone* p_time_zone,
                                                       const r_ssize& i);
 
@@ -184,7 +184,7 @@ public:
                                                       const date::local_info& info,
                                                       const enum nonexistent& nonexistent_val,
                                                       const enum ambiguous& ambiguous_val,
-                                                      const date::zoned_seconds& reference,
+                                                      const date::sys_seconds& reference,
                                                       const date::time_zone* p_time_zone,
                                                       const r_ssize& i);
 
@@ -393,7 +393,7 @@ duration2<std::chrono::seconds>::convert_local_with_reference_to_sys_and_assign(
                                                                                 const date::local_info& info,
                                                                                 const enum nonexistent& nonexistent_val,
                                                                                 const enum ambiguous& ambiguous_val,
-                                                                                const date::zoned_seconds& reference,
+                                                                                const date::sys_seconds& reference,
                                                                                 const date::time_zone* p_time_zone,
                                                                                 const r_ssize& i)
 {
@@ -404,8 +404,8 @@ duration2<std::chrono::seconds>::convert_local_with_reference_to_sys_and_assign(
     return;
   }
 
-  const date::local_seconds ref_lt = reference.get_local_time();
-  const date::local_info ref_info = p_time_zone->get_info(ref_lt);
+  const date::local_seconds ref_lt = rclock::get_local_time(reference, p_time_zone);
+  const date::local_info ref_info = rclock::get_info(ref_lt, p_time_zone);
 
   if (ref_info.result != date::local_info::ambiguous) {
     // If reference time is not ambiguous, we can't get any offset information
@@ -420,10 +420,8 @@ duration2<std::chrono::seconds>::convert_local_with_reference_to_sys_and_assign(
     return;
   }
 
-  const date::sys_seconds ref_st = reference.get_sys_time();
-
   const std::chrono::seconds offset =
-    ref_st < ref_info.first.end ?
+    reference < ref_info.first.end ?
     ref_info.first.offset :
     ref_info.second.offset;
 
@@ -572,7 +570,7 @@ duration3<Duration>::convert_local_with_reference_to_sys_and_assign(const date::
                                                                     const date::local_info& info,
                                                                     const enum nonexistent& nonexistent_val,
                                                                     const enum ambiguous& ambiguous_val,
-                                                                    const date::zoned_seconds& reference,
+                                                                    const date::sys_seconds& reference,
                                                                     const date::time_zone* p_time_zone,
                                                                     const r_ssize& i)
 {
@@ -583,8 +581,8 @@ duration3<Duration>::convert_local_with_reference_to_sys_and_assign(const date::
     return;
   }
 
-  const date::local_seconds ref_lt = reference.get_local_time();
-  const date::local_info ref_info = p_time_zone->get_info(ref_lt);
+  const date::local_seconds ref_lt = rclock::get_local_time(reference, p_time_zone);
+  const date::local_info ref_info = rclock::get_info(ref_lt, p_time_zone);
 
   if (ref_info.result != date::local_info::ambiguous) {
     // If reference time is not ambiguous, we can't get any offset information
@@ -599,10 +597,8 @@ duration3<Duration>::convert_local_with_reference_to_sys_and_assign(const date::
     return;
   }
 
-  const date::sys_seconds ref_st = reference.get_sys_time();
-
   const std::chrono::seconds offset =
-    ref_st < ref_info.first.end ?
+    reference < ref_info.first.end ?
     ref_info.first.offset :
     ref_info.second.offset;
 

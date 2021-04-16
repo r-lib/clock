@@ -1,7 +1,6 @@
 ^clock\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
-^tools$
 ^README\.Rmd$
 ^codecov\.yml$
 ^\.github$
