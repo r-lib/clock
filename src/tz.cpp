@@ -2858,17 +2858,23 @@ file_exists(const std::string& filename)
 
 // CURL tools
 
-static
-int
-curl_global()
-{
-    if (::curl_global_init(CURL_GLOBAL_DEFAULT) != 0)
-        throw std::runtime_error("CURL global initialization failed");
-    return 0;
-}
-
 namespace
 {
+
+struct curl_global_init_and_cleanup
+{
+    ~curl_global_init_and_cleanup()
+    {
+        ::curl_global_cleanup();
+    }
+    curl_global_init_and_cleanup()
+    {
+        if (::curl_global_init(CURL_GLOBAL_DEFAULT) != 0)
+            throw std::runtime_error("CURL global initialization failed");
+    }
+    curl_global_init_and_cleanup(curl_global_init_and_cleanup const&) = delete;
+    curl_global_init_and_cleanup& operator=(curl_global_init_and_cleanup const&) = delete;
+};
 
 struct curl_deleter
 {
@@ -2884,8 +2890,7 @@ static
 std::unique_ptr<CURL, curl_deleter>
 curl_init()
 {
-    static const auto curl_is_now_initiailized = curl_global();
-    (void)curl_is_now_initiailized;
+    static const curl_global_init_and_cleanup _{};
     return std::unique_ptr<CURL, curl_deleter>{::curl_easy_init()};
 }
 
