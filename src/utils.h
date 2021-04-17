@@ -34,6 +34,18 @@ extern SEXP ints_empty;
 
 namespace rclock {
 
+namespace detail {
+
+static
+inline
+void stop_if_exception(const std::string& error) {
+  if (!error.empty()) {
+    cpp11::stop(error.c_str());
+  }
+}
+
+} // namespace detail
+
 // Essentially date's `time_zone::get_info(sys_time<Duration> st)`, but goes
 // through `zones::` to get the sys_info
 template <class Duration>
@@ -42,7 +54,13 @@ inline
 date::sys_info
 get_info(const date::sys_time<Duration>& tp, const date::time_zone* p_time_zone)
 {
-  return zones::get_sys_info(date::floor<std::chrono::seconds>(tp), p_time_zone);
+  const date::sys_seconds ss = date::floor<std::chrono::seconds>(tp);
+
+  std::string error;
+  const date::sys_info info = zones::get_sys_info(ss, p_time_zone, error);
+  detail::stop_if_exception(error);
+
+  return info;
 }
 
 // Essentially date's `time_zone::get_info(local_time<Duration> lt)`, but goes
@@ -53,7 +71,13 @@ inline
 date::local_info
 get_info(const date::local_time<Duration>& tp, const date::time_zone* p_time_zone)
 {
-  return zones::get_local_info(date::floor<std::chrono::seconds>(tp), p_time_zone);
+  const date::local_seconds ls = date::floor<std::chrono::seconds>(tp);
+
+  std::string error;
+  const date::local_info info = zones::get_local_info(ls, p_time_zone, error);
+  detail::stop_if_exception(error);
+
+  return info;
 }
 
 // Essentially date's `time_zone::to_local(sys_time<Duration> tp)`, but goes
@@ -65,8 +89,7 @@ date::local_time<typename std::common_type<Duration, std::chrono::seconds>::type
 get_local_time(const date::sys_time<Duration>& tp, const date::time_zone* p_time_zone)
 {
   using LT = date::local_time<typename std::common_type<Duration, std::chrono::seconds>::type>;
-  const date::sys_seconds ss = date::floor<std::chrono::seconds>(tp);
-  const date::sys_info info = zones::get_sys_info(ss, p_time_zone);
+  const date::sys_info info = rclock::get_info(tp, p_time_zone);
   return LT{(tp + info.offset).time_since_epoch()};
 }
 

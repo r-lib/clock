@@ -401,16 +401,21 @@ void
 finalize_parse_zone(const std::string& candidate,
                     std::string& zone,
                     const date::time_zone*& p_time_zone) {
-  try {
-    p_time_zone = zones::locate_zone(candidate);
+  std::string error;
+  const date::time_zone* p_candidate = zones::locate_zone(candidate, error);
+
+  if (error.empty()) {
+    p_time_zone = p_candidate;
     zone = candidate;
-  } catch (const std::runtime_error& error) {
-    std::string message{
-      "`%%Z` must be used, and must result in a valid time zone name, "
-      "not '" + candidate + "'."
-    };
-    clock_abort(message.c_str());
+    return;
+  }
+
+  std::string message{
+    "`%%Z` must be used, and must result in a valid time zone name, "
+    "not '" + candidate + "'."
   };
+
+  clock_abort(message.c_str());
 }
 
 static

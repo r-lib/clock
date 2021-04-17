@@ -1,5 +1,6 @@
 #include "zone.h"
 #include "utils.h"
+#include <string>
 
 /*
  * Brought over from lubridate/timechange
@@ -20,12 +21,14 @@ cpp11::writable::logicals zone_is_valid(const cpp11::strings& zone) {
     return cpp11::writable::logicals({cpp11::r_bool(true)});
   }
 
-  try {
-    zones::locate_zone(zone_name);
+  std::string error;
+  zones::locate_zone(zone_name, error);
+
+  if (error.empty()) {
     return cpp11::writable::logicals({cpp11::r_bool(true)});
-  } catch (const std::runtime_error& error) {
+  } else {
     return cpp11::writable::logicals({cpp11::r_bool(false)});
-  };
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -54,11 +57,14 @@ const date::time_zone* zone_name_load(const std::string& zone_name) {
 }
 
 const date::time_zone* zone_name_load_try(const std::string& zone_name) {
-  try {
-    return zones::locate_zone(zone_name);
-  } catch (const std::runtime_error& error) {
+  std::string error;
+  const date::time_zone* p_time_zone = zones::locate_zone(zone_name, error);
+
+  if (error.empty()) {
+    return p_time_zone;
+  } else {
     clock_abort("'%s' not found in the timezone database.", zone_name.c_str());
-  };
+  }
 }
 
 static std::string zone_name_system();
