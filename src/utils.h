@@ -36,14 +36,6 @@ namespace rclock {
 
 namespace detail {
 
-static
-inline
-void stop_if_exception(const std::error_condition& cnd) {
-  if (zones::is_error(cnd)) {
-    cpp11::stop(cnd.message());
-  }
-}
-
 } // namespace detail
 
 // Essentially date's `time_zone::get_info(sys_time<Duration> st)`, but goes
@@ -57,8 +49,10 @@ get_info(const date::sys_time<Duration>& tp, const date::time_zone* p_time_zone)
   const date::sys_seconds ss = date::floor<std::chrono::seconds>(tp);
 
   date::sys_info info;
-  const std::error_condition cnd = zones::get_sys_info(ss, p_time_zone, info);
-  detail::stop_if_exception(cnd);
+
+  if (!zones::get_sys_info(ss, p_time_zone, info)) {
+    cpp11::stop("Can't lookup sys information for the supplied time zone.");
+  }
 
   return info;
 }
@@ -74,8 +68,10 @@ get_info(const date::local_time<Duration>& tp, const date::time_zone* p_time_zon
   const date::local_seconds ls = date::floor<std::chrono::seconds>(tp);
 
   date::local_info info;
-  const std::error_condition cnd = zones::get_local_info(ls, p_time_zone, info);
-  detail::stop_if_exception(cnd);
+
+  if (!zones::get_local_info(ls, p_time_zone, info)) {
+    cpp11::stop("Can't lookup local information for the supplied time zone.");
+  }
 
   return info;
 }
