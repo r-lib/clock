@@ -21,13 +21,13 @@ cpp11::writable::logicals zone_is_valid(const cpp11::strings& zone) {
     return cpp11::writable::logicals({cpp11::r_bool(true)});
   }
 
-  std::string error;
-  zones::locate_zone(zone_name, error);
+  const date::time_zone* p_time_zone;
+  const std::error_condition cnd = zones::locate_zone(zone_name, p_time_zone);
 
-  if (error.empty()) {
-    return cpp11::writable::logicals({cpp11::r_bool(true)});
-  } else {
+  if (zones::is_error(cnd)) {
     return cpp11::writable::logicals({cpp11::r_bool(false)});
+  } else {
+    return cpp11::writable::logicals({cpp11::r_bool(true)});
   }
 }
 
@@ -57,14 +57,14 @@ const date::time_zone* zone_name_load(const std::string& zone_name) {
 }
 
 const date::time_zone* zone_name_load_try(const std::string& zone_name) {
-  std::string error;
-  const date::time_zone* p_time_zone = zones::locate_zone(zone_name, error);
+  const date::time_zone* p_time_zone;
+  const std::error_condition cnd = zones::locate_zone(zone_name, p_time_zone);
 
-  if (error.empty()) {
-    return p_time_zone;
-  } else {
+  if (zones::is_error(cnd)) {
     clock_abort("'%s' not found in the timezone database.", zone_name.c_str());
   }
+
+  return p_time_zone;
 }
 
 static std::string zone_name_system();

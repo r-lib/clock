@@ -38,9 +38,9 @@ namespace detail {
 
 static
 inline
-void stop_if_exception(const std::string& error) {
-  if (!error.empty()) {
-    cpp11::stop(error.c_str());
+void stop_if_exception(const std::error_condition& cnd) {
+  if (zones::is_error(cnd)) {
+    cpp11::stop(cnd.message());
   }
 }
 
@@ -56,9 +56,9 @@ get_info(const date::sys_time<Duration>& tp, const date::time_zone* p_time_zone)
 {
   const date::sys_seconds ss = date::floor<std::chrono::seconds>(tp);
 
-  std::string error;
-  const date::sys_info info = zones::get_sys_info(ss, p_time_zone, error);
-  detail::stop_if_exception(error);
+  date::sys_info info;
+  const std::error_condition cnd = zones::get_sys_info(ss, p_time_zone, info);
+  detail::stop_if_exception(cnd);
 
   return info;
 }
@@ -73,9 +73,9 @@ get_info(const date::local_time<Duration>& tp, const date::time_zone* p_time_zon
 {
   const date::local_seconds ls = date::floor<std::chrono::seconds>(tp);
 
-  std::string error;
-  const date::local_info info = zones::get_local_info(ls, p_time_zone, error);
-  detail::stop_if_exception(error);
+  date::local_info info;
+  const std::error_condition cnd = zones::get_local_info(ls, p_time_zone, info);
+  detail::stop_if_exception(cnd);
 
   return info;
 }
