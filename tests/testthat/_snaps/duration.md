@@ -95,7 +95,7 @@
 
 ---
 
-    Can't convert `n` <character> to <integer>.
+    Can't convert `by` <character> to <integer>.
 
 # `by` must be castable to the type of `from`
 
