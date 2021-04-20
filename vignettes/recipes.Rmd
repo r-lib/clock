@@ -487,7 +487,7 @@ x <- naive_time_parse(x)
 x
 ```
 
-Next, we'll develop a function that attempts to turn this naive-time into a zoned-time, iterating through all of the time zone names available in the time zone database. These time zone names are accessible through `zone_database_names()`. By using the low-level `naive_time_info()`, rather than `as_zoned_time()`, to lookup zone specific information, we'll also get back information about the UTC offset and time zone abbreviation that is currently in use. By matching this abbreviation against our input abbreviation, we can generate a list of zoned-times that use the abbreviation we care about at that particular instance in time.
+Next, we'll develop a function that attempts to turn this naive-time into a zoned-time, iterating through all of the time zone names available in the time zone database. These time zone names are accessible through `tzdb_names()`. By using the low-level `naive_time_info()`, rather than `as_zoned_time()`, to lookup zone specific information, we'll also get back information about the UTC offset and time zone abbreviation that is currently in use. By matching this abbreviation against our input abbreviation, we can generate a list of zoned-times that use the abbreviation we care about at that particular instance in time.
 
 ```{r}
 naive_find_by_abbrev <- function(x, abbrev) {
@@ -501,7 +501,7 @@ naive_find_by_abbrev <- function(x, abbrev) {
     abort("`abbrev` must be a single string.")
   }
   
-  zones <- zone_database_names()
+  zones <- tzdb_names()
   info <- naive_time_info(x, zones)
   info$zones <- zones
   
