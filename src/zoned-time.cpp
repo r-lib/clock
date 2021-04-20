@@ -401,7 +401,7 @@ void
 finalize_parse_zone(const std::string& candidate,
                     std::string& zone,
                     const date::time_zone*& p_time_zone) {
-  if (!zones::locate_zone(candidate, p_time_zone)) {
+  if (!tzdb::locate_zone(candidate, p_time_zone)) {
     std::string message{
       "`%%Z` must be used, and must result in a valid time zone name, "
       "not '" + candidate + "'."

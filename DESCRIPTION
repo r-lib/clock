@@ -26,8 +26,8 @@ Depends:
 Imports: 
     ellipsis (>= 0.3.1),
     rlang (>= 0.4.10),
-    vctrs (>= 0.3.7),
-    zones (>= 0.0.0.9000)
+    tzdb (>= 0.1.0.9001),
+    vctrs (>= 0.3.7)
 Suggests: 
     covr,
     knitr,
@@ -38,7 +38,7 @@ Suggests:
     withr
 LinkingTo: 
     cpp11 (>= 0.2.7),
-    zones (>= 0.0.0.9000)
+    tzdb (>= 0.1.0.9001)
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3
@@ -48,4 +48,4 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 SystemRequirements: C++11
 Remotes:
-    r-lib/zones
+    r-lib/tzdb@feature/zones-merge

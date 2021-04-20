@@ -1,7 +1,7 @@
 # nocov start
 
 .onLoad <- function(libname, pkgname) {
-  zones::zones_initialize()
+  tzdb::tzdb_initialize()
 
   clock_init_utils()
 

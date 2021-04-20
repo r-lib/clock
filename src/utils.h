@@ -39,7 +39,7 @@ namespace detail {
 } // namespace detail
 
 // Essentially date's `time_zone::get_info(sys_time<Duration> st)`, but goes
-// through `zones::` to get the sys_info
+// through `tzdb::` to get the sys_info
 template <class Duration>
 static
 inline
@@ -50,7 +50,7 @@ get_info(const date::sys_time<Duration>& tp, const date::time_zone* p_time_zone)
 
   date::sys_info info;
 
-  if (!zones::get_sys_info(ss, p_time_zone, info)) {
+  if (!tzdb::get_sys_info(ss, p_time_zone, info)) {
     cpp11::stop("Can't lookup sys information for the supplied time zone.");
   }
 
@@ -58,7 +58,7 @@ get_info(const date::sys_time<Duration>& tp, const date::time_zone* p_time_zone)
 }
 
 // Essentially date's `time_zone::get_info(local_time<Duration> lt)`, but goes
-// through `zones::` to get the local_info
+// through `tzdb::` to get the local_info
 template <class Duration>
 static
 inline
@@ -69,7 +69,7 @@ get_info(const date::local_time<Duration>& tp, const date::time_zone* p_time_zon
 
   date::local_info info;
 
-  if (!zones::get_local_info(ls, p_time_zone, info)) {
+  if (!tzdb::get_local_info(ls, p_time_zone, info)) {
     cpp11::stop("Can't lookup local information for the supplied time zone.");
   }
 
@@ -77,7 +77,7 @@ get_info(const date::local_time<Duration>& tp, const date::time_zone* p_time_zon
 }
 
 // Essentially date's `time_zone::to_local(sys_time<Duration> tp)`, but goes
-// through `zones::` to get the sys_info
+// through `tzdb::` to get the sys_info
 template <class Duration>
 static
 inline

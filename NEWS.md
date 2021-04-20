@@ -2,9 +2,9 @@
 
 * New `date_seq()` for generating date and date-time sequences (#218).
 
-* clock now uses the zones package to access the date library's API. This
+* clock now uses the tzdb package to access the date library's API. This
   means that the experimental API that was to be used for vroom has been
-  removed in favor of using the one exposed in zones.
+  removed in favor of using the one exposed in tzdb.
 
 # clock 0.2.0
 
