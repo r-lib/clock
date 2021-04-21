@@ -1,5 +1,7 @@
 # clock (development version)
 
+* New `date_seq()` for generating date and date-time sequences (#218).
+
 # clock 0.2.0
 
 * clock now interprets R's Date class as _naive-time_ rather than _sys-time_.

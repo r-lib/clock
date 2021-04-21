@@ -206,6 +206,112 @@
     Ambiguous time due to daylight saving time at location 1.
     i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
+# daily `by` uses naive-time around DST gaps
+
+    Nonexistent time due to daylight saving time at location 2.
+    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
+
+# daily `by` uses naive-time around DST fallbacks
+
+    Ambiguous time due to daylight saving time at location 2.
+    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+
+# monthly / yearly `by` uses calendar -> naive-time around DST gaps
+
+    Nonexistent time due to daylight saving time at location 2.
+    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
+
+# monthly / yearly `by` uses calendar -> naive-time around DST fallbacks
+
+    Ambiguous time due to daylight saving time at location 2.
+    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+
+# can resolve invalid dates
+
+    Invalid date found at location 2.
+    i Resolve invalid date issues by specifying the `invalid` argument.
+
+# components of `to` more precise than `by` must match `from`
+
+    All components of `from` and `to` more precise than 'minute' must match.
+
+---
+
+    All components of `from` and `to` more precise than 'day' must match.
+
+---
+
+    All components of `from` and `to` more precise than 'month' must match.
+
+---
+
+    All components of `from` and `to` more precise than 'month' must match.
+
+---
+
+    All components of `from` and `to` more precise than 'year' must match.
+
+# `to` must have same time zone as `by`
+
+    `from` and `to` must have identical time zones.
+
+# validates integerish `by`
+
+    Can't convert from `by` <double> to <integer> due to loss of precision.
+    * Locations: 1
+
+# validates `total_size` early
+
+    Can't convert from `total_size` <double> to <integer> due to loss of precision.
+    * Locations: 1
+
+---
+
+    `total_size` can't be `NA`.
+
+---
+
+    `total_size` can't be negative.
+
+# requires exactly two optional arguments
+
+    Must specify exactly two of:
+    - `to`
+    - `by`
+    - `total_size`
+
+---
+
+    Must specify exactly two of:
+    - `to`
+    - `by`
+    - `total_size`
+
+---
+
+    Must specify exactly two of:
+    - `to`
+    - `by`
+    - `total_size`
+
+# requires `to` to be POSIXt
+
+    If supplied, `to` must be a <POSIXct> or <POSIXlt>.
+
+# requires year, month, day, hour, minute, or second precision
+
+    `by` must have a precision of 'year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', or 'second'.
+
+# checks empty dots
+
+    `...` is not empty.
+    
+    We detected these problematic arguments:
+    * `..1`
+    
+    These dots only exist to allow future extensions and should be empty.
+    Did you misspecify an argument?
+
 # <posixt> op <duration>
 
     no applicable method for 'add_milliseconds' applied to an object of class "c('POSIXct', 'POSIXt')"

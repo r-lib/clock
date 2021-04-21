@@ -150,6 +150,76 @@
     Invalid date found at location 2.
     i Resolve invalid date issues by specifying the `invalid` argument.
 
+# can resolve invalid dates
+
+    Invalid date found at location 2.
+    i Resolve invalid date issues by specifying the `invalid` argument.
+
+# components of `to` more precise than `by` must match `from`
+
+    All components of `from` and `to` more precise than 'month' must match.
+
+---
+
+    All components of `from` and `to` more precise than 'year' must match.
+
+# validates integerish `by`
+
+    Can't convert from `by` <double> to <integer> due to loss of precision.
+    * Locations: 1
+
+# validates `total_size` early
+
+    Can't convert from `total_size` <double> to <integer> due to loss of precision.
+    * Locations: 1
+
+---
+
+    `total_size` can't be `NA`.
+
+---
+
+    `total_size` can't be negative.
+
+# requires exactly two optional arguments
+
+    Must specify exactly two of:
+    - `to`
+    - `by`
+    - `total_size`
+
+---
+
+    Must specify exactly two of:
+    - `to`
+    - `by`
+    - `total_size`
+
+---
+
+    Must specify exactly two of:
+    - `to`
+    - `by`
+    - `total_size`
+
+# requires `to` to be Date
+
+    If supplied, `to` must be a <Date>.
+
+# requires year, month, or day precision
+
+    `by` must have a precision of 'year', 'quarter', 'month', 'week', or 'day'.
+
+# checks empty dots
+
+    `...` is not empty.
+    
+    We detected these problematic arguments:
+    * `..1`
+    
+    These dots only exist to allow future extensions and should be empty.
+    Did you misspecify an argument?
+
 # cannot get the zone of a Date
 
     Can't get the zone of a 'Date'.

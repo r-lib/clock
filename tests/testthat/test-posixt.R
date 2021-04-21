@@ -486,6 +486,229 @@ test_that("can get the current date-time", {
 })
 
 # ------------------------------------------------------------------------------
+# date_seq()
+
+test_that("integer `by` means second precision", {
+  expect_identical(
+    date_seq(new_datetime(0), to = new_datetime(5), by = 1),
+    date_seq(new_datetime(0), to = new_datetime(5), by = duration_seconds(1))
+  )
+})
+
+test_that("calendar backed `by` works", {
+  zone <- "America/New_York"
+
+  expect_identical(
+    date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 6, 1, zone = zone), by = duration_months(2)),
+    date_time_build(2019, c(1, 3, 5), 1, zone = zone)
+  )
+  expect_identical(
+    date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2025, 1, 1, zone = zone), by = duration_years(2)),
+    date_time_build(c(2019, 2021, 2023, 2025), 1, 1, zone = zone)
+  )
+})
+
+test_that("naive-time backed `by` works", {
+  zone <- "America/New_York"
+
+  expect_identical(
+    date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 1, 6, zone = zone), by = duration_days(2)),
+    date_time_build(2019, 1, c(1, 3, 5), zone = zone)
+  )
+})
+
+test_that("sys-time backed `by` works", {
+  zone <- "America/New_York"
+
+  expect_identical(
+    date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 1, 1, 6, zone = zone), by = duration_hours(3)),
+    date_time_build(2019, 1, 1, c(0, 3, 6), zone = zone)
+  )
+  expect_identical(
+    date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 1, 1, 0, 6, zone = zone), by = duration_minutes(3)),
+    date_time_build(2019, 1, 1, 0, c(0, 3, 6), zone = zone)
+  )
+})
+
+test_that("sub daily `by` uses sys-time around DST", {
+  zone <- "America/New_York"
+  from <- date_time_build(1970, 4, 26, 1, 30, zone = zone)
+
+  expect_identical(
+    date_seq(from, by = duration_hours(1), total_size = 3),
+    date_time_build(1970, 4, 26, c(1, 3, 4), 30, zone = zone)
+  )
+})
+
+test_that("daily `by` uses naive-time around DST gaps", {
+  zone <- "America/New_York"
+  from <- date_time_build(1970, 4, 25, 2, 30, zone = zone)
+
+  expect_snapshot_error(date_seq(from, by = duration_days(1), total_size = 3))
+
+  expect_identical(
+    date_seq(from, by = duration_days(1), total_size = 3, nonexistent = "roll-forward"),
+    date_time_build(1970, 4, c(25, 26, 27), c(2, 3, 2), c(30, 0, 30), zone = zone)
+  )
+})
+
+test_that("daily `by` uses naive-time around DST fallbacks", {
+  zone <- "America/New_York"
+  from <- date_time_build(1970, 10, 24, 1, 30, zone = zone)
+
+  expect_snapshot_error(date_seq(from, by = duration_days(1), total_size = 3))
+
+  expect_identical(
+    date_seq(from, by = duration_days(1), total_size = 3, ambiguous = "earliest"),
+    date_time_build(1970, 10, c(24, 25, 26), 1, 30, zone = zone, ambiguous = "earliest")
+  )
+})
+
+test_that("monthly / yearly `by` uses calendar -> naive-time around DST gaps", {
+  zone <- "America/New_York"
+  from <- date_time_build(1970, 3, 26, 2, 30, zone = zone)
+
+  expect_snapshot_error(date_seq(from, by = duration_months(1), total_size = 3))
+
+  expect_identical(
+    date_seq(from, by = duration_months(1), total_size = 3, nonexistent = "roll-forward"),
+    date_time_build(1970, c(3, 4, 5), 26, c(2, 3, 2), c(30, 0, 30), zone = zone)
+  )
+})
+
+test_that("monthly / yearly `by` uses calendar -> naive-time around DST fallbacks", {
+  zone <- "America/New_York"
+  from <- date_time_build(1969, 10, 25, 1, 30, zone = zone)
+
+  expect_snapshot_error(date_seq(from, by = duration_years(1), total_size = 3))
+
+  expect_identical(
+    date_seq(from, by = duration_years(1), total_size = 3, ambiguous = "earliest"),
+    date_time_build(c(1969, 1970, 1971), 10, 25, 1, 30, zone = zone, ambiguous = "earliest")
+  )
+})
+
+test_that("combining `by` with `total_size` works", {
+  zone <- "America/New_York"
+
+  expect_identical(
+    date_seq(date_time_build(2019, 1, 1, zone = zone), by = 2, total_size = 3),
+    date_time_build(2019, 1, 1, 0, 0, c(0, 2, 4), zone = zone)
+  )
+})
+
+test_that("combining `to` with `total_size` works", {
+  zone <- "America/New_York"
+
+  expect_identical(
+    date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 1, 5, zone = zone), total_size = 3),
+    date_time_build(2019, 1, c(1, 3, 5), zone = zone)
+  )
+})
+
+test_that("can resolve invalid dates", {
+  zone <- "America/New_York"
+
+  from <- date_time_build(2019, 1, 31, zone = zone)
+  to <- date_time_build(2019, 5, 31, zone = zone)
+
+  expect_snapshot_error(date_seq(from, to = to, by = duration_months(1)))
+
+  expect_identical(
+    date_seq(from, to = to, by = duration_months(1), invalid = "previous-day"),
+    date_time_build(2019, 1:5, "last", zone = zone)
+  )
+})
+
+test_that("quarterly `by` works", {
+  zone <- "America/New_York"
+
+  expect_identical(
+    date_seq(date_time_build(2019, 1, 2, zone = zone), by = duration_quarters(1), total_size = 3),
+    date_seq(date_time_build(2019, 1, 2, zone = zone), by = duration_months(3), total_size = 3)
+  )
+})
+
+test_that("weekly `by` works", {
+  zone <- "America/New_York"
+
+  expect_identical(
+    date_seq(date_time_build(2019, 1, 2, zone = zone), by = duration_weeks(1), total_size = 3),
+    date_seq(date_time_build(2019, 1, 2, zone = zone), by = duration_days(7), total_size = 3)
+  )
+})
+
+test_that("components of `from` more precise than `by` are restored", {
+  zone <- "America/New_York"
+
+  expect_identical(
+    date_seq(date_time_build(2019, 2, 3, 2, 2, 2, zone = zone), by = duration_minutes(1), total_size = 2),
+    date_time_build(2019, 2, 3, 2, 2:3, 2, zone = zone)
+  )
+  expect_identical(
+    date_seq(date_time_build(2019, 2, 3, 2, 2, 2, zone = zone), by = duration_hours(1), total_size = 2),
+    date_time_build(2019, 2, 3, 2:3, 2, 2, zone = zone)
+  )
+  expect_identical(
+    date_seq(date_time_build(2019, 2, 3, 2, 2, 2, zone = zone), by = duration_days(1), total_size = 2),
+    date_time_build(2019, 2, 3:4, 2, 2, 2, zone = zone)
+  )
+  expect_identical(
+    date_seq(date_time_build(2019, 2, 3, 2, 2, 2, zone = zone), by = duration_months(1), total_size = 2),
+    date_time_build(2019, 2:3, 3, 2, 2, 2, zone = zone)
+  )
+  expect_identical(
+    date_seq(date_time_build(2019, 2, 3, 2, 2, 2, zone = zone), by = duration_years(1), total_size = 2),
+    date_time_build(2019:2020, 2, 3, 2, 2, 2, zone = zone)
+  )
+})
+
+test_that("components of `to` more precise than `by` must match `from`", {
+  zone <- "America/New_York"
+
+  expect_snapshot_error(date_seq(date_time_build(2019, 1, 1, 2, 3, 20, zone = zone), to = date_time_build(2019, 2, 2, 1, 3, 5, zone = zone), by = duration_minutes(1)))
+
+  expect_snapshot_error(date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 2, 2, 2, zone = zone), by = duration_days(1)))
+
+  expect_snapshot_error(date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 2, 2, zone = zone), by = duration_months(1)))
+  expect_snapshot_error(date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 2, 1, 1, zone = zone), by = duration_months(1)))
+
+  expect_snapshot_error(date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 1, 2, zone = zone), by = duration_years(1)))
+})
+
+test_that("`to` must have same time zone as `by`", {
+  expect_snapshot_error(date_seq(date_time_build(1970, zone = "UTC"), to = date_time_build(1970, zone = "America/New_York"), by = 1))
+})
+
+test_that("validates integerish `by`", {
+  expect_snapshot_error(date_seq(new_datetime(1), by = 1.5, total_size = 1))
+})
+
+test_that("validates `total_size` early", {
+  expect_snapshot_error(date_seq(new_datetime(1), by = 1, total_size = 1.5))
+  expect_snapshot_error(date_seq(new_datetime(1), by = 1, total_size = NA))
+  expect_snapshot_error(date_seq(new_datetime(1), by = 1, total_size = -1))
+})
+
+test_that("requires exactly two optional arguments", {
+  expect_snapshot_error(date_seq(new_datetime(1), by = 1))
+  expect_snapshot_error(date_seq(new_datetime(1), total_size = 1))
+  expect_snapshot_error(date_seq(new_datetime(1), to = new_datetime(1)))
+})
+
+test_that("requires `to` to be POSIXt", {
+  expect_snapshot_error(date_seq(new_datetime(1), to = 1, by = 1))
+})
+
+test_that("requires year, month, day, hour, minute, or second precision", {
+  expect_snapshot_error(date_seq(new_datetime(1), to = new_datetime(2), by = duration_nanoseconds(1)))
+})
+
+test_that("checks empty dots", {
+  expect_snapshot_error(date_seq(new_datetime(1), new_datetime(2)))
+})
+
+# ------------------------------------------------------------------------------
 # vec_arith()
 
 test_that("<posixt> op <duration>", {

@@ -140,7 +140,7 @@ duration_nanoseconds <- function(n = integer()) {
   duration_helper(n, PRECISION_NANOSECOND)
 }
 
-duration_helper <- function(n, precision, ..., retain_names = FALSE) {
+duration_helper <- function(n, precision, ..., retain_names = FALSE, n_arg = "n") {
   check_dots_empty()
 
   # Generally don't retain names for helpers like `duration_years()`,
@@ -151,7 +151,7 @@ duration_helper <- function(n, precision, ..., retain_names = FALSE) {
     names <- NULL
   }
 
-  n <- vec_cast(n, integer(), x_arg = "n")
+  n <- vec_cast(n, integer(), x_arg = n_arg)
   fields <- duration_helper_cpp(n, precision)
 
   new_duration_from_fields(fields, precision, names)
@@ -672,15 +672,7 @@ seq.clock_duration <- function(from,
   }
 
   if (has_lo) {
-    length.out <- vec_cast(length.out, integer(), x_arg = "length.out")
-
-    vec_assert(length.out, size = 1L, arg = "length.out")
-    if (is.na(length.out)) {
-      abort("`length.out` can't be `NA`.")
-    }
-    if (length.out < 0) {
-      abort("`length.out` can't be negative.")
-    }
+    length.out <- check_length_out(length.out, arg = "length.out")
   }
 
   if (has_to) {
@@ -720,8 +712,24 @@ duration_collect_by <- function(by, precision) {
     to <- duration_helper(integer(), precision)
     vec_cast(by, to, x_arg = "by")
   } else {
-    duration_helper(by, precision)
+    duration_helper(by, precision, n_arg = "by")
   }
+}
+
+check_length_out <- function(length.out, arg) {
+  length.out <- vec_cast(length.out, integer(), x_arg = arg)
+
+  vec_assert(length.out, size = 1L, arg = arg)
+
+  if (is.na(length.out)) {
+    abort(paste0("`", arg, "` can't be `NA`."))
+  }
+
+  if (length.out < 0) {
+    abort(paste0("`", arg, "` can't be negative."))
+  }
+
+  length.out
 }
 
 # Used by other methods that eventually call the duration seq() method
