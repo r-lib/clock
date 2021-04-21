@@ -121,6 +121,9 @@
     <loc>https://clock.r-lib.org/reference/date-rounding.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/date-sequence.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/date-shifting.html</loc>
   </url>
   <url>
@@ -149,6 +152,9 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/date_parse.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/reference/date_seq.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/date_time_build.html</loc>
@@ -245,6 +251,9 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/posixt-rounding.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/reference/posixt-sequence.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/posixt-setters.html</loc>

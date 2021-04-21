@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Current date and date-time — date-today • clock</title>
+<title>Sequences: date and date-time — date_seq • clock</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,12 +46,12 @@
 
 
 
-<meta property="og:title" content="Current date and date-time — date-today" />
-<meta property="og:description" content="
-
-date_today() returns the current date in the specified zone as a Date.
-date_now() returns the current date-time in the specified zone as a
-POSIXct.
+<meta property="og:title" content="Sequences: date and date-time — date_seq" />
+<meta property="og:description" content="date_seq() generates a date (Date) or date-time (POSIXct/POSIXlt) sequence.
+There are separate help pages for generating sequences for dates and
+date-times:
+dates (Date)
+date-times (POSIXct/POSIXlt)
 
 " />
 <meta property="og:image" content="https://clock.r-lib.org/logo.png" />
@@ -160,60 +160,70 @@ POSIXct.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Current date and date-time</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/clock/blob/master/R/date.R'><code>R/date.R</code></a>, <a href='https://github.com/r-lib/clock/blob/master/R/posixt.R'><code>R/posixt.R</code></a></small>
-    <div class="hidden name"><code>date-today.Rd</code></div>
+    <h1>Sequences: date and date-time</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/clock/blob/master/R/date.R'><code>R/date.R</code></a></small>
+    <div class="hidden name"><code>date_seq.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-<ul>
-<li><p><code>date_today()</code> returns the current date in the specified <code>zone</code> as a Date.</p></li>
-<li><p><code>date_now()</code> returns the current date-time in the specified <code>zone</code> as a
-POSIXct.</p></li>
+    <p><code>date_seq()</code> generates a date (Date) or date-time (POSIXct/POSIXlt) sequence.</p>
+<p>There are separate help pages for generating sequences for dates and
+date-times:</p><ul>
+<li><p><a href='date-sequence.html'>dates (Date)</a></p></li>
+<li><p><a href='posixt-sequence.html'>date-times (POSIXct/POSIXlt)</a></p></li>
 </ul>
 
     </div>
 
-    <pre class="usage"><span class='fu'>date_today</span><span class='op'>(</span><span class='va'>zone</span><span class='op'>)</span>
-
-<span class='fu'>date_now</span><span class='op'>(</span><span class='va'>zone</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>date_seq</span><span class='op'>(</span><span class='va'>from</span>, <span class='va'>...</span>, to <span class='op'>=</span> <span class='cn'>NULL</span>, by <span class='op'>=</span> <span class='cn'>NULL</span>, total_size <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>zone</th>
-      <td><p><code>[character(1)]</code></p>
-<p>A time zone to get the current time for.</p></td>
+      <th>from</th>
+      <td><p><code>[Date(1) / POSIXct(1) / POSIXlt(1)]</code></p>
+<p>A date or date-time to start the sequence from.</p>
+<p><code>from</code> is always included in the result.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>These dots are for future extensions and must be empty.</p></td>
+    </tr>
+    <tr>
+      <th>to</th>
+      <td><p><code>[Date(1) / POSIXct(1) / POSIXlt(1) / NULL]</code></p>
+<p>A date or date-time to stop the sequence at.</p>
+<p><code>to</code> is only included in the result if the resulting sequence divides
+the distance between <code>from</code> and <code>to</code> exactly.</p></td>
+    </tr>
+    <tr>
+      <th>by</th>
+      <td><p><code>[integer(1) / clock_duration(1) / NULL]</code></p>
+<p>The unit to increment the sequence by.</p>
+<p>If <code>to &lt; from</code>, then <code>by</code> must be positive.</p>
+<p>If <code>to &gt; from</code>, then <code>by</code> must be negative.</p></td>
+    </tr>
+    <tr>
+      <th>total_size</th>
+      <td><p><code>[positive integer(1) / NULL]</code></p>
+<p>The size of the resulting sequence.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    
-<ul>
-<li><p><code>date_today()</code> a single Date.</p></li>
-<li><p><code>date_now()</code> a single POSIXct.</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>clock assumes that Date is a <em>naive</em> type, like naive-time. This means that
-<code>date_today()</code> first looks up the current date-time in the specified <code>zone</code>,
-then converts that to a Date, retaining the printed time while dropping any
-information about that time zone.</p>
+    <p>A date or date-time vector.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Current date in the local time zone</span>
-<span class='fu'>date_today</span><span class='op'>(</span><span class='st'>""</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2021-04-21"</div><div class='input'>
-<span class='co'># Current date in a specified time zone</span>
-<span class='fu'>date_today</span><span class='op'>(</span><span class='st'>"Europe/London"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2021-04-21"</div><div class='input'>
-<span class='co'># Current date-time in that same time zone</span>
-<span class='fu'>date_now</span><span class='op'>(</span><span class='st'>"Europe/London"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2021-04-21 18:09:24 BST"</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># See method specific documentation for more examples</span>
+
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span><span class='op'>)</span>
+<span class='fu'>date_seq</span><span class='op'>(</span><span class='va'>x</span>, by <span class='op'>=</span> <span class='fu'><a href='duration-helper.html'>duration_months</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>, total_size <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] "2019-01-01" "2019-03-01" "2019-05-01" "2019-07-01" "2019-09-01"
+#&gt;  [6] "2019-11-01" "2020-01-01" "2020-03-01" "2020-05-01" "2020-07-01"
+#&gt; [11] "2020-09-01" "2020-11-01" "2021-01-01" "2021-03-01" "2021-05-01"
+#&gt; [16] "2021-07-01" "2021-09-01" "2021-11-01" "2022-01-01" "2022-03-01"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
