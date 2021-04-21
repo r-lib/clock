@@ -690,6 +690,10 @@ test_that("validates `total_size` early", {
   expect_snapshot_error(date_seq(new_datetime(1), by = 1, total_size = -1))
 })
 
+test_that("`to` and `total_size` must not generate a non-fractional sequence", {
+  expect_snapshot_error(date_seq(new_datetime(0), to = new_datetime(3), total_size = 3))
+})
+
 test_that("requires exactly two optional arguments", {
   expect_snapshot_error(date_seq(new_datetime(1), by = 1))
   expect_snapshot_error(date_seq(new_datetime(1), total_size = 1))

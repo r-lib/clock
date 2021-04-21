@@ -181,6 +181,10 @@
 
     `total_size` can't be negative.
 
+# `to` and `total_size` must not generate a non-fractional sequence
+
+    The supplied output size does not result in a non-fractional sequence between `from` and `to`.
+
 # requires exactly two optional arguments
 
     Must specify exactly two of:

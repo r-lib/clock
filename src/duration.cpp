@@ -1453,7 +1453,7 @@ duration_seq_to_lo_impl(const ClockDuration& from,
 
   if (rem != Rep{0}) {
     clock_abort(
-      "Usage of `length.out` or `along.with` must generate a non-fractional "
+      "The supplied output size does not result in a non-fractional "
       "sequence between `from` and `to`."
     );
   }
