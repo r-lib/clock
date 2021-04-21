@@ -1230,3 +1230,338 @@ NULL
 date_today <- function(zone) {
   as.Date(zoned_time_now(zone))
 }
+
+# ------------------------------------------------------------------------------
+
+#' Sequences: date and date-time
+#'
+#' @description
+#' `date_seq()` generates a date (Date) or date-time (POSIXct/POSIXlt) sequence.
+#'
+#' There are separate help pages for generating sequences for dates and
+#' date-times:
+#'
+#' - [dates (Date)][date-sequence]
+#'
+#' - [date-times (POSIXct/POSIXlt)][posixt-sequence]
+#'
+#' @inheritParams ellipsis::dots_empty
+#'
+#' @param from `[Date(1) / POSIXct(1) / POSIXlt(1)]`
+#'
+#'   A date or date-time to start the sequence from.
+#'
+#'   `from` is always included in the result.
+#'
+#' @param to `[Date(1) / POSIXct(1) / POSIXlt(1) / NULL]`
+#'
+#'   A date or date-time to stop the sequence at.
+#'
+#'   `to` is only included in the result if the resulting sequence divides
+#'   the distance between `from` and `to` exactly.
+#'
+#' @param by `[integer(1) / clock_duration(1) / NULL]`
+#'
+#'   The unit to increment the sequence by.
+#'
+#'   If `to < from`, then `by` must be positive.
+#'
+#'   If `to > from`, then `by` must be negative.
+#'
+#' @param total_size `[positive integer(1) / NULL]`
+#'
+#'   The size of the resulting sequence.
+#'
+#' @return A date or date-time vector.
+#'
+#' @export
+#' @examples
+#' # See method specific documentation for more examples
+#'
+#' x <- as.Date("2019-01-01")
+#' date_seq(x, by = duration_months(2), total_size = 20)
+date_seq <- function(from,
+                     ...,
+                     to = NULL,
+                     by = NULL,
+                     total_size = NULL) {
+  UseMethod("date_seq")
+}
+
+#' Sequences: date
+#'
+#' @description
+#' This is a Date method for the [date_seq()] generic.
+#'
+#' `date_seq()` generates a date (Date) sequence.
+#'
+#' When calling `date_seq()`, exactly two of the following must be specified:
+#' - `to`
+#' - `by`
+#' - `total_size`
+#'
+#' @inheritParams date_seq
+#' @inheritParams invalid_resolve
+#'
+#' @param from `[Date(1)]`
+#'
+#'   A date to start the sequence from.
+#'
+#'   `from` is always included in the result.
+#'
+#' @param to `[Date(1) / NULL]`
+#'
+#'   A date to stop the sequence at.
+#'
+#'   `to` is only included in the result if the resulting sequence divides
+#'   the distance between `from` and `to` exactly.
+#'
+#'   If `to` is supplied along with `by`, all components of `to` more precise
+#'   than the precision of `by` must match `from` exactly. For example, if
+#'   `by = duration_months(1)`, the day component of `to` must match the day
+#'   component of `from`.
+#'
+#' @param by `[integer(1) / clock_duration(1) / NULL]`
+#'
+#'   The unit to increment the sequence by.
+#'
+#'   If `to < from`, then `by` must be positive.
+#'
+#'   If `to > from`, then `by` must be negative.
+#'
+#'   If `by` is an integer, it is equivalent to `duration_days(by)`.
+#'
+#'   If `by` is a duration, it is allowed to have a precision of:
+#'   - year
+#'   - quarter
+#'   - month
+#'   - week
+#'   - day
+#'
+#' @return A date vector.
+#'
+#' @name date-sequence
+#'
+#' @export
+#' @examples
+#' from <- date_build(2019, 1)
+#' to <- date_build(2019, 4)
+#'
+#' # Defaults to daily sequence
+#' date_seq(from, to = to, by = 7)
+#'
+#' # Use durations to change to monthly or yearly sequences
+#' date_seq(from, to = to, by = duration_months(1))
+#' date_seq(from, by = duration_years(-2), total_size = 3)
+#'
+#' # Note that components of `to` more precise than the precision of `by`
+#' # must match `from` exactly. For example, this is not well defined:
+#' from <- date_build(2019, 5, 2)
+#' to <- date_build(2025, 7, 5)
+#' try(date_seq(from, to = to, by = duration_years(1)))
+#'
+#' # The month and day components of `to` must match `from`
+#' to <- date_build(2025, 5, 2)
+#' date_seq(from, to = to, by = duration_years(1))
+#'
+#' # Invalid dates must be resolved with the `invalid` argument
+#' from <- date_build(2019, 1, 31)
+#' to <- date_build(2019, 12, 31)
+#'
+#' try(date_seq(from, to = to, by = duration_months(1)))
+#' date_seq(from, to = to, by = duration_months(1), invalid = "previous")
+#'
+#' # Compare this to the base R result, which is often a source of confusion
+#' seq(from, to = to, by = "1 month")
+#'
+#' # This is equivalent to the overflow invalid resolution strategy
+#' date_seq(from, to = to, by = duration_months(1), invalid = "overflow")
+date_seq.Date <- function(from,
+                          ...,
+                          to = NULL,
+                          by = NULL,
+                          total_size = NULL,
+                          invalid = NULL) {
+  check_dots_empty()
+
+  check_number_of_supplied_optional_arguments(to, by, total_size)
+
+  if (!is_null(to) && !is_Date(to)) {
+    abort("If supplied, `to` must be a <Date>.")
+  }
+
+  if (!is_null(total_size)) {
+    total_size <- check_length_out(total_size, arg = "total_size")
+  }
+
+  if (is_null(by)) {
+    precision <- "day"
+  } else if (is_duration(by)) {
+    precision <- duration_precision(by)
+  } else {
+    precision <- "day"
+    by <- duration_helper(by, PRECISION_DAY, n_arg = "by")
+  }
+
+  precision_int <- validate_precision_string(precision)
+
+  if (precision_int == PRECISION_QUARTER) {
+    by <- duration_cast(by, "month")
+    precision <- "month"
+    precision_int <- PRECISION_MONTH
+  }
+
+  if (precision_int == PRECISION_WEEK) {
+    by <- duration_cast(by, "day")
+    precision <- "day"
+    precision_int <- PRECISION_DAY
+  }
+
+  if (precision_int %in% c(PRECISION_YEAR, PRECISION_MONTH)) {
+    out <- date_seq_year_month(from, to, by, total_size, precision)
+    out <- invalid_resolve(out, invalid = invalid)
+    out <- as.Date(out)
+    return(out)
+  }
+
+  if (precision_int == PRECISION_DAY) {
+    out <- date_seq_day(from, to, by, total_size, precision)
+    out <- as.Date(out)
+    return(out)
+  }
+
+  abort("`by` must have a precision of 'year', 'quarter', 'month', 'week', or 'day'.")
+}
+
+date_seq_year_month <- function(from, to, by, total_size, precision) {
+  has_time <- is_POSIXt(from)
+
+  from <- as_year_month_day(from)
+  original_from <- from
+  from <- calendar_narrow(from, precision)
+
+  if (!is_null(to)) {
+    to <- as_year_month_day(to)
+    check_from_to_component_equivalence(original_from, to, precision, has_time)
+    to <- calendar_narrow(to, precision)
+  }
+
+  out <- seq(from, to = to, by = by, length.out = total_size)
+  out <- reset_original_components(out, original_from, precision, has_time)
+
+  out
+}
+
+date_seq_day <- function(from, to, by, total_size, precision) {
+  date_seq_day_hour_minute_second(from, to, by, total_size, precision, as_naive_time)
+}
+date_seq_hour_minute_second <- function(from, to, by, total_size, precision) {
+  date_seq_day_hour_minute_second(from, to, by, total_size, precision, as_sys_time)
+}
+date_seq_day_hour_minute_second <- function(from, to, by, total_size, precision, as_time_point_fn) {
+  has_time <- is_POSIXt(from)
+
+  from <- as_time_point_fn(from)
+  original_from <- from
+  from <- time_point_floor(from, precision)
+
+  if (!is_null(to)) {
+    to <- as_time_point_fn(to)
+
+    check_from_to_component_equivalence(
+      from = as_year_month_day(original_from),
+      to = as_year_month_day(to),
+      precision = precision,
+      has_time = has_time
+    )
+
+    to <- time_point_floor(to, precision)
+  }
+
+  out <- seq(from, to = to, by = by, length.out = total_size)
+
+  original_time <- original_from - from
+  out <- out + original_time
+
+  out
+}
+
+check_from_to_component_equivalence <- function(from, to, precision, has_time) {
+  ok <- TRUE
+  precision_int <- validate_precision_string(precision)
+
+  if (precision_int < PRECISION_MONTH) {
+    ok <- ok && is_true(get_month(from) == get_month(to))
+  }
+  if (precision_int < PRECISION_DAY) {
+    ok <- ok && is_true(get_day(from) == get_day(to))
+  }
+
+  if (has_time) {
+    if (precision_int < PRECISION_HOUR) {
+      ok <- ok && is_true(get_hour(from) == get_hour(to))
+    }
+    if (precision_int < PRECISION_MINUTE) {
+      ok <- ok && is_true(get_minute(from) == get_minute(to))
+    }
+    if (precision_int < PRECISION_SECOND) {
+      ok <- ok && is_true(get_second(from) == get_second(to))
+    }
+  }
+
+  if (!ok) {
+    message <- paste0(
+      "All components of `from` and `to` more precise than ",
+      "'", precision, "' ",
+      "must match."
+    )
+    abort(message)
+  }
+
+  invisible()
+}
+
+reset_original_components <- function(out, from, precision, has_time) {
+  precision_int <- validate_precision_string(precision)
+
+  if (precision_int < PRECISION_MONTH) {
+    out <- set_month(out, get_month(from))
+  }
+  if (precision_int < PRECISION_DAY) {
+    out <- set_day(out, get_day(from))
+  }
+
+  if (has_time) {
+    if (precision_int < PRECISION_HOUR) {
+      out <- set_hour(out, get_hour(from))
+    }
+    if (precision_int < PRECISION_MINUTE) {
+      out <- set_minute(out, get_minute(from))
+    }
+    if (precision_int < PRECISION_SECOND) {
+      out <- set_second(out, get_second(from))
+    }
+  }
+
+  out
+}
+
+check_number_of_supplied_optional_arguments <- function(to, by, total_size) {
+  has_to <- !is_null(to)
+  has_by <- !is_null(by)
+  has_ts <- !is_null(total_size)
+
+  n_has <- sum(has_to, has_by, has_ts)
+
+  if (n_has != 2L) {
+    message <- paste0(
+      "Must specify exactly two of:\n",
+      "- `to`\n",
+      "- `by`\n",
+      "- `total_size`"
+    )
+    abort(message)
+  }
+
+  invisible()
+}

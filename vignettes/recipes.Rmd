@@ -255,6 +255,53 @@ to <- as_naive_time(year_month_day(2019, 1, 1, 12, 30, 00))
 seq(from, to, by = duration_minutes(90))
 ```
 
+### High level API
+
+In the high level API, you can use `date_seq()` to generate sequences. This doesn't have all of the flexibility of the `seq()` methods above, but is still extremely useful and has the added benefit of switching between calendars, sys-times, and naive-times automatically for you.
+
+If an integer `by` is supplied with a date `from`, it defaults to a daily sequence:
+
+```{r}
+date_seq(date_build(2019, 1), by = 2, total_size = 10)
+```
+
+You can generate a monthly sequence by supplying a month precision duration for `by`.
+
+```{r}
+date_seq(date_build(2019, 1), by = duration_months(2), total_size = 10)
+```
+
+If you supply `to`, be aware that all components of `to` that are more precise than the precision of `by` must match `from` exactly. For example, the day component of `from` and `to` doesn't match here, so the sequence isn't defined.
+
+```{r, error=TRUE}
+date_seq(
+  date_build(2019, 1, 1),
+  to = date_build(2019, 10, 2),
+  by = duration_months(2)
+)
+```
+
+`date_seq()` also catches invalid dates for you, forcing you to specify the `invalid` argument to specify how to handle them.
+
+```{r, error=TRUE}
+jan31 <- date_build(2019, 1, 31)
+dec31 <- date_build(2019, 12, 31)
+
+date_seq(jan31, to = dec31, by = duration_months(1))
+```
+
+By specifying `invalid = "previous"` here, we can generate month end values.
+
+```{r}
+date_seq(jan31, to = dec31, by = duration_months(1), invalid = "previous")
+```
+
+Compare this with the automatic "overflow" behavior of `seq()`, which is often a source of confusion.
+
+```{r}
+seq(jan31, to = dec31, by = "1 month")
+```
+
 ## Grouping by months or quarters
 
 When working on a data analysis, you might be required to summarize certain metrics at a monthly or quarterly level. With `calendar_group()`, you can easily summarize at the granular precision that you care about. Take this vector of day precision naive-times in 2019:

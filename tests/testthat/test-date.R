@@ -366,6 +366,118 @@ test_that("can get the current date", {
 })
 
 # ------------------------------------------------------------------------------
+# date_seq()
+
+test_that("integer `by` means day precision", {
+  expect_identical(
+    date_seq(new_date(0), to = new_date(5), by = 1),
+    date_seq(new_date(0), to = new_date(5), by = duration_days(1))
+  )
+})
+
+test_that("day precision seq works", {
+  expect_identical(
+    date_seq(new_date(0), to = new_date(5), by = duration_days(2)),
+    new_date(c(0, 2, 4))
+  )
+})
+
+test_that("granular `by` are allowed", {
+  expect_identical(
+    date_seq(date_build(2019, 1, 1), to = date_build(2019, 6, 1), by = duration_months(2)),
+    date_build(2019, c(1, 3, 5), 1)
+  )
+  expect_identical(
+    date_seq(date_build(2019, 1, 1), to = date_build(2025, 1, 1), by = duration_years(2)),
+    date_build(c(2019, 2021, 2023, 2025), 1, 1)
+  )
+})
+
+test_that("combining `by` with `total_size` works", {
+  expect_identical(
+    date_seq(date_build(2019, 1, 1), by = 2, total_size = 3),
+    date_build(2019, 1, c(1, 3, 5))
+  )
+})
+
+test_that("combining `to` with `total_size` works", {
+  expect_identical(
+    date_seq(date_build(2019, 1, 1), to = date_build(2019, 1, 5), total_size = 3),
+    date_build(2019, 1, c(1, 3, 5))
+  )
+})
+
+test_that("can resolve invalid dates", {
+  from <- date_build(2019, 1, 31)
+  to <- date_build(2019, 5, 31)
+
+  expect_snapshot_error(date_seq(from, to = to, by = duration_months(1)))
+
+  expect_identical(
+    date_seq(from, to = to, by = duration_months(1), invalid = "previous"),
+    date_build(2019, 1:5, "last")
+  )
+})
+
+test_that("quarterly `by` works", {
+  expect_identical(
+    date_seq(date_build(2019, 1, 2), by = duration_quarters(1), total_size = 3),
+    date_seq(date_build(2019, 1, 2), by = duration_months(3), total_size = 3)
+  )
+})
+
+test_that("weekly `by` works", {
+  expect_identical(
+    date_seq(date_build(2019, 1, 2), by = duration_weeks(1), total_size = 3),
+    date_seq(date_build(2019, 1, 2), by = duration_days(7), total_size = 3)
+  )
+})
+
+test_that("components of `from` more precise than `by` are restored", {
+  expect_identical(
+    date_seq(date_build(2019, 2, 3), by = duration_months(1), total_size = 2),
+    date_build(2019, 2:3, 3)
+  )
+  expect_identical(
+    date_seq(date_build(2019, 2, 3), by = duration_years(1), total_size = 2),
+    date_build(2019:2020, 2, 3)
+  )
+})
+
+test_that("components of `to` more precise than `by` must match `from`", {
+  expect_snapshot_error(date_seq(date_build(2019, 1, 1), to = date_build(2019, 2, 2), by = duration_months(1)))
+  expect_snapshot_error(date_seq(date_build(2019, 1, 1), to = date_build(2019, 3, 1), by = duration_years(1)))
+})
+
+test_that("validates integerish `by`", {
+  expect_snapshot_error(date_seq(new_date(1), by = 1.5, total_size = 1))
+})
+
+test_that("validates `total_size` early", {
+  expect_snapshot_error(date_seq(new_date(1), by = 1, total_size = 1.5))
+  expect_snapshot_error(date_seq(new_date(1), by = 1, total_size = NA))
+  expect_snapshot_error(date_seq(new_date(1), by = 1, total_size = -1))
+})
+
+test_that("requires exactly two optional arguments", {
+  expect_snapshot_error(date_seq(new_date(1), by = 1))
+  expect_snapshot_error(date_seq(new_date(1), total_size = 1))
+  expect_snapshot_error(date_seq(new_date(1), to = new_date(1)))
+})
+
+test_that("requires `to` to be Date", {
+  expect_snapshot_error(date_seq(new_date(1), to = 1, by = 1))
+})
+
+test_that("requires year, month, or day precision", {
+  expect_snapshot_error(date_seq(new_date(1), to = new_date(2), by = duration_nanoseconds(1)))
+})
+
+test_that("checks empty dots", {
+  expect_snapshot_error(date_seq(new_date(1), new_date(2)))
+})
+
+# ------------------------------------------------------------------------------
 # date_zone()
 
 test_that("cannot get the zone of a Date", {

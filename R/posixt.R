@@ -1424,3 +1424,245 @@ date_time_build <- function(year,
 date_now <- function(zone) {
   as.POSIXct(zoned_time_now(zone))
 }
+
+# ------------------------------------------------------------------------------
+
+#' Sequences: date-time
+#'
+#' @description
+#' This is a POSIXct method for the [date_seq()] generic.
+#'
+#' `date_seq()` generates a date-time (POSIXct) sequence.
+#'
+#' When calling `date_seq()`, exactly two of the following must be specified:
+#' - `to`
+#' - `by`
+#' - `total_size`
+#'
+#' @section Sequence Generation:
+#'
+#' Different methods are used to generate the sequences, depending on the
+#' precision implied by `by`. They are intended to generate the most intuitive
+#' sequences, especially around daylight saving time gaps and fallbacks.
+#'
+#' See the examples for more details.
+#'
+#' ## Calendrical based sequences:
+#'
+#' These convert to a naive-time, then to a year-month-day, generate
+#' the sequence, then convert back to a date-time.
+#'
+#' - `by = duration_years()`
+#'
+#' - `by = duration_quarters()`
+#'
+#' - `by = duration_months()`
+#'
+#' ## Naive-time based sequences:
+#'
+#' These convert to a naive-time, generate the sequence, then
+#' convert back to a date-time.
+#'
+#' - `by = duration_weeks()`
+#'
+#' - `by = duration_days()`
+#'
+#' ## Sys-time based sequences:
+#'
+#' These convert to a sys-time, generate the sequence, then
+#' convert back to a date-time.
+#'
+#' - `by = duration_hours()`
+#'
+#' - `by = duration_minutes()`
+#'
+#' - `by = duration_seconds()`
+#'
+#' @inheritParams date_seq
+#' @inheritParams invalid_resolve
+#' @inheritParams as-zoned-time-naive-time
+#'
+#' @param from `[POSIXct(1) / POSIXlt(1)]`
+#'
+#'   A date-time to start the sequence from.
+#'
+#'   `from` is always included in the result.
+#'
+#' @param to `[POSIXct(1) / POSIXlt(1) / NULL]`
+#'
+#'   A date-time to stop the sequence at.
+#'
+#'   `to` is only included in the result if the resulting sequence divides
+#'   the distance between `from` and `to` exactly.
+#'
+#'   If `to` is supplied along with `by`, all components of `to` more precise
+#'   than the precision of `by` must match `from` exactly. For example, if `by =
+#'   duration_months(1)`, the day, hour, minute, and second components of `to`
+#'   must match the corresponding components of `from`.
+#'
+#'   The time zone of `to` must match the time zone of `from` exactly.
+#'
+#' @param by `[integer(1) / clock_duration(1) / NULL]`
+#'
+#'   The unit to increment the sequence by.
+#'
+#'   If `to < from`, then `by` must be positive.
+#'
+#'   If `to > from`, then `by` must be negative.
+#'
+#'   If `by` is an integer, it is equivalent to `duration_seconds(by)`.
+#'
+#'   If `by` is a duration, it is allowed to have a precision of:
+#'   - year
+#'   - quarter
+#'   - month
+#'   - week
+#'   - day
+#'   - hour
+#'   - minute
+#'   - second
+#'
+#' @return A date-time vector.
+#'
+#' @name posixt-sequence
+#'
+#' @export
+#' @examples
+#' zone <- "America/New_York"
+#'
+#' from <- date_time_build(2019, 1, zone = zone)
+#' to <- date_time_build(2019, 1, second = 50, zone = zone)
+#'
+#' # Defaults to second precision sequence
+#' date_seq(from, to = to, by = 7)
+#'
+#' to <- date_time_build(2019, 1, 5, zone = zone)
+#'
+#' # Use durations to change to alternative precisions
+#' date_seq(from, to = to, by = duration_days(1))
+#' date_seq(from, to = to, by = duration_hours(10))
+#' date_seq(from, by = duration_minutes(-2), total_size = 3)
+#'
+#' # Note that components of `to` more precise than the precision of `by`
+#' # must match `from` exactly. For example, this is not well defined:
+#' from <- date_time_build(2019, 1, 1, 0, 1, 30, zone = zone)
+#' to <- date_time_build(2019, 1, 1, 5, 2, 20, zone = zone)
+#' try(date_seq(from, to = to, by = duration_hours(1)))
+#'
+#' # The minute and second components of `to` must match `from`
+#' to <- date_time_build(2019, 1, 1, 5, 1, 30, zone = zone)
+#' date_seq(from, to = to, by = duration_hours(1))
+#'
+#' # ---------------------------------------------------------------------------
+#'
+#' # Invalid dates must be resolved with the `invalid` argument
+#' from <- date_time_build(2019, 1, 31, zone = zone)
+#' to <- date_time_build(2019, 12, 31, zone = zone)
+#'
+#' try(date_seq(from, to = to, by = duration_months(1)))
+#' date_seq(from, to = to, by = duration_months(1), invalid = "previous-day")
+#'
+#' # Compare this to the base R result, which is often a source of confusion
+#' seq(from, to = to, by = "1 month")
+#'
+#' # This is equivalent to the overflow invalid resolution strategy
+#' date_seq(from, to = to, by = duration_months(1), invalid = "overflow")
+#'
+#' # ---------------------------------------------------------------------------
+#'
+#' # This date-time is 2 days before a daylight saving time gap that occurred
+#' # on 2021-03-14 between 01:59:59 -> 03:00:00
+#' from <- as.POSIXct("2021-03-12 02:30:00", "America/New_York")
+#'
+#' # So creating a daily sequence lands us in that daylight saving time gap,
+#' # creating a nonexistent time
+#' try(date_seq(from, by = duration_days(1), total_size = 5))
+#'
+#' # Resolve the nonexistent time with `nonexistent`. Note that this importantly
+#' # allows times after the gap to retain the `02:30:00` time.
+#' date_seq(from, by = duration_days(1), total_size = 5, nonexistent = "roll-forward")
+#'
+#' # Compare this to the base R behavior, where the hour is adjusted from 2->3
+#' # as you cross the daylight saving time gap, and is never restored. This is
+#' # equivalent to always using sys-time (rather than naive-time, like clock
+#' # uses for daily sequences).
+#' seq(from, by = "1 day", length.out = 5)
+#'
+#' # You can replicate this behavior by generating a second precision sequence
+#' # of 86,400 seconds. Seconds always add in sys-time.
+#' date_seq(from, by = duration_seconds(86400), total_size = 5)
+date_seq.POSIXt <- function(from,
+                            ...,
+                            to = NULL,
+                            by = NULL,
+                            total_size = NULL,
+                            invalid = NULL,
+                            nonexistent = NULL,
+                            ambiguous = NULL) {
+  check_dots_empty()
+
+  check_number_of_supplied_optional_arguments(to, by, total_size)
+
+  from <- to_posixct(from)
+  zone <- date_zone(from)
+
+  if (!is_null(to)) {
+    if (!is_POSIXt(to)) {
+      abort("If supplied, `to` must be a <POSIXct> or <POSIXlt>.")
+    }
+
+    to <- to_posixct(to)
+
+    if (!identical(zone, date_zone(to))) {
+      abort("`from` and `to` must have identical time zones.")
+    }
+  }
+
+  if (!is_null(total_size)) {
+    total_size <- check_length_out(total_size, arg = "total_size")
+  }
+
+  if (is_null(by)) {
+    precision <- "second"
+  } else if (is_duration(by)) {
+    precision <- duration_precision(by)
+  } else {
+    precision <- "second"
+    by <- duration_helper(by, PRECISION_SECOND, n_arg = "by")
+  }
+
+  precision_int <- validate_precision_string(precision)
+
+  if (precision_int == PRECISION_QUARTER) {
+    by <- duration_cast(by, "month")
+    precision <- "month"
+    precision_int <- PRECISION_MONTH
+  }
+
+  if (precision_int == PRECISION_WEEK) {
+    by <- duration_cast(by, "day")
+    precision <- "day"
+    precision_int <- PRECISION_DAY
+  }
+
+  if (precision_int %in% c(PRECISION_YEAR, PRECISION_MONTH)) {
+    out <- date_seq_year_month(from, to, by, total_size, precision)
+    out <- invalid_resolve(out, invalid = invalid)
+    out <- as.POSIXct(out, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
+    return(out)
+  }
+
+  if (precision_int == PRECISION_DAY) {
+    out <- date_seq_day(from, to, by, total_size, precision)
+    out <- as.POSIXct(out, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
+    return(out)
+  }
+
+  if (precision_int %in% c(PRECISION_HOUR, PRECISION_MINUTE, PRECISION_SECOND)) {
+    out <- date_seq_hour_minute_second(from, to, by, total_size, precision)
+    out <- as.POSIXct(out, tz = zone)
+    return(out)
+  }
+
+  abort("`by` must have a precision of 'year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', or 'second'.")
+}
