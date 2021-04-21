@@ -234,7 +234,9 @@ must match the corresponding components of <code>from</code>.</p>
     <tr>
       <th>total_size</th>
       <td><p><code>[positive integer(1) / NULL]</code></p>
-<p>The size of the resulting sequence.</p></td>
+<p>The size of the resulting sequence.</p>
+<p>If specified alongside <code>to</code>, this must generate a non-fractional sequence
+between <code>from</code> and <code>to</code>.</p></td>
     </tr>
     <tr>
       <th>invalid</th>
@@ -451,7 +453,22 @@ convert back to a date-time.</p><ul>
 <span class='fu'><a href='date_seq.html'>date_seq</a></span><span class='op'>(</span><span class='va'>from</span>, by <span class='op'>=</span> <span class='fu'><a href='duration-helper.html'>duration_seconds</a></span><span class='op'>(</span><span class='fl'>86400</span><span class='op'>)</span>, total_size <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "2021-03-12 02:30:00 EST" "2021-03-13 02:30:00 EST"
 #&gt; [3] "2021-03-14 03:30:00 EDT" "2021-03-15 03:30:00 EDT"
-#&gt; [5] "2021-03-16 03:30:00 EDT"</div></span></pre>
+#&gt; [5] "2021-03-16 03:30:00 EDT"</div><div class='input'>
+<span class='co'># ---------------------------------------------------------------------------</span>
+
+<span class='co'># Usage of `to` and `total_size` must generate a non-fractional sequence</span>
+<span class='co'># between `from` and `to`</span>
+<span class='va'>from</span> <span class='op'>&lt;-</span> <span class='fu'><a href='date_time_build.html'>date_time_build</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, zone <span class='op'>=</span> <span class='st'>"America/New_York"</span><span class='op'>)</span>
+<span class='va'>to</span> <span class='op'>&lt;-</span> <span class='fu'><a href='date_time_build.html'>date_time_build</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>3</span>, zone <span class='op'>=</span> <span class='st'>"America/New_York"</span><span class='op'>)</span>
+
+<span class='co'># These are fine</span>
+<span class='fu'><a href='date_seq.html'>date_seq</a></span><span class='op'>(</span><span class='va'>from</span>, to <span class='op'>=</span> <span class='va'>to</span>, total_size <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2019-01-01 00:00:00 EST" "2019-01-01 00:00:03 EST"</div><div class='input'><span class='fu'><a href='date_seq.html'>date_seq</a></span><span class='op'>(</span><span class='va'>from</span>, to <span class='op'>=</span> <span class='va'>to</span>, total_size <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2019-01-01 00:00:00 EST" "2019-01-01 00:00:01 EST"
+#&gt; [3] "2019-01-01 00:00:02 EST" "2019-01-01 00:00:03 EST"</div><div class='input'>
+<span class='co'># But this is not!</span>
+<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='date_seq.html'>date_seq</a></span><span class='op'>(</span><span class='va'>from</span>, to <span class='op'>=</span> <span class='va'>to</span>, total_size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Error : The supplied output size does not result in a non-fractional sequence between `from` and `to`.</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
