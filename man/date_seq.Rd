@@ -32,7 +32,10 @@ If \code{to > from}, then \code{by} must be negative.}
 
 \item{total_size}{\verb{[positive integer(1) / NULL]}
 
-The size of the resulting sequence.}
+The size of the resulting sequence.
+
+If specified alongside \code{to}, this must generate a non-fractional sequence
+between \code{from} and \code{to}.}
 }
 \value{
 A date or date-time vector.

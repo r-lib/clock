@@ -62,7 +62,10 @@ If \code{by} is a duration, it is allowed to have a precision of:
 
 \item{total_size}{\verb{[positive integer(1) / NULL]}
 
-The size of the resulting sequence.}
+The size of the resulting sequence.
+
+If specified alongside \code{to}, this must generate a non-fractional sequence
+between \code{from} and \code{to}.}
 
 \item{invalid}{\verb{[character(1) / NULL]}
 
@@ -271,4 +274,18 @@ seq(from, by = "1 day", length.out = 5)
 # You can replicate this behavior by generating a second precision sequence
 # of 86,400 seconds. Seconds always add in sys-time.
 date_seq(from, by = duration_seconds(86400), total_size = 5)
+
+# ---------------------------------------------------------------------------
+
+# Usage of `to` and `total_size` must generate a non-fractional sequence
+# between `from` and `to`
+from <- date_time_build(2019, 1, 1, 0, 0, 0, zone = "America/New_York")
+to <- date_time_build(2019, 1, 1, 0, 0, 3, zone = "America/New_York")
+
+# These are fine
+date_seq(from, to = to, total_size = 2)
+date_seq(from, to = to, total_size = 4)
+
+# But this is not!
+try(date_seq(from, to = to, total_size = 3))
 }

@@ -49,7 +49,10 @@ If \code{by} is a duration, it is allowed to have a precision of:
 
 \item{total_size}{\verb{[positive integer(1) / NULL]}
 
-The size of the resulting sequence.}
+The size of the resulting sequence.
+
+If specified alongside \code{to}, this must generate a non-fractional sequence
+between \code{from} and \code{to}.}
 
 \item{invalid}{\verb{[character(1) / NULL]}
 
@@ -114,6 +117,8 @@ try(date_seq(from, to = to, by = duration_years(1)))
 to <- date_build(2025, 5, 2)
 date_seq(from, to = to, by = duration_years(1))
 
+# ---------------------------------------------------------------------------
+
 # Invalid dates must be resolved with the `invalid` argument
 from <- date_build(2019, 1, 31)
 to <- date_build(2019, 12, 31)
@@ -126,4 +131,18 @@ seq(from, to = to, by = "1 month")
 
 # This is equivalent to the overflow invalid resolution strategy
 date_seq(from, to = to, by = duration_months(1), invalid = "overflow")
+
+# ---------------------------------------------------------------------------
+
+# Usage of `to` and `total_size` must generate a non-fractional sequence
+# between `from` and `to`
+from <- date_build(2019, 1, 1)
+to <- date_build(2019, 1, 4)
+
+# These are fine
+date_seq(from, to = to, total_size = 2)
+date_seq(from, to = to, total_size = 4)
+
+# But this is not!
+try(date_seq(from, to = to, total_size = 3))
 }
