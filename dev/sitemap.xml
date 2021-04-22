@@ -262,6 +262,9 @@
     <loc>https://clock.r-lib.org/reference/posixt-shifting.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/reexports.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/seq.clock_duration.html</loc>
   </url>
   <url>
@@ -404,9 +407,6 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/year_quarter_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/reference/zone-database.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/zoned-parsing.html</loc>
