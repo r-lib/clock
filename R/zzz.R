@@ -1,10 +1,9 @@
 # nocov start
 
 .onLoad <- function(libname, pkgname) {
-  clock_init_utils()
+  tzdb::tzdb_initialize()
 
-  tzdata <- tzdb::tzdb_path(type = "text")
-  clock_set_install(tzdata)
+  clock_init_utils()
 
   clock_ns <- topenv(environment())
 

@@ -1,12 +1,15 @@
 #ifndef CLOCK_CLOCK_H
 #define CLOCK_CLOCK_H
 
-// Include <date/> first to avoid hitting R's `length()` macro
-#include <date/date.h>
-#include <date/ordinal.h>
-#include <date/quarterly.h>
-#include <date/iso_week.h>
-#include <date/tz.h>
+// Include date tooling first to avoid hitting R's `length()` macro
+#include <tzdb/tzdb.h>
+#include <tzdb/date.h>
+#include <tzdb/tz.h>
+#include <tzdb/iso_week.h>
+
+// Include date extensions next
+#include "quarterly.h"
+#include "ordinal.h"
 
 // Include cpp11 next to avoid <Rinternals.h> being included before cpp11
 #include <cpp11.hpp>

@@ -32,6 +32,67 @@ extern SEXP ints_empty;
 
 // -----------------------------------------------------------------------------
 
+namespace rclock {
+
+namespace detail {
+
+} // namespace detail
+
+// Essentially date's `time_zone::get_info(sys_time<Duration> st)`, but goes
+// through `tzdb::` to get the sys_info
+template <class Duration>
+static
+inline
+date::sys_info
+get_info(const date::sys_time<Duration>& tp, const date::time_zone* p_time_zone)
+{
+  const date::sys_seconds ss = date::floor<std::chrono::seconds>(tp);
+
+  date::sys_info info;
+
+  if (!tzdb::get_sys_info(ss, p_time_zone, info)) {
+    cpp11::stop("Can't lookup sys information for the supplied time zone.");
+  }
+
+  return info;
+}
+
+// Essentially date's `time_zone::get_info(local_time<Duration> lt)`, but goes
+// through `tzdb::` to get the local_info
+template <class Duration>
+static
+inline
+date::local_info
+get_info(const date::local_time<Duration>& tp, const date::time_zone* p_time_zone)
+{
+  const date::local_seconds ls = date::floor<std::chrono::seconds>(tp);
+
+  date::local_info info;
+
+  if (!tzdb::get_local_info(ls, p_time_zone, info)) {
+    cpp11::stop("Can't lookup local information for the supplied time zone.");
+  }
+
+  return info;
+}
+
+// Essentially date's `time_zone::to_local(sys_time<Duration> tp)`, but goes
+// through `tzdb::` to get the sys_info
+template <class Duration>
+static
+inline
+date::local_time<typename std::common_type<Duration, std::chrono::seconds>::type>
+get_local_time(const date::sys_time<Duration>& tp, const date::time_zone* p_time_zone)
+{
+  using LT = date::local_time<typename std::common_type<Duration, std::chrono::seconds>::type>;
+  const date::sys_info info = rclock::get_info(tp, p_time_zone);
+  return LT{(tp + info.offset).time_since_epoch()};
+}
+
+} // namespace rclock
+
+// -----------------------------------------------------------------------------
+
 static
 inline
 SEXP

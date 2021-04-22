@@ -6,10 +6,6 @@ Authors@R:
              family = "Vaughan",
              role = c("aut", "cre"),
              email = "davis@rstudio.com"),
-      person(given = "Howard",
-             family = "Hinnant",
-             role = "cph",
-             comment = "Author of the included date library"),
       person(given = "RStudio",
              role = c("cph", "fnd")))
 Description: Provides a comprehensive library for date-time manipulations
@@ -26,7 +22,7 @@ Depends:
 Imports: 
     ellipsis (>= 0.3.1),
     rlang (>= 0.4.10),
-    tzdb (>= 0.1.0),
+    tzdb (>= 0.1.1),
     vctrs (>= 0.3.7)
 Suggests: 
     covr,
@@ -37,7 +33,8 @@ Suggests:
     testthat (>= 3.0.0),
     withr
 LinkingTo: 
-    cpp11 (>= 0.2.7)
+    cpp11 (>= 0.2.7),
+    tzdb (>= 0.1.1)
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3

@@ -67,7 +67,7 @@ sys_time_info_impl(const ClockDuration& x, const cpp11::strings& zone) {
     }
 
     const date::sys_time<Duration> elt{x[i]};
-    const date::sys_info info = p_time_zone_elt->get_info(elt);
+    const date::sys_info info = rclock::get_info(elt, p_time_zone_elt);
 
     begin.assign(info.begin.time_since_epoch(), i);
     end.assign(info.end.time_since_epoch(), i);

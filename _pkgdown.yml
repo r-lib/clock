@@ -183,10 +183,6 @@ reference:
   contents:
   - clock-codes
 
-- title: Database
-  contents:
-  - zone_database_version
-
 - title: Developer
   contents:
   - vec_arith.clock_year_month_day
@@ -205,6 +201,10 @@ reference:
   - posixt-sequence
   - as-zoned-time-Date
   - as-zoned-time-posixt
+
+- title: Reexports
+  contents:
+  - reexports
 
 news:
   releases:

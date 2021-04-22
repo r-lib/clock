@@ -99,11 +99,10 @@ get_naive_time_impl(const ClockDuration& x,
       continue;
     }
 
-    Duration elt = x[i];
-    date::sys_time<Duration> elt_st{elt};
-    date::zoned_time<Duration> elt_zt{p_time_zone, elt_st};
-    date::local_time<Duration> elt_lt = elt_zt.get_local_time();
-    Duration elt_out = elt_lt.time_since_epoch();
+    const Duration elt = x[i];
+    const date::sys_time<Duration> elt_st{elt};
+    const date::local_time<Duration> elt_lt = rclock::get_local_time(elt_st, p_time_zone);
+    const Duration elt_out = elt_lt.time_since_epoch();
     out.assign(elt_out, i);
   }
 
@@ -186,7 +185,7 @@ as_zoned_sys_time_from_naive_time_impl(const ClockDuration& x,
 
     const Duration elt = x[i];
     const date::local_time<Duration> elt_lt{elt};
-    const date::local_info elt_info = p_time_zone->get_info(elt_lt);
+    const date::local_info elt_info = rclock::get_info(elt_lt, p_time_zone);
 
     out.convert_local_to_sys_and_assign(
       elt_lt,
@@ -253,7 +252,7 @@ as_zoned_sys_time_from_naive_time_with_reference_impl(const ClockDuration& x,
 
   enum nonexistent nonexistent_val;
   enum ambiguous ambiguous_val;
-  date::zoned_seconds reference_val;
+  date::sys_seconds reference_val;
 
   if (recycle_nonexistent) {
     nonexistent_val = parse_nonexistent_one(nonexistent_string[0]);
@@ -262,7 +261,7 @@ as_zoned_sys_time_from_naive_time_with_reference_impl(const ClockDuration& x,
     ambiguous_val = parse_ambiguous_one(ambiguous_string[0]);
   }
   if (recycle_reference) {
-    reference_val = date::zoned_seconds(p_time_zone, date::sys_seconds{reference_duration[0]});
+    reference_val = date::sys_seconds{reference_duration[0]};
   }
 
   for (r_ssize i = 0; i < size; ++i) {
@@ -281,14 +280,14 @@ as_zoned_sys_time_from_naive_time_with_reference_impl(const ClockDuration& x,
       ambiguous_val :
       parse_ambiguous_one(ambiguous_string[i]);
 
-    const date::zoned_seconds elt_reference_val =
+    const date::sys_seconds elt_reference_val =
       recycle_reference ?
       reference_val :
-      date::zoned_seconds(p_time_zone, date::sys_seconds{reference_duration[i]});
+      date::sys_seconds{reference_duration[i]};
 
     const Duration elt = x[i];
     const date::local_time<Duration> elt_lt{elt};
-    const date::local_info elt_info = p_time_zone->get_info(elt_lt);
+    const date::local_info elt_info = rclock::get_info(elt_lt, p_time_zone);
 
     out.convert_local_with_reference_to_sys_and_assign(
       elt_lt,
@@ -402,16 +401,16 @@ void
 finalize_parse_zone(const std::string& candidate,
                     std::string& zone,
                     const date::time_zone*& p_time_zone) {
-  try {
-    p_time_zone = date::locate_zone(candidate);
-    zone = candidate;
-  } catch (const std::runtime_error& error) {
+  if (!tzdb::locate_zone(candidate, p_time_zone)) {
     std::string message{
       "`%%Z` must be used, and must result in a valid time zone name, "
       "not '" + candidate + "'."
     };
+
     clock_abort(message.c_str());
-  };
+  }
+
+  zone = candidate;
 }
 
 static
@@ -481,7 +480,7 @@ zoned_time_parse_complete_one(std::istringstream& stream,
       clock_abort("`%%z` must be used, and must result in a valid offset from UTC.");
     }
 
-    const date::local_info info = p_time_zone->get_info(lt);
+    const date::local_info info = rclock::get_info(lt, p_time_zone);
 
     switch (info.result) {
     case date::local_info::nonexistent: {
@@ -691,7 +690,7 @@ zoned_time_parse_abbrev_one(std::istringstream& stream,
       clock_abort("`%%Z` must be used and must result in a time zone abbreviation.");
     }
 
-    const date::local_info info = p_time_zone->get_info(lt);
+    const date::local_info info = rclock::get_info(lt, p_time_zone);
     std::chrono::seconds offset{};
 
     switch (info.result) {
