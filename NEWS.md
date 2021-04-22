@@ -1,3 +1,5 @@
+# clock (development version)
+
 # clock 0.3.0
 
 * New `date_seq()` for generating date and date-time sequences (#218).
