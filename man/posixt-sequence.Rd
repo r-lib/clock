@@ -34,7 +34,9 @@ the distance between \code{from} and \code{to} exactly.
 
 If \code{to} is supplied along with \code{by}, all components of \code{to} more precise
 than the precision of \code{by} must match \code{from} exactly. For example, if \code{by = duration_months(1)}, the day, hour, minute, and second components of \code{to}
-must match the corresponding components of \code{from}.
+must match the corresponding components of \code{from}. This ensures that the
+generated sequence is, at a minimum, a weakly monotonic sequence of
+date-times.
 
 The time zone of \code{to} must match the time zone of \code{from} exactly.}
 

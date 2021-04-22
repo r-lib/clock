@@ -481,6 +481,16 @@ test_that("checks empty dots", {
   expect_snapshot_error(date_seq(new_date(1), new_date(2)))
 })
 
+test_that("golden test: ensure that we never allow components of `to` to differ with `from` (#224)", {
+  from <- date_build(1970, 01, 31)
+  to <- date_build(1970, 03, 01)
+
+  expect_error(date_seq(from, to = to, by = duration_months(1), invalid = "overflow"))
+
+  # Could theoretically generate this, where the second element is past `to`
+  #> "1970-01-31" "1970-03-03"
+})
+
 # ------------------------------------------------------------------------------
 # date_zone()
 

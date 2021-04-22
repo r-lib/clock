@@ -1320,9 +1320,10 @@ date_seq <- function(from,
 #'   the distance between `from` and `to` exactly.
 #'
 #'   If `to` is supplied along with `by`, all components of `to` more precise
-#'   than the precision of `by` must match `from` exactly. For example, if
-#'   `by = duration_months(1)`, the day component of `to` must match the day
-#'   component of `from`.
+#'   than the precision of `by` must match `from` exactly. For example, if `by =
+#'   duration_months(1)`, the day component of `to` must match the day component
+#'   of `from`. This ensures that the generated sequence is, at a minimum, a
+#'   weakly monotonic sequence of dates.
 #'
 #' @param by `[integer(1) / clock_duration(1) / NULL]`
 #'

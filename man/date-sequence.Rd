@@ -24,9 +24,9 @@ A date to stop the sequence at.
 the distance between \code{from} and \code{to} exactly.
 
 If \code{to} is supplied along with \code{by}, all components of \code{to} more precise
-than the precision of \code{by} must match \code{from} exactly. For example, if
-\code{by = duration_months(1)}, the day component of \code{to} must match the day
-component of \code{from}.}
+than the precision of \code{by} must match \code{from} exactly. For example, if \code{by = duration_months(1)}, the day component of \code{to} must match the day component
+of \code{from}. This ensures that the generated sequence is, at a minimum, a
+weakly monotonic sequence of dates.}
 
 \item{by}{\verb{[integer(1) / clock_duration(1) / NULL]}
 

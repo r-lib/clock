@@ -1498,7 +1498,9 @@ date_now <- function(zone) {
 #'   If `to` is supplied along with `by`, all components of `to` more precise
 #'   than the precision of `by` must match `from` exactly. For example, if `by =
 #'   duration_months(1)`, the day, hour, minute, and second components of `to`
-#'   must match the corresponding components of `from`.
+#'   must match the corresponding components of `from`. This ensures that the
+#'   generated sequence is, at a minimum, a weakly monotonic sequence of
+#'   date-times.
 #'
 #'   The time zone of `to` must match the time zone of `from` exactly.
 #'

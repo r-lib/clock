@@ -712,6 +712,17 @@ test_that("checks empty dots", {
   expect_snapshot_error(date_seq(new_datetime(1), new_datetime(2)))
 })
 
+test_that("golden test: ensure that we never allow components of `to` to differ with `from` (#224)", {
+  # DST gap from 01:59:59 -> 03:00:00 on the 26th
+  from <- date_time_build(1970, 04, 25, 02, 30, 00, zone = "America/New_York")
+  to <- date_time_build(1970, 04, 26, 03, 00, 00, zone = "America/New_York")
+
+  expect_error(date_seq(from, to = to, by = duration_days(1), nonexistent = "shift-forward"))
+
+  # Could theoretically generate this, where the second element is past `to`
+  #> "1970-04-25 02:30:00 EST" "1970-04-26 03:30:00 EDT"
+})
+
 # ------------------------------------------------------------------------------
 # vec_arith()
 
