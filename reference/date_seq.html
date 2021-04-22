@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Is x a iso-year-week-day? — is_iso_year_week_day • clock</title>
+<title>Sequences: date and date-time — date_seq • clock</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,14 @@
 
 
 
-<meta property="og:title" content="Is x a iso-year-week-day? — is_iso_year_week_day" />
-<meta property="og:description" content="Check if x is a iso-year-week-day." />
+<meta property="og:title" content="Sequences: date and date-time — date_seq" />
+<meta property="og:description" content="date_seq() generates a date (Date) or date-time (POSIXct/POSIXlt) sequence.
+There are separate help pages for generating sequences for dates and
+date-times:
+dates (Date)
+date-times (POSIXct/POSIXlt)
+
+" />
 <meta property="og:image" content="https://clock.r-lib.org/logo.png" />
 
 
@@ -154,35 +160,72 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Is <code>x</code> a iso-year-week-day?</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/clock/blob/master/R/iso-year-week-day.R'><code>R/iso-year-week-day.R</code></a></small>
-    <div class="hidden name"><code>is_iso_year_week_day.Rd</code></div>
+    <h1>Sequences: date and date-time</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/clock/blob/master/R/date.R'><code>R/date.R</code></a></small>
+    <div class="hidden name"><code>date_seq.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Check if <code>x</code> is a iso-year-week-day.</p>
+    <p><code>date_seq()</code> generates a date (Date) or date-time (POSIXct/POSIXlt) sequence.</p>
+<p>There are separate help pages for generating sequences for dates and
+date-times:</p><ul>
+<li><p><a href='date-sequence.html'>dates (Date)</a></p></li>
+<li><p><a href='posixt-sequence.html'>date-times (POSIXct/POSIXlt)</a></p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>is_iso_year_week_day</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>date_seq</span><span class='op'>(</span><span class='va'>from</span>, <span class='va'>...</span>, to <span class='op'>=</span> <span class='cn'>NULL</span>, by <span class='op'>=</span> <span class='cn'>NULL</span>, total_size <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p><code>[object]</code></p>
-<p>An object.</p></td>
+      <th>from</th>
+      <td><p><code>[Date(1) / POSIXct(1) / POSIXlt(1)]</code></p>
+<p>A date or date-time to start the sequence from.</p>
+<p><code>from</code> is always included in the result.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>These dots are for future extensions and must be empty.</p></td>
+    </tr>
+    <tr>
+      <th>to</th>
+      <td><p><code>[Date(1) / POSIXct(1) / POSIXlt(1) / NULL]</code></p>
+<p>A date or date-time to stop the sequence at.</p>
+<p><code>to</code> is only included in the result if the resulting sequence divides
+the distance between <code>from</code> and <code>to</code> exactly.</p></td>
+    </tr>
+    <tr>
+      <th>by</th>
+      <td><p><code>[integer(1) / clock_duration(1) / NULL]</code></p>
+<p>The unit to increment the sequence by.</p>
+<p>If <code>to &lt; from</code>, then <code>by</code> must be positive.</p>
+<p>If <code>to &gt; from</code>, then <code>by</code> must be negative.</p></td>
+    </tr>
+    <tr>
+      <th>total_size</th>
+      <td><p><code>[positive integer(1) / NULL]</code></p>
+<p>The size of the resulting sequence.</p>
+<p>If specified alongside <code>to</code>, this must generate a non-fractional sequence
+between <code>from</code> and <code>to</code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns <code>TRUE</code> if <code>x</code> inherits from <code>"clock_iso_year_week_day"</code>,
-otherwise returns <code>FALSE</code>.</p>
+    <p>A date or date-time vector.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>is_iso_year_week_day</span><span class='op'>(</span><span class='fu'><a href='iso_year_week_day.html'>iso_year_week_day</a></span><span class='op'>(</span><span class='fl'>2019</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># See method specific documentation for more examples</span>
+
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span><span class='op'>)</span>
+<span class='fu'>date_seq</span><span class='op'>(</span><span class='va'>x</span>, by <span class='op'>=</span> <span class='fu'><a href='duration-helper.html'>duration_months</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>, total_size <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] "2019-01-01" "2019-03-01" "2019-05-01" "2019-07-01" "2019-09-01"
+#&gt;  [6] "2019-11-01" "2020-01-01" "2020-03-01" "2020-05-01" "2020-07-01"
+#&gt; [11] "2020-09-01" "2020-11-01" "2021-01-01" "2021-03-01" "2021-05-01"
+#&gt; [16] "2021-07-01" "2021-09-01" "2021-11-01" "2022-01-01" "2022-03-01"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -157,6 +157,16 @@
       <small>Source: <a href='https://github.com/r-lib/clock/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="clock-030" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.0">
+<a href="#clock-030" class="anchor"></a>clock 0.3.0<small> Unreleased </small>
+</h1>
+<ul>
+<li><p>New <code><a href="../reference/date_seq.html">date_seq()</a></code> for generating date and date-time sequences (<a href='https://github.com/r-lib/clock/issues/218'>#218</a>).</p></li>
+<li><p>clock now uses the tzdb package to access the date library’s API. This means that the experimental API that was to be used for vroom has been removed in favor of using the one exposed in tzdb.</p></li>
+<li><p><code>zone_database_names()</code> and <code>zone_database_version()</code> have been removed in favor of re-exporting <code><a href="https://rdrr.io/pkg/tzdb/man/tzdb_names.html">tzdb_names()</a></code> and <code><a href="https://rdrr.io/pkg/tzdb/man/tzdb_version.html">tzdb_version()</a></code> from the tzdb package.</p></li>
+</ul>
+</div>
     <div id="clock-020" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.0">
 <a href="#clock-020" class="anchor"></a>clock 0.2.0<small> 2021-04-12 </small>
