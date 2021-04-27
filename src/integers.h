@@ -1,7 +1,9 @@
 #ifndef CLOCK_INTEGERS_H
 #define CLOCK_INTEGERS_H
 
-#include "clock.h"
+#include <tzdb/date.h>
+#include <cpp11/integers.hpp>
+#include "r.h"
 
 namespace rclock {
 

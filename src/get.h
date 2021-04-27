@@ -1,7 +1,8 @@
 #ifndef CLOCK_GET_H
 #define CLOCK_GET_H
 
-#include "clock.h"
+#include <cpp11/integers.hpp>
+#include <cpp11/list_of.hpp>
 
 namespace rclock {
 

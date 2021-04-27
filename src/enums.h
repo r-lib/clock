@@ -1,7 +1,9 @@
 #ifndef CLOCK_ENUMS_H
 #define CLOCK_ENUMS_H
 
-#include "clock.h"
+#include <cpp11/strings.hpp>
+#include <cpp11/integers.hpp>
+#include "r.h"
 #include "utils.h"
 // -----------------------------------------------------------------------------
 
@@ -60,10 +62,6 @@ enum class component {
 };
 
 enum component parse_component(const cpp11::strings& x);
-
-// -----------------------------------------------------------------------------
-
-enum quarterly::start parse_start(const cpp11::integers& x);
 
 // -----------------------------------------------------------------------------
 

@@ -1,3 +1,7 @@
+#include <cpp11/integers.hpp>
+#include <cpp11/strings.hpp>
+#include <cpp11/list.hpp>
+#include <cpp11/doubles.hpp>
 #include "duration.h"
 #include "enums.h"
 #include "utils.h"

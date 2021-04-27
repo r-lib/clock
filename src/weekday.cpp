@@ -1,3 +1,6 @@
+#include <cpp11/integers.hpp>
+#include <cpp11/list_of.hpp>
+#include <cpp11/strings.hpp>
 #include "duration.h"
 #include "get.h"
 

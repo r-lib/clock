@@ -1,3 +1,5 @@
+#include <cpp11/strings.hpp>
+#include <cpp11/logicals.hpp>
 #include "duration.h"
 #include "get.h"
 #include "zone.h"

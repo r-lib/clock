@@ -1,9 +1,15 @@
 #ifndef CLOCK_DURATION_H
 #define CLOCK_DURATION_H
 
-#include "clock.h"
-#include "integers.h"
+#include <tzdb/date.h>
+#include <tzdb/tzdb.h>
+#include "quarterly-decl.h"
+#include <cpp11/integers.hpp>
+#include <cpp11/list.hpp>
+#include <cpp11/function.hpp>
+#include "r.h"
 #include "enums.h"
+#include "integers.h"
 #include "utils.h"
 
 namespace rclock {

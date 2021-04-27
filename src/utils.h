@@ -1,11 +1,17 @@
 #ifndef CLOCK_UTILS_H
 #define CLOCK_UTILS_H
 
-#include "clock.h"
+#include <tzdb/date.h>
+#include <tzdb/tzdb.h>
+#include <cpp11/sexp.hpp>
+#include <cpp11/protect.hpp>
+#include <cpp11/strings.hpp>
+#include <cpp11/function.hpp>
 #include <cstdint>
 #include <cmath>
 #include <cstdarg> // For `va_start()` and `va_end()`
 #include <cstdio> // For `vsnprintf()`
+#include "r.h"
 
 // -----------------------------------------------------------------------------
 
@@ -33,10 +39,6 @@ extern SEXP ints_empty;
 // -----------------------------------------------------------------------------
 
 namespace rclock {
-
-namespace detail {
-
-} // namespace detail
 
 // Essentially date's `time_zone::get_info(sys_time<Duration> st)`, but goes
 // through `tzdb::` to get the sys_info

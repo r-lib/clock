@@ -27,17 +27,12 @@
 // SOFTWARE.
 
 #include <tzdb/date.h>
+#include "quarterly-decl.h"
 
 #include <climits>
 
 namespace quarterly
 {
-
-using days = date::days;
-using years = date::years;
-
-using quarters = std::chrono::duration
-    <int, date::detail::ratio_divide<years::period, std::ratio<4>>>;
 
 // time_point
 

@@ -1,9 +1,8 @@
 #ifndef CLOCK_CHECK_H
 #define CLOCK_CHECK_H
 
-#include "clock.h"
+#include <tzdb/date.h>
 #include "utils.h"
-#include "enums.h"
 
 // Gregorian / general
 static inline void check_range_year(const int& value, const char* arg) {

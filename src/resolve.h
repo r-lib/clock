@@ -1,7 +1,10 @@
 #ifndef CLOCK_RESOLVE_H
 #define CLOCK_RESOLVE_H
 
-#include "clock.h"
+#include <cpp11/integers.hpp>
+#include <cpp11/function.hpp>
+#include <chrono>
+#include "r.h"
 #include "utils.h"
 
 namespace rclock {

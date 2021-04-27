@@ -1,3 +1,10 @@
+#include "ordinal.h"
+#include <cpp11/integers.hpp>
+#include <cpp11/logicals.hpp>
+#include <cpp11/list.hpp>
+#include <cpp11/list_of.hpp>
+#include "r.h"
+#include "utils.h"
 #include "gregorian-year-day.h"
 #include "calendar.h"
 #include "duration.h"

@@ -1,8 +1,8 @@
 #ifndef CLOCK_LOCALE_H
 #define CLOCK_LOCALE_H
 
-#include "clock.h"
-#include "enums.h"
+#include <cpp11/strings.hpp>
+#include <string>
 #include <locale>
 
 // -----------------------------------------------------------------------------

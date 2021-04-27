@@ -1,9 +1,13 @@
 #ifndef CLOCK_CALENDAR_H
 #define CLOCK_CALENDAR_H
 
-#include "clock.h"
+#include <tzdb/date.h>
+#include <cpp11/strings.hpp>
+#include <cpp11/integers.hpp>
+#include <cpp11/list.hpp>
+#include <cpp11/logicals.hpp>
+#include "r.h"
 #include "enums.h"
-#include "check.h"
 #include "integers.h"
 
 // -----------------------------------------------------------------------------

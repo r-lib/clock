@@ -1,7 +1,8 @@
 #ifndef CLOCK_ZONE_H
 #define CLOCK_ZONE_H
 
-#include "clock.h"
+#include <cpp11/strings.hpp>
+#include <string>
 #include "utils.h"
 
 static

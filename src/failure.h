@@ -1,7 +1,10 @@
 #ifndef CLOCK_FAILURE_H
 #define CLOCK_FAILURE_H
 
-#include "clock.h"
+#include <tzdb/date.h>
+#include <cpp11/integers.hpp>
+#include <cpp11/function.hpp>
+#include "r.h"
 
 // -----------------------------------------------------------------------------
 

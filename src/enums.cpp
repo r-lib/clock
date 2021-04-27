@@ -1,7 +1,9 @@
-#include "enums.h"
-#include "utils.h"
+#include <cpp11/strings.hpp>
+#include <cpp11/integers.hpp>
 #include <cstring>
 #include <string>
+#include "enums.h"
+#include "utils.h"
 
 // -----------------------------------------------------------------------------
 
@@ -79,31 +81,6 @@ enum component parse_component(const cpp11::strings& x) {
   if (string == "index") return component::index;
 
   clock_abort("'%s' is not a recognized `component` option.", string.c_str());
-}
-
-// -----------------------------------------------------------------------------
-
-// [[ include("enums.h") ]]
-enum quarterly::start parse_start(const cpp11::integers& x) {
-  if (x.size() != 1) {
-    clock_abort("`start` must be an integer with length 1.");
-  }
-
-  const int s = x[0];
-
-  if (s == 1) return quarterly::start::january;
-  else if (s == 2) return quarterly::start::february;
-  else if (s == 3) return quarterly::start::march;
-  else if (s == 4) return quarterly::start::april;
-  else if (s == 5) return quarterly::start::may;
-  else if (s == 6) return quarterly::start::june;
-  else if (s == 7) return quarterly::start::july;
-  else if (s == 8) return quarterly::start::august;
-  else if (s == 9) return quarterly::start::september;
-  else if (s == 10) return quarterly::start::october;
-  else if (s == 11) return quarterly::start::november;
-  else if (s == 12) return quarterly::start::december;
-  else clock_abort("'%i' is not a recognized `start` option.", s);
 }
 
 // -----------------------------------------------------------------------------

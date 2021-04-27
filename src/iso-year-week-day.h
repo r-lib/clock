@@ -1,9 +1,13 @@
 #ifndef CLOCK_ISO_YEAR_WEEK_DAY_H
 #define CLOCK_ISO_YEAR_WEEK_DAY_H
 
-#include "clock.h"
-#include "integers.h"
+#include <tzdb/date.h>
+#include <tzdb/iso_week.h>
+#include <cpp11/integers.hpp>
+#include <cpp11/list.hpp>
+#include "r.h"
 #include "enums.h"
+#include "integers.h"
 #include "utils.h"
 #include "stream.h"
 #include "resolve.h"

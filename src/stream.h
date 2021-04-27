@@ -1,7 +1,7 @@
 #ifndef CLOCK_STREAM_H
 #define CLOCK_STREAM_H
 
-#include "clock.h"
+#include <tzdb/date.h>
 
 namespace rclock {
 
