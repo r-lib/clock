@@ -161,10 +161,30 @@
 <h1 class="page-header" data-toc-text="development version">
 <a href="#clock-development-version" class="anchor"></a>clock (development version)<small> Unreleased </small>
 </h1>
+<ul>
+<li>
+<p>Parsing into a date-time type that is coarser than the original string is now considered ambiguous and undefined behavior. For example, parsing a string with fractional seconds using <code><a href="../reference/date-time-parse.html">date_time_parse(x)</a></code> or <code><a href="../reference/naive_time_parse.html">naive_time_parse(x, precision = "second")</a></code> is no longer considered correct. Instead, if you only require second precision from such a string, parse the full string, with fractional seconds, into a clock type that can handle them, then round to seconds using whatever rounding convention is required for your use case, such as <code><a href="../reference/time-point-rounding.html">time_point_floor()</a></code> (<a href='https://github.com/r-lib/clock/issues/230'>#230</a>).</p>
+<p>For example:</p>
+<pre><code>x &lt;- c("2019-01-01 00:00:59.123", "2019-01-01 00:00:59.556")
+
+x &lt;- naive_time_parse(x, precision = "millisecond")
+x
+#&gt; &lt;time_point&lt;naive&gt;&lt;millisecond&gt;[2]&gt;
+#&gt; [1] "2019-01-01 00:00:59.123" "2019-01-01 00:00:59.556"
+
+x &lt;- time_point_round(x, "second")
+x
+#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;
+#&gt; [1] "2019-01-01 00:00:59" "2019-01-01 00:01:00"
+
+as_date_time(x, "America/New_York")
+#&gt; [1] "2019-01-01 00:00:59 EST" "2019-01-01 00:01:00 EST"</code></pre>
+</li>
+</ul>
 </div>
     <div id="clock-030" class="section level1">
 <h1 class="page-header" data-toc-text="0.3.0">
-<a href="#clock-030" class="anchor"></a>clock 0.3.0<small> Unreleased </small>
+<a href="#clock-030" class="anchor"></a>clock 0.3.0<small> 2021-04-22 </small>
 </h1>
 <ul>
 <li><p>New <code><a href="../reference/date_seq.html">date_seq()</a></code> for generating date and date-time sequences (<a href='https://github.com/r-lib/clock/issues/218'>#218</a>).</p></li>
