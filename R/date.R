@@ -983,9 +983,11 @@ date_set_zone.Date <- function(x, zone) {
 #' _`date_parse()` ignores both the `%z` and `%Z` commands,_ as clock treats
 #' Date as a _naive_ type, with a yet-to-be-specified time zone.
 #'
-#' If parsing a string with sub-daily components, such as hours, minutes or
-#' seconds, note that the conversion to Date will round those components to
-#' the nearest day. See the examples for a way to control this.
+#' Parsing strings with sub-daily components, such as hours, minutes, or
+#' seconds, should be done with [date_time_parse()]. If you only need the date
+#' components, round the result to day precision, and then use [as_date()].
+#' Attempting to directly parse a sub-daily string into a Date is ambiguous and
+#' undefined, and is unlikely to work as you might expect.
 #'
 #' @inheritParams zoned-parsing
 #'
@@ -1012,27 +1014,21 @@ date_set_zone.Date <- function(x, zone) {
 #' date_parse("2020-W01-2", format = "%G-W%V-%u")
 #'
 #' # ---------------------------------------------------------------------------
-#' # Rounding of sub-daily components
+#' # Sub-daily components
 #'
-#' # Note that rounding a string with time components will round them to the
-#' # nearest day if you try and parse them
+#' # If you have a string with sub-daily components, but only require the date,
+#' # first parse them as date-times to fully parse the sub-daily components,
+#' # then round using whatever convention is required for your use case before
+#' # converting to date.
 #' x <- c("2019-01-01 11", "2019-01-01 12")
 #'
-#' # Hour 12 rounds up to the next day
-#' date_parse(x, format = "%Y-%m-%d %H")
+#' x <- date_time_parse(x, zone = "UTC", format = "%Y-%m-%d %H")
+#' x
 #'
-#' # If you don't like this, one option is to just not parse the time component
-#' date_parse(x, format = "%Y-%m-%d")
+#' date_floor(x, "day")
+#' date_round(x, "day")
 #'
-#' # A more general option is to parse the full string as a naive-time,
-#' # then round manually
-#' nt <- naive_time_parse(x, format = "%Y-%m-%d %H", precision = "hour")
-#' nt
-#'
-#' nt <- time_point_floor(nt, "day")
-#' nt
-#'
-#' as.Date(nt)
+#' as_date(date_round(x, "day"))
 date_parse <- function(x, ..., format = NULL, locale = clock_locale()) {
   x <- naive_time_parse(x, ..., format = format, precision = "day", locale = locale)
   as.Date(x)

@@ -139,12 +139,17 @@ are permitted but not required.
 \code{N} is a positive decimal integer specifies the maximum number of
 characters to read. If not specified, the default is \code{2}. Leading zeroes
 are permitted but not required.
-\item \verb{\%S}: The seconds as a decimal number. The modified command \verb{\%NS} where
-\code{N} is a positive decimal integer specifies the maximum number of
-characters to read. If not specified, the default is determined by the
-precision that you are parsing at. If encountered, the \code{locale}
-determines the decimal point character. Leading zeroes are permitted but
-not required.
+\item \verb{\%S}: The seconds as a decimal number. Leading zeroes are permitted but
+not required. If encountered, the \code{locale} determines the decimal point
+character. Generally, the maximum number of characters to read is
+determined by the precision that you are parsing at. For example, a
+precision of \code{"second"} would read a maximum of 2 characters, while a
+precision of \code{"millisecond"} would read a maximum of 6 (2 for the values
+before the decimal point, 1 for the decimal point, and 3 for the values
+after it). The modified command \verb{\%NS}, where \code{N} is a positive decimal
+integer, can be used to exactly specify the maximum number of characters to
+read. This is only useful if you happen to have seconds with more than 1
+leading zero.
 \item \verb{\%p}: The \code{locale}'s equivalent of the AM/PM designations associated with
 a 12-hour clock. The command \verb{\%I} must precede \verb{\%p} in the format string.
 \item \verb{\%R}: Equivalent to \verb{\%H:\%M}.
@@ -230,6 +235,18 @@ If your date-time strings don't contain an offset from UTC, you might
 consider using \code{\link[=naive_time_parse]{naive_time_parse()}}, since the resulting naive-time doesn't
 come with an assumption of a UTC time zone.
 }
+\section{Full Precision Parsing}{
+
+
+It is highly recommended to parse all of the information in the date-time
+string into a type at least as precise as the string. For example, if your
+string has fractional seconds, but you only require seconds, specify a
+sub-second \code{precision}, then round to seconds manually using whatever
+convention is appropriate for your use case. Parsing such a string directly
+into a second precision result is ambiguous and undefined, and is unlikely to
+work as you might expect.
+}
+
 \examples{
 sys_time_parse("2020-01-01 05:06:07")
 

@@ -1,5 +1,33 @@
 # clock (development version)
 
+* Parsing into a date-time type that is coarser than the original string is now
+  considered ambiguous and undefined behavior. For example, parsing a string
+  with fractional seconds using `date_time_parse(x)` or
+  `naive_time_parse(x, precision = "second")` is no longer considered correct.
+  Instead, if you only require second precision from such a string, parse the
+  full string, with fractional seconds, into a clock type that can handle them,
+  then round to seconds using whatever rounding convention is required for your
+  use case, such as `time_point_floor()` (#230).
+  
+  For example:
+  
+  ```
+  x <- c("2019-01-01 00:00:59.123", "2019-01-01 00:00:59.556")
+  
+  x <- naive_time_parse(x, precision = "millisecond")
+  x
+  #> <time_point<naive><millisecond>[2]>
+  #> [1] "2019-01-01 00:00:59.123" "2019-01-01 00:00:59.556"
+  
+  x <- time_point_round(x, "second")
+  x
+  #> <time_point<naive><second>[2]>
+  #> [1] "2019-01-01 00:00:59" "2019-01-01 00:01:00"
+  
+  as_date_time(x, "America/New_York")
+  #> [1] "2019-01-01 00:00:59 EST" "2019-01-01 00:01:00 EST"
+  ```
+
 # clock 0.3.0
 
 * New `date_seq()` for generating date and date-time sequences (#218).

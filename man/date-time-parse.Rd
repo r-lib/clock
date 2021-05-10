@@ -152,12 +152,17 @@ are permitted but not required.
 \code{N} is a positive decimal integer specifies the maximum number of
 characters to read. If not specified, the default is \code{2}. Leading zeroes
 are permitted but not required.
-\item \verb{\%S}: The seconds as a decimal number. The modified command \verb{\%NS} where
-\code{N} is a positive decimal integer specifies the maximum number of
-characters to read. If not specified, the default is determined by the
-precision that you are parsing at. If encountered, the \code{locale}
-determines the decimal point character. Leading zeroes are permitted but
-not required.
+\item \verb{\%S}: The seconds as a decimal number. Leading zeroes are permitted but
+not required. If encountered, the \code{locale} determines the decimal point
+character. Generally, the maximum number of characters to read is
+determined by the precision that you are parsing at. For example, a
+precision of \code{"second"} would read a maximum of 2 characters, while a
+precision of \code{"millisecond"} would read a maximum of 6 (2 for the values
+before the decimal point, 1 for the decimal point, and 3 for the values
+after it). The modified command \verb{\%NS}, where \code{N} is a positive decimal
+integer, can be used to exactly specify the maximum number of characters to
+read. This is only useful if you happen to have seconds with more than 1
+leading zero.
 \item \verb{\%p}: The \code{locale}'s equivalent of the AM/PM designations associated with
 a 12-hour clock. The command \verb{\%I} must precede \verb{\%p} in the format string.
 \item \verb{\%R}: Equivalent to \verb{\%H:\%M}.
@@ -315,9 +320,16 @@ If \code{date_time_parse_complete()} is given input that is length zero, all
 \code{NA}s, or completely fails to parse, then no time zone will be able to be
 determined. In that case, the result will use \code{"UTC"}.
 
-If manually parsing sub-second components, be aware that they will be
-automatically rounded to the nearest second when converting them to POSIXct.
-See the examples for a way to control this.
+If you have strings with sub-second components, then these date-time parsers
+are not appropriate for you. Remember that clock treats POSIXct as a second
+precision type, so parsing a string with fractional seconds directly into a
+POSIXct is ambiguous and undefined. Instead, fully parse the string,
+including its fractional seconds, into a clock type that can handle it, such
+as a naive-time with \code{\link[=naive_time_parse]{naive_time_parse()}}, then round to seconds with
+whatever rounding convention is appropriate for your use case, such as
+\code{\link[=time_point_floor]{time_point_floor()}}, and finally convert that to POSIXct with
+\code{\link[=as_date_time]{as_date_time()}}. This gives you complete control over how the fractional
+seconds are handled when converting to POSIXct.
 }
 \examples{
 # Parse with a known `zone`, even though that information isn't in the string
@@ -367,26 +379,19 @@ abbrev_times <- c(
 date_time_parse_abbrev(abbrev_times, "America/New_York")
 
 # ---------------------------------------------------------------------------
-# Rounding of sub-second components
+# Sub-second components
 
-# Generally, if you have a string with sub-second components, they will
-# be ignored when parsing into a date-time
-x <- c("2019-01-01 00:00:01.1", "2019-01-01 00:00:01.7")
+# If you have a string with sub-second components, but only require up to
+# seconds, first parse them into a clock type that can handle sub-seconds to
+# fully capture that information, then round using whatever convention is
+# required for your use case before converting to a date-time.
+x <- c("2019-01-01 00:00:01.1", "2019-01-01 00:00:01.78")
 
-date_time_parse(x, "America/New_York")
+x <- naive_time_parse(x, precision = "millisecond")
+x
 
-# If you manually try and parse those sub-second components with `\%4S` to
-# read the 2 seconds, 1 decimal point, and 1 fractional component, the
-# fractional component will be rounded to the nearest second
-date_time_parse(x, "America/New_York", format = "\%Y-\%m-\%d \%H:\%M:\%4S")
+time_point_floor(x, "second")
+time_point_round(x, "second")
 
-# If you don't like this, parse the full string as a naive-time,
-# then round manually and convert to a POSIXct
-nt <- naive_time_parse(x, format = "\%Y-\%m-\%d \%H:\%M:\%S", precision = "millisecond")
-nt
-
-nt <- time_point_floor(nt, "second")
-nt
-
-as.POSIXct(nt, "America/New_York")
+as_date_time(time_point_round(x, "second"), "America/New_York")
 }

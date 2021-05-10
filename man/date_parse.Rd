@@ -133,12 +133,17 @@ are permitted but not required.
 \code{N} is a positive decimal integer specifies the maximum number of
 characters to read. If not specified, the default is \code{2}. Leading zeroes
 are permitted but not required.
-\item \verb{\%S}: The seconds as a decimal number. The modified command \verb{\%NS} where
-\code{N} is a positive decimal integer specifies the maximum number of
-characters to read. If not specified, the default is determined by the
-precision that you are parsing at. If encountered, the \code{locale}
-determines the decimal point character. Leading zeroes are permitted but
-not required.
+\item \verb{\%S}: The seconds as a decimal number. Leading zeroes are permitted but
+not required. If encountered, the \code{locale} determines the decimal point
+character. Generally, the maximum number of characters to read is
+determined by the precision that you are parsing at. For example, a
+precision of \code{"second"} would read a maximum of 2 characters, while a
+precision of \code{"millisecond"} would read a maximum of 6 (2 for the values
+before the decimal point, 1 for the decimal point, and 3 for the values
+after it). The modified command \verb{\%NS}, where \code{N} is a positive decimal
+integer, can be used to exactly specify the maximum number of characters to
+read. This is only useful if you happen to have seconds with more than 1
+leading zero.
 \item \verb{\%p}: The \code{locale}'s equivalent of the AM/PM designations associated with
 a 12-hour clock. The command \verb{\%I} must precede \verb{\%p} in the format string.
 \item \verb{\%R}: Equivalent to \verb{\%H:\%M}.
@@ -188,9 +193,11 @@ The default \code{format} used is \code{"\%Y-\%m-\%d"}.
 \emph{\code{date_parse()} ignores both the \verb{\%z} and \verb{\%Z} commands,} as clock treats
 Date as a \emph{naive} type, with a yet-to-be-specified time zone.
 
-If parsing a string with sub-daily components, such as hours, minutes or
-seconds, note that the conversion to Date will round those components to
-the nearest day. See the examples for a way to control this.
+Parsing strings with sub-daily components, such as hours, minutes, or
+seconds, should be done with \code{\link[=date_time_parse]{date_time_parse()}}. If you only need the date
+components, round the result to day precision, and then use \code{\link[=as_date]{as_date()}}.
+Attempting to directly parse a sub-daily string into a Date is ambiguous and
+undefined, and is unlikely to work as you might expect.
 }
 \examples{
 date_parse("2020-01-01")
@@ -212,25 +219,19 @@ date_parse(
 date_parse("2020-W01-2", format = "\%G-W\%V-\%u")
 
 # ---------------------------------------------------------------------------
-# Rounding of sub-daily components
+# Sub-daily components
 
-# Note that rounding a string with time components will round them to the
-# nearest day if you try and parse them
+# If you have a string with sub-daily components, but only require the date,
+# first parse them as date-times to fully parse the sub-daily components,
+# then round using whatever convention is required for your use case before
+# converting to date.
 x <- c("2019-01-01 11", "2019-01-01 12")
 
-# Hour 12 rounds up to the next day
-date_parse(x, format = "\%Y-\%m-\%d \%H")
+x <- date_time_parse(x, zone = "UTC", format = "\%Y-\%m-\%d \%H")
+x
 
-# If you don't like this, one option is to just not parse the time component
-date_parse(x, format = "\%Y-\%m-\%d")
+date_floor(x, "day")
+date_round(x, "day")
 
-# A more general option is to parse the full string as a naive-time,
-# then round manually
-nt <- naive_time_parse(x, format = "\%Y-\%m-\%d \%H", precision = "hour")
-nt
-
-nt <- time_point_floor(nt, "day")
-nt
-
-as.Date(nt)
+as_date(date_round(x, "day"))
 }
