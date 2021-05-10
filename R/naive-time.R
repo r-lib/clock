@@ -61,6 +61,8 @@ is_naive_time <- function(x) {
 #' If your date-time strings contain a UTC offset, but not a full time zone
 #' name, use [sys_time_parse()].
 #'
+#' @inheritSection zoned-parsing Full Precision Parsing
+#'
 #' @inheritParams sys_time_parse
 #'
 #' @return A naive-time.
@@ -80,6 +82,29 @@ is_naive_time <- function(x) {
 #'   "2020-01-01 -4000 America/New_York",
 #'   format = "%Y-%m-%d %z %Z"
 #' )
+#'
+#' # ---------------------------------------------------------------------------
+#' # Fractional seconds and POSIXct
+#'
+#' # If you have a string with fractional seconds and want to convert it to
+#' # a POSIXct, remember that clock treats POSIXct as a second precision type.
+#' # Ideally, you'd use a clock type that can support fractional seconds, but
+#' # if you really want to parse it into a POSIXct, the correct way to do so
+#' # is to parse the full fractional time point with the correct `precision`,
+#' # then round to seconds using whatever convention you require, and finally
+#' # convert that to POSIXct.
+#' x <- c("2020-01-01 00:00:00.123", "2020-01-01 00:00:00.555")
+#'
+#' # First, parse string with full precision
+#' x <- naive_time_parse(x, precision = "millisecond")
+#' x
+#'
+#' # Then round to second with a floor, ceiling, or round to nearest
+#' time_point_floor(x, "second")
+#' time_point_round(x, "second")
+#'
+#' # Finally, convert to POSIXct
+#' as_date_time(time_point_round(x, "second"), zone = "UTC")
 naive_time_parse <- function(x,
                              ...,
                              format = NULL,

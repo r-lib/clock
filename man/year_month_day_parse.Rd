@@ -139,12 +139,17 @@ are permitted but not required.
 \code{N} is a positive decimal integer specifies the maximum number of
 characters to read. If not specified, the default is \code{2}. Leading zeroes
 are permitted but not required.
-\item \verb{\%S}: The seconds as a decimal number. The modified command \verb{\%NS} where
-\code{N} is a positive decimal integer specifies the maximum number of
-characters to read. If not specified, the default is determined by the
-precision that you are parsing at. If encountered, the \code{locale}
-determines the decimal point character. Leading zeroes are permitted but
-not required.
+\item \verb{\%S}: The seconds as a decimal number. Leading zeroes are permitted but
+not required. If encountered, the \code{locale} determines the decimal point
+character. Generally, the maximum number of characters to read is
+determined by the precision that you are parsing at. For example, a
+precision of \code{"second"} would read a maximum of 2 characters, while a
+precision of \code{"millisecond"} would read a maximum of 6 (2 for the values
+before the decimal point, 1 for the decimal point, and 3 for the values
+after it). The modified command \verb{\%NS}, where \code{N} is a positive decimal
+integer, can be used to exactly specify the maximum number of characters to
+read. This is only useful if you happen to have seconds with more than 1
+leading zero.
 \item \verb{\%p}: The \code{locale}'s equivalent of the AM/PM designations associated with
 a 12-hour clock. The command \verb{\%I} must precede \verb{\%p} in the format string.
 \item \verb{\%R}: Equivalent to \verb{\%H:\%M}.

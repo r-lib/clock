@@ -139,12 +139,17 @@ are permitted but not required.
 \code{N} is a positive decimal integer specifies the maximum number of
 characters to read. If not specified, the default is \code{2}. Leading zeroes
 are permitted but not required.
-\item \verb{\%S}: The seconds as a decimal number. The modified command \verb{\%NS} where
-\code{N} is a positive decimal integer specifies the maximum number of
-characters to read. If not specified, the default is determined by the
-precision that you are parsing at. If encountered, the \code{locale}
-determines the decimal point character. Leading zeroes are permitted but
-not required.
+\item \verb{\%S}: The seconds as a decimal number. Leading zeroes are permitted but
+not required. If encountered, the \code{locale} determines the decimal point
+character. Generally, the maximum number of characters to read is
+determined by the precision that you are parsing at. For example, a
+precision of \code{"second"} would read a maximum of 2 characters, while a
+precision of \code{"millisecond"} would read a maximum of 6 (2 for the values
+before the decimal point, 1 for the decimal point, and 3 for the values
+after it). The modified command \verb{\%NS}, where \code{N} is a positive decimal
+integer, can be used to exactly specify the maximum number of characters to
+read. This is only useful if you happen to have seconds with more than 1
+leading zero.
 \item \verb{\%p}: The \code{locale}'s equivalent of the AM/PM designations associated with
 a 12-hour clock. The command \verb{\%I} must precede \verb{\%p} in the format string.
 \item \verb{\%R}: Equivalent to \verb{\%H:\%M}.
@@ -222,6 +227,18 @@ If your date-time strings contain a full time zone name and a UTC offset, use
 If your date-time strings contain a UTC offset, but not a full time zone
 name, use \code{\link[=sys_time_parse]{sys_time_parse()}}.
 }
+\section{Full Precision Parsing}{
+
+
+It is highly recommended to parse all of the information in the date-time
+string into a type at least as precise as the string. For example, if your
+string has fractional seconds, but you only require seconds, specify a
+sub-second \code{precision}, then round to seconds manually using whatever
+convention is appropriate for your use case. Parsing such a string directly
+into a second precision result is ambiguous and undefined, and is unlikely to
+work as you might expect.
+}
+
 \examples{
 naive_time_parse("2020-01-01 05:06:07")
 
@@ -236,4 +253,27 @@ naive_time_parse(
   "2020-01-01 -4000 America/New_York",
   format = "\%Y-\%m-\%d \%z \%Z"
 )
+
+# ---------------------------------------------------------------------------
+# Fractional seconds and POSIXct
+
+# If you have a string with fractional seconds and want to convert it to
+# a POSIXct, remember that clock treats POSIXct as a second precision type.
+# Ideally, you'd use a clock type that can support fractional seconds, but
+# if you really want to parse it into a POSIXct, the correct way to do so
+# is to parse the full fractional time point with the correct `precision`,
+# then round to seconds using whatever convention you require, and finally
+# convert that to POSIXct.
+x <- c("2020-01-01 00:00:00.123", "2020-01-01 00:00:00.555")
+
+# First, parse string with full precision
+x <- naive_time_parse(x, precision = "millisecond")
+x
+
+# Then round to second with a floor, ceiling, or round to nearest
+time_point_floor(x, "second")
+time_point_round(x, "second")
+
+# Finally, convert to POSIXct
+as_date_time(time_point_round(x, "second"), zone = "UTC")
 }
