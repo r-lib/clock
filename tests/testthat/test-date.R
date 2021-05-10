@@ -290,16 +290,16 @@ test_that("formatting Dates with `%z` or `%Z` returns NA with a warning", {
 
 test_that("`%z` and `%Z` commands are ignored", {
   expect_identical(
-    date_parse("2019-12-31 11:59:59-0500", format = "%Y-%m-%d %H:%M:%S%z"),
+    date_parse("2019-12-31 -0500", format = "%Y-%m-%d %z"),
     as.Date("2019-12-31")
   )
   expect_identical(
-    date_parse("2019-12-31 11:59:59[America/New_York]", format = "%Y-%m-%d %H:%M:%S[%Z]"),
+    date_parse("2019-12-31 America/New_York", format = "%Y-%m-%d %Z"),
     as.Date("2019-12-31")
   )
 })
 
-test_that("parsing into a date if you requested to parse time components rounds the time (#207)", {
+test_that("parsing into a date if you requested to parse time components rounds the time (#207) (#230) (undocumented)", {
   expect_identical(
     date_parse("2019-12-31 11:59:59", format = "%Y-%m-%d %H:%M:%S"),
     as.Date("2019-12-31")
@@ -307,6 +307,16 @@ test_that("parsing into a date if you requested to parse time components rounds 
   expect_identical(
     date_parse("2019-12-31 12:00:00", format = "%Y-%m-%d %H:%M:%S"),
     as.Date("2020-01-01")
+  )
+})
+
+test_that("parsing fails when undocumented rounding behavior would result in invalid 60 second component (#230) (undocumented)", {
+  expect_identical(
+    expect_warning(
+      date_parse("2019-01-01 01:01:59.550", format = "%Y-%m-%d %H:%M:%6S"),
+      class = "clock_warning_parse_failures"
+    ),
+    new_date(NA_real_)
   )
 })
 
