@@ -218,6 +218,18 @@ The default options assume \code{x} should be parsed at day precision, using a
 \details{
 \code{year_month_day_parse()} completely ignores the \verb{\%z} and \verb{\%Z} commands.
 }
+\section{Full Precision Parsing}{
+
+
+It is highly recommended to parse all of the information in the date-time
+string into a type at least as precise as the string. For example, if your
+string has fractional seconds, but you only require seconds, specify a
+sub-second \code{precision}, then round to seconds manually using whatever
+convention is appropriate for your use case. Parsing such a string directly
+into a second precision result is ambiguous and undefined, and is unlikely to
+work as you might expect.
+}
+
 \examples{
 x <- "2019-01-01"
 
