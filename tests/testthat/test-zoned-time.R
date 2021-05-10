@@ -248,13 +248,27 @@ test_that("leftover subseconds result in a parse failure", {
   )
 })
 
-test_that("parsing rounds parsed subsecond components more precise than the resulting container (#207)", {
+test_that("parsing rounds parsed subsecond components more precise than the resulting container (#207) (#230) (undocumented)", {
   x <- "2019-01-01 01:01:01.1238-05:00[America/New_York]"
 
   # Requesting `%7S` parses the full `01.1238`, and the `1238` portion is rounded up
   expect_identical(
     zoned_time_parse_complete(x, precision = "millisecond", format = "%Y-%m-%d %H:%M:%7S%Ez[%Z]"),
     as_zoned_time(as_naive_time(year_month_day(2019, 1, 1, 1, 1, 1, 124, subsecond_precision = "millisecond")), "America/New_York")
+  )
+})
+
+test_that("parsing fails when undocumented rounding behavior would result in invalid 60 second component (#230) (undocumented)", {
+  x <- "2019-01-01 01:01:59.550-05:00[America/New_York]"
+
+  # Requesting `%6S` parses the full `59.550`, which is immediately rounded to `60` which looks invalid.
+  # The correct way to do this is to parse the milliseconds, then round.
+  expect_identical(
+    expect_warning(
+      zoned_time_parse_complete(x, precision = "second", format = "%Y-%m-%d %H:%M:%6S%Ez[%Z]"),
+      class = "clock_warning_parse_failures"
+    ),
+    as_zoned_time(as_naive_time(year_month_day(NA, NA, NA, NA, NA, NA)), zone = "UTC")
   )
 })
 

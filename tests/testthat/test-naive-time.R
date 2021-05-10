@@ -152,21 +152,19 @@ test_that("can parse subsecond precision", {
   )
 })
 
-test_that("parsing to a lower precision ignores higher precision info", {
+test_that("parsing works if `precision` uses a default that doesn't attempt to capture all the info", {
+  # Uses %Y-%m-%d
   x <- "2019-01-01 01:00:00"
-  y <- "2019-01-01 01:00:00.12345"
-
   expect_identical(
     naive_time_parse(x, precision = "day"),
     as_naive_time(year_month_day(2019, 1, 1))
   )
+
+  # Uses %Y-%m-%d %H:%M
+  x <- "2019-01-01 01:00:59"
   expect_identical(
-    naive_time_parse(y, precision = "second"),
-    as_naive_time(year_month_day(2019, 1, 1, 1, 0, 0))
-  )
-  expect_identical(
-    naive_time_parse(y, precision = "millisecond"),
-    as_naive_time(year_month_day(2019, 1, 1, 1, 0, 0, 123, subsecond_precision = "millisecond"))
+    naive_time_parse(x, precision = "minute"),
+    as_naive_time(year_month_day(2019, 1, 1, 1, 0))
   )
 })
 
@@ -272,7 +270,7 @@ test_that("%Z is completely ignored", {
   )
 })
 
-test_that("parsing rounds parsed components more precise than the resulting container (#207)", {
+test_that("parsing rounds parsed components more precise than the resulting container (#207) (#230) (undocumented)", {
   expect_identical(
     naive_time_parse("2019-12-31 11", format = "%Y-%m-%d %H", precision = "day"),
     as_naive_time(year_month_day(2019, 12, 31))
@@ -289,7 +287,7 @@ test_that("parsing rounds parsed components more precise than the resulting cont
   )
 })
 
-test_that("parsing rounds parsed subsecond components more precise than the resulting container (#207)", {
+test_that("parsing rounds parsed subsecond components more precise than the resulting container (#207) (#230) (undocumented)", {
   # Default N for milliseconds is 6, so `%6S` (2 hour seconds, 1 for decimal, 3 for subseconds)
   expect_identical(
     naive_time_parse("2019-01-01 01:01:01.1238", format = "%Y-%m-%d %H:%M:%S", precision = "millisecond"),
@@ -300,6 +298,16 @@ test_that("parsing rounds parsed subsecond components more precise than the resu
   expect_identical(
     naive_time_parse("2019-01-01 01:01:01.1238", format = "%Y-%m-%d %H:%M:%7S", precision = "millisecond"),
     as_naive_time(year_month_day(2019, 1, 1, 1, 1, 1, 124, subsecond_precision = "millisecond"))
+  )
+})
+
+test_that("parsing fails when undocumented rounding behavior would result in invalid 60 second component (#230) (undocumented)", {
+  expect_identical(
+    expect_warning(
+      naive_time_parse("2019-01-01 01:01:59.550", format = "%Y-%m-%d %H:%M:%6S", precision = "second"),
+      class = "clock_warning_parse_failures"
+    ),
+    as_naive_time(year_month_day(NA, NA, NA, NA, NA, NA))
   )
 })
 
