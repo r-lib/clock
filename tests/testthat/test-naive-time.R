@@ -180,9 +180,11 @@ test_that("parsing day components with second precision uses midnight as time", 
 test_that("cannot parse invalid dates", {
   x <- "2019-02-31"
 
-  expect_identical(
-    expect_warning(naive_time_parse(x, precision = "day")),
-    naive_days(NA)
+  expect_warning(
+    expect_identical(
+      naive_time_parse(x, precision = "day"),
+      naive_days(NA)
+    )
   )
 
   expect_snapshot(naive_time_parse(x, precision = "day"))
@@ -201,9 +203,11 @@ test_that("can parse with multiple formats", {
 test_that("failure to parse results in NA", {
   x <- "2019-01-oh"
 
-  expect_identical(
-    expect_warning(naive_time_parse(x, format = "%Y-%m-%d", precision = "day")),
-    naive_days(NA)
+  expect_warning(
+    expect_identical(
+      naive_time_parse(x, format = "%Y-%m-%d", precision = "day"),
+      naive_days(NA)
+    )
   )
 })
 
@@ -255,9 +259,11 @@ test_that("%z is completely ignored, but is required to be parsed correctly if s
     naive_time_parse(x, format = "%Y-%m-%d %H:%M:%S%z"),
     as_naive_time(year_month_day(2019, 1, 1, 0, 0, 0))
   )
-  expect_identical(
-    expect_warning(naive_time_parse(y, format = "%Y-%m-%d %H:%M:%S%z")),
-    naive_seconds(NA)
+  expect_warning(
+    expect_identical(
+      naive_time_parse(y, format = "%Y-%m-%d %H:%M:%S%z"),
+      naive_seconds(NA)
+    )
   )
 })
 
@@ -302,12 +308,12 @@ test_that("parsing rounds parsed subsecond components more precise than the resu
 })
 
 test_that("parsing fails when undocumented rounding behavior would result in invalid 60 second component (#230) (undocumented)", {
-  expect_identical(
-    expect_warning(
+  expect_warning(
+    expect_identical(
       naive_time_parse("2019-01-01 01:01:59.550", format = "%Y-%m-%d %H:%M:%6S", precision = "second"),
-      class = "clock_warning_parse_failures"
+      as_naive_time(year_month_day(NA, NA, NA, NA, NA, NA))
     ),
-    as_naive_time(year_month_day(NA, NA, NA, NA, NA, NA))
+    class = "clock_warning_parse_failures"
   )
 })
 
