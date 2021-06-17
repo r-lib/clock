@@ -27,6 +27,8 @@
   as_date_time(x, "America/New_York")
   #> [1] "2019-01-01 00:00:59 EST" "2019-01-01 00:01:00 EST"
   ```
+  
+* Preemptively updated tests related to upcoming changes in testthat (#236).
 
 # clock 0.3.0
 
