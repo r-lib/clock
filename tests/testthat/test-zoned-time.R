@@ -117,9 +117,11 @@ test_that("cannot parse nonexistent time", {
 
   x <- "1970-04-26 02:30:00-05:00[America/New_York]"
 
-  expect_identical(
-    expect_warning(zoned_time_parse_complete(x)),
-    as_zoned_time(naive_seconds(NA), zone)
+  expect_warning(
+    expect_identical(
+      zoned_time_parse_complete(x),
+      as_zoned_time(naive_seconds(NA), zone)
+    )
   )
 
   expect_snapshot(zoned_time_parse_complete(x))
@@ -149,9 +151,11 @@ test_that("offset must align with unique offset", {
   # Should be `-05:00`
   x <- "2019-01-01 01:02:03-03:00[America/New_York]"
 
-  expect_identical(
-    expect_warning(zoned_time_parse_complete(x)),
-    as_zoned_time(naive_seconds(NA), zone)
+  expect_warning(
+    expect_identical(
+      zoned_time_parse_complete(x),
+      as_zoned_time(naive_seconds(NA), zone)
+    )
   )
 
   expect_snapshot(zoned_time_parse_complete(x))
@@ -166,9 +170,11 @@ test_that("offset must align with one of two possible ambiguous offsets", {
     "1970-10-25 01:30:00-06:00[America/New_York]"
   )
 
-  expect_identical(
-    expect_warning(zoned_time_parse_complete(x)),
-    as_zoned_time(naive_seconds(c(NA, NA)), zone)
+  expect_warning(
+    expect_identical(
+      zoned_time_parse_complete(x),
+      as_zoned_time(naive_seconds(c(NA, NA)), zone)
+    )
   )
 
   expect_snapshot(zoned_time_parse_complete(x))
@@ -208,9 +214,11 @@ test_that("all `NA`s uses UTC time zone (#162)", {
 })
 
 test_that("all failures uses UTC time zone (#162)", {
-  expect_identical(
-    expect_warning(zoned_time_parse_complete(c("foo", "bar"))),
-    as_zoned_time(naive_seconds(c(NA, NA)), "UTC")
+  expect_warning(
+    expect_identical(
+      zoned_time_parse_complete(c("foo", "bar")),
+      as_zoned_time(naive_seconds(c(NA, NA)), "UTC")
+    )
   )
 })
 
@@ -242,9 +250,12 @@ test_that("leftover subseconds result in a parse failure", {
   # This defaults to `%6S`, which parses `01.123` then stops,
   # leaving a `8` for `%z` to parse, resulting in a failure. Because everything
   # fails, we get a UTC time zone.
-  expect_identical(
-    expect_warning(zoned_time_parse_complete(x, precision = "millisecond"), class = "clock_warning_parse_failures"),
-    as_zoned_time(naive_seconds(NA) + duration_milliseconds(NA), zone = "UTC")
+  expect_warning(
+    expect_identical(
+      zoned_time_parse_complete(x, precision = "millisecond"),
+      as_zoned_time(naive_seconds(NA) + duration_milliseconds(NA), zone = "UTC")
+    ),
+    class = "clock_warning_parse_failures"
   )
 })
 
@@ -263,12 +274,12 @@ test_that("parsing fails when undocumented rounding behavior would result in inv
 
   # Requesting `%6S` parses the full `59.550`, which is immediately rounded to `60` which looks invalid.
   # The correct way to do this is to parse the milliseconds, then round.
-  expect_identical(
-    expect_warning(
+  expect_warning(
+    expect_identical(
       zoned_time_parse_complete(x, precision = "second", format = "%Y-%m-%d %H:%M:%6S%Ez[%Z]"),
-      class = "clock_warning_parse_failures"
+      as_zoned_time(as_naive_time(year_month_day(NA, NA, NA, NA, NA, NA)), zone = "UTC")
     ),
-    as_zoned_time(as_naive_time(year_month_day(NA, NA, NA, NA, NA, NA)), zone = "UTC")
+    class = "clock_warning_parse_failures"
   )
 })
 
@@ -322,28 +333,32 @@ test_that("abbreviation is used to resolve ambiguity", {
 })
 
 test_that("nonexistent times are NAs", {
-  expect_identical(
-    expect_warning(
-      zoned_time_parse_abbrev("1970-04-26 02:30:00 EST", "America/New_York")
-    ),
-    as_zoned_time(sys_seconds(NA), "America/New_York")
+  expect_warning(
+    expect_identical(
+      zoned_time_parse_abbrev("1970-04-26 02:30:00 EST", "America/New_York"),
+      as_zoned_time(sys_seconds(NA), "America/New_York")
+    )
   )
 })
 
 test_that("abbreviation must match the one implied from naive + time zone name lookup", {
   x <- "1970-01-01 00:00:00 FOOBAR"
 
-  expect_identical(
-    expect_warning(zoned_time_parse_abbrev(x, "America/New_York")),
-    as_zoned_time(sys_days(NA), "America/New_York")
+  expect_warning(
+    expect_identical(
+      zoned_time_parse_abbrev(x, "America/New_York"),
+      as_zoned_time(sys_days(NA), "America/New_York")
+    )
   )
 
   # Should be EST
   x <- "1970-01-01 00:00:00 EDT"
 
-  expect_identical(
-    expect_warning(zoned_time_parse_abbrev(x, "America/New_York")),
-    as_zoned_time(sys_days(NA), "America/New_York")
+  expect_warning(
+    expect_identical(
+      zoned_time_parse_abbrev(x, "America/New_York"),
+      as_zoned_time(sys_days(NA), "America/New_York")
+    )
   )
 
   expect_snapshot(zoned_time_parse_abbrev(x, "America/New_York"))

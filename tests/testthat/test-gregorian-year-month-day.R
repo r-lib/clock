@@ -222,9 +222,11 @@ test_that("multiple formats can be provided", {
 test_that("failure to parse results in `NA`", {
   x <- "2020-01-ohno"
 
-  expect_identical(
-    expect_warning(year_month_day_parse(x)),
-    year_month_day(NA, NA, NA)
+  expect_warning(
+    expect_identical(
+      year_month_day_parse(x),
+      year_month_day(NA, NA, NA)
+    )
   )
 })
 

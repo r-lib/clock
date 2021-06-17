@@ -311,12 +311,12 @@ test_that("parsing into a date if you requested to parse time components rounds 
 })
 
 test_that("parsing fails when undocumented rounding behavior would result in invalid 60 second component (#230) (undocumented)", {
-  expect_identical(
-    expect_warning(
+  expect_warning(
+    expect_identical(
       date_parse("2019-01-01 01:01:59.550", format = "%Y-%m-%d %H:%M:%6S"),
-      class = "clock_warning_parse_failures"
+      new_date(NA_real_)
     ),
-    new_date(NA_real_)
+    class = "clock_warning_parse_failures"
   )
 })
 
