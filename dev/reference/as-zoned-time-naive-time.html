@@ -313,7 +313,7 @@ time resolution strategies.</p>
 <span class='va'>nonexistent_time</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='va'>nonexistent_time</span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>nonexistent_time</span>, <span class='va'>new_york</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Error : Nonexistent time due to daylight saving time at location 1.
-#&gt; <span style='color: #0000BB;'>ℹ</span><span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</div><div class='input'>
+#&gt; <span style='color: #0000BB;'>ℹ</span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</div><div class='input'>
 <span class='co'># Resolve this by specifying a nonexistent time resolution strategy</span>
 <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>nonexistent_time</span>, <span class='va'>new_york</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-forward"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;
@@ -358,7 +358,7 @@ time resolution strategies.</p>
 <span class='va'>ambiguous_time</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='va'>ambiguous_time</span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>ambiguous_time</span>, <span class='va'>new_york</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Error : Ambiguous time due to daylight saving time at location 1.
-#&gt; </span><span style='color: #0000BB;'>ℹ</span><span> Resolve ambiguous time issues by specifying the `ambiguous` argument.</div><div class='input'>
+#&gt; <span style='color: #0000BB;'>ℹ</span> Resolve ambiguous time issues by specifying the `ambiguous` argument.</div><div class='input'>
 <span class='co'># Resolve this by specifying an ambiguous time resolution strategy</span>
 <span class='va'>earliest</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>ambiguous_time</span>, <span class='va'>new_york</span>, ambiguous <span class='op'>=</span> <span class='st'>"earliest"</span><span class='op'>)</span>
 <span class='va'>latest</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>ambiguous_time</span>, <span class='va'>new_york</span>, ambiguous <span class='op'>=</span> <span class='st'>"latest"</span><span class='op'>)</span>
@@ -391,7 +391,7 @@ time resolution strategies.</p>
 <span class='co'># offsets these ambiguous times started in</span>
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x_naive</span>, <span class='fu'><a href='zoned-zone.html'>zoned_time_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Error : Ambiguous time due to daylight saving time at location 1.
-#&gt; </span><span style='color: #0000BB;'>ℹ</span><span> Resolve ambiguous time issues by specifying the `ambiguous` argument.</div><div class='input'>
+#&gt; <span style='color: #0000BB;'>ℹ</span> Resolve ambiguous time issues by specifying the `ambiguous` argument.</div><div class='input'>
 <span class='co'># To get around this, you can use that information by specifying</span>
 <span class='co'># `ambiguous = x`, which will use the offset from `x` to resolve the</span>
 <span class='co'># ambiguity in `x_naive` as long as `x` is also an ambiguous time with the</span>
@@ -428,7 +428,7 @@ time resolution strategies.</p>
 <span class='co'># but we have an issue at location 3.</span>
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x_naive</span>, <span class='fu'><a href='zoned-zone.html'>zoned_time_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, ambiguous <span class='op'>=</span> <span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Error : Ambiguous time due to daylight saving time at location 3.
-#&gt; </span><span style='color: #0000BB;'>ℹ</span><span> Resolve ambiguous time issues by specifying the `ambiguous` argument.</div><div class='input'>
+#&gt; <span style='color: #0000BB;'>ℹ</span> Resolve ambiguous time issues by specifying the `ambiguous` argument.</div><div class='input'>
 <span class='co'># When we floored from 02:30:00 -&gt; 01:00:00, we went from being</span>
 <span class='co'># unambiguous -&gt; ambiguous. In clock, this is something you must handle</span>
 <span class='co'># explicitly, and cannot be handled by using information from `x`. You can</span>
@@ -439,7 +439,7 @@ time resolution strategies.</p>
 <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x_naive</span>, <span class='fu'><a href='zoned-zone.html'>zoned_time_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, ambiguous <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"latest"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[3]&gt;
 #&gt; [1] "2020-11-01 01:00:00-04:00" "2020-11-01 01:00:00-05:00"
-#&gt; [3] "2020-11-01 01:00:00-05:00"</div></span></pre>
+#&gt; [3] "2020-11-01 01:00:00-05:00"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

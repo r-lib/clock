@@ -411,7 +411,7 @@ convert back to a date-time.</p><ul>
 
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='date_seq.html'>date_seq</a></span><span class='op'>(</span><span class='va'>from</span>, to <span class='op'>=</span> <span class='va'>to</span>, by <span class='op'>=</span> <span class='fu'><a href='duration-helper.html'>duration_months</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Error : Invalid date found at location 2.
-#&gt; <span style='color: #0000BB;'>ℹ</span><span> Resolve invalid date issues by specifying the `invalid` argument.</div><div class='input'><span class='fu'><a href='date_seq.html'>date_seq</a></span><span class='op'>(</span><span class='va'>from</span>, to <span class='op'>=</span> <span class='va'>to</span>, by <span class='op'>=</span> <span class='fu'><a href='duration-helper.html'>duration_months</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>, invalid <span class='op'>=</span> <span class='st'>"previous-day"</span><span class='op'>)</span>
+#&gt; <span style='color: #0000BB;'>ℹ</span> Resolve invalid date issues by specifying the `invalid` argument.</div><div class='input'><span class='fu'><a href='date_seq.html'>date_seq</a></span><span class='op'>(</span><span class='va'>from</span>, to <span class='op'>=</span> <span class='va'>to</span>, by <span class='op'>=</span> <span class='fu'><a href='duration-helper.html'>duration_months</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>, invalid <span class='op'>=</span> <span class='st'>"previous-day"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  [1] "2019-01-31 EST" "2019-02-28 EST" "2019-03-31 EDT" "2019-04-30 EDT"
 #&gt;  [5] "2019-05-31 EDT" "2019-06-30 EDT" "2019-07-31 EDT" "2019-08-31 EDT"
 #&gt;  [9] "2019-09-30 EDT" "2019-10-31 EDT" "2019-11-30 EST" "2019-12-31 EST"</div><div class='input'>
@@ -435,7 +435,7 @@ convert back to a date-time.</p><ul>
 <span class='co'># creating a nonexistent time</span>
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='date_seq.html'>date_seq</a></span><span class='op'>(</span><span class='va'>from</span>, by <span class='op'>=</span> <span class='fu'><a href='duration-helper.html'>duration_days</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>, total_size <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Error : Nonexistent time due to daylight saving time at location 3.
-#&gt; </span><span style='color: #0000BB;'>ℹ</span><span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</div><div class='input'>
+#&gt; <span style='color: #0000BB;'>ℹ</span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</div><div class='input'>
 <span class='co'># Resolve the nonexistent time with `nonexistent`. Note that this importantly</span>
 <span class='co'># allows times after the gap to retain the `02:30:00` time.</span>
 <span class='fu'><a href='date_seq.html'>date_seq</a></span><span class='op'>(</span><span class='va'>from</span>, by <span class='op'>=</span> <span class='fu'><a href='duration-helper.html'>duration_days</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>, total_size <span class='op'>=</span> <span class='fl'>5</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-forward"</span><span class='op'>)</span>
@@ -470,7 +470,7 @@ convert back to a date-time.</p><ul>
 #&gt; [3] "2019-01-01 00:00:02 EST" "2019-01-01 00:00:03 EST"</div><div class='input'>
 <span class='co'># But this is not!</span>
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='date_seq.html'>date_seq</a></span><span class='op'>(</span><span class='va'>from</span>, to <span class='op'>=</span> <span class='va'>to</span>, total_size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Error : The supplied output size does not result in a non-fractional sequence between `from` and `to`.</div></span></pre>
+</div><div class='output co'>#&gt; Error : The supplied output size does not result in a non-fractional sequence between `from` and `to`.</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
