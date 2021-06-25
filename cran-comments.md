@@ -2,6 +2,10 @@
 
 0 errors | 0 warnings | 0 notes
 
+## 0.3.1 Submission
+
+This is a patch release mainly intended to support an upcoming breaking change in testthat.
+
 ## 0.3.0 Submission
 
 This is a minor release that switches clock to use the date API exposed by tzdb. It also adds a new sequence generation function, `date_seq()`.
