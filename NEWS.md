@@ -1,4 +1,4 @@
-# clock (development version)
+# clock 0.3.1
 
 * Parsing into a date-time type that is coarser than the original string is now
   considered ambiguous and undefined behavior. For example, parsing a string
