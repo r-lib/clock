@@ -122,7 +122,7 @@ The default format used is &quot;%Y-%m-%d %H:%M:%S %Z&quot;.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -388,12 +388,17 @@ are permitted but not required.</p></li>
 <code>N</code> is a positive decimal integer specifies the maximum number of
 characters to read. If not specified, the default is <code>2</code>. Leading zeroes
 are permitted but not required.</p></li>
-<li><p><code>%S</code>: The seconds as a decimal number. The modified command <code>%NS</code> where
-<code>N</code> is a positive decimal integer specifies the maximum number of
-characters to read. If not specified, the default is determined by the
-precision that you are parsing at. If encountered, the <code>locale</code>
-determines the decimal point character. Leading zeroes are permitted but
-not required.</p></li>
+<li><p><code>%S</code>: The seconds as a decimal number. Leading zeroes are permitted but
+not required. If encountered, the <code>locale</code> determines the decimal point
+character. Generally, the maximum number of characters to read is
+determined by the precision that you are parsing at. For example, a
+precision of <code>"second"</code> would read a maximum of 2 characters, while a
+precision of <code>"millisecond"</code> would read a maximum of 6 (2 for the values
+before the decimal point, 1 for the decimal point, and 3 for the values
+after it). The modified command <code>%NS</code>, where <code>N</code> is a positive decimal
+integer, can be used to exactly specify the maximum number of characters to
+read. This is only useful if you happen to have seconds with more than 1
+leading zero.</p></li>
 <li><p><code>%p</code>: The <code>locale</code>'s equivalent of the AM/PM designations associated with
 a 12-hour clock. The command <code>%I</code> must precede <code>%p</code> in the format string.</p></li>
 <li><p><code>%R</code>: Equivalent to <code>%H:%M</code>.</p></li>
@@ -495,9 +500,16 @@ a convenient way to make production code robust to ambiguous times.</p></td>
     <p>If <code>date_time_parse_complete()</code> is given input that is length zero, all
 <code>NA</code>s, or completely fails to parse, then no time zone will be able to be
 determined. In that case, the result will use <code>"UTC"</code>.</p>
-<p>If manually parsing sub-second components, be aware that they will be
-automatically rounded to the nearest second when converting them to POSIXct.
-See the examples for a way to control this.</p>
+<p>If you have strings with sub-second components, then these date-time parsers
+are not appropriate for you. Remember that clock treats POSIXct as a second
+precision type, so parsing a string with fractional seconds directly into a
+POSIXct is ambiguous and undefined. Instead, fully parse the string,
+including its fractional seconds, into a clock type that can handle it, such
+as a naive-time with <code><a href='naive_time_parse.html'>naive_time_parse()</a></code>, then round to seconds with
+whatever rounding convention is appropriate for your use case, such as
+<code><a href='time-point-rounding.html'>time_point_floor()</a></code>, and finally convert that to POSIXct with
+<code><a href='as_date_time.html'>as_date_time()</a></code>. This gives you complete control over how the fractional
+seconds are handled when converting to POSIXct.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Parse with a known `zone`, even though that information isn't in the string</span>
@@ -524,7 +536,7 @@ See the examples for a way to control this.</p>
 <span class='va'>ambiguous_time</span> <span class='op'>&lt;-</span> <span class='st'>"1970-10-25 01:00:00"</span>
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>date_time_parse</span><span class='op'>(</span><span class='va'>ambiguous_time</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Error : Ambiguous time due to daylight saving time at location 1.
-#&gt; <span style='color: #0000BB;'>ℹ</span><span> Resolve ambiguous time issues by specifying the `ambiguous` argument.</div><div class='input'>
+#&gt; <span style='color: #0000BB;'>ℹ</span> Resolve ambiguous time issues by specifying the `ambiguous` argument.</div><div class='input'>
 <span class='co'># Resolve it by specifying whether you'd like to use the</span>
 <span class='co'># `earliest` or `latest` of the two possible times</span>
 <span class='fu'>date_time_parse</span><span class='op'>(</span><span class='va'>ambiguous_time</span>, <span class='st'>"America/New_York"</span>, ambiguous <span class='op'>=</span> <span class='st'>"earliest"</span><span class='op'>)</span>
@@ -548,31 +560,25 @@ See the examples for a way to control this.</p>
 <span class='fu'>date_time_parse_abbrev</span><span class='op'>(</span><span class='va'>abbrev_times</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EDT" "1970-10-25 01:00:00 EST"</div><div class='input'>
 <span class='co'># ---------------------------------------------------------------------------</span>
-<span class='co'># Rounding of sub-second components</span>
+<span class='co'># Sub-second components</span>
 
-<span class='co'># Generally, if you have a string with sub-second components, they will</span>
-<span class='co'># be ignored when parsing into a date-time</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2019-01-01 00:00:01.1"</span>, <span class='st'>"2019-01-01 00:00:01.7"</span><span class='op'>)</span>
+<span class='co'># If you have a string with sub-second components, but only require up to</span>
+<span class='co'># seconds, first parse them into a clock type that can handle sub-seconds to</span>
+<span class='co'># fully capture that information, then round using whatever convention is</span>
+<span class='co'># required for your use case before converting to a date-time.</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2019-01-01 00:00:01.1"</span>, <span class='st'>"2019-01-01 00:00:01.78"</span><span class='op'>)</span>
 
-<span class='fu'>date_time_parse</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2019-01-01 00:00:01 EST" "2019-01-01 00:00:01 EST"</div><div class='input'>
-<span class='co'># If you manually try and parse those sub-second components with `%4S` to</span>
-<span class='co'># read the 2 seconds, 1 decimal point, and 1 fractional component, the</span>
-<span class='co'># fractional component will be rounded to the nearest second</span>
-<span class='fu'>date_time_parse</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/New_York"</span>, format <span class='op'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%4S"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2019-01-01 00:00:01 EST" "2019-01-01 00:00:02 EST"</div><div class='input'>
-<span class='co'># If you don't like this, parse the full string as a naive-time,</span>
-<span class='co'># then round manually and convert to a POSIXct</span>
-<span class='va'>nt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='naive_time_parse.html'>naive_time_parse</a></span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%S"</span>, precision <span class='op'>=</span> <span class='st'>"millisecond"</span><span class='op'>)</span>
-<span class='va'>nt</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='naive_time_parse.html'>naive_time_parse</a></span><span class='op'>(</span><span class='va'>x</span>, precision <span class='op'>=</span> <span class='st'>"millisecond"</span><span class='op'>)</span>
+<span class='va'>x</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;millisecond&gt;[2]&gt;
-#&gt; [1] "2019-01-01 00:00:01.100" "2019-01-01 00:00:01.700"</div><div class='input'>
-<span class='va'>nt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='time-point-rounding.html'>time_point_floor</a></span><span class='op'>(</span><span class='va'>nt</span>, <span class='st'>"second"</span><span class='op'>)</span>
-<span class='va'>nt</span>
+#&gt; [1] "2019-01-01 00:00:01.100" "2019-01-01 00:00:01.780"</div><div class='input'>
+<span class='fu'><a href='time-point-rounding.html'>time_point_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;
-#&gt; [1] "2019-01-01 00:00:01" "2019-01-01 00:00:01"</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='va'>nt</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2019-01-01 00:00:01 EST" "2019-01-01 00:00:01 EST"</div></span></pre>
+#&gt; [1] "2019-01-01 00:00:01" "2019-01-01 00:00:01"</div><div class='input'><span class='fu'><a href='time-point-rounding.html'>time_point_round</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;
+#&gt; [1] "2019-01-01 00:00:01" "2019-01-01 00:00:02"</div><div class='input'>
+<span class='fu'><a href='as_date_time.html'>as_date_time</a></span><span class='op'>(</span><span class='fu'><a href='time-point-rounding.html'>time_point_round</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2019-01-01 00:00:01 EST" "2019-01-01 00:00:02 EST"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
