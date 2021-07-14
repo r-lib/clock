@@ -5,6 +5,7 @@
 \alias{invalid_detect}
 \alias{invalid_any}
 \alias{invalid_count}
+\alias{invalid_remove}
 \alias{invalid_resolve}
 \title{Invalid calendar dates}
 \usage{
@@ -13,6 +14,8 @@ invalid_detect(x)
 invalid_any(x)
 
 invalid_count(x)
+
+invalid_remove(x)
 
 invalid_resolve(x, ..., invalid = NULL)
 }
@@ -56,6 +59,7 @@ to invalid dates.}
 \item \code{invalid_any()}: Returns \code{TRUE} if any invalid dates are detected.
 \item \code{invalid_count()}: Returns a single integer containing the number of
 invalid dates.
+\item \code{invalid_remove()}: Returns \code{x} with invalid dates removed.
 \item \code{invalid_resolve()}: Returns \code{x} with invalid dates resolved using the
 \code{invalid} strategy.
 }
@@ -98,6 +102,9 @@ x_previous[1] < x_previous[2]
 
 # But `"previous-day"` here does not!
 x_previous_day[1] < x_previous_day[2]
+
+# Remove invalid dates entirely
+invalid_remove(x)
 
 y <- year_quarter_day(2019, 1, 90:92)
 y

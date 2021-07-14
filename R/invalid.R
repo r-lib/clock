@@ -64,6 +64,8 @@
 #' - `invalid_count()`: Returns a single integer containing the number of
 #'   invalid dates.
 #'
+#' - `invalid_remove()`: Returns `x` with invalid dates removed.
+#'
 #' - `invalid_resolve()`: Returns `x` with invalid dates resolved using the
 #'   `invalid` strategy.
 #'
@@ -89,6 +91,9 @@
 #'
 #' # But `"previous-day"` here does not!
 #' x_previous_day[1] < x_previous_day[2]
+#'
+#' # Remove invalid dates entirely
+#' invalid_remove(x)
 #'
 #' y <- year_quarter_day(2019, 1, 90:92)
 #' y
@@ -135,6 +140,19 @@ invalid_count <- function(x) {
 #' @export
 invalid_count.clock_calendar <- function(x) {
   stop_clock_unsupported_calendar_op("invalid_count")
+}
+
+# ------------------------------------------------------------------------------
+
+#' @rdname clock-invalid
+#' @export
+invalid_remove <- function(x) {
+  UseMethod("invalid_remove")
+}
+
+#' @export
+invalid_remove.clock_calendar <- function(x) {
+  x[!invalid_detect(x)]
 }
 
 # ------------------------------------------------------------------------------

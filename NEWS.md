@@ -1,5 +1,8 @@
 # clock (development version)
 
+* New `invalid_remove()` for removing invalid dates. This is just a wrapper
+  around `x[!invalid_detect(x)]`, but works nicely with the pipe (#229).
+
 # clock 0.3.1
 
 * Parsing into a date-time type that is coarser than the original string is now
