@@ -486,6 +486,84 @@ test_that("can get the current date-time", {
 })
 
 # ------------------------------------------------------------------------------
+# date_start()
+
+test_that("can get the start", {
+  zone <- "America/New_York"
+  x <- date_time_build(2019, 2, 2, 2, 2, 2, zone = zone)
+  expect_identical(date_start(x, "second"), x)
+  expect_identical(date_start(x, "month"), date_time_build(2019, 2, 1, zone = zone))
+  expect_identical(date_start(x, "year"), date_time_build(2019, 1, 1, zone = zone))
+})
+
+test_that("start: can't use invalid precisions", {
+  expect_snapshot_error(date_start(date_time_build(2019, zone = "America/New_York"), "quarter"))
+})
+
+test_that("can resolve nonexistent start issues", {
+  # In Asia/Beirut, DST gap from 2021-03-27 23:59:59 -> 2021-03-28 01:00:00
+  zone <- "Asia/Beirut"
+  x <- date_time_build(2021, 3, 28, 2, zone = zone)
+
+  expect_snapshot_error(date_start(x, "day"), class = "clock_error_nonexistent_time")
+
+  expect_identical(
+    date_start(x, "day", nonexistent = "roll-forward"),
+    date_time_build(2021, 3, 28, 1, zone = zone)
+  )
+})
+
+test_that("can resolve ambiguous start issues", {
+  # In Asia/Amman, DST fallback from 2021-10-29 00:59:59 -> 2021-10-29 00:00:00
+  zone <- "Asia/Amman"
+  x <- date_time_build(2021, 10, 29, 2, zone = zone)
+
+  expect_snapshot_error(date_start(x, "day"), class = "clock_error_ambiguous_time")
+
+  expect_identical(
+    date_start(x, "day", ambiguous = "earliest"),
+    date_time_parse_complete("2021-10-29 00:00:00+03:00[Asia/Amman]")
+  )
+  expect_identical(
+    date_start(x, "day", ambiguous = "latest"),
+    date_time_parse_complete("2021-10-29 00:00:00+02:00[Asia/Amman]")
+  )
+})
+
+test_that("can automatically resolve ambiguous issues", {
+  # In Asia/Amman, DST fallback from 2021-10-29 00:59:59 -> 2021-10-29 00:00:00
+  zone <- "Asia/Amman"
+
+  # Starts and ends the manipulation in the "earliest" hour
+  x <- date_time_build(2021, 10, 29, 0, 20, zone = zone, ambiguous = "earliest")
+  expect_identical(
+    date_start(x, "day"),
+    date_time_parse_complete("2021-10-29 00:00:00+03:00[Asia/Amman]")
+  )
+
+  # Starts and ends the manipulation in the "latest" hour
+  x <- date_time_build(2021, 10, 29, 0, 20, zone = zone, ambiguous = "latest")
+  expect_identical(
+    date_start(x, "day"),
+    date_time_parse_complete("2021-10-29 00:00:00+02:00[Asia/Amman]")
+  )
+})
+
+# ------------------------------------------------------------------------------
+# date_end()
+
+test_that("can get the end", {
+  zone <- "America/New_York"
+  x <- date_time_build(2019:2020, 2, 2, 2, 2, 2, zone = zone)
+  expect_identical(date_end(x, "day"), date_time_build(2019:2020, 2, 2, 23, 59, 59, zone = zone))
+  expect_identical(date_end(x, "month"), date_time_build(2019:2020, 2, 28:29, 23, 59, 59, zone = zone))
+})
+
+test_that("end: can't use invalid precisions", {
+  expect_snapshot_error(date_end(date_time_build(2019, zone = "America/New_York"), "quarter"))
+})
+
+# ------------------------------------------------------------------------------
 # date_seq()
 
 test_that("integer `by` means second precision", {

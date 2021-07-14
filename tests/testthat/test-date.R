@@ -376,6 +376,34 @@ test_that("can get the current date", {
 })
 
 # ------------------------------------------------------------------------------
+# date_start()
+
+test_that("can get the start", {
+  x <- date_build(2019, 2, 2)
+  expect_identical(date_start(x, "day"), x)
+  expect_identical(date_start(x, "month"), date_build(2019, 2, 1))
+  expect_identical(date_start(x, "year"), date_build(2019, 1, 1))
+})
+
+test_that("start: can't use invalid precisions", {
+  expect_snapshot_error(date_start(date_build(2019), "quarter"))
+})
+
+# ------------------------------------------------------------------------------
+# date_end()
+
+test_that("can get the end", {
+  x <- date_build(2019:2020, 2, 2)
+  expect_identical(date_end(x, "day"), x)
+  expect_identical(date_end(x, "month"), date_build(2019:2020, 2, 28:29))
+  expect_identical(date_end(x, "year"), date_build(2019:2020, 12, 31))
+})
+
+test_that("end: can't use invalid precisions", {
+  expect_snapshot_error(date_end(date_build(2019), "quarter"))
+})
+
+# ------------------------------------------------------------------------------
 # date_seq()
 
 test_that("integer `by` means day precision", {

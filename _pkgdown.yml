@@ -15,6 +15,7 @@ reference:
   - date_time_build
   - date-today
   - date_group
+  - date-and-date-time-boundary
   - date-and-date-time-rounding
   - date-and-date-time-shifting
   - date_seq
@@ -197,6 +198,8 @@ reference:
   contents:
   - date-group
   - posixt-group
+  - date-boundary
+  - posixt-boundary
   - date-formatting
   - posixt-formatting
   - date-rounding

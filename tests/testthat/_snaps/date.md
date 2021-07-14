@@ -150,6 +150,14 @@
     Invalid date found at location 2.
     i Resolve invalid date issues by specifying the `invalid` argument.
 
+# start: can't use invalid precisions
+
+    `precision` must be a valid precision for a 'year_month_day'.
+
+# end: can't use invalid precisions
+
+    `precision` must be a valid precision for a 'year_month_day'.
+
 # can resolve invalid dates
 
     Invalid date found at location 2.

@@ -1229,6 +1229,122 @@ date_today <- function(zone) {
 
 # ------------------------------------------------------------------------------
 
+#' Boundaries: date and date-time
+#'
+#' @description
+#' - `date_start()` computes the date at the start of a particular
+#'   `precision`, such as the "start of the year".
+#'
+#' - `date_end()` computes the date at the end of a particular
+#'   `precision`, such as the "end of the month".
+#'
+#' There are separate help pages for computing boundaries for dates and
+#' date-times:
+#'
+#' - [dates (Date)][date-boundary]
+#'
+#' - [date-times (POSIXct/POSIXlt)][posixt-boundary]
+#'
+#' @inheritParams date_group
+#'
+#' @param x `[Date / POSIXct / POSIXlt]`
+#'
+#'   A date or date-time vector.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   A precision. Allowed precisions are dependent on the input used.
+#'
+#' @return `x` but with some components altered to be at the boundary value.
+#'
+#' @name date-and-date-time-boundary
+#'
+#' @examples
+#' # See type specific documentation for more examples
+#'
+#' x <- date_build(2019, 2:4)
+#'
+#' date_end(x, "month")
+#'
+#' x <- date_time_build(2019, 2:4, 3:5, 4, 5, zone = "America/New_York")
+#'
+#' # Note that the hour, minute, and second components are also adjusted
+#' date_end(x, "month")
+NULL
+
+#' @rdname date-and-date-time-boundary
+#' @export
+date_start <- function(x, precision, ...) {
+  UseMethod("date_start")
+}
+
+#' @rdname date-and-date-time-boundary
+#' @export
+date_end <- function(x, precision, ...) {
+  UseMethod("date_end")
+}
+
+
+#' Boundaries: date
+#'
+#' @description
+#' This is a Date method for the [date_start()] and [date_end()] generics.
+#'
+#' @inheritParams date_group
+#' @inheritParams invalid_resolve
+#'
+#' @param x `[Date]`
+#'
+#'   A date vector.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"year"`
+#'
+#'   - `"month"`
+#'
+#'   - `"day"`
+#'
+#' @return `x` but with some components altered to be at the boundary value.
+#'
+#' @name date-boundary
+#'
+#' @examples
+#' x <- date_build(2019:2021, 2:4, 3:5)
+#' x
+#'
+#' # Last day of the month
+#' date_end(x, "month")
+#'
+#' # Last day of the year
+#' date_end(x, "year")
+#'
+#' # First day of the year
+#' date_start(x, "year")
+NULL
+
+#' @rdname date-boundary
+#' @export
+date_start.Date <- function(x, precision, ..., invalid = NULL) {
+  check_dots_empty()
+  x <- as_year_month_day(x)
+  x <- calendar_start(x, precision)
+  as.Date(x, invalid = invalid)
+}
+
+#' @rdname date-boundary
+#' @export
+date_end.Date <- function(x, precision, ..., invalid = NULL) {
+  check_dots_empty()
+  x <- as_year_month_day(x)
+  x <- calendar_end(x, precision)
+  as.Date(x, invalid = invalid)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Sequences: date and date-time
 #'
 #' @description
