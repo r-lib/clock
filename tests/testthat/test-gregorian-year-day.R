@@ -254,6 +254,30 @@ test_that("can widen to subsecond precision", {
 })
 
 # ------------------------------------------------------------------------------
+# calendar_start()
+
+test_that("can compute year start", {
+  x <- year_day(2019)
+  expect_identical(calendar_start(x, "year"), x)
+
+  x <- year_day(2019, 2, 2, 2, 2, 2, subsecond_precision = "millisecond")
+  expect <- year_day(2019, 1, 0, 0, 0, 0, subsecond_precision = "millisecond")
+  expect_identical(calendar_start(x, "year"), expect)
+})
+
+# ------------------------------------------------------------------------------
+# calendar_end()
+
+test_that("can compute year end", {
+  x <- year_day(2019)
+  expect_identical(calendar_end(x, "year"), x)
+
+  x <- year_day(2019:2020, 2, 2, 2, 2, 2, subsecond_precision = "millisecond")
+  expect <- year_day(2019:2020, 365:366, 23, 59, 59, 999L, subsecond_precision = "millisecond")
+  expect_identical(calendar_end(x, "year"), expect)
+})
+
+# ------------------------------------------------------------------------------
 # calendar_leap_year()
 
 test_that("can detect leap years", {

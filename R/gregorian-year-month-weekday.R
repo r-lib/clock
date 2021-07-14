@@ -1019,6 +1019,92 @@ calendar_widen.clock_year_month_weekday <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Boundaries: year-month-weekday
+#'
+#' @description
+#' This is a year-month-weekday method for the [calendar_start()] and
+#' [calendar_end()] generics. They adjust components of a calendar to the
+#' start or end of a specified `precision`.
+#'
+#' This method is restricted to only `"year"` and `"month"` `precision`s, and
+#' `x` can't be more precise than month precision. Computing the "start" of
+#' a day precision year-month-weekday object isn't defined because
+#' a year-month-weekday with `day = 1, index = 1` doesn't necessarily occur
+#' earlier (chronologically) than `day = 2, index = 1`. Because of these
+#' restrictions, this method isn't particularly useful, but is included for
+#' completeness.
+#'
+#' @inheritParams year-month-weekday-group
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"year"`
+#'   - `"month"`
+#'
+#' @return `x` at the same precision, but with some components altered to be
+#'   at the boundary value.
+#'
+#' @name year-month-weekday-boundary
+#'
+#' @examples
+#' # Month precision
+#' x <- year_month_weekday(2019, 1:5)
+#' x
+#'
+#' # Compute the last month of the year
+#' calendar_end(x, "year")
+NULL
+
+#' @rdname year-month-weekday-boundary
+#' @export
+calendar_start.clock_year_month_weekday <- function(x, precision) {
+  x_precision <- calendar_precision_attribute(x)
+  precision <- validate_precision_string(precision)
+
+  calendar_start_end_checks(x, x_precision, precision, "start")
+
+  if (x_precision >= PRECISION_DAY) {
+    message <- paste0(
+      "Computing the start of a 'year_month_weekday' with a precision equal to ",
+      "or more precise than 'day' is undefined."
+    )
+    abort(message)
+  }
+
+  if (precision <= PRECISION_YEAR && x_precision > PRECISION_YEAR) {
+    x <- set_month(x, 1L)
+  }
+
+  x
+}
+
+#' @rdname year-month-weekday-boundary
+#' @export
+calendar_end.clock_year_month_weekday <- function(x, precision) {
+  x_precision <- calendar_precision_attribute(x)
+  precision <- validate_precision_string(precision)
+
+  calendar_start_end_checks(x, x_precision, precision, "end")
+
+  if (x_precision >= PRECISION_DAY) {
+    message <- paste0(
+      "Computing the end of a 'year_month_weekday' with a precision equal to ",
+      "or more precise than 'day' is undefined."
+    )
+    abort(message)
+  }
+
+  if (precision <= PRECISION_YEAR && x_precision > PRECISION_YEAR) {
+    x <- set_month(x, 12L)
+  }
+
+  x
+}
+
+# ------------------------------------------------------------------------------
+
 #' Sequences: year-month-weekday
 #'
 #' @description

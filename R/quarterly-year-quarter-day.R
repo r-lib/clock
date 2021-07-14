@@ -999,6 +999,78 @@ calendar_widen.clock_year_quarter_day <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Boundaries: year-quarter-day
+#'
+#' This is a year-quarter-day method for the [calendar_start()] and
+#' [calendar_end()] generics. They adjust components of a calendar to the
+#' start or end of a specified `precision`.
+#'
+#' @inheritParams year-quarter-day-group
+#'
+#' @return `x` at the same precision, but with some components altered to be
+#'   at the boundary value.
+#'
+#' @name year-quarter-day-boundary
+#'
+#' @examples
+#' x <- year_quarter_day(2019:2020, 2:3, 5, 6, 7, 8, start = clock_months$march)
+#' x
+#'
+#' # Compute the last moment of the fiscal quarter
+#' calendar_end(x, "quarter")
+#'
+#' # Compare that to just setting the day to `"last"`,
+#' # which doesn't affect the other components
+#' set_day(x, "last")
+#'
+#' # Compute the start of the fiscal year
+#' calendar_start(x, "year")
+#'
+#' as_date(calendar_start(x, "year"))
+NULL
+
+#' @rdname year-quarter-day-boundary
+#' @export
+calendar_start.clock_year_quarter_day <- function(x, precision) {
+  x_precision <- calendar_precision_attribute(x)
+  precision <- validate_precision_string(precision)
+
+  calendar_start_end_checks(x, x_precision, precision, "start")
+
+  if (precision <= PRECISION_YEAR && x_precision > PRECISION_YEAR) {
+    x <- set_quarter(x, 1L)
+  }
+  if (precision <= PRECISION_QUARTER && x_precision > PRECISION_QUARTER) {
+    x <- set_day(x, 1L)
+  }
+
+  x <- calendar_start_time(x, x_precision, precision)
+
+  x
+}
+
+#' @rdname year-quarter-day-boundary
+#' @export
+calendar_end.clock_year_quarter_day <- function(x, precision) {
+  x_precision <- calendar_precision_attribute(x)
+  precision <- validate_precision_string(precision)
+
+  calendar_start_end_checks(x, x_precision, precision, "end")
+
+  if (precision <= PRECISION_YEAR && x_precision > PRECISION_YEAR) {
+    x <- set_quarter(x, 4L)
+  }
+  if (precision <= PRECISION_QUARTER && x_precision > PRECISION_QUARTER) {
+    x <- set_day(x, "last")
+  }
+
+  x <- calendar_end_time(x, x_precision, precision)
+
+  x
+}
+
+# ------------------------------------------------------------------------------
+
 #' Sequences: year-quarter-day
 #'
 #' @description

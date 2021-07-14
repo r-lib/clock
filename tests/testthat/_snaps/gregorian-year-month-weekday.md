@@ -82,6 +82,22 @@
 
     [1] "ymw<day>"
 
+# can't compute start with a year_month_weekday at day precision or greater
+
+    Computing the start of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
+
+---
+
+    Computing the start of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
+
+# can't compute end with a year_month_weekday at day precision or greater
+
+    Computing the end of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
+
+---
+
+    Computing the end of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
+
 # only granular precisions are allowed
 
     `from` must be 'year' or 'month' precision.
