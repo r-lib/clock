@@ -489,6 +489,31 @@ add_days.clock_weekday <- function(x, n, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+vec_math.clock_weekday <- function(.fn, .x, ...) {
+  switch(
+    .fn,
+    is.nan = weekday_is_nan(.x),
+    is.finite = weekday_is_finite(.x),
+    is.infinite = weekday_is_infinite(.x),
+    NextMethod()
+  )
+}
+
+weekday_is_nan <- function(x) {
+  vec_rep(FALSE, vec_size(x))
+}
+
+weekday_is_finite <- function(x) {
+  !vec_equal_na(x)
+}
+
+weekday_is_infinite <- function(x) {
+  vec_rep(FALSE, vec_size(x))
+}
+
+# ------------------------------------------------------------------------------
+
 validate_encoding <- function(encoding) {
   if (!is_string(encoding, string = c("western", "iso"))) {
     abort("`encoding` must be one of \"western\" or \"iso\".")
