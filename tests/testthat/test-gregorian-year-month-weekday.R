@@ -177,6 +177,48 @@ test_that("can widen to day", {
 })
 
 # ------------------------------------------------------------------------------
+# calendar_start()
+
+test_that("can compute year start", {
+  x <- year_month_weekday(2019)
+  expect_identical(calendar_start(x, "year"), x)
+
+  x <- year_month_weekday(2019, 2)
+  expect_identical(calendar_start(x, "year"), year_month_weekday(2019, 1))
+})
+
+test_that("can compute month start", {
+  x <- year_month_weekday(2019, 2)
+  expect_identical(calendar_start(x, "month"), x)
+})
+
+test_that("can't compute start with a year_month_weekday at day precision or greater", {
+  expect_snapshot_error(calendar_start(year_month_weekday(2019, 2, 2, 2), "day"))
+  expect_snapshot_error(calendar_start(year_month_weekday(2019, 2, 2, 2), "month"))
+})
+
+# ------------------------------------------------------------------------------
+# calendar_end()
+
+test_that("can compute year end", {
+  x <- year_month_weekday(2019)
+  expect_identical(calendar_end(x, "year"), x)
+
+  x <- year_month_weekday(2019, 2)
+  expect_identical(calendar_end(x, "year"), year_month_weekday(2019, 12))
+})
+
+test_that("can compute month end", {
+  x <- year_month_weekday(2019, 2)
+  expect_identical(calendar_end(x, "month"), x)
+})
+
+test_that("can't compute end with a year_month_weekday at day precision or greater", {
+  expect_snapshot_error(calendar_end(year_month_weekday(2019, 2, 2, 2), "day"))
+  expect_snapshot_error(calendar_end(year_month_weekday(2019, 2, 2, 2), "month"))
+})
+
+# ------------------------------------------------------------------------------
 # calendar_month_factor()
 
 test_that("can get a month factor", {

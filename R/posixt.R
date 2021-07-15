@@ -1427,6 +1427,91 @@ date_now <- function(zone) {
 
 # ------------------------------------------------------------------------------
 
+#' Boundaries: date-time
+#'
+#' @description
+#' This is a POSIXct/POSIXlt method for the [date_start()] and [date_end()]
+#' generics.
+#'
+#' @inheritParams date_group
+#' @inheritParams invalid_resolve
+#' @inheritParams as-zoned-time-naive-time
+#'
+#' @param x `[POSIXct / POSIXlt]`
+#'
+#'   A date-time vector.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"year"`
+#'
+#'   - `"month"`
+#'
+#'   - `"day"`
+#'
+#'   - `"hour"`
+#'
+#'   - `"minute"`
+#'
+#'   - `"second"`
+#'
+#' @return `x` but with some components altered to be at the boundary value.
+#'
+#' @name posixt-boundary
+#'
+#' @examples
+#' x <- date_time_build(2019:2021, 2:4, 3:5, 4, 5, 6, zone = "America/New_York")
+#' x
+#'
+#' # Last moment of the month
+#' date_end(x, "month")
+#'
+#' # Notice that this is different from just setting the day to `"last"`
+#' set_day(x, "last")
+#'
+#' # Last moment of the year
+#' date_end(x, "year")
+#'
+#' # First moment of the hour
+#' date_start(x, "hour")
+NULL
+
+#' @rdname posixt-boundary
+#' @export
+date_start.POSIXt <- function(x,
+                              precision,
+                              ...,
+                              invalid = NULL,
+                              nonexistent = NULL,
+                              ambiguous = x) {
+  check_dots_empty()
+  force(ambiguous)
+  zone <- date_zone(x)
+  x <- as_year_month_day(x)
+  x <- calendar_start(x, precision)
+  as.POSIXct(x, zone, invalid = invalid, nonexistent = nonexistent, ambiguous = ambiguous)
+}
+
+#' @rdname posixt-boundary
+#' @export
+date_end.POSIXt <- function(x,
+                            precision,
+                            ...,
+                            invalid = NULL,
+                            nonexistent = NULL,
+                            ambiguous = x) {
+  check_dots_empty()
+  force(ambiguous)
+  zone <- date_zone(x)
+  x <- as_year_month_day(x)
+  x <- calendar_end(x, precision)
+  as.POSIXct(x, zone, invalid = invalid, nonexistent = nonexistent, ambiguous = ambiguous)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Sequences: date-time
 #'
 #' @description

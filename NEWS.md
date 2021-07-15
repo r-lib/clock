@@ -1,5 +1,11 @@
 # clock (development version)
 
+* New `date_start()` and `date_end()` for computing the date at the start or
+  end of a particular `precision`, such as the "end of the month" or
+  the "start of the year". These are powered by `calendar_start()` and
+  `calendar_end()`, which allow for even more flexible calendar-specific
+  boundary generation, such as the "last moment in the fiscal quarter" (#232).
+
 * New `invalid_remove()` for removing invalid dates. This is just a wrapper
   around `x[!invalid_detect(x)]`, but works nicely with the pipe (#229).
 

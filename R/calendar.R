@@ -556,6 +556,161 @@ calendar_widen_time <- function(x, x_precision, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Boundaries: calendars
+#'
+#' @description
+#' - `calendar_start()` computes the start of a calendar at a particular
+#'   `precision`, such as the "start of the quarter".
+#'
+#' - `calendar_end()` computes the end of a calendar at a particular
+#'   `precision`, such as the "end of the month".
+#'
+#' For both `calendar_start()` and `calendar_end()`, the precision of `x` is
+#' always retained.
+#'
+#' Each calendar has its own help page describing the precisions that you
+#' can compute a boundary at:
+#'
+#' - [year-month-day][year-month-day-boundary]
+#'
+#' - [year-month-weekday][year-month-weekday-boundary]
+#'
+#' - [iso-year-week-day][iso-year-week-day-boundary]
+#'
+#' - [year-quarter-day][year-quarter-day-boundary]
+#'
+#' - [year-day][year-day-boundary]
+#'
+#' @inheritParams calendar_group
+#'
+#' @return `x` at the same precision, but with some components altered to be
+#'   at the boundary value.
+#'
+#' @name calendar-boundary
+#' @examples
+#' # Hour precision
+#' x <- year_month_day(2019, 2:4, 5, 6)
+#' x
+#'
+#' # Compute the start of the month
+#' calendar_start(x, "month")
+#'
+#' # Or the end of the month, notice that the hour value is adjusted as well
+#' calendar_end(x, "month")
+NULL
+
+
+#' @rdname calendar-boundary
+#' @export
+calendar_start <- function(x, precision) {
+  UseMethod("calendar_start")
+}
+
+#' @export
+calendar_start.clock_calendar <- function(x, precision) {
+  stop_clock_unsupported_calendar_op("calendar_start")
+}
+
+
+#' @rdname calendar-boundary
+#' @export
+calendar_end <- function(x, precision) {
+  UseMethod("calendar_end")
+}
+
+#' @export
+calendar_end.clock_calendar <- function(x, precision) {
+  stop_clock_unsupported_calendar_op("calendar_end")
+}
+
+
+calendar_start_end_checks <- function(x, x_precision, precision, which) {
+  if (!calendar_is_valid_precision(x, precision)) {
+    message <- paste0(
+      "`precision` must be a valid precision for a '", calendar_name(x), "'."
+    )
+    abort(message)
+  }
+
+  if (x_precision < precision) {
+    precision <- precision_to_string(precision)
+    x_precision <- precision_to_string(x_precision)
+
+    message <- paste0(
+      "Can't compute the ", which, " of `x` (", x_precision, ") ",
+      "at a more precise precision (", precision, ")."
+    )
+    abort(message)
+  }
+
+  if (precision > PRECISION_SECOND && x_precision != precision) {
+    # Computing the start/end of nanosecond precision at millisecond precision
+    # would be inconsistent with our general philosophy that you "lock in"
+    # the subsecond precision.
+    precision <- precision_to_string(precision)
+    x_precision <- precision_to_string(x_precision)
+
+    message <- paste0(
+      "Can't compute the ", which, " of a subsecond precision `x` (", x_precision, ") ",
+      "at another subsecond precision (", precision, ")."
+    )
+    abort(message)
+  }
+
+  invisible(x)
+}
+
+calendar_start_time <- function(x, x_precision, precision) {
+  values <- list(
+    hour = 0L,
+    minute = 0L,
+    second = 0L,
+    millisecond = 0L,
+    microsecond = 0L,
+    nanosecond = 0L
+  )
+
+  calendar_start_end_time(x, x_precision, precision, values)
+}
+
+calendar_end_time <- function(x, x_precision, precision) {
+  values <- list(
+    hour = 23L,
+    minute = 59L,
+    second = 59L,
+    millisecond = 999L,
+    microsecond = 999999L,
+    nanosecond = 999999999L
+  )
+
+  calendar_start_end_time(x, x_precision, precision, values)
+}
+
+calendar_start_end_time <- function(x, x_precision, precision, values) {
+  if (precision <= PRECISION_DAY && x_precision > PRECISION_DAY) {
+    x <- set_hour(x, values$hour)
+  }
+  if (precision <= PRECISION_HOUR && x_precision > PRECISION_HOUR) {
+    x <- set_minute(x, values$minute)
+  }
+  if (precision <= PRECISION_MINUTE && x_precision > PRECISION_MINUTE) {
+    x <- set_second(x, values$second)
+  }
+  if (precision <= PRECISION_SECOND && x_precision > PRECISION_SECOND) {
+    if (x_precision == PRECISION_MILLISECOND) {
+      x <- set_millisecond(x, values$millisecond)
+    } else if (x_precision == PRECISION_MICROSECOND) {
+      x <- set_microsecond(x, values$microsecond)
+    } else if (x_precision == PRECISION_NANOSECOND) {
+      x <- set_nanosecond(x, values$nanosecond)
+    }
+  }
+
+  x
+}
+
+# ------------------------------------------------------------------------------
+
 #' Precision: calendar
 #'
 #' `calendar_precision()` extracts the precision from a calendar object. It

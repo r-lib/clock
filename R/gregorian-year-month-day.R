@@ -1136,6 +1136,81 @@ calendar_widen.clock_year_month_day <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Boundaries: year-month-day
+#'
+#' This is a year-month-day method for the [calendar_start()] and
+#' [calendar_end()] generics. They adjust components of a calendar to the
+#' start or end of a specified `precision`.
+#'
+#' @inheritParams year-month-day-group
+#'
+#' @return `x` at the same precision, but with some components altered to be
+#'   at the boundary value.
+#'
+#' @name year-month-day-boundary
+#'
+#' @examples
+#' # Hour precision
+#' x <- year_month_day(2019, 2:4, 5, 6)
+#' x
+#'
+#' # Compute the start of the month
+#' calendar_start(x, "month")
+#'
+#' # Or the end of the month, notice that the hour value is adjusted as well
+#' calendar_end(x, "month")
+#'
+#' # Compare that with just setting the day of the month to `"last"`, which
+#' # doesn't adjust any other components
+#' set_day(x, "last")
+#'
+#' # You can't compute the start / end at a more precise precision than
+#' # the input is at
+#' try(calendar_start(x, "second"))
+NULL
+
+#' @rdname year-month-day-boundary
+#' @export
+calendar_start.clock_year_month_day <- function(x, precision) {
+  x_precision <- calendar_precision_attribute(x)
+  precision <- validate_precision_string(precision)
+
+  calendar_start_end_checks(x, x_precision, precision, "start")
+
+  if (precision <= PRECISION_YEAR && x_precision > PRECISION_YEAR) {
+    x <- set_month(x, 1L)
+  }
+  if (precision <= PRECISION_MONTH && x_precision > PRECISION_MONTH) {
+    x <- set_day(x, 1L)
+  }
+
+  x <- calendar_start_time(x, x_precision, precision)
+
+  x
+}
+
+#' @rdname year-month-day-boundary
+#' @export
+calendar_end.clock_year_month_day <- function(x, precision) {
+  x_precision <- calendar_precision_attribute(x)
+  precision <- validate_precision_string(precision)
+
+  calendar_start_end_checks(x, x_precision, precision, "end")
+
+  if (precision <= PRECISION_YEAR && x_precision > PRECISION_YEAR) {
+    x <- set_month(x, 12L)
+  }
+  if (precision <= PRECISION_MONTH && x_precision > PRECISION_MONTH) {
+    x <- set_day(x, "last")
+  }
+
+  x <- calendar_end_time(x, x_precision, precision)
+
+  x
+}
+
+# ------------------------------------------------------------------------------
+
 #' Sequences: year-month-day
 #'
 #' @description

@@ -857,6 +857,64 @@ calendar_widen.clock_year_day <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Boundaries: year-day
+#'
+#' This is a year-day method for the [calendar_start()] and
+#' [calendar_end()] generics. They adjust components of a calendar to the
+#' start or end of a specified `precision`.
+#'
+#' @inheritParams year-day-group
+#'
+#' @return `x` at the same precision, but with some components altered to be
+#'   at the boundary value.
+#'
+#' @name year-day-boundary
+#'
+#' @examples
+#' # Day precision
+#' x <- year_day(2019:2020, 5)
+#' x
+#'
+#' # Compute the last day of the year
+#' calendar_end(x, "year")
+NULL
+
+#' @rdname year-day-boundary
+#' @export
+calendar_start.clock_year_day <- function(x, precision) {
+  x_precision <- calendar_precision_attribute(x)
+  precision <- validate_precision_string(precision)
+
+  calendar_start_end_checks(x, x_precision, precision, "start")
+
+  if (precision <= PRECISION_YEAR && x_precision > PRECISION_YEAR) {
+    x <- set_day(x, 1L)
+  }
+
+  x <- calendar_start_time(x, x_precision, precision)
+
+  x
+}
+
+#' @rdname year-day-boundary
+#' @export
+calendar_end.clock_year_day <- function(x, precision) {
+  x_precision <- calendar_precision_attribute(x)
+  precision <- validate_precision_string(precision)
+
+  calendar_start_end_checks(x, x_precision, precision, "end")
+
+  if (precision <= PRECISION_YEAR && x_precision > PRECISION_YEAR) {
+    x <- set_day(x, "last")
+  }
+
+  x <- calendar_end_time(x, x_precision, precision)
+
+  x
+}
+
+# ------------------------------------------------------------------------------
+
 #' Sequences: year-day
 #'
 #' @description

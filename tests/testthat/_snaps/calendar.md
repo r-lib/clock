@@ -130,6 +130,54 @@
 
     Can't widen a subsecond precision `x` (millisecond) to another subsecond precision (microsecond).
 
+# start: `x` is validated
+
+    no applicable method for 'calendar_start' applied to an object of class "c('double', 'numeric')"
+
+# start: `precision` is validated
+
+    `precision` not recognized.
+
+---
+
+    `precision` must be a string.
+
+# start: errors on unsupported precision
+
+    `precision` must be a valid precision for a 'year_month_day'.
+
+# start: `precision` can't be more precise than `x`
+
+    Can't compute the start of `x` (year) at a more precise precision (month).
+
+# start: can't mix different subsecond precisions
+
+    Can't compute the start of a subsecond precision `x` (microsecond) at another subsecond precision (millisecond).
+
+# end: `x` is validated
+
+    no applicable method for 'calendar_end' applied to an object of class "c('double', 'numeric')"
+
+# end: `precision` is validated
+
+    `precision` not recognized.
+
+---
+
+    `precision` must be a string.
+
+# end: errors on unsupported precision
+
+    `precision` must be a valid precision for a 'year_month_day'.
+
+# end: `precision` can't be more precise than `x`
+
+    Can't compute the end of `x` (year) at a more precise precision (month).
+
+# end: can't mix different subsecond precisions
+
+    Can't compute the end of a subsecond precision `x` (microsecond) at another subsecond precision (millisecond).
+
 # precision: can only be called on calendars
 
     no applicable method for 'calendar_precision' applied to an object of class "c('clock_sys_time', 'clock_time_point', 'clock_rcrd', 'vctrs_rcrd', 'vctrs_vctr')"

@@ -206,6 +206,24 @@
     Ambiguous time due to daylight saving time at location 1.
     i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
+# start: can't use invalid precisions
+
+    `precision` must be a valid precision for a 'year_month_day'.
+
+# can resolve nonexistent start issues
+
+    Nonexistent time due to daylight saving time at location 1.
+    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
+
+# can resolve ambiguous start issues
+
+    Ambiguous time due to daylight saving time at location 1.
+    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+
+# end: can't use invalid precisions
+
+    `precision` must be a valid precision for a 'year_month_day'.
+
 # daily `by` uses naive-time around DST gaps
 
     Nonexistent time due to daylight saving time at location 2.

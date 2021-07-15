@@ -433,6 +433,48 @@ test_that("can widen to subsecond precision", {
 })
 
 # ------------------------------------------------------------------------------
+# calendar_start()
+
+test_that("can compute year start", {
+  x <- year_month_day(2019)
+  expect_identical(calendar_start(x, "year"), x)
+
+  x <- year_month_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "millisecond")
+  expect <- year_month_day(2019, 1, 1, 0, 0, 0, 0, subsecond_precision = "millisecond")
+  expect_identical(calendar_start(x, "year"), expect)
+})
+
+test_that("can compute month start", {
+  x <- year_month_day(2019, 2)
+  expect_identical(calendar_start(x, "month"), x)
+
+  x <- year_month_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "microsecond")
+  expect <- year_month_day(2019, 2, 1, 0, 0, 0, 0, subsecond_precision = "microsecond")
+  expect_identical(calendar_start(x, "month"), expect)
+})
+
+# ------------------------------------------------------------------------------
+# calendar_end()
+
+test_that("can compute year end", {
+  x <- year_month_day(2019)
+  expect_identical(calendar_end(x, "year"), x)
+
+  x <- year_month_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "millisecond")
+  expect <- year_month_day(2019, 12, 31, 23, 59, 59, 999L, subsecond_precision = "millisecond")
+  expect_identical(calendar_end(x, "year"), expect)
+})
+
+test_that("can compute month end", {
+  x <- year_month_day(2019, 2)
+  expect_identical(calendar_end(x, "month"), x)
+
+  x <- year_month_day(2019, 2:3, 2, 2, 2, 2, 2, subsecond_precision = "microsecond")
+  expect <- year_month_day(2019, 2:3, c(28, 31), 23, 59, 59, 999999L, subsecond_precision = "microsecond")
+  expect_identical(calendar_end(x, "month"), expect)
+})
+
+# ------------------------------------------------------------------------------
 # calendar_month_factor()
 
 test_that("can get a month factor", {

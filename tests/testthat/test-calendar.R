@@ -112,6 +112,151 @@ test_that("widen: can widen subsecond precision to the same subsecond precision"
 })
 
 # ------------------------------------------------------------------------------
+# calendar_start()
+
+test_that("start: `x` is validated", {
+  expect_snapshot_error(calendar_start(1))
+})
+
+test_that("start: `precision` is validated", {
+  expect_snapshot_error(calendar_start(year_month_day(2019), "foo"))
+  expect_snapshot_error(calendar_start(year_month_day(2019), 1))
+})
+
+test_that("start: errors on unsupported precision", {
+  expect_snapshot_error(calendar_start(year_month_day(2019, 1), "quarter"))
+})
+
+test_that("start: `precision` can't be more precise than `x`", {
+  expect_snapshot_error(calendar_start(year_month_day(2019), "month"))
+})
+
+test_that("start: can't mix different subsecond precisions", {
+  x <- year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "microsecond")
+  expect_snapshot_error(calendar_start(x, "millisecond"))
+})
+
+test_that("start: can use same subsecond precision", {
+  x <- year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "microsecond")
+  expect_identical(calendar_start(x, "microsecond"), x)
+})
+
+test_that("start: can compute day start", {
+  x <- year_month_day(2019, 2, 2)
+  expect_identical(calendar_start(x, "day"), x)
+
+  x <- year_month_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "nanosecond")
+  expect <- year_month_day(2019, 2, 2, 0, 0, 0, 0, subsecond_precision = "nanosecond")
+  expect_identical(calendar_start(x, "day"), expect)
+})
+
+test_that("start: can compute hour start", {
+  x <- year_month_day(2019, 2, 2, 2)
+  expect_identical(calendar_start(x, "hour"), x)
+
+  x <- year_month_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "nanosecond")
+  expect <- year_month_day(2019, 2, 2, 2, 0, 0, 0, subsecond_precision = "nanosecond")
+  expect_identical(calendar_start(x, "hour"), expect)
+})
+
+test_that("start: can compute minute start", {
+  x <- year_month_day(2019, 2, 2, 2, 2)
+  expect_identical(calendar_start(x, "minute"), x)
+
+  x <- year_month_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "nanosecond")
+  expect <- year_month_day(2019, 2, 2, 2, 2, 0, 0, subsecond_precision = "nanosecond")
+  expect_identical(calendar_start(x, "minute"), expect)
+})
+
+test_that("start: can compute second start", {
+  x <- year_month_day(2019, 2, 2, 2, 2, 2)
+  expect_identical(calendar_start(x, "second"), x)
+
+  x <- year_month_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "nanosecond")
+  expect <- year_month_day(2019, 2, 2, 2, 2, 2, 0, subsecond_precision = "nanosecond")
+  expect_identical(calendar_start(x, "second"), expect)
+})
+
+test_that("start: invalid dates are adjusted", {
+  x <- year_month_day(2019, 2, 31, 3)
+  expect_identical(calendar_start(x, "year"), year_month_day(2019, 1, 1, 0))
+  expect_identical(calendar_start(x, "day"), year_month_day(2019, 2, 31, 0))
+})
+
+# ------------------------------------------------------------------------------
+# calendar_end()
+
+test_that("end: `x` is validated", {
+  expect_snapshot_error(calendar_end(1))
+})
+
+test_that("end: `precision` is validated", {
+  expect_snapshot_error(calendar_end(year_month_day(2019), "foo"))
+  expect_snapshot_error(calendar_end(year_month_day(2019), 1))
+})
+
+test_that("end: errors on unsupported precision", {
+  expect_snapshot_error(calendar_end(year_month_day(2019, 1), "quarter"))
+})
+
+test_that("end: `precision` can't be more precise than `x`", {
+  expect_snapshot_error(calendar_end(year_month_day(2019), "month"))
+})
+
+test_that("end: can't mix different subsecond precisions", {
+  x <- year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "microsecond")
+  expect_snapshot_error(calendar_end(x, "millisecond"))
+})
+
+test_that("end: can use same subsecond precision", {
+  x <- year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "microsecond")
+  expect_identical(calendar_end(x, "microsecond"), x)
+})
+
+test_that("end: can compute day end", {
+  x <- year_month_day(2019, 2, 2)
+  expect_identical(calendar_end(x, "day"), x)
+
+  x <- year_month_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "nanosecond")
+  expect <- year_month_day(2019, 2, 2, 23, 59, 59, 999999999L, subsecond_precision = "nanosecond")
+  expect_identical(calendar_end(x, "day"), expect)
+})
+
+test_that("end: can compute hour end", {
+  x <- year_month_day(2019, 2, 2, 2)
+  expect_identical(calendar_end(x, "hour"), x)
+
+  x <- year_month_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "nanosecond")
+  expect <- year_month_day(2019, 2, 2, 2, 59, 59, 999999999L, subsecond_precision = "nanosecond")
+  expect_identical(calendar_end(x, "hour"), expect)
+})
+
+test_that("end: can compute minute end", {
+  x <- year_month_day(2019, 2, 2, 2, 2)
+  expect_identical(calendar_end(x, "minute"), x)
+
+  x <- year_month_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "nanosecond")
+  expect <- year_month_day(2019, 2, 2, 2, 2, 59, 999999999L, subsecond_precision = "nanosecond")
+  expect_identical(calendar_end(x, "minute"), expect)
+})
+
+test_that("end: can compute second end", {
+  x <- year_month_day(2019, 2, 2, 2, 2, 2)
+  expect_identical(calendar_end(x, "second"), x)
+
+  x <- year_month_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "nanosecond")
+  expect <- year_month_day(2019, 2, 2, 2, 2, 2, 999999999L, subsecond_precision = "nanosecond")
+  expect_identical(calendar_end(x, "second"), expect)
+})
+
+test_that("end: invalid dates are adjusted", {
+  x <- year_month_day(2019, 2, 31, 3)
+  expect_identical(calendar_end(x, "year"), year_month_day(2019, 12, 31, 23))
+  expect_identical(calendar_end(x, "month"), year_month_day(2019, 2, 28, 23))
+  expect_identical(calendar_end(x, "day"), year_month_day(2019, 2, 31, 23))
+})
+
+# ------------------------------------------------------------------------------
 # calendar_precision()
 
 test_that("precision: can get the precision", {
