@@ -162,7 +162,8 @@
 <a href="#clock-development-version" class="anchor"></a>clock (development version)<small> Unreleased </small>
 </h1>
 <ul>
-<li>New <code><a href="../reference/clock-invalid.html">invalid_remove()</a></code> for removing invalid dates. This is just a wrapper around <code>x[!invalid_detect(x)]</code>, but works nicely with the pipe (<a href='https://github.com/r-lib/clock/issues/229'>#229</a>).</li>
+<li><p>New <code><a href="../reference/date-and-date-time-boundary.html">date_start()</a></code> and <code><a href="../reference/date-and-date-time-boundary.html">date_end()</a></code> for computing the date at the start or end of a particular <code>precision</code>, such as the “end of the month” or the “start of the year”. These are powered by <code><a href="../reference/calendar-boundary.html">calendar_start()</a></code> and <code><a href="../reference/calendar-boundary.html">calendar_end()</a></code>, which allow for even more flexible calendar-specific boundary generation, such as the “last moment in the fiscal quarter” (<a href='https://github.com/r-lib/clock/issues/232'>#232</a>).</p></li>
+<li><p>New <code><a href="../reference/clock-invalid.html">invalid_remove()</a></code> for removing invalid dates. This is just a wrapper around <code>x[!invalid_detect(x)]</code>, but works nicely with the pipe (<a href='https://github.com/r-lib/clock/issues/229'>#229</a>).</p></li>
 </ul>
 </div>
     <div id="clock-031" class="section level1">
