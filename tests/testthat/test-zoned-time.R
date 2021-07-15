@@ -491,6 +491,27 @@ test_that("ptype is correct", {
 })
 
 # ------------------------------------------------------------------------------
+# vec_math()
+
+test_that("is.nan() works", {
+  zone <- "America/New_York"
+  x <- as_zoned_time(naive_days(c(2019, NA)), zone)
+  expect_identical(is.nan(x), c(FALSE, FALSE))
+})
+
+test_that("is.finite() works", {
+  zone <- "America/New_York"
+  x <- as_zoned_time(naive_days(c(2019, NA)), zone)
+  expect_identical(is.finite(x), c(TRUE, FALSE))
+})
+
+test_that("is.infinite() works", {
+  zone <- "America/New_York"
+  x <- as_zoned_time(naive_days(c(2019, NA)), zone)
+  expect_identical(is.infinite(x), c(FALSE, FALSE))
+})
+
+# ------------------------------------------------------------------------------
 # zoned_time_precision()
 
 test_that("precision: can get the precision", {

@@ -279,3 +279,21 @@ test_that("precision: can get the precision", {
 test_that("precision: can only be called on durations", {
   expect_snapshot_error(duration_precision(sys_days(0)))
 })
+
+# ------------------------------------------------------------------------------
+# vec_math()
+
+test_that("is.nan() works", {
+  x <- duration_years(c(1, NA))
+  expect_identical(is.nan(x), c(FALSE, FALSE))
+})
+
+test_that("is.finite() works", {
+  x <- duration_years(c(1, NA))
+  expect_identical(is.finite(x), c(TRUE, FALSE))
+})
+
+test_that("is.infinite() works", {
+  x <- duration_years(c(1, NA))
+  expect_identical(is.infinite(x), c(FALSE, FALSE))
+})

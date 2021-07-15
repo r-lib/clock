@@ -584,3 +584,21 @@ test_that("ptype is correct", {
     expect_identical(vec_ptype(x), expect)
   }
 })
+
+# ------------------------------------------------------------------------------
+# vec_math()
+
+test_that("is.nan() works", {
+  x <- naive_days(c(2019, NA))
+  expect_identical(is.nan(x), c(FALSE, FALSE))
+})
+
+test_that("is.finite() works", {
+  x <- naive_days(c(2019, NA))
+  expect_identical(is.finite(x), c(TRUE, FALSE))
+})
+
+test_that("is.infinite() works", {
+  x <- naive_days(c(2019, NA))
+  expect_identical(is.infinite(x), c(FALSE, FALSE))
+})

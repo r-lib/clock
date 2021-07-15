@@ -223,3 +223,21 @@ test_that("strict mode can be activated", {
   local_options(clock.strict = TRUE)
   expect_snapshot_error(invalid_resolve(iso_year_week_day(2019, 1)))
 })
+
+# ------------------------------------------------------------------------------
+# vec_math()
+
+test_that("is.nan() works", {
+  x <- iso_year_week_day(c(2019, NA))
+  expect_identical(is.nan(x), c(FALSE, FALSE))
+})
+
+test_that("is.finite() works", {
+  x <- iso_year_week_day(c(2019, NA))
+  expect_identical(is.finite(x), c(TRUE, FALSE))
+})
+
+test_that("is.infinite() works", {
+  x <- iso_year_week_day(c(2019, NA))
+  expect_identical(is.infinite(x), c(FALSE, FALSE))
+})

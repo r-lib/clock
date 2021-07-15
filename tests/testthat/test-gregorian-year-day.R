@@ -335,3 +335,21 @@ test_that("throws known classed error", {
   expect_snapshot_error(invalid_resolve(year_day(2019, 366)))
   expect_error(invalid_resolve(year_day(2019, 366)), class = "clock_error_invalid_date")
 })
+
+# ------------------------------------------------------------------------------
+# vec_math()
+
+test_that("is.nan() works", {
+  x <- year_day(c(2019, NA))
+  expect_identical(is.nan(x), c(FALSE, FALSE))
+})
+
+test_that("is.finite() works", {
+  x <- year_day(c(2019, NA))
+  expect_identical(is.finite(x), c(TRUE, FALSE))
+})
+
+test_that("is.infinite() works", {
+  x <- year_day(c(2019, NA))
+  expect_identical(is.infinite(x), c(FALSE, FALSE))
+})
