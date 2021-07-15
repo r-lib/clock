@@ -8,6 +8,9 @@
 
 * New `invalid_remove()` for removing invalid dates. This is just a wrapper
   around `x[!invalid_detect(x)]`, but works nicely with the pipe (#229).
+  
+* All clock types now support `is.nan()`, `is.finite()`, and `is.infinite()`
+  (#235).
 
 # clock 0.3.1
 
