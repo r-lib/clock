@@ -37,3 +37,28 @@ names.clock_rcrd <- function(x) {
 
   vec_slice(x, i)
 }
+
+# ------------------------------------------------------------------------------
+
+#' @export
+vec_math.clock_rcrd <- function(.fn, .x, ...) {
+  switch(
+    .fn,
+    is.nan = clock_rcrd_is_nan(.x),
+    is.finite = clock_rcrd_is_finite(.x),
+    is.infinite = clock_rcrd_is_infinite(.x),
+    NextMethod()
+  )
+}
+
+clock_rcrd_is_nan <- function(x) {
+  vec_rep(FALSE, vec_size(x))
+}
+
+clock_rcrd_is_finite <- function(x) {
+  !vec_equal_na(x)
+}
+
+clock_rcrd_is_infinite <- function(x) {
+  vec_rep(FALSE, vec_size(x))
+}

@@ -180,3 +180,21 @@ test_that("can't compare or order weekdays (#153)", {
 test_that("ptype is correct", {
   expect_identical(vec_ptype(weekday(1:7)), weekday(integer()))
 })
+
+# ------------------------------------------------------------------------------
+# vec_math()
+
+test_that("is.nan() works", {
+  x <- weekday(c(1, NA))
+  expect_identical(is.nan(x), c(FALSE, FALSE))
+})
+
+test_that("is.finite() works", {
+  x <- weekday(c(1, NA))
+  expect_identical(is.finite(x), c(TRUE, FALSE))
+})
+
+test_that("is.infinite() works", {
+  x <- weekday(c(1, NA))
+  expect_identical(is.infinite(x), c(FALSE, FALSE))
+})
