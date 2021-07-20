@@ -72,6 +72,14 @@ duration_as_double_cpp <- function(fields, precision_int) {
   .Call(`_clock_duration_as_double_cpp`, fields, precision_int)
 }
 
+duration_abs_cpp <- function(fields, precision_int) {
+  .Call(`_clock_duration_abs_cpp`, fields, precision_int)
+}
+
+duration_sign_cpp <- function(fields, precision_int) {
+  .Call(`_clock_duration_sign_cpp`, fields, precision_int)
+}
+
 duration_seq_by_lo_cpp <- function(from, precision_int, by, length_out) {
   .Call(`_clock_duration_seq_by_lo_cpp`, from, precision_int, by, length_out)
 }
