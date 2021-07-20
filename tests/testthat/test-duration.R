@@ -297,3 +297,25 @@ test_that("is.infinite() works", {
   x <- duration_years(c(1, NA))
   expect_identical(is.infinite(x), c(FALSE, FALSE))
 })
+
+test_that("abs() works", {
+  x <- duration_hours(c(-2, -1, 0, 1, 2, NA))
+  expect <- duration_hours(c(2, 1, 0, 1, 2, NA))
+  expect_identical(abs(x), expect)
+})
+
+test_that("abs() propagates names", {
+  x <- set_names(duration_years(1:2), c("a", "b"))
+  expect_named(abs(x), c("a", "b"))
+})
+
+test_that("sign() works", {
+  x <- duration_hours(c(-2, -1, 0, 1, 2, NA))
+  expect <- c(-1L, -1L, 0L, 1L, 1L, NA)
+  expect_identical(sign(x), expect)
+})
+
+test_that("sign() propagates names", {
+  x <- set_names(duration_years(1:2), c("a", "b"))
+  expect_named(sign(x), c("a", "b"))
+})

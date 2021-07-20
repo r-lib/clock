@@ -757,6 +757,31 @@ seq_impl <- function(from, to, by, length.out, along.with, precision, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
+vec_math.clock_duration <- function(.fn, .x, ...) {
+  switch(
+    .fn,
+    abs = duration_abs(.x),
+    sign = duration_sign(.x),
+    # Pass on to `vec_math.clock_rcrd()`
+    NextMethod()
+  )
+}
+
+duration_abs <- function(x) {
+  precision <- duration_precision_attribute(x)
+  fields <- duration_abs_cpp(x, precision)
+  new_duration_from_fields(fields, precision, clock_rcrd_names(x))
+}
+
+duration_sign <- function(x) {
+  out <- duration_sign_cpp(x, duration_precision_attribute(x))
+  names(out) <- names(x)
+  out
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 #' @method vec_arith clock_duration
 vec_arith.clock_duration <- function(op, x, y, ...) {
   UseMethod("vec_arith.clock_duration", y)
