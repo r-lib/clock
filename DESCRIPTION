@@ -46,4 +46,4 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 SystemRequirements: C++11
 Remotes:
-    r-lib/tzdb#7
+    r-lib/tzdb
