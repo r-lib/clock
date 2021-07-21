@@ -165,6 +165,7 @@
 <li><p>New <code><a href="../reference/date-and-date-time-boundary.html">date_start()</a></code> and <code><a href="../reference/date-and-date-time-boundary.html">date_end()</a></code> for computing the date at the start or end of a particular <code>precision</code>, such as the “end of the month” or the “start of the year”. These are powered by <code><a href="../reference/calendar-boundary.html">calendar_start()</a></code> and <code><a href="../reference/calendar-boundary.html">calendar_end()</a></code>, which allow for even more flexible calendar-specific boundary generation, such as the “last moment in the fiscal quarter” (<a href='https://github.com/r-lib/clock/issues/232'>#232</a>).</p></li>
 <li><p>New <code><a href="../reference/clock-invalid.html">invalid_remove()</a></code> for removing invalid dates. This is just a wrapper around <code>x[!invalid_detect(x)]</code>, but works nicely with the pipe (<a href='https://github.com/r-lib/clock/issues/229'>#229</a>).</p></li>
 <li><p>All clock types now support <code><a href="https://rdrr.io/r/base/is.finite.html">is.nan()</a></code>, <code><a href="https://rdrr.io/r/base/is.finite.html">is.finite()</a></code>, and <code><a href="https://rdrr.io/r/base/is.finite.html">is.infinite()</a></code>. Additionally, duration types now support <code><a href="https://rdrr.io/r/base/MathFun.html">abs()</a></code> and <code><a href="https://rdrr.io/r/base/sign.html">sign()</a></code> (<a href='https://github.com/r-lib/clock/issues/235'>#235</a>).</p></li>
+<li><p>tzdb 0.1.2 is now required, which fixes compilation issues on RHEL7/Centos (<a href='https://github.com/r-lib/clock/issues/234'>#234</a>).</p></li>
 </ul>
 </div>
     <div id="clock-031" class="section level1">
@@ -200,7 +201,7 @@ as_date_time(x, "America/New_York")
 <ul>
 <li><p>New <code><a href="../reference/date_seq.html">date_seq()</a></code> for generating date and date-time sequences (<a href='https://github.com/r-lib/clock/issues/218'>#218</a>).</p></li>
 <li><p>clock now uses the tzdb package to access the date library’s API. This means that the experimental API that was to be used for vroom has been removed in favor of using the one exposed in tzdb.</p></li>
-<li><p><code>zone_database_names()</code> and <code>zone_database_version()</code> have been removed in favor of re-exporting <code><a href="https://rdrr.io/pkg/tzdb/man/tzdb_names.html">tzdb_names()</a></code> and <code><a href="https://rdrr.io/pkg/tzdb/man/tzdb_version.html">tzdb_version()</a></code> from the tzdb package.</p></li>
+<li><p><code>zone_database_names()</code> and <code>zone_database_version()</code> have been removed in favor of re-exporting <code><a href="https://r-lib.github.io/tzdb/reference/tzdb_names.html">tzdb_names()</a></code> and <code><a href="https://r-lib.github.io/tzdb/reference/tzdb_version.html">tzdb_version()</a></code> from the tzdb package.</p></li>
 </ul>
 </div>
     <div id="clock-020" class="section level1">

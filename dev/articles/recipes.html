@@ -637,7 +637,7 @@
 <span class="va">x</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2020-10-25 01:30:00"</span></code></pre></div>
-<p>Next, we’ll develop a function that attempts to turn this naive-time into a zoned-time, iterating through all of the time zone names available in the time zone database. These time zone names are accessible through <code><a href="https://rdrr.io/pkg/tzdb/man/tzdb_names.html">tzdb_names()</a></code>. By using the low-level <code><a href="../reference/naive_time_info.html">naive_time_info()</a></code>, rather than <code><a href="../reference/as_zoned_time.html">as_zoned_time()</a></code>, to lookup zone specific information, we’ll also get back information about the UTC offset and time zone abbreviation that is currently in use. By matching this abbreviation against our input abbreviation, we can generate a list of zoned-times that use the abbreviation we care about at that particular instance in time.</p>
+<p>Next, we’ll develop a function that attempts to turn this naive-time into a zoned-time, iterating through all of the time zone names available in the time zone database. These time zone names are accessible through <code><a href="https://r-lib.github.io/tzdb/reference/tzdb_names.html">tzdb_names()</a></code>. By using the low-level <code><a href="../reference/naive_time_info.html">naive_time_info()</a></code>, rather than <code><a href="../reference/as_zoned_time.html">as_zoned_time()</a></code>, to lookup zone specific information, we’ll also get back information about the UTC offset and time zone abbreviation that is currently in use. By matching this abbreviation against our input abbreviation, we can generate a list of zoned-times that use the abbreviation we care about at that particular instance in time.</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">naive_find_by_abbrev</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">abbrev</span><span class="op">)</span> <span class="op">{</span>
   <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="../reference/is_naive_time.html">is_naive_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
@@ -650,7 +650,7 @@
     <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"`abbrev` must be a single string."</span><span class="op">)</span>
   <span class="op">}</span>
   
-  <span class="va">zones</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tzdb/man/tzdb_names.html">tzdb_names</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="va">zones</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-lib.github.io/tzdb/reference/tzdb_names.html">tzdb_names</a></span><span class="op">(</span><span class="op">)</span>
   <span class="va">info</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/naive_time_info.html">naive_time_info</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">zones</span><span class="op">)</span>
   <span class="va">info</span><span class="op">$</span><span class="va">zones</span> <span class="op">&lt;-</span> <span class="va">zones</span>
   
