@@ -61,6 +61,9 @@
     <loc>https://clock.r-lib.org/reference/as_zoned_time.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/calendar-boundary.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/calendar_group.html</loc>
   </url>
   <url>
@@ -106,10 +109,16 @@
     <loc>https://clock.r-lib.org/reference/clock_locale.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/date-and-date-time-boundary.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/date-and-date-time-rounding.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/date-and-date-time-shifting.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/reference/date-boundary.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/date-formatting.html</loc>
@@ -214,6 +223,9 @@
     <loc>https://clock.r-lib.org/reference/iso-year-week-day-arithmetic.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/iso-year-week-day-boundary.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/iso-year-week-day-getters.html</loc>
   </url>
   <url>
@@ -239,6 +251,9 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/posixt-arithmetic.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/reference/posixt-boundary.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/posixt-formatting.html</loc>
@@ -325,6 +340,9 @@
     <loc>https://clock.r-lib.org/reference/year-day-arithmetic.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/year-day-boundary.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/year-day-getters.html</loc>
   </url>
   <url>
@@ -341,6 +359,9 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/year-month-day-arithmetic.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/reference/year-month-day-boundary.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/year-month-day-getters.html</loc>
@@ -361,6 +382,9 @@
     <loc>https://clock.r-lib.org/reference/year-month-weekday-arithmetic.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/year-month-weekday-boundary.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/year-month-weekday-getters.html</loc>
   </url>
   <url>
@@ -377,6 +401,9 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/year-quarter-day-arithmetic.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/reference/year-quarter-day-boundary.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/year-quarter-day-getters.html</loc>
