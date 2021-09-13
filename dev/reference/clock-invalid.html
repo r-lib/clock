@@ -48,8 +48,12 @@
 
 <meta property="og:title" content="Invalid calendar dates — clock-invalid" />
 <meta property="og:description" content="This family of functions is for working with invalid calendar dates.
-These represent dates that don't exist, such as
-year_month_day(2019, 02, 31).
+Invalid dates represent dates made up of valid individual components, which
+taken as a whole don't represent valid calendar dates. For example, for
+year_month_day() the following component ranges are valid:
+year: [-32767, 32767], month: [1, 12], day: [1, 31].
+However, the date 2019-02-31 doesn't exist even though it is made up
+of valid components. This is an example of an invalid date.
 Invalid dates are allowed in clock, provided that they are eventually
 resolved by using invalid_resolve() or by manually resolving them through
 arithmetic or setter functions." />
@@ -165,9 +169,13 @@ arithmetic or setter functions." />
     </div>
 
     <div class="ref-description">
-    <p>This family of functions is for working with <em>invalid</em> calendar dates.
-These represent dates that don't exist, such as
-<code><a href='year_month_day.html'>year_month_day(2019, 02, 31)</a></code>.</p>
+    <p>This family of functions is for working with <em>invalid</em> calendar dates.</p>
+<p>Invalid dates represent dates made up of valid individual components, which
+taken as a whole don't represent valid calendar dates. For example, for
+<code><a href='year_month_day.html'>year_month_day()</a></code> the following component ranges are valid:
+<code>year: [-32767, 32767]</code>, <code>month: [1, 12]</code>, <code>day: [1, 31]</code>.
+However, the date <code>2019-02-31</code> doesn't exist even though it is made up
+of valid components. This is an example of an invalid date.</p>
 <p>Invalid dates are allowed in clock, provided that they are eventually
 resolved by using <code>invalid_resolve()</code> or by manually resolving them through
 arithmetic or setter functions.</p>
