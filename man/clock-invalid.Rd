@@ -66,8 +66,13 @@ invalid dates.
 }
 \description{
 This family of functions is for working with \emph{invalid} calendar dates.
-These represent dates that don't exist, such as
-\code{year_month_day(2019, 02, 31)}.
+
+Invalid dates represent dates made up of valid individual components, which
+taken as a whole don't represent valid calendar dates. For example, for
+\code{\link[=year_month_day]{year_month_day()}} the following component ranges are valid:
+\verb{year: [-32767, 32767]}, \verb{month: [1, 12]}, \verb{day: [1, 31]}.
+However, the date \code{2019-02-31} doesn't exist even though it is made up
+of valid components. This is an example of an invalid date.
 
 Invalid dates are allowed in clock, provided that they are eventually
 resolved by using \code{invalid_resolve()} or by manually resolving them through

@@ -2,8 +2,13 @@
 #'
 #' @description
 #' This family of functions is for working with _invalid_ calendar dates.
-#' These represent dates that don't exist, such as
-#' `year_month_day(2019, 02, 31)`.
+#'
+#' Invalid dates represent dates made up of valid individual components, which
+#' taken as a whole don't represent valid calendar dates. For example, for
+#' [year_month_day()] the following component ranges are valid:
+#' `year: [-32767, 32767]`, `month: [1, 12]`, `day: [1, 31]`.
+#' However, the date `2019-02-31` doesn't exist even though it is made up
+#' of valid components. This is an example of an invalid date.
 #'
 #' Invalid dates are allowed in clock, provided that they are eventually
 #' resolved by using `invalid_resolve()` or by manually resolving them through
