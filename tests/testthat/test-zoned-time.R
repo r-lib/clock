@@ -396,12 +396,11 @@ test_that("%z must parse correctly if included", {
   expect <- as_zoned_time(sys_days(NA), "America/New_York")
   x <- "1970-01-01 00:00:00-0a:00 EST"
 
-  expect_identical(
-    expect_warning(
-      zoned_time_parse_abbrev(x, "America/New_York", format = "%Y-%m-%d %H:%M:%S%Ez %Z")
-    ),
-    expect
+  expect_warning(
+    result <- zoned_time_parse_abbrev(x, "America/New_York", format = "%Y-%m-%d %H:%M:%S%Ez %Z")
   )
+
+  expect_identical(result, expect)
 })
 
 test_that("multiple formats can be attempted", {
