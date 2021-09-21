@@ -9,6 +9,10 @@ We checked 2 reverse dependencies, comparing R CMD check results across CRAN and
  * We saw 0 new problems
  * We failed to check 0 packages
  
+## 0.4.1 Submission
+
+This is a patch release to support upcoming changes in testthat.
+ 
 ## 0.4.0 Submission
 
 This is a minor release containing a few new functions: `date_start()`, `date_end()`, and `invalid_remove()`. It also requires tzdb 0.1.2 to hopefully fix a compilation issue on RHEL7/Centos machines.
