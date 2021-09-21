@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -165,19 +165,16 @@
   <span class="fu"><a href="../reference/clock-invalid.html">invalid_resolve</a></span><span class="op">(</span>invalid <span class="op">=</span> <span class="st">"next"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;year_month_day&lt;day&gt;[4]&gt;</span>
 <span class="co">#&gt; [1] "2019-02-28" "2019-03-01" "2019-03-01" "2019-03-01"</span>
-
 <span class="va">odd_dates</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-invalid.html">invalid_resolve</a></span><span class="op">(</span>invalid <span class="op">=</span> <span class="st">"next"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[4]&gt;</span>
 <span class="co">#&gt; [1] "2019-03-02" "2019-03-03" "2019-03-03" "2019-03-03"</span>
-
 <span class="va">odd_dates</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-invalid.html">invalid_resolve</a></span><span class="op">(</span>invalid <span class="op">=</span> <span class="st">"overflow"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;year_month_day&lt;day&gt;[4]&gt;</span>
 <span class="co">#&gt; [1] "2019-02-28" "2019-03-01" "2019-03-02" "2019-03-03"</span>
-
 <span class="va">odd_dates</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-invalid.html">invalid_resolve</a></span><span class="op">(</span>invalid <span class="op">=</span> <span class="st">"overflow"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -198,7 +195,6 @@
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; Error: Zoned-times don't support `add_days()`.</span>
-
 <span class="fu"><a href="../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; Error: Zoned-times don't support `add_seconds()`.</span></code></pre></div>
 <p>In clock, you can’t do much with zoned-times directly. The best way to understand this is to think of a zoned-time as containing 3 things: a sys-time, a naive-time, and a time zone name. You can access those things with:</p>
@@ -206,17 +202,14 @@
 <code class="sourceCode R"><span class="va">x</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "1970-04-26 01:30:00-05:00"</span>
-
 <span class="co"># The printed time with no time zone info</span>
 <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "1970-04-26 01:30:00"</span>
-
 <span class="co"># The equivalent time in UTC</span>
 <span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "1970-04-26 06:30:00"</span>
-
 <span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; [1] "America/New_York"</span></code></pre></div>
 <p>Calling <code><a href="../reference/clock-arithmetic.html">add_days()</a></code> on a zoned-time is then an ambiguous operation. Should we add to the sys-time or the naive-time that is contained in the zoned-time? The answer changes depending on the scenario.</p>
@@ -228,7 +221,6 @@
   <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "1970-04-26 01:30:01-05:00"</span>
-
 <span class="va">x</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -247,7 +239,6 @@
   <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 1.</span>
 <span class="co">#&gt; ℹ Resolve nonexistent time issues by specifying the `nonexistent` argument.</span>
-
 <span class="va">x</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-arithmetic.html">add_minutes</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -261,7 +252,6 @@
 <code class="sourceCode R"><span class="va">x</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "1970-04-26 01:30:00-05:00"</span>
-
 <span class="va">x</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span>
@@ -334,11 +324,9 @@
 
 <span class="fu">new_utc</span><span class="op">(</span><span class="va">year_2050</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2050-01-01 UTC"</span>
-
 <span class="co"># Oh no!</span>
 <span class="fu">new_utc</span><span class="op">(</span><span class="va">year_2050</span> <span class="op">+</span> <span class="va">five_microseconds</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2050-01-01 00:00:00.000004 UTC"</span>
-
 <span class="co"># Represented internally as:</span>
 <span class="va">year_2050</span> <span class="op">+</span> <span class="va">five_microseconds</span>
 <span class="co">#&gt; [1] 2524608000.000004768372</span></code></pre></div>
@@ -365,7 +353,6 @@
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2019-01-01"</span><span class="op">)</span>
 <span class="va">x</span>
 <span class="co">#&gt; [1] "2019-01-01"</span>
-
 <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_timezone.html">with_timezone</a></span><span class="op">(</span><span class="st">"America/New_York"</span>, <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
@@ -375,11 +362,9 @@
 <code class="sourceCode R"><span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"UTC"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;UTC&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-01 00:00:00+00:00"</span>
-
 <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-01 00:00:00-05:00"</span>
-
 <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"Europe/London"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Europe/London&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-01 00:00:00+00:00"</span></code></pre></div>
@@ -394,7 +379,6 @@
 <code class="sourceCode R"><span class="va">utc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date-zone.html">date_set_zone</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"UTC"</span><span class="op">)</span>
 <span class="va">utc</span>
 <span class="co">#&gt; [1] "2019-01-02 04:00:00 UTC"</span>
-
 <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="va">utc</span>, tz <span class="op">=</span> <span class="fu"><a href="../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">utc</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2019-01-02"</span></code></pre></div>
 </div>
@@ -428,7 +412,6 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; attr(,"precision")</span>
 <span class="co">#&gt; [1] 5</span>
-
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">unclass</a></span><span class="op">(</span><span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">ymdh</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; $ticks</span>
 <span class="co">#&gt; [1] 17897 17898</span>
@@ -450,7 +433,6 @@
 <span class="co">#&gt; [1] 1546318800</span>
 <span class="co">#&gt; attr(,"tzone")</span>
 <span class="co">#&gt; [1] "America/New_York"</span>
-
 <span class="co"># POSIXlt is a record type</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">unclass</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXlt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; $sec</span>
