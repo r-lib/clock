@@ -251,8 +251,9 @@ If used, the \verb{\%z} command must parse correctly, but its value will be
 completely ignored.
 
 The default options assume that \code{x} should be parsed at second precision,
-using a \code{format} string of \code{"\%Y-\%m-\%d \%H:\%M:\%S \%Z"}. This default format
-generally matches what R prints out by default for POSIXct objects.
+using a \code{format} string of \code{"\%Y-\%m-\%d \%H:\%M:\%S \%Z"}. This matches the default
+result from calling \code{print()} or \code{format(usetz = TRUE)} on a POSIXct
+date-time.
 }
 }
 \details{

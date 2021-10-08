@@ -313,7 +313,9 @@ the time zone abbreviation rather than the full time zone name.
 If used, the \verb{\%z} command must parse correctly, but its value will be
 completely ignored.
 
-The default \code{format} used is \code{"\%Y-\%m-\%d \%H:\%M:\%S \%Z"}.
+The default \code{format} used is \code{"\%Y-\%m-\%d \%H:\%M:\%S \%Z"}. This matches the
+default result from calling \code{print()} or \code{format(usetz = TRUE)} on a POSIXct
+date-time.
 }
 }
 \details{

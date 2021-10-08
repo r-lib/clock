@@ -284,8 +284,9 @@ zoned_time_format <- function(print_zone_name) {
 #' completely ignored.
 #'
 #' The default options assume that `x` should be parsed at second precision,
-#' using a `format` string of `"%Y-%m-%d %H:%M:%S %Z"`. This default format
-#' generally matches what R prints out by default for POSIXct objects.
+#' using a `format` string of `"%Y-%m-%d %H:%M:%S %Z"`. This matches the default
+#' result from calling `print()` or `format(usetz = TRUE)` on a POSIXct
+#' date-time.
 #'
 #' @details
 #' If `zoned_time_parse_complete()` is given input that is length zero, all

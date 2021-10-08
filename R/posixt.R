@@ -1158,7 +1158,9 @@ date_set_zone.POSIXt <- function(x, zone) {
 #' If used, the `%z` command must parse correctly, but its value will be
 #' completely ignored.
 #'
-#' The default `format` used is `"%Y-%m-%d %H:%M:%S %Z"`.
+#' The default `format` used is `"%Y-%m-%d %H:%M:%S %Z"`. This matches the
+#' default result from calling `print()` or `format(usetz = TRUE)` on a POSIXct
+#' date-time.
 #'
 #' @details
 #' If `date_time_parse_complete()` is given input that is length zero, all
