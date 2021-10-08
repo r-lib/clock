@@ -118,11 +118,11 @@ test_that("can resolve ambiguous midnight issues", {
 
   expect_identical(
     as_zoned_time(x, zone, ambiguous = "earliest"),
-    zoned_time_parse_complete("2021-10-29 00:00:00+03:00[Asia/Amman]")
+    zoned_time_parse_complete("2021-10-29T00:00:00+03:00[Asia/Amman]")
   )
   expect_identical(
     as_zoned_time(x, zone, ambiguous = "latest"),
-    zoned_time_parse_complete("2021-10-29 00:00:00+02:00[Asia/Amman]")
+    zoned_time_parse_complete("2021-10-29T00:00:00+02:00[Asia/Amman]")
   )
 })
 

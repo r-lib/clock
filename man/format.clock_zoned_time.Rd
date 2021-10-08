@@ -147,9 +147,10 @@ This is a zoned-time method for the \code{\link[=format]{format()}} generic.
 This function allows you to format a zoned-time using a flexible \code{format}
 string.
 
-If \code{format} is \code{NULL}, a default format of \code{"\%Y-\%m-\%d \%H:\%M:\%S\%Ez[\%Z]"} is
-used. This maximizes the chance for constructing a string that can be
-reproducibly parsed into a valid zoned-time.
+If \code{format} is \code{NULL}, a default format of \code{"\%Y-\%m-\%dT\%H:\%M:\%S\%Ez[\%Z]"} is
+used. This matches the default format that \code{\link[=zoned_time_parse_complete]{zoned_time_parse_complete()}}
+parses. Additionally, this format matches the de-facto standard extension to
+RFC 3339 for creating completely unambiguous date-times.
 }
 \examples{
 x <- year_month_day(2019, 1, 1)

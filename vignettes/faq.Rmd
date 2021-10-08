@@ -86,7 +86,7 @@ odd_dates %>%
 If you have a zoned-time, such as:
 
 ```{r}
-x <- zoned_time_parse_complete("1970-04-26 01:30:00-05:00[America/New_York]")
+x <- zoned_time_parse_complete("1970-04-26T01:30:00-05:00[America/New_York]")
 x
 ```
 

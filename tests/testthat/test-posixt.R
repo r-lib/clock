@@ -77,11 +77,11 @@ test_that("can resolve ambiguous midnight issues for Date -> POSIXct", {
 
   expect_identical(
     as_date_time(x, zone, ambiguous = "earliest"),
-    date_time_parse_complete("2021-10-29 00:00:00+03:00[Asia/Amman]")
+    date_time_parse_complete("2021-10-29T00:00:00+03:00[Asia/Amman]")
   )
   expect_identical(
     as_date_time(x, zone, ambiguous = "latest"),
-    date_time_parse_complete("2021-10-29 00:00:00+02:00[Asia/Amman]")
+    date_time_parse_complete("2021-10-29T00:00:00+02:00[Asia/Amman]")
   )
 })
 
@@ -270,6 +270,11 @@ test_that("can convert to a month factor", {
 # ------------------------------------------------------------------------------
 # date_format()
 
+test_that("default format is correct", {
+  x <- date_time_parse("2019-01-01 00:00:00", "America/New_York")
+  expect_snapshot(date_format(x))
+})
+
 test_that("can format date-times", {
   x <- as.POSIXct("2018-12-31 23:59:59", "America/New_York")
   format <- test_all_formats()
@@ -346,18 +351,18 @@ test_that("failure to parse throws a warning", {
 
 test_that("can parse into a POSIXct", {
   expect_identical(
-    date_time_parse_complete("2019-12-31 23:59:59-05:00[America/New_York]"),
+    date_time_parse_complete("2019-12-31T23:59:59-05:00[America/New_York]"),
     as.POSIXct("2019-12-31 23:59:59", tz = "America/New_York")
   )
 })
 
 test_that("ambiguity is resolved through the string", {
   expect_identical(
-    date_time_parse_complete("1970-10-25 01:30:00-04:00[America/New_York]"),
+    date_time_parse_complete("1970-10-25T01:30:00-04:00[America/New_York]"),
     add_seconds(date_time_parse("1970-10-25 00:30:00", "America/New_York"), 3600)
   )
   expect_identical(
-    date_time_parse_complete("1970-10-25 01:30:00-05:00[America/New_York]"),
+    date_time_parse_complete("1970-10-25T01:30:00-05:00[America/New_York]"),
     add_seconds(date_time_parse("1970-10-25 00:30:00", "America/New_York"), 7200)
   )
 })
@@ -468,11 +473,11 @@ test_that("can handle ambiguous times", {
 
   expect_identical(
     date_time_build(1970, 10, 25, 1, 30, zone = zone, ambiguous = "earliest"),
-    date_time_parse_complete("1970-10-25 01:30:00-04:00[America/New_York]")
+    date_time_parse_complete("1970-10-25T01:30:00-04:00[America/New_York]")
   )
   expect_identical(
     date_time_build(1970, 10, 25, 1, 30, zone = zone, ambiguous = "latest"),
-    date_time_parse_complete("1970-10-25 01:30:00-05:00[America/New_York]")
+    date_time_parse_complete("1970-10-25T01:30:00-05:00[America/New_York]")
   )
 })
 
@@ -522,11 +527,11 @@ test_that("can resolve ambiguous start issues", {
 
   expect_identical(
     date_start(x, "day", ambiguous = "earliest"),
-    date_time_parse_complete("2021-10-29 00:00:00+03:00[Asia/Amman]")
+    date_time_parse_complete("2021-10-29T00:00:00+03:00[Asia/Amman]")
   )
   expect_identical(
     date_start(x, "day", ambiguous = "latest"),
-    date_time_parse_complete("2021-10-29 00:00:00+02:00[Asia/Amman]")
+    date_time_parse_complete("2021-10-29T00:00:00+02:00[Asia/Amman]")
   )
 })
 
@@ -538,14 +543,14 @@ test_that("can automatically resolve ambiguous issues", {
   x <- date_time_build(2021, 10, 29, 0, 20, zone = zone, ambiguous = "earliest")
   expect_identical(
     date_start(x, "day"),
-    date_time_parse_complete("2021-10-29 00:00:00+03:00[Asia/Amman]")
+    date_time_parse_complete("2021-10-29T00:00:00+03:00[Asia/Amman]")
   )
 
   # Starts and ends the manipulation in the "latest" hour
   x <- date_time_build(2021, 10, 29, 0, 20, zone = zone, ambiguous = "latest")
   expect_identical(
     date_start(x, "day"),
-    date_time_parse_complete("2021-10-29 00:00:00+02:00[Asia/Amman]")
+    date_time_parse_complete("2021-10-29T00:00:00+02:00[Asia/Amman]")
   )
 })
 

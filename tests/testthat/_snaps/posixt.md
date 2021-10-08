@@ -69,6 +69,13 @@
 
     `origin` must have the same time zone as `x`.
 
+# default format is correct
+
+    Code
+      date_format(x)
+    Output
+      [1] "2019-01-01T00:00:00-05:00[America/New_York]"
+
 # can format date-times
 
     C: 20

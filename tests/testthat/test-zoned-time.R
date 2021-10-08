@@ -50,7 +50,7 @@ test_that("`max` defaults to `getOption('max.print')` but can be overridden", {
 # as.character()
 
 test_that("as.character() works", {
-  expect <- "2019-01-01 01:02:03-05:00[America/New_York]"
+  expect <- "2019-01-01T01:02:03-05:00[America/New_York]"
   x <- zoned_time_parse_complete(expect)
   expect_identical(as.character(x), expect)
 })
@@ -72,9 +72,9 @@ test_that("can parse what we format with seconds precision zoned time", {
 test_that("can parse subsecond zoned time", {
   zone <- "America/New_York"
 
-  x <- "2019-01-01 01:02:03.123-05:00[America/New_York]"
-  y <- "2019-01-01 01:02:03.1234-05:00[America/New_York]"
-  z <- "2019-01-01 01:02:03.123456789-05:00[America/New_York]"
+  x <- "2019-01-01T01:02:03.123-05:00[America/New_York]"
+  y <- "2019-01-01T01:02:03.1234-05:00[America/New_York]"
+  z <- "2019-01-01T01:02:03.123456789-05:00[America/New_York]"
 
   expect_identical(
     zoned_time_parse_complete(x, precision = "millisecond"),
@@ -115,7 +115,7 @@ test_that("multiple formats can be used", {
 test_that("cannot parse nonexistent time", {
   zone <- "America/New_York"
 
-  x <- "1970-04-26 02:30:00-05:00[America/New_York]"
+  x <- "1970-04-26T02:30:00-05:00[America/New_York]"
 
   expect_warning(
     expect_identical(
@@ -131,8 +131,8 @@ test_that("ambiguous times are resolved by the offset", {
   zone <- "America/New_York"
 
   x <- c(
-    "1970-10-25 01:30:00-04:00[America/New_York]",
-    "1970-10-25 01:30:00-05:00[America/New_York]"
+    "1970-10-25T01:30:00-04:00[America/New_York]",
+    "1970-10-25T01:30:00-05:00[America/New_York]"
   )
 
   expect_identical(
@@ -149,7 +149,7 @@ test_that("offset must align with unique offset", {
   zone <- "America/New_York"
 
   # Should be `-05:00`
-  x <- "2019-01-01 01:02:03-03:00[America/New_York]"
+  x <- "2019-01-01T01:02:03-03:00[America/New_York]"
 
   expect_warning(
     expect_identical(
@@ -166,8 +166,8 @@ test_that("offset must align with one of two possible ambiguous offsets", {
 
   # Should be `-04:00` or `-05:00`
   x <- c(
-    "1970-10-25 01:30:00-03:00[America/New_York]",
-    "1970-10-25 01:30:00-06:00[America/New_York]"
+    "1970-10-25T01:30:00-03:00[America/New_York]",
+    "1970-10-25T01:30:00-06:00[America/New_York]"
   )
 
   expect_warning(
@@ -182,15 +182,15 @@ test_that("offset must align with one of two possible ambiguous offsets", {
 
 test_that("cannot have differing zone names", {
   x <- c(
-    "2019-01-01 01:02:03-05:00[America/New_York]",
-    "2019-01-01 01:02:03-08:00[America/Los_Angeles]"
+    "2019-01-01T01:02:03-05:00[America/New_York]",
+    "2019-01-01T01:02:03-08:00[America/Los_Angeles]"
   )
 
   expect_snapshot_error(zoned_time_parse_complete(x))
 })
 
 test_that("zone name must be valid", {
-  x <- "2019-01-01 01:02:03-05:00[America/New_Yor]"
+  x <- "2019-01-01T01:02:03-05:00[America/New_Yor]"
 
   expect_snapshot_error(zoned_time_parse_complete(x))
 })
@@ -239,7 +239,7 @@ test_that("`x` is translated to UTF-8", {
 })
 
 test_that("leftover subseconds result in a parse failure", {
-  x <- "2019-01-01 01:01:01.1238-05:00[America/New_York]"
+  x <- "2019-01-01T01:01:01.1238-05:00[America/New_York]"
 
   # This is fine
   expect_identical(
@@ -289,18 +289,18 @@ test_that("parsing fails when undocumented rounding behavior would result in inv
 test_that("can parse with abbreviation and zone name", {
   expect_identical(
     zoned_time_parse_abbrev("2019-01-01 01:02:03 EST", "America/New_York"),
-    zoned_time_parse_complete("2019-01-01 01:02:03-05:00[America/New_York]")
+    zoned_time_parse_complete("2019-01-01T01:02:03-05:00[America/New_York]")
   )
 })
 
 test_that("can parse when abbreviation is an offset", {
   expect_identical(
     zoned_time_parse_abbrev("2019-01-01 01:02:03 +11", "Australia/Lord_Howe"),
-    zoned_time_parse_complete("2019-01-01 01:02:03+11:00[Australia/Lord_Howe]")
+    zoned_time_parse_complete("2019-01-01T01:02:03+11:00[Australia/Lord_Howe]")
   )
   expect_identical(
     zoned_time_parse_abbrev("2019-10-01 01:02:03 +1030", "Australia/Lord_Howe"),
-    zoned_time_parse_complete("2019-10-01 01:02:03+10:30[Australia/Lord_Howe]")
+    zoned_time_parse_complete("2019-10-01T01:02:03+10:30[Australia/Lord_Howe]")
   )
 })
 
@@ -322,8 +322,8 @@ test_that("abbreviation is used to resolve ambiguity", {
   )
 
   expect <- c(
-    "1970-10-25 01:30:00-04:00[America/New_York]",
-    "1970-10-25 01:30:00-05:00[America/New_York]"
+    "1970-10-25T01:30:00-04:00[America/New_York]",
+    "1970-10-25T01:30:00-05:00[America/New_York]"
   )
 
   expect_identical(
@@ -373,7 +373,7 @@ test_that("%Z must be used", {
 })
 
 test_that("%z can be parsed (but is ignored really)", {
-  expect <- zoned_time_parse_complete("1970-01-01 00:00:00-05:00[America/New_York]")
+  expect <- zoned_time_parse_complete("1970-01-01T00:00:00-05:00[America/New_York]")
   x <- "1970-01-01 00:00:00-05:00 EST"
 
   expect_identical(
@@ -383,7 +383,7 @@ test_that("%z can be parsed (but is ignored really)", {
 })
 
 test_that("%z that is incorrect technically slips through unnoticed", {
-  expect <- zoned_time_parse_complete("1970-01-01 00:00:00-05:00[America/New_York]")
+  expect <- zoned_time_parse_complete("1970-01-01T00:00:00-05:00[America/New_York]")
   x <- "1970-01-01 00:00:00-02:00 EST"
 
   expect_identical(
