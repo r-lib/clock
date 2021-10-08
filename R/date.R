@@ -977,7 +977,8 @@ date_set_zone.Date <- function(x, zone) {
 #' @description
 #' `date_parse()` parses strings into a Date.
 #'
-#' The default `format` used is `"%Y-%m-%d"`.
+#' The default `format` used is `"%Y-%m-%d"`. This matches the default
+#' result from calling `print()` or `format()` on a Date.
 #'
 #' @details
 #' _`date_parse()` ignores both the `%z` and `%Z` commands,_ as clock treats
