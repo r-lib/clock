@@ -281,7 +281,8 @@ explicitly with the \code{nonexistent} and \code{ambiguous} arguments.
 \code{date_time_parse()} completely ignores the \verb{\%z} and \verb{\%Z} commands. The only
 time zone specific information that is used is the \code{zone}.
 
-The default \code{format} used is \code{"\%Y-\%m-\%d \%H:\%M:\%S"}.
+The default \code{format} used is \code{"\%Y-\%m-\%d \%H:\%M:\%S"}. This matches the default
+result from calling \code{format()} on a POSIXct date-time.
 }
 
 \subsection{date_time_parse_complete()}{

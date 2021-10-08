@@ -209,14 +209,15 @@ A naive-time.
 \description{
 \code{naive_time_parse()} is a parser into a naive-time.
 
-\code{naive_time_parse()} is useful when you have date-time strings like:
-\code{"2020-01-01 01:04:30"}. If there is no attached UTC offset or time zone
+\code{naive_time_parse()} is useful when you have date-time strings like
+\code{"2020-01-01T01:04:30"}. If there is no attached UTC offset or time zone
 name, then parsing this string as a naive-time is your best option. If
 you know that this string should be interpreted in a specific time zone,
 parse as a naive-time, then use \code{\link[=as_zoned_time]{as_zoned_time()}}.
 
 The default options assume that \code{x} should be parsed at second precision,
-using a \code{format} string of \code{"\%Y-\%m-\%d \%H:\%M:\%S"}.
+using a \code{format} string of \code{"\%Y-\%m-\%dT\%H:\%M:\%S"}. This matches the default
+result from calling \code{format()} on a naive-time.
 
 \emph{\code{naive_time_parse()} ignores both the \verb{\%z} and \verb{\%Z} commands.}
 
@@ -240,7 +241,7 @@ work as you might expect.
 }
 
 \examples{
-naive_time_parse("2020-01-01 05:06:07")
+naive_time_parse("2020-01-01T05:06:07")
 
 # Day precision
 naive_time_parse("2020-01-01", precision = "day")
@@ -264,7 +265,7 @@ naive_time_parse(
 # is to parse the full fractional time point with the correct `precision`,
 # then round to seconds using whatever convention you require, and finally
 # convert that to POSIXct.
-x <- c("2020-01-01 00:00:00.123", "2020-01-01 00:00:00.555")
+x <- c("2020-01-01T00:00:00.123", "2020-01-01T00:00:00.555")
 
 # First, parse string with full precision
 x <- naive_time_parse(x, precision = "millisecond")

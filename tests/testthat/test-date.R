@@ -37,7 +37,7 @@ test_that("can convert naive-time -> Date", {
 })
 
 test_that("can convert zoned-time -> Date", {
-  x <- as_zoned_time(naive_time_parse("2019-01-01 23:02:03"), "America/New_York")
+  x <- as_zoned_time(naive_time_parse("2019-01-01T23:02:03"), "America/New_York")
   expect <- date_parse("2019-01-01")
   expect_identical(as_date(x), expect)
 })
@@ -57,7 +57,7 @@ test_that("conversion from zoned-time uses naive-time as an intermediate", {
 })
 
 test_that("casting to Date floors components more precise than days (#205)", {
-  x <- naive_time_parse("1969-01-01 13", precision = "hour")
+  x <- naive_time_parse("1969-01-01T13", precision = "hour")
 
   expect_identical(
     as.Date(x),

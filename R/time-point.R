@@ -68,12 +68,12 @@ time_point_precision_format <- function(precision) {
   switch(
     precision,
     day = "%Y-%m-%d",
-    hour = "%Y-%m-%d %H",
-    minute = "%Y-%m-%d %H:%M",
-    second = "%Y-%m-%d %H:%M:%S",
-    millisecond = "%Y-%m-%d %H:%M:%S",
-    microsecond = "%Y-%m-%d %H:%M:%S",
-    nanosecond = "%Y-%m-%d %H:%M:%S",
+    hour = "%Y-%m-%dT%H",
+    minute = "%Y-%m-%dT%H:%M",
+    second = "%Y-%m-%dT%H:%M:%S",
+    millisecond = "%Y-%m-%dT%H:%M:%S",
+    microsecond = "%Y-%m-%dT%H:%M:%S",
+    nanosecond = "%Y-%m-%dT%H:%M:%S",
     abort("Unknown precision.")
   )
 }

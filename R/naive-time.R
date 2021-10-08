@@ -43,14 +43,15 @@ is_naive_time <- function(x) {
 #' @description
 #' `naive_time_parse()` is a parser into a naive-time.
 #'
-#' `naive_time_parse()` is useful when you have date-time strings like:
-#' `"2020-01-01 01:04:30"`. If there is no attached UTC offset or time zone
+#' `naive_time_parse()` is useful when you have date-time strings like
+#' `"2020-01-01T01:04:30"`. If there is no attached UTC offset or time zone
 #' name, then parsing this string as a naive-time is your best option. If
 #' you know that this string should be interpreted in a specific time zone,
 #' parse as a naive-time, then use [as_zoned_time()].
 #'
 #' The default options assume that `x` should be parsed at second precision,
-#' using a `format` string of `"%Y-%m-%d %H:%M:%S"`.
+#' using a `format` string of `"%Y-%m-%dT%H:%M:%S"`. This matches the default
+#' result from calling `format()` on a naive-time.
 #'
 #' _`naive_time_parse()` ignores both the `%z` and `%Z` commands._
 #'
@@ -69,7 +70,7 @@ is_naive_time <- function(x) {
 #'
 #' @export
 #' @examples
-#' naive_time_parse("2020-01-01 05:06:07")
+#' naive_time_parse("2020-01-01T05:06:07")
 #'
 #' # Day precision
 #' naive_time_parse("2020-01-01", precision = "day")
@@ -93,7 +94,7 @@ is_naive_time <- function(x) {
 #' # is to parse the full fractional time point with the correct `precision`,
 #' # then round to seconds using whatever convention you require, and finally
 #' # convert that to POSIXct.
-#' x <- c("2020-01-01 00:00:00.123", "2020-01-01 00:00:00.555")
+#' x <- c("2020-01-01T00:00:00.123", "2020-01-01T00:00:00.555")
 #'
 #' # First, parse string with full precision
 #' x <- naive_time_parse(x, precision = "millisecond")

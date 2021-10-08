@@ -50,7 +50,7 @@ test_that("can convert naive-time -> POSIXct", {
 })
 
 test_that("can convert zoned-time -> POSIXct", {
-  x <- as_zoned_time(naive_time_parse("2019-01-01 23:02:03"), "America/New_York")
+  x <- as_zoned_time(naive_time_parse("2019-01-01T23:02:03"), "America/New_York")
   expect <- date_time_parse("2019-01-01 23:02:03", "America/New_York")
   expect_identical(as_date_time(x), expect)
 })
@@ -89,7 +89,7 @@ test_that("can resolve ambiguous midnight issues for Date -> POSIXct", {
 # as.POSIXct()
 
 test_that("casting to POSIXct floors components more precise than seconds (#205)", {
-  x <- naive_time_parse("1969-01-01 01:01:01.678", precision = "millisecond")
+  x <- naive_time_parse("1969-01-01T01:01:01.678", precision = "millisecond")
 
   expect_identical(
     as.POSIXct(x, "America/New_York"),

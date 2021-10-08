@@ -84,7 +84,7 @@ test_that("as.character() works", {
   expect_identical(as.character(x), "2019-01-01")
 
   x <- as_sys_time(year_month_day(2019, 1, 1, 1, 1))
-  expect_identical(as.character(x), "2019-01-01 01:01")
+  expect_identical(as.character(x), "2019-01-01T01:01")
 })
 
 # ------------------------------------------------------------------------------
@@ -102,15 +102,15 @@ test_that("can parse day precision", {
 })
 
 test_that("%z shifts the result by the offset", {
-  x <- "2019-01-01 00:00:00+0100"
-  y <- "2019-01-01 00:00:00-0100"
+  x <- "2019-01-01T00:00:00+0100"
+  y <- "2019-01-01T00:00:00-0100"
 
   expect_identical(
-    sys_time_parse(x, format = "%Y-%m-%d %H:%M:%S%z"),
+    sys_time_parse(x, format = "%Y-%m-%dT%H:%M:%S%z"),
     as_sys_time(year_month_day(2018, 12, 31, 23, 0, 0))
   )
   expect_identical(
-    sys_time_parse(y, format = "%Y-%m-%d %H:%M:%S%z"),
+    sys_time_parse(y, format = "%Y-%m-%dT%H:%M:%S%z"),
     as_sys_time(year_month_day(2019, 1, 1, 1, 0, 0))
   )
 })
@@ -122,6 +122,10 @@ test_that("failure to parse throws a warning", {
 
 # ------------------------------------------------------------------------------
 # format()
+
+test_that("default format is correct", {
+  expect_snapshot(format(sys_seconds(0)))
+})
 
 test_that("allows `%z` and `%Z`", {
   x <- sys_seconds(0)

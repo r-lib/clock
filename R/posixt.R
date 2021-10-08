@@ -1128,7 +1128,8 @@ date_set_zone.POSIXt <- function(x, zone) {
 #' `date_time_parse()` completely ignores the `%z` and `%Z` commands. The only
 #' time zone specific information that is used is the `zone`.
 #'
-#' The default `format` used is `"%Y-%m-%d %H:%M:%S"`.
+#' The default `format` used is `"%Y-%m-%d %H:%M:%S"`. This matches the default
+#' result from calling `format()` on a POSIXct date-time.
 #'
 #' ## date_time_parse_complete()
 #'
@@ -1256,6 +1257,13 @@ date_time_parse <- function(x,
                             locale = clock_locale(),
                             nonexistent = NULL,
                             ambiguous = NULL) {
+  if (is_null(format)) {
+    # Default format for `date_time_parse()` doesn't have the `T`, unlike
+    # default format for `naive_time_parse()`. This is intended to parse the
+    # format returned by `format(<POSIXct>)` by default.
+    format <- "%Y-%m-%d %H:%M:%S"
+  }
+
   x <- naive_time_parse(x, ..., format = format, precision = "second", locale = locale)
   as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
 }

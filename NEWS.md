@@ -1,5 +1,22 @@
 # clock (development version)
 
+* To align more with RFC 3339 and ISO 8601 standards, the default formats used
+  in many of the date formatting and parsing functions have been slightly
+  altered. The following changes have been made:
+  
+  * Sys-times:
+  
+    * `format()` and `as.character()` now print a `T` between the date and time.
+    
+    * `sys_time_parse()` now expects a `T` between the date and time by default.
+    
+  * Naive-times:
+  
+    * `format()` and `as.character()` now print a `T` between the date and time.
+    
+    * `naive_time_parse()` now expects a `T` between the date and time by
+      default.
+
 * Further improved documentation of undefined behavior resulting from attempting
   to parse sub-daily components of a string that is intended to be parsed into
   a Date (#258).

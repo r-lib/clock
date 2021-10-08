@@ -26,6 +26,13 @@
       <time_point<naive><second>[1]>
       [1] NA
 
+# default format is correct
+
+    Code
+      format(naive_seconds(0))
+    Output
+      [1] "1970-01-01T00:00:00"
+
 # `%Z` generates format warnings (#204)
 
     Code
