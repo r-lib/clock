@@ -984,10 +984,25 @@ date_set_zone.Date <- function(x, zone) {
 #' Date as a _naive_ type, with a yet-to-be-specified time zone.
 #'
 #' Parsing strings with sub-daily components, such as hours, minutes, or
-#' seconds, should be done with [date_time_parse()]. If you only need the date
-#' components, round the result to day precision, and then use [as_date()].
-#' Attempting to directly parse a sub-daily string into a Date is ambiguous and
-#' undefined, and is unlikely to work as you might expect.
+#' seconds, should generally be done with [date_time_parse()]. If you only
+#' need the date components from a string with sub-daily components, choose
+#' one of the following:
+#'
+#' - If the date components are at the front of the string, and you don't want
+#'   the time components to affect the date in any way, you can use
+#'   [date_parse()] to parse only the date components. For example,
+#'   `date_parse("2019-01-05 00:01:02", format = "%Y-%m-%d")` will parse
+#'   through `05` and then stop.
+#'
+#' - If you want the time components to influence the date, then parse the full
+#'   string with [date_time_parse()], round to day precision with a
+#'   rounding function like [date_round()], and cast to date with [as_date()].
+#'
+#' Attempting to directly parse all components of a sub-daily string into a
+#' Date is ambiguous and undefined, and is unlikely to work as you might expect.
+#' For example, `date_parse("2019-01-05 00:01:02", format =
+#' "%Y-%m-%d %H:%M:%S")` is not officially supported, even if it works in
+#' some cases.
 #'
 #' @inheritParams zoned-parsing
 #'

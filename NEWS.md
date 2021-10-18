@@ -1,5 +1,9 @@
 # clock (development version)
 
+* Further improved documentation of undefined behavior resulting from attempting
+  to parse sub-daily components of a string that is intended to be parsed into
+  a Date (#258).
+
 # clock 0.4.1
 
 * Updated a test related to upcoming changes in testthat.
