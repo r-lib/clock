@@ -226,6 +226,7 @@
 <span class="co"># First 1 o'clock</span>
 <span class="va">before</span> <span class="op">+</span> <span class="fl">1</span>
 <span class="co">#&gt; [1] "2020-11-01 01:00:00 EDT"</span>
+
 <span class="co"># Second 1 o'clock</span>
 <span class="va">before</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">3600</span>
 <span class="co">#&gt; [1] "2020-11-01 01:00:00 EST"</span></code></pre></div>
@@ -271,6 +272,7 @@
 <span class="co"># IST = India Standard Time</span>
 <span class="fu"><a href="../reference/date-time-parse.html">date_time_parse_abbrev</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"Asia/Kolkata"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "1970-01-01 02:30:30 IST"</span>
+
 <span class="co"># IST = Israel Standard Time</span>
 <span class="fu"><a href="../reference/date-time-parse.html">date_time_parse_abbrev</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"Asia/Jerusalem"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "1970-01-01 02:30:30 IST"</span></code></pre></div>
@@ -296,6 +298,7 @@
 <span class="co">#&gt;  [6] "2019-01-25" "2019-01-26" "2019-01-27" "2019-01-28" "2019-01-29"</span>
 <span class="co">#&gt; [11] "2019-01-30" "2019-01-31" "2019-02-01" "2019-02-02" "2019-02-03"</span>
 <span class="co">#&gt; [16] "2019-02-04" "2019-02-05"</span>
+
 <span class="co"># Grouping by 5 days of the current month</span>
 <span class="fu"><a href="../reference/date_group.html">date_group</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"day"</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
 <span class="co">#&gt;  [1] "2019-01-16" "2019-01-21" "2019-01-21" "2019-01-21" "2019-01-21"</span>
@@ -324,6 +327,7 @@
 <span class="co">#&gt;  [7] "2019-01-01 02:07:00 UTC" "2019-01-01 02:09:00 UTC"</span>
 <span class="co">#&gt;  [9] "2019-01-01 02:11:00 UTC" "2019-01-01 02:13:00 UTC"</span>
 <span class="co">#&gt; [11] "2019-01-01 02:15:00 UTC"</span>
+
 <span class="fu"><a href="../reference/date_group.html">date_group</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"minute"</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
 <span class="co">#&gt;  [1] "2019-01-01 01:55:00 UTC" "2019-01-01 01:55:00 UTC"</span>
 <span class="co">#&gt;  [3] "2019-01-01 01:55:00 UTC" "2019-01-01 02:00:00 UTC"</span>
@@ -362,6 +366,7 @@
 <span class="fu"><a href="../reference/date-and-date-time-rounding.html">date_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"week"</span>, n <span class="op">=</span> <span class="fl">14</span>, origin <span class="op">=</span> <span class="va">sunday</span><span class="op">)</span>
 <span class="co">#&gt; [1] "1969-09-28" "1970-01-04" "1970-01-04" "1970-01-04" "1970-01-04"</span>
 <span class="co">#&gt; [6] "1970-01-04" "1970-04-12"</span>
+
 <span class="fu"><a href="../reference/as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="fu"><a href="../reference/date-and-date-time-rounding.html">date_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"week"</span>, n <span class="op">=</span> <span class="fl">14</span>, origin <span class="op">=</span> <span class="va">sunday</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; &lt;weekday[7]&gt;</span>
 <span class="co">#&gt; [1] Sun Sun Sun Sun Sun Sun Sun</span></code></pre></div>
@@ -379,14 +384,17 @@
 <span class="fu"><a href="../reference/as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; &lt;weekday[2]&gt;</span>
 <span class="co">#&gt; [1] Wed Thu</span>
+
 <span class="co"># `clock_weekdays` is a helper that returns the code corresponding to</span>
 <span class="co"># the requested day of the week</span>
 <span class="va">clock_weekdays</span><span class="op">$</span><span class="va">tuesday</span>
 <span class="co">#&gt; [1] 3</span>
+
 <span class="va">tuesday</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/weekday.html">weekday</a></span><span class="op">(</span><span class="va">clock_weekdays</span><span class="op">$</span><span class="va">tuesday</span><span class="op">)</span>
 <span class="va">tuesday</span>
 <span class="co">#&gt; &lt;weekday[1]&gt;</span>
 <span class="co">#&gt; [1] Tue</span>
+
 <span class="fu"><a href="../reference/date-and-date-time-shifting.html">date_shift</a></span><span class="op">(</span><span class="va">x</span>, target <span class="op">=</span> <span class="va">tuesday</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-01-07" "2020-01-07"</span></code></pre></div>
 <p>Shifting to the <em>previous</em> day of the week is a nice way to floor by 1 week. It allows you to control the start of the week in a way that is slightly easier than using <code><a href="../reference/date-and-date-time-rounding.html">date_floor(origin = )</a></code>.</p>
@@ -420,13 +428,16 @@
 <code class="sourceCode R"><span class="co"># The previous valid moment in time</span>
 <span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, invalid <span class="op">=</span> <span class="st">"previous"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-02-29"</span>
+
 <span class="co"># The next valid moment in time</span>
 <span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, invalid <span class="op">=</span> <span class="st">"next"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-03-01"</span>
+
 <span class="co"># Overflow the days. There were 29 days in February, 2020, but we</span>
 <span class="co"># specified 31. So this overflows 2 days past day 29.</span>
 <span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, invalid <span class="op">=</span> <span class="st">"overflow"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-03-02"</span>
+
 <span class="co"># If you don't consider it to be a valid date</span>
 <span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, invalid <span class="op">=</span> <span class="st">"NA"</span><span class="op">)</span>
 <span class="co">#&gt; [1] NA</span></code></pre></div>
@@ -456,6 +467,7 @@
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_time_build.html">date_time_build</a></span><span class="op">(</span><span class="fl">1970</span>, <span class="fl">04</span>, <span class="fl">25</span>, <span class="fl">02</span>, <span class="fl">30</span>, <span class="fl">00</span>, zone <span class="op">=</span> <span class="st">"America/New_York"</span><span class="op">)</span>
 <span class="va">x</span>
 <span class="co">#&gt; [1] "1970-04-25 02:30:00 EST"</span>
+
 <span class="co"># Daylight saving time gap on the 26th between 01:59:59 -&gt; 03:00:00</span>
 <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 1.</span>
@@ -465,15 +477,18 @@
 <code class="sourceCode R"><span class="co"># Roll forward to the next valid moment in time</span>
 <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"roll-forward"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "1970-04-26 03:00:00 EDT"</span>
+
 <span class="co"># Roll backward to the previous valid moment in time</span>
 <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"roll-backward"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "1970-04-26 01:59:59 EST"</span>
+
 <span class="co"># Shift forward by adding the size of the DST gap</span>
 <span class="co"># (this often keeps the time of day,</span>
 <span class="co"># but doesn't guaratee that relative ordering in `x` is maintained</span>
 <span class="co"># so I don't recommend it)</span>
 <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"shift-forward"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "1970-04-26 03:30:00 EDT"</span>
+
 <span class="co"># Replace nonexistent times with an NA</span>
 <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"NA"</span><span class="op">)</span>
 <span class="co">#&gt; [1] NA</span></code></pre></div>
@@ -491,6 +506,7 @@
 <span class="co">#&gt; [1] 5</span>
 <span class="fu"><a href="../reference/clock-getters.html">get_day</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; [1] 6</span>
+
 <span class="va">x</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">22</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-setters.html">set_month</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
@@ -502,6 +518,7 @@
   <span class="fu"><a href="../reference/clock-setters.html">set_month</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>
 <span class="co">#&gt; Error: Invalid date found at location 1.</span>
 <span class="co">#&gt; ℹ Resolve invalid date issues by specifying the `invalid` argument.</span>
+
 <span class="va">x</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">31</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-setters.html">set_month</a></span><span class="op">(</span><span class="fl">4</span>, invalid <span class="op">=</span> <span class="st">"previous"</span><span class="op">)</span>
@@ -511,6 +528,7 @@
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_time_build.html">date_time_build</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, zone <span class="op">=</span> <span class="st">"America/New_York"</span><span class="op">)</span>
 <span class="va">x</span>
 <span class="co">#&gt; [1] "2020-01-02 03:00:00 EST"</span>
+
 <span class="va">x</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-setters.html">set_minute</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/clock-setters.html">set_second</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
