@@ -8,12 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-Provides a comprehensive library for date-time manipulations
-    using a new family of orthogonal date-time classes (durations, time
-    points, zoned-times, and calendars) that partition responsibilities so
-    that the complexities of time zones are only considered when they are
-    really needed. Capabilities include: date-time parsing, formatting,
-    arithmetic, extraction and updating of components, and rounding.
+Provides a comprehensive library for date-time manipulations using a new family of orthogonal date-time classes (durations, time points, zoned-times, and calendars) that partition responsibilities so that the complexities of time zones are only considered when they are really needed. Capabilities include: date-time parsing, formatting, arithmetic, extraction and updating of components, and rounding.
 }
 \seealso{
 Useful links:
