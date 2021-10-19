@@ -107,6 +107,16 @@ test_that("abbreviated ptype is correct", {
 })
 
 # ------------------------------------------------------------------------------
+# format()
+
+test_that("default formats are correct", {
+  expect_snapshot(format(iso_year_week_day(2019)))
+  expect_snapshot(format(iso_year_week_day(2019, 1)))
+  expect_snapshot(format(iso_year_week_day(2019, 1, 1, 1)))
+  expect_snapshot(format(iso_year_week_day(2019, 1, 1, 1, 2, 3, 50, subsecond_precision = "microsecond")))
+})
+
+# ------------------------------------------------------------------------------
 # as.character()
 
 test_that("as.character() works", {
