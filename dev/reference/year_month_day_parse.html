@@ -49,7 +49,13 @@
 <meta property="og:title" content="Parsing: year-month-day — year_month_day_parse" />
 <meta property="og:description" content="year_month_day_parse() parses strings into a year-month-day.
 The default options assume x should be parsed at day precision, using a
-format string of &quot;%Y-%m-%d&quot;." />
+format string of &quot;%Y-%m-%d&quot;.
+If a more precise precision than day is used, then time components will also
+be parsed. The default format separates date and time components by a &quot;T&quot;
+and the time components by a &quot;:&quot;. For example, setting the precision to
+&quot;second&quot; will use a default format of &quot;%Y-%m-%dT%H:%M:%S&quot;. This is
+aligned with the format() method for year-month-day, and with the RFC 3339
+standard." />
 <meta property="og:image" content="https://clock.r-lib.org/logo.png" />
 
 
@@ -165,6 +171,12 @@ format string of &quot;%Y-%m-%d&quot;." />
     <p><code>year_month_day_parse()</code> parses strings into a year-month-day.</p>
 <p>The default options assume <code>x</code> should be parsed at day precision, using a
 <code>format</code> string of <code>"%Y-%m-%d"</code>.</p>
+<p>If a more precise precision than day is used, then time components will also
+be parsed. The default format separates date and time components by a <code>"T"</code>
+and the time components by a <code>":"</code>. For example, setting the precision to
+<code>"second"</code> will use a default format of <code>"%Y-%m-%dT%H:%M:%S"</code>. This is
+aligned with the <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code> method for year-month-day, and with the RFC 3339
+standard.</p>
     </div>
 
     <pre class="usage"><span class='fu'>year_month_day_parse</span><span class='op'>(</span>
@@ -404,11 +416,11 @@ work as you might expect.</p>
 #&gt; [1] "2019-02-30"</div><div class='input'>
 <span class='co'># Can parse with time of day</span>
 <span class='fu'>year_month_day_parse</span><span class='op'>(</span>
-  <span class='st'>"2019-01-30 02:30:00.123456789"</span>,
+  <span class='st'>"2019-01-30T02:30:00.123456789"</span>,
   precision <span class='op'>=</span> <span class='st'>"nanosecond"</span>
 <span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;year_month_day&lt;nanosecond&gt;[1]&gt;
-#&gt; [1] "2019-01-30 02:30:00.123456789"</div><div class='input'>
+#&gt; [1] "2019-01-30T02:30:00.123456789"</div><div class='input'>
 <span class='co'># Can parse using multiple format strings, which will be tried</span>
 <span class='co'># in the order they are provided</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span>, <span class='st'>"2020-01-01"</span>, <span class='st'>"2021/2/3"</span><span class='op'>)</span>

@@ -50,9 +50,10 @@
 <meta property="og:description" content="This is a zoned-time method for the format() generic.
 This function allows you to format a zoned-time using a flexible format
 string.
-If format is NULL, a default format of &quot;%Y-%m-%d %H:%M:%S%Ez[%Z]&quot; is
-used. This maximizes the chance for constructing a string that can be
-reproducibly parsed into a valid zoned-time." />
+If format is NULL, a default format of &quot;%Y-%m-%dT%H:%M:%S%Ez[%Z]&quot; is
+used. This matches the default format that zoned_time_parse_complete()
+parses. Additionally, this format matches the de-facto standard extension to
+RFC 3339 for creating completely unambiguous date-times." />
 <meta property="og:image" content="https://clock.r-lib.org/logo.png" />
 
 
@@ -168,9 +169,10 @@ reproducibly parsed into a valid zoned-time." />
     <p>This is a zoned-time method for the <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code> generic.</p>
 <p>This function allows you to format a zoned-time using a flexible <code>format</code>
 string.</p>
-<p>If <code>format</code> is <code>NULL</code>, a default format of <code>"%Y-%m-%d %H:%M:%S%Ez[%Z]"</code> is
-used. This maximizes the chance for constructing a string that can be
-reproducibly parsed into a valid zoned-time.</p>
+<p>If <code>format</code> is <code>NULL</code>, a default format of <code>"%Y-%m-%dT%H:%M:%S%Ez[%Z]"</code> is
+used. This matches the default format that <code><a href='zoned-parsing.html'>zoned_time_parse_complete()</a></code>
+parses. Additionally, this format matches the de-facto standard extension to
+RFC 3339 for creating completely unambiguous date-times.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for clock_zoned_time</span>
@@ -312,7 +314,7 @@ same as, <code>%a %b %d %H:%M:%S %Y</code>.</p></li>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2019-01-01 00:00:00-05:00[America/New_York]"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='st'>"%B %d, %Y"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2019-01-01T00:00:00-05:00[America/New_York]"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='st'>"%B %d, %Y"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "January 01, 2019"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='st'>"%B %d, %Y"</span>, locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='st'>"fr"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "janvier 01, 2019"</div></pre>
   </div>

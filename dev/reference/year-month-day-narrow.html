@@ -202,7 +202,7 @@ narrows a year-month-day vector to the specified <code>precision</code>.</p>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>4</span><span class='op'>)</span>
 <span class='va'>x</span>
 </div><div class='output co'>#&gt; &lt;year_month_day&lt;hour&gt;[1]&gt;
-#&gt; [1] "2019-01-03 04"</div><div class='input'>
+#&gt; [1] "2019-01-03T04"</div><div class='input'>
 <span class='co'># Narrowed to day precision</span>
 <span class='fu'><a href='calendar_narrow.html'>calendar_narrow</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[1]&gt;
@@ -216,14 +216,14 @@ narrows a year-month-day vector to the specified <code>precision</code>.</p>
 <span class='va'>micro</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calendar_widen.html'>calendar_widen</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"microsecond"</span><span class='op'>)</span>
 <span class='va'>milli</span>
 </div><div class='output co'>#&gt; &lt;year_month_day&lt;millisecond&gt;[1]&gt;
-#&gt; [1] "2019-01-03 04:00:00.000"</div><div class='input'><span class='va'>micro</span>
+#&gt; [1] "2019-01-03T04:00:00.000"</div><div class='input'><span class='va'>micro</span>
 </div><div class='output co'>#&gt; &lt;year_month_day&lt;microsecond&gt;[1]&gt;
-#&gt; [1] "2019-01-03 04:00:00.000000"</div><div class='input'>
+#&gt; [1] "2019-01-03T04:00:00.000000"</div><div class='input'>
 <span class='fu'><a href='calendar_narrow.html'>calendar_narrow</a></span><span class='op'>(</span><span class='va'>milli</span>, <span class='st'>"second"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;year_month_day&lt;second&gt;[1]&gt;
-#&gt; [1] "2019-01-03 04:00:00"</div><div class='input'><span class='fu'><a href='calendar_narrow.html'>calendar_narrow</a></span><span class='op'>(</span><span class='va'>micro</span>, <span class='st'>"second"</span><span class='op'>)</span>
+#&gt; [1] "2019-01-03T04:00:00"</div><div class='input'><span class='fu'><a href='calendar_narrow.html'>calendar_narrow</a></span><span class='op'>(</span><span class='va'>micro</span>, <span class='st'>"second"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;year_month_day&lt;second&gt;[1]&gt;
-#&gt; [1] "2019-01-03 04:00:00"</div><div class='input'>
+#&gt; [1] "2019-01-03T04:00:00"</div><div class='input'>
 <span class='co'># But once you have "locked in" a subsecond precision, it can't be</span>
 <span class='co'># narrowed to another subsecond precision</span>
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='calendar_narrow.html'>calendar_narrow</a></span><span class='op'>(</span><span class='va'>micro</span>, <span class='st'>"millisecond"</span><span class='op'>)</span><span class='op'>)</span>

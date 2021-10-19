@@ -48,13 +48,14 @@
 
 <meta property="og:title" content="Parsing: naive-time — naive_time_parse" />
 <meta property="og:description" content="naive_time_parse() is a parser into a naive-time.
-naive_time_parse() is useful when you have date-time strings like:
-&quot;2020-01-01 01:04:30&quot;. If there is no attached UTC offset or time zone
+naive_time_parse() is useful when you have date-time strings like
+&quot;2020-01-01T01:04:30&quot;. If there is no attached UTC offset or time zone
 name, then parsing this string as a naive-time is your best option. If
 you know that this string should be interpreted in a specific time zone,
 parse as a naive-time, then use as_zoned_time().
 The default options assume that x should be parsed at second precision,
-using a format string of &quot;%Y-%m-%d %H:%M:%S&quot;.
+using a format string of &quot;%Y-%m-%dT%H:%M:%S&quot;. This matches the default
+result from calling format() on a naive-time.
 naive_time_parse() ignores both the %z and %Z commands.
 If your date-time strings contain a full time zone name and a UTC offset, use
 zoned_time_parse_complete(). If they contain a time zone abbreviation, use
@@ -174,13 +175,14 @@ name, use sys_time_parse()." />
 
     <div class="ref-description">
     <p><code>naive_time_parse()</code> is a parser into a naive-time.</p>
-<p><code>naive_time_parse()</code> is useful when you have date-time strings like:
-<code>"2020-01-01 01:04:30"</code>. If there is no attached UTC offset or time zone
+<p><code>naive_time_parse()</code> is useful when you have date-time strings like
+<code>"2020-01-01T01:04:30"</code>. If there is no attached UTC offset or time zone
 name, then parsing this string as a naive-time is your best option. If
 you know that this string should be interpreted in a specific time zone,
 parse as a naive-time, then use <code><a href='as_zoned_time.html'>as_zoned_time()</a></code>.</p>
 <p>The default options assume that <code>x</code> should be parsed at second precision,
-using a <code>format</code> string of <code>"%Y-%m-%d %H:%M:%S"</code>.</p>
+using a <code>format</code> string of <code>"%Y-%m-%dT%H:%M:%S"</code>. This matches the default
+result from calling <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code> on a naive-time.</p>
 <p><em><code>naive_time_parse()</code> ignores both the <code>%z</code> and <code>%Z</code> commands.</em></p>
 <p>If your date-time strings contain a full time zone name and a UTC offset, use
 <code><a href='zoned-parsing.html'>zoned_time_parse_complete()</a></code>. If they contain a time zone abbreviation, use
@@ -401,9 +403,9 @@ into a second precision result is ambiguous and undefined, and is unlikely to
 work as you might expect.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>naive_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01 05:06:07"</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'>naive_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01T05:06:07"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;
-#&gt; [1] "2020-01-01 05:06:07"</div><div class='input'>
+#&gt; [1] "2020-01-01T05:06:07"</div><div class='input'>
 <span class='co'># Day precision</span>
 <span class='fu'>naive_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01"</span>, precision <span class='op'>=</span> <span class='st'>"day"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[1]&gt;
@@ -411,14 +413,14 @@ work as you might expect.</p>
 <span class='co'># Nanosecond precision, but using a day based format</span>
 <span class='fu'>naive_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01"</span>, format <span class='op'>=</span> <span class='st'>"%Y-%m-%d"</span>, precision <span class='op'>=</span> <span class='st'>"nanosecond"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;nanosecond&gt;[1]&gt;
-#&gt; [1] "2020-01-01 00:00:00.000000000"</div><div class='input'>
+#&gt; [1] "2020-01-01T00:00:00.000000000"</div><div class='input'>
 <span class='co'># Remember that the `%z` and `%Z` commands are ignored entirely!</span>
 <span class='fu'>naive_time_parse</span><span class='op'>(</span>
   <span class='st'>"2020-01-01 -4000 America/New_York"</span>,
   format <span class='op'>=</span> <span class='st'>"%Y-%m-%d %z %Z"</span>
 <span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;
-#&gt; [1] "2020-01-01 00:00:00"</div><div class='input'>
+#&gt; [1] "2020-01-01T00:00:00"</div><div class='input'>
 <span class='co'># ---------------------------------------------------------------------------</span>
 <span class='co'># Fractional seconds and POSIXct</span>
 
@@ -429,19 +431,19 @@ work as you might expect.</p>
 <span class='co'># is to parse the full fractional time point with the correct `precision`,</span>
 <span class='co'># then round to seconds using whatever convention you require, and finally</span>
 <span class='co'># convert that to POSIXct.</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2020-01-01 00:00:00.123"</span>, <span class='st'>"2020-01-01 00:00:00.555"</span><span class='op'>)</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2020-01-01T00:00:00.123"</span>, <span class='st'>"2020-01-01T00:00:00.555"</span><span class='op'>)</span>
 
 <span class='co'># First, parse string with full precision</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>naive_time_parse</span><span class='op'>(</span><span class='va'>x</span>, precision <span class='op'>=</span> <span class='st'>"millisecond"</span><span class='op'>)</span>
 <span class='va'>x</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;millisecond&gt;[2]&gt;
-#&gt; [1] "2020-01-01 00:00:00.123" "2020-01-01 00:00:00.555"</div><div class='input'>
+#&gt; [1] "2020-01-01T00:00:00.123" "2020-01-01T00:00:00.555"</div><div class='input'>
 <span class='co'># Then round to second with a floor, ceiling, or round to nearest</span>
 <span class='fu'><a href='time-point-rounding.html'>time_point_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;
-#&gt; [1] "2020-01-01 00:00:00" "2020-01-01 00:00:00"</div><div class='input'><span class='fu'><a href='time-point-rounding.html'>time_point_round</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>
+#&gt; [1] "2020-01-01T00:00:00" "2020-01-01T00:00:00"</div><div class='input'><span class='fu'><a href='time-point-rounding.html'>time_point_round</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;
-#&gt; [1] "2020-01-01 00:00:00" "2020-01-01 00:00:01"</div><div class='input'>
+#&gt; [1] "2020-01-01T00:00:00" "2020-01-01T00:00:01"</div><div class='input'>
 <span class='co'># Finally, convert to POSIXct</span>
 <span class='fu'><a href='as_date_time.html'>as_date_time</a></span><span class='op'>(</span><span class='fu'><a href='time-point-rounding.html'>time_point_round</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>, zone <span class='op'>=</span> <span class='st'>"UTC"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "2020-01-01 00:00:00 UTC" "2020-01-01 00:00:01 UTC"</div></pre>

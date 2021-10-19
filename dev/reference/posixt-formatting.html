@@ -49,10 +49,10 @@
 <meta property="og:title" content="Formatting: date-time — posixt-formatting" />
 <meta property="og:description" content="This is a POSIXct method for the date_format() generic.
 date_format() formats a date-time (POSIXct) using a format string.
-If format is NULL, a default format of &quot;%Y-%m-%d %H:%M:%S%Ez[%Z]&quot; is
-used. This maximizes the chance for constructing a string that can be
-reproducibly parsed into a valid date-time using
-date_time_parse_complete()." />
+If format is NULL, a default format of &quot;%Y-%m-%dT%H:%M:%S%Ez[%Z]&quot; is
+used. This matches the default format that date_time_parse_complete()
+parses. Additionally, this format matches the de-facto standard extension to
+RFC 3339 for creating completely unambiguous date-times." />
 <meta property="og:image" content="https://clock.r-lib.org/logo.png" />
 
 
@@ -167,10 +167,10 @@ date_time_parse_complete()." />
     <div class="ref-description">
     <p>This is a POSIXct method for the <code><a href='date_format.html'>date_format()</a></code> generic.</p>
 <p><code><a href='date_format.html'>date_format()</a></code> formats a date-time (POSIXct) using a <code>format</code> string.</p>
-<p>If <code>format</code> is <code>NULL</code>, a default format of <code>"%Y-%m-%d %H:%M:%S%Ez[%Z]"</code> is
-used. This maximizes the chance for constructing a string that can be
-reproducibly parsed into a valid date-time using
-<code><a href='date-time-parse.html'>date_time_parse_complete()</a></code>.</p>
+<p>If <code>format</code> is <code>NULL</code>, a default format of <code>"%Y-%m-%dT%H:%M:%S%Ez[%Z]"</code> is
+used. This matches the default format that <code><a href='date-time-parse.html'>date_time_parse_complete()</a></code>
+parses. Additionally, this format matches the de-facto standard extension to
+RFC 3339 for creating completely unambiguous date-times.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for POSIXt</span>
@@ -319,8 +319,11 @@ same as, <code>%a %b %d %H:%M:%S %Y</code>.</p></li>
 
 <span class='co'># Default</span>
 <span class='fu'><a href='date_format.html'>date_format</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "1970-04-26 01:30:00-05:00[America/New_York]"
-#&gt; [2] "1970-04-26 03:30:00-04:00[America/New_York]"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "1970-04-26T01:30:00-05:00[America/New_York]"
+#&gt; [2] "1970-04-26T03:30:00-04:00[America/New_York]"</div><div class='input'>
+<span class='co'># Which is parseable by `date_time_parse_complete()`</span>
+<span class='fu'><a href='date-time-parse.html'>date_time_parse_complete</a></span><span class='op'>(</span><span class='fu'><a href='date_format.html'>date_format</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "1970-04-26 01:30:00 EST" "1970-04-26 03:30:00 EDT"</div><div class='input'>
 <span class='fu'><a href='date_format.html'>date_format</a></span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='st'>"%B %d, %Y %H:%M:%S"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "April 26, 1970 01:30:00" "April 26, 1970 03:30:00"</div><div class='input'>
 <span class='co'># By default, `%Z` uses the full zone name, but you can switch to the</span>

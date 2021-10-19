@@ -386,7 +386,7 @@ using the <code>nonexistent</code> argument of <code><a href='https://rdrr.io/r/
 </div><div class='output co'>#&gt; Error : Invalid date found at location 1.
 #&gt; <span style='color: #0000BB;'>ℹ</span> Resolve invalid date issues by specifying the `invalid` argument.</div><div class='input'><span class='fu'><a href='clock-arithmetic.html'>add_months</a></span><span class='op'>(</span><span class='fu'><a href='as_year_month_day.html'>as_year_month_day</a></span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;year_month_day&lt;second&gt;[2]&gt;
-#&gt; [1] "2019-02-31 00:30:00" "2019-03-31 00:30:00"</div><div class='input'>
+#&gt; [1] "2019-02-31T00:30:00" "2019-03-31T00:30:00"</div><div class='input'>
 <span class='co'># Resolve invalid dates by specifying an invalid date resolution strategy</span>
 <span class='co'># with the `invalid` argument. Using `"previous"` here sets the date-time to</span>
 <span class='co'># the previous valid moment in time - i.e. the end of the month. The</span>

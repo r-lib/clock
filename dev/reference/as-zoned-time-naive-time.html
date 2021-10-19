@@ -297,9 +297,9 @@ time resolution strategies.</p>
 <span class='co'># printed time, while changing the underlying duration.</span>
 <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "2019-01-01 00:00:00-05:00"</div><div class='input'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/Los_Angeles"</span><span class='op'>)</span>
+#&gt; [1] "2019-01-01T00:00:00-05:00"</div><div class='input'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/Los_Angeles"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/Los_Angeles&gt;[1]&gt;
-#&gt; [1] "2019-01-01 00:00:00-08:00"</div><div class='input'>
+#&gt; [1] "2019-01-01T00:00:00-08:00"</div><div class='input'>
 <span class='co'># ---------------------------------------------------------------------------</span>
 <span class='co'># Nonexistent time:</span>
 
@@ -317,17 +317,17 @@ time resolution strategies.</p>
 <span class='co'># Resolve this by specifying a nonexistent time resolution strategy</span>
 <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>nonexistent_time</span>, <span class='va'>new_york</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-forward"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;
-#&gt; [1] "2020-03-08 03:00:00-04:00" "2020-03-08 03:30:00-04:00"</div><div class='input'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>nonexistent_time</span>, <span class='va'>new_york</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-backward"</span><span class='op'>)</span>
+#&gt; [1] "2020-03-08T03:00:00-04:00" "2020-03-08T03:30:00-04:00"</div><div class='input'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>nonexistent_time</span>, <span class='va'>new_york</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-backward"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;
-#&gt; [1] "2020-03-08 01:59:59-05:00" "2020-03-08 03:30:00-04:00"</div><div class='input'>
+#&gt; [1] "2020-03-08T01:59:59-05:00" "2020-03-08T03:30:00-04:00"</div><div class='input'>
 <span class='co'># Note that rolling backwards will choose the last possible moment in</span>
 <span class='co'># time at the current precision of the input</span>
 <span class='va'>nonexistent_nanotime</span> <span class='op'>&lt;-</span> <span class='fu'><a href='time_point_cast.html'>time_point_cast</a></span><span class='op'>(</span><span class='va'>nonexistent_time</span>, <span class='st'>"nanosecond"</span><span class='op'>)</span>
 <span class='va'>nonexistent_nanotime</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;nanosecond&gt;[2]&gt;
-#&gt; [1] "2020-03-08 02:45:00.000000000" "2020-03-08 03:30:00.000000000"</div><div class='input'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>nonexistent_nanotime</span>, <span class='va'>new_york</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-backward"</span><span class='op'>)</span>
+#&gt; [1] "2020-03-08T02:45:00.000000000" "2020-03-08T03:30:00.000000000"</div><div class='input'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>nonexistent_nanotime</span>, <span class='va'>new_york</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-backward"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;nanosecond&gt;&lt;America/New_York&gt;[2]&gt;
-#&gt; [1] "2020-03-08 01:59:59.999999999-05:00" "2020-03-08 03:30:00.000000000-04:00"</div><div class='input'>
+#&gt; [1] "2020-03-08T01:59:59.999999999-05:00" "2020-03-08T03:30:00.000000000-04:00"</div><div class='input'>
 <span class='co'># A word of caution - Shifting does not guarantee that the relative ordering</span>
 <span class='co'># of the input is maintained</span>
 <span class='va'>shifted</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span>
@@ -337,7 +337,7 @@ time resolution strategies.</p>
 <span class='op'>)</span>
 <span class='va'>shifted</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;
-#&gt; [1] "2020-03-08 03:45:00-04:00" "2020-03-08 03:30:00-04:00"</div><div class='input'>
+#&gt; [1] "2020-03-08T03:45:00-04:00" "2020-03-08T03:30:00-04:00"</div><div class='input'>
 <span class='co'># 02:45:00 &lt; 03:30:00</span>
 <span class='va'>nonexistent_time</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;</span> <span class='va'>nonexistent_time</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='co'># 03:45:00 &gt; 03:30:00 (relative ordering is lost)</span>
@@ -365,9 +365,9 @@ time resolution strategies.</p>
 <span class='va'>na</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>ambiguous_time</span>, <span class='va'>new_york</span>, ambiguous <span class='op'>=</span> <span class='st'>"NA"</span><span class='op'>)</span>
 <span class='va'>earliest</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "2020-11-01 01:30:00-04:00"</div><div class='input'><span class='va'>latest</span>
+#&gt; [1] "2020-11-01T01:30:00-04:00"</div><div class='input'><span class='va'>latest</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "2020-11-01 01:30:00-05:00"</div><div class='input'><span class='va'>na</span>
+#&gt; [1] "2020-11-01T01:30:00-05:00"</div><div class='input'><span class='va'>na</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
 #&gt; [1] NA</div><div class='input'>
 <span class='co'># Now assume that you were given the following zoned-times, i.e.,</span>
@@ -376,7 +376,7 @@ time resolution strategies.</p>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>earliest</span>, <span class='va'>latest</span><span class='op'>)</span>
 <span class='va'>x</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;
-#&gt; [1] "2020-11-01 01:30:00-04:00" "2020-11-01 01:30:00-05:00"</div><div class='input'>
+#&gt; [1] "2020-11-01T01:30:00-04:00" "2020-11-01T01:30:00-05:00"</div><div class='input'>
 <span class='co'># To set the seconds to 5 in both, you might try:</span>
 <span class='va'>x_naive</span> <span class='op'>&lt;-</span> <span class='va'>x</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -386,7 +386,7 @@ time resolution strategies.</p>
 
 <span class='va'>x_naive</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;
-#&gt; [1] "2020-11-01 01:30:05" "2020-11-01 01:30:05"</div><div class='input'>
+#&gt; [1] "2020-11-01T01:30:05" "2020-11-01T01:30:05"</div><div class='input'>
 <span class='co'># But this fails because you've "lost" the information about which</span>
 <span class='co'># offsets these ambiguous times started in</span>
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x_naive</span>, <span class='fu'><a href='zoned-zone.html'>zoned_time_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
@@ -399,14 +399,14 @@ time resolution strategies.</p>
 <span class='co'># everything has a transition point of `"2020-11-01 01:00:00 EST"`).</span>
 <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x_naive</span>, <span class='fu'><a href='zoned-zone.html'>zoned_time_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, ambiguous <span class='op'>=</span> <span class='va'>x</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;
-#&gt; [1] "2020-11-01 01:30:05-04:00" "2020-11-01 01:30:05-05:00"</div><div class='input'>
+#&gt; [1] "2020-11-01T01:30:05-04:00" "2020-11-01T01:30:05-05:00"</div><div class='input'>
 <span class='co'># Say you added one more time to `x` that would not be considered ambiguous</span>
 <span class='co'># in naive-time</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='fu'><a href='as_sys_time.html'>as_sys_time</a></span><span class='op'>(</span><span class='va'>latest</span><span class='op'>)</span> <span class='op'>+</span> <span class='fl'>3600</span>, <span class='fu'><a href='zoned-zone.html'>zoned_time_zone</a></span><span class='op'>(</span><span class='va'>latest</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>x</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[3]&gt;
-#&gt; [1] "2020-11-01 01:30:00-04:00" "2020-11-01 01:30:00-05:00"
-#&gt; [3] "2020-11-01 02:30:00-05:00"</div><div class='input'>
+#&gt; [1] "2020-11-01T01:30:00-04:00" "2020-11-01T01:30:00-05:00"
+#&gt; [3] "2020-11-01T02:30:00-05:00"</div><div class='input'>
 <span class='co'># Imagine you want to floor this vector to a multiple of 2 hours, with</span>
 <span class='co'># an origin of 1am that day. You can do this by subtracting the origin,</span>
 <span class='co'># flooring, then adding it back</span>
@@ -422,7 +422,7 @@ time resolution strategies.</p>
 
 <span class='va'>x_naive</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[3]&gt;
-#&gt; [1] "2020-11-01 01:00:00" "2020-11-01 01:00:00" "2020-11-01 01:00:00"</div><div class='input'>
+#&gt; [1] "2020-11-01T01:00:00" "2020-11-01T01:00:00" "2020-11-01T01:00:00"</div><div class='input'>
 <span class='co'># You again have ambiguous naive-time points, so you might try using</span>
 <span class='co'># `ambiguous = x`. It looks like this took care of the first two problems,</span>
 <span class='co'># but we have an issue at location 3.</span>
@@ -438,8 +438,8 @@ time resolution strategies.</p>
 <span class='co'># when information from `x` can't resolve ambiguities:</span>
 <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x_naive</span>, <span class='fu'><a href='zoned-zone.html'>zoned_time_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, ambiguous <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"latest"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[3]&gt;
-#&gt; [1] "2020-11-01 01:00:00-04:00" "2020-11-01 01:00:00-05:00"
-#&gt; [3] "2020-11-01 01:00:00-05:00"</div></pre>
+#&gt; [1] "2020-11-01T01:00:00-04:00" "2020-11-01T01:00:00-05:00"
+#&gt; [3] "2020-11-01T01:00:00-05:00"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

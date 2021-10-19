@@ -520,50 +520,50 @@
 <p>The previous section was entirely focused on issues that might arise when working with POSIXct and time zones. If you don’t require the complexity of time zones, you can use a naive-time. Naive-times are a type of time point that have a yet-to-be-specified time zone. The other type of time point in clock is a sys-time, which is interpreted as having a UTC time zone attached to it. If you aren’t using time zones at all, naive-times and sys-times are equivalent, and even use the same date algorithms under the hood.</p>
 <p>Unlike our ambiguous time examples from before, since naive-times don’t have any implied time zone, there is no repeated 1 o’clock hour.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/naive_time_parse.html">naive_time_parse</a></span><span class="op">(</span><span class="st">"2020-11-01 00:30:00"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/naive_time_parse.html">naive_time_parse</a></span><span class="op">(</span><span class="st">"2020-11-01T00:30:00"</span><span class="op">)</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/clock-arithmetic.html">add_hours</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">0</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
 <span class="va">x</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[6]&gt;</span>
-<span class="co">#&gt; [1] "2020-11-01 00:30:00" "2020-11-01 01:30:00" "2020-11-01 02:30:00"</span>
-<span class="co">#&gt; [4] "2020-11-01 03:30:00" "2020-11-01 04:30:00" "2020-11-01 05:30:00"</span></code></pre></div>
+<span class="co">#&gt; [1] "2020-11-01T00:30:00" "2020-11-01T01:30:00" "2020-11-01T02:30:00"</span>
+<span class="co">#&gt; [4] "2020-11-01T03:30:00" "2020-11-01T04:30:00" "2020-11-01T05:30:00"</span></code></pre></div>
 <p>This makes arithmetic and flooring much simpler to reason about:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/time-point-rounding.html">time_point_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"hour"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;hour&gt;[6]&gt;</span>
-<span class="co">#&gt; [1] "2020-11-01 00" "2020-11-01 01" "2020-11-01 02" "2020-11-01 03"</span>
-<span class="co">#&gt; [5] "2020-11-01 04" "2020-11-01 05"</span>
+<span class="co">#&gt; [1] "2020-11-01T00" "2020-11-01T01" "2020-11-01T02" "2020-11-01T03"</span>
+<span class="co">#&gt; [5] "2020-11-01T04" "2020-11-01T05"</span>
 
 <span class="va">origin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/time_point_cast.html">time_point_cast</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"hour"</span><span class="op">)</span>
 <span class="fu"><a href="../../reference/time-point-rounding.html">time_point_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"hour"</span>, n <span class="op">=</span> <span class="fl">2</span>, origin <span class="op">=</span> <span class="va">origin</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;hour&gt;[6]&gt;</span>
-<span class="co">#&gt; [1] "2020-10-31 23" "2020-11-01 01" "2020-11-01 01" "2020-11-01 03"</span>
-<span class="co">#&gt; [5] "2020-11-01 03" "2020-11-01 05"</span></code></pre></div>
+<span class="co">#&gt; [1] "2020-10-31T23" "2020-11-01T01" "2020-11-01T01" "2020-11-01T03"</span>
+<span class="co">#&gt; [5] "2020-11-01T03" "2020-11-01T05"</span></code></pre></div>
 <p>You’ll notice that the result of flooring by hour is a time point with <em>hour</em> precision. Flooring drops all information at more precise precisions, and the result is represented in a more compact form.</p>
 <p>The difference between naive-time and sys-time is only important when you are working with time zones and zoned-times / POSIXct. Since naive-time has a yet-to-be-specified time zone, converting to a zoned-time simply specifies that zone. If possible, it keeps the printed time the same, while changing the underlying duration.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2020-11-01 00:30:00"</span>
+<span class="co">#&gt; [1] "2020-11-01T00:30:00"</span>
 
 <span class="fu"><a href="../../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2020-11-01 00:30:00-04:00"</span></code></pre></div>
+<span class="co">#&gt; [1] "2020-11-01T00:30:00-04:00"</span></code></pre></div>
 <p>Sys-time is interpreted as being UTC. Converting it to a zoned-time will keep the underlying duration, but will change the printed time.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x_sys</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
 <span class="va">x_sys</span>
 <span class="co">#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2020-11-01 00:30:00"</span>
+<span class="co">#&gt; [1] "2020-11-01T00:30:00"</span>
 
 <span class="co"># Subtract 4 hours to print the America/New_York time</span>
 <span class="fu"><a href="../../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x_sys</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2020-10-31 20:30:00-04:00"</span></code></pre></div>
+<span class="co">#&gt; [1] "2020-10-31T20:30:00-04:00"</span></code></pre></div>
 <p>Converting from sys-time to zoned-time won’t ever have any issues with nonexistent or ambiguous times, but converting from naive-time might. Remember that there were two 1 o’clock hours on this day in the America/New_York time zone.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;</span>
-<span class="co">#&gt; [1] "2020-11-01 00:30:00" "2020-11-01 01:30:00"</span>
+<span class="co">#&gt; [1] "2020-11-01T00:30:00" "2020-11-01T01:30:00"</span>
 
 <span class="fu"><a href="../../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
 <span class="co">#&gt; Error: Ambiguous time due to daylight saving time at location 2.</span>
@@ -571,7 +571,7 @@
 
 <span class="fu"><a href="../../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"America/New_York"</span>, ambiguous <span class="op">=</span> <span class="st">"earliest"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;</span>
-<span class="co">#&gt; [1] "2020-11-01 00:30:00-04:00" "2020-11-01 01:30:00-04:00"</span></code></pre></div>
+<span class="co">#&gt; [1] "2020-11-01T00:30:00-04:00" "2020-11-01T01:30:00-04:00"</span></code></pre></div>
 <p>In the low-level API, converting from naive-time to zoned-time is actually the <em>only</em> place where the <code>nonexistent</code> and <code>ambiguous</code> arguments are used. This limits how often you have to think about daylight saving time, ideally helping you avoid as many subtle bugs as possible. In the high-level API for POSIXct, these arguments are forced to bubble up in more places. This trades the user benefit of being able to work directly on R’s native date-time types for the side-effect of potentially having to deal with these issues in more places.</p>
 </div>
 <div id="calendar-types" class="section level2">
@@ -732,7 +732,7 @@
 
 <span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">01</span>, <span class="fl">01</span>, <span class="fl">02</span>, <span class="fl">30</span>, <span class="fl">50</span>, <span class="fl">123</span>, subsecond_precision <span class="op">=</span> <span class="st">"nanosecond"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;year_month_day&lt;nanosecond&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2019-01-01 02:30:50.000000123"</span></code></pre></div>
+<span class="co">#&gt; [1] "2019-01-01T02:30:50.000000123"</span></code></pre></div>
 <p>A nice thing about this is that you get year-month and year-quarter types for free.</p>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
@@ -784,7 +784,7 @@
   subsecond_precision <span class="op">=</span> <span class="st">"millisecond"</span>
 <span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;sys&gt;&lt;millisecond&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2019-02-03 01:30:35.123"</span></code></pre></div>
+<span class="co">#&gt; [1] "2019-02-03T01:30:35.123"</span></code></pre></div>
 <p>Unlike calendars, a time point at say, second precision, is considered equivalent to a time point at millisecond precision with millisecond information set to 0.</p>
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span>
@@ -802,7 +802,7 @@
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../../reference/duration-helper.html">duration_nanoseconds</a></span><span class="op">(</span><span class="fl">25</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;nanosecond&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2019-01-02 00:00:00.000000025"</span></code></pre></div>
+<span class="co">#&gt; [1] "2019-01-02T00:00:00.000000025"</span></code></pre></div>
 </div>
 </div>
 </div>

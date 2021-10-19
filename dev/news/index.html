@@ -162,7 +162,47 @@
 <a href="#clock-development-version" class="anchor"></a>clock (development version)<small> Unreleased </small>
 </h1>
 <ul>
-<li>Further improved documentation of undefined behavior resulting from attempting to parse sub-daily components of a string that is intended to be parsed into a Date (<a href='https://github.com/r-lib/clock/issues/258'>#258</a>).</li>
+<li>
+<p>To align more with RFC 3339 and ISO 8601 standards, the default formats used in many of the date formatting and parsing functions have been slightly altered. The following changes have been made:</p>
+<ul>
+<li>
+<p>Date-times (POSIXct):</p>
+<ul>
+<li><p><code><a href="../reference/date_format.html">date_format()</a></code> now prints a <code>T</code> between the date and time.</p></li>
+<li><p><code><a href="../reference/date-time-parse.html">date_time_parse_complete()</a></code> now expects a <code>T</code> between the date and time by default.</p></li>
+</ul>
+</li>
+<li>
+<p>Sys-times:</p>
+<ul>
+<li><p><code><a href="https://rdrr.io/r/base/format.html">format()</a></code> and <code><a href="https://rdrr.io/r/base/character.html">as.character()</a></code> now print a <code>T</code> between the date and time.</p></li>
+<li><p><code><a href="../reference/sys_time_parse.html">sys_time_parse()</a></code> now expects a <code>T</code> between the date and time by default.</p></li>
+</ul>
+</li>
+<li>
+<p>Naive-times:</p>
+<ul>
+<li><p><code><a href="https://rdrr.io/r/base/format.html">format()</a></code> and <code><a href="https://rdrr.io/r/base/character.html">as.character()</a></code> now print a <code>T</code> between the date and time.</p></li>
+<li><p><code><a href="../reference/naive_time_parse.html">naive_time_parse()</a></code> now expects a <code>T</code> between the date and time by default.</p></li>
+</ul>
+</li>
+<li>
+<p>Zoned-times:</p>
+<ul>
+<li><p><code><a href="https://rdrr.io/r/base/format.html">format()</a></code> and <code><a href="https://rdrr.io/r/base/character.html">as.character()</a></code> now print a <code>T</code> between the date and time.</p></li>
+<li><p><code><a href="../reference/zoned-parsing.html">zoned_time_parse_complete()</a></code> now expects a <code>T</code> between the date and time by default.</p></li>
+</ul>
+</li>
+<li>
+<p>Calendars:</p>
+<ul>
+<li><p><code><a href="https://rdrr.io/r/base/format.html">format()</a></code> and <code><a href="https://rdrr.io/r/base/character.html">as.character()</a></code> now print a <code>T</code> between the date and time.</p></li>
+<li><p><code><a href="../reference/year_month_day_parse.html">year_month_day_parse()</a></code> now expects a <code>T</code> between the date and time by default.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Further improved documentation of undefined behavior resulting from attempting to parse sub-daily components of a string that is intended to be parsed into a Date (<a href='https://github.com/r-lib/clock/issues/258'>#258</a>).</p></li>
 </ul>
 </div>
     <div id="clock-041" class="section level1">

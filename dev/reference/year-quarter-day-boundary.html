@@ -207,20 +207,20 @@ at the boundary value.</p>
     <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_quarter_day.html'>year_quarter_day</a></span><span class='op'>(</span><span class='fl'>2019</span><span class='op'>:</span><span class='fl'>2020</span>, <span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>7</span>, <span class='fl'>8</span>, start <span class='op'>=</span> <span class='va'>clock_months</span><span class='op'>$</span><span class='va'>march</span><span class='op'>)</span>
 <span class='va'>x</span>
 </div><div class='output co'>#&gt; &lt;year_quarter_day&lt;March&gt;&lt;second&gt;[2]&gt;
-#&gt; [1] "2019-Q2-05 06:07:08" "2020-Q3-05 06:07:08"</div><div class='input'>
+#&gt; [1] "2019-Q2-05T06:07:08" "2020-Q3-05T06:07:08"</div><div class='input'>
 <span class='co'># Compute the last moment of the fiscal quarter</span>
 <span class='fu'><a href='calendar-boundary.html'>calendar_end</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"quarter"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;year_quarter_day&lt;March&gt;&lt;second&gt;[2]&gt;
-#&gt; [1] "2019-Q2-92 23:59:59" "2020-Q3-91 23:59:59"</div><div class='input'>
+#&gt; [1] "2019-Q2-92T23:59:59" "2020-Q3-91T23:59:59"</div><div class='input'>
 <span class='co'># Compare that to just setting the day to `"last"`,</span>
 <span class='co'># which doesn't affect the other components</span>
 <span class='fu'><a href='clock-setters.html'>set_day</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"last"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;year_quarter_day&lt;March&gt;&lt;second&gt;[2]&gt;
-#&gt; [1] "2019-Q2-92 06:07:08" "2020-Q3-91 06:07:08"</div><div class='input'>
+#&gt; [1] "2019-Q2-92T06:07:08" "2020-Q3-91T06:07:08"</div><div class='input'>
 <span class='co'># Compute the start of the fiscal year</span>
 <span class='fu'><a href='calendar-boundary.html'>calendar_start</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"year"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;year_quarter_day&lt;March&gt;&lt;second&gt;[2]&gt;
-#&gt; [1] "2019-Q1-01 00:00:00" "2020-Q1-01 00:00:00"</div><div class='input'>
+#&gt; [1] "2019-Q1-01T00:00:00" "2020-Q1-01T00:00:00"</div><div class='input'>
 <span class='fu'><a href='as_date.html'>as_date</a></span><span class='op'>(</span><span class='fu'><a href='calendar-boundary.html'>calendar_start</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"year"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "2018-03-01" "2019-03-01"</div></pre>
   </div>

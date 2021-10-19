@@ -211,15 +211,15 @@ widens a year-month-day vector to the specified <code>precision</code>.</p>
 <span class='va'>sec</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calendar_widen.html'>calendar_widen</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>
 <span class='va'>sec</span>
 </div><div class='output co'>#&gt; &lt;year_month_day&lt;second&gt;[1]&gt;
-#&gt; [1] "2019-01-01 00:00:00"</div><div class='input'>
+#&gt; [1] "2019-01-01T00:00:00"</div><div class='input'>
 <span class='co'># Second precision can be widened to subsecond precision</span>
 <span class='va'>milli</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calendar_widen.html'>calendar_widen</a></span><span class='op'>(</span><span class='va'>sec</span>, <span class='st'>"millisecond"</span><span class='op'>)</span>
 <span class='va'>micro</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calendar_widen.html'>calendar_widen</a></span><span class='op'>(</span><span class='va'>sec</span>, <span class='st'>"microsecond"</span><span class='op'>)</span>
 <span class='va'>milli</span>
 </div><div class='output co'>#&gt; &lt;year_month_day&lt;millisecond&gt;[1]&gt;
-#&gt; [1] "2019-01-01 00:00:00.000"</div><div class='input'><span class='va'>micro</span>
+#&gt; [1] "2019-01-01T00:00:00.000"</div><div class='input'><span class='va'>micro</span>
 </div><div class='output co'>#&gt; &lt;year_month_day&lt;microsecond&gt;[1]&gt;
-#&gt; [1] "2019-01-01 00:00:00.000000"</div><div class='input'>
+#&gt; [1] "2019-01-01T00:00:00.000000"</div><div class='input'>
 <span class='co'># But once you have "locked in" a subsecond precision, it can't</span>
 <span class='co'># be widened again</span>
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='calendar_widen.html'>calendar_widen</a></span><span class='op'>(</span><span class='va'>milli</span>, <span class='st'>"microsecond"</span><span class='op'>)</span><span class='op'>)</span>
