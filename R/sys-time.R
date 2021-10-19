@@ -43,15 +43,17 @@ is_sys_time <- function(x) {
 #' @description
 #' `sys_time_parse()` is a parser into a sys-time.
 #'
-#' `sys_time_parse()` is useful when you have date-time strings like:
-#' `"2020-01-01 01:04:30-0400"`. If there is an attached UTC offset, but no time
-#' zone name, then parsing this string as a sys-time using the `%z` command to
-#' capture the offset is probably your best option. If you know that this string
-#' should be interpreted in a specific time zone, parse as a sys-time to get the
-#' UTC equivalent, then use [as_zoned_time()].
+#' `sys_time_parse()` is useful when you have date-time strings like
+#' `"2020-01-01T01:04:30"` that you know should be interpreted as UTC, or like
+#' `"2020-01-01T01:04:30-04:00"` with a UTC offset but no zone name. If you find
+#' yourself in the latter situation, then parsing this string as a sys-time
+#' using the `%z` command to capture the offset is probably your best option.
+#' If you know that this string should be interpreted in a specific time zone,
+#' parse as a sys-time to get the UTC equivalent, then use [as_zoned_time()].
 #'
 #' The default options assume that `x` should be parsed at second precision,
-#' using a `format` string of `"%Y-%m-%d %H:%M:%S"`.
+#' using a `format` string of `"%Y-%m-%dT%H:%M:%S"`. This matches the default
+#' result from calling `format()` on a sys-time.
 #'
 #' `sys_time_parse()` is nearly equivalent to [naive_time_parse()], except for
 #' the fact that the `%z` command is actually used. Using `%z` assumes that the
@@ -65,9 +67,10 @@ is_sys_time <- function(x) {
 #' [zoned_time_parse_complete()]. If they contain a time zone abbreviation, use
 #' [zoned_time_parse_abbrev()].
 #'
-#' If your date-time strings don't contain an offset from UTC, you might
-#' consider using [naive_time_parse()], since the resulting naive-time doesn't
-#' come with an assumption of a UTC time zone.
+#' If your date-time strings don't contain an offset from UTC and you aren't
+#' sure if they should be treated as UTC or not, you might consider using
+#' [naive_time_parse()], since the resulting naive-time doesn't come with an
+#' assumption of a UTC time zone.
 #'
 #' @inheritSection zoned-parsing Full Precision Parsing
 #'
@@ -98,7 +101,7 @@ is_sys_time <- function(x) {
 #'
 #' @export
 #' @examples
-#' sys_time_parse("2020-01-01 05:06:07")
+#' sys_time_parse("2020-01-01T05:06:07")
 #'
 #' # Day precision
 #' sys_time_parse("2020-01-01", precision = "day")

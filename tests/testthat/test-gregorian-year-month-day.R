@@ -140,6 +140,16 @@ test_that("invalid dates must be resolved when converting to a naive-time", {
 })
 
 # ------------------------------------------------------------------------------
+# format()
+
+test_that("default formats are correct", {
+  expect_snapshot(format(year_month_day(2019)))
+  expect_snapshot(format(year_month_day(2019, 1)))
+  expect_snapshot(format(year_month_day(2019, 1, 1, 1)))
+  expect_snapshot(format(year_month_day(2019, 1, 1, 1, 2, 3, 50, subsecond_precision = "microsecond")))
+})
+
+# ------------------------------------------------------------------------------
 # as.character()
 
 test_that("as.character() works", {
@@ -177,8 +187,8 @@ test_that("can parse years or year-months", {
 })
 
 test_that("can parse second and subsecond precision", {
-  x <- "2019-01-01 05:10:20"
-  y <- "2019-01-01 05:10:20.1234"
+  x <- "2019-01-01T05:10:20"
+  y <- "2019-01-01T05:10:20.1234"
 
   expect_identical(
     year_month_day_parse(x, precision = "second"),
@@ -246,7 +256,7 @@ test_that("failure to parse results in a warning", {
 
 test_that("can use a different locale", {
   x <- "janvier 05, 2020"
-  y <- "2019-01-01 00:00:00,123456"
+  y <- "2019-01-01T00:00:00,123456"
 
   expect_identical(
     year_month_day_parse(x, format = "%B %d, %Y", locale = clock_locale("fr")),

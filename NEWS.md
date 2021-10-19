@@ -1,5 +1,43 @@
 # clock (development version)
 
+* To align more with RFC 3339 and ISO 8601 standards, the default formats used
+  in many of the date formatting and parsing functions have been slightly
+  altered. The following changes have been made:
+  
+  * Date-times (POSIXct):
+  
+    * `date_format()` now prints a `T` between the date and time.
+    
+    * `date_time_parse_complete()` now expects a `T` between the date and time
+      by default.
+  
+  * Sys-times:
+  
+    * `format()` and `as.character()` now print a `T` between the date and time.
+    
+    * `sys_time_parse()` now expects a `T` between the date and time by default.
+    
+  * Naive-times:
+  
+    * `format()` and `as.character()` now print a `T` between the date and time.
+    
+    * `naive_time_parse()` now expects a `T` between the date and time by
+      default.
+      
+  * Zoned-times:
+  
+    * `format()` and `as.character()` now print a `T` between the date and time.
+    
+    * `zoned_time_parse_complete()` now expects a `T` between the date and time
+      by default.
+      
+  * Calendars:
+  
+    * `format()` and `as.character()` now print a `T` between the date and time.
+    
+    * `year_month_day_parse()` now expects a `T` between the date and time by
+      default.
+
 * Further improved documentation of undefined behavior resulting from attempting
   to parse sub-daily components of a string that is intended to be parsed into
   a Date (#258).

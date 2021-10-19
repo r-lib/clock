@@ -224,7 +224,7 @@ There are two parsers into a zoned-time, \code{zoned_time_parse_complete()} and
 \subsection{zoned_time_parse_complete()}{
 
 \code{zoned_time_parse_complete()} is a parser for \emph{complete} date-time strings,
-like \code{"2019-01-01 00:00:00-05:00[America/New_York]"}. A complete date-time
+like \code{"2019-01-01T00:00:00-05:00[America/New_York]"}. A complete date-time
 string has both the time zone offset and full time zone name in the string,
 which is the only way for the string itself to contain all of the information
 required to construct a zoned-time. Because of this,
@@ -232,7 +232,10 @@ required to construct a zoned-time. Because of this,
 supplied in the \code{format} string.
 
 The default options assume that \code{x} should be parsed at second precision,
-using a \code{format} string of \code{"\%Y-\%m-\%d \%H:\%M:\%S\%Ez[\%Z]"}.
+using a \code{format} string of \code{"\%Y-\%m-\%dT\%H:\%M:\%S\%Ez[\%Z]"}. This matches the
+default result from calling \code{format()} on a zoned-time. Additionally, this
+format matches the de-facto standard extension to RFC 3339 for creating
+completely unambiguous date-times.
 }
 
 \subsection{zoned_time_parse_abbrev()}{
@@ -251,8 +254,9 @@ If used, the \verb{\%z} command must parse correctly, but its value will be
 completely ignored.
 
 The default options assume that \code{x} should be parsed at second precision,
-using a \code{format} string of \code{"\%Y-\%m-\%d \%H:\%M:\%S \%Z"}. This default format
-generally matches what R prints out by default for POSIXct objects.
+using a \code{format} string of \code{"\%Y-\%m-\%d \%H:\%M:\%S \%Z"}. This matches the default
+result from calling \code{print()} or \code{format(usetz = TRUE)} on a POSIXct
+date-time.
 }
 }
 \details{
@@ -283,7 +287,7 @@ work as you might expect.
 \examples{
 library(magrittr)
 
-zoned_time_parse_complete("2019-01-01 01:02:03-05:00[America/New_York]")
+zoned_time_parse_complete("2019-01-01T01:02:03-05:00[America/New_York]")
 
 zoned_time_parse_complete(
   "January 21, 2019 -0500 America/New_York",
@@ -307,14 +311,14 @@ year_month_day(2019, 1, 1, 1, 2, 3) \%>\%
   as_zoned_time("America/New_York")
 
 # So the following would not parse correctly
-zoned_time_parse_complete("2019-01-01 01:02:03-04:00[America/New_York]")
+zoned_time_parse_complete("2019-01-01T01:02:03-04:00[America/New_York]")
 
 # `\%z` is useful for breaking ties in otherwise ambiguous times. For example,
 # these two times are on either side of a daylight saving time fallback.
 # Without the `\%z` offset, you wouldn't be able to tell them apart!
 x <- c(
-  "1970-10-25 01:30:00-04:00[America/New_York]",
-  "1970-10-25 01:30:00-05:00[America/New_York]"
+  "1970-10-25T01:30:00-04:00[America/New_York]",
+  "1970-10-25T01:30:00-05:00[America/New_York]"
 )
 
 zoned_time_parse_complete(x)

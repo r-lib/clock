@@ -74,6 +74,34 @@
 
     [1] "yqd<Jan><day>"
 
+# default formats are correct
+
+    Code
+      format(year_quarter_day(2019))
+    Output
+      [1] "2019"
+
+---
+
+    Code
+      format(year_quarter_day(2019, 1))
+    Output
+      [1] "2019-Q1"
+
+---
+
+    Code
+      format(year_quarter_day(2019, 1, 1, 1))
+    Output
+      [1] "2019-Q1-01T01"
+
+---
+
+    Code
+      format(year_quarter_day(2019, 1, 1, 1, 2, 3, 50, subsecond_precision = "microsecond"))
+    Output
+      [1] "2019-Q1-01T01:02:03.000050"
+
 # only granular precisions are allowed
 
     `from` must be 'year' or 'quarter' precision.

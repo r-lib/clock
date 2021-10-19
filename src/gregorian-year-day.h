@@ -475,7 +475,7 @@ std::ostringstream&
 yydh::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
   yyd::stream(os, i);
-  os << ' ';
+  os << 'T';
   rclock::detail::stream_hour(os, hour_[i]);
   return os;
 }

@@ -168,6 +168,13 @@ vec_ptype_abbr.clock_year_month_day <- function(x, ...) {
 #' The default options assume `x` should be parsed at day precision, using a
 #' `format` string of `"%Y-%m-%d"`.
 #'
+#' If a more precise precision than day is used, then time components will also
+#' be parsed. The default format separates date and time components by a `"T"`
+#' and the time components by a `":"`. For example, setting the precision to
+#' `"second"` will use a default format of `"%Y-%m-%dT%H:%M:%S"`. This is
+#' aligned with the [format()] method for year-month-day, and with the RFC 3339
+#' standard.
+#'
 #' @details
 #' `year_month_day_parse()` completely ignores the `%z` and `%Z` commands.
 #'
@@ -220,7 +227,7 @@ vec_ptype_abbr.clock_year_month_day <- function(x, ...) {
 #'
 #' # Can parse with time of day
 #' year_month_day_parse(
-#'   "2019-01-30 02:30:00.123456789",
+#'   "2019-01-30T02:30:00.123456789",
 #'   precision = "nanosecond"
 #' )
 #'
@@ -293,12 +300,12 @@ year_month_day_format <- function(precision) {
     year = "%Y",
     month = "%Y-%m",
     day = "%Y-%m-%d",
-    hour = "%Y-%m-%d %H",
-    minute = "%Y-%m-%d %H:%M",
+    hour = "%Y-%m-%dT%H",
+    minute = "%Y-%m-%dT%H:%M",
     second = ,
     millisecond = ,
     microsecond = ,
-    nanosecond = "%Y-%m-%d %H:%M:%S",
+    nanosecond = "%Y-%m-%dT%H:%M:%S",
     abort("Internal error: Unknown precision.")
   )
 }

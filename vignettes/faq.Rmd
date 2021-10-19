@@ -86,7 +86,7 @@ odd_dates %>%
 If you have a zoned-time, such as:
 
 ```{r}
-x <- zoned_time_parse_complete("1970-04-26 01:30:00-05:00[America/New_York]")
+x <- zoned_time_parse_complete("1970-04-26T01:30:00-05:00[America/New_York]")
 x
 ```
 
@@ -250,7 +250,7 @@ Because of these issues, clock treats POSIXct as a second precision data type, d
 
 ```{r}
 naive_time_parse(
-  c("2019-01-01 01:00:00.1", "2019-01-01 01:00:00.3"), 
+  c("2019-01-01T01:00:00.1", "2019-01-01T01:00:00.3"), 
   precision = "millisecond"
 ) %>%
   as_zoned_time("America/New_York")

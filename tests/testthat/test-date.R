@@ -37,7 +37,7 @@ test_that("can convert naive-time -> Date", {
 })
 
 test_that("can convert zoned-time -> Date", {
-  x <- as_zoned_time(naive_time_parse("2019-01-01 23:02:03"), "America/New_York")
+  x <- as_zoned_time(naive_time_parse("2019-01-01T23:02:03"), "America/New_York")
   expect <- date_parse("2019-01-01")
   expect_identical(as_date(x), expect)
 })
@@ -57,7 +57,7 @@ test_that("conversion from zoned-time uses naive-time as an intermediate", {
 })
 
 test_that("casting to Date floors components more precise than days (#205)", {
-  x <- naive_time_parse("1969-01-01 13", precision = "hour")
+  x <- naive_time_parse("1969-01-01T13", precision = "hour")
 
   expect_identical(
     as.Date(x),
@@ -118,11 +118,11 @@ test_that("can resolve ambiguous midnight issues", {
 
   expect_identical(
     as_zoned_time(x, zone, ambiguous = "earliest"),
-    zoned_time_parse_complete("2021-10-29 00:00:00+03:00[Asia/Amman]")
+    zoned_time_parse_complete("2021-10-29T00:00:00+03:00[Asia/Amman]")
   )
   expect_identical(
     as_zoned_time(x, zone, ambiguous = "latest"),
-    zoned_time_parse_complete("2021-10-29 00:00:00+02:00[Asia/Amman]")
+    zoned_time_parse_complete("2021-10-29T00:00:00+02:00[Asia/Amman]")
   )
 })
 

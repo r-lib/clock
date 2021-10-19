@@ -214,6 +214,13 @@ returned.
 
 The default options assume \code{x} should be parsed at day precision, using a
 \code{format} string of \code{"\%Y-\%m-\%d"}.
+
+If a more precise precision than day is used, then time components will also
+be parsed. The default format separates date and time components by a \code{"T"}
+and the time components by a \code{":"}. For example, setting the precision to
+\code{"second"} will use a default format of \code{"\%Y-\%m-\%dT\%H:\%M:\%S"}. This is
+aligned with the \code{\link[=format]{format()}} method for year-month-day, and with the RFC 3339
+standard.
 }
 \details{
 \code{year_month_day_parse()} completely ignores the \verb{\%z} and \verb{\%Z} commands.
@@ -246,7 +253,7 @@ year_month_day_parse(format(invalid))
 
 # Can parse with time of day
 year_month_day_parse(
-  "2019-01-30 02:30:00.123456789",
+  "2019-01-30T02:30:00.123456789",
   precision = "nanosecond"
 )
 

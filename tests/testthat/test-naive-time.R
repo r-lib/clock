@@ -107,7 +107,7 @@ test_that("as.character() works", {
   expect_identical(as.character(x), "2019-01-01")
 
   x <- as_naive_time(year_month_day(2019, 1, 1, 1, 1))
-  expect_identical(as.character(x), "2019-01-01 01:01")
+  expect_identical(as.character(x), "2019-01-01T01:01")
 })
 
 # ------------------------------------------------------------------------------
@@ -123,7 +123,7 @@ test_that("can parse day precision", {
 })
 
 test_that("can parse second precision", {
-  x <- c("2019-01-01 00:00:05", "2019-01-31 00:00:10")
+  x <- c("2019-01-01T00:00:05", "2019-01-31T00:00:10")
 
   expect_identical(
     naive_time_parse(x, precision = "second"),
@@ -132,9 +132,9 @@ test_that("can parse second precision", {
 })
 
 test_that("can parse subsecond precision", {
-  x <- c("2019-01-01 00:00:05.123", "2019-01-31 00:00:10.124")
-  y <- c("2019-01-01 00:00:05.12345", "2019-01-31 00:00:10.124567")
-  z <- c("2019-01-01 00:00:05.12345678", "2019-01-31 00:00:10.124567899")
+  x <- c("2019-01-01T00:00:05.123", "2019-01-31T00:00:10.124")
+  y <- c("2019-01-01T00:00:05.12345", "2019-01-31T00:00:10.124567")
+  z <- c("2019-01-01T00:00:05.12345678", "2019-01-31T00:00:10.124567899")
 
   sec <- year_month_day(2019, 1, c(1, 31), 00, 00, c(05, 10))
 
@@ -154,14 +154,14 @@ test_that("can parse subsecond precision", {
 
 test_that("parsing works if `precision` uses a default that doesn't attempt to capture all the info", {
   # Uses %Y-%m-%d
-  x <- "2019-01-01 01:00:00"
+  x <- "2019-01-01T01:00:00"
   expect_identical(
     naive_time_parse(x, precision = "day"),
     as_naive_time(year_month_day(2019, 1, 1))
   )
 
-  # Uses %Y-%m-%d %H:%M
-  x <- "2019-01-01 01:00:59"
+  # Uses %Y-%m-%dT%H:%M
+  x <- "2019-01-01T01:00:59"
   expect_identical(
     naive_time_parse(x, precision = "minute"),
     as_naive_time(year_month_day(2019, 1, 1, 1, 0))
@@ -223,7 +223,7 @@ test_that("names of input are kept", {
 
 test_that("can use a different locale", {
   x <- "janvier 01, 2019"
-  y <- "2019-01-01 00:00:00,123456"
+  y <- "2019-01-01T00:00:00,123456"
 
   expect_identical(
     naive_time_parse(x, format = "%B %d, %Y", precision = "day", locale = clock_locale("fr")),
@@ -319,6 +319,10 @@ test_that("parsing fails when undocumented rounding behavior would result in inv
 
 # ------------------------------------------------------------------------------
 # format()
+
+test_that("default format is correct", {
+  expect_snapshot(format(naive_seconds(0)))
+})
 
 test_that("`%Z` generates format warnings (#204)", {
   x <- naive_seconds(0)

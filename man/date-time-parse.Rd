@@ -281,20 +281,24 @@ explicitly with the \code{nonexistent} and \code{ambiguous} arguments.
 \code{date_time_parse()} completely ignores the \verb{\%z} and \verb{\%Z} commands. The only
 time zone specific information that is used is the \code{zone}.
 
-The default \code{format} used is \code{"\%Y-\%m-\%d \%H:\%M:\%S"}.
+The default \code{format} used is \code{"\%Y-\%m-\%d \%H:\%M:\%S"}. This matches the default
+result from calling \code{format()} on a POSIXct date-time.
 }
 
 \subsection{date_time_parse_complete()}{
 
 \code{date_time_parse_complete()} is a parser for \emph{complete} date-time strings,
-like \code{"2019-01-01 00:00:00-05:00[America/New_York]"}. A complete date-time
+like \code{"2019-01-01T00:00:00-05:00[America/New_York]"}. A complete date-time
 string has both the time zone offset and full time zone name in the string,
 which is the only way for the string itself to contain all of the information
-required to construct a zoned-time. Because of this,
+required to unambiguously construct a zoned-time. Because of this,
 \code{date_time_parse_complete()} requires both the \verb{\%z} and \verb{\%Z} commands to be
 supplied in the \code{format} string.
 
-The default \code{format} used is \code{"\%Y-\%m-\%d \%H:\%M:\%S\%Ez[\%Z]"}.
+The default \code{format} used is \code{"\%Y-\%m-\%dT\%H:\%M:\%S\%Ez[\%Z]"}. This matches the
+default result from calling \code{date_format()} on a POSIXct date-time.
+Additionally, this format matches the de-facto standard extension to RFC 3339
+for creating completely unambiguous date-times.
 }
 
 \subsection{date_time_parse_abbrev()}{
@@ -312,7 +316,9 @@ the time zone abbreviation rather than the full time zone name.
 If used, the \verb{\%z} command must parse correctly, but its value will be
 completely ignored.
 
-The default \code{format} used is \code{"\%Y-\%m-\%d \%H:\%M:\%S \%Z"}.
+The default \code{format} used is \code{"\%Y-\%m-\%d \%H:\%M:\%S \%Z"}. This matches the
+default result from calling \code{print()} or \code{format(usetz = TRUE)} on a POSIXct
+date-time.
 }
 }
 \details{
@@ -338,7 +344,7 @@ date_time_parse("2020-01-01 05:06:07", "America/New_York")
 # Same time as above, except this is a completely unambiguous parse that
 # doesn't require a `zone` argument, because the zone name and offset are
 # both present in the string
-date_time_parse_complete("2020-01-01 05:06:07-05:00[America/New_York]")
+date_time_parse_complete("2020-01-01T05:06:07-05:00[America/New_York]")
 
 # Only day components
 date_time_parse("2020-01-01", "America/New_York", format = "\%Y-\%m-\%d")
@@ -365,8 +371,8 @@ date_time_parse(ambiguous_time, "America/New_York", ambiguous = "latest")
 # that the offset and zone name are both in the string, which resolves
 # the ambiguity
 complete_times <- c(
-  "1970-10-25 01:00:00-04:00[America/New_York]",
-  "1970-10-25 01:00:00-05:00[America/New_York]"
+  "1970-10-25T01:00:00-04:00[America/New_York]",
+  "1970-10-25T01:00:00-05:00[America/New_York]"
 )
 date_time_parse_complete(complete_times)
 
@@ -385,7 +391,7 @@ date_time_parse_abbrev(abbrev_times, "America/New_York")
 # seconds, first parse them into a clock type that can handle sub-seconds to
 # fully capture that information, then round using whatever convention is
 # required for your use case before converting to a date-time.
-x <- c("2019-01-01 00:00:01.1", "2019-01-01 00:00:01.78")
+x <- c("2019-01-01T00:00:01.1", "2019-01-01T00:00:01.78")
 
 x <- naive_time_parse(x, precision = "millisecond")
 x

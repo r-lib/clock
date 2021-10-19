@@ -639,7 +639,7 @@ std::ostringstream&
 ywnwdh::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 {
   ywnwd::stream(os, i);
-  os << ' ';
+  os << 'T';
   rclock::detail::stream_hour(os, hour_[i]);
   return os;
 }

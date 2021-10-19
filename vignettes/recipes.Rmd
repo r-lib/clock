@@ -34,7 +34,7 @@ Using `""` as the time zone string will try and use whatever R thinks your local
 ```{r, eval=FALSE}
 zoned_time_now("")
 #> <zoned_time<nanosecond><America/New_York (current)>[1]>
-#> [1] "2021-02-10 15:54:29.875011000-05:00"
+#> [1] "2021-02-10T15:54:29.875011000-05:00"
 ```
 
 ## The current time somewhere else
@@ -44,7 +44,7 @@ Pass a time zone name to `zoned_time_now()` to get the current time somewhere el
 ```{r, eval=FALSE}
 zoned_time_now("Asia/Shanghai")
 #> <zoned_time<nanosecond><Asia/Shanghai>[1]>
-#> [1] "2021-02-11 04:54:29.875011000+08:00"
+#> [1] "2021-02-11T04:54:29.875011000+08:00"
 ```
 
 ## Set a meeting across time zones
@@ -483,7 +483,7 @@ If you _don't_ know what time zone this abbreviation goes with, then generally y
 Assuming that `x` is a naive-time with its corresponding time zone abbreviation attached, the first thing to do is to parse this string as a naive-time.
 
 ```{r}
-x <- naive_time_parse(x)
+x <- naive_time_parse(x, format = "%Y-%m-%d %H:%M:%S IST")
 x
 ```
 
@@ -569,7 +569,7 @@ as_zoned_time(x, "Asia/Jerusalem", ambiguous = "latest")
 Given a particular zoned-time, when will it next be affected by daylight saving time? For this, we can use a relatively low level helper, `sys_time_info()`. It returns a data frame of information about the current daylight saving time transition points, along with information about the offset, the current time zone abbreviation, and whether or not daylight saving time is currently active or not.
 
 ```{r}
-x <- zoned_time_parse_complete("2019-01-01 00:00:00-05:00[America/New_York]")
+x <- zoned_time_parse_complete("2019-01-01T00:00:00-05:00[America/New_York]")
 
 info <- sys_time_info(as_sys_time(x), zoned_time_zone(x))
 

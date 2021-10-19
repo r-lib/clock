@@ -187,7 +187,8 @@ A Date.
 \description{
 \code{date_parse()} parses strings into a Date.
 
-The default \code{format} used is \code{"\%Y-\%m-\%d"}.
+The default \code{format} used is \code{"\%Y-\%m-\%d"}. This matches the default
+result from calling \code{print()} or \code{format()} on a Date.
 }
 \details{
 \emph{\code{date_parse()} ignores both the \verb{\%z} and \verb{\%Z} commands,} as clock treats

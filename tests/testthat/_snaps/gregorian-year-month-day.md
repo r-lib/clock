@@ -78,6 +78,34 @@
 
     Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
 
+# default formats are correct
+
+    Code
+      format(year_month_day(2019))
+    Output
+      [1] "2019"
+
+---
+
+    Code
+      format(year_month_day(2019, 1))
+    Output
+      [1] "2019-01"
+
+---
+
+    Code
+      format(year_month_day(2019, 1, 1, 1))
+    Output
+      [1] "2019-01-01T01"
+
+---
+
+    Code
+      format(year_month_day(2019, 1, 1, 1, 2, 3, 50, subsecond_precision = "microsecond"))
+    Output
+      [1] "2019-01-01T01:02:03.000050"
+
 # failure to parse results in a warning
 
     Code

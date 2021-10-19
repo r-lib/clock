@@ -117,7 +117,7 @@ You have three options when parsing date-times:
 
 - With strings like `"2020-01-01 01:02:03"` where there is no time zone offset or full (not abbreviated!) time zone name, use `date_time_parse()`.
 
-- With strings like `"2020-01-01 01:02:03-05:00[America/New_York]"` where there is both a time zone offset and time zone name present in the string, use `date_time_parse_complete()`.
+- With strings like `"2020-01-01T01:02:03-05:00[America/New_York]"` where there is both a time zone offset and time zone name present in the string, use `date_time_parse_complete()`.
 
 - With strings like `"2020-01-01 01:02:03 EST"` where there is a time zone abbreviation in the string, use `date_time_parse_abbrev()`.
 
@@ -156,10 +156,10 @@ date_time_parse("2020-11-01 01:30:00", zone, ambiguous = "latest")
 
 `date_time_parse_complete()` doesn't have a `zone` argument, and doesn't require `ambiguous` or `nonexistent` arguments, since it assumes that the string you are providing is completely unambiguous. The only way this is possible is by having both a time zone offset, specified by `%z`, and a full time zone name, specified by `%Z`, in the string.
 
-The following is an example of an "extended" ISO 8601 format used by Java 8's time library to specify complete date-time strings. This is something that `date_time_parse_complete()` can parse. The default format string follows this extended format, and is `"%Y-%m-%d %H:%M:%S%z[%Z]"`.
+The following is an example of an "extended" RFC 3339 format used by Java 8's time library to specify complete date-time strings. This is something that `date_time_parse_complete()` can parse. The default format string follows this extended format, and is `"%Y-%m-%dT%H:%M:%S%z[%Z]"`.
 
 ```{r}
-x <- "2020-01-01 01:02:03-05:00[America/New_York]"
+x <- "2020-01-01T01:02:03-05:00[America/New_York]"
 
 date_time_parse_complete(x)
 ```

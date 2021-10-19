@@ -40,9 +40,10 @@ zoned_time_precision_attribute <- function(x) {
 #' This function allows you to format a zoned-time using a flexible `format`
 #' string.
 #'
-#' If `format` is `NULL`, a default format of `"%Y-%m-%d %H:%M:%S%Ez[%Z]"` is
-#' used. This maximizes the chance for constructing a string that can be
-#' reproducibly parsed into a valid zoned-time.
+#' If `format` is `NULL`, a default format of `"%Y-%m-%dT%H:%M:%S%Ez[%Z]"` is
+#' used. This matches the default format that [zoned_time_parse_complete()]
+#' parses. Additionally, this format matches the de-facto standard extension to
+#' RFC 3339 for creating completely unambiguous date-times.
 #'
 #' @param x `[clock_zoned_time]`
 #'
@@ -241,9 +242,9 @@ zoned_time_print_zone_name <- function(..., print_zone_name = TRUE) {
 }
 zoned_time_format <- function(print_zone_name) {
   if (print_zone_name) {
-    "%Y-%m-%d %H:%M:%S%Ez[%Z]"
+    "%Y-%m-%dT%H:%M:%S%Ez[%Z]"
   } else {
-    "%Y-%m-%d %H:%M:%S%Ez"
+    "%Y-%m-%dT%H:%M:%S%Ez"
   }
 }
 
@@ -258,7 +259,7 @@ zoned_time_format <- function(print_zone_name) {
 #' ## zoned_time_parse_complete()
 #'
 #' `zoned_time_parse_complete()` is a parser for _complete_ date-time strings,
-#' like `"2019-01-01 00:00:00-05:00[America/New_York]"`. A complete date-time
+#' like `"2019-01-01T00:00:00-05:00[America/New_York]"`. A complete date-time
 #' string has both the time zone offset and full time zone name in the string,
 #' which is the only way for the string itself to contain all of the information
 #' required to construct a zoned-time. Because of this,
@@ -266,7 +267,10 @@ zoned_time_format <- function(print_zone_name) {
 #' supplied in the `format` string.
 #'
 #' The default options assume that `x` should be parsed at second precision,
-#' using a `format` string of `"%Y-%m-%d %H:%M:%S%Ez[%Z]"`.
+#' using a `format` string of `"%Y-%m-%dT%H:%M:%S%Ez[%Z]"`. This matches the
+#' default result from calling `format()` on a zoned-time. Additionally, this
+#' format matches the de-facto standard extension to RFC 3339 for creating
+#' completely unambiguous date-times.
 #'
 #' ## zoned_time_parse_abbrev()
 #'
@@ -284,8 +288,9 @@ zoned_time_format <- function(print_zone_name) {
 #' completely ignored.
 #'
 #' The default options assume that `x` should be parsed at second precision,
-#' using a `format` string of `"%Y-%m-%d %H:%M:%S %Z"`. This default format
-#' generally matches what R prints out by default for POSIXct objects.
+#' using a `format` string of `"%Y-%m-%d %H:%M:%S %Z"`. This matches the default
+#' result from calling `print()` or `format(usetz = TRUE)` on a POSIXct
+#' date-time.
 #'
 #' @details
 #' If `zoned_time_parse_complete()` is given input that is length zero, all
@@ -519,7 +524,7 @@ zoned_time_format <- function(print_zone_name) {
 #' @examples
 #' library(magrittr)
 #'
-#' zoned_time_parse_complete("2019-01-01 01:02:03-05:00[America/New_York]")
+#' zoned_time_parse_complete("2019-01-01T01:02:03-05:00[America/New_York]")
 #'
 #' zoned_time_parse_complete(
 #'   "January 21, 2019 -0500 America/New_York",
@@ -543,14 +548,14 @@ zoned_time_format <- function(print_zone_name) {
 #'   as_zoned_time("America/New_York")
 #'
 #' # So the following would not parse correctly
-#' zoned_time_parse_complete("2019-01-01 01:02:03-04:00[America/New_York]")
+#' zoned_time_parse_complete("2019-01-01T01:02:03-04:00[America/New_York]")
 #'
 #' # `%z` is useful for breaking ties in otherwise ambiguous times. For example,
 #' # these two times are on either side of a daylight saving time fallback.
 #' # Without the `%z` offset, you wouldn't be able to tell them apart!
 #' x <- c(
-#'   "1970-10-25 01:30:00-04:00[America/New_York]",
-#'   "1970-10-25 01:30:00-05:00[America/New_York]"
+#'   "1970-10-25T01:30:00-04:00[America/New_York]",
+#'   "1970-10-25T01:30:00-05:00[America/New_York]"
 #' )
 #'
 #' zoned_time_parse_complete(x)

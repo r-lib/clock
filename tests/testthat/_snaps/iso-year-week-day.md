@@ -66,6 +66,34 @@
 
     [1] "iso_ywd<week>"
 
+# default formats are correct
+
+    Code
+      format(iso_year_week_day(2019))
+    Output
+      [1] "2019"
+
+---
+
+    Code
+      format(iso_year_week_day(2019, 1))
+    Output
+      [1] "2019-W01"
+
+---
+
+    Code
+      format(iso_year_week_day(2019, 1, 1, 1))
+    Output
+      [1] "2019-W01-1T01"
+
+---
+
+    Code
+      format(iso_year_week_day(2019, 1, 1, 1, 2, 3, 50, subsecond_precision = "microsecond"))
+    Output
+      [1] "2019-W01-1T01:02:03.000050"
+
 # only year precision is allowed
 
     `from` must be 'year' precision.

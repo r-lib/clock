@@ -150,10 +150,10 @@ This is a POSIXct method for the \code{\link[=date_format]{date_format()}} gener
 
 \code{date_format()} formats a date-time (POSIXct) using a \code{format} string.
 
-If \code{format} is \code{NULL}, a default format of \code{"\%Y-\%m-\%d \%H:\%M:\%S\%Ez[\%Z]"} is
-used. This maximizes the chance for constructing a string that can be
-reproducibly parsed into a valid date-time using
-\code{\link[=date_time_parse_complete]{date_time_parse_complete()}}.
+If \code{format} is \code{NULL}, a default format of \code{"\%Y-\%m-\%dT\%H:\%M:\%S\%Ez[\%Z]"} is
+used. This matches the default format that \code{\link[=date_time_parse_complete]{date_time_parse_complete()}}
+parses. Additionally, this format matches the de-facto standard extension to
+RFC 3339 for creating completely unambiguous date-times.
 }
 \examples{
 x <- date_time_parse(
@@ -163,6 +163,9 @@ x <- date_time_parse(
 
 # Default
 date_format(x)
+
+# Which is parseable by `date_time_parse_complete()`
+date_time_parse_complete(date_format(x))
 
 date_format(x, format = "\%B \%d, \%Y \%H:\%M:\%S")
 
