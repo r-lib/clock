@@ -82,6 +82,34 @@
 
     [1] "ymw<day>"
 
+# default formats are correct
+
+    Code
+      format(year_month_weekday(2019))
+    Output
+      [1] "2019"
+
+---
+
+    Code
+      format(year_month_weekday(2019, 1))
+    Output
+      [1] "2019-01"
+
+---
+
+    Code
+      format(year_month_weekday(2019, 1, 1, 2, 1))
+    Output
+      [1] "2019-01-Sun[2]T01"
+
+---
+
+    Code
+      format(year_month_weekday(2019, 1, 1, 2, 1, 2, 3, 50, subsecond_precision = "microsecond"))
+    Output
+      [1] "2019-01-Sun[2]T01:02:03.000050"
+
 # can't compute start with a year_month_weekday at day precision or greater
 
     Computing the start of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
