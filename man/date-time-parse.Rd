@@ -5,6 +5,7 @@
 \alias{date_time_parse}
 \alias{date_time_parse_complete}
 \alias{date_time_parse_abbrev}
+\alias{date_time_parse_RFC_3339}
 \title{Parsing: date-time}
 \usage{
 date_time_parse(
@@ -20,6 +21,8 @@ date_time_parse(
 date_time_parse_complete(x, ..., format = NULL, locale = clock_locale())
 
 date_time_parse_abbrev(x, zone, ..., format = NULL, locale = clock_locale())
+
+date_time_parse_RFC_3339(x, ..., separator = "T", offset = "Z")
 }
 \arguments{
 \item{x}{\verb{[character]}
@@ -259,14 +262,33 @@ zoned_time on its own, as this implies \code{NULL} for ambiguous times that the
 zoned_time cannot resolve. Instead, it must be specified as a list
 alongside an ambiguous time resolution strategy as described above. This is
 a convenient way to make production code robust to ambiguous times.}
+
+\item{separator}{\verb{[character(1)]}
+
+The separator between the date and time components of the string. One of:
+\itemize{
+\item \code{"T"}
+\item \code{"t"}
+\item \code{" "}
+}}
+
+\item{offset}{\verb{[character(1)]}
+
+The format of the offset from UTC contained in the string. One of:
+\itemize{
+\item \code{"Z"}
+\item \code{"z"}
+\item \code{"\%z"} to parse a numeric offset of the form \code{"+0430"}
+\item \code{"\%Ez"} to parse a numeric offset of the form \code{"+04:30"}
+}}
 }
 \value{
 A POSIXct.
 }
 \description{
-There are three parsers for parsing strings into POSIXct date-times,
-\code{date_time_parse()}, \code{date_time_parse_complete()}, and
-\code{date_time_parse_abbrev()}.
+There are four parsers for parsing strings into POSIXct date-times,
+\code{date_time_parse()}, \code{date_time_parse_complete()},
+\code{date_time_parse_abbrev()}, and \code{date_time_parse_RFC_3339()}.
 \subsection{date_time_parse()}{
 
 \code{date_time_parse()} is useful for strings like \code{"2019-01-01 00:00:00"}, where
@@ -319,6 +341,36 @@ completely ignored.
 The default \code{format} used is \code{"\%Y-\%m-\%d \%H:\%M:\%S \%Z"}. This matches the
 default result from calling \code{print()} or \code{format(usetz = TRUE)} on a POSIXct
 date-time.
+}
+
+\subsection{date_time_parse_RFC_3339()}{
+
+\code{date_time_parse_RFC_3339()} is a parser for date-time strings in the
+extremely common date-time format outlined by \href{https://datatracker.ietf.org/doc/html/rfc3339}{RFC 3339}. This document outlines
+a profile of the ISO 8601 format that is even more restrictive, but
+corresponds to the most common formats that are likely to be used in
+internet protocols (i.e. through APIs).
+
+In particular, this function is intended to parse the following three
+formats:\preformatted{2019-01-01T00:00:00Z
+2019-01-01T00:00:00+0430
+2019-01-01T00:00:00+04:30
+}
+
+This function defaults to parsing the first of these formats by using
+a format string of \code{"\%Y-\%m-\%dT\%H:\%M:\%SZ"}.
+
+If your date-time strings use offsets from UTC rather than \code{"Z"}, then set
+\code{offset} to one of the following:
+\itemize{
+\item \code{"\%z"} if the offset is of the form \code{"+0430"}.
+\item \code{"\%Ez"} if the offset is of the form \code{"+04:30"}.
+}
+
+The RFC 3339 standard allows for replacing the \code{"T"} with a \code{"t"} or a space
+(\code{" "}). Set \code{separator} to adjust this as needed.
+
+The date-times returned by this function will always be in the UTC time zone.
 }
 }
 \details{
@@ -383,6 +435,21 @@ abbrev_times <- c(
   "1970-10-25 01:00:00 EST"
 )
 date_time_parse_abbrev(abbrev_times, "America/New_York")
+
+# ---------------------------------------------------------------------------
+# RFC 3339
+
+# Typical UTC format
+x <- "2019-01-01T00:01:02Z"
+date_time_parse_RFC_3339(x)
+
+# With a UTC offset containing a `:`
+x <- "2019-01-01T00:01:02+02:30"
+date_time_parse_RFC_3339(x, offset = "\%Ez")
+
+# With a space between the date and time and no `:` in the offset
+x <- "2019-01-01 00:01:02+0230"
+date_time_parse_RFC_3339(x, separator = " ", offset = "\%Ez")
 
 # ---------------------------------------------------------------------------
 # Sub-second components

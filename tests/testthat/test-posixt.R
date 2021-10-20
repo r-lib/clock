@@ -399,6 +399,33 @@ test_that("abbrev - throws warning on failed parses", {
 })
 
 # ------------------------------------------------------------------------------
+# date_time_parse_RFC_3339()
+
+test_that("can parse default RFC 3339 format", {
+  x <- "2019-01-01T00:00:01Z"
+  expect_identical(
+    date_time_parse_RFC_3339(x),
+    date_time_build(2019, 1, 1, 0, 0, 1, zone = "UTC")
+  )
+})
+
+test_that("`offset` is passed through", {
+  x <- "2019-01-01T00:00:01-03:30"
+  expect_identical(
+    date_time_parse_RFC_3339(x, offset = "%Ez"),
+    as_date_time(sys_time_parse_RFC_3339(x, offset = "%Ez"), zone = "UTC")
+  )
+})
+
+test_that("`separator` is passed through", {
+  x <- "2019-01-01 00:00:01Z"
+  expect_identical(
+    date_time_parse_RFC_3339(x, separator = " "),
+    as_date_time(sys_time_parse_RFC_3339(x, separator = " "), zone = "UTC")
+  )
+})
+
+# ------------------------------------------------------------------------------
 # date_shift()
 
 test_that("can shift date times", {
