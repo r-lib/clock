@@ -162,6 +162,7 @@
 <a href="#clock-development-version" class="anchor"></a>clock (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>New <code><a href="../reference/date-time-parse.html">date_time_parse_RFC_3339()</a></code> and <code><a href="../reference/sys-parsing.html">sys_time_parse_RFC_3339()</a></code> for parsing date-time strings in the <a href="https://datatracker.ietf.org/doc/html/rfc3339">RFC 3339</a> format. This format is a subset of ISO 8601 representing the most common date-time formats seen in internet protocols, and is particularly useful for parsing date-time strings returned by an API. The default format parses strings like <code>"2019-01-01T01:02:03Z"</code> but can be adjusted to parse a numeric offset from UTC with the <code>offset</code> argument, which can parse strings like <code>"2019-01-01T01:02:03-04:30"</code> (<a href='https://github.com/r-lib/clock/issues/254'>#254</a>).</p></li>
 <li>
 <p>To align more with RFC 3339 and ISO 8601 standards, the default formats used in many of the date formatting and parsing functions have been slightly altered. The following changes have been made:</p>
 <ul>
@@ -176,7 +177,7 @@
 <p>Sys-times:</p>
 <ul>
 <li><p><code><a href="https://rdrr.io/r/base/format.html">format()</a></code> and <code><a href="https://rdrr.io/r/base/character.html">as.character()</a></code> now print a <code>T</code> between the date and time.</p></li>
-<li><p><code><a href="../reference/sys_time_parse.html">sys_time_parse()</a></code> now expects a <code>T</code> between the date and time by default.</p></li>
+<li><p><code><a href="../reference/sys-parsing.html">sys_time_parse()</a></code> now expects a <code>T</code> between the date and time by default.</p></li>
 </ul>
 </li>
 <li>

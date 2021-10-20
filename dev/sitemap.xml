@@ -301,13 +301,13 @@
     <loc>https://clock.r-lib.org/reference/seq.clock_year_quarter_day.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/sys-parsing.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/sys_time_info.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/sys_time_now.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/reference/sys_time_parse.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/time-point-arithmetic.html</loc>

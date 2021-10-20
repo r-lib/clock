@@ -47,9 +47,9 @@
 
 
 <meta property="og:title" content="Parsing: date-time — date-time-parse" />
-<meta property="og:description" content="There are three parsers for parsing strings into POSIXct date-times,
-date_time_parse(), date_time_parse_complete(), and
-date_time_parse_abbrev().date_time_parse()
+<meta property="og:description" content="There are four parsers for parsing strings into POSIXct date-times,
+date_time_parse(), date_time_parse_complete(),
+date_time_parse_abbrev(), and date_time_parse_RFC_3339().date_time_parse()
 
 
 date_time_parse() is useful for strings like &quot;2019-01-01 00:00:00&quot;, where
@@ -95,6 +95,32 @@ completely ignored.
 The default format used is &quot;%Y-%m-%d %H:%M:%S %Z&quot;. This matches the
 default result from calling print() or format(usetz = TRUE) on a POSIXct
 date-time.
+
+date_time_parse_RFC_3339()
+
+
+date_time_parse_RFC_3339() is a parser for date-time strings in the
+extremely common date-time format outlined by RFC 3339. This document outlines
+a profile of the ISO 8601 format that is even more restrictive, but
+corresponds to the most common formats that are likely to be used in
+internet protocols (i.e. through APIs).
+In particular, this function is intended to parse the following three
+formats:2019-01-01T00:00:00Z
+2019-01-01T00:00:00+0430
+2019-01-01T00:00:00+04:30
+
+
+This function defaults to parsing the first of these formats by using
+a format string of &quot;%Y-%m-%dT%H:%M:%SZ&quot;.
+If your date-time strings use offsets from UTC rather than &quot;Z&quot;, then set
+offset to one of the following:
+&quot;%z&quot; if the offset is of the form &quot;+0430&quot;.
+&quot;%Ez&quot; if the offset is of the form &quot;+04:30&quot;.
+
+
+The RFC 3339 standard allows for replacing the &quot;T&quot; with a &quot;t&quot; or a space
+(&quot; &quot;). Set separator to adjust this as needed.
+The date-times returned by this function will always be in the UTC time zone.
 " />
 <meta property="og:image" content="https://clock.r-lib.org/logo.png" />
 
@@ -208,9 +234,9 @@ date-time.
     </div>
 
     <div class="ref-description">
-    <p>There are three parsers for parsing strings into POSIXct date-times,
-<code>date_time_parse()</code>, <code>date_time_parse_complete()</code>, and
-<code>date_time_parse_abbrev()</code>.</p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>date_time_parse()</h3>
+    <p>There are four parsers for parsing strings into POSIXct date-times,
+<code>date_time_parse()</code>, <code>date_time_parse_complete()</code>,
+<code>date_time_parse_abbrev()</code>, and <code>date_time_parse_RFC_3339()</code>.</p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>date_time_parse()</h3>
 
 
 <p><code>date_time_parse()</code> is useful for strings like <code>"2019-01-01 00:00:00"</code>, where
@@ -257,6 +283,32 @@ completely ignored.</p>
 default result from calling <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code> or <code><a href='https://rdrr.io/r/base/format.html'>format(usetz = TRUE)</a></code> on a POSIXct
 date-time.</p>
 
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>date_time_parse_RFC_3339()</h3>
+
+
+<p><code>date_time_parse_RFC_3339()</code> is a parser for date-time strings in the
+extremely common date-time format outlined by <a href='https://datatracker.ietf.org/doc/html/rfc3339'>RFC 3339</a>. This document outlines
+a profile of the ISO 8601 format that is even more restrictive, but
+corresponds to the most common formats that are likely to be used in
+internet protocols (i.e. through APIs).</p>
+<p>In particular, this function is intended to parse the following three
+formats:</p><pre>2019-01-01T00:00:00Z
+2019-01-01T00:00:00+0430
+2019-01-01T00:00:00+04:30
+</pre>
+
+<p>This function defaults to parsing the first of these formats by using
+a format string of <code>"%Y-%m-%dT%H:%M:%SZ"</code>.</p>
+<p>If your date-time strings use offsets from UTC rather than <code>"Z"</code>, then set
+<code>offset</code> to one of the following:</p><ul>
+<li><p><code>"%z"</code> if the offset is of the form <code>"+0430"</code>.</p></li>
+<li><p><code>"%Ez"</code> if the offset is of the form <code>"+04:30"</code>.</p></li>
+</ul>
+
+<p>The RFC 3339 standard allows for replacing the <code>"T"</code> with a <code>"t"</code> or a space
+(<code>" "</code>). Set <code>separator</code> to adjust this as needed.</p>
+<p>The date-times returned by this function will always be in the UTC time zone.</p>
+
     </div>
 
     <pre class="usage"><span class='fu'>date_time_parse</span><span class='op'>(</span>
@@ -271,7 +323,9 @@ date-time.</p>
 
 <span class='fu'>date_time_parse_complete</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, format <span class='op'>=</span> <span class='cn'>NULL</span>, locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>date_time_parse_abbrev</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>zone</span>, <span class='va'>...</span>, format <span class='op'>=</span> <span class='cn'>NULL</span>, locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
+<span class='fu'>date_time_parse_abbrev</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>zone</span>, <span class='va'>...</span>, format <span class='op'>=</span> <span class='cn'>NULL</span>, locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'>date_time_parse_RFC_3339</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, separator <span class='op'>=</span> <span class='st'>"T"</span>, offset <span class='op'>=</span> <span class='st'>"Z"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -502,6 +556,25 @@ zoned_time cannot resolve. Instead, it must be specified as a list
 alongside an ambiguous time resolution strategy as described above. This is
 a convenient way to make production code robust to ambiguous times.</p></td>
     </tr>
+    <tr>
+      <th>separator</th>
+      <td><p><code>[character(1)]</code></p>
+<p>The separator between the date and time components of the string. One of:</p><ul>
+<li><p><code>"T"</code></p></li>
+<li><p><code>"t"</code></p></li>
+<li><p><code>" "</code></p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>offset</th>
+      <td><p><code>[character(1)]</code></p>
+<p>The format of the offset from UTC contained in the string. One of:</p><ul>
+<li><p><code>"Z"</code></p></li>
+<li><p><code>"z"</code></p></li>
+<li><p><code>"%z"</code> to parse a numeric offset of the form <code>"+0430"</code></p></li>
+<li><p><code>"%Ez"</code> to parse a numeric offset of the form <code>"+04:30"</code></p></li>
+</ul></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -571,6 +644,21 @@ seconds are handled when converting to POSIXct.</p>
 <span class='op'>)</span>
 <span class='fu'>date_time_parse_abbrev</span><span class='op'>(</span><span class='va'>abbrev_times</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EDT" "1970-10-25 01:00:00 EST"</div><div class='input'>
+<span class='co'># ---------------------------------------------------------------------------</span>
+<span class='co'># RFC 3339</span>
+
+<span class='co'># Typical UTC format</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019-01-01T00:01:02Z"</span>
+<span class='fu'>date_time_parse_RFC_3339</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2019-01-01 00:01:02 UTC"</div><div class='input'>
+<span class='co'># With a UTC offset containing a `:`</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019-01-01T00:01:02+02:30"</span>
+<span class='fu'>date_time_parse_RFC_3339</span><span class='op'>(</span><span class='va'>x</span>, offset <span class='op'>=</span> <span class='st'>"%Ez"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2018-12-31 21:31:02 UTC"</div><div class='input'>
+<span class='co'># With a space between the date and time and no `:` in the offset</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019-01-01 00:01:02+0230"</span>
+<span class='fu'>date_time_parse_RFC_3339</span><span class='op'>(</span><span class='va'>x</span>, separator <span class='op'>=</span> <span class='st'>" "</span>, offset <span class='op'>=</span> <span class='st'>"%Ez"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2018-12-31 22:01:02 UTC"</div><div class='input'>
 <span class='co'># ---------------------------------------------------------------------------</span>
 <span class='co'># Sub-second components</span>
 
