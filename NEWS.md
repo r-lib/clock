@@ -1,5 +1,15 @@
 # clock (development version)
 
+* New `date_time_parse_RFC_3339()` and `sys_time_parse_RFC_3339()` for parsing
+  date-time strings in the
+  [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339) format. This format
+  is a subset of ISO 8601 representing the most common date-time formats seen in
+  internet protocols, and is particularly useful for parsing date-time strings
+  returned by an API. The default format parses strings like
+  `"2019-01-01T01:02:03Z"` but can be adjusted to parse a numeric offset from
+  UTC with the `offset` argument, which can parse strings like
+  `"2019-01-01T01:02:03-04:30"` (#254).
+
 * To align more with RFC 3339 and ISO 8601 standards, the default formats used
   in many of the date formatting and parsing functions have been slightly
   altered. The following changes have been made:
