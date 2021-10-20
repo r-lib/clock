@@ -142,7 +142,7 @@ reference:
   contents:
   - as_sys_time
   - is_sys_time
-  - sys_time_parse
+  - sys-parsing
   - sys_time_info
   - sys_time_now
 - subtitle: Naive-time
