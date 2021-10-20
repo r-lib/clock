@@ -3,6 +3,7 @@
 
 
 #include "cpp11/declarations.hpp"
+#include <R_ext/Visibility.h>
 
 // duration.cpp
 SEXP new_duration_from_fields(SEXP fields, const cpp11::integers& precision_int, SEXP names);
@@ -874,132 +875,6 @@ extern "C" SEXP _clock_zoned_time_parse_abbrev_cpp(SEXP x, SEXP zone, SEXP forma
 }
 
 extern "C" {
-/* .Call calls */
-extern SEXP _clock_as_iso_year_week_day_from_sys_time_cpp(SEXP, SEXP);
-extern SEXP _clock_as_sys_time_iso_year_week_day_cpp(SEXP, SEXP);
-extern SEXP _clock_as_sys_time_year_day_cpp(SEXP, SEXP);
-extern SEXP _clock_as_sys_time_year_month_day_cpp(SEXP, SEXP);
-extern SEXP _clock_as_sys_time_year_month_weekday_cpp(SEXP, SEXP);
-extern SEXP _clock_as_sys_time_year_quarter_day_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_as_year_day_from_sys_time_cpp(SEXP, SEXP);
-extern SEXP _clock_as_year_month_day_from_sys_time_cpp(SEXP, SEXP);
-extern SEXP _clock_as_year_month_weekday_from_sys_time_cpp(SEXP, SEXP);
-extern SEXP _clock_as_year_quarter_day_from_sys_time_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_as_zoned_sys_time_from_naive_time_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_as_zoned_sys_time_from_naive_time_with_reference_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_clock_init_utils();
-extern SEXP _clock_clock_rcrd_names(SEXP);
-extern SEXP _clock_clock_rcrd_proxy(SEXP);
-extern SEXP _clock_clock_rcrd_set_names(SEXP, SEXP);
-extern SEXP _clock_clock_to_string(SEXP);
-extern SEXP _clock_collect_iso_year_week_day_fields(SEXP, SEXP);
-extern SEXP _clock_collect_year_day_fields(SEXP, SEXP);
-extern SEXP _clock_collect_year_month_day_fields(SEXP, SEXP);
-extern SEXP _clock_collect_year_month_weekday_fields(SEXP, SEXP);
-extern SEXP _clock_collect_year_quarter_day_fields(SEXP, SEXP, SEXP);
-extern SEXP _clock_duration_abs_cpp(SEXP, SEXP);
-extern SEXP _clock_duration_as_double_cpp(SEXP, SEXP);
-extern SEXP _clock_duration_as_integer_cpp(SEXP, SEXP);
-extern SEXP _clock_duration_cast_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_duration_ceiling_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_duration_floor_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_duration_has_common_precision_cpp(SEXP, SEXP);
-extern SEXP _clock_duration_helper_cpp(SEXP, SEXP);
-extern SEXP _clock_duration_minus_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_duration_modulus_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_duration_plus_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_duration_precision_common_cpp(SEXP, SEXP);
-extern SEXP _clock_duration_restore(SEXP, SEXP);
-extern SEXP _clock_duration_round_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_duration_scalar_divide_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_duration_scalar_multiply_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_duration_seq_by_lo_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_duration_seq_to_by_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_duration_seq_to_lo_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_duration_sign_cpp(SEXP, SEXP);
-extern SEXP _clock_duration_unary_minus_cpp(SEXP, SEXP);
-extern SEXP _clock_format_duration_cpp(SEXP, SEXP);
-extern SEXP _clock_format_iso_year_week_day_cpp(SEXP, SEXP);
-extern SEXP _clock_format_time_point_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_format_weekday_cpp(SEXP, SEXP);
-extern SEXP _clock_format_year_day_cpp(SEXP, SEXP);
-extern SEXP _clock_format_year_month_day_cpp(SEXP, SEXP);
-extern SEXP _clock_format_year_month_weekday_cpp(SEXP, SEXP);
-extern SEXP _clock_format_year_quarter_day_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_format_zoned_time_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_get_naive_time_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_gregorian_leap_year_cpp(SEXP);
-extern SEXP _clock_invalid_any_iso_year_week_day_cpp(SEXP, SEXP);
-extern SEXP _clock_invalid_any_year_day_cpp(SEXP, SEXP);
-extern SEXP _clock_invalid_any_year_month_day_cpp(SEXP, SEXP);
-extern SEXP _clock_invalid_any_year_month_weekday_cpp(SEXP, SEXP);
-extern SEXP _clock_invalid_any_year_quarter_day_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_invalid_count_iso_year_week_day_cpp(SEXP, SEXP);
-extern SEXP _clock_invalid_count_year_day_cpp(SEXP, SEXP);
-extern SEXP _clock_invalid_count_year_month_day_cpp(SEXP, SEXP);
-extern SEXP _clock_invalid_count_year_month_weekday_cpp(SEXP, SEXP);
-extern SEXP _clock_invalid_count_year_quarter_day_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_invalid_detect_iso_year_week_day_cpp(SEXP, SEXP);
-extern SEXP _clock_invalid_detect_year_day_cpp(SEXP, SEXP);
-extern SEXP _clock_invalid_detect_year_month_day_cpp(SEXP, SEXP);
-extern SEXP _clock_invalid_detect_year_month_weekday_cpp(SEXP, SEXP);
-extern SEXP _clock_invalid_detect_year_quarter_day_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_invalid_resolve_iso_year_week_day_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_invalid_resolve_year_day_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_invalid_resolve_year_month_day_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_invalid_resolve_year_month_weekday_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_invalid_resolve_year_quarter_day_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_iso_year_week_day_minus_iso_year_week_day_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_iso_year_week_day_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_iso_year_week_day_restore(SEXP, SEXP);
-extern SEXP _clock_naive_time_info_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_new_duration_from_fields(SEXP, SEXP, SEXP);
-extern SEXP _clock_new_iso_year_week_day_from_fields(SEXP, SEXP, SEXP);
-extern SEXP _clock_new_time_point_from_fields(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_new_year_day_from_fields(SEXP, SEXP, SEXP);
-extern SEXP _clock_new_year_month_day_from_fields(SEXP, SEXP, SEXP);
-extern SEXP _clock_new_year_month_weekday_from_fields(SEXP, SEXP, SEXP);
-extern SEXP _clock_new_year_quarter_day_from_fields(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_new_zoned_time_from_fields(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_precision_to_string(SEXP);
-extern SEXP _clock_set_field_iso_year_week_day_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_set_field_iso_year_week_day_last_cpp(SEXP, SEXP);
-extern SEXP _clock_set_field_year_day_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_set_field_year_day_last_cpp(SEXP, SEXP);
-extern SEXP _clock_set_field_year_month_day_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_set_field_year_month_day_last_cpp(SEXP, SEXP);
-extern SEXP _clock_set_field_year_month_weekday_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_set_field_year_month_weekday_last_cpp(SEXP, SEXP);
-extern SEXP _clock_set_field_year_quarter_day_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_set_field_year_quarter_day_last_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_sys_time_info_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_sys_time_now_cpp();
-extern SEXP _clock_time_point_parse_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_time_point_restore(SEXP, SEXP);
-extern SEXP _clock_to_sys_duration_fields_from_sys_seconds_cpp(SEXP);
-extern SEXP _clock_to_sys_seconds_from_sys_duration_fields_cpp(SEXP);
-extern SEXP _clock_weekday_add_days_cpp(SEXP, SEXP);
-extern SEXP _clock_weekday_from_time_point_cpp(SEXP);
-extern SEXP _clock_weekday_minus_weekday_cpp(SEXP, SEXP);
-extern SEXP _clock_year_day_minus_year_day_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_year_day_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_year_day_restore(SEXP, SEXP);
-extern SEXP _clock_year_month_day_minus_year_month_day_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_year_month_day_parse_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_year_month_day_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_year_month_day_restore(SEXP, SEXP);
-extern SEXP _clock_year_month_weekday_minus_year_month_weekday_cpp(SEXP, SEXP, SEXP);
-extern SEXP _clock_year_month_weekday_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_year_month_weekday_restore(SEXP, SEXP);
-extern SEXP _clock_year_quarter_day_minus_year_quarter_day_cpp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_year_quarter_day_plus_duration_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_year_quarter_day_restore(SEXP, SEXP);
-extern SEXP _clock_zone_current();
-extern SEXP _clock_zone_is_valid(SEXP);
-extern SEXP _clock_zoned_time_parse_abbrev_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_zoned_time_parse_complete_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _clock_zoned_time_restore(SEXP, SEXP);
-
 static const R_CallMethodDef CallEntries[] = {
     {"_clock_as_iso_year_week_day_from_sys_time_cpp",               (DL_FUNC) &_clock_as_iso_year_week_day_from_sys_time_cpp,                2},
     {"_clock_as_sys_time_iso_year_week_day_cpp",                    (DL_FUNC) &_clock_as_sys_time_iso_year_week_day_cpp,                     2},
@@ -1129,7 +1004,7 @@ static const R_CallMethodDef CallEntries[] = {
 };
 }
 
-extern "C" void R_init_clock(DllInfo* dll){
+extern "C" attribute_visible void R_init_clock(DllInfo* dll){
   R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
   R_useDynamicSymbols(dll, FALSE);
   R_forceSymbols(dll, TRUE);
