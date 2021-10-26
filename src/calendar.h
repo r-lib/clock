@@ -70,8 +70,7 @@ format_calendar_impl(const Calendar& x) {
     }
 
     const std::string string = stream.str();
-    const SEXP r_string = Rf_mkCharLenCE(string.c_str(), string.size(), CE_UTF8);
-    SET_STRING_ELT(out, i, r_string);
+    SET_STRING_ELT(out, i, Rf_mkCharLenCE(string.c_str(), string.size(), CE_UTF8));
   }
 
   return out;
