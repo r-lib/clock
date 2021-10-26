@@ -58,7 +58,7 @@ read_seconds(std::basic_istream<CharT, Traits>& is,
     is.setstate(std::ios::failbit);
     return 0;
   }
-  return i + f/std::pow(10.L, fcount);
+  return static_cast<long double>(i) + static_cast<long double>(f)/std::pow(10.L, fcount);
 }
 
 // Takes the `read()` variant for rld, removes the Args..., and
