@@ -987,8 +987,14 @@ clock_to_stream(std::basic_ostream<CharT, Traits>& os,
                 const std::chrono::seconds* offset_sec = nullptr)
 {
   using CT = typename std::common_type<Duration, std::chrono::seconds>::type;
-  auto ld = date::floor<date::days>(tp);
-  date::fields<CT> fds{date::year_month_day{ld}, date::hh_mm_ss<CT>{tp-date::local_seconds{ld}}};
+  auto ld = std::chrono::time_point_cast<date::days>(tp);
+  date::fields<CT> fds;
+  if (ld <= tp)
+    fds = date::fields<CT>{date::year_month_day{ld},
+                           date::hh_mm_ss<CT>{tp-date::local_seconds{ld}}};
+  else
+    fds = date::fields<CT>{date::year_month_day{ld - date::days{1}},
+                           date::hh_mm_ss<CT>{date::days{1} - (date::local_seconds{ld} - tp)}};
   return clock_to_stream(os, fmt, fds, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, abbrev, offset_sec);
 }
 
@@ -1003,12 +1009,19 @@ clock_to_stream(std::basic_ostream<CharT, Traits>& os,
                 const std::pair<const std::string*, const std::string*>& ampm_names_pair,
                 const CharT* decimal_mark)
 {
-  using CT = typename std::common_type<Duration, std::chrono::seconds>::type;
-  auto ld = date::floor<date::days>(tp);
+  using std::chrono::seconds;
+  using CT = typename std::common_type<Duration, seconds>::type;
   const std::string abbrev("UTC");
-  CONSTDATA std::chrono::seconds offset_sec{0};
-  date::fields<CT> fds{date::year_month_day{ld}, date::hh_mm_ss<CT>{tp-date::sys_seconds{ld}}};
-  return clock_to_stream(os, fmt, fds, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, &abbrev, &offset_sec);
+  CONSTDATA seconds offset{0};
+  auto sd = std::chrono::time_point_cast<date::days>(tp);
+  date::fields<CT> fds;
+  if (sd <= tp)
+    fds = date::fields<CT>{date::year_month_day{sd},
+                           date::hh_mm_ss<CT>{tp-date::sys_seconds{sd}}};
+  else
+    fds = date::fields<CT>{date::year_month_day{sd - date::days{1}},
+                           date::hh_mm_ss<CT>{date::days{1} - (date::sys_seconds{sd} - tp)}};
+  return clock_to_stream(os, fmt, fds, month_names_pair, weekday_names_pair, ampm_names_pair, decimal_mark, &abbrev, &offset);
 }
 
 // -----------------------------------------------------------------------------
