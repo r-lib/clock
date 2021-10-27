@@ -196,7 +196,7 @@ is_sys_time <- function(x) {
 #'
 #' # With a space between the date and time and no `:` in the offset
 #' x <- "2019-01-01 00:01:02+0230"
-#' sys_time_parse_RFC_3339(x, separator = " ", offset = "%Ez")
+#' sys_time_parse_RFC_3339(x, separator = " ", offset = "%z")
 NULL
 
 #' @rdname sys-parsing

@@ -1284,7 +1284,7 @@ date_set_zone.POSIXt <- function(x, zone) {
 #'
 #' # With a space between the date and time and no `:` in the offset
 #' x <- "2019-01-01 00:01:02+0230"
-#' date_time_parse_RFC_3339(x, separator = " ", offset = "%Ez")
+#' date_time_parse_RFC_3339(x, separator = " ", offset = "%z")
 #'
 #' # ---------------------------------------------------------------------------
 #' # Sub-second components
