@@ -58,7 +58,7 @@ read_seconds(std::basic_istream<CharT, Traits>& is,
     is.setstate(std::ios::failbit);
     return 0;
   }
-  return i + f/std::pow(10.L, fcount);
+  return static_cast<long double>(i) + static_cast<long double>(f)/std::pow(10.L, fcount);
 }
 
 // Takes the `read()` variant for rld, removes the Args..., and
@@ -261,7 +261,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                         CONSTDATA auto w = Duration::period::den == 1 ? 2 : 3 + dfs::width;
                         int tH;
                         int tM;
-                        long double S;
+                        long double S{};
                         read(is, ru{tH, 1, 2}, CharT{':'}, ru{tM, 1, 2}, CharT{':'});
                         rclock::read(is, decimal_mark, rld{S, 1, w});
                         checked_set(H, tH, not_a_hour, is);
@@ -316,7 +316,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                         CONSTDATA auto w = Duration::period::den == 1 ? 2 : 3 + dfs::width;
                         int tH = not_a_hour;
                         int tM = not_a_minute;
-                        long double S;
+                        long double S{};
                         read(is, ru{tH, 1, 2}, CharT{':'}, ru{tM, 1, 2}, CharT{':'});
                         rclock::read(is, decimal_mark, rld{S, 1, w});
                         checked_set(H, tH, not_a_hour, is);
@@ -567,7 +567,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                         // "%I:%M:%S %p"
                         using dfs = date::detail::decimal_format_seconds<Duration>;
                         CONSTDATA auto w = Duration::period::den == 1 ? 2 : 3 + dfs::width;
-                        long double S;
+                        long double S{};
                         int tI = not_a_hour_12_value;
                         int tM = not_a_minute;
                         read(is, ru{tI, 1, 2}, CharT{':'}, ru{tM, 1, 2}, CharT{':'});
@@ -618,7 +618,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                     {
                         using dfs = date::detail::decimal_format_seconds<Duration>;
                         CONSTDATA auto w = Duration::period::den == 1 ? 2 : 3 + dfs::width;
-                        long double S;
+                        long double S{};
                         rclock::read(is, decimal_mark, rld{S, 1, width == -1 ? w : static_cast<unsigned>(width)});
                         checked_set(s, round_i<Duration>(duration<long double>{S}),
                                     not_a_second, is);
@@ -641,7 +641,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                         CONSTDATA auto w = Duration::period::den == 1 ? 2 : 3 + dfs::width;
                         int tH = not_a_hour;
                         int tM = not_a_minute;
-                        long double S;
+                        long double S{};
                         read(is, ru{tH, 1, 2}, CharT{':'}, ru{tM, 1, 2}, CharT{':'});
                         rclock::read(is, decimal_mark, rld{S, 1, w});
                         checked_set(H, tH, not_a_hour, is);
