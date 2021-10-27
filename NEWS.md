@@ -51,6 +51,9 @@
 * Further improved documentation of undefined behavior resulting from attempting
   to parse sub-daily components of a string that is intended to be parsed into
   a Date (#258).
+  
+* Bumped required minimum version of tzdb to 0.2.0 to get access to the latest
+  time zone database information (2021e) and to fix a Unicode bug on Windows.
 
 # clock 0.4.1
 
