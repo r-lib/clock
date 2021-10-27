@@ -73,8 +73,7 @@ sys_time_info_impl(const ClockDuration& x, const cpp11::strings& zone) {
     end.assign(info.end.time_since_epoch(), i);
     offset.assign(info.offset, i);
     dst[i] = info.save != zero;
-    const SEXP abbreviation_elt = Rf_mkCharLenCE(info.abbrev.c_str(), info.abbrev.size(), CE_UTF8);
-    SET_STRING_ELT(abbreviation, i, abbreviation_elt);
+    SET_STRING_ELT(abbreviation, i, Rf_mkCharLenCE(info.abbrev.c_str(), info.abbrev.size(), CE_UTF8));
   }
 
   cpp11::writable::list out_begin = begin.to_list();

@@ -108,8 +108,7 @@ format_duration_impl(const ClockDuration& cd) {
     duration_stream(stream, duration);
     std::string string = stream.str();
 
-    SEXP r_string = Rf_mkCharLenCE(string.c_str(), string.size(), CE_UTF8);
-    SET_STRING_ELT(out, i, r_string);
+    SET_STRING_ELT(out, i, Rf_mkCharLenCE(string.c_str(), string.size(), CE_UTF8));
   }
 
   return out;
