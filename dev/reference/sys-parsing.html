@@ -547,9 +547,9 @@ work as you might expect.</p>
 #&gt; [1] "2018-12-31T21:31:02"</div><div class='input'>
 <span class='co'># With a space between the date and time and no `:` in the offset</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019-01-01 00:01:02+0230"</span>
-<span class='fu'>sys_time_parse_RFC_3339</span><span class='op'>(</span><span class='va'>x</span>, separator <span class='op'>=</span> <span class='st'>" "</span>, offset <span class='op'>=</span> <span class='st'>"%Ez"</span><span class='op'>)</span>
+<span class='fu'>sys_time_parse_RFC_3339</span><span class='op'>(</span><span class='va'>x</span>, separator <span class='op'>=</span> <span class='st'>" "</span>, offset <span class='op'>=</span> <span class='st'>"%z"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;
-#&gt; [1] "2018-12-31T22:01:02"</div></pre>
+#&gt; [1] "2018-12-31T21:31:02"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
