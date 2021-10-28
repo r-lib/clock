@@ -9,6 +9,12 @@ We checked 2 reverse dependencies, comparing R CMD check results across CRAN and
  * We saw 0 new problems
  * We failed to check 0 packages
  
+## 0.5.0 Submission
+
+This is a minor release with a few new parsing functions, updates to the
+required version of tzdb, and a few small changes to default formatting output
+and parsing input.
+ 
 ## 0.4.1 Submission
 
 This is a patch release to support upcoming changes in testthat.
