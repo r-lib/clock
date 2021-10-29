@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.4.1.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.5.0.9000</span>
       </span>
     </div>
 
@@ -160,6 +160,11 @@
     <div id="clock-development-version" class="section level1">
 <h1 class="page-header" data-toc-text="development version">
 <a href="#clock-development-version" class="anchor"></a>clock (development version)<small> Unreleased </small>
+</h1>
+</div>
+    <div id="clock-050" class="section level1">
+<h1 class="page-header" data-toc-text="0.5.0">
+<a href="#clock-050" class="anchor"></a>clock 0.5.0<small> 2021-10-29 </small>
 </h1>
 <ul>
 <li><p>New <code><a href="../reference/date-time-parse.html">date_time_parse_RFC_3339()</a></code> and <code><a href="../reference/sys-parsing.html">sys_time_parse_RFC_3339()</a></code> for parsing date-time strings in the <a href="https://datatracker.ietf.org/doc/html/rfc3339">RFC 3339</a> format. This format is a subset of ISO 8601 representing the most common date-time formats seen in internet protocols, and is particularly useful for parsing date-time strings returned by an API. The default format parses strings like <code>"2019-01-01T01:02:03Z"</code> but can be adjusted to parse a numeric offset from UTC with the <code>offset</code> argument, which can parse strings like <code>"2019-01-01T01:02:03-04:30"</code> (<a href='https://github.com/r-lib/clock/issues/254'>#254</a>).</p></li>
