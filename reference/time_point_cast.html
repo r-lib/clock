@@ -88,7 +88,7 @@ a conversion factor between the current precision and the new precision." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -215,7 +215,7 @@ a conversion factor between the current precision and the new precision.</p>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 <span class='va'>x</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;hour&gt;[2]&gt;
-#&gt; [1] "1970-01-02 01" "1969-12-30 23"</div><div class='input'>
+#&gt; [1] "1970-01-02T01" "1969-12-30T23"</div><div class='input'>
 <span class='co'># Casting rounds the underlying duration towards 0</span>
 <span class='va'>cast</span> <span class='op'>&lt;-</span> <span class='fu'>time_point_cast</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span><span class='op'>)</span>
 <span class='va'>cast</span>
@@ -232,7 +232,7 @@ a conversion factor between the current precision and the new precision.</p>
 <span class='co'># Casting to a more precise precision, hour-&gt;millisecond</span>
 <span class='fu'>time_point_cast</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"millisecond"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;millisecond&gt;[2]&gt;
-#&gt; [1] "1970-01-02 01:00:00.000" "1969-12-30 23:00:00.000"</div></pre>
+#&gt; [1] "1970-01-02T01:00:00.000" "1969-12-30T23:00:00.000"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

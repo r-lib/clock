@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -160,6 +160,7 @@
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-31"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="va">x</span>
 <span class="co">#&gt; [1] "2020-01-29" "2020-01-30" "2020-01-31" "2020-02-01"</span>
+
 <span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-02-29" NA           NA           "2020-03-01"</span></code></pre></div>
 <p>In this example, we’ve asked lubridate to create two <em>invalid dates</em>, <code>2020-02-30</code> and <code>2020-02-31</code>. Invalid dates often arise with month-based arithmetic, but they also arise when forcibly setting the month to a specific value. Because these dates don’t exist, lubridate returns <code>NA</code>. When working with time series, it is often more useful to return <em>something</em> back, but what? We could:</p>
@@ -169,14 +170,15 @@
 <li><p>Return the next valid moment in time</p></li>
 <li><p>Overflow our invalid date into March by the number of days past the true end of February that it landed at</p></li>
 </ul>
-<p>Only the first is available to you with <code>+ months(1)</code>. To supplement this, lubridate added <code><a href="http://lubridate.tidyverse.org/reference/mplus.html">%m+%</a></code> and <code><a href="http://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback()</a></code>.</p>
+<p>Only the first is available to you with <code>+ months(1)</code>. To supplement this, lubridate added <code><a href="https://lubridate.tidyverse.org/reference/mplus.html">%m+%</a></code> and <code><a href="https://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Equivalent to `add_with_rollback(x, months(1))`</span>
 <span class="va">x</span> <span class="op">%m+%</span> <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-02-29" "2020-02-29" "2020-02-29" "2020-03-01"</span>
-<span class="fu"><a href="http://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, roll_to_first <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+
+<span class="fu"><a href="https://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, roll_to_first <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-02-29" "2020-03-01" "2020-03-01" "2020-03-01"</span></code></pre></div>
-<p>With Dates, the hardest part about <code><a href="http://lubridate.tidyverse.org/reference/mplus.html">%m+%</a></code> is remembering to use it. It is a common bug to forget to use this helper until <em>after</em> you have been bitten by an invalid date issue with an unexpected <code>NA</code>.</p>
+<p>With Dates, the hardest part about <code><a href="https://lubridate.tidyverse.org/reference/mplus.html">%m+%</a></code> is remembering to use it. It is a common bug to forget to use this helper until <em>after</em> you have been bitten by an invalid date issue with an unexpected <code>NA</code>.</p>
 <p>In clock, invalid dates must be handled explicitly as they occur. The default behavior raises an error.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>
@@ -187,12 +189,15 @@
 <code class="sourceCode R"><span class="co"># Previous moment in time</span>
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, invalid <span class="op">=</span> <span class="st">"previous"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-02-29" "2020-02-29" "2020-02-29" "2020-03-01"</span>
+
 <span class="co"># Next moment in time</span>
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, invalid <span class="op">=</span> <span class="st">"next"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-02-29" "2020-03-01" "2020-03-01" "2020-03-01"</span>
+
 <span class="co"># Overflow by 1 day for 30th, 2 days for 31st</span>
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, invalid <span class="op">=</span> <span class="st">"overflow"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-02-29" "2020-03-01" "2020-03-02" "2020-03-01"</span>
+
 <span class="co"># Like lubridate</span>
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, invalid <span class="op">=</span> <span class="st">"NA"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-02-29" NA           NA           "2020-03-01"</span></code></pre></div>
@@ -200,6 +205,7 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1 2 3 4</span>
+
 <span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, invalid <span class="op">=</span> <span class="st">"overflow"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1 2 4 3</span></code></pre></div>
 </div>
@@ -215,41 +221,46 @@
 <span class="va">x</span>
 <span class="co">#&gt; [1] "2020-01-29 04:00:00 EST" "2020-01-30 03:00:00 EST"</span>
 <span class="co">#&gt; [3] "2020-01-31 02:00:00 EST" "2020-02-01 01:00:00 EST"</span></code></pre></div>
-<p><code><a href="http://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback()</a></code> defaults to preserving the time of day. Invalid dates are rolled back to the previous valid <em>day</em>, but the time of day of <code>x</code> is kept:</p>
+<p><code><a href="https://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback()</a></code> defaults to preserving the time of day. Invalid dates are rolled back to the previous valid <em>day</em>, but the time of day of <code>x</code> is kept:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="http://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-02-29 04:00:00 EST" "2020-02-29 03:00:00 EST"</span>
 <span class="co">#&gt; [3] "2020-02-29 02:00:00 EST" "2020-03-01 01:00:00 EST"</span></code></pre></div>
 <p>I think this is dangerous for the same reason I advised not using <code>"overflow"</code> in the Date section above. You can easily lose the relative ordering within <code>x</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1 2 3 4</span>
-<span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="fu"><a href="http://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] 3 2 1 4</span></code></pre></div>
-<p><code><a href="http://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback()</a></code> has a <code>preserve_hms</code> argument, but this can’t help here, as it just sets the time of day to midnight and the ordering is still lost.</p>
+<p><code><a href="https://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback()</a></code> has a <code>preserve_hms</code> argument, but this can’t help here, as it just sets the time of day to midnight and the ordering is still lost.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="http://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, preserve_hms <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, preserve_hms <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-02-29 04:00:00 EST" "2020-02-29 00:00:00 EST"</span>
 <span class="co">#&gt; [3] "2020-02-29 00:00:00 EST" "2020-03-01 01:00:00 EST"</span>
-<span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="fu"><a href="http://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, preserve_hms <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, preserve_hms <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] 2 3 1 4</span></code></pre></div>
 <p>With clock, using <code>"previous"</code> and <code>"next"</code> will use the previous and next valid <em>moment in time</em>. With POSIXct (which clock assumes to have second precision), this chooses the previous and next valid second. This is the only way to preserve relative ordering in <code>x</code>, which is another reason I advocate for using these options.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, invalid <span class="op">=</span> <span class="st">"previous"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-02-29 04:00:00 EST" "2020-02-29 23:59:59 EST"</span>
 <span class="co">#&gt; [3] "2020-02-29 23:59:59 EST" "2020-03-01 01:00:00 EST"</span>
+
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, invalid <span class="op">=</span> <span class="st">"next"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-02-29 04:00:00 EST" "2020-03-01 00:00:00 EST"</span>
 <span class="co">#&gt; [3] "2020-03-01 00:00:00 EST" "2020-03-01 01:00:00 EST"</span>
+
 <span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, invalid <span class="op">=</span> <span class="st">"previous"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1 2 3 4</span>
 <span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, invalid <span class="op">=</span> <span class="st">"next"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1 2 3 4</span></code></pre></div>
-<p>If you really want lubridate’s <code><a href="http://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback()</a></code> behavior of retaining the time of day, you can use <code>"previous-day"</code> and <code>"next-day"</code>, which only adjust the day component, leaving the time of day intact. Again, I don’t recommend this.</p>
+<p>If you really want lubridate’s <code><a href="https://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback()</a></code> behavior of retaining the time of day, you can use <code>"previous-day"</code> and <code>"next-day"</code>, which only adjust the day component, leaving the time of day intact. Again, I don’t recommend this.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, invalid <span class="op">=</span> <span class="st">"previous-day"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-02-29 04:00:00 EST" "2020-02-29 03:00:00 EST"</span>
 <span class="co">#&gt; [3] "2020-02-29 02:00:00 EST" "2020-03-01 01:00:00 EST"</span>
+
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, invalid <span class="op">=</span> <span class="st">"next-day"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-02-29 04:00:00 EST" "2020-03-01 03:00:00 EST"</span>
 <span class="co">#&gt; [3] "2020-03-01 02:00:00 EST" "2020-03-01 01:00:00 EST"</span></code></pre></div>
@@ -279,10 +290,10 @@
 <span class="co">#&gt; [3] "2020-03-07 03:15:00 EST"</span></code></pre></div>
 <p>Let’s try adding 1 day to these times with lubridate. As you might expect, you get an <code>NA</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="http://lubridate.tidyverse.org/reference/period.html">days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/period.html">days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-03-08 01:45:00 EST" NA                       </span>
 <span class="co">#&gt; [3] "2020-03-08 03:15:00 EDT"</span></code></pre></div>
-<p>Unlike with invalid dates, there aren’t any tools like <code><a href="http://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback()</a></code> to help you out here. You’re stuck with the <code>NA</code>. But what could you do? Possibly:</p>
+<p>Unlike with invalid dates, there aren’t any tools like <code><a href="https://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback()</a></code> to help you out here. You’re stuck with the <code>NA</code>. But what could you do? Possibly:</p>
 <ul>
 <li><p>Roll forward to the next valid moment in time</p></li>
 <li><p>Roll backward to the previous valid moment in time</p></li>
@@ -301,18 +312,22 @@
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"roll-forward"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-03-08 01:45:00 EST" "2020-03-08 03:00:00 EDT"</span>
 <span class="co">#&gt; [3] "2020-03-08 03:15:00 EDT"</span>
+
 <span class="co"># 02:30:00 -&gt; 01:59:59</span>
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"roll-backward"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-03-08 01:45:00 EST" "2020-03-08 01:59:59 EST"</span>
 <span class="co">#&gt; [3] "2020-03-08 03:15:00 EDT"</span>
+
 <span class="co"># 02:30:00 + gap of 1 hr = 03:30:00</span>
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"shift-forward"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-03-08 01:45:00 EST" "2020-03-08 03:30:00 EDT"</span>
 <span class="co">#&gt; [3] "2020-03-08 03:15:00 EDT"</span>
+
 <span class="co"># 02:30:00 - gap of 1 hr = 01:30:00</span>
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"shift-backward"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-03-08 01:45:00 EST" "2020-03-08 01:30:00 EST"</span>
 <span class="co">#&gt; [3] "2020-03-08 03:15:00 EDT"</span>
+
 <span class="co"># lubridate behavior</span>
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"NA"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-03-08 01:45:00 EST" NA                       </span>
@@ -321,6 +336,7 @@
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1 2 3</span>
+
 <span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="fu"><a href="../../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"shift-forward"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1 3 2</span></code></pre></div>
 <p>When doing arithmetic with clock’s high-level API, you’ll only encounter these nonexistent time issues when adding “large” units of time, like days, months, or years. Adding hours, minutes, or seconds will first convert to UTC, add the units of time there, and then convert back to your original time zone, which never creates any problematic times. This might sound a bit strange, but it is generally what you want when working with these smaller units of time.</p>
@@ -333,11 +349,12 @@
 
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-03-08 03:00:00 EDT"</span></code></pre></div>
-<p>This is essentially equivalent to using <code><a href="http://lubridate.tidyverse.org/reference/duration.html">dseconds()</a></code> from lubridate. Note that adding <code><a href="http://lubridate.tidyverse.org/reference/period.html">seconds()</a></code> would “land” you in the gap, but <code><a href="http://lubridate.tidyverse.org/reference/duration.html">dseconds()</a></code> jumps right over it.</p>
+<p>This is essentially equivalent to using <code><a href="https://lubridate.tidyverse.org/reference/duration.html">dseconds()</a></code> from lubridate. Note that adding <code><a href="https://lubridate.tidyverse.org/reference/period.html">seconds()</a></code> would “land” you in the gap, but <code><a href="https://lubridate.tidyverse.org/reference/duration.html">dseconds()</a></code> jumps right over it.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="http://lubridate.tidyverse.org/reference/period.html">seconds</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/period.html">seconds</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; [1] NA</span>
-<span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="http://lubridate.tidyverse.org/reference/duration.html">dseconds</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+
+<span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/duration.html">dseconds</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-03-08 03:00:00 EDT"</span></code></pre></div>
 <p>If for any reason you want the <code>+ seconds()</code> behavior, you can manually take control by converting to naive-time, adding the units of time there, and then converting back to POSIXct.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
@@ -347,6 +364,7 @@
   <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="../../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 1.</span>
 <span class="co">#&gt; ℹ Resolve nonexistent time issues by specifying the `nonexistent` argument.</span>
+
 <span class="va">x</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -364,6 +382,7 @@
 <span class="co"># The first 1 o'clock</span>
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-11-01 01:00:00 EDT"</span>
+
 <span class="co"># The second 1 o'clock</span>
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">3601</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-11-01 01:00:00 EST"</span></code></pre></div>
@@ -381,9 +400,11 @@
 <code class="sourceCode R"><span class="co"># The 1 o'clock that is earliest in the timeline</span>
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, ambiguous <span class="op">=</span> <span class="st">"earliest"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-11-01 01:30:00 EDT"</span>
+
 <span class="co"># The 1 o'clock that is latest in the timeline</span>
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, ambiguous <span class="op">=</span> <span class="st">"latest"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-11-01 01:30:00 EST"</span>
+
 <span class="co"># Ambiguous times should return NA</span>
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, ambiguous <span class="op">=</span> <span class="st">"NA"</span><span class="op">)</span>
 <span class="co">#&gt; [1] NA</span></code></pre></div>
@@ -397,6 +418,7 @@
 <span class="co">#&gt; [1] "2020-10-01 01:30:00 EDT"</span>
 <span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-11-01 01:30:00 EDT"</span>
+
 <span class="co"># Start after the fallback, subtract time, return the latest ambiguous time</span>
 <span class="va">x_after</span>
 <span class="co">#&gt; [1] "2020-12-01 01:30:00 EST"</span>
@@ -404,18 +426,19 @@
 <span class="co">#&gt; [1] "2020-11-01 01:30:00 EST"</span></code></pre></div>
 <p>But with other examples, you can end up with confusing results:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x_year_before</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">-</span> <span class="fu"><a href="http://lubridate.tidyverse.org/reference/period.html">years</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="va">x_year_after</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="http://lubridate.tidyverse.org/reference/period.html">years</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">x_year_before</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">-</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/period.html">years</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">x_year_after</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/period.html">years</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 
 <span class="co"># Start before the fallback, add time, return the earliest ambiguous time</span>
 <span class="va">x_year_before</span>
 <span class="co">#&gt; [1] "2019-11-01 01:30:00 EDT"</span>
-<span class="va">x_year_before</span> <span class="op">+</span> <span class="fu"><a href="http://lubridate.tidyverse.org/reference/period.html">years</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">x_year_before</span> <span class="op">+</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/period.html">years</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-11-01 01:30:00 EDT"</span>
+
 <span class="co"># Start after the fallback, subtract time, return the...earliest ambiguous time?</span>
 <span class="va">x_year_after</span>
 <span class="co">#&gt; [1] "2021-11-01 01:30:00 EDT"</span>
-<span class="va">x_year_after</span> <span class="op">-</span> <span class="fu"><a href="http://lubridate.tidyverse.org/reference/period.html">years</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">x_year_after</span> <span class="op">-</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/period.html">years</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-11-01 01:30:00 EDT"</span></code></pre></div>
 <p>When lubridate hits an ambiguous time, the UTC offset of the result always matches the offset of the original input. Sometimes this makes sense, but often when adding larger periods of time or updating multiple components of a date-time, this can be confusing.</p>
 <p>This isn’t to say that the lubridate behavior is wrong. I would argue that it is just a bit too lenient. In clock, a slightly modified form of this behavior exists that is a bit stricter. Consider what would happen if you tried to floor these dates to the nearest hour:</p>
@@ -450,6 +473,7 @@
 <code class="sourceCode R"><span class="va">origin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/date-and-date-time-rounding.html">date_floor</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"hour"</span><span class="op">)</span>
 <span class="va">origin</span>
 <span class="co">#&gt; [1] "2020-11-01 01:00:00 EDT"</span>
+
 <span class="fu"><a href="../../reference/date-and-date-time-rounding.html">date_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"hour"</span>, n <span class="op">=</span> <span class="fl">2</span>, origin <span class="op">=</span> <span class="va">origin</span><span class="op">)</span>
 <span class="co">#&gt; Error: Ambiguous time due to daylight saving time at location 4.</span>
 <span class="co">#&gt; ℹ Resolve ambiguous time issues by specifying the `ambiguous` argument.</span></code></pre></div>
@@ -472,9 +496,11 @@
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2020-03-30"</span>, <span class="st">"2020-03-31"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">x</span>
 <span class="co">#&gt; [1] "2020-03-30" "2020-03-31"</span>
+
 <span class="co"># All good! Ship it!</span>
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fl">1</span><span class="op">)</span> 
 <span class="co">#&gt; [1] "2020-04-30"</span>
+
 <span class="co"># Got new production data. Oh no!</span>
 <span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; Error: Invalid date found at location 2.</span>
@@ -493,53 +519,58 @@
 <p>The previous section was entirely focused on issues that might arise when working with POSIXct and time zones. If you don’t require the complexity of time zones, you can use a naive-time. Naive-times are a type of time point that have a yet-to-be-specified time zone. The other type of time point in clock is a sys-time, which is interpreted as having a UTC time zone attached to it. If you aren’t using time zones at all, naive-times and sys-times are equivalent, and even use the same date algorithms under the hood.</p>
 <p>Unlike our ambiguous time examples from before, since naive-times don’t have any implied time zone, there is no repeated 1 o’clock hour.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/naive_time_parse.html">naive_time_parse</a></span><span class="op">(</span><span class="st">"2020-11-01 00:30:00"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/naive_time_parse.html">naive_time_parse</a></span><span class="op">(</span><span class="st">"2020-11-01T00:30:00"</span><span class="op">)</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/clock-arithmetic.html">add_hours</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">0</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
 <span class="va">x</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[6]&gt;</span>
-<span class="co">#&gt; [1] "2020-11-01 00:30:00" "2020-11-01 01:30:00" "2020-11-01 02:30:00"</span>
-<span class="co">#&gt; [4] "2020-11-01 03:30:00" "2020-11-01 04:30:00" "2020-11-01 05:30:00"</span></code></pre></div>
+<span class="co">#&gt; [1] "2020-11-01T00:30:00" "2020-11-01T01:30:00" "2020-11-01T02:30:00"</span>
+<span class="co">#&gt; [4] "2020-11-01T03:30:00" "2020-11-01T04:30:00" "2020-11-01T05:30:00"</span></code></pre></div>
 <p>This makes arithmetic and flooring much simpler to reason about:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/time-point-rounding.html">time_point_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"hour"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;hour&gt;[6]&gt;</span>
-<span class="co">#&gt; [1] "2020-11-01 00" "2020-11-01 01" "2020-11-01 02" "2020-11-01 03"</span>
-<span class="co">#&gt; [5] "2020-11-01 04" "2020-11-01 05"</span>
+<span class="co">#&gt; [1] "2020-11-01T00" "2020-11-01T01" "2020-11-01T02" "2020-11-01T03"</span>
+<span class="co">#&gt; [5] "2020-11-01T04" "2020-11-01T05"</span>
+
 <span class="va">origin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/time_point_cast.html">time_point_cast</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"hour"</span><span class="op">)</span>
 <span class="fu"><a href="../../reference/time-point-rounding.html">time_point_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"hour"</span>, n <span class="op">=</span> <span class="fl">2</span>, origin <span class="op">=</span> <span class="va">origin</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;hour&gt;[6]&gt;</span>
-<span class="co">#&gt; [1] "2020-10-31 23" "2020-11-01 01" "2020-11-01 01" "2020-11-01 03"</span>
-<span class="co">#&gt; [5] "2020-11-01 03" "2020-11-01 05"</span></code></pre></div>
+<span class="co">#&gt; [1] "2020-10-31T23" "2020-11-01T01" "2020-11-01T01" "2020-11-01T03"</span>
+<span class="co">#&gt; [5] "2020-11-01T03" "2020-11-01T05"</span></code></pre></div>
 <p>You’ll notice that the result of flooring by hour is a time point with <em>hour</em> precision. Flooring drops all information at more precise precisions, and the result is represented in a more compact form.</p>
 <p>The difference between naive-time and sys-time is only important when you are working with time zones and zoned-times / POSIXct. Since naive-time has a yet-to-be-specified time zone, converting to a zoned-time simply specifies that zone. If possible, it keeps the printed time the same, while changing the underlying duration.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2020-11-01 00:30:00"</span>
+<span class="co">#&gt; [1] "2020-11-01T00:30:00"</span>
+
 <span class="fu"><a href="../../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2020-11-01 00:30:00-04:00"</span></code></pre></div>
+<span class="co">#&gt; [1] "2020-11-01T00:30:00-04:00"</span></code></pre></div>
 <p>Sys-time is interpreted as being UTC. Converting it to a zoned-time will keep the underlying duration, but will change the printed time.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x_sys</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
 <span class="va">x_sys</span>
 <span class="co">#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2020-11-01 00:30:00"</span>
+<span class="co">#&gt; [1] "2020-11-01T00:30:00"</span>
+
 <span class="co"># Subtract 4 hours to print the America/New_York time</span>
 <span class="fu"><a href="../../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x_sys</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2020-10-31 20:30:00-04:00"</span></code></pre></div>
+<span class="co">#&gt; [1] "2020-10-31T20:30:00-04:00"</span></code></pre></div>
 <p>Converting from sys-time to zoned-time won’t ever have any issues with nonexistent or ambiguous times, but converting from naive-time might. Remember that there were two 1 o’clock hours on this day in the America/New_York time zone.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;</span>
-<span class="co">#&gt; [1] "2020-11-01 00:30:00" "2020-11-01 01:30:00"</span>
+<span class="co">#&gt; [1] "2020-11-01T00:30:00" "2020-11-01T01:30:00"</span>
+
 <span class="fu"><a href="../../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
 <span class="co">#&gt; Error: Ambiguous time due to daylight saving time at location 2.</span>
 <span class="co">#&gt; ℹ Resolve ambiguous time issues by specifying the `ambiguous` argument.</span>
+
 <span class="fu"><a href="../../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"America/New_York"</span>, ambiguous <span class="op">=</span> <span class="st">"earliest"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;</span>
-<span class="co">#&gt; [1] "2020-11-01 00:30:00-04:00" "2020-11-01 01:30:00-04:00"</span></code></pre></div>
+<span class="co">#&gt; [1] "2020-11-01T00:30:00-04:00" "2020-11-01T01:30:00-04:00"</span></code></pre></div>
 <p>In the low-level API, converting from naive-time to zoned-time is actually the <em>only</em> place where the <code>nonexistent</code> and <code>ambiguous</code> arguments are used. This limits how often you have to think about daylight saving time, ideally helping you avoid as many subtle bugs as possible. In the high-level API for POSIXct, these arguments are forced to bubble up in more places. This trades the user benefit of being able to work directly on R’s native date-time types for the side-effect of potentially having to deal with these issues in more places.</p>
 </div>
 <div id="calendar-types" class="section level2">
@@ -551,6 +582,7 @@
 <code class="sourceCode R"><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
 <span class="co">#&gt; &lt;year_month_day&lt;day&gt;[5]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-01" "2019-01-02" "2019-01-03" "2019-01-04" "2019-01-05"</span>
+
 <span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">12</span>, <span class="st">"last"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;year_month_day&lt;day&gt;[12]&gt;</span>
 <span class="co">#&gt;  [1] "2020-01-31" "2020-02-29" "2020-03-31" "2020-04-30" "2020-05-31"</span>
@@ -578,8 +610,10 @@
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/clock-invalid.html">invalid_count</a></span><span class="op">(</span><span class="va">ymd</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1</span>
+
 <span class="fu"><a href="../../reference/clock-invalid.html">invalid_detect</a></span><span class="op">(</span><span class="va">ymd</span><span class="op">)</span>
 <span class="co">#&gt; [1] FALSE  TRUE</span>
+
 <span class="fu"><a href="../../reference/clock-invalid.html">invalid_resolve</a></span><span class="op">(</span><span class="va">ymd</span>, invalid <span class="op">=</span> <span class="st">"previous"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;year_month_day&lt;day&gt;[2]&gt;</span>
 <span class="co">#&gt; [1] "2019-04-30" "2019-04-30"</span>
@@ -617,6 +651,7 @@
 <span class="co">#&gt; [25] "2019-09-Fri[1]" "2019-09-Fri[3]" "2019-09-Fri[5]" "2019-10-Fri[1]"</span>
 <span class="co">#&gt; [29] "2019-10-Fri[3]" "2019-10-Fri[5]" "2019-11-Fri[1]" "2019-11-Fri[3]"</span>
 <span class="co">#&gt; [33] "2019-11-Fri[5]" "2019-12-Fri[1]" "2019-12-Fri[3]" "2019-12-Fri[5]"</span>
+
 <span class="va">meetings</span><span class="op">[</span><span class="fu"><a href="../../reference/clock-invalid.html">invalid_detect</a></span><span class="op">(</span><span class="va">meetings</span><span class="op">)</span><span class="op">]</span>
 <span class="co">#&gt; &lt;year_month_weekday&lt;day&gt;[8]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-Fri[5]" "2019-02-Fri[5]" "2019-04-Fri[5]" "2019-06-Fri[5]"</span>
@@ -657,6 +692,7 @@
 <span class="co">#&gt; &lt;weekday[36]&gt;</span>
 <span class="co">#&gt;  [1] Fri Fri Thu Fri Fri Thu Fri Fri Fri Fri Fri Tue Fri Fri Fri Fri Fri Sun Fri</span>
 <span class="co">#&gt; [20] Fri Wed Fri Fri Fri Fri Fri Mon Fri Fri Thu Fri Fri Fri Fri Fri Tue</span>
+
 <span class="va">friday</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/weekday.html">weekday</a></span><span class="op">(</span><span class="va">clock_weekdays</span><span class="op">$</span><span class="va">friday</span><span class="op">)</span>
 <span class="va">saturday</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/weekday.html">weekday</a></span><span class="op">(</span><span class="va">clock_weekdays</span><span class="op">$</span><span class="va">saturday</span><span class="op">)</span>
 <span class="va">sunday</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/weekday.html">weekday</a></span><span class="op">(</span><span class="va">clock_weekdays</span><span class="op">$</span><span class="va">sunday</span><span class="op">)</span>
@@ -692,14 +728,16 @@
 <code class="sourceCode R"><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span><span class="op">)</span>
 <span class="co">#&gt; &lt;year_month_day&lt;year&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019"</span>
+
 <span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">01</span>, <span class="fl">01</span>, <span class="fl">02</span>, <span class="fl">30</span>, <span class="fl">50</span>, <span class="fl">123</span>, subsecond_precision <span class="op">=</span> <span class="st">"nanosecond"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;year_month_day&lt;nanosecond&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2019-01-01 02:30:50.000000123"</span></code></pre></div>
+<span class="co">#&gt; [1] "2019-01-01T02:30:50.000000123"</span></code></pre></div>
 <p>A nice thing about this is that you get year-month and year-quarter types for free.</p>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
 <span class="co">#&gt; &lt;year_month_day&lt;month&gt;[5]&gt;</span>
 <span class="co">#&gt; [1] "2019-01" "2019-02" "2019-03" "2019-04" "2019-05"</span>
+
 <span class="fu"><a href="../../reference/year_quarter_day.html">year_quarter_day</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>
 <span class="co">#&gt; &lt;year_quarter_day&lt;January&gt;&lt;quarter&gt;[4]&gt;</span>
 <span class="co">#&gt; [1] "2020-Q1" "2020-Q2" "2020-Q3" "2020-Q4"</span></code></pre></div>
@@ -709,12 +747,14 @@
 
 <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">ym</span><span class="op">)</span>
 <span class="co">#&gt; Error: Can't convert to a time point from a calendar with 'month' precision. A minimum of 'day' precision is required.</span>
+
 <span class="co"># You might want the first of the month</span>
 <span class="va">ym</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[3]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-01" "2019-02-01" "2019-03-01"</span>
+
 <span class="co"># Or the last</span>
 <span class="va">ym</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="st">"last"</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -737,12 +777,13 @@
 <code class="sourceCode R"><span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-02"</span>
+
 <span class="fu"><a href="../../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span>
   <span class="fl">2019</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">30</span>, <span class="fl">35</span>, <span class="fl">123</span>, 
   subsecond_precision <span class="op">=</span> <span class="st">"millisecond"</span>
 <span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;sys&gt;&lt;millisecond&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2019-02-03 01:30:35.123"</span></code></pre></div>
+<span class="co">#&gt; [1] "2019-02-03T01:30:35.123"</span></code></pre></div>
 <p>Unlike calendars, a time point at say, second precision, is considered equivalent to a time point at millisecond precision with millisecond information set to 0.</p>
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span>
@@ -760,7 +801,7 @@
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../../reference/duration-helper.html">duration_nanoseconds</a></span><span class="op">(</span><span class="fl">25</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;nanosecond&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2019-01-02 00:00:00.000000025"</span></code></pre></div>
+<span class="co">#&gt; [1] "2019-01-02T00:00:00.000000025"</span></code></pre></div>
 </div>
 </div>
 </div>

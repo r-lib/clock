@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -157,9 +157,59 @@
       <small>Source: <a href='https://github.com/r-lib/clock/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="clock-050" class="section level1">
+<h1 class="page-header" data-toc-text="0.5.0">
+<a href="#clock-050" class="anchor"></a>clock 0.5.0<small> 2021-10-29 </small>
+</h1>
+<ul>
+<li><p>New <code><a href="../reference/date-time-parse.html">date_time_parse_RFC_3339()</a></code> and <code><a href="../reference/sys-parsing.html">sys_time_parse_RFC_3339()</a></code> for parsing date-time strings in the <a href="https://datatracker.ietf.org/doc/html/rfc3339">RFC 3339</a> format. This format is a subset of ISO 8601 representing the most common date-time formats seen in internet protocols, and is particularly useful for parsing date-time strings returned by an API. The default format parses strings like <code>"2019-01-01T01:02:03Z"</code> but can be adjusted to parse a numeric offset from UTC with the <code>offset</code> argument, which can parse strings like <code>"2019-01-01T01:02:03-04:30"</code> (<a href='https://github.com/r-lib/clock/issues/254'>#254</a>).</p></li>
+<li>
+<p>To align more with RFC 3339 and ISO 8601 standards, the default formats used in many of the date formatting and parsing functions have been slightly altered. The following changes have been made:</p>
+<ul>
+<li>
+<p>Date-times (POSIXct):</p>
+<ul>
+<li><p><code><a href="../reference/date_format.html">date_format()</a></code> now prints a <code>T</code> between the date and time.</p></li>
+<li><p><code><a href="../reference/date-time-parse.html">date_time_parse_complete()</a></code> now expects a <code>T</code> between the date and time by default.</p></li>
+</ul>
+</li>
+<li>
+<p>Sys-times:</p>
+<ul>
+<li><p><code><a href="https://rdrr.io/r/base/format.html">format()</a></code> and <code><a href="https://rdrr.io/r/base/character.html">as.character()</a></code> now print a <code>T</code> between the date and time.</p></li>
+<li><p><code><a href="../reference/sys-parsing.html">sys_time_parse()</a></code> now expects a <code>T</code> between the date and time by default.</p></li>
+</ul>
+</li>
+<li>
+<p>Naive-times:</p>
+<ul>
+<li><p><code><a href="https://rdrr.io/r/base/format.html">format()</a></code> and <code><a href="https://rdrr.io/r/base/character.html">as.character()</a></code> now print a <code>T</code> between the date and time.</p></li>
+<li><p><code><a href="../reference/naive_time_parse.html">naive_time_parse()</a></code> now expects a <code>T</code> between the date and time by default.</p></li>
+</ul>
+</li>
+<li>
+<p>Zoned-times:</p>
+<ul>
+<li><p><code><a href="https://rdrr.io/r/base/format.html">format()</a></code> and <code><a href="https://rdrr.io/r/base/character.html">as.character()</a></code> now print a <code>T</code> between the date and time.</p></li>
+<li><p><code><a href="../reference/zoned-parsing.html">zoned_time_parse_complete()</a></code> now expects a <code>T</code> between the date and time by default.</p></li>
+</ul>
+</li>
+<li>
+<p>Calendars:</p>
+<ul>
+<li><p><code><a href="https://rdrr.io/r/base/format.html">format()</a></code> and <code><a href="https://rdrr.io/r/base/character.html">as.character()</a></code> now print a <code>T</code> between the date and time.</p></li>
+<li><p><code><a href="../reference/year_month_day_parse.html">year_month_day_parse()</a></code> now expects a <code>T</code> between the date and time by default.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Further improved documentation of undefined behavior resulting from attempting to parse sub-daily components of a string that is intended to be parsed into a Date (<a href='https://github.com/r-lib/clock/issues/258'>#258</a>).</p></li>
+<li><p>Bumped required minimum version of tzdb to 0.2.0 to get access to the latest time zone database information (2021e) and to fix a Unicode bug on Windows.</p></li>
+</ul>
+</div>
     <div id="clock-041" class="section level1">
 <h1 class="page-header" data-toc-text="0.4.1">
-<a href="#clock-041" class="anchor"></a>clock 0.4.1<small> Unreleased </small>
+<a href="#clock-041" class="anchor"></a>clock 0.4.1<small> 2021-09-21 </small>
 </h1>
 <ul>
 <li>Updated a test related to upcoming changes in testthat.</li>
@@ -227,7 +277,7 @@ as_date_time(x, "America/New_York")
 <li><p>The Date method for <code><a href="../reference/as_zoned_time.html">as_zoned_time()</a></code> now converts to zoned-time through an intermediate naive-time, rather than a sys-time. This means that the printed date will always attempt to be retained, if possible, which is generally what is expected. In the rare case that daylight saving time makes a direct conversion impossible, <code>nonexistent</code> and <code>ambiguous</code> can be used to resolve any issues.</p></li>
 </ul>
 </li>
-<li><p>New <code><a href="../reference/as_date.html">as_date()</a></code> and <code><a href="../reference/as_date_time.html">as_date_time()</a></code> for converting to Date and POSIXct respectively. Unlike <code><a href="https://rdrr.io/r/base/as.Date.html">as.Date()</a></code> and <code><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct()</a></code>, these functions always treat Date as a naive-time type, which results in more consistent and intuitive conversions. Note that <code><a href="../reference/as_date.html">as_date()</a></code> does conflict with <code><a href="http://lubridate.tidyverse.org/reference/as_date.html">lubridate::as_date()</a></code>, and the lubridate version handles Dates differently (<a href='https://github.com/r-lib/clock/issues/209'>#209</a>).</p></li>
+<li><p>New <code><a href="../reference/as_date.html">as_date()</a></code> and <code><a href="../reference/as_date_time.html">as_date_time()</a></code> for converting to Date and POSIXct respectively. Unlike <code><a href="https://rdrr.io/r/base/as.Date.html">as.Date()</a></code> and <code><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct()</a></code>, these functions always treat Date as a naive-time type, which results in more consistent and intuitive conversions. Note that <code><a href="../reference/as_date.html">as_date()</a></code> does conflict with <code><a href="https://lubridate.tidyverse.org/reference/as_date.html">lubridate::as_date()</a></code>, and the lubridate version handles Dates differently (<a href='https://github.com/r-lib/clock/issues/209'>#209</a>).</p></li>
 <li>
 <p>Added two new convenient helpers (<a href='https://github.com/r-lib/clock/issues/197'>#197</a>):</p>
 <ul>

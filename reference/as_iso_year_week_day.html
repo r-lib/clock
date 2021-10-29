@@ -82,7 +82,7 @@ converted to iso-year-week-day." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -191,7 +191,7 @@ converted to iso-year-week-day.</p>
 <span class='co'># From POSIXct, which assumes that the naive time is what should be converted</span>
 <span class='fu'>as_iso_year_week_day</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"2019-01-01 02:30:30"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;iso_year_week_day&lt;second&gt;[1]&gt;
-#&gt; [1] "2019-W01-2 02:30:30"</div><div class='input'>
+#&gt; [1] "2019-W01-2T02:30:30"</div><div class='input'>
 <span class='co'># From other calendars</span>
 <span class='fu'>as_iso_year_week_day</span><span class='op'>(</span><span class='fu'><a href='year_quarter_day.html'>year_quarter_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, quarter <span class='op'>=</span> <span class='fl'>2</span>, day <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;iso_year_week_day&lt;day&gt;[1]&gt;

@@ -47,9 +47,9 @@
 
 
 <meta property="og:title" content="Parsing: date-time — date-time-parse" />
-<meta property="og:description" content="There are three parsers for parsing strings into POSIXct date-times,
-date_time_parse(), date_time_parse_complete(), and
-date_time_parse_abbrev().date_time_parse()
+<meta property="og:description" content="There are four parsers for parsing strings into POSIXct date-times,
+date_time_parse(), date_time_parse_complete(),
+date_time_parse_abbrev(), and date_time_parse_RFC_3339().date_time_parse()
 
 
 date_time_parse() is useful for strings like &quot;2019-01-01 00:00:00&quot;, where
@@ -61,19 +61,23 @@ ambiguous times due to daylight saving time, these must be resolved
 explicitly with the nonexistent and ambiguous arguments.
 date_time_parse() completely ignores the %z and %Z commands. The only
 time zone specific information that is used is the zone.
-The default format used is &quot;%Y-%m-%d %H:%M:%S&quot;.
+The default format used is &quot;%Y-%m-%d %H:%M:%S&quot;. This matches the default
+result from calling format() on a POSIXct date-time.
 
 date_time_parse_complete()
 
 
 date_time_parse_complete() is a parser for complete date-time strings,
-like &quot;2019-01-01 00:00:00-05:00[America/New_York]&quot;. A complete date-time
+like &quot;2019-01-01T00:00:00-05:00[America/New_York]&quot;. A complete date-time
 string has both the time zone offset and full time zone name in the string,
 which is the only way for the string itself to contain all of the information
-required to construct a zoned-time. Because of this,
+required to unambiguously construct a zoned-time. Because of this,
 date_time_parse_complete() requires both the %z and %Z commands to be
 supplied in the format string.
-The default format used is &quot;%Y-%m-%d %H:%M:%S%Ez[%Z]&quot;.
+The default format used is &quot;%Y-%m-%dT%H:%M:%S%Ez[%Z]&quot;. This matches the
+default result from calling date_format() on a POSIXct date-time.
+Additionally, this format matches the de-facto standard extension to RFC 3339
+for creating completely unambiguous date-times.
 
 date_time_parse_abbrev()
 
@@ -88,7 +92,35 @@ For date_time_parse_abbrev(), %Z must be supplied and is interpreted as
 the time zone abbreviation rather than the full time zone name.
 If used, the %z command must parse correctly, but its value will be
 completely ignored.
-The default format used is &quot;%Y-%m-%d %H:%M:%S %Z&quot;.
+The default format used is &quot;%Y-%m-%d %H:%M:%S %Z&quot;. This matches the
+default result from calling print() or format(usetz = TRUE) on a POSIXct
+date-time.
+
+date_time_parse_RFC_3339()
+
+
+date_time_parse_RFC_3339() is a parser for date-time strings in the
+extremely common date-time format outlined by RFC 3339. This document outlines
+a profile of the ISO 8601 format that is even more restrictive, but
+corresponds to the most common formats that are likely to be used in
+internet protocols (i.e. through APIs).
+In particular, this function is intended to parse the following three
+formats:2019-01-01T00:00:00Z
+2019-01-01T00:00:00+0430
+2019-01-01T00:00:00+04:30
+
+
+This function defaults to parsing the first of these formats by using
+a format string of &quot;%Y-%m-%dT%H:%M:%SZ&quot;.
+If your date-time strings use offsets from UTC rather than &quot;Z&quot;, then set
+offset to one of the following:
+&quot;%z&quot; if the offset is of the form &quot;+0430&quot;.
+&quot;%Ez&quot; if the offset is of the form &quot;+04:30&quot;.
+
+
+The RFC 3339 standard allows for replacing the &quot;T&quot; with a &quot;t&quot; or a space
+(&quot; &quot;). Set separator to adjust this as needed.
+The date-times returned by this function will always be in the UTC time zone.
 " />
 <meta property="og:image" content="https://clock.r-lib.org/logo.png" />
 
@@ -122,7 +154,7 @@ The default format used is &quot;%Y-%m-%d %H:%M:%S %Z&quot;.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -202,9 +234,9 @@ The default format used is &quot;%Y-%m-%d %H:%M:%S %Z&quot;.
     </div>
 
     <div class="ref-description">
-    <p>There are three parsers for parsing strings into POSIXct date-times,
-<code>date_time_parse()</code>, <code>date_time_parse_complete()</code>, and
-<code>date_time_parse_abbrev()</code>.</p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>date_time_parse()</h3>
+    <p>There are four parsers for parsing strings into POSIXct date-times,
+<code>date_time_parse()</code>, <code>date_time_parse_complete()</code>,
+<code>date_time_parse_abbrev()</code>, and <code>date_time_parse_RFC_3339()</code>.</p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>date_time_parse()</h3>
 
 
 <p><code>date_time_parse()</code> is useful for strings like <code>"2019-01-01 00:00:00"</code>, where
@@ -216,19 +248,23 @@ ambiguous times due to daylight saving time, these must be resolved
 explicitly with the <code>nonexistent</code> and <code>ambiguous</code> arguments.</p>
 <p><code>date_time_parse()</code> completely ignores the <code>%z</code> and <code>%Z</code> commands. The only
 time zone specific information that is used is the <code>zone</code>.</p>
-<p>The default <code>format</code> used is <code>"%Y-%m-%d %H:%M:%S"</code>.</p>
+<p>The default <code>format</code> used is <code>"%Y-%m-%d %H:%M:%S"</code>. This matches the default
+result from calling <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code> on a POSIXct date-time.</p>
 
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>date_time_parse_complete()</h3>
 
 
 <p><code>date_time_parse_complete()</code> is a parser for <em>complete</em> date-time strings,
-like <code>"2019-01-01 00:00:00-05:00[America/New_York]"</code>. A complete date-time
+like <code>"2019-01-01T00:00:00-05:00[America/New_York]"</code>. A complete date-time
 string has both the time zone offset and full time zone name in the string,
 which is the only way for the string itself to contain all of the information
-required to construct a zoned-time. Because of this,
+required to unambiguously construct a zoned-time. Because of this,
 <code>date_time_parse_complete()</code> requires both the <code>%z</code> and <code>%Z</code> commands to be
 supplied in the <code>format</code> string.</p>
-<p>The default <code>format</code> used is <code>"%Y-%m-%d %H:%M:%S%Ez[%Z]"</code>.</p>
+<p>The default <code>format</code> used is <code>"%Y-%m-%dT%H:%M:%S%Ez[%Z]"</code>. This matches the
+default result from calling <code><a href='date_format.html'>date_format()</a></code> on a POSIXct date-time.
+Additionally, this format matches the de-facto standard extension to RFC 3339
+for creating completely unambiguous date-times.</p>
 
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>date_time_parse_abbrev()</h3>
 
@@ -243,7 +279,35 @@ ambiguity around daylight saving time fallbacks.</p>
 the time zone abbreviation rather than the full time zone name.</p>
 <p>If used, the <code>%z</code> command must parse correctly, but its value will be
 completely ignored.</p>
-<p>The default <code>format</code> used is <code>"%Y-%m-%d %H:%M:%S %Z"</code>.</p>
+<p>The default <code>format</code> used is <code>"%Y-%m-%d %H:%M:%S %Z"</code>. This matches the
+default result from calling <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code> or <code><a href='https://rdrr.io/r/base/format.html'>format(usetz = TRUE)</a></code> on a POSIXct
+date-time.</p>
+
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>date_time_parse_RFC_3339()</h3>
+
+
+<p><code>date_time_parse_RFC_3339()</code> is a parser for date-time strings in the
+extremely common date-time format outlined by <a href='https://datatracker.ietf.org/doc/html/rfc3339'>RFC 3339</a>. This document outlines
+a profile of the ISO 8601 format that is even more restrictive, but
+corresponds to the most common formats that are likely to be used in
+internet protocols (i.e. through APIs).</p>
+<p>In particular, this function is intended to parse the following three
+formats:</p><pre>2019-01-01T00:00:00Z
+2019-01-01T00:00:00+0430
+2019-01-01T00:00:00+04:30
+</pre>
+
+<p>This function defaults to parsing the first of these formats by using
+a format string of <code>"%Y-%m-%dT%H:%M:%SZ"</code>.</p>
+<p>If your date-time strings use offsets from UTC rather than <code>"Z"</code>, then set
+<code>offset</code> to one of the following:</p><ul>
+<li><p><code>"%z"</code> if the offset is of the form <code>"+0430"</code>.</p></li>
+<li><p><code>"%Ez"</code> if the offset is of the form <code>"+04:30"</code>.</p></li>
+</ul>
+
+<p>The RFC 3339 standard allows for replacing the <code>"T"</code> with a <code>"t"</code> or a space
+(<code>" "</code>). Set <code>separator</code> to adjust this as needed.</p>
+<p>The date-times returned by this function will always be in the UTC time zone.</p>
 
     </div>
 
@@ -259,7 +323,9 @@ completely ignored.</p>
 
 <span class='fu'>date_time_parse_complete</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, format <span class='op'>=</span> <span class='cn'>NULL</span>, locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>date_time_parse_abbrev</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>zone</span>, <span class='va'>...</span>, format <span class='op'>=</span> <span class='cn'>NULL</span>, locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
+<span class='fu'>date_time_parse_abbrev</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>zone</span>, <span class='va'>...</span>, format <span class='op'>=</span> <span class='cn'>NULL</span>, locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'>date_time_parse_RFC_3339</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, separator <span class='op'>=</span> <span class='st'>"T"</span>, offset <span class='op'>=</span> <span class='st'>"Z"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -490,6 +556,25 @@ zoned_time cannot resolve. Instead, it must be specified as a list
 alongside an ambiguous time resolution strategy as described above. This is
 a convenient way to make production code robust to ambiguous times.</p></td>
     </tr>
+    <tr>
+      <th>separator</th>
+      <td><p><code>[character(1)]</code></p>
+<p>The separator between the date and time components of the string. One of:</p><ul>
+<li><p><code>"T"</code></p></li>
+<li><p><code>"t"</code></p></li>
+<li><p><code>" "</code></p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>offset</th>
+      <td><p><code>[character(1)]</code></p>
+<p>The format of the offset from UTC contained in the string. One of:</p><ul>
+<li><p><code>"Z"</code></p></li>
+<li><p><code>"z"</code></p></li>
+<li><p><code>"%z"</code> to parse a numeric offset of the form <code>"+0430"</code></p></li>
+<li><p><code>"%Ez"</code> to parse a numeric offset of the form <code>"+04:30"</code></p></li>
+</ul></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -518,7 +603,7 @@ seconds are handled when converting to POSIXct.</p>
 <span class='co'># Same time as above, except this is a completely unambiguous parse that</span>
 <span class='co'># doesn't require a `zone` argument, because the zone name and offset are</span>
 <span class='co'># both present in the string</span>
-<span class='fu'>date_time_parse_complete</span><span class='op'>(</span><span class='st'>"2020-01-01 05:06:07-05:00[America/New_York]"</span><span class='op'>)</span>
+<span class='fu'>date_time_parse_complete</span><span class='op'>(</span><span class='st'>"2020-01-01T05:06:07-05:00[America/New_York]"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "2020-01-01 05:06:07 EST"</div><div class='input'>
 <span class='co'># Only day components</span>
 <span class='fu'>date_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01"</span>, <span class='st'>"America/New_York"</span>, format <span class='op'>=</span> <span class='st'>"%Y-%m-%d"</span><span class='op'>)</span>
@@ -546,8 +631,8 @@ seconds are handled when converting to POSIXct.</p>
 <span class='co'># that the offset and zone name are both in the string, which resolves</span>
 <span class='co'># the ambiguity</span>
 <span class='va'>complete_times</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-  <span class='st'>"1970-10-25 01:00:00-04:00[America/New_York]"</span>,
-  <span class='st'>"1970-10-25 01:00:00-05:00[America/New_York]"</span>
+  <span class='st'>"1970-10-25T01:00:00-04:00[America/New_York]"</span>,
+  <span class='st'>"1970-10-25T01:00:00-05:00[America/New_York]"</span>
 <span class='op'>)</span>
 <span class='fu'>date_time_parse_complete</span><span class='op'>(</span><span class='va'>complete_times</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EDT" "1970-10-25 01:00:00 EST"</div><div class='input'>
@@ -560,23 +645,38 @@ seconds are handled when converting to POSIXct.</p>
 <span class='fu'>date_time_parse_abbrev</span><span class='op'>(</span><span class='va'>abbrev_times</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EDT" "1970-10-25 01:00:00 EST"</div><div class='input'>
 <span class='co'># ---------------------------------------------------------------------------</span>
+<span class='co'># RFC 3339</span>
+
+<span class='co'># Typical UTC format</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019-01-01T00:01:02Z"</span>
+<span class='fu'>date_time_parse_RFC_3339</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2019-01-01 00:01:02 UTC"</div><div class='input'>
+<span class='co'># With a UTC offset containing a `:`</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019-01-01T00:01:02+02:30"</span>
+<span class='fu'>date_time_parse_RFC_3339</span><span class='op'>(</span><span class='va'>x</span>, offset <span class='op'>=</span> <span class='st'>"%Ez"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2018-12-31 21:31:02 UTC"</div><div class='input'>
+<span class='co'># With a space between the date and time and no `:` in the offset</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019-01-01 00:01:02+0230"</span>
+<span class='fu'>date_time_parse_RFC_3339</span><span class='op'>(</span><span class='va'>x</span>, separator <span class='op'>=</span> <span class='st'>" "</span>, offset <span class='op'>=</span> <span class='st'>"%z"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2018-12-31 21:31:02 UTC"</div><div class='input'>
+<span class='co'># ---------------------------------------------------------------------------</span>
 <span class='co'># Sub-second components</span>
 
 <span class='co'># If you have a string with sub-second components, but only require up to</span>
 <span class='co'># seconds, first parse them into a clock type that can handle sub-seconds to</span>
 <span class='co'># fully capture that information, then round using whatever convention is</span>
 <span class='co'># required for your use case before converting to a date-time.</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2019-01-01 00:00:01.1"</span>, <span class='st'>"2019-01-01 00:00:01.78"</span><span class='op'>)</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2019-01-01T00:00:01.1"</span>, <span class='st'>"2019-01-01T00:00:01.78"</span><span class='op'>)</span>
 
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='naive_time_parse.html'>naive_time_parse</a></span><span class='op'>(</span><span class='va'>x</span>, precision <span class='op'>=</span> <span class='st'>"millisecond"</span><span class='op'>)</span>
 <span class='va'>x</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;millisecond&gt;[2]&gt;
-#&gt; [1] "2019-01-01 00:00:01.100" "2019-01-01 00:00:01.780"</div><div class='input'>
+#&gt; [1] "2019-01-01T00:00:01.100" "2019-01-01T00:00:01.780"</div><div class='input'>
 <span class='fu'><a href='time-point-rounding.html'>time_point_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;
-#&gt; [1] "2019-01-01 00:00:01" "2019-01-01 00:00:01"</div><div class='input'><span class='fu'><a href='time-point-rounding.html'>time_point_round</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>
+#&gt; [1] "2019-01-01T00:00:01" "2019-01-01T00:00:01"</div><div class='input'><span class='fu'><a href='time-point-rounding.html'>time_point_round</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;
-#&gt; [1] "2019-01-01 00:00:01" "2019-01-01 00:00:02"</div><div class='input'>
+#&gt; [1] "2019-01-01T00:00:01" "2019-01-01T00:00:02"</div><div class='input'>
 <span class='fu'><a href='as_date_time.html'>as_date_time</a></span><span class='op'>(</span><span class='fu'><a href='time-point-rounding.html'>time_point_round</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "2019-01-01 00:00:01 EST" "2019-01-01 00:00:02 EST"</div></pre>
   </div>

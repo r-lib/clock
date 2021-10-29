@@ -100,7 +100,7 @@ as_year_month_day()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -264,7 +264,7 @@ units of duration.</p></td>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
 <span class='va'>x</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "1970-04-25 02:30:00-05:00"</div><div class='input'>
+#&gt; [1] "1970-04-25T02:30:00-05:00"</div><div class='input'>
 <span class='co'># Note that there was a daylight saving time gap on 1970-04-26 where</span>
 <span class='co'># we jumped from 01:59:59 -&gt; 03:00:00.</span>
 
@@ -275,20 +275,20 @@ units of duration.</p></td>
 <span class='co'># (note that the hour field is shifted forward by the size of the gap)</span>
 <span class='fu'><a href='as_sys_time.html'>as_sys_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;
-#&gt; [1] "1970-04-25 07:30:00"</div><div class='input'>
+#&gt; [1] "1970-04-25T07:30:00"</div><div class='input'>
 <span class='va'>x</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='as_sys_time.html'>as_sys_time</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='fu'><a href='zoned-zone.html'>zoned_time_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "1970-04-26 03:30:00-04:00"</div><div class='input'>
+#&gt; [1] "1970-04-26T03:30:00-04:00"</div><div class='input'>
 <span class='co'># Alternatively, you can add 1 day in "naive time". Naive time represents</span>
 <span class='co'># a clock time with a yet-to-be-specified time zone. It tries to maintain</span>
 <span class='co'># smaller units where possible, so adding 1 day would attempt to return</span>
 <span class='co'># "1970-04-26T02:30:00" in the America/New_York time zone, but...</span>
 <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;
-#&gt; [1] "1970-04-25 02:30:00"</div><div class='input'>
+#&gt; [1] "1970-04-25T02:30:00"</div><div class='input'>
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='op'>{</span>
 <span class='va'>x</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -306,7 +306,7 @@ units of duration.</p></td>
   <span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='fu'><a href='zoned-zone.html'>zoned_time_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-forward"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "1970-04-26 03:00:00-04:00"</div></pre>
+#&gt; [1] "1970-04-26T03:00:00-04:00"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
