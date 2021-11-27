@@ -281,6 +281,48 @@ test_that("precision: can only be called on durations", {
 })
 
 # ------------------------------------------------------------------------------
+# vec_arith()
+
+test_that("`<duration> / <duration>` is not allowed", {
+  expect_snapshot(
+    (expect_error(duration_years(1) / duration_years(2)))
+  )
+})
+
+test_that("`<duration> %/% <duration>` works", {
+  expect_identical(duration_years(5) %/% duration_years(2:3), c(2L, 1L))
+  expect_identical(duration_days(10) %/% duration_hours(7), 34L)
+})
+
+test_that("`<duration> %/% <duration>` propagates NA", {
+  expect_identical(duration_hours(NA) %/% duration_hours(1), NA_integer_)
+  expect_identical(duration_hours(1) %/% duration_hours(NA), NA_integer_)
+})
+
+test_that("`<duration> %/% <duration>` propagates names", {
+  expect_named(c(x = duration_hours(1)) %/% duration_hours(1:2), c("x", "x"))
+  expect_named(c(x = duration_hours(1)) %/% c(y = duration_hours(1)), "x")
+  expect_named(duration_hours(1) %/% c(y = duration_hours(1)), "y")
+})
+
+test_that("`<duration> %/% <duration>` results in NA for OOB values", {
+  skip_on_cran()
+
+  one <- duration_hours(1)
+  numerator <- duration_hours(.Machine$integer.max)
+  denominator <- duration_hours(1)
+
+  expect_identical(numerator %/% denominator, .Machine$integer.max)
+  expect_identical(-numerator %/% denominator, -.Machine$integer.max)
+
+  expect_snapshot(out <- (numerator + one) %/% denominator)
+  expect_identical(out, NA_integer_)
+
+  expect_snapshot(out <- (-numerator - one) %/% denominator)
+  expect_identical(out, NA_integer_)
+})
+
+# ------------------------------------------------------------------------------
 # vec_math()
 
 test_that("is.nan() works", {

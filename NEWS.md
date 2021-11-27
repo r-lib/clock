@@ -1,5 +1,11 @@
 # clock (development version)
 
+* Integer division is now defined for two duration objects through
+  `<duration> %/% <duration>`. This always returns an integer vector, so be
+  aware that using very precise duration objects (like nanoseconds) can easily
+  generate a division result that is outside the range of an integer. In that
+  case, an `NA` is returned with a warning.
+
 # clock 0.5.0
 
 * New `date_time_parse_RFC_3339()` and `sys_time_parse_RFC_3339()` for parsing

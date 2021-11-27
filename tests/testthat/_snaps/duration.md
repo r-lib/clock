@@ -188,3 +188,26 @@
 
     `x` must be a 'clock_duration'.
 
+# `<duration> / <duration>` is not allowed
+
+    Code
+      (expect_error(duration_years(1) / duration_years(2)))
+    Output
+      <error/vctrs_error_incompatible_op>
+      <duration<year>> / <duration<year>> is not permitted
+      Durations only support integer division. Did you want `%/%`?
+
+# `<duration> %/% <duration>` results in NA for OOB values
+
+    Code
+      out <- (numerator + one) %/% denominator
+    Warning <simpleWarning>
+      Conversion to integer is outside the range of an integer. `NA` values have been introduced, beginning at location 1.
+
+---
+
+    Code
+      out <- (-numerator - one) %/% denominator
+    Warning <simpleWarning>
+      Conversion to integer is outside the range of an integer. `NA` values have been introduced, beginning at location 1.
+

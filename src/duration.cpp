@@ -463,6 +463,115 @@ duration_modulus_cpp(cpp11::list_of<cpp11::integers> x,
 
 // -----------------------------------------------------------------------------
 
+template <class ClockDuration>
+static
+inline
+cpp11::writable::integers
+duration_integer_divide_impl(const ClockDuration& x, const ClockDuration& y) {
+  using Duration = typename ClockDuration::duration;
+  using Rep = typename Duration::rep;
+
+  const Rep REP_INT_MAX = static_cast<Rep>(INT_MAX);
+  const Rep REP_INT_MIN = static_cast<Rep>(INT_MIN);
+
+  const r_ssize size = x.size();
+
+  cpp11::writable::integers out(size);
+
+  bool warn = false;
+  r_ssize loc = 0;
+
+  for (r_ssize i = 0; i < size; ++i) {
+    if (x.is_na(i) || y.is_na(i)) {
+      out[i] = r_int_na;
+      continue;
+    }
+
+    const Rep elt = x[i] / y[i];
+
+    if (elt > REP_INT_MAX || elt <= REP_INT_MIN) {
+      out[i] = r_int_na;
+
+      if (!warn) {
+        warn = true;
+        loc = i + 1;
+      }
+
+      continue;
+    }
+
+    out[i] = static_cast<int>(elt);
+  }
+
+  if (warn) {
+    cpp11::warning(
+      "Conversion to integer is outside the range of an integer. "
+      "`NA` values have been introduced, beginning at location %td.",
+      (ptrdiff_t) loc
+    );
+  }
+
+  return out;
+}
+
+[[cpp11::register]]
+cpp11::writable::integers
+duration_integer_divide_cpp(cpp11::list_of<cpp11::integers> x,
+                            cpp11::list_of<cpp11::integers> y,
+                            const cpp11::integers& precision_int) {
+  using namespace rclock;
+
+  const cpp11::integers x_ticks = duration::get_ticks(x);
+  const cpp11::integers x_ticks_of_day = duration::get_ticks_of_day(x);
+  const cpp11::integers x_ticks_of_second = duration::get_ticks_of_second(x);
+
+  const cpp11::integers y_ticks = duration::get_ticks(y);
+  const cpp11::integers y_ticks_of_day = duration::get_ticks_of_day(y);
+  const cpp11::integers y_ticks_of_second = duration::get_ticks_of_second(y);
+
+  const duration::years x_dy{x_ticks};
+  const duration::quarters x_dq{x_ticks};
+  const duration::months x_dm{x_ticks};
+  const duration::weeks x_dw{x_ticks};
+  const duration::days x_dd{x_ticks};
+  const duration::hours x_dh{x_ticks, x_ticks_of_day};
+  const duration::minutes x_dmin{x_ticks, x_ticks_of_day};
+  const duration::seconds x_ds{x_ticks, x_ticks_of_day};
+  const duration::milliseconds x_dmilli{x_ticks, x_ticks_of_day, x_ticks_of_second};
+  const duration::microseconds x_dmicro{x_ticks, x_ticks_of_day, x_ticks_of_second};
+  const duration::nanoseconds x_dnano{x_ticks, x_ticks_of_day, x_ticks_of_second};
+
+  const duration::years y_dy{y_ticks};
+  const duration::quarters y_dq{y_ticks};
+  const duration::months y_dm{y_ticks};
+  const duration::weeks y_dw{y_ticks};
+  const duration::days y_dd{y_ticks};
+  const duration::hours y_dh{y_ticks, y_ticks_of_day};
+  const duration::minutes y_dmin{y_ticks, y_ticks_of_day};
+  const duration::seconds y_ds{y_ticks, y_ticks_of_day};
+  const duration::milliseconds y_dmilli{y_ticks, y_ticks_of_day, y_ticks_of_second};
+  const duration::microseconds y_dmicro{y_ticks, y_ticks_of_day, y_ticks_of_second};
+  const duration::nanoseconds y_dnano{y_ticks, y_ticks_of_day, y_ticks_of_second};
+
+  switch (parse_precision(precision_int)) {
+  case precision::year: return duration_integer_divide_impl(x_dy, y_dy);
+  case precision::quarter: return duration_integer_divide_impl(x_dq, y_dq);
+  case precision::month: return duration_integer_divide_impl(x_dm, y_dm);
+  case precision::week: return duration_integer_divide_impl(x_dw, y_dw);
+  case precision::day: return duration_integer_divide_impl(x_dd, y_dd);
+  case precision::hour: return duration_integer_divide_impl(x_dh, y_dh);
+  case precision::minute: return duration_integer_divide_impl(x_dmin, y_dmin);
+  case precision::second: return duration_integer_divide_impl(x_ds, y_ds);
+  case precision::millisecond: return duration_integer_divide_impl(x_dmilli, y_dmilli);
+  case precision::microsecond: return duration_integer_divide_impl(x_dmicro, y_dmicro);
+  case precision::nanosecond: return duration_integer_divide_impl(x_dnano, y_dnano);
+  }
+
+  never_reached("duration_integer_divide_cpp");
+}
+
+// -----------------------------------------------------------------------------
+
 enum class arith_scalar_op {
   multiply,
   divide
