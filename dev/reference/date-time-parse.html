@@ -280,7 +280,7 @@ the time zone abbreviation rather than the full time zone name.</p>
 <p>If used, the <code>%z</code> command must parse correctly, but its value will be
 completely ignored.</p>
 <p>The default <code>format</code> used is <code>"%Y-%m-%d %H:%M:%S %Z"</code>. This matches the
-default result from calling <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code> or <code><a href='https://rdrr.io/r/base/format.html'>format(usetz = TRUE)</a></code> on a POSIXct
+default result from calling <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code> or <code>format(usetz = TRUE)</code> on a POSIXct
 date-time.</p>
 
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>date_time_parse_RFC_3339()</h3>
@@ -475,7 +475,7 @@ a 12-hour clock. The command <code>%I</code> must precede <code>%p</code> in the
 <p><strong>Time zone</strong></p><ul>
 <li><p><code>%z</code>: The offset from UTC in the format <code>[+|-]hh[mm]</code>. For example
 <code>-0430</code> refers to 4 hours 30 minutes behind UTC. And <code>04</code> refers to 4 hours
-ahead of UTC. The modified command <code>%Ez</code> parses a <code><a href='https://rdrr.io/r/base/Colon.html'>:</a></code> between the hours and
+ahead of UTC. The modified command <code>%Ez</code> parses a <code>:</code> between the hours and
 minutes and leading zeroes on the hour field are optional:
 <code>[+|-]h[h][:mm]</code>. For example <code>-04:30</code> refers to 4 hours 30 minutes behind
 UTC. And <code>4</code> refers to 4 hours ahead of UTC.</p></li>
@@ -488,7 +488,7 @@ contain characters that are alphanumeric, or one of <code>'_'</code>, <code>'/'<
 <p><strong>Miscellaneous</strong></p><ul>
 <li><p><code>%c</code>: A date and time representation. Equivalent to
 <code>%a %b %d %H:%M:%S %Y</code>.</p></li>
-<li><p><code><a href='https://rdrr.io/r/base/Arithmetic.html'>%%</a></code>: A <code>%</code> character.</p></li>
+<li><p><code>%%</code>: A <code>%</code> character.</p></li>
 <li><p><code>%n</code>: Matches one white space character. <code>%n</code>, <code>%t</code>, and a space can be
 combined to match a wide range of white-space patterns. For example <code>"%n "</code>
 matches one or more white space characters, and <code>"%n%t%t"</code> matches one to
@@ -520,7 +520,7 @@ the daylight saving time gap.</p></li>
 recommended over shifting, as these two strategies maintain the
 <em>relative ordering</em> between elements of the input.</p>
 <p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
-<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>nonexistent</code> must be supplied
+<p>If <code>getOption("clock.strict")</code> is <code>TRUE</code>, <code>nonexistent</code> must be supplied
 and cannot be <code>NULL</code>. This is a convenient way to make production code
 robust to nonexistent times.</p></td>
     </tr>
@@ -549,7 +549,7 @@ element of the list is an ambiguous time resolution strategy to use when
 the ambiguous time cannot be resolved by consulting the zoned_time.
 Specifying a zoned_time on its own is identical to <code>list(&lt;zoned_time&gt;, NULL)</code>.</p>
 <p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
-<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>ambiguous</code> must be supplied and
+<p>If <code>getOption("clock.strict")</code> is <code>TRUE</code>, <code>ambiguous</code> must be supplied and
 cannot be <code>NULL</code>. Additionally, <code>ambiguous</code> cannot be specified as a
 zoned_time on its own, as this implies <code>NULL</code> for ambiguous times that the
 zoned_time cannot resolve. Instead, it must be specified as a list
@@ -597,88 +597,105 @@ whatever rounding convention is appropriate for your use case, such as
 seconds are handled when converting to POSIXct.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Parse with a known `zone`, even though that information isn't in the string</span>
-<span class='fu'>date_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01 05:06:07"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-01-01 05:06:07 EST"</div><div class='input'>
-<span class='co'># Same time as above, except this is a completely unambiguous parse that</span>
-<span class='co'># doesn't require a `zone` argument, because the zone name and offset are</span>
-<span class='co'># both present in the string</span>
-<span class='fu'>date_time_parse_complete</span><span class='op'>(</span><span class='st'>"2020-01-01T05:06:07-05:00[America/New_York]"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-01-01 05:06:07 EST"</div><div class='input'>
-<span class='co'># Only day components</span>
-<span class='fu'>date_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01"</span>, <span class='st'>"America/New_York"</span>, format <span class='op'>=</span> <span class='st'>"%Y-%m-%d"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-01-01 EST"</div><div class='input'>
-<span class='co'># `date_time_parse()` may have issues with ambiguous times due to daylight</span>
-<span class='co'># saving time fallbacks. For example, there were two 1'oclock hours here:</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>date_time_parse</span><span class='op'>(</span><span class='st'>"1970-10-25 00:59:59"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
-
-<span class='co'># First (earliest) 1'oclock hour</span>
-<span class='fu'><a href='clock-arithmetic.html'>add_seconds</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EDT"</div><div class='input'><span class='co'># Second (latest) 1'oclock hour</span>
-<span class='fu'><a href='clock-arithmetic.html'>add_seconds</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>3601</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EST"</div><div class='input'>
-<span class='co'># If you try to parse this ambiguous time directly, you'll get an error:</span>
-<span class='va'>ambiguous_time</span> <span class='op'>&lt;-</span> <span class='st'>"1970-10-25 01:00:00"</span>
-<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>date_time_parse</span><span class='op'>(</span><span class='va'>ambiguous_time</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Error : Ambiguous time due to daylight saving time at location 1.
-#&gt; <span style='color: #0000BB;'>ℹ</span> Resolve ambiguous time issues by specifying the `ambiguous` argument.</div><div class='input'>
-<span class='co'># Resolve it by specifying whether you'd like to use the</span>
-<span class='co'># `earliest` or `latest` of the two possible times</span>
-<span class='fu'>date_time_parse</span><span class='op'>(</span><span class='va'>ambiguous_time</span>, <span class='st'>"America/New_York"</span>, ambiguous <span class='op'>=</span> <span class='st'>"earliest"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EDT"</div><div class='input'><span class='fu'>date_time_parse</span><span class='op'>(</span><span class='va'>ambiguous_time</span>, <span class='st'>"America/New_York"</span>, ambiguous <span class='op'>=</span> <span class='st'>"latest"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EST"</div><div class='input'>
-<span class='co'># `date_time_parse_complete()` doesn't have these issues, as it requires</span>
-<span class='co'># that the offset and zone name are both in the string, which resolves</span>
-<span class='co'># the ambiguity</span>
-<span class='va'>complete_times</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-  <span class='st'>"1970-10-25T01:00:00-04:00[America/New_York]"</span>,
-  <span class='st'>"1970-10-25T01:00:00-05:00[America/New_York]"</span>
-<span class='op'>)</span>
-<span class='fu'>date_time_parse_complete</span><span class='op'>(</span><span class='va'>complete_times</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EDT" "1970-10-25 01:00:00 EST"</div><div class='input'>
-<span class='co'># `date_time_parse_abbrev()` also doesn't have these issues, since it</span>
-<span class='co'># uses the time zone abbreviation name to resolve the ambiguity</span>
-<span class='va'>abbrev_times</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-  <span class='st'>"1970-10-25 01:00:00 EDT"</span>,
-  <span class='st'>"1970-10-25 01:00:00 EST"</span>
-<span class='op'>)</span>
-<span class='fu'>date_time_parse_abbrev</span><span class='op'>(</span><span class='va'>abbrev_times</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "1970-10-25 01:00:00 EDT" "1970-10-25 01:00:00 EST"</div><div class='input'>
-<span class='co'># ---------------------------------------------------------------------------</span>
-<span class='co'># RFC 3339</span>
-
-<span class='co'># Typical UTC format</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019-01-01T00:01:02Z"</span>
-<span class='fu'>date_time_parse_RFC_3339</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2019-01-01 00:01:02 UTC"</div><div class='input'>
-<span class='co'># With a UTC offset containing a `:`</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019-01-01T00:01:02+02:30"</span>
-<span class='fu'>date_time_parse_RFC_3339</span><span class='op'>(</span><span class='va'>x</span>, offset <span class='op'>=</span> <span class='st'>"%Ez"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2018-12-31 21:31:02 UTC"</div><div class='input'>
-<span class='co'># With a space between the date and time and no `:` in the offset</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019-01-01 00:01:02+0230"</span>
-<span class='fu'>date_time_parse_RFC_3339</span><span class='op'>(</span><span class='va'>x</span>, separator <span class='op'>=</span> <span class='st'>" "</span>, offset <span class='op'>=</span> <span class='st'>"%z"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2018-12-31 21:31:02 UTC"</div><div class='input'>
-<span class='co'># ---------------------------------------------------------------------------</span>
-<span class='co'># Sub-second components</span>
-
-<span class='co'># If you have a string with sub-second components, but only require up to</span>
-<span class='co'># seconds, first parse them into a clock type that can handle sub-seconds to</span>
-<span class='co'># fully capture that information, then round using whatever convention is</span>
-<span class='co'># required for your use case before converting to a date-time.</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2019-01-01T00:00:01.1"</span>, <span class='st'>"2019-01-01T00:00:01.78"</span><span class='op'>)</span>
-
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='naive_time_parse.html'>naive_time_parse</a></span><span class='op'>(</span><span class='va'>x</span>, precision <span class='op'>=</span> <span class='st'>"millisecond"</span><span class='op'>)</span>
-<span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;millisecond&gt;[2]&gt;
-#&gt; [1] "2019-01-01T00:00:01.100" "2019-01-01T00:00:01.780"</div><div class='input'>
-<span class='fu'><a href='time-point-rounding.html'>time_point_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;
-#&gt; [1] "2019-01-01T00:00:01" "2019-01-01T00:00:01"</div><div class='input'><span class='fu'><a href='time-point-rounding.html'>time_point_round</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;
-#&gt; [1] "2019-01-01T00:00:01" "2019-01-01T00:00:02"</div><div class='input'>
-<span class='fu'><a href='as_date_time.html'>as_date_time</a></span><span class='op'>(</span><span class='fu'><a href='time-point-rounding.html'>time_point_round</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2019-01-01 00:00:01 EST" "2019-01-01 00:00:02 EST"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Parse with a known `zone`, even though that information isn't in the string</span></span>
+<span class='r-in'><span class='fu'>date_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01 05:06:07"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2020-01-01 05:06:07 EST"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Same time as above, except this is a completely unambiguous parse that</span></span>
+<span class='r-in'><span class='co'># doesn't require a `zone` argument, because the zone name and offset are</span></span>
+<span class='r-in'><span class='co'># both present in the string</span></span>
+<span class='r-in'><span class='fu'>date_time_parse_complete</span><span class='op'>(</span><span class='st'>"2020-01-01T05:06:07-05:00[America/New_York]"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2020-01-01 05:06:07 EST"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Only day components</span></span>
+<span class='r-in'><span class='fu'>date_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01"</span>, <span class='st'>"America/New_York"</span>, format <span class='op'>=</span> <span class='st'>"%Y-%m-%d"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2020-01-01 EST"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `date_time_parse()` may have issues with ambiguous times due to daylight</span></span>
+<span class='r-in'><span class='co'># saving time fallbacks. For example, there were two 1'oclock hours here:</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>date_time_parse</span><span class='op'>(</span><span class='st'>"1970-10-25 00:59:59"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># First (earliest) 1'oclock hour</span></span>
+<span class='r-in'><span class='fu'><a href='clock-arithmetic.html'>add_seconds</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-10-25 01:00:00 EDT"</span>
+<span class='r-in'><span class='co'># Second (latest) 1'oclock hour</span></span>
+<span class='r-in'><span class='fu'><a href='clock-arithmetic.html'>add_seconds</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>3601</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-10-25 01:00:00 EST"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># If you try to parse this ambiguous time directly, you'll get an error:</span></span>
+<span class='r-in'><span class='va'>ambiguous_time</span> <span class='op'>&lt;-</span> <span class='st'>"1970-10-25 01:00:00"</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>date_time_parse</span><span class='op'>(</span><span class='va'>ambiguous_time</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Error : Ambiguous time due to daylight saving time at location 1.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'>ℹ</span> Resolve ambiguous time issues by specifying the `ambiguous` argument.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Resolve it by specifying whether you'd like to use the</span></span>
+<span class='r-in'><span class='co'># `earliest` or `latest` of the two possible times</span></span>
+<span class='r-in'><span class='fu'>date_time_parse</span><span class='op'>(</span><span class='va'>ambiguous_time</span>, <span class='st'>"America/New_York"</span>, ambiguous <span class='op'>=</span> <span class='st'>"earliest"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-10-25 01:00:00 EDT"</span>
+<span class='r-in'><span class='fu'>date_time_parse</span><span class='op'>(</span><span class='va'>ambiguous_time</span>, <span class='st'>"America/New_York"</span>, ambiguous <span class='op'>=</span> <span class='st'>"latest"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-10-25 01:00:00 EST"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `date_time_parse_complete()` doesn't have these issues, as it requires</span></span>
+<span class='r-in'><span class='co'># that the offset and zone name are both in the string, which resolves</span></span>
+<span class='r-in'><span class='co'># the ambiguity</span></span>
+<span class='r-in'><span class='va'>complete_times</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='st'>"1970-10-25T01:00:00-04:00[America/New_York]"</span>,</span>
+<span class='r-in'>  <span class='st'>"1970-10-25T01:00:00-05:00[America/New_York]"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>date_time_parse_complete</span><span class='op'>(</span><span class='va'>complete_times</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-10-25 01:00:00 EDT" "1970-10-25 01:00:00 EST"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `date_time_parse_abbrev()` also doesn't have these issues, since it</span></span>
+<span class='r-in'><span class='co'># uses the time zone abbreviation name to resolve the ambiguity</span></span>
+<span class='r-in'><span class='va'>abbrev_times</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='st'>"1970-10-25 01:00:00 EDT"</span>,</span>
+<span class='r-in'>  <span class='st'>"1970-10-25 01:00:00 EST"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>date_time_parse_abbrev</span><span class='op'>(</span><span class='va'>abbrev_times</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-10-25 01:00:00 EDT" "1970-10-25 01:00:00 EST"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># ---------------------------------------------------------------------------</span></span>
+<span class='r-in'><span class='co'># RFC 3339</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Typical UTC format</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019-01-01T00:01:02Z"</span></span>
+<span class='r-in'><span class='fu'>date_time_parse_RFC_3339</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-01-01 00:01:02 UTC"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># With a UTC offset containing a `:`</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019-01-01T00:01:02+02:30"</span></span>
+<span class='r-in'><span class='fu'>date_time_parse_RFC_3339</span><span class='op'>(</span><span class='va'>x</span>, offset <span class='op'>=</span> <span class='st'>"%Ez"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2018-12-31 21:31:02 UTC"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># With a space between the date and time and no `:` in the offset</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019-01-01 00:01:02+0230"</span></span>
+<span class='r-in'><span class='fu'>date_time_parse_RFC_3339</span><span class='op'>(</span><span class='va'>x</span>, separator <span class='op'>=</span> <span class='st'>" "</span>, offset <span class='op'>=</span> <span class='st'>"%z"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2018-12-31 21:31:02 UTC"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># ---------------------------------------------------------------------------</span></span>
+<span class='r-in'><span class='co'># Sub-second components</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># If you have a string with sub-second components, but only require up to</span></span>
+<span class='r-in'><span class='co'># seconds, first parse them into a clock type that can handle sub-seconds to</span></span>
+<span class='r-in'><span class='co'># fully capture that information, then round using whatever convention is</span></span>
+<span class='r-in'><span class='co'># required for your use case before converting to a date-time.</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2019-01-01T00:00:01.1"</span>, <span class='st'>"2019-01-01T00:00:01.78"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='naive_time_parse.html'>naive_time_parse</a></span><span class='op'>(</span><span class='va'>x</span>, precision <span class='op'>=</span> <span class='st'>"millisecond"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;time_point&lt;naive&gt;&lt;millisecond&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-01-01T00:00:01.100" "2019-01-01T00:00:01.780"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='time-point-rounding.html'>time_point_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-01-01T00:00:01" "2019-01-01T00:00:01"</span>
+<span class='r-in'><span class='fu'><a href='time-point-rounding.html'>time_point_round</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-01-01T00:00:01" "2019-01-01T00:00:02"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='as_date_time.html'>as_date_time</a></span><span class='op'>(</span><span class='fu'><a href='time-point-rounding.html'>time_point_round</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-01-01 00:00:01 EST" "2019-01-01 00:00:02 EST"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

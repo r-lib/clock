@@ -271,97 +271,112 @@ and is recycled against <code>x</code>.</p></td>
 to a tibble with <code>as_tibble()</code>, as that will print the df-cols much nicer.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://vctrs.r-lib.org/'>vctrs</a></span><span class='op'>)</span>
-
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>1970</span>, <span class='fl'>04</span>, <span class='fl'>26</span>, <span class='fl'>02</span>, <span class='fl'>30</span>, <span class='fl'>00</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-
-<span class='co'># Maps uniquely to a time in London</span>
-<span class='fu'>naive_time_info</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"Europe/London"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;     type         first.begin           first.end first.offset first.dst
-#&gt; 1 unique 1968-10-26T23:00:00 1971-10-31T02:00:00         3600     FALSE
-#&gt;   first.abbreviation second.begin second.end second.offset second.dst
-#&gt; 1                BST         &lt;NA&gt;       &lt;NA&gt;          &lt;NA&gt;         NA
-#&gt;   second.abbreviation
-#&gt; 1                &lt;NA&gt;</div><div class='input'>
-<span class='co'># This naive-time never existed in New York!</span>
-<span class='co'># A DST gap jumped the time from 01:59:59 -&gt; 03:00:00,</span>
-<span class='co'># skipping the 2 o'clock hour</span>
-<span class='va'>zone</span> <span class='op'>&lt;-</span> <span class='st'>"America/New_York"</span>
-<span class='va'>info</span> <span class='op'>&lt;-</span> <span class='fu'>naive_time_info</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>zone</span><span class='op'>)</span>
-<span class='va'>info</span>
-</div><div class='output co'>#&gt;          type         first.begin           first.end first.offset first.dst
-#&gt; 1 nonexistent 1969-10-26T06:00:00 1970-04-26T07:00:00       -18000     FALSE
-#&gt;   first.abbreviation        second.begin          second.end second.offset
-#&gt; 1                EST 1970-04-26T07:00:00 1970-10-25T06:00:00        -14400
-#&gt;   second.dst second.abbreviation
-#&gt; 1       TRUE                 EDT</div><div class='input'>
-<span class='co'># You can recreate various `nonexistent` strategies with this info</span>
-<span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>zone</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-forward"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "1970-04-26T03:00:00-04:00"</div><div class='input'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>info</span><span class='op'>$</span><span class='va'>first</span><span class='op'>$</span><span class='va'>end</span>, <span class='va'>zone</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "1970-04-26T03:00:00-04:00"</div><div class='input'>
-<span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>zone</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-backward"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "1970-04-26T01:59:59-05:00"</div><div class='input'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>info</span><span class='op'>$</span><span class='va'>first</span><span class='op'>$</span><span class='va'>end</span> <span class='op'>-</span> <span class='fl'>1</span>, <span class='va'>zone</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "1970-04-26T01:59:59-05:00"</div><div class='input'>
-<span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>zone</span>, nonexistent <span class='op'>=</span> <span class='st'>"shift-forward"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "1970-04-26T03:30:00-04:00"</div><div class='input'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='fu'><a href='as_sys_time.html'>as_sys_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>-</span> <span class='va'>info</span><span class='op'>$</span><span class='va'>first</span><span class='op'>$</span><span class='va'>offset</span>, <span class='va'>zone</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "1970-04-26T03:30:00-04:00"</div><div class='input'>
-<span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>zone</span>, nonexistent <span class='op'>=</span> <span class='st'>"shift-backward"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "1970-04-26T01:30:00-05:00"</div><div class='input'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='fu'><a href='as_sys_time.html'>as_sys_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>-</span> <span class='va'>info</span><span class='op'>$</span><span class='va'>second</span><span class='op'>$</span><span class='va'>offset</span>, <span class='va'>zone</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "1970-04-26T01:30:00-05:00"</div><div class='input'>
-<span class='co'># ---------------------------------------------------------------------------</span>
-<span class='co'># Normalizing to UTC</span>
-
-<span class='co'># Imagine you had the following printed times, and knowledge that they</span>
-<span class='co'># are to be interpreted as in the corresponding time zones</span>
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://vctrs.r-lib.org/reference/data_frame.html'>data_frame</a></span><span class='op'>(</span>
-  x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2020-01-05 02:30:00"</span>, <span class='st'>"2020-06-03 12:20:05"</span><span class='op'>)</span>,
-  zone <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"America/Los_Angeles"</span>, <span class='st'>"Europe/London"</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='co'># The times are assumed to be naive-times, i.e. if you lived in the `zone`</span>
-<span class='co'># at the moment the time was recorded, then you would have seen that time</span>
-<span class='co'># printed on the clock. Currently, these are strings. To convert them to</span>
-<span class='co'># a time based type, you'll have to acknowledge that R only lets you have</span>
-<span class='co'># 1 time zone in a vector of date-times at a time. So you'll need to</span>
-<span class='co'># normalize these naive-times. The easiest thing to normalize them to</span>
-<span class='co'># is UTC.</span>
-<span class='va'>df</span><span class='op'>$</span><span class='va'>naive</span> <span class='op'>&lt;-</span> <span class='fu'><a href='naive_time_parse.html'>naive_time_parse</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Failed to parse 2 strings, beginning at location 1. Returning `NA` at the locations where there were parse failures.</span></div><div class='input'>
-<span class='co'># Get info about the naive times using a vector of zones</span>
-<span class='va'>info</span> <span class='op'>&lt;-</span> <span class='fu'>naive_time_info</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>naive</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>zone</span><span class='op'>)</span>
-<span class='va'>info</span>
-</div><div class='output co'>#&gt;   type first.begin first.end first.offset first.dst first.abbreviation
-#&gt; 1 &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;         &lt;NA&gt;        NA               &lt;NA&gt;
-#&gt; 2 &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;         &lt;NA&gt;        NA               &lt;NA&gt;
-#&gt;   second.begin second.end second.offset second.dst second.abbreviation
-#&gt; 1         &lt;NA&gt;       &lt;NA&gt;          &lt;NA&gt;         NA                &lt;NA&gt;
-#&gt; 2         &lt;NA&gt;       &lt;NA&gt;          &lt;NA&gt;         NA                &lt;NA&gt;</div><div class='input'>
-<span class='co'># We'll assume that some system generated these naive-times with no</span>
-<span class='co'># chance of them ever being nonexistent or ambiguous. So now all we have</span>
-<span class='co'># to do is use the offset to convert the naive-time to a sys-time. The</span>
-<span class='co'># relationship used is:</span>
-<span class='co'># offset = naive_time - sys_time</span>
-<span class='va'>df</span><span class='op'>$</span><span class='va'>sys</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_sys_time.html'>as_sys_time</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>naive</span><span class='op'>)</span> <span class='op'>-</span> <span class='va'>info</span><span class='op'>$</span><span class='va'>first</span><span class='op'>$</span><span class='va'>offset</span>
-<span class='va'>df</span>
-</div><div class='output co'>#&gt;                     x                zone naive  sys
-#&gt; 1 2020-01-05 02:30:00 America/Los_Angeles  &lt;NA&gt; &lt;NA&gt;
-#&gt; 2 2020-06-03 12:20:05       Europe/London  &lt;NA&gt; &lt;NA&gt;</div><div class='input'>
-<span class='co'># At this point, both times are in UTC. From here, you can convert them</span>
-<span class='co'># both to either America/Los_Angeles or Europe/London as required.</span>
-<span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>sys</span>, <span class='st'>"America/Los_Angeles"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/Los_Angeles&gt;[2]&gt;
-#&gt; [1] NA NA</div><div class='input'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>sys</span>, <span class='st'>"Europe/London"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;Europe/London&gt;[2]&gt;
-#&gt; [1] NA NA</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://vctrs.r-lib.org/'>vctrs</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>1970</span>, <span class='fl'>04</span>, <span class='fl'>26</span>, <span class='fl'>02</span>, <span class='fl'>30</span>, <span class='fl'>00</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Maps uniquely to a time in London</span></span>
+<span class='r-in'><span class='fu'>naive_time_info</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"Europe/London"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     type         first.begin           first.end first.offset first.dst</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 unique 1968-10-26T23:00:00 1971-10-31T02:00:00         3600     FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   first.abbreviation second.begin second.end second.offset second.dst</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                BST         &lt;NA&gt;       &lt;NA&gt;          &lt;NA&gt;         NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   second.abbreviation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                &lt;NA&gt;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># This naive-time never existed in New York!</span></span>
+<span class='r-in'><span class='co'># A DST gap jumped the time from 01:59:59 -&gt; 03:00:00,</span></span>
+<span class='r-in'><span class='co'># skipping the 2 o'clock hour</span></span>
+<span class='r-in'><span class='va'>zone</span> <span class='op'>&lt;-</span> <span class='st'>"America/New_York"</span></span>
+<span class='r-in'><span class='va'>info</span> <span class='op'>&lt;-</span> <span class='fu'>naive_time_info</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>zone</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>info</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          type         first.begin           first.end first.offset first.dst</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 nonexistent 1969-10-26T06:00:00 1970-04-26T07:00:00       -18000     FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   first.abbreviation        second.begin          second.end second.offset</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                EST 1970-04-26T07:00:00 1970-10-25T06:00:00        -14400</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   second.dst second.abbreviation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1       TRUE                 EDT</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># You can recreate various `nonexistent` strategies with this info</span></span>
+<span class='r-in'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>zone</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-forward"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-04-26T03:00:00-04:00"</span>
+<span class='r-in'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>info</span><span class='op'>$</span><span class='va'>first</span><span class='op'>$</span><span class='va'>end</span>, <span class='va'>zone</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-04-26T03:00:00-04:00"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>zone</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-backward"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-04-26T01:59:59-05:00"</span>
+<span class='r-in'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>info</span><span class='op'>$</span><span class='va'>first</span><span class='op'>$</span><span class='va'>end</span> <span class='op'>-</span> <span class='fl'>1</span>, <span class='va'>zone</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-04-26T01:59:59-05:00"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>zone</span>, nonexistent <span class='op'>=</span> <span class='st'>"shift-forward"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-04-26T03:30:00-04:00"</span>
+<span class='r-in'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='fu'><a href='as_sys_time.html'>as_sys_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>-</span> <span class='va'>info</span><span class='op'>$</span><span class='va'>first</span><span class='op'>$</span><span class='va'>offset</span>, <span class='va'>zone</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-04-26T03:30:00-04:00"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>zone</span>, nonexistent <span class='op'>=</span> <span class='st'>"shift-backward"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-04-26T01:30:00-05:00"</span>
+<span class='r-in'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='fu'><a href='as_sys_time.html'>as_sys_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>-</span> <span class='va'>info</span><span class='op'>$</span><span class='va'>second</span><span class='op'>$</span><span class='va'>offset</span>, <span class='va'>zone</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-04-26T01:30:00-05:00"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># ---------------------------------------------------------------------------</span></span>
+<span class='r-in'><span class='co'># Normalizing to UTC</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Imagine you had the following printed times, and knowledge that they</span></span>
+<span class='r-in'><span class='co'># are to be interpreted as in the corresponding time zones</span></span>
+<span class='r-in'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://vctrs.r-lib.org/reference/data_frame.html'>data_frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2020-01-05 02:30:00"</span>, <span class='st'>"2020-06-03 12:20:05"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  zone <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"America/Los_Angeles"</span>, <span class='st'>"Europe/London"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># The times are assumed to be naive-times, i.e. if you lived in the `zone`</span></span>
+<span class='r-in'><span class='co'># at the moment the time was recorded, then you would have seen that time</span></span>
+<span class='r-in'><span class='co'># printed on the clock. Currently, these are strings. To convert them to</span></span>
+<span class='r-in'><span class='co'># a time based type, you'll have to acknowledge that R only lets you have</span></span>
+<span class='r-in'><span class='co'># 1 time zone in a vector of date-times at a time. So you'll need to</span></span>
+<span class='r-in'><span class='co'># normalize these naive-times. The easiest thing to normalize them to</span></span>
+<span class='r-in'><span class='co'># is UTC.</span></span>
+<span class='r-in'><span class='va'>df</span><span class='op'>$</span><span class='va'>naive</span> <span class='op'>&lt;-</span> <span class='fu'><a href='naive_time_parse.html'>naive_time_parse</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Failed to parse 2 strings, beginning at location 1. Returning `NA` at the locations where there were parse failures.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Get info about the naive times using a vector of zones</span></span>
+<span class='r-in'><span class='va'>info</span> <span class='op'>&lt;-</span> <span class='fu'>naive_time_info</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>naive</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>zone</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>info</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   type first.begin first.end first.offset first.dst first.abbreviation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;         &lt;NA&gt;        NA               &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;         &lt;NA&gt;        NA               &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   second.begin second.end second.offset second.dst second.abbreviation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1         &lt;NA&gt;       &lt;NA&gt;          &lt;NA&gt;         NA                &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2         &lt;NA&gt;       &lt;NA&gt;          &lt;NA&gt;         NA                &lt;NA&gt;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># We'll assume that some system generated these naive-times with no</span></span>
+<span class='r-in'><span class='co'># chance of them ever being nonexistent or ambiguous. So now all we have</span></span>
+<span class='r-in'><span class='co'># to do is use the offset to convert the naive-time to a sys-time. The</span></span>
+<span class='r-in'><span class='co'># relationship used is:</span></span>
+<span class='r-in'><span class='co'># offset = naive_time - sys_time</span></span>
+<span class='r-in'><span class='va'>df</span><span class='op'>$</span><span class='va'>sys</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_sys_time.html'>as_sys_time</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>naive</span><span class='op'>)</span> <span class='op'>-</span> <span class='va'>info</span><span class='op'>$</span><span class='va'>first</span><span class='op'>$</span><span class='va'>offset</span></span>
+<span class='r-in'><span class='va'>df</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                     x                zone naive  sys</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 2020-01-05 02:30:00 America/Los_Angeles  &lt;NA&gt; &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 2020-06-03 12:20:05       Europe/London  &lt;NA&gt; &lt;NA&gt;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># At this point, both times are in UTC. From here, you can convert them</span></span>
+<span class='r-in'><span class='co'># both to either America/Los_Angeles or Europe/London as required.</span></span>
+<span class='r-in'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>sys</span>, <span class='st'>"America/Los_Angeles"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/Los_Angeles&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA NA</span>
+<span class='r-in'><span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>sys</span>, <span class='st'>"Europe/London"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;Europe/London&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA NA</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

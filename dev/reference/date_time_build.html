@@ -244,7 +244,7 @@ invalid by. Time of day is kept.</p></li>
 two strategies maintain the <em>relative ordering</em> between elements of the
 input.</p>
 <p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
-<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>invalid</code> must be supplied and
+<p>If <code>getOption("clock.strict")</code> is <code>TRUE</code>, <code>invalid</code> must be supplied and
 cannot be <code>NULL</code>. This is a convenient way to make production code robust
 to invalid dates.</p></td>
     </tr>
@@ -267,7 +267,7 @@ the daylight saving time gap.</p></li>
 recommended over shifting, as these two strategies maintain the
 <em>relative ordering</em> between elements of the input.</p>
 <p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
-<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>nonexistent</code> must be supplied
+<p>If <code>getOption("clock.strict")</code> is <code>TRUE</code>, <code>nonexistent</code> must be supplied
 and cannot be <code>NULL</code>. This is a convenient way to make production code
 robust to nonexistent times.</p></td>
     </tr>
@@ -296,7 +296,7 @@ element of the list is an ambiguous time resolution strategy to use when
 the ambiguous time cannot be resolved by consulting the zoned_time.
 Specifying a zoned_time on its own is identical to <code>list(&lt;zoned_time&gt;, NULL)</code>.</p>
 <p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
-<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>ambiguous</code> must be supplied and
+<p>If <code>getOption("clock.strict")</code> is <code>TRUE</code>, <code>ambiguous</code> must be supplied and
 cannot be <code>NULL</code>. Additionally, <code>ambiguous</code> cannot be specified as a
 zoned_time on its own, as this implies <code>NULL</code> for ambiguous times that the
 zoned_time cannot resolve. Instead, it must be specified as a list
@@ -313,28 +313,32 @@ a convenient way to make production code robust to ambiguous times.</p></td>
     <p>Components are recycled against each other.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># The zone argument is required!</span>
-<span class='co'># clock always requires you to be explicit about your choice of `zone`.</span>
-<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>date_time_build</span><span class='op'>(</span><span class='fl'>2020</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Error : `zone` is a required argument to `date_time_build()`.</div><div class='input'>
-<span class='fu'>date_time_build</span><span class='op'>(</span><span class='fl'>2020</span>, zone <span class='op'>=</span> <span class='st'>"America/New_York"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-01-01 EST"</div><div class='input'>
-<span class='co'># Nonexistent time due to daylight saving time gap from 01:59:59 -&gt; 03:00:00</span>
-<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>date_time_build</span><span class='op'>(</span><span class='fl'>1970</span>, <span class='fl'>4</span>, <span class='fl'>26</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span>, <span class='fl'>30</span>, zone <span class='op'>=</span> <span class='st'>"America/New_York"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Error : Nonexistent time due to daylight saving time at location 2.
-#&gt; <span style='color: #0000BB;'>ℹ</span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</div><div class='input'>
-<span class='co'># Resolve with a nonexistent time resolution strategy</span>
-<span class='fu'>date_time_build</span><span class='op'>(</span>
-  <span class='fl'>1970</span>, <span class='fl'>4</span>, <span class='fl'>26</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span>, <span class='fl'>30</span>,
-  zone <span class='op'>=</span> <span class='st'>"America/New_York"</span>,
-  nonexistent <span class='op'>=</span> <span class='st'>"roll-forward"</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "1970-04-26 01:30:00 EST" "1970-04-26 03:00:00 EDT"
-#&gt;  [3] "1970-04-26 03:30:00 EDT" "1970-04-26 04:30:00 EDT"
-#&gt;  [5] "1970-04-26 05:30:00 EDT" "1970-04-26 06:30:00 EDT"
-#&gt;  [7] "1970-04-26 07:30:00 EDT" "1970-04-26 08:30:00 EDT"
-#&gt;  [9] "1970-04-26 09:30:00 EDT" "1970-04-26 10:30:00 EDT"
-#&gt; [11] "1970-04-26 11:30:00 EDT" "1970-04-26 12:30:00 EDT"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># The zone argument is required!</span></span>
+<span class='r-in'><span class='co'># clock always requires you to be explicit about your choice of `zone`.</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>date_time_build</span><span class='op'>(</span><span class='fl'>2020</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Error : `zone` is a required argument to `date_time_build()`.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>date_time_build</span><span class='op'>(</span><span class='fl'>2020</span>, zone <span class='op'>=</span> <span class='st'>"America/New_York"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2020-01-01 EST"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Nonexistent time due to daylight saving time gap from 01:59:59 -&gt; 03:00:00</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>date_time_build</span><span class='op'>(</span><span class='fl'>1970</span>, <span class='fl'>4</span>, <span class='fl'>26</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span>, <span class='fl'>30</span>, zone <span class='op'>=</span> <span class='st'>"America/New_York"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Error : Nonexistent time due to daylight saving time at location 2.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'>ℹ</span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Resolve with a nonexistent time resolution strategy</span></span>
+<span class='r-in'><span class='fu'>date_time_build</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fl'>1970</span>, <span class='fl'>4</span>, <span class='fl'>26</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span>, <span class='fl'>30</span>,</span>
+<span class='r-in'>  zone <span class='op'>=</span> <span class='st'>"America/New_York"</span>,</span>
+<span class='r-in'>  nonexistent <span class='op'>=</span> <span class='st'>"roll-forward"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "1970-04-26 01:30:00 EST" "1970-04-26 03:00:00 EDT"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] "1970-04-26 03:30:00 EDT" "1970-04-26 04:30:00 EDT"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] "1970-04-26 05:30:00 EDT" "1970-04-26 06:30:00 EDT"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "1970-04-26 07:30:00 EDT" "1970-04-26 08:30:00 EDT"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "1970-04-26 09:30:00 EDT" "1970-04-26 10:30:00 EDT"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "1970-04-26 11:30:00 EDT" "1970-04-26 12:30:00 EDT"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

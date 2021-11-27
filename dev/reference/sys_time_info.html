@@ -223,63 +223,69 @@ being used. The relationship of the three values is:</p><pre><span class='va'>of
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://vctrs.r-lib.org/'>vctrs</a></span><span class='op'>)</span>
-
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2021</span>, <span class='fl'>03</span>, <span class='fl'>14</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>01</span>, <span class='fl'>03</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>59</span>, <span class='fl'>00</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>59</span>, <span class='fl'>00</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
-
-<span class='co'># x[1] is in EST, x[2] is in EDT</span>
-<span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;
-#&gt; [1] "2021-03-14T01:59:59-05:00" "2021-03-14T03:00:00-04:00"</div><div class='input'>
-<span class='va'>x_sys</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_sys_time.html'>as_sys_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-
-<span class='va'>info</span> <span class='op'>&lt;-</span> <span class='fu'>sys_time_info</span><span class='op'>(</span><span class='va'>x_sys</span>, <span class='fu'><a href='zoned-zone.html'>zoned_time_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>info</span>
-</div><div class='output co'>#&gt;                 begin                 end offset   dst abbreviation
-#&gt; 1 2020-11-01T06:00:00 2021-03-14T07:00:00 -18000 FALSE          EST
-#&gt; 2 2021-03-14T07:00:00 2021-11-07T06:00:00 -14400  TRUE          EDT</div><div class='input'>
-<span class='co'># Convert `begin` and `end` to zoned-times to see the previous and</span>
-<span class='co'># next daylight saving time transitions</span>
-<span class='fu'><a href='https://vctrs.r-lib.org/reference/data_frame.html'>data_frame</a></span><span class='op'>(</span>
-  x <span class='op'>=</span> <span class='va'>x</span>,
-  begin <span class='op'>=</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>info</span><span class='op'>$</span><span class='va'>begin</span>, <span class='fu'><a href='zoned-zone.html'>zoned_time_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>,
-  end <span class='op'>=</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>info</span><span class='op'>$</span><span class='va'>end</span>, <span class='fu'><a href='zoned-zone.html'>zoned_time_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt;                                             x
-#&gt; 1 2021-03-14T01:59:59-05:00[America/New_York]
-#&gt; 2 2021-03-14T03:00:00-04:00[America/New_York]
-#&gt;                                         begin
-#&gt; 1 2020-11-01T01:00:00-05:00[America/New_York]
-#&gt; 2 2021-03-14T03:00:00-04:00[America/New_York]
-#&gt;                                           end
-#&gt; 1 2021-03-14T03:00:00-04:00[America/New_York]
-#&gt; 2 2021-11-07T01:00:00-05:00[America/New_York]</div><div class='input'>
-<span class='co'># `end` can be used to iterate through daylight saving time transitions</span>
-<span class='co'># by repeatedly calling `sys_time_info()`</span>
-<span class='fu'>sys_time_info</span><span class='op'>(</span><span class='va'>info</span><span class='op'>$</span><span class='va'>end</span>, <span class='fu'><a href='zoned-zone.html'>zoned_time_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                 begin                 end offset   dst abbreviation
-#&gt; 1 2021-03-14T07:00:00 2021-11-07T06:00:00 -14400  TRUE          EDT
-#&gt; 2 2021-11-07T06:00:00 2022-03-13T07:00:00 -18000 FALSE          EST</div><div class='input'>
-<span class='co'># Multiple `zone`s can be supplied to look up daylight saving time</span>
-<span class='co'># information in different time zones</span>
-<span class='va'>zones</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"America/New_York"</span>, <span class='st'>"America/Los_Angeles"</span><span class='op'>)</span>
-
-<span class='va'>info2</span> <span class='op'>&lt;-</span> <span class='fu'>sys_time_info</span><span class='op'>(</span><span class='va'>x_sys</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>, <span class='va'>zones</span><span class='op'>)</span>
-<span class='va'>info2</span>
-</div><div class='output co'>#&gt;                 begin                 end offset   dst abbreviation
-#&gt; 1 2020-11-01T06:00:00 2021-03-14T07:00:00 -18000 FALSE          EST
-#&gt; 2 2020-11-01T09:00:00 2021-03-14T10:00:00 -28800 FALSE          PST</div><div class='input'>
-<span class='co'># The offset can be used to display the naive-time (i.e. the printed time)</span>
-<span class='co'># in both of those time zones</span>
-<span class='fu'><a href='https://vctrs.r-lib.org/reference/data_frame.html'>data_frame</a></span><span class='op'>(</span>
-  zone <span class='op'>=</span> <span class='va'>zones</span>,
-  naive_time <span class='op'>=</span> <span class='va'>x_sys</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>+</span> <span class='va'>info2</span><span class='op'>$</span><span class='va'>offset</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt;                  zone          naive_time
-#&gt; 1    America/New_York 2021-03-14T01:59:59
-#&gt; 2 America/Los_Angeles 2021-03-13T22:59:59</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://vctrs.r-lib.org/'>vctrs</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2021</span>, <span class='fl'>03</span>, <span class='fl'>14</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>01</span>, <span class='fl'>03</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>59</span>, <span class='fl'>00</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>59</span>, <span class='fl'>00</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># x[1] is in EST, x[2] is in EDT</span></span>
+<span class='r-in'><span class='va'>x</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-03-14T01:59:59-05:00" "2021-03-14T03:00:00-04:00"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>x_sys</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_sys_time.html'>as_sys_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>info</span> <span class='op'>&lt;-</span> <span class='fu'>sys_time_info</span><span class='op'>(</span><span class='va'>x_sys</span>, <span class='fu'><a href='zoned-zone.html'>zoned_time_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>info</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                 begin                 end offset   dst abbreviation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 2020-11-01T06:00:00 2021-03-14T07:00:00 -18000 FALSE          EST</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 2021-03-14T07:00:00 2021-11-07T06:00:00 -14400  TRUE          EDT</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Convert `begin` and `end` to zoned-times to see the previous and</span></span>
+<span class='r-in'><span class='co'># next daylight saving time transitions</span></span>
+<span class='r-in'><span class='fu'><a href='https://vctrs.r-lib.org/reference/data_frame.html'>data_frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  x <span class='op'>=</span> <span class='va'>x</span>,</span>
+<span class='r-in'>  begin <span class='op'>=</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>info</span><span class='op'>$</span><span class='va'>begin</span>, <span class='fu'><a href='zoned-zone.html'>zoned_time_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  end <span class='op'>=</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>info</span><span class='op'>$</span><span class='va'>end</span>, <span class='fu'><a href='zoned-zone.html'>zoned_time_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                             x</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 2021-03-14T01:59:59-05:00[America/New_York]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 2021-03-14T03:00:00-04:00[America/New_York]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                         begin</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 2020-11-01T01:00:00-05:00[America/New_York]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 2021-03-14T03:00:00-04:00[America/New_York]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                           end</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 2021-03-14T03:00:00-04:00[America/New_York]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 2021-11-07T01:00:00-05:00[America/New_York]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `end` can be used to iterate through daylight saving time transitions</span></span>
+<span class='r-in'><span class='co'># by repeatedly calling `sys_time_info()`</span></span>
+<span class='r-in'><span class='fu'>sys_time_info</span><span class='op'>(</span><span class='va'>info</span><span class='op'>$</span><span class='va'>end</span>, <span class='fu'><a href='zoned-zone.html'>zoned_time_zone</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                 begin                 end offset   dst abbreviation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 2021-03-14T07:00:00 2021-11-07T06:00:00 -14400  TRUE          EDT</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 2021-11-07T06:00:00 2022-03-13T07:00:00 -18000 FALSE          EST</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Multiple `zone`s can be supplied to look up daylight saving time</span></span>
+<span class='r-in'><span class='co'># information in different time zones</span></span>
+<span class='r-in'><span class='va'>zones</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"America/New_York"</span>, <span class='st'>"America/Los_Angeles"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>info2</span> <span class='op'>&lt;-</span> <span class='fu'>sys_time_info</span><span class='op'>(</span><span class='va'>x_sys</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>, <span class='va'>zones</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>info2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                 begin                 end offset   dst abbreviation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 2020-11-01T06:00:00 2021-03-14T07:00:00 -18000 FALSE          EST</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 2020-11-01T09:00:00 2021-03-14T10:00:00 -28800 FALSE          PST</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># The offset can be used to display the naive-time (i.e. the printed time)</span></span>
+<span class='r-in'><span class='co'># in both of those time zones</span></span>
+<span class='r-in'><span class='fu'><a href='https://vctrs.r-lib.org/reference/data_frame.html'>data_frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  zone <span class='op'>=</span> <span class='va'>zones</span>,</span>
+<span class='r-in'>  naive_time <span class='op'>=</span> <span class='va'>x_sys</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>+</span> <span class='va'>info2</span><span class='op'>$</span><span class='va'>offset</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  zone          naive_time</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1    America/New_York 2021-03-14T01:59:59</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 America/Los_Angeles 2021-03-13T22:59:59</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -226,7 +226,7 @@ the time zone abbreviation rather than the full time zone name.</p>
 completely ignored.</p>
 <p>The default options assume that <code>x</code> should be parsed at second precision,
 using a <code>format</code> string of <code>"%Y-%m-%d %H:%M:%S %Z"</code>. This matches the default
-result from calling <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code> or <code><a href='https://rdrr.io/r/base/format.html'>format(usetz = TRUE)</a></code> on a POSIXct
+result from calling <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code> or <code>format(usetz = TRUE)</code> on a POSIXct
 date-time.</p>
 
     </div>
@@ -391,7 +391,7 @@ a 12-hour clock. The command <code>%I</code> must precede <code>%p</code> in the
 <p><strong>Time zone</strong></p><ul>
 <li><p><code>%z</code>: The offset from UTC in the format <code>[+|-]hh[mm]</code>. For example
 <code>-0430</code> refers to 4 hours 30 minutes behind UTC. And <code>04</code> refers to 4 hours
-ahead of UTC. The modified command <code>%Ez</code> parses a <code><a href='https://rdrr.io/r/base/Colon.html'>:</a></code> between the hours and
+ahead of UTC. The modified command <code>%Ez</code> parses a <code>:</code> between the hours and
 minutes and leading zeroes on the hour field are optional:
 <code>[+|-]h[h][:mm]</code>. For example <code>-04:30</code> refers to 4 hours 30 minutes behind
 UTC. And <code>4</code> refers to 4 hours ahead of UTC.</p></li>
@@ -404,7 +404,7 @@ contain characters that are alphanumeric, or one of <code>'_'</code>, <code>'/'<
 <p><strong>Miscellaneous</strong></p><ul>
 <li><p><code>%c</code>: A date and time representation. Equivalent to
 <code>%a %b %d %H:%M:%S %Y</code>.</p></li>
-<li><p><code><a href='https://rdrr.io/r/base/Arithmetic.html'>%%</a></code>: A <code>%</code> character.</p></li>
+<li><p><code>%%</code>: A <code>%</code> character.</p></li>
 <li><p><code>%n</code>: Matches one white space character. <code>%n</code>, <code>%t</code>, and a space can be
 combined to match a wide range of white-space patterns. For example <code>"%n "</code>
 matches one or more white space characters, and <code>"%n%t%t"</code> matches one to
@@ -465,74 +465,84 @@ into a second precision result is ambiguous and undefined, and is unlikely to
 work as you might expect.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span>
-
-<span class='fu'>zoned_time_parse_complete</span><span class='op'>(</span><span class='st'>"2019-01-01T01:02:03-05:00[America/New_York]"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "2019-01-01T01:02:03-05:00"</div><div class='input'>
-<span class='fu'>zoned_time_parse_complete</span><span class='op'>(</span>
-  <span class='st'>"January 21, 2019 -0500 America/New_York"</span>,
-  format <span class='op'>=</span> <span class='st'>"%B %d, %Y %z %Z"</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "2019-01-21T00:00:00-05:00"</div><div class='input'>
-<span class='co'># Nanosecond precision</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019/12/31 01:05:05.123456700-05:00[America/New_York]"</span>
-<span class='fu'>zoned_time_parse_complete</span><span class='op'>(</span>
-  <span class='va'>x</span>,
-  format <span class='op'>=</span> <span class='st'>"%Y/%m/%d %H:%M:%S%Ez[%Z]"</span>,
-  precision <span class='op'>=</span> <span class='st'>"nanosecond"</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;nanosecond&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "2019-12-31T01:05:05.123456700-05:00"</div><div class='input'>
-<span class='co'># The `%z` offset must correspond to the true offset that would be used</span>
-<span class='co'># if the input was parsed as a naive-time and then converted to a zoned-time</span>
-<span class='co'># with `as_zoned_time()`. For example, the time that was parsed above used an</span>
-<span class='co'># offset of `-05:00`. We can confirm that this is correct with:</span>
-<span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='st'>"America/New_York"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "2019-01-01T01:02:03-05:00"</div><div class='input'>
-<span class='co'># So the following would not parse correctly</span>
-<span class='fu'>zoned_time_parse_complete</span><span class='op'>(</span><span class='st'>"2019-01-01T01:02:03-04:00[America/New_York]"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Failed to parse 1 string at location 1. Returning `NA` at that location.</span></div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] NA</div><div class='input'>
-<span class='co'># `%z` is useful for breaking ties in otherwise ambiguous times. For example,</span>
-<span class='co'># these two times are on either side of a daylight saving time fallback.</span>
-<span class='co'># Without the `%z` offset, you wouldn't be able to tell them apart!</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-  <span class='st'>"1970-10-25T01:30:00-04:00[America/New_York]"</span>,
-  <span class='st'>"1970-10-25T01:30:00-05:00[America/New_York]"</span>
-<span class='op'>)</span>
-
-<span class='fu'>zoned_time_parse_complete</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;
-#&gt; [1] "1970-10-25T01:30:00-04:00" "1970-10-25T01:30:00-05:00"</div><div class='input'>
-<span class='co'># If you have date-time strings with time zone abbreviations,</span>
-<span class='co'># `zoned_time_parse_abbrev()` should be able to help. The `zone` must be</span>
-<span class='co'># provided, because multiple countries may use the same time zone</span>
-<span class='co'># abbreviation. For example:</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"1970-01-01 02:30:30 IST"</span>
-
-<span class='co'># IST = India Standard Time</span>
-<span class='fu'>zoned_time_parse_abbrev</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"Asia/Kolkata"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;Asia/Kolkata&gt;[1]&gt;
-#&gt; [1] "1970-01-01T02:30:30+05:30"</div><div class='input'>
-<span class='co'># IST = Israel Standard Time</span>
-<span class='fu'>zoned_time_parse_abbrev</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"Asia/Jerusalem"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;Asia/Jerusalem&gt;[1]&gt;
-#&gt; [1] "1970-01-01T02:30:30+02:00"</div><div class='input'>
-<span class='co'># The time zone abbreviation is mainly useful for resolving ambiguity</span>
-<span class='co'># around daylight saving time fallbacks. Without the abbreviation, these</span>
-<span class='co'># date-times would be ambiguous.</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-  <span class='st'>"1970-10-25 01:30:00 EDT"</span>,
-  <span class='st'>"1970-10-25 01:30:00 EST"</span>
-<span class='op'>)</span>
-<span class='fu'>zoned_time_parse_abbrev</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;
-#&gt; [1] "1970-10-25T01:30:00-04:00" "1970-10-25T01:30:00-05:00"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>zoned_time_parse_complete</span><span class='op'>(</span><span class='st'>"2019-01-01T01:02:03-05:00[America/New_York]"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-01-01T01:02:03-05:00"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>zoned_time_parse_complete</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='st'>"January 21, 2019 -0500 America/New_York"</span>,</span>
+<span class='r-in'>  format <span class='op'>=</span> <span class='st'>"%B %d, %Y %z %Z"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-01-21T00:00:00-05:00"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Nanosecond precision</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019/12/31 01:05:05.123456700-05:00[America/New_York]"</span></span>
+<span class='r-in'><span class='fu'>zoned_time_parse_complete</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>x</span>,</span>
+<span class='r-in'>  format <span class='op'>=</span> <span class='st'>"%Y/%m/%d %H:%M:%S%Ez[%Z]"</span>,</span>
+<span class='r-in'>  precision <span class='op'>=</span> <span class='st'>"nanosecond"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;nanosecond&gt;&lt;America/New_York&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-12-31T01:05:05.123456700-05:00"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># The `%z` offset must correspond to the true offset that would be used</span></span>
+<span class='r-in'><span class='co'># if the input was parsed as a naive-time and then converted to a zoned-time</span></span>
+<span class='r-in'><span class='co'># with `as_zoned_time()`. For example, the time that was parsed above used an</span></span>
+<span class='r-in'><span class='co'># offset of `-05:00`. We can confirm that this is correct with:</span></span>
+<span class='r-in'><span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='st'>"America/New_York"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-01-01T01:02:03-05:00"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># So the following would not parse correctly</span></span>
+<span class='r-in'><span class='fu'>zoned_time_parse_complete</span><span class='op'>(</span><span class='st'>"2019-01-01T01:02:03-04:00[America/New_York]"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Failed to parse 1 string at location 1. Returning `NA` at that location.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `%z` is useful for breaking ties in otherwise ambiguous times. For example,</span></span>
+<span class='r-in'><span class='co'># these two times are on either side of a daylight saving time fallback.</span></span>
+<span class='r-in'><span class='co'># Without the `%z` offset, you wouldn't be able to tell them apart!</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='st'>"1970-10-25T01:30:00-04:00[America/New_York]"</span>,</span>
+<span class='r-in'>  <span class='st'>"1970-10-25T01:30:00-05:00[America/New_York]"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>zoned_time_parse_complete</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-10-25T01:30:00-04:00" "1970-10-25T01:30:00-05:00"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># If you have date-time strings with time zone abbreviations,</span></span>
+<span class='r-in'><span class='co'># `zoned_time_parse_abbrev()` should be able to help. The `zone` must be</span></span>
+<span class='r-in'><span class='co'># provided, because multiple countries may use the same time zone</span></span>
+<span class='r-in'><span class='co'># abbreviation. For example:</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"1970-01-01 02:30:30 IST"</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># IST = India Standard Time</span></span>
+<span class='r-in'><span class='fu'>zoned_time_parse_abbrev</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"Asia/Kolkata"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;Asia/Kolkata&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-01-01T02:30:30+05:30"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># IST = Israel Standard Time</span></span>
+<span class='r-in'><span class='fu'>zoned_time_parse_abbrev</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"Asia/Jerusalem"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;Asia/Jerusalem&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-01-01T02:30:30+02:00"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># The time zone abbreviation is mainly useful for resolving ambiguity</span></span>
+<span class='r-in'><span class='co'># around daylight saving time fallbacks. Without the abbreviation, these</span></span>
+<span class='r-in'><span class='co'># date-times would be ambiguous.</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='st'>"1970-10-25 01:30:00 EDT"</span>,</span>
+<span class='r-in'>  <span class='st'>"1970-10-25 01:30:00 EST"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>zoned_time_parse_abbrev</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-10-25T01:30:00-04:00" "1970-10-25T01:30:00-05:00"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

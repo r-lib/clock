@@ -275,15 +275,18 @@ to integer codes.</p><h3 class='hasAnchor' id='arguments'><a class='anchor' href
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='weekday.html'>weekday</a></span><span class='op'>(</span><span class='va'>clock_weekdays</span><span class='op'>$</span><span class='va'>wednesday</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;weekday[1]&gt;
-#&gt; [1] Wed</div><div class='input'>
-<span class='fu'><a href='year_month_weekday.html'>year_month_weekday</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='va'>clock_months</span><span class='op'>$</span><span class='va'>april</span>, <span class='va'>clock_weekdays</span><span class='op'>$</span><span class='va'>monday</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[4]&gt;
-#&gt; [1] "2019-04-Mon[1]" "2019-04-Mon[2]" "2019-04-Mon[3]" "2019-04-Mon[4]"</div><div class='input'>
-<span class='fu'><a href='iso_year_week_day.html'>iso_year_week_day</a></span><span class='op'>(</span><span class='fl'>2020</span>, <span class='fl'>52</span>, <span class='va'>clock_iso_weekdays</span><span class='op'>$</span><span class='va'>thursday</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;iso_year_week_day&lt;day&gt;[1]&gt;
-#&gt; [1] "2020-W52-4"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='weekday.html'>weekday</a></span><span class='op'>(</span><span class='va'>clock_weekdays</span><span class='op'>$</span><span class='va'>wednesday</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;weekday[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] Wed</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='year_month_weekday.html'>year_month_weekday</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='va'>clock_months</span><span class='op'>$</span><span class='va'>april</span>, <span class='va'>clock_weekdays</span><span class='op'>$</span><span class='va'>monday</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_weekday&lt;day&gt;[4]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-04-Mon[1]" "2019-04-Mon[2]" "2019-04-Mon[3]" "2019-04-Mon[4]"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='iso_year_week_day.html'>iso_year_week_day</a></span><span class='op'>(</span><span class='fl'>2020</span>, <span class='fl'>52</span>, <span class='va'>clock_iso_weekdays</span><span class='op'>$</span><span class='va'>thursday</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;iso_year_week_day&lt;day&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2020-W52-4"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

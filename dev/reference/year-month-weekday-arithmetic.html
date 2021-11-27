@@ -222,19 +222,22 @@ units of duration.</p></td>
 <p><code>x</code> and <code>n</code> are recycled against each other.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># 2nd Friday in January, 2019</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_weekday.html'>year_month_weekday</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='va'>clock_weekdays</span><span class='op'>$</span><span class='va'>friday</span>, <span class='fl'>2</span><span class='op'>)</span>
-<span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[1]&gt;
-#&gt; [1] "2019-01-Fri[2]"</div><div class='input'>
-<span class='fu'><a href='clock-arithmetic.html'>add_months</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[5]&gt;
-#&gt; [1] "2019-02-Fri[2]" "2019-03-Fri[2]" "2019-04-Fri[2]" "2019-05-Fri[2]"
-#&gt; [5] "2019-06-Fri[2]"</div><div class='input'>
-<span class='co'># These don't necessarily correspond to the same day of the month</span>
-<span class='fu'><a href='as_year_month_day.html'>as_year_month_day</a></span><span class='op'>(</span><span class='fu'><a href='clock-arithmetic.html'>add_months</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[5]&gt;
-#&gt; [1] "2019-02-08" "2019-03-08" "2019-04-12" "2019-05-10" "2019-06-14"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># 2nd Friday in January, 2019</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_weekday.html'>year_month_weekday</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='va'>clock_weekdays</span><span class='op'>$</span><span class='va'>friday</span>, <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_weekday&lt;day&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-01-Fri[2]"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='clock-arithmetic.html'>add_months</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_weekday&lt;day&gt;[5]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-02-Fri[2]" "2019-03-Fri[2]" "2019-04-Fri[2]" "2019-05-Fri[2]"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [5] "2019-06-Fri[2]"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># These don't necessarily correspond to the same day of the month</span></span>
+<span class='r-in'><span class='fu'><a href='as_year_month_day.html'>as_year_month_day</a></span><span class='op'>(</span><span class='fu'><a href='clock-arithmetic.html'>add_months</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_day&lt;day&gt;[5]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-02-08" "2019-03-08" "2019-04-12" "2019-05-10" "2019-06-14"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

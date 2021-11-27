@@ -438,7 +438,7 @@
 
 <span class="fu"><a href="../reference/date-and-date-time-shifting.html">date_shift</a></span><span class="op">(</span><span class="va">x</span>, target <span class="op">=</span> <span class="va">tuesday</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-01-07" "2020-01-07"</span></code></pre></div>
-<p>Shifting to the <em>previous</em> day of the week is a nice way to floor by 1 week. It allows you to control the start of the week in a way that is slightly easier than using <code><a href="../reference/date-and-date-time-rounding.html">date_floor(origin = )</a></code>.</p>
+<p>Shifting to the <em>previous</em> day of the week is a nice way to floor by 1 week. It allows you to control the start of the week in a way that is slightly easier than using <code>date_floor(origin = )</code>.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">1970</span>, <span class="fl">01</span>, <span class="fl">01</span><span class="op">)</span>, <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">1970</span>, <span class="fl">01</span>, <span class="st">"last"</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
 
@@ -488,7 +488,7 @@
 <span class="va">ymd</span>
 <span class="co">#&gt; &lt;year_month_day&lt;day&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2020-02-31"</span></code></pre></div>
-<p>You can use <code><a href="../reference/clock-invalid.html">invalid_resolve(invalid =)</a></code> to resolve this like you did in <code><a href="../reference/clock-arithmetic.html">add_months()</a></code>, or you can let it hang around if you expect other operations to make it “valid” again.</p>
+<p>You can use <code>invalid_resolve(invalid =)</code> to resolve this like you did in <code><a href="../reference/clock-arithmetic.html">add_months()</a></code>, or you can let it hang around if you expect other operations to make it “valid” again.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Adding 1 more month makes it valid again</span>
 <span class="va">ymd</span> <span class="op">+</span> <span class="fu"><a href="../reference/duration-helper.html">duration_months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
@@ -498,8 +498,8 @@
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_time_build.html">date_time_build</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">30</span>, zone <span class="op">=</span> <span class="st">"America/New_York"</span><span class="op">)</span>
 
-<span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/clock-arithmetic.html">add_hours</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-01-02 04:30:00 EST" "2020-01-02 05:30:00 EST"</span>
 <span class="co">#&gt; [3] "2020-01-02 06:30:00 EST" "2020-01-02 07:30:00 EST"</span></code></pre></div>
@@ -510,28 +510,28 @@
 <span class="co">#&gt; [1] "1970-04-25 02:30:00 EST"</span>
 
 <span class="co"># Daylight saving time gap on the 26th between 01:59:59 -&gt; 03:00:00</span>
-<span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 1.</span>
 <span class="co">#&gt; ℹ Resolve nonexistent time issues by specifying the `nonexistent` argument.</span></code></pre></div>
 <p>You can solve this using the <code>nonexistent</code> argument to control how these times should be handled.</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Roll forward to the next valid moment in time</span>
-<span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"roll-forward"</span><span class="op">)</span>
+<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"roll-forward"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "1970-04-26 03:00:00 EDT"</span>
 
 <span class="co"># Roll backward to the previous valid moment in time</span>
-<span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"roll-backward"</span><span class="op">)</span>
+<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"roll-backward"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "1970-04-26 01:59:59 EST"</span>
 
 <span class="co"># Shift forward by adding the size of the DST gap</span>
 <span class="co"># (this often keeps the time of day,</span>
 <span class="co"># but doesn't guaratee that relative ordering in `x` is maintained</span>
 <span class="co"># so I don't recommend it)</span>
-<span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"shift-forward"</span><span class="op">)</span>
+<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"shift-forward"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "1970-04-26 03:30:00 EDT"</span>
 
 <span class="co"># Replace nonexistent times with an NA</span>
-<span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"NA"</span><span class="op">)</span>
+<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span>, nonexistent <span class="op">=</span> <span class="st">"NA"</span><span class="op">)</span>
 <span class="co">#&gt; [1] NA</span></code></pre></div>
 </div>
 <div id="getting-and-setting" class="section level2">
@@ -548,20 +548,20 @@
 <span class="fu"><a href="../reference/clock-getters.html">get_day</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; [1] 6</span>
 
-<span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">22</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">22</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/clock-setters.html">set_month</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2019-10-22"</span></code></pre></div>
 <p>As you might expect by now, setting the date to an invalid date requires you to explicitly handle this:</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">31</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">31</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/clock-setters.html">set_month</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>
 <span class="co">#&gt; Error: Invalid date found at location 1.</span>
 <span class="co">#&gt; ℹ Resolve invalid date issues by specifying the `invalid` argument.</span>
 
-<span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">31</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">31</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/clock-setters.html">set_month</a></span><span class="op">(</span><span class="fl">4</span>, invalid <span class="op">=</span> <span class="st">"previous"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2019-04-30"</span></code></pre></div>
 <p>You can additionally set the hour, minute, and second of a POSIXct.</p>
@@ -570,8 +570,8 @@
 <span class="va">x</span>
 <span class="co">#&gt; [1] "2020-01-02 03:00:00 EST"</span>
 
-<span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-setters.html">set_minute</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/clock-setters.html">set_minute</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/clock-setters.html">set_second</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-01-02 03:05:10 EST"</span></code></pre></div>
 <p>As with other manipulations of POSIXct, you’ll have to be aware of daylight saving time when setting components. You may need to supply the <code>nonexistent</code> or <code>ambiguous</code> arguments of the <code>set_*()</code> functions to handle these issues.</p>

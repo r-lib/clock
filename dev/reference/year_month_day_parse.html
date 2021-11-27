@@ -330,7 +330,7 @@ a 12-hour clock. The command <code>%I</code> must precede <code>%p</code> in the
 <p><strong>Time zone</strong></p><ul>
 <li><p><code>%z</code>: The offset from UTC in the format <code>[+|-]hh[mm]</code>. For example
 <code>-0430</code> refers to 4 hours 30 minutes behind UTC. And <code>04</code> refers to 4 hours
-ahead of UTC. The modified command <code>%Ez</code> parses a <code><a href='https://rdrr.io/r/base/Colon.html'>:</a></code> between the hours and
+ahead of UTC. The modified command <code>%Ez</code> parses a <code>:</code> between the hours and
 minutes and leading zeroes on the hour field are optional:
 <code>[+|-]h[h][:mm]</code>. For example <code>-04:30</code> refers to 4 hours 30 minutes behind
 UTC. And <code>4</code> refers to 4 hours ahead of UTC.</p></li>
@@ -343,7 +343,7 @@ contain characters that are alphanumeric, or one of <code>'_'</code>, <code>'/'<
 <p><strong>Miscellaneous</strong></p><ul>
 <li><p><code>%c</code>: A date and time representation. Equivalent to
 <code>%a %b %d %H:%M:%S %Y</code>.</p></li>
-<li><p><code><a href='https://rdrr.io/r/base/Arithmetic.html'>%%</a></code>: A <code>%</code> character.</p></li>
+<li><p><code>%%</code>: A <code>%</code> character.</p></li>
 <li><p><code>%n</code>: Matches one white space character. <code>%n</code>, <code>%t</code>, and a space can be
 combined to match a wide range of white-space patterns. For example <code>"%n "</code>
 matches one or more white space characters, and <code>"%n%t%t"</code> matches one to
@@ -397,53 +397,61 @@ into a second precision result is ambiguous and undefined, and is unlikely to
 work as you might expect.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019-01-01"</span>
-
-<span class='co'># Default parses at day precision</span>
-<span class='fu'>year_month_day_parse</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[1]&gt;
-#&gt; [1] "2019-01-01"</div><div class='input'>
-<span class='co'># Can parse at less precise precisions too</span>
-<span class='fu'>year_month_day_parse</span><span class='op'>(</span><span class='va'>x</span>, precision <span class='op'>=</span> <span class='st'>"month"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;month&gt;[1]&gt;
-#&gt; [1] "2019-01"</div><div class='input'><span class='fu'>year_month_day_parse</span><span class='op'>(</span><span class='va'>x</span>, precision <span class='op'>=</span> <span class='st'>"year"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;year&gt;[1]&gt;
-#&gt; [1] "2019"</div><div class='input'>
-<span class='co'># Even invalid dates can be round-tripped through format&lt;-&gt;parse calls</span>
-<span class='va'>invalid</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>2</span>, <span class='fl'>30</span><span class='op'>)</span>
-<span class='fu'>year_month_day_parse</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>invalid</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[1]&gt;
-#&gt; [1] "2019-02-30"</div><div class='input'>
-<span class='co'># Can parse with time of day</span>
-<span class='fu'>year_month_day_parse</span><span class='op'>(</span>
-  <span class='st'>"2019-01-30T02:30:00.123456789"</span>,
-  precision <span class='op'>=</span> <span class='st'>"nanosecond"</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;nanosecond&gt;[1]&gt;
-#&gt; [1] "2019-01-30T02:30:00.123456789"</div><div class='input'>
-<span class='co'># Can parse using multiple format strings, which will be tried</span>
-<span class='co'># in the order they are provided</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span>, <span class='st'>"2020-01-01"</span>, <span class='st'>"2021/2/3"</span><span class='op'>)</span>
-<span class='va'>formats</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"%Y-%m-%d"</span>, <span class='st'>"%Y/%m/%d"</span><span class='op'>)</span>
-<span class='fu'>year_month_day_parse</span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='va'>formats</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[3]&gt;
-#&gt; [1] "2019-01-01" "2020-01-01" "2021-02-03"</div><div class='input'>
-<span class='co'># Can parse using other format tokens as well</span>
-<span class='fu'>year_month_day_parse</span><span class='op'>(</span>
-  <span class='st'>"January, 2019"</span>,
-  format <span class='op'>=</span> <span class='st'>"%B, %Y"</span>,
-  precision <span class='op'>=</span> <span class='st'>"month"</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;month&gt;[1]&gt;
-#&gt; [1] "2019-01"</div><div class='input'>
-<span class='co'># Parsing a French year-month-day</span>
-<span class='fu'>year_month_day_parse</span><span class='op'>(</span>
-  <span class='st'>"octobre 1, 2000"</span>,
-  format <span class='op'>=</span> <span class='st'>"%B %d, %Y"</span>,
-  locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='st'>"fr"</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;day&gt;[1]&gt;
-#&gt; [1] "2000-10-01"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='st'>"2019-01-01"</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Default parses at day precision</span></span>
+<span class='r-in'><span class='fu'>year_month_day_parse</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_day&lt;day&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-01-01"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Can parse at less precise precisions too</span></span>
+<span class='r-in'><span class='fu'>year_month_day_parse</span><span class='op'>(</span><span class='va'>x</span>, precision <span class='op'>=</span> <span class='st'>"month"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_day&lt;month&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-01"</span>
+<span class='r-in'><span class='fu'>year_month_day_parse</span><span class='op'>(</span><span class='va'>x</span>, precision <span class='op'>=</span> <span class='st'>"year"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_day&lt;year&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Even invalid dates can be round-tripped through format&lt;-&gt;parse calls</span></span>
+<span class='r-in'><span class='va'>invalid</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>2</span>, <span class='fl'>30</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>year_month_day_parse</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>invalid</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_day&lt;day&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-02-30"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Can parse with time of day</span></span>
+<span class='r-in'><span class='fu'>year_month_day_parse</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='st'>"2019-01-30T02:30:00.123456789"</span>,</span>
+<span class='r-in'>  precision <span class='op'>=</span> <span class='st'>"nanosecond"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_day&lt;nanosecond&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-01-30T02:30:00.123456789"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Can parse using multiple format strings, which will be tried</span></span>
+<span class='r-in'><span class='co'># in the order they are provided</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span>, <span class='st'>"2020-01-01"</span>, <span class='st'>"2021/2/3"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>formats</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"%Y-%m-%d"</span>, <span class='st'>"%Y/%m/%d"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>year_month_day_parse</span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='va'>formats</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_day&lt;day&gt;[3]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-01-01" "2020-01-01" "2021-02-03"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Can parse using other format tokens as well</span></span>
+<span class='r-in'><span class='fu'>year_month_day_parse</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='st'>"January, 2019"</span>,</span>
+<span class='r-in'>  format <span class='op'>=</span> <span class='st'>"%B, %Y"</span>,</span>
+<span class='r-in'>  precision <span class='op'>=</span> <span class='st'>"month"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_day&lt;month&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-01"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Parsing a French year-month-day</span></span>
+<span class='r-in'><span class='fu'>year_month_day_parse</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='st'>"octobre 1, 2000"</span>,</span>
+<span class='r-in'>  format <span class='op'>=</span> <span class='st'>"%B %d, %Y"</span>,</span>
+<span class='r-in'>  locale <span class='op'>=</span> <span class='fu'><a href='clock_locale.html'>clock_locale</a></span><span class='op'>(</span><span class='st'>"fr"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_day&lt;day&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2000-10-01"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

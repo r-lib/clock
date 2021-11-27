@@ -276,7 +276,7 @@ the daylight saving time gap.</p></li>
 recommended over shifting, as these two strategies maintain the
 <em>relative ordering</em> between elements of the input.</p>
 <p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
-<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>nonexistent</code> must be supplied
+<p>If <code>getOption("clock.strict")</code> is <code>TRUE</code>, <code>nonexistent</code> must be supplied
 and cannot be <code>NULL</code>. This is a convenient way to make production code
 robust to nonexistent times.</p></td>
     </tr>
@@ -305,7 +305,7 @@ element of the list is an ambiguous time resolution strategy to use when
 the ambiguous time cannot be resolved by consulting the zoned_time.
 Specifying a zoned_time on its own is identical to <code>list(&lt;zoned_time&gt;, NULL)</code>.</p>
 <p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
-<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>ambiguous</code> must be supplied and
+<p>If <code>getOption("clock.strict")</code> is <code>TRUE</code>, <code>ambiguous</code> must be supplied and
 cannot be <code>NULL</code>. Additionally, <code>ambiguous</code> cannot be specified as a
 zoned_time on its own, as this implies <code>NULL</code> for ambiguous times that the
 zoned_time cannot resolve. Instead, it must be specified as a list
@@ -325,32 +325,37 @@ Thursday. If you would like to round by weeks with a different week start,
 just supply an origin on the weekday you are interested in.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"2019-03-31"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>0</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>
-
-<span class='co'># Flooring by 2 days, note that this is not tied to the current month,</span>
-<span class='co'># and instead counts from the specified `origin`, so groups can cross</span>
-<span class='co'># the month boundary</span>
-<span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2019-03-31 EDT" "2019-03-31 EDT" "2019-04-02 EDT" "2019-04-02 EDT"
-#&gt; [5] "2019-04-04 EDT" "2019-04-04 EDT"</div><div class='input'>
-<span class='co'># Compare to `date_group()`, which groups by the day of the month</span>
-<span class='fu'><a href='date_group.html'>date_group</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2019-03-31 EDT" "2019-04-01 EDT" "2019-04-01 EDT" "2019-04-03 EDT"
-#&gt; [5] "2019-04-03 EDT" "2019-04-05 EDT"</div><div class='input'>
-<span class='co'># Note that daylight saving time gaps can throw off rounding</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"1970-04-26 01:59:59"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>
-<span class='va'>x</span>
-</div><div class='output co'>#&gt; [1] "1970-04-26 01:59:59 EST" "1970-04-26 03:00:00 EDT"</div><div class='input'>
-<span class='co'># Rounding is done in naive-time, which means that rounding by 2 hours</span>
-<span class='co'># will attempt to generate a time of 1970-04-26 02:00:00, which doesn't</span>
-<span class='co'># exist in this time zone</span>
-<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"hour"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Error : Nonexistent time due to daylight saving time at location 2.
-#&gt; <span style='color: #0000BB;'>ℹ</span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</div><div class='input'>
-<span class='co'># You can handle this by specifying a nonexistent time resolution strategy</span>
-<span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"hour"</span>, n <span class='op'>=</span> <span class='fl'>2</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-forward"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "1970-04-26 00:00:00 EST" "1970-04-26 03:00:00 EDT"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"2019-03-31"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>0</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Flooring by 2 days, note that this is not tied to the current month,</span></span>
+<span class='r-in'><span class='co'># and instead counts from the specified `origin`, so groups can cross</span></span>
+<span class='r-in'><span class='co'># the month boundary</span></span>
+<span class='r-in'><span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-03-31 EDT" "2019-03-31 EDT" "2019-04-02 EDT" "2019-04-02 EDT"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [5] "2019-04-04 EDT" "2019-04-04 EDT"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Compare to `date_group()`, which groups by the day of the month</span></span>
+<span class='r-in'><span class='fu'><a href='date_group.html'>date_group</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-03-31 EDT" "2019-04-01 EDT" "2019-04-01 EDT" "2019-04-03 EDT"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [5] "2019-04-03 EDT" "2019-04-05 EDT"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Note that daylight saving time gaps can throw off rounding</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"1970-04-26 01:59:59"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-04-26 01:59:59 EST" "1970-04-26 03:00:00 EDT"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Rounding is done in naive-time, which means that rounding by 2 hours</span></span>
+<span class='r-in'><span class='co'># will attempt to generate a time of 1970-04-26 02:00:00, which doesn't</span></span>
+<span class='r-in'><span class='co'># exist in this time zone</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"hour"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Error : Nonexistent time due to daylight saving time at location 2.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'>ℹ</span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># You can handle this by specifying a nonexistent time resolution strategy</span></span>
+<span class='r-in'><span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"hour"</span>, n <span class='op'>=</span> <span class='fl'>2</span>, nonexistent <span class='op'>=</span> <span class='st'>"roll-forward"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-04-26 00:00:00 EST" "1970-04-26 03:00:00 EDT"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -342,7 +342,7 @@ a 12-hour clock. The command <code>%I</code> must precede <code>%p</code> in the
 <p><strong>Time zone</strong></p><ul>
 <li><p><code>%z</code>: The offset from UTC in the format <code>[+|-]hh[mm]</code>. For example
 <code>-0430</code> refers to 4 hours 30 minutes behind UTC. And <code>04</code> refers to 4 hours
-ahead of UTC. The modified command <code>%Ez</code> parses a <code><a href='https://rdrr.io/r/base/Colon.html'>:</a></code> between the hours and
+ahead of UTC. The modified command <code>%Ez</code> parses a <code>:</code> between the hours and
 minutes and leading zeroes on the hour field are optional:
 <code>[+|-]h[h][:mm]</code>. For example <code>-04:30</code> refers to 4 hours 30 minutes behind
 UTC. And <code>4</code> refers to 4 hours ahead of UTC.</p></li>
@@ -355,7 +355,7 @@ contain characters that are alphanumeric, or one of <code>'_'</code>, <code>'/'<
 <p><strong>Miscellaneous</strong></p><ul>
 <li><p><code>%c</code>: A date and time representation. Equivalent to
 <code>%a %b %d %H:%M:%S %Y</code>.</p></li>
-<li><p><code><a href='https://rdrr.io/r/base/Arithmetic.html'>%%</a></code>: A <code>%</code> character.</p></li>
+<li><p><code>%%</code>: A <code>%</code> character.</p></li>
 <li><p><code>%n</code>: Matches one white space character. <code>%n</code>, <code>%t</code>, and a space can be
 combined to match a wide range of white-space patterns. For example <code>"%n "</code>
 matches one or more white space characters, and <code>"%n%t%t"</code> matches one to
@@ -403,50 +403,58 @@ into a second precision result is ambiguous and undefined, and is unlikely to
 work as you might expect.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>naive_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01T05:06:07"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;
-#&gt; [1] "2020-01-01T05:06:07"</div><div class='input'>
-<span class='co'># Day precision</span>
-<span class='fu'>naive_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01"</span>, precision <span class='op'>=</span> <span class='st'>"day"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[1]&gt;
-#&gt; [1] "2020-01-01"</div><div class='input'>
-<span class='co'># Nanosecond precision, but using a day based format</span>
-<span class='fu'>naive_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01"</span>, format <span class='op'>=</span> <span class='st'>"%Y-%m-%d"</span>, precision <span class='op'>=</span> <span class='st'>"nanosecond"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;nanosecond&gt;[1]&gt;
-#&gt; [1] "2020-01-01T00:00:00.000000000"</div><div class='input'>
-<span class='co'># Remember that the `%z` and `%Z` commands are ignored entirely!</span>
-<span class='fu'>naive_time_parse</span><span class='op'>(</span>
-  <span class='st'>"2020-01-01 -4000 America/New_York"</span>,
-  format <span class='op'>=</span> <span class='st'>"%Y-%m-%d %z %Z"</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;
-#&gt; [1] "2020-01-01T00:00:00"</div><div class='input'>
-<span class='co'># ---------------------------------------------------------------------------</span>
-<span class='co'># Fractional seconds and POSIXct</span>
-
-<span class='co'># If you have a string with fractional seconds and want to convert it to</span>
-<span class='co'># a POSIXct, remember that clock treats POSIXct as a second precision type.</span>
-<span class='co'># Ideally, you'd use a clock type that can support fractional seconds, but</span>
-<span class='co'># if you really want to parse it into a POSIXct, the correct way to do so</span>
-<span class='co'># is to parse the full fractional time point with the correct `precision`,</span>
-<span class='co'># then round to seconds using whatever convention you require, and finally</span>
-<span class='co'># convert that to POSIXct.</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2020-01-01T00:00:00.123"</span>, <span class='st'>"2020-01-01T00:00:00.555"</span><span class='op'>)</span>
-
-<span class='co'># First, parse string with full precision</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>naive_time_parse</span><span class='op'>(</span><span class='va'>x</span>, precision <span class='op'>=</span> <span class='st'>"millisecond"</span><span class='op'>)</span>
-<span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;millisecond&gt;[2]&gt;
-#&gt; [1] "2020-01-01T00:00:00.123" "2020-01-01T00:00:00.555"</div><div class='input'>
-<span class='co'># Then round to second with a floor, ceiling, or round to nearest</span>
-<span class='fu'><a href='time-point-rounding.html'>time_point_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;
-#&gt; [1] "2020-01-01T00:00:00" "2020-01-01T00:00:00"</div><div class='input'><span class='fu'><a href='time-point-rounding.html'>time_point_round</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;
-#&gt; [1] "2020-01-01T00:00:00" "2020-01-01T00:00:01"</div><div class='input'>
-<span class='co'># Finally, convert to POSIXct</span>
-<span class='fu'><a href='as_date_time.html'>as_date_time</a></span><span class='op'>(</span><span class='fu'><a href='time-point-rounding.html'>time_point_round</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>, zone <span class='op'>=</span> <span class='st'>"UTC"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-01-01 00:00:00 UTC" "2020-01-01 00:00:01 UTC"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>naive_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01T05:06:07"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2020-01-01T05:06:07"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Day precision</span></span>
+<span class='r-in'><span class='fu'>naive_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01"</span>, precision <span class='op'>=</span> <span class='st'>"day"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;time_point&lt;naive&gt;&lt;day&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2020-01-01"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Nanosecond precision, but using a day based format</span></span>
+<span class='r-in'><span class='fu'>naive_time_parse</span><span class='op'>(</span><span class='st'>"2020-01-01"</span>, format <span class='op'>=</span> <span class='st'>"%Y-%m-%d"</span>, precision <span class='op'>=</span> <span class='st'>"nanosecond"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;time_point&lt;naive&gt;&lt;nanosecond&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2020-01-01T00:00:00.000000000"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Remember that the `%z` and `%Z` commands are ignored entirely!</span></span>
+<span class='r-in'><span class='fu'>naive_time_parse</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='st'>"2020-01-01 -4000 America/New_York"</span>,</span>
+<span class='r-in'>  format <span class='op'>=</span> <span class='st'>"%Y-%m-%d %z %Z"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2020-01-01T00:00:00"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># ---------------------------------------------------------------------------</span></span>
+<span class='r-in'><span class='co'># Fractional seconds and POSIXct</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># If you have a string with fractional seconds and want to convert it to</span></span>
+<span class='r-in'><span class='co'># a POSIXct, remember that clock treats POSIXct as a second precision type.</span></span>
+<span class='r-in'><span class='co'># Ideally, you'd use a clock type that can support fractional seconds, but</span></span>
+<span class='r-in'><span class='co'># if you really want to parse it into a POSIXct, the correct way to do so</span></span>
+<span class='r-in'><span class='co'># is to parse the full fractional time point with the correct `precision`,</span></span>
+<span class='r-in'><span class='co'># then round to seconds using whatever convention you require, and finally</span></span>
+<span class='r-in'><span class='co'># convert that to POSIXct.</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2020-01-01T00:00:00.123"</span>, <span class='st'>"2020-01-01T00:00:00.555"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># First, parse string with full precision</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>naive_time_parse</span><span class='op'>(</span><span class='va'>x</span>, precision <span class='op'>=</span> <span class='st'>"millisecond"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;time_point&lt;naive&gt;&lt;millisecond&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2020-01-01T00:00:00.123" "2020-01-01T00:00:00.555"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Then round to second with a floor, ceiling, or round to nearest</span></span>
+<span class='r-in'><span class='fu'><a href='time-point-rounding.html'>time_point_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2020-01-01T00:00:00" "2020-01-01T00:00:00"</span>
+<span class='r-in'><span class='fu'><a href='time-point-rounding.html'>time_point_round</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2020-01-01T00:00:00" "2020-01-01T00:00:01"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Finally, convert to POSIXct</span></span>
+<span class='r-in'><span class='fu'><a href='as_date_time.html'>as_date_time</a></span><span class='op'>(</span><span class='fu'><a href='time-point-rounding.html'>time_point_round</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"second"</span><span class='op'>)</span>, zone <span class='op'>=</span> <span class='st'>"UTC"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2020-01-01 00:00:00 UTC" "2020-01-01 00:00:01 UTC"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

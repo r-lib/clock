@@ -234,7 +234,7 @@ invalid by. Time of day is kept.</p></li>
 two strategies maintain the <em>relative ordering</em> between elements of the
 input.</p>
 <p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
-<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>invalid</code> must be supplied and
+<p>If <code>getOption("clock.strict")</code> is <code>TRUE</code>, <code>invalid</code> must be supplied and
 cannot be <code>NULL</code>. This is a convenient way to make production code robust
 to invalid dates.</p></td>
     </tr>
@@ -257,7 +257,7 @@ the daylight saving time gap.</p></li>
 recommended over shifting, as these two strategies maintain the
 <em>relative ordering</em> between elements of the input.</p>
 <p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
-<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>nonexistent</code> must be supplied
+<p>If <code>getOption("clock.strict")</code> is <code>TRUE</code>, <code>nonexistent</code> must be supplied
 and cannot be <code>NULL</code>. This is a convenient way to make production code
 robust to nonexistent times.</p></td>
     </tr>
@@ -286,7 +286,7 @@ element of the list is an ambiguous time resolution strategy to use when
 the ambiguous time cannot be resolved by consulting the zoned_time.
 Specifying a zoned_time on its own is identical to <code>list(&lt;zoned_time&gt;, NULL)</code>.</p>
 <p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
-<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>ambiguous</code> must be supplied and
+<p>If <code>getOption("clock.strict")</code> is <code>TRUE</code>, <code>ambiguous</code> must be supplied and
 cannot be <code>NULL</code>. Additionally, <code>ambiguous</code> cannot be specified as a
 zoned_time on its own, as this implies <code>NULL</code> for ambiguous times that the
 zoned_time cannot resolve. Instead, it must be specified as a list
@@ -300,40 +300,44 @@ a convenient way to make production code robust to ambiguous times.</p></td>
     <p><code>x</code>, grouped at <code>precision</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='op'>-</span><span class='fl'>3</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>
-
-<span class='co'># Group by 2 days of the current month.</span>
-<span class='co'># Note that this resets at the beginning of the month, creating day groups</span>
-<span class='co'># of [29, 30] [31] [01, 02] [03, 04].</span>
-<span class='fu'><a href='date_group.html'>date_group</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2018-12-29 EST" "2018-12-29 EST" "2018-12-31 EST" "2019-01-01 EST"
-#&gt; [5] "2019-01-01 EST" "2019-01-03 EST" "2019-01-03 EST" "2019-01-05 EST"
-#&gt; [9] "2019-01-05 EST"</div><div class='input'>
-<span class='co'># Group by month</span>
-<span class='fu'><a href='date_group.html'>date_group</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"month"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2018-12-01 EST" "2018-12-01 EST" "2018-12-01 EST" "2019-01-01 EST"
-#&gt; [5] "2019-01-01 EST" "2019-01-01 EST" "2019-01-01 EST" "2019-01-01 EST"
-#&gt; [9] "2019-01-01 EST"</div><div class='input'>
-<span class='co'># Group by hour of the day</span>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"2019-12-30"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-arithmetic.html'>add_hours</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='fl'>0</span><span class='op'>:</span><span class='fl'>12</span><span class='op'>)</span>
-<span class='va'>y</span>
-</div><div class='output co'>#&gt;  [1] "2019-12-30 00:00:00 EST" "2019-12-30 01:00:00 EST"
-#&gt;  [3] "2019-12-30 02:00:00 EST" "2019-12-30 03:00:00 EST"
-#&gt;  [5] "2019-12-30 04:00:00 EST" "2019-12-30 05:00:00 EST"
-#&gt;  [7] "2019-12-30 06:00:00 EST" "2019-12-30 07:00:00 EST"
-#&gt;  [9] "2019-12-30 08:00:00 EST" "2019-12-30 09:00:00 EST"
-#&gt; [11] "2019-12-30 10:00:00 EST" "2019-12-30 11:00:00 EST"
-#&gt; [13] "2019-12-30 12:00:00 EST"</div><div class='input'>
-<span class='fu'><a href='date_group.html'>date_group</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='st'>"hour"</span>, n <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "2019-12-30 00:00:00 EST" "2019-12-30 00:00:00 EST"
-#&gt;  [3] "2019-12-30 00:00:00 EST" "2019-12-30 03:00:00 EST"
-#&gt;  [5] "2019-12-30 03:00:00 EST" "2019-12-30 03:00:00 EST"
-#&gt;  [7] "2019-12-30 06:00:00 EST" "2019-12-30 06:00:00 EST"
-#&gt;  [9] "2019-12-30 06:00:00 EST" "2019-12-30 09:00:00 EST"
-#&gt; [11] "2019-12-30 09:00:00 EST" "2019-12-30 09:00:00 EST"
-#&gt; [13] "2019-12-30 12:00:00 EST"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-arithmetic.html'>add_days</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='op'>-</span><span class='fl'>3</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Group by 2 days of the current month.</span></span>
+<span class='r-in'><span class='co'># Note that this resets at the beginning of the month, creating day groups</span></span>
+<span class='r-in'><span class='co'># of [29, 30] [31] [01, 02] [03, 04].</span></span>
+<span class='r-in'><span class='fu'><a href='date_group.html'>date_group</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2018-12-29 EST" "2018-12-29 EST" "2018-12-31 EST" "2019-01-01 EST"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [5] "2019-01-01 EST" "2019-01-03 EST" "2019-01-03 EST" "2019-01-05 EST"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [9] "2019-01-05 EST"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Group by month</span></span>
+<span class='r-in'><span class='fu'><a href='date_group.html'>date_group</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"month"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2018-12-01 EST" "2018-12-01 EST" "2018-12-01 EST" "2019-01-01 EST"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [5] "2019-01-01 EST" "2019-01-01 EST" "2019-01-01 EST" "2019-01-01 EST"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [9] "2019-01-01 EST"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Group by hour of the day</span></span>
+<span class='r-in'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"2019-12-30"</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='clock-arithmetic.html'>add_hours</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='fl'>0</span><span class='op'>:</span><span class='fl'>12</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>y</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "2019-12-30 00:00:00 EST" "2019-12-30 01:00:00 EST"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] "2019-12-30 02:00:00 EST" "2019-12-30 03:00:00 EST"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] "2019-12-30 04:00:00 EST" "2019-12-30 05:00:00 EST"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "2019-12-30 06:00:00 EST" "2019-12-30 07:00:00 EST"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "2019-12-30 08:00:00 EST" "2019-12-30 09:00:00 EST"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "2019-12-30 10:00:00 EST" "2019-12-30 11:00:00 EST"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [13] "2019-12-30 12:00:00 EST"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='date_group.html'>date_group</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='st'>"hour"</span>, n <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "2019-12-30 00:00:00 EST" "2019-12-30 00:00:00 EST"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] "2019-12-30 00:00:00 EST" "2019-12-30 03:00:00 EST"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] "2019-12-30 03:00:00 EST" "2019-12-30 03:00:00 EST"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "2019-12-30 06:00:00 EST" "2019-12-30 06:00:00 EST"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "2019-12-30 06:00:00 EST" "2019-12-30 09:00:00 EST"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "2019-12-30 09:00:00 EST" "2019-12-30 09:00:00 EST"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [13] "2019-12-30 12:00:00 EST"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -182,9 +182,11 @@ as a sys-time or naive-time. It returns the precision as a single string.</p>
     <p>A single string holding the precision of the time point.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>time_point_precision</span><span class='op'>(</span><span class='fu'><a href='sys_time_now.html'>sys_time_now</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "nanosecond"</div><div class='input'><span class='fu'>time_point_precision</span><span class='op'>(</span><span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='fu'><a href='duration-helper.html'>duration_days</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "day"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>time_point_precision</span><span class='op'>(</span><span class='fu'><a href='sys_time_now.html'>sys_time_now</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "nanosecond"</span>
+<span class='r-in'><span class='fu'>time_point_precision</span><span class='op'>(</span><span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='fu'><a href='duration-helper.html'>duration_days</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "day"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

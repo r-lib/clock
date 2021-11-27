@@ -161,6 +161,9 @@
 <h1 class="page-header" data-toc-text="development version">
 <a href="#clock-development-version" class="anchor"></a>clock (development version)<small> Unreleased </small>
 </h1>
+<ul>
+<li>Integer division is now defined for two duration objects through <code>&lt;duration&gt; %/% &lt;duration&gt;</code>. This always returns an integer vector, so be aware that using very precise duration objects (like nanoseconds) can easily generate a division result that is outside the range of an integer. In that case, an <code>NA</code> is returned with a warning.</li>
+</ul>
 </div>
     <div id="clock-050" class="section level1">
 <h1 class="page-header" data-toc-text="0.5.0">
@@ -237,7 +240,7 @@
 </h1>
 <ul>
 <li>
-<p>Parsing into a date-time type that is coarser than the original string is now considered ambiguous and undefined behavior. For example, parsing a string with fractional seconds using <code><a href="../reference/date-time-parse.html">date_time_parse(x)</a></code> or <code><a href="../reference/naive_time_parse.html">naive_time_parse(x, precision = "second")</a></code> is no longer considered correct. Instead, if you only require second precision from such a string, parse the full string, with fractional seconds, into a clock type that can handle them, then round to seconds using whatever rounding convention is required for your use case, such as <code><a href="../reference/time-point-rounding.html">time_point_floor()</a></code> (<a href='https://github.com/r-lib/clock/issues/230'>#230</a>).</p>
+<p>Parsing into a date-time type that is coarser than the original string is now considered ambiguous and undefined behavior. For example, parsing a string with fractional seconds using <code>date_time_parse(x)</code> or <code>naive_time_parse(x, precision = "second")</code> is no longer considered correct. Instead, if you only require second precision from such a string, parse the full string, with fractional seconds, into a clock type that can handle them, then round to seconds using whatever rounding convention is required for your use case, such as <code><a href="../reference/time-point-rounding.html">time_point_floor()</a></code> (<a href='https://github.com/r-lib/clock/issues/230'>#230</a>).</p>
 <p>For example:</p>
 <pre><code>x &lt;- c("2019-01-01 00:00:59.123", "2019-01-01 00:00:59.556")
 

@@ -171,15 +171,15 @@
 <li><p>Return the next valid moment in time</p></li>
 <li><p>Overflow our invalid date into March by the number of days past the true end of February that it landed at</p></li>
 </ul>
-<p>Only the first is available to you with <code>+ months(1)</code>. To supplement this, lubridate added <code><a href="https://lubridate.tidyverse.org/reference/mplus.html">%m+%</a></code> and <code><a href="https://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback()</a></code>.</p>
+<p>Only the first is available to you with <code>+ months(1)</code>. To supplement this, lubridate added <code>%m+%</code> and <code><a href="https://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Equivalent to `add_with_rollback(x, months(1))`</span>
-<span class="va">x</span> <span class="op">%m+%</span> <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">x</span> <span class="op"><a href="https://lubridate.tidyverse.org/reference/mplus.html">%m+%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-02-29" "2020-02-29" "2020-02-29" "2020-03-01"</span>
 
 <span class="fu"><a href="https://lubridate.tidyverse.org/reference/mplus.html">add_with_rollback</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, roll_to_first <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-02-29" "2020-03-01" "2020-03-01" "2020-03-01"</span></code></pre></div>
-<p>With Dates, the hardest part about <code><a href="https://lubridate.tidyverse.org/reference/mplus.html">%m+%</a></code> is remembering to use it. It is a common bug to forget to use this helper until <em>after</em> you have been bitten by an invalid date issue with an unexpected <code>NA</code>.</p>
+<p>With Dates, the hardest part about <code>%m+%</code> is remembering to use it. It is a common bug to forget to use this helper until <em>after</em> you have been bitten by an invalid date issue with an unexpected <code>NA</code>.</p>
 <p>In clock, invalid dates must be handled explicitly as they occur. The default behavior raises an error.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>
@@ -215,8 +215,8 @@
 <a href="#date-times" class="anchor"></a>Date-times</h3>
 <p>With date-times, when you hit invalid dates you also have to consider what to do with the time of day.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2020-01-31"</span>, <span class="st">"America/New_York"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2020-01-31"</span>, <span class="st">"America/New_York"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../../reference/clock-arithmetic.html">add_hours</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>
 
 <span class="va">x</span>
@@ -359,16 +359,16 @@
 <span class="co">#&gt; [1] "2020-03-08 03:00:00 EDT"</span></code></pre></div>
 <p>If for any reason you want the <code>+ seconds()</code> behavior, you can manually take control by converting to naive-time, adding the units of time there, and then converting back to POSIXct.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="../../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Error: Nonexistent time due to daylight saving time at location 1.</span>
 <span class="co">#&gt; ℹ Resolve nonexistent time issues by specifying the `nonexistent` argument.</span>
 
-<span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="../../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, nonexistent <span class="op">=</span> <span class="st">"roll-forward"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2020-03-08 03:00:00 EDT"</span></code></pre></div>
 </div>
@@ -452,8 +452,8 @@
 <span class="co">#&gt; [5] "2020-11-01 03:30:00 EST" "2020-11-01 04:30:00 EST"</span></code></pre></div>
 <p>Notice that if we converted two of these dates to naive-time, and then tried to convert them back to POSIXct, they would have been considered ambiguous.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="../../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Error: Ambiguous time due to daylight saving time at location 2.</span>
 <span class="co">#&gt; ℹ Resolve ambiguous time issues by specifying the `ambiguous` argument.</span></code></pre></div>
@@ -750,15 +750,15 @@
 <span class="co">#&gt; Error: Can't convert to a time point from a calendar with 'month' precision. A minimum of 'day' precision is required.</span>
 
 <span class="co"># You might want the first of the month</span>
-<span class="va">ym</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">ym</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[3]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-01" "2019-02-01" "2019-03-01"</span>
 
 <span class="co"># Or the last</span>
-<span class="va">ym</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="st">"last"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">ym</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="st">"last"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[3]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-31" "2019-02-28" "2019-03-31"</span></code></pre></div>

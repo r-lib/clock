@@ -184,20 +184,23 @@ The precision of the input is retained in the returned duration.</p>
     <p>A duration with the same precision as <code>x</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_sys_time.html'>as_sys_time</a></span><span class='op'>(</span><span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>01</span>, <span class='fl'>01</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'># The number of days since 1970-01-01 UTC</span>
-<span class='fu'>as_duration</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;duration&lt;day&gt;[1]&gt;
-#&gt; [1] 17897</div><div class='input'>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>x</span> <span class='op'>+</span> <span class='fu'><a href='duration-helper.html'>duration_seconds</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
-<span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;
-#&gt; [1] "2019-01-01T00:00:01"</div><div class='input'>
-<span class='co'># The number of seconds since 1970-01-01 00:00:00 UTC</span>
-<span class='fu'>as_duration</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;duration&lt;second&gt;[1]&gt;
-#&gt; [1] 1546300801</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_sys_time.html'>as_sys_time</a></span><span class='op'>(</span><span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>01</span>, <span class='fl'>01</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># The number of days since 1970-01-01 UTC</span></span>
+<span class='r-in'><span class='fu'>as_duration</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;duration&lt;day&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 17897</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>x</span> <span class='op'>+</span> <span class='fu'><a href='duration-helper.html'>duration_seconds</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-01-01T00:00:01"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># The number of seconds since 1970-01-01 00:00:00 UTC</span></span>
+<span class='r-in'><span class='fu'>as_duration</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;duration&lt;second&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1546300801</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

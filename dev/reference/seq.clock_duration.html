@@ -231,22 +231,26 @@ precision of <code>from</code>.</p>
     <p>A sequence with the type of <code>from</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='duration-helper.html'>duration_days</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>, <span class='fu'><a href='duration-helper.html'>duration_days</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span>, by <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;duration&lt;day&gt;[21]&gt;
-#&gt;  [1] 0   5   10  15  20  25  30  35  40  45  50  55  60  65  70  75  80  85  90 
-#&gt; [20] 95  100</div><div class='input'>
-<span class='co'># Using a duration `by`. Note that `by` is cast to the type of `from`.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='duration-helper.html'>duration_days</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>, <span class='fu'><a href='duration-helper.html'>duration_days</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span>, by <span class='op'>=</span> <span class='fu'><a href='duration-helper.html'>duration_weeks</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;duration&lt;day&gt;[15]&gt;
-#&gt;  [1] 0  7  14 21 28 35 42 49 56 63 70 77 84 91 98</div><div class='input'>
-<span class='co'># `to` is cast from 5 years to 60 months</span>
-<span class='co'># `by` is cast from 1 quarter to 4 months</span>
-<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='duration-helper.html'>duration_months</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>, <span class='fu'><a href='duration-helper.html'>duration_years</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>, by <span class='op'>=</span> <span class='fu'><a href='duration-helper.html'>duration_quarters</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;duration&lt;month&gt;[21]&gt;
-#&gt;  [1] 0  3  6  9  12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='duration-helper.html'>duration_days</a></span><span class='op'>(</span><span class='fl'>20</span><span class='op'>)</span>, by <span class='op'>=</span> <span class='fl'>2</span>, length.out <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;duration&lt;day&gt;[5]&gt;
-#&gt; [1] 20 22 24 26 28</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='duration-helper.html'>duration_days</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>, <span class='fu'><a href='duration-helper.html'>duration_days</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span>, by <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;duration&lt;day&gt;[21]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] 0   5   10  15  20  25  30  35  40  45  50  55  60  65  70  75  80  85  90 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [20] 95  100</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Using a duration `by`. Note that `by` is cast to the type of `from`.</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='duration-helper.html'>duration_days</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>, <span class='fu'><a href='duration-helper.html'>duration_days</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span>, by <span class='op'>=</span> <span class='fu'><a href='duration-helper.html'>duration_weeks</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;duration&lt;day&gt;[15]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] 0  7  14 21 28 35 42 49 56 63 70 77 84 91 98</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># `to` is cast from 5 years to 60 months</span></span>
+<span class='r-in'><span class='co'># `by` is cast from 1 quarter to 4 months</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='duration-helper.html'>duration_months</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>, <span class='fu'><a href='duration-helper.html'>duration_years</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>, by <span class='op'>=</span> <span class='fu'><a href='duration-helper.html'>duration_quarters</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;duration&lt;month&gt;[21]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] 0  3  6  9  12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='duration-helper.html'>duration_days</a></span><span class='op'>(</span><span class='fl'>20</span><span class='op'>)</span>, by <span class='op'>=</span> <span class='fl'>2</span>, length.out <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;duration&lt;day&gt;[5]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 20 22 24 26 28</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

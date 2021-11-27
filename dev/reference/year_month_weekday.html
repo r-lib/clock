@@ -253,25 +253,28 @@ to determine how to interpret the <code>subsecond</code>.</p>
 fields after the first <code>NULL</code> field are used.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># All Fridays in January, 2019</span>
-<span class='co'># Note that there was no 5th Friday in January</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>year_month_weekday</span><span class='op'>(</span>
-  <span class='fl'>2019</span>,
-  <span class='va'>clock_months</span><span class='op'>$</span><span class='va'>january</span>,
-  <span class='va'>clock_weekdays</span><span class='op'>$</span><span class='va'>friday</span>,
-  <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>
-<span class='op'>)</span>
-<span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[5]&gt;
-#&gt; [1] "2019-01-Fri[1]" "2019-01-Fri[2]" "2019-01-Fri[3]" "2019-01-Fri[4]"
-#&gt; [5] "2019-01-Fri[5]"</div><div class='input'>
-<span class='fu'><a href='clock-invalid.html'>invalid_detect</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] FALSE FALSE FALSE FALSE  TRUE</div><div class='input'>
-<span class='co'># Resolve this invalid date by using the previous valid date</span>
-<span class='fu'><a href='clock-invalid.html'>invalid_resolve</a></span><span class='op'>(</span><span class='va'>x</span>, invalid <span class='op'>=</span> <span class='st'>"previous"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_weekday&lt;day&gt;[5]&gt;
-#&gt; [1] "2019-01-Fri[1]" "2019-01-Fri[2]" "2019-01-Fri[3]" "2019-01-Fri[4]"
-#&gt; [5] "2019-01-Thu[5]"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># All Fridays in January, 2019</span></span>
+<span class='r-in'><span class='co'># Note that there was no 5th Friday in January</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>year_month_weekday</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fl'>2019</span>,</span>
+<span class='r-in'>  <span class='va'>clock_months</span><span class='op'>$</span><span class='va'>january</span>,</span>
+<span class='r-in'>  <span class='va'>clock_weekdays</span><span class='op'>$</span><span class='va'>friday</span>,</span>
+<span class='r-in'>  <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_weekday&lt;day&gt;[5]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-01-Fri[1]" "2019-01-Fri[2]" "2019-01-Fri[3]" "2019-01-Fri[4]"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [5] "2019-01-Fri[5]"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='clock-invalid.html'>invalid_detect</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE FALSE FALSE FALSE  TRUE</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Resolve this invalid date by using the previous valid date</span></span>
+<span class='r-in'><span class='fu'><a href='clock-invalid.html'>invalid_resolve</a></span><span class='op'>(</span><span class='va'>x</span>, invalid <span class='op'>=</span> <span class='st'>"previous"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_weekday&lt;day&gt;[5]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-01-Fri[1]" "2019-01-Fri[2]" "2019-01-Fri[3]" "2019-01-Fri[4]"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [5] "2019-01-Thu[5]"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

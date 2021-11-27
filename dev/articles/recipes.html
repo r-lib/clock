@@ -152,8 +152,8 @@
 <a href="#set-a-meeting-across-time-zones" class="anchor"></a>Set a meeting across time zones</h2>
 <p>Say you need to set a meeting with someone in Shanghai, but you live in New York. If you set a meeting for 9am, what time is that for them?</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">30</span>, <span class="fl">9</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">my_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">30</span>, <span class="fl">9</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="st">"America/New_York"</span><span class="op">)</span>
 
 <span class="va">my_time</span>
@@ -181,8 +181,8 @@
 <p>Say your co-worker in Shanghai (from the last example) accidentally logged on at 9am <em>their time</em>. What time would this be for you?</p>
 <p>The first step to solve this is to force <code>my_time</code> to have the same printed time, but use the Asia/Shanghai time zone. You can do this by going through naive-time:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">30</span>, <span class="fl">9</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">my_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">30</span>, <span class="fl">9</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="st">"America/New_York"</span><span class="op">)</span>
 
 <span class="va">my_time</span>
@@ -190,15 +190,15 @@
 <span class="co">#&gt; [1] "2019-01-30T09:00:00-05:00"</span>
 
 <span class="co"># Drop the time zone information, retaining the printed time</span>
-<span class="va">my_time</span> <span class="op">%&gt;%</span>
+<span class="va">my_time</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-30T09:00:00"</span>
 
 <span class="co"># Add the correct time zone name back on,</span>
 <span class="co"># again retaining the printed time</span>
-<span class="va">their_9am</span> <span class="op">&lt;-</span> <span class="va">my_time</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">their_9am</span> <span class="op">&lt;-</span> <span class="va">my_time</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="st">"Asia/Shanghai"</span><span class="op">)</span>
 
 <span class="va">their_9am</span>
@@ -216,9 +216,9 @@
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-30 09:00:00"</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
 
-<span class="va">my_time</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"Asia/Shanghai"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">my_time</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"Asia/Shanghai"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/date-zone.html">date_set_zone</a></span><span class="op">(</span><span class="st">"America/New_York"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2019-01-29 20:00:00 EST"</span></code></pre></div>
 </div>
@@ -486,21 +486,21 @@
 <span class="co">#&gt; [16] "2019-10-01" "2019-11-01" "2019-12-01" "2019-12-01"</span></code></pre></div>
 <p>You won’t be able to group by <code>"quarter"</code>, since this isn’t one of the 3 components that the high level API lets you work with. Instead, this is a case where you should convert to a year-quarter-day, group on that type, then convert back to Date.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/as_year_quarter_day.html">as_year_quarter_day</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/calendar_group.html">calendar_group</a></span><span class="op">(</span><span class="st">"quarter"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/as_year_quarter_day.html">as_year_quarter_day</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/calendar_group.html">calendar_group</a></span><span class="op">(</span><span class="st">"quarter"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;  [1] "2019-01-01" "2019-01-01" "2019-01-01" "2019-01-01" "2019-01-01"</span>
 <span class="co">#&gt;  [6] "2019-04-01" "2019-04-01" "2019-04-01" "2019-04-01" "2019-04-01"</span>
 <span class="co">#&gt; [11] "2019-07-01" "2019-07-01" "2019-07-01" "2019-07-01" "2019-10-01"</span>
 <span class="co">#&gt; [16] "2019-10-01" "2019-10-01" "2019-10-01" "2019-10-01"</span></code></pre></div>
-<p>This is actually equivalent to <code><a href="../reference/date_group.html">date_group(x, "month", n = 3)</a></code>. If your fiscal year starts in January, you can use that instead. However, if your fiscal year starts in a different month, say, June, you’ll need to use the approach from above like so:</p>
+<p>This is actually equivalent to <code>date_group(x, "month", n = 3)</code>. If your fiscal year starts in January, you can use that instead. However, if your fiscal year starts in a different month, say, June, you’ll need to use the approach from above like so:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/as_year_quarter_day.html">as_year_quarter_day</a></span><span class="op">(</span>start <span class="op">=</span> <span class="va">clock_months</span><span class="op">$</span><span class="va">june</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/calendar_group.html">calendar_group</a></span><span class="op">(</span><span class="st">"quarter"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/as_year_quarter_day.html">as_year_quarter_day</a></span><span class="op">(</span>start <span class="op">=</span> <span class="va">clock_months</span><span class="op">$</span><span class="va">june</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/calendar_group.html">calendar_group</a></span><span class="op">(</span><span class="st">"quarter"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;  [1] "2018-12-01" "2018-12-01" "2018-12-01" "2019-03-01" "2019-03-01"</span>
 <span class="co">#&gt;  [6] "2019-03-01" "2019-03-01" "2019-03-01" "2019-06-01" "2019-06-01"</span>
@@ -611,8 +611,8 @@
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2019-07-04"</span><span class="op">)</span>
 
-<span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/as_year_day.html">as_year_day</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/as_year_day.html">as_year_day</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/clock-getters.html">get_day</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] 185</span></code></pre></div>
 </div>
@@ -757,8 +757,8 @@
 <p>So on 2018-11-04 at (the second) 1 o’clock hour, daylight saving time was turned off. On 2019-03-10 at 3 o’clock, daylight saving time will be considered on again. This is the next moment in time right after a daylight saving time gap of 1 hour, which you can see by subtracting 1 second (in sys-time):</p>
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Last moment in time in the current DST range</span>
-<span class="va">info</span><span class="op">$</span><span class="va">end</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">info</span><span class="op">$</span><span class="va">end</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-03-10T01:59:59-05:00"</span></code></pre></div>

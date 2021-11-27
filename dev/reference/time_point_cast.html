@@ -209,30 +209,34 @@ a conversion factor between the current precision and the new precision.</p>
     <p><code>x</code> cast to the new <code>precision</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Hour precision time points</span>
-<span class='co'># One is pre-1970, one is post-1970</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='duration-helper.html'>duration_hours</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>25</span>, <span class='op'>-</span><span class='fl'>25</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-<span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;hour&gt;[2]&gt;
-#&gt; [1] "1970-01-02T01" "1969-12-30T23"</div><div class='input'>
-<span class='co'># Casting rounds the underlying duration towards 0</span>
-<span class='va'>cast</span> <span class='op'>&lt;-</span> <span class='fu'>time_point_cast</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span><span class='op'>)</span>
-<span class='va'>cast</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[2]&gt;
-#&gt; [1] "1970-01-02" "1969-12-31"</div><div class='input'>
-<span class='co'># Flooring rounds the underlying duration towards negative infinity,</span>
-<span class='co'># which is often more intuitive for time points.</span>
-<span class='co'># Note that the cast ends up rounding the pre-1970 date up to the next</span>
-<span class='co'># day, while the post-1970 date is rounded down.</span>
-<span class='va'>floor</span> <span class='op'>&lt;-</span> <span class='fu'><a href='time-point-rounding.html'>time_point_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span><span class='op'>)</span>
-<span class='va'>floor</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[2]&gt;
-#&gt; [1] "1970-01-02" "1969-12-30"</div><div class='input'>
-<span class='co'># Casting to a more precise precision, hour-&gt;millisecond</span>
-<span class='fu'>time_point_cast</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"millisecond"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;naive&gt;&lt;millisecond&gt;[2]&gt;
-#&gt; [1] "1970-01-02T01:00:00.000" "1969-12-30T23:00:00.000"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Hour precision time points</span></span>
+<span class='r-in'><span class='co'># One is pre-1970, one is post-1970</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='duration-helper.html'>duration_hours</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>25</span>, <span class='op'>-</span><span class='fl'>25</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_naive_time.html'>as_naive_time</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;time_point&lt;naive&gt;&lt;hour&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-01-02T01" "1969-12-30T23"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Casting rounds the underlying duration towards 0</span></span>
+<span class='r-in'><span class='va'>cast</span> <span class='op'>&lt;-</span> <span class='fu'>time_point_cast</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>cast</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;time_point&lt;naive&gt;&lt;day&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-01-02" "1969-12-31"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Flooring rounds the underlying duration towards negative infinity,</span></span>
+<span class='r-in'><span class='co'># which is often more intuitive for time points.</span></span>
+<span class='r-in'><span class='co'># Note that the cast ends up rounding the pre-1970 date up to the next</span></span>
+<span class='r-in'><span class='co'># day, while the post-1970 date is rounded down.</span></span>
+<span class='r-in'><span class='va'>floor</span> <span class='op'>&lt;-</span> <span class='fu'><a href='time-point-rounding.html'>time_point_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>floor</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;time_point&lt;naive&gt;&lt;day&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-01-02" "1969-12-30"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Casting to a more precise precision, hour-&gt;millisecond</span></span>
+<span class='r-in'><span class='fu'>time_point_cast</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"millisecond"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;time_point&lt;naive&gt;&lt;millisecond&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1970-01-02T01:00:00.000" "1969-12-30T23:00:00.000"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

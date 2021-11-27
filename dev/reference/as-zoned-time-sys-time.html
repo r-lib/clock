@@ -202,23 +202,26 @@ with a yet-to-be-determined time zone.</p>
     <p>A zoned-time vector.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_sys_time.html'>as_sys_time</a></span><span class='op'>(</span><span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>02</span>, <span class='fl'>01</span>, <span class='fl'>02</span>, <span class='fl'>30</span>, <span class='fl'>00</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;
-#&gt; [1] "2019-02-01T02:30:00"</div><div class='input'>
-<span class='co'># Since sys-time is interpreted as UTC, converting to a zoned-time with</span>
-<span class='co'># a zone of UTC retains the printed time</span>
-<span class='va'>x_utc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"UTC"</span><span class='op'>)</span>
-<span class='va'>x_utc</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;UTC&gt;[1]&gt;
-#&gt; [1] "2019-02-01T02:30:00+00:00"</div><div class='input'>
-<span class='co'># Converting to a different zone results in a different printed time,</span>
-<span class='co'># which corresponds to the exact same point in time, just in a different</span>
-<span class='co'># part of the work</span>
-<span class='va'>x_ny</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span>
-<span class='va'>x_ny</span>
-</div><div class='output co'>#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;
-#&gt; [1] "2019-01-31T21:30:00-05:00"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_sys_time.html'>as_sys_time</a></span><span class='op'>(</span><span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>02</span>, <span class='fl'>01</span>, <span class='fl'>02</span>, <span class='fl'>30</span>, <span class='fl'>00</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-02-01T02:30:00"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Since sys-time is interpreted as UTC, converting to a zoned-time with</span></span>
+<span class='r-in'><span class='co'># a zone of UTC retains the printed time</span></span>
+<span class='r-in'><span class='va'>x_utc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"UTC"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x_utc</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;UTC&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-02-01T02:30:00+00:00"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Converting to a different zone results in a different printed time,</span></span>
+<span class='r-in'><span class='co'># which corresponds to the exact same point in time, just in a different</span></span>
+<span class='r-in'><span class='co'># part of the work</span></span>
+<span class='r-in'><span class='va'>x_ny</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_zoned_time.html'>as_zoned_time</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"America/New_York"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x_ny</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-01-31T21:30:00-05:00"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -276,7 +276,7 @@ invalid by. Time of day is kept.</p></li>
 two strategies maintain the <em>relative ordering</em> between elements of the
 input.</p>
 <p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
-<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>invalid</code> must be supplied and
+<p>If <code>getOption("clock.strict")</code> is <code>TRUE</code>, <code>invalid</code> must be supplied and
 cannot be <code>NULL</code>. This is a convenient way to make production code robust
 to invalid dates.</p></td>
     </tr>
@@ -299,7 +299,7 @@ the daylight saving time gap.</p></li>
 recommended over shifting, as these two strategies maintain the
 <em>relative ordering</em> between elements of the input.</p>
 <p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
-<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>nonexistent</code> must be supplied
+<p>If <code>getOption("clock.strict")</code> is <code>TRUE</code>, <code>nonexistent</code> must be supplied
 and cannot be <code>NULL</code>. This is a convenient way to make production code
 robust to nonexistent times.</p></td>
     </tr>
@@ -328,7 +328,7 @@ element of the list is an ambiguous time resolution strategy to use when
 the ambiguous time cannot be resolved by consulting the zoned_time.
 Specifying a zoned_time on its own is identical to <code>list(&lt;zoned_time&gt;, NULL)</code>.</p>
 <p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
-<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>ambiguous</code> must be supplied and
+<p>If <code>getOption("clock.strict")</code> is <code>TRUE</code>, <code>ambiguous</code> must be supplied and
 cannot be <code>NULL</code>. Additionally, <code>ambiguous</code> cannot be specified as a
 zoned_time on its own, as this implies <code>NULL</code> for ambiguous times that the
 zoned_time cannot resolve. Instead, it must be specified as a list
@@ -372,31 +372,36 @@ POSIXct/POSIXlt, dealing with the nonexistent time that gets created by
 using the <code>nonexistent</code> argument of <code><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span>, tz <span class='op'>=</span> <span class='st'>"America/New_York"</span><span class='op'>)</span>
-
-<span class='fu'><a href='clock-arithmetic.html'>add_years</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-01-01 EST" "2021-01-01 EST" "2022-01-01 EST" "2023-01-01 EST"
-#&gt; [5] "2024-01-01 EST"</div><div class='input'>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"2019-01-31 00:30:00"</span>, tz <span class='op'>=</span> <span class='st'>"America/New_York"</span><span class='op'>)</span>
-
-<span class='co'># Adding 1 month to `y` generates an invalid date. Unlike year-month-day</span>
-<span class='co'># types, R's native date-time types cannot handle invalid dates, so you must</span>
-<span class='co'># resolve them immediately. If you don't you get an error:</span>
-<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='clock-arithmetic.html'>add_months</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Error : Invalid date found at location 1.
-#&gt; <span style='color: #0000BB;'>ℹ</span> Resolve invalid date issues by specifying the `invalid` argument.</div><div class='input'><span class='fu'><a href='clock-arithmetic.html'>add_months</a></span><span class='op'>(</span><span class='fu'><a href='as_year_month_day.html'>as_year_month_day</a></span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;second&gt;[2]&gt;
-#&gt; [1] "2019-02-31T00:30:00" "2019-03-31T00:30:00"</div><div class='input'>
-<span class='co'># Resolve invalid dates by specifying an invalid date resolution strategy</span>
-<span class='co'># with the `invalid` argument. Using `"previous"` here sets the date-time to</span>
-<span class='co'># the previous valid moment in time - i.e. the end of the month. The</span>
-<span class='co'># time is set to the last moment in the day to retain the relative ordering</span>
-<span class='co'># within your input. If you are okay with potentially losing this, and</span>
-<span class='co'># want to retain your time of day, you can use `"previous-day"` to set the</span>
-<span class='co'># date-time to the previous valid day, while keeping the time of day.</span>
-<span class='fu'><a href='clock-arithmetic.html'>add_months</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, invalid <span class='op'>=</span> <span class='st'>"previous"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2019-02-28 23:59:59 EST" "2019-03-31 00:30:00 EDT"</div><div class='input'><span class='fu'><a href='clock-arithmetic.html'>add_months</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, invalid <span class='op'>=</span> <span class='st'>"previous-day"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2019-02-28 00:30:00 EST" "2019-03-31 00:30:00 EDT"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span>, tz <span class='op'>=</span> <span class='st'>"America/New_York"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='clock-arithmetic.html'>add_years</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2020-01-01 EST" "2021-01-01 EST" "2022-01-01 EST" "2023-01-01 EST"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [5] "2024-01-01 EST"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='st'>"2019-01-31 00:30:00"</span>, tz <span class='op'>=</span> <span class='st'>"America/New_York"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Adding 1 month to `y` generates an invalid date. Unlike year-month-day</span></span>
+<span class='r-in'><span class='co'># types, R's native date-time types cannot handle invalid dates, so you must</span></span>
+<span class='r-in'><span class='co'># resolve them immediately. If you don't you get an error:</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='clock-arithmetic.html'>add_months</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Error : Invalid date found at location 1.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'>ℹ</span> Resolve invalid date issues by specifying the `invalid` argument.</span>
+<span class='r-in'><span class='fu'><a href='clock-arithmetic.html'>add_months</a></span><span class='op'>(</span><span class='fu'><a href='as_year_month_day.html'>as_year_month_day</a></span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_day&lt;second&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-02-31T00:30:00" "2019-03-31T00:30:00"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Resolve invalid dates by specifying an invalid date resolution strategy</span></span>
+<span class='r-in'><span class='co'># with the `invalid` argument. Using `"previous"` here sets the date-time to</span></span>
+<span class='r-in'><span class='co'># the previous valid moment in time - i.e. the end of the month. The</span></span>
+<span class='r-in'><span class='co'># time is set to the last moment in the day to retain the relative ordering</span></span>
+<span class='r-in'><span class='co'># within your input. If you are okay with potentially losing this, and</span></span>
+<span class='r-in'><span class='co'># want to retain your time of day, you can use `"previous-day"` to set the</span></span>
+<span class='r-in'><span class='co'># date-time to the previous valid day, while keeping the time of day.</span></span>
+<span class='r-in'><span class='fu'><a href='clock-arithmetic.html'>add_months</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, invalid <span class='op'>=</span> <span class='st'>"previous"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-02-28 23:59:59 EST" "2019-03-31 00:30:00 EDT"</span>
+<span class='r-in'><span class='fu'><a href='clock-arithmetic.html'>add_months</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, invalid <span class='op'>=</span> <span class='st'>"previous-day"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-02-28 00:30:00 EST" "2019-03-31 00:30:00 EDT"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

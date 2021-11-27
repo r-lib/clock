@@ -224,7 +224,7 @@ invalid by. Time of day is kept.</p></li>
 two strategies maintain the <em>relative ordering</em> between elements of the
 input.</p>
 <p>If <code>NULL</code>, defaults to <code>"error"</code>.</p>
-<p>If <code><a href='https://rdrr.io/r/base/options.html'>getOption("clock.strict")</a></code> is <code>TRUE</code>, <code>invalid</code> must be supplied and
+<p>If <code>getOption("clock.strict")</code> is <code>TRUE</code>, <code>invalid</code> must be supplied and
 cannot be <code>NULL</code>. This is a convenient way to make production code robust
 to invalid dates.</p></td>
     </tr>
@@ -252,43 +252,53 @@ This is a often a very important property to maintain when doing time series
 data analysis. See the examples for more information.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Invalid date</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>04</span>, <span class='fl'>30</span><span class='op'>:</span><span class='fl'>31</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='fl'>30</span>, <span class='fl'>00</span><span class='op'>)</span>
-<span class='va'>x</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;second&gt;[2]&gt;
-#&gt; [1] "2019-04-30T03:30:00" "2019-04-31T02:30:00"</div><div class='input'>
-<span class='fu'>invalid_detect</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] FALSE  TRUE</div><div class='input'>
-<span class='co'># Previous valid moment in time</span>
-<span class='va'>x_previous</span> <span class='op'>&lt;-</span> <span class='fu'>invalid_resolve</span><span class='op'>(</span><span class='va'>x</span>, invalid <span class='op'>=</span> <span class='st'>"previous"</span><span class='op'>)</span>
-<span class='va'>x_previous</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;second&gt;[2]&gt;
-#&gt; [1] "2019-04-30T03:30:00" "2019-04-30T23:59:59"</div><div class='input'>
-<span class='co'># Previous valid day, retaining time of day</span>
-<span class='va'>x_previous_day</span> <span class='op'>&lt;-</span> <span class='fu'>invalid_resolve</span><span class='op'>(</span><span class='va'>x</span>, invalid <span class='op'>=</span> <span class='st'>"previous-day"</span><span class='op'>)</span>
-<span class='va'>x_previous_day</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;second&gt;[2]&gt;
-#&gt; [1] "2019-04-30T03:30:00" "2019-04-30T02:30:00"</div><div class='input'>
-<span class='co'># Note that `"previous"` retains the relative ordering in `x`</span>
-<span class='va'>x</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;</span> <span class='va'>x</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='va'>x_previous</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;</span> <span class='va'>x_previous</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='co'># But `"previous-day"` here does not!</span>
-<span class='va'>x_previous_day</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;</span> <span class='va'>x_previous_day</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
-<span class='co'># Remove invalid dates entirely</span>
-<span class='fu'>invalid_remove</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_month_day&lt;second&gt;[1]&gt;
-#&gt; [1] "2019-04-30T03:30:00"</div><div class='input'>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_quarter_day.html'>year_quarter_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>90</span><span class='op'>:</span><span class='fl'>92</span><span class='op'>)</span>
-<span class='va'>y</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[3]&gt;
-#&gt; [1] "2019-Q1-90" "2019-Q1-91" "2019-Q1-92"</div><div class='input'>
-<span class='co'># Overflow rolls forward by the number of days between `y` and the previous</span>
-<span class='co'># valid date</span>
-<span class='fu'>invalid_resolve</span><span class='op'>(</span><span class='va'>y</span>, invalid <span class='op'>=</span> <span class='st'>"overflow"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[3]&gt;
-#&gt; [1] "2019-Q1-90" "2019-Q2-01" "2019-Q2-02"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Invalid date</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_month_day.html'>year_month_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>04</span>, <span class='fl'>30</span><span class='op'>:</span><span class='fl'>31</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='fl'>30</span>, <span class='fl'>00</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_day&lt;second&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-04-30T03:30:00" "2019-04-31T02:30:00"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>invalid_detect</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE  TRUE</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Previous valid moment in time</span></span>
+<span class='r-in'><span class='va'>x_previous</span> <span class='op'>&lt;-</span> <span class='fu'>invalid_resolve</span><span class='op'>(</span><span class='va'>x</span>, invalid <span class='op'>=</span> <span class='st'>"previous"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x_previous</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_day&lt;second&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-04-30T03:30:00" "2019-04-30T23:59:59"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Previous valid day, retaining time of day</span></span>
+<span class='r-in'><span class='va'>x_previous_day</span> <span class='op'>&lt;-</span> <span class='fu'>invalid_resolve</span><span class='op'>(</span><span class='va'>x</span>, invalid <span class='op'>=</span> <span class='st'>"previous-day"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x_previous_day</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_day&lt;second&gt;[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-04-30T03:30:00" "2019-04-30T02:30:00"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Note that `"previous"` retains the relative ordering in `x`</span></span>
+<span class='r-in'><span class='va'>x</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;</span> <span class='va'>x</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-in'><span class='va'>x_previous</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;</span> <span class='va'>x_previous</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># But `"previous-day"` here does not!</span></span>
+<span class='r-in'><span class='va'>x_previous_day</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;</span> <span class='va'>x_previous_day</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Remove invalid dates entirely</span></span>
+<span class='r-in'><span class='fu'>invalid_remove</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_month_day&lt;second&gt;[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-04-30T03:30:00"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='year_quarter_day.html'>year_quarter_day</a></span><span class='op'>(</span><span class='fl'>2019</span>, <span class='fl'>1</span>, <span class='fl'>90</span><span class='op'>:</span><span class='fl'>92</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>y</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[3]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-Q1-90" "2019-Q1-91" "2019-Q1-92"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Overflow rolls forward by the number of days between `y` and the previous</span></span>
+<span class='r-in'><span class='co'># valid date</span></span>
+<span class='r-in'><span class='fu'>invalid_resolve</span><span class='op'>(</span><span class='va'>y</span>, invalid <span class='op'>=</span> <span class='st'>"overflow"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[3]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-Q1-90" "2019-Q2-01" "2019-Q2-02"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

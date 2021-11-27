@@ -242,53 +242,62 @@ Thursday. If you would like to round by weeks with a different week start,
 just supply an origin on the weekday you are interested in.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-03-31"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>5</span>
-<span class='va'>x</span>
-</div><div class='output co'>#&gt; [1] "2019-03-31" "2019-04-01" "2019-04-02" "2019-04-03" "2019-04-04"
-#&gt; [6] "2019-04-05"</div><div class='input'>
-<span class='co'># Flooring by 2 days, note that this is not tied to the current month,</span>
-<span class='co'># and instead counts from the specified `origin`, so groups can cross</span>
-<span class='co'># the month boundary</span>
-<span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2019-03-31" "2019-03-31" "2019-04-02" "2019-04-02" "2019-04-04"
-#&gt; [6] "2019-04-04"</div><div class='input'>
-<span class='co'># Compare to `date_group()`, which groups by the day of the month</span>
-<span class='fu'><a href='date_group.html'>date_group</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2019-03-31" "2019-04-01" "2019-04-01" "2019-04-03" "2019-04-03"
-#&gt; [6] "2019-04-05"</div><div class='input'>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>20</span>
-<span class='va'>y</span>
-</div><div class='output co'>#&gt;  [1] "2019-01-01" "2019-01-02" "2019-01-03" "2019-01-04" "2019-01-05"
-#&gt;  [6] "2019-01-06" "2019-01-07" "2019-01-08" "2019-01-09" "2019-01-10"
-#&gt; [11] "2019-01-11" "2019-01-12" "2019-01-13" "2019-01-14" "2019-01-15"
-#&gt; [16] "2019-01-16" "2019-01-17" "2019-01-18" "2019-01-19" "2019-01-20"
-#&gt; [21] "2019-01-21"</div><div class='input'>
-<span class='co'># Flooring by week uses an implicit `origin` of 1970-01-01, which</span>
-<span class='co'># is a Thursday</span>
-<span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='st'>"week"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "2018-12-27" "2018-12-27" "2019-01-03" "2019-01-03" "2019-01-03"
-#&gt;  [6] "2019-01-03" "2019-01-03" "2019-01-03" "2019-01-03" "2019-01-10"
-#&gt; [11] "2019-01-10" "2019-01-10" "2019-01-10" "2019-01-10" "2019-01-10"
-#&gt; [16] "2019-01-10" "2019-01-17" "2019-01-17" "2019-01-17" "2019-01-17"
-#&gt; [21] "2019-01-17"</div><div class='input'><span class='fu'><a href='as_weekday.html'>as_weekday</a></span><span class='op'>(</span><span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='st'>"week"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;weekday[21]&gt;
-#&gt;  [1] Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu
-#&gt; [20] Thu Thu</div><div class='input'>
-<span class='co'># If you want to round by weeks with a different week start, supply an</span>
-<span class='co'># `origin` that falls on the weekday you care about. This uses a Monday.</span>
-<span class='va'>origin</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"1970-01-05"</span><span class='op'>)</span>
-<span class='fu'><a href='as_weekday.html'>as_weekday</a></span><span class='op'>(</span><span class='va'>origin</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;weekday[1]&gt;
-#&gt; [1] Mon</div><div class='input'>
-<span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='st'>"week"</span>, origin <span class='op'>=</span> <span class='va'>origin</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "2018-12-31" "2018-12-31" "2018-12-31" "2018-12-31" "2018-12-31"
-#&gt;  [6] "2018-12-31" "2019-01-07" "2019-01-07" "2019-01-07" "2019-01-07"
-#&gt; [11] "2019-01-07" "2019-01-07" "2019-01-07" "2019-01-14" "2019-01-14"
-#&gt; [16] "2019-01-14" "2019-01-14" "2019-01-14" "2019-01-14" "2019-01-14"
-#&gt; [21] "2019-01-21"</div><div class='input'><span class='fu'><a href='as_weekday.html'>as_weekday</a></span><span class='op'>(</span><span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='st'>"week"</span>, origin <span class='op'>=</span> <span class='va'>origin</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;weekday[21]&gt;
-#&gt;  [1] Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon
-#&gt; [20] Mon Mon</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-03-31"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>5</span></span>
+<span class='r-in'><span class='va'>x</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-03-31" "2019-04-01" "2019-04-02" "2019-04-03" "2019-04-04"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [6] "2019-04-05"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Flooring by 2 days, note that this is not tied to the current month,</span></span>
+<span class='r-in'><span class='co'># and instead counts from the specified `origin`, so groups can cross</span></span>
+<span class='r-in'><span class='co'># the month boundary</span></span>
+<span class='r-in'><span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-03-31" "2019-03-31" "2019-04-02" "2019-04-02" "2019-04-04"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [6] "2019-04-04"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Compare to `date_group()`, which groups by the day of the month</span></span>
+<span class='r-in'><span class='fu'><a href='date_group.html'>date_group</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"day"</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2019-03-31" "2019-04-01" "2019-04-01" "2019-04-03" "2019-04-03"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [6] "2019-04-05"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2019-01-01"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>20</span></span>
+<span class='r-in'><span class='va'>y</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "2019-01-01" "2019-01-02" "2019-01-03" "2019-01-04" "2019-01-05"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6] "2019-01-06" "2019-01-07" "2019-01-08" "2019-01-09" "2019-01-10"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "2019-01-11" "2019-01-12" "2019-01-13" "2019-01-14" "2019-01-15"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [16] "2019-01-16" "2019-01-17" "2019-01-18" "2019-01-19" "2019-01-20"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [21] "2019-01-21"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Flooring by week uses an implicit `origin` of 1970-01-01, which</span></span>
+<span class='r-in'><span class='co'># is a Thursday</span></span>
+<span class='r-in'><span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='st'>"week"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "2018-12-27" "2018-12-27" "2019-01-03" "2019-01-03" "2019-01-03"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6] "2019-01-03" "2019-01-03" "2019-01-03" "2019-01-03" "2019-01-10"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "2019-01-10" "2019-01-10" "2019-01-10" "2019-01-10" "2019-01-10"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [16] "2019-01-10" "2019-01-17" "2019-01-17" "2019-01-17" "2019-01-17"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [21] "2019-01-17"</span>
+<span class='r-in'><span class='fu'><a href='as_weekday.html'>as_weekday</a></span><span class='op'>(</span><span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='st'>"week"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;weekday[21]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu Thu</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [20] Thu Thu</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># If you want to round by weeks with a different week start, supply an</span></span>
+<span class='r-in'><span class='co'># `origin` that falls on the weekday you care about. This uses a Monday.</span></span>
+<span class='r-in'><span class='va'>origin</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"1970-01-05"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='as_weekday.html'>as_weekday</a></span><span class='op'>(</span><span class='va'>origin</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;weekday[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] Mon</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='st'>"week"</span>, origin <span class='op'>=</span> <span class='va'>origin</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "2018-12-31" "2018-12-31" "2018-12-31" "2018-12-31" "2018-12-31"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6] "2018-12-31" "2019-01-07" "2019-01-07" "2019-01-07" "2019-01-07"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "2019-01-07" "2019-01-07" "2019-01-07" "2019-01-14" "2019-01-14"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [16] "2019-01-14" "2019-01-14" "2019-01-14" "2019-01-14" "2019-01-14"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [21] "2019-01-21"</span>
+<span class='r-in'><span class='fu'><a href='as_weekday.html'>as_weekday</a></span><span class='op'>(</span><span class='fu'><a href='date-and-date-time-rounding.html'>date_floor</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='st'>"week"</span>, origin <span class='op'>=</span> <span class='va'>origin</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;weekday[21]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [20] Mon Mon</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
