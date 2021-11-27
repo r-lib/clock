@@ -804,20 +804,9 @@ vec_arith.clock_duration.clock_duration <- function(op, x, y, ...) {
     op,
     "+" = duration_plus(x, y, names_common(x, y)),
     "-" = duration_minus(x, y, names_common(x, y)),
+    "/" = stop_incompatible_op(op, x, y, details = "Durations only support integer division. Did you want `%/%`?"),
     "%%" = duration_modulus(x, y, names_common(x, y)),
-
-    # TODO: Operation would return an integer vector,
-    # but precision often won't be good enough
-    "%/%" = stop_incompatible_op(
-      op,
-      x,
-      y,
-      details = paste0(
-        "<duration> %/% <duration> is not yet supported, ",
-        "as the resulting type often won't fit into an R integer."
-      )
-    ),
-
+    "%/%" = duration_integer_divide(x, y, names_common(x, y)),
     stop_incompatible_op(op, x, y)
   )
 }
@@ -1033,6 +1022,30 @@ duration_arith <- function(x, y, names, fn) {
   fields <- fn(x, y, precision)
 
   new_duration_from_fields(fields, precision, names)
+}
+
+duration_integer_divide <- function(x, y, names) {
+  duration_arith_integer(x, y, names, duration_integer_divide_cpp)
+}
+
+duration_arith_integer <- function(x, y, names, fn) {
+  if (!is_duration(x) || !is_duration(y)) {
+    abort("`x` and `y` must both be 'duration' objects.")
+  }
+
+  args <- vec_cast_common(x = x, y = y)
+  args <- vec_recycle_common(!!!args, names = names)
+  x <- args$x
+  y <- args$y
+  names <- args$names
+
+  precision <- duration_precision_attribute(x)
+
+  out <- fn(x, y, precision)
+
+  names(out) <- names
+
+  out
 }
 
 duration_scalar_multiply <- function(x, y, names) {
