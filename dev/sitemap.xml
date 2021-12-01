@@ -1,7 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://clock.r-lib.org/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/articles/clock.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/articles/faq.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/articles/motivations.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/articles/recipes.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/authors.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/index.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/news/index.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/Date-arithmetic.html</loc>
@@ -64,6 +91,9 @@
     <loc>https://clock.r-lib.org/reference/calendar-boundary.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/calendar-count-between.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/calendar_group.html</loc>
   </url>
   <url>
@@ -121,6 +151,9 @@
     <loc>https://clock.r-lib.org/reference/date-boundary.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/date-count-between.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/date-formatting.html</loc>
   </url>
   <url>
@@ -146,6 +179,9 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/date_build.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/reference/date_count_between.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/date_format.html</loc>
@@ -190,6 +226,9 @@
     <loc>https://clock.r-lib.org/reference/format.clock_zoned_time.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/index.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/is_duration.html</loc>
   </url>
   <url>
@@ -226,6 +265,9 @@
     <loc>https://clock.r-lib.org/reference/iso-year-week-day-boundary.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/iso-year-week-day-count-between.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/iso-year-week-day-getters.html</loc>
   </url>
   <url>
@@ -254,6 +296,9 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/posixt-boundary.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/reference/posixt-count-between.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/posixt-formatting.html</loc>
@@ -319,6 +364,9 @@
     <loc>https://clock.r-lib.org/reference/time_point_cast.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/time_point_count_between.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/time_point_precision.html</loc>
   </url>
   <url>
@@ -343,6 +391,9 @@
     <loc>https://clock.r-lib.org/reference/year-day-boundary.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/year-day-count-between.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/year-day-getters.html</loc>
   </url>
   <url>
@@ -362,6 +413,9 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/year-month-day-boundary.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/reference/year-month-day-count-between.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/year-month-day-getters.html</loc>
@@ -385,6 +439,9 @@
     <loc>https://clock.r-lib.org/reference/year-month-weekday-boundary.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/reference/year-month-weekday-count-between.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/reference/year-month-weekday-getters.html</loc>
   </url>
   <url>
@@ -404,6 +461,9 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/year-quarter-day-boundary.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/reference/year-quarter-day-count-between.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/year-quarter-day-getters.html</loc>
@@ -446,17 +506,5 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/reference/zoned_time_precision.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/articles/articles/motivations.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/articles/clock.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/articles/faq.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/articles/recipes.html</loc>
   </url>
 </urlset>
