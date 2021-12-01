@@ -178,6 +178,59 @@
 
     Can't compute the end of a subsecond precision `x` (microsecond) at another subsecond precision (millisecond).
 
+# `end` must be a calendar
+
+    Code
+      (expect_error(calendar_count_between(x, 1, "year")))
+    Output
+      <error/rlang_error>
+      `end` must be a <clock_calendar>.
+
+# can't count with a precision that calendar doesn't use
+
+    Code
+      (expect_error(calendar_count_between(x, x, "quarter")))
+    Output
+      <error/rlang_error>
+      `precision` must be a valid 'iso_year_week_day' precision.
+
+# can't count with a precision finer than the calendar precision
+
+    Code
+      (expect_error(calendar_count_between(x, x, "month")))
+    Output
+      <error/rlang_error>
+      Precision of inputs must be at least as precise as `precision`.
+
+# `n` is validated
+
+    Code
+      (expect_error(calendar_count_between(x, x, "year", n = NA_integer_)))
+    Output
+      <error/rlang_error>
+      `n` must be a single positive integer.
+    Code
+      (expect_error(calendar_count_between(x, x, "year", n = -1)))
+    Output
+      <error/rlang_error>
+      `n` must be a single positive integer.
+    Code
+      (expect_error(calendar_count_between(x, x, "year", n = 1.5)))
+    Output
+      <error/vctrs_error_cast_lossy>
+      Can't convert from `n` <double> to <integer> due to loss of precision.
+      * Locations: 1
+    Code
+      (expect_error(calendar_count_between(x, x, "year", n = "x")))
+    Output
+      <error/vctrs_error_incompatible_type>
+      Can't convert `n` <character> to <integer>.
+    Code
+      (expect_error(calendar_count_between(x, x, "year", n = c(1L, 2L))))
+    Output
+      <error/rlang_error>
+      `n` must be a single positive integer.
+
 # precision: can only be called on calendars
 
     no applicable method for 'calendar_precision' applied to an object of class "c('clock_sys_time', 'clock_time_point', 'clock_rcrd', 'vctrs_rcrd', 'vctrs_vctr')"

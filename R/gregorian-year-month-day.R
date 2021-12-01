@@ -1218,6 +1218,91 @@ calendar_end.clock_year_month_day <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Counting: year-month-day
+#'
+#' This is a year-month-day method for the [calendar_count_between()] generic.
+#' It counts the number of `precision` units between `start` and `end`
+#' (i.e., the number of years or months).
+#'
+#' @inheritParams calendar-count-between
+#'
+#' @param start,end `[clock_year_month_day]`
+#'
+#'   A pair of year-month-day vectors. These will be recycled to their
+#'   common size.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"year"`
+#'   - `"month"`
+#'
+#' @inherit calendar-count-between return
+#'
+#' @name year-month-day-count-between
+#'
+#' @export
+#' @examples
+#' # Compute an individual's age in years
+#' x <- year_month_day(2001, 2, 4)
+#' today <- year_month_day(2021, 11, 30)
+#' calendar_count_between(x, today, "year")
+#'
+#' # Compute the number of months between two dates, taking
+#' # into account the day of the month and time of day
+#' x <- year_month_day(2000, 4, 2, 5)
+#' y <- year_month_day(2000, 7, c(1, 2, 2), c(3, 4, 6))
+#' calendar_count_between(x, y, "month")
+calendar_count_between.clock_year_month_day <- function(start,
+                                                        end,
+                                                        precision,
+                                                        ...,
+                                                        n = 1L) {
+  NextMethod()
+}
+
+calendar_count_between_compute.clock_year_month_day <- function(start,
+                                                                end,
+                                                                precision) {
+  precision <- validate_precision_string(precision)
+
+  if (precision == PRECISION_YEAR) {
+    out <- get_year(end) - get_year(start)
+    return(out)
+  }
+
+  if (precision == PRECISION_MONTH) {
+    out <- (get_year(end) - get_year(start)) * 12L
+    out <- out + (get_month(end) - get_month(start))
+    return(out)
+  }
+
+  abort("`precision` must be one of: 'year', 'month'.")
+}
+
+calendar_count_between_proxy_compare.clock_year_month_day <- function(start,
+                                                                      end,
+                                                                      precision) {
+  precision <- validate_precision_string(precision)
+
+  start <- vec_proxy_compare(start)
+  end <- vec_proxy_compare(end)
+
+  if (precision >= PRECISION_YEAR) {
+    start$year <- NULL
+    end$year <- NULL
+  }
+  if (precision >= PRECISION_MONTH) {
+    start$month <- NULL
+    end$month <- NULL
+  }
+
+  list(start = start, end = end)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Sequences: year-month-day
 #'
 #' @description

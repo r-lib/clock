@@ -936,6 +936,74 @@ calendar_end.clock_iso_year_week_day <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Counting: iso-year-week-day
+#'
+#' This is an iso-year-week-day method for the [calendar_count_between()]
+#' generic. It counts the number of `precision` units between `start` and `end`
+#' (i.e., the number of ISO years).
+#'
+#' @inheritParams calendar-count-between
+#'
+#' @param start,end `[clock_iso_year_week_day]`
+#'
+#'   A pair of iso-year-week-day vectors. These will be recycled to their
+#'   common size.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"year"`
+#'
+#' @inherit calendar-count-between return
+#'
+#' @name iso-year-week-day-count-between
+#'
+#' @export
+#' @examples
+#' # Compute the number of whole ISO years between two dates
+#' x <- iso_year_week_day(2001, 1, 2)
+#' y <- iso_year_week_day(2021, 1, c(1, 3))
+#' calendar_count_between(x, y, "year")
+calendar_count_between.clock_iso_year_week_day <- function(start,
+                                                           end,
+                                                           precision,
+                                                           ...,
+                                                           n = 1L) {
+  NextMethod()
+}
+
+calendar_count_between_compute.clock_iso_year_week_day <- function(start,
+                                                                   end,
+                                                                   precision) {
+  precision <- validate_precision_string(precision)
+
+  if (precision == PRECISION_YEAR) {
+    out <- get_year(end) - get_year(start)
+    return(out)
+  }
+
+  abort("`precision` must be one of: 'year'.")
+}
+
+calendar_count_between_proxy_compare.clock_iso_year_week_day <- function(start,
+                                                                         end,
+                                                                         precision) {
+  precision <- validate_precision_string(precision)
+
+  start <- vec_proxy_compare(start)
+  end <- vec_proxy_compare(end)
+
+  if (precision >= PRECISION_YEAR) {
+    start$year <- NULL
+    end$year <- NULL
+  }
+
+  list(start = start, end = end)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Sequences: iso-year-week-day
 #'
 #' @description

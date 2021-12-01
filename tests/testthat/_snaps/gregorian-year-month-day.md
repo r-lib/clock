@@ -136,6 +136,22 @@
 
     `abbreviate` must be `TRUE` or `FALSE`.
 
+# can't compute a unsupported count precision
+
+    Code
+      (expect_error(calendar_count_between(x, x, "day")))
+    Output
+      <error/rlang_error>
+      `precision` must be one of: 'year', 'month'.
+
+# can't compute a quarter count
+
+    Code
+      (expect_error(calendar_count_between(x, x, "quarter")))
+    Output
+      <error/rlang_error>
+      `precision` must be a valid 'year_month_day' precision.
+
 # only granular precisions are allowed
 
     `from` must be 'year' or 'month' precision.

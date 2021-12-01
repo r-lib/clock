@@ -1105,6 +1105,69 @@ calendar_end.clock_year_month_weekday <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Counting: year-month-weekday
+#'
+#' This is a year-month-weekday method for the [calendar_count_between()]
+#' generic. It counts the number of `precision` units between `start` and `end`
+#' (i.e., the number of years or months).
+#'
+#' @details
+#' Remember that year-month-weekday is not comparable when it is `"day"`
+#' precision or finer, so this method is only defined for `"year"` and
+#' `"month"` precision year-month-weekday objects.
+#'
+#' @inheritParams calendar-count-between
+#'
+#' @param start,end `[clock_year_month_weekday]`
+#'
+#'   A pair of year-month-weekday vectors. These will be recycled to their
+#'   common size.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"year"`
+#'   - `"month"`
+#'
+#' @inherit calendar-count-between return
+#'
+#' @name year-month-weekday-count-between
+#'
+#' @export
+#' @examples
+#' # Compute the number of months between two dates
+#' x <- year_month_weekday(2001, 2)
+#' y <- year_month_weekday(2021, c(1, 3))
+#'
+#' calendar_count_between(x, y, "month")
+#'
+#' # Remember that day precision or finer year-month-weekday objects
+#' # are not comparable, so this won't work
+#' x <- year_month_weekday(2001, 2, 1, 1)
+#' try(calendar_count_between(x, x, "month"))
+calendar_count_between.clock_year_month_weekday <- function(start,
+                                                            end,
+                                                            precision,
+                                                            ...,
+                                                            n = 1L) {
+  NextMethod()
+}
+
+calendar_count_between_compute.clock_year_month_weekday <- function(start,
+                                                                    end,
+                                                                    precision) {
+  calendar_count_between_compute.clock_year_month_day(start, end, precision)
+}
+
+calendar_count_between_proxy_compare.clock_year_month_weekday <- function(start,
+                                                                          end,
+                                                                          precision) {
+  calendar_count_between_proxy_compare.clock_year_month_day(start, end, precision)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Sequences: year-month-weekday
 #'
 #' @description

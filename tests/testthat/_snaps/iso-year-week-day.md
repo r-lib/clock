@@ -94,6 +94,14 @@
     Output
       [1] "2019-W01-1T01:02:03.000050"
 
+# can't compute a unsupported count precision
+
+    Code
+      (expect_error(calendar_count_between(x, x, "week")))
+    Output
+      <error/rlang_error>
+      `precision` must be one of: 'year'.
+
 # only year precision is allowed
 
     `from` must be 'year' precision.

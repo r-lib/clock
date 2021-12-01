@@ -1071,6 +1071,91 @@ calendar_end.clock_year_quarter_day <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Counting: year-quarter-day
+#'
+#' This is a year-quarter-day method for the [calendar_count_between()] generic.
+#' It counts the number of `precision` units between `start` and `end` (i.e.,
+#' the number of years or quarters).
+#'
+#' @inheritParams calendar-count-between
+#'
+#' @param start,end `[clock_year_quarter_day]`
+#'
+#'   A pair of year-quarter-day vectors. These will be recycled to their
+#'   common size.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"year"`
+#'   - `"quarter"`
+#'
+#' @inherit calendar-count-between return
+#'
+#' @name year-quarter-day-count-between
+#'
+#' @export
+#' @examples
+#' # Compute the number of whole quarters between two dates
+#' x <- year_quarter_day(2020, 3, 91)
+#' y <- year_quarter_day(2025, 4, c(90, 92))
+#' calendar_count_between(x, y, "quarter")
+#'
+#' # Note that this is not always the same as the number of whole 3 month
+#' # periods between two dates
+#' x <- as_year_month_day(x)
+#' y <- as_year_month_day(y)
+#' calendar_count_between(x, y, "month", n = 3)
+calendar_count_between.clock_year_quarter_day <- function(start,
+                                                          end,
+                                                          precision,
+                                                          ...,
+                                                          n = 1L) {
+  NextMethod()
+}
+
+calendar_count_between_compute.clock_year_quarter_day <- function(start,
+                                                                  end,
+                                                                  precision) {
+  precision <- validate_precision_string(precision)
+
+  if (precision == PRECISION_YEAR) {
+    out <- get_year(end) - get_year(start)
+    return(out)
+  }
+
+  if (precision == PRECISION_QUARTER) {
+    out <- (get_year(end) - get_year(start)) * 4L
+    out <- out + (get_quarter(end) - get_quarter(start))
+    return(out)
+  }
+
+  abort("`precision` must be one of: 'year', 'quarter'.")
+}
+
+calendar_count_between_proxy_compare.clock_year_quarter_day <- function(start,
+                                                                        end,
+                                                                        precision) {
+  precision <- validate_precision_string(precision)
+
+  start <- vec_proxy_compare(start)
+  end <- vec_proxy_compare(end)
+
+  if (precision >= PRECISION_YEAR) {
+    start$year <- NULL
+    end$year <- NULL
+  }
+  if (precision >= PRECISION_QUARTER) {
+    start$quarter <- NULL
+    end$quarter <- NULL
+  }
+
+  list(start = start, end = end)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Sequences: year-quarter-day
 #'
 #' @description
