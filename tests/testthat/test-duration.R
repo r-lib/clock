@@ -322,6 +322,19 @@ test_that("`<duration> %/% <duration>` results in NA for OOB values", {
   expect_identical(out, NA_integer_)
 })
 
+test_that("`<duration> %% <numeric>` works (#273)", {
+  expect_identical(duration_hours(7) %% 4, duration_hours(3))
+})
+
+test_that("`<duration> %% <numeric>` propagates `NA`", {
+  expect_identical(duration_hours(7) %% NA_integer_, duration_hours(NA))
+  expect_identical(duration_hours(NA) %% 4, duration_hours(NA))
+})
+
+test_that("`<duration> %% <numeric>` casts the numeric to integer", {
+  expect_snapshot((expect_error(duration_hours(5) %% 2.5)))
+})
+
 # ------------------------------------------------------------------------------
 # vec_math()
 
