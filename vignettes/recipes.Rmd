@@ -467,6 +467,146 @@ x %>%
   get_day()
 ```
 
+## Computing an age in years
+
+To get the age of an individual in years, use `calendar_count_between()`.
+
+```{r}
+x <- year_month_day(1980, 12, 14:16)
+today <- year_month_day(2005, 12, 15)
+
+# Note that the month and day of the month are taken into account!
+# (Time of day would also be taken into account if there was any.)
+calendar_count_between(x, today, "year")
+```
+
+### High level API
+
+You can use `date_count_between()` with Date and POSIXct types.
+
+```{r}
+x <- date_build(1980, 12, 14:16)
+today <- date_build(2005, 12, 15)
+
+date_count_between(x, today, "year")
+```
+
+## Computing number of weeks since the start of the year
+
+`lubridate::week()` is a useful function that returns "the number of complete seven day periods that have occurred between the date and January 1st, plus one."
+
+There is no direct equivalent to this, but it is possible to replicate with `calendar_start()` and `time_point_count_between()`.
+
+```{r}
+x <- year_month_day(2019, 11, 28)
+
+# lubridate::week(as.Date(x))
+# [1] 48
+
+x_start <- calendar_start(x, "year")
+x_start
+
+time_point_count_between(
+  as_naive_time(x_start),
+  as_naive_time(x),
+  "week"
+) + 1L
+```
+
+You could also peek at the `lubridate::week()` implementation to see that this is just:
+
+```{r}
+doy <- get_day(as_year_day(x))
+doy
+
+(doy - 1L) %/% 7L + 1L
+```
+
+### High level API
+
+This is actually a little easier in the high level API because you don't have to think about switching between types.
+
+```{r}
+x <- date_build(2019, 11, 28)
+
+date_count_between(date_start(x, "year"), x, "week") + 1L
+```
+
+## Compute the number of months between two dates
+
+How can we compute the number of months between these two dates?
+
+```{r}
+x <- year_month_day(2013, 10, 15)
+y <- year_month_day(2016, 10, 13)
+```
+
+This is a bit of an ambiguous question because "month" isn't very well-defined, and there are various different interpretations we could take.
+
+We might want to ignore the day component entirely, and just compute the number of months between `2013-10` and `2016-10`.
+
+```{r}
+calendar_narrow(y, "month") - calendar_narrow(x, "month")
+```
+
+Or we could include the day of the month, and say that `2013-10-15` to `2014-10-15` defines 1 month (i.e. you have to hit the same day of the month in the next month).
+
+```{r}
+calendar_count_between(x, y, "month")
+```
+
+With this you could also compute the number of days remaining between these two dates.
+
+```{r}
+x_close <- add_months(x, calendar_count_between(x, y, "month"))
+x_close
+
+x_close_st <- as_sys_time(x_close)
+y_st <- as_sys_time(y)
+
+time_point_count_between(x_close_st, y_st, "day")
+```
+
+Or we could compute the number of days between these two dates in units of seconds, and divide that by the average number of seconds in 1 proleptic Gregorian month.
+
+```{r}
+# Days between x and y
+days <- as_sys_time(y) - as_sys_time(x)
+days
+
+# In units of seconds
+days <- duration_cast(days, "second")
+days <- as.numeric(days)
+days
+
+# Average number of seconds in 1 proleptic Gregorian month
+avg_sec_in_month <- duration_cast(duration_months(1), "second")
+avg_sec_in_month <- as.numeric(avg_sec_in_month)
+
+days / avg_sec_in_month
+```
+
+### High level API
+
+```{r}
+x <- date_build(2013, 10, 15)
+y <- date_build(2016, 10, 13)
+```
+
+To ignore the day of the month, first shift to the start of the month, then you can use `date_count_between()`.
+
+```{r}
+date_count_between(date_start(x, "month"), date_start(y, "month"), "month")
+```
+
+To utilize the day field, do the same as above but without calling `date_start()`.
+
+```{r}
+date_count_between(x, y, "month")
+```
+
+There is no high level equivalent to the average length of one proleptic Gregorian month example.
+
 ## Converting a time zone abbreviation into a time zone name
 
 It is possible that you might run into date-time strings of the form `"2020-10-25 01:30:00 IST"`, which contain a time zone _abbreviation_ rather than a full time zone name. Because time zone maintainers change the abbreviation they use throughout time, and because multiple time zones sometimes use the same abbreviation, it is generally impossible to parse strings of this form without more information. That said, if you know what time zone this abbreviation goes with, you can parse this time with `zoned_time_parse_abbrev()`, supplying the `zone`.
