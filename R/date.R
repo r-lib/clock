@@ -1713,3 +1713,249 @@ check_number_of_supplied_optional_arguments <- function(to, by, total_size) {
 
   invisible()
 }
+
+# ------------------------------------------------------------------------------
+
+#' Counting: date and date-time
+#'
+#' @description
+#' `date_count_between()` counts the number of `precision` units between
+#' `start` and `end` (i.e., the number of years or months or hours). This count
+#' corresponds to the _whole number_ of units, and will never return a
+#' fractional value.
+#'
+#' This is suitable for, say, computing the whole number of years or months
+#' between two dates, accounting for the day and time of day.
+#'
+#' There are separate help pages for counting for dates and date-times:
+#'
+#' - [dates (Date)][date-count-between]
+#'
+#' - [date-times (POSIXct/POSIXlt)][posixt-count-between]
+#'
+#' @inheritSection calendar_count_between Comparison Direction
+#'
+#' @inheritParams calendar_count_between
+#'
+#' @param start,end `[Date / POSIXct / POSIXlt]`
+#'
+#'   A pair of date or date-time vectors. These will be recycled to their common
+#'   size.
+#'
+#' @inherit calendar_count_between return
+#'
+#' @export
+#' @examples
+#' # See method specific documentation for more examples
+#'
+#' start <- date_parse("2000-05-05")
+#' end <- date_parse(c("2020-05-04", "2020-05-06"))
+#'
+#' # Age in years
+#' date_count_between(start, end, "year")
+#'
+#' # Number of "whole" months between these dates
+#' date_count_between(start, end, "month")
+date_count_between <- function(start, end, precision, ..., n = 1L) {
+  UseMethod("date_count_between")
+}
+
+#' Counting: date
+#'
+#' @description
+#' This is a Date method for the [date_count_between()] generic.
+#'
+#' `date_count_between()` counts the number of `precision` units between
+#' `start` and `end` (i.e., the number of years or months). This count
+#' corresponds to the _whole number_ of units, and will never return a
+#' fractional value.
+#'
+#' This is suitable for, say, computing the whole number of years or months
+#' between two dates, accounting for the day of the month.
+#'
+#' _Calendrical based counting:_
+#'
+#' These precisions convert to a year-month-day calendar and count while in that
+#' type.
+#'
+#' - `"year"`
+#'
+#' - `"month"`
+#'
+#' _Time point based counting:_
+#'
+#' These precisions convert to a time point and count while in that type.
+#'
+#' - `"week"`
+#'
+#' - `"day"`
+#'
+#' For dates, whether a calendar or time point is used is not all that
+#' important, but is is fairly important for date-times.
+#'
+#' @inheritSection calendar_count_between Comparison Direction
+#'
+#' @inheritParams date_count_between
+#'
+#' @param start,end `[Date]`
+#'
+#'   A pair of date vectors. These will be recycled to their common
+#'   size.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"year"`
+#'   - `"month"`
+#'   - `"week"`
+#'   - `"day"`
+#'
+#' @inherit date_count_between return
+#'
+#' @name date-count-between
+#'
+#' @export
+#' @examples
+#' start <- date_parse("2000-05-05")
+#' end <- date_parse(c("2020-05-04", "2020-05-06"))
+#'
+#' # Age in years
+#' date_count_between(start, end, "year")
+#'
+#' # Number of "whole" months between these dates. i.e.
+#' # `2000-05-05 -> 2020-04-05` is 239 months
+#' # `2000-05-05 -> 2020-05-05` is 240 months
+#' # Since 2020-05-04 occurs before the 5th of that month,
+#' # it gets a count of 239
+#' date_count_between(start, end, "month")
+#'
+#' # Number of days between
+#' date_count_between(start, end, "day")
+#'
+#' # Number of full 3 day periods between these two dates
+#' date_count_between(start, end, "day", n = 3)
+#'
+#' # Essentially the truncated value of this
+#' date_count_between(start, end, "day") / 3
+#'
+#' # ---------------------------------------------------------------------------
+#'
+#' # Breakdown into full years, months, and days between
+#' x <- start
+#'
+#' years <- date_count_between(x, end, "year")
+#' x <- add_years(x, years)
+#'
+#' months <- date_count_between(x, end, "month")
+#' x <- add_months(x, months)
+#'
+#' days <- date_count_between(x, end, "day")
+#' x <- add_days(x, days)
+#'
+#' data.frame(
+#'   start = start,
+#'   end = end,
+#'   years = years,
+#'   months = months,
+#'   days = days
+#' )
+#'
+#' # Note that when breaking down a date like that, you may need to
+#' # set `invalid` during intermediate calculations
+#' start <- date_build(2019, c(3, 3, 4), c(30, 31, 1))
+#' end <- date_build(2019, 5, 05)
+#'
+#' # These are 1 month apart (plus a few days)
+#' months <- date_count_between(start, end, "month")
+#'
+#' # But adding that 1 month to `start` results in an invalid date
+#' try(add_months(start, months))
+#'
+#' # You can choose various ways to resolve this
+#' start_previous <- add_months(start, months, invalid = "previous")
+#' start_next <- add_months(start, months, invalid = "next")
+#'
+#' days_previous <- date_count_between(start_previous, end, "day")
+#' days_next <- date_count_between(start_next, end, "day")
+#'
+#' # Resulting in slightly different day values.
+#' # No result is "perfect". Choosing "previous" or "next" both result
+#' # in multiple `start` dates having the same month/day breakdown values.
+#' data.frame(
+#'   start = start,
+#'   end = end,
+#'   months = months,
+#'   days_previous = days_previous,
+#'   days_next = days_next
+#' )
+date_count_between.Date <- function(start, end, precision, ..., n = 1L) {
+  check_dots_empty()
+
+  if (!is_Date(end)) {
+    abort("`end` must be a <Date>.")
+  }
+
+  # Designed to match `add_*()` functions to guarantee that
+  # if `start <= end`, then `start + <count> <= end`
+  allowed_precisions_calendar <- c(
+    PRECISION_YEAR, PRECISION_MONTH
+  )
+  allowed_precisions_naive_time <- c(
+    PRECISION_WEEK, PRECISION_DAY
+  )
+  allowed_precisions_sys_time <- c(
+  )
+
+  date_count_between_impl(
+    start = start,
+    end = end,
+    precision = precision,
+    n = n,
+    allowed_precisions_calendar = allowed_precisions_calendar,
+    allowed_precisions_naive_time = allowed_precisions_naive_time,
+    allowed_precisions_sys_time = allowed_precisions_sys_time
+  )
+}
+
+date_count_between_impl <- function(start,
+                                    end,
+                                    precision,
+                                    n,
+                                    allowed_precisions_calendar,
+                                    allowed_precisions_naive_time,
+                                    allowed_precisions_sys_time) {
+  precision_int <- validate_precision_string(precision)
+
+  if (precision_int %in% allowed_precisions_calendar) {
+    start <- as_year_month_day(start)
+    end <- as_year_month_day(end)
+    out <- calendar_count_between(start, end, precision, n = n)
+    return(out)
+  }
+
+  if (precision_int %in% allowed_precisions_naive_time) {
+    start <- as_naive_time(start)
+    end <- as_naive_time(end)
+    out <- time_point_count_between(start, end, precision, n = n)
+    return(out)
+  }
+
+  if (precision_int %in% allowed_precisions_sys_time) {
+    start <- as_sys_time(start)
+    end <- as_sys_time(end)
+    out <- time_point_count_between(start, end, precision, n = n)
+    return(out)
+  }
+
+  precisions <- c(
+    allowed_precisions_calendar,
+    allowed_precisions_naive_time,
+    allowed_precisions_sys_time
+  )
+  precisions <- vapply(precisions, precision_to_string, character(1))
+  precisions <- encodeString(precisions, quote = "'")
+  precisions <- paste0(precisions, collapse = ", ")
+
+  abort(paste0("`precision` must be one of: ", precisions, "."))
+}

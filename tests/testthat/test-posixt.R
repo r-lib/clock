@@ -834,6 +834,83 @@ test_that("golden test: ensure that we never allow components of `to` to differ 
 })
 
 # ------------------------------------------------------------------------------
+# date_count_between()
+
+test_that("can compute precisions at year / month / week / day / hour / minute / second", {
+  x <- date_time_build(2019, 1, 5, 5, zone = "UTC")
+
+  y <- date_time_build(2025, 1, c(4, 6), zone = "UTC")
+  expect_identical(date_count_between(x, y, "year"), c(5L, 6L))
+  expect_identical(date_count_between(x, y, "month"), c(71L, 72L))
+
+  y <- date_time_build(2019, 1, c(25, 27), zone = "UTC")
+  expect_identical(date_count_between(x, y, "week"), c(2L, 3L))
+  expect_identical(date_count_between(x, y, "day"), c(19L, 21L))
+
+  y <- date_time_build(2019, 1, 6, c(5, 6), c(59, 0), zone = "UTC")
+  expect_identical(date_count_between(x, y, "hour"), c(24L, 25L))
+  expect_identical(date_count_between(x, y, "minute"), c(1499L, 1500L))
+  expect_identical(date_count_between(x, y, "second"), c(89940L, 90000L))
+})
+
+test_that("can use posixlt", {
+  x <- as.POSIXlt(date_time_build(2019, 1, 5, 5, zone = "UTC"))
+  y <- as.POSIXlt(date_time_build(2020, 1, 5, c(4, 5), zone = "UTC"))
+  expect_identical(date_count_between(x, y, "year"), c(0L, 1L))
+})
+
+test_that("nonexistent times are handled correctly", {
+  x <- date_time_build(1970, 4, 26, 1, 59, 59, zone = "America/New_York")
+  y <- date_time_build(1970, 4, 26, 3, 00, 00, zone = "America/New_York")
+
+  # sys-time for hour, minute, second
+  expect_identical(date_count_between(x, y, "second"), 1L)
+  expect_identical(date_count_between(x, y, "hour"), 0L)
+
+  # naive-time for week and day
+  z <- date_time_build(1970, 5, 3, 2, 00, 00, zone = "America/New_York")
+  expect_identical(date_count_between(x, z, "day"), 7L)
+  expect_identical(date_count_between(y, z, "day"), 6L)
+
+  # calendar (naive) for year and month
+  z <- date_time_build(1970, 5, 26, 2, 30, 00, zone = "America/New_York")
+  expect_identical(date_count_between(x, z, "month"), 1L)
+  expect_identical(date_count_between(y, z, "month"), 0L)
+})
+
+test_that("ambiguous times are handled correctly", {
+  x <- date_time_build(1970, 10, 25, 1, 00, 01, zone = "America/New_York", ambiguous = "earliest")
+  y <- date_time_build(1970, 10, 25, 1, 00, 01, zone = "America/New_York", ambiguous = "latest")
+
+  # sys-time for hour, minute, second
+  expect_identical(date_count_between(x, y, "second"), 3600L)
+  expect_identical(date_count_between(x, y, "hour"), 1L)
+
+  # naive-time for week and day
+  z <- date_time_build(1970, 11, 01, 1, 00, c(00, 02), zone = "America/New_York")
+  expect_identical(date_count_between(x, z, "week"), c(0L, 1L))
+  expect_identical(date_count_between(y, z, "week"), c(0L, 1L))
+  expect_identical(date_count_between(x, z, "day"), c(6L, 7L))
+  expect_identical(date_count_between(y, z, "day"), c(6L, 7L))
+
+  # calendar (naive) for year and month
+  z <- date_time_build(1970, 11, 25, 1, 00, c(00, 02), zone = "America/New_York")
+  expect_identical(date_count_between(x, z, "month"), c(0L, 1L))
+  expect_identical(date_count_between(y, z, "month"), c(0L, 1L))
+})
+
+test_that("must use a valid POSIXt precision", {
+  x <- date_time_build(2019, zone = "UTC")
+  expect_snapshot((expect_error(date_count_between(x, x, "millisecond"))))
+})
+
+test_that("can't count between a POSIXt and a Date", {
+  x <- date_time_build(2019, zone = "UTC")
+  y <- date_build(2019)
+  expect_snapshot((expect_error(date_count_between(x, y, "year"))))
+})
+
+# ------------------------------------------------------------------------------
 # vec_arith()
 
 test_that("<posixt> op <duration>", {

@@ -915,6 +915,78 @@ calendar_end.clock_year_day <- function(x, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Counting: year-day
+#'
+#' This is a year-day method for the [calendar_count_between()] generic.
+#' It counts the number of `precision` units between `start` and `end`
+#' (i.e., the number of years).
+#'
+#' @inheritParams calendar-count-between
+#'
+#' @param start,end `[clock_year_day]`
+#'
+#'   A pair of year-day vectors. These will be recycled to their
+#'   common size.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"year"`
+#'
+#' @inherit calendar-count-between return
+#'
+#' @name year-day-count-between
+#'
+#' @export
+#' @examples
+#' # Compute an individual's age in years
+#' x <- year_day(2001, 100)
+#' y <- year_day(2021, c(99, 101))
+#'
+#' calendar_count_between(x, y, "year")
+#'
+#' # Or in a whole number multiple of years
+#' calendar_count_between(x, y, "year", n = 3)
+calendar_count_between.clock_year_day <- function(start,
+                                                  end,
+                                                  precision,
+                                                  ...,
+                                                  n = 1L) {
+  NextMethod()
+}
+
+calendar_count_between_compute.clock_year_day <- function(start,
+                                                          end,
+                                                          precision) {
+  precision <- validate_precision_string(precision)
+
+  if (precision == PRECISION_YEAR) {
+    out <- get_year(end) - get_year(start)
+    return(out)
+  }
+
+  abort("`precision` must be one of: 'year'.")
+}
+
+calendar_count_between_proxy_compare.clock_year_day <- function(start,
+                                                                end,
+                                                                precision) {
+  precision <- validate_precision_string(precision)
+
+  start <- vec_proxy_compare(start)
+  end <- vec_proxy_compare(end)
+
+  if (precision >= PRECISION_YEAR) {
+    start$year <- NULL
+    end$year <- NULL
+  }
+
+  list(start = start, end = end)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Sequences: year-day
 #'
 #' @description

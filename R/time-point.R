@@ -887,6 +887,149 @@ is_advance <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' Counting: time point
+#'
+#' @description
+#' `time_point_count_between()` counts the number of `precision` units
+#' between `start` and `end` (i.e., the number of days or hours). This count
+#' corresponds to the _whole number_ of units, and will never return a
+#' fractional value.
+#'
+#' This is suitable for, say, computing the whole number of days between two
+#' time points, accounting for the time of day.
+#'
+#' @details
+#' Remember that `time_point_count_between()` returns an integer vector.
+#' With extremely fine precisions, such as nanoseconds, the count can quickly
+#' exceed the maximum value that is allowed in an integer. In this case, an
+#' `NA` will be returned with a warning.
+#'
+#' @inheritSection calendar_count_between Comparison Direction
+#'
+#' @inheritParams ellipsis::dots_empty
+#'
+#' @param start,end `[clock_time_point]`
+#'
+#'   A pair of time points. These will be recycled to their common size.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"week"`
+#'   - `"day"`
+#'   - `"hour"`
+#'   - `"minute"`
+#'   - `"second"`
+#'   - `"millisecond"`
+#'   - `"microsecond"`
+#'   - `"nanosecond"`
+#'
+#' @param n `[positive integer(1)]`
+#'
+#'   A single positive integer specifying a multiple of `precision` to use.
+#'
+#' @return An integer representing the number of `precision` units between
+#' `start` and `end`.
+#'
+#' @export
+#' @examples
+#' x <- as_naive_time(year_month_day(2019, 2, 3))
+#' y <- as_naive_time(year_month_day(2019, 2, 10))
+#'
+#' # Whole number of days or hours between two time points
+#' time_point_count_between(x, y, "day")
+#' time_point_count_between(x, y, "hour")
+#'
+#' # Whole number of 2-day units
+#' time_point_count_between(x, y, "day", n = 2)
+#'
+#' # Leap years are taken into account
+#' x <- as_naive_time(year_month_day(c(2020, 2021), 2, 28))
+#' y <- as_naive_time(year_month_day(c(2020, 2021), 3, 01))
+#' time_point_count_between(x, y, "day")
+#'
+#' # Time of day is taken into account.
+#' # `2020-02-02T04 -> 2020-02-03T03` is not a whole day (because of the hour)
+#' # `2020-02-02T04 -> 2020-02-03T05` is a whole day
+#' x <- as_naive_time(year_month_day(2020, 2, 2, 4))
+#' y <- as_naive_time(year_month_day(2020, 2, 3, c(3, 5)))
+#' time_point_count_between(x, y, "day")
+#' time_point_count_between(x, y, "hour")
+#'
+#' # Can compute negative counts (using the same example from above)
+#' time_point_count_between(y, x, "day")
+#' time_point_count_between(y, x, "hour")
+#'
+#' # Repeated computation at increasingly fine precisions
+#' x <- as_naive_time(year_month_day(
+#'   2020, 2, 2, 4, 5, 6, 200,
+#'   subsecond_precision = "microsecond"
+#' ))
+#' y <- as_naive_time(year_month_day(
+#'   2020, 3, 1, 8, 9, 10, 100,
+#'   subsecond_precision = "microsecond"
+#' ))
+#'
+#' days <- time_point_count_between(x, y, "day")
+#' x <- x + duration_days(days)
+#'
+#' hours <- time_point_count_between(x, y, "hour")
+#' x <- x + duration_hours(hours)
+#'
+#' minutes <- time_point_count_between(x, y, "minute")
+#' x <- x + duration_minutes(minutes)
+#'
+#' seconds <- time_point_count_between(x, y, "second")
+#' x <- x + duration_seconds(seconds)
+#'
+#' microseconds <- time_point_count_between(x, y, "microsecond")
+#' x <- x + duration_microseconds(microseconds)
+#'
+#' data.frame(
+#'   days = days,
+#'   hours = hours,
+#'   minutes = minutes,
+#'   seconds = seconds,
+#'   microseconds = microseconds
+#' )
+time_point_count_between <- function(start, end, precision, ..., n = 1L) {
+  check_dots_empty()
+
+  if (!is_time_point(start)) {
+    abort("`start` must be a <clock_time_point>.")
+  }
+  if (!is_time_point(end)) {
+    abort("`end` must be a <clock_time_point>.")
+  }
+
+  args <- vec_cast_common(start = start, end = end)
+  args <- vec_recycle_common(!!!args)
+  start <- args[[1]]
+  end <- args[[2]]
+
+  precision_int <- validate_precision_string(precision)
+  if (precision_int < PRECISION_WEEK) {
+    abort("`precision` must be at least 'week' precision.")
+  }
+
+  n <- vec_cast(n, integer(), x_arg = "n")
+  if (!is_number(n) || n <= 0L) {
+    abort("`n` must be a single positive integer.")
+  }
+
+  out <- end - start
+  out <- duration_cast(out, precision)
+
+  if (n != 1L) {
+    out <- out %/% n
+  }
+
+  as.integer(out)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Sequences: time points
 #'
 #' @description

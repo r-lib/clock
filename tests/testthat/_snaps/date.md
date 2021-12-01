@@ -232,6 +232,22 @@
     These dots only exist to allow future extensions and should be empty.
     Did you misspecify an argument?
 
+# must use a valid Date precision
+
+    Code
+      (expect_error(date_count_between(x, x, "hour")))
+    Output
+      <error/rlang_error>
+      `precision` must be one of: 'year', 'month', 'week', 'day'.
+
+# can't count between a Date and a POSIXt
+
+    Code
+      (expect_error(date_count_between(x, y, "year")))
+    Output
+      <error/rlang_error>
+      `end` must be a <Date>.
+
 # cannot get the zone of a Date
 
     Can't get the zone of a 'Date'.

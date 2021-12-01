@@ -711,6 +711,146 @@ calendar_start_end_time <- function(x, x_precision, precision, values) {
 
 # ------------------------------------------------------------------------------
 
+#' Counting: calendars
+#'
+#' @description
+#' `calendar_count_between()` counts the number of `precision` units between
+#' `start` and `end` (i.e., the number of years or months). This count
+#' corresponds to the _whole number_ of units, and will never return a
+#' fractional value.
+#'
+#' This is suitable for, say, computing the whole number of years or months
+#' between two calendar dates, accounting for the day and time of day.
+#'
+#' Each calendar has its own help page describing the precisions that you can
+#' count at:
+#'
+#' - [year-month-day][year-month-day-count-between]
+#'
+#' - [year-month-weekday][year-month-weekday-count-between]
+#'
+#' - [iso-year-week-day][iso-year-week-day-count-between]
+#'
+#' - [year-quarter-day][year-quarter-day-count-between]
+#'
+#' - [year-day][year-day-count-between]
+#'
+#' @section Comparison Direction:
+#' The computed count has the property that if `start <= end`, then
+#' `start + <count> <= end`. Similarly, if `start >= end`, then
+#' `start + <count> >= end`. In other words, the comparison direction between
+#' `start` and `end` will never change after adding the count to `start`. This
+#' makes this function useful for repeated count computations at
+#' increasingly fine precisions.
+#'
+#' @inheritParams calendar_group
+#'
+#' @param start,end `[clock_calendar]`
+#'
+#'   A pair of calendar vectors. These will be recycled to their common size.
+#'
+#' @return An integer representing the number of `precision` units between
+#' `start` and `end`.
+#'
+#' @name calendar-count-between
+#' @examples
+#' # Number of whole years between these dates
+#' x <- year_month_day(2000, 01, 05)
+#' y <- year_month_day(2005, 01, 04:06)
+#'
+#' # Note that `2000-01-05 -> 2005-01-04` is only 4 full years
+#' calendar_count_between(x, y, "year")
+NULL
+
+#' @rdname calendar-count-between
+#' @export
+calendar_count_between <- function(start,
+                                   end,
+                                   precision,
+                                   ...,
+                                   n = 1L) {
+  UseMethod("calendar_count_between")
+}
+
+#' @export
+calendar_count_between.clock_calendar <- function(start,
+                                                  end,
+                                                  precision,
+                                                  ...,
+                                                  n = 1L) {
+  check_dots_empty()
+
+  if (!is_calendar(end)) {
+    abort("`end` must be a <clock_calendar>.")
+  }
+
+  size <- vec_size_common(start = start, end = end)
+
+  args <- vec_cast_common(start = start, end = end)
+  args <- vec_recycle_common(!!!args, .size = size)
+  start <- args[[1]]
+  end <- args[[2]]
+
+  n <- vec_cast(n, integer(), x_arg = "n")
+  if (!is_number(n) || n <= 0L) {
+    abort("`n` must be a single positive integer.")
+  }
+
+  precision_int <- validate_precision_string(precision)
+
+  if (!calendar_is_valid_precision(start, precision_int)) {
+    abort(paste0(
+      "`precision` must be a valid '", calendar_name(start), "' precision."
+    ))
+  }
+  if (calendar_precision_attribute(start) < precision_int) {
+    abort("Precision of inputs must be at least as precise as `precision`.")
+  }
+
+  # Core computation to get the difference (pre-adjustment).
+  # Result is an integer because it represents a count of duration units.
+  out <- calendar_count_between_compute(start, end, precision)
+
+  # Comparison proxy, truncated to avoid fields already when computing `out`
+  args <- calendar_count_between_proxy_compare(start, end, precision)
+  start_proxy <- args[[1]]
+  end_proxy <- args[[2]]
+
+  if (ncol(start_proxy) == 0L) {
+    # vctrs bug with vec_compare()?
+    # https://github.com/r-lib/vctrs/issues/1500
+    comparison <- vec_rep(0L, size)
+  } else {
+    comparison <- vec_compare(end_proxy, start_proxy)
+  }
+
+  # - When `start > end` and the non-year portion of `start < end`, add 1
+  # - When `start < end` and the non-year portion of `start > end`, subtract 1
+  adjustment <- vec_rep(-1L, size)
+  adjustment[start > end] <- 1L
+  adjustment[comparison != adjustment] <- 0L
+
+  out <- out + adjustment
+
+  if (n != 1L) {
+    out <- out %/% n
+  }
+
+  out
+}
+
+# Internal generic
+calendar_count_between_compute <- function(start, end, precision) {
+  UseMethod("calendar_count_between_compute")
+}
+
+# Internal generic
+calendar_count_between_proxy_compare <- function(start, end, precision) {
+  UseMethod("calendar_count_between_proxy_compare")
+}
+
+# ------------------------------------------------------------------------------
+
 #' Precision: calendar
 #'
 #' `calendar_precision()` extracts the precision from a calendar object. It
@@ -956,3 +1096,6 @@ field_index <- function(x) {
   field(x, "index")
 }
 
+is_calendar <- function(x) {
+  inherits(x, "clock_calendar")
+}

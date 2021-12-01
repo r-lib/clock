@@ -204,6 +204,62 @@ test_that("can compute quarter end", {
 })
 
 # ------------------------------------------------------------------------------
+# calendar_count_between()
+
+test_that("can compute year and month counts", {
+  x <- year_quarter_day(2019, 1, 1)
+  y <- year_quarter_day(2020, 3, 4)
+
+  expect_identical(calendar_count_between(x, y, "year"), 1L)
+  expect_identical(calendar_count_between(x, y, "quarter"), 6L)
+  expect_identical(calendar_count_between(x, y, "quarter", n = 2), 3L)
+})
+
+test_that("works with different quarter start months", {
+  x <- year_quarter_day(2019, 1, 1, start = clock_months$march)
+  y <- year_quarter_day(2020, 3, 4, start = clock_months$march)
+
+  expect_identical(calendar_count_between(x, y, "year"), 1L)
+  expect_identical(calendar_count_between(x, y, "quarter"), 6L)
+  expect_identical(calendar_count_between(x, y, "quarter", n = 2), 3L)
+})
+
+test_that("can't compute a unsupported count precision", {
+  x <- year_quarter_day(2019, 1, 1)
+  expect_snapshot((expect_error(calendar_count_between(x, x, "day"))))
+})
+
+test_that("positive / negative counts are correct", {
+  start <- year_quarter_day(1972, 03, 04)
+
+
+  end <- year_quarter_day(1973, 03, 03)
+  expect_identical(calendar_count_between(start, end, "year"), 0L)
+  expect_identical(calendar_count_between(start, end, "quarter"), 3L)
+
+  end <- year_quarter_day(1973, 03, 04)
+  expect_identical(calendar_count_between(start, end, "year"), 1L)
+  expect_identical(calendar_count_between(start, end, "quarter"), 4L)
+
+  end <- year_quarter_day(1973, 03, 05)
+  expect_identical(calendar_count_between(start, end, "year"), 1L)
+  expect_identical(calendar_count_between(start, end, "quarter"), 4L)
+
+
+  end <- year_quarter_day(1971, 03, 03)
+  expect_identical(calendar_count_between(start, end, "year"), -1L)
+  expect_identical(calendar_count_between(start, end, "quarter"), -4L)
+
+  end <- year_quarter_day(1971, 03, 04)
+  expect_identical(calendar_count_between(start, end, "year"), -1L)
+  expect_identical(calendar_count_between(start, end, "quarter"), -4L)
+
+  end <- year_quarter_day(1971, 03, 05)
+  expect_identical(calendar_count_between(start, end, "year"), 0L)
+  expect_identical(calendar_count_between(start, end, "quarter"), -3L)
+})
+
+# ------------------------------------------------------------------------------
 # seq()
 
 test_that("only granular precisions are allowed", {

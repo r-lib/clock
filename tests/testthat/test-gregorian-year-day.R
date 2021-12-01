@@ -296,6 +296,45 @@ test_that("can detect leap years", {
 })
 
 # ------------------------------------------------------------------------------
+# calendar_count_between()
+
+test_that("can compute year counts", {
+  x <- year_day(2019, 1)
+  y <- year_day(2020, 3)
+
+  expect_identical(calendar_count_between(x, y, "year"), 1L)
+})
+
+test_that("can't compute a unsupported difference precision", {
+  x <- year_day(2019, 1)
+  expect_snapshot((expect_error(calendar_count_between(x, x, "day"))))
+})
+
+test_that("positive / negative differences are correct", {
+  start <- year_day(1972, 04)
+
+
+  end <- year_day(1973, 03)
+  expect_identical(calendar_count_between(start, end, "year"), 0L)
+
+  end <- year_day(1973, 04)
+  expect_identical(calendar_count_between(start, end, "year"), 1L)
+
+  end <- year_day(1973, 05)
+  expect_identical(calendar_count_between(start, end, "year"), 1L)
+
+
+  end <- year_day(1971, 03)
+  expect_identical(calendar_count_between(start, end, "year"), -1L)
+
+  end <- year_day(1971, 04)
+  expect_identical(calendar_count_between(start, end, "year"), -1L)
+
+  end <- year_day(1971, 05)
+  expect_identical(calendar_count_between(start, end, "year"), 0L)
+})
+
+# ------------------------------------------------------------------------------
 # seq()
 
 test_that("only granular precisions are allowed", {

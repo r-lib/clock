@@ -202,6 +202,45 @@ test_that("can compute week end", {
 })
 
 # ------------------------------------------------------------------------------
+# calendar_count_between()
+
+test_that("can compute year and month counts", {
+  x <- iso_year_week_day(2019, 1, 1)
+  y <- iso_year_week_day(2020, 3, 4)
+
+  expect_identical(calendar_count_between(x, y, "year"), 1L)
+})
+
+test_that("can't compute a unsupported count precision", {
+  x <- iso_year_week_day(2019, 1, 1)
+  expect_snapshot((expect_error(calendar_count_between(x, x, "week"))))
+})
+
+test_that("positive / negative counts are correct", {
+  start <- iso_year_week_day(1972, 03, 04)
+
+
+  end <- iso_year_week_day(1973, 03, 03)
+  expect_identical(calendar_count_between(start, end, "year"), 0L)
+
+  end <- iso_year_week_day(1973, 03, 04)
+  expect_identical(calendar_count_between(start, end, "year"), 1L)
+
+  end <- iso_year_week_day(1973, 03, 05)
+  expect_identical(calendar_count_between(start, end, "year"), 1L)
+
+
+  end <- iso_year_week_day(1971, 03, 03)
+  expect_identical(calendar_count_between(start, end, "year"), -1L)
+
+  end <- iso_year_week_day(1971, 03, 04)
+  expect_identical(calendar_count_between(start, end, "year"), -1L)
+
+  end <- iso_year_week_day(1971, 03, 05)
+  expect_identical(calendar_count_between(start, end, "year"), 0L)
+})
+
+# ------------------------------------------------------------------------------
 # seq()
 
 test_that("only year precision is allowed", {

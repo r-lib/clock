@@ -1845,3 +1845,188 @@ date_seq.POSIXt <- function(from,
 
   abort("`by` must have a precision of 'year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', or 'second'.")
 }
+
+# ------------------------------------------------------------------------------
+
+#' Counting: date-times
+#'
+#' @description
+#' This is a POSIXct/POSIXlt method for the [date_count_between()] generic.
+#'
+#' `date_count_between()` counts the number of `precision` units between
+#' `start` and `end` (i.e., the number of years or months). This count
+#' corresponds to the _whole number_ of units, and will never return a
+#' fractional value.
+#'
+#' This is suitable for, say, computing the whole number of years or months
+#' between two dates, accounting for the day of the month and the time of day.
+#'
+#' Internally, the date-time is converted to one of the following three clock
+#' types, and the counting is done directly on that type. The choice of type is
+#' based on the most common interpretation of each precision, but is ultimately
+#' a heuristic. See the examples for more information.
+#'
+#' _Calendrical based counting:_
+#'
+#' These precisions convert to a year-month-day calendar and count while in that
+#' type.
+#'
+#' - `"year"`
+#'
+#' - `"month"`
+#'
+#' _Naive-time based counting:_
+#'
+#' These precisions convert to a naive-time and count while in that type.
+#'
+#' - `"week"`
+#'
+#' - `"day"`
+#'
+#' _Sys-time based counting:_
+#'
+#' These precisions convert to a sys-time and count while in that type.
+#'
+#' - `"hour"`
+#'
+#' - `"minute"`
+#'
+#' - `"second"`
+#'
+#' @inheritSection calendar_count_between Comparison Direction
+#'
+#' @inheritParams date_count_between
+#'
+#' @param start,end `[POSIXct / POSIXlt]`
+#'
+#'   A pair of date-time vectors. These will be recycled to their common
+#'   size.
+#'
+#' @param precision `[character(1)]`
+#'
+#'   One of:
+#'
+#'   - `"year"`
+#'   - `"month"`
+#'   - `"week"`
+#'   - `"day"`
+#'   - `"hour"`
+#'   - `"minute"`
+#'   - `"second"`
+#'
+#' @inherit date_count_between return
+#'
+#' @name posixt-count-between
+#'
+#' @export
+#' @examples
+#' start <- date_time_parse("2000-05-05 02:00:00", zone = "America/New_York")
+#' end <- date_time_parse(
+#'   c("2020-05-05 01:00:00", "2020-05-05 03:00:00"),
+#'   zone = "America/New_York"
+#' )
+#'
+#' # Age in years
+#' date_count_between(start, end, "year")
+#'
+#' # Number of "whole" months between these dates. i.e.
+#' # `2000-05-05 02:00:00 -> 2020-04-05 02:00:00` is 239 months
+#' # `2000-05-05 02:00:00 -> 2020-05-05 02:00:00` is 240 months
+#' # Since `2020-05-05 01:00:00` occurs before the 2nd hour,
+#' # it gets a count of 239
+#' date_count_between(start, end, "month")
+#'
+#' # Number of seconds between
+#' date_count_between(start, end, "second")
+#'
+#' # ---------------------------------------------------------------------------
+#' # Naive-time VS Sys-time interpretation
+#'
+#' # The difference between whether `start` and `end` are converted to a
+#' # naive-time vs a sys-time comes into play when dealing with daylight
+#' # savings.
+#'
+#' # Here are two times around a 1 hour DST gap where clocks jumped from
+#' # 01:59:59 -> 03:00:00
+#' x <- date_time_build(1970, 4, 26, 1, 50, 00, zone = "America/New_York")
+#' y <- date_time_build(1970, 4, 26, 3, 00, 00, zone = "America/New_York")
+#'
+#' # When treated like sys-times, these are considered to be 10 minutes apart,
+#' # which is the amount of time that would have elapsed if you were watching
+#' # a clock as it changed between these two times.
+#' date_count_between(x, y, "minute")
+#'
+#' # Lets add a 3rd date that is ~1 day ahead of these
+#' z <- date_time_build(1970, 4, 27, 1, 55, 00, zone = "America/New_York")
+#'
+#' # When treated like naive-times, `z` is considered to be at least 1 day ahead
+#' # of `x`, because `01:55:00` is after `01:50:00`. This is probably what you
+#' # expected.
+#' date_count_between(x, z, "day")
+#'
+#' # If these were interpreted like sys-times, then `z` would not be considered
+#' # to be 1 day ahead. That would look something like this:
+#' date_count_between(x, z, "second")
+#' trunc(date_count_between(x, z, "second") / 86400)
+#'
+#' # This is because there have only been 83,100 elapsed seconds since `x`,
+#' # which isn't a full day's worth (86,400 seconds). But we'd generally
+#' # consider `z` to be 1 day ahead of `x` (and ignore the DST gap), so that is
+#' # how it is implemented.
+#'
+#' # You can override this by converting directly to sys-time, then using
+#' # `time_point_count_between()`
+#' x_st <- as_sys_time(x)
+#' x_st
+#'
+#' z_st <- as_sys_time(z)
+#' z_st
+#'
+#' time_point_count_between(x_st, z_st, "day")
+date_count_between.POSIXt <- function(start, end, precision, ..., n = 1L) {
+  check_dots_empty()
+
+  if (!is_POSIXt(end)) {
+    abort("`end` must be a <POSIXt>.")
+  }
+
+  start <- to_posixct(start)
+  end <- to_posixct(end)
+
+  start_zone <- date_zone(start)
+  end_zone <- date_zone(end)
+
+  if (!identical(start_zone, end_zone)) {
+    start_zone <- zone_pretty(start_zone)
+    end_zone <- zone_pretty(end_zone)
+
+    abort(paste0(
+      "`start` (", start_zone, ") and `end` (", end_zone, ") ",
+      "must have identical time zones."
+    ))
+  }
+
+  precision_int <- validate_precision_string(precision)
+
+  # Designed to match `add_*()` functions to guarantee that
+  # if `start <= end`, then `start + <count> <= end`
+  allowed_precisions_calendar <- c(
+    PRECISION_YEAR, PRECISION_MONTH
+  )
+  allowed_precisions_naive_time <- c(
+    PRECISION_WEEK, PRECISION_DAY
+  )
+  allowed_precisions_sys_time <- c(
+    PRECISION_HOUR, PRECISION_MINUTE, PRECISION_SECOND
+  )
+
+  date_count_between_impl(
+    start = start,
+    end = end,
+    precision = precision,
+    n = n,
+    allowed_precisions_calendar = allowed_precisions_calendar,
+    allowed_precisions_naive_time = allowed_precisions_naive_time,
+    allowed_precisions_sys_time = allowed_precisions_sys_time
+  )
+}

@@ -257,6 +257,42 @@ test_that("end: invalid dates are adjusted", {
 })
 
 # ------------------------------------------------------------------------------
+# calendar_count_between()
+
+test_that("`n` gets used", {
+  x <- year_month_day(2019, 1)
+  y <- year_month_day(2019, 7)
+  expect_identical(calendar_count_between(x, y, "month", n = 2), 3L)
+})
+
+test_that("`end` must be a calendar", {
+  x <- year_month_day(2019)
+  expect_snapshot((expect_error(calendar_count_between(x, 1, "year"))))
+})
+
+test_that("can't count with a precision that calendar doesn't use", {
+  x <- iso_year_week_day(2019, 1, 1)
+  expect_snapshot((expect_error(calendar_count_between(x, x, "quarter"))))
+})
+
+test_that("can't count with a precision finer than the calendar precision", {
+  x <- year_month_day(2019)
+  expect_snapshot((expect_error(calendar_count_between(x, x, "month"))))
+})
+
+test_that("`n` is validated", {
+  x <- year_month_day(2019)
+
+  expect_snapshot({
+    (expect_error(calendar_count_between(x, x, "year", n = NA_integer_)))
+    (expect_error(calendar_count_between(x, x, "year", n = -1)))
+    (expect_error(calendar_count_between(x, x, "year", n = 1.5)))
+    (expect_error(calendar_count_between(x, x, "year", n = "x")))
+    (expect_error(calendar_count_between(x, x, "year", n = c(1L, 2L))))
+  })
+})
+
+# ------------------------------------------------------------------------------
 # calendar_precision()
 
 test_that("precision: can get the precision", {

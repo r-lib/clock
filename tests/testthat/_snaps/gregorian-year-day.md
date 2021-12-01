@@ -102,6 +102,14 @@
     Output
       [1] "2019-001T01:02:03.000050"
 
+# can't compute a unsupported difference precision
+
+    Code
+      (expect_error(calendar_count_between(x, x, "day")))
+    Output
+      <error/rlang_error>
+      `precision` must be one of: 'year'.
+
 # only granular precisions are allowed
 
     `from` must be 'year' precision.

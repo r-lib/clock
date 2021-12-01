@@ -239,6 +239,58 @@ test_that("can get a month factor", {
 })
 
 # ------------------------------------------------------------------------------
+# calendar_count_between()
+
+test_that("can compute year and month counts", {
+  x <- year_month_weekday(2019, 1)
+  y <- year_month_weekday(2020, 3)
+
+  expect_identical(calendar_count_between(x, y, "year"), 1L)
+  expect_identical(calendar_count_between(x, y, "month"), 14L)
+  expect_identical(calendar_count_between(x, y, "month", n = 2), 7L)
+})
+
+test_that("can't compute a unsupported count precision", {
+  x <- year_month_weekday(2019, 1)
+  expect_snapshot((expect_error(calendar_count_between(x, x, "quarter"))))
+})
+
+test_that("positive / negative counts are correct", {
+  start <- year_month_weekday(1972, 04)
+
+
+  end <- year_month_weekday(1973, 03)
+  expect_identical(calendar_count_between(start, end, "year"), 0L)
+  expect_identical(calendar_count_between(start, end, "month"), 11L)
+
+  end <- year_month_weekday(1973, 04)
+  expect_identical(calendar_count_between(start, end, "year"), 1L)
+  expect_identical(calendar_count_between(start, end, "month"), 12L)
+
+  end <- year_month_weekday(1973, 05)
+  expect_identical(calendar_count_between(start, end, "year"), 1L)
+  expect_identical(calendar_count_between(start, end, "month"), 13L)
+
+
+  end <- year_month_weekday(1971, 03)
+  expect_identical(calendar_count_between(start, end, "year"), -1L)
+  expect_identical(calendar_count_between(start, end, "month"), -13L)
+
+  end <- year_month_weekday(1971, 04)
+  expect_identical(calendar_count_between(start, end, "year"), -1L)
+  expect_identical(calendar_count_between(start, end, "month"), -12L)
+
+  end <- year_month_weekday(1971, 05)
+  expect_identical(calendar_count_between(start, end, "year"), 0L)
+  expect_identical(calendar_count_between(start, end, "month"), -11L)
+})
+
+test_that("can't compare a 'year_month_weekday' with day precision!", {
+  x <- year_month_weekday(2019, 1, 1, 1)
+  expect_snapshot((expect_error(calendar_count_between(x, x, "month"))))
+})
+
+# ------------------------------------------------------------------------------
 # seq()
 
 test_that("only granular precisions are allowed", {
