@@ -15,6 +15,7 @@ reference:
   - date_time_build
   - date-today
   - date_group
+  - date_count_between
   - date-and-date-time-boundary
   - date-and-date-time-rounding
   - date-and-date-time-shifting
@@ -42,6 +43,7 @@ reference:
 - title: Calendars
   contents:
   - calendar_group
+  - calendar_count_between
   - calendar-boundary
   - calendar_narrow
   - calendar_widen
@@ -58,6 +60,7 @@ reference:
   - is_year_month_day
   - year_month_day_parse
   - calendar_group.clock_year_month_day
+  - year-month-day-count-between
   - year-month-day-boundary
   - year-month-day-narrow
   - year-month-day-widen
@@ -72,6 +75,7 @@ reference:
   - as_year_month_weekday
   - is_year_month_weekday
   - calendar_group.clock_year_month_weekday
+  - year-month-weekday-count-between
   - year-month-weekday-boundary
   - year-month-weekday-narrow
   - year-month-weekday-widen
@@ -86,6 +90,7 @@ reference:
   - as_iso_year_week_day
   - is_iso_year_week_day
   - calendar_group.clock_iso_year_week_day
+  - iso-year-week-day-count-between
   - iso-year-week-day-boundary
   - iso-year-week-day-narrow
   - iso-year-week-day-widen
@@ -100,6 +105,7 @@ reference:
   - as_year_quarter_day
   - is_year_quarter_day
   - calendar_group.clock_year_quarter_day
+  - year-quarter-day-count-between
   - year-quarter-day-boundary
   - year-quarter-day-narrow
   - year-quarter-day-widen
@@ -114,6 +120,7 @@ reference:
   - as_year_day
   - is_year_day
   - calendar_group.clock_year_day
+  - year-day-count-between
   - year-day-boundary
   - year-day-narrow
   - year-day-widen
@@ -154,6 +161,7 @@ reference:
 - subtitle: Manipulation
   contents:
   - time_point_cast
+  - time_point_count_between
   - time-point-rounding
   - time_point_shift
   - time_point_precision
@@ -198,6 +206,8 @@ reference:
   contents:
   - date-group
   - posixt-group
+  - date-count-between
+  - posixt-count-between
   - date-boundary
   - posixt-boundary
   - date-formatting
