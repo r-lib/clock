@@ -838,6 +838,7 @@ calendar_count_between.clock_calendar <- function(start,
   out
 }
 
+# Internal generic
 calendar_count_between_standardize_precision_n <- function(x, precision, n) {
   UseMethod("calendar_count_between_standardize_precision_n")
 }
