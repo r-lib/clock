@@ -99,6 +99,7 @@ common size.</p></dd>
 <dt>precision</dt>
 <dd><p><code>[character(1)]</code></p>
 <p>One of:</p><ul><li><p><code>"year"</code></p></li>
+<li><p><code>"quarter"</code></p></li>
 <li><p><code>"month"</code></p></li>
 </ul></dd>
 <dt>...</dt>
@@ -111,6 +112,10 @@ common size.</p></dd>
     <h2>Value</h2>
     <p>An integer representing the number of <code>precision</code> units between
 <code>start</code> and <code>end</code>.</p>
+    </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p><code>"quarter"</code> is equivalent to <code>"month"</code> precision with <code>n</code> set to <code>n * 3L</code>.</p>
     </div>
 
     <div id="ref-examples">

@@ -99,6 +99,7 @@ common size.</p></dd>
 <dt>precision</dt>
 <dd><p><code>[character(1)]</code></p>
 <p>One of:</p><ul><li><p><code>"year"</code></p></li>
+<li><p><code>"quarter"</code></p></li>
 <li><p><code>"month"</code></p></li>
 </ul></dd>
 <dt>...</dt>
@@ -117,6 +118,7 @@ common size.</p></dd>
     <p>Remember that year-month-weekday is not comparable when it is <code>"day"</code>
 precision or finer, so this method is only defined for <code>"year"</code> and
 <code>"month"</code> precision year-month-weekday objects.</p>
+<p><code>"quarter"</code> is equivalent to <code>"month"</code> precision with <code>n</code> set to <code>n * 3L</code>.</p>
     </div>
 
     <div id="ref-examples">

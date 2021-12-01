@@ -14,6 +14,7 @@ Calendrical based counting:
 These precisions convert to a year-month-day calendar and count while in that
 type.
 "year"
+"quarter"
 "month"
 
 
@@ -124,6 +125,7 @@ a heuristic. See the examples for more information.</p>
 <p><em>Calendrical based counting:</em></p>
 <p>These precisions convert to a year-month-day calendar and count while in that
 type.</p><ul><li><p><code>"year"</code></p></li>
+<li><p><code>"quarter"</code></p></li>
 <li><p><code>"month"</code></p></li>
 </ul><p><em>Naive-time based counting:</em></p>
 <p>These precisions convert to a naive-time and count while in that type.</p><ul><li><p><code>"week"</code></p></li>
@@ -146,6 +148,7 @@ size.</p></dd>
 <dt>precision</dt>
 <dd><p><code>[character(1)]</code></p>
 <p>One of:</p><ul><li><p><code>"year"</code></p></li>
+<li><p><code>"quarter"</code></p></li>
 <li><p><code>"month"</code></p></li>
 <li><p><code>"week"</code></p></li>
 <li><p><code>"day"</code></p></li>
@@ -163,6 +166,10 @@ size.</p></dd>
     <h2>Value</h2>
     <p>An integer representing the number of <code>precision</code> units between
 <code>start</code> and <code>end</code>.</p>
+    </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p><code>"quarter"</code> is equivalent to <code>"month"</code> precision with <code>n</code> set to <code>n * 3L</code>.</p>
     </div>
     <div id="comparison-direction">
     <h2>Comparison Direction</h2>

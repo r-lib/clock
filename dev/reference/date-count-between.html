@@ -10,6 +10,7 @@ Calendrical based counting:
 These precisions convert to a year-month-day calendar and count while in that
 type.
 "year"
+"quarter"
 "month"
 
 
@@ -111,6 +112,7 @@ between two dates, accounting for the day of the month.</p>
 <p><em>Calendrical based counting:</em></p>
 <p>These precisions convert to a year-month-day calendar and count while in that
 type.</p><ul><li><p><code>"year"</code></p></li>
+<li><p><code>"quarter"</code></p></li>
 <li><p><code>"month"</code></p></li>
 </ul><p><em>Time point based counting:</em></p>
 <p>These precisions convert to a time point and count while in that type.</p><ul><li><p><code>"week"</code></p></li>
@@ -131,6 +133,7 @@ size.</p></dd>
 <dt>precision</dt>
 <dd><p><code>[character(1)]</code></p>
 <p>One of:</p><ul><li><p><code>"year"</code></p></li>
+<li><p><code>"quarter"</code></p></li>
 <li><p><code>"month"</code></p></li>
 <li><p><code>"week"</code></p></li>
 <li><p><code>"day"</code></p></li>
@@ -145,6 +148,10 @@ size.</p></dd>
     <h2>Value</h2>
     <p>An integer representing the number of <code>precision</code> units between
 <code>start</code> and <code>end</code>.</p>
+    </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p><code>"quarter"</code> is equivalent to <code>"month"</code> precision with <code>n</code> set to <code>n * 3L</code>.</p>
     </div>
     <div id="comparison-direction">
     <h2>Comparison Direction</h2>
@@ -174,6 +181,12 @@ increasingly fine precisions.</p>
 <span class="r-in"><span class="co"># it gets a count of 239</span></span>
 <span class="r-in"><span class="fu"><a href="date_count_between.html">date_count_between</a></span><span class="op">(</span><span class="va">start</span>, <span class="va">end</span>, <span class="st">"month"</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 239 240</span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># Number of "whole" quarters between (same as `"month"` with `n * 3`)</span></span>
+<span class="r-in"><span class="fu"><a href="date_count_between.html">date_count_between</a></span><span class="op">(</span><span class="va">start</span>, <span class="va">end</span>, <span class="st">"quarter"</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 79 80</span>
+<span class="r-in"><span class="fu"><a href="date_count_between.html">date_count_between</a></span><span class="op">(</span><span class="va">start</span>, <span class="va">end</span>, <span class="st">"month"</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 79 80</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Number of days between</span></span>
 <span class="r-in"><span class="fu"><a href="date_count_between.html">date_count_between</a></span><span class="op">(</span><span class="va">start</span>, <span class="va">end</span>, <span class="st">"day"</span><span class="op">)</span></span>
