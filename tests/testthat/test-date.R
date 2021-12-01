@@ -530,6 +530,32 @@ test_that("golden test: ensure that we never allow components of `to` to differ 
 })
 
 # ------------------------------------------------------------------------------
+# date_count_between()
+
+test_that("can compute precisions at year / month / week / day", {
+  x <- date_build(2019, 1, 5)
+
+  y <- date_build(2025, 1, c(4, 6))
+  expect_identical(date_count_between(x, y, "year"), c(5L, 6L))
+  expect_identical(date_count_between(x, y, "month"), c(71L, 72L))
+
+  y <- date_build(2019, 1, c(25, 26))
+  expect_identical(date_count_between(x, y, "week"), c(2L, 3L))
+  expect_identical(date_count_between(x, y, "day"), c(20L, 21L))
+})
+
+test_that("must use a valid Date precision", {
+  x <- date_build(2019)
+  expect_snapshot((expect_error(date_count_between(x, x, "hour"))))
+})
+
+test_that("can't count between a Date and a POSIXt", {
+  x <- date_build(2019)
+  y <- date_time_build(2019, zone = "UTC")
+  expect_snapshot((expect_error(date_count_between(x, y, "year"))))
+})
+
+# ------------------------------------------------------------------------------
 # date_zone()
 
 test_that("cannot get the zone of a Date", {

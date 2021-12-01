@@ -341,6 +341,22 @@
     These dots only exist to allow future extensions and should be empty.
     Did you misspecify an argument?
 
+# must use a valid POSIXt precision
+
+    Code
+      (expect_error(date_count_between(x, x, "millisecond")))
+    Output
+      <error/rlang_error>
+      `precision` must be one of: 'year', 'month', 'week', 'day', 'hour', 'minute', 'second'.
+
+# can't count between a POSIXt and a Date
+
+    Code
+      (expect_error(date_count_between(x, y, "year")))
+    Output
+      <error/rlang_error>
+      `end` must be a <POSIXt>.
+
 # <posixt> op <duration>
 
     no applicable method for 'add_milliseconds' applied to an object of class "c('POSIXct', 'POSIXt')"
