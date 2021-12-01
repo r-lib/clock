@@ -1,5 +1,9 @@
 # clock (development version)
 
+* Modulus is now defined between a duration vector and an integer vector
+  through `<duration> %% <integer>`. This returns a duration vector containing
+  the remainder of the division (#273).
+
 * New `date_count_between()`, `calendar_count_between()`, and
   `time_point_count_between()` for computing the number of units of time between
   two dates (i.e. the number of years, months, days, or seconds). This has a

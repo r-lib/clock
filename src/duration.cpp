@@ -574,6 +574,7 @@ duration_integer_divide_cpp(cpp11::list_of<cpp11::integers> x,
 
 enum class arith_scalar_op {
   multiply,
+  modulus,
   divide
 };
 
@@ -596,7 +597,18 @@ duration_scalar_arith_impl(const ClockDuration& x,
         continue;
       }
       out.assign(x[i] * elt_y, i);
+    }
+    break;
   }
+  case arith_scalar_op::modulus: {
+    for (r_ssize i = 0; i < size; ++i) {
+      const int elt_y = y[i];
+      if (x.is_na(i) || elt_y == r_int_na) {
+        out.assign_na(i);
+        continue;
+      }
+      out.assign(x[i] % elt_y, i);
+    }
     break;
   }
   case arith_scalar_op::divide: {
@@ -607,7 +619,7 @@ duration_scalar_arith_impl(const ClockDuration& x,
         continue;
       }
       out.assign(x[i] / elt_y, i);
-  }
+    }
     break;
   }
   }
@@ -664,6 +676,14 @@ duration_scalar_multiply_cpp(cpp11::list_of<cpp11::integers> x,
                              const cpp11::integers& y,
                              const cpp11::integers& precision_int) {
   return duration_scalar_arith(x, y, precision_int, arith_scalar_op::multiply);
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+duration_scalar_modulus_cpp(cpp11::list_of<cpp11::integers> x,
+                            const cpp11::integers& y,
+                            const cpp11::integers& precision_int) {
+  return duration_scalar_arith(x, y, precision_int, arith_scalar_op::modulus);
 }
 
 [[cpp11::register]]

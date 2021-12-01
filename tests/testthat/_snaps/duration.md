@@ -211,3 +211,12 @@
     Warning <simpleWarning>
       Conversion to integer is outside the range of an integer. `NA` values have been introduced, beginning at location 1.
 
+# `<duration> %% <numeric>` casts the numeric to integer
+
+    Code
+      (expect_error(duration_hours(5) %% 2.5))
+    Output
+      <error/vctrs_error_cast_lossy>
+      Can't convert from `y` <double> to <integer> due to loss of precision.
+      * Locations: 1
+

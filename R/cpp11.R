@@ -40,6 +40,10 @@ duration_scalar_multiply_cpp <- function(x, y, precision_int) {
   .Call(`_clock_duration_scalar_multiply_cpp`, x, y, precision_int)
 }
 
+duration_scalar_modulus_cpp <- function(x, y, precision_int) {
+  .Call(`_clock_duration_scalar_modulus_cpp`, x, y, precision_int)
+}
+
 duration_scalar_divide_cpp <- function(x, y, precision_int) {
   .Call(`_clock_duration_scalar_divide_cpp`, x, y, precision_int)
 }
