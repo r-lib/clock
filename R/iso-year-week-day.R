@@ -973,6 +973,20 @@ calendar_count_between.clock_iso_year_week_day <- function(start,
   NextMethod()
 }
 
+calendar_count_between_standardize_precision_n.clock_iso_year_week_day <- function(x,
+                                                                                   precision,
+                                                                                   n) {
+  precision_int <- validate_precision_string(precision)
+
+  allowed_precisions <- c(PRECISION_YEAR)
+
+  if (!(precision_int %in% allowed_precisions)) {
+    abort("`precision` must be one of: 'year'.")
+  }
+
+  list(precision = precision, n = n)
+}
+
 calendar_count_between_compute.clock_iso_year_week_day <- function(start,
                                                                    end,
                                                                    precision) {
@@ -983,7 +997,7 @@ calendar_count_between_compute.clock_iso_year_week_day <- function(start,
     return(out)
   }
 
-  abort("`precision` must be one of: 'year'.")
+  abort("Internal error: `precision` should be 'year' at this point.")
 }
 
 calendar_count_between_proxy_compare.clock_iso_year_week_day <- function(start,
