@@ -1,5 +1,12 @@
 # clock (development version)
 
+* New `date_count_between()`, `calendar_count_between()`, and
+  `time_point_count_between()` for computing the number of units of time between
+  two dates (i.e. the number of years, months, days, or seconds). This has a
+  number of uses, like computing the age of an individual in years, or
+  determining the number of weeks that have passed since the start of the year
+  (#266).
+
 * Integer division is now defined for two duration objects through
   `<duration> %/% <duration>`. This always returns an integer vector, so be
   aware that using very precise duration objects (like nanoseconds) can easily
