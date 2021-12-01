@@ -192,6 +192,102 @@ test_that("`boundary` is validated", {
 })
 
 # ------------------------------------------------------------------------------
+# time_point_count_between()
+
+test_that("can count units between", {
+  x <- as_naive_time(year_month_day(1990, 02, 03, 04))
+  y <- as_naive_time(year_month_day(1995, 04, 05, 03))
+
+  expect_identical(time_point_count_between(x, y, "day"), 1886L)
+  expect_identical(time_point_count_between(x, y, "hour"), 45287L)
+})
+
+test_that("'week' is an allowed precision", {
+  x <- sys_days(0)
+  y <- sys_days(13:15)
+
+  expect_identical(time_point_count_between(x, y, "week"), c(1L, 2L, 2L))
+})
+
+test_that("`n` affects the result", {
+  x <- sys_days(0)
+  y <- sys_days(10)
+
+  expect_identical(time_point_count_between(x, y, "day", n = 2L), 5L)
+  expect_identical(time_point_count_between(x, y, "day", n = 3L), 3L)
+})
+
+test_that("negative vs positive differences are handled correctly", {
+  one_hour <- duration_hours(1)
+
+  x <- sys_days(0)
+  y <- sys_days(1)
+  z <- sys_days(-1)
+
+  expect_identical(time_point_count_between(x, y - one_hour, "day"), 0L)
+  expect_identical(time_point_count_between(x, y, "day"), 1L)
+  expect_identical(time_point_count_between(x, y + one_hour, "day"), 1L)
+
+  expect_identical(time_point_count_between(x, z - one_hour, "day"), -1L)
+  expect_identical(time_point_count_between(x, z, "day"), -1L)
+  expect_identical(time_point_count_between(x, z + one_hour, "day"), 0L)
+})
+
+test_that("common precision of inputs and `precision` is taken", {
+  expect_identical(
+    time_point_count_between(sys_days(0), sys_days(2) + duration_hours(1), "second"),
+    176400L
+  )
+  expect_identical(
+    time_point_count_between(sys_seconds(0), sys_seconds(86401), "day"),
+    1L
+  )
+})
+
+test_that("OOB results return a warning and NA", {
+  expect_snapshot({
+    out <- time_point_count_between(sys_days(0), sys_days(1000), "nanosecond")
+  })
+  expect_identical(out, NA_integer_)
+})
+
+test_that("both inputs must be time points", {
+  expect_snapshot({
+    (expect_error(time_point_count_between(sys_days(1), 1)))
+    (expect_error(time_point_count_between(1, sys_days(1))))
+  })
+})
+
+test_that("both inputs must be compatible", {
+  x <- sys_days(1)
+  y <- naive_days(1)
+
+  expect_snapshot((expect_error(
+    time_point_count_between(x, y)
+  )))
+})
+
+test_that("`n` is validated", {
+  x <- sys_days(1)
+
+  expect_snapshot({
+    (expect_error(time_point_count_between(x, x, "day", n = NA_integer_)))
+    (expect_error(time_point_count_between(x, x, "day", n = -1)))
+    (expect_error(time_point_count_between(x, x, "day", n = 1.5)))
+    (expect_error(time_point_count_between(x, x, "day", n = "x")))
+    (expect_error(time_point_count_between(x, x, "day", n = c(1L, 2L))))
+  })
+})
+
+test_that("`precision` must be a time point precision", {
+  x <- sys_days(1)
+
+  expect_snapshot((expect_error(
+    time_point_count_between(x, x, "year")
+  )))
+})
+
+# ------------------------------------------------------------------------------
 # seq()
 
 test_that("seq(to, by) works", {
