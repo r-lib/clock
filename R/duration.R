@@ -818,6 +818,7 @@ vec_arith.clock_duration.numeric <- function(op, x, y, ...) {
     op,
     "*" = duration_scalar_multiply(x, y, names_common(x, y)),
     "/" = stop_incompatible_op(op, x, y, details = "Durations only support integer division. Did you want `%/%`?"),
+    "%%" = duration_scalar_modulus(x, y, names_common(x, y)),
     "%/%" = duration_scalar_divide(x, y, names_common(x, y)),
     stop_incompatible_op(op, x, y)
   )
@@ -1050,6 +1051,9 @@ duration_arith_integer <- function(x, y, names, fn) {
 
 duration_scalar_multiply <- function(x, y, names) {
   duration_scalar_arith(x, y, names, duration_scalar_multiply_cpp)
+}
+duration_scalar_modulus <- function(x, y, names) {
+  duration_scalar_arith(x, y, names, duration_scalar_modulus_cpp)
 }
 duration_scalar_divide <- function(x, y, names) {
   duration_scalar_arith(x, y, names, duration_scalar_divide_cpp)
