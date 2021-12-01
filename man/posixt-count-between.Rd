@@ -18,6 +18,7 @@ size.}
 One of:
 \itemize{
 \item \code{"year"}
+\item \code{"quarter"}
 \item \code{"month"}
 \item \code{"week"}
 \item \code{"day"}
@@ -58,6 +59,7 @@ These precisions convert to a year-month-day calendar and count while in that
 type.
 \itemize{
 \item \code{"year"}
+\item \code{"quarter"}
 \item \code{"month"}
 }
 
@@ -77,6 +79,9 @@ These precisions convert to a sys-time and count while in that type.
 \item \code{"minute"}
 \item \code{"second"}
 }
+}
+\details{
+\code{"quarter"} is equivalent to \code{"month"} precision with \code{n} set to \code{n * 3L}.
 }
 \section{Comparison Direction}{
 

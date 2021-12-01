@@ -836,11 +836,12 @@ test_that("golden test: ensure that we never allow components of `to` to differ 
 # ------------------------------------------------------------------------------
 # date_count_between()
 
-test_that("can compute precisions at year / month / week / day / hour / minute / second", {
+test_that("can compute precisions at year / quarter / month / week / day / hour / minute / second", {
   x <- date_time_build(2019, 1, 5, 5, zone = "UTC")
 
   y <- date_time_build(2025, 1, c(4, 6), zone = "UTC")
   expect_identical(date_count_between(x, y, "year"), c(5L, 6L))
+  expect_identical(date_count_between(x, y, "quarter"), c(23L, 24L))
   expect_identical(date_count_between(x, y, "month"), c(71L, 72L))
 
   y <- date_time_build(2019, 1, c(25, 27), zone = "UTC")
