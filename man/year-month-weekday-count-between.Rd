@@ -18,6 +18,7 @@ common size.}
 One of:
 \itemize{
 \item \code{"year"}
+\item \code{"quarter"}
 \item \code{"month"}
 }}
 
@@ -40,6 +41,8 @@ generic. It counts the number of \code{precision} units between \code{start} and
 Remember that year-month-weekday is not comparable when it is \code{"day"}
 precision or finer, so this method is only defined for \code{"year"} and
 \code{"month"} precision year-month-weekday objects.
+
+\code{"quarter"} is equivalent to \code{"month"} precision with \code{n} set to \code{n * 3L}.
 }
 \examples{
 # Compute the number of months between two dates

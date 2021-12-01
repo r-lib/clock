@@ -1224,6 +1224,9 @@ calendar_end.clock_year_month_day <- function(x, precision) {
 #' It counts the number of `precision` units between `start` and `end`
 #' (i.e., the number of years or months).
 #'
+#' @details
+#' `"quarter"` is equivalent to `"month"` precision with `n` set to `n * 3L`.
+#'
 #' @inheritParams calendar-count-between
 #'
 #' @param start,end `[clock_year_month_day]`
@@ -1236,6 +1239,7 @@ calendar_end.clock_year_month_day <- function(x, precision) {
 #'   One of:
 #'
 #'   - `"year"`
+#'   - `"quarter"`
 #'   - `"month"`
 #'
 #' @inherit calendar-count-between return
@@ -1262,6 +1266,26 @@ calendar_count_between.clock_year_month_day <- function(start,
   NextMethod()
 }
 
+calendar_count_between_standardize_precision_n.clock_year_month_day <- function(x,
+                                                                                precision,
+                                                                                n) {
+  precision_int <- validate_precision_string(precision)
+
+  allowed_precisions <- c(PRECISION_YEAR, PRECISION_QUARTER, PRECISION_MONTH)
+
+  if (!(precision_int %in% allowed_precisions)) {
+    abort("`precision` must be one of: 'year', 'quarter', 'month'.")
+  }
+
+  if (precision_int == PRECISION_QUARTER) {
+    # See #270's comment for why this is well-defined
+    precision <- "month"
+    n <- n * 3L
+  }
+
+  list(precision = precision, n = n)
+}
+
 calendar_count_between_compute.clock_year_month_day <- function(start,
                                                                 end,
                                                                 precision) {
@@ -1278,7 +1302,7 @@ calendar_count_between_compute.clock_year_month_day <- function(start,
     return(out)
   }
 
-  abort("`precision` must be one of: 'year', 'month'.")
+  abort("Internal error: `precision` should be 'year' or 'month' at this point.")
 }
 
 calendar_count_between_proxy_compare.clock_year_month_day <- function(start,

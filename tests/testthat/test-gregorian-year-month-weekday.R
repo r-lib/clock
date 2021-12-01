@@ -250,9 +250,22 @@ test_that("can compute year and month counts", {
   expect_identical(calendar_count_between(x, y, "month", n = 2), 7L)
 })
 
-test_that("can't compute a unsupported count precision", {
+test_that("can compute a quarter count", {
   x <- year_month_weekday(2019, 1)
-  expect_snapshot((expect_error(calendar_count_between(x, x, "quarter"))))
+
+  y <- year_month_weekday(2019, c(3, 5))
+  expect_identical(calendar_count_between(x, y, "quarter"), c(0L, 1L))
+  expect_identical(
+    calendar_count_between(x, y, "quarter"),
+    calendar_count_between(x, y, "month", n = 3L)
+  )
+
+  y <- year_month_weekday(2020, c(3, 5))
+  expect_identical(calendar_count_between(x, y, "quarter", n = 2L), c(2L, 2L))
+  expect_identical(
+    calendar_count_between(x, y, "quarter", n = 2L),
+    calendar_count_between(x, y, "month", n = 6L)
+  )
 })
 
 test_that("positive / negative counts are correct", {

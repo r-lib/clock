@@ -238,7 +238,7 @@
       (expect_error(date_count_between(x, x, "hour")))
     Output
       <error/rlang_error>
-      `precision` must be one of: 'year', 'month', 'week', 'day'.
+      `precision` must be one of: 'year', 'quarter', 'month', 'week', 'day'.
 
 # can't count between a Date and a POSIXt
 

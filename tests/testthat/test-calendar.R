@@ -270,11 +270,6 @@ test_that("`end` must be a calendar", {
   expect_snapshot((expect_error(calendar_count_between(x, 1, "year"))))
 })
 
-test_that("can't count with a precision that calendar doesn't use", {
-  x <- iso_year_week_day(2019, 1, 1)
-  expect_snapshot((expect_error(calendar_count_between(x, x, "quarter"))))
-})
-
 test_that("can't count with a precision finer than the calendar precision", {
   x <- year_month_day(2019)
   expect_snapshot((expect_error(calendar_count_between(x, x, "month"))))

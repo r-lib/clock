@@ -1116,6 +1116,8 @@ calendar_end.clock_year_month_weekday <- function(x, precision) {
 #' precision or finer, so this method is only defined for `"year"` and
 #' `"month"` precision year-month-weekday objects.
 #'
+#' `"quarter"` is equivalent to `"month"` precision with `n` set to `n * 3L`.
+#'
 #' @inheritParams calendar-count-between
 #'
 #' @param start,end `[clock_year_month_weekday]`
@@ -1128,6 +1130,7 @@ calendar_end.clock_year_month_weekday <- function(x, precision) {
 #'   One of:
 #'
 #'   - `"year"`
+#'   - `"quarter"`
 #'   - `"month"`
 #'
 #' @inherit calendar-count-between return
@@ -1152,6 +1155,12 @@ calendar_count_between.clock_year_month_weekday <- function(start,
                                                             ...,
                                                             n = 1L) {
   NextMethod()
+}
+
+calendar_count_between_standardize_precision_n.clock_year_month_weekday <- function(x,
+                                                                                    precision,
+                                                                                    n) {
+  calendar_count_between_standardize_precision_n.clock_year_month_day(x, precision, n)
 }
 
 calendar_count_between_compute.clock_year_month_weekday <- function(start,

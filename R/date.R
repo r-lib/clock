@@ -1780,6 +1780,8 @@ date_count_between <- function(start, end, precision, ..., n = 1L) {
 #'
 #' - `"year"`
 #'
+#' - `"quarter"`
+#'
 #' - `"month"`
 #'
 #' _Time point based counting:_
@@ -1792,6 +1794,9 @@ date_count_between <- function(start, end, precision, ..., n = 1L) {
 #'
 #' For dates, whether a calendar or time point is used is not all that
 #' important, but is is fairly important for date-times.
+#'
+#' @details
+#' `"quarter"` is equivalent to `"month"` precision with `n` set to `n * 3L`.
 #'
 #' @inheritSection calendar_count_between Comparison Direction
 #'
@@ -1807,6 +1812,7 @@ date_count_between <- function(start, end, precision, ..., n = 1L) {
 #'   One of:
 #'
 #'   - `"year"`
+#'   - `"quarter"`
 #'   - `"month"`
 #'   - `"week"`
 #'   - `"day"`
@@ -1829,6 +1835,10 @@ date_count_between <- function(start, end, precision, ..., n = 1L) {
 #' # Since 2020-05-04 occurs before the 5th of that month,
 #' # it gets a count of 239
 #' date_count_between(start, end, "month")
+#'
+#' # Number of "whole" quarters between (same as `"month"` with `n * 3`)
+#' date_count_between(start, end, "quarter")
+#' date_count_between(start, end, "month", n = 3)
 #'
 #' # Number of days between
 #' date_count_between(start, end, "day")
@@ -1899,7 +1909,7 @@ date_count_between.Date <- function(start, end, precision, ..., n = 1L) {
   # Designed to match `add_*()` functions to guarantee that
   # if `start <= end`, then `start + <count> <= end`
   allowed_precisions_calendar <- c(
-    PRECISION_YEAR, PRECISION_MONTH
+    PRECISION_YEAR, PRECISION_QUARTER, PRECISION_MONTH
   )
   allowed_precisions_naive_time <- c(
     PRECISION_WEEK, PRECISION_DAY

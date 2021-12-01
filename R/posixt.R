@@ -1873,6 +1873,8 @@ date_seq.POSIXt <- function(from,
 #'
 #' - `"year"`
 #'
+#' - `"quarter"`
+#'
 #' - `"month"`
 #'
 #' _Naive-time based counting:_
@@ -1893,6 +1895,9 @@ date_seq.POSIXt <- function(from,
 #'
 #' - `"second"`
 #'
+#' @details
+#' `"quarter"` is equivalent to `"month"` precision with `n` set to `n * 3L`.
+#'
 #' @inheritSection calendar_count_between Comparison Direction
 #'
 #' @inheritParams date_count_between
@@ -1907,6 +1912,7 @@ date_seq.POSIXt <- function(from,
 #'   One of:
 #'
 #'   - `"year"`
+#'   - `"quarter"`
 #'   - `"month"`
 #'   - `"week"`
 #'   - `"day"`
@@ -2011,7 +2017,7 @@ date_count_between.POSIXt <- function(start, end, precision, ..., n = 1L) {
   # Designed to match `add_*()` functions to guarantee that
   # if `start <= end`, then `start + <count> <= end`
   allowed_precisions_calendar <- c(
-    PRECISION_YEAR, PRECISION_MONTH
+    PRECISION_YEAR, PRECISION_QUARTER, PRECISION_MONTH
   )
   allowed_precisions_naive_time <- c(
     PRECISION_WEEK, PRECISION_DAY

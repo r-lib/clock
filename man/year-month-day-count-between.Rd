@@ -18,6 +18,7 @@ common size.}
 One of:
 \itemize{
 \item \code{"year"}
+\item \code{"quarter"}
 \item \code{"month"}
 }}
 
@@ -35,6 +36,9 @@ An integer representing the number of \code{precision} units between
 This is a year-month-day method for the \code{\link[=calendar_count_between]{calendar_count_between()}} generic.
 It counts the number of \code{precision} units between \code{start} and \code{end}
 (i.e., the number of years or months).
+}
+\details{
+\code{"quarter"} is equivalent to \code{"month"} precision with \code{n} set to \code{n * 3L}.
 }
 \examples{
 # Compute an individual's age in years

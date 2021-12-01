@@ -798,14 +798,13 @@ calendar_count_between.clock_calendar <- function(start,
 
   precision_int <- validate_precision_string(precision)
 
-  if (!calendar_is_valid_precision(start, precision_int)) {
-    abort(paste0(
-      "`precision` must be a valid '", calendar_name(start), "' precision."
-    ))
-  }
   if (calendar_precision_attribute(start) < precision_int) {
     abort("Precision of inputs must be at least as precise as `precision`.")
   }
+
+  args <- calendar_count_between_standardize_precision_n(start, precision, n)
+  precision <- args$precision
+  n <- args$n
 
   # Core computation to get the difference (pre-adjustment).
   # Result is an integer because it represents a count of duration units.
@@ -813,8 +812,8 @@ calendar_count_between.clock_calendar <- function(start,
 
   # Comparison proxy, truncated to avoid fields already when computing `out`
   args <- calendar_count_between_proxy_compare(start, end, precision)
-  start_proxy <- args[[1]]
-  end_proxy <- args[[2]]
+  start_proxy <- args$start
+  end_proxy <- args$end
 
   if (ncol(start_proxy) == 0L) {
     # vctrs bug with vec_compare()?
@@ -837,6 +836,11 @@ calendar_count_between.clock_calendar <- function(start,
   }
 
   out
+}
+
+# Internal generic
+calendar_count_between_standardize_precision_n <- function(x, precision, n) {
+  UseMethod("calendar_count_between_standardize_precision_n")
 }
 
 # Internal generic

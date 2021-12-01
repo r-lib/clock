@@ -347,7 +347,7 @@
       (expect_error(date_count_between(x, x, "millisecond")))
     Output
       <error/rlang_error>
-      `precision` must be one of: 'year', 'month', 'week', 'day', 'hour', 'minute', 'second'.
+      `precision` must be one of: 'year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second'.
 
 # can't count between a POSIXt and a Date
 

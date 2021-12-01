@@ -18,6 +18,7 @@ size.}
 One of:
 \itemize{
 \item \code{"year"}
+\item \code{"quarter"}
 \item \code{"month"}
 \item \code{"week"}
 \item \code{"day"}
@@ -50,6 +51,7 @@ These precisions convert to a year-month-day calendar and count while in that
 type.
 \itemize{
 \item \code{"year"}
+\item \code{"quarter"}
 \item \code{"month"}
 }
 
@@ -63,6 +65,9 @@ These precisions convert to a time point and count while in that type.
 
 For dates, whether a calendar or time point is used is not all that
 important, but is is fairly important for date-times.
+}
+\details{
+\code{"quarter"} is equivalent to \code{"month"} precision with \code{n} set to \code{n * 3L}.
 }
 \section{Comparison Direction}{
 
@@ -87,6 +92,10 @@ date_count_between(start, end, "year")
 # Since 2020-05-04 occurs before the 5th of that month,
 # it gets a count of 239
 date_count_between(start, end, "month")
+
+# Number of "whole" quarters between (same as `"month"` with `n * 3`)
+date_count_between(start, end, "quarter")
+date_count_between(start, end, "month", n = 3)
 
 # Number of days between
 date_count_between(start, end, "day")

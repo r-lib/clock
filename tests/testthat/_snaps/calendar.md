@@ -186,14 +186,6 @@
       <error/rlang_error>
       `end` must be a <clock_calendar>.
 
-# can't count with a precision that calendar doesn't use
-
-    Code
-      (expect_error(calendar_count_between(x, x, "quarter")))
-    Output
-      <error/rlang_error>
-      `precision` must be a valid 'iso_year_week_day' precision.
-
 # can't count with a precision finer than the calendar precision
 
     Code
