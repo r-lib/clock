@@ -1,4 +1,4 @@
-# clock (development version)
+# clock 0.6.0
 
 * New `date_count_between()`, `calendar_count_between()`, and
   `time_point_count_between()` for computing the number of units of time between

@@ -9,6 +9,10 @@ We checked 2 reverse dependencies, comparing R CMD check results across CRAN and
  * We saw 0 new problems
  * We failed to check 0 packages
  
+## 0.6.0 Submission
+
+This is a minor release with a few new features.
+ 
 ## 0.5.0 Submission
 
 This is a minor release with a few new parsing functions, updates to the
