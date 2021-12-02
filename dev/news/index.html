@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.5.0.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.6.0.9000</span>
       </span>
     </div>
 
@@ -80,6 +80,9 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="development version" id="clock-development-version">clock (development version)<a class="anchor" aria-label="anchor" href="#clock-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.6.0" id="clock-060">clock 0.6.0<a class="anchor" aria-label="anchor" href="#clock-060"></a></h2>
 <ul><li><p>New <code><a href="../reference/date_count_between.html">date_count_between()</a></code>, <code><a href="../reference/calendar-count-between.html">calendar_count_between()</a></code>, and <code><a href="../reference/time_point_count_between.html">time_point_count_between()</a></code> for computing the number of units of time between two dates (i.e. the number of years, months, days, or seconds). This has a number of uses, like computing the age of an individual in years, or determining the number of weeks that have passed since the start of the year (<a href="https://github.com/r-lib/clock/issues/266" class="external-link">#266</a>).</p></li>
 <li><p>Modulus is now defined between a duration vector and an integer vector through <code>&lt;duration&gt; %% &lt;integer&gt;</code>. This returns a duration vector containing the remainder of the division (<a href="https://github.com/r-lib/clock/issues/273" class="external-link">#273</a>).</p></li>
 <li><p>Integer division is now defined for two duration objects through <code>&lt;duration&gt; %/% &lt;duration&gt;</code>. This always returns an integer vector, so be aware that using very precise duration objects (like nanoseconds) can easily generate a division result that is outside the range of an integer. In that case, an <code>NA</code> is returned with a warning.</p></li>
