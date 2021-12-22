@@ -105,13 +105,8 @@ as.POSIXct.clock_calendar <- function(x,
 
 #' @export
 as.POSIXct.clock_sys_time <- function(x, tz = "", ...) {
-  zone <- zone_validate(tz)
-  # Promote to at least seconds precision for `POSIXt`
-  x <- vec_cast(x, vec_ptype2(x, clock_empty_sys_time_second))
-  x <- time_point_floor(x, "second")
-  seconds <- to_sys_seconds_from_sys_duration_fields_cpp(x)
-  names(seconds) <- clock_rcrd_names(x)
-  new_datetime(seconds, zone)
+  x <- as_zoned_time(x, zone = tz)
+  as.POSIXct(x)
 }
 
 #' @export
@@ -128,7 +123,10 @@ as.POSIXct.clock_naive_time <- function(x,
 as.POSIXct.clock_zoned_time <- function(x, ...) {
   zone <- zoned_time_zone_attribute(x)
   x <- as_sys_time(x)
-  as.POSIXct(x, tz = zone)
+  x <- time_point_floor(x, "second")
+  seconds <- to_sys_seconds_from_sys_duration_fields_cpp(x)
+  names(seconds) <- clock_rcrd_names(x)
+  new_datetime(seconds, zone)
 }
 
 # ------------------------------------------------------------------------------
