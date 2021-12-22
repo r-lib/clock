@@ -1,5 +1,9 @@
 # clock (development version)
 
+* The sys-time method for `as.POSIXct()` now correctly promotes to a precision
+  of at least seconds before attempting the conversion. This matches the
+  behavior of the naive-time method (#278).
+
 # clock 0.6.0
 
 * New `date_count_between()`, `calendar_count_between()`, and
