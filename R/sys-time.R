@@ -375,7 +375,7 @@ as_zoned_time.clock_sys_time <- function(x, zone, ...) {
   zone <- zone_validate(zone)
 
   # Promote to at least seconds precision for `zoned_time`
-  x <- vec_cast(x, vec_ptype2(x, sys_seconds()))
+  x <- vec_cast(x, vec_ptype2(x, clock_empty_sys_time_second))
 
   precision <- time_point_precision_attribute(x)
   names <- clock_rcrd_names(x)

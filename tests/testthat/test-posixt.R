@@ -97,6 +97,22 @@ test_that("casting to POSIXct floors components more precise than seconds (#205)
   )
 })
 
+test_that("casting to POSIXct with time point less precise than seconds works (#278)", {
+  x <- as_naive_time(year_month_day(2019, 1, 1, 1))
+
+  expect_identical(
+    as.POSIXct(x, "America/New_York"),
+    date_time_parse("2019-01-01 01:00:00", "America/New_York")
+  )
+
+  x <- as_sys_time(year_month_day(2019, 1, 1, 1))
+
+  expect_identical(
+    as.POSIXct(x, "America/New_York"),
+    date_time_parse("2018-12-31 20:00:00", "America/New_York")
+  )
+})
+
 # ------------------------------------------------------------------------------
 # as_weekday()
 
