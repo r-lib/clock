@@ -450,7 +450,7 @@ as_zoned_time.clock_naive_time <- function(x,
   zone <- zone_validate(zone)
 
   # Promote to at least seconds precision for `zoned_time`
-  x <- vec_cast(x, vec_ptype2(x, naive_seconds()))
+  x <- vec_cast(x, vec_ptype2(x, clock_empty_naive_time_second))
 
   size <- vec_size(x)
   precision <- time_point_precision_attribute(x)
