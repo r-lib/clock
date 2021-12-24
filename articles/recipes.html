@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,18 +40,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/clock.html">Get started</a>
 </li>
@@ -64,7 +60,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/articles/motivations.html">Motivations for clock</a>
+      <a href="../articles/motivations.html">Motivations for clock</a>
     </li>
     <li>
       <a href="../articles/faq.html">Frequently Asked Questions</a>
@@ -83,10 +79,11 @@
   <ul class="dropdown-menu" role="menu">
 <li class="dropdown-header">Releases</li>
     <li>
-      <a href="https://www.tidyverse.org/blog/2021/03/clock-0-1-0/">Version 0.1.0</a>
+      <a href="https://www.tidyverse.org/blog/2021/03/clock-0-1-0/" class="external-link">Version 0.1.0</a>
     </li>
     <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="../news/index.html">Changelog</a>
     </li>
   </ul>
@@ -94,7 +91,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/r-lib/clock/">
+  <a href="https://github.com/r-lib/clock/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -115,7 +112,7 @@
       <h1 data-toc-skip>Examples and Recipes</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/r-lib/clock/blob/master/vignettes/recipes.Rmd"><code>vignettes/recipes.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-lib/clock/blob/HEAD/vignettes/recipes.Rmd" class="external-link"><code>vignettes/recipes.Rmd</code></a></small>
       <div class="hidden name"><code>recipes.Rmd</code></div>
 
     </div>
@@ -123,36 +120,36 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://clock.r-lib.org">clock</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://clock.r-lib.org">clock</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></code></pre></div>
 <p>This vignette shows common examples and recipes that might be useful when learning about clock. Where possible, both the high and low level API are shown.</p>
-<p>Many of these examples are adapted from the date C++ library’s <a href="https://github.com/HowardHinnant/date/wiki/Examples-and-Recipes">Examples and Recipes</a> page.</p>
-<div id="the-current-local-time" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-current-local-time" class="anchor"></a>The current local time</h2>
+<p>Many of these examples are adapted from the date C++ library’s <a href="https://github.com/HowardHinnant/date/wiki/Examples-and-Recipes" class="external-link">Examples and Recipes</a> page.</p>
+<div class="section level2">
+<h2 id="the-current-local-time">The current local time<a class="anchor" aria-label="anchor" href="#the-current-local-time"></a>
+</h2>
 <p><code><a href="../reference/zoned_time_now.html">zoned_time_now()</a></code> returns the current time in a particular time zone. It will display up to nanosecond precision, but the exact amount is OS dependent (on a Mac this displays microsecond level information at nanosecond resolution).</p>
-<p>Using <code>""</code> as the time zone string will try and use whatever R thinks your local time zone is (i.e. from <code><a href="https://rdrr.io/r/base/timezones.html">Sys.timezone()</a></code>).</p>
+<p>Using <code>""</code> as the time zone string will try and use whatever R thinks your local time zone is (i.e. from <code><a href="https://rdrr.io/r/base/timezones.html" class="external-link">Sys.timezone()</a></code>).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/zoned_time_now.html">zoned_time_now</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;nanosecond&gt;&lt;America/New_York (current)&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2021-02-10T15:54:29.875011000-05:00"</span></code></pre></div>
 </div>
-<div id="the-current-time-somewhere-else" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-current-time-somewhere-else" class="anchor"></a>The current time somewhere else</h2>
+<div class="section level2">
+<h2 id="the-current-time-somewhere-else">The current time somewhere else<a class="anchor" aria-label="anchor" href="#the-current-time-somewhere-else"></a>
+</h2>
 <p>Pass a time zone name to <code><a href="../reference/zoned_time_now.html">zoned_time_now()</a></code> to get the current time somewhere else.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/zoned_time_now.html">zoned_time_now</a></span><span class="op">(</span><span class="st">"Asia/Shanghai"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;nanosecond&gt;&lt;Asia/Shanghai&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2021-02-11T04:54:29.875011000+08:00"</span></code></pre></div>
 </div>
-<div id="set-a-meeting-across-time-zones" class="section level2">
-<h2 class="hasAnchor">
-<a href="#set-a-meeting-across-time-zones" class="anchor"></a>Set a meeting across time zones</h2>
+<div class="section level2">
+<h2 id="set-a-meeting-across-time-zones">Set a meeting across time zones<a class="anchor" aria-label="anchor" href="#set-a-meeting-across-time-zones"></a>
+</h2>
 <p>Say you need to set a meeting with someone in Shanghai, but you live in New York. If you set a meeting for 9am, what time is that for them?</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">30</span>, <span class="fl">9</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">my_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">30</span>, <span class="fl">9</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="st">"America/New_York"</span><span class="op">)</span>
 
 <span class="va">my_time</span>
@@ -164,24 +161,24 @@
 <span class="va">their_time</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Asia/Shanghai&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-30T22:00:00+08:00"</span></code></pre></div>
-<div id="high-level-api" class="section level3">
-<h3 class="hasAnchor">
-<a href="#high-level-api" class="anchor"></a>High level API</h3>
+<div class="section level3">
+<h3 id="high-level-api">High level API<a class="anchor" aria-label="anchor" href="#high-level-api"></a>
+</h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-30 09:00:00"</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">my_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-30 09:00:00"</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/date-zone.html">date_set_zone</a></span><span class="op">(</span><span class="va">my_time</span>, <span class="st">"Asia/Shanghai"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2019-01-30 22:00:00 CST"</span></code></pre></div>
 </div>
 </div>
-<div id="force-a-specific-time-zone" class="section level2">
-<h2 class="hasAnchor">
-<a href="#force-a-specific-time-zone" class="anchor"></a>Force a specific time zone</h2>
+<div class="section level2">
+<h2 id="force-a-specific-time-zone">Force a specific time zone<a class="anchor" aria-label="anchor" href="#force-a-specific-time-zone"></a>
+</h2>
 <p>Say your co-worker in Shanghai (from the last example) accidentally logged on at 9am <em>their time</em>. What time would this be for you?</p>
 <p>The first step to solve this is to force <code>my_time</code> to have the same printed time, but use the Asia/Shanghai time zone. You can do this by going through naive-time:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">30</span>, <span class="fl">9</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">my_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">30</span>, <span class="fl">9</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="st">"America/New_York"</span><span class="op">)</span>
 
 <span class="va">my_time</span>
@@ -189,15 +186,15 @@
 <span class="co">#&gt; [1] "2019-01-30T09:00:00-05:00"</span>
 
 <span class="co"># Drop the time zone information, retaining the printed time</span>
-<span class="va">my_time</span> <span class="op">%&gt;%</span>
+<span class="va">my_time</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-30T09:00:00"</span>
 
 <span class="co"># Add the correct time zone name back on,</span>
 <span class="co"># again retaining the printed time</span>
-<span class="va">their_9am</span> <span class="op">&lt;-</span> <span class="va">my_time</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">their_9am</span> <span class="op">&lt;-</span> <span class="va">my_time</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="st">"Asia/Shanghai"</span><span class="op">)</span>
 
 <span class="va">their_9am</span>
@@ -209,25 +206,25 @@
 <code class="sourceCode R"><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_set_zone</a></span><span class="op">(</span><span class="va">their_9am</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-29T20:00:00-05:00"</span></code></pre></div>
-<div id="high-level-api-1" class="section level3">
-<h3 class="hasAnchor">
-<a href="#high-level-api-1" class="anchor"></a>High level API</h3>
+<div class="section level3">
+<h3 id="high-level-api-1">High level API<a class="anchor" aria-label="anchor" href="#high-level-api-1"></a>
+</h3>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-30 09:00:00"</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">my_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-30 09:00:00"</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
 
-<span class="va">my_time</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"Asia/Shanghai"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">my_time</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"Asia/Shanghai"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/date-zone.html">date_set_zone</a></span><span class="op">(</span><span class="st">"America/New_York"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2019-01-29 20:00:00 EST"</span></code></pre></div>
 </div>
 </div>
-<div id="finding-the-next-monday-or-thursday" class="section level2">
-<h2 class="hasAnchor">
-<a href="#finding-the-next-monday-or-thursday" class="anchor"></a>Finding the next Monday (or Thursday)</h2>
+<div class="section level2">
+<h2 id="finding-the-next-monday-or-thursday">Finding the next Monday (or Thursday)<a class="anchor" aria-label="anchor" href="#finding-the-next-monday-or-thursday"></a>
+</h2>
 <p>Given a particular day precision naive-time, how can you compute the next Monday? This is very easily accomplished with <code><a href="../reference/time_point_shift.html">time_point_shift()</a></code>. It takes a time point vector and a “target” weekday, and shifts the time points to that target weekday.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">days</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">days</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># A Tuesday and a Friday</span>
 <span class="fu"><a href="../reference/as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="va">days</span><span class="op">)</span>
@@ -297,21 +294,21 @@
 <span class="fu">next_weekday2</span><span class="op">(</span><span class="va">a_monday</span>, <span class="va">monday</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-07"</span></code></pre></div>
-<div id="high-level-api-2" class="section level3">
-<h3 class="hasAnchor">
-<a href="#high-level-api-2" class="anchor"></a>High level API</h3>
+<div class="section level3">
+<h3 id="high-level-api-2">High level API<a class="anchor" aria-label="anchor" href="#high-level-api-2"></a>
+</h3>
 <p>In the high level API, you can use <code><a href="../reference/date-and-date-time-shifting.html">date_shift()</a></code>:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">monday</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/weekday.html">weekday</a></span><span class="op">(</span><span class="va">clock_weekdays</span><span class="op">$</span><span class="va">monday</span><span class="op">)</span>
 
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2019-01-01"</span>, <span class="st">"2019-02-01"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2019-01-01"</span>, <span class="st">"2019-02-01"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/date-and-date-time-shifting.html">date_shift</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">monday</span><span class="op">)</span>
 <span class="co">#&gt; [1] "2019-01-07" "2019-02-04"</span>
 
 <span class="co"># With a date-time</span>
-<span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2019-01-01 02:30:30"</span>, <span class="st">"2019-02-01 05:20:22"</span><span class="op">)</span>, 
+<span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2019-01-01 02:30:30"</span>, <span class="st">"2019-02-01 05:20:22"</span><span class="op">)</span>, 
   <span class="st">"America/New_York"</span>
 <span class="op">)</span>
 
@@ -320,10 +317,10 @@
 <p>Note that adding weekdays to a POSIXct could generate nonexistent or ambiguous times due to daylight saving time, which would have to be handled by supplying <code>nonexistent</code> and <code>ambiguous</code> arguments to <code><a href="../reference/date-and-date-time-shifting.html">date_shift()</a></code>.</p>
 </div>
 </div>
-<div id="generate-sequences-of-dates-and-date-times" class="section level2">
-<h2 class="hasAnchor">
-<a href="#generate-sequences-of-dates-and-date-times" class="anchor"></a>Generate sequences of dates and date-times</h2>
-<p>clock implements S3 methods for the <code><a href="https://rdrr.io/r/base/seq.html">seq()</a></code> generic function for the calendar and time point types it provides. The precision that you can generate sequences for depends on the type.</p>
+<div class="section level2">
+<h2 id="generate-sequences-of-dates-and-date-times">Generate sequences of dates and date-times<a class="anchor" aria-label="anchor" href="#generate-sequences-of-dates-and-date-times"></a>
+</h2>
+<p>clock implements S3 methods for the <code><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq()</a></code> generic function for the calendar and time point types it provides. The precision that you can generate sequences for depends on the type.</p>
 <ul>
 <li>year-month-day: Yearly or monthly sequences</li>
 <li>year-quarter-day: Yearly or quarterly sequences</li>
@@ -331,13 +328,13 @@
 </ul>
 <p>When generating sequences, the type and precision of <code>from</code> determine the result. For example:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ym</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">2</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">ym</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">2</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="va">ym</span>
 <span class="co">#&gt; &lt;year_month_day&lt;month&gt;[10]&gt;</span>
 <span class="co">#&gt;  [1] "2019-01" "2019-03" "2019-05" "2019-07" "2019-09" "2019-11" "2020-01"</span>
 <span class="co">#&gt;  [8] "2020-03" "2020-05" "2020-07"</span></code></pre></div>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">yq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_quarter_day.html">year_quarter_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">2</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">yq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_quarter_day.html">year_quarter_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">2</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div>
 <p>This allows you to generate sequences of year-months or year-quarters without having to worry about the day of the month/quarter becoming invalid. You can set the day of the results to get to a day precision calendar. For example, to get the last days of the month/quarter for this sequence:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="va">ym</span>, <span class="st">"last"</span><span class="op">)</span>
@@ -354,7 +351,7 @@
 <code class="sourceCode R"><span class="va">from</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="va">to</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">5</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span>, by <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span>, by <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[7]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-01" "2019-01-21" "2019-02-10" "2019-03-02" "2019-03-22"</span>
 <span class="co">#&gt; [6] "2019-04-11" "2019-05-01"</span></code></pre></div>
@@ -363,15 +360,15 @@
 <code class="sourceCode R"><span class="va">from</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">30</span>, <span class="fl">00</span><span class="op">)</span><span class="op">)</span>
 <span class="va">to</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">12</span>, <span class="fl">30</span>, <span class="fl">00</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span>, by <span class="op">=</span> <span class="fu"><a href="../reference/duration-helper.html">duration_minutes</a></span><span class="op">(</span><span class="fl">90</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span>, by <span class="op">=</span> <span class="fu"><a href="../reference/duration-helper.html">duration_minutes</a></span><span class="op">(</span><span class="fl">90</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[7]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-01T02:30:00" "2019-01-01T04:00:00" "2019-01-01T05:30:00"</span>
 <span class="co">#&gt; [4] "2019-01-01T07:00:00" "2019-01-01T08:30:00" "2019-01-01T10:00:00"</span>
 <span class="co">#&gt; [7] "2019-01-01T11:30:00"</span></code></pre></div>
-<div id="high-level-api-3" class="section level3">
-<h3 class="hasAnchor">
-<a href="#high-level-api-3" class="anchor"></a>High level API</h3>
-<p>In the high level API, you can use <code><a href="../reference/date_seq.html">date_seq()</a></code> to generate sequences. This doesn’t have all of the flexibility of the <code><a href="https://rdrr.io/r/base/seq.html">seq()</a></code> methods above, but is still extremely useful and has the added benefit of switching between calendars, sys-times, and naive-times automatically for you.</p>
+<div class="section level3">
+<h3 id="high-level-api-3">High level API<a class="anchor" aria-label="anchor" href="#high-level-api-3"></a>
+</h3>
+<p>In the high level API, you can use <code><a href="../reference/date_seq.html">date_seq()</a></code> to generate sequences. This doesn’t have all of the flexibility of the <code><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq()</a></code> methods above, but is still extremely useful and has the added benefit of switching between calendars, sys-times, and naive-times automatically for you.</p>
 <p>If an integer <code>by</code> is supplied with a date <code>from</code>, it defaults to a daily sequence:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/date_seq.html">date_seq</a></span><span class="op">(</span><span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">2</span>, total_size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
@@ -397,30 +394,30 @@
 
 <span class="fu"><a href="../reference/date_seq.html">date_seq</a></span><span class="op">(</span><span class="va">jan31</span>, to <span class="op">=</span> <span class="va">dec31</span>, by <span class="op">=</span> <span class="fu"><a href="../reference/duration-helper.html">duration_months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Error: Invalid date found at location 2.</span>
-<span class="co">#&gt; ℹ Resolve invalid date issues by specifying the `invalid` argument.</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve invalid date issues by specifying the `invalid` argument.</span></code></pre></div>
 <p>By specifying <code>invalid = "previous"</code> here, we can generate month end values.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/date_seq.html">date_seq</a></span><span class="op">(</span><span class="va">jan31</span>, to <span class="op">=</span> <span class="va">dec31</span>, by <span class="op">=</span> <span class="fu"><a href="../reference/duration-helper.html">duration_months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, invalid <span class="op">=</span> <span class="st">"previous"</span><span class="op">)</span>
 <span class="co">#&gt;  [1] "2019-01-31" "2019-02-28" "2019-03-31" "2019-04-30" "2019-05-31"</span>
 <span class="co">#&gt;  [6] "2019-06-30" "2019-07-31" "2019-08-31" "2019-09-30" "2019-10-31"</span>
 <span class="co">#&gt; [11] "2019-11-30" "2019-12-31"</span></code></pre></div>
-<p>Compare this with the automatic “overflow” behavior of <code><a href="https://rdrr.io/r/base/seq.html">seq()</a></code>, which is often a source of confusion.</p>
+<p>Compare this with the automatic “overflow” behavior of <code><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq()</a></code>, which is often a source of confusion.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="va">jan31</span>, to <span class="op">=</span> <span class="va">dec31</span>, by <span class="op">=</span> <span class="st">"1 month"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">jan31</span>, to <span class="op">=</span> <span class="va">dec31</span>, by <span class="op">=</span> <span class="st">"1 month"</span><span class="op">)</span>
 <span class="co">#&gt;  [1] "2019-01-31" "2019-03-03" "2019-03-31" "2019-05-01" "2019-05-31"</span>
 <span class="co">#&gt;  [6] "2019-07-01" "2019-07-31" "2019-08-31" "2019-10-01" "2019-10-31"</span>
 <span class="co">#&gt; [11] "2019-12-01" "2019-12-31"</span></code></pre></div>
 </div>
 </div>
-<div id="grouping-by-months-or-quarters" class="section level2">
-<h2 class="hasAnchor">
-<a href="#grouping-by-months-or-quarters" class="anchor"></a>Grouping by months or quarters</h2>
+<div class="section level2">
+<h2 id="grouping-by-months-or-quarters">Grouping by months or quarters<a class="anchor" aria-label="anchor" href="#grouping-by-months-or-quarters"></a>
+</h2>
 <p>When working on a data analysis, you might be required to summarize certain metrics at a monthly or quarterly level. With <code><a href="../reference/calendar_group.html">calendar_group()</a></code>, you can easily summarize at the granular precision that you care about. Take this vector of day precision naive-times in 2019:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">from</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="va">to</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">12</span>, <span class="fl">31</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span>, by <span class="op">=</span> <span class="fu"><a href="../reference/duration-helper.html">duration_days</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span>, by <span class="op">=</span> <span class="fu"><a href="../reference/duration-helper.html">duration_days</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">x</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[19]&gt;</span>
@@ -432,7 +429,7 @@
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ymd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_year_month_day.html">as_year_month_day</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ymd</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ymd</span><span class="op">)</span>
 <span class="co">#&gt; &lt;year_month_day&lt;day&gt;[6]&gt;</span>
 <span class="co">#&gt; [1] "2019-01-01" "2019-01-21" "2019-02-10" "2019-03-02" "2019-03-22"</span>
 <span class="co">#&gt; [6] "2019-04-11"</span>
@@ -446,7 +443,7 @@
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">yqd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_year_quarter_day.html">as_year_quarter_day</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">yqd</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">yqd</span><span class="op">)</span>
 <span class="co">#&gt; &lt;year_quarter_day&lt;January&gt;&lt;day&gt;[6]&gt;</span>
 <span class="co">#&gt; [1] "2019-Q1-01" "2019-Q1-21" "2019-Q1-41" "2019-Q1-61" "2019-Q1-81"</span>
 <span class="co">#&gt; [6] "2019-Q2-11"</span>
@@ -471,12 +468,12 @@
 <span class="co">#&gt; [15] "2019-Q3" "2019-Q3" "2019-Q3" "2019-Q3" "2019-Q3"</span></code></pre></div>
 <p>Note that the returned calendar vector is at the precision we grouped by, not at the original precision with, say, the day of the month / quarter set to <code>1</code>.</p>
 <p>Additionally, be aware that <code><a href="../reference/calendar_group.html">calendar_group()</a></code> groups “within” the component that is one unit of precision larger than the <code>precision</code> you specify. So, when grouping by <code>"day"</code>, this groups by “day of the month”, which can’t cross the month or year boundary. If you need to bundle dates together by something like 60 days (i.e. crossing the month boundary), then you should use <code><a href="../reference/time-point-rounding.html">time_point_floor()</a></code>.</p>
-<div id="high-level-api-4" class="section level3">
-<h3 class="hasAnchor">
-<a href="#high-level-api-4" class="anchor"></a>High level API</h3>
+<div class="section level3">
+<h3 id="high-level-api-4">High level API<a class="anchor" aria-label="anchor" href="#high-level-api-4"></a>
+</h3>
 <p>In the high level API, you can use <code><a href="../reference/date_group.html">date_group()</a></code> to group Date vectors by one of their 3 components: year, month, or day. Since month precision dates can’t be represented with Date vectors, <code><a href="../reference/date_group.html">date_group()</a></code> sets the day of the month to 1.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2019-01-01"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2019-12-31"</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2019-01-01"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2019-12-31"</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/date_group.html">date_group</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"month"</span><span class="op">)</span>
 <span class="co">#&gt;  [1] "2019-01-01" "2019-01-01" "2019-02-01" "2019-03-01" "2019-03-01"</span>
@@ -485,37 +482,37 @@
 <span class="co">#&gt; [16] "2019-10-01" "2019-11-01" "2019-12-01" "2019-12-01"</span></code></pre></div>
 <p>You won’t be able to group by <code>"quarter"</code>, since this isn’t one of the 3 components that the high level API lets you work with. Instead, this is a case where you should convert to a year-quarter-day, group on that type, then convert back to Date.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/as_year_quarter_day.html">as_year_quarter_day</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/calendar_group.html">calendar_group</a></span><span class="op">(</span><span class="st">"quarter"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/as_year_quarter_day.html">as_year_quarter_day</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/calendar_group.html">calendar_group</a></span><span class="op">(</span><span class="st">"quarter"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;  [1] "2019-01-01" "2019-01-01" "2019-01-01" "2019-01-01" "2019-01-01"</span>
 <span class="co">#&gt;  [6] "2019-04-01" "2019-04-01" "2019-04-01" "2019-04-01" "2019-04-01"</span>
 <span class="co">#&gt; [11] "2019-07-01" "2019-07-01" "2019-07-01" "2019-07-01" "2019-10-01"</span>
 <span class="co">#&gt; [16] "2019-10-01" "2019-10-01" "2019-10-01" "2019-10-01"</span></code></pre></div>
-<p>This is actually equivalent to <code><a href="../reference/date_group.html">date_group(x, "month", n = 3)</a></code>. If your fiscal year starts in January, you can use that instead. However, if your fiscal year starts in a different month, say, June, you’ll need to use the approach from above like so:</p>
+<p>This is actually equivalent to <code>date_group(x, "month", n = 3)</code>. If your fiscal year starts in January, you can use that instead. However, if your fiscal year starts in a different month, say, June, you’ll need to use the approach from above like so:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/as_year_quarter_day.html">as_year_quarter_day</a></span><span class="op">(</span>start <span class="op">=</span> <span class="va">clock_months</span><span class="op">$</span><span class="va">june</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/calendar_group.html">calendar_group</a></span><span class="op">(</span><span class="st">"quarter"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/as_year_quarter_day.html">as_year_quarter_day</a></span><span class="op">(</span>start <span class="op">=</span> <span class="va">clock_months</span><span class="op">$</span><span class="va">june</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/calendar_group.html">calendar_group</a></span><span class="op">(</span><span class="st">"quarter"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;  [1] "2018-12-01" "2018-12-01" "2018-12-01" "2019-03-01" "2019-03-01"</span>
 <span class="co">#&gt;  [6] "2019-03-01" "2019-03-01" "2019-03-01" "2019-06-01" "2019-06-01"</span>
 <span class="co">#&gt; [11] "2019-06-01" "2019-06-01" "2019-06-01" "2019-09-01" "2019-09-01"</span>
 <span class="co">#&gt; [16] "2019-09-01" "2019-09-01" "2019-12-01" "2019-12-01"</span></code></pre></div>
 </div>
 </div>
-<div id="flooring-by-days" class="section level2">
-<h2 class="hasAnchor">
-<a href="#flooring-by-days" class="anchor"></a>Flooring by days</h2>
+<div class="section level2">
+<h2 id="flooring-by-days">Flooring by days<a class="anchor" aria-label="anchor" href="#flooring-by-days"></a>
+</h2>
 <p>While <code><a href="../reference/calendar_group.html">calendar_group()</a></code> can group by “component”, it isn’t useful for bundling together sets of time points that can cross month/year boundaries, like “60 days” of data. For that, you are better off <em>flooring</em> by rolling sets of 60 days.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">from</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="va">to</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">12</span>, <span class="fl">31</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span>, by <span class="op">=</span> <span class="fu"><a href="../reference/duration-helper.html">duration_days</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span>, by <span class="op">=</span> <span class="fu"><a href="../reference/duration-helper.html">duration_days</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/time-point-rounding.html">time_point_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"day"</span>, n <span class="op">=</span> <span class="fl">60</span><span class="op">)</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[19]&gt;</span>
@@ -525,7 +522,7 @@
 <span class="co">#&gt; [16] "2019-10-11" "2019-10-11" "2019-10-11" "2019-12-10"</span></code></pre></div>
 <p>Flooring operates on the underlying duration, which for day precision time points is a count of days since the <em>origin</em>, 1970-01-01.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">unclass</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">unclass</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
 <span class="co">#&gt; $ticks</span>
 <span class="co">#&gt; [1] 17897</span>
 <span class="co">#&gt; </span>
@@ -536,7 +533,7 @@
 <p>The 60 day counter starts here, which means that any times between <code>[1970-01-01, 1970-03-02)</code> are all floored to 1970-01-01. At <code>1970-03-02</code>, the counter starts again.</p>
 <p>If you would like to change this origin, you can provide a time point to start counting from with the <code>origin</code> argument. This is mostly useful if you are flooring by weeks and you want to change the day of the week that the count starts on. Since 1970-01-01 is a Thursday, flooring by 14 days defaults to returning all Thursdays.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">3</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">3</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="va">x</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[10]&gt;</span>
 <span class="co">#&gt;  [1] "2019-01-01" "2019-01-04" "2019-01-07" "2019-01-10" "2019-01-13"</span>
@@ -567,12 +564,12 @@
 <span class="fu"><a href="../reference/as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="va">mondays</span><span class="op">)</span>
 <span class="co">#&gt; &lt;weekday[10]&gt;</span>
 <span class="co">#&gt;  [1] Mon Mon Mon Mon Mon Mon Mon Mon Mon Mon</span></code></pre></div>
-<div id="high-level-api-5" class="section level3">
-<h3 class="hasAnchor">
-<a href="#high-level-api-5" class="anchor"></a>High level API</h3>
+<div class="section level3">
+<h3 id="high-level-api-5">High level API<a class="anchor" aria-label="anchor" href="#high-level-api-5"></a>
+</h3>
 <p>You can use <code><a href="../reference/date-and-date-time-rounding.html">date_floor()</a></code> with Date and POSIXct types.</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2019-01-01"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2019-12-31"</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2019-01-01"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2019-12-31"</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/date-and-date-time-rounding.html">date_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"day"</span>, n <span class="op">=</span> <span class="fl">60</span><span class="op">)</span>
 <span class="co">#&gt;  [1] "2018-12-15" "2018-12-15" "2018-12-15" "2019-02-13" "2019-02-13"</span>
@@ -581,18 +578,18 @@
 <span class="co">#&gt; [16] "2019-10-11" "2019-10-11" "2019-10-11" "2019-12-10"</span></code></pre></div>
 <p>The <code>origin</code> you provide should be another Date. For week precision flooring with Dates, you can specify <code>"week"</code> as the precision.</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2019-01-01"</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">3</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2019-01-01"</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">3</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 
-<span class="va">origin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2018-12-31"</span><span class="op">)</span>
+<span class="va">origin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2018-12-31"</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/date-and-date-time-rounding.html">date_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"week"</span>, n <span class="op">=</span> <span class="fl">2</span>, origin <span class="op">=</span> <span class="va">origin</span><span class="op">)</span>
 <span class="co">#&gt;  [1] "2018-12-31" "2018-12-31" "2018-12-31" "2018-12-31" "2018-12-31"</span>
 <span class="co">#&gt;  [6] "2019-01-14" "2019-01-14" "2019-01-14" "2019-01-14" "2019-01-28"</span></code></pre></div>
 </div>
 </div>
-<div id="day-of-the-year" class="section level2">
-<h2 class="hasAnchor">
-<a href="#day-of-the-year" class="anchor"></a>Day of the year</h2>
+<div class="section level2">
+<h2 id="day-of-the-year">Day of the year<a class="anchor" aria-label="anchor" href="#day-of-the-year"></a>
+</h2>
 <p>To get the day of the year, convert to the year-day calendar type and extract the day with <code><a href="../reference/clock-getters.html">get_day()</a></code>.</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="va">clock_months</span><span class="op">$</span><span class="va">july</span>, <span class="fl">4</span><span class="op">)</span>
@@ -604,23 +601,154 @@
 
 <span class="fu"><a href="../reference/clock-getters.html">get_day</a></span><span class="op">(</span><span class="va">yd</span><span class="op">)</span>
 <span class="co">#&gt; [1] 185</span></code></pre></div>
-<div id="high-level-api-6" class="section level3">
-<h3 class="hasAnchor">
-<a href="#high-level-api-6" class="anchor"></a>High level API</h3>
+<div class="section level3">
+<h3 id="high-level-api-6">High level API<a class="anchor" aria-label="anchor" href="#high-level-api-6"></a>
+</h3>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2019-07-04"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2019-07-04"</span><span class="op">)</span>
 
-<span class="va">x</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/as_year_day.html">as_year_day</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/as_year_day.html">as_year_day</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/clock-getters.html">get_day</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] 185</span></code></pre></div>
 </div>
 </div>
-<div id="converting-a-time-zone-abbreviation-into-a-time-zone-name" class="section level2">
-<h2 class="hasAnchor">
-<a href="#converting-a-time-zone-abbreviation-into-a-time-zone-name" class="anchor"></a>Converting a time zone abbreviation into a time zone name</h2>
-<p>It is possible that you might run into date-time strings of the form <code>"2020-10-25 01:30:00 IST"</code>, which contain a time zone <em>abbreviation</em> rather than a full time zone name. Because time zone maintainers change the abbreviation they use throughout time, and because multiple time zones sometimes use the same abbreviation, it is generally impossible to parse strings of this form without more information. That said, if you know what time zone this abbreviation goes with, you can parse this time with <code><a href="../reference/zoned-parsing.html">zoned_time_parse_abbrev()</a></code>, supplying the <code>zone</code>.</p>
+<div class="section level2">
+<h2 id="computing-an-age-in-years">Computing an age in years<a class="anchor" aria-label="anchor" href="#computing-an-age-in-years"></a>
+</h2>
+<p>To get the age of an individual in years, use <code><a href="../reference/calendar-count-between.html">calendar_count_between()</a></code>.</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">1980</span>, <span class="fl">12</span>, <span class="fl">14</span><span class="op">:</span><span class="fl">16</span><span class="op">)</span>
+<span class="va">today</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2005</span>, <span class="fl">12</span>, <span class="fl">15</span><span class="op">)</span>
+
+<span class="co"># Note that the month and day of the month are taken into account!</span>
+<span class="co"># (Time of day would also be taken into account if there was any.)</span>
+<span class="fu"><a href="../reference/calendar-count-between.html">calendar_count_between</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">today</span>, <span class="st">"year"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 25 25 24</span></code></pre></div>
+<div class="section level3">
+<h3 id="high-level-api-7">High level API<a class="anchor" aria-label="anchor" href="#high-level-api-7"></a>
+</h3>
+<p>You can use <code><a href="../reference/date_count_between.html">date_count_between()</a></code> with Date and POSIXct types.</p>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">1980</span>, <span class="fl">12</span>, <span class="fl">14</span><span class="op">:</span><span class="fl">16</span><span class="op">)</span>
+<span class="va">today</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2005</span>, <span class="fl">12</span>, <span class="fl">15</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/date_count_between.html">date_count_between</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">today</span>, <span class="st">"year"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 25 25 24</span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="computing-number-of-weeks-since-the-start-of-the-year">Computing number of weeks since the start of the year<a class="anchor" aria-label="anchor" href="#computing-number-of-weeks-since-the-start-of-the-year"></a>
+</h2>
+<p><code><a href="https://lubridate.tidyverse.org/reference/week.html" class="external-link">lubridate::week()</a></code> is a useful function that returns “the number of complete seven day periods that have occurred between the date and January 1st, plus one.”</p>
+<p>There is no direct equivalent to this, but it is possible to replicate with <code><a href="../reference/calendar-boundary.html">calendar_start()</a></code> and <code><a href="../reference/time_point_count_between.html">time_point_count_between()</a></code>.</p>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">11</span>, <span class="fl">28</span><span class="op">)</span>
+
+<span class="co"># lubridate::week(as.Date(x))</span>
+<span class="co"># [1] 48</span>
+
+<span class="va">x_start</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calendar-boundary.html">calendar_start</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"year"</span><span class="op">)</span>
+<span class="va">x_start</span>
+<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] "2019-01-01"</span>
+
+<span class="fu"><a href="../reference/time_point_count_between.html">time_point_count_between</a></span><span class="op">(</span>
+  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">x_start</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
+  <span class="st">"week"</span>
+<span class="op">)</span> <span class="op">+</span> <span class="fl">1L</span>
+<span class="co">#&gt; [1] 48</span></code></pre></div>
+<p>You could also peek at the <code><a href="https://lubridate.tidyverse.org/reference/week.html" class="external-link">lubridate::week()</a></code> implementation to see that this is just:</p>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">doy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clock-getters.html">get_day</a></span><span class="op">(</span><span class="fu"><a href="../reference/as_year_day.html">as_year_day</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
+<span class="va">doy</span>
+<span class="co">#&gt; [1] 332</span>
+
+<span class="op">(</span><span class="va">doy</span> <span class="op">-</span> <span class="fl">1L</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%/%</a></span> <span class="fl">7L</span> <span class="op">+</span> <span class="fl">1L</span>
+<span class="co">#&gt; [1] 48</span></code></pre></div>
+<div class="section level3">
+<h3 id="high-level-api-8">High level API<a class="anchor" aria-label="anchor" href="#high-level-api-8"></a>
+</h3>
+<p>This is actually a little easier in the high level API because you don’t have to think about switching between types.</p>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">11</span>, <span class="fl">28</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/date_count_between.html">date_count_between</a></span><span class="op">(</span><span class="fu"><a href="../reference/date-and-date-time-boundary.html">date_start</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"year"</span><span class="op">)</span>, <span class="va">x</span>, <span class="st">"week"</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1L</span>
+<span class="co">#&gt; [1] 48</span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="compute-the-number-of-months-between-two-dates">Compute the number of months between two dates<a class="anchor" aria-label="anchor" href="#compute-the-number-of-months-between-two-dates"></a>
+</h2>
+<p>How can we compute the number of months between these two dates?</p>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2013</span>, <span class="fl">10</span>, <span class="fl">15</span><span class="op">)</span>
+<span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2016</span>, <span class="fl">10</span>, <span class="fl">13</span><span class="op">)</span></code></pre></div>
+<p>This is a bit of an ambiguous question because “month” isn’t very well-defined, and there are various different interpretations we could take.</p>
+<p>We might want to ignore the day component entirely, and just compute the number of months between <code>2013-10</code> and <code>2016-10</code>.</p>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/calendar_narrow.html">calendar_narrow</a></span><span class="op">(</span><span class="va">y</span>, <span class="st">"month"</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="../reference/calendar_narrow.html">calendar_narrow</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"month"</span><span class="op">)</span>
+<span class="co">#&gt; &lt;duration&lt;month&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] 36</span></code></pre></div>
+<p>Or we could include the day of the month, and say that <code>2013-10-15</code> to <code>2014-10-15</code> defines 1 month (i.e. you have to hit the same day of the month in the next month).</p>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/calendar-count-between.html">calendar_count_between</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="st">"month"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 35</span></code></pre></div>
+<p>With this you could also compute the number of days remaining between these two dates.</p>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x_close</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="../reference/calendar-count-between.html">calendar_count_between</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="st">"month"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">x_close</span>
+<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] "2016-09-15"</span>
+
+<span class="va">x_close_st</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">x_close</span><span class="op">)</span>
+<span class="va">y_st</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/time_point_count_between.html">time_point_count_between</a></span><span class="op">(</span><span class="va">x_close_st</span>, <span class="va">y_st</span>, <span class="st">"day"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 28</span></code></pre></div>
+<p>Or we could compute the number of days between these two dates in units of seconds, and divide that by the average number of seconds in 1 proleptic Gregorian month.</p>
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Days between x and y</span>
+<span class="va">days</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="va">days</span>
+<span class="co">#&gt; &lt;duration&lt;day&gt;[1]&gt;</span>
+<span class="co">#&gt; [1] 1094</span>
+
+<span class="co"># In units of seconds</span>
+<span class="va">days</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/duration_cast.html">duration_cast</a></span><span class="op">(</span><span class="va">days</span>, <span class="st">"second"</span><span class="op">)</span>
+<span class="va">days</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">days</span><span class="op">)</span>
+<span class="va">days</span>
+<span class="co">#&gt; [1] 94521600</span>
+
+<span class="co"># Average number of seconds in 1 proleptic Gregorian month</span>
+<span class="va">avg_sec_in_month</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/duration_cast.html">duration_cast</a></span><span class="op">(</span><span class="fu"><a href="../reference/duration-helper.html">duration_months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="st">"second"</span><span class="op">)</span>
+<span class="va">avg_sec_in_month</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">avg_sec_in_month</span><span class="op">)</span>
+
+<span class="va">days</span> <span class="op">/</span> <span class="va">avg_sec_in_month</span>
+<span class="co">#&gt; [1] 35.94324</span></code></pre></div>
+<div class="section level3">
+<h3 id="high-level-api-9">High level API<a class="anchor" aria-label="anchor" href="#high-level-api-9"></a>
+</h3>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2013</span>, <span class="fl">10</span>, <span class="fl">15</span><span class="op">)</span>
+<span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2016</span>, <span class="fl">10</span>, <span class="fl">13</span><span class="op">)</span></code></pre></div>
+<p>To ignore the day of the month, first shift to the start of the month, then you can use <code><a href="../reference/date_count_between.html">date_count_between()</a></code>.</p>
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/date_count_between.html">date_count_between</a></span><span class="op">(</span><span class="fu"><a href="../reference/date-and-date-time-boundary.html">date_start</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"month"</span><span class="op">)</span>, <span class="fu"><a href="../reference/date-and-date-time-boundary.html">date_start</a></span><span class="op">(</span><span class="va">y</span>, <span class="st">"month"</span><span class="op">)</span>, <span class="st">"month"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 36</span></code></pre></div>
+<p>To utilize the day field, do the same as above but without calling <code><a href="../reference/date-and-date-time-boundary.html">date_start()</a></code>.</p>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/date_count_between.html">date_count_between</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="st">"month"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 35</span></code></pre></div>
+<p>There is no high level equivalent to the average length of one proleptic Gregorian month example.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="converting-a-time-zone-abbreviation-into-a-time-zone-name">Converting a time zone abbreviation into a time zone name<a class="anchor" aria-label="anchor" href="#converting-a-time-zone-abbreviation-into-a-time-zone-name"></a>
+</h2>
+<p>It is possible that you might run into date-time strings of the form <code>"2020-10-25 01:30:00 IST"</code>, which contain a time zone <em>abbreviation</em> rather than a full time zone name. Because time zone maintainers change the abbreviation they use throughout time, and because multiple time zones sometimes use the same abbreviation, it is generally impossible to parse strings of this form without more information. That said, if you know what time zone this abbreviation goes with, you can parse this time with <code><a href="../reference/zoned-parsing.html">zoned_time_parse_abbrev()</a></code>, supplying the <code>zone</code>.</p>
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"2020-10-25 01:30:00 IST"</span>
 
 <span class="fu"><a href="../reference/zoned-parsing.html">zoned_time_parse_abbrev</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"Asia/Kolkata"</span><span class="op">)</span>
@@ -631,29 +759,29 @@
 <span class="co">#&gt; [1] "2020-10-25T01:30:00+02:00"</span></code></pre></div>
 <p>If you <em>don’t</em> know what time zone this abbreviation goes with, then generally you are out of luck. However, there are low-level tools in this library that can help you generate a list of <em>possible</em> zoned-times this could map to.</p>
 <p>Assuming that <code>x</code> is a naive-time with its corresponding time zone abbreviation attached, the first thing to do is to parse this string as a naive-time.</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/naive_time_parse.html">naive_time_parse</a></span><span class="op">(</span><span class="va">x</span>, format <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%S IST"</span><span class="op">)</span>
 <span class="va">x</span>
 <span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2020-10-25T01:30:00"</span></code></pre></div>
-<p>Next, we’ll develop a function that attempts to turn this naive-time into a zoned-time, iterating through all of the time zone names available in the time zone database. These time zone names are accessible through <code><a href="https://r-lib.github.io/tzdb/reference/tzdb_names.html">tzdb_names()</a></code>. By using the low-level <code><a href="../reference/naive_time_info.html">naive_time_info()</a></code>, rather than <code><a href="../reference/as_zoned_time.html">as_zoned_time()</a></code>, to lookup zone specific information, we’ll also get back information about the UTC offset and time zone abbreviation that is currently in use. By matching this abbreviation against our input abbreviation, we can generate a list of zoned-times that use the abbreviation we care about at that particular instance in time.</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<p>Next, we’ll develop a function that attempts to turn this naive-time into a zoned-time, iterating through all of the time zone names available in the time zone database. These time zone names are accessible through <code><a href="https://r-lib.github.io/tzdb/reference/tzdb_names.html" class="external-link">tzdb_names()</a></code>. By using the low-level <code><a href="../reference/naive_time_info.html">naive_time_info()</a></code>, rather than <code><a href="../reference/as_zoned_time.html">as_zoned_time()</a></code>, to lookup zone specific information, we’ll also get back information about the UTC offset and time zone abbreviation that is currently in use. By matching this abbreviation against our input abbreviation, we can generate a list of zoned-times that use the abbreviation we care about at that particular instance in time.</p>
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">naive_find_by_abbrev</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">abbrev</span><span class="op">)</span> <span class="op">{</span>
   <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="../reference/is_naive_time.html">is_naive_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"`x` must be a naive-time."</span><span class="op">)</span>
+    <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">abort</a></span><span class="op">(</span><span class="st">"`x` must be a naive-time."</span><span class="op">)</span>
   <span class="op">}</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">1L</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"`x` must be length 1."</span><span class="op">)</span>
+  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">1L</span><span class="op">)</span> <span class="op">{</span>
+    <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">abort</a></span><span class="op">(</span><span class="st">"`x` must be length 1."</span><span class="op">)</span>
   <span class="op">}</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/scalar-type-predicates.html">is_string</a></span><span class="op">(</span><span class="va">abbrev</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"`abbrev` must be a single string."</span><span class="op">)</span>
+  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/scalar-type-predicates.html" class="external-link">is_string</a></span><span class="op">(</span><span class="va">abbrev</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+    <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">abort</a></span><span class="op">(</span><span class="st">"`abbrev` must be a single string."</span><span class="op">)</span>
   <span class="op">}</span>
   
-  <span class="va">zones</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-lib.github.io/tzdb/reference/tzdb_names.html">tzdb_names</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="va">zones</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-lib.github.io/tzdb/reference/tzdb_names.html" class="external-link">tzdb_names</a></span><span class="op">(</span><span class="op">)</span>
   <span class="va">info</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/naive_time_info.html">naive_time_info</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">zones</span><span class="op">)</span>
   <span class="va">info</span><span class="op">$</span><span class="va">zones</span> <span class="op">&lt;-</span> <span class="va">zones</span>
   
-  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
     <span class="fu">compute_uniques</span><span class="op">(</span><span class="va">x</span>, <span class="va">info</span>, <span class="va">abbrev</span><span class="op">)</span>,
     <span class="fu">compute_ambiguous</span><span class="op">(</span><span class="va">x</span>, <span class="va">info</span>, <span class="va">abbrev</span><span class="op">)</span>
   <span class="op">)</span>
@@ -667,7 +795,7 @@
   <span class="va">matches</span> <span class="op">&lt;-</span> <span class="va">info</span><span class="op">$</span><span class="va">first</span><span class="op">$</span><span class="va">abbreviation</span> <span class="op">==</span> <span class="va">abbrev</span>
   <span class="va">zones</span> <span class="op">&lt;-</span> <span class="va">info</span><span class="op">$</span><span class="va">zones</span><span class="op">[</span><span class="va">matches</span><span class="op">]</span>
   
-  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">zones</span>, <span class="va">as_zoned_time</span>, x <span class="op">=</span> <span class="va">x</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">zones</span>, <span class="va">as_zoned_time</span>, x <span class="op">=</span> <span class="va">x</span><span class="op">)</span>
 <span class="op">}</span>
 
 <span class="va">compute_ambiguous</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">info</span>, <span class="va">abbrev</span><span class="op">)</span> <span class="op">{</span>
@@ -678,18 +806,18 @@
   <span class="va">matches</span> <span class="op">&lt;-</span> <span class="va">info</span><span class="op">$</span><span class="va">first</span><span class="op">$</span><span class="va">abbreviation</span> <span class="op">==</span> <span class="va">abbrev</span>
   <span class="va">zones</span> <span class="op">&lt;-</span> <span class="va">info</span><span class="op">$</span><span class="va">zones</span><span class="op">[</span><span class="va">matches</span><span class="op">]</span>
   
-  <span class="va">earliest</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">zones</span>, <span class="va">as_zoned_time</span>, x <span class="op">=</span> <span class="va">x</span>, ambiguous <span class="op">=</span> <span class="st">"earliest"</span><span class="op">)</span>
+  <span class="va">earliest</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">zones</span>, <span class="va">as_zoned_time</span>, x <span class="op">=</span> <span class="va">x</span>, ambiguous <span class="op">=</span> <span class="st">"earliest"</span><span class="op">)</span>
   
   <span class="co"># Of the two possible times,</span>
   <span class="co"># does the abbreviation of the latest match the input `abbrev`?</span>
   <span class="va">matches</span> <span class="op">&lt;-</span> <span class="va">info</span><span class="op">$</span><span class="va">second</span><span class="op">$</span><span class="va">abbreviation</span> <span class="op">==</span> <span class="va">abbrev</span>
   <span class="va">zones</span> <span class="op">&lt;-</span> <span class="va">info</span><span class="op">$</span><span class="va">zones</span><span class="op">[</span><span class="va">matches</span><span class="op">]</span>
   
-  <span class="va">latest</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">zones</span>, <span class="va">as_zoned_time</span>, x <span class="op">=</span> <span class="va">x</span>, ambiguous <span class="op">=</span> <span class="st">"latest"</span><span class="op">)</span>
+  <span class="va">latest</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">zones</span>, <span class="va">as_zoned_time</span>, x <span class="op">=</span> <span class="va">x</span>, ambiguous <span class="op">=</span> <span class="st">"latest"</span><span class="op">)</span>
   
-  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">earliest</span>, <span class="va">latest</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">earliest</span>, <span class="va">latest</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">candidates</span> <span class="op">&lt;-</span> <span class="fu">naive_find_by_abbrev</span><span class="op">(</span><span class="va">x</span>, <span class="st">"IST"</span><span class="op">)</span>
 <span class="va">candidates</span>
 <span class="co">#&gt; [[1]]</span>
@@ -724,7 +852,7 @@
 <p>If there is a unique mapping from <code>{naive-time, zone}</code> to <code>sys-time</code>, then we check if the abbreviation that goes with that unique mapping matches our input abbreviation. If so, then we convert <code>x</code> to a zoned-time with that time zone.</p>
 <p>If there is an ambiguous mapping from <code>{naive-time, zone}</code> to <code>sys-time</code>, which is due to a daylight saving fallback, then we check the abbreviation of both the <em>earliest</em> and <em>latest</em> possible times. If either matches, then we convert <code>x</code> to a zoned-time using that time zone and the information about which of the two ambiguous times were used.</p>
 <p>This example is particularly interesting, since each of the 3 candidates came from a different path. The Asia/Kolkata one is unique, the Europe/Dublin one is ambiguous but the earliest was chosen, and the Asia/Jerusalem one is ambiguous but the latest was chosen:</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"Asia/Kolkata"</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Asia/Kolkata&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2020-10-25T01:30:00+05:30"</span>
@@ -735,11 +863,11 @@
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Asia/Jerusalem&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2020-10-25T01:30:00+02:00"</span></code></pre></div>
 </div>
-<div id="when-is-the-next-daylight-saving-time-event" class="section level2">
-<h2 class="hasAnchor">
-<a href="#when-is-the-next-daylight-saving-time-event" class="anchor"></a>When is the next daylight saving time event?</h2>
+<div class="section level2">
+<h2 id="when-is-the-next-daylight-saving-time-event">When is the next daylight saving time event?<a class="anchor" aria-label="anchor" href="#when-is-the-next-daylight-saving-time-event"></a>
+</h2>
 <p>Given a particular zoned-time, when will it next be affected by daylight saving time? For this, we can use a relatively low level helper, <code><a href="../reference/sys_time_info.html">sys_time_info()</a></code>. It returns a data frame of information about the current daylight saving time transition points, along with information about the offset, the current time zone abbreviation, and whether or not daylight saving time is currently active or not.</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/zoned-parsing.html">zoned_time_parse_complete</a></span><span class="op">(</span><span class="st">"2019-01-01T00:00:00-05:00[America/New_York]"</span><span class="op">)</span>
 
 <span class="va">info</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sys_time_info.html">sys_time_info</a></span><span class="op">(</span><span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
@@ -754,10 +882,10 @@
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-03-10T03:00:00-04:00"</span></code></pre></div>
 <p>So on 2018-11-04 at (the second) 1 o’clock hour, daylight saving time was turned off. On 2019-03-10 at 3 o’clock, daylight saving time will be considered on again. This is the next moment in time right after a daylight saving time gap of 1 hour, which you can see by subtracting 1 second (in sys-time):</p>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Last moment in time in the current DST range</span>
-<span class="va">info</span><span class="op">$</span><span class="va">end</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">info</span><span class="op">$</span><span class="va">end</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="co">#&gt; [1] "2019-03-10T01:59:59-05:00"</span></code></pre></div>
@@ -775,11 +903,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Davis Vaughan, <a href="https://www.rstudio.com"><img src="https://www.tidyverse.org/rstudio-logo.svg" alt="RStudio" height="24"></a>.</p>
+  <p></p>
+<p>Developed by Davis Vaughan, <a href="https://www.rstudio.com" class="external-link"><img src="https://www.tidyverse.org/rstudio-logo.svg" alt="RStudio" width="72"></a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -787,6 +917,8 @@
 
   
 
+
+  
 
   </body>
 </html>

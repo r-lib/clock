@@ -31,6 +31,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -43,18 +45,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">clock</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="articles/clock.html">Get started</a>
 </li>
@@ -69,7 +65,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/articles/motivations.html">Motivations for clock</a>
+      <a href="articles/motivations.html">Motivations for clock</a>
     </li>
     <li>
       <a href="articles/faq.html">Frequently Asked Questions</a>
@@ -88,10 +84,11 @@
   <ul class="dropdown-menu" role="menu">
 <li class="dropdown-header">Releases</li>
     <li>
-      <a href="https://www.tidyverse.org/blog/2021/03/clock-0-1-0/">Version 0.1.0</a>
+      <a href="https://www.tidyverse.org/blog/2021/03/clock-0-1-0/" class="external-link">Version 0.1.0</a>
     </li>
     <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="news/index.html">Changelog</a>
     </li>
   </ul>
@@ -99,7 +96,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/r-lib/clock/">
+  <a href="https://github.com/r-lib/clock/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -116,9 +113,9 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="clock-" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#clock-" class="anchor"></a>clock <a href="https://clock.r-lib.org/"><img src="reference/figures/logo.png" align="right" height="139"></a>
+<div class="section level1">
+<div class="page-header"><h1 id="clock-">clock <a href="https://clock.r-lib.org/"><img src="reference/figures/logo.png" align="right" height="139"></a>
+<a class="anchor" aria-label="anchor" href="#clock-"></a>
 </h1></div>
 <!-- badges: start -->
 
@@ -127,7 +124,7 @@
 <li><p>Provides a new family of date-time classes (durations, time points, zoned-times, and calendars) that partition responsibilities so that you only have to think about time zones when you need them.</p></li>
 <li><p>Implements a high level API for R’s native date (Date) and date-time (POSIXct) classes that lets you get productive quickly without having to learn the details of clock’s new date-time types.</p></li>
 <li><p>Requires explicit handling of invalid dates (e.g. what date is one month after January 31st?) and nonexistent or ambiguous times (caused by daylight saving time issues).</p></li>
-<li><p>Is built on the C++ <a href="https://github.com/HowardHinnant/date">date</a> library, which provides a correct and high-performance backend.</p></li>
+<li><p>Is built on the C++ <a href="https://github.com/HowardHinnant/date" class="external-link">date</a> library, which provides a correct and high-performance backend.</p></li>
 </ul>
 <p>There are four key classes in clock, inspired by the design of the C++ date and chrono libraries. Some types are more efficient than others at particular operations, and it is only when all 4 are taken as a whole do you get a complete date time library.</p>
 <ul>
@@ -136,20 +133,20 @@
 <li><p>A <em>zoned-time</em> is a time point paired with a time zone. You can create them from either a sys-time or a naive-time, depending on whether you want to convert the time point from UTC (leaving the underlying duration unchanged, but changing the printed time), or declare that the time point is in a specific time zone (leaving the printed time unchanged, but changing the underlying duration). Zoned-times are primarily needed for communication with humans.</p></li>
 <li><p>A <em>calendar</em> represents a date using a combination of fields like year-month-day, year-month-weekday, year-quarter-day, year-day, or iso-year-week-day, along with hour/minute/second fields to represent time within a day (so they’re similar to R’s POSIXlt). Calendar objects are extremely efficient at arithmetic involving irregular periods such as months, quarters, and years and at getting and setting specified components. A calendar can represent invalid dates (like 2020-02-31) which only need to be resolved when converting back to a time point.</p></li>
 </ul>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>Install the released version from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>Install the released version from <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"clock"</span><span class="op">)</span></code></pre></div>
-<p>Install the development version from <a href="https://github.com/">GitHub</a> with:</p>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"clock"</span><span class="op">)</span></code></pre></div>
+<p>Install the development version from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
 <span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"r-lib/clock"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="learning" class="section level2">
-<h2 class="hasAnchor">
-<a href="#learning" class="anchor"></a>Learning</h2>
+<div class="section level2">
+<h2 id="learning">Learning<a class="anchor" aria-label="anchor" href="#learning"></a>
+</h2>
 <p>With clock, there is a high-level API for manipulating R’s native date and date-time types (Date, POSIXct, and POSIXlt), as well as a low-level API for more advanced date-time manipulations. The high-level API should allow you to quickly get productive with clock without having to learn many of the new types. An easy way to get an overview of this is by looking at the <a href="https://clock.r-lib.org/reference/index.html#section-high-level-api">High Level API</a> section of the pkgdown reference page.</p>
 <p>You’ll also want to take a look at clock’s vignettes:</p>
 <ul>
@@ -159,15 +156,15 @@
 <li><p><a href="https://clock.r-lib.org/articles/faq.html">Frequently Asked Questions</a></p></li>
 </ul>
 </div>
-<div id="acknowledgements" class="section level2">
-<h2 class="hasAnchor">
-<a href="#acknowledgements" class="anchor"></a>Acknowledgements</h2>
+<div class="section level2">
+<h2 id="acknowledgements">Acknowledgements<a class="anchor" aria-label="anchor" href="#acknowledgements"></a>
+</h2>
 <p>The ideas used to build clock have come from a number of places:</p>
 <ul>
-<li><p>First and foremost, clock depends on and is inspired by the <a href="https://github.com/HowardHinnant/date">date</a> library by Howard Hinnant, a variant of which has been voted in to C++20.</p></li>
-<li><p>The R “record” types that clock is built on come from <a href="https://github.com/r-lib/vctrs">vctrs</a>.</p></li>
-<li><p>The <a href="https://github.com/eddelbuettel/nanotime">nanotime</a> package was the first to implement a nanosecond resolution time type for R.</p></li>
-<li><p>The <a href="https://CRAN.R-project.org/package=zoo">zoo</a> package was the first to implement year-month and year-quarter types, and has functioned as a very successful time series infrastructure package for many years.</p></li>
+<li><p>First and foremost, clock depends on and is inspired by the <a href="https://github.com/HowardHinnant/date" class="external-link">date</a> library by Howard Hinnant, a variant of which has been voted in to C++20.</p></li>
+<li><p>The R “record” types that clock is built on come from <a href="https://github.com/r-lib/vctrs" class="external-link">vctrs</a>.</p></li>
+<li><p>The <a href="https://github.com/eddelbuettel/nanotime" class="external-link">nanotime</a> package was the first to implement a nanosecond resolution time type for R.</p></li>
+<li><p>The <a href="https://CRAN.R-project.org/package=zoo" class="external-link">zoo</a> package was the first to implement year-month and year-quarter types, and has functioned as a very successful time series infrastructure package for many years.</p></li>
 </ul>
 </div>
 </div>
@@ -175,49 +172,59 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=clock">https://​cloud.r-project.org/​package=clock</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/r-lib/clock/">https://​github.com/​r-lib/​clock/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/r-lib/clock/issues">https://​github.com/​r-lib/​clock/​issues</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Davis Vaughan <br><small class="roles"> Author, maintainer </small>  </li>
-<li>
-<a href="https://www.rstudio.com"><img src="https://www.tidyverse.org/rstudio-logo.svg" alt="RStudio" height="24"></a> <br><small class="roles"> Copyright holder, funder </small>  </li>
+<li><a href="https://cloud.r-project.org/package=clock" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/r-lib/clock/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/r-lib/clock/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://app.codecov.io/gh/r-lib/clock?branch=main"><img src="https://codecov.io/gh/r-lib/clock/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://github.com/r-lib/clock/actions"><img src="https://github.com/r-lib/clock/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing clock</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Davis Vaughan <br><small class="roles"> Author, maintainer </small>  </li>
+<li>
+<a href="https://www.rstudio.com" class="external-link"><img src="https://www.tidyverse.org/rstudio-logo.svg" alt="RStudio" width="72"></a> <br><small class="roles"> Copyright holder, funder </small>  </li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://app.codecov.io/gh/r-lib/clock?branch=main" class="external-link"><img src="https://codecov.io/gh/r-lib/clock/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/r-lib/clock/actions" class="external-link"><img src="https://github.com/r-lib/clock/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Davis Vaughan, <a href="https://www.rstudio.com"><img src="https://www.tidyverse.org/rstudio-logo.svg" alt="RStudio" height="24"></a>.</p>
+  <p></p>
+<p>Developed by Davis Vaughan, <a href="https://www.rstudio.com" class="external-link"><img src="https://www.tidyverse.org/rstudio-logo.svg" alt="RStudio" width="72"></a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -225,6 +232,8 @@
 
   
 
+
+  
 
   </body>
 </html>
