@@ -103,8 +103,7 @@ Either length.out or along.with
     <h2>Arguments</h2>
     <dl><dt>from</dt>
 <dd><p><code>[clock_duration(1)]</code></p>
-<p>A duration to start the sequence from.</p>
-<p><code>from</code> is always included in the result.</p></dd>
+<p>A duration to start the sequence from.</p></dd>
 <dt>to</dt>
 <dd><p><code>[clock_duration(1) / NULL]</code></p>
 <p>A duration to stop the sequence at.</p>
@@ -114,8 +113,6 @@ the distance between <code>from</code> and <code>to</code> exactly.</p></dd>
 <dt>by</dt>
 <dd><p><code>[integer(1) / clock_duration(1) / NULL]</code></p>
 <p>The unit to increment the sequence by.</p>
-<p>If <code>to &lt; from</code>, then <code>by</code> must be positive.</p>
-<p>If <code>to &gt; from</code>, then <code>by</code> must be negative.</p>
 <p>If <code>by</code> is an integer, it is transformed into a duration with the
 precision of <code>from</code>.</p>
 <p>If <code>by</code> is a duration, it is cast to the type of <code>from</code>.</p></dd>
@@ -134,6 +131,13 @@ precision of <code>from</code>.</p>
     <div id="value">
     <h2>Value</h2>
     <p>A sequence with the type of <code>from</code>.</p>
+    </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>If <code>from &gt; to</code> and <code>by &gt; 0</code>, then the result will be length 0. This matches
+the behavior of <code><a href="https://rlang.r-lib.org/reference/seq2.html" class="external-link">rlang::seq2()</a></code>, and results in nicer theoretical
+properties when compared with throwing an error. Similarly, if <code>from &lt; to</code>
+and <code>by &lt; 0</code>, then the result will also be length 0.</p>
     </div>
 
     <div id="ref-examples">

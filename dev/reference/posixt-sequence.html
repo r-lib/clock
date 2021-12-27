@@ -112,8 +112,7 @@ total_size
     <h2>Arguments</h2>
     <dl><dt>from</dt>
 <dd><p><code>[POSIXct(1) / POSIXlt(1)]</code></p>
-<p>A date-time to start the sequence from.</p>
-<p><code>from</code> is always included in the result.</p></dd>
+<p>A date-time to start the sequence from.</p></dd>
 <dt>...</dt>
 <dd><p>These dots are for future extensions and must be empty.</p></dd>
 <dt>to</dt>
@@ -130,8 +129,6 @@ date-times.</p>
 <dt>by</dt>
 <dd><p><code>[integer(1) / clock_duration(1) / NULL]</code></p>
 <p>The unit to increment the sequence by.</p>
-<p>If <code>to &lt; from</code>, then <code>by</code> must be positive.</p>
-<p>If <code>to &gt; from</code>, then <code>by</code> must be negative.</p>
 <p>If <code>by</code> is an integer, it is equivalent to <code>duration_seconds(by)</code>.</p>
 <p>If <code>by</code> is a duration, it is allowed to have a precision of:</p><ul><li><p>year</p></li>
 <li><p>quarter</p></li>

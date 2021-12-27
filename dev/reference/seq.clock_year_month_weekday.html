@@ -118,8 +118,6 @@ the distance between <code>from</code> and <code>to</code> exactly.</p></dd>
 <dt>by</dt>
 <dd><p><code>[integer(1) / clock_duration(1) / NULL]</code></p>
 <p>The unit to increment the sequence by.</p>
-<p>If <code>to &lt; from</code>, then <code>by</code> must be positive.</p>
-<p>If <code>to &gt; from</code>, then <code>by</code> must be negative.</p>
 <p>If <code>by</code> is an integer, it is transformed into a duration with the
 precision of <code>from</code>.</p>
 <p>If <code>by</code> is a duration, it is cast to the type of <code>from</code>.</p></dd>
