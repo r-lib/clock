@@ -6,6 +6,7 @@
 #include <cmath>
 #include <cstdarg> // For `va_start()` and `va_end()`
 #include <cstdio> // For `vsnprintf()`
+#include <limits>
 
 // -----------------------------------------------------------------------------
 
@@ -120,6 +121,25 @@ r_list_deref_const(SEXP x) {
 #else
   return ((const SEXP*) DATAPTR_RO(x));
 #endif
+}
+
+// -----------------------------------------------------------------------------
+
+template <class T>
+static inline
+T clock_safe_subtract(T x, T y) {
+  static const T max = std::numeric_limits<T>::max();
+  static const T min = std::numeric_limits<T>::min();
+
+  if ((y > 0 && x < (min + y)) ||
+      (y < 0 && x > (max + y))) {
+    cpp11::stop(
+      "Internal error in `clock_safe_subtract()`: "
+      "Subtraction resulted in overflow or underflow."
+    );
+  }
+
+  return x - y;
 }
 
 // -----------------------------------------------------------------------------
