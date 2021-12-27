@@ -1,5 +1,10 @@
 # clock (development version)
 
+* `date_seq()` and the `seq()` methods for the calendar, time point, and
+  duration types now allow `from > to` when `by > 0`. This now results in a
+  size zero result rather than an error, which is more in line with
+  `rlang::seq2()` and generally has more useful programmatic properties (#282).
+
 * The sys-time method for `as.POSIXct()` now correctly promotes to a precision
   of at least seconds before attempting the conversion. This matches the
   behavior of the naive-time method (#278).
