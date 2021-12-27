@@ -6,6 +6,7 @@
 #include "rcrd.h"
 #include <sstream>
 #include <cfloat>
+#include <algorithm>
 
 // -----------------------------------------------------------------------------
 
