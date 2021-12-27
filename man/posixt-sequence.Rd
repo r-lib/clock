@@ -19,9 +19,7 @@
 \arguments{
 \item{from}{\verb{[POSIXct(1) / POSIXlt(1)]}
 
-A date-time to start the sequence from.
-
-\code{from} is always included in the result.}
+A date-time to start the sequence from.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
@@ -43,10 +41,6 @@ The time zone of \code{to} must match the time zone of \code{from} exactly.}
 \item{by}{\verb{[integer(1) / clock_duration(1) / NULL]}
 
 The unit to increment the sequence by.
-
-If \code{to < from}, then \code{by} must be positive.
-
-If \code{to > from}, then \code{by} must be negative.
 
 If \code{by} is an integer, it is equivalent to \code{duration_seconds(by)}.
 

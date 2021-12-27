@@ -156,14 +156,22 @@ test_that("seq() validates dots", {
   expect_snapshot_error(seq(duration_years(1), duration_years(1), 1, 1, 1, 1))
 })
 
-test_that("seq() validates from/to/by signs", {
-  expect_snapshot_error(seq(duration_years(1L), to = duration_years(2L), by = -1))
-  expect_snapshot_error(seq(duration_years(2L), to = duration_years(1L), by = 1))
-})
-
 test_that("seq() enforces non-fractional results", {
   expect_snapshot_error(seq(duration_years(1L), to = duration_years(2L), length.out = 3))
   expect_snapshot_error(seq(duration_years(1L), to = duration_years(2L), along.with = 1:3))
+})
+
+test_that("seq() works when from and to are identical", {
+  expect_identical(seq(duration_years(1L), to = duration_years(1L), by = 1), duration_years(1L))
+  expect_identical(seq(duration_years(1L), to = duration_years(1L), by = -1), duration_years(1L))
+})
+
+test_that("seq() with `from > to && by > 0` or `from < to && by > 0` results in length 0 output (#282)", {
+  expect_identical(seq(duration_years(2L), to = duration_years(1L), by = 1), duration_years())
+  expect_identical(seq(duration_years(5L), to = duration_years(1L), by = 1), duration_years())
+
+  expect_identical(seq(duration_years(1L), to = duration_years(2L), by = -1), duration_years())
+  expect_identical(seq(duration_years(1L), to = duration_years(5L), by = -1), duration_years())
 })
 
 test_that("seq(to, by) works", {

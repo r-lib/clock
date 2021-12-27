@@ -1653,8 +1653,6 @@ date_end.POSIXt <- function(x,
 #'
 #'   A date-time to start the sequence from.
 #'
-#'   `from` is always included in the result.
-#'
 #' @param to `[POSIXct(1) / POSIXlt(1) / NULL]`
 #'
 #'   A date-time to stop the sequence at.
@@ -1674,10 +1672,6 @@ date_end.POSIXt <- function(x,
 #' @param by `[integer(1) / clock_duration(1) / NULL]`
 #'
 #'   The unit to increment the sequence by.
-#'
-#'   If `to < from`, then `by` must be positive.
-#'
-#'   If `to > from`, then `by` must be negative.
 #'
 #'   If `by` is an integer, it is equivalent to `duration_seconds(by)`.
 #'

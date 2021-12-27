@@ -138,14 +138,6 @@
     These dots only exist to allow future extensions and should be empty.
     Did you misspecify an argument?
 
-# seq() validates from/to/by signs
-
-    When `from` is less than `to`, `by` must be positive.
-
----
-
-    When `from` is greater than `to`, `by` must be negative.
-
 # seq() enforces non-fractional results
 
     The supplied output size does not result in a non-fractional sequence between `from` and `to`.

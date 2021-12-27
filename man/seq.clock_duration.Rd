@@ -9,9 +9,7 @@
 \arguments{
 \item{from}{\verb{[clock_duration(1)]}
 
-A duration to start the sequence from.
-
-\code{from} is always included in the result.}
+A duration to start the sequence from.}
 
 \item{to}{\verb{[clock_duration(1) / NULL]}
 
@@ -25,10 +23,6 @@ the distance between \code{from} and \code{to} exactly.}
 \item{by}{\verb{[integer(1) / clock_duration(1) / NULL]}
 
 The unit to increment the sequence by.
-
-If \code{to < from}, then \code{by} must be positive.
-
-If \code{to > from}, then \code{by} must be negative.
 
 If \code{by} is an integer, it is transformed into a duration with the
 precision of \code{from}.
@@ -65,6 +59,12 @@ When calling \code{seq()}, exactly two of the following must be specified:
 \item \code{by}
 \item Either \code{length.out} or \code{along.with}
 }
+}
+\details{
+If \code{from > to} and \code{by > 0}, then the result will be length 0. This matches
+the behavior of \code{\link[rlang:seq2]{rlang::seq2()}}, and results in nicer theoretical
+properties when compared with throwing an error. Similarly, if \code{from < to}
+and \code{by < 0}, then the result will also be length 0.
 }
 \examples{
 seq(duration_days(0), duration_days(100), by = 5)
