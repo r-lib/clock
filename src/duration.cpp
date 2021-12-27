@@ -1599,8 +1599,7 @@ duration_seq_to_by_impl(const ClockDuration& from,
   const Duration end = to[0];
   const Duration step = by[0];
 
-  // TODO: This can overflow with very far apart nanosecond durations
-  const Rep num = end.count() - start.count();
+  const Rep num = clock_safe_subtract(end.count(), start.count());
   const Rep den = step.count();
   const Rep length_out = num / den + 1;
 
