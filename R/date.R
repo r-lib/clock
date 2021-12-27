@@ -1379,8 +1379,6 @@ date_end.Date <- function(x, precision, ..., invalid = NULL) {
 #'
 #'   A date or date-time to start the sequence from.
 #'
-#'   `from` is always included in the result.
-#'
 #' @param to `[Date(1) / POSIXct(1) / POSIXlt(1) / NULL]`
 #'
 #'   A date or date-time to stop the sequence at.
@@ -1391,10 +1389,6 @@ date_end.Date <- function(x, precision, ..., invalid = NULL) {
 #' @param by `[integer(1) / clock_duration(1) / NULL]`
 #'
 #'   The unit to increment the sequence by.
-#'
-#'   If `to < from`, then `by` must be positive.
-#'
-#'   If `to > from`, then `by` must be negative.
 #'
 #' @param total_size `[positive integer(1) / NULL]`
 #'
@@ -1438,8 +1432,6 @@ date_seq <- function(from,
 #'
 #'   A date to start the sequence from.
 #'
-#'   `from` is always included in the result.
-#'
 #' @param to `[Date(1) / NULL]`
 #'
 #'   A date to stop the sequence at.
@@ -1456,10 +1448,6 @@ date_seq <- function(from,
 #' @param by `[integer(1) / clock_duration(1) / NULL]`
 #'
 #'   The unit to increment the sequence by.
-#'
-#'   If `to < from`, then `by` must be positive.
-#'
-#'   If `to > from`, then `by` must be negative.
 #'
 #'   If `by` is an integer, it is equivalent to `duration_days(by)`.
 #'

@@ -482,6 +482,18 @@ test_that("components of `from` more precise than `by` are restored", {
   )
 })
 
+test_that("seq() with `from > to && by > 0` or `from < to && by > 0` results in length 0 output (#282)", {
+  expect_identical(
+    date_seq(date_build(2019, 1, 2), to = date_build(2019, 1, 1), by = 1),
+    date_build(integer())
+  )
+
+  expect_identical(
+    date_seq(date_build(2019), to = date_build(2020), by = -1),
+    date_build(integer())
+  )
+})
+
 test_that("components of `to` more precise than `by` must match `from`", {
   expect_snapshot_error(date_seq(date_build(2019, 1, 1), to = date_build(2019, 2, 2), by = duration_months(1)))
   expect_snapshot_error(date_seq(date_build(2019, 1, 1), to = date_build(2019, 3, 1), by = duration_years(1)))

@@ -28,10 +28,6 @@ the distance between \code{from} and \code{to} exactly.}
 
 The unit to increment the sequence by.
 
-If \code{to < from}, then \code{by} must be positive.
-
-If \code{to > from}, then \code{by} must be negative.
-
 If \code{by} is an integer, it is transformed into a duration with the
 precision of \code{from}.
 

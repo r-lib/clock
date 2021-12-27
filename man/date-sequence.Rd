@@ -10,9 +10,7 @@
 \arguments{
 \item{from}{\verb{[Date(1)]}
 
-A date to start the sequence from.
-
-\code{from} is always included in the result.}
+A date to start the sequence from.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
@@ -31,10 +29,6 @@ weakly monotonic sequence of dates.}
 \item{by}{\verb{[integer(1) / clock_duration(1) / NULL]}
 
 The unit to increment the sequence by.
-
-If \code{to < from}, then \code{by} must be positive.
-
-If \code{to > from}, then \code{by} must be negative.
 
 If \code{by} is an integer, it is equivalent to \code{duration_days(by)}.
 

@@ -802,6 +802,20 @@ test_that("components of `to` more precise than `by` must match `from`", {
   expect_snapshot_error(date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 1, 2, zone = zone), by = duration_years(1)))
 })
 
+test_that("seq() with `from > to && by > 0` or `from < to && by > 0` results in length 0 output (#282)", {
+  zone <- "America/New_York"
+
+  expect_identical(
+    date_seq(date_time_build(2019, 1, 2, second = 1, zone = zone), to = date_time_build(2019, 1, 2, zone = zone), by = 1),
+    date_time_build(integer(), zone = zone)
+  )
+
+  expect_identical(
+    date_seq(date_time_build(2019, zone = zone), to = date_time_build(2020, zone = zone), by = -1),
+    date_time_build(integer(), zone = zone)
+  )
+})
+
 test_that("`to` must have same time zone as `by`", {
   expect_snapshot_error(date_seq(date_time_build(1970, zone = "UTC"), to = date_time_build(1970, zone = "America/New_York"), by = 1))
 })

@@ -6,6 +6,7 @@
 #include "rcrd.h"
 #include <sstream>
 #include <cfloat>
+#include <algorithm>
 
 // -----------------------------------------------------------------------------
 
@@ -1599,21 +1600,15 @@ duration_seq_to_by_impl(const ClockDuration& from,
   const Duration end = to[0];
   const Duration step = by[0];
 
-  // Base seq() requires negative `by` when creating a decreasing seq, so this
-  // helps be compatible with that.
-  if (start > end && step > Duration{0}) {
-    clock_abort("When `from` is greater than `to`, `by` must be negative.");
-  }
-  if (start < end && step < Duration{0}) {
-    clock_abort("When `from` is less than `to`, `by` must be positive.");
-  }
-
-  // TODO: This can overflow with very far apart nanosecond durations
-  const Rep num = end.count() - start.count();
+  const Rep num = clock_safe_subtract(end.count(), start.count());
   const Rep den = step.count();
   const Rep length_out = num / den + 1;
 
-  const r_ssize size = static_cast<r_ssize>(length_out);
+  // To match `rlang::seq2()`, which has nicer properties.
+  // i.e., when `start > end && step > 0` or `start < end && step < 0`.
+  const Rep length_out2 = std::max(length_out, Rep{0});
+
+  const r_ssize size = static_cast<r_ssize>(length_out2);
 
   ClockDuration out(size);
 

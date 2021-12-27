@@ -552,13 +552,17 @@ duration_rounder <- function(x, precision, n, rounder, verb, ...) {
 #' - `by`
 #' - Either `length.out` or `along.with`
 #'
+#' @details
+#' If `from > to` and `by > 0`, then the result will be length 0. This matches
+#' the behavior of [rlang::seq2()], and results in nicer theoretical
+#' properties when compared with throwing an error. Similarly, if `from < to`
+#' and `by < 0`, then the result will also be length 0.
+#'
 #' @inheritParams ellipsis::dots_empty
 #'
 #' @param from `[clock_duration(1)]`
 #'
 #'   A duration to start the sequence from.
-#'
-#'   `from` is always included in the result.
 #'
 #' @param to `[clock_duration(1) / NULL]`
 #'
@@ -572,10 +576,6 @@ duration_rounder <- function(x, precision, n, rounder, verb, ...) {
 #' @param by `[integer(1) / clock_duration(1) / NULL]`
 #'
 #'   The unit to increment the sequence by.
-#'
-#'   If `to < from`, then `by` must be positive.
-#'
-#'   If `to > from`, then `by` must be negative.
 #'
 #'   If `by` is an integer, it is transformed into a duration with the
 #'   precision of `from`.
