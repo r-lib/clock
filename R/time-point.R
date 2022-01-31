@@ -640,7 +640,7 @@ time_point_cast <- function(x, precision) {
 #' Notice that, regardless of whether you are doing a floor or ceiling, if
 #' the input falls on a boundary then it will be returned as is.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #' @inheritParams time_point_cast
 #'
 #' @param n `[positive integer(1)]`
@@ -776,7 +776,7 @@ collect_time_point_rounder_origin <- function(origin, x, precision) {
 #' accomplish this with the `origin` argument of [time_point_floor()], but
 #' this is slightly easier.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param x `[clock_time_point]`
 #'
@@ -906,7 +906,7 @@ is_advance <- function(x) {
 #'
 #' @inheritSection calendar_count_between Comparison Direction
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param start,end `[clock_time_point]`
 #'

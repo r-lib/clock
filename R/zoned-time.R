@@ -315,7 +315,7 @@ zoned_time_format <- function(print_zone_name) {
 #' into a second precision result is ambiguous and undefined, and is unlikely to
 #' work as you might expect.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param x `[character]`
 #'
@@ -832,7 +832,7 @@ pillar_shaft.clock_zoned_time <- function(x, ...) {
 #'
 #' - [date-times (POSIXct / POSIXlt)][as-zoned-time-posixt]
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param x `[object]`
 #'

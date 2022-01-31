@@ -9,7 +9,7 @@
 #' Fields are collected in order until the first `NULL` field is located. No
 #' fields after the first `NULL` field are used.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param year `[integer]`
 #'
@@ -523,7 +523,7 @@ get_nanosecond.clock_year_month_day <- function(x) {
 #'
 #' - There are sub-daily setters for setting more precise components.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param x `[clock_year_month_day]`
 #'

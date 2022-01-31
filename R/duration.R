@@ -443,7 +443,7 @@ duration_cast <- function(x, precision) {
 #' from day to month). For more information, see the documentation on the
 #' [duration helper][duration-helper] page.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #' @inheritParams duration_cast
 #'
 #' @param n `[positive integer(1)]`
@@ -558,7 +558,7 @@ duration_rounder <- function(x, precision, n, rounder, verb, ...) {
 #' properties when compared with throwing an error. Similarly, if `from < to`
 #' and `by < 0`, then the result will also be length 0.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param from `[clock_duration(1)]`
 #'

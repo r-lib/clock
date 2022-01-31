@@ -17,7 +17,7 @@ as_naive_time.POSIXt <- function(x) {
 #' Converting from one of R's native date-time classes (POSIXct or POSIXlt)
 #' will retain the time zone of that object. There is no `zone` argument.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param x `[POSIXct / POSIXlt]`
 #'
@@ -361,7 +361,7 @@ get_posixt_field_year_month_day <- function(x, get_fn) {
 #' - There are sub-daily setters for setting more precise components, up to
 #'   a precision of seconds.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #' @inheritParams invalid_resolve
 #' @inheritParams as-zoned-time-naive-time
 #'
@@ -976,7 +976,7 @@ date_month_factor.POSIXt <- function(x,
 #' parses. Additionally, this format matches the de-facto standard extension to
 #' RFC 3339 for creating completely unambiguous date-times.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #' @inheritParams format.clock_zoned_time
 #'
 #' @param x `[POSIXct / POSIXlt]`
