@@ -75,79 +75,89 @@
 
 # can format date-times
 
-    C: 20
-    y: 18
-    Y: 2018
-    b: Dec
-    h: Dec
-    B: December
-    m: 12
-    d: 31
-    a: Mon
-    A: Monday
-    w: 1
-    g: 19
-    G: 2019
-    V: 01
-    u: 1
-    U: 52
-    W: 53
-    j: 365
-    D: 12/31/18
-    x: 12/31/18
-    F: 2018-12-31
-    H: 23
-    I: 11
-    M: 59
-    S: 59
-    p: PM
-    R: 23:59
-    T: 23:59:59
-    X: 23:59:59
-    r: 11:59:59 PM
-    c: Mon Dec 31 23:59:59 2018
-    %: %
-    z: -0500
-    Ez: -05:00
-    Z: America/New_York
+    Code
+      vapply(X = formats, FUN = function(format) date_format(x, format = format),
+      FUN.VALUE = character(1))
+    Output
+                              C: %C                         y: %y 
+                            "C: 20"                       "y: 18" 
+                              Y: %Y                         b: %b 
+                          "Y: 2018"                      "b: Dec" 
+                              h: %h                         B: %B 
+                           "h: Dec"                 "B: December" 
+                              m: %m                         d: %d 
+                            "m: 12"                       "d: 31" 
+                              a: %a                         A: %A 
+                           "a: Mon"                   "A: Monday" 
+                              w: %w                         g: %g 
+                             "w: 1"                       "g: 19" 
+                              G: %G                         V: %V 
+                          "G: 2019"                       "V: 01" 
+                              u: %u                         U: %U 
+                             "u: 1"                       "U: 52" 
+                              W: %W                         j: %j 
+                            "W: 53"                      "j: 365" 
+                              D: %D                         x: %x 
+                      "D: 12/31/18"                 "x: 12/31/18" 
+                              F: %F                         H: %H 
+                    "F: 2018-12-31"                       "H: 23" 
+                              I: %I                         M: %M 
+                            "I: 11"                       "M: 59" 
+                              S: %S                         p: %p 
+                            "S: 59"                       "p: PM" 
+                              R: %R                         T: %T 
+                         "R: 23:59"                 "T: 23:59:59" 
+                              X: %X                         r: %r 
+                      "X: 23:59:59"              "r: 11:59:59 PM" 
+                              c: %c                         %: %% 
+      "c: Mon Dec 31 23:59:59 2018"                        "%: %" 
+                              z: %z                       Ez: %Ez 
+                         "z: -0500"                  "Ez: -05:00" 
+                              Z: %Z 
+              "Z: America/New_York" 
 
 ---
 
-    C: 20
-    y: 18
-    Y: 2018
-    b: déc.
-    h: déc.
-    B: décembre
-    m: 12
-    d: 31
-    a: lun.
-    A: lundi
-    w: 1
-    g: 19
-    G: 2019
-    V: 01
-    u: 1
-    U: 52
-    W: 53
-    j: 365
-    D: 12/31/18
-    x: 12/31/18
-    F: 2018-12-31
-    H: 23
-    I: 11
-    M: 59
-    S: 59
-    p: PM
-    R: 23:59
-    T: 23:59:59
-    X: 23:59:59
-    r: 11:59:59 PM
-    c: lun. déc. 31 23:59:59 2018
-    %: %
-    z: -0500
-    Ez: -05:00
-    Z: America/New_York
+    Code
+      vapply(X = formats, FUN = function(format) date_format(x, format = format,
+        locale = clock_locale("fr")), FUN.VALUE = character(1))
+    Output
+                                C: %C                           y: %y 
+                              "C: 20"                         "y: 18" 
+                                Y: %Y                           b: %b 
+                            "Y: 2018"                       "b: déc." 
+                                h: %h                           B: %B 
+                            "h: déc."                   "B: décembre" 
+                                m: %m                           d: %d 
+                              "m: 12"                         "d: 31" 
+                                a: %a                           A: %A 
+                            "a: lun."                      "A: lundi" 
+                                w: %w                           g: %g 
+                               "w: 1"                         "g: 19" 
+                                G: %G                           V: %V 
+                            "G: 2019"                         "V: 01" 
+                                u: %u                           U: %U 
+                               "u: 1"                         "U: 52" 
+                                W: %W                           j: %j 
+                              "W: 53"                        "j: 365" 
+                                D: %D                           x: %x 
+                        "D: 12/31/18"                   "x: 12/31/18" 
+                                F: %F                           H: %H 
+                      "F: 2018-12-31"                         "H: 23" 
+                                I: %I                           M: %M 
+                              "I: 11"                         "M: 59" 
+                                S: %S                           p: %p 
+                              "S: 59"                         "p: PM" 
+                                R: %R                           T: %T 
+                           "R: 23:59"                   "T: 23:59:59" 
+                                X: %X                           r: %r 
+                        "X: 23:59:59"                "r: 11:59:59 PM" 
+                                c: %c                           %: %% 
+      "c: lun. déc. 31 23:59:59 2018"                          "%: %" 
+                                z: %z                         Ez: %Ez 
+                           "z: -0500"                    "Ez: -05:00" 
+                                Z: %Z 
+                "Z: America/New_York" 
 
 # can resolve ambiguity and nonexistent times
 

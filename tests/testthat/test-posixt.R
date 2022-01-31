@@ -293,13 +293,21 @@ test_that("default format is correct", {
 
 test_that("can format date-times", {
   x <- as.POSIXct("2018-12-31 23:59:59", "America/New_York")
-  format <- test_all_formats()
+  formats <- test_all_formats()
 
-  expect_snapshot_output(
-    cat(date_format(x, format = format))
+  expect_snapshot(
+    vapply(
+      X = formats,
+      FUN = function(format) date_format(x, format = format),
+      FUN.VALUE = character(1)
+    )
   )
-  expect_snapshot_output(
-    cat(date_format(x, format = format, locale = clock_locale("fr")))
+  expect_snapshot(
+    vapply(
+      X = formats,
+      FUN = function(format) date_format(x, format = format, locale = clock_locale("fr")),
+      FUN.VALUE = character(1)
+    )
   )
 })
 
