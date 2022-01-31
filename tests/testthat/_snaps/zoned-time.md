@@ -86,7 +86,8 @@
 
     Code
       zoned_time_parse_complete(x)
-    Warning <clock_warning_parse_failures>
+    Condition
+      Warning:
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output
       <zoned_time<second><America/New_York>[1]>
@@ -96,7 +97,8 @@
 
     Code
       zoned_time_parse_complete(x)
-    Warning <clock_warning_parse_failures>
+    Condition
+      Warning:
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output
       <zoned_time<second><America/New_York>[1]>
@@ -106,7 +108,8 @@
 
     Code
       zoned_time_parse_complete(x)
-    Warning <clock_warning_parse_failures>
+    Condition
+      Warning:
       Failed to parse 2 strings, beginning at location 1. Returning `NA` at the locations where there were parse failures.
     Output
       <zoned_time<second><America/New_York>[2]>
@@ -124,7 +127,8 @@
 
     Code
       zoned_time_parse_abbrev(x, "America/New_York")
-    Warning <clock_warning_parse_failures>
+    Condition
+      Warning:
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output
       <zoned_time<second><America/New_York>[1]>

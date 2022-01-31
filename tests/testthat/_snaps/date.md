@@ -122,7 +122,8 @@
 
     Code
       date_format(x, format = "%z")
-    Warning <clock_warning_format_failures>
+    Condition
+      Warning:
       Failed to format 1 string at location 1. Returning `NA` at that location.
     Output
       [1] NA
@@ -131,7 +132,8 @@
 
     Code
       date_format(x, format = "%Z")
-    Warning <clock_warning_format_failures>
+    Condition
+      Warning:
       Failed to format 1 string at location 1. Returning `NA` at that location.
     Output
       [1] NA
@@ -140,7 +142,8 @@
 
     Code
       date_parse("foo")
-    Warning <clock_warning_parse_failures>
+    Condition
+      Warning:
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output
       [1] NA
@@ -224,13 +227,10 @@
 
 # checks empty dots
 
-    `...` is not empty.
-    
-    We detected these problematic arguments:
-    * `..1`
-    
-    These dots only exist to allow future extensions and should be empty.
-    Did you misspecify an argument?
+    `...` must be empty.
+    x Problematic argument:
+    * ..1 = new_date(2)
+    i Did you forget to name an argument?
 
 # must use a valid Date precision
 
@@ -238,7 +238,8 @@
       (expect_error(date_count_between(x, x, "hour")))
     Output
       <error/rlang_error>
-      `precision` must be one of: 'year', 'quarter', 'month', 'week', 'day'.
+      Error in `date_count_between_impl()`:
+      ! `precision` must be one of: 'year', 'quarter', 'month', 'week', 'day'.
 
 # can't count between a Date and a POSIXt
 
@@ -246,7 +247,8 @@
       (expect_error(date_count_between(x, y, "year")))
     Output
       <error/rlang_error>
-      `end` must be a <Date>.
+      Error in `date_count_between()`:
+      ! `end` must be a <Date>.
 
 # cannot get the zone of a Date
 

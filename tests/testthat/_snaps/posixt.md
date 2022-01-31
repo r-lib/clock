@@ -1,12 +1,8 @@
 # can't accidentally supply `zone` to reinterpret date-time in new zone
 
-    `...` is not empty.
-    
-    We detected these problematic arguments:
-    * `zone`
-    
-    These dots only exist to allow future extensions and should be empty.
-    Did you misspecify an argument?
+    `...` must be empty.
+    x Problematic argument:
+    * zone = "America/New_York"
 
 # can resolve nonexistent midnight issues for Date -> POSIXct
 
@@ -40,7 +36,8 @@
 
     Code
       date_floor(x, "day", origin = origin)
-    Warning <clock_warning_invalid_rounding_origin>
+    Condition
+      Warning:
       `origin` has been floored from 'second' precision to 'day' precision to match `precision`. This floor has lost information.
     Output
       [1] "1970-01-01 EST" "1970-01-02 EST"
@@ -166,7 +163,8 @@
 
     Code
       date_time_parse("foo", "America/New_York")
-    Warning <clock_warning_parse_failures>
+    Condition
+      Warning:
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output
       [1] NA
@@ -175,7 +173,8 @@
 
     Code
       date_time_parse_complete("foo")
-    Warning <clock_warning_parse_failures>
+    Condition
+      Warning:
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output
       [1] NA
@@ -184,7 +183,8 @@
 
     Code
       date_time_parse_abbrev("foo", "America/New_York")
-    Warning <clock_warning_parse_failures>
+    Condition
+      Warning:
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output
       [1] NA
@@ -333,13 +333,10 @@
 
 # checks empty dots
 
-    `...` is not empty.
-    
-    We detected these problematic arguments:
-    * `..1`
-    
-    These dots only exist to allow future extensions and should be empty.
-    Did you misspecify an argument?
+    `...` must be empty.
+    x Problematic argument:
+    * ..1 = new_datetime(2)
+    i Did you forget to name an argument?
 
 # must use a valid POSIXt precision
 
@@ -347,7 +344,8 @@
       (expect_error(date_count_between(x, x, "millisecond")))
     Output
       <error/rlang_error>
-      `precision` must be one of: 'year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second'.
+      Error in `date_count_between_impl()`:
+      ! `precision` must be one of: 'year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second'.
 
 # can't count between a POSIXt and a Date
 
@@ -355,7 +353,8 @@
       (expect_error(date_count_between(x, y, "year")))
     Output
       <error/rlang_error>
-      `end` must be a <POSIXt>.
+      Error in `date_count_between()`:
+      ! `end` must be a <POSIXt>.
 
 # <posixt> op <duration>
 

@@ -130,13 +130,10 @@
 
 # seq() validates dots
 
-    `...` is not empty.
-    
-    We detected these problematic arguments:
-    * `..1`
-    
-    These dots only exist to allow future extensions and should be empty.
-    Did you misspecify an argument?
+    `...` must be empty.
+    x Problematic argument:
+    * ..1 = 1
+    i Did you forget to name an argument?
 
 # seq() enforces non-fractional results
 
@@ -186,21 +183,24 @@
       (expect_error(duration_years(1) / duration_years(2)))
     Output
       <error/vctrs_error_incompatible_op>
-      <duration<year>> / <duration<year>> is not permitted
+      Error in `stop_vctrs()`:
+      ! <duration<year>> / <duration<year>> is not permitted
       Durations only support integer division. Did you want `%/%`?
 
 # `<duration> %/% <duration>` results in NA for OOB values
 
     Code
       out <- (numerator + one) %/% denominator
-    Warning <simpleWarning>
+    Condition
+      Warning:
       Conversion to integer is outside the range of an integer. `NA` values have been introduced, beginning at location 1.
 
 ---
 
     Code
       out <- (-numerator - one) %/% denominator
-    Warning <simpleWarning>
+    Condition
+      Warning:
       Conversion to integer is outside the range of an integer. `NA` values have been introduced, beginning at location 1.
 
 # `<duration> %% <numeric>` casts the numeric to integer
@@ -209,6 +209,7 @@
       (expect_error(duration_hours(5) %% 2.5))
     Output
       <error/vctrs_error_cast_lossy>
-      Can't convert from `y` <double> to <integer> due to loss of precision.
+      Error in `stop_vctrs()`:
+      ! Can't convert from `y` <double> to <integer> due to loss of precision.
       * Locations: 1
 
