@@ -30,7 +30,7 @@ as_naive_time.Date <- function(x) {
 #' to resolve the issue. Similarly, if there are two possible midnight times due
 #' to a daylight saving time fallback, `ambiguous` can be used.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #' @inheritParams as-zoned-time-naive-time
 #'
 #' @param x `[Date]`
@@ -263,7 +263,7 @@ get_date_field_year_month_day <- function(x, get_fn) {
 #' - `set_day()` sets the day of the month. Valid values are in the range
 #'   of `[1, 31]`.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #' @inheritParams invalid_resolve
 #'
 #' @param x `[Date]`
@@ -894,7 +894,7 @@ date_month_factor.Date <- function(x,
 #'
 #' - [date-times (POSIXct/POSIXlt)][posixt-formatting]
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param x `[Date / POSIXct / POSIXlt]`
 #'
@@ -926,7 +926,7 @@ date_format <- function(x, ...) {
 #' it currently has no implied time zone, using the `%z` or `%Z` format commands
 #' is not allowed and will result in `NA`.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #' @inheritParams format.clock_zoned_time
 #'
 #' @param x `[Date]`
@@ -1373,7 +1373,7 @@ date_end.Date <- function(x, precision, ..., invalid = NULL) {
 #'
 #' - [date-times (POSIXct/POSIXlt)][posixt-sequence]
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param from `[Date(1) / POSIXct(1) / POSIXlt(1)]`
 #'

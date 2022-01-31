@@ -341,7 +341,7 @@ as_naive_time.clock_sys_time <- function(x) {
 #' [from a naive-time][as-zoned-time-naive-time], which is a time point
 #' with a yet-to-be-determined time zone.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param x `[clock_sys_time]`
 #'

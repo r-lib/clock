@@ -383,7 +383,7 @@ get_nanosecond.clock_year_month_weekday <- function(x) {
 #'
 #' - There are sub-daily setters for setting more precise components.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param x `[clock_year_month_weekday]`
 #'

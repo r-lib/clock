@@ -48,7 +48,7 @@
 #'
 #' Days are considered "regular" because they are defined as 86,400 seconds.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param x `[object]`
 #'

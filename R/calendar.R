@@ -100,7 +100,7 @@ calendar_leap_year.clock_calendar <- function(x) {
 #' i.e. [year_month_day()] and [year_month_weekday()]. The calendar type must
 #' have at least month precision.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #' @inheritParams clock_locale
 #'
 #' @param x `[calendar]`
@@ -191,7 +191,7 @@ calendar_month_factor_impl <- function(x, labels, abbreviate, ...) {
 #'
 #' - [year-day][year-day-group]
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param x `[calendar]`
 #'

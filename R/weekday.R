@@ -8,7 +8,7 @@
 #' "previous Tuesday" from a sys-time or naive-time easy to compute.
 #' See the examples.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param code `[integer]`
 #'

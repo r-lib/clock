@@ -22,7 +22,7 @@
 #' This is a often a very important property to maintain when doing time series
 #' data analysis. See the examples for more information.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param x `[calendar]`
 #'

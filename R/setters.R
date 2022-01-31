@@ -47,7 +47,7 @@
 #' a zoned-time must be converted to either a sys-time or naive-time, and
 #' then to a calendar type, to be able to set components on it.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param x `[object]`
 #'

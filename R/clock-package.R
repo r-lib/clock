@@ -6,7 +6,6 @@
 ## usethis namespace: start
 #' @useDynLib clock, .registration = TRUE
 #' @import vctrs
-#' @import ellipsis
 #' @import rlang
 ## usethis namespace: end
 NULL

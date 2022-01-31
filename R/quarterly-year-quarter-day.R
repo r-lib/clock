@@ -10,7 +10,7 @@
 #' Fields are collected in order until the first `NULL` field is located. No
 #' fields after the first `NULL` field are used.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #' @inheritParams year_month_day
 #'
 #' @param year `[integer]`
@@ -391,7 +391,7 @@ get_nanosecond.clock_year_quarter_day <- function(x) {
 #'
 #' - There are sub-daily setters for setting more precise components.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param x `[clock_year_quarter_day]`
 #'
@@ -749,7 +749,7 @@ year_quarter_day_plus_duration <- function(x, n, precision_n) {
 #' calendar. Time points, Dates, POSIXct, and other calendars can all be
 #' converted to year-quarter-day.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param x `[vector]`
 #'

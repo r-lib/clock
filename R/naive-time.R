@@ -230,7 +230,7 @@ as_sys_time.clock_naive_time <- function(x) {
 #' the `ambiguous` argument can be used to specify one of many ambiguous
 #' time resolution strategies.
 #'
-#' @inheritParams ellipsis::dots_empty
+#' @inheritParams rlang::args_dots_empty
 #'
 #' @param x `[clock_naive_time]`
 #'
