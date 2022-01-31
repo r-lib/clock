@@ -1,5 +1,5 @@
 test_all_formats <- function(zone = TRUE) {
-  out <- paste(
+  out <- c(
     "C: %C",
     "y: %y",
     "Y: %Y",
@@ -31,19 +31,17 @@ test_all_formats <- function(zone = TRUE) {
     "X: %X",
     "r: %r",
     "c: %c",
-    "%: %%",
-    sep = "\n"
+    "%: %%"
   )
 
   if (!zone) {
     return(out)
   }
 
-  paste(
+  c(
     out,
     "z: %z",
     "Ez: %Ez",
-    "Z: %Z",
-    sep = "\n"
+    "Z: %Z"
   )
 }
