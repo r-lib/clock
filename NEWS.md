@@ -1,5 +1,8 @@
 # clock (development version)
 
+* Removed the dependency on ellipsis in favor of the equivalent functions in
+  rlang (#288).
+
 * Updated tests related to writing UTF-8 on Windows and testthat 3.1.2 (#287).
 
 * Updated all snapshot tests to use rlang 1.0.0 (#285).
