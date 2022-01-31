@@ -1,5 +1,7 @@
 # clock (development version)
 
+* Updated tests related to writing UTF-8 on Windows and testthat 3.1.2 (#287).
+
 * Updated all snapshot tests to use rlang 1.0.0 (#285).
 
 * `date_seq()` and the `seq()` methods for the calendar, time point, and
