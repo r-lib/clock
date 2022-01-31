@@ -1,5 +1,7 @@
 # clock (development version)
 
+* Updated all snapshot tests to use rlang 1.0.0 (#285).
+
 * `date_seq()` and the `seq()` methods for the calendar, time point, and
   duration types now allow `from > to` when `by > 0`. This now results in a
   size zero result rather than an error, which is more in line with
