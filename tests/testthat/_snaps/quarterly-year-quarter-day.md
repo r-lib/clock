@@ -108,7 +108,8 @@
       (expect_error(calendar_count_between(x, x, "day")))
     Output
       <error/rlang_error>
-      `precision` must be one of: 'year', 'quarter'.
+      Error in `calendar_count_between_standardize_precision_n()`:
+      ! `precision` must be one of: 'year', 'quarter'.
 
 # only granular precisions are allowed
 

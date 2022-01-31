@@ -10,7 +10,8 @@
 
     Code
       naive_time_parse(x, precision = "day")
-    Warning <clock_warning_parse_failures>
+    Condition
+      Warning:
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output
       <time_point<naive><day>[1]>
@@ -20,7 +21,8 @@
 
     Code
       naive_time_parse("foo")
-    Warning <clock_warning_parse_failures>
+    Condition
+      Warning:
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output
       <time_point<naive><second>[1]>
@@ -37,7 +39,8 @@
 
     Code
       format(x, format = "%Z")
-    Warning <clock_warning_format_failures>
+    Condition
+      Warning:
       Failed to format 1 string at location 1. Returning `NA` at that location.
     Output
       [1] NA
@@ -46,7 +49,8 @@
 
     Code
       format(c(x, x), format = "%Z")
-    Warning <clock_warning_format_failures>
+    Condition
+      Warning:
       Failed to format 2 strings, beginning at location 1. Returning `NA` at the locations where there were format failures.
     Output
       [1] NA NA
@@ -55,7 +59,8 @@
 
     Code
       format(x, format = "%z")
-    Warning <clock_warning_format_failures>
+    Condition
+      Warning:
       Failed to format 1 string at location 1. Returning `NA` at that location.
     Output
       [1] NA
@@ -64,7 +69,8 @@
 
     Code
       format(c(x, x), format = "%z")
-    Warning <clock_warning_format_failures>
+    Condition
+      Warning:
       Failed to format 2 strings, beginning at location 1. Returning `NA` at the locations where there were format failures.
     Output
       [1] NA NA
@@ -163,11 +169,8 @@
 
 # empty dots are checked
 
-    `...` is not empty.
-    
-    We detected these problematic arguments:
-    * `..1`
-    
-    These dots only exist to allow future extensions and should be empty.
-    Did you misspecify an argument?
+    `...` must be empty.
+    x Problematic argument:
+    * ..1 = "roll-forward"
+    i Did you forget to name an argument?
 

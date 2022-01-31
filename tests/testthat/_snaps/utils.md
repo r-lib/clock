@@ -2,7 +2,8 @@
 
     Code
       posixt_tzone_standardize(character())
-    Warning <simpleWarning>
+    Condition
+      Warning in `posixt_tzone_standardize()`:
       POSIXt input had a corrupt time zone attribute of `character(0)`. Defaulting to the current zone by assuming the zone is `""`.
     Output
       [1] ""

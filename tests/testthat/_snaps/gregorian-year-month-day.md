@@ -110,7 +110,8 @@
 
     Code
       year_month_day_parse("foo")
-    Warning <clock_warning_parse_failures>
+    Condition
+      Warning:
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output
       <year_month_day<day>[1]>
@@ -142,7 +143,8 @@
       (expect_error(calendar_count_between(x, x, "day")))
     Output
       <error/rlang_error>
-      `precision` must be one of: 'year', 'quarter', 'month'.
+      Error in `calendar_count_between_standardize_precision_n()`:
+      ! `precision` must be one of: 'year', 'quarter', 'month'.
 
 # only granular precisions are allowed
 

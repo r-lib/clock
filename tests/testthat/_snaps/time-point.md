@@ -135,7 +135,8 @@
 
     Code
       out <- time_point_count_between(sys_days(0), sys_days(1000), "nanosecond")
-    Warning <simpleWarning>
+    Condition
+      Warning:
       Conversion from duration to integer is outside the range of an integer. `NA` values have been introduced, beginning at location 1.
 
 # both inputs must be time points
@@ -144,12 +145,14 @@
       (expect_error(time_point_count_between(sys_days(1), 1)))
     Output
       <error/rlang_error>
-      `end` must be a <clock_time_point>.
+      Error in `time_point_count_between()`:
+      ! `end` must be a <clock_time_point>.
     Code
       (expect_error(time_point_count_between(1, sys_days(1))))
     Output
       <error/rlang_error>
-      `start` must be a <clock_time_point>.
+      Error in `time_point_count_between()`:
+      ! `start` must be a <clock_time_point>.
 
 # both inputs must be compatible
 
@@ -157,7 +160,8 @@
       (expect_error(time_point_count_between(x, y)))
     Output
       <error/vctrs_error_incompatible_type>
-      Can't combine `start` <time_point<sys><day>> and `end` <time_point<naive><day>>.
+      Error in `stop_vctrs()`:
+      ! Can't combine `start` <time_point<sys><day>> and `end` <time_point<naive><day>>.
 
 # `n` is validated
 
@@ -165,28 +169,33 @@
       (expect_error(time_point_count_between(x, x, "day", n = NA_integer_)))
     Output
       <error/rlang_error>
-      `n` must be a single positive integer.
+      Error in `time_point_count_between()`:
+      ! `n` must be a single positive integer.
     Code
       (expect_error(time_point_count_between(x, x, "day", n = -1)))
     Output
       <error/rlang_error>
-      `n` must be a single positive integer.
+      Error in `time_point_count_between()`:
+      ! `n` must be a single positive integer.
     Code
       (expect_error(time_point_count_between(x, x, "day", n = 1.5)))
     Output
       <error/vctrs_error_cast_lossy>
-      Can't convert from `n` <double> to <integer> due to loss of precision.
+      Error in `stop_vctrs()`:
+      ! Can't convert from `n` <double> to <integer> due to loss of precision.
       * Locations: 1
     Code
       (expect_error(time_point_count_between(x, x, "day", n = "x")))
     Output
       <error/vctrs_error_incompatible_type>
-      Can't convert `n` <character> to <integer>.
+      Error in `stop_vctrs()`:
+      ! Can't convert `n` <character> to <integer>.
     Code
       (expect_error(time_point_count_between(x, x, "day", n = c(1L, 2L))))
     Output
       <error/rlang_error>
-      `n` must be a single positive integer.
+      Error in `time_point_count_between()`:
+      ! `n` must be a single positive integer.
 
 # `precision` must be a time point precision
 
@@ -194,7 +203,8 @@
       (expect_error(time_point_count_between(x, x, "year")))
     Output
       <error/rlang_error>
-      `precision` must be at least 'week' precision.
+      Error in `time_point_count_between()`:
+      ! `precision` must be at least 'week' precision.
 
 # can't mix chronological time points and calendrical durations
 

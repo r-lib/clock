@@ -2,7 +2,8 @@
 
     Code
       sys_time_parse("foo")
-    Warning <clock_warning_parse_failures>
+    Condition
+      Warning:
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output
       <time_point<sys><second>[1]>
@@ -12,49 +13,53 @@
 
     Code
       sys_time_parse_RFC_3339(x, precision = "day")
-    Error <rlang_error>
-      `precision` must be at least 'second' precision.
+    Condition
+      Error in `validate_RFC_3339_precision_string()`:
+      ! `precision` must be at least 'second' precision.
 
 # `separator` is validated
 
     Code
       sys_time_parse_RFC_3339(x, separator = 1)
-    Error <rlang_error>
-      `separator` must be a character vector.
+    Condition
+      Error in `arg_match0()`:
+      ! `separator` must be a string or character vector.
 
 ---
 
     Code
       sys_time_parse_RFC_3339(x, separator = "TT")
-    Error <rlang_error>
-      `separator` must be one of "T", "t", or " ".
+    Condition
+      Error in `sys_time_parse_RFC_3339()`:
+      ! `separator` must be one of "T", "t", or " ", not "TT".
 
 # `offset` is validated
 
     Code
       sys_time_parse_RFC_3339(x, offset = 1)
-    Error <rlang_error>
-      `offset` must be a character vector.
+    Condition
+      Error in `arg_match0()`:
+      ! `offset` must be a string or character vector.
 
 ---
 
     Code
       sys_time_parse_RFC_3339(x, offset = "ZZ")
-    Error <rlang_error>
-      `offset` must be one of "Z", "z", "%z", or "%Ez".
+    Condition
+      Error in `sys_time_parse_RFC_3339()`:
+      ! `offset` must be one of "Z", "z", "%z", or "%Ez", not "ZZ".
+      i Did you mean "%z"?
 
 # sys-time-parse-RFC-3339: empty dots are checked
 
     Code
       sys_time_parse_RFC_3339(x, 1)
-    Error <rlib_error_dots_nonempty>
-      `...` is not empty.
-      
-      We detected these problematic arguments:
-      * `..1`
-      
-      These dots only exist to allow future extensions and should be empty.
-      Did you misspecify an argument?
+    Condition
+      Error in `time_point_parse()`:
+      ! `...` must be empty.
+      x Problematic argument:
+      * ..1 = 1
+      i Did you forget to name an argument?
 
 # default format is correct
 
@@ -65,11 +70,8 @@
 
 # empty dots are checked
 
-    `...` is not empty.
-    
-    We detected these problematic arguments:
-    * `..1`
-    
-    These dots only exist to allow future extensions and should be empty.
-    Did you misspecify an argument?
+    `...` must be empty.
+    x Problematic argument:
+    * ..1 = 123
+    i Did you forget to name an argument?
 

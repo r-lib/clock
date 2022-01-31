@@ -132,7 +132,8 @@
       (expect_error(calendar_count_between(x, x, "month")))
     Output
       <error/rlang_error>
-      'year_month_weekday' types with a precision of >= 'day' cannot be trivially compared or ordered. Convert to 'year_month_day' to compare using day-of-month values.
+      Error in `vec_proxy_compare()`:
+      ! 'year_month_weekday' types with a precision of >= 'day' cannot be trivially compared or ordered. Convert to 'year_month_day' to compare using day-of-month values.
 
 # only granular precisions are allowed
 
