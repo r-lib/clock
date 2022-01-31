@@ -2,6 +2,10 @@ url: https://clock.r-lib.org
 
 destination: docs
 
+template:
+  bootstrap: 5
+  package: tidytemplate
+
 development:
   mode: auto
 
