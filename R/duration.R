@@ -312,7 +312,8 @@ as_sys_time.clock_duration <- function(x) {
   names <- clock_rcrd_names(x)
 
   # Promote to at least day precision for sys-time
-  x <- vec_cast(x, vec_ptype2(x, duration_days()))
+  ptype <- vec_ptype2(x, duration_days(), y_arg = "")
+  x <- vec_cast(x, ptype)
 
   precision <- duration_precision_attribute(x)
 

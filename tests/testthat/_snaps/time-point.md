@@ -160,7 +160,7 @@
       (expect_error(time_point_count_between(x, y)))
     Output
       <error/vctrs_error_incompatible_type>
-      Error in `stop_vctrs()`:
+      Error in `time_point_count_between()`:
       ! Can't combine `start` <time_point<sys><day>> and `end` <time_point<naive><day>>.
 
 # `n` is validated
@@ -181,14 +181,14 @@
       (expect_error(time_point_count_between(x, x, "day", n = 1.5)))
     Output
       <error/vctrs_error_cast_lossy>
-      Error in `stop_vctrs()`:
+      Error in `time_point_count_between()`:
       ! Can't convert from `n` <double> to <integer> due to loss of precision.
       * Locations: 1
     Code
       (expect_error(time_point_count_between(x, x, "day", n = "x")))
     Output
       <error/vctrs_error_incompatible_type>
-      Error in `stop_vctrs()`:
+      Error in `time_point_count_between()`:
       ! Can't convert `n` <character> to <integer>.
     Code
       (expect_error(time_point_count_between(x, x, "day", n = c(1L, 2L))))

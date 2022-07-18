@@ -165,12 +165,12 @@
 
 # can't convert calendrical duration to time point
 
-    Can't combine <duration<year>> and <duration<day>>.
+    Can't combine `x` <duration<year>> and <duration<day>>.
     Can't combine calendrical durations with chronological durations.
 
 ---
 
-    Can't combine <duration<year>> and <duration<day>>.
+    Can't combine `x` <duration<year>> and <duration<day>>.
     Can't combine calendrical durations with chronological durations.
 
 # precision: can only be called on durations
@@ -183,7 +183,7 @@
       (expect_error(duration_years(1) / duration_years(2)))
     Output
       <error/vctrs_error_incompatible_op>
-      Error in `stop_vctrs()`:
+      Error in `vec_arith()`:
       ! <duration<year>> / <duration<year>> is not permitted
       Durations only support integer division. Did you want `%/%`?
 
@@ -209,7 +209,7 @@
       (expect_error(duration_hours(5) %% 2.5))
     Output
       <error/vctrs_error_cast_lossy>
-      Error in `stop_vctrs()`:
+      Error in `duration_scalar_arith()`:
       ! Can't convert from `y` <double> to <integer> due to loss of precision.
       * Locations: 1
 

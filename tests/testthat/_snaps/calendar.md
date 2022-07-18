@@ -214,14 +214,14 @@
       (expect_error(calendar_count_between(x, x, "year", n = 1.5)))
     Output
       <error/vctrs_error_cast_lossy>
-      Error in `stop_vctrs()`:
+      Error in `calendar_count_between()`:
       ! Can't convert from `n` <double> to <integer> due to loss of precision.
       * Locations: 1
     Code
       (expect_error(calendar_count_between(x, x, "year", n = "x")))
     Output
       <error/vctrs_error_incompatible_type>
-      Error in `stop_vctrs()`:
+      Error in `calendar_count_between()`:
       ! Can't convert `n` <character> to <integer>.
     Code
       (expect_error(calendar_count_between(x, x, "year", n = c(1L, 2L))))
