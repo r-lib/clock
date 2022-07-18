@@ -1,5 +1,8 @@
 # clock (development version)
 
+* Bumped required minimum version of tzdb to 0.3.0 to get access to the latest
+  time zone database information (2022a).
+
 * vctrs >=0.4.1 and rlang >=1.0.4 are now required (#297).
 
 * Removed the dependency on ellipsis in favor of the equivalent functions in

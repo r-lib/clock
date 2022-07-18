@@ -21,7 +21,7 @@ Depends:
     R (>= 3.3)
 Imports:
     rlang (>= 1.0.4),
-    tzdb (>= 0.2.0),
+    tzdb (>= 0.3.0),
     vctrs (>= 0.4.1)
 Suggests: 
     covr,
