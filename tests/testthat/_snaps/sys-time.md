@@ -22,7 +22,7 @@
     Code
       sys_time_parse_RFC_3339(x, separator = 1)
     Condition
-      Error in `arg_match0()`:
+      Error in `sys_time_parse_RFC_3339()`:
       ! `separator` must be a string or character vector.
 
 ---
@@ -38,7 +38,7 @@
     Code
       sys_time_parse_RFC_3339(x, offset = 1)
     Condition
-      Error in `arg_match0()`:
+      Error in `sys_time_parse_RFC_3339()`:
       ! `offset` must be a string or character vector.
 
 ---
