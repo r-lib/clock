@@ -352,10 +352,12 @@ corresponds to the most common formats that are likely to be used in
 internet protocols (i.e. through APIs).
 
 In particular, this function is intended to parse the following three
-formats:\preformatted{2019-01-01T00:00:00Z
+formats:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{2019-01-01T00:00:00Z
 2019-01-01T00:00:00+0430
 2019-01-01T00:00:00+04:30
-}
+}\if{html}{\out{</div>}}
 
 This function defaults to parsing the first of these formats by using
 a format string of \code{"\%Y-\%m-\%dT\%H:\%M:\%SZ"}.

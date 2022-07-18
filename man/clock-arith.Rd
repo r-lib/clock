@@ -34,10 +34,7 @@
 \arguments{
 \item{op}{An arithmetic operator as a string}
 
-\item{x}{A pair of vectors. For \code{!}, unary \code{+} and unary \code{-}, \code{y} will be
-a sentinel object of class \code{MISSING}, as created by \code{MISSING()}.}
-
-\item{y}{A pair of vectors. For \code{!}, unary \code{+} and unary \code{-}, \code{y} will be
+\item{x, y}{A pair of vectors. For \code{!}, unary \code{+} and unary \code{-}, \code{y} will be
 a sentinel object of class \code{MISSING}, as created by \code{MISSING()}.}
 
 \item{...}{These dots are for future extensions and must be empty.}

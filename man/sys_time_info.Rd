@@ -46,8 +46,10 @@ supported year value is returned for \code{end} (typically, a year value of
 \code{32767}).
 
 The \code{offset} is the bridge between sys-time and naive-time for the \code{zone}
-being used. The relationship of the three values is:\preformatted{offset = naive_time - sys_time
-}
+being used. The relationship of the three values is:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{offset = naive_time - sys_time
+}\if{html}{\out{</div>}}
 }
 \examples{
 library(vctrs)
