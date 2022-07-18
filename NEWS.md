@@ -1,5 +1,7 @@
 # clock (development version)
 
+* vctrs >=0.4.1 and rlang >=1.0.4 are now required (#297).
+
 * Removed the dependency on ellipsis in favor of the equivalent functions in
   rlang (#288).
 
