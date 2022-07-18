@@ -63,15 +63,15 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="clock-development-version">clock (development version)<a class="anchor" aria-label="anchor" href="#clock-development-version"></a></h2>
-<ul><li><p>cpp11 &gt;=0.4.2 is now required to ensure that a fix related to unwind protection is included.</p></li>
-<li><p>R &gt;=3.4.0 is now required. This is consistent with the standards of the tidyverse.</p></li>
-<li><p>Bumped required minimum version of tzdb to 0.3.0 to get access to the latest time zone database information (2022a).</p></li>
-<li><p>vctrs &gt;=0.4.1 and rlang &gt;=1.0.4 are now required (<a href="https://github.com/r-lib/clock/issues/297" class="external-link">#297</a>).</p></li>
+<ul><li><p><code><a href="../reference/date_seq.html">date_seq()</a></code> and the <code><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq()</a></code> methods for the calendar, time point, and duration types now allow <code>from &gt; to</code> when <code>by &gt; 0</code>. This now results in a size zero result rather than an error, which is more in line with <code><a href="https://rlang.r-lib.org/reference/seq2.html" class="external-link">rlang::seq2()</a></code> and generally has more useful programmatic properties (<a href="https://github.com/r-lib/clock/issues/282" class="external-link">#282</a>).</p></li>
+<li><p>The sys-time method for <code><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct()</a></code> now correctly promotes to a precision of at least seconds before attempting the conversion. This matches the behavior of the naive-time method (<a href="https://github.com/r-lib/clock/issues/278" class="external-link">#278</a>).</p></li>
 <li><p>Removed the dependency on ellipsis in favor of the equivalent functions in rlang (<a href="https://github.com/r-lib/clock/issues/288" class="external-link">#288</a>).</p></li>
 <li><p>Updated tests related to writing UTF-8 on Windows and testthat 3.1.2 (<a href="https://github.com/r-lib/clock/issues/287" class="external-link">#287</a>).</p></li>
 <li><p>Updated all snapshot tests to use rlang 1.0.0 (<a href="https://github.com/r-lib/clock/issues/285" class="external-link">#285</a>).</p></li>
-<li><p><code><a href="../reference/date_seq.html">date_seq()</a></code> and the <code><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq()</a></code> methods for the calendar, time point, and duration types now allow <code>from &gt; to</code> when <code>by &gt; 0</code>. This now results in a size zero result rather than an error, which is more in line with <code><a href="https://rlang.r-lib.org/reference/seq2.html" class="external-link">rlang::seq2()</a></code> and generally has more useful programmatic properties (<a href="https://github.com/r-lib/clock/issues/282" class="external-link">#282</a>).</p></li>
-<li><p>The sys-time method for <code><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct()</a></code> now correctly promotes to a precision of at least seconds before attempting the conversion. This matches the behavior of the naive-time method (<a href="https://github.com/r-lib/clock/issues/278" class="external-link">#278</a>).</p></li>
+<li><p>tzdb &gt;=0.3.0 is now required to get access to the latest time zone database information (2022a).</p></li>
+<li><p>vctrs &gt;=0.4.1 and rlang &gt;=1.0.4 are now required (<a href="https://github.com/r-lib/clock/issues/297" class="external-link">#297</a>).</p></li>
+<li><p>cpp11 &gt;=0.4.2 is now required to ensure that a fix related to unwind protection is included.</p></li>
+<li><p>R &gt;=3.4.0 is now required. This is consistent with the standards of the tidyverse.</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.6.0" id="clock-060">clock 0.6.0<a class="anchor" aria-label="anchor" href="#clock-060"></a></h2><p class="text-muted">CRAN release: 2021-12-02</p>
