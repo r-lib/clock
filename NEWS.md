@@ -1,4 +1,4 @@
-# clock (development version)
+# clock 0.6.1
 
 * `date_seq()` and the `seq()` methods for the calendar, time point, and
   duration types now allow `from > to` when `by > 0`. This now results in a
