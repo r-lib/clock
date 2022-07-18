@@ -37,7 +37,7 @@ using a format string of "%Y-%m-%d %H:%M:%S %Z". This matches the default
 result from calling print() or format(usetz = TRUE) on a POSIXct
 date-time.
 
-'><title>Parsing: zoned-time — zoned-parsing • clock</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Source%20Sans%20Pro-0.4.0/font.css" rel="stylesheet"><link href="../deps/_Source%20Code%20Pro-0.4.0/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Parsing: zoned-time — zoned-parsing"><meta property="og:description" content='There are two parsers into a zoned-time, zoned_time_parse_complete() and
+'><title>Parsing: zoned-time — zoned-parsing • clock</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.2/font.css" rel="stylesheet"><link href="../deps/Source_Code_Pro-0.4.2/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Parsing: zoned-time — zoned-parsing"><meta property="og:description" content='There are two parsers into a zoned-time, zoned_time_parse_complete() and
 zoned_time_parse_abbrev().
 zoned_time_parse_complete()
 
@@ -182,22 +182,22 @@ date-time.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">zoned_time_parse_complete</span><span class="op">(</span>
-  <span class="va">x</span>,
-  <span class="va">...</span>,
-  format <span class="op">=</span> <span class="cn">NULL</span>,
-  precision <span class="op">=</span> <span class="st">"second"</span>,
-  locale <span class="op">=</span> <span class="fu"><a href="clock_locale.html">clock_locale</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">zoned_time_parse_abbrev</span><span class="op">(</span>
-  <span class="va">x</span>,
-  <span class="va">zone</span>,
-  <span class="va">...</span>,
-  format <span class="op">=</span> <span class="cn">NULL</span>,
-  precision <span class="op">=</span> <span class="st">"second"</span>,
-  locale <span class="op">=</span> <span class="fu"><a href="clock_locale.html">clock_locale</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">zoned_time_parse_complete</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  format <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  precision <span class="op">=</span> <span class="st">"second"</span>,</span>
+<span>  locale <span class="op">=</span> <span class="fu"><a href="clock_locale.html">clock_locale</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">zoned_time_parse_abbrev</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">zone</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  format <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  precision <span class="op">=</span> <span class="st">"second"</span>,</span>
+<span>  locale <span class="op">=</span> <span class="fu"><a href="clock_locale.html">clock_locale</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -205,8 +205,12 @@ date-time.</p>
     <dl><dt>x</dt>
 <dd><p><code>[character]</code></p>
 <p>A character vector to parse.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>These dots are for future extensions and must be empty.</p></dd>
+
+
 <dt>format</dt>
 <dd><p><code>[character / NULL]</code></p>
 <p>A format string. A combination of the following commands, or <code>NULL</code>,
@@ -326,6 +330,8 @@ matches one or more white space characters, and <code>"%n%t%t"</code> matches on
 three white space characters.</p></li>
 <li><p><code>%t</code>: Matches zero or one white space characters.</p></li>
 </ul></dd>
+
+
 <dt>precision</dt>
 <dd><p><code>[character(1)]</code></p>
 <p>A precision for the resulting zoned-time. One of:</p><ul><li><p><code>"second"</code></p></li>
@@ -334,16 +340,23 @@ three white space characters.</p></li>
 <li><p><code>"nanosecond"</code></p></li>
 </ul><p>Setting the <code>precision</code> determines how much information <code>%S</code> attempts
 to parse.</p></dd>
+
+
 <dt>locale</dt>
 <dd><p><code>[clock_locale]</code></p>
 <p>A locale object created from <code><a href="clock_locale.html">clock_locale()</a></code>.</p></dd>
+
+
 <dt>zone</dt>
 <dd><p><code>[character(1)]</code></p>
 <p>A full time zone name.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A zoned-time.</p>
+    
+
+<p>A zoned-time.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -373,81 +386,81 @@ work as you might expect.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">zoned_time_parse_complete</span><span class="op">(</span><span class="st">"2019-01-01T01:02:03-05:00[America/New_York]"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">zoned_time_parse_complete</span><span class="op">(</span><span class="st">"2019-01-01T01:02:03-05:00[America/New_York]"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2019-01-01T01:02:03-05:00"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">zoned_time_parse_complete</span><span class="op">(</span></span>
-<span class="r-in">  <span class="st">"January 21, 2019 -0500 America/New_York"</span>,</span>
-<span class="r-in">  format <span class="op">=</span> <span class="st">"%B %d, %Y %z %Z"</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">zoned_time_parse_complete</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"January 21, 2019 -0500 America/New_York"</span>,</span></span>
+<span class="r-in"><span>  format <span class="op">=</span> <span class="st">"%B %d, %Y %z %Z"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2019-01-21T00:00:00-05:00"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Nanosecond precision</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"2019/12/31 01:05:05.123456700-05:00[America/New_York]"</span></span>
-<span class="r-in"><span class="fu">zoned_time_parse_complete</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">x</span>,</span>
-<span class="r-in">  format <span class="op">=</span> <span class="st">"%Y/%m/%d %H:%M:%S%Ez[%Z]"</span>,</span>
-<span class="r-in">  precision <span class="op">=</span> <span class="st">"nanosecond"</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Nanosecond precision</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"2019/12/31 01:05:05.123456700-05:00[America/New_York]"</span></span></span>
+<span class="r-in"><span><span class="fu">zoned_time_parse_complete</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">x</span>,</span></span>
+<span class="r-in"><span>  format <span class="op">=</span> <span class="st">"%Y/%m/%d %H:%M:%S%Ez[%Z]"</span>,</span></span>
+<span class="r-in"><span>  precision <span class="op">=</span> <span class="st">"nanosecond"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;nanosecond&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2019-12-31T01:05:05.123456700-05:00"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># The `%z` offset must correspond to the true offset that would be used</span></span>
-<span class="r-in"><span class="co"># if the input was parsed as a naive-time and then converted to a zoned-time</span></span>
-<span class="r-in"><span class="co"># with `as_zoned_time()`. For example, the time that was parsed above used an</span></span>
-<span class="r-in"><span class="co"># offset of `-05:00`. We can confirm that this is correct with:</span></span>
-<span class="r-in"><span class="fu"><a href="year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="st">"America/New_York"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The `%z` offset must correspond to the true offset that would be used</span></span></span>
+<span class="r-in"><span><span class="co"># if the input was parsed as a naive-time and then converted to a zoned-time</span></span></span>
+<span class="r-in"><span><span class="co"># with `as_zoned_time()`. For example, the time that was parsed above used an</span></span></span>
+<span class="r-in"><span><span class="co"># offset of `-05:00`. We can confirm that this is correct with:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="st">"America/New_York"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2019-01-01T01:02:03-05:00"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># So the following would not parse correctly</span></span>
-<span class="r-in"><span class="fu">zoned_time_parse_complete</span><span class="op">(</span><span class="st">"2019-01-01T01:02:03-04:00[America/New_York]"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># So the following would not parse correctly</span></span></span>
+<span class="r-in"><span><span class="fu">zoned_time_parse_complete</span><span class="op">(</span><span class="st">"2019-01-01T01:02:03-04:00[America/New_York]"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Failed to parse 1 string at location 1. Returning `NA` at that location.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># `%z` is useful for breaking ties in otherwise ambiguous times. For example,</span></span>
-<span class="r-in"><span class="co"># these two times are on either side of a daylight saving time fallback.</span></span>
-<span class="r-in"><span class="co"># Without the `%z` offset, you wouldn't be able to tell them apart!</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="st">"1970-10-25T01:30:00-04:00[America/New_York]"</span>,</span>
-<span class="r-in">  <span class="st">"1970-10-25T01:30:00-05:00[America/New_York]"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">zoned_time_parse_complete</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># `%z` is useful for breaking ties in otherwise ambiguous times. For example,</span></span></span>
+<span class="r-in"><span><span class="co"># these two times are on either side of a daylight saving time fallback.</span></span></span>
+<span class="r-in"><span><span class="co"># Without the `%z` offset, you wouldn't be able to tell them apart!</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"1970-10-25T01:30:00-04:00[America/New_York]"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"1970-10-25T01:30:00-05:00[America/New_York]"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">zoned_time_parse_complete</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1970-10-25T01:30:00-04:00" "1970-10-25T01:30:00-05:00"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># If you have date-time strings with time zone abbreviations,</span></span>
-<span class="r-in"><span class="co"># `zoned_time_parse_abbrev()` should be able to help. The `zone` must be</span></span>
-<span class="r-in"><span class="co"># provided, because multiple countries may use the same time zone</span></span>
-<span class="r-in"><span class="co"># abbreviation. For example:</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"1970-01-01 02:30:30 IST"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># IST = India Standard Time</span></span>
-<span class="r-in"><span class="fu">zoned_time_parse_abbrev</span><span class="op">(</span><span class="va">x</span>, <span class="st">"Asia/Kolkata"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If you have date-time strings with time zone abbreviations,</span></span></span>
+<span class="r-in"><span><span class="co"># `zoned_time_parse_abbrev()` should be able to help. The `zone` must be</span></span></span>
+<span class="r-in"><span><span class="co"># provided, because multiple countries may use the same time zone</span></span></span>
+<span class="r-in"><span><span class="co"># abbreviation. For example:</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"1970-01-01 02:30:30 IST"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># IST = India Standard Time</span></span></span>
+<span class="r-in"><span><span class="fu">zoned_time_parse_abbrev</span><span class="op">(</span><span class="va">x</span>, <span class="st">"Asia/Kolkata"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;Asia/Kolkata&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1970-01-01T02:30:30+05:30"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># IST = Israel Standard Time</span></span>
-<span class="r-in"><span class="fu">zoned_time_parse_abbrev</span><span class="op">(</span><span class="va">x</span>, <span class="st">"Asia/Jerusalem"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># IST = Israel Standard Time</span></span></span>
+<span class="r-in"><span><span class="fu">zoned_time_parse_abbrev</span><span class="op">(</span><span class="va">x</span>, <span class="st">"Asia/Jerusalem"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;Asia/Jerusalem&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1970-01-01T02:30:30+02:00"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># The time zone abbreviation is mainly useful for resolving ambiguity</span></span>
-<span class="r-in"><span class="co"># around daylight saving time fallbacks. Without the abbreviation, these</span></span>
-<span class="r-in"><span class="co"># date-times would be ambiguous.</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="st">"1970-10-25 01:30:00 EDT"</span>,</span>
-<span class="r-in">  <span class="st">"1970-10-25 01:30:00 EST"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu">zoned_time_parse_abbrev</span><span class="op">(</span><span class="va">x</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The time zone abbreviation is mainly useful for resolving ambiguity</span></span></span>
+<span class="r-in"><span><span class="co"># around daylight saving time fallbacks. Without the abbreviation, these</span></span></span>
+<span class="r-in"><span><span class="co"># date-times would be ambiguous.</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"1970-10-25 01:30:00 EDT"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"1970-10-25 01:30:00 EST"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">zoned_time_parse_abbrev</span><span class="op">(</span><span class="va">x</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1970-10-25T01:30:00-04:00" "1970-10-25T01:30:00-05:00"</span>
 </code></pre></div>
@@ -463,7 +476,7 @@ work as you might expect.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
   </div></footer></body></html>

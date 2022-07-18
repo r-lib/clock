@@ -14,9 +14,9 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Source%20Sans%20Pro-0.4.0/font.css" rel="stylesheet">
-<link href="../deps/_Source%20Code%20Pro-0.4.0/font.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.2/font.css" rel="stylesheet">
+<link href="../deps/Source_Code_Pro-0.4.2/font.css" rel="stylesheet">
 <!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Frequently Asked Questions">
@@ -90,7 +90,7 @@
 
 
 <script src="faq_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
-  <main id="main"><div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Frequently Asked Questions</h1>
             
       
@@ -101,31 +101,31 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://clock.r-lib.org">clock</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://clock.r-lib.org">clock</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="why-cant-i-do-day-arithmetic-on-a-year-month-day">Why can’t I do day arithmetic on a year-month-day?<a class="anchor" aria-label="anchor" href="#why-cant-i-do-day-arithmetic-on-a-year-month-day"></a>
 </h2>
 <p>It might seem intuitive that since you can do:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2019-02-05"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;year_month_day&lt;day&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; [1] "2019-02-05"</span></span></code></pre></div>
 <p>That you should also be able to do:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in </span><span style="color: #262626; background-color: #DADADA; font-weight: bold;">`stop_clock()`</span><span style="font-weight: bold;">:</span></span>
-<span class="co">#&gt; <span style="color: #BBBB00;">!</span> This calendar doesn't support `add_days()`.</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> This calendar doesn't support `add_days()`.</span></span></code></pre></div>
 <p>Generally, calendars don’t support day based arithmetic, nor do they support arithmetic at more precise precisions than day. Instead, you have to convert to a time point, do the arithmetic there, and then convert back (if you still need a year-month-day after that).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/as_year_month_day.html">as_year_month_day</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2019-01-06"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/as_year_month_day.html">as_year_month_day</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;year_month_day&lt;day&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; [1] "2019-01-06"</span></span></code></pre></div>
 <p>The first reason for this is performance. A year-month-day is a <em>field</em> type, implemented as multiple parallel vectors holding the year, month, day, and all other components separately. There are two ways that day based arithmetic could be implemented for this:</p>
 <ul>
 <li><p>Increment the day field, then check the year and month field to see if they need to be incremented, accounting for months having a differing number of days, and leap years.</p></li>
@@ -134,135 +134,135 @@
 <p>Both approaches are relatively expensive. One of the goals of the low-level API of clock is to make these expensive operations explicit. This helps make it apparent that when you need to chain together multiple operations, you should try and do all of your <em>calendrical</em> arithmetic steps first, then convert to a time point (i.e. the second bullet point from above) to do all of your <em>chronological</em> arithmetic.</p>
 <p>The second reason for this has to do with invalid dates, such as the three in this vector:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">odd_dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">2</span>, <span class="fl">28</span><span class="op">:</span><span class="fl">31</span><span class="op">)</span>
-<span class="va">odd_dates</span>
-<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[4]&gt;</span>
-<span class="co">#&gt; [1] "2019-02-28" "2019-02-29" "2019-02-30" "2019-02-31"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">odd_dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">2</span>, <span class="fl">28</span><span class="op">:</span><span class="fl">31</span><span class="op">)</span></span>
+<span><span class="va">odd_dates</span></span>
+<span><span class="co">#&gt; &lt;year_month_day&lt;day&gt;[4]&gt;</span></span>
+<span><span class="co">#&gt; [1] "2019-02-28" "2019-02-29" "2019-02-30" "2019-02-31"</span></span></code></pre></div>
 <p>What does it mean to “add 1 day” to these? There is no obvious answer to this question. Since clock requires that you first convert to a time point to do day based arithmetic, you’ll be forced to call <code><a href="../reference/clock-invalid.html">invalid_resolve()</a></code> to handle these invalid dates first. After resolving them manually, then day based arithmetic again makes sense.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">odd_dates</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/clock-invalid.html">invalid_resolve</a></span><span class="op">(</span>invalid <span class="op">=</span> <span class="st">"next"</span><span class="op">)</span>
-<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[4]&gt;</span>
-<span class="co">#&gt; [1] "2019-02-28" "2019-03-01" "2019-03-01" "2019-03-01"</span>
-
-<span class="va">odd_dates</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/clock-invalid.html">invalid_resolve</a></span><span class="op">(</span>invalid <span class="op">=</span> <span class="st">"next"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
-<span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[4]&gt;</span>
-<span class="co">#&gt; [1] "2019-03-02" "2019-03-03" "2019-03-03" "2019-03-03"</span>
-
-<span class="va">odd_dates</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/clock-invalid.html">invalid_resolve</a></span><span class="op">(</span>invalid <span class="op">=</span> <span class="st">"overflow"</span><span class="op">)</span>
-<span class="co">#&gt; &lt;year_month_day&lt;day&gt;[4]&gt;</span>
-<span class="co">#&gt; [1] "2019-02-28" "2019-03-01" "2019-03-02" "2019-03-03"</span>
-
-<span class="va">odd_dates</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/clock-invalid.html">invalid_resolve</a></span><span class="op">(</span>invalid <span class="op">=</span> <span class="st">"overflow"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
-<span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[4]&gt;</span>
-<span class="co">#&gt; [1] "2019-03-02" "2019-03-03" "2019-03-04" "2019-03-05"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">odd_dates</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/clock-invalid.html">invalid_resolve</a></span><span class="op">(</span>invalid <span class="op">=</span> <span class="st">"next"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;year_month_day&lt;day&gt;[4]&gt;</span></span>
+<span><span class="co">#&gt; [1] "2019-02-28" "2019-03-01" "2019-03-01" "2019-03-01"</span></span>
+<span></span>
+<span><span class="va">odd_dates</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/clock-invalid.html">invalid_resolve</a></span><span class="op">(</span>invalid <span class="op">=</span> <span class="st">"next"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[4]&gt;</span></span>
+<span><span class="co">#&gt; [1] "2019-03-02" "2019-03-03" "2019-03-03" "2019-03-03"</span></span>
+<span></span>
+<span><span class="va">odd_dates</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/clock-invalid.html">invalid_resolve</a></span><span class="op">(</span>invalid <span class="op">=</span> <span class="st">"overflow"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;year_month_day&lt;day&gt;[4]&gt;</span></span>
+<span><span class="co">#&gt; [1] "2019-02-28" "2019-03-01" "2019-03-02" "2019-03-03"</span></span>
+<span></span>
+<span><span class="va">odd_dates</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/clock-invalid.html">invalid_resolve</a></span><span class="op">(</span>invalid <span class="op">=</span> <span class="st">"overflow"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[4]&gt;</span></span>
+<span><span class="co">#&gt; [1] "2019-03-02" "2019-03-03" "2019-03-04" "2019-03-05"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="why-cant-i-add-time-to-a-zoned-time">Why can’t I add time to a zoned-time?<a class="anchor" aria-label="anchor" href="#why-cant-i-add-time-to-a-zoned-time"></a>
 </h2>
 <p>If you have a zoned-time, such as:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/zoned-parsing.html">zoned_time_parse_complete</a></span><span class="op">(</span><span class="st">"1970-04-26T01:30:00-05:00[America/New_York]"</span><span class="op">)</span>
-<span class="va">x</span>
-<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "1970-04-26T01:30:00-05:00"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/zoned-parsing.html">zoned_time_parse_complete</a></span><span class="op">(</span><span class="st">"1970-04-26T01:30:00-05:00[America/New_York]"</span><span class="op">)</span></span>
+<span><span class="va">x</span></span>
+<span><span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; [1] "1970-04-26T01:30:00-05:00"</span></span></code></pre></div>
 <p>You might wonder why you can’t add any units of time to it:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in </span><span style="color: #262626; background-color: #DADADA; font-weight: bold;">`stop_clock()`</span><span style="font-weight: bold;">:</span></span>
-<span class="co">#&gt; <span style="color: #BBBB00;">!</span> Zoned-times don't support `add_days()`.</span>
-
-<span class="fu"><a href="../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in </span><span style="color: #262626; background-color: #DADADA; font-weight: bold;">`stop_clock()`</span><span style="font-weight: bold;">:</span></span>
-<span class="co">#&gt; <span style="color: #BBBB00;">!</span> Zoned-times don't support `add_seconds()`.</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Zoned-times don't support `add_days()`.</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Zoned-times don't support `add_seconds()`.</span></span></code></pre></div>
 <p>In clock, you can’t do much with zoned-times directly. The best way to understand this is to think of a zoned-time as containing 3 things: a sys-time, a naive-time, and a time zone name. You can access those things with:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span>
-<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "1970-04-26T01:30:00-05:00"</span>
-
-<span class="co"># The printed time with no time zone info</span>
-<span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "1970-04-26T01:30:00"</span>
-
-<span class="co"># The equivalent time in UTC</span>
-<span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "1970-04-26T06:30:00"</span>
-
-<span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; [1] "America/New_York"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">x</span></span>
+<span><span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; [1] "1970-04-26T01:30:00-05:00"</span></span>
+<span></span>
+<span><span class="co"># The printed time with no time zone info</span></span>
+<span><span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; [1] "1970-04-26T01:30:00"</span></span>
+<span></span>
+<span><span class="co"># The equivalent time in UTC</span></span>
+<span><span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; [1] "1970-04-26T06:30:00"</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "America/New_York"</span></span></code></pre></div>
 <p>Calling <code><a href="../reference/clock-arithmetic.html">add_days()</a></code> on a zoned-time is then an ambiguous operation. Should we add to the sys-time or the naive-time that is contained in the zoned-time? The answer changes depending on the scenario.</p>
 <p>Because of this, you have to extract out the relevant time point that you care about, operate on that, and then convert back to zoned-time. This often produces the same result:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "1970-04-26T01:30:01-05:00"</span>
-
-<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "1970-04-26T01:30:01-05:00"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; [1] "1970-04-26T01:30:01-05:00"</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; [1] "1970-04-26T01:30:01-05:00"</span></span></code></pre></div>
 <p>But not always! When daylight saving time is involved, the choice of sys-time or naive-time matters. Let’s try adding 30 minutes:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># There is a DST gap 1 second after 01:59:59,</span>
-<span class="co"># which jumps us straight to 03:00:00,</span>
-<span class="co"># skipping the 2 o'clock hour entirely</span>
-
-<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_minutes</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in </span><span style="color: #262626; background-color: #DADADA; font-weight: bold;">`stop_clock()`</span><span style="font-weight: bold;">:</span></span>
-<span class="co">#&gt; <span style="color: #BBBB00;">!</span> Nonexistent time due to daylight saving time at location 1.</span>
-<span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</span>
-
-<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_minutes</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "1970-04-26T03:00:00-04:00"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># There is a DST gap 1 second after 01:59:59,</span></span>
+<span><span class="co"># which jumps us straight to 03:00:00,</span></span>
+<span><span class="co"># skipping the 2 o'clock hour entirely</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/clock-arithmetic.html">add_minutes</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Nonexistent time due to daylight saving time at location 1.</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/clock-arithmetic.html">add_minutes</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; [1] "1970-04-26T03:00:00-04:00"</span></span></code></pre></div>
 <p>When adding to the naive-time, we got an error. With the sys-time, everything seems okay. What happened?</p>
 <p>The sys-time scenario is easy to explain. Technically this converts to UTC, adds the time there, then converts back to your time zone. An easier way to think about this is that you sat in front of your computer for exactly 30 minutes (1800 seconds), then looked at the clock. Assuming that that clock automatically changes itself correctly for daylight saving time, it should read 3 o’clock.</p>
 <p>The naive-time scenario makes more sense if you break down the steps. First, we convert to naive-time, dropping all time zone information but keeping the printed time:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span>
-<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "1970-04-26T01:30:00-05:00"</span>
-
-<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "1970-04-26T01:30:00"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">x</span></span>
+<span><span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; [1] "1970-04-26T01:30:00-05:00"</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; [1] "1970-04-26T01:30:00"</span></span></code></pre></div>
 <p>We add 30 minutes to this. Because we don’t have any time zone information, this lands us at 2 o’clock, which isn’t an issue when working with naive-time:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_minutes</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span>
-<span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "1970-04-26T02:00:00"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/clock-arithmetic.html">add_minutes</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; [1] "1970-04-26T02:00:00"</span></span></code></pre></div>
 <p>Finally, we convert back to zoned-time. If possible, this tries to keep the printed time, and just attaches the relevant time zone onto it. However, in this case that isn’t possible, since 2 o’clock didn’t exist in this time zone! This <em>nonexistent time</em> must be handled explicitly by setting the <code>nonexistent</code> argument of <code><a href="../reference/as_zoned_time.html">as_zoned_time()</a></code>. We can choose from a variety of strategies to handle nonexistent times, but here we just roll forward to the next valid moment in time.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/clock-arithmetic.html">add_minutes</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, nonexistent <span class="op">=</span> <span class="st">"roll-forward"</span><span class="op">)</span>
-<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "1970-04-26T03:00:00-04:00"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/clock-arithmetic.html">add_minutes</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, nonexistent <span class="op">=</span> <span class="st">"roll-forward"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; [1] "1970-04-26T03:00:00-04:00"</span></span></code></pre></div>
 <p>As a general rule, it often makes the most sense to add:</p>
 <ul>
 <li><p>Years, quarters, and months to a <em>calendar</em>.</p></li>
@@ -275,67 +275,67 @@
 <h2 id="where-did-my-posixct-subseconds-go">Where did my POSIXct subseconds go?<a class="anchor" aria-label="anchor" href="#where-did-my-posixct-subseconds-go"></a>
 </h2>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">old</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>digits.secs <span class="op">=</span> <span class="fl">6</span>, digits <span class="op">=</span> <span class="fl">22</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">old</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>digits.secs <span class="op">=</span> <span class="fl">6</span>, digits <span class="op">=</span> <span class="fl">22</span><span class="op">)</span></span></code></pre></div>
 <p>Consider the following POSIXct:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-01 01:00:00.2"</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
-<span class="va">x</span>
-<span class="co">#&gt; [1] "2019-01-01 01:00:00.2 EST"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-01 01:00:00.2"</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span>
+<span><span class="va">x</span></span>
+<span><span class="co">#&gt; [1] "2019-01-01 01:00:00.2 EST"</span></span></code></pre></div>
 <p>It looks like there is some fractional second information here, but converting it to naive-time drops it:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2019-01-01T01:00:00"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; [1] "2019-01-01T01:00:00"</span></span></code></pre></div>
 <p>This is purposeful. clock treats POSIXct as a <em>second precision</em> data type. The reason for this has to do with the fact that POSIXct is implemented as a vector of doubles, which have a limit to how precisely they can store information. For example, try parsing a slightly smaller or larger fractional second:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2019-01-01 01:00:00.1"</span>, <span class="st">"2019-01-01 01:00:00.3"</span><span class="op">)</span>, 
-  <span class="st">"America/New_York"</span>
-<span class="op">)</span>
-
-<span class="co"># Oh dear!</span>
-<span class="va">y</span>
-<span class="co">#&gt; [1] "2019-01-01 01:00:00.0 EST" "2019-01-01 01:00:00.2 EST"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2019-01-01 01:00:00.1"</span>, <span class="st">"2019-01-01 01:00:00.3"</span><span class="op">)</span>, </span>
+<span>  <span class="st">"America/New_York"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Oh dear!</span></span>
+<span><span class="va">y</span></span>
+<span><span class="co">#&gt; [1] "2019-01-01 01:00:00.0 EST" "2019-01-01 01:00:00.2 EST"</span></span></code></pre></div>
 <p>It isn’t printing correctly, at the very least. Let’s look under the hood:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">unclass</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1546322400.099999904633 1546322400.299999952316</span>
-<span class="co">#&gt; attr(,"tzone")</span>
-<span class="co">#&gt; [1] "America/New_York"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">unclass</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1546322400.099999904633 1546322400.299999952316</span></span>
+<span><span class="co">#&gt; attr(,"tzone")</span></span>
+<span><span class="co">#&gt; [1] "America/New_York"</span></span></code></pre></div>
 <p>Double vectors have a limit to how much precision they can represent, and this is bumping up against that limit. So our <code>.1</code> seconds is instead represented as <code>.099999etc</code>.</p>
 <p>This precision loss gets worse the farther we get from the epoch, 1970-01-01, represented as <code>0</code> under the hood. For example, here we’ll use a number of seconds that represents the year 2050, and add 5 microseconds to it:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">new_utc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"POSIXct"</span>, <span class="st">"POSIXt"</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"tzone"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"UTC"</span>
-  <span class="va">x</span>
-<span class="op">}</span>
-
-<span class="va">year_2050</span> <span class="op">&lt;-</span> <span class="fl">2524608000</span>
-<span class="va">five_microseconds</span> <span class="op">&lt;-</span> <span class="fl">0.000005</span>
-
-<span class="fu">new_utc</span><span class="op">(</span><span class="va">year_2050</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2050-01-01 UTC"</span>
-
-<span class="co"># Oh no!</span>
-<span class="fu">new_utc</span><span class="op">(</span><span class="va">year_2050</span> <span class="op">+</span> <span class="va">five_microseconds</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2050-01-01 00:00:00.000004 UTC"</span>
-
-<span class="co"># Represented internally as:</span>
-<span class="va">year_2050</span> <span class="op">+</span> <span class="va">five_microseconds</span>
-<span class="co">#&gt; [1] 2524608000.000004768372</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">new_utc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"POSIXct"</span>, <span class="st">"POSIXt"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"tzone"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"UTC"</span></span>
+<span>  <span class="va">x</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">year_2050</span> <span class="op">&lt;-</span> <span class="fl">2524608000</span></span>
+<span><span class="va">five_microseconds</span> <span class="op">&lt;-</span> <span class="fl">0.000005</span></span>
+<span></span>
+<span><span class="fu">new_utc</span><span class="op">(</span><span class="va">year_2050</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "2050-01-01 UTC"</span></span>
+<span></span>
+<span><span class="co"># Oh no!</span></span>
+<span><span class="fu">new_utc</span><span class="op">(</span><span class="va">year_2050</span> <span class="op">+</span> <span class="va">five_microseconds</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "2050-01-01 00:00:00.000004 UTC"</span></span>
+<span></span>
+<span><span class="co"># Represented internally as:</span></span>
+<span><span class="va">year_2050</span> <span class="op">+</span> <span class="va">five_microseconds</span></span>
+<span><span class="co">#&gt; [1] 2524608000.000004768372</span></span></code></pre></div>
 <p>Because of these issues, clock treats POSIXct as a second precision data type, dropping all other information. Instead, you should parse directly into a subsecond clock type:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/naive_time_parse.html">naive_time_parse</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2019-01-01T01:00:00.1"</span>, <span class="st">"2019-01-01T01:00:00.3"</span><span class="op">)</span>, 
-  precision <span class="op">=</span> <span class="st">"millisecond"</span>
-<span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="st">"America/New_York"</span><span class="op">)</span>
-<span class="co">#&gt; &lt;zoned_time&lt;millisecond&gt;&lt;America/New_York&gt;[2]&gt;</span>
-<span class="co">#&gt; [1] "2019-01-01T01:00:00.100-05:00" "2019-01-01T01:00:00.300-05:00"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/naive_time_parse.html">naive_time_parse</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2019-01-01T01:00:00.1"</span>, <span class="st">"2019-01-01T01:00:00.3"</span><span class="op">)</span>, </span>
+<span>  precision <span class="op">=</span> <span class="st">"millisecond"</span></span>
+<span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="st">"America/New_York"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;zoned_time&lt;millisecond&gt;&lt;America/New_York&gt;[2]&gt;</span></span>
+<span><span class="co">#&gt; [1] "2019-01-01T01:00:00.100-05:00" "2019-01-01T01:00:00.300-05:00"</span></span></code></pre></div>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Reset old options</span>
-<span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="va">old</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Reset old options</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="va">old</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="what-is-the-time-zone-of-date">What is the time zone of Date?<a class="anchor" aria-label="anchor" href="#what-is-the-time-zone-of-date"></a>
@@ -344,140 +344,140 @@
 <p>R does not consistently treat Dates as naive or UTC. Instead it switches between them, depending on the function.</p>
 <p>For example, the Date method of <code><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct()</a></code> does not expose a <code>tz</code> argument. Instead, it assumes that Date is UTC, and that the result should be shown in local time (as defined by <code><a href="https://rdrr.io/r/base/timezones.html" class="external-link">Sys.timezone()</a></code>). This often results in confusing behavior, such as:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2019-01-01"</span><span class="op">)</span>
-<span class="va">x</span>
-<span class="co">#&gt; [1] "2019-01-01"</span>
-
-<span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_timezone.html" class="external-link">with_timezone</a></span><span class="op">(</span><span class="st">"America/New_York"</span>, <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2018-12-31 19:00:00 EST"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2019-01-01"</span><span class="op">)</span></span>
+<span><span class="va">x</span></span>
+<span><span class="co">#&gt; [1] "2019-01-01"</span></span>
+<span></span>
+<span><span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_timezone.html" class="external-link">with_timezone</a></span><span class="op">(</span><span class="st">"America/New_York"</span>, <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "2018-12-31 19:00:00 EST"</span></span></code></pre></div>
 <p>With clock, converting to zoned-time from Date will always assume that Date is naive, which will keep the printed date (if possible) and show it in the <code>zone</code> you specified.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"UTC"</span><span class="op">)</span>
-<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;UTC&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2019-01-01T00:00:00+00:00"</span>
-
-<span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
-<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2019-01-01T00:00:00-05:00"</span>
-
-<span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"Europe/London"</span><span class="op">)</span>
-<span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Europe/London&gt;[1]&gt;</span>
-<span class="co">#&gt; [1] "2019-01-01T00:00:00+00:00"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"UTC"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;UTC&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; [1] "2019-01-01T00:00:00+00:00"</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; [1] "2019-01-01T00:00:00-05:00"</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"Europe/London"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Europe/London&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; [1] "2019-01-01T00:00:00+00:00"</span></span></code></pre></div>
 <p>On the other hand, the POSIXct method for <code><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date()</a></code> treats Date as a naive type. This is probably what you want, and this example just shows the inconsistency. It is a bit hard to see this, because the <code>tz</code> argument of the method defaults to <code>"UTC"</code>, but if you set the <code>tz</code> argument to the zone of your input, it becomes clear:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-01 23:00:00"</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">x</span>, tz <span class="op">=</span> <span class="fu"><a href="../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2019-01-01"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-01 23:00:00"</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">x</span>, tz <span class="op">=</span> <span class="fu"><a href="../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "2019-01-01"</span></span></code></pre></div>
 <p>If this assumed that Date was UTC, then it would have resulted in something like:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">utc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date-zone.html">date_set_zone</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"UTC"</span><span class="op">)</span>
-<span class="va">utc</span>
-<span class="co">#&gt; [1] "2019-01-02 04:00:00 UTC"</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">utc</span>, tz <span class="op">=</span> <span class="fu"><a href="../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">utc</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2019-01-02"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">utc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date-zone.html">date_set_zone</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"UTC"</span><span class="op">)</span></span>
+<span><span class="va">utc</span></span>
+<span><span class="co">#&gt; [1] "2019-01-02 04:00:00 UTC"</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">utc</span>, tz <span class="op">=</span> <span class="fu"><a href="../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">utc</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "2019-01-02"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="why-doesnt-this-work-with-data-table">Why doesn’t this work with data.table?<a class="anchor" aria-label="anchor" href="#why-doesnt-this-work-with-data-table"></a>
 </h2>
 <p>While the entire high-level API for R’s native date (Date) and date-time (POSIXct) types will work fine with data.table, if you try to put any of the major clock types into a data.table, you will probably see this error message:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span>
-
-<span class="fu">data.table</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error in dimnames(x) &lt;- dn : </span>
-<span class="co">#&gt;   length of 'dimnames' [1] not equal to array extent</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">data.table</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in dimnames(x) &lt;- dn : </span></span>
+<span><span class="co">#&gt;   length of 'dimnames' [1] not equal to array extent</span></span></code></pre></div>
 <p>You won’t see this issue when working with data.frames or tibbles.</p>
 <p>As of now, data.table doesn’t support the concept of <em>record types</em>. These are implemented as a list of vectors of equal length, that together represent a single idea. The <code><a href="https://rdrr.io/r/base/length.html" class="external-link">length()</a></code> of these types should be taken from the length of the vectors, not the length of the list. If you unclass any of the clock types, you’ll see that they are implemented in this way:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ymdh</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">unclass</a></span><span class="op">(</span><span class="va">ymdh</span><span class="op">)</span>
-<span class="co">#&gt; $year</span>
-<span class="co">#&gt; [1] 2019 2019</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $month</span>
-<span class="co">#&gt; [1] 1 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $day</span>
-<span class="co">#&gt; [1] 1 2</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $hour</span>
-<span class="co">#&gt; [1] 1 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; attr(,"precision")</span>
-<span class="co">#&gt; [1] 5</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">unclass</a></span><span class="op">(</span><span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">ymdh</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; $ticks</span>
-<span class="co">#&gt; [1] 17897 17898</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $ticks_of_day</span>
-<span class="co">#&gt; [1] 1 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; attr(,"precision")</span>
-<span class="co">#&gt; [1] 5</span>
-<span class="co">#&gt; attr(,"clock")</span>
-<span class="co">#&gt; [1] 1</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ymdh</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">unclass</a></span><span class="op">(</span><span class="va">ymdh</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $year</span></span>
+<span><span class="co">#&gt; [1] 2019 2019</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $month</span></span>
+<span><span class="co">#&gt; [1] 1 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $day</span></span>
+<span><span class="co">#&gt; [1] 1 2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $hour</span></span>
+<span><span class="co">#&gt; [1] 1 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attr(,"precision")</span></span>
+<span><span class="co">#&gt; [1] 5</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">unclass</a></span><span class="op">(</span><span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">ymdh</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $ticks</span></span>
+<span><span class="co">#&gt; [1] 17897 17898</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ticks_of_day</span></span>
+<span><span class="co">#&gt; [1] 1 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attr(,"precision")</span></span>
+<span><span class="co">#&gt; [1] 5</span></span>
+<span><span class="co">#&gt; attr(,"clock")</span></span>
+<span><span class="co">#&gt; [1] 1</span></span></code></pre></div>
 <p>I find that record types are extremely useful data structures for building upon R’s basic atomic types in ways that otherwise couldn’t be done. They allow calendar types to hold information about each component, enabling instant access for retrieval, modification, and grouping. They also allow calendars to represent invalid dates, such as <code>2019-02-31</code>, without any issues. Time points use them to store up to nanosecond precision date-times, which are really C++ <code>int64_t</code> types that don’t nicely fit into any R atomic type (I am aware of the bit64 package, and made a conscious decision to implement as a record type instead. This partly had to do with how missing values are handled, and how that integrates with vctrs).</p>
 <p>The idea of a record type actually isn’t new. R’s own POSIXlt type is a record type:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-01"</span>, <span class="st">"America/New_York"</span><span class="op">)</span>
-
-<span class="co"># POSIXct is implemented as a double</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">unclass</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1546318800</span>
-<span class="co">#&gt; attr(,"tzone")</span>
-<span class="co">#&gt; [1] "America/New_York"</span>
-
-<span class="co"># POSIXlt is a record type</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">unclass</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXlt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; $sec</span>
-<span class="co">#&gt; [1] 0</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $min</span>
-<span class="co">#&gt; [1] 0</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $hour</span>
-<span class="co">#&gt; [1] 0</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $mday</span>
-<span class="co">#&gt; [1] 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $mon</span>
-<span class="co">#&gt; [1] 0</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $year</span>
-<span class="co">#&gt; [1] 119</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $wday</span>
-<span class="co">#&gt; [1] 2</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $yday</span>
-<span class="co">#&gt; [1] 0</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $isdst</span>
-<span class="co">#&gt; [1] 0</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $zone</span>
-<span class="co">#&gt; [1] "EST"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $gmtoff</span>
-<span class="co">#&gt; [1] -18000</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; attr(,"tzone")</span>
-<span class="co">#&gt; [1] "America/New_York" "EST"              "EDT"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-01"</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># POSIXct is implemented as a double</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">unclass</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1546318800</span></span>
+<span><span class="co">#&gt; attr(,"tzone")</span></span>
+<span><span class="co">#&gt; [1] "America/New_York"</span></span>
+<span></span>
+<span><span class="co"># POSIXlt is a record type</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">unclass</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXlt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $sec</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $min</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $hour</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $mday</span></span>
+<span><span class="co">#&gt; [1] 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $mon</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $year</span></span>
+<span><span class="co">#&gt; [1] 119</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $wday</span></span>
+<span><span class="co">#&gt; [1] 2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $yday</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $isdst</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $zone</span></span>
+<span><span class="co">#&gt; [1] "EST"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $gmtoff</span></span>
+<span><span class="co">#&gt; [1] -18000</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attr(,"tzone")</span></span>
+<span><span class="co">#&gt; [1] "America/New_York" "EST"              "EDT"</span></span></code></pre></div>
 <p>data.table doesn’t truly support POSIXlt either. Instead, you get a warning about them converting it to a POSIXct. This is pretty reasonable considering their focus on performance.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">data.table</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXlt</a></span><span class="op">(</span><span class="st">"2019-01-01"</span>, <span class="st">"America/New_York"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;             x</span>
-<span class="co">#&gt; 1: 2019-01-01</span>
-<span class="co">#&gt; Warning message:</span>
-<span class="co">#&gt; In as.data.table.list(x, keep.rownames = keep.rownames, check.names = check.names,  :</span>
-<span class="co">#&gt;   POSIXlt column type detected and converted to POSIXct. We do not recommend use of POSIXlt at all because it uses 40 bytes to store one date.</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">data.table</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXlt</a></span><span class="op">(</span><span class="st">"2019-01-01"</span>, <span class="st">"America/New_York"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;             x</span></span>
+<span><span class="co">#&gt; 1: 2019-01-01</span></span>
+<span><span class="co">#&gt; Warning message:</span></span>
+<span><span class="co">#&gt; In as.data.table.list(x, keep.rownames = keep.rownames, check.names = check.names,  :</span></span>
+<span><span class="co">#&gt;   POSIXlt column type detected and converted to POSIXct. We do not recommend use of POSIXlt at all because it uses 40 bytes to store one date.</span></span></code></pre></div>
 <p>It was previously a bit difficult to create record types in R because there were few examples and no resources to build on. In vctrs, we’ve added a <code>vctrs_rcrd</code> type that serves as a base to build new record types on. Many S3 methods have been written for <code>vctrs_rcrd</code>s in a way that should work for any type that builds on top of it, giving you a lot of scaffolding for free.</p>
 <p>I am hopeful that as more record types make their way into the R ecosystem built on this common foundation, it might be possible for data.table to enable this as an approved type in their package.</p>
 </div>
@@ -496,7 +496,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
   </div></footer>

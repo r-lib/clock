@@ -3,7 +3,7 @@
 The most interesting thing about the weekday type is that it implements
 circular arithmetic, which makes determining the "next Monday" or
 "previous Tuesday" from a sys-time or naive-time easy to compute.
-See the examples.'><title>Construct a weekday vector — weekday • clock</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Source%20Sans%20Pro-0.4.0/font.css" rel="stylesheet"><link href="../deps/_Source%20Code%20Pro-0.4.0/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Construct a weekday vector — weekday"><meta property="og:description" content='A weekday is a simple type that represents a day of the week.
+See the examples.'><title>Construct a weekday vector — weekday • clock</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.2/font.css" rel="stylesheet"><link href="../deps/Source_Code_Pro-0.4.2/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Construct a weekday vector — weekday"><meta property="og:description" content='A weekday is a simple type that represents a day of the week.
 The most interesting thing about the weekday type is that it implements
 circular arithmetic, which makes determining the "next Monday" or
 "previous Tuesday" from a sys-time or naive-time easy to compute.
@@ -80,7 +80,7 @@ See the examples.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">weekday</span><span class="op">(</span>code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span>, encoding <span class="op">=</span> <span class="st">"western"</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">weekday</span><span class="op">(</span>code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span>, encoding <span class="op">=</span> <span class="st">"western"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -89,65 +89,72 @@ See the examples.</p>
 <dd><p><code>[integer]</code></p>
 <p>Integer codes between <code>[1, 7]</code> representing days of the week. The
 interpretation of these values depends on <code>encoding</code>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>These dots are for future extensions and must be empty.</p></dd>
+
+
 <dt>encoding</dt>
 <dd><p><code>[character(1)]</code></p>
 <p>One of:</p><ul><li><p><code>"western"</code>: Encode weekdays assuming <code>1 == Sunday</code> and <code>7 == Saturday</code>.</p></li>
 <li><p><code>"iso"</code>: Encode weekdays assuming <code>1 == Monday</code> and <code>7 == Sunday</code>. This
 is in line with the ISO standard.</p></li>
 </ul></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A weekday vector.</p>
+    
+
+<p>A weekday vector.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">01</span>, <span class="fl">05</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># This is a Saturday!</span></span>
-<span class="r-in"><span class="fu"><a href="as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">01</span>, <span class="fl">05</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># This is a Saturday!</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;weekday[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] Sat</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Adjust to the next Wednesday</span></span>
-<span class="r-in"><span class="va">wednesday</span> <span class="op">&lt;-</span> <span class="fu">weekday</span><span class="op">(</span><span class="va">clock_weekdays</span><span class="op">$</span><span class="va">wednesday</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># This returns the number of days until the next Wednesday using</span></span>
-<span class="r-in"><span class="co"># circular arithmetic</span></span>
-<span class="r-in"><span class="co"># "Wednesday - Saturday = 4 days until next Wednesday"</span></span>
-<span class="r-in"><span class="va">wednesday</span> <span class="op">-</span> <span class="fu"><a href="as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Adjust to the next Wednesday</span></span></span>
+<span class="r-in"><span><span class="va">wednesday</span> <span class="op">&lt;-</span> <span class="fu">weekday</span><span class="op">(</span><span class="va">clock_weekdays</span><span class="op">$</span><span class="va">wednesday</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># This returns the number of days until the next Wednesday using</span></span></span>
+<span class="r-in"><span><span class="co"># circular arithmetic</span></span></span>
+<span class="r-in"><span><span class="co"># "Wednesday - Saturday = 4 days until next Wednesday"</span></span></span>
+<span class="r-in"><span><span class="va">wednesday</span> <span class="op">-</span> <span class="fu"><a href="as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;duration&lt;day&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Advance to the next Wednesday</span></span>
-<span class="r-in"><span class="va">x_next_wednesday</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="op">(</span><span class="va">wednesday</span> <span class="op">-</span> <span class="fu"><a href="as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="va">x_next_wednesday</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Advance to the next Wednesday</span></span></span>
+<span class="r-in"><span><span class="va">x_next_wednesday</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="op">(</span><span class="va">wednesday</span> <span class="op">-</span> <span class="fu"><a href="as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="va">x_next_wednesday</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;weekday[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] Wed</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># What about the previous Tuesday?</span></span>
-<span class="r-in"><span class="va">tuesday</span> <span class="op">&lt;-</span> <span class="fu">weekday</span><span class="op">(</span><span class="va">clock_weekdays</span><span class="op">$</span><span class="va">tuesday</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">-</span> <span class="op">(</span><span class="fu"><a href="as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">-</span> <span class="va">tuesday</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># What about the previous Tuesday?</span></span></span>
+<span class="r-in"><span><span class="va">tuesday</span> <span class="op">&lt;-</span> <span class="fu">weekday</span><span class="op">(</span><span class="va">clock_weekdays</span><span class="op">$</span><span class="va">tuesday</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">-</span> <span class="op">(</span><span class="fu"><a href="as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">-</span> <span class="va">tuesday</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;time_point&lt;naive&gt;&lt;day&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2019-01-01"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># What about the next Saturday?</span></span>
-<span class="r-in"><span class="co"># With an additional condition that if today is a Saturday,</span></span>
-<span class="r-in"><span class="co"># then advance to the next one.</span></span>
-<span class="r-in"><span class="va">saturday</span> <span class="op">&lt;-</span> <span class="fu">weekday</span><span class="op">(</span><span class="va">clock_weekdays</span><span class="op">$</span><span class="va">saturday</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">+</span> <span class="fl">1L</span> <span class="op">+</span> <span class="op">(</span><span class="va">saturday</span> <span class="op">-</span> <span class="fu"><a href="as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="va">x</span> <span class="op">+</span> <span class="fl">1L</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># What about the next Saturday?</span></span></span>
+<span class="r-in"><span><span class="co"># With an additional condition that if today is a Saturday,</span></span></span>
+<span class="r-in"><span><span class="co"># then advance to the next one.</span></span></span>
+<span class="r-in"><span><span class="va">saturday</span> <span class="op">&lt;-</span> <span class="fu">weekday</span><span class="op">(</span><span class="va">clock_weekdays</span><span class="op">$</span><span class="va">saturday</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">+</span> <span class="fl">1L</span> <span class="op">+</span> <span class="op">(</span><span class="va">saturday</span> <span class="op">-</span> <span class="fu"><a href="as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="va">x</span> <span class="op">+</span> <span class="fl">1L</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;time_point&lt;naive&gt;&lt;day&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2019-01-12"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># You can supply an ISO coding for `code` as well, where 1 == Monday.</span></span>
-<span class="r-in"><span class="fu">weekday</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">7</span>, encoding <span class="op">=</span> <span class="st">"western"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># You can supply an ISO coding for `code` as well, where 1 == Monday.</span></span></span>
+<span class="r-in"><span><span class="fu">weekday</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">7</span>, encoding <span class="op">=</span> <span class="st">"western"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;weekday[7]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] Sun Mon Tue Wed Thu Fri Sat</span>
-<span class="r-in"><span class="fu">weekday</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">7</span>, encoding <span class="op">=</span> <span class="st">"iso"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">weekday</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">7</span>, encoding <span class="op">=</span> <span class="st">"iso"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;weekday[7]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] Mon Tue Wed Thu Fri Sat Sun</span>
 </code></pre></div>
@@ -163,7 +170,7 @@ is in line with the ISO standard.</p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
   </div></footer></body></html>

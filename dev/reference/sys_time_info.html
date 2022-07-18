@@ -11,7 +11,7 @@ active.
 abbreviation: The time zone abbreviation in use throughout this begin
 to end range.
 
-"><title>Info: sys-time — sys_time_info • clock</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Source%20Sans%20Pro-0.4.0/font.css" rel="stylesheet"><link href="../deps/_Source%20Code%20Pro-0.4.0/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Info: sys-time — sys_time_info"><meta property="og:description" content="sys_time_info() retrieves a set of low-level information generally not
+"><title>Info: sys-time — sys_time_info • clock</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.2/font.css" rel="stylesheet"><link href="../deps/Source_Code_Pro-0.4.2/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Info: sys-time — sys_time_info"><meta property="og:description" content="sys_time_info() retrieves a set of low-level information generally not
 required for most date-time manipulations. It returns a data frame with the
 following columns:
 begin, end: Second precision sys-times specifying the range of the
@@ -101,7 +101,7 @@ to <code>end</code> range.</p></li>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sys_time_info</span><span class="op">(</span><span class="va">x</span>, <span class="va">zone</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sys_time_info</span><span class="op">(</span><span class="va">x</span>, <span class="va">zone</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -109,15 +109,20 @@ to <code>end</code> range.</p></li>
     <dl><dt>x</dt>
 <dd><p><code>[clock_sys_time]</code></p>
 <p>A sys-time.</p></dd>
+
+
 <dt>zone</dt>
 <dd><p><code>[character]</code></p>
 <p>A valid time zone name.</p>
 <p>Unlike most functions in clock, in <code>sys_time_info()</code> <code>zone</code> is vectorized
 and is recycled against <code>x</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data frame of low level information.</p>
+    
+
+<p>A data frame of low level information.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -128,38 +133,38 @@ supported year value is returned for <code>begin</code> (typically, a year value
 supported year value is returned for <code>end</code> (typically, a year value of
 <code>32767</code>).</p>
 <p>The <code>offset</code> is the bridge between sys-time and naive-time for the <code>zone</code>
-being used. The relationship of the three values is:</p><div class="sourceCode"><pre><code><span class="va">offset</span> <span class="op">=</span> <span class="va">naive_time</span> <span class="op">-</span> <span class="va">sys_time</span></code></pre></div>
+being used. The relationship of the three values is:</p><div class="sourceCode"><pre><code><span><span class="va">offset</span> <span class="op">=</span> <span class="va">naive_time</span> <span class="op">-</span> <span class="va">sys_time</span></span></code></pre></div>
 
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://vctrs.r-lib.org/" class="external-link">vctrs</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2021</span>, <span class="fl">03</span>, <span class="fl">14</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">01</span>, <span class="fl">03</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">59</span>, <span class="fl">00</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">59</span>, <span class="fl">00</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># x[1] is in EST, x[2] is in EDT</span></span>
-<span class="r-in"><span class="va">x</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://vctrs.r-lib.org/" class="external-link">vctrs</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2021</span>, <span class="fl">03</span>, <span class="fl">14</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">01</span>, <span class="fl">03</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">59</span>, <span class="fl">00</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">59</span>, <span class="fl">00</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># x[1] is in EST, x[2] is in EDT</span></span></span>
+<span class="r-in"><span><span class="va">x</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2021-03-14T01:59:59-05:00" "2021-03-14T03:00:00-04:00"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">x_sys</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">info</span> <span class="op">&lt;-</span> <span class="fu">sys_time_info</span><span class="op">(</span><span class="va">x_sys</span>, <span class="fu"><a href="zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">info</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">x_sys</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">info</span> <span class="op">&lt;-</span> <span class="fu">sys_time_info</span><span class="op">(</span><span class="va">x_sys</span>, <span class="fu"><a href="zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">info</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 begin                 end offset   dst abbreviation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 2020-11-01T06:00:00 2021-03-14T07:00:00 -18000 FALSE          EST</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 2021-03-14T07:00:00 2021-11-07T06:00:00 -14400  TRUE          EDT</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Convert `begin` and `end` to zoned-times to see the previous and</span></span>
-<span class="r-in"><span class="co"># next daylight saving time transitions</span></span>
-<span class="r-in"><span class="fu"><a href="https://vctrs.r-lib.org/reference/data_frame.html" class="external-link">data_frame</a></span><span class="op">(</span></span>
-<span class="r-in">  x <span class="op">=</span> <span class="va">x</span>,</span>
-<span class="r-in">  begin <span class="op">=</span> <span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">info</span><span class="op">$</span><span class="va">begin</span>, <span class="fu"><a href="zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  end <span class="op">=</span> <span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">info</span><span class="op">$</span><span class="va">end</span>, <span class="fu"><a href="zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Convert `begin` and `end` to zoned-times to see the previous and</span></span></span>
+<span class="r-in"><span><span class="co"># next daylight saving time transitions</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://vctrs.r-lib.org/reference/data_frame.html" class="external-link">data_frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="va">x</span>,</span></span>
+<span class="r-in"><span>  begin <span class="op">=</span> <span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">info</span><span class="op">$</span><span class="va">begin</span>, <span class="fu"><a href="zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  end <span class="op">=</span> <span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">info</span><span class="op">$</span><span class="va">end</span>, <span class="fu"><a href="zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                             x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 2021-03-14T01:59:59-05:00[America/New_York]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 2021-03-14T03:00:00-04:00[America/New_York]</span>
@@ -169,30 +174,30 @@ being used. The relationship of the three values is:</p><div class="sourceCode">
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                           end</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 2021-03-14T03:00:00-04:00[America/New_York]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 2021-11-07T01:00:00-05:00[America/New_York]</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># `end` can be used to iterate through daylight saving time transitions</span></span>
-<span class="r-in"><span class="co"># by repeatedly calling `sys_time_info()`</span></span>
-<span class="r-in"><span class="fu">sys_time_info</span><span class="op">(</span><span class="va">info</span><span class="op">$</span><span class="va">end</span>, <span class="fu"><a href="zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># `end` can be used to iterate through daylight saving time transitions</span></span></span>
+<span class="r-in"><span><span class="co"># by repeatedly calling `sys_time_info()`</span></span></span>
+<span class="r-in"><span><span class="fu">sys_time_info</span><span class="op">(</span><span class="va">info</span><span class="op">$</span><span class="va">end</span>, <span class="fu"><a href="zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 begin                 end offset   dst abbreviation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 2021-03-14T07:00:00 2021-11-07T06:00:00 -14400  TRUE          EDT</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 2021-11-07T06:00:00 2022-03-13T07:00:00 -18000 FALSE          EST</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Multiple `zone`s can be supplied to look up daylight saving time</span></span>
-<span class="r-in"><span class="co"># information in different time zones</span></span>
-<span class="r-in"><span class="va">zones</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"America/New_York"</span>, <span class="st">"America/Los_Angeles"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">info2</span> <span class="op">&lt;-</span> <span class="fu">sys_time_info</span><span class="op">(</span><span class="va">x_sys</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">zones</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">info2</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Multiple `zone`s can be supplied to look up daylight saving time</span></span></span>
+<span class="r-in"><span><span class="co"># information in different time zones</span></span></span>
+<span class="r-in"><span><span class="va">zones</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"America/New_York"</span>, <span class="st">"America/Los_Angeles"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">info2</span> <span class="op">&lt;-</span> <span class="fu">sys_time_info</span><span class="op">(</span><span class="va">x_sys</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">zones</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">info2</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 begin                 end offset   dst abbreviation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 2020-11-01T06:00:00 2021-03-14T07:00:00 -18000 FALSE          EST</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 2020-11-01T09:00:00 2021-03-14T10:00:00 -28800 FALSE          PST</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># The offset can be used to display the naive-time (i.e. the printed time)</span></span>
-<span class="r-in"><span class="co"># in both of those time zones</span></span>
-<span class="r-in"><span class="fu"><a href="https://vctrs.r-lib.org/reference/data_frame.html" class="external-link">data_frame</a></span><span class="op">(</span></span>
-<span class="r-in">  zone <span class="op">=</span> <span class="va">zones</span>,</span>
-<span class="r-in">  naive_time <span class="op">=</span> <span class="va">x_sys</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">info2</span><span class="op">$</span><span class="va">offset</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The offset can be used to display the naive-time (i.e. the printed time)</span></span></span>
+<span class="r-in"><span><span class="co"># in both of those time zones</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://vctrs.r-lib.org/reference/data_frame.html" class="external-link">data_frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  zone <span class="op">=</span> <span class="va">zones</span>,</span></span>
+<span class="r-in"><span>  naive_time <span class="op">=</span> <span class="va">x_sys</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">info2</span><span class="op">$</span><span class="va">offset</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  zone          naive_time</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    America/New_York 2021-03-14T01:59:59</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 America/Los_Angeles 2021-03-13T22:59:59</span>
@@ -209,7 +214,7 @@ being used. The relationship of the three values is:</p><div class="sourceCode">
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
   </div></footer></body></html>

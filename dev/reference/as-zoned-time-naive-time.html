@@ -8,7 +8,7 @@ time zone while attempting to keep all other printed information the
 same (if possible).
 If you want to retain the underlying duration, try converting to a zoned-time
 from a sys-time, which is a time point
-interpreted as having a UTC time zone."><title>Convert to a zoned-time from a naive-time — as-zoned-time-naive-time • clock</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Source%20Sans%20Pro-0.4.0/font.css" rel="stylesheet"><link href="../deps/_Source%20Code%20Pro-0.4.0/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Convert to a zoned-time from a naive-time — as-zoned-time-naive-time"><meta property="og:description" content="This is a naive-time method for the as_zoned_time() generic.
+interpreted as having a UTC time zone."><title>Convert to a zoned-time from a naive-time — as-zoned-time-naive-time • clock</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.2/font.css" rel="stylesheet"><link href="../deps/Source_Code_Pro-0.4.2/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Convert to a zoned-time from a naive-time — as-zoned-time-naive-time"><meta property="og:description" content="This is a naive-time method for the as_zoned_time() generic.
 Converting to a zoned-time from a naive-time retains the printed time,
 but changes the underlying duration, depending on the zone that you choose.
 Naive-times are time points with a yet-to-be-determined time zone. By
@@ -95,8 +95,8 @@ interpreted as having a UTC time zone.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for clock_naive_time</span>
-<span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">zone</span>, <span class="va">...</span>, nonexistent <span class="op">=</span> <span class="cn">NULL</span>, ambiguous <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for clock_naive_time</span></span>
+<span><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">zone</span>, <span class="va">...</span>, nonexistent <span class="op">=</span> <span class="cn">NULL</span>, ambiguous <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -104,11 +104,17 @@ interpreted as having a UTC time zone.</p>
     <dl><dt>x</dt>
 <dd><p><code>[clock_naive_time]</code></p>
 <p>A naive-time to convert to a zoned-time.</p></dd>
+
+
 <dt>zone</dt>
 <dd><p><code>[character(1)]</code></p>
 <p>The zone to convert to.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>These dots are for future extensions and must be empty.</p></dd>
+
+
 <dt>nonexistent</dt>
 <dd><p><code>[character / NULL]</code></p>
 <p>One of the following nonexistent time resolution strategies, allowed to be
@@ -127,6 +133,8 @@ recommended over shifting, as these two strategies maintain the
 <p>If <code>getOption("clock.strict")</code> is <code>TRUE</code>, <code>nonexistent</code> must be supplied
 and cannot be <code>NULL</code>. This is a convenient way to make production code
 robust to nonexistent times.</p></dd>
+
+
 <dt>ambiguous</dt>
 <dd><p><code>[character / zoned_time / POSIXct / list(2) / NULL]</code></p>
 <p>One of the following ambiguous time resolution strategies, allowed to be
@@ -154,10 +162,13 @@ zoned_time on its own, as this implies <code>NULL</code> for ambiguous times tha
 zoned_time cannot resolve. Instead, it must be specified as a list
 alongside an ambiguous time resolution strategy as described above. This is
 a convenient way to make production code robust to ambiguous times.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A zoned-time vector.</p>
+    
+
+<p>A zoned-time vector.</p>
     </div>
     <div class="section level2">
     <h2 id="daylight-saving-time">Daylight Saving Time<a class="anchor" aria-label="anchor" href="#daylight-saving-time"></a></h2>
@@ -189,180 +200,180 @@ time resolution strategies.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Converting a naive-time to a zoned-time generally retains the</span></span>
-<span class="r-in"><span class="co"># printed time, while changing the underlying duration.</span></span>
-<span class="r-in"><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Converting a naive-time to a zoned-time generally retains the</span></span></span>
+<span class="r-in"><span><span class="co"># printed time, while changing the underlying duration.</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2019-01-01T00:00:00-05:00"</span>
-<span class="r-in"><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"America/Los_Angeles"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"America/Los_Angeles"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/Los_Angeles&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2019-01-01T00:00:00-08:00"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># ---------------------------------------------------------------------------</span></span>
-<span class="r-in"><span class="co"># Nonexistent time:</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">new_york</span> <span class="op">&lt;-</span> <span class="st">"America/New_York"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># There was a daylight saving gap in the America/New_York time zone on</span></span>
-<span class="r-in"><span class="co"># 2020-03-08 01:59:59 -&gt; 03:00:00, which means that one of these</span></span>
-<span class="r-in"><span class="co"># naive-times don't exist in that time zone. By default, attempting to</span></span>
-<span class="r-in"><span class="co"># convert it to a zoned time will result in an error.</span></span>
-<span class="r-in"><span class="va">nonexistent_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">03</span>, <span class="fl">08</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">02</span>, <span class="fl">03</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">45</span>, <span class="fl">30</span><span class="op">)</span>, <span class="fl">00</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">nonexistent_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">nonexistent_time</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">nonexistent_time</span>, <span class="va">new_york</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># ---------------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co"># Nonexistent time:</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">new_york</span> <span class="op">&lt;-</span> <span class="st">"America/New_York"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># There was a daylight saving gap in the America/New_York time zone on</span></span></span>
+<span class="r-in"><span><span class="co"># 2020-03-08 01:59:59 -&gt; 03:00:00, which means that one of these</span></span></span>
+<span class="r-in"><span><span class="co"># naive-times don't exist in that time zone. By default, attempting to</span></span></span>
+<span class="r-in"><span><span class="co"># convert it to a zoned time will result in an error.</span></span></span>
+<span class="r-in"><span><span class="va">nonexistent_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">03</span>, <span class="fl">08</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">02</span>, <span class="fl">03</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">45</span>, <span class="fl">30</span><span class="op">)</span>, <span class="fl">00</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">nonexistent_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">nonexistent_time</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">nonexistent_time</span>, <span class="va">new_york</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in stop_clock(message, "clock_error_nonexistent_time") : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Nonexistent time due to daylight saving time at location 1.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Resolve this by specifying a nonexistent time resolution strategy</span></span>
-<span class="r-in"><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">nonexistent_time</span>, <span class="va">new_york</span>, nonexistent <span class="op">=</span> <span class="st">"roll-forward"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Resolve this by specifying a nonexistent time resolution strategy</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">nonexistent_time</span>, <span class="va">new_york</span>, nonexistent <span class="op">=</span> <span class="st">"roll-forward"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-03-08T03:00:00-04:00" "2020-03-08T03:30:00-04:00"</span>
-<span class="r-in"><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">nonexistent_time</span>, <span class="va">new_york</span>, nonexistent <span class="op">=</span> <span class="st">"roll-backward"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">nonexistent_time</span>, <span class="va">new_york</span>, nonexistent <span class="op">=</span> <span class="st">"roll-backward"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-03-08T01:59:59-05:00" "2020-03-08T03:30:00-04:00"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Note that rolling backwards will choose the last possible moment in</span></span>
-<span class="r-in"><span class="co"># time at the current precision of the input</span></span>
-<span class="r-in"><span class="va">nonexistent_nanotime</span> <span class="op">&lt;-</span> <span class="fu"><a href="time_point_cast.html">time_point_cast</a></span><span class="op">(</span><span class="va">nonexistent_time</span>, <span class="st">"nanosecond"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">nonexistent_nanotime</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Note that rolling backwards will choose the last possible moment in</span></span></span>
+<span class="r-in"><span><span class="co"># time at the current precision of the input</span></span></span>
+<span class="r-in"><span><span class="va">nonexistent_nanotime</span> <span class="op">&lt;-</span> <span class="fu"><a href="time_point_cast.html">time_point_cast</a></span><span class="op">(</span><span class="va">nonexistent_time</span>, <span class="st">"nanosecond"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">nonexistent_nanotime</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;time_point&lt;naive&gt;&lt;nanosecond&gt;[2]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-03-08T02:45:00.000000000" "2020-03-08T03:30:00.000000000"</span>
-<span class="r-in"><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">nonexistent_nanotime</span>, <span class="va">new_york</span>, nonexistent <span class="op">=</span> <span class="st">"roll-backward"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">nonexistent_nanotime</span>, <span class="va">new_york</span>, nonexistent <span class="op">=</span> <span class="st">"roll-backward"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;nanosecond&gt;&lt;America/New_York&gt;[2]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-03-08T01:59:59.999999999-05:00"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "2020-03-08T03:30:00.000000000-04:00"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># A word of caution - Shifting does not guarantee that the relative ordering</span></span>
-<span class="r-in"><span class="co"># of the input is maintained</span></span>
-<span class="r-in"><span class="va">shifted</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">nonexistent_time</span>,</span>
-<span class="r-in">  <span class="va">new_york</span>,</span>
-<span class="r-in">  nonexistent <span class="op">=</span> <span class="st">"shift-forward"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">shifted</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># A word of caution - Shifting does not guarantee that the relative ordering</span></span></span>
+<span class="r-in"><span><span class="co"># of the input is maintained</span></span></span>
+<span class="r-in"><span><span class="va">shifted</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">nonexistent_time</span>,</span></span>
+<span class="r-in"><span>  <span class="va">new_york</span>,</span></span>
+<span class="r-in"><span>  nonexistent <span class="op">=</span> <span class="st">"shift-forward"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">shifted</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-03-08T03:45:00-04:00" "2020-03-08T03:30:00-04:00"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># 02:45:00 &lt; 03:30:00</span></span>
-<span class="r-in"><span class="va">nonexistent_time</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;</span> <span class="va">nonexistent_time</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 02:45:00 &lt; 03:30:00</span></span></span>
+<span class="r-in"><span><span class="va">nonexistent_time</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;</span> <span class="va">nonexistent_time</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span class="co"># 03:45:00 &gt; 03:30:00 (relative ordering is lost)</span></span>
-<span class="r-in"><span class="va">shifted</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;</span> <span class="va">shifted</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
+<span class="r-in"><span><span class="co"># 03:45:00 &gt; 03:30:00 (relative ordering is lost)</span></span></span>
+<span class="r-in"><span><span class="va">shifted</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;</span> <span class="va">shifted</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># ---------------------------------------------------------------------------</span></span>
-<span class="r-in"><span class="co"># Ambiguous time:</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">new_york</span> <span class="op">&lt;-</span> <span class="st">"America/New_York"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># There was a daylight saving time fallback in the America/New_York time</span></span>
-<span class="r-in"><span class="co"># zone on 2020-11-01 01:59:59 EDT -&gt; 2020-11-01 01:00:00 EST, resulting</span></span>
-<span class="r-in"><span class="co"># in two 1 o'clock hours. This means that the following naive time is</span></span>
-<span class="r-in"><span class="co"># ambiguous since we don't know which of the two 1 o'clocks it belongs to.</span></span>
-<span class="r-in"><span class="co"># By default, attempting to convert it to a zoned time will result in an</span></span>
-<span class="r-in"><span class="co"># error.</span></span>
-<span class="r-in"><span class="va">ambiguous_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">11</span>, <span class="fl">01</span>, <span class="fl">01</span>, <span class="fl">30</span>, <span class="fl">00</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ambiguous_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">ambiguous_time</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">ambiguous_time</span>, <span class="va">new_york</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># ---------------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co"># Ambiguous time:</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">new_york</span> <span class="op">&lt;-</span> <span class="st">"America/New_York"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># There was a daylight saving time fallback in the America/New_York time</span></span></span>
+<span class="r-in"><span><span class="co"># zone on 2020-11-01 01:59:59 EDT -&gt; 2020-11-01 01:00:00 EST, resulting</span></span></span>
+<span class="r-in"><span><span class="co"># in two 1 o'clock hours. This means that the following naive time is</span></span></span>
+<span class="r-in"><span><span class="co"># ambiguous since we don't know which of the two 1 o'clocks it belongs to.</span></span></span>
+<span class="r-in"><span><span class="co"># By default, attempting to convert it to a zoned time will result in an</span></span></span>
+<span class="r-in"><span><span class="co"># error.</span></span></span>
+<span class="r-in"><span><span class="va">ambiguous_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">11</span>, <span class="fl">01</span>, <span class="fl">01</span>, <span class="fl">30</span>, <span class="fl">00</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ambiguous_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">ambiguous_time</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">ambiguous_time</span>, <span class="va">new_york</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in stop_clock(message, "clock_error_ambiguous_time") : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Ambiguous time due to daylight saving time at location 1.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Resolve ambiguous time issues by specifying the `ambiguous` argument.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Resolve this by specifying an ambiguous time resolution strategy</span></span>
-<span class="r-in"><span class="va">earliest</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">ambiguous_time</span>, <span class="va">new_york</span>, ambiguous <span class="op">=</span> <span class="st">"earliest"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">latest</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">ambiguous_time</span>, <span class="va">new_york</span>, ambiguous <span class="op">=</span> <span class="st">"latest"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">na</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">ambiguous_time</span>, <span class="va">new_york</span>, ambiguous <span class="op">=</span> <span class="st">"NA"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">earliest</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Resolve this by specifying an ambiguous time resolution strategy</span></span></span>
+<span class="r-in"><span><span class="va">earliest</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">ambiguous_time</span>, <span class="va">new_york</span>, ambiguous <span class="op">=</span> <span class="st">"earliest"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">latest</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">ambiguous_time</span>, <span class="va">new_york</span>, ambiguous <span class="op">=</span> <span class="st">"latest"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">na</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">ambiguous_time</span>, <span class="va">new_york</span>, ambiguous <span class="op">=</span> <span class="st">"NA"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">earliest</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-11-01T01:30:00-04:00"</span>
-<span class="r-in"><span class="va">latest</span></span>
+<span class="r-in"><span><span class="va">latest</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-11-01T01:30:00-05:00"</span>
-<span class="r-in"><span class="va">na</span></span>
+<span class="r-in"><span><span class="va">na</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Now assume that you were given the following zoned-times, i.e.,</span></span>
-<span class="r-in"><span class="co"># you didn't build them from scratch so you already know their otherwise</span></span>
-<span class="r-in"><span class="co"># ambiguous offsets</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">earliest</span>, <span class="va">latest</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Now assume that you were given the following zoned-times, i.e.,</span></span></span>
+<span class="r-in"><span><span class="co"># you didn't build them from scratch so you already know their otherwise</span></span></span>
+<span class="r-in"><span><span class="co"># ambiguous offsets</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">earliest</span>, <span class="va">latest</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-11-01T01:30:00-04:00" "2020-11-01T01:30:00-05:00"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># To set the seconds to 5 in both, you might try:</span></span>
-<span class="r-in"><span class="va">x_naive</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="as_year_month_day.html">as_year_month_day</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="clock-setters.html">set_second</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">x_naive</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># To set the seconds to 5 in both, you might try:</span></span></span>
+<span class="r-in"><span><span class="va">x_naive</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="as_year_month_day.html">as_year_month_day</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="clock-setters.html">set_second</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">x_naive</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-11-01T01:30:05" "2020-11-01T01:30:05"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># But this fails because you've "lost" the information about which</span></span>
-<span class="r-in"><span class="co"># offsets these ambiguous times started in</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x_naive</span>, <span class="fu"><a href="zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># But this fails because you've "lost" the information about which</span></span></span>
+<span class="r-in"><span><span class="co"># offsets these ambiguous times started in</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x_naive</span>, <span class="fu"><a href="zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in stop_clock(message, "clock_error_ambiguous_time") : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Ambiguous time due to daylight saving time at location 1.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Resolve ambiguous time issues by specifying the `ambiguous` argument.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># To get around this, you can use that information by specifying</span></span>
-<span class="r-in"><span class="co"># `ambiguous = x`, which will use the offset from `x` to resolve the</span></span>
-<span class="r-in"><span class="co"># ambiguity in `x_naive` as long as `x` is also an ambiguous time with the</span></span>
-<span class="r-in"><span class="co"># same daylight saving time transition point as `x_naive` (i.e. here</span></span>
-<span class="r-in"><span class="co"># everything has a transition point of `"2020-11-01 01:00:00 EST"`).</span></span>
-<span class="r-in"><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x_naive</span>, <span class="fu"><a href="zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, ambiguous <span class="op">=</span> <span class="va">x</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># To get around this, you can use that information by specifying</span></span></span>
+<span class="r-in"><span><span class="co"># `ambiguous = x`, which will use the offset from `x` to resolve the</span></span></span>
+<span class="r-in"><span><span class="co"># ambiguity in `x_naive` as long as `x` is also an ambiguous time with the</span></span></span>
+<span class="r-in"><span><span class="co"># same daylight saving time transition point as `x_naive` (i.e. here</span></span></span>
+<span class="r-in"><span><span class="co"># everything has a transition point of `"2020-11-01 01:00:00 EST"`).</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x_naive</span>, <span class="fu"><a href="zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, ambiguous <span class="op">=</span> <span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[2]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-11-01T01:30:05-04:00" "2020-11-01T01:30:05-05:00"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Say you added one more time to `x` that would not be considered ambiguous</span></span>
-<span class="r-in"><span class="co"># in naive-time</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">latest</span><span class="op">)</span> <span class="op">+</span> <span class="fl">3600</span>, <span class="fu"><a href="zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">latest</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Say you added one more time to `x` that would not be considered ambiguous</span></span></span>
+<span class="r-in"><span><span class="co"># in naive-time</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">latest</span><span class="op">)</span> <span class="op">+</span> <span class="fl">3600</span>, <span class="fu"><a href="zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">latest</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[3]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-11-01T01:30:00-04:00" "2020-11-01T01:30:00-05:00"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "2020-11-01T02:30:00-05:00"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Imagine you want to floor this vector to a multiple of 2 hours, with</span></span>
-<span class="r-in"><span class="co"># an origin of 1am that day. You can do this by subtracting the origin,</span></span>
-<span class="r-in"><span class="co"># flooring, then adding it back</span></span>
-<span class="r-in"><span class="va">origin</span> <span class="op">&lt;-</span> <span class="fu"><a href="year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">11</span>, <span class="fl">01</span>, <span class="fl">01</span>, <span class="fl">00</span>, <span class="fl">00</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="as_duration.html">as_duration</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">x_naive</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="op">-</span><span class="va">origin</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="time-point-rounding.html">time_point_floor</a></span><span class="op">(</span><span class="st">"hour"</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="va">origin</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">x_naive</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Imagine you want to floor this vector to a multiple of 2 hours, with</span></span></span>
+<span class="r-in"><span><span class="co"># an origin of 1am that day. You can do this by subtracting the origin,</span></span></span>
+<span class="r-in"><span><span class="co"># flooring, then adding it back</span></span></span>
+<span class="r-in"><span><span class="va">origin</span> <span class="op">&lt;-</span> <span class="fu"><a href="year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">11</span>, <span class="fl">01</span>, <span class="fl">01</span>, <span class="fl">00</span>, <span class="fl">00</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="as_duration.html">as_duration</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">x_naive</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="op">-</span><span class="va">origin</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="time-point-rounding.html">time_point_floor</a></span><span class="op">(</span><span class="st">"hour"</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="va">origin</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">x_naive</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;time_point&lt;naive&gt;&lt;second&gt;[3]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-11-01T01:00:00" "2020-11-01T01:00:00" "2020-11-01T01:00:00"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># You again have ambiguous naive-time points, so you might try using</span></span>
-<span class="r-in"><span class="co"># `ambiguous = x`. It looks like this took care of the first two problems,</span></span>
-<span class="r-in"><span class="co"># but we have an issue at location 3.</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x_naive</span>, <span class="fu"><a href="zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, ambiguous <span class="op">=</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># You again have ambiguous naive-time points, so you might try using</span></span></span>
+<span class="r-in"><span><span class="co"># `ambiguous = x`. It looks like this took care of the first two problems,</span></span></span>
+<span class="r-in"><span><span class="co"># but we have an issue at location 3.</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x_naive</span>, <span class="fu"><a href="zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, ambiguous <span class="op">=</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in stop_clock(message, "clock_error_ambiguous_time") : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Ambiguous time due to daylight saving time at location 3.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Resolve ambiguous time issues by specifying the `ambiguous` argument.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># When we floored from 02:30:00 -&gt; 01:00:00, we went from being</span></span>
-<span class="r-in"><span class="co"># unambiguous -&gt; ambiguous. In clock, this is something you must handle</span></span>
-<span class="r-in"><span class="co"># explicitly, and cannot be handled by using information from `x`. You can</span></span>
-<span class="r-in"><span class="co"># handle this while still retaining the behavior for the other two</span></span>
-<span class="r-in"><span class="co"># time points that were ambiguous before and after the floor by passing a</span></span>
-<span class="r-in"><span class="co"># list containing `x` and an ambiguous time resolution strategy to use</span></span>
-<span class="r-in"><span class="co"># when information from `x` can't resolve ambiguities:</span></span>
-<span class="r-in"><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x_naive</span>, <span class="fu"><a href="zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, ambiguous <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"latest"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># When we floored from 02:30:00 -&gt; 01:00:00, we went from being</span></span></span>
+<span class="r-in"><span><span class="co"># unambiguous -&gt; ambiguous. In clock, this is something you must handle</span></span></span>
+<span class="r-in"><span><span class="co"># explicitly, and cannot be handled by using information from `x`. You can</span></span></span>
+<span class="r-in"><span><span class="co"># handle this while still retaining the behavior for the other two</span></span></span>
+<span class="r-in"><span><span class="co"># time points that were ambiguous before and after the floor by passing a</span></span></span>
+<span class="r-in"><span><span class="co"># list containing `x` and an ambiguous time resolution strategy to use</span></span></span>
+<span class="r-in"><span><span class="co"># when information from `x` can't resolve ambiguities:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x_naive</span>, <span class="fu"><a href="zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, ambiguous <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"latest"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;zoned_time&lt;second&gt;&lt;America/New_York&gt;[3]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-11-01T01:00:00-04:00" "2020-11-01T01:00:00-05:00"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "2020-11-01T01:00:00-05:00"</span>
@@ -379,7 +390,7 @@ time resolution strategies.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
   </div></footer></body></html>
