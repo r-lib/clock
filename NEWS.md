@@ -1,5 +1,8 @@
 # clock (development version)
 
+* cpp11 >=0.4.2 is now required to ensure that a fix related to unwind
+  protection is included.
+
 * R >=3.4.0 is now required. This is consistent with the standards of the
   tidyverse.
 
