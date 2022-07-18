@@ -31,10 +31,10 @@ intended to parse the extremely common date-time format outlined by
 RFC 3339. This document
 outlines a profile of the ISO 8601 format that is even more restrictive.
 In particular, this function is intended to parse the following three
-formats:2019-01-01T00:00:00Z
+formats:
+2019-01-01T00:00:00Z
 2019-01-01T00:00:00+0430
 2019-01-01T00:00:00+04:30
-
 
 This function defaults to parsing the first of these formats by using
 a format string of "%Y-%m-%dT%H:%M:%SZ".
@@ -80,10 +80,10 @@ intended to parse the extremely common date-time format outlined by
 RFC 3339. This document
 outlines a profile of the ISO 8601 format that is even more restrictive.
 In particular, this function is intended to parse the following three
-formats:2019-01-01T00:00:00Z
+formats:
+2019-01-01T00:00:00Z
 2019-01-01T00:00:00+0430
 2019-01-01T00:00:00+04:30
-
 
 This function defaults to parsing the first of these formats by using
 a format string of "%Y-%m-%dT%H:%M:%SZ".
@@ -193,11 +193,10 @@ intended to parse the extremely common date-time format outlined by
 <a href="https://datatracker.ietf.org/doc/html/rfc3339" class="external-link">RFC 3339</a>. This document
 outlines a profile of the ISO 8601 format that is even more restrictive.</p>
 <p>In particular, this function is intended to parse the following three
-formats:</p><div class="sourceCode"><pre><code>2019-01-01T00:00:00Z
-2019-01-01T00:00:00+0430
-2019-01-01T00:00:00+04:30
-</code></pre></div>
-
+formats:</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="dv">2019-01</span><span class="op">-</span>01T00<span class="op">:</span><span class="dv">00</span><span class="op">:</span>00Z</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="dv">2019-01</span><span class="op">-</span>01T00<span class="op">:</span><span class="dv">00</span><span class="op">:</span><span class="dv">00</span><span class="op">+</span><span class="dv">0430</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="dv">2019-01</span><span class="op">-</span>01T00<span class="op">:</span><span class="dv">00</span><span class="op">:</span><span class="dv">00</span><span class="op">+</span><span class="dv">04</span><span class="op">:</span><span class="dv">30</span></span></code></pre><p></p></div>
 <p>This function defaults to parsing the first of these formats by using
 a format string of <code>"%Y-%m-%dT%H:%M:%SZ"</code>.</p>
 <p>If your date-time strings use offsets from UTC rather than <code>"Z"</code>, then set
