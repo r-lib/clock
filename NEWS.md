@@ -1,3 +1,5 @@
+# clock (development version)
+
 # clock 0.6.1
 
 * `date_seq()` and the `seq()` methods for the calendar, time point, and
