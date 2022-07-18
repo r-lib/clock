@@ -33,7 +33,7 @@ Suggests:
     withr
 LinkingTo: 
     cpp11 (>= 0.4.2),
-    tzdb (>= 0.2.0)
+    tzdb (>= 0.3.0)
 VignetteBuilder: 
     knitr
 Config/Needs/website:
