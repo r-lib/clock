@@ -1,5 +1,8 @@
 # clock (development version)
 
+* R >=3.4.0 is now required. This is consistent with the standards of the
+  tidyverse.
+
 * Bumped required minimum version of tzdb to 0.3.0 to get access to the latest
   time zone database information (2022a).
 
