@@ -6,7 +6,7 @@
       Warning:
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output
-      <time_point<sys><second>[1]>
+      <clock_sys_time[1]>
       [1] NA
 
 # `precision` must be at least second

@@ -220,7 +220,7 @@
     Code
       (expect_error(calendar_count_between(x, x, "year", n = "x")))
     Output
-      <error/vctrs_error_incompatible_type>
+      <error/vctrs_error_cast>
       Error in `calendar_count_between()`:
       ! Can't convert `n` <character> to <integer>.
     Code

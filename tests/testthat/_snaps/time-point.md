@@ -3,7 +3,7 @@
     Code
       x
     Output
-      <time_point<sys><day>[5]>
+      <clock_sys_time[5]>
       [1] "2019-01-01" "2019-02-01" "2019-03-01" "2019-04-01" "2019-05-01"
 
 # can limit with `max`
@@ -11,7 +11,7 @@
     Code
       print(x, max = 2)
     Output
-      <time_point<sys><day>[5]>
+      <clock_sys_time[5]>
       [1] "2019-01-01" "2019-02-01"
       Reached `max` or `getOption('max.print')`. Omitted 3 values.
 
@@ -20,7 +20,7 @@
     Code
       print(x, max = 4)
     Output
-      <time_point<sys><day>[5]>
+      <clock_sys_time[5]>
       [1] "2019-01-01" "2019-02-01" "2019-03-01" "2019-04-01"
       Reached `max` or `getOption('max.print')`. Omitted 1 value.
 
@@ -29,7 +29,7 @@
     Code
       print(x, max = 5)
     Output
-      <time_point<sys><day>[5]>
+      <clock_sys_time[5]>
       [1] "2019-01-01" "2019-02-01" "2019-03-01" "2019-04-01" "2019-05-01"
 
 ---
@@ -37,7 +37,7 @@
     Code
       print(x, max = 6)
     Output
-      <time_point<sys><day>[5]>
+      <clock_sys_time[5]>
       [1] "2019-01-01" "2019-02-01" "2019-03-01" "2019-04-01" "2019-05-01"
 
 # `max` defaults to `getOption('max.print')` but can be overridden
@@ -45,7 +45,7 @@
     Code
       x
     Output
-      <time_point<naive><day>[5]>
+      <clock_naive_time[5]>
       [1] "2019-01-01" "2019-02-01" "2019-03-01"
       Reached `max` or `getOption('max.print')`. Omitted 2 values.
 
@@ -54,7 +54,7 @@
     Code
       print(x, max = 4)
     Output
-      <time_point<naive><day>[5]>
+      <clock_naive_time[5]>
       [1] "2019-01-01" "2019-02-01" "2019-03-01" "2019-04-01"
       Reached `max` or `getOption('max.print')`. Omitted 1 value.
 
@@ -63,7 +63,7 @@
     Code
       print(x, max = 5)
     Output
-      <time_point<naive><day>[5]>
+      <clock_naive_time[5]>
       [1] "2019-01-01" "2019-02-01" "2019-03-01" "2019-04-01" "2019-05-01"
 
 # cannot floor to more precise precision
@@ -72,11 +72,11 @@
 
 # rounding with `origin` requires same clock
 
-    Can't convert `origin` <time_point<sys><day>> to <time_point<naive><day>>.
+    Can't convert `origin` <clock_sys_time> to <clock_naive_time>.
 
 # `origin` can be cast to a more precise `precision`, but not to a less precise one
 
-    Can't convert `origin` <time_point<naive><millisecond>> to <time_point<naive><hour>>.
+    Can't convert `origin` <clock_naive_time> to <clock_naive_time>.
     Can't cast to a less precise precision.
 
 # `origin` must be size 1
@@ -89,11 +89,11 @@
 
 # `origin` can't be Date or POSIXt
 
-    Can't convert `origin` <date> to <time_point<naive><day>>.
+    Can't convert `origin` <date> to <clock_naive_time>.
 
 ---
 
-    Can't convert `origin` <datetime<America/New_York>> to <time_point<naive><day>>.
+    Can't convert `origin` <datetime<America/New_York>> to <clock_naive_time>.
 
 # `target` is recycled to size of `x`
 
@@ -159,9 +159,9 @@
     Code
       (expect_error(time_point_count_between(x, y)))
     Output
-      <error/vctrs_error_incompatible_type>
+      <error/vctrs_error_ptype2>
       Error in `time_point_count_between()`:
-      ! Can't combine `start` <time_point<sys><day>> and `end` <time_point<naive><day>>.
+      ! Can't combine `start` <clock_sys_time> and `end` <clock_naive_time>.
 
 # `n` is validated
 
@@ -187,7 +187,7 @@
     Code
       (expect_error(time_point_count_between(x, x, "day", n = "x")))
     Output
-      <error/vctrs_error_incompatible_type>
+      <error/vctrs_error_cast>
       Error in `time_point_count_between()`:
       ! Can't convert `n` <character> to <integer>.
     Code
@@ -213,11 +213,11 @@
 
 # can't mix clocks in seq()
 
-    Can't convert `to` <time_point<naive><second>> to match type of `from` <time_point<sys><second>>.
+    Can't convert `to` <clock_naive_time> to match type of `from` <clock_sys_time>.
 
 # `to` is always cast to `from`
 
-    Can't convert `to` <time_point<naive><second>> to match type of `from` <time_point<naive><day>>.
+    Can't convert `to` <clock_naive_time> to match type of `from` <clock_naive_time>.
     Can't cast to a less precise precision.
 
 # duration to add to a time-point must have at least week precision (#120)

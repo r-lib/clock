@@ -184,11 +184,13 @@
 
 # validates integerish `by`
 
-    Can't convert `by` <double> to <integer>.
+    Can't convert from `by` <double> to <integer> due to loss of precision.
+    * Locations: 1
 
 # validates `total_size` early
 
-    Can't convert `total_size` <double> to <integer>.
+    Can't convert from `total_size` <double> to <integer> due to loss of precision.
+    * Locations: 1
 
 ---
 
