@@ -22,7 +22,7 @@ Depends:
 Imports:
     rlang (>= 1.0.4),
     tzdb (>= 0.3.0),
-    vctrs (>= 0.4.1)
+    vctrs (>= 0.5.0)
 Suggests: 
     covr,
     knitr,

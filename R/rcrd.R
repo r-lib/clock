@@ -56,7 +56,7 @@ clock_rcrd_is_nan <- function(x) {
 }
 
 clock_rcrd_is_finite <- function(x) {
-  !vec_equal_na(x)
+  !vec_detect_missing(x)
 }
 
 clock_rcrd_is_infinite <- function(x) {
