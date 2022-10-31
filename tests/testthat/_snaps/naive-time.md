@@ -14,7 +14,7 @@
       Warning:
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output
-      <time_point<naive><day>[1]>
+      <clock_naive_time[1]>
       [1] NA
 
 # failure to parse throws a warning
@@ -25,7 +25,7 @@
       Warning:
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output
-      <time_point<naive><second>[1]>
+      <clock_naive_time[1]>
       [1] NA
 
 # default format is correct

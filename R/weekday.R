@@ -505,7 +505,7 @@ weekday_is_nan <- function(x) {
 }
 
 weekday_is_finite <- function(x) {
-  !vec_equal_na(x)
+  !vec_detect_missing(x)
 }
 
 weekday_is_infinite <- function(x) {

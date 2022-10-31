@@ -57,7 +57,7 @@ ones_along <- function(x, na_propagate = FALSE) {
     return(out)
   }
 
-  na <- vec_equal_na(x)
+  na <- vec_detect_missing(x)
   if (any(na)) {
     out[na] <- NA_integer_
   }
@@ -71,7 +71,7 @@ zeros_along <- function(x, na_propagate = FALSE) {
     return(out)
   }
 
-  na <- vec_equal_na(x)
+  na <- vec_detect_missing(x)
   if (any(na)) {
     out[na] <- NA_integer_
   }
@@ -355,7 +355,7 @@ if_else <- function(condition, true, false, na = NULL) {
   out <- vec_assign(out, loc_false, vec_slice(args$false, loc_false))
 
   if (!is_null(na)) {
-    loc_na <- vec_equal_na(condition)
+    loc_na <- vec_detect_missing(condition)
     out <- vec_assign(out, loc_na, vec_slice(args$na, loc_na))
   }
 
