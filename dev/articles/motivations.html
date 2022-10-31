@@ -140,7 +140,7 @@
 <span><span class="co">#&gt; [1] "2020-01-29" "2020-01-30" "2020-01-31" "2020-02-01"</span></span>
 <span></span>
 <span><span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/weekday.POSIXt.html" class="external-link">months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "2020-02-29" NA           NA           "2020-03-01"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "2020-02-29" "1970-01-30" "1970-01-31" "2020-03-01"</span></span></code></pre></div>
 <p>In this example, we’ve asked lubridate to create two <em>invalid dates</em>, <code>2020-02-30</code> and <code>2020-02-31</code>. Invalid dates often arise with month-based arithmetic, but they also arise when forcibly setting the month to a specific value. Because these dates don’t exist, lubridate returns <code>NA</code>. When working with time series, it is often more useful to return <em>something</em> back, but what? We could:</p>
 <ul>
 <li><p>Return <code>NA</code> as lubridate does</p></li>
@@ -508,26 +508,26 @@
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/naive_time_parse.html">naive_time_parse</a></span><span class="op">(</span><span class="st">"2020-11-01T00:30:00"</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_hours</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">0</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
-<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[6]&gt;</span></span>
+<span><span class="co">#&gt; &lt;clock_naive_time[6]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2020-11-01T00:30:00" "2020-11-01T01:30:00" "2020-11-01T02:30:00"</span></span>
 <span><span class="co">#&gt; [4] "2020-11-01T03:30:00" "2020-11-01T04:30:00" "2020-11-01T05:30:00"</span></span></code></pre></div>
 <p>This makes arithmetic and flooring much simpler to reason about:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/time-point-rounding.html">time_point_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"hour"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;hour&gt;[6]&gt;</span></span>
+<span><span class="co">#&gt; &lt;clock_naive_time[6]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2020-11-01T00" "2020-11-01T01" "2020-11-01T02" "2020-11-01T03"</span></span>
 <span><span class="co">#&gt; [5] "2020-11-01T04" "2020-11-01T05"</span></span>
 <span></span>
 <span><span class="va">origin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/time_point_cast.html">time_point_cast</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"hour"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/time-point-rounding.html">time_point_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"hour"</span>, n <span class="op">=</span> <span class="fl">2</span>, origin <span class="op">=</span> <span class="va">origin</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;hour&gt;[6]&gt;</span></span>
+<span><span class="co">#&gt; &lt;clock_naive_time[6]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2020-10-31T23" "2020-11-01T01" "2020-11-01T01" "2020-11-01T03"</span></span>
 <span><span class="co">#&gt; [5] "2020-11-01T03" "2020-11-01T05"</span></span></code></pre></div>
 <p>You’ll notice that the result of flooring by hour is a time point with <em>hour</em> precision. Flooring drops all information at more precise precisions, and the result is represented in a more compact form.</p>
 <p>The difference between naive-time and sys-time is only important when you are working with time zones and zoned-times / POSIXct. Since naive-time has a yet-to-be-specified time zone, converting to a zoned-time simply specifies that zone. If possible, it keeps the printed time the same, while changing the underlying duration.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
-<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; &lt;clock_naive_time[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2020-11-01T00:30:00"</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span>
@@ -537,7 +537,7 @@
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x_sys</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">x_sys</span></span>
-<span><span class="co">#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; &lt;clock_sys_time[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2020-11-01T00:30:00"</span></span>
 <span></span>
 <span><span class="co"># Subtract 4 hours to print the America/New_York time</span></span>
@@ -547,7 +547,7 @@
 <p>Converting from sys-time to zoned-time won’t ever have any issues with nonexistent or ambiguous times, but converting from naive-time might. Remember that there were two 1 o’clock hours on this day in the America/New_York time zone.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span>
-<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[2]&gt;</span></span>
+<span><span class="co">#&gt; &lt;clock_naive_time[2]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2020-11-01T00:30:00" "2020-11-01T01:30:00"</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span>
@@ -744,14 +744,14 @@
 <span><span class="va">ym</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[3]&gt;</span></span>
+<span><span class="co">#&gt; &lt;clock_naive_time[3]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-01-01" "2019-02-01" "2019-03-01"</span></span>
 <span></span>
 <span><span class="co"># Or the last</span></span>
 <span><span class="va">ym</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="st">"last"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[3]&gt;</span></span>
+<span><span class="co">#&gt; &lt;clock_naive_time[3]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-01-31" "2019-02-28" "2019-03-31"</span></span></code></pre></div>
 <p>This range assumption is all throughout clock. For example, grouping a day precision iso-year-week-day by weeks returns a week precision calendar.</p>
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
@@ -767,14 +767,14 @@
 <p>Time points, such as naive-time and sys-time, can vary in precision from day to nanosecond.</p>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; &lt;clock_naive_time[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-01-02"</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span></span>
 <span>  <span class="fl">2019</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">30</span>, <span class="fl">35</span>, <span class="fl">123</span>, </span>
 <span>  subsecond_precision <span class="op">=</span> <span class="st">"millisecond"</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;time_point&lt;sys&gt;&lt;millisecond&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; &lt;clock_sys_time[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-02-03T01:30:35.123"</span></span></code></pre></div>
 <p>Unlike calendars, a time point at say, second precision, is considered equivalent to a time point at millisecond precision with millisecond information set to 0.</p>
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
@@ -792,7 +792,7 @@
 <p>This allows time points to naturally promote upwards to a more precise precision when doing arithmetic with them:</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/duration-helper.html">duration_nanoseconds</a></span><span class="op">(</span><span class="fl">25</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;nanosecond&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; &lt;clock_naive_time[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-01-02T00:00:00.000000025"</span></span></code></pre></div>
 </div>
 </div>

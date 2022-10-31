@@ -149,7 +149,7 @@
 <span>  <span class="fu"><a href="../reference/clock-invalid.html">invalid_resolve</a></span><span class="op">(</span>invalid <span class="op">=</span> <span class="st">"next"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[4]&gt;</span></span>
+<span><span class="co">#&gt; &lt;clock_naive_time[4]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-03-02" "2019-03-03" "2019-03-03" "2019-03-03"</span></span>
 <span></span>
 <span><span class="va">odd_dates</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -161,7 +161,7 @@
 <span>  <span class="fu"><a href="../reference/clock-invalid.html">invalid_resolve</a></span><span class="op">(</span>invalid <span class="op">=</span> <span class="st">"overflow"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;day&gt;[4]&gt;</span></span>
+<span><span class="co">#&gt; &lt;clock_naive_time[4]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-03-02" "2019-03-03" "2019-03-04" "2019-03-05"</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -190,12 +190,12 @@
 <span></span>
 <span><span class="co"># The printed time with no time zone info</span></span>
 <span><span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; &lt;clock_naive_time[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "1970-04-26T01:30:00"</span></span>
 <span></span>
 <span><span class="co"># The equivalent time in UTC</span></span>
 <span><span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;time_point&lt;sys&gt;&lt;second&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; &lt;clock_sys_time[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "1970-04-26T06:30:00"</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
@@ -246,14 +246,14 @@
 <span></span>
 <span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; &lt;clock_naive_time[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "1970-04-26T01:30:00"</span></span></code></pre></div>
 <p>We add 30 minutes to this. Because we don’t have any time zone information, this lands us at 2 o’clock, which isn’t an issue when working with naive-time:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/clock-arithmetic.html">add_minutes</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; &lt;clock_naive_time[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "1970-04-26T02:00:00"</span></span></code></pre></div>
 <p>Finally, we convert back to zoned-time. If possible, this tries to keep the printed time, and just attaches the relevant time zone onto it. However, in this case that isn’t possible, since 2 o’clock didn’t exist in this time zone! This <em>nonexistent time</em> must be handled explicitly by setting the <code>nonexistent</code> argument of <code><a href="../reference/as_zoned_time.html">as_zoned_time()</a></code>. We can choose from a variety of strategies to handle nonexistent times, but here we just roll forward to the next valid moment in time.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -284,7 +284,7 @@
 <p>It looks like there is some fractional second information here, but converting it to naive-time drops it:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;time_point&lt;naive&gt;&lt;second&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; &lt;clock_naive_time[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-01-01T01:00:00"</span></span></code></pre></div>
 <p>This is purposeful. clock treats POSIXct as a <em>second precision</em> data type. The reason for this has to do with the fact that POSIXct is implemented as a vector of doubles, which have a limit to how precisely they can store information. For example, try parsing a slightly smaller or larger fractional second:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">

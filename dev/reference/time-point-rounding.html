@@ -198,14 +198,14 @@ the input falls on a boundary then it will be returned as is.</p>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">01</span>, <span class="fl">01</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">0</span><span class="op">:</span><span class="fl">40</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;time_point&lt;naive&gt;&lt;day&gt;[6]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;clock_naive_time[6]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2019-01-01" "2019-01-02" "2019-01-03" "2019-01-04" "2019-01-05"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6] "2019-01-06"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Floor by sets of 20 days</span></span></span>
 <span class="r-in"><span><span class="co"># The implicit origin to start the 20 day counter is 1970-01-01</span></span></span>
 <span class="r-in"><span><span class="fu">time_point_floor</span><span class="op">(</span><span class="va">x</span>, <span class="st">"day"</span>, n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;time_point&lt;naive&gt;&lt;day&gt;[41]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;clock_naive_time[41]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "2018-12-15" "2018-12-15" "2018-12-15" "2019-01-04" "2019-01-04"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "2019-01-04" "2019-01-04" "2019-01-04" "2019-01-04" "2019-01-04"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [11] "2019-01-04" "2019-01-04" "2019-01-04" "2019-01-04" "2019-01-04"</span>
@@ -224,7 +224,7 @@ the input falls on a boundary then it will be returned as is.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Which you can subtract from, floor, and then add to your input</span></span></span>
 <span class="r-in"><span><span class="fu">time_point_floor</span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="va">origin</span>, <span class="st">"day"</span>, n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">+</span> <span class="va">origin</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;time_point&lt;naive&gt;&lt;day&gt;[41]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;clock_naive_time[41]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "2019-01-01" "2019-01-01" "2019-01-01" "2019-01-01" "2019-01-01"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "2019-01-01" "2019-01-01" "2019-01-01" "2019-01-01" "2019-01-01"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [11] "2019-01-01" "2019-01-01" "2019-01-01" "2019-01-01" "2019-01-01"</span>
@@ -240,10 +240,10 @@ the input falls on a boundary then it will be returned as is.</p>
 <span class="r-in"><span><span class="co"># and the second is 1 second after the boundary.</span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">01</span>, <span class="fl">02</span>, <span class="fl">00</span>, <span class="fl">00</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">00</span>, <span class="fl">01</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">time_point_floor</span><span class="op">(</span><span class="va">y</span>, <span class="st">"day"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;time_point&lt;naive&gt;&lt;day&gt;[2]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;clock_naive_time[2]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-01-02" "2020-01-02"</span>
 <span class="r-in"><span><span class="fu">time_point_ceiling</span><span class="op">(</span><span class="va">y</span>, <span class="st">"day"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;time_point&lt;naive&gt;&lt;day&gt;[2]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;clock_naive_time[2]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-01-02" "2020-01-03"</span>
 </code></pre></div>
     </div>
