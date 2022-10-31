@@ -1,5 +1,7 @@
 # clock (development version)
 
+* vctrs >=0.5.0 is now required (#303).
+
 # clock 0.6.1
 
 * `date_seq()` and the `seq()` methods for the calendar, time point, and
