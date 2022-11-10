@@ -491,6 +491,28 @@ arith_duration_and_posixt <- function(op, x, y, ...) {
 
 # ------------------------------------------------------------------------------
 
+# @export - .onLoad()
+slider_plus.POSIXct.clock_duration <- function(x, y) {
+  vec_arith("+", x, y)
+}
+
+# @export - .onLoad()
+slider_plus.POSIXlt.clock_duration <- function(x, y) {
+  vec_arith("+", x, y)
+}
+
+# @export - .onLoad()
+slider_minus.POSIXct.clock_duration <- function(x, y) {
+  vec_arith("-", x, y)
+}
+
+# @export - .onLoad()
+slider_minus.POSIXlt.clock_duration <- function(x, y) {
+  vec_arith("-", x, y)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Arithmetic: date-time
 #'
 #' @description

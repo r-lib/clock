@@ -287,3 +287,12 @@
 
     <duration<year>> * <date> is not permitted
 
+# `slide_index()` will error on calendrical arithmetic and invalid dates
+
+    Code
+      slider::slide_index(x, i, identity, .after = after)
+    Condition
+      Error in `stop_clock()`:
+      ! Invalid date found at location 2.
+      i Resolve invalid date issues by specifying the `invalid` argument.
+

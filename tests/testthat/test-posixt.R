@@ -997,3 +997,206 @@ test_that("<duration> op <posixt>", {
   expect_snapshot_error(vec_arith("*", duration_years(1), new_datetime(0, zone)))
   expect_snapshot_error(vec_arith("*", duration_years(1), new_posixlt(0, zone)))
 })
+
+# ------------------------------------------------------------------------------
+# slider_plus() / slider_minus()
+
+test_that("`slider_plus()` method is registered", {
+  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+
+  zone <- "America/New_York"
+
+  x <- date_time_build(2019, 1, 1, 3:4, 30, zone = zone)
+
+  y <- duration_hours(3)
+  expect_identical(
+    slider::slider_plus(x, y),
+    date_time_build(2019, 1, 1, 6:7, 30, zone = zone)
+  )
+  expect_identical(
+    slider::slider_plus(as.POSIXlt(x), y),
+    date_time_build(2019, 1, 1, 6:7, 30, zone = zone)
+  )
+
+  y <- duration_days(2)
+  expect_identical(
+    slider::slider_plus(x, y),
+    date_time_build(2019, 1, 3, 3:4, 30, zone = zone)
+  )
+  expect_identical(
+    slider::slider_plus(as.POSIXlt(x), y),
+    date_time_build(2019, 1, 3, 3:4, 30, zone = zone)
+  )
+})
+
+test_that("`slider_minus()` method is registered", {
+  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+
+  zone <- "America/New_York"
+
+  x <- date_time_build(2019, 1, 1, 3:4, 30, zone = zone)
+
+  y <- duration_hours(3)
+  expect_identical(
+    slider::slider_minus(x, y),
+    date_time_build(2019, 1, 1, 0:1, 30, zone = zone)
+  )
+  expect_identical(
+    slider::slider_minus(as.POSIXlt(x), y),
+    date_time_build(2019, 1, 1, 0:1, 30, zone = zone)
+  )
+
+  y <- duration_days(2)
+  expect_identical(
+    slider::slider_minus(x, y),
+    date_time_build(2018, 12, 30, 3:4, 30, zone = zone)
+  )
+  expect_identical(
+    slider::slider_minus(as.POSIXlt(x), y),
+    date_time_build(2018, 12, 30, 3:4, 30, zone = zone)
+  )
+})
+
+test_that("`slide_index()` works with date-times and durations", {
+  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+
+  zone <- "America/New_York"
+
+  i <- date_time_build(2019, 1, 1, 1:6, zone = zone)
+  x <- seq_along(i)
+
+  before <- duration_hours(2)
+  after <- duration_hours(1)
+
+  expect <- list(
+    1:2,
+    1:3,
+    1:4,
+    2:5,
+    3:6,
+    4:6
+  )
+
+  expect_identical(
+    slider::slide_index(x, i, identity, .before = before, .after = after),
+    expect
+  )
+  expect_identical(
+    slider::slide_index(x, as.POSIXlt(i), identity, .before = before, .after = after),
+    expect
+  )
+})
+
+test_that("`slide_index()` with date-times and sys-time based arithmetic is sensible around ambiguous times", {
+  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+
+  zone <- "America/New_York"
+
+  hour <- c(0, 1, 1, 2, 3)
+  ambiguous <- c("error", "earliest", "latest", "error", "error")
+
+  i <- date_time_build(1970, 10, 25, hour, zone = zone, ambiguous = ambiguous)
+  x <- seq_along(i)
+
+  # Sys-time based arithmetic
+  before <- duration_hours(2)
+
+  expect_identical(
+    slider::slide_index(x, i, identity, .before = before),
+    list(
+      1L,
+      1:2,
+      1:3,
+      2:4,
+      3:5
+    )
+  )
+})
+
+test_that("`slide_index()` with date-times and sys-time based arithmetic is sensible around nonexistent times", {
+  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+
+  zone <- "America/New_York"
+
+  i <- date_time_build(1970, 4, 26, 1, 59, 59, zone = zone)
+  i <- add_seconds(i, 0:4)
+  x <- seq_along(i)
+
+  # Sys-time based arithmetic
+  before <- duration_seconds(2)
+
+  expect_identical(
+    slider::slide_index(x, i, identity, .before = before),
+    list(
+      1L,
+      1:2,
+      1:3,
+      2:4,
+      3:5
+    )
+  )
+})
+
+test_that("`slide_index()` will error on naive-time based arithmetic and ambiguous times", {
+  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+
+  zone <- "America/New_York"
+
+  i <- date_time_build(1970, 10, 24, 1, zone = zone)
+  x <- seq_along(i)
+
+  # Naive-time based arithmetic
+  after <- duration_days(1)
+
+  expect_snapshot(error = TRUE, {
+    slider::slide_index(x, i, identity, .after = after)
+  })
+})
+
+test_that("`slide_index()` will error on naive-time based arithmetic and nonexistent times", {
+  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+
+  zone <- "America/New_York"
+
+  i <- date_time_build(1970, 4, 25, 2, 30, zone = zone)
+  x <- seq_along(i)
+
+  # Naive-time based arithmetic
+  after <- duration_days(1)
+
+  expect_snapshot(error = TRUE, {
+    slider::slide_index(x, i, identity, .after = after)
+  })
+})
+
+test_that("`slide_index()` will error on calendrical arithmetic and ambiguous times", {
+  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+
+  zone <- "America/New_York"
+
+  i <- date_time_build(1970, 9, 25, 1, zone = zone)
+  x <- seq_along(i)
+
+  # Calendrical based arithmetic
+  after <- duration_months(1)
+
+  expect_snapshot(error = TRUE, {
+    slider::slide_index(x, i, identity, .after = after)
+  })
+})
+
+test_that("`slide_index()` will error on calendrical arithmetic and nonexistent times", {
+  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+
+  zone <- "America/New_York"
+
+  i <- date_time_build(1970, 3, 26, 2, 30, zone = zone)
+  x <- seq_along(i)
+
+  # Calendrical based arithmetic
+  after <- duration_months(1)
+
+  expect_snapshot(error = TRUE, {
+    slider::slide_index(x, i, identity, .after = after)
+  })
+})

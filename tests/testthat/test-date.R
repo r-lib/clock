@@ -608,3 +608,75 @@ test_that("<duration> op <date>", {
   expect_snapshot_error(vec_arith("+", duration_hours(1), new_date(0)))
   expect_snapshot_error(vec_arith("*", duration_years(1), new_date(0)))
 })
+
+# ------------------------------------------------------------------------------
+# slider_plus() / slider_minus()
+
+test_that("`slider_plus()` method is registered", {
+  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+
+  x <- date_build(2019, 1, 1:2)
+
+  y <- duration_days(2)
+  expect_identical(
+    slider::slider_plus(x, y),
+    date_build(2019, 1, 3:4)
+  )
+
+  y <- duration_years(1)
+  expect_identical(
+    slider::slider_plus(x, y),
+    date_build(2020, 1, 1:2)
+  )
+})
+
+test_that("`slider_minus()` method is registered", {
+  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+
+  x <- date_build(2019, 1, 1:2)
+
+  y <- duration_days(2)
+  expect_identical(
+    slider::slider_minus(x, y),
+    date_build(2018, 12, 30:31)
+  )
+
+  y <- duration_years(1)
+  expect_identical(
+    slider::slider_minus(x, y),
+    date_build(2018, 1, 1:2)
+  )
+})
+
+test_that("`slide_index()` works with dates and durations", {
+  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+
+  i <- date_build(2019, 1, 1:4)
+  x <- seq_along(i)
+
+  before <- duration_days(1)
+  after <- duration_days(2)
+
+  expect_identical(
+    slider::slide_index(x, i, identity, .before = before, .after = after),
+    list(
+      1:3,
+      1:4,
+      2:4,
+      3:4
+    )
+  )
+})
+
+test_that("`slide_index()` will error on calendrical arithmetic and invalid dates", {
+  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+
+  i <- date_build(2019, 1, 28:31)
+  x <- seq_along(i)
+
+  after <- duration_months(1)
+
+  expect_snapshot(error = TRUE, {
+    slider::slide_index(x, i, identity, .after = after)
+  })
+})

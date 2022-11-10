@@ -29,6 +29,7 @@ Suggests:
     magrittr,
     pillar,
     rmarkdown,
+    slider (>= 0.2.2.9000),
     testthat (>= 3.0.0),
     withr
 LinkingTo: 
@@ -44,3 +45,5 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Remotes:
+    DavisVaughan/slider#184
