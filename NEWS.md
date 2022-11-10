@@ -1,5 +1,8 @@
 # clock (development version)
 
+* Duration vectors now work as `.before` and `.after` arguments of
+  `slider::slide_index()` and friends (#306).
+
 * R >=3.5.0 is now required, which is in line with tidyverse standards.
 
 * vctrs >=0.6.1 and rlang >=1.1.0 are now required.
