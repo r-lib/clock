@@ -5,8 +5,8 @@ Authors@R:
     c(person(given = "Davis",
              family = "Vaughan",
              role = c("aut", "cre"),
-             email = "davis@rstudio.com"),
-      person(given = "RStudio",
+             email = "davis@posit.co"),
+      person(given = "Posit Software, PBC",
              role = c("cph", "fnd")))
 Description: Provides a comprehensive library for date-time manipulations
     using a new family of orthogonal date-time classes (durations, time
