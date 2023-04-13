@@ -1,5 +1,7 @@
 # clock (development version)
 
+* Skipped a test on 32-bit architectures to work around a bug in base R (#312).
+
 * Fixed `vec_ptype_full()` and `vec_ptype_abbr()` methods for sys-time and
   naive-time objects (#302).
 
