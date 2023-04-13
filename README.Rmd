@@ -87,7 +87,7 @@ You'll also want to take a look at clock's vignettes:
 
 -   [Frequently Asked Questions](https://clock.r-lib.org/articles/faq.html)
 
-## Acknowledgements
+## Acknowledgments
 
 The ideas used to build clock have come from a number of places:
 
