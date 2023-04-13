@@ -1,6 +1,6 @@
 # clock (development version)
 
-* vctrs >=0.5.0 is now required (#303).
+* vctrs >=0.6.1 and rlang >=1.1.0 are now required.
 
 # clock 0.6.1
 
