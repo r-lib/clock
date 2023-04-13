@@ -185,7 +185,7 @@ this by going through naive-time:</p>
 <span><span class="co"># Drop the time zone information, retaining the printed time</span></span>
 <span><span class="va">my_time</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[1]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;second&gt;[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-01-30T09:00:00"</span></span>
 <span></span>
 <span><span class="co"># Add the correct time zone name back on,</span></span>
@@ -237,7 +237,7 @@ next Monday? This is very easily accomplished with
 <span><span class="va">monday</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/weekday.html">weekday</a></span><span class="op">(</span><span class="va">clock_weekdays</span><span class="op">$</span><span class="va">monday</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/time_point_shift.html">time_point_shift</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">monday</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[2]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;day&gt;[2]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-01-07" "2019-02-04"</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="fu"><a href="../reference/time_point_shift.html">time_point_shift</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">monday</span><span class="op">)</span><span class="op">)</span></span>
@@ -247,7 +247,7 @@ next Monday? This is very easily accomplished with
 weekday:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/time_point_shift.html">time_point_shift</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">monday</span>, which <span class="op">=</span> <span class="st">"previous"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[2]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;day&gt;[2]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2018-12-31" "2019-01-28"</span></span></code></pre></div>
 <p>If you happen to already be on the target weekday, the default
 behavior returns the input unchanged. However, you can also chose to
@@ -256,10 +256,10 @@ advance to the next instance of the target.</p>
 <code class="sourceCode R"><span><span class="va">tuesday</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/weekday.html">weekday</a></span><span class="op">(</span><span class="va">clock_weekdays</span><span class="op">$</span><span class="va">tuesday</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/time_point_shift.html">time_point_shift</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">tuesday</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[2]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;day&gt;[2]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-01-01" "2019-02-05"</span></span>
 <span><span class="fu"><a href="../reference/time_point_shift.html">time_point_shift</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">tuesday</span>, boundary <span class="op">=</span> <span class="st">"advance"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[2]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;day&gt;[2]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-01-08" "2019-02-05"</span></span></code></pre></div>
 <p>While <code><a href="../reference/time_point_shift.html">time_point_shift()</a></code> is built in to clock, it can be
 useful to discuss the arithmetic going on in the underlying weekday type
@@ -275,7 +275,7 @@ weekday:</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">next_weekday</span><span class="op">(</span><span class="va">days</span>, <span class="va">monday</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[2]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;day&gt;[2]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-01-07" "2019-02-04"</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="fu">next_weekday</span><span class="op">(</span><span class="va">days</span>, <span class="va">monday</span><span class="op">)</span><span class="op">)</span></span>
@@ -296,7 +296,7 @@ duration:</p>
 get the date of the next Monday:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">days</span> <span class="op">+</span> <span class="op">(</span><span class="va">monday</span> <span class="op">-</span> <span class="fu"><a href="../reference/as_weekday.html">as_weekday</a></span><span class="op">(</span><span class="va">days</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[2]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;day&gt;[2]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-01-07" "2019-02-04"</span></span></code></pre></div>
 <p>The current implementation will return the input if it is already on
 the target weekday. To use the <code>boundary = "advance"</code>
@@ -313,7 +313,7 @@ behavior, you could implement <code>next_weekday()</code> as:</p>
 <span><span class="co">#&gt; [1] Mon</span></span>
 <span></span>
 <span><span class="fu">next_weekday2</span><span class="op">(</span><span class="va">a_monday</span>, <span class="va">monday</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[1]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;day&gt;[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-01-07"</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="high-level-api-2">High level API<a class="anchor" aria-label="anchor" href="#high-level-api-2"></a>
@@ -385,7 +385,7 @@ Instead, you should use a time point.</p>
 <span><span class="va">to</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">5</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span>, by <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[7]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;day&gt;[7]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-01-01" "2019-01-21" "2019-02-10" "2019-03-02" "2019-03-22"</span></span>
 <span><span class="co">#&gt; [6] "2019-04-11" "2019-05-01"</span></span></code></pre></div>
 <p>If you use an integer <code>by</code> value, it is interpreted as a
@@ -398,7 +398,7 @@ minutes for these second precision end points:</p>
 <span><span class="va">to</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">12</span>, <span class="fl">30</span>, <span class="fl">00</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span>, by <span class="op">=</span> <span class="fu"><a href="../reference/duration-helper.html">duration_minutes</a></span><span class="op">(</span><span class="fl">90</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[7]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;second&gt;[7]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-01-01T02:30:00" "2019-01-01T04:00:00" "2019-01-01T05:30:00"</span></span>
 <span><span class="co">#&gt; [4] "2019-01-01T07:00:00" "2019-01-01T08:30:00" "2019-01-01T10:00:00"</span></span>
 <span><span class="co">#&gt; [7] "2019-01-01T11:30:00"</span></span></code></pre></div>
@@ -477,7 +477,7 @@ naive-times in 2019:</p>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span>, by <span class="op">=</span> <span class="fu"><a href="../reference/duration-helper.html">duration_days</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">x</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[19]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;day&gt;[19]&gt;</span></span>
 <span><span class="co">#&gt;  [1] "2019-01-01" "2019-01-21" "2019-02-10" "2019-03-02" "2019-03-22"</span></span>
 <span><span class="co">#&gt;  [6] "2019-04-11" "2019-05-01" "2019-05-21" "2019-06-10" "2019-06-30"</span></span>
 <span><span class="co">#&gt; [11] "2019-07-20" "2019-08-09" "2019-08-29" "2019-09-18" "2019-10-08"</span></span>
@@ -594,7 +594,7 @@ off <em>flooring</em> by rolling sets of 60 days.</p>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span>, by <span class="op">=</span> <span class="fu"><a href="../reference/duration-helper.html">duration_days</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/time-point-rounding.html">time_point_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"day"</span>, n <span class="op">=</span> <span class="fl">60</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[19]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;day&gt;[19]&gt;</span></span>
 <span><span class="co">#&gt;  [1] "2018-12-15" "2018-12-15" "2018-12-15" "2019-02-13" "2019-02-13"</span></span>
 <span><span class="co">#&gt;  [6] "2019-02-13" "2019-04-14" "2019-04-14" "2019-04-14" "2019-06-13"</span></span>
 <span><span class="co">#&gt; [11] "2019-06-13" "2019-06-13" "2019-08-12" "2019-08-12" "2019-08-12"</span></span>
@@ -622,13 +622,13 @@ Thursday, flooring by 14 days defaults to returning all Thursdays.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">3</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[10]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;day&gt;[10]&gt;</span></span>
 <span><span class="co">#&gt;  [1] "2019-01-01" "2019-01-04" "2019-01-07" "2019-01-10" "2019-01-13"</span></span>
 <span><span class="co">#&gt;  [6] "2019-01-16" "2019-01-19" "2019-01-22" "2019-01-25" "2019-01-28"</span></span>
 <span></span>
 <span><span class="va">thursdays</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/time-point-rounding.html">time_point_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"day"</span>, n <span class="op">=</span> <span class="fl">14</span><span class="op">)</span></span>
 <span><span class="va">thursdays</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[10]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;day&gt;[10]&gt;</span></span>
 <span><span class="co">#&gt;  [1] "2018-12-27" "2018-12-27" "2018-12-27" "2019-01-10" "2019-01-10"</span></span>
 <span><span class="co">#&gt;  [6] "2019-01-10" "2019-01-10" "2019-01-10" "2019-01-24" "2019-01-24"</span></span>
 <span></span>
@@ -645,7 +645,7 @@ Mondays.</p>
 <span></span>
 <span><span class="va">mondays</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/time-point-rounding.html">time_point_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"day"</span>, n <span class="op">=</span> <span class="fl">14</span>, origin <span class="op">=</span> <span class="va">origin</span><span class="op">)</span></span>
 <span><span class="va">mondays</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[10]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;day&gt;[10]&gt;</span></span>
 <span><span class="co">#&gt;  [1] "2018-12-31" "2018-12-31" "2018-12-31" "2018-12-31" "2018-12-31"</span></span>
 <span><span class="co">#&gt;  [6] "2019-01-14" "2019-01-14" "2019-01-14" "2019-01-14" "2019-01-28"</span></span>
 <span></span>
@@ -888,7 +888,7 @@ string as a naive-time.</p>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/naive_time_parse.html">naive_time_parse</a></span><span class="op">(</span><span class="va">x</span>, format <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%S IST"</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[1]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;second&gt;[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2020-10-25T01:30:00"</span></span></code></pre></div>
 <p>Next, we’ll develop a function that attempts to turn this naive-time
 into a zoned-time, iterating through all of the time zone names

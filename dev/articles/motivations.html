@@ -674,19 +674,19 @@ hour.</p>
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/naive_time_parse.html">naive_time_parse</a></span><span class="op">(</span><span class="st">"2020-11-01T00:30:00"</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_hours</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">0</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[6]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;second&gt;[6]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2020-11-01T00:30:00" "2020-11-01T01:30:00" "2020-11-01T02:30:00"</span></span>
 <span><span class="co">#&gt; [4] "2020-11-01T03:30:00" "2020-11-01T04:30:00" "2020-11-01T05:30:00"</span></span></code></pre></div>
 <p>This makes arithmetic and flooring much simpler to reason about:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/time-point-rounding.html">time_point_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"hour"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[6]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;hour&gt;[6]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2020-11-01T00" "2020-11-01T01" "2020-11-01T02" "2020-11-01T03"</span></span>
 <span><span class="co">#&gt; [5] "2020-11-01T04" "2020-11-01T05"</span></span>
 <span></span>
 <span><span class="va">origin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/time_point_cast.html">time_point_cast</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"hour"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/time-point-rounding.html">time_point_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"hour"</span>, n <span class="op">=</span> <span class="fl">2</span>, origin <span class="op">=</span> <span class="va">origin</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[6]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;hour&gt;[6]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2020-10-31T23" "2020-11-01T01" "2020-11-01T01" "2020-11-01T03"</span></span>
 <span><span class="co">#&gt; [5] "2020-11-01T03" "2020-11-01T05"</span></span></code></pre></div>
 <p>You’ll notice that the result of flooring by hour is a time point
@@ -700,7 +700,7 @@ zoned-time simply specifies that zone. If possible, it keeps the printed
 time the same, while changing the underlying duration.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[1]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;second&gt;[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2020-11-01T00:30:00"</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span>
@@ -711,7 +711,7 @@ will keep the underlying duration, but will change the printed time.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x_sys</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">x_sys</span></span>
-<span><span class="co">#&gt; &lt;clock_sys_time[1]&gt;</span></span>
+<span><span class="co">#&gt; &lt;sys_time&lt;second&gt;[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2020-11-01T00:30:00"</span></span>
 <span></span>
 <span><span class="co"># Subtract 4 hours to print the America/New_York time</span></span>
@@ -724,7 +724,7 @@ might. Remember that there were two 1 o’clock hours on this day in the
 America/New_York time zone.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[2]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;second&gt;[2]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2020-11-01T00:30:00" "2020-11-01T01:30:00"</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span>
@@ -968,14 +968,14 @@ precision calendar up to day precision.</p>
 <span><span class="va">ym</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[3]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;day&gt;[3]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-01-01" "2019-02-01" "2019-03-01"</span></span>
 <span></span>
 <span><span class="co"># Or the last</span></span>
 <span><span class="va">ym</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="st">"last"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[3]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;day&gt;[3]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-01-31" "2019-02-28" "2019-03-31"</span></span></code></pre></div>
 <p>This range assumption is all throughout clock. For example, grouping
 a day precision iso-year-week-day by weeks returns a week precision
@@ -994,14 +994,14 @@ calendar.</p>
 from day to nanosecond.</p>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[1]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;day&gt;[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-01-02"</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span></span>
 <span>  <span class="fl">2019</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">30</span>, <span class="fl">35</span>, <span class="fl">123</span>, </span>
 <span>  subsecond_precision <span class="op">=</span> <span class="st">"millisecond"</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;clock_sys_time[1]&gt;</span></span>
+<span><span class="co">#&gt; &lt;sys_time&lt;millisecond&gt;[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-02-03T01:30:35.123"</span></span></code></pre></div>
 <p>Unlike calendars, a time point at say, second precision, is
 considered equivalent to a time point at millisecond precision with
@@ -1022,7 +1022,7 @@ millisecond information set to 0.</p>
 precise precision when doing arithmetic with them:</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/duration-helper.html">duration_nanoseconds</a></span><span class="op">(</span><span class="fl">25</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;clock_naive_time[1]&gt;</span></span>
+<span><span class="co">#&gt; &lt;naive_time&lt;nanosecond&gt;[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2019-01-02T00:00:00.000000025"</span></span></code></pre></div>
 </div>
 </div>

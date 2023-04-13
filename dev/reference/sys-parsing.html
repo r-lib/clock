@@ -428,17 +428,17 @@ work as you might expect.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">sys_time_parse</span><span class="op">(</span><span class="st">"2020-01-01T05:06:07"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;clock_sys_time[1]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;sys_time&lt;second&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-01-01T05:06:07"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Day precision</span></span></span>
 <span class="r-in"><span><span class="fu">sys_time_parse</span><span class="op">(</span><span class="st">"2020-01-01"</span>, precision <span class="op">=</span> <span class="st">"day"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;clock_sys_time[1]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;sys_time&lt;day&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-01-01"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Nanosecond precision, but using a day based format</span></span></span>
 <span class="r-in"><span><span class="fu">sys_time_parse</span><span class="op">(</span><span class="st">"2020-01-01"</span>, format <span class="op">=</span> <span class="st">"%Y-%m-%d"</span>, precision <span class="op">=</span> <span class="st">"nanosecond"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;clock_sys_time[1]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;sys_time&lt;nanosecond&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-01-01T00:00:00.000000000"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Multiple format strings are allowed for heterogeneous times</span></span></span>
@@ -447,7 +447,7 @@ work as you might expect.</p>
 <span class="r-in"><span>  format <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"%Y/%m/%d"</span>, <span class="st">"%Y-%m-%d"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  precision <span class="op">=</span> <span class="st">"day"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;clock_sys_time[2]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;sys_time&lt;day&gt;[2]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2019-01-01" "2019-01-01"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The `%z` command shifts the date-time by subtracting the UTC offset so</span></span></span>
@@ -456,12 +456,12 @@ work as you might expect.</p>
 <span class="r-in"><span>  <span class="st">"2020-01-01 02:00:00 -0400"</span>,</span></span>
 <span class="r-in"><span>  format <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%S %z"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;clock_sys_time[1]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;sys_time&lt;second&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-01-01T06:00:00"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Remember that the `%Z` command is ignored entirely!</span></span></span>
 <span class="r-in"><span><span class="fu">sys_time_parse</span><span class="op">(</span><span class="st">"2020-01-01 America/New_York"</span>, format <span class="op">=</span> <span class="st">"%Y-%m-%d %Z"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;clock_sys_time[1]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;sys_time&lt;second&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2020-01-01T00:00:00"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># ---------------------------------------------------------------------------</span></span></span>
@@ -470,19 +470,19 @@ work as you might expect.</p>
 <span class="r-in"><span><span class="co"># Typical UTC format</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"2019-01-01T00:01:02Z"</span></span></span>
 <span class="r-in"><span><span class="fu">sys_time_parse_RFC_3339</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;clock_sys_time[1]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;sys_time&lt;second&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2019-01-01T00:01:02"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># With a UTC offset containing a `:`</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"2019-01-01T00:01:02+02:30"</span></span></span>
 <span class="r-in"><span><span class="fu">sys_time_parse_RFC_3339</span><span class="op">(</span><span class="va">x</span>, offset <span class="op">=</span> <span class="st">"%Ez"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;clock_sys_time[1]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;sys_time&lt;second&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2018-12-31T21:31:02"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># With a space between the date and time and no `:` in the offset</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"2019-01-01 00:01:02+0230"</span></span></span>
 <span class="r-in"><span><span class="fu">sys_time_parse_RFC_3339</span><span class="op">(</span><span class="va">x</span>, separator <span class="op">=</span> <span class="st">" "</span>, offset <span class="op">=</span> <span class="st">"%z"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;clock_sys_time[1]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;sys_time&lt;second&gt;[1]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2018-12-31T21:31:02"</span>
 </code></pre></div>
     </div>

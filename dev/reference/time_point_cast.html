@@ -128,13 +128,13 @@ a conversion factor between the current precision and the new precision.</p>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="duration-helper.html">duration_hours</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="op">-</span><span class="fl">25</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;clock_naive_time[2]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;naive_time&lt;hour&gt;[2]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1970-01-02T01" "1969-12-30T23"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Casting rounds the underlying duration towards 0</span></span></span>
 <span class="r-in"><span><span class="va">cast</span> <span class="op">&lt;-</span> <span class="fu">time_point_cast</span><span class="op">(</span><span class="va">x</span>, <span class="st">"day"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cast</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;clock_naive_time[2]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;naive_time&lt;day&gt;[2]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1970-01-02" "1969-12-31"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Flooring rounds the underlying duration towards negative infinity,</span></span></span>
@@ -143,12 +143,12 @@ a conversion factor between the current precision and the new precision.</p>
 <span class="r-in"><span><span class="co"># day, while the post-1970 date is rounded down.</span></span></span>
 <span class="r-in"><span><span class="va">floor</span> <span class="op">&lt;-</span> <span class="fu"><a href="time-point-rounding.html">time_point_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"day"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">floor</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;clock_naive_time[2]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;naive_time&lt;day&gt;[2]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1970-01-02" "1969-12-30"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Casting to a more precise precision, hour-&gt;millisecond</span></span></span>
 <span class="r-in"><span><span class="fu">time_point_cast</span><span class="op">(</span><span class="va">x</span>, <span class="st">"millisecond"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;clock_naive_time[2]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;naive_time&lt;millisecond&gt;[2]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1970-01-02T01:00:00.000" "1969-12-30T23:00:00.000"</span>
 </code></pre></div>
     </div>
