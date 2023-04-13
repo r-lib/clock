@@ -29,6 +29,7 @@ Suggests:
     magrittr,
     pillar,
     rmarkdown,
+    slider (>= 0.3.0),
     testthat (>= 3.0.0),
     withr
 LinkingTo: 

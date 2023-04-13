@@ -408,3 +408,39 @@
 
     <duration<year>> * <POSIXlt<America/New_York>> is not permitted
 
+# `slide_index()` will error on naive-time based arithmetic and ambiguous times
+
+    Code
+      slider::slide_index(x, i, identity, .after = after)
+    Condition
+      Error in `stop_clock()`:
+      ! Ambiguous time due to daylight saving time at location 1.
+      i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+
+# `slide_index()` will error on naive-time based arithmetic and nonexistent times
+
+    Code
+      slider::slide_index(x, i, identity, .after = after)
+    Condition
+      Error in `stop_clock()`:
+      ! Nonexistent time due to daylight saving time at location 1.
+      i Resolve nonexistent time issues by specifying the `nonexistent` argument.
+
+# `slide_index()` will error on calendrical arithmetic and ambiguous times
+
+    Code
+      slider::slide_index(x, i, identity, .after = after)
+    Condition
+      Error in `stop_clock()`:
+      ! Ambiguous time due to daylight saving time at location 1.
+      i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+
+# `slide_index()` will error on calendrical arithmetic and nonexistent times
+
+    Code
+      slider::slide_index(x, i, identity, .after = after)
+    Condition
+      Error in `stop_clock()`:
+      ! Nonexistent time due to daylight saving time at location 1.
+      i Resolve nonexistent time issues by specifying the `nonexistent` argument.
+

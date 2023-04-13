@@ -356,6 +356,18 @@ arith_duration_and_date <- function(op, x, y, ...) {
 
 # ------------------------------------------------------------------------------
 
+# @export - .onLoad()
+slider_plus.Date.clock_duration <- function(x, y) {
+  vec_arith("+", x, y)
+}
+
+# @export - .onLoad()
+slider_minus.Date.clock_duration <- function(x, y) {
+  vec_arith("-", x, y)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Arithmetic: date
 #'
 #' @description
