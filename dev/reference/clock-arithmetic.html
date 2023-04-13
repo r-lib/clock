@@ -202,7 +202,9 @@ units of duration.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Months and years are considered "irregular" because some months have more
+    <p><code>x</code> and <code>n</code> are recycled against each other using
+<a href="https://vctrs.r-lib.org/reference/vector_recycling_rules.html" class="external-link">tidyverse recycling rules</a>.</p>
+<p>Months and years are considered "irregular" because some months have more
 days then others (28, 29, 30, or 31), and some years have more days than
 others (365 or 366).</p>
 <p>Days are considered "regular" because they are defined as 86,400 seconds.</p>

@@ -144,7 +144,8 @@ to determine how to interpret the <code>subsecond</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Fields are recycled against each other.</p>
+    <p>Fields are recycled against each other using
+<a href="https://vctrs.r-lib.org/reference/vector_recycling_rules.html" class="external-link">tidyverse recycling rules</a>.</p>
 <p>Fields are collected in order until the first <code>NULL</code> field is located. No
 fields after the first <code>NULL</code> field are used.</p>
     </div>
