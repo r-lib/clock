@@ -737,6 +737,18 @@ new_naive_time_info_from_fields <- function(fields) {
 # ------------------------------------------------------------------------------
 
 #' @export
+vec_ptype_full.clock_naive_time <- function(x, ...) {
+  time_point_ptype(x, type = "full")
+}
+
+#' @export
+vec_ptype_abbr.clock_naive_time <- function(x, ...) {
+  time_point_ptype(x, type = "abbr")
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 vec_ptype.clock_naive_time <- function(x, ...) {
   switch(
     time_point_precision_attribute(x) + 1L,

@@ -1,5 +1,8 @@
 # clock (development version)
 
+* Fixed `vec_ptype_full()` and `vec_ptype_abbr()` methods for sys-time and
+  naive-time objects (#302).
+
 * Duration vectors now work as `.before` and `.after` arguments of
   `slider::slide_index()` and friends (#306).
 

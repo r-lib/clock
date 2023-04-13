@@ -164,23 +164,31 @@ vec_restore.clock_time_point <- function(x, to, ...) {
 
 # ------------------------------------------------------------------------------
 
-#' @export
-vec_ptype_full.clock_time_point <- function(x, ...) {
-  clock <- time_point_clock_attribute(x)
-  clock <- clock_to_string(clock)
-  precision <- time_point_precision_attribute(x)
-  precision <- precision_to_string(precision)
-  paste0("time_point<", clock, "><", precision, ">")
-}
+time_point_ptype <- function(x, ..., type = c("full", "abbr")) {
+  check_dots_empty0(...)
+  type <- arg_match0(type, values = c("full", "abbr"))
 
-#' @export
-vec_ptype_abbr.clock_time_point <- function(x, ...) {
   clock <- time_point_clock_attribute(x)
   clock <- clock_to_string(clock)
+
   precision <- time_point_precision_attribute(x)
   precision <- precision_to_string(precision)
-  precision <- precision_abbr(precision)
-  paste0("tp<", clock, "><", precision, ">")
+
+  name <- switch(
+    type,
+    full = switch(
+      clock,
+      sys = "sys_time",
+      naive = "naive_time"
+    ),
+    abbr = switch(
+      clock,
+      sys = "sys",
+      naive = "naive"
+    )
+  )
+
+  paste0(name, "<", precision, ">")
 }
 
 # ------------------------------------------------------------------------------

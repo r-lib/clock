@@ -3,7 +3,7 @@
     Code
       x
     Output
-      <clock_sys_time[5]>
+      <sys_time<day>[5]>
       [1] "2019-01-01" "2019-02-01" "2019-03-01" "2019-04-01" "2019-05-01"
 
 # can limit with `max`
@@ -11,7 +11,7 @@
     Code
       print(x, max = 2)
     Output
-      <clock_sys_time[5]>
+      <sys_time<day>[5]>
       [1] "2019-01-01" "2019-02-01"
       Reached `max` or `getOption('max.print')`. Omitted 3 values.
 
@@ -20,7 +20,7 @@
     Code
       print(x, max = 4)
     Output
-      <clock_sys_time[5]>
+      <sys_time<day>[5]>
       [1] "2019-01-01" "2019-02-01" "2019-03-01" "2019-04-01"
       Reached `max` or `getOption('max.print')`. Omitted 1 value.
 
@@ -29,7 +29,7 @@
     Code
       print(x, max = 5)
     Output
-      <clock_sys_time[5]>
+      <sys_time<day>[5]>
       [1] "2019-01-01" "2019-02-01" "2019-03-01" "2019-04-01" "2019-05-01"
 
 ---
@@ -37,7 +37,7 @@
     Code
       print(x, max = 6)
     Output
-      <clock_sys_time[5]>
+      <sys_time<day>[5]>
       [1] "2019-01-01" "2019-02-01" "2019-03-01" "2019-04-01" "2019-05-01"
 
 # `max` defaults to `getOption('max.print')` but can be overridden
@@ -45,7 +45,7 @@
     Code
       x
     Output
-      <clock_naive_time[5]>
+      <naive_time<day>[5]>
       [1] "2019-01-01" "2019-02-01" "2019-03-01"
       Reached `max` or `getOption('max.print')`. Omitted 2 values.
 
@@ -54,7 +54,7 @@
     Code
       print(x, max = 4)
     Output
-      <clock_naive_time[5]>
+      <naive_time<day>[5]>
       [1] "2019-01-01" "2019-02-01" "2019-03-01" "2019-04-01"
       Reached `max` or `getOption('max.print')`. Omitted 1 value.
 
@@ -63,7 +63,7 @@
     Code
       print(x, max = 5)
     Output
-      <clock_naive_time[5]>
+      <naive_time<day>[5]>
       [1] "2019-01-01" "2019-02-01" "2019-03-01" "2019-04-01" "2019-05-01"
 
 # cannot floor to more precise precision
@@ -72,11 +72,11 @@
 
 # rounding with `origin` requires same clock
 
-    Can't convert `origin` <clock_sys_time> to <clock_naive_time>.
+    Can't convert `origin` <sys_time<day>> to <naive_time<day>>.
 
 # `origin` can be cast to a more precise `precision`, but not to a less precise one
 
-    Can't convert `origin` <clock_naive_time> to <clock_naive_time>.
+    Can't convert `origin` <naive_time<millisecond>> to <naive_time<hour>>.
     Can't cast to a less precise precision.
 
 # `origin` must be size 1
@@ -89,11 +89,11 @@
 
 # `origin` can't be Date or POSIXt
 
-    Can't convert `origin` <date> to <clock_naive_time>.
+    Can't convert `origin` <date> to <naive_time<day>>.
 
 ---
 
-    Can't convert `origin` <datetime<America/New_York>> to <clock_naive_time>.
+    Can't convert `origin` <datetime<America/New_York>> to <naive_time<day>>.
 
 # `target` is recycled to size of `x`
 
@@ -161,7 +161,7 @@
     Output
       <error/vctrs_error_ptype2>
       Error in `time_point_count_between()`:
-      ! Can't combine `start` <clock_sys_time> and `end` <clock_naive_time>.
+      ! Can't combine `start` <sys_time<day>> and `end` <naive_time<day>>.
 
 # `n` is validated
 
@@ -213,11 +213,11 @@
 
 # can't mix clocks in seq()
 
-    Can't convert `to` <clock_naive_time> to match type of `from` <clock_sys_time>.
+    Can't convert `to` <naive_time<second>> to match type of `from` <sys_time<second>>.
 
 # `to` is always cast to `from`
 
-    Can't convert `to` <clock_naive_time> to match type of `from` <clock_naive_time>.
+    Can't convert `to` <naive_time<second>> to match type of `from` <naive_time<day>>.
     Can't cast to a less precise precision.
 
 # duration to add to a time-point must have at least week precision (#120)

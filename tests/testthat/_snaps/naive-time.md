@@ -14,7 +14,7 @@
       Warning:
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output
-      <clock_naive_time[1]>
+      <naive_time<day>[1]>
       [1] NA
 
 # failure to parse throws a warning
@@ -25,7 +25,7 @@
       Warning:
       Failed to parse 1 string at location 1. Returning `NA` at that location.
     Output
-      <clock_naive_time[1]>
+      <naive_time<second>[1]>
       [1] NA
 
 # default format is correct
@@ -173,4 +173,26 @@
     x Problematic argument:
     * ..1 = "roll-forward"
     i Did you forget to name an argument?
+
+# `vec_ptype_full()` prints correctly
+
+    Code
+      vec_ptype_full(naive_days())
+    Output
+      [1] "naive_time<day>"
+    Code
+      vec_ptype_full(naive_seconds(1:5))
+    Output
+      [1] "naive_time<second>"
+
+# `vec_ptype_abbr()` prints correctly
+
+    Code
+      vec_ptype_abbr(naive_days())
+    Output
+      [1] "naive<day>"
+    Code
+      vec_ptype_abbr(naive_seconds(1:5))
+    Output
+      [1] "naive<second>"
 
