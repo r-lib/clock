@@ -80,8 +80,8 @@ install.packages("clock")
 Install the development version from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("remotes")
-remotes::install_github("r-lib/clock")
+# install.packages("pak")
+pak::pak("r-lib/clock")
 ```
 
 ## Learning
