@@ -1,13 +1,14 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# clock <a href="https://clock.r-lib.org"><img src="man/figures/logo.png" align="right" height="138" /></a>
+# clock <a href="https://clock.r-lib.org"><img src="man/figures/logo.png" align="right" height="138"/></a>
 
 <!-- badges: start -->
 
 [![Codecov test
 coverage](https://codecov.io/gh/r-lib/clock/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/clock?branch=main)
 [![R-CMD-check](https://github.com/r-lib/clock/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/clock/actions)
+
 <!-- badges: end -->
 
 clock is an R package for working with date-times. It is packed with
