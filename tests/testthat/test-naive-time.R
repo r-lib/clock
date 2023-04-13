@@ -571,6 +571,23 @@ test_that("empty dots are checked", {
 })
 
 # ------------------------------------------------------------------------------
+# vec_ptype_full() / vec_ptype_abbr()
+
+test_that("`vec_ptype_full()` prints correctly", {
+  expect_snapshot({
+    vec_ptype_full(naive_days())
+    vec_ptype_full(naive_seconds(1:5))
+  })
+})
+
+test_that("`vec_ptype_abbr()` prints correctly", {
+  expect_snapshot({
+    vec_ptype_abbr(naive_days())
+    vec_ptype_abbr(naive_seconds(1:5))
+  })
+})
+
+# ------------------------------------------------------------------------------
 # vec_ptype()
 
 test_that("ptype is correct", {
