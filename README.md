@@ -125,3 +125,7 @@ The ideas used to build clock have come from a number of places:
   first to implement year-month and year-quarter types, and has
   functioned as a very successful time series infrastructure package for
   many years.
+
+Additionally, I’d like to thank my wife for being a power user of clock,
+and having a number of discussions with me around bugs and missing
+features. You can thank her for `date_count_between()`.
