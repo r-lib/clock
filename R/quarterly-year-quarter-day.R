@@ -5,7 +5,8 @@
 #' month the fiscal year `start`s in.
 #'
 #' @details
-#' Fields are recycled against each other.
+#' Fields are recycled against each other using
+#' [tidyverse recycling rules][vctrs::vector_recycling_rules].
 #'
 #' Fields are collected in order until the first `NULL` field is located. No
 #' fields after the first `NULL` field are used.
@@ -681,9 +682,10 @@ year_quarter_day_minus_year_quarter_day <- function(op, x, y, ...) {
 #' [as_sys_time()].
 #'
 #' @details
-#' `x` and `n` are recycled against each other.
+#' `x` and `n` are recycled against each other using
+#' [tidyverse recycling rules][vctrs::vector_recycling_rules].
 #'
-#' @inheritParams add_years
+#' @inheritParams clock-arithmetic
 #'
 #' @param x `[clock_year_quarter_day]`
 #'

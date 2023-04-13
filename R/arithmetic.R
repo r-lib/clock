@@ -42,6 +42,9 @@
 #' - [date-times (POSIXct / POSIXlt)][posixt-arithmetic]
 #'
 #' @details
+#' `x` and `n` are recycled against each other using
+#' [tidyverse recycling rules][vctrs::vector_recycling_rules].
+#'
 #' Months and years are considered "irregular" because some months have more
 #' days then others (28, 29, 30, or 31), and some years have more days than
 #' others (365 or 366).

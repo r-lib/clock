@@ -450,9 +450,10 @@ weekday_minus_weekday <- function(op, x, y, ...) {
 #' usage.
 #'
 #' @details
-#' `x` and `n` are recycled against each other.
+#' `x` and `n` are recycled against each other using
+#' [tidyverse recycling rules][vctrs::vector_recycling_rules].
 #'
-#' @inheritParams add_years
+#' @inheritParams clock-arithmetic
 #'
 #' @param x `[clock_weekday]`
 #'

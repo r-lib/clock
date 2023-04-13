@@ -40,7 +40,8 @@ arithmetic, first convert to a time point with \code{\link[=as_naive_time]{as_na
 \code{\link[=as_sys_time]{as_sys_time()}}.
 }
 \details{
-\code{x} and \code{n} are recycled against each other.
+\code{x} and \code{n} are recycled against each other using
+\link[vctrs:vector_recycling_rules]{tidyverse recycling rules}.
 }
 \examples{
 x <- year_quarter_day(2019, 1:3)

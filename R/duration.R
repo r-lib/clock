@@ -879,9 +879,10 @@ vec_arith.numeric.clock_duration <- function(op, x, y, ...) {
 #' (such as adding days and months). For more information, see the
 #' documentation on the [duration helper][duration-helper] page.
 #'
-#' `x` and `n` are recycled against each other.
+#' `x` and `n` are recycled against each other using
+#' [tidyverse recycling rules][vctrs::vector_recycling_rules].
 #'
-#' @inheritParams add_years
+#' @inheritParams clock-arithmetic
 #'
 #' @param x `[clock_duration]`
 #'

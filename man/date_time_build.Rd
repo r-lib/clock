@@ -149,7 +149,8 @@ A POSIXct.
 To build a POSIXct, it is required that you specify the \code{zone}.
 }
 \details{
-Components are recycled against each other.
+Components are recycled against each other using
+\link[vctrs:vector_recycling_rules]{tidyverse recycling rules}.
 }
 \examples{
 # The zone argument is required!

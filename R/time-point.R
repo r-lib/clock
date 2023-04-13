@@ -310,9 +310,10 @@ arith_numeric_and_time_point <- function(op, x, y, ...) {
 #' [as_year_month_day()].
 #'
 #' @details
-#' `x` and `n` are recycled against each other.
+#' `x` and `n` are recycled against each other using
+#' [tidyverse recycling rules][vctrs::vector_recycling_rules].
 #'
-#' @inheritParams add_years
+#' @inheritParams clock-arithmetic
 #'
 #' @param x `[clock_sys_time / clock_naive_time]`
 #'

@@ -90,7 +90,8 @@ convert back to a Date.
 Adding a single quarter with \code{add_quarters()} is equivalent to adding
 3 months.
 
-\code{x} and \code{n} are recycled against each other.
+\code{x} and \code{n} are recycled against each other using
+\link[vctrs:vector_recycling_rules]{tidyverse recycling rules}.
 
 Only calendrical based arithmetic has the potential to generate invalid
 dates. Time point based arithmetic, like adding days, will always generate

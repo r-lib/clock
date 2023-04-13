@@ -47,7 +47,8 @@ arithmetic, first convert to a time point with \code{\link[=as_naive_time]{as_na
 Adding a single quarter with \code{add_quarters()} is equivalent to adding
 3 months.
 
-\code{x} and \code{n} are recycled against each other.
+\code{x} and \code{n} are recycled against each other using
+\link[vctrs:vector_recycling_rules]{tidyverse recycling rules}.
 }
 \examples{
 # 2nd Friday in January, 2019

@@ -398,13 +398,14 @@ slider_minus.Date.clock_duration <- function(x, y) {
 #' Adding a single quarter with `add_quarters()` is equivalent to adding
 #' 3 months.
 #'
-#' `x` and `n` are recycled against each other.
+#' `x` and `n` are recycled against each other using
+#' [tidyverse recycling rules][vctrs::vector_recycling_rules].
 #'
 #' Only calendrical based arithmetic has the potential to generate invalid
 #' dates. Time point based arithmetic, like adding days, will always generate
 #' a valid date.
 #'
-#' @inheritParams add_years
+#' @inheritParams clock-arithmetic
 #' @inheritParams invalid_resolve
 #'
 #' @param x `[Date]`
@@ -1172,7 +1173,8 @@ date_shift.Date <- function(x,
 #' `date_build()` builds a Date from it's individual components.
 #'
 #' @details
-#' Components are recycled against each other.
+#' Components are recycled against each other using
+#' [tidyverse recycling rules][vctrs::vector_recycling_rules].
 #'
 #' @inheritParams invalid_resolve
 #'

@@ -554,7 +554,8 @@ slider_minus.POSIXlt.clock_duration <- function(x, y) {
 #' Adding a single quarter with `add_quarters()` is equivalent to adding
 #' 3 months.
 #'
-#' `x` and `n` are recycled against each other.
+#' `x` and `n` are recycled against each other using
+#' [tidyverse recycling rules][vctrs::vector_recycling_rules].
 #'
 #' Calendrical based arithmetic has the potential to generate invalid dates
 #' (like the 31st of February), nonexistent times (due to daylight saving
@@ -585,7 +586,7 @@ slider_minus.POSIXlt.clock_duration <- function(x, y) {
 #' POSIXct/POSIXlt, dealing with the nonexistent time that gets created by
 #' using the `nonexistent` argument of `as.POSIXct()`.
 #'
-#' @inheritParams add_years
+#' @inheritParams clock-arithmetic
 #' @inheritParams invalid_resolve
 #' @inheritParams as-zoned-time-naive-time
 #'
@@ -1443,7 +1444,8 @@ date_shift.POSIXt <- function(x,
 #' To build a POSIXct, it is required that you specify the `zone`.
 #'
 #' @details
-#' Components are recycled against each other.
+#' Components are recycled against each other using
+#' [tidyverse recycling rules][vctrs::vector_recycling_rules].
 #'
 #' @inheritParams invalid_resolve
 #' @inheritParams as-zoned-time-naive-time

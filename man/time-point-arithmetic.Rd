@@ -72,7 +72,8 @@ or years, convert to a calendar type with a converter like
 \code{\link[=as_year_month_day]{as_year_month_day()}}.
 }
 \details{
-\code{x} and \code{n} are recycled against each other.
+\code{x} and \code{n} are recycled against each other using
+\link[vctrs:vector_recycling_rules]{tidyverse recycling rules}.
 }
 \examples{
 library(magrittr)

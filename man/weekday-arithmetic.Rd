@@ -35,7 +35,8 @@ Also check out the examples on the \code{\link[=weekday]{weekday()}} page for mo
 usage.
 }
 \details{
-\code{x} and \code{n} are recycled against each other.
+\code{x} and \code{n} are recycled against each other using
+\link[vctrs:vector_recycling_rules]{tidyverse recycling rules}.
 }
 \examples{
 saturday <- weekday(clock_weekdays$saturday)

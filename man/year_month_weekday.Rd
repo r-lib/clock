@@ -78,7 +78,8 @@ year, month, weekday, and index specifying that this is the n-th weekday
 of the month.
 }
 \details{
-Fields are recycled against each other.
+Fields are recycled against each other using
+\link[vctrs:vector_recycling_rules]{tidyverse recycling rules}.
 
 Fields are collected in order until the first \code{NULL} field is located. No
 fields after the first \code{NULL} field are used.

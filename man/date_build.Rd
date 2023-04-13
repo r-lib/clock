@@ -57,7 +57,8 @@ A Date.
 \code{date_build()} builds a Date from it's individual components.
 }
 \details{
-Components are recycled against each other.
+Components are recycled against each other using
+\link[vctrs:vector_recycling_rules]{tidyverse recycling rules}.
 }
 \examples{
 date_build(2019)
