@@ -1002,7 +1002,7 @@ test_that("<duration> op <posixt>", {
 # slider_plus() / slider_minus()
 
 test_that("`slider_plus()` method is registered", {
-  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+  skip_if_not_installed("slider", minimum_version = "0.3.0")
 
   zone <- "America/New_York"
 
@@ -1030,7 +1030,7 @@ test_that("`slider_plus()` method is registered", {
 })
 
 test_that("`slider_minus()` method is registered", {
-  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+  skip_if_not_installed("slider", minimum_version = "0.3.0")
 
   zone <- "America/New_York"
 
@@ -1058,7 +1058,7 @@ test_that("`slider_minus()` method is registered", {
 })
 
 test_that("`slide_index()` works with date-times and durations", {
-  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+  skip_if_not_installed("slider", minimum_version = "0.3.0")
 
   zone <- "America/New_York"
 
@@ -1088,7 +1088,7 @@ test_that("`slide_index()` works with date-times and durations", {
 })
 
 test_that("`slide_index()` with date-times and sys-time based arithmetic is sensible around ambiguous times", {
-  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+  skip_if_not_installed("slider", minimum_version = "0.3.0")
 
   zone <- "America/New_York"
 
@@ -1114,7 +1114,7 @@ test_that("`slide_index()` with date-times and sys-time based arithmetic is sens
 })
 
 test_that("`slide_index()` with date-times and sys-time based arithmetic is sensible around nonexistent times", {
-  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+  skip_if_not_installed("slider", minimum_version = "0.3.0")
 
   zone <- "America/New_York"
 
@@ -1138,7 +1138,7 @@ test_that("`slide_index()` with date-times and sys-time based arithmetic is sens
 })
 
 test_that("`slide_index()` will error on naive-time based arithmetic and ambiguous times", {
-  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+  skip_if_not_installed("slider", minimum_version = "0.3.0")
 
   zone <- "America/New_York"
 
@@ -1154,7 +1154,7 @@ test_that("`slide_index()` will error on naive-time based arithmetic and ambiguo
 })
 
 test_that("`slide_index()` will error on naive-time based arithmetic and nonexistent times", {
-  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+  skip_if_not_installed("slider", minimum_version = "0.3.0")
 
   zone <- "America/New_York"
 
@@ -1170,7 +1170,7 @@ test_that("`slide_index()` will error on naive-time based arithmetic and nonexis
 })
 
 test_that("`slide_index()` will error on calendrical arithmetic and ambiguous times", {
-  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+  skip_if_not_installed("slider", minimum_version = "0.3.0")
 
   zone <- "America/New_York"
 
@@ -1186,7 +1186,7 @@ test_that("`slide_index()` will error on calendrical arithmetic and ambiguous ti
 })
 
 test_that("`slide_index()` will error on calendrical arithmetic and nonexistent times", {
-  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+  skip_if_not_installed("slider", minimum_version = "0.3.0")
 
   zone <- "America/New_York"
 

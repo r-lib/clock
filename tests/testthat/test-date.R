@@ -613,7 +613,7 @@ test_that("<duration> op <date>", {
 # slider_plus() / slider_minus()
 
 test_that("`slider_plus()` method is registered", {
-  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+  skip_if_not_installed("slider", minimum_version = "0.3.0")
 
   x <- date_build(2019, 1, 1:2)
 
@@ -631,7 +631,7 @@ test_that("`slider_plus()` method is registered", {
 })
 
 test_that("`slider_minus()` method is registered", {
-  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+  skip_if_not_installed("slider", minimum_version = "0.3.0")
 
   x <- date_build(2019, 1, 1:2)
 
@@ -649,7 +649,7 @@ test_that("`slider_minus()` method is registered", {
 })
 
 test_that("`slide_index()` works with dates and durations", {
-  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+  skip_if_not_installed("slider", minimum_version = "0.3.0")
 
   i <- date_build(2019, 1, 1:4)
   x <- seq_along(i)
@@ -669,7 +669,7 @@ test_that("`slide_index()` works with dates and durations", {
 })
 
 test_that("`slide_index()` will error on calendrical arithmetic and invalid dates", {
-  skip_if_not_installed("slider", minimum_version = "0.2.2.9000")
+  skip_if_not_installed("slider", minimum_version = "0.3.0")
 
   i <- date_build(2019, 1, 28:31)
   x <- seq_along(i)
