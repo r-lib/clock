@@ -1,5 +1,8 @@
 # clock (development version)
 
+* clock now compiles significantly faster (on a 2018 Intel Mac, it used to take
+  ~70 seconds for a full compilation, and now takes ~25 seconds) (#322).
+
 * Skipped a test on 32-bit architectures to work around a bug in base R (#312).
 
 * Fixed `vec_ptype_full()` and `vec_ptype_abbr()` methods for sys-time and
