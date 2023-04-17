@@ -26,10 +26,6 @@ public:
   int operator[](r_ssize i) const noexcept;
 
   SEXP sexp() const noexcept;
-
-private:
-  bool is_writable() const noexcept;
-  void as_writable();
 };
 
 namespace detail {
@@ -75,8 +71,9 @@ integers::size() const noexcept {
 inline
 void
 integers::assign(int x, r_ssize i) {
-  if (!is_writable()) {
-    as_writable();
+  if (!writable_) {
+    write_ = cpp11::writable::integers(read_);
+    writable_ = true;
   }
   write_[i] = x;
 }
@@ -97,19 +94,6 @@ inline
 SEXP
 integers::sexp() const noexcept {
   return writable_ ? write_ : read_;
-}
-
-inline
-bool
-integers::is_writable() const noexcept {
-  return writable_;
-}
-
-inline
-void
-integers::as_writable() {
-  write_ = cpp11::writable::integers(read_);
-  writable_ = true;
 }
 
 } // namespace rclock
