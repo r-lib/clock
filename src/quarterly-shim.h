@@ -49,12 +49,12 @@ public:
   CONSTCD11 quarterly::start start() const NOEXCEPT;
 
   CONSTCD11 explicit operator int() const NOEXCEPT;
-  CONSTCD11 bool ok() const NOEXCEPT;
+  CONSTCD14 bool ok() const NOEXCEPT;
 };
 
-CONSTCD11 year operator+(const year& x, const quarterly::years& y) NOEXCEPT;
+CONSTCD14 year operator+(const year& x, const quarterly::years& y) NOEXCEPT;
 
-CONSTCD11 quarterly::years operator-(const year& x, const year& y) NOEXCEPT;
+CONSTCD14 quarterly::years operator-(const year& x, const year& y) NOEXCEPT;
 
 // year_quarternum
 
@@ -71,12 +71,12 @@ public:
   CONSTCD11 quarterly_shim::year year() const NOEXCEPT;
   CONSTCD11 quarterly::quarternum quarternum() const NOEXCEPT;
 
-  CONSTCD11 bool ok() const NOEXCEPT;
+  CONSTCD14 bool ok() const NOEXCEPT;
 };
 
 CONSTCD14 year_quarternum operator+(const year_quarternum& yqn, const quarterly::quarters& dq) NOEXCEPT;
 
-CONSTCD11 quarterly::quarters operator-(const year_quarternum& x, const year_quarternum& y) NOEXCEPT;
+CONSTCD14 quarterly::quarters operator-(const year_quarternum& x, const year_quarternum& y) NOEXCEPT;
 
 // year_quarternum_quarterday
 
@@ -225,7 +225,7 @@ year::operator int() const NOEXCEPT
   return y_;
 }
 
-CONSTCD11
+CONSTCD14
 inline
 bool
 year::ok() const NOEXCEPT
@@ -257,7 +257,7 @@ year::start() const NOEXCEPT
   return s_;
 }
 
-CONSTCD11
+CONSTCD14
 inline
 year
 operator+(const year& x, const quarterly::years& y) NOEXCEPT
@@ -282,7 +282,7 @@ operator+(const year& x, const quarterly::years& y) NOEXCEPT
   }
 }
 
-CONSTCD11
+CONSTCD14
 inline
 quarterly::years
 operator-(const year& x, const year& y) NOEXCEPT
@@ -317,7 +317,7 @@ year_quarternum::year_quarternum(const quarterly_shim::year& y,
   , qn_(qn)
   {}
 
-CONSTCD11
+CONSTCD14
 inline
 bool
 year_quarternum::ok() const NOEXCEPT
@@ -382,7 +382,7 @@ operator+(const year_quarternum& yqn, const quarterly::quarters& dq) NOEXCEPT
   }
 }
 
-CONSTCD11
+CONSTCD14
 inline
 quarterly::quarters
 operator-(const year_quarternum& x, const year_quarternum& y) NOEXCEPT
