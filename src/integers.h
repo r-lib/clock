@@ -5,8 +5,6 @@
 
 namespace rclock {
 
-static const cpp11::integers clock_empty_integers = cpp11::integers{};
-
 class integers
 {
   const cpp11::integers read_;
@@ -33,9 +31,15 @@ private:
   void as_writable();
 };
 
+namespace detail {
+
+static const cpp11::integers empty_integers = cpp11::integers{};
+
+} // namespace detail
+
 inline
 integers::integers() noexcept
-  : read_(clock_empty_integers),
+  : read_(detail::empty_integers),
     writable_(false)
   {}
 
@@ -47,7 +51,7 @@ integers::integers(const cpp11::integers& x)
 
 inline
 integers::integers(r_ssize size)
-  : read_(clock_empty_integers),
+  : read_(detail::empty_integers),
     write_(cpp11::writable::integers(size)),
     writable_(true)
   {}
