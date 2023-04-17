@@ -14,33 +14,33 @@ class integers
   bool writable_;
 
 public:
-  integers() NOEXCEPT;
-  integers(const cpp11::integers& x) NOEXCEPT;
+  integers() noexcept;
+  integers(const cpp11::integers& x);
   integers(r_ssize size);
 
-  bool is_na(r_ssize i) const NOEXCEPT;
-  r_ssize size() const NOEXCEPT;
+  bool is_na(r_ssize i) const noexcept;
+  r_ssize size() const noexcept;
 
   void assign(int x, r_ssize i);
   void assign_na(r_ssize i);
 
-  int operator[](r_ssize i) const NOEXCEPT;
+  int operator[](r_ssize i) const noexcept;
 
-  SEXP sexp() const NOEXCEPT;
+  SEXP sexp() const noexcept;
 
 private:
-  bool is_writable() const NOEXCEPT;
+  bool is_writable() const noexcept;
   void as_writable();
 };
 
 inline
-integers::integers() NOEXCEPT
+integers::integers() noexcept
   : read_(clock_empty_integers),
     writable_(false)
   {}
 
 inline
-integers::integers(const cpp11::integers& x) NOEXCEPT
+integers::integers(const cpp11::integers& x)
   : read_(x),
     writable_(false)
   {}
@@ -54,13 +54,13 @@ integers::integers(r_ssize size)
 
 inline
 bool
-integers::is_na(r_ssize i) const NOEXCEPT {
+integers::is_na(r_ssize i) const noexcept {
   return this->operator[](i) == r_int_na;
 }
 
 inline
 r_ssize
-integers::size() const NOEXCEPT {
+integers::size() const noexcept {
   return read_.size();
 }
 
@@ -81,19 +81,19 @@ integers::assign_na(r_ssize i) {
 
 inline
 int
-integers::operator[](r_ssize i) const NOEXCEPT {
+integers::operator[](r_ssize i) const noexcept {
   return writable_ ? write_[i] : read_[i];
 }
 
 inline
 SEXP
-integers::sexp() const NOEXCEPT {
+integers::sexp() const noexcept {
   return writable_ ? write_ : read_;
 }
 
 inline
 bool
-integers::is_writable() const NOEXCEPT {
+integers::is_writable() const noexcept {
   return writable_;
 }
 
