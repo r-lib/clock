@@ -63,7 +63,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="clock-development-version">clock (development version)<a class="anchor" aria-label="anchor" href="#clock-development-version"></a></h2>
-<ul><li><p>Skipped a test on 32-bit architectures to work around a bug in base R (<a href="https://github.com/r-lib/clock/issues/312" class="external-link">#312</a>).</p></li>
+<ul><li><p>clock now compiles significantly faster (on a 2018 Intel Mac, it used to take ~70 seconds for a full compilation, and now takes ~25 seconds) (<a href="https://github.com/r-lib/clock/issues/322" class="external-link">#322</a>).</p></li>
+<li><p>Skipped a test on 32-bit architectures to work around a bug in base R (<a href="https://github.com/r-lib/clock/issues/312" class="external-link">#312</a>).</p></li>
 <li><p>Fixed <code><a href="https://vctrs.r-lib.org/reference/vec_ptype_full.html" class="external-link">vec_ptype_full()</a></code> and <code><a href="https://vctrs.r-lib.org/reference/vec_ptype_full.html" class="external-link">vec_ptype_abbr()</a></code> methods for sys-time and naive-time objects (<a href="https://github.com/r-lib/clock/issues/302" class="external-link">#302</a>).</p></li>
 <li><p>Duration vectors now work as <code>.before</code> and <code>.after</code> arguments of <code><a href="https://slider.r-lib.org/reference/slide_index.html" class="external-link">slider::slide_index()</a></code> and friends (<a href="https://github.com/r-lib/clock/issues/306" class="external-link">#306</a>).</p></li>
 <li><p>R &gt;=3.5.0 is now required, which is in line with tidyverse standards.</p></li>
