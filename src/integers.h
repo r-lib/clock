@@ -10,6 +10,7 @@ class integers
   const cpp11::integers read_;
   cpp11::writable::integers write_;
   bool writable_;
+  r_ssize size_;
 
 public:
   integers() noexcept;
@@ -40,20 +41,23 @@ static const cpp11::integers empty_integers = cpp11::integers{};
 inline
 integers::integers() noexcept
   : read_(detail::empty_integers),
-    writable_(false)
+    writable_(false),
+    size_(0)
   {}
 
 inline
 integers::integers(const cpp11::integers& x)
   : read_(x),
-    writable_(false)
+    writable_(false),
+    size_(x.size())
   {}
 
 inline
 integers::integers(r_ssize size)
   : read_(detail::empty_integers),
     write_(cpp11::writable::integers(size)),
-    writable_(true)
+    writable_(true),
+    size_(size)
   {}
 
 inline
@@ -65,7 +69,7 @@ integers::is_na(r_ssize i) const noexcept {
 inline
 r_ssize
 integers::size() const noexcept {
-  return read_.size();
+  return size_;
 }
 
 inline
