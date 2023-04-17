@@ -9,13 +9,13 @@ static const cpp11::integers clock_empty_integers = cpp11::integers{};
 
 class integers
 {
-  const cpp11::integers& read_;
+  const cpp11::integers read_;
   cpp11::writable::integers write_;
   bool writable_;
 
 public:
-  CONSTCD11 integers() NOEXCEPT;
-  CONSTCD11 integers(const cpp11::integers& x) NOEXCEPT;
+  integers() NOEXCEPT;
+  integers(const cpp11::integers& x) NOEXCEPT;
   integers(r_ssize size);
 
   bool is_na(r_ssize i) const NOEXCEPT;
@@ -33,14 +33,12 @@ private:
   void as_writable();
 };
 
-CONSTCD11
 inline
 integers::integers() NOEXCEPT
   : read_(clock_empty_integers),
     writable_(false)
   {}
 
-CONSTCD11
 inline
 integers::integers(const cpp11::integers& x) NOEXCEPT
   : read_(x),
