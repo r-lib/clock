@@ -296,8 +296,8 @@ invalid_resolve_iso_year_week_day_cpp <- function(fields, precision_int, invalid
   .Call(`_clock_invalid_resolve_iso_year_week_day_cpp`, fields, precision_int, invalid_string)
 }
 
-set_field_iso_year_week_day_last_cpp <- function(fields, precision_fields) {
-  .Call(`_clock_set_field_iso_year_week_day_last_cpp`, fields, precision_fields)
+get_iso_year_week_day_last_cpp <- function(year) {
+  .Call(`_clock_get_iso_year_week_day_last_cpp`, year)
 }
 
 iso_year_week_day_plus_duration_cpp <- function(fields, fields_n, precision_fields, precision_n) {
