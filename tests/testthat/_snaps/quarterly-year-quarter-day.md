@@ -1,38 +1,83 @@
 # validates value ranges
 
-    `year` must be within the range of [-32767, 32767], not 50000.
+    Code
+      year_quarter_day(50000)
+    Condition
+      Error in `year_quarter_day()`:
+      ! `year` must be between [-32767, 32767].
+      i Invalid results at locations: 1.
 
 ---
 
-    `quarter` must be within the range of [1, 4], not 5.
+    Code
+      year_quarter_day(2020, 5)
+    Condition
+      Error in `year_quarter_day()`:
+      ! `quarter` must be between [1, 4].
+      i Invalid results at locations: 1.
 
 ---
 
-    `day` must be within the range of [1, 92], not 93.
+    Code
+      year_quarter_day(2020, 1, 93)
+    Condition
+      Error in `year_quarter_day()`:
+      ! `day` must be between [1, 92].
+      i Invalid results at locations: 1.
 
 ---
 
-    `hour` must be within the range of [0, 23], not 24.
+    Code
+      year_quarter_day(2020, 1, 1, 24)
+    Condition
+      Error in `year_quarter_day()`:
+      ! `hour` must be between [0, 23].
+      i Invalid results at locations: 1.
 
 ---
 
-    `minute` must be within the range of [0, 59], not 60.
+    Code
+      year_quarter_day(2020, 1, 1, 1, 60)
+    Condition
+      Error in `year_quarter_day()`:
+      ! `minute` must be between [0, 59].
+      i Invalid results at locations: 1.
 
 ---
 
-    `second` must be within the range of [0, 59], not 60.
+    Code
+      year_quarter_day(2020, 1, 1, 1, 1, 60)
+    Condition
+      Error in `year_quarter_day()`:
+      ! `second` must be between [0, 59].
+      i Invalid results at locations: 1.
 
 ---
 
-    `subsecond` must be within the range of [0, 999], not 1000.
+    Code
+      year_quarter_day(2020, 1, 1, 1, 1, 1, 1000, subsecond_precision = "millisecond")
+    Condition
+      Error in `year_quarter_day()`:
+      ! `subsecond` must be between [0, 999].
+      i Invalid results at locations: 1.
 
 ---
 
-    `subsecond` must be within the range of [0, 999999], not 1000000.
+    Code
+      year_quarter_day(2020, 1, 1, 1, 1, 1, 1e+06, subsecond_precision = "microsecond")
+    Condition
+      Error in `year_quarter_day()`:
+      ! `subsecond` must be between [0, 999999].
+      i Invalid results at locations: 1.
 
 ---
 
-    `subsecond` must be within the range of [0, 999999999], not 1000000000.
+    Code
+      year_quarter_day(2020, 1, 1, 1, 1, 1, 1e+09, subsecond_precision = "nanosecond")
+    Condition
+      Error in `year_quarter_day()`:
+      ! `subsecond` must be between [0, 999999999].
+      i Invalid results at locations: 1.
 
 # full ptype is correct
 

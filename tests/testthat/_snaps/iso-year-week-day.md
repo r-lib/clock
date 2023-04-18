@@ -1,38 +1,83 @@
 # validates value ranges
 
-    `year` must be within the range of [-32767, 32767], not 50000.
+    Code
+      iso_year_week_day(50000)
+    Condition
+      Error in `iso_year_week_day()`:
+      ! `year` must be between [-32767, 32767].
+      i Invalid results at locations: 1.
 
 ---
 
-    `week` must be within the range of [1, 53], not 54.
+    Code
+      iso_year_week_day(2020, 54)
+    Condition
+      Error in `iso_year_week_day()`:
+      ! `week` must be between [1, 53].
+      i Invalid results at locations: 1.
 
 ---
 
-    `day` must be within the range of [1, 7], not 8.
+    Code
+      iso_year_week_day(2020, 1, 8)
+    Condition
+      Error in `iso_year_week_day()`:
+      ! `day` must be between [1, 7].
+      i Invalid results at locations: 1.
 
 ---
 
-    `hour` must be within the range of [0, 23], not 24.
+    Code
+      iso_year_week_day(2020, 1, 1, 24)
+    Condition
+      Error in `iso_year_week_day()`:
+      ! `hour` must be between [0, 23].
+      i Invalid results at locations: 1.
 
 ---
 
-    `minute` must be within the range of [0, 59], not 60.
+    Code
+      iso_year_week_day(2020, 1, 1, 1, 60)
+    Condition
+      Error in `iso_year_week_day()`:
+      ! `minute` must be between [0, 59].
+      i Invalid results at locations: 1.
 
 ---
 
-    `second` must be within the range of [0, 59], not 60.
+    Code
+      iso_year_week_day(2020, 1, 1, 1, 1, 60)
+    Condition
+      Error in `iso_year_week_day()`:
+      ! `second` must be between [0, 59].
+      i Invalid results at locations: 1.
 
 ---
 
-    `subsecond` must be within the range of [0, 999], not 1000.
+    Code
+      iso_year_week_day(2020, 1, 1, 1, 1, 1, 1000, subsecond_precision = "millisecond")
+    Condition
+      Error in `iso_year_week_day()`:
+      ! `subsecond` must be between [0, 999].
+      i Invalid results at locations: 1.
 
 ---
 
-    `subsecond` must be within the range of [0, 999999], not 1000000.
+    Code
+      iso_year_week_day(2020, 1, 1, 1, 1, 1, 1e+06, subsecond_precision = "microsecond")
+    Condition
+      Error in `iso_year_week_day()`:
+      ! `subsecond` must be between [0, 999999].
+      i Invalid results at locations: 1.
 
 ---
 
-    `subsecond` must be within the range of [0, 999999999], not 1000000000.
+    Code
+      iso_year_week_day(2020, 1, 1, 1, 1, 1, 1e+09, subsecond_precision = "nanosecond")
+    Condition
+      Error in `iso_year_week_day()`:
+      ! `subsecond` must be between [0, 999999999].
+      i Invalid results at locations: 1.
 
 # full ptype is correct
 

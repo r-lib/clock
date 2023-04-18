@@ -4,43 +4,93 @@
 
 # validates value ranges
 
-    `year` must be within the range of [-32767, 32767], not 50000.
+    Code
+      year_month_weekday(50000)
+    Condition
+      Error in `year_month_weekday()`:
+      ! `year` must be between [-32767, 32767].
+      i Invalid results at locations: 1.
 
 ---
 
-    `month` must be within the range of [1, 12], not 13.
+    Code
+      year_month_weekday(2020, 13)
+    Condition
+      Error in `year_month_weekday()`:
+      ! `month` must be between [1, 12].
+      i Invalid results at locations: 1.
 
 ---
 
-    `day` must be within the range of [1, 7], not 32.
+    Code
+      year_month_weekday(2020, 1, 32, 1)
+    Condition
+      Error in `year_month_weekday()`:
+      ! `day` must be between [1, 7].
+      i Invalid results at locations: 1.
 
 ---
 
-    `index` must be within the range of [1, 5], not 6.
+    Code
+      year_month_weekday(2020, 1, 1, 6)
+    Condition
+      Error in `year_month_weekday()`:
+      ! `index` must be between [1, 5].
+      i Invalid results at locations: 1.
 
 ---
 
-    `hour` must be within the range of [0, 23], not 24.
+    Code
+      year_month_weekday(2020, 1, 1, 1, 24)
+    Condition
+      Error in `year_month_weekday()`:
+      ! `hour` must be between [0, 23].
+      i Invalid results at locations: 1.
 
 ---
 
-    `minute` must be within the range of [0, 59], not 60.
+    Code
+      year_month_weekday(2020, 1, 1, 1, 1, 60)
+    Condition
+      Error in `year_month_weekday()`:
+      ! `minute` must be between [0, 59].
+      i Invalid results at locations: 1.
 
 ---
 
-    `second` must be within the range of [0, 59], not 60.
+    Code
+      year_month_weekday(2020, 1, 1, 1, 1, 1, 60)
+    Condition
+      Error in `year_month_weekday()`:
+      ! `second` must be between [0, 59].
+      i Invalid results at locations: 1.
 
 ---
 
-    `subsecond` must be within the range of [0, 999], not 1000.
+    Code
+      year_month_weekday(2020, 1, 1, 1, 1, 1, 1, 1000, subsecond_precision = "millisecond")
+    Condition
+      Error in `year_month_weekday()`:
+      ! `subsecond` must be between [0, 999].
+      i Invalid results at locations: 1.
 
 ---
 
-    `subsecond` must be within the range of [0, 999999], not 1000000.
+    Code
+      year_month_weekday(2020, 1, 1, 1, 1, 1, 1, 1e+06, subsecond_precision = "microsecond")
+    Condition
+      Error in `year_month_weekday()`:
+      ! `subsecond` must be between [0, 999999].
+      i Invalid results at locations: 1.
 
 ---
 
-    `subsecond` must be within the range of [0, 999999999], not 1000000000.
+    Code
+      year_month_weekday(2020, 1, 1, 1, 1, 1, 1, 1e+09, subsecond_precision = "nanosecond")
+    Condition
+      Error in `year_month_weekday()`:
+      ! `subsecond` must be between [0, 999999999].
+      i Invalid results at locations: 1.
 
 # cannot compare / sort with day precision or finer
 

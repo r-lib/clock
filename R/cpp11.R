@@ -124,10 +124,6 @@ year_day_restore <- function(x, to) {
   .Call(`_clock_year_day_restore`, x, to)
 }
 
-collect_year_day_fields <- function(fields, precision_int) {
-  .Call(`_clock_collect_year_day_fields`, fields, precision_int)
-}
-
 format_year_day_cpp <- function(fields, precision_int) {
   .Call(`_clock_format_year_day_cpp`, fields, precision_int)
 }
@@ -178,10 +174,6 @@ new_year_month_day_from_fields <- function(fields, precision_int, names) {
 
 year_month_day_restore <- function(x, to) {
   .Call(`_clock_year_month_day_restore`, x, to)
-}
-
-collect_year_month_day_fields <- function(fields, precision_int) {
-  .Call(`_clock_collect_year_month_day_fields`, fields, precision_int)
 }
 
 format_year_month_day_cpp <- function(fields, precision_int) {
@@ -244,10 +236,6 @@ year_month_weekday_restore <- function(x, to) {
   .Call(`_clock_year_month_weekday_restore`, x, to)
 }
 
-collect_year_month_weekday_fields <- function(fields, precision_int) {
-  .Call(`_clock_collect_year_month_weekday_fields`, fields, precision_int)
-}
-
 format_year_month_weekday_cpp <- function(fields, precision_int) {
   .Call(`_clock_format_year_month_weekday_cpp`, fields, precision_int)
 }
@@ -300,10 +288,6 @@ iso_year_week_day_restore <- function(x, to) {
   .Call(`_clock_iso_year_week_day_restore`, x, to)
 }
 
-collect_iso_year_week_day_fields <- function(fields, precision_int) {
-  .Call(`_clock_collect_iso_year_week_day_fields`, fields, precision_int)
-}
-
 format_iso_year_week_day_cpp <- function(fields, precision_int) {
   .Call(`_clock_format_iso_year_week_day_cpp`, fields, precision_int)
 }
@@ -348,6 +332,14 @@ iso_year_week_day_minus_iso_year_week_day_cpp <- function(x, y, precision_int) {
   .Call(`_clock_iso_year_week_day_minus_iso_year_week_day_cpp`, x, y, precision_int)
 }
 
+clock_get_year_max <- function() {
+  .Call(`_clock_clock_get_year_max`)
+}
+
+clock_get_year_min <- function() {
+  .Call(`_clock_clock_get_year_min`)
+}
+
 naive_time_info_cpp <- function(fields, precision_int, zone) {
   .Call(`_clock_naive_time_info_cpp`, fields, precision_int, zone)
 }
@@ -358,10 +350,6 @@ new_year_quarter_day_from_fields <- function(fields, precision_int, start, names
 
 year_quarter_day_restore <- function(x, to) {
   .Call(`_clock_year_quarter_day_restore`, x, to)
-}
-
-collect_year_quarter_day_fields <- function(fields, precision_int, start_int) {
-  .Call(`_clock_collect_year_quarter_day_fields`, fields, precision_int, start_int)
 }
 
 format_year_quarter_day_cpp <- function(fields, precision_int, start_int) {

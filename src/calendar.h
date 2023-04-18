@@ -8,40 +8,6 @@
 
 // -----------------------------------------------------------------------------
 
-template <enum component Component, class Calendar>
-void
-calendar_check_range_impl(const Calendar& dummy, const cpp11::integers& x, const char* arg) {
-  const r_ssize size = x.size();
-
-  for (r_ssize i = 0; i < size; ++i) {
-    // Should never be `NA`, so don't allow that to pass through
-    dummy.template check_range<Component>(x[i], arg);
-  }
-}
-
-// -----------------------------------------------------------------------------
-
-template <enum component Component, class Calendar>
-static
-inline
-void
-collect_field(Calendar& x, const cpp11::integers& field, const char* arg) {
-  r_ssize size = x.size();
-
-  for (r_ssize i = 0; i < size; ++i) {
-    const int elt = field[i];
-
-    if (elt == r_int_na) {
-      x.assign_na(i);
-      continue;
-    }
-
-    x.template check_range<Component>(elt, arg);
-  }
-}
-
-// -----------------------------------------------------------------------------
-
 template <class Calendar>
 static
 inline
