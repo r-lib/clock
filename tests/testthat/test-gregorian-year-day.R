@@ -118,6 +118,167 @@ test_that("abbreviated ptype is correct", {
 })
 
 # ------------------------------------------------------------------------------
+# set_*()
+
+test_that("setters work", {
+  x <- year_day(1L)
+
+  x <- set_year(x, 2L)
+  expect_identical(get_year(x), 2L)
+
+  x <- set_day(x, 2L)
+  expect_identical(get_day(x), 2L)
+
+  x <- set_hour(x, 3L)
+  expect_identical(get_hour(x), 3L)
+
+  x <- set_minute(x, 4L)
+  expect_identical(get_minute(x), 4L)
+
+  x <- set_second(x, 5L)
+  expect_identical(get_second(x), 5L)
+
+  ms <- set_millisecond(x, 6L)
+  expect_identical(get_millisecond(ms), 6L)
+
+  us <- set_microsecond(x, 7L)
+  expect_identical(get_microsecond(us), 7L)
+
+  ns <- set_nanosecond(x, 8L)
+  expect_identical(get_nanosecond(ns), 8L)
+})
+
+test_that("setters propagate all missings", {
+  x <- year_day(2019, c(1, NA, 3))
+  x <- set_hour(x, c(NA, 2, 4))
+  expect_identical(vec_detect_missing(x), c(TRUE, TRUE, FALSE))
+})
+
+test_that("setters recycling works both ways", {
+  x <- year_day(2019)
+
+  x <- set_day(x, 1:2)
+  expect_identical(x, year_day(2019, 1:2))
+
+  x <- set_hour(x, 1)
+  expect_identical(x, year_day(2019, 1:2, 1))
+
+  expect_snapshot(error = TRUE, {
+    x <- year_day(1:2)
+    y <- 1:3
+    set_day(x, y)
+  })
+})
+
+test_that("setters require integer `value`", {
+  x <- year_day(2019, 1, 2, 3, 4)
+
+  expect_snapshot(error = TRUE, {
+    set_year(x, 1.5)
+  })
+  expect_snapshot(error = TRUE, {
+    set_day(x, 1.5)
+  })
+  expect_snapshot(error = TRUE, {
+    set_hour(x, 1.5)
+  })
+  expect_snapshot(error = TRUE, {
+    set_minute(x, 1.5)
+  })
+  expect_snapshot(error = TRUE, {
+    set_second(x, 1.5)
+  })
+  expect_snapshot(error = TRUE, {
+    set_millisecond(x, 1.5)
+  })
+  expect_snapshot(error = TRUE, {
+    set_microsecond(x, 1.5)
+  })
+  expect_snapshot(error = TRUE, {
+    set_nanosecond(x, 1.5)
+  })
+})
+
+test_that("setters check `value` range", {
+  x <- year_day(2019, 1, 2, 3, 4)
+
+  expect_snapshot(error = TRUE, {
+    set_year(x, 100000)
+  })
+  expect_snapshot(error = TRUE, {
+    set_day(x, 367)
+  })
+  expect_snapshot(error = TRUE, {
+    set_hour(x, 24)
+  })
+  expect_snapshot(error = TRUE, {
+    set_minute(x, 60)
+  })
+  expect_snapshot(error = TRUE, {
+    set_second(x, 60)
+  })
+  expect_snapshot(error = TRUE, {
+    set_millisecond(x, -1)
+  })
+  expect_snapshot(error = TRUE, {
+    set_microsecond(x, -1)
+  })
+  expect_snapshot(error = TRUE, {
+    set_nanosecond(x, -1)
+  })
+})
+
+test_that("setters require minimum precision", {
+  expect_snapshot(error = TRUE, {
+    set_hour(year_day(year = 1), 1)
+  })
+  expect_snapshot(error = TRUE, {
+    set_minute(year_day(year = 1, day = 1), 1)
+  })
+  expect_snapshot(error = TRUE, {
+    set_second(year_day(year = 1, day = 1, hour = 1), 1)
+  })
+  expect_snapshot(error = TRUE, {
+    set_millisecond(year_day(year = 1, day = 1, hour = 1, minute = 1), 1)
+  })
+  expect_snapshot(error = TRUE, {
+    set_microsecond(year_day(year = 1, day = 1, hour = 1, minute = 1), 1)
+  })
+  expect_snapshot(error = TRUE, {
+    set_nanosecond(year_day(year = 1, day = 1, hour = 1, minute = 1), 1)
+  })
+})
+
+test_that("setters require correct subsecond precision", {
+  expect_snapshot(error = TRUE, {
+    set_millisecond(year_day(year = 1, day = 3, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "microsecond"), 1)
+  })
+  expect_snapshot(error = TRUE, {
+    set_millisecond(year_day(year = 1, day = 3, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "nanosecond"), 1)
+  })
+
+  expect_snapshot(error = TRUE, {
+    set_microsecond(year_day(year = 1, day = 3, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "millisecond"), 1)
+  })
+  expect_snapshot(error = TRUE, {
+    set_microsecond(year_day(year = 1, day = 3, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "nanosecond"), 1)
+  })
+
+  expect_snapshot(error = TRUE, {
+    set_nanosecond(year_day(year = 1, day = 3, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "millisecond"), 1)
+  })
+  expect_snapshot(error = TRUE, {
+    set_nanosecond(year_day(year = 1, day = 3, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "microsecond"), 1)
+  })
+})
+
+test_that("setters retain names", {
+  x <- year_day(2019)
+  x <- set_names(x, "foo")
+  expect_named(set_day(x, 2), "foo")
+})
+
+# ------------------------------------------------------------------------------
 # as_year_quarter_day()
 
 test_that("invalid dates must be resolved when converting to another calendar", {
