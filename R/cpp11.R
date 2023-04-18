@@ -248,8 +248,8 @@ invalid_resolve_year_month_weekday_cpp <- function(fields, precision_int, invali
   .Call(`_clock_invalid_resolve_year_month_weekday_cpp`, fields, precision_int, invalid_string)
 }
 
-set_field_year_month_weekday_last_cpp <- function(fields, precision_fields) {
-  .Call(`_clock_set_field_year_month_weekday_last_cpp`, fields, precision_fields)
+get_year_month_weekday_last_cpp <- function(year, month, day, index) {
+  .Call(`_clock_get_year_month_weekday_last_cpp`, year, month, day, index)
 }
 
 year_month_weekday_plus_duration_cpp <- function(fields, fields_n, precision_fields, precision_n) {

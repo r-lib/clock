@@ -609,13 +609,20 @@ set_field_year_month_weekday <- function(x, value, component) {
 set_field_year_month_weekday_last <- function(x) {
   # We require 'day' precision to set the `index` at all, so no
   # need to find a common precision here
-  precision_fields <- calendar_precision_attribute(x)
+  precision_out <- calendar_precision_attribute(x)
 
-  result <- set_field_year_month_weekday_last_cpp(x, precision_fields)
-  fields <- result$fields
-  fields[["index"]] <- result$value
+  names_out <- names(x)
 
-  new_year_month_weekday_from_fields(fields, precision_fields, names = names(x))
+  year <- field_year(x)
+  month <- field_month(x)
+  day <- field_day(x)
+  index <- field_index(x)
+  value <- get_year_month_weekday_last_cpp(year, month, day, index)
+
+  out <- vec_unstructure(x)
+  out[["index"]] <- value
+
+  new_year_month_weekday_from_fields(out, precision_out, names = names_out)
 }
 
 # ------------------------------------------------------------------------------
