@@ -524,13 +524,6 @@ extern "C" SEXP _clock_invalid_resolve_iso_year_week_day_cpp(SEXP fields, SEXP p
   END_CPP11
 }
 // iso-year-week-day.cpp
-cpp11::writable::list set_field_iso_year_week_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& value, const cpp11::integers& precision_fields, const cpp11::integers& precision_value);
-extern "C" SEXP _clock_set_field_iso_year_week_day_cpp(SEXP fields, SEXP value, SEXP precision_fields, SEXP precision_value) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(set_field_iso_year_week_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(value), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_value)));
-  END_CPP11
-}
-// iso-year-week-day.cpp
 cpp11::writable::list set_field_iso_year_week_day_last_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_fields);
 extern "C" SEXP _clock_set_field_iso_year_week_day_last_cpp(SEXP fields, SEXP precision_fields) {
   BEGIN_CPP11
@@ -934,7 +927,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_new_year_quarter_day_from_fields",                     (DL_FUNC) &_clock_new_year_quarter_day_from_fields,                      4},
     {"_clock_new_zoned_time_from_fields",                           (DL_FUNC) &_clock_new_zoned_time_from_fields,                            4},
     {"_clock_precision_to_string",                                  (DL_FUNC) &_clock_precision_to_string,                                   1},
-    {"_clock_set_field_iso_year_week_day_cpp",                      (DL_FUNC) &_clock_set_field_iso_year_week_day_cpp,                       4},
     {"_clock_set_field_iso_year_week_day_last_cpp",                 (DL_FUNC) &_clock_set_field_iso_year_week_day_last_cpp,                  2},
     {"_clock_set_field_year_day_last_cpp",                          (DL_FUNC) &_clock_set_field_year_day_last_cpp,                           2},
     {"_clock_set_field_year_month_day_last_cpp",                    (DL_FUNC) &_clock_set_field_year_month_day_last_cpp,                     2},

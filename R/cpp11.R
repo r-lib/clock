@@ -296,10 +296,6 @@ invalid_resolve_iso_year_week_day_cpp <- function(fields, precision_int, invalid
   .Call(`_clock_invalid_resolve_iso_year_week_day_cpp`, fields, precision_int, invalid_string)
 }
 
-set_field_iso_year_week_day_cpp <- function(fields, value, precision_fields, precision_value) {
-  .Call(`_clock_set_field_iso_year_week_day_cpp`, fields, value, precision_fields, precision_value)
-}
-
 set_field_iso_year_week_day_last_cpp <- function(fields, precision_fields) {
   .Call(`_clock_set_field_iso_year_week_day_last_cpp`, fields, precision_fields)
 }

@@ -111,6 +111,293 @@
 
     [1] "iso_ywd<week>"
 
+# setters recycling works both ways
+
+    Code
+      x <- iso_year_week_day(1:2)
+      y <- 1:3
+      set_week(x, y)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! Can't recycle `x` (size 2) to match `value` (size 3).
+
+# setters require integer `value`
+
+    Code
+      set_year(x, 1.5)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! Can't convert from `value` <double> to <integer> due to loss of precision.
+      * Locations: 1
+
+---
+
+    Code
+      set_week(x, 1.5)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! Can't convert from `value` <double> to <integer> due to loss of precision.
+      * Locations: 1
+
+---
+
+    Code
+      set_day(x, 1.5)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! Can't convert from `value` <double> to <integer> due to loss of precision.
+      * Locations: 1
+
+---
+
+    Code
+      set_hour(x, 1.5)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! Can't convert from `value` <double> to <integer> due to loss of precision.
+      * Locations: 1
+
+---
+
+    Code
+      set_minute(x, 1.5)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! Can't convert from `value` <double> to <integer> due to loss of precision.
+      * Locations: 1
+
+---
+
+    Code
+      set_second(x, 1.5)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! Can't convert from `value` <double> to <integer> due to loss of precision.
+      * Locations: 1
+
+---
+
+    Code
+      set_millisecond(x, 1.5)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! Can't convert from `value` <double> to <integer> due to loss of precision.
+      * Locations: 1
+
+---
+
+    Code
+      set_microsecond(x, 1.5)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! Can't convert from `value` <double> to <integer> due to loss of precision.
+      * Locations: 1
+
+---
+
+    Code
+      set_nanosecond(x, 1.5)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! Can't convert from `value` <double> to <integer> due to loss of precision.
+      * Locations: 1
+
+# setters check `value` range
+
+    Code
+      set_year(x, 1e+05)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! `value` must be between [-32767, 32767].
+      i Invalid results at locations: 1.
+
+---
+
+    Code
+      set_week(x, 54)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! `value` must be between [1, 53].
+      i Invalid results at locations: 1.
+
+---
+
+    Code
+      set_day(x, 8)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! `value` must be between [1, 7].
+      i Invalid results at locations: 1.
+
+---
+
+    Code
+      set_hour(x, 24)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! `value` must be between [0, 23].
+      i Invalid results at locations: 1.
+
+---
+
+    Code
+      set_minute(x, 60)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! `value` must be between [0, 59].
+      i Invalid results at locations: 1.
+
+---
+
+    Code
+      set_second(x, 60)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! `value` must be between [0, 59].
+      i Invalid results at locations: 1.
+
+---
+
+    Code
+      set_millisecond(x, -1)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! `value` must be between [0, 999].
+      i Invalid results at locations: 1.
+
+---
+
+    Code
+      set_microsecond(x, -1)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! `value` must be between [0, 999999].
+      i Invalid results at locations: 1.
+
+---
+
+    Code
+      set_nanosecond(x, -1)
+    Condition
+      Error in `set_field_iso_year_week_day()`:
+      ! `value` must be between [0, 999999999].
+      i Invalid results at locations: 1.
+
+# setters require minimum precision
+
+    Code
+      set_day(iso_year_week_day(year = 1), 1)
+    Condition
+      Error in `calendar_require_minimum_precision()`:
+      ! `set_day()` requires a minimum precision of 'week'.
+
+---
+
+    Code
+      set_hour(iso_year_week_day(year = 1, week = 2), 1)
+    Condition
+      Error in `calendar_require_minimum_precision()`:
+      ! `set_hour()` requires a minimum precision of 'day'.
+
+---
+
+    Code
+      set_minute(iso_year_week_day(year = 1, week = 2, day = 3), 1)
+    Condition
+      Error in `calendar_require_minimum_precision()`:
+      ! `set_minute()` requires a minimum precision of 'hour'.
+
+---
+
+    Code
+      set_second(iso_year_week_day(year = 1, week = 2, day = 3, hour = 4), 1)
+    Condition
+      Error in `calendar_require_minimum_precision()`:
+      ! `set_second()` requires a minimum precision of 'minute'.
+
+---
+
+    Code
+      set_millisecond(iso_year_week_day(year = 1, week = 2, day = 3, hour = 4,
+        minute = 5), 1)
+    Condition
+      Error in `calendar_require_any_of_precisions()`:
+      ! `set_millisecond()` does not support a precision of 'minute'.
+
+---
+
+    Code
+      set_microsecond(iso_year_week_day(year = 1, week = 2, day = 3, hour = 4,
+        minute = 5), 1)
+    Condition
+      Error in `calendar_require_any_of_precisions()`:
+      ! `set_microsecond()` does not support a precision of 'minute'.
+
+---
+
+    Code
+      set_nanosecond(iso_year_week_day(year = 1, week = 2, day = 3, hour = 4, minute = 5),
+      1)
+    Condition
+      Error in `calendar_require_any_of_precisions()`:
+      ! `set_nanosecond()` does not support a precision of 'minute'.
+
+# setters require correct subsecond precision
+
+    Code
+      set_millisecond(iso_year_week_day(year = 1, week = 2, day = 3, hour = 4,
+        minute = 5, second = 6, subsecond = 7, subsecond_precision = "microsecond"),
+      1)
+    Condition
+      Error in `calendar_require_any_of_precisions()`:
+      ! `set_millisecond()` does not support a precision of 'microsecond'.
+
+---
+
+    Code
+      set_millisecond(iso_year_week_day(year = 1, week = 2, day = 3, hour = 4,
+        minute = 5, second = 6, subsecond = 7, subsecond_precision = "nanosecond"), 1)
+    Condition
+      Error in `calendar_require_any_of_precisions()`:
+      ! `set_millisecond()` does not support a precision of 'nanosecond'.
+
+---
+
+    Code
+      set_microsecond(iso_year_week_day(year = 1, week = 2, day = 3, hour = 4,
+        minute = 5, second = 6, subsecond = 7, subsecond_precision = "millisecond"),
+      1)
+    Condition
+      Error in `calendar_require_any_of_precisions()`:
+      ! `set_microsecond()` does not support a precision of 'millisecond'.
+
+---
+
+    Code
+      set_microsecond(iso_year_week_day(year = 1, week = 2, day = 3, hour = 4,
+        minute = 5, second = 6, subsecond = 7, subsecond_precision = "nanosecond"), 1)
+    Condition
+      Error in `calendar_require_any_of_precisions()`:
+      ! `set_microsecond()` does not support a precision of 'nanosecond'.
+
+---
+
+    Code
+      set_nanosecond(iso_year_week_day(year = 1, week = 2, day = 3, hour = 4, minute = 5,
+        second = 6, subsecond = 7, subsecond_precision = "millisecond"), 1)
+    Condition
+      Error in `calendar_require_any_of_precisions()`:
+      ! `set_nanosecond()` does not support a precision of 'millisecond'.
+
+---
+
+    Code
+      set_nanosecond(iso_year_week_day(year = 1, week = 2, day = 3, hour = 4, minute = 5,
+        second = 6, subsecond = 7, subsecond_precision = "microsecond"), 1)
+    Condition
+      Error in `calendar_require_any_of_precisions()`:
+      ! `set_nanosecond()` does not support a precision of 'microsecond'.
+
 # default formats are correct
 
     Code
