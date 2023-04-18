@@ -356,10 +356,6 @@ invalid_resolve_year_quarter_day_cpp <- function(fields, precision_int, start_in
   .Call(`_clock_invalid_resolve_year_quarter_day_cpp`, fields, precision_int, start_int, invalid_string)
 }
 
-set_field_year_quarter_day_cpp <- function(fields, value, precision_fields, precision_value, start_int) {
-  .Call(`_clock_set_field_year_quarter_day_cpp`, fields, value, precision_fields, precision_value, start_int)
-}
-
 set_field_year_quarter_day_last_cpp <- function(fields, precision_fields, start_int) {
   .Call(`_clock_set_field_year_quarter_day_last_cpp`, fields, precision_fields, start_int)
 }

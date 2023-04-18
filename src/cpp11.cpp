@@ -629,13 +629,6 @@ extern "C" SEXP _clock_invalid_resolve_year_quarter_day_cpp(SEXP fields, SEXP pr
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-cpp11::writable::list set_field_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& value, const cpp11::integers& precision_fields, const cpp11::integers& precision_value, const cpp11::integers& start_int);
-extern "C" SEXP _clock_set_field_year_quarter_day_cpp(SEXP fields, SEXP value, SEXP precision_fields, SEXP precision_value, SEXP start_int) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(set_field_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(value), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_value), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
-  END_CPP11
-}
-// quarterly-year-quarter-day.cpp
 cpp11::writable::list set_field_year_quarter_day_last_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_fields, const cpp11::integers& start_int);
 extern "C" SEXP _clock_set_field_year_quarter_day_last_cpp(SEXP fields, SEXP precision_fields, SEXP start_int) {
   BEGIN_CPP11
@@ -931,7 +924,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_set_field_year_day_last_cpp",                          (DL_FUNC) &_clock_set_field_year_day_last_cpp,                           2},
     {"_clock_set_field_year_month_day_last_cpp",                    (DL_FUNC) &_clock_set_field_year_month_day_last_cpp,                     2},
     {"_clock_set_field_year_month_weekday_last_cpp",                (DL_FUNC) &_clock_set_field_year_month_weekday_last_cpp,                 2},
-    {"_clock_set_field_year_quarter_day_cpp",                       (DL_FUNC) &_clock_set_field_year_quarter_day_cpp,                        5},
     {"_clock_set_field_year_quarter_day_last_cpp",                  (DL_FUNC) &_clock_set_field_year_quarter_day_last_cpp,                   3},
     {"_clock_sys_time_info_cpp",                                    (DL_FUNC) &_clock_sys_time_info_cpp,                                     3},
     {"_clock_sys_time_now_cpp",                                     (DL_FUNC) &_clock_sys_time_now_cpp,                                      0},
