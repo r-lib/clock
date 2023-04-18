@@ -676,7 +676,8 @@ set_field_year_month_day <- function(x, value, component) {
     second = check_between_second(value),
     millisecond = check_between_subsecond(value, PRECISION_MILLISECOND),
     microsecond = check_between_subsecond(value, PRECISION_MICROSECOND),
-    nanosecond = check_between_subsecond(value, PRECISION_NANOSECOND)
+    nanosecond = check_between_subsecond(value, PRECISION_NANOSECOND),
+    abort("Unknown `component`", .internal = TRUE)
   )
 
   args <- vec_recycle_common(x = x, value = value)
