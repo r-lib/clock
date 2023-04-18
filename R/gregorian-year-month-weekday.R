@@ -89,13 +89,35 @@ year_month_weekday <- function(year,
     last <- FALSE
   }
 
-  fields <- vec_recycle_common(!!!fields)
   fields <- vec_cast_common(!!!fields, .to = integer())
 
-  fields <- collect_year_month_weekday_fields(fields, precision)
+  if (precision >= PRECISION_YEAR) {
+    check_between_year(fields$year, arg = "year")
+  }
+  if (precision >= PRECISION_MONTH) {
+    check_between_month(fields$month, arg = "month")
+  }
+  if (precision >= PRECISION_DAY) {
+    check_between_day_of_week(fields$day, arg = "day")
+    check_between_index_of_week(fields$index, arg = "index")
+  }
+  if (precision >= PRECISION_HOUR) {
+    check_between_hour(fields$hour, arg = "hour")
+  }
+  if (precision >= PRECISION_MINUTE) {
+    check_between_minute(fields$minute, arg = "minute")
+  }
+  if (precision >= PRECISION_SECOND) {
+    check_between_second(fields$second, arg = "second")
+  }
+  if (precision > PRECISION_SECOND) {
+    check_between_subsecond(fields$subsecond, precision, arg = "subsecond")
+  }
+
+  fields <- vec_recycle_common(!!!fields)
+  fields <- df_list_propagate_missing(fields)
 
   names <- NULL
-
   out <- new_year_month_weekday_from_fields(fields, precision, names)
 
   if (last) {

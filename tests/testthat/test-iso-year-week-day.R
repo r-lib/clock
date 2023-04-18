@@ -22,15 +22,15 @@ test_that("can create subsecond precision calendars", {
 })
 
 test_that("validates value ranges", {
-  expect_snapshot_error(iso_year_week_day(50000))
-  expect_snapshot_error(iso_year_week_day(2020, 54))
-  expect_snapshot_error(iso_year_week_day(2020, 1, 8))
-  expect_snapshot_error(iso_year_week_day(2020, 1, 1, 24))
-  expect_snapshot_error(iso_year_week_day(2020, 1, 1, 1, 60))
-  expect_snapshot_error(iso_year_week_day(2020, 1, 1, 1, 1, 60))
-  expect_snapshot_error(iso_year_week_day(2020, 1, 1, 1, 1, 1, 1000, subsecond_precision = "millisecond"))
-  expect_snapshot_error(iso_year_week_day(2020, 1, 1, 1, 1, 1, 1000000, subsecond_precision = "microsecond"))
-  expect_snapshot_error(iso_year_week_day(2020, 1, 1, 1, 1, 1, 1000000000, subsecond_precision = "nanosecond"))
+  expect_snapshot(error = TRUE, iso_year_week_day(50000))
+  expect_snapshot(error = TRUE, iso_year_week_day(2020, 54))
+  expect_snapshot(error = TRUE, iso_year_week_day(2020, 1, 8))
+  expect_snapshot(error = TRUE, iso_year_week_day(2020, 1, 1, 24))
+  expect_snapshot(error = TRUE, iso_year_week_day(2020, 1, 1, 1, 60))
+  expect_snapshot(error = TRUE, iso_year_week_day(2020, 1, 1, 1, 1, 60))
+  expect_snapshot(error = TRUE, iso_year_week_day(2020, 1, 1, 1, 1, 1, 1000, subsecond_precision = "millisecond"))
+  expect_snapshot(error = TRUE, iso_year_week_day(2020, 1, 1, 1, 1, 1, 1000000, subsecond_precision = "microsecond"))
+  expect_snapshot(error = TRUE, iso_year_week_day(2020, 1, 1, 1, 1, 1, 1000000000, subsecond_precision = "nanosecond"))
 })
 
 test_that("can get the last week of the iso year", {

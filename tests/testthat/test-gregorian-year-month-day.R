@@ -22,15 +22,15 @@ test_that("can create subsecond precision calendars", {
 })
 
 test_that("validates value ranges", {
-  expect_snapshot_error(year_month_day(50000))
-  expect_snapshot_error(year_month_day(2020, 13))
-  expect_snapshot_error(year_month_day(2020, 1, 32))
-  expect_snapshot_error(year_month_day(2020, 1, 1, 24))
-  expect_snapshot_error(year_month_day(2020, 1, 1, 1, 60))
-  expect_snapshot_error(year_month_day(2020, 1, 1, 1, 1, 60))
-  expect_snapshot_error(year_month_day(2020, 1, 1, 1, 1, 1, 1000, subsecond_precision = "millisecond"))
-  expect_snapshot_error(year_month_day(2020, 1, 1, 1, 1, 1, 1000000, subsecond_precision = "microsecond"))
-  expect_snapshot_error(year_month_day(2020, 1, 1, 1, 1, 1, 1000000000, subsecond_precision = "nanosecond"))
+  expect_snapshot(error = TRUE, year_month_day(50000))
+  expect_snapshot(error = TRUE, year_month_day(2020, 13))
+  expect_snapshot(error = TRUE, year_month_day(2020, 1, 32))
+  expect_snapshot(error = TRUE, year_month_day(2020, 1, 1, 24))
+  expect_snapshot(error = TRUE, year_month_day(2020, 1, 1, 1, 60))
+  expect_snapshot(error = TRUE, year_month_day(2020, 1, 1, 1, 1, 60))
+  expect_snapshot(error = TRUE, year_month_day(2020, 1, 1, 1, 1, 1, 1000, subsecond_precision = "millisecond"))
+  expect_snapshot(error = TRUE, year_month_day(2020, 1, 1, 1, 1, 1, 1000000, subsecond_precision = "microsecond"))
+  expect_snapshot(error = TRUE, year_month_day(2020, 1, 1, 1, 1, 1, 1000000000, subsecond_precision = "nanosecond"))
 })
 
 test_that("can create a date at the boundary", {

@@ -85,6 +85,12 @@ unstructure <- function(x) {
   set_attributes(x, NULL)
 }
 
+vec_unstructure <- function(x) {
+  out <- unstructure(x)
+  names(out) <- names(x)
+  out
+}
+
 set_attributes <- function(x, attributes) {
   attributes(x) <- attributes
   x
@@ -314,6 +320,35 @@ clock_print_footer <- function(x, max) {
   )
 
   invisible(x)
+}
+
+# ------------------------------------------------------------------------------
+
+df_list_propagate_missing <- function(x, ..., size = NULL) {
+  check_dots_empty0(...)
+
+  x <- new_data_frame(x, n = size)
+
+  incomplete <- !vec_detect_complete(x)
+  if (!any(incomplete)) {
+    return(vec_unstructure(x))
+  }
+
+  missing <- vec_detect_missing(x)
+  aligned <- missing == incomplete
+  if (all(aligned)) {
+    # Already fully missing where incomplete
+    return(vec_unstructure(x))
+  }
+
+  n <- length(x)
+  out <- vector("list", length = n)
+  out <- set_names(out, names(x))
+
+  # Propagate missings
+  x <- vec_assign(x, incomplete, NA)
+
+  vec_unstructure(x)
 }
 
 # ------------------------------------------------------------------------------
