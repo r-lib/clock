@@ -144,10 +144,6 @@ invalid_resolve_year_day_cpp <- function(fields, precision_int, invalid_string) 
   .Call(`_clock_invalid_resolve_year_day_cpp`, fields, precision_int, invalid_string)
 }
 
-set_field_year_day_cpp <- function(fields, value, precision_fields, precision_value) {
-  .Call(`_clock_set_field_year_day_cpp`, fields, value, precision_fields, precision_value)
-}
-
 set_field_year_day_last_cpp <- function(fields, precision_fields) {
   .Call(`_clock_set_field_year_day_last_cpp`, fields, precision_fields)
 }
@@ -194,10 +190,6 @@ invalid_count_year_month_day_cpp <- function(fields, precision_int) {
 
 invalid_resolve_year_month_day_cpp <- function(fields, precision_int, invalid_string) {
   .Call(`_clock_invalid_resolve_year_month_day_cpp`, fields, precision_int, invalid_string)
-}
-
-set_field_year_month_day_cpp <- function(fields, value, precision_fields, precision_value) {
-  .Call(`_clock_set_field_year_month_day_cpp`, fields, value, precision_fields, precision_value)
 }
 
 set_field_year_month_day_last_cpp <- function(fields, precision_fields) {
@@ -256,10 +248,6 @@ invalid_resolve_year_month_weekday_cpp <- function(fields, precision_int, invali
   .Call(`_clock_invalid_resolve_year_month_weekday_cpp`, fields, precision_int, invalid_string)
 }
 
-set_field_year_month_weekday_cpp <- function(fields, value, precision_fields, component_string) {
-  .Call(`_clock_set_field_year_month_weekday_cpp`, fields, value, precision_fields, component_string)
-}
-
 set_field_year_month_weekday_last_cpp <- function(fields, precision_fields) {
   .Call(`_clock_set_field_year_month_weekday_last_cpp`, fields, precision_fields)
 }
@@ -306,10 +294,6 @@ invalid_count_iso_year_week_day_cpp <- function(fields, precision_int) {
 
 invalid_resolve_iso_year_week_day_cpp <- function(fields, precision_int, invalid_string) {
   .Call(`_clock_invalid_resolve_iso_year_week_day_cpp`, fields, precision_int, invalid_string)
-}
-
-set_field_iso_year_week_day_cpp <- function(fields, value, precision_fields, precision_value) {
-  .Call(`_clock_set_field_iso_year_week_day_cpp`, fields, value, precision_fields, precision_value)
 }
 
 set_field_iso_year_week_day_last_cpp <- function(fields, precision_fields) {
@@ -370,10 +354,6 @@ invalid_count_year_quarter_day_cpp <- function(fields, precision_int, start_int)
 
 invalid_resolve_year_quarter_day_cpp <- function(fields, precision_int, start_int, invalid_string) {
   .Call(`_clock_invalid_resolve_year_quarter_day_cpp`, fields, precision_int, start_int, invalid_string)
-}
-
-set_field_year_quarter_day_cpp <- function(fields, value, precision_fields, precision_value, start_int) {
-  .Call(`_clock_set_field_year_quarter_day_cpp`, fields, value, precision_fields, precision_value, start_int)
 }
 
 set_field_year_quarter_day_last_cpp <- function(fields, precision_fields, start_int) {

@@ -119,6 +119,295 @@
 
     [1] "yqd<Jan><day>"
 
+# setters recycling works both ways
+
+    Code
+      x <- year_quarter_day(1:2)
+      y <- 1:3
+      set_quarter(x, y)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! Can't recycle `x` (size 2) to match `value` (size 3).
+
+# setters require integer `value`
+
+    Code
+      set_year(x, 1.5)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! Can't convert from `value` <double> to <integer> due to loss of precision.
+      * Locations: 1
+
+---
+
+    Code
+      set_quarter(x, 1.5)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! Can't convert from `value` <double> to <integer> due to loss of precision.
+      * Locations: 1
+
+---
+
+    Code
+      set_day(x, 1.5)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! Can't convert from `value` <double> to <integer> due to loss of precision.
+      * Locations: 1
+
+---
+
+    Code
+      set_hour(x, 1.5)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! Can't convert from `value` <double> to <integer> due to loss of precision.
+      * Locations: 1
+
+---
+
+    Code
+      set_minute(x, 1.5)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! Can't convert from `value` <double> to <integer> due to loss of precision.
+      * Locations: 1
+
+---
+
+    Code
+      set_second(x, 1.5)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! Can't convert from `value` <double> to <integer> due to loss of precision.
+      * Locations: 1
+
+---
+
+    Code
+      set_millisecond(x, 1.5)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! Can't convert from `value` <double> to <integer> due to loss of precision.
+      * Locations: 1
+
+---
+
+    Code
+      set_microsecond(x, 1.5)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! Can't convert from `value` <double> to <integer> due to loss of precision.
+      * Locations: 1
+
+---
+
+    Code
+      set_nanosecond(x, 1.5)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! Can't convert from `value` <double> to <integer> due to loss of precision.
+      * Locations: 1
+
+# setters check `value` range
+
+    Code
+      set_year(x, 1e+05)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! `value` must be between [-32767, 32767].
+      i Invalid results at locations: 1.
+
+---
+
+    Code
+      set_quarter(x, 5)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! `value` must be between [1, 4].
+      i Invalid results at locations: 1.
+
+---
+
+    Code
+      set_day(x, 93)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! `value` must be between [1, 92].
+      i Invalid results at locations: 1.
+
+---
+
+    Code
+      set_hour(x, 24)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! `value` must be between [0, 23].
+      i Invalid results at locations: 1.
+
+---
+
+    Code
+      set_minute(x, 60)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! `value` must be between [0, 59].
+      i Invalid results at locations: 1.
+
+---
+
+    Code
+      set_second(x, 60)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! `value` must be between [0, 59].
+      i Invalid results at locations: 1.
+
+---
+
+    Code
+      set_millisecond(x, -1)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! `value` must be between [0, 999].
+      i Invalid results at locations: 1.
+
+---
+
+    Code
+      set_microsecond(x, -1)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! `value` must be between [0, 999999].
+      i Invalid results at locations: 1.
+
+---
+
+    Code
+      set_nanosecond(x, -1)
+    Condition
+      Error in `set_field_year_quarter_day()`:
+      ! `value` must be between [0, 999999999].
+      i Invalid results at locations: 1.
+
+# setters require minimum precision
+
+    Code
+      set_day(year_quarter_day(year = 1), 1)
+    Condition
+      Error in `calendar_require_minimum_precision()`:
+      ! `set_day()` requires a minimum precision of 'quarter'.
+
+---
+
+    Code
+      set_hour(year_quarter_day(year = 1, quarter = 2), 1)
+    Condition
+      Error in `calendar_require_minimum_precision()`:
+      ! `set_hour()` requires a minimum precision of 'day'.
+
+---
+
+    Code
+      set_minute(year_quarter_day(year = 1, quarter = 2, day = 3), 1)
+    Condition
+      Error in `calendar_require_minimum_precision()`:
+      ! `set_minute()` requires a minimum precision of 'hour'.
+
+---
+
+    Code
+      set_second(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4), 1)
+    Condition
+      Error in `calendar_require_minimum_precision()`:
+      ! `set_second()` requires a minimum precision of 'minute'.
+
+---
+
+    Code
+      set_millisecond(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4,
+        minute = 5), 1)
+    Condition
+      Error in `calendar_require_any_of_precisions()`:
+      ! `set_millisecond()` does not support a precision of 'minute'.
+
+---
+
+    Code
+      set_microsecond(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4,
+        minute = 5), 1)
+    Condition
+      Error in `calendar_require_any_of_precisions()`:
+      ! `set_microsecond()` does not support a precision of 'minute'.
+
+---
+
+    Code
+      set_nanosecond(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4,
+        minute = 5), 1)
+    Condition
+      Error in `calendar_require_any_of_precisions()`:
+      ! `set_nanosecond()` does not support a precision of 'minute'.
+
+# setters require correct subsecond precision
+
+    Code
+      set_millisecond(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4,
+        minute = 5, second = 6, subsecond = 7, subsecond_precision = "microsecond"),
+      1)
+    Condition
+      Error in `calendar_require_any_of_precisions()`:
+      ! `set_millisecond()` does not support a precision of 'microsecond'.
+
+---
+
+    Code
+      set_millisecond(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4,
+        minute = 5, second = 6, subsecond = 7, subsecond_precision = "nanosecond"), 1)
+    Condition
+      Error in `calendar_require_any_of_precisions()`:
+      ! `set_millisecond()` does not support a precision of 'nanosecond'.
+
+---
+
+    Code
+      set_microsecond(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4,
+        minute = 5, second = 6, subsecond = 7, subsecond_precision = "millisecond"),
+      1)
+    Condition
+      Error in `calendar_require_any_of_precisions()`:
+      ! `set_microsecond()` does not support a precision of 'millisecond'.
+
+---
+
+    Code
+      set_microsecond(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4,
+        minute = 5, second = 6, subsecond = 7, subsecond_precision = "nanosecond"), 1)
+    Condition
+      Error in `calendar_require_any_of_precisions()`:
+      ! `set_microsecond()` does not support a precision of 'nanosecond'.
+
+---
+
+    Code
+      set_nanosecond(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4,
+        minute = 5, second = 6, subsecond = 7, subsecond_precision = "millisecond"),
+      1)
+    Condition
+      Error in `calendar_require_any_of_precisions()`:
+      ! `set_nanosecond()` does not support a precision of 'millisecond'.
+
+---
+
+    Code
+      set_nanosecond(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4,
+        minute = 5, second = 6, subsecond = 7, subsecond_precision = "microsecond"),
+      1)
+    Condition
+      Error in `calendar_require_any_of_precisions()`:
+      ! `set_nanosecond()` does not support a precision of 'microsecond'.
+
 # default formats are correct
 
     Code

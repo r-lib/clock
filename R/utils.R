@@ -86,6 +86,9 @@ unstructure <- function(x) {
 }
 
 vec_unstructure <- function(x) {
+  # Must unclass first because `names()` might not be the same length before
+  # and after unclassing
+  x <- unclass(x)
   out <- unstructure(x)
   names(out) <- names(x)
   out
@@ -329,12 +332,14 @@ df_list_propagate_missing <- function(x, ..., size = NULL) {
 
   x <- new_data_frame(x, n = size)
 
-  incomplete <- !vec_detect_complete(x)
-  if (!any(incomplete)) {
+  complete <- vec_detect_complete(x)
+  if (all(complete)) {
     return(vec_unstructure(x))
   }
 
+  incomplete <- !complete
   missing <- vec_detect_missing(x)
+
   aligned <- missing == incomplete
   if (all(aligned)) {
     # Already fully missing where incomplete

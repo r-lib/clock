@@ -489,17 +489,36 @@ set_field_iso_year_week_day <- function(x, value, component) {
   precision_value <- iso_year_week_day_component_to_precision(component)
   precision_out <- precision_common2(precision_fields, precision_value)
 
-  value <- vec_cast(value, integer(), x_arg = "value")
+  names_out <- names(x)
+
+  value <- vec_cast(value, integer())
+  value <- unname(value)
+
+  switch(
+    component,
+    year = check_between_year(value),
+    week = check_between_week(value),
+    day = check_between_day_of_week(value),
+    hour = check_between_hour(value),
+    minute = check_between_minute(value),
+    second = check_between_second(value),
+    millisecond = check_between_subsecond(value, PRECISION_MILLISECOND),
+    microsecond = check_between_subsecond(value, PRECISION_MICROSECOND),
+    nanosecond = check_between_subsecond(value, PRECISION_NANOSECOND),
+    abort("Unknown `component`", .internal = TRUE)
+  )
+
   args <- vec_recycle_common(x = x, value = value)
+  args <- df_list_propagate_missing(args)
   x <- args$x
   value <- args$value
 
-  result <- set_field_iso_year_week_day_cpp(x, value, precision_fields, precision_value)
-  fields <- result$fields
   field <- iso_year_week_day_component_to_field(component)
-  fields[[field]] <- result$value
 
-  new_iso_year_week_day_from_fields(fields, precision_out, names = names(x))
+  out <- vec_unstructure(x)
+  out[[field]] <- value
+
+  new_iso_year_week_day_from_fields(out, precision_out, names = names_out)
 }
 
 set_field_iso_year_week_day_last <- function(x) {
