@@ -3,7 +3,6 @@
 #include "duration.h"
 #include "enums.h"
 #include "resolve.h"
-#include "check.h"
 #include "zone.h"
 #include "locale.h"
 #include "failure.h"

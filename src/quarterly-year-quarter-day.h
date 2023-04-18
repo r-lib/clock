@@ -8,7 +8,6 @@
 #include "utils.h"
 #include "stream.h"
 #include "resolve.h"
-#include "check.h"
 
 namespace rclock {
 
@@ -50,47 +49,6 @@ resolve_overflow_day_yqd(const quarterly_shim::year_quarternum_quarterday& x) {
   return quarterly_shim::year_quarternum_quarterday{date::sys_days{x}, x.year().start()};
 }
 
-template <enum component Component>
-inline void check_range(const int& value, const char* arg) {
-  clock_abort("Unimplemented range check");
-}
-template <>
-inline void check_range<component::year>(const int& value, const char* arg) {
-  check_range_year(value, arg);
-}
-template <>
-inline void check_range<component::quarter>(const int& value, const char* arg) {
-  check_range_quarterly_quarter(value, arg);
-}
-template <>
-inline void check_range<component::day>(const int& value, const char* arg) {
-  check_range_quarterly_day(value, arg);
-}
-template <>
-inline void check_range<component::hour>(const int& value, const char* arg) {
-  check_range_hour(value, arg);
-}
-template <>
-inline void check_range<component::minute>(const int& value, const char* arg) {
-  check_range_minute(value, arg);
-}
-template <>
-inline void check_range<component::second>(const int& value, const char* arg) {
-  check_range_second(value, arg);
-}
-template <>
-inline void check_range<component::millisecond>(const int& value, const char* arg) {
-  check_range_millisecond(value, arg);
-}
-template <>
-inline void check_range<component::microsecond>(const int& value, const char* arg) {
-  check_range_microsecond(value, arg);
-}
-template <>
-inline void check_range<component::nanosecond>(const int& value, const char* arg) {
-  check_range_nanosecond(value, arg);
-}
-
 } // namespace detail
 
 class y
@@ -114,9 +72,6 @@ public:
 
   void assign_year(const quarterly_shim::year& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
-
-  template <component Component>
-  void check_range(const int& value, const char* arg) const;
 
   void resolve(r_ssize i, const enum invalid type);
 
@@ -357,14 +312,6 @@ void
 y::resolve(r_ssize i, const enum invalid type)
 {
   // Never invalid
-}
-
-template <component Component>
-inline
-void
-y::check_range(const int& value, const char* arg) const
-{
-  detail::check_range<Component>(value, arg);
 }
 
 inline

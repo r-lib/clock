@@ -2,7 +2,6 @@
 #include "quarterly-shim.h"
 #include "calendar.h"
 #include "duration.h"
-#include "check.h"
 #include "enums.h"
 #include "get.h"
 #include "rcrd.h"

@@ -3,7 +3,6 @@
 
 #include "clock.h"
 #include "enums.h"
-#include "check.h"
 #include "integers.h"
 
 // -----------------------------------------------------------------------------
@@ -115,32 +114,6 @@ invalid_resolve_calendar_impl(Calendar& x, const enum invalid& invalid_val) {
   }
 
   return x.to_list();
-}
-
-
-// -----------------------------------------------------------------------------
-
-template <enum component Component, class Calendar>
-cpp11::writable::list
-set_field_calendar(Calendar& x, rclock::integers& value) {
-  const r_ssize size = x.size();
-
-  for (r_ssize i = 0; i < size; ++i) {
-    if (x.is_na(i)) {
-      if (!value.is_na(i)) {
-        value.assign_na(i);
-      }
-    } else if (value.is_na(i)) {
-      x.assign_na(i);
-    } else {
-      x.template check_range<Component>(value[i], "value");
-    }
-  }
-
-  cpp11::writable::list out({x.to_list(), value.sexp()});
-  out.names() = {"fields", "value"};
-
-  return out;
 }
 
 // -----------------------------------------------------------------------------
