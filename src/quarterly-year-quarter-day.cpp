@@ -292,66 +292,28 @@ invalid_resolve_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
 
 // -----------------------------------------------------------------------------
 
-template <class Calendar>
-cpp11::writable::list
-set_field_year_quarter_day_last_impl(const Calendar& x) {
+[[cpp11::register]]
+cpp11::writable::integers
+get_year_quarter_day_last_cpp(const cpp11::integers& year,
+                              const cpp11::integers& quarter,
+                              const cpp11::integers& start_int) {
+  const quarterly::start start = parse_start(start_int);
+
+  rclock::rquarterly::yqn x{year, quarter, start};
+
   const r_ssize size = x.size();
-  cpp11::writable::integers value(size);
+  cpp11::writable::integers out(size);
 
   for (r_ssize i = 0; i < size; ++i) {
     if (x.is_na(i)) {
-      value[i] = r_int_na;
+      out[i] = r_int_na;
     } else {
-      rclock::rquarterly::quarterly_shim::year_quarternum_quarterday_last yqnqdl{x.to_year_quarternum(i)};
-      value[i] = static_cast<int>(static_cast<unsigned>(yqnqdl.quarterday()));
+      rclock::rquarterly::quarterly_shim::year_quarternum_quarterday_last elt{x.to_year_quarternum(i)};
+      out[i] = static_cast<int>(static_cast<unsigned>(elt.quarterday()));
     }
   }
 
-  cpp11::writable::list out({x.to_list(), value});
-  out.names() = {"fields", "value"};
-
   return out;
-}
-
-[[cpp11::register]]
-cpp11::writable::list
-set_field_year_quarter_day_last_cpp(cpp11::list_of<cpp11::integers> fields,
-                                    const cpp11::integers& precision_fields,
-                                    const cpp11::integers& start_int) {
-  using namespace rclock;
-
-  const quarterly::start start = parse_start(start_int);
-
-  cpp11::integers year = rquarterly::get_year(fields);
-  cpp11::integers quarter = rquarterly::get_quarter(fields);
-  cpp11::integers day = rquarterly::get_day(fields);
-  cpp11::integers hour = rquarterly::get_hour(fields);
-  cpp11::integers minute = rquarterly::get_minute(fields);
-  cpp11::integers second = rquarterly::get_second(fields);
-  cpp11::integers subsecond = rquarterly::get_subsecond(fields);
-
-  rquarterly::yqn yqn{year, quarter, start};
-  rquarterly::yqnqd yqnqd{year, quarter, day, start};
-  rquarterly::yqnqdh yqnqdh{year, quarter, day, hour, start};
-  rquarterly::yqnqdhm yqnqdhm{year, quarter, day, hour, minute, start};
-  rquarterly::yqnqdhms yqnqdhms{year, quarter, day, hour, minute, second, start};
-  rquarterly::yqnqdhmss<std::chrono::milliseconds> yqnqdhmss1{year, quarter, day, hour, minute, second, subsecond, start};
-  rquarterly::yqnqdhmss<std::chrono::microseconds> yqnqdhmss2{year, quarter, day, hour, minute, second, subsecond, start};
-  rquarterly::yqnqdhmss<std::chrono::nanoseconds> yqnqdhmss3{year, quarter, day, hour, minute, second, subsecond, start};
-
-  switch (parse_precision(precision_fields)) {
-  case precision::quarter: return set_field_year_quarter_day_last_impl(yqn);
-  case precision::day: return set_field_year_quarter_day_last_impl(yqnqd);
-  case precision::hour: return set_field_year_quarter_day_last_impl(yqnqdh);
-  case precision::minute: return set_field_year_quarter_day_last_impl(yqnqdhm);
-  case precision::second: return set_field_year_quarter_day_last_impl(yqnqdhms);
-  case precision::millisecond: return set_field_year_quarter_day_last_impl(yqnqdhmss1);
-  case precision::microsecond: return set_field_year_quarter_day_last_impl(yqnqdhmss2);
-  case precision::nanosecond: return set_field_year_quarter_day_last_impl(yqnqdhmss3);
-  default: clock_abort("Internal error: Invalid precision.");
-  }
-
-  never_reached("set_field_year_quarter_day_last_cpp");
 }
 
 // -----------------------------------------------------------------------------

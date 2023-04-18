@@ -629,10 +629,10 @@ extern "C" SEXP _clock_invalid_resolve_year_quarter_day_cpp(SEXP fields, SEXP pr
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-cpp11::writable::list set_field_year_quarter_day_last_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_fields, const cpp11::integers& start_int);
-extern "C" SEXP _clock_set_field_year_quarter_day_last_cpp(SEXP fields, SEXP precision_fields, SEXP start_int) {
+cpp11::writable::integers get_year_quarter_day_last_cpp(const cpp11::integers& year, const cpp11::integers& quarter, const cpp11::integers& start_int);
+extern "C" SEXP _clock_get_year_quarter_day_last_cpp(SEXP year, SEXP quarter, SEXP start_int) {
   BEGIN_CPP11
-    return cpp11::as_sexp(set_field_year_quarter_day_last_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
+    return cpp11::as_sexp(get_year_quarter_day_last_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(quarter), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
@@ -890,6 +890,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_get_year_day_last_cpp",                                (DL_FUNC) &_clock_get_year_day_last_cpp,                                 1},
     {"_clock_get_year_month_day_last_cpp",                          (DL_FUNC) &_clock_get_year_month_day_last_cpp,                           2},
     {"_clock_get_year_month_weekday_last_cpp",                      (DL_FUNC) &_clock_get_year_month_weekday_last_cpp,                       4},
+    {"_clock_get_year_quarter_day_last_cpp",                        (DL_FUNC) &_clock_get_year_quarter_day_last_cpp,                         3},
     {"_clock_gregorian_leap_year_cpp",                              (DL_FUNC) &_clock_gregorian_leap_year_cpp,                               1},
     {"_clock_invalid_any_iso_year_week_day_cpp",                    (DL_FUNC) &_clock_invalid_any_iso_year_week_day_cpp,                     2},
     {"_clock_invalid_any_year_day_cpp",                             (DL_FUNC) &_clock_invalid_any_year_day_cpp,                              2},
@@ -924,7 +925,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_new_year_quarter_day_from_fields",                     (DL_FUNC) &_clock_new_year_quarter_day_from_fields,                      4},
     {"_clock_new_zoned_time_from_fields",                           (DL_FUNC) &_clock_new_zoned_time_from_fields,                            4},
     {"_clock_precision_to_string",                                  (DL_FUNC) &_clock_precision_to_string,                                   1},
-    {"_clock_set_field_year_quarter_day_last_cpp",                  (DL_FUNC) &_clock_set_field_year_quarter_day_last_cpp,                   3},
     {"_clock_sys_time_info_cpp",                                    (DL_FUNC) &_clock_sys_time_info_cpp,                                     3},
     {"_clock_sys_time_now_cpp",                                     (DL_FUNC) &_clock_sys_time_now_cpp,                                      0},
     {"_clock_time_point_parse_cpp",                                 (DL_FUNC) &_clock_time_point_parse_cpp,                                 10},
