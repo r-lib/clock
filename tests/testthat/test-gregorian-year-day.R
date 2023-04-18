@@ -45,6 +45,12 @@ test_that("can get the last day of the year", {
   expect_identical(get_day(x), c(365L, 366L))
 })
 
+test_that("`NA` propagates through 'last'", {
+  x <- year_day(2019, c(1, NA))
+  x <- set_day(x, "last")
+  expect_identical(get_day(x), c(365L, NA))
+})
+
 test_that("ignores values past first `NULL`", {
   expect_identical(year_day(2019, hour = 2), year_day(2019))
 })

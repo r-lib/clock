@@ -46,6 +46,12 @@ test_that("can get the last day of the month", {
   expect_identical(get_day(x), c(31L, 28L))
 })
 
+test_that("`NA` propagates through 'last'", {
+  x <- year_month_day(2019, c(1, NA))
+  x <- set_day(x, "last")
+  expect_identical(get_day(x), c(31L, NA))
+})
+
 test_that("ignores values past first `NULL`", {
   expect_identical(year_month_day(2019, day = 2), year_month_day(2019))
 })

@@ -277,64 +277,29 @@ invalid_resolve_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
 
 // -----------------------------------------------------------------------------
 
-template <class Calendar>
-cpp11::writable::list
-set_field_year_month_weekday_last_impl(const Calendar& x) {
+[[cpp11::register]]
+cpp11::writable::integers
+get_year_month_weekday_last_cpp(const cpp11::integers& year,
+                                const cpp11::integers& month,
+                                const cpp11::integers& day,
+                                const cpp11::integers& index) {
+  rclock::weekday::ymwd x{year, month, day, index};
+
   const r_ssize size = x.size();
-  cpp11::writable::integers day(size);
+  cpp11::writable::integers out(size);
 
   for (r_ssize i = 0; i < size; ++i) {
     if (x.is_na(i)) {
-      day[i] = r_int_na;
+      out[i] = r_int_na;
     } else {
       // We require day precision to set the index to last, so this is allowed
       date::year_month_weekday elt = x.to_year_month_weekday(i);
-      date::year_month_weekday ymwd{elt.year() / elt.month() / elt.weekday()[date::last]};
-      day[i] = static_cast<int>(static_cast<unsigned>(ymwd.index()));
+      date::year_month_weekday elt_last{elt.year() / elt.month() / elt.weekday()[date::last]};
+      out[i] = static_cast<int>(static_cast<unsigned>(elt_last.index()));
     }
   }
 
-  cpp11::writable::list out({x.to_list(), day});
-  out.names() = {"fields", "value"};
-
   return out;
-}
-
-[[cpp11::register]]
-cpp11::writable::list
-set_field_year_month_weekday_last_cpp(cpp11::list_of<cpp11::integers> fields,
-                                  const cpp11::integers& precision_fields) {
-  using namespace rclock;
-
-  cpp11::integers year = weekday::get_year(fields);
-  cpp11::integers month = weekday::get_month(fields);
-  cpp11::integers day = weekday::get_day(fields);
-  cpp11::integers index = weekday::get_index(fields);
-  cpp11::integers hour = weekday::get_hour(fields);
-  cpp11::integers minute = weekday::get_minute(fields);
-  cpp11::integers second = weekday::get_second(fields);
-  cpp11::integers subsecond = weekday::get_subsecond(fields);
-
-  weekday::ymwd ymwd{year, month, day, index};
-  weekday::ymwdh ymwdh{year, month, day, index, hour};
-  weekday::ymwdhm ymwdhm{year, month, day, index, hour, minute};
-  weekday::ymwdhms ymwdhms{year, month, day, index, hour, minute, second};
-  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, day, index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
-
-  switch (parse_precision(precision_fields)) {
-  case precision::day: return set_field_year_month_weekday_last_impl(ymwd);
-  case precision::hour: return set_field_year_month_weekday_last_impl(ymwdh);
-  case precision::minute: return set_field_year_month_weekday_last_impl(ymwdhm);
-  case precision::second: return set_field_year_month_weekday_last_impl(ymwdhms);
-  case precision::millisecond: return set_field_year_month_weekday_last_impl(ymwdhmss1);
-  case precision::microsecond: return set_field_year_month_weekday_last_impl(ymwdhmss2);
-  case precision::nanosecond: return set_field_year_month_weekday_last_impl(ymwdhmss3);
-  default: clock_abort("Internal error: Invalid precision.");
-  }
-
-  never_reached("set_field_year_month_weekday_last_cpp");
 }
 
 // -----------------------------------------------------------------------------

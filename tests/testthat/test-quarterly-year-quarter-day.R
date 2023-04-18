@@ -38,6 +38,12 @@ test_that("can get the last day of the quarter", {
   expect_identical(get_day(x), c(90L, 91L))
 })
 
+test_that("`NA` propagates through 'last'", {
+  x <- year_quarter_day(2019, c(1, NA))
+  x <- set_day(x, "last")
+  expect_identical(get_day(x), c(90L, NA))
+})
+
 test_that("ignores values past first `NULL`", {
   expect_identical(year_quarter_day(2019, day = 2), year_quarter_day(2019))
 })

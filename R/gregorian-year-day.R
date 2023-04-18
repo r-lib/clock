@@ -477,11 +477,15 @@ set_field_year_day_last <- function(x) {
   precision_fields <- calendar_precision_attribute(x)
   precision_out <- precision_common2(precision_fields, PRECISION_DAY)
 
-  result <- set_field_year_day_last_cpp(x, precision_fields)
-  fields <- result$fields
-  fields[["day"]] <- result$value
+  names_out <- names(x)
 
-  new_year_day_from_fields(fields, precision_out, names = names(x))
+  year <- field_year(x)
+  value <- get_year_day_last_cpp(year)
+
+  out <- vec_unstructure(x)
+  out[["day"]] <- value
+
+  new_year_day_from_fields(out, precision_out, names = names_out)
 }
 
 # ------------------------------------------------------------------------------

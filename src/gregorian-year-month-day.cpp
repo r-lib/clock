@@ -275,63 +275,25 @@ invalid_resolve_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields,
 
 // -----------------------------------------------------------------------------
 
-template <class Calendar>
-cpp11::writable::list
-set_field_year_month_day_last_impl(const Calendar& x) {
+[[cpp11::register]]
+cpp11::writable::integers
+get_year_month_day_last_cpp(const cpp11::integers& year,
+                            const cpp11::integers& month) {
+  rclock::gregorian::ym x{year, month};
+
   const r_ssize size = x.size();
-  cpp11::writable::integers day(size);
+  cpp11::writable::integers out(size);
 
   for (r_ssize i = 0; i < size; ++i) {
     if (x.is_na(i)) {
-      day[i] = r_int_na;
+      out[i] = r_int_na;
     } else {
-      date::year_month_day_last ymdl = x.to_year_month(i) / date::last;
-      day[i] = static_cast<int>(static_cast<unsigned>(ymdl.day()));
+      date::year_month_day_last elt = x.to_year_month(i) / date::last;
+      out[i] = static_cast<int>(static_cast<unsigned>(elt.day()));
     }
   }
 
-  cpp11::writable::list out({x.to_list(), day});
-  out.names() = {"fields", "value"};
-
   return out;
-}
-
-[[cpp11::register]]
-cpp11::writable::list
-set_field_year_month_day_last_cpp(cpp11::list_of<cpp11::integers> fields,
-                                  const cpp11::integers& precision_fields) {
-  using namespace rclock;
-
-  cpp11::integers year = gregorian::get_year(fields);
-  cpp11::integers month = gregorian::get_month(fields);
-  cpp11::integers day = gregorian::get_day(fields);
-  cpp11::integers hour = gregorian::get_hour(fields);
-  cpp11::integers minute = gregorian::get_minute(fields);
-  cpp11::integers second = gregorian::get_second(fields);
-  cpp11::integers subsecond = gregorian::get_subsecond(fields);
-
-  gregorian::ym ym{year, month};
-  gregorian::ymd ymd{year, month, day};
-  gregorian::ymdh ymdh{year, month, day, hour};
-  gregorian::ymdhm ymdhm{year, month, day, hour, minute};
-  gregorian::ymdhms ymdhms{year, month, day, hour, minute, second};
-  gregorian::ymdhmss<std::chrono::milliseconds> ymdhmss1{year, month, day, hour, minute, second, subsecond};
-  gregorian::ymdhmss<std::chrono::microseconds> ymdhmss2{year, month, day, hour, minute, second, subsecond};
-  gregorian::ymdhmss<std::chrono::nanoseconds> ymdhmss3{year, month, day, hour, minute, second, subsecond};
-
-  switch (parse_precision(precision_fields)) {
-  case precision::month: return set_field_year_month_day_last_impl(ym);
-  case precision::day: return set_field_year_month_day_last_impl(ymd);
-  case precision::hour: return set_field_year_month_day_last_impl(ymdh);
-  case precision::minute: return set_field_year_month_day_last_impl(ymdhm);
-  case precision::second: return set_field_year_month_day_last_impl(ymdhms);
-  case precision::millisecond: return set_field_year_month_day_last_impl(ymdhmss1);
-  case precision::microsecond: return set_field_year_month_day_last_impl(ymdhmss2);
-  case precision::nanosecond: return set_field_year_month_day_last_impl(ymdhmss3);
-  default: clock_abort("Internal error: Invalid precision.");
-  }
-
-  never_reached("set_field_year_month_day_last_cpp");
 }
 
 // -----------------------------------------------------------------------------

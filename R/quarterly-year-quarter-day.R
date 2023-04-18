@@ -586,16 +586,20 @@ set_field_year_quarter_day <- function(x, value, component) {
 }
 
 set_field_year_quarter_day_last <- function(x) {
-  start <- quarterly_start(x)
-
   precision_fields <- calendar_precision_attribute(x)
   precision_out <- precision_common2(precision_fields, PRECISION_DAY)
 
-  result <- set_field_year_quarter_day_last_cpp(x, precision_fields, start)
-  fields <- result$fields
-  fields[["day"]] <- result$value
+  start_out <- quarterly_start(x)
+  names_out <- names(x)
 
-  new_year_quarter_day_from_fields(fields, precision_out, start, names = names(x))
+  year <- field_year(x)
+  quarter <- field_quarter(x)
+  value <- get_year_quarter_day_last_cpp(year, quarter, start_out)
+
+  out <- vec_unstructure(x)
+  out[["day"]] <- value
+
+  new_year_quarter_day_from_fields(out, precision_out, start_out, names = names_out)
 }
 
 # ------------------------------------------------------------------------------

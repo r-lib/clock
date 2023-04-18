@@ -38,6 +38,12 @@ test_that("can get the last week of the iso year", {
   expect_identical(get_week(x), c(52L, 53L))
 })
 
+test_that("`NA` propagates through 'last'", {
+  x <- iso_year_week_day(c(2019, NA))
+  x <- set_week(x, "last")
+  expect_identical(get_week(x), c(52L, NA))
+})
+
 test_that("ignores values past first `NULL`", {
   expect_identical(iso_year_week_day(2019, day = 2), iso_year_week_day(2019))
 })

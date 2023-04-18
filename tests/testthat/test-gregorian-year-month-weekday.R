@@ -44,6 +44,12 @@ test_that("can get the last indexed weekday of the month", {
   expect_identical(get_index(x), c(4L, 4L, 4L, 5L))
 })
 
+test_that("`NA` propagates through 'last'", {
+  x <- year_month_weekday(2019, c(1, NA), clock_weekdays$monday, 1)
+  x <- set_index(x, "last")
+  expect_identical(get_index(x), c(4L, NA))
+})
+
 test_that("ignores values past first `NULL`", {
   expect_identical(year_month_weekday(2019, minute = 2), year_month_weekday(2019))
 })
