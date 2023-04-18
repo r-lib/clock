@@ -128,16 +128,16 @@ format_year_day_cpp <- function(fields, precision_int) {
   .Call(`_clock_format_year_day_cpp`, fields, precision_int)
 }
 
-invalid_detect_year_day_cpp <- function(fields, precision_int) {
-  .Call(`_clock_invalid_detect_year_day_cpp`, fields, precision_int)
+invalid_detect_year_day_cpp <- function(year, day) {
+  .Call(`_clock_invalid_detect_year_day_cpp`, year, day)
 }
 
-invalid_any_year_day_cpp <- function(fields, precision_int) {
-  .Call(`_clock_invalid_any_year_day_cpp`, fields, precision_int)
+invalid_any_year_day_cpp <- function(year, day) {
+  .Call(`_clock_invalid_any_year_day_cpp`, year, day)
 }
 
-invalid_count_year_day_cpp <- function(fields, precision_int) {
-  .Call(`_clock_invalid_count_year_day_cpp`, fields, precision_int)
+invalid_count_year_day_cpp <- function(year, day) {
+  .Call(`_clock_invalid_count_year_day_cpp`, year, day)
 }
 
 invalid_resolve_year_day_cpp <- function(fields, precision_int, invalid_string) {

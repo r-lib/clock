@@ -99,117 +99,60 @@ format_year_day_cpp(cpp11::list_of<cpp11::integers> fields,
 
 [[cpp11::register]]
 cpp11::writable::logicals
-invalid_detect_year_day_cpp(cpp11::list_of<cpp11::integers> fields,
-                            const cpp11::integers& precision_int) {
-  using namespace rclock;
+invalid_detect_year_day_cpp(const cpp11::integers& year,
+                            const cpp11::integers& day) {
+  rclock::yearday::yyd x{year, day};
 
-  cpp11::integers year = yearday::get_year(fields);
-  cpp11::integers day = yearday::get_day(fields);
-  cpp11::integers hour = yearday::get_hour(fields);
-  cpp11::integers minute = yearday::get_minute(fields);
-  cpp11::integers second = yearday::get_second(fields);
-  cpp11::integers subsecond = yearday::get_subsecond(fields);
+  const r_ssize size = x.size();
+  cpp11::writable::logicals out(size);
 
-  yearday::y y{year};
-  yearday::yyd yyd{year, day};
-  yearday::yydh yydh{year, day, hour};
-  yearday::yydhm yydhm{year, day, hour, minute};
-  yearday::yydhms yydhms{year, day, hour, minute, second};
-  yearday::yydhmss<std::chrono::milliseconds> yydhmss1{year, day, hour, minute, second, subsecond};
-  yearday::yydhmss<std::chrono::microseconds> yydhmss2{year, day, hour, minute, second, subsecond};
-  yearday::yydhmss<std::chrono::nanoseconds> yydhmss3{year, day, hour, minute, second, subsecond};
-
-  switch (parse_precision(precision_int)) {
-  case precision::year: return invalid_detect_calendar_impl(y);
-  case precision::day: return invalid_detect_calendar_impl(yyd);
-  case precision::hour: return invalid_detect_calendar_impl(yydh);
-  case precision::minute: return invalid_detect_calendar_impl(yydhm);
-  case precision::second: return invalid_detect_calendar_impl(yydhms);
-  case precision::millisecond: return invalid_detect_calendar_impl(yydhmss1);
-  case precision::microsecond: return invalid_detect_calendar_impl(yydhmss2);
-  case precision::nanosecond: return invalid_detect_calendar_impl(yydhmss3);
-  default: clock_abort("Internal error: Invalid precision.");
+  for (r_ssize i = 0; i < size; ++i) {
+    if (x.is_na(i)) {
+      out[i] = false;
+    } else {
+      out[i] = !x.to_year_yearday(i).ok();
+    }
   }
 
-  never_reached("invalid_detect_year_day_cpp");
+  return out;
 }
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
 bool
-invalid_any_year_day_cpp(cpp11::list_of<cpp11::integers> fields,
-                               const cpp11::integers& precision_int) {
-  using namespace rclock;
+invalid_any_year_day_cpp(const cpp11::integers& year,
+                         const cpp11::integers& day) {
+  rclock::yearday::yyd x{year, day};
 
-  cpp11::integers year = yearday::get_year(fields);
-  cpp11::integers day = yearday::get_day(fields);
-  cpp11::integers hour = yearday::get_hour(fields);
-  cpp11::integers minute = yearday::get_minute(fields);
-  cpp11::integers second = yearday::get_second(fields);
-  cpp11::integers subsecond = yearday::get_subsecond(fields);
+  const r_ssize size = x.size();
 
-  yearday::y y{year};
-  yearday::yyd yyd{year, day};
-  yearday::yydh yydh{year, day, hour};
-  yearday::yydhm yydhm{year, day, hour, minute};
-  yearday::yydhms yydhms{year, day, hour, minute, second};
-  yearday::yydhmss<std::chrono::milliseconds> yydhmss1{year, day, hour, minute, second, subsecond};
-  yearday::yydhmss<std::chrono::microseconds> yydhmss2{year, day, hour, minute, second, subsecond};
-  yearday::yydhmss<std::chrono::nanoseconds> yydhmss3{year, day, hour, minute, second, subsecond};
-
-  switch (parse_precision(precision_int)) {
-  case precision::year: return invalid_any_calendar_impl(y);
-  case precision::day: return invalid_any_calendar_impl(yyd);
-  case precision::hour: return invalid_any_calendar_impl(yydh);
-  case precision::minute: return invalid_any_calendar_impl(yydhm);
-  case precision::second: return invalid_any_calendar_impl(yydhms);
-  case precision::millisecond: return invalid_any_calendar_impl(yydhmss1);
-  case precision::microsecond: return invalid_any_calendar_impl(yydhmss2);
-  case precision::nanosecond: return invalid_any_calendar_impl(yydhmss3);
-  default: clock_abort("Internal error: Invalid precision.");
+  for (r_ssize i = 0; i < size; ++i) {
+    if (!x.is_na(i) && !x.to_year_yearday(i).ok()) {
+      return true;
+    }
   }
 
-  never_reached("invalid_any_year_day_cpp");
+  return false;
 }
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
 int
-invalid_count_year_day_cpp(cpp11::list_of<cpp11::integers> fields,
-                                 const cpp11::integers& precision_int) {
-  using namespace rclock;
+invalid_count_year_day_cpp(const cpp11::integers& year,
+                           const cpp11::integers& day) {
+  rclock::yearday::yyd x{year, day};
 
-  cpp11::integers year = yearday::get_year(fields);
-  cpp11::integers day = yearday::get_day(fields);
-  cpp11::integers hour = yearday::get_hour(fields);
-  cpp11::integers minute = yearday::get_minute(fields);
-  cpp11::integers second = yearday::get_second(fields);
-  cpp11::integers subsecond = yearday::get_subsecond(fields);
+  const r_ssize size = x.size();
 
-  yearday::y y{year};
-  yearday::yyd yyd{year, day};
-  yearday::yydh yydh{year, day, hour};
-  yearday::yydhm yydhm{year, day, hour, minute};
-  yearday::yydhms yydhms{year, day, hour, minute, second};
-  yearday::yydhmss<std::chrono::milliseconds> yydhmss1{year, day, hour, minute, second, subsecond};
-  yearday::yydhmss<std::chrono::microseconds> yydhmss2{year, day, hour, minute, second, subsecond};
-  yearday::yydhmss<std::chrono::nanoseconds> yydhmss3{year, day, hour, minute, second, subsecond};
+  int count = 0;
 
-  switch (parse_precision(precision_int)) {
-  case precision::year: return invalid_count_calendar_impl(y);
-  case precision::day: return invalid_count_calendar_impl(yyd);
-  case precision::hour: return invalid_count_calendar_impl(yydh);
-  case precision::minute: return invalid_count_calendar_impl(yydhm);
-  case precision::second: return invalid_count_calendar_impl(yydhms);
-  case precision::millisecond: return invalid_count_calendar_impl(yydhmss1);
-  case precision::microsecond: return invalid_count_calendar_impl(yydhmss2);
-  case precision::nanosecond: return invalid_count_calendar_impl(yydhmss3);
-  default: clock_abort("Internal error: Invalid precision.");
+  for (r_ssize i = 0; i < size; ++i) {
+    count += !x.is_na(i) && !x.to_year_yearday(i).ok();
   }
 
-  never_reached("invalid_count_year_day_cpp");
+  return count;
 }
 
 // -----------------------------------------------------------------------------
@@ -217,8 +160,8 @@ invalid_count_year_day_cpp(cpp11::list_of<cpp11::integers> fields,
 [[cpp11::register]]
 cpp11::writable::list
 invalid_resolve_year_day_cpp(cpp11::list_of<cpp11::integers> fields,
-                                   const cpp11::integers& precision_int,
-                                   const cpp11::strings& invalid_string) {
+                             const cpp11::integers& precision_int,
+                             const cpp11::strings& invalid_string) {
   using namespace rclock;
   const enum invalid invalid_val = parse_invalid(invalid_string);
 
@@ -229,7 +172,6 @@ invalid_resolve_year_day_cpp(cpp11::list_of<cpp11::integers> fields,
   cpp11::integers second = yearday::get_second(fields);
   cpp11::integers subsecond = yearday::get_subsecond(fields);
 
-  yearday::y y{year};
   yearday::yyd yyd{year, day};
   yearday::yydh yydh{year, day, hour};
   yearday::yydhm yydhm{year, day, hour, minute};
@@ -239,7 +181,6 @@ invalid_resolve_year_day_cpp(cpp11::list_of<cpp11::integers> fields,
   yearday::yydhmss<std::chrono::nanoseconds> yydhmss3{year, day, hour, minute, second, subsecond};
 
   switch (parse_precision(precision_int)) {
-  case precision::year: return invalid_resolve_calendar_impl(y, invalid_val);
   case precision::day: return invalid_resolve_calendar_impl(yyd, invalid_val);
   case precision::hour: return invalid_resolve_calendar_impl(yydh, invalid_val);
   case precision::minute: return invalid_resolve_calendar_impl(yydhm, invalid_val);
@@ -247,10 +188,8 @@ invalid_resolve_year_day_cpp(cpp11::list_of<cpp11::integers> fields,
   case precision::millisecond: return invalid_resolve_calendar_impl(yydhmss1, invalid_val);
   case precision::microsecond: return invalid_resolve_calendar_impl(yydhmss2, invalid_val);
   case precision::nanosecond: return invalid_resolve_calendar_impl(yydhmss3, invalid_val);
-  default: clock_abort("Internal error: Invalid precision.");
+  default: never_reached("invalid_resolve_year_day_cpp");
   }
-
-  never_reached("invalid_resolve_year_day_cpp");
 }
 
 // -----------------------------------------------------------------------------

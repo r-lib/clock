@@ -230,24 +230,24 @@ extern "C" SEXP _clock_format_year_day_cpp(SEXP fields, SEXP precision_int) {
   END_CPP11
 }
 // gregorian-year-day.cpp
-cpp11::writable::logicals invalid_detect_year_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int);
-extern "C" SEXP _clock_invalid_detect_year_day_cpp(SEXP fields, SEXP precision_int) {
+cpp11::writable::logicals invalid_detect_year_day_cpp(const cpp11::integers& year, const cpp11::integers& day);
+extern "C" SEXP _clock_invalid_detect_year_day_cpp(SEXP year, SEXP day) {
   BEGIN_CPP11
-    return cpp11::as_sexp(invalid_detect_year_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int)));
+    return cpp11::as_sexp(invalid_detect_year_day_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(day)));
   END_CPP11
 }
 // gregorian-year-day.cpp
-bool invalid_any_year_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int);
-extern "C" SEXP _clock_invalid_any_year_day_cpp(SEXP fields, SEXP precision_int) {
+bool invalid_any_year_day_cpp(const cpp11::integers& year, const cpp11::integers& day);
+extern "C" SEXP _clock_invalid_any_year_day_cpp(SEXP year, SEXP day) {
   BEGIN_CPP11
-    return cpp11::as_sexp(invalid_any_year_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int)));
+    return cpp11::as_sexp(invalid_any_year_day_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(day)));
   END_CPP11
 }
 // gregorian-year-day.cpp
-int invalid_count_year_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int);
-extern "C" SEXP _clock_invalid_count_year_day_cpp(SEXP fields, SEXP precision_int) {
+int invalid_count_year_day_cpp(const cpp11::integers& year, const cpp11::integers& day);
+extern "C" SEXP _clock_invalid_count_year_day_cpp(SEXP year, SEXP day) {
   BEGIN_CPP11
-    return cpp11::as_sexp(invalid_count_year_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int)));
+    return cpp11::as_sexp(invalid_count_year_day_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(day)));
   END_CPP11
 }
 // gregorian-year-day.cpp
