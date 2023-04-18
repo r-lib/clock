@@ -291,6 +291,12 @@ test_that("setters retain names", {
   expect_named(set_month(x, 2), "foo")
 })
 
+test_that("setting with named `value` strips its names", {
+  x <- year_month_day(2019)
+  x <- set_month(x, set_names(1L, "x"))
+  expect_named(field(x, "month"), NULL)
+})
+
 # ------------------------------------------------------------------------------
 # as_year_quarter_day()
 

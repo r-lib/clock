@@ -664,6 +664,7 @@ set_field_year_month_day <- function(x, value, component) {
   names_out <- names(x)
 
   value <- vec_cast(value, integer())
+  value <- unname(value)
 
   switch(
     component,
