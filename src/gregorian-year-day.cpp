@@ -256,62 +256,24 @@ invalid_resolve_year_day_cpp(cpp11::list_of<cpp11::integers> fields,
 
 // -----------------------------------------------------------------------------
 
-template <class Calendar>
-cpp11::writable::list
-set_field_year_day_last_impl(const Calendar& x) {
+[[cpp11::register]]
+cpp11::writable::integers
+get_year_day_last_cpp(const cpp11::integers& year) {
+  rclock::yearday::y x{year};
+
   const r_ssize size = x.size();
-  cpp11::writable::integers day(size);
+  cpp11::writable::integers out(size);
 
   for (r_ssize i = 0; i < size; ++i) {
     if (x.is_na(i)) {
-      day[i] = r_int_na;
+      out[i] = r_int_na;
     } else {
-      ordinal::year_yearday_last yydl = x.to_year(i) / ordinal::last;
-      day[i] = static_cast<int>(static_cast<unsigned>(yydl.yearday()));
+      ordinal::year_yearday_last elt = x.to_year(i) / ordinal::last;
+      out[i] = static_cast<int>(static_cast<unsigned>(elt.yearday()));
     }
   }
 
-  cpp11::writable::list out({x.to_list(), day});
-  out.names() = {"fields", "value"};
-
   return out;
-}
-
-[[cpp11::register]]
-cpp11::writable::list
-set_field_year_day_last_cpp(cpp11::list_of<cpp11::integers> fields,
-                            const cpp11::integers& precision_fields) {
-  using namespace rclock;
-
-  cpp11::integers year = yearday::get_year(fields);
-  cpp11::integers day = yearday::get_day(fields);
-  cpp11::integers hour = yearday::get_hour(fields);
-  cpp11::integers minute = yearday::get_minute(fields);
-  cpp11::integers second = yearday::get_second(fields);
-  cpp11::integers subsecond = yearday::get_subsecond(fields);
-
-  yearday::y y{year};
-  yearday::yyd yyd{year, day};
-  yearday::yydh yydh{year, day, hour};
-  yearday::yydhm yydhm{year, day, hour, minute};
-  yearday::yydhms yydhms{year, day, hour, minute, second};
-  yearday::yydhmss<std::chrono::milliseconds> yydhmss1{year, day, hour, minute, second, subsecond};
-  yearday::yydhmss<std::chrono::microseconds> yydhmss2{year, day, hour, minute, second, subsecond};
-  yearday::yydhmss<std::chrono::nanoseconds> yydhmss3{year, day, hour, minute, second, subsecond};
-
-  switch (parse_precision(precision_fields)) {
-  case precision::year: return set_field_year_day_last_impl(y);
-  case precision::day: return set_field_year_day_last_impl(yyd);
-  case precision::hour: return set_field_year_day_last_impl(yydh);
-  case precision::minute: return set_field_year_day_last_impl(yydhm);
-  case precision::second: return set_field_year_day_last_impl(yydhms);
-  case precision::millisecond: return set_field_year_day_last_impl(yydhmss1);
-  case precision::microsecond: return set_field_year_day_last_impl(yydhmss2);
-  case precision::nanosecond: return set_field_year_day_last_impl(yydhmss3);
-  default: clock_abort("Internal error: Invalid precision.");
-  }
-
-  never_reached("set_field_year_day_last_cpp");
 }
 
 // -----------------------------------------------------------------------------

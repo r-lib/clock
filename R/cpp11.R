@@ -144,8 +144,8 @@ invalid_resolve_year_day_cpp <- function(fields, precision_int, invalid_string) 
   .Call(`_clock_invalid_resolve_year_day_cpp`, fields, precision_int, invalid_string)
 }
 
-set_field_year_day_last_cpp <- function(fields, precision_fields) {
-  .Call(`_clock_set_field_year_day_last_cpp`, fields, precision_fields)
+get_year_day_last_cpp <- function(year) {
+  .Call(`_clock_get_year_day_last_cpp`, year)
 }
 
 year_day_plus_duration_cpp <- function(fields, fields_n, precision_fields, precision_n) {
