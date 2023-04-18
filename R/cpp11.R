@@ -176,16 +176,16 @@ format_year_month_day_cpp <- function(fields, precision_int) {
   .Call(`_clock_format_year_month_day_cpp`, fields, precision_int)
 }
 
-invalid_detect_year_month_day_cpp <- function(fields, precision_int) {
-  .Call(`_clock_invalid_detect_year_month_day_cpp`, fields, precision_int)
+invalid_detect_year_month_day_cpp <- function(year, month, day) {
+  .Call(`_clock_invalid_detect_year_month_day_cpp`, year, month, day)
 }
 
-invalid_any_year_month_day_cpp <- function(fields, precision_int) {
-  .Call(`_clock_invalid_any_year_month_day_cpp`, fields, precision_int)
+invalid_any_year_month_day_cpp <- function(year, month, day) {
+  .Call(`_clock_invalid_any_year_month_day_cpp`, year, month, day)
 }
 
-invalid_count_year_month_day_cpp <- function(fields, precision_int) {
-  .Call(`_clock_invalid_count_year_month_day_cpp`, fields, precision_int)
+invalid_count_year_month_day_cpp <- function(year, month, day) {
+  .Call(`_clock_invalid_count_year_month_day_cpp`, year, month, day)
 }
 
 invalid_resolve_year_month_day_cpp <- function(fields, precision_int, invalid_string) {
