@@ -76,8 +76,6 @@ public:
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
 
-  bool ok(r_ssize i) const NOEXCEPT;
-
   void add(const date::years& x, r_ssize i) NOEXCEPT;
 
   void assign_year(const iso_week::year& x, r_ssize i) NOEXCEPT;
@@ -101,8 +99,6 @@ public:
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
 
-  bool ok(r_ssize i) const NOEXCEPT;
-
   void assign_weeknum(const iso_week::weeknum& x, r_ssize i) NOEXCEPT;
   void assign_year_weeknum(const iso_week::year_weeknum& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
@@ -125,8 +121,6 @@ public:
         const cpp11::integers& day);
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
-
-  bool ok(r_ssize i) const NOEXCEPT;
 
   void assign_weekday(const iso_week::weekday& x, r_ssize i) NOEXCEPT;
   void assign_year_weeknum_weekday(const iso_week::year_weeknum_weekday& x, r_ssize i) NOEXCEPT;
@@ -280,13 +274,6 @@ y::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 }
 
 inline
-bool
-y::ok(r_ssize i) const NOEXCEPT
-{
-  return true;
-}
-
-inline
 void
 y::add(const date::years& x, r_ssize i) NOEXCEPT
 {
@@ -353,13 +340,6 @@ ywn::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
   os << '-';
   detail::stream_week(os, week_[i]);
   return os;
-}
-
-inline
-bool
-ywn::ok(r_ssize i) const NOEXCEPT
-{
-  return to_year_weeknum(i).ok();
 }
 
 inline
@@ -462,13 +442,6 @@ ywnwd::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
   os << '-';
   detail::stream_day(os, day_[i]);
   return os;
-}
-
-inline
-bool
-ywnwd::ok(r_ssize i) const NOEXCEPT
-{
-  return to_year_weeknum_weekday(i).ok();
 }
 
 inline

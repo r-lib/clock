@@ -815,6 +815,57 @@ test_that("`by` can be a duration", {
 })
 
 # ------------------------------------------------------------------------------
+# invalid_detect()
+
+test_that("`invalid_detect()` works", {
+  # Not possible to be invalid
+  x <- year_month_day(2019:2020, 1)
+  expect_identical(invalid_detect(x), c(FALSE, FALSE))
+
+  # Now possible
+  x <- year_month_day(2019, 2, c(1, 28, 31, NA))
+  expect_identical(invalid_detect(x), c(FALSE, FALSE, TRUE, FALSE))
+
+  # Possible after that too
+  x <- year_month_day(2019, 2, c(1, 28, 31, NA))
+  expect_identical(invalid_detect(x), c(FALSE, FALSE, TRUE, FALSE))
+})
+
+# ------------------------------------------------------------------------------
+# invalid_any()
+
+test_that("`invalid_any()` works", {
+  # Not possible to be invalid
+  x <- year_month_day(2019:2020, 1)
+  expect_false(invalid_any(x))
+
+  # Now possible
+  x <- year_month_day(2019, 2, c(1, 28, 31, NA))
+  expect_true(invalid_any(x))
+
+  # Possible after that too
+  x <- year_month_day(2019, 2, c(1, 28, 31, NA))
+  expect_true(invalid_any(x))
+})
+
+# ------------------------------------------------------------------------------
+# invalid_count()
+
+test_that("`invalid_count()` works", {
+  # Not possible to be invalid
+  x <- year_month_day(2019:2020, 1)
+  expect_identical(invalid_count(x), 0L)
+
+  # Now possible
+  x <- year_month_day(2019, 2, c(1, 28, 31, NA))
+  expect_identical(invalid_count(x), 1L)
+
+  # Possible after that too
+  x <- year_month_day(2019, 2, c(1, 28, 31, NA), 3)
+  expect_identical(invalid_count(x), 1L)
+})
+
+# ------------------------------------------------------------------------------
 # invalid_resolve()
 
 test_that("strict mode can be activated", {
@@ -822,9 +873,47 @@ test_that("strict mode can be activated", {
   expect_snapshot_error(invalid_resolve(year_month_day(2019, 1, 1)))
 })
 
+test_that("can resolve correctly", {
+  x <- year_month_day(2019, 02, 31, 2, 3, 4, 5, subsecond_precision = "millisecond")
+
+  expect_identical(
+    invalid_resolve(x, invalid = "previous"),
+    year_month_day(2019, 02, 28, 23, 59, 59, 999, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "previous-day"),
+    year_month_day(2019, 02, 28, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "next"),
+    year_month_day(2019, 03, 01, 0, 0, 0, 0, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "next-day"),
+    year_month_day(2019, 03, 01, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "overflow"),
+    year_month_day(2019, 03, 03, 0, 0, 0, 0, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "overflow-day"),
+    year_month_day(2019, 03, 03, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "NA"),
+    year_month_day(NA, NA, NA, NA, NA, NA, NA, subsecond_precision = "millisecond")
+  )
+})
+
 test_that("throws known classed error", {
   expect_snapshot_error(invalid_resolve(year_month_day(2019, 2, 31)))
   expect_error(invalid_resolve(year_month_day(2019, 2, 31)), class = "clock_error_invalid_date")
+})
+
+test_that("works with always valid precisions", {
+  x <- year_month_day(2019:2020)
+  expect_identical(invalid_resolve(x), x)
 })
 
 # ------------------------------------------------------------------------------

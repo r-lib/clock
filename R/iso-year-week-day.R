@@ -226,17 +226,41 @@ iso_year_week_day_is_valid_precision <- function(precision) {
 
 #' @export
 invalid_detect.clock_iso_year_week_day <- function(x) {
-  invalid_detect_iso_year_week_day_cpp(x, calendar_precision_attribute(x))
+  precision <- calendar_precision_attribute(x)
+
+  if (precision < PRECISION_WEEK) {
+    rep_along(x, FALSE)
+  } else {
+    year <- field_year(x)
+    week <- field_week(x)
+    invalid_detect_iso_year_week_day_cpp(year, week)
+  }
 }
 
 #' @export
 invalid_any.clock_iso_year_week_day <- function(x) {
-  invalid_any_iso_year_week_day_cpp(x, calendar_precision_attribute(x))
+  precision <- calendar_precision_attribute(x)
+
+  if (precision < PRECISION_WEEK) {
+    FALSE
+  } else {
+    year <- field_year(x)
+    week <- field_week(x)
+    invalid_any_iso_year_week_day_cpp(year, week)
+  }
 }
 
 #' @export
 invalid_count.clock_iso_year_week_day <- function(x) {
-  invalid_count_iso_year_week_day_cpp(x, calendar_precision_attribute(x))
+  precision <- calendar_precision_attribute(x)
+
+  if (precision < PRECISION_WEEK) {
+    0L
+  } else {
+    year <- field_year(x)
+    week <- field_week(x)
+    invalid_count_iso_year_week_day_cpp(year, week)
+  }
 }
 
 #' @export
@@ -244,8 +268,13 @@ invalid_resolve.clock_iso_year_week_day <- function(x, ..., invalid = NULL) {
   check_dots_empty()
   precision <- calendar_precision_attribute(x)
   invalid <- validate_invalid(invalid)
-  fields <- invalid_resolve_iso_year_week_day_cpp(x, precision, invalid)
-  new_iso_year_week_day_from_fields(fields, precision, names = names(x))
+
+  if (precision < PRECISION_WEEK) {
+    x
+  } else {
+    fields <- invalid_resolve_iso_year_week_day_cpp(x, precision, invalid)
+    new_iso_year_week_day_from_fields(fields, precision, names(x))
+  }
 }
 
 # ------------------------------------------------------------------------------

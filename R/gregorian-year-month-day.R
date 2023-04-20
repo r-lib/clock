@@ -406,17 +406,44 @@ year_month_day_is_valid_precision <- function(precision) {
 
 #' @export
 invalid_detect.clock_year_month_day <- function(x) {
-  invalid_detect_year_month_day_cpp(x, calendar_precision_attribute(x))
+  precision <- calendar_precision_attribute(x)
+
+  if (precision < PRECISION_DAY) {
+    rep_along(x, FALSE)
+  } else {
+    year <- field_year(x)
+    month <- field_month(x)
+    day <- field_day(x)
+    invalid_detect_year_month_day_cpp(year, month, day)
+  }
 }
 
 #' @export
 invalid_any.clock_year_month_day <- function(x) {
-  invalid_any_year_month_day_cpp(x, calendar_precision_attribute(x))
+  precision <- calendar_precision_attribute(x)
+
+  if (precision < PRECISION_DAY) {
+    FALSE
+  } else {
+    year <- field_year(x)
+    month <- field_month(x)
+    day <- field_day(x)
+    invalid_any_year_month_day_cpp(year, month, day)
+  }
 }
 
 #' @export
 invalid_count.clock_year_month_day <- function(x) {
-  invalid_count_year_month_day_cpp(x, calendar_precision_attribute(x))
+  precision <- calendar_precision_attribute(x)
+
+  if (precision < PRECISION_DAY) {
+    0L
+  } else {
+    year <- field_year(x)
+    month <- field_month(x)
+    day <- field_day(x)
+    invalid_count_year_month_day_cpp(year, month, day)
+  }
 }
 
 #' @export
@@ -424,8 +451,13 @@ invalid_resolve.clock_year_month_day <- function(x, ..., invalid = NULL) {
   check_dots_empty()
   precision <- calendar_precision_attribute(x)
   invalid <- validate_invalid(invalid)
-  fields <- invalid_resolve_year_month_day_cpp(x, precision, invalid)
-  new_year_month_day_from_fields(fields, precision, names(x))
+
+  if (precision < PRECISION_DAY) {
+    x
+  } else {
+    fields <- invalid_resolve_year_month_day_cpp(x, precision, invalid)
+    new_year_month_day_from_fields(fields, precision, names(x))
+  }
 }
 
 # ------------------------------------------------------------------------------

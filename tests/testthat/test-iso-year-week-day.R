@@ -451,11 +451,105 @@ test_that("seq(by, length.out) works", {
 })
 
 # ------------------------------------------------------------------------------
+# invalid_detect()
+
+test_that("`invalid_detect()` works", {
+  # Not possible to be invalid
+  x <- iso_year_week_day(2019:2020)
+  expect_identical(invalid_detect(x), c(FALSE, FALSE))
+
+  # Now possible
+  x <- iso_year_week_day(2019, c(1, 52, 53, NA))
+  expect_identical(invalid_detect(x), c(FALSE, FALSE, TRUE, FALSE))
+
+  # Possible after that too
+  x <- iso_year_week_day(2019, c(1, 52, 53, NA), 1)
+  expect_identical(invalid_detect(x), c(FALSE, FALSE, TRUE, FALSE))
+})
+
+# ------------------------------------------------------------------------------
+# invalid_any()
+
+test_that("`invalid_any()` works", {
+  # Not possible to be invalid
+  x <- iso_year_week_day(2019:2020)
+  expect_false(invalid_any(x))
+
+  # Now possible
+  x <- iso_year_week_day(2019, c(1, 52, 53, NA))
+  expect_true(invalid_any(x))
+
+  # Possible after that too
+  x <- iso_year_week_day(2019, c(1, 52, 53, NA), 1)
+  expect_true(invalid_any(x))
+})
+
+# ------------------------------------------------------------------------------
+# invalid_count()
+
+test_that("`invalid_count()` works", {
+  # Not possible to be invalid
+  x <- iso_year_week_day(2019:2020)
+  expect_identical(invalid_count(x), 0L)
+
+  # Now possible
+  x <- iso_year_week_day(2019, c(1, 52, 53, NA))
+  expect_identical(invalid_count(x), 1L)
+
+  # Possible after that too
+  x <- iso_year_week_day(2019, c(1, 52, 53, NA), 1)
+  expect_identical(invalid_count(x), 1L)
+})
+
+# ------------------------------------------------------------------------------
 # invalid_resolve()
 
 test_that("strict mode can be activated", {
   local_options(clock.strict = TRUE)
   expect_snapshot_error(invalid_resolve(iso_year_week_day(2019, 1)))
+})
+
+test_that("can resolve correctly", {
+  x <- iso_year_week_day(2019, 53, 2, 2, 3, 4, 5, subsecond_precision = "millisecond")
+
+  expect_identical(
+    invalid_resolve(x, invalid = "previous"),
+    iso_year_week_day(2019, 52, 7, 23, 59, 59, 999, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "previous-day"),
+    iso_year_week_day(2019, 52, 7, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "next"),
+    iso_year_week_day(2020, 01, 1, 0, 0, 0, 0, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "next-day"),
+    iso_year_week_day(2020, 01, 1, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "overflow"),
+    iso_year_week_day(2020, 01, 02, 0, 0, 0, 0, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "overflow-day"),
+    iso_year_week_day(2020, 01, 02, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "NA"),
+    iso_year_week_day(NA, NA, NA, NA, NA, NA, NA, subsecond_precision = "millisecond")
+  )
+})
+
+test_that("throws known classed error", {
+  expect_snapshot_error(invalid_resolve(iso_year_week_day(2019, 53)))
+  expect_error(invalid_resolve(iso_year_week_day(2019, 53)), class = "clock_error_invalid_date")
+})
+
+test_that("works with always valid precisions", {
+  x <- iso_year_week_day(2019:2020)
+  expect_identical(invalid_resolve(x), x)
 })
 
 # ------------------------------------------------------------------------------
