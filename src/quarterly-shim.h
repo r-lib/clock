@@ -49,7 +49,6 @@ public:
   CONSTCD11 quarterly::start start() const NOEXCEPT;
 
   CONSTCD11 explicit operator int() const NOEXCEPT;
-  CONSTCD14 bool ok() const NOEXCEPT;
 };
 
 CONSTCD14 year operator+(const year& x, const quarterly::years& y) NOEXCEPT;
@@ -70,8 +69,6 @@ public:
 
   CONSTCD11 quarterly_shim::year year() const NOEXCEPT;
   CONSTCD11 quarterly::quarternum quarternum() const NOEXCEPT;
-
-  CONSTCD14 bool ok() const NOEXCEPT;
 };
 
 CONSTCD14 year_quarternum operator+(const year_quarternum& yqn, const quarterly::quarters& dq) NOEXCEPT;
@@ -238,31 +235,6 @@ year::operator int() const NOEXCEPT
   return y_;
 }
 
-CONSTCD14
-inline
-bool
-year::ok() const NOEXCEPT
-{
-  using start = quarterly::start;
-  using detail::to_quarterly;
-
-  switch (s_) {
-  case start::january: return to_quarterly<start::january>(*this).ok();
-  case start::february: return to_quarterly<start::february>(*this).ok();
-  case start::march: return to_quarterly<start::march>(*this).ok();
-  case start::april: return to_quarterly<start::april>(*this).ok();
-  case start::may: return to_quarterly<start::may>(*this).ok();
-  case start::june: return to_quarterly<start::june>(*this).ok();
-  case start::july: return to_quarterly<start::july>(*this).ok();
-  case start::august: return to_quarterly<start::august>(*this).ok();
-  case start::september: return to_quarterly<start::september>(*this).ok();
-  case start::october: return to_quarterly<start::october>(*this).ok();
-  case start::november: return to_quarterly<start::november>(*this).ok();
-  case start::december: return to_quarterly<start::december>(*this).ok();
-  default: detail::never_reached();
-  }
-}
-
 CONSTCD11
 inline
 quarterly::start
@@ -332,31 +304,6 @@ year_quarternum::year_quarternum(const quarterly_shim::year& y,
   : y_(y)
   , qn_(qn)
   {}
-
-CONSTCD14
-inline
-bool
-year_quarternum::ok() const NOEXCEPT
-{
-  using start = quarterly::start;
-  using detail::to_quarterly;
-
-  switch (y_.start()) {
-  case start::january: return to_quarterly<start::january>(*this).ok();
-  case start::february: return to_quarterly<start::february>(*this).ok();
-  case start::march: return to_quarterly<start::march>(*this).ok();
-  case start::april: return to_quarterly<start::april>(*this).ok();
-  case start::may: return to_quarterly<start::may>(*this).ok();
-  case start::june: return to_quarterly<start::june>(*this).ok();
-  case start::july: return to_quarterly<start::july>(*this).ok();
-  case start::august: return to_quarterly<start::august>(*this).ok();
-  case start::september: return to_quarterly<start::september>(*this).ok();
-  case start::october: return to_quarterly<start::october>(*this).ok();
-  case start::november: return to_quarterly<start::november>(*this).ok();
-  case start::december: return to_quarterly<start::december>(*this).ok();
-  default: detail::never_reached();
-  }
-}
 
 CONSTCD11
 inline
