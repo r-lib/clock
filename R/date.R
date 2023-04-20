@@ -114,7 +114,7 @@ as.Date.clock_calendar <- function(x, ...) {
 as.Date.clock_time_point <- function(x, ...) {
   names <- clock_rcrd_names(x)
   x <- time_point_floor(x, "day")
-  x <- field_ticks(x)
+  x <- as_duration(x)
   x <- as.double(x)
   names(x) <- names
   new_date(x)

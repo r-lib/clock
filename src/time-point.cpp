@@ -18,6 +18,9 @@ new_time_point_from_fields(SEXP fields,
   const enum clock_name clock_val = parse_clock_name(clock_int);
 
   const r_ssize n_fields = Rf_xlength(fields);
+  if (n_fields != 2) {
+    clock_abort("`fields` must be length 2.");
+  }
 
   switch (precision_val) {
   case precision::year:
@@ -26,26 +29,13 @@ new_time_point_from_fields(SEXP fields,
   case precision::week: {
     clock_abort("`precision` must be at least 'day' precision.");
   }
-  case precision::day: {
-    if (n_fields != 1) {
-      clock_abort("`fields` must have 1 field for day precision.");
-    }
-    break;
-  }
+  case precision::day:
   case precision::hour:
   case precision::minute:
-  case precision::second: {
-    if (n_fields != 2) {
-      clock_abort("`fields` must have 2 fields for [hour, second] precision.");
-    }
-    break;
-  }
+  case precision::second:
   case precision::millisecond:
   case precision::microsecond:
   case precision::nanosecond: {
-    if (n_fields != 3) {
-      clock_abort("`fields` must have 3 fields for [millisecond, nanosecond] precision.");
-    }
     break;
   }
   default: {
@@ -110,7 +100,7 @@ time_point_parse_one(std::istringstream& stream,
                      const r_ssize& i,
                      rclock::failures& fail,
                      ClockDuration& out) {
-  using Duration = typename ClockDuration::duration;
+  using Duration = typename ClockDuration::chrono_duration;
   const r_ssize size = fmts.size();
 
   for (r_ssize j = 0; j < size; ++j) {

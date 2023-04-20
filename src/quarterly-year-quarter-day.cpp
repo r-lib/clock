@@ -251,7 +251,7 @@ get_year_quarter_day_last_cpp(const cpp11::integers& year,
 [[cpp11::register]]
 cpp11::writable::list
 year_quarter_day_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields,
-                                   cpp11::list_of<cpp11::integers> fields_n,
+                                   cpp11::list_of<cpp11::doubles> fields_n,
                                    const cpp11::integers& precision_fields,
                                    const cpp11::integers& precision_n,
                                    const cpp11::integers& start_int) {
@@ -280,10 +280,8 @@ year_quarter_day_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields,
   rquarterly::yqnqdhmss<std::chrono::microseconds> yqnqdhmss2{year, quarter, day, hour, minute, second, subsecond, start};
   rquarterly::yqnqdhmss<std::chrono::nanoseconds> yqnqdhmss3{year, quarter, day, hour, minute, second, subsecond, start};
 
-  cpp11::integers ticks = duration::get_ticks(fields_n);
-
-  duration::years dy{ticks};
-  duration::quarters dq{ticks};
+  duration::years dy{fields_n};
+  duration::quarters dq{fields_n};
 
   switch (precision_fields_val) {
   case precision::year:
@@ -397,19 +395,23 @@ as_sys_time_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
 
 // -----------------------------------------------------------------------------
 
-template <class Calendar, class ClockDuration>
+template <class ClockDuration, class Calendar>
 cpp11::writable::list
-as_year_quarter_day_from_sys_time_impl(const ClockDuration& x, quarterly::start start) {
+as_year_quarter_day_from_sys_time_impl(cpp11::list_of<cpp11::doubles>& fields,
+                                       quarterly::start start) {
+  using Duration = typename ClockDuration::chrono_duration;
+
+  const ClockDuration x{fields};
   const r_ssize size = x.size();
+
   Calendar out(size, start);
-  using Duration = typename ClockDuration::duration;
 
   for (r_ssize i = 0; i < size; ++i) {
     if (x.is_na(i)) {
       out.assign_na(i);
     } else {
-      Duration elt = x[i];
-      date::sys_time<Duration> elt_st{elt};
+      const Duration elt = x[i];
+      const date::sys_time<Duration> elt_st{elt};
       out.assign_sys_time(elt_st, i);
     }
   }
@@ -419,33 +421,21 @@ as_year_quarter_day_from_sys_time_impl(const ClockDuration& x, quarterly::start 
 
 [[cpp11::register]]
 cpp11::writable::list
-as_year_quarter_day_from_sys_time_cpp(cpp11::list_of<cpp11::integers> fields,
+as_year_quarter_day_from_sys_time_cpp(cpp11::list_of<cpp11::doubles> fields,
                                       const cpp11::integers& precision_int,
                                       const cpp11::integers& start_int) {
   using namespace rclock;
 
   const quarterly::start start = parse_start(start_int);
 
-  cpp11::integers ticks = duration::get_ticks(fields);
-  cpp11::integers ticks_of_day = duration::get_ticks_of_day(fields);
-  cpp11::integers ticks_of_second = duration::get_ticks_of_second(fields);
-
-  duration::days dd{ticks};
-  duration::hours dh{ticks, ticks_of_day};
-  duration::minutes dmin{ticks, ticks_of_day};
-  duration::seconds ds{ticks, ticks_of_day};
-  duration::milliseconds dmilli{ticks, ticks_of_day, ticks_of_second};
-  duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
-  duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
-
   switch (parse_precision(precision_int)) {
-  case precision::day: return as_year_quarter_day_from_sys_time_impl<rquarterly::yqnqd>(dd, start);
-  case precision::hour: return as_year_quarter_day_from_sys_time_impl<rquarterly::yqnqdh>(dh, start);
-  case precision::minute: return as_year_quarter_day_from_sys_time_impl<rquarterly::yqnqdhm>(dmin, start);
-  case precision::second: return as_year_quarter_day_from_sys_time_impl<rquarterly::yqnqdhms>(ds, start);
-  case precision::millisecond: return as_year_quarter_day_from_sys_time_impl<rquarterly::yqnqdhmss<std::chrono::milliseconds>>(dmilli, start);
-  case precision::microsecond: return as_year_quarter_day_from_sys_time_impl<rquarterly::yqnqdhmss<std::chrono::microseconds>>(dmicro, start);
-  case precision::nanosecond: return as_year_quarter_day_from_sys_time_impl<rquarterly::yqnqdhmss<std::chrono::nanoseconds>>(dnano, start);
+  case precision::day: return as_year_quarter_day_from_sys_time_impl<duration::days, rquarterly::yqnqd>(fields, start);
+  case precision::hour: return as_year_quarter_day_from_sys_time_impl<duration::hours, rquarterly::yqnqdh>(fields, start);
+  case precision::minute: return as_year_quarter_day_from_sys_time_impl<duration::minutes, rquarterly::yqnqdhm>(fields, start);
+  case precision::second: return as_year_quarter_day_from_sys_time_impl<duration::seconds, rquarterly::yqnqdhms>(fields, start);
+  case precision::millisecond: return as_year_quarter_day_from_sys_time_impl<duration::milliseconds, rquarterly::yqnqdhmss<std::chrono::milliseconds>>(fields, start);
+  case precision::microsecond: return as_year_quarter_day_from_sys_time_impl<duration::microseconds, rquarterly::yqnqdhmss<std::chrono::microseconds>>(fields, start);
+  case precision::nanosecond: return as_year_quarter_day_from_sys_time_impl<duration::nanoseconds, rquarterly::yqnqdhmss<std::chrono::nanoseconds>>(fields, start);
   default: clock_abort("Internal error: Invalid precision.");
   }
 

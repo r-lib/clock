@@ -18,24 +18,23 @@ reencode_c_to_western(const unsigned& x) {
 [[cpp11::register]]
 cpp11::writable::integers
 weekday_add_days_cpp(const cpp11::integers& x,
-                     cpp11::list_of<cpp11::integers> n) {
+                     cpp11::list_of<cpp11::doubles> n_fields) {
   const r_ssize size = x.size();
 
-  const cpp11::integers ticks = rclock::duration::get_ticks(n);
-  const rclock::duration::days d{ticks};
+  const rclock::duration::days n{n_fields};
 
   cpp11::writable::integers out(size);
 
   for (r_ssize i = 0; i < size; ++i) {
     const int elt = x[i];
 
-    if (elt == r_int_na || d.is_na(i)) {
+    if (elt == r_int_na || n.is_na(i)) {
       out[i] = r_int_na;
       continue;
     }
 
     const unsigned weekday = reencode_western_to_c(static_cast<unsigned>(elt));
-    const date::weekday out_elt = date::weekday{weekday} + d[i];
+    const date::weekday out_elt = date::weekday{weekday} + n[i];
     out[i] = static_cast<int>(reencode_c_to_western(out_elt.c_encoding()));
   }
 
@@ -70,20 +69,19 @@ weekday_minus_weekday_cpp(const cpp11::integers& x, const cpp11::integers& y) {
 
 [[cpp11::register]]
 cpp11::writable::integers
-weekday_from_time_point_cpp(cpp11::list_of<cpp11::integers> x) {
-  const cpp11::integers ticks = rclock::duration::get_ticks(x);
-  const rclock::duration::days d{ticks};
-  const r_ssize size = d.size();
+weekday_from_time_point_cpp(cpp11::list_of<cpp11::doubles> x_fields) {
+  const rclock::duration::days x{x_fields};
+  const r_ssize size = x.size();
   cpp11::writable::integers out(size);
 
   for (r_ssize i = 0; i < size; ++i) {
-    if (d.is_na(i)) {
+    if (x.is_na(i)) {
       out[i] = r_int_na;
       continue;
     }
 
-    const date::sys_days sd{d[i]};
-    const date::weekday weekday{sd};
+    const date::sys_days elt{x[i]};
+    const date::weekday weekday{elt};
     out[i] = static_cast<int>(reencode_c_to_western(weekday.c_encoding()));
   }
 

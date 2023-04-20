@@ -91,9 +91,10 @@ static
 inline
 cpp11::writable::list
 as_sys_time_from_calendar_impl(const Calendar& x) {
+  using Duration = typename ClockDuration::chrono_duration;
+
   const r_ssize size = x.size();
   ClockDuration out(size);
-  using Duration = typename ClockDuration::duration;
 
   for (r_ssize i = 0; i < size; ++i) {
     if (x.is_na(i)) {
@@ -108,12 +109,15 @@ as_sys_time_from_calendar_impl(const Calendar& x) {
   return out.to_list();
 }
 
-template <class Calendar, class ClockDuration>
+template <class ClockDuration, class Calendar>
 cpp11::writable::list
-as_calendar_from_sys_time_impl(const ClockDuration& x) {
+as_calendar_from_sys_time_impl(cpp11::list_of<cpp11::doubles>& fields) {
+  using Duration = typename ClockDuration::chrono_duration;
+
+  const ClockDuration x{fields};
   const r_ssize size = x.size();
+
   Calendar out(size);
-  using Duration = typename ClockDuration::duration;
 
   for (r_ssize i = 0; i < size; ++i) {
     if (x.is_na(i)) {
