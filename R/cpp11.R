@@ -280,16 +280,16 @@ format_iso_year_week_day_cpp <- function(fields, precision_int) {
   .Call(`_clock_format_iso_year_week_day_cpp`, fields, precision_int)
 }
 
-invalid_detect_iso_year_week_day_cpp <- function(fields, precision_int) {
-  .Call(`_clock_invalid_detect_iso_year_week_day_cpp`, fields, precision_int)
+invalid_detect_iso_year_week_day_cpp <- function(year, week) {
+  .Call(`_clock_invalid_detect_iso_year_week_day_cpp`, year, week)
 }
 
-invalid_any_iso_year_week_day_cpp <- function(fields, precision_int) {
-  .Call(`_clock_invalid_any_iso_year_week_day_cpp`, fields, precision_int)
+invalid_any_iso_year_week_day_cpp <- function(year, week) {
+  .Call(`_clock_invalid_any_iso_year_week_day_cpp`, year, week)
 }
 
-invalid_count_iso_year_week_day_cpp <- function(fields, precision_int) {
-  .Call(`_clock_invalid_count_iso_year_week_day_cpp`, fields, precision_int)
+invalid_count_iso_year_week_day_cpp <- function(year, week) {
+  .Call(`_clock_invalid_count_iso_year_week_day_cpp`, year, week)
 }
 
 invalid_resolve_iso_year_week_day_cpp <- function(fields, precision_int, invalid_string) {

@@ -103,126 +103,60 @@ format_iso_year_week_day_cpp(cpp11::list_of<cpp11::integers> fields,
 
 [[cpp11::register]]
 cpp11::writable::logicals
-invalid_detect_iso_year_week_day_cpp(cpp11::list_of<cpp11::integers> fields,
-                                     const cpp11::integers& precision_int) {
-  using namespace rclock;
+invalid_detect_iso_year_week_day_cpp(const cpp11::integers& year,
+                                     const cpp11::integers& week) {
+  rclock::iso::ywn x{year, week};
 
-  cpp11::integers year = iso::get_year(fields);
-  cpp11::integers week = iso::get_week(fields);
-  cpp11::integers day = iso::get_day(fields);
-  cpp11::integers hour = iso::get_hour(fields);
-  cpp11::integers minute = iso::get_minute(fields);
-  cpp11::integers second = iso::get_second(fields);
-  cpp11::integers subsecond = iso::get_subsecond(fields);
+  const r_ssize size = x.size();
+  cpp11::writable::logicals out(size);
 
-  iso::y y{year};
-  iso::ywn ywn{year, week};
-  iso::ywnwd ywnwd{year, week, day};
-  iso::ywnwdh ywnwdh{year, week, day, hour};
-  iso::ywnwdhm ywnwdhm{year, week, day, hour, minute};
-  iso::ywnwdhms ywnwdhms{year, week, day, hour, minute, second};
-  iso::ywnwdhmss<std::chrono::milliseconds> ywnwdhmss1{year, week, day, hour, minute, second, subsecond};
-  iso::ywnwdhmss<std::chrono::microseconds> ywnwdhmss2{year, week, day, hour, minute, second, subsecond};
-  iso::ywnwdhmss<std::chrono::nanoseconds> ywnwdhmss3{year, week, day, hour, minute, second, subsecond};
-
-  switch (parse_precision(precision_int)) {
-  case precision::year: return invalid_detect_calendar_impl(y);
-  case precision::week: return invalid_detect_calendar_impl(ywn);
-  case precision::day: return invalid_detect_calendar_impl(ywnwd);
-  case precision::hour: return invalid_detect_calendar_impl(ywnwdh);
-  case precision::minute: return invalid_detect_calendar_impl(ywnwdhm);
-  case precision::second: return invalid_detect_calendar_impl(ywnwdhms);
-  case precision::millisecond: return invalid_detect_calendar_impl(ywnwdhmss1);
-  case precision::microsecond: return invalid_detect_calendar_impl(ywnwdhmss2);
-  case precision::nanosecond: return invalid_detect_calendar_impl(ywnwdhmss3);
-  default: clock_abort("Internal error: Invalid precision.");
+  for (r_ssize i = 0; i < size; ++i) {
+    if (x.is_na(i)) {
+      out[i] = false;
+    } else {
+      out[i] = !x.to_year_weeknum(i).ok();
+    }
   }
 
-  never_reached("invalid_detect_iso_year_week_day_cpp");
+  return out;
 }
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
 bool
-invalid_any_iso_year_week_day_cpp(cpp11::list_of<cpp11::integers> fields,
-                                  const cpp11::integers& precision_int) {
-  using namespace rclock;
+invalid_any_iso_year_week_day_cpp(const cpp11::integers& year,
+                                  const cpp11::integers& week) {
+  rclock::iso::ywn x{year, week};
 
-  cpp11::integers year = iso::get_year(fields);
-  cpp11::integers week = iso::get_week(fields);
-  cpp11::integers day = iso::get_day(fields);
-  cpp11::integers hour = iso::get_hour(fields);
-  cpp11::integers minute = iso::get_minute(fields);
-  cpp11::integers second = iso::get_second(fields);
-  cpp11::integers subsecond = iso::get_subsecond(fields);
+  const r_ssize size = x.size();
 
-  iso::y y{year};
-  iso::ywn ywn{year, week};
-  iso::ywnwd ywnwd{year, week, day};
-  iso::ywnwdh ywnwdh{year, week, day, hour};
-  iso::ywnwdhm ywnwdhm{year, week, day, hour, minute};
-  iso::ywnwdhms ywnwdhms{year, week, day, hour, minute, second};
-  iso::ywnwdhmss<std::chrono::milliseconds> ywnwdhmss1{year, week, day, hour, minute, second, subsecond};
-  iso::ywnwdhmss<std::chrono::microseconds> ywnwdhmss2{year, week, day, hour, minute, second, subsecond};
-  iso::ywnwdhmss<std::chrono::nanoseconds> ywnwdhmss3{year, week, day, hour, minute, second, subsecond};
-
-  switch (parse_precision(precision_int)) {
-  case precision::year: return invalid_any_calendar_impl(y);
-  case precision::week: return invalid_any_calendar_impl(ywn);
-  case precision::day: return invalid_any_calendar_impl(ywnwd);
-  case precision::hour: return invalid_any_calendar_impl(ywnwdh);
-  case precision::minute: return invalid_any_calendar_impl(ywnwdhm);
-  case precision::second: return invalid_any_calendar_impl(ywnwdhms);
-  case precision::millisecond: return invalid_any_calendar_impl(ywnwdhmss1);
-  case precision::microsecond: return invalid_any_calendar_impl(ywnwdhmss2);
-  case precision::nanosecond: return invalid_any_calendar_impl(ywnwdhmss3);
-  default: clock_abort("Internal error: Invalid precision.");
+  for (r_ssize i = 0; i < size; ++i) {
+    if (!x.is_na(i) && !x.to_year_weeknum(i).ok()) {
+      return true;
+    }
   }
 
-  never_reached("invalid_any_iso_year_week_day_cpp");
+  return false;
 }
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
 int
-invalid_count_iso_year_week_day_cpp(cpp11::list_of<cpp11::integers> fields,
-                                    const cpp11::integers& precision_int) {
-  using namespace rclock;
+invalid_count_iso_year_week_day_cpp(const cpp11::integers& year,
+                                    const cpp11::integers& week) {
+  rclock::iso::ywn x{year, week};
 
-  cpp11::integers year = iso::get_year(fields);
-  cpp11::integers week = iso::get_week(fields);
-  cpp11::integers day = iso::get_day(fields);
-  cpp11::integers hour = iso::get_hour(fields);
-  cpp11::integers minute = iso::get_minute(fields);
-  cpp11::integers second = iso::get_second(fields);
-  cpp11::integers subsecond = iso::get_subsecond(fields);
+  const r_ssize size = x.size();
 
-  iso::y y{year};
-  iso::ywn ywn{year, week};
-  iso::ywnwd ywnwd{year, week, day};
-  iso::ywnwdh ywnwdh{year, week, day, hour};
-  iso::ywnwdhm ywnwdhm{year, week, day, hour, minute};
-  iso::ywnwdhms ywnwdhms{year, week, day, hour, minute, second};
-  iso::ywnwdhmss<std::chrono::milliseconds> ywnwdhmss1{year, week, day, hour, minute, second, subsecond};
-  iso::ywnwdhmss<std::chrono::microseconds> ywnwdhmss2{year, week, day, hour, minute, second, subsecond};
-  iso::ywnwdhmss<std::chrono::nanoseconds> ywnwdhmss3{year, week, day, hour, minute, second, subsecond};
+  int count = 0;
 
-  switch (parse_precision(precision_int)) {
-  case precision::year: return invalid_count_calendar_impl(y);
-  case precision::week: return invalid_count_calendar_impl(ywn);
-  case precision::day: return invalid_count_calendar_impl(ywnwd);
-  case precision::hour: return invalid_count_calendar_impl(ywnwdh);
-  case precision::minute: return invalid_count_calendar_impl(ywnwdhm);
-  case precision::second: return invalid_count_calendar_impl(ywnwdhms);
-  case precision::millisecond: return invalid_count_calendar_impl(ywnwdhmss1);
-  case precision::microsecond: return invalid_count_calendar_impl(ywnwdhmss2);
-  case precision::nanosecond: return invalid_count_calendar_impl(ywnwdhmss3);
-  default: clock_abort("Internal error: Invalid precision.");
+  for (r_ssize i = 0; i < size; ++i) {
+    count += !x.is_na(i) && !x.to_year_weeknum(i).ok();
   }
 
-  never_reached("invalid_count_iso_year_week_day_cpp");
+  return count;
 }
 
 // -----------------------------------------------------------------------------
@@ -243,7 +177,6 @@ invalid_resolve_iso_year_week_day_cpp(cpp11::list_of<cpp11::integers> fields,
   cpp11::integers second = iso::get_second(fields);
   cpp11::integers subsecond = iso::get_subsecond(fields);
 
-  iso::y y{year};
   iso::ywn ywn{year, week};
   iso::ywnwd ywnwd{year, week, day};
   iso::ywnwdh ywnwdh{year, week, day, hour};
@@ -254,7 +187,6 @@ invalid_resolve_iso_year_week_day_cpp(cpp11::list_of<cpp11::integers> fields,
   iso::ywnwdhmss<std::chrono::nanoseconds> ywnwdhmss3{year, week, day, hour, minute, second, subsecond};
 
   switch (parse_precision(precision_int)) {
-  case precision::year: return invalid_resolve_calendar_impl(y, invalid_val);
   case precision::week: return invalid_resolve_calendar_impl(ywn, invalid_val);
   case precision::day: return invalid_resolve_calendar_impl(ywnwd, invalid_val);
   case precision::hour: return invalid_resolve_calendar_impl(ywnwdh, invalid_val);
@@ -263,10 +195,8 @@ invalid_resolve_iso_year_week_day_cpp(cpp11::list_of<cpp11::integers> fields,
   case precision::millisecond: return invalid_resolve_calendar_impl(ywnwdhmss1, invalid_val);
   case precision::microsecond: return invalid_resolve_calendar_impl(ywnwdhmss2, invalid_val);
   case precision::nanosecond: return invalid_resolve_calendar_impl(ywnwdhmss3, invalid_val);
-  default: clock_abort("Internal error: Invalid precision.");
+  default: never_reached("invalid_resolve_iso_year_week_day_cpp");
   }
-
-  never_reached("invalid_resolve_iso_year_week_day_cpp");
 }
 
 // -----------------------------------------------------------------------------
