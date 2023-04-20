@@ -303,7 +303,7 @@ invalid_resolve.clock_year_month_weekday <- function(x, ..., invalid = NULL) {
     x
   } else {
     fields <- invalid_resolve_year_month_weekday_cpp(x, precision, invalid)
-    new_year_day_from_fields(fields, precision, names(x))
+    new_year_month_weekday_from_fields(fields, precision, names(x))
   }
 }
 
