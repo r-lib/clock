@@ -340,16 +340,16 @@ format_year_quarter_day_cpp <- function(fields, precision_int, start_int) {
   .Call(`_clock_format_year_quarter_day_cpp`, fields, precision_int, start_int)
 }
 
-invalid_detect_year_quarter_day_cpp <- function(fields, precision_int, start_int) {
-  .Call(`_clock_invalid_detect_year_quarter_day_cpp`, fields, precision_int, start_int)
+invalid_detect_year_quarter_day_cpp <- function(year, quarter, day, start_int) {
+  .Call(`_clock_invalid_detect_year_quarter_day_cpp`, year, quarter, day, start_int)
 }
 
-invalid_any_year_quarter_day_cpp <- function(fields, precision_int, start_int) {
-  .Call(`_clock_invalid_any_year_quarter_day_cpp`, fields, precision_int, start_int)
+invalid_any_year_quarter_day_cpp <- function(year, quarter, day, start_int) {
+  .Call(`_clock_invalid_any_year_quarter_day_cpp`, year, quarter, day, start_int)
 }
 
-invalid_count_year_quarter_day_cpp <- function(fields, precision_int, start_int) {
-  .Call(`_clock_invalid_count_year_quarter_day_cpp`, fields, precision_int, start_int)
+invalid_count_year_quarter_day_cpp <- function(year, quarter, day, start_int) {
+  .Call(`_clock_invalid_count_year_quarter_day_cpp`, year, quarter, day, start_int)
 }
 
 invalid_resolve_year_quarter_day_cpp <- function(fields, precision_int, start_int, invalid_string) {

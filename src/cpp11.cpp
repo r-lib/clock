@@ -601,24 +601,24 @@ extern "C" SEXP _clock_format_year_quarter_day_cpp(SEXP fields, SEXP precision_i
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-cpp11::writable::logicals invalid_detect_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::integers& start_int);
-extern "C" SEXP _clock_invalid_detect_year_quarter_day_cpp(SEXP fields, SEXP precision_int, SEXP start_int) {
+cpp11::writable::logicals invalid_detect_year_quarter_day_cpp(const cpp11::integers& year, const cpp11::integers& quarter, const cpp11::integers& day, const cpp11::integers& start_int);
+extern "C" SEXP _clock_invalid_detect_year_quarter_day_cpp(SEXP year, SEXP quarter, SEXP day, SEXP start_int) {
   BEGIN_CPP11
-    return cpp11::as_sexp(invalid_detect_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
+    return cpp11::as_sexp(invalid_detect_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(quarter), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(day), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-bool invalid_any_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::integers& start_int);
-extern "C" SEXP _clock_invalid_any_year_quarter_day_cpp(SEXP fields, SEXP precision_int, SEXP start_int) {
+bool invalid_any_year_quarter_day_cpp(const cpp11::integers& year, const cpp11::integers& quarter, const cpp11::integers& day, const cpp11::integers& start_int);
+extern "C" SEXP _clock_invalid_any_year_quarter_day_cpp(SEXP year, SEXP quarter, SEXP day, SEXP start_int) {
   BEGIN_CPP11
-    return cpp11::as_sexp(invalid_any_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
+    return cpp11::as_sexp(invalid_any_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(quarter), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(day), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-int invalid_count_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::integers& start_int);
-extern "C" SEXP _clock_invalid_count_year_quarter_day_cpp(SEXP fields, SEXP precision_int, SEXP start_int) {
+int invalid_count_year_quarter_day_cpp(const cpp11::integers& year, const cpp11::integers& quarter, const cpp11::integers& day, const cpp11::integers& start_int);
+extern "C" SEXP _clock_invalid_count_year_quarter_day_cpp(SEXP year, SEXP quarter, SEXP day, SEXP start_int) {
   BEGIN_CPP11
-    return cpp11::as_sexp(invalid_count_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
+    return cpp11::as_sexp(invalid_count_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(quarter), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(day), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
@@ -896,17 +896,17 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_invalid_any_year_day_cpp",                             (DL_FUNC) &_clock_invalid_any_year_day_cpp,                              2},
     {"_clock_invalid_any_year_month_day_cpp",                       (DL_FUNC) &_clock_invalid_any_year_month_day_cpp,                        3},
     {"_clock_invalid_any_year_month_weekday_cpp",                   (DL_FUNC) &_clock_invalid_any_year_month_weekday_cpp,                    4},
-    {"_clock_invalid_any_year_quarter_day_cpp",                     (DL_FUNC) &_clock_invalid_any_year_quarter_day_cpp,                      3},
+    {"_clock_invalid_any_year_quarter_day_cpp",                     (DL_FUNC) &_clock_invalid_any_year_quarter_day_cpp,                      4},
     {"_clock_invalid_count_iso_year_week_day_cpp",                  (DL_FUNC) &_clock_invalid_count_iso_year_week_day_cpp,                   2},
     {"_clock_invalid_count_year_day_cpp",                           (DL_FUNC) &_clock_invalid_count_year_day_cpp,                            2},
     {"_clock_invalid_count_year_month_day_cpp",                     (DL_FUNC) &_clock_invalid_count_year_month_day_cpp,                      3},
     {"_clock_invalid_count_year_month_weekday_cpp",                 (DL_FUNC) &_clock_invalid_count_year_month_weekday_cpp,                  4},
-    {"_clock_invalid_count_year_quarter_day_cpp",                   (DL_FUNC) &_clock_invalid_count_year_quarter_day_cpp,                    3},
+    {"_clock_invalid_count_year_quarter_day_cpp",                   (DL_FUNC) &_clock_invalid_count_year_quarter_day_cpp,                    4},
     {"_clock_invalid_detect_iso_year_week_day_cpp",                 (DL_FUNC) &_clock_invalid_detect_iso_year_week_day_cpp,                  2},
     {"_clock_invalid_detect_year_day_cpp",                          (DL_FUNC) &_clock_invalid_detect_year_day_cpp,                           2},
     {"_clock_invalid_detect_year_month_day_cpp",                    (DL_FUNC) &_clock_invalid_detect_year_month_day_cpp,                     3},
     {"_clock_invalid_detect_year_month_weekday_cpp",                (DL_FUNC) &_clock_invalid_detect_year_month_weekday_cpp,                 4},
-    {"_clock_invalid_detect_year_quarter_day_cpp",                  (DL_FUNC) &_clock_invalid_detect_year_quarter_day_cpp,                   3},
+    {"_clock_invalid_detect_year_quarter_day_cpp",                  (DL_FUNC) &_clock_invalid_detect_year_quarter_day_cpp,                   4},
     {"_clock_invalid_resolve_iso_year_week_day_cpp",                (DL_FUNC) &_clock_invalid_resolve_iso_year_week_day_cpp,                 3},
     {"_clock_invalid_resolve_year_day_cpp",                         (DL_FUNC) &_clock_invalid_resolve_year_day_cpp,                          3},
     {"_clock_invalid_resolve_year_month_day_cpp",                   (DL_FUNC) &_clock_invalid_resolve_year_month_day_cpp,                    3},

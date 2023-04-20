@@ -111,135 +111,72 @@ format_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
 
 [[cpp11::register]]
 cpp11::writable::logicals
-invalid_detect_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
-                                    const cpp11::integers& precision_int,
+invalid_detect_year_quarter_day_cpp(const cpp11::integers& year,
+                                    const cpp11::integers& quarter,
+                                    const cpp11::integers& day,
                                     const cpp11::integers& start_int) {
-  using namespace rclock;
-
   const quarterly::start start = parse_start(start_int);
 
-  cpp11::integers year = rquarterly::get_year(fields);
-  cpp11::integers quarter = rquarterly::get_quarter(fields);
-  cpp11::integers day = rquarterly::get_day(fields);
-  cpp11::integers hour = rquarterly::get_hour(fields);
-  cpp11::integers minute = rquarterly::get_minute(fields);
-  cpp11::integers second = rquarterly::get_second(fields);
-  cpp11::integers subsecond = rquarterly::get_subsecond(fields);
+  rclock::rquarterly::yqnqd x{year, quarter, day, start};
 
-  rquarterly::y y{year, start};
-  rquarterly::yqn yqn{year, quarter, start};
-  rquarterly::yqnqd yqnqd{year, quarter, day, start};
-  rquarterly::yqnqdh yqnqdh{year, quarter, day, hour, start};
-  rquarterly::yqnqdhm yqnqdhm{year, quarter, day, hour, minute, start};
-  rquarterly::yqnqdhms yqnqdhms{year, quarter, day, hour, minute, second, start};
-  rquarterly::yqnqdhmss<std::chrono::milliseconds> yqnqdhmss1{year, quarter, day, hour, minute, second, subsecond, start};
-  rquarterly::yqnqdhmss<std::chrono::microseconds> yqnqdhmss2{year, quarter, day, hour, minute, second, subsecond, start};
-  rquarterly::yqnqdhmss<std::chrono::nanoseconds> yqnqdhmss3{year, quarter, day, hour, minute, second, subsecond, start};
+  const r_ssize size = x.size();
+  cpp11::writable::logicals out(size);
 
-  switch (parse_precision(precision_int)) {
-  case precision::year: return invalid_detect_calendar_impl(y);
-  case precision::quarter: return invalid_detect_calendar_impl(yqn);
-  case precision::day: return invalid_detect_calendar_impl(yqnqd);
-  case precision::hour: return invalid_detect_calendar_impl(yqnqdh);
-  case precision::minute: return invalid_detect_calendar_impl(yqnqdhm);
-  case precision::second: return invalid_detect_calendar_impl(yqnqdhms);
-  case precision::millisecond: return invalid_detect_calendar_impl(yqnqdhmss1);
-  case precision::microsecond: return invalid_detect_calendar_impl(yqnqdhmss2);
-  case precision::nanosecond: return invalid_detect_calendar_impl(yqnqdhmss3);
-  default: clock_abort("Internal error: Invalid precision.");
+  for (r_ssize i = 0; i < size; ++i) {
+    if (x.is_na(i)) {
+      out[i] = false;
+    } else {
+      out[i] = !x.to_year_quarternum_quarterday(i).ok();
+    }
   }
 
-  never_reached("invalid_detect_year_quarter_day_cpp");
+  return out;
 }
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
 bool
-invalid_any_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
-                                 const cpp11::integers& precision_int,
+invalid_any_year_quarter_day_cpp(const cpp11::integers& year,
+                                 const cpp11::integers& quarter,
+                                 const cpp11::integers& day,
                                  const cpp11::integers& start_int) {
-  using namespace rclock;
-
   const quarterly::start start = parse_start(start_int);
 
-  cpp11::integers year = rquarterly::get_year(fields);
-  cpp11::integers quarter = rquarterly::get_quarter(fields);
-  cpp11::integers day = rquarterly::get_day(fields);
-  cpp11::integers hour = rquarterly::get_hour(fields);
-  cpp11::integers minute = rquarterly::get_minute(fields);
-  cpp11::integers second = rquarterly::get_second(fields);
-  cpp11::integers subsecond = rquarterly::get_subsecond(fields);
+  rclock::rquarterly::yqnqd x{year, quarter, day, start};
 
-  rquarterly::y y{year, start};
-  rquarterly::yqn yqn{year, quarter, start};
-  rquarterly::yqnqd yqnqd{year, quarter, day, start};
-  rquarterly::yqnqdh yqnqdh{year, quarter, day, hour, start};
-  rquarterly::yqnqdhm yqnqdhm{year, quarter, day, hour, minute, start};
-  rquarterly::yqnqdhms yqnqdhms{year, quarter, day, hour, minute, second, start};
-  rquarterly::yqnqdhmss<std::chrono::milliseconds> yqnqdhmss1{year, quarter, day, hour, minute, second, subsecond, start};
-  rquarterly::yqnqdhmss<std::chrono::microseconds> yqnqdhmss2{year, quarter, day, hour, minute, second, subsecond, start};
-  rquarterly::yqnqdhmss<std::chrono::nanoseconds> yqnqdhmss3{year, quarter, day, hour, minute, second, subsecond, start};
+  const r_ssize size = x.size();
 
-  switch (parse_precision(precision_int)) {
-  case precision::year: return invalid_any_calendar_impl(y);
-  case precision::quarter: return invalid_any_calendar_impl(yqn);
-  case precision::day: return invalid_any_calendar_impl(yqnqd);
-  case precision::hour: return invalid_any_calendar_impl(yqnqdh);
-  case precision::minute: return invalid_any_calendar_impl(yqnqdhm);
-  case precision::second: return invalid_any_calendar_impl(yqnqdhms);
-  case precision::millisecond: return invalid_any_calendar_impl(yqnqdhmss1);
-  case precision::microsecond: return invalid_any_calendar_impl(yqnqdhmss2);
-  case precision::nanosecond: return invalid_any_calendar_impl(yqnqdhmss3);
-  default: clock_abort("Internal error: Invalid precision.");
+  for (r_ssize i = 0; i < size; ++i) {
+    if (!x.is_na(i) && !x.to_year_quarternum_quarterday(i).ok()) {
+      return true;
+    }
   }
 
-  never_reached("invalid_any_year_quarter_day_cpp");
+  return false;
 }
 
 // -----------------------------------------------------------------------------
 
 [[cpp11::register]]
 int
-invalid_count_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
-                                   const cpp11::integers& precision_int,
+invalid_count_year_quarter_day_cpp(const cpp11::integers& year,
+                                   const cpp11::integers& quarter,
+                                   const cpp11::integers& day,
                                    const cpp11::integers& start_int) {
-  using namespace rclock;
-
   const quarterly::start start = parse_start(start_int);
 
-  cpp11::integers year = rquarterly::get_year(fields);
-  cpp11::integers quarter = rquarterly::get_quarter(fields);
-  cpp11::integers day = rquarterly::get_day(fields);
-  cpp11::integers hour = rquarterly::get_hour(fields);
-  cpp11::integers minute = rquarterly::get_minute(fields);
-  cpp11::integers second = rquarterly::get_second(fields);
-  cpp11::integers subsecond = rquarterly::get_subsecond(fields);
+  rclock::rquarterly::yqnqd x{year, quarter, day, start};
 
-  rquarterly::y y{year, start};
-  rquarterly::yqn yqn{year, quarter, start};
-  rquarterly::yqnqd yqnqd{year, quarter, day, start};
-  rquarterly::yqnqdh yqnqdh{year, quarter, day, hour, start};
-  rquarterly::yqnqdhm yqnqdhm{year, quarter, day, hour, minute, start};
-  rquarterly::yqnqdhms yqnqdhms{year, quarter, day, hour, minute, second, start};
-  rquarterly::yqnqdhmss<std::chrono::milliseconds> yqnqdhmss1{year, quarter, day, hour, minute, second, subsecond, start};
-  rquarterly::yqnqdhmss<std::chrono::microseconds> yqnqdhmss2{year, quarter, day, hour, minute, second, subsecond, start};
-  rquarterly::yqnqdhmss<std::chrono::nanoseconds> yqnqdhmss3{year, quarter, day, hour, minute, second, subsecond, start};
+  const r_ssize size = x.size();
 
-  switch (parse_precision(precision_int)) {
-  case precision::year: return invalid_count_calendar_impl(y);
-  case precision::quarter: return invalid_count_calendar_impl(yqn);
-  case precision::day: return invalid_count_calendar_impl(yqnqd);
-  case precision::hour: return invalid_count_calendar_impl(yqnqdh);
-  case precision::minute: return invalid_count_calendar_impl(yqnqdhm);
-  case precision::second: return invalid_count_calendar_impl(yqnqdhms);
-  case precision::millisecond: return invalid_count_calendar_impl(yqnqdhmss1);
-  case precision::microsecond: return invalid_count_calendar_impl(yqnqdhmss2);
-  case precision::nanosecond: return invalid_count_calendar_impl(yqnqdhmss3);
-  default: clock_abort("Internal error: Invalid precision.");
+  int count = 0;
+
+  for (r_ssize i = 0; i < size; ++i) {
+    count += !x.is_na(i) && !x.to_year_quarternum_quarterday(i).ok();
   }
 
-  never_reached("invalid_count_year_quarter_day_cpp");
+  return count;
 }
 
 // -----------------------------------------------------------------------------
@@ -263,8 +200,6 @@ invalid_resolve_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
   cpp11::integers second = rquarterly::get_second(fields);
   cpp11::integers subsecond = rquarterly::get_subsecond(fields);
 
-  rquarterly::y y{year, start};
-  rquarterly::yqn yqn{year, quarter, start};
   rquarterly::yqnqd yqnqd{year, quarter, day, start};
   rquarterly::yqnqdh yqnqdh{year, quarter, day, hour, start};
   rquarterly::yqnqdhm yqnqdhm{year, quarter, day, hour, minute, start};
@@ -274,8 +209,6 @@ invalid_resolve_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
   rquarterly::yqnqdhmss<std::chrono::nanoseconds> yqnqdhmss3{year, quarter, day, hour, minute, second, subsecond, start};
 
   switch (parse_precision(precision_int)) {
-  case precision::year: return invalid_resolve_calendar_impl(y, invalid_val);
-  case precision::quarter: return invalid_resolve_calendar_impl(yqn, invalid_val);
   case precision::day: return invalid_resolve_calendar_impl(yqnqd, invalid_val);
   case precision::hour: return invalid_resolve_calendar_impl(yqnqdh, invalid_val);
   case precision::minute: return invalid_resolve_calendar_impl(yqnqdhm, invalid_val);
@@ -283,10 +216,8 @@ invalid_resolve_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
   case precision::millisecond: return invalid_resolve_calendar_impl(yqnqdhmss1, invalid_val);
   case precision::microsecond: return invalid_resolve_calendar_impl(yqnqdhmss2, invalid_val);
   case precision::nanosecond: return invalid_resolve_calendar_impl(yqnqdhmss3, invalid_val);
-  default: clock_abort("Internal error: Invalid precision.");
+  default: never_reached("invalid_resolve_year_quarter_day_cpp");
   }
-
-  never_reached("invalid_resolve_year_quarter_day_cpp");
 }
 
 // -----------------------------------------------------------------------------
