@@ -569,6 +569,39 @@ test_that("strict mode can be activated", {
   expect_snapshot_error(invalid_resolve(year_month_weekday(2019, 1, 1, 1)))
 })
 
+test_that("can resolve correctly", {
+  x <- year_month_weekday(2019, 1, clock_weekdays$friday, 5, 2, 3, 4, 5, subsecond_precision = "millisecond")
+
+  expect_identical(
+    invalid_resolve(x, invalid = "previous"),
+    year_month_weekday(2019, 1, clock_weekdays$thursday, 5, 23, 59, 59, 999, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "previous-day"),
+    year_month_weekday(2019, 1, clock_weekdays$thursday, 5, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "next"),
+    year_month_weekday(2019, 2, clock_weekdays$friday, 1, 0, 0, 0, 0, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "next-day"),
+    year_month_weekday(2019, 2, clock_weekdays$friday, 1, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "overflow"),
+    year_month_weekday(2019, 2, clock_weekdays$friday, 1, 0, 0, 0, 0, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "overflow-day"),
+    year_month_weekday(2019, 2, clock_weekdays$friday, 1, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "NA"),
+    year_month_weekday(NA, NA, NA, NA, NA, NA, NA, NA, subsecond_precision = "millisecond")
+  )
+})
+
 test_that("throws known classed error", {
   expect_snapshot_error(invalid_resolve(year_month_weekday(2019, 1, 1, 5)))
   expect_error(invalid_resolve(year_month_weekday(2019, 1, 1, 5)), class = "clock_error_invalid_date")

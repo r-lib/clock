@@ -598,6 +598,39 @@ test_that("strict mode can be activated", {
   expect_snapshot_error(invalid_resolve(year_quarter_day(2019, 1, 1)))
 })
 
+test_that("can resolve correctly", {
+  x <- year_quarter_day(2019, 1, 92, 2, 3, 4, 5, subsecond_precision = "millisecond")
+
+  expect_identical(
+    invalid_resolve(x, invalid = "previous"),
+    year_quarter_day(2019, 1, 90, 23, 59, 59, 999, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "previous-day"),
+    year_quarter_day(2019, 1, 90, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "next"),
+    year_quarter_day(2019, 2, 1, 0, 0, 0, 0, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "next-day"),
+    year_quarter_day(2019, 2, 1, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "overflow"),
+    year_quarter_day(2019, 2, 2, 0, 0, 0, 0, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "overflow-day"),
+    year_quarter_day(2019, 2, 2, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "NA"),
+    year_quarter_day(NA, NA, NA, NA, NA, NA, NA, subsecond_precision = "millisecond")
+  )
+})
+
 test_that("throws known classed error", {
   expect_snapshot_error(invalid_resolve(year_quarter_day(2019, 1, 91)))
   expect_error(invalid_resolve(year_quarter_day(2019, 1, 91)), class = "clock_error_invalid_date")

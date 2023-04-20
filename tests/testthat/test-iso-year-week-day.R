@@ -509,6 +509,39 @@ test_that("strict mode can be activated", {
   expect_snapshot_error(invalid_resolve(iso_year_week_day(2019, 1)))
 })
 
+test_that("can resolve correctly", {
+  x <- iso_year_week_day(2019, 53, 2, 2, 3, 4, 5, subsecond_precision = "millisecond")
+
+  expect_identical(
+    invalid_resolve(x, invalid = "previous"),
+    iso_year_week_day(2019, 52, 7, 23, 59, 59, 999, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "previous-day"),
+    iso_year_week_day(2019, 52, 7, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "next"),
+    iso_year_week_day(2020, 01, 1, 0, 0, 0, 0, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "next-day"),
+    iso_year_week_day(2020, 01, 1, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "overflow"),
+    iso_year_week_day(2020, 01, 02, 0, 0, 0, 0, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "overflow-day"),
+    iso_year_week_day(2020, 01, 02, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "NA"),
+    iso_year_week_day(NA, NA, NA, NA, NA, NA, NA, subsecond_precision = "millisecond")
+  )
+})
+
 test_that("throws known classed error", {
   expect_snapshot_error(invalid_resolve(iso_year_week_day(2019, 53)))
   expect_error(invalid_resolve(iso_year_week_day(2019, 53)), class = "clock_error_invalid_date")

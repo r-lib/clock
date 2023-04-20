@@ -604,6 +604,39 @@ test_that("strict mode can be activated", {
   expect_snapshot_error(invalid_resolve(year_day(2019, 1)))
 })
 
+test_that("can resolve correctly", {
+  x <- year_day(2019, 366, 2, 3, 4, 5, subsecond_precision = "millisecond")
+
+  expect_identical(
+    invalid_resolve(x, invalid = "previous"),
+    year_day(2019, 365, 23, 59, 59, 999, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "previous-day"),
+    year_day(2019, 365, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "next"),
+    year_day(2020, 1, 0, 0, 0, 0, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "next-day"),
+    year_day(2020, 1, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "overflow"),
+    year_day(2020, 1, 0, 0, 0, 0, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "overflow-day"),
+    year_day(2020, 1, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  )
+  expect_identical(
+    invalid_resolve(x, invalid = "NA"),
+    year_day(NA, NA, NA, NA, NA, NA, subsecond_precision = "millisecond")
+  )
+})
+
 test_that("throws known classed error", {
   expect_snapshot_error(invalid_resolve(year_day(2019, 366)))
   expect_error(invalid_resolve(year_day(2019, 366)), class = "clock_error_invalid_date")
