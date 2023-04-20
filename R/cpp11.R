@@ -232,16 +232,16 @@ format_year_month_weekday_cpp <- function(fields, precision_int) {
   .Call(`_clock_format_year_month_weekday_cpp`, fields, precision_int)
 }
 
-invalid_detect_year_month_weekday_cpp <- function(fields, precision_int) {
-  .Call(`_clock_invalid_detect_year_month_weekday_cpp`, fields, precision_int)
+invalid_detect_year_month_weekday_cpp <- function(year, month, day, index) {
+  .Call(`_clock_invalid_detect_year_month_weekday_cpp`, year, month, day, index)
 }
 
-invalid_any_year_month_weekday_cpp <- function(fields, precision_int) {
-  .Call(`_clock_invalid_any_year_month_weekday_cpp`, fields, precision_int)
+invalid_any_year_month_weekday_cpp <- function(year, month, day, index) {
+  .Call(`_clock_invalid_any_year_month_weekday_cpp`, year, month, day, index)
 }
 
-invalid_count_year_month_weekday_cpp <- function(fields, precision_int) {
-  .Call(`_clock_invalid_count_year_month_weekday_cpp`, fields, precision_int)
+invalid_count_year_month_weekday_cpp <- function(year, month, day, index) {
+  .Call(`_clock_invalid_count_year_month_weekday_cpp`, year, month, day, index)
 }
 
 invalid_resolve_year_month_weekday_cpp <- function(fields, precision_int, invalid_string) {

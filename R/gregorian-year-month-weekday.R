@@ -250,17 +250,47 @@ year_month_weekday_is_valid_precision <- function(precision) {
 
 #' @export
 invalid_detect.clock_year_month_weekday <- function(x) {
-  invalid_detect_year_month_weekday_cpp(x, calendar_precision_attribute(x))
+  precision <- calendar_precision_attribute(x)
+
+  if (precision < PRECISION_DAY) {
+    rep_along(x, FALSE)
+  } else {
+    year <- field_year(x)
+    month <- field_month(x)
+    day <- field_day(x)
+    index <- field_index(x)
+    invalid_detect_year_month_weekday_cpp(year, month, day, index)
+  }
 }
 
 #' @export
 invalid_any.clock_year_month_weekday <- function(x) {
-  invalid_any_year_month_weekday_cpp(x, calendar_precision_attribute(x))
+  precision <- calendar_precision_attribute(x)
+
+  if (precision < PRECISION_DAY) {
+    FALSE
+  } else {
+    year <- field_year(x)
+    month <- field_month(x)
+    day <- field_day(x)
+    index <- field_index(x)
+    invalid_any_year_month_weekday_cpp(year, month, day, index)
+  }
 }
 
 #' @export
 invalid_count.clock_year_month_weekday <- function(x) {
-  invalid_count_year_month_weekday_cpp(x, calendar_precision_attribute(x))
+  precision <- calendar_precision_attribute(x)
+
+  if (precision < PRECISION_DAY) {
+    0L
+  } else {
+    year <- field_year(x)
+    month <- field_month(x)
+    day <- field_day(x)
+    index <- field_index(x)
+    invalid_count_year_month_weekday_cpp(year, month, day, index)
+  }
 }
 
 #' @export
@@ -268,8 +298,13 @@ invalid_resolve.clock_year_month_weekday <- function(x, ..., invalid = NULL) {
   check_dots_empty()
   precision <- calendar_precision_attribute(x)
   invalid <- validate_invalid(invalid)
-  fields <- invalid_resolve_year_month_weekday_cpp(x, precision, invalid)
-  new_year_month_weekday_from_fields(fields, precision, names = names(x))
+
+  if (precision < PRECISION_DAY) {
+    x
+  } else {
+    fields <- invalid_resolve_year_month_weekday_cpp(x, precision, invalid)
+    new_year_day_from_fields(fields, precision, names(x))
+  }
 }
 
 # ------------------------------------------------------------------------------
