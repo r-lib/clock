@@ -66,8 +66,6 @@ public:
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
 
-  bool ok(r_ssize i) const NOEXCEPT;
-
   void add(const date::years& x, r_ssize i) NOEXCEPT;
 
   void assign_year(const quarterly_shim::year& x, r_ssize i) NOEXCEPT;
@@ -91,8 +89,6 @@ public:
       quarterly::start start);
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
-
-  bool ok(r_ssize i) const NOEXCEPT;
 
   void add(const quarterly::quarters& x, r_ssize i) NOEXCEPT;
 
@@ -119,8 +115,6 @@ public:
         quarterly::start start);
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
-
-  bool ok(r_ssize i) const NOEXCEPT;
 
   void assign_quarterday(const quarterly::quarterday& x, r_ssize i) NOEXCEPT;
   void assign_year_quarternum_quarterday(const quarterly_shim::year_quarternum_quarterday& x, r_ssize i) NOEXCEPT;
@@ -280,13 +274,6 @@ y::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 }
 
 inline
-bool
-y::ok(r_ssize i) const NOEXCEPT
-{
-  return true;
-}
-
-inline
 void
 y::add(const date::years& x, r_ssize i) NOEXCEPT
 {
@@ -354,13 +341,6 @@ yqn::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
   os << '-';
   detail::stream_quarter(os, quarter_[i]);
   return os;
-}
-
-inline
-bool
-yqn::ok(r_ssize i) const NOEXCEPT
-{
-  return true;
 }
 
 inline
@@ -441,13 +421,6 @@ yqnqd::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
   os << '-';
   detail::stream_day(os, day_[i]);
   return os;
-}
-
-inline
-bool
-yqnqd::ok(r_ssize i) const NOEXCEPT
-{
-  return to_year_quarternum_quarterday(i).ok();
 }
 
 inline

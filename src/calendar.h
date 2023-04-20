@@ -46,62 +46,6 @@ format_calendar_impl(const Calendar& x) {
 template <class Calendar>
 static
 inline
-cpp11::writable::logicals
-invalid_detect_calendar_impl(const Calendar& x) {
-  const r_ssize size = x.size();
-  cpp11::writable::logicals out(size);
-
-  for (r_ssize i = 0; i < size; ++i) {
-    if (x.is_na(i)) {
-      out[i] = false;
-    } else {
-      out[i] = !x.ok(i);
-    }
-  }
-
-  return out;
-}
-
-template <class Calendar>
-static
-inline
-bool
-invalid_any_calendar_impl(const Calendar& x) {
-  const r_ssize size = x.size();
-
-  for (r_ssize i = 0; i < size; ++i) {
-    if (x.is_na(i) || x.ok(i)) {
-      continue;
-    }
-    return true;
-  }
-
-  return false;
-}
-
-template <class Calendar>
-static
-inline
-int
-invalid_count_calendar_impl(const Calendar& x) {
-  int count = 0;
-  const r_ssize size = x.size();
-
-  for (r_ssize i = 0; i < size; ++i) {
-    if (x.is_na(i)) {
-      continue;
-    }
-    if (!x.ok(i)) {
-      ++count;
-    }
-  }
-
-  return count;
-}
-
-template <class Calendar>
-static
-inline
 cpp11::writable::list
 invalid_resolve_calendar_impl(Calendar& x, const enum invalid& invalid_val) {
   const r_ssize size = x.size();

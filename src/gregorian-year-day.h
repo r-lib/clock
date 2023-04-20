@@ -57,8 +57,6 @@ public:
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
 
-  bool ok(r_ssize i) const NOEXCEPT;
-
   void add(const date::years& x, r_ssize i) NOEXCEPT;
 
   void assign_year(const ordinal::year& x, r_ssize i) NOEXCEPT;
@@ -81,8 +79,6 @@ public:
       const cpp11::integers& day);
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
-
-  bool ok(r_ssize i) const NOEXCEPT;
 
   void assign_day(const ordinal::yearday& x, r_ssize i) NOEXCEPT;
   void assign_year_yearday(const ordinal::year_yearday& x, r_ssize i) NOEXCEPT;
@@ -234,13 +230,6 @@ y::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 }
 
 inline
-bool
-y::ok(r_ssize i) const NOEXCEPT
-{
-  return true;
-}
-
-inline
 void
 y::add(const date::years& x, r_ssize i) NOEXCEPT
 {
@@ -306,13 +295,6 @@ yyd::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
   os << '-';
   detail::stream_day(os, day_[i]);
   return os;
-}
-
-inline
-bool
-yyd::ok(r_ssize i) const NOEXCEPT
-{
-  return to_year_yearday(i).ok();
 }
 
 inline

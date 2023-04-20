@@ -41,8 +41,6 @@ public:
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
 
-  bool ok(r_ssize i) const NOEXCEPT;
-
   void add(const date::years& x, r_ssize i) NOEXCEPT;
 
   void assign_year(const date::year& x, r_ssize i) NOEXCEPT;
@@ -65,8 +63,6 @@ public:
      const cpp11::integers& month);
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
-
-  bool ok(r_ssize i) const NOEXCEPT;
 
   void add(const date::months& x, r_ssize i) NOEXCEPT;
 
@@ -92,8 +88,6 @@ public:
       const cpp11::integers& day);
 
   std::ostringstream& stream(std::ostringstream&, r_ssize i) const NOEXCEPT;
-
-  bool ok(r_ssize i) const NOEXCEPT;
 
   void assign_day(const date::day& x, r_ssize i) NOEXCEPT;
   void assign_year_month_day(const date::year_month_day& x, r_ssize i) NOEXCEPT;
@@ -249,13 +243,6 @@ y::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
 }
 
 inline
-bool
-y::ok(r_ssize i) const NOEXCEPT
-{
-  return true;
-}
-
-inline
 void
 y::add(const date::years& x, r_ssize i) NOEXCEPT
 {
@@ -323,13 +310,6 @@ ym::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
   os << '-';
   rclock::detail::stream_month(os, month_[i]);
   return os;
-}
-
-inline
-bool
-ym::ok(r_ssize i) const NOEXCEPT
-{
-  return true;
 }
 
 inline
@@ -409,13 +389,6 @@ ymd::stream(std::ostringstream& os, r_ssize i) const NOEXCEPT
   os << '-';
   rclock::detail::stream_day(os, day_[i]);
   return os;
-}
-
-inline
-bool
-ymd::ok(r_ssize i) const NOEXCEPT
-{
-  return to_year_month_day(i).ok();
 }
 
 inline
