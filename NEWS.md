@@ -1,5 +1,17 @@
 # clock (development version)
 
+* The storage mechanism for the duration, sys-time, naive-time, and zoned-time
+  types has been altered to more correctly represent the full range of values
+  allowed by the underlying C++ types. This means that if you have serialized
+  a value of one of these types with an old version of clock, then it will no
+  longer unserialize correctly going forward.
+  
+  Technically, rather than storing a variable number of integer vectors
+  representing ticks, ticks of a day, and ticks of a second, we now always store
+  values of these types within two double vectors, regardless of the precision.
+  This simplifies the implementation and allows us to represent the full range
+  of possible `int64_t` values (#331).
+
 * clock now compiles significantly faster (on a 2018 Intel Mac, it used to take
   ~70 seconds for a full compilation, and now takes ~25 seconds) (#322).
 
