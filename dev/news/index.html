@@ -63,7 +63,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="clock-development-version">clock (development version)<a class="anchor" aria-label="anchor" href="#clock-development-version"></a></h2>
-<ul><li>
+<ul><li><p>Documented clock’s current stance on leap seconds in the FAQ vignette (clock ignores them like POSIXct) (<a href="https://github.com/r-lib/clock/issues/309" class="external-link">#309</a>).</p></li>
+<li>
 <p>The storage mechanism for the duration, sys-time, naive-time, and zoned-time types has been altered to more correctly represent the full range of values allowed by the underlying C++ types. This means that if you have serialized a value of one of these types with an old version of clock, then it will no longer unserialize correctly going forward.</p>
 <p>Technically, rather than storing a variable number of integer vectors representing ticks, ticks of a day, and ticks of a second, we now always store values of these types within two double vectors, regardless of the precision. This simplifies the implementation and allows us to represent the full range of possible <code>int64_t</code> values (<a href="https://github.com/r-lib/clock/issues/331" class="external-link">#331</a>).</p>
 </li>

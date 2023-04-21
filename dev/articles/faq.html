@@ -462,13 +462,69 @@ something like:</p>
 <span><span class="co">#&gt; [1] "2019-01-02"</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="what-does-clock-do-with-leap-seconds">What does clock do with leap seconds?<a class="anchor" aria-label="anchor" href="#what-does-clock-do-with-leap-seconds"></a>
+</h2>
+<p>clock currently handles leap seconds in the same way that base R’s
+date-time (POSIXct) class does - it ignores them entirely. While
+<code><a href="https://rdrr.io/r/base/strptime.html" class="external-link">strptime()</a></code> has some very simple capabilities for parsing
+leap seconds, clock doesn’t allow them at all:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"2015-12-31T23:59:59"</span>, </span>
+<span>  <span class="st">"2015-12-31T23:59:60"</span>, <span class="co"># A real leap second!</span></span>
+<span>  <span class="st">"2016-01-01T00:00:00"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sys-parsing.html">sys_time_parse</a></span><span class="op">(</span><span class="va">raw</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Failed to parse 1 string at location 2. Returning `NA` at that</span></span>
+<span><span class="co">#&gt; location.</span></span>
+<span></span>
+<span><span class="va">x</span></span>
+<span><span class="co">#&gt; &lt;sys_time&lt;second&gt;[3]&gt;</span></span>
+<span><span class="co">#&gt; [1] "2015-12-31T23:59:59" NA                    "2016-01-01T00:00:00"</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Reported as exactly 1 second apart.</span></span>
+<span><span class="co"># In real life these are 2 seconds apart because of the leap second.</span></span>
+<span><span class="va">x</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span> <span class="op">-</span> <span class="va">x</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; &lt;duration&lt;second&gt;[1]&gt;</span></span>
+<span><span class="co">#&gt; [1] 1</span></span></code></pre></div>
+<p>Because none of the clock types handle leap seconds, clock currently
+doesn’t offer a way to parse them. Your current best option if you
+<em>really</em> need to parse leap seconds is to use
+<code><a href="https://rdrr.io/r/base/strptime.html" class="external-link">strptime()</a></code>:</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># This returns a POSIXlt, which can handle the special 60s field</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/strptime.html" class="external-link">strptime</a></span><span class="op">(</span><span class="va">raw</span>, format <span class="op">=</span> <span class="st">"%Y-%m-%dT%H:%M:%S"</span>, tz <span class="op">=</span> <span class="st">"UTC"</span><span class="op">)</span></span>
+<span><span class="va">x</span></span>
+<span><span class="co">#&gt; [1] "2015-12-31 23:59:59 UTC" "2015-12-31 23:59:60 UTC"</span></span>
+<span><span class="co">#&gt; [3] "2016-01-01 00:00:00 UTC"</span></span>
+<span></span>
+<span><span class="co"># On conversion to POSIXct, it "rolls" forward</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "2015-12-31 23:59:59 UTC" "2016-01-01 00:00:00 UTC"</span></span>
+<span><span class="co">#&gt; [3] "2016-01-01 00:00:00 UTC"</span></span></code></pre></div>
+<p><code><a href="https://rdrr.io/r/base/strptime.html" class="external-link">strptime()</a></code> isn’t a great solution though, because the
+parsing is fairly simple. If you try to use a “fake” leap second, it
+will still accept it, even though it isn’t a real time:</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># 2016-12-31 wasn't a leap second date, but it still tries to parse this fake time</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/strptime.html" class="external-link">strptime</a></span><span class="op">(</span><span class="st">"2016-12-31T23:59:60"</span>, format <span class="op">=</span> <span class="st">"%Y-%m-%dT%H:%M:%S"</span>, tz <span class="op">=</span> <span class="st">"UTC"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "2016-12-31 23:59:60 UTC"</span></span></code></pre></div>
+<p>A true solution would check this against a database of actual leap
+seconds, and would only successfully parse it if it matched a real leap
+second. The C++ library that powers clock does have this capability,
+through a <code>utc_clock</code> class, and we may expose this in a
+limited form in the future, with conversion to and from sys-time and
+naive-time.</p>
+</div>
+<div class="section level2">
 <h2 id="why-doesnt-this-work-with-data-table">Why doesn’t this work with data.table?<a class="anchor" aria-label="anchor" href="#why-doesnt-this-work-with-data-table"></a>
 </h2>
 <p>While the entire high-level API for R’s native date (Date) and
 date-time (POSIXct) types will work fine with data.table, if you try to
 put any of the major clock types into a data.table, you will probably
 see this error message:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">data.table</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
@@ -482,7 +538,7 @@ that together represent a single idea. The <code><a href="https://rdrr.io/r/base
 these types should be taken from the length of the vectors, not the
 length of the list. If you unclass any of the clock types, you’ll see
 that they are implemented in this way:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ymdh</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/year_month_day.html">year_month_day</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">unclass</a></span><span class="op">(</span><span class="va">ymdh</span><span class="op">)</span></span>
@@ -525,7 +581,7 @@ implement as a record type instead. This partly had to do with how
 missing values are handled, and how that integrates with vctrs).</p>
 <p>The idea of a record type actually isn’t new. R’s own POSIXlt type is
 a record type:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-01"</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># POSIXct is implemented as a double</span></span>
@@ -576,7 +632,7 @@ a record type:</p>
 <p>data.table doesn’t truly support POSIXlt either. Instead, you get a
 warning about them converting it to a POSIXct. This is pretty reasonable
 considering their focus on performance.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">data.table</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXlt</a></span><span class="op">(</span><span class="st">"2019-01-01"</span>, <span class="st">"America/New_York"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;             x</span></span>
 <span><span class="co">#&gt; 1: 2019-01-01</span></span>
