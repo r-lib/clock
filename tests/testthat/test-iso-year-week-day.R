@@ -387,6 +387,27 @@ test_that("can compute week end", {
 })
 
 # ------------------------------------------------------------------------------
+# calendar_leap_year()
+
+test_that("can detect leap years", {
+  # Exactly 71 leap weeks for any 400 year cycle
+  start <- 1900L
+
+  while (start < 2000L) {
+    # `- 1L` to have exactly 400 years considered in the range since both
+    # `start` and `end` are included by `seq()`
+    end <- start + 400L - 1L
+    x <- iso_year_week_day(seq(start, end))
+    expect_identical(sum(calendar_leap_year(x)), 71L)
+    start <- start + 1L
+  }
+})
+
+test_that("`NA` propagates", {
+  expect_identical(calendar_leap_year(iso_year_week_day(NA)), NA)
+})
+
+# ------------------------------------------------------------------------------
 # calendar_count_between()
 
 test_that("can compute year and month counts", {

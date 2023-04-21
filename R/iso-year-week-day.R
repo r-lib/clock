@@ -786,6 +786,14 @@ as.character.clock_iso_year_week_day <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+calendar_leap_year.clock_iso_year_week_day <- function(x) {
+  year <- get_year(x)
+  iso_year_week_day_leap_year_cpp(year)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Grouping: iso-year-week-day
 #'
 #' @description
