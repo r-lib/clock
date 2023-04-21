@@ -424,7 +424,7 @@ such as:</p>
 <span><span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_timezone.html" class="external-link">with_timezone</a></span><span class="op">(</span><span class="st">"America/New_York"</span>, <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "2018-12-31 19:00:00 EST"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "2019-01-01 UTC"</span></span></code></pre></div>
 <p>With clock, converting to zoned-time from Date will always assume
 that Date is naive, which will keep the printed date (if possible) and
 show it in the <code>zone</code> you specified.</p>
@@ -502,11 +502,11 @@ that they are implemented in this way:</p>
 <span><span class="co">#&gt; [1] 5</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">unclass</a></span><span class="op">(</span><span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">ymdh</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $ticks</span></span>
-<span><span class="co">#&gt; [1] 17897 17898</span></span>
+<span><span class="co">#&gt; $lower</span></span>
+<span><span class="co">#&gt; [1] 2147483648 2147483648</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $ticks_of_day</span></span>
-<span><span class="co">#&gt; [1] 1 1</span></span>
+<span><span class="co">#&gt; $upper</span></span>
+<span><span class="co">#&gt; [1] 429529 429553</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; attr(,"precision")</span></span>
 <span><span class="co">#&gt; [1] 5</span></span>
@@ -570,7 +570,9 @@ a record type:</p>
 <span><span class="co">#&gt; [1] -18000</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; attr(,"tzone")</span></span>
-<span><span class="co">#&gt; [1] "America/New_York" "EST"              "EDT"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "America/New_York" "EST"              "EDT"             </span></span>
+<span><span class="co">#&gt; attr(,"balanced")</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 <p>data.table doesn’t truly support POSIXlt either. Instead, you get a
 warning about them converting it to a POSIXct. This is pretty reasonable
 considering their focus on performance.</p>

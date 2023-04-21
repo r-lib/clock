@@ -198,8 +198,8 @@ limited set of types to POSIXct. For parsing characters as date-times, see
 <span class="r-in"><span>  <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_timezone.html" class="external-link">with_timezone</a></span><span class="op">(</span><span class="st">"America/New_York"</span>, <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2019-01-01 UTC"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2019-01-01 01:00:00 CET"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2018-12-31 19:00:00 EST"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2019-01-01 UTC"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2019-01-01 UTC"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `as_date_time()` will treat Date as naive, which means that the original</span></span></span>
 <span class="r-in"><span><span class="co"># printed date will attempt to be kept wherever possible, no matter the</span></span></span>
