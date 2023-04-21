@@ -510,3 +510,27 @@ year_quarter_day_minus_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> x,
 
   never_reached("year_quarter_day_minus_year_quarter_day_cpp");
 }
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+cpp11::writable::logicals
+year_quarter_day_leap_year_cpp(const cpp11::integers& year,
+                               const cpp11::integers& start_int) {
+  const quarterly::start start = parse_start(start_int);
+
+  const r_ssize size = year.size();
+  cpp11::writable::logicals out(size);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    const int elt = year[i];
+
+    if (elt == r_int_na) {
+      out[i] = r_lgl_na;
+    } else {
+      out[i] = rclock::rquarterly::quarterly_shim::year{elt, start}.is_leap();
+    }
+  }
+
+  return out;
+}

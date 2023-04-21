@@ -62,10 +62,23 @@ cast_calendar_to_calendar <- function(x, to, ...) {
 
 #' Is the calendar year a leap year?
 #'
-#' `calendar_leap_year()` detects if the year is a leap year according to
-#' the Gregorian calendar. It is only relevant for calendar types that use
-#' a Gregorian year, i.e. [year_month_day()], [year_month_weekday()], and
-#' [year_day()].
+#' @description
+#' `calendar_leap_year()` detects if the calendar year is a leap year - i.e.
+#' does it contain one or more extra components than other years?
+#'
+#' A particular year is a leap year if:
+#'
+#' - [year_month_day()]: February has 29 days.
+#'
+#' - [year_month_weekday()]: February has a weekday that occurs 5 times.
+#'
+#' - [year_day()]: There are 366 days in the year.
+#'
+#' - [year_quarter_day()]: One of the quarters has 1 more day than normal (the
+#'   quarter with an extra day depends on the `start` used, but will always be
+#'   the same for a particular `start`). This aligns with Gregorian leap years
+#'   for all `start`s except February, in which case the leap year is always 1
+#'   year after the Gregorian leap year.
 #'
 #' @param x `[calendar]`
 #'
@@ -74,10 +87,29 @@ cast_calendar_to_calendar <- function(x, to, ...) {
 #' @return A logical vector the same size as `x`. Returns `TRUE` if in a leap
 #'   year, `FALSE` if not in a leap year, and `NA` if `x` is `NA`.
 #'
+#' @export
 #' @examples
 #' x <- year_month_day(c(2019:2024, NA))
 #' calendar_leap_year(x)
-#' @export
+#'
+#' # For year-quarter-day, the leap year typically aligns with the Gregorian
+#' # leap year, unless the `start` is February, in which case the leap year is
+#' # always 1 year after the Gregorian leap year
+#' x <- year_quarter_day(2020:2021, start = clock_months$january)
+#' calendar_leap_year(x)
+#'
+#' x <- year_quarter_day(2020:2021, start = clock_months$february)
+#' calendar_leap_year(x)
+#'
+#' # With a January start, 2020 has the extra day
+#' get_day(year_quarter_day(2020, 1:4, "last", start = clock_months$january))
+#' get_day(year_quarter_day(2021, 1:4, "last", start = clock_months$january))
+#' get_day(year_quarter_day(2022, 1:4, "last", start = clock_months$january))
+#'
+#' # With a February start, 2021 has the extra day
+#' get_day(year_quarter_day(2020, 1:4, "last", start = clock_months$february))
+#' get_day(year_quarter_day(2021, 1:4, "last", start = clock_months$february))
+#' get_day(year_quarter_day(2022, 1:4, "last", start = clock_months$february))
 calendar_leap_year <- function(x) {
   UseMethod("calendar_leap_year")
 }
