@@ -37,7 +37,8 @@ That you should also be able to do:
 add_days(x, 1)
 ```
 
-Generally, calendars don't support day based arithmetic, nor do they support arithmetic at more precise precisions than day. Instead, you have to convert to a time point, do the arithmetic there, and then convert back (if you still need a year-month-day after that).
+Generally, calendars don't support day based arithmetic, nor do they support arithmetic at more precise precisions than day.
+Instead, you have to convert to a time point, do the arithmetic there, and then convert back (if you still need a year-month-day after that).
 
 ```{r}
 x %>%
@@ -46,13 +47,17 @@ x %>%
   as_year_month_day()
 ```
 
-The first reason for this is performance. A year-month-day is a _field_ type, implemented as multiple parallel vectors holding the year, month, day, and all other components separately. There are two ways that day based arithmetic could be implemented for this:
+The first reason for this is performance.
+A year-month-day is a *field* type, implemented as multiple parallel vectors holding the year, month, day, and all other components separately.
+There are two ways that day based arithmetic could be implemented for this:
 
-- Increment the day field, then check the year and month field to see if they need to be incremented, accounting for months having a differing number of days, and leap years.
+-   Increment the day field, then check the year and month field to see if they need to be incremented, accounting for months having a differing number of days, and leap years.
 
-- Convert to naive-time, add days, convert back.
+-   Convert to naive-time, add days, convert back.
 
-Both approaches are relatively expensive. One of the goals of the low-level API of clock is to make these expensive operations explicit. This helps make it apparent that when you need to chain together multiple operations, you should try and do all of your _calendrical_ arithmetic steps first, then convert to a time point (i.e. the second bullet point from above) to do all of your _chronological_ arithmetic.
+Both approaches are relatively expensive.
+One of the goals of the low-level API of clock is to make these expensive operations explicit.
+This helps make it apparent that when you need to chain together multiple operations, you should try and do all of your *calendrical* arithmetic steps first, then convert to a time point (i.e. the second bullet point from above) to do all of your *chronological* arithmetic.
 
 The second reason for this has to do with invalid dates, such as the three in this vector:
 
@@ -61,7 +66,10 @@ odd_dates <- year_month_day(2019, 2, 28:31)
 odd_dates
 ```
 
-What does it mean to "add 1 day" to these? There is no obvious answer to this question. Since clock requires that you first convert to a time point to do day based arithmetic, you'll be forced to call `invalid_resolve()` to handle these invalid dates first. After resolving them manually, then day based arithmetic again makes sense.
+What does it mean to "add 1 day" to these?
+There is no obvious answer to this question.
+Since clock requires that you first convert to a time point to do day based arithmetic, you'll be forced to call `invalid_resolve()` to handle these invalid dates first.
+After resolving them manually, then day based arithmetic again makes sense.
 
 ```{r}
 odd_dates %>%
@@ -98,7 +106,9 @@ add_days(x, 1)
 add_seconds(x, 1)
 ```
 
-In clock, you can't do much with zoned-times directly. The best way to understand this is to think of a zoned-time as containing 3 things: a sys-time, a naive-time, and a time zone name. You can access those things with:
+In clock, you can't do much with zoned-times directly.
+The best way to understand this is to think of a zoned-time as containing 3 things: a sys-time, a naive-time, and a time zone name.
+You can access those things with:
 
 ```{r}
 x
@@ -112,9 +122,12 @@ as_sys_time(x)
 zoned_time_zone(x)
 ```
 
-Calling `add_days()` on a zoned-time is then an ambiguous operation. Should we add to the sys-time or the naive-time that is contained in the zoned-time? The answer changes depending on the scenario.
+Calling `add_days()` on a zoned-time is then an ambiguous operation.
+Should we add to the sys-time or the naive-time that is contained in the zoned-time?
+The answer changes depending on the scenario.
 
-Because of this, you have to extract out the relevant time point that you care about, operate on that, and then convert back to zoned-time. This often produces the same result:
+Because of this, you have to extract out the relevant time point that you care about, operate on that, and then convert back to zoned-time.
+This often produces the same result:
 
 ```{r}
 x %>%
@@ -128,7 +141,9 @@ x %>%
   as_zoned_time(zoned_time_zone(x))
 ```
 
-But not always! When daylight saving time is involved, the choice of sys-time or naive-time matters. Let's try adding 30 minutes:
+But not always!
+When daylight saving time is involved, the choice of sys-time or naive-time matters.
+Let's try adding 30 minutes:
 
 ```{r, error=TRUE}
 # There is a DST gap 1 second after 01:59:59,
@@ -146,11 +161,17 @@ x %>%
   as_zoned_time(zoned_time_zone(x))
 ```
 
-When adding to the naive-time, we got an error. With the sys-time, everything seems okay. What happened?
+When adding to the naive-time, we got an error.
+With the sys-time, everything seems okay.
+What happened?
 
-The sys-time scenario is easy to explain. Technically this converts to UTC, adds the time there, then converts back to your time zone. An easier way to think about this is that you sat in front of your computer for exactly 30 minutes (1800 seconds), then looked at the clock. Assuming that that clock automatically changes itself correctly for daylight saving time, it should read 3 o'clock.
+The sys-time scenario is easy to explain.
+Technically this converts to UTC, adds the time there, then converts back to your time zone.
+An easier way to think about this is that you sat in front of your computer for exactly 30 minutes (1800 seconds), then looked at the clock.
+Assuming that that clock automatically changes itself correctly for daylight saving time, it should read 3 o'clock.
 
-The naive-time scenario makes more sense if you break down the steps. First, we convert to naive-time, dropping all time zone information but keeping the printed time:
+The naive-time scenario makes more sense if you break down the steps.
+First, we convert to naive-time, dropping all time zone information but keeping the printed time:
 
 ```{r}
 x
@@ -159,7 +180,8 @@ x %>%
   as_naive_time()
 ```
 
-We add 30 minutes to this. Because we don't have any time zone information, this lands us at 2 o'clock, which isn't an issue when working with naive-time:
+We add 30 minutes to this.
+Because we don't have any time zone information, this lands us at 2 o'clock, which isn't an issue when working with naive-time:
 
 ```{r}
 x %>%
@@ -167,7 +189,11 @@ x %>%
   add_minutes(30)
 ```
 
-Finally, we convert back to zoned-time. If possible, this tries to keep the printed time, and just attaches the relevant time zone onto it. However, in this case that isn't possible, since 2 o'clock didn't exist in this time zone! This _nonexistent time_ must be handled explicitly by setting the `nonexistent` argument of `as_zoned_time()`. We can choose from a variety of strategies to handle nonexistent times, but here we just roll forward to the next valid moment in time.
+Finally, we convert back to zoned-time.
+If possible, this tries to keep the printed time, and just attaches the relevant time zone onto it.
+However, in this case that isn't possible, since 2 o'clock didn't exist in this time zone!
+This *nonexistent time* must be handled explicitly by setting the `nonexistent` argument of `as_zoned_time()`.
+We can choose from a variety of strategies to handle nonexistent times, but here we just roll forward to the next valid moment in time.
 
 ```{r}
 x %>%
@@ -178,13 +204,14 @@ x %>%
 
 As a general rule, it often makes the most sense to add:
 
-- Years, quarters, and months to a _calendar_.
+-   Years, quarters, and months to a *calendar*.
 
-- Weeks and days to a _naive time_.
+-   Weeks and days to a *naive time*.
 
-- Hours, minutes, seconds, and subseconds to a _sys time_.
+-   Hours, minutes, seconds, and subseconds to a *sys time*.
 
-This is what the high-level API for POSIXct does. However, this isn't always what you want, so the low-level API requires you to be more explicit.
+This is what the high-level API for POSIXct does.
+However, this isn't always what you want, so the low-level API requires you to be more explicit.
 
 ## Where did my POSIXct subseconds go?
 
@@ -205,7 +232,10 @@ It looks like there is some fractional second information here, but converting i
 as_naive_time(x)
 ```
 
-This is purposeful. clock treats POSIXct as a _second precision_ data type. The reason for this has to do with the fact that POSIXct is implemented as a vector of doubles, which have a limit to how precisely they can store information. For example, try parsing a slightly smaller or larger fractional second:
+This is purposeful.
+clock treats POSIXct as a *second precision* data type.
+The reason for this has to do with the fact that POSIXct is implemented as a vector of doubles, which have a limit to how precisely they can store information.
+For example, try parsing a slightly smaller or larger fractional second:
 
 ```{r}
 y <- as.POSIXct(
@@ -217,15 +247,18 @@ y <- as.POSIXct(
 y
 ```
 
-It isn't printing correctly, at the very least. Let's look under the hood:
+It isn't printing correctly, at the very least.
+Let's look under the hood:
 
 ```{r}
 unclass(y)
 ```
 
-Double vectors have a limit to how much precision they can represent, and this is bumping up against that limit. So our `.1` seconds is instead represented as `.099999etc`.
+Double vectors have a limit to how much precision they can represent, and this is bumping up against that limit.
+So our `.1` seconds is instead represented as `.099999etc`.
 
-This precision loss gets worse the farther we get from the epoch, 1970-01-01, represented as `0` under the hood. For example, here we'll use a number of seconds that represents the year 2050, and add 5 microseconds to it:
+This precision loss gets worse the farther we get from the epoch, 1970-01-01, represented as `0` under the hood.
+For example, here we'll use a number of seconds that represents the year 2050, and add 5 microseconds to it:
 
 ```{r}
 new_utc <- function(x) {
@@ -246,7 +279,8 @@ new_utc(year_2050 + five_microseconds)
 year_2050 + five_microseconds
 ```
 
-Because of these issues, clock treats POSIXct as a second precision data type, dropping all other information. Instead, you should parse directly into a subsecond clock type:
+Because of these issues, clock treats POSIXct as a second precision data type, dropping all other information.
+Instead, you should parse directly into a subsecond clock type:
 
 ```{r}
 naive_time_parse(
@@ -263,11 +297,15 @@ options(old)
 
 ## What is the time zone of Date?
 
-In clock, R's native Date type is actually assumed to be _naive_, i.e. clock assumes that there is a yet-to-be-specified time zone, like with a naive-time. The other possibility is to assume that Date is UTC (like sys-time), but it is often more intuitive for Dates to be naive when manipulating them and converting them to zoned-time or POSIXct.
+In clock, R's native Date type is actually assumed to be *naive*, i.e. clock assumes that there is a yet-to-be-specified time zone, like with a naive-time.
+The other possibility is to assume that Date is UTC (like sys-time), but it is often more intuitive for Dates to be naive when manipulating them and converting them to zoned-time or POSIXct.
 
-R does not consistently treat Dates as naive or UTC. Instead it switches between them, depending on the function.
+R does not consistently treat Dates as naive or UTC.
+Instead it switches between them, depending on the function.
 
-For example, the Date method of `as.POSIXct()` does not expose a `tz` argument. Instead, it assumes that Date is UTC, and that the result should be shown in local time (as defined by `Sys.timezone()`). This often results in confusing behavior, such as:
+For example, the Date method of `as.POSIXct()` does not expose a `tz` argument.
+Instead, it assumes that Date is UTC, and that the result should be shown in local time (as defined by `Sys.timezone()`).
+This often results in confusing behavior, such as:
 
 ```{r}
 x <- as.Date("2019-01-01")
@@ -288,7 +326,9 @@ as_zoned_time(x, "America/New_York")
 as_zoned_time(x, "Europe/London")
 ```
 
-On the other hand, the POSIXct method for `as.Date()` treats Date as a naive type. This is probably what you want, and this example just shows the inconsistency. It is a bit hard to see this, because the `tz` argument of the method defaults to `"UTC"`, but if you set the `tz` argument to the zone of your input, it becomes clear:
+On the other hand, the POSIXct method for `as.Date()` treats Date as a naive type.
+This is probably what you want, and this example just shows the inconsistency.
+It is a bit hard to see this, because the `tz` argument of the method defaults to `"UTC"`, but if you set the `tz` argument to the zone of your input, it becomes clear:
 
 ```{r}
 x <- as.POSIXct("2019-01-01 23:00:00", "America/New_York")
@@ -319,7 +359,10 @@ data.table(x = year_month_day(2019, 1, 1))
 
 You won't see this issue when working with data.frames or tibbles.
 
-As of now, data.table doesn't support the concept of _record types_. These are implemented as a list of vectors of equal length, that together represent a single idea. The `length()` of these types should be taken from the length of the vectors, not the length of the list. If you unclass any of the clock types, you'll see that they are implemented in this way:
+As of now, data.table doesn't support the concept of *record types*.
+These are implemented as a list of vectors of equal length, that together represent a single idea.
+The `length()` of these types should be taken from the length of the vectors, not the length of the list.
+If you unclass any of the clock types, you'll see that they are implemented in this way:
 
 ```{r}
 ymdh <- year_month_day(2019, 1, 1:2, 1)
@@ -329,9 +372,13 @@ unclass(ymdh)
 unclass(as_naive_time(ymdh))
 ```
 
-I find that record types are extremely useful data structures for building upon R's basic atomic types in ways that otherwise couldn't be done. They allow calendar types to hold information about each component, enabling instant access for retrieval, modification, and grouping. They also allow calendars to represent invalid dates, such as `2019-02-31`, without any issues. Time points use them to store up to nanosecond precision date-times, which are really C++ `int64_t` types that don't nicely fit into any R atomic type (I am aware of the bit64 package, and made a conscious decision to implement as a record type instead. This partly had to do with how missing values are handled, and how that integrates with vctrs).
+I find that record types are extremely useful data structures for building upon R's basic atomic types in ways that otherwise couldn't be done.
+They allow calendar types to hold information about each component, enabling instant access for retrieval, modification, and grouping.
+They also allow calendars to represent invalid dates, such as `2019-02-31`, without any issues.
+Time points use them to store up to nanosecond precision date-times, which are really C++ `int64_t` types that don't nicely fit into any R atomic type (I am aware of the bit64 package, and made a conscious decision to implement as a record type instead. This partly had to do with how missing values are handled, and how that integrates with vctrs).
 
-The idea of a record type actually isn't new. R's own POSIXlt type is a record type:
+The idea of a record type actually isn't new.
+R's own POSIXlt type is a record type:
 
 ```{r}
 x <- as.POSIXct("2019-01-01", "America/New_York")
@@ -343,7 +390,9 @@ unclass(x)
 unclass(as.POSIXlt(x))
 ```
 
-data.table doesn't truly support POSIXlt either. Instead, you get a warning about them converting it to a POSIXct. This is pretty reasonable considering their focus on performance.
+data.table doesn't truly support POSIXlt either.
+Instead, you get a warning about them converting it to a POSIXct.
+This is pretty reasonable considering their focus on performance.
 
 ```{r, eval=FALSE}
 data.table(x = as.POSIXlt("2019-01-01", "America/New_York"))
@@ -354,6 +403,8 @@ data.table(x = as.POSIXlt("2019-01-01", "America/New_York"))
 #>   POSIXlt column type detected and converted to POSIXct. We do not recommend use of POSIXlt at all because it uses 40 bytes to store one date.
 ```
 
-It was previously a bit difficult to create record types in R because there were few examples and no resources to build on. In vctrs, we've added a `vctrs_rcrd` type that serves as a base to build new record types on. Many S3 methods have been written for `vctrs_rcrd`s in a way that should work for any type that builds on top of it, giving you a lot of scaffolding for free.
+It was previously a bit difficult to create record types in R because there were few examples and no resources to build on.
+In vctrs, we've added a `vctrs_rcrd` type that serves as a base to build new record types on.
+Many S3 methods have been written for `vctrs_rcrd`s in a way that should work for any type that builds on top of it, giving you a lot of scaffolding for free.
 
 I am hopeful that as more record types make their way into the R ecosystem built on this common foundation, it might be possible for data.table to enable this as an approved type in their package.
