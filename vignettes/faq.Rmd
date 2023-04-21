@@ -345,6 +345,52 @@ utc
 as.Date(utc, tz = date_zone(utc))
 ```
 
+## What does clock do with leap seconds?
+
+clock currently handles leap seconds in the same way that base R's date-time (POSIXct) class does - it ignores them entirely.
+While `strptime()` has some very simple capabilities for parsing leap seconds, clock doesn't allow them at all:
+
+```{r, warning=TRUE}
+raw <- c(
+  "2015-12-31T23:59:59", 
+  "2015-12-31T23:59:60", # A real leap second!
+  "2016-01-01T00:00:00"
+)
+
+x <- sys_time_parse(raw)
+
+x
+```
+
+```{r}
+# Reported as exactly 1 second apart.
+# In real life these are 2 seconds apart because of the leap second.
+x[[3]] - x[[1]]
+```
+
+Because none of the clock types handle leap seconds, clock currently doesn't offer a way to parse them.
+Your current best option if you *really* need to parse leap seconds is to use `strptime()`:
+
+```{r}
+# This returns a POSIXlt, which can handle the special 60s field
+x <- strptime(raw, format = "%Y-%m-%dT%H:%M:%S", tz = "UTC")
+x
+
+# On conversion to POSIXct, it "rolls" forward
+as.POSIXct(x)
+```
+
+`strptime()` isn't a great solution though, because the parsing is fairly simple.
+If you try to use a "fake" leap second, it will still accept it, even though it isn't a real time:
+
+```{r}
+# 2016-12-31 wasn't a leap second date, but it still tries to parse this fake time
+strptime("2016-12-31T23:59:60", format = "%Y-%m-%dT%H:%M:%S", tz = "UTC")
+```
+
+A true solution would check this against a database of actual leap seconds, and would only successfully parse it if it matched a real leap second.
+The C++ library that powers clock does have this capability, through a `utc_clock` class, and we may expose this in a limited form in the future, with conversion to and from sys-time and naive-time.
+
 ## Why doesn't this work with data.table?
 
 While the entire high-level API for R's native date (Date) and date-time (POSIXct) types will work fine with data.table, if you try to put any of the major clock types into a data.table, you will probably see this error message:

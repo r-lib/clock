@@ -1,5 +1,8 @@
 # clock (development version)
 
+* Documented clock's current stance on leap seconds in the FAQ vignette (clock
+  ignores them like POSIXct) (#309).
+
 * The storage mechanism for the duration, sys-time, naive-time, and zoned-time
   types has been altered to more correctly represent the full range of values
   allowed by the underlying C++ types. This means that if you have serialized
