@@ -376,6 +376,10 @@ year_quarter_day_minus_year_quarter_day_cpp <- function(x, y, precision_int, sta
   .Call(`_clock_year_quarter_day_minus_year_quarter_day_cpp`, x, y, precision_int, start_int)
 }
 
+year_quarter_day_leap_year_cpp <- function(year, start_int) {
+  .Call(`_clock_year_quarter_day_leap_year_cpp`, year, start_int)
+}
+
 clock_rcrd_proxy <- function(x) {
   .Call(`_clock_clock_rcrd_proxy`, x)
 }

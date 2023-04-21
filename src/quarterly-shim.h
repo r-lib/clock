@@ -49,6 +49,8 @@ public:
   CONSTCD11 quarterly::start start() const NOEXCEPT;
 
   CONSTCD11 explicit operator int() const NOEXCEPT;
+
+  CONSTCD14 bool is_leap() const NOEXCEPT;
 };
 
 CONSTCD14 year operator+(const year& x, const quarterly::years& y) NOEXCEPT;
@@ -230,17 +232,40 @@ year::year(int y, quarterly::start s) NOEXCEPT
 
 CONSTCD11
 inline
+quarterly::start
+year::start() const NOEXCEPT
+{
+  return s_;
+}
+
+CONSTCD11
+inline
 year::operator int() const NOEXCEPT
 {
   return y_;
 }
 
-CONSTCD11
-inline
-quarterly::start
-year::start() const NOEXCEPT
-{
-  return s_;
+CONSTCD14
+bool
+year::is_leap() const NOEXCEPT {
+  using start = quarterly::start;
+  using detail::to_quarterly;
+
+  switch (s_) {
+  case start::january: return to_quarterly<start::january>(*this).is_leap();
+  case start::february: return to_quarterly<start::february>(*this).is_leap();
+  case start::march: return to_quarterly<start::march>(*this).is_leap();
+  case start::april: return to_quarterly<start::april>(*this).is_leap();
+  case start::may: return to_quarterly<start::may>(*this).is_leap();
+  case start::june: return to_quarterly<start::june>(*this).is_leap();
+  case start::july: return to_quarterly<start::july>(*this).is_leap();
+  case start::august: return to_quarterly<start::august>(*this).is_leap();
+  case start::september: return to_quarterly<start::september>(*this).is_leap();
+  case start::october: return to_quarterly<start::october>(*this).is_leap();
+  case start::november: return to_quarterly<start::november>(*this).is_leap();
+  case start::december: return to_quarterly<start::december>(*this).is_leap();
+  default: detail::never_reached();
+  }
 }
 
 CONSTCD14

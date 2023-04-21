@@ -918,6 +918,15 @@ as.character.clock_year_quarter_day <- function(x, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+calendar_leap_year.clock_year_quarter_day <- function(x) {
+  year <- get_year(x)
+  start <- quarterly_start(x)
+  year_quarter_day_leap_year_cpp(year, start)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Grouping: year-quarter-day
 #'
 #' @description

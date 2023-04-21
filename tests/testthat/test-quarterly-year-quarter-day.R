@@ -389,6 +389,29 @@ test_that("can compute quarter end", {
 })
 
 # ------------------------------------------------------------------------------
+# calendar_leap_year()
+
+test_that("can detect leap years", {
+  year <- 2020
+  for (start in as.list(clock_months)) {
+    x <- year_quarter_day(year, start = start)
+    expect <- start != clock_months$february
+    expect_identical(calendar_leap_year(x), expect)
+  }
+
+  year <- 2021
+  for (start in as.list(clock_months)) {
+    x <- year_quarter_day(year, start = start)
+    expect <- start == clock_months$february
+    expect_identical(calendar_leap_year(x), expect)
+  }
+})
+
+test_that("`NA` propagates", {
+  expect_identical(calendar_leap_year(year_quarter_day(NA)), NA)
+})
+
+# ------------------------------------------------------------------------------
 # calendar_count_between()
 
 test_that("can compute year and month counts", {
