@@ -1,5 +1,7 @@
 # clock (development version)
 
+* `calendar_leap_year()` now supports the year-quarter-day calendar (#332).
+
 * Documented clock's current stance on leap seconds in the FAQ vignette (clock
   ignores them like POSIXct) (#309).
 
