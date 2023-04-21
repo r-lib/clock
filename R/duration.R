@@ -1150,21 +1150,3 @@ duration_precision <- function(x) {
 duration_precision_attribute <- function(x) {
   attr(x, "precision", exact = TRUE)
 }
-
-# ------------------------------------------------------------------------------
-
-field_ticks <- function(x) {
-  # The `ticks` field is the first field of every
-  # duration / time point / zoned time type, which makes it the field that
-  # names are on. When extracting the field, we don't ever
-  # want the names to come with it.
-  out <- field(x, "ticks")
-  names(out) <- NULL
-  out
-}
-field_ticks_of_day <- function(x) {
-  field(x, "ticks_of_day")
-}
-field_ticks_of_second <- function(x) {
-  field(x, "ticks_of_second")
-}

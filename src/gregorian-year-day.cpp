@@ -219,7 +219,7 @@ get_year_day_last_cpp(const cpp11::integers& year) {
 [[cpp11::register]]
 cpp11::writable::list
 year_day_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields,
-                           cpp11::list_of<cpp11::integers> fields_n,
+                           cpp11::list_of<cpp11::doubles> fields_n,
                            const cpp11::integers& precision_fields,
                            const cpp11::integers& precision_n) {
   using namespace rclock;
@@ -243,9 +243,7 @@ year_day_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields,
   yearday::yydhmss<std::chrono::microseconds> yydhmss2{year, day, hour, minute, second, subsecond};
   yearday::yydhmss<std::chrono::nanoseconds> yydhmss3{year, day, hour, minute, second, subsecond};
 
-  cpp11::integers ticks = duration::get_ticks(fields_n);
-
-  duration::years dy{ticks};
+  duration::years dy{fields_n};
 
   switch (precision_fields_val) {
   case precision::year:
@@ -344,30 +342,18 @@ as_sys_time_year_day_cpp(cpp11::list_of<cpp11::integers> fields,
 
 [[cpp11::register]]
 cpp11::writable::list
-as_year_day_from_sys_time_cpp(cpp11::list_of<cpp11::integers> fields,
+as_year_day_from_sys_time_cpp(cpp11::list_of<cpp11::doubles> fields,
                               const cpp11::integers& precision_int) {
   using namespace rclock;
 
-  cpp11::integers ticks = duration::get_ticks(fields);
-  cpp11::integers ticks_of_day = duration::get_ticks_of_day(fields);
-  cpp11::integers ticks_of_second = duration::get_ticks_of_second(fields);
-
-  duration::days dd{ticks};
-  duration::hours dh{ticks, ticks_of_day};
-  duration::minutes dmin{ticks, ticks_of_day};
-  duration::seconds ds{ticks, ticks_of_day};
-  duration::milliseconds dmilli{ticks, ticks_of_day, ticks_of_second};
-  duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
-  duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
-
   switch (parse_precision(precision_int)) {
-  case precision::day: return as_calendar_from_sys_time_impl<yearday::yyd>(dd);
-  case precision::hour: return as_calendar_from_sys_time_impl<yearday::yydh>(dh);
-  case precision::minute: return as_calendar_from_sys_time_impl<yearday::yydhm>(dmin);
-  case precision::second: return as_calendar_from_sys_time_impl<yearday::yydhms>(ds);
-  case precision::millisecond: return as_calendar_from_sys_time_impl<yearday::yydhmss<std::chrono::milliseconds>>(dmilli);
-  case precision::microsecond: return as_calendar_from_sys_time_impl<yearday::yydhmss<std::chrono::microseconds>>(dmicro);
-  case precision::nanosecond: return as_calendar_from_sys_time_impl<yearday::yydhmss<std::chrono::nanoseconds>>(dnano);
+  case precision::day: return as_calendar_from_sys_time_impl<duration::days, yearday::yyd>(fields);
+  case precision::hour: return as_calendar_from_sys_time_impl<duration::hours, yearday::yydh>(fields);
+  case precision::minute: return as_calendar_from_sys_time_impl<duration::minutes, yearday::yydhm>(fields);
+  case precision::second: return as_calendar_from_sys_time_impl<duration::seconds, yearday::yydhms>(fields);
+  case precision::millisecond: return as_calendar_from_sys_time_impl<duration::milliseconds, yearday::yydhmss<std::chrono::milliseconds>>(fields);
+  case precision::microsecond: return as_calendar_from_sys_time_impl<duration::microseconds, yearday::yydhmss<std::chrono::microseconds>>(fields);
+  case precision::nanosecond: return as_calendar_from_sys_time_impl<duration::nanoseconds, yearday::yydhmss<std::chrono::nanoseconds>>(fields);
   default: clock_abort("Internal error: Invalid precision.");
   }
 

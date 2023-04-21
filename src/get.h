@@ -296,35 +296,4 @@ get_subsecond(cpp11::list_of<cpp11::integers>& fields) {
 
 } // namespace rclock
 
-// -----------------------------------------------------------------------------
-
-namespace rclock {
-
-namespace duration {
-
-static
-inline
-cpp11::integers
-get_ticks(cpp11::list_of<cpp11::integers>& fields) {
-  return fields.size() >= 1 ? fields[0] : cpp11::integers{};
-}
-
-static
-inline
-cpp11::integers
-get_ticks_of_day(cpp11::list_of<cpp11::integers>& fields) {
-  return fields.size() >= 2 ? fields[1] : cpp11::integers{};
-}
-
-static
-inline
-cpp11::integers
-get_ticks_of_second(cpp11::list_of<cpp11::integers>& fields) {
-  return fields.size() >= 3 ? fields[2] : cpp11::integers{};
-}
-
-} // namespace duration
-
-} // namespace rclock
-
 #endif

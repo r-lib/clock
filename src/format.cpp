@@ -1026,7 +1026,7 @@ clock_to_stream(std::basic_ostream<CharT, Traits>& os,
 // -----------------------------------------------------------------------------
 
 template <class Clock, class ClockDuration>
-cpp11::writable::strings format_time_point_impl(const ClockDuration& cd,
+cpp11::writable::strings format_time_point_impl(cpp11::list_of<cpp11::doubles>& fields,
                                                 const cpp11::strings& format,
                                                 const cpp11::strings& month,
                                                 const cpp11::strings& month_abbrev,
@@ -1034,9 +1034,10 @@ cpp11::writable::strings format_time_point_impl(const ClockDuration& cd,
                                                 const cpp11::strings& weekday_abbrev,
                                                 const cpp11::strings& am_pm,
                                                 const cpp11::strings& decimal_mark) {
-  using Duration = typename ClockDuration::duration;
+  using Duration = typename ClockDuration::chrono_duration;
 
-  r_ssize size = cd.size();
+  const ClockDuration x{fields};
+  const r_ssize size = x.size();
 
   cpp11::writable::strings out(size);
 
@@ -1075,12 +1076,12 @@ cpp11::writable::strings format_time_point_impl(const ClockDuration& cd,
   rclock::failures fail{};
 
   for (r_ssize i = 0; i < size; ++i) {
-    if (cd.is_na(i)) {
+    if (x.is_na(i)) {
       SET_STRING_ELT(out, i, r_chr_na);
       continue;
     }
 
-    Duration duration = cd[i];
+    Duration duration = x[i];
     std::chrono::time_point<Clock, Duration> tp{duration};
 
     stream.str(std::string());
@@ -1114,7 +1115,7 @@ cpp11::writable::strings format_time_point_impl(const ClockDuration& cd,
 }
 
 [[cpp11::register]]
-cpp11::writable::strings format_time_point_cpp(cpp11::list_of<cpp11::integers> fields,
+cpp11::writable::strings format_time_point_cpp(cpp11::list_of<cpp11::doubles> fields,
                                                const cpp11::integers& clock,
                                                const cpp11::strings& format,
                                                const cpp11::integers& precision_int,
@@ -1124,30 +1125,32 @@ cpp11::writable::strings format_time_point_cpp(cpp11::list_of<cpp11::integers> f
                                                const cpp11::strings& weekday_abbrev,
                                                const cpp11::strings& am_pm,
                                                const cpp11::strings& decimal_mark) {
+  using namespace rclock;
+
   switch (parse_clock_name(clock)) {
   case clock_name::sys: {
-  switch (parse_precision(precision_int)) {
-  case precision::day: return format_time_point_impl<std::chrono::system_clock>(rclock::duration::duration1<date::days>(fields[0]), format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
-  case precision::hour: return format_time_point_impl<std::chrono::system_clock>(rclock::duration::duration2<std::chrono::hours>(fields[0], fields[1]), format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
-  case precision::minute: return format_time_point_impl<std::chrono::system_clock>(rclock::duration::duration2<std::chrono::minutes>(fields[0], fields[1]), format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
-  case precision::second: return format_time_point_impl<std::chrono::system_clock>(rclock::duration::duration2<std::chrono::seconds>(fields[0], fields[1]), format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
-  case precision::millisecond: return format_time_point_impl<std::chrono::system_clock>(rclock::duration::duration3<std::chrono::milliseconds>(fields[0], fields[1], fields[2]), format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
-  case precision::microsecond: return format_time_point_impl<std::chrono::system_clock>(rclock::duration::duration3<std::chrono::microseconds>(fields[0], fields[1], fields[2]), format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
-  case precision::nanosecond: return format_time_point_impl<std::chrono::system_clock>(rclock::duration::duration3<std::chrono::nanoseconds>(fields[0], fields[1], fields[2]), format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
-  default: clock_abort("Internal error: Unexpected precision.");
-  }
+    switch (parse_precision(precision_int)) {
+    case precision::day: return format_time_point_impl<std::chrono::system_clock, duration::days>(fields, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
+    case precision::hour: return format_time_point_impl<std::chrono::system_clock, duration::hours>(fields, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
+    case precision::minute: return format_time_point_impl<std::chrono::system_clock, duration::minutes>(fields, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
+    case precision::second: return format_time_point_impl<std::chrono::system_clock, duration::seconds>(fields, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
+    case precision::millisecond: return format_time_point_impl<std::chrono::system_clock, duration::milliseconds>(fields, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
+    case precision::microsecond: return format_time_point_impl<std::chrono::system_clock, duration::microseconds>(fields, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
+    case precision::nanosecond: return format_time_point_impl<std::chrono::system_clock, duration::nanoseconds>(fields, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
+    default: clock_abort("Internal error: Unexpected precision.");
+    }
   }
   case clock_name::naive: {
-  switch (parse_precision(precision_int)) {
-  case precision::day: return format_time_point_impl<date::local_t>(rclock::duration::duration1<date::days>(fields[0]), format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
-  case precision::hour: return format_time_point_impl<date::local_t>(rclock::duration::duration2<std::chrono::hours>(fields[0], fields[1]), format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
-  case precision::minute: return format_time_point_impl<date::local_t>(rclock::duration::duration2<std::chrono::minutes>(fields[0], fields[1]), format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
-  case precision::second: return format_time_point_impl<date::local_t>(rclock::duration::duration2<std::chrono::seconds>(fields[0], fields[1]), format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
-  case precision::millisecond: return format_time_point_impl<date::local_t>(rclock::duration::duration3<std::chrono::milliseconds>(fields[0], fields[1], fields[2]), format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
-  case precision::microsecond: return format_time_point_impl<date::local_t>(rclock::duration::duration3<std::chrono::microseconds>(fields[0], fields[1], fields[2]), format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
-  case precision::nanosecond: return format_time_point_impl<date::local_t>(rclock::duration::duration3<std::chrono::nanoseconds>(fields[0], fields[1], fields[2]), format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
-  default: clock_abort("Internal error: Unexpected precision.");
-  }
+    switch (parse_precision(precision_int)) {
+    case precision::day: return format_time_point_impl<date::local_t, duration::days>(fields, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
+    case precision::hour: return format_time_point_impl<date::local_t, duration::hours>(fields, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
+    case precision::minute: return format_time_point_impl<date::local_t, duration::minutes>(fields, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
+    case precision::second: return format_time_point_impl<date::local_t, duration::seconds>(fields, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
+    case precision::millisecond: return format_time_point_impl<date::local_t, duration::milliseconds>(fields, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
+    case precision::microsecond: return format_time_point_impl<date::local_t, duration::microseconds>(fields, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
+    case precision::nanosecond: return format_time_point_impl<date::local_t, duration::nanoseconds>(fields, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
+    default: clock_abort("Internal error: Unexpected precision.");
+    }
   }
   default: clock_abort("Internal error: Unexpected clock.");
   }
@@ -1156,7 +1159,7 @@ cpp11::writable::strings format_time_point_cpp(cpp11::list_of<cpp11::integers> f
 // -----------------------------------------------------------------------------
 
 template <class ClockDuration>
-cpp11::writable::strings format_zoned_time_impl(const ClockDuration& cd,
+cpp11::writable::strings format_zoned_time_impl(cpp11::list_of<cpp11::doubles>& fields,
                                                 const cpp11::strings& zone,
                                                 const bool& abbreviate_zone,
                                                 const cpp11::strings& format,
@@ -1166,9 +1169,10 @@ cpp11::writable::strings format_zoned_time_impl(const ClockDuration& cd,
                                                 const cpp11::strings& weekday_abbrev,
                                                 const cpp11::strings& am_pm,
                                                 const cpp11::strings& decimal_mark) {
-  using Duration = typename ClockDuration::duration;
+  using Duration = typename ClockDuration::chrono_duration;
 
-  const r_ssize size = cd.size();
+  const ClockDuration x{fields};
+  const r_ssize size = x.size();
 
   cpp11::writable::strings out(size);
 
@@ -1215,12 +1219,12 @@ cpp11::writable::strings format_zoned_time_impl(const ClockDuration& cd,
   rclock::failures fail{};
 
   for (r_ssize i = 0; i < size; ++i) {
-    if (cd.is_na(i)) {
+    if (x.is_na(i)) {
       SET_STRING_ELT(out, i, r_chr_na);
       continue;
     }
 
-    const Duration duration = cd[i];
+    const Duration duration = x[i];
     const date::sys_time<Duration> stp{duration};
 
     const date::sys_info info = rclock::get_info(stp, p_time_zone);
@@ -1266,7 +1270,7 @@ cpp11::writable::strings format_zoned_time_impl(const ClockDuration& cd,
 }
 
 [[cpp11::register]]
-cpp11::writable::strings format_zoned_time_cpp(cpp11::list_of<cpp11::integers> fields,
+cpp11::writable::strings format_zoned_time_cpp(cpp11::list_of<cpp11::doubles> fields,
                                                const cpp11::strings& zone,
                                                const bool& abbreviate_zone,
                                                const cpp11::strings& format,
@@ -1277,11 +1281,13 @@ cpp11::writable::strings format_zoned_time_cpp(cpp11::list_of<cpp11::integers> f
                                                const cpp11::strings& weekday_abbrev,
                                                const cpp11::strings& am_pm,
                                                const cpp11::strings& decimal_mark) {
+  using namespace rclock;
+
   switch (parse_precision(precision_int)) {
-  case precision::second: return format_zoned_time_impl(rclock::duration::duration2<std::chrono::seconds>(fields[0], fields[1]), zone, abbreviate_zone, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
-  case precision::millisecond: return format_zoned_time_impl(rclock::duration::duration3<std::chrono::milliseconds>(fields[0], fields[1], fields[2]), zone, abbreviate_zone, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
-  case precision::microsecond: return format_zoned_time_impl(rclock::duration::duration3<std::chrono::microseconds>(fields[0], fields[1], fields[2]), zone, abbreviate_zone, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
-  case precision::nanosecond: return format_zoned_time_impl(rclock::duration::duration3<std::chrono::nanoseconds>(fields[0], fields[1], fields[2]), zone, abbreviate_zone, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
+  case precision::second: return format_zoned_time_impl<duration::seconds>(fields, zone, abbreviate_zone, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
+  case precision::millisecond: return format_zoned_time_impl<duration::milliseconds>(fields, zone, abbreviate_zone, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
+  case precision::microsecond: return format_zoned_time_impl<duration::microseconds>(fields, zone, abbreviate_zone, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
+  case precision::nanosecond: return format_zoned_time_impl<duration::nanoseconds>(fields, zone, abbreviate_zone, format, month, month_abbrev, weekday, weekday_abbrev, am_pm, decimal_mark);
   default: clock_abort("Internal error: Unexpected precision.");
   }
 }

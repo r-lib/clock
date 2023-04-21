@@ -382,3 +382,40 @@ test_that("sign() propagates names", {
   x <- set_names(duration_years(1:2), c("a", "b"))
   expect_named(sign(x), c("a", "b"))
 })
+
+# ------------------------------------------------------------------------------
+# vec_order()
+
+test_that("ordering works", {
+  x <- duration_days(c(-1, -3, -2, 1))
+  expect_identical(vec_order(x), c(2L, 3L, 1L, 4L))
+})
+
+# ------------------------------------------------------------------------------
+# vec_compare()
+
+test_that("comparisons work", {
+  x <- duration_days(c(1, NA, 2))
+  y <- duration_days(c(0, 2, 3))
+  expect_identical(vec_compare(x, y), c(1L, NA, -1L))
+})
+
+# ------------------------------------------------------------------------------
+# Missing values
+
+test_that("`NA` duration prints as expected", {
+  expect_snapshot({
+    duration_years(NA)
+    duration_quarters(NA)
+    duration_months(NA)
+    duration_weeks(NA)
+    duration_days(NA)
+    duration_hours(NA)
+    duration_minutes(NA)
+    duration_seconds(NA)
+    duration_milliseconds(NA)
+    duration_microseconds(NA)
+    duration_nanoseconds(NA)
+  })
+})
+

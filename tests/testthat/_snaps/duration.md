@@ -213,3 +213,61 @@
       ! Can't convert from `y` <double> to <integer> due to loss of precision.
       * Locations: 1
 
+# `NA` duration prints as expected
+
+    Code
+      duration_years(NA)
+    Output
+      <duration<year>[1]>
+      [1] NA
+    Code
+      duration_quarters(NA)
+    Output
+      <duration<quarter>[1]>
+      [1] NA
+    Code
+      duration_months(NA)
+    Output
+      <duration<month>[1]>
+      [1] NA
+    Code
+      duration_weeks(NA)
+    Output
+      <duration<week>[1]>
+      [1] NA
+    Code
+      duration_days(NA)
+    Output
+      <duration<day>[1]>
+      [1] NA
+    Code
+      duration_hours(NA)
+    Output
+      <duration<hour>[1]>
+      [1] NA
+    Code
+      duration_minutes(NA)
+    Output
+      <duration<minute>[1]>
+      [1] NA
+    Code
+      duration_seconds(NA)
+    Output
+      <duration<second>[1]>
+      [1] NA
+    Code
+      duration_milliseconds(NA)
+    Output
+      <duration<millisecond>[1]>
+      [1] NA
+    Code
+      duration_microseconds(NA)
+    Output
+      <duration<microsecond>[1]>
+      [1] NA
+    Code
+      duration_nanoseconds(NA)
+    Output
+      <duration<nanosecond>[1]>
+      [1] NA
+

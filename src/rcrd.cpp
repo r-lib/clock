@@ -27,15 +27,15 @@ new_clock_rcrd_from_fields(SEXP fields, SEXP names, SEXP classes) {
   const SEXP* p_fields = r_list_deref_const(fields);
 
   SEXP field0 = p_fields[0];
-  if (TYPEOF(field0) != INTSXP) {
-    clock_abort("All clock_rcrd types have integer fields.");
+  if (TYPEOF(field0) != INTSXP && TYPEOF(field0) != REALSXP) {
+    clock_abort("All clock_rcrd types have integer or double fields.");
   }
   const r_ssize size = Rf_xlength(field0);
 
   for (r_ssize i = 1; i < n_fields; ++i) {
     const SEXP field = p_fields[i];
-    if (TYPEOF(field) != INTSXP) {
-      clock_abort("All clock_rcrd types have integer fields.");
+    if (TYPEOF(field) != INTSXP && TYPEOF(field) != REALSXP) {
+      clock_abort("All clock_rcrd types have integer or double fields.");
     }
     if (Rf_xlength(field) != size) {
       clock_abort("All fields must have the same size.");

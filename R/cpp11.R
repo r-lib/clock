@@ -412,16 +412,16 @@ clock_init_utils <- function() {
   .Call(`_clock_clock_init_utils`)
 }
 
-weekday_add_days_cpp <- function(x, n) {
-  .Call(`_clock_weekday_add_days_cpp`, x, n)
+weekday_add_days_cpp <- function(x, n_fields) {
+  .Call(`_clock_weekday_add_days_cpp`, x, n_fields)
 }
 
 weekday_minus_weekday_cpp <- function(x, y) {
   .Call(`_clock_weekday_minus_weekday_cpp`, x, y)
 }
 
-weekday_from_time_point_cpp <- function(x) {
-  .Call(`_clock_weekday_from_time_point_cpp`, x)
+weekday_from_time_point_cpp <- function(x_fields) {
+  .Call(`_clock_weekday_from_time_point_cpp`, x_fields)
 }
 
 format_weekday_cpp <- function(x, labels) {
@@ -452,8 +452,8 @@ as_zoned_sys_time_from_naive_time_cpp <- function(fields, precision_int, zone, n
   .Call(`_clock_as_zoned_sys_time_from_naive_time_cpp`, fields, precision_int, zone, nonexistent_string, ambiguous_string)
 }
 
-as_zoned_sys_time_from_naive_time_with_reference_cpp <- function(fields, precision_int, zone, nonexistent_string, ambiguous_string, reference) {
-  .Call(`_clock_as_zoned_sys_time_from_naive_time_with_reference_cpp`, fields, precision_int, zone, nonexistent_string, ambiguous_string, reference)
+as_zoned_sys_time_from_naive_time_with_reference_cpp <- function(fields, precision_int, zone, nonexistent_string, ambiguous_string, reference_fields) {
+  .Call(`_clock_as_zoned_sys_time_from_naive_time_with_reference_cpp`, fields, precision_int, zone, nonexistent_string, ambiguous_string, reference_fields)
 }
 
 to_sys_duration_fields_from_sys_seconds_cpp <- function(seconds) {

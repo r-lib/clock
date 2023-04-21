@@ -29,9 +29,12 @@ template <class ClockDuration>
 static
 inline
 cpp11::writable::list
-sys_time_info_impl(const ClockDuration& x, const cpp11::strings& zone) {
+sys_time_info_impl(cpp11::list_of<cpp11::doubles>& fields,
+                   const cpp11::strings& zone) {
+  using Duration = typename ClockDuration::chrono_duration;
+
+  const ClockDuration x{fields};
   const r_ssize size = x.size();
-  using Duration = typename ClockDuration::duration;
 
   rclock::duration::seconds begin(size);
   rclock::duration::seconds end(size);
@@ -88,27 +91,17 @@ sys_time_info_impl(const ClockDuration& x, const cpp11::strings& zone) {
 
 [[cpp11::register]]
 cpp11::writable::list
-sys_time_info_cpp(cpp11::list_of<cpp11::integers> fields,
+sys_time_info_cpp(cpp11::list_of<cpp11::doubles> fields,
                   const cpp11::integers& precision_int,
                   const cpp11::strings& zone) {
   using namespace rclock;
 
-  const cpp11::integers ticks = duration::get_ticks(fields);
-  const cpp11::integers ticks_of_day = duration::get_ticks_of_day(fields);
-  const cpp11::integers ticks_of_second = duration::get_ticks_of_second(fields);
-
-  const duration::days dd{ticks};
-  const duration::seconds ds{ticks, ticks_of_day};
-  const duration::milliseconds dmilli{ticks, ticks_of_day, ticks_of_second};
-  const duration::microseconds dmicro{ticks, ticks_of_day, ticks_of_second};
-  const duration::nanoseconds dnano{ticks, ticks_of_day, ticks_of_second};
-
   switch (parse_precision(precision_int)) {
-  case precision::day: return sys_time_info_impl(dd, zone);
-  case precision::second: return sys_time_info_impl(ds, zone);
-  case precision::millisecond: return sys_time_info_impl(dmilli, zone);
-  case precision::microsecond: return sys_time_info_impl(dmicro, zone);
-  case precision::nanosecond: return sys_time_info_impl(dnano, zone);
+  case precision::day: return sys_time_info_impl<duration::days>(fields, zone);
+  case precision::second: return sys_time_info_impl<duration::seconds>(fields, zone);
+  case precision::millisecond: return sys_time_info_impl<duration::milliseconds>(fields, zone);
+  case precision::microsecond: return sys_time_info_impl<duration::microseconds>(fields, zone);
+  case precision::nanosecond: return sys_time_info_impl<duration::nanoseconds>(fields, zone);
   default: clock_abort("Internal error: Should never be called.");
   }
 }
