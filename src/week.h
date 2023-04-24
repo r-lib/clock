@@ -53,6 +53,7 @@ struct last_week
     explicit last_week() = default;
 };
 
+// C-encoded to be aligned with `date::weekday`
 enum class start: unsigned char {
     sunday = 0u,
     monday = 1u,
@@ -63,7 +64,8 @@ enum class start: unsigned char {
     saturday = 6u
 };
 
-using weekday = date::weekday;
+template <start S>
+class weekday;
 class weeknum;
 template <start S>
 class year;
@@ -72,7 +74,9 @@ template <start S>
 class year_weeknum;
 template <start S>
 class year_lastweek;
+template <start S>
 class weeknum_weekday;
+template <start S>
 class lastweek_weekday;
 
 template <start S>
@@ -90,33 +94,89 @@ CONSTCD11 year_weeknum<S> operator/(const year<S>& y, int            wn) NOEXCEP
 template <start S>
 CONSTCD11 year_lastweek<S> operator/(const year<S>& y, last_week      wn) NOEXCEPT;
 
-CONSTCD11 weeknum_weekday operator/(const weeknum& wn, const weekday& wd) NOEXCEPT;
-CONSTCD11 weeknum_weekday operator/(const weeknum& wn, int            wd) NOEXCEPT;
-CONSTCD11 weeknum_weekday operator/(const weekday& wd, const weeknum& wn) NOEXCEPT;
-CONSTCD11 weeknum_weekday operator/(const weekday& wd, int            wn) NOEXCEPT;
-
-CONSTCD11 lastweek_weekday operator/(const last_week& wn, const weekday& wd) NOEXCEPT;
-CONSTCD11 lastweek_weekday operator/(const last_week& wn, int            wd) NOEXCEPT;
-CONSTCD11 lastweek_weekday operator/(const weekday& wd, const last_week& wn) NOEXCEPT;
-
 template <start S>
-CONSTCD11 year_weeknum_weekday<S> operator/(const year_weeknum<S>& ywn, const weekday& wd) NOEXCEPT;
+CONSTCD11 weeknum_weekday<S> operator/(const weeknum& wn, const weekday<S>& wd) NOEXCEPT;
 template <start S>
-CONSTCD11 year_weeknum_weekday<S> operator/(const year_weeknum<S>& ywn, int            wd) NOEXCEPT;
+CONSTCD11 weeknum_weekday<S> operator/(const weeknum& wn, int               wd) NOEXCEPT;
 template <start S>
-CONSTCD11 year_weeknum_weekday<S> operator/(const weeknum_weekday& wnwd, const year<S>& y) NOEXCEPT;
+CONSTCD11 weeknum_weekday<S> operator/(const weekday<S>& wd, const weeknum& wn) NOEXCEPT;
 template <start S>
-CONSTCD11 year_weeknum_weekday<S> operator/(const weeknum_weekday& wnwd, int            y) NOEXCEPT;
+CONSTCD11 weeknum_weekday<S> operator/(const weekday<S>& wd, int            wn) NOEXCEPT;
 
 template <start S>
-CONSTCD11 year_lastweek_weekday<S> operator/(const year_lastweek<S>& ylw, const weekday& wd) NOEXCEPT;
+CONSTCD11 lastweek_weekday<S> operator/(const last_week& wn, const weekday<S>& wd) NOEXCEPT;
 template <start S>
-CONSTCD11 year_lastweek_weekday<S> operator/(const year_lastweek<S>& ylw, int            wd) NOEXCEPT;
+CONSTCD11 lastweek_weekday<S> operator/(const last_week& wn, int               wd) NOEXCEPT;
+template <start S>
+CONSTCD11 lastweek_weekday<S> operator/(const weekday<S>& wd, const last_week& wn) NOEXCEPT;
 
 template <start S>
-CONSTCD11 year_lastweek_weekday<S> operator/(const lastweek_weekday& lwwd, const year<S>& y) NOEXCEPT;
+CONSTCD11 year_weeknum_weekday<S> operator/(const year_weeknum<S>& ywn, const weekday<S>& wd) NOEXCEPT;
 template <start S>
-CONSTCD11 year_lastweek_weekday<S> operator/(const lastweek_weekday& lwwd, int            y) NOEXCEPT;
+CONSTCD11 year_weeknum_weekday<S> operator/(const year_weeknum<S>& ywn, int               wd) NOEXCEPT;
+template <start S>
+CONSTCD11 year_weeknum_weekday<S> operator/(const weeknum_weekday<S>& wnwd, const year<S>& y) NOEXCEPT;
+template <start S>
+CONSTCD11 year_weeknum_weekday<S> operator/(const weeknum_weekday<S>& wnwd, int            y) NOEXCEPT;
+
+template <start S>
+CONSTCD11 year_lastweek_weekday<S> operator/(const year_lastweek<S>& ylw, const weekday<S>& wd) NOEXCEPT;
+template <start S>
+CONSTCD11 year_lastweek_weekday<S> operator/(const year_lastweek<S>& ylw, int               wd) NOEXCEPT;
+
+template <start S>
+CONSTCD11 year_lastweek_weekday<S> operator/(const lastweek_weekday<S>& lwwd, const year<S>& y) NOEXCEPT;
+template <start S>
+CONSTCD11 year_lastweek_weekday<S> operator/(const lastweek_weekday<S>& lwwd, int            y) NOEXCEPT;
+
+// weekday
+
+template <start S>
+class weekday
+{
+    unsigned char wd_;
+public:
+    weekday() = default;
+    explicit CONSTCD11 weekday(unsigned wd) NOEXCEPT;
+    CONSTCD11 weekday(date::weekday wd) NOEXCEPT;
+    explicit weekday(int) = delete;
+    CONSTCD11 weekday(const sys_days& dp) NOEXCEPT;
+    CONSTCD11 explicit weekday(const local_days& dp) NOEXCEPT;
+
+    weekday& operator++()    NOEXCEPT;
+    weekday  operator++(int) NOEXCEPT;
+    weekday& operator--()    NOEXCEPT;
+    weekday  operator--(int) NOEXCEPT;
+
+    weekday& operator+=(const days& d) NOEXCEPT;
+    weekday& operator-=(const days& d) NOEXCEPT;
+
+    CONSTCD11 explicit operator unsigned() const NOEXCEPT;
+    CONSTCD11 operator date::weekday() const NOEXCEPT;
+    CONSTCD11 bool ok() const NOEXCEPT;
+
+private:
+    static CONSTCD11 unsigned char from_weekday(const date::weekday& wd) NOEXCEPT;
+    static CONSTCD11 unsigned char to_weekday(const weekday<S>& x) NOEXCEPT;
+};
+
+template <start S>
+CONSTCD11 bool operator==(const weekday<S>& x, const weekday<S>& y) NOEXCEPT;
+template <start S>
+CONSTCD11 bool operator!=(const weekday<S>& x, const weekday<S>& y) NOEXCEPT;
+
+template <start S>
+CONSTCD14 weekday<S> operator+(const weekday<S>& x, const days&       y) NOEXCEPT;
+template <start S>
+CONSTCD14 weekday<S> operator+(const days&       x, const weekday<S>& y) NOEXCEPT;
+template <start S>
+CONSTCD14 weekday<S> operator-(const weekday<S>& x, const days&       y) NOEXCEPT;
+template <start S>
+CONSTCD14 days       operator-(const weekday<S>& x, const weekday<S>& y) NOEXCEPT;
+
+template<class CharT, class Traits, start S>
+std::basic_ostream<CharT, Traits>&
+operator<<(std::basic_ostream<CharT, Traits>& os, const weekday<S>& wd);
 
 // year
 
@@ -126,6 +186,7 @@ class year
     short y_;
 
 public:
+    year() = default;
     explicit CONSTCD11 year(int y) NOEXCEPT;
 
     year& operator++()    NOEXCEPT;
@@ -178,6 +239,7 @@ class weeknum
     unsigned char wn_;
 
 public:
+    weeknum() = default;
     explicit CONSTCD11 weeknum(unsigned wn) NOEXCEPT;
 
     weeknum& operator++()    NOEXCEPT;
@@ -217,6 +279,7 @@ class year_weeknum
     week::weeknum wn_;
 
 public:
+    year_weeknum() = default;
     CONSTCD11 year_weeknum(const week::year<S>& y, const week::weeknum& wn) NOEXCEPT;
 
     CONSTCD11 week::year<S> year()    const NOEXCEPT;
@@ -260,6 +323,7 @@ class year_lastweek
     week::year<S> y_;
 
 public:
+    year_lastweek() = default;
     CONSTCD11 explicit year_lastweek(const week::year<S>& y) NOEXCEPT;
 
     CONSTCD11 week::year<S> year()    const NOEXCEPT;
@@ -297,56 +361,72 @@ operator<<(std::basic_ostream<CharT, Traits>& os, const year_lastweek<S>& ym);
 
 // weeknum_weekday
 
+template <start S>
 class weeknum_weekday
 {
     week::weeknum wn_;
-    week::weekday wd_;
+    week::weekday<S> wd_;
 
 public:
+    weeknum_weekday() = default;
     CONSTCD11 weeknum_weekday(const week::weeknum& wn,
-                              const week::weekday& wd) NOEXCEPT;
+                              const week::weekday<S>& wd) NOEXCEPT;
 
     CONSTCD11 week::weeknum weeknum() const NOEXCEPT;
-    CONSTCD11 week::weekday weekday() const NOEXCEPT;
+    CONSTCD11 week::weekday<S> weekday() const NOEXCEPT;
 
     CONSTCD14 bool ok() const NOEXCEPT;
 };
 
-CONSTCD11 bool operator==(const weeknum_weekday& x, const weeknum_weekday& y) NOEXCEPT;
-CONSTCD11 bool operator!=(const weeknum_weekday& x, const weeknum_weekday& y) NOEXCEPT;
-//CONSTCD11 bool operator< (const weeknum_weekday& x, const weeknum_weekday& y) NOEXCEPT;
-//CONSTCD11 bool operator> (const weeknum_weekday& x, const weeknum_weekday& y) NOEXCEPT;
-//CONSTCD11 bool operator<=(const weeknum_weekday& x, const weeknum_weekday& y) NOEXCEPT;
-//CONSTCD11 bool operator>=(const weeknum_weekday& x, const weeknum_weekday& y) NOEXCEPT;
+template <start S>
+CONSTCD11 bool operator==(const weeknum_weekday<S>& x, const weeknum_weekday<S>& y) NOEXCEPT;
+template <start S>
+CONSTCD11 bool operator!=(const weeknum_weekday<S>& x, const weeknum_weekday<S>& y) NOEXCEPT;
+template <start S>
+CONSTCD11 bool operator< (const weeknum_weekday<S>& x, const weeknum_weekday<S>& y) NOEXCEPT;
+template <start S>
+CONSTCD11 bool operator> (const weeknum_weekday<S>& x, const weeknum_weekday<S>& y) NOEXCEPT;
+template <start S>
+CONSTCD11 bool operator<=(const weeknum_weekday<S>& x, const weeknum_weekday<S>& y) NOEXCEPT;
+template <start S>
+CONSTCD11 bool operator>=(const weeknum_weekday<S>& x, const weeknum_weekday<S>& y) NOEXCEPT;
 
-template<class CharT, class Traits>
+template<class CharT, class Traits, start S>
 std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, const weeknum_weekday& md);
+operator<<(std::basic_ostream<CharT, Traits>& os, const weeknum_weekday<S>& md);
 
 // lastweek_weekday
 
+template <start S>
 class lastweek_weekday
 {
-    week::weekday wd_;
+    week::weekday<S> wd_;
 
 public:
-    CONSTCD11 explicit lastweek_weekday(const week::weekday& wd) NOEXCEPT;
+    lastweek_weekday() = default;
+    CONSTCD11 explicit lastweek_weekday(const week::weekday<S>& wd) NOEXCEPT;
 
-    CONSTCD11 week::weekday weekday() const NOEXCEPT;
+    CONSTCD11 week::weekday<S> weekday() const NOEXCEPT;
 
     CONSTCD14 bool ok() const NOEXCEPT;
 };
 
-CONSTCD11 bool operator==(const lastweek_weekday& x, const lastweek_weekday& y) NOEXCEPT;
-CONSTCD11 bool operator!=(const lastweek_weekday& x, const lastweek_weekday& y) NOEXCEPT;
-//CONSTCD11 bool operator< (const lastweek_weekday& x, const lastweek_weekday& y) NOEXCEPT;
-//CONSTCD11 bool operator> (const lastweek_weekday& x, const lastweek_weekday& y) NOEXCEPT;
-//CONSTCD11 bool operator<=(const lastweek_weekday& x, const lastweek_weekday& y) NOEXCEPT;
-//CONSTCD11 bool operator>=(const lastweek_weekday& x, const lastweek_weekday& y) NOEXCEPT;
+template <start S>
+CONSTCD11 bool operator==(const lastweek_weekday<S>& x, const lastweek_weekday<S>& y) NOEXCEPT;
+template <start S>
+CONSTCD11 bool operator!=(const lastweek_weekday<S>& x, const lastweek_weekday<S>& y) NOEXCEPT;
+template <start S>
+CONSTCD11 bool operator< (const lastweek_weekday<S>& x, const lastweek_weekday<S>& y) NOEXCEPT;
+template <start S>
+CONSTCD11 bool operator> (const lastweek_weekday<S>& x, const lastweek_weekday<S>& y) NOEXCEPT;
+template <start S>
+CONSTCD11 bool operator<=(const lastweek_weekday<S>& x, const lastweek_weekday<S>& y) NOEXCEPT;
+template <start S>
+CONSTCD11 bool operator>=(const lastweek_weekday<S>& x, const lastweek_weekday<S>& y) NOEXCEPT;
 
-template<class CharT, class Traits>
+template<class CharT, class Traits, start S>
 std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, const lastweek_weekday& md);
+operator<<(std::basic_ostream<CharT, Traits>& os, const lastweek_weekday<S>& md);
 
 // year_lastweek_weekday
 
@@ -354,18 +434,19 @@ template <start S>
 class year_lastweek_weekday
 {
     week::year<S> y_;
-    week::weekday wd_;
+    week::weekday<S> wd_;
 
 public:
+    year_lastweek_weekday() = default;
     CONSTCD11 year_lastweek_weekday(const week::year<S>& y,
-                                    const week::weekday& wd) NOEXCEPT;
+                                    const week::weekday<S>& wd) NOEXCEPT;
 
     year_lastweek_weekday& operator+=(const years& y) NOEXCEPT;
     year_lastweek_weekday& operator-=(const years& y) NOEXCEPT;
 
     CONSTCD11 week::year<S> year()    const NOEXCEPT;
     CONSTCD14 week::weeknum weeknum() const NOEXCEPT;
-    CONSTCD11 week::weekday weekday() const NOEXCEPT;
+    CONSTCD11 week::weekday<S> weekday() const NOEXCEPT;
 
     CONSTCD14 operator sys_days() const NOEXCEPT;
     CONSTCD14 explicit operator local_days() const NOEXCEPT;
@@ -403,11 +484,12 @@ class year_weeknum_weekday
 {
     week::year<S> y_;
     week::weeknum wn_;
-    week::weekday wd_;
+    week::weekday<S> wd_;
 
 public:
+    year_weeknum_weekday() = default;
     CONSTCD11 year_weeknum_weekday(const week::year<S>& y, const week::weeknum& wn,
-                                   const week::weekday& wd) NOEXCEPT;
+                                   const week::weekday<S>& wd) NOEXCEPT;
     CONSTCD14 year_weeknum_weekday(const year_lastweek_weekday<S>& ylwwd) NOEXCEPT;
     CONSTCD14 year_weeknum_weekday(const sys_days& dp) NOEXCEPT;
     CONSTCD14 explicit year_weeknum_weekday(const local_days& dp) NOEXCEPT;
@@ -417,7 +499,7 @@ public:
 
     CONSTCD11 week::year<S> year()    const NOEXCEPT;
     CONSTCD11 week::weeknum weeknum() const NOEXCEPT;
-    CONSTCD11 week::weekday weekday() const NOEXCEPT;
+    CONSTCD11 week::weekday<S> weekday() const NOEXCEPT;
 
     CONSTCD14 operator sys_days() const NOEXCEPT;
     CONSTCD14 explicit operator local_days() const NOEXCEPT;
@@ -455,6 +537,168 @@ operator<<(std::basic_ostream<CharT, Traits>& os, const year_weeknum_weekday<S>&
 // Implementation |
 //----------------+
 
+// weekday
+
+template <start S>
+CONSTCD11
+inline
+unsigned char
+weekday<S>::from_weekday(const date::weekday& x) NOEXCEPT
+{
+    const auto wd = x - days{static_cast<unsigned>(S)};
+    return wd.c_encoding() + 1u;
+}
+
+template <start S>
+CONSTCD11
+inline
+unsigned char
+weekday<S>::to_weekday(const weekday<S>& x) NOEXCEPT
+{
+    const auto wd = x + days{static_cast<unsigned>(S)};
+    return static_cast<unsigned>(wd) - 1u;
+}
+
+template <start S>
+CONSTCD11
+inline
+weekday<S>::weekday(unsigned wd) NOEXCEPT
+    : wd_(static_cast<decltype(wd_)>(wd))
+    {}
+
+template <start S>
+CONSTCD11
+inline
+weekday<S>::weekday(date::weekday wd) NOEXCEPT
+    : wd_(from_weekday(wd))
+    {}
+
+template <start S>
+CONSTCD11
+inline
+weekday<S>::weekday(const sys_days& dp) NOEXCEPT
+    : wd_(from_weekday(date::weekday(dp)))
+    {}
+
+template <start S>
+CONSTCD11
+inline
+weekday<S>::weekday(const local_days& dp) NOEXCEPT
+    : wd_(from_weekday(date::weekday(dp)))
+    {}
+
+template <start S>
+inline weekday<S>& weekday<S>::operator++() NOEXCEPT {if (++wd_ == 8) wd_ = 1; return *this;}
+template <start S>
+inline weekday<S> weekday<S>::operator++(int) NOEXCEPT {auto tmp(*this); ++(*this); return tmp;}
+template <start S>
+inline weekday<S>& weekday<S>::operator--() NOEXCEPT {if (wd_-- == 1) wd_ = 7; return *this;}
+template <start S>
+inline weekday<S> weekday<S>::operator--(int) NOEXCEPT {auto tmp(*this); --(*this); return tmp;}
+
+template <start S>
+inline
+weekday<S>&
+weekday<S>::operator+=(const days& d) NOEXCEPT
+{
+    *this = *this + d;
+    return *this;
+}
+
+template <start S>
+inline
+weekday<S>&
+weekday<S>::operator-=(const days& d) NOEXCEPT
+{
+    *this = *this - d;
+    return *this;
+}
+
+template <start S>
+CONSTCD11
+inline
+weekday<S>::operator unsigned() const NOEXCEPT
+{
+    return wd_;
+}
+
+template <start S>
+CONSTCD11
+inline
+weekday<S>::operator date::weekday() const NOEXCEPT
+{
+    return date::weekday{to_weekday(*this)};
+}
+
+template <start S>
+CONSTCD11 inline bool weekday<S>::ok() const NOEXCEPT {return 1 <= wd_ && wd_ <= 7;}
+
+template <start S>
+CONSTCD11
+inline
+bool
+operator==(const weekday<S>& x, const weekday<S>& y) NOEXCEPT
+{
+    return static_cast<unsigned>(x) == static_cast<unsigned>(y);
+}
+
+template <start S>
+CONSTCD11
+inline
+bool
+operator!=(const weekday<S>& x, const weekday<S>& y) NOEXCEPT
+{
+    return !(x == y);
+}
+
+template <start S>
+CONSTCD14
+inline
+days
+operator-(const weekday<S>& x, const weekday<S>& y) NOEXCEPT
+{
+    auto const diff = static_cast<unsigned>(x) - static_cast<unsigned>(y);
+    return days{diff <= 6 ? diff : diff + 7};
+}
+
+template <start S>
+CONSTCD14
+inline
+weekday<S>
+operator+(const weekday<S>& x, const days& y) NOEXCEPT
+{
+    auto const wdu = static_cast<long long>(static_cast<unsigned>(x) - 1u) + y.count();
+    auto const wk = (wdu >= 0 ? wdu : wdu - 6) / 7;
+    return weekday<S>{static_cast<unsigned>(wdu - wk * 7) + 1u};
+}
+
+template <start S>
+CONSTCD14
+inline
+weekday<S>
+operator+(const days& x, const weekday<S>& y) NOEXCEPT
+{
+    return y + x;
+}
+
+template <start S>
+CONSTCD14
+inline
+weekday<S>
+operator-(const weekday<S>& x, const days& y) NOEXCEPT
+{
+    return x + -y;
+}
+
+template<class CharT, class Traits, start S>
+inline
+std::basic_ostream<CharT, Traits>&
+operator<<(std::basic_ostream<CharT, Traits>& os, const weekday<S>& wd)
+{
+    const date::weekday wd2{wd};
+    return operator<<(os, wd2);
+}
+
 // year
 
 template <start S>
@@ -479,7 +723,7 @@ bool
 year<S>::is_leap() const NOEXCEPT
 {
     const auto y = date::year{static_cast<int>(y_)};
-    const auto middle = weekday{static_cast<unsigned char>(S)} + days{3};
+    const auto middle = date::weekday{static_cast<unsigned char>(S)} + days{3};
     const auto s0 = sys_days((y-years{1})/12/middle[date::last]);
     const auto s1 = sys_days(y/12/middle[date::last]);
     return s1-s0 != days{7*52};
@@ -642,14 +886,6 @@ operator "" _w(unsigned long long wn) NOEXCEPT
 #endif  // !defined(_MSC_VER) || (_MSC_VER >= 1900)
 
 CONSTDATA week::last_week last{};
-
-CONSTDATA week::weekday sun{0u};
-CONSTDATA week::weekday mon{1u};
-CONSTDATA week::weekday tue{2u};
-CONSTDATA week::weekday wed{3u};
-CONSTDATA week::weekday thu{4u};
-CONSTDATA week::weekday fri{5u};
-CONSTDATA week::weekday sat{6u};
 
 #if !defined(_MSC_VER) || (_MSC_VER >= 1900)
 }  // inline namespace literals
@@ -1045,156 +1281,172 @@ operator<<(std::basic_ostream<CharT, Traits>& os, const year_lastweek<S>& ywn)
 
 // weeknum_weekday
 
+template <start S>
 CONSTCD11
 inline
-weeknum_weekday::weeknum_weekday(const week::weeknum& wn,
-                                 const week::weekday& wd) NOEXCEPT
+weeknum_weekday<S>::weeknum_weekday(const week::weeknum& wn,
+                                    const week::weekday<S>& wd) NOEXCEPT
     : wn_(wn)
     , wd_(wd)
     {}
 
-CONSTCD11 inline weeknum weeknum_weekday::weeknum() const NOEXCEPT {return wn_;}
-CONSTCD11 inline weekday weeknum_weekday::weekday() const NOEXCEPT {return wd_;}
+template <start S>
+CONSTCD11 inline weeknum weeknum_weekday<S>::weeknum() const NOEXCEPT {return wn_;}
+template <start S>
+CONSTCD11 inline weekday<S> weeknum_weekday<S>::weekday() const NOEXCEPT {return wd_;}
 
+template <start S>
 CONSTCD14
 inline
 bool
-weeknum_weekday::ok() const NOEXCEPT
+weeknum_weekday<S>::ok() const NOEXCEPT
 {
     return wn_.ok() && wd_.ok();
 }
 
+template <start S>
 CONSTCD11
 inline
 bool
-operator==(const weeknum_weekday& x, const weeknum_weekday& y) NOEXCEPT
+operator==(const weeknum_weekday<S>& x, const weeknum_weekday<S>& y) NOEXCEPT
 {
     return x.weeknum() == y.weeknum() && x.weekday() == y.weekday();
 }
 
+template <start S>
 CONSTCD11
 inline
 bool
-operator!=(const weeknum_weekday& x, const weeknum_weekday& y) NOEXCEPT
+operator!=(const weeknum_weekday<S>& x, const weeknum_weekday<S>& y) NOEXCEPT
 {
     return !(x == y);
 }
 
-// TODO We don't know the week start yet, so this shouldn't be defined?
+template <start S>
+CONSTCD11
+inline
+bool
+operator<(const weeknum_weekday<S>& x, const weeknum_weekday<S>& y) NOEXCEPT
+{
+    return x.weeknum() < y.weeknum() ? true
+        : (x.weeknum() > y.weeknum() ? false
+        : (static_cast<unsigned>(x.weekday()) < static_cast<unsigned>(y.weekday())));
+}
 
-// CONSTCD11
-// inline
-// bool
-// operator<(const weeknum_weekday& x, const weeknum_weekday& y) NOEXCEPT
-// {
-//     // TODO: We don't know the week start yet, so this shouldn't be defined?
-//     return x.weeknum() < y.weeknum() ? true
-//         : (x.weeknum() > y.weeknum() ? false
-//         : (static_cast<unsigned>(x.weekday()) < static_cast<unsigned>(y.weekday())));
-// }
+template <start S>
+CONSTCD11
+inline
+bool
+operator>(const weeknum_weekday<S>& x, const weeknum_weekday<S>& y) NOEXCEPT
+{
+    return y < x;
+}
 
-// CONSTCD11
-// inline
-// bool
-// operator>(const weeknum_weekday& x, const weeknum_weekday& y) NOEXCEPT
-// {
-//     return y < x;
-// }
+template <start S>
+CONSTCD11
+inline
+bool
+operator<=(const weeknum_weekday<S>& x, const weeknum_weekday<S>& y) NOEXCEPT
+{
+    return !(y < x);
+}
 
-// CONSTCD11
-// inline
-// bool
-// operator<=(const weeknum_weekday& x, const weeknum_weekday& y) NOEXCEPT
-// {
-//     return !(y < x);
-// }
+template <start S>
+CONSTCD11
+inline
+bool
+operator>=(const weeknum_weekday<S>& x, const weeknum_weekday<S>& y) NOEXCEPT
+{
+    return !(x < y);
+}
 
-// CONSTCD11
-// inline
-// bool
-// operator>=(const weeknum_weekday& x, const weeknum_weekday& y) NOEXCEPT
-// {
-//     return !(x < y);
-// }
-
-template<class CharT, class Traits>
+template<class CharT, class Traits, start S>
 inline
 std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, const weeknum_weekday& md)
+operator<<(std::basic_ostream<CharT, Traits>& os, const weeknum_weekday<S>& md)
 {
     return os << md.weeknum() << '-' << md.weekday();
 }
 
 // lastweek_weekday
 
+template <start S>
 CONSTCD11
 inline
-lastweek_weekday::lastweek_weekday(const week::weekday& wd) NOEXCEPT
+lastweek_weekday<S>::lastweek_weekday(const week::weekday<S>& wd) NOEXCEPT
     : wd_(wd)
     {}
 
-CONSTCD11 inline weekday lastweek_weekday::weekday() const NOEXCEPT {return wd_;}
+template <start S>
+CONSTCD11 inline weekday<S> lastweek_weekday<S>::weekday() const NOEXCEPT {return wd_;}
 
+template <start S>
 CONSTCD14
 inline
 bool
-lastweek_weekday::ok() const NOEXCEPT
+lastweek_weekday<S>::ok() const NOEXCEPT
 {
     return wd_.ok();
 }
 
+template <start S>
 CONSTCD11
 inline
 bool
-operator==(const lastweek_weekday& x, const lastweek_weekday& y) NOEXCEPT
+operator==(const lastweek_weekday<S>& x, const lastweek_weekday<S>& y) NOEXCEPT
 {
     return x.weekday() == y.weekday();
 }
 
+template <start S>
 CONSTCD11
 inline
 bool
-operator!=(const lastweek_weekday& x, const lastweek_weekday& y) NOEXCEPT
+operator!=(const lastweek_weekday<S>& x, const lastweek_weekday<S>& y) NOEXCEPT
 {
     return !(x == y);
 }
 
-// CONSTCD11
-// inline
-// bool
-// operator<(const lastweek_weekday& x, const lastweek_weekday& y) NOEXCEPT
-// {
-//     return static_cast<unsigned>(x.weekday()) < static_cast<unsigned>(y.weekday());
-// }
+template <start S>
+CONSTCD11
+inline
+bool
+operator<(const lastweek_weekday<S>& x, const lastweek_weekday<S>& y) NOEXCEPT
+{
+    return static_cast<unsigned>(x.weekday()) < static_cast<unsigned>(y.weekday());
+}
 
-// CONSTCD11
-// inline
-// bool
-// operator>(const lastweek_weekday& x, const lastweek_weekday& y) NOEXCEPT
-// {
-//     return y < x;
-// }
+template <start S>
+CONSTCD11
+inline
+bool
+operator>(const lastweek_weekday<S>& x, const lastweek_weekday<S>& y) NOEXCEPT
+{
+    return y < x;
+}
 
-// CONSTCD11
-// inline
-// bool
-// operator<=(const lastweek_weekday& x, const lastweek_weekday& y) NOEXCEPT
-// {
-//     return !(y < x);
-// }
+template <start S>
+CONSTCD11
+inline
+bool
+operator<=(const lastweek_weekday<S>& x, const lastweek_weekday<S>& y) NOEXCEPT
+{
+    return !(y < x);
+}
 
-// CONSTCD11
-// inline
-// bool
-// operator>=(const lastweek_weekday& x, const lastweek_weekday& y) NOEXCEPT
-// {
-//     return !(x < y);
-// }
+template <start S>
+CONSTCD11
+inline
+bool
+operator>=(const lastweek_weekday<S>& x, const lastweek_weekday<S>& y) NOEXCEPT
+{
+    return !(x < y);
+}
 
-template<class CharT, class Traits>
+template<class CharT, class Traits, start S>
 inline
 std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, const lastweek_weekday& md)
+operator<<(std::basic_ostream<CharT, Traits>& os, const lastweek_weekday<S>& md)
 {
     return os << "W last-" << md.weekday();
 }
@@ -1205,7 +1457,7 @@ template <start S>
 CONSTCD11
 inline
 year_lastweek_weekday<S>::year_lastweek_weekday(const week::year<S>& y,
-                                                const week::weekday& wd) NOEXCEPT
+                                                const week::weekday<S>& wd) NOEXCEPT
     : y_(y)
     , wd_(wd)
     {}
@@ -1241,15 +1493,14 @@ year_lastweek_weekday<S>::weeknum() const NOEXCEPT
 }
 
 template <start S>
-CONSTCD11 inline weekday year_lastweek_weekday<S>::weekday() const NOEXCEPT {return wd_;}
+CONSTCD11 inline weekday<S> year_lastweek_weekday<S>::weekday() const NOEXCEPT {return wd_;}
 
 template <start S>
 CONSTCD14
 inline
 year_lastweek_weekday<S>::operator sys_days() const NOEXCEPT
 {
-    // TODO
-    const auto start = week::weekday(static_cast<unsigned char>(S));
+    const auto start = date::weekday(static_cast<unsigned char>(S));
     const auto end = start - days{1};
     const auto middle = start + days{3};
     return sys_days(date::year{static_cast<int>(y_)}/date::dec/middle[date::last])
@@ -1261,8 +1512,7 @@ CONSTCD14
 inline
 year_lastweek_weekday<S>::operator local_days() const NOEXCEPT
 {
-    // TODO
-    const auto start = week::weekday(static_cast<unsigned char>(S));
+    const auto start = date::weekday(static_cast<unsigned char>(S));
     const auto end = start - days{1};
     const auto middle = start + days{3};
     return local_days(date::year{static_cast<int>(y_)}/date::dec/middle[date::last])
@@ -1376,7 +1626,7 @@ CONSTCD11
 inline
 year_weeknum_weekday<S>::year_weeknum_weekday(const week::year<S>& y,
                                               const week::weeknum& wn,
-                                              const week::weekday& wd) NOEXCEPT
+                                              const week::weekday<S>& wd) NOEXCEPT
     : y_(y)
     , wn_(wn)
     , wd_(wd)
@@ -1428,15 +1678,14 @@ CONSTCD11 inline year<S> year_weeknum_weekday<S>::year() const NOEXCEPT {return 
 template <start S>
 CONSTCD11 inline weeknum year_weeknum_weekday<S>::weeknum() const NOEXCEPT {return wn_;}
 template <start S>
-CONSTCD11 inline weekday year_weeknum_weekday<S>::weekday() const NOEXCEPT {return wd_;}
+CONSTCD11 inline weekday<S> year_weeknum_weekday<S>::weekday() const NOEXCEPT {return wd_;}
 
 template <start S>
 CONSTCD14
 inline
 year_weeknum_weekday<S>::operator sys_days() const NOEXCEPT
 {
-    // TODO
-    const auto start = week::weekday(static_cast<unsigned char>(S));
+    const auto start = date::weekday(static_cast<unsigned char>(S));
     const auto middle = start + days{3};
     return sys_days(date::year{static_cast<int>(y_)-1}/date::dec/middle[date::last])
          + (start - middle) + weeks{static_cast<unsigned>(wn_)-1} + (wd_ - start);
@@ -1447,8 +1696,7 @@ CONSTCD14
 inline
 year_weeknum_weekday<S>::operator local_days() const NOEXCEPT
 {
-    // TODO
-    const auto start = week::weekday(static_cast<unsigned char>(S));
+    const auto start = date::weekday(static_cast<unsigned char>(S));
     const auto middle = start + days{3};
     return local_days(date::year{static_cast<int>(y_)-1}/date::dec/middle[date::last])
          + (start - middle) + weeks{static_cast<unsigned>(wn_)-1} + (wd_ - start);
@@ -1469,10 +1717,9 @@ inline
 year_weeknum_weekday<S>
 year_weeknum_weekday<S>::from_days(days d) NOEXCEPT
 {
-    // TODO
     const auto dp = sys_days{d};
-    const auto wd = week::weekday{dp};
-    const auto start = week::weekday{static_cast<unsigned char>(S)};
+    const auto wd = week::weekday<S>{dp};
+    const auto start = date::weekday{static_cast<unsigned char>(S)};
     const auto middle = start + days{3};
     auto y = date::year_month_day{dp + days{3}}.year();
     auto dp_start = sys_days((y - date::years{1})/date::dec/middle[date::last]) + (start-middle);
@@ -1608,58 +1855,65 @@ operator/(const year<S>& y, last_week) NOEXCEPT
     return year_lastweek<S>{y};
 }
 
+template <start S>
 CONSTCD11
 inline
-weeknum_weekday
-operator/(const weeknum& wn, const weekday& wd) NOEXCEPT
+weeknum_weekday<S>
+operator/(const weeknum& wn, const weekday<S>& wd) NOEXCEPT
 {
     return {wn, wd};
 }
 
+template <start S>
 CONSTCD11
 inline
-weeknum_weekday
+weeknum_weekday<S>
 operator/(const weeknum& wn, int wd) NOEXCEPT
 {
-    return wn/weekday{static_cast<unsigned>(wd)};
+    return wn/weekday<S>{static_cast<unsigned>(wd)};
 }
 
+template <start S>
 CONSTCD11
 inline
-weeknum_weekday
-operator/(const weekday& wd, const weeknum& wn) NOEXCEPT
+weeknum_weekday<S>
+operator/(const weekday<S>& wd, const weeknum& wn) NOEXCEPT
 {
     return wn/wd;
 }
 
+template <start S>
 CONSTCD11
 inline
-weeknum_weekday
-operator/(const weekday& wd, int wn) NOEXCEPT
+weeknum_weekday<S>
+operator/(const weekday<S>& wd, int wn) NOEXCEPT
 {
     return weeknum{static_cast<unsigned>(wn)}/wd;
 }
 
+template <start S>
 CONSTCD11
 inline
-lastweek_weekday
-operator/(const last_week&, const weekday& wd) NOEXCEPT
+lastweek_weekday<S>
+operator/(const last_week&, const weekday<S>& wd) NOEXCEPT
 {
-    return lastweek_weekday{wd};
+    return lastweek_weekday<S>{wd};
 }
 
+template <start S>
 CONSTCD11
 inline
-lastweek_weekday
+lastweek_weekday<S>
 operator/(const last_week& wn, int wd) NOEXCEPT
 {
-    return wn / weekday{static_cast<unsigned>(wd)};
+    return wn / weekday<S>{static_cast<unsigned>(wd)};
 }
 
+template <start S>
 CONSTCD11
 inline
-lastweek_weekday
-operator/(const weekday& wd, const last_week& wn) NOEXCEPT
+lastweek_weekday<S>
+operator/(const weekday<S>& wd, const last_week& wn) NOEXCEPT
 {
     return wn / wd;
 }
@@ -1668,7 +1922,7 @@ template <start S>
 CONSTCD11
 inline
 year_weeknum_weekday<S>
-operator/(const year_weeknum<S>& ywn, const weekday& wd) NOEXCEPT
+operator/(const year_weeknum<S>& ywn, const weekday<S>& wd) NOEXCEPT
 {
     return {ywn.year(), ywn.weeknum(), wd};
 }
@@ -1679,14 +1933,14 @@ inline
 year_weeknum_weekday<S>
 operator/(const year_weeknum<S>& ywn, int wd) NOEXCEPT
 {
-    return ywn / weekday(static_cast<unsigned>(wd));
+    return ywn / weekday<S>(static_cast<unsigned>(wd));
 }
 
 template <start S>
 CONSTCD11
 inline
 year_weeknum_weekday<S>
-operator/(const weeknum_weekday& wnwd, const year<S>& y) NOEXCEPT
+operator/(const weeknum_weekday<S>& wnwd, const year<S>& y) NOEXCEPT
 {
     return {y, wnwd.weeknum(), wnwd.weekday()};
 }
@@ -1695,7 +1949,7 @@ template <start S>
 CONSTCD11
 inline
 year_weeknum_weekday<S>
-operator/(const weeknum_weekday& wnwd, int y) NOEXCEPT
+operator/(const weeknum_weekday<S>& wnwd, int y) NOEXCEPT
 {
     return wnwd / year<S>{y};
 }
@@ -1704,7 +1958,7 @@ template <start S>
 CONSTCD11
 inline
 year_lastweek_weekday<S>
-operator/(const year_lastweek<S>& ylw, const weekday& wd) NOEXCEPT
+operator/(const year_lastweek<S>& ylw, const weekday<S>& wd) NOEXCEPT
 {
     return {ylw.year(), wd};
 }
@@ -1715,14 +1969,14 @@ inline
 year_lastweek_weekday<S>
 operator/(const year_lastweek<S>& ylw, int wd) NOEXCEPT
 {
-    return ylw / weekday(static_cast<unsigned>(wd));
+    return ylw / weekday<S>(static_cast<unsigned>(wd));
 }
 
 template <start S>
 CONSTCD11
 inline
 year_lastweek_weekday<S>
-operator/(const lastweek_weekday& lwwd, const year<S>& y) NOEXCEPT
+operator/(const lastweek_weekday<S>& lwwd, const year<S>& y) NOEXCEPT
 {
     return {y, lwwd.weekday()};
 }
@@ -1731,7 +1985,7 @@ template <start S>
 CONSTCD11
 inline
 year_lastweek_weekday<S>
-operator/(const lastweek_weekday& lwwd, int y) NOEXCEPT
+operator/(const lastweek_weekday<S>& lwwd, int y) NOEXCEPT
 {
     return lwwd / year<S>{y};
 }
