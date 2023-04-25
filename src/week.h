@@ -281,6 +281,7 @@ class year_weeknum
 public:
     year_weeknum() = default;
     CONSTCD11 year_weeknum(const week::year<S>& y, const week::weeknum& wn) NOEXCEPT;
+    CONSTCD14 year_weeknum(const week::year_lastweek<S>& ylw) NOEXCEPT;
 
     CONSTCD11 week::year<S> year()    const NOEXCEPT;
     CONSTCD11 week::weeknum weeknum() const NOEXCEPT;
@@ -1026,6 +1027,14 @@ inline
 year_weeknum<S>::year_weeknum(const week::year<S>& y, const week::weeknum& wn) NOEXCEPT
     : y_(y)
     , wn_(wn)
+    {}
+
+template <start S>
+CONSTCD14 
+inline
+year_weeknum<S>::year_weeknum(const week::year_lastweek<S>& ylw) NOEXCEPT
+    : y_(ylw.year())
+    , wn_(ylw.weeknum())
     {}
 
 template <start S>
