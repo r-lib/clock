@@ -613,7 +613,7 @@ The ISO 8601 standard outlines an alternative calendar that is specified by the 
 
 ```{r}
 x <- date_build(2019:2026)
-y <- as_year_week_day(y, start = clock_weekdays$monday)
+y <- as_year_week_day(x, start = clock_weekdays$monday)
 
 data.frame(x = x, y = y)
 ```
@@ -640,8 +640,8 @@ Epidemiologists following the US CDC guidelines use a calendar that is similar t
 
 ```{r}
 x <- date_build(2019:2026)
-iso <- as_year_week_day(y, start = clock_weekdays$monday)
-epi <- as_year_week_day(y, start = clock_weekdays$sunday)
+iso <- as_year_week_day(x, start = clock_weekdays$monday)
+epi <- as_year_week_day(x, start = clock_weekdays$sunday)
 
 data.frame(x = x, iso = iso, epi = epi)
 ```
