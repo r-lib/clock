@@ -546,8 +546,7 @@ inline
 unsigned char
 weekday<S>::from_weekday(const date::weekday& x) NOEXCEPT
 {
-    const auto wd = x - days{static_cast<unsigned>(S)};
-    return wd.c_encoding() + 1u;
+    return (x - days{static_cast<unsigned>(S)}).c_encoding() + 1u;
 }
 
 template <start S>
@@ -556,8 +555,7 @@ inline
 unsigned char
 weekday<S>::to_weekday(const weekday<S>& x) NOEXCEPT
 {
-    const auto wd = x + days{static_cast<unsigned>(S)};
-    return static_cast<unsigned>(wd) - 1u;
+    return static_cast<unsigned>(x + days{static_cast<unsigned>(S)}) - 1u;
 }
 
 template <start S>
@@ -1030,7 +1028,7 @@ year_weeknum<S>::year_weeknum(const week::year<S>& y, const week::weeknum& wn) N
     {}
 
 template <start S>
-CONSTCD14 
+CONSTCD14
 inline
 year_weeknum<S>::year_weeknum(const week::year_lastweek<S>& ylw) NOEXCEPT
     : y_(ylw.year())
