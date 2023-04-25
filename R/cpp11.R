@@ -416,6 +416,58 @@ clock_init_utils <- function() {
   .Call(`_clock_clock_init_utils`)
 }
 
+new_year_week_day_from_fields <- function(fields, precision_int, start, names) {
+  .Call(`_clock_new_year_week_day_from_fields`, fields, precision_int, start, names)
+}
+
+year_week_day_restore <- function(x, to) {
+  .Call(`_clock_year_week_day_restore`, x, to)
+}
+
+format_year_week_day_cpp <- function(fields, precision_int, start_int) {
+  .Call(`_clock_format_year_week_day_cpp`, fields, precision_int, start_int)
+}
+
+invalid_detect_year_week_day_cpp <- function(year, week, start_int) {
+  .Call(`_clock_invalid_detect_year_week_day_cpp`, year, week, start_int)
+}
+
+invalid_any_year_week_day_cpp <- function(year, week, start_int) {
+  .Call(`_clock_invalid_any_year_week_day_cpp`, year, week, start_int)
+}
+
+invalid_count_year_week_day_cpp <- function(year, week, start_int) {
+  .Call(`_clock_invalid_count_year_week_day_cpp`, year, week, start_int)
+}
+
+invalid_resolve_year_week_day_cpp <- function(fields, precision_int, start_int, invalid_string) {
+  .Call(`_clock_invalid_resolve_year_week_day_cpp`, fields, precision_int, start_int, invalid_string)
+}
+
+get_year_week_day_last_cpp <- function(year, start_int) {
+  .Call(`_clock_get_year_week_day_last_cpp`, year, start_int)
+}
+
+year_week_day_plus_duration_cpp <- function(fields, fields_n, precision_fields, precision_n, start_int) {
+  .Call(`_clock_year_week_day_plus_duration_cpp`, fields, fields_n, precision_fields, precision_n, start_int)
+}
+
+as_sys_time_year_week_day_cpp <- function(fields, precision_int, start_int) {
+  .Call(`_clock_as_sys_time_year_week_day_cpp`, fields, precision_int, start_int)
+}
+
+as_year_week_day_from_sys_time_cpp <- function(fields, precision_int, start_int) {
+  .Call(`_clock_as_year_week_day_from_sys_time_cpp`, fields, precision_int, start_int)
+}
+
+year_week_day_minus_year_week_day_cpp <- function(x, y, precision_int, start_int) {
+  .Call(`_clock_year_week_day_minus_year_week_day_cpp`, x, y, precision_int, start_int)
+}
+
+year_week_day_leap_year_cpp <- function(year, start_int) {
+  .Call(`_clock_year_week_day_leap_year_cpp`, year, start_int)
+}
+
 weekday_add_days_cpp <- function(x, n_fields) {
   .Call(`_clock_weekday_add_days_cpp`, x, n_fields)
 }

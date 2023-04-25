@@ -86,6 +86,11 @@ as_year_quarter_day.Date <- function(x, ..., start = NULL) {
 }
 
 #' @export
+as_year_week_day.Date <- function(x, ..., start = NULL) {
+  as_year_week_day(as_naive_time(x), ..., start = start)
+}
+
+#' @export
 as_iso_year_week_day.Date <- function(x) {
   as_iso_year_week_day(as_naive_time(x))
 }

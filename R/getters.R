@@ -9,6 +9,8 @@
 #'
 #' - [year-month-weekday][year-month-weekday-getters]
 #'
+#' - [year-week-day][year-week-day-getters]
+#'
 #' - [iso-year-week-day][iso-year-week-day-getters]
 #'
 #' - [year-quarter-day][year-quarter-day-getters]

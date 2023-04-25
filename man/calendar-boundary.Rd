@@ -39,6 +39,7 @@ can compute a boundary at:
 \itemize{
 \item \link[=year-month-day-boundary]{year-month-day}
 \item \link[=year-month-weekday-boundary]{year-month-weekday}
+\item \link[=year-week-day-boundary]{year-week-day}
 \item \link[=iso-year-week-day-boundary]{iso-year-week-day}
 \item \link[=year-quarter-day-boundary]{year-quarter-day}
 \item \link[=year-day-boundary]{year-day}

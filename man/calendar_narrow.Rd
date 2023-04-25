@@ -28,6 +28,7 @@ can narrow to:
 \itemize{
 \item \link[=year-month-day-narrow]{year-month-day}
 \item \link[=year-month-weekday-narrow]{year-month-weekday}
+\item \link[=year-week-day-narrow]{year-week-day}
 \item \link[=iso-year-week-day-narrow]{iso-year-week-day}
 \item \link[=year-quarter-day-narrow]{year-quarter-day}
 \item \link[=year-day-narrow]{year-day}

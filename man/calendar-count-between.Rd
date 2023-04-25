@@ -40,6 +40,7 @@ count at:
 \itemize{
 \item \link[=year-month-day-count-between]{year-month-day}
 \item \link[=year-month-weekday-count-between]{year-month-weekday}
+\item \link[=year-week-day-count-between]{year-week-day}
 \item \link[=iso-year-week-day-count-between]{iso-year-week-day}
 \item \link[=year-quarter-day-count-between]{year-quarter-day}
 \item \link[=year-day-count-between]{year-day}

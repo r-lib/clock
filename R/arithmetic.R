@@ -14,6 +14,8 @@
 #'
 #' - [year-quarter-day][year-quarter-day-arithmetic]
 #'
+#' - [year-week-day][year-week-day-arithmetic]
+#'
 #' - [iso-year-week-day][iso-year-week-day-arithmetic]
 #'
 #' - [year-day][year-day-arithmetic]

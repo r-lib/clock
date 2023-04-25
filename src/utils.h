@@ -25,6 +25,7 @@ extern SEXP classes_zoned_time;
 extern SEXP classes_year_month_day;
 extern SEXP classes_year_month_weekday;
 extern SEXP classes_year_day;
+extern SEXP classes_year_week_day;
 extern SEXP classes_iso_year_week_day;
 extern SEXP classes_year_quarter_day;
 extern SEXP classes_data_frame;

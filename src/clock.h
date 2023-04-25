@@ -10,6 +10,7 @@
 // Include date extensions next
 #include "quarterly.h"
 #include "ordinal.h"
+#include "week.h"
 
 // Include cpp11 next to avoid <Rinternals.h> being included before cpp11
 #include <cpp11.hpp>

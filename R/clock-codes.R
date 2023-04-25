@@ -46,6 +46,8 @@
 #' weekday(clock_weekdays$wednesday)
 #'
 #' year_month_weekday(2019, clock_months$april, clock_weekdays$monday, 1:4)
+#' 
+#' year_week_day(2020, 52, start = clock_weekdays$monday)
 #'
 #' iso_year_week_day(2020, 52, clock_iso_weekdays$thursday)
 NULL
