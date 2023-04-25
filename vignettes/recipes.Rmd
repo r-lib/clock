@@ -607,6 +607,50 @@ date_count_between(x, y, "month")
 
 There is no high level equivalent to the average length of one proleptic Gregorian month example.
 
+## Computing the ISO year or week
+
+The ISO 8601 standard outlines an alternative calendar that is specified by the year, the week of the year, and the day of the week. It also specifies that the _start_ of the week is considered to be a Monday. This ends up meaning that the actual ISO year may be different from the Gregorian year, and is somewhat difficult to compute "by hand". Instead, you can use the `year_week_day()` calendar if you need to work with ISO week dates.
+
+```{r}
+x <- date_build(2019:2026)
+y <- as_year_week_day(y, start = clock_weekdays$monday)
+
+data.frame(x = x, y = y)
+```
+
+```{r}
+get_year(y)
+get_week(y)
+
+# Last week in the ISO year
+set_week(y, "last")
+```
+
+The year-week-day calendar is a fully supported calendar, meaning that all of the `calendar_*()` functions work on it:
+
+```{r}
+calendar_narrow(y, "week")
+```
+
+There is also an `iso_year_week_day()` calendar available, which is identical to `year_week_day(start = clock_weekdays$monday)`. That ISO calendar actually existed first, before we generalized it to any `start` weekday.
+
+## Computing the Epidemiological year or week
+
+Epidemiologists following the US CDC guidelines use a calendar that is similar to the ISO calendar, but defines the start of the week to be Sunday instead of Monday. `year_week_day()` supports this as well:
+
+```{r}
+x <- date_build(2019:2026)
+iso <- as_year_week_day(y, start = clock_weekdays$monday)
+epi <- as_year_week_day(y, start = clock_weekdays$sunday)
+
+data.frame(x = x, iso = iso, epi = epi)
+```
+
+```{r}
+get_year(epi)
+get_week(epi)
+```
+
 ## Converting a time zone abbreviation into a time zone name
 
 It is possible that you might run into date-time strings of the form `"2020-10-25 01:30:00 IST"`, which contain a time zone _abbreviation_ rather than a full time zone name. Because time zone maintainers change the abbreviation they use throughout time, and because multiple time zones sometimes use the same abbreviation, it is generally impossible to parse strings of this form without more information. That said, if you know what time zone this abbreviation goes with, you can parse this time with `zoned_time_parse_abbrev()`, supplying the `zone`.
