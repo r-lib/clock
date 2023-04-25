@@ -774,10 +774,14 @@ grouping by the day of the year.</p></li>
 <li><p>year-quarter-day: Great for quarterly financial data, or if you
 have a fiscal year that starts in a different month from
 January.</p></li>
+<li><p>year-week-day: Allows you to specify a date using the year, week
+number, day of the week, and a <code>start</code> value representing the
+day that represents the start of the week.</p></li>
 <li><p>iso-year-week-day: Follows the ISO week standard. Great if you
 need to represent ISO weeks like <code>2020-W02</code>, or if you need
-to extract out the ISO year which might differ from the Gregorian
-year.</p></li>
+to extract out the ISO year which might differ from the Gregorian year.
+Identical to year-week-day with <code>start</code> set to
+Monday.</p></li>
 </ul>
 <p>Calendar types are great for instant retrieval of their underlying
 components (year, month, day, etc), and for irregular calendrical

@@ -88,6 +88,9 @@
     <loc>https://clock.r-lib.org/dev/reference/as_year_quarter_day.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/dev/reference/as_year_week_day.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/dev/reference/as_zoned_time.html</loc>
   </url>
   <url>
@@ -259,6 +262,9 @@
     <loc>https://clock.r-lib.org/dev/reference/is_year_quarter_day.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/dev/reference/is_year_week_day.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/dev/reference/is_zoned_time.html</loc>
   </url>
   <url>
@@ -347,6 +353,9 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/dev/reference/seq.clock_year_quarter_day.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/dev/reference/seq.clock_year_week_day.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/dev/reference/sys-parsing.html</loc>
@@ -484,6 +493,30 @@
     <loc>https://clock.r-lib.org/dev/reference/year-quarter-day-widen.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/dev/reference/year-week-day-arithmetic.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/dev/reference/year-week-day-boundary.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/dev/reference/year-week-day-count-between.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/dev/reference/year-week-day-getters.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/dev/reference/year-week-day-group.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/dev/reference/year-week-day-narrow.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/dev/reference/year-week-day-setters.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/dev/reference/year-week-day-widen.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/dev/reference/year_day.html</loc>
   </url>
   <url>
@@ -497,6 +530,9 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/dev/reference/year_quarter_day.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/dev/reference/year_week_day.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/dev/reference/zoned-parsing.html</loc>

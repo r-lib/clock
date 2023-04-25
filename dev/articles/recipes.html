@@ -860,6 +860,82 @@ proleptic Gregorian month example.</p>
 </div>
 </div>
 <div class="section level2">
+<h2 id="computing-the-iso-year-or-week">Computing the ISO year or week<a class="anchor" aria-label="anchor" href="#computing-the-iso-year-or-week"></a>
+</h2>
+<p>The ISO 8601 standard outlines an alternative calendar that is
+specified by the year, the week of the year, and the day of the week. It
+also specifies that the <em>start</em> of the week is considered to be a
+Monday. This ends up meaning that the actual ISO year may be different
+from the Gregorian year, and is somewhat difficult to compute “by hand”.
+Instead, you can use the <code><a href="../reference/year_week_day.html">year_week_day()</a></code> calendar if you
+need to work with ISO week dates.</p>
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2019</span><span class="op">:</span><span class="fl">2026</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_year_week_day.html">as_year_week_day</a></span><span class="op">(</span><span class="va">x</span>, start <span class="op">=</span> <span class="va">clock_weekdays</span><span class="op">$</span><span class="va">monday</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span></span>
+<span><span class="co">#&gt;            x          y</span></span>
+<span><span class="co">#&gt; 1 2019-01-01 2019-W01-2</span></span>
+<span><span class="co">#&gt; 2 2020-01-01 2020-W01-3</span></span>
+<span><span class="co">#&gt; 3 2021-01-01 2020-W53-5</span></span>
+<span><span class="co">#&gt; 4 2022-01-01 2021-W52-6</span></span>
+<span><span class="co">#&gt; 5 2023-01-01 2022-W52-7</span></span>
+<span><span class="co">#&gt; 6 2024-01-01 2024-W01-1</span></span>
+<span><span class="co">#&gt; 7 2025-01-01 2025-W01-3</span></span>
+<span><span class="co">#&gt; 8 2026-01-01 2026-W01-4</span></span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/clock-getters.html">get_year</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 2019 2020 2020 2021 2022 2024 2025 2026</span></span>
+<span><span class="fu"><a href="../reference/clock-getters.html">get_week</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  1  1 53 52 52  1  1  1</span></span>
+<span></span>
+<span><span class="co"># Last week in the ISO year</span></span>
+<span><span class="fu"><a href="../reference/clock-setters.html">set_week</a></span><span class="op">(</span><span class="va">y</span>, <span class="st">"last"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;year_week_day&lt;Monday&gt;&lt;day&gt;[8]&gt;</span></span>
+<span><span class="co">#&gt; [1] "2019-W52-2" "2020-W53-3" "2020-W53-5" "2021-W52-6" "2022-W52-7"</span></span>
+<span><span class="co">#&gt; [6] "2024-W52-1" "2025-W52-3" "2026-W53-4"</span></span></code></pre></div>
+<p>The year-week-day calendar is a fully supported calendar, meaning
+that all of the <code>calendar_*()</code> functions work on it:</p>
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/calendar_narrow.html">calendar_narrow</a></span><span class="op">(</span><span class="va">y</span>, <span class="st">"week"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;year_week_day&lt;Monday&gt;&lt;week&gt;[8]&gt;</span></span>
+<span><span class="co">#&gt; [1] "2019-W01" "2020-W01" "2020-W53" "2021-W52" "2022-W52" "2024-W01"</span></span>
+<span><span class="co">#&gt; [7] "2025-W01" "2026-W01"</span></span></code></pre></div>
+<p>There is also an <code><a href="../reference/iso_year_week_day.html">iso_year_week_day()</a></code> calendar available,
+which is identical to
+<code>year_week_day(start = clock_weekdays$monday)</code>. That ISO
+calendar actually existed first, before we generalized it to any
+<code>start</code> weekday.</p>
+</div>
+<div class="section level2">
+<h2 id="computing-the-epidemiological-year-or-week">Computing the Epidemiological year or week<a class="anchor" aria-label="anchor" href="#computing-the-epidemiological-year-or-week"></a>
+</h2>
+<p>Epidemiologists following the US CDC guidelines use a calendar that
+is similar to the ISO calendar, but defines the start of the week to be
+Sunday instead of Monday. <code><a href="../reference/year_week_day.html">year_week_day()</a></code> supports this as
+well:</p>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2019</span><span class="op">:</span><span class="fl">2026</span><span class="op">)</span></span>
+<span><span class="va">iso</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_year_week_day.html">as_year_week_day</a></span><span class="op">(</span><span class="va">x</span>, start <span class="op">=</span> <span class="va">clock_weekdays</span><span class="op">$</span><span class="va">monday</span><span class="op">)</span></span>
+<span><span class="va">epi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_year_week_day.html">as_year_week_day</a></span><span class="op">(</span><span class="va">x</span>, start <span class="op">=</span> <span class="va">clock_weekdays</span><span class="op">$</span><span class="va">sunday</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, iso <span class="op">=</span> <span class="va">iso</span>, epi <span class="op">=</span> <span class="va">epi</span><span class="op">)</span></span>
+<span><span class="co">#&gt;            x        iso        epi</span></span>
+<span><span class="co">#&gt; 1 2019-01-01 2019-W01-2 2019-W01-3</span></span>
+<span><span class="co">#&gt; 2 2020-01-01 2020-W01-3 2020-W01-4</span></span>
+<span><span class="co">#&gt; 3 2021-01-01 2020-W53-5 2020-W53-6</span></span>
+<span><span class="co">#&gt; 4 2022-01-01 2021-W52-6 2021-W52-7</span></span>
+<span><span class="co">#&gt; 5 2023-01-01 2022-W52-7 2023-W01-1</span></span>
+<span><span class="co">#&gt; 6 2024-01-01 2024-W01-1 2024-W01-2</span></span>
+<span><span class="co">#&gt; 7 2025-01-01 2025-W01-3 2025-W01-4</span></span>
+<span><span class="co">#&gt; 8 2026-01-01 2026-W01-4 2025-W53-5</span></span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/clock-getters.html">get_year</a></span><span class="op">(</span><span class="va">epi</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 2019 2020 2020 2021 2023 2024 2025 2025</span></span>
+<span><span class="fu"><a href="../reference/clock-getters.html">get_week</a></span><span class="op">(</span><span class="va">epi</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  1  1 53 52  1  1  1 53</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="converting-a-time-zone-abbreviation-into-a-time-zone-name">Converting a time zone abbreviation into a time zone name<a class="anchor" aria-label="anchor" href="#converting-a-time-zone-abbreviation-into-a-time-zone-name"></a>
 </h2>
 <p>It is possible that you might run into date-time strings of the form
@@ -872,7 +948,7 @@ information. That said, if you know what time zone this abbreviation
 goes with, you can parse this time with
 <code><a href="../reference/zoned-parsing.html">zoned_time_parse_abbrev()</a></code>, supplying the
 <code>zone</code>.</p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"2020-10-25 01:30:00 IST"</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/zoned-parsing.html">zoned_time_parse_abbrev</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"Asia/Kolkata"</span><span class="op">)</span></span>
@@ -888,7 +964,7 @@ tools in this library that can help you generate a list of
 <p>Assuming that <code>x</code> is a naive-time with its corresponding
 time zone abbreviation attached, the first thing to do is to parse this
 string as a naive-time.</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/naive_time_parse.html">naive_time_parse</a></span><span class="op">(</span><span class="va">x</span>, format <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%S IST"</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
 <span><span class="co">#&gt; &lt;naive_time&lt;second&gt;[1]&gt;</span></span>
@@ -904,7 +980,7 @@ abbreviation that is currently in use. By matching this abbreviation
 against our input abbreviation, we can generate a list of zoned-times
 that use the abbreviation we care about at that particular instance in
 time.</p>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">naive_find_by_abbrev</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">abbrev</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="../reference/is_naive_time.html">is_naive_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">abort</a></span><span class="op">(</span><span class="st">"`x` must be a naive-time."</span><span class="op">)</span></span>
@@ -956,7 +1032,7 @@ time.</p>
 <span>  </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">earliest</span>, <span class="va">latest</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">candidates</span> <span class="op">&lt;-</span> <span class="fu">naive_find_by_abbrev</span><span class="op">(</span><span class="va">x</span>, <span class="st">"IST"</span><span class="op">)</span></span>
 <span><span class="va">candidates</span></span>
 <span><span class="co">#&gt; [[1]]</span></span>
@@ -1006,7 +1082,7 @@ about which of the two ambiguous times were used.</p>
 candidates came from a different path. The Asia/Kolkata one is unique,
 the Europe/Dublin one is ambiguous but the earliest was chosen, and the
 Asia/Jerusalem one is ambiguous but the latest was chosen:</p>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"Asia/Kolkata"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;zoned_time&lt;second&gt;&lt;Asia/Kolkata&gt;[1]&gt;</span></span>
 <span><span class="co">#&gt; [1] "2020-10-25T01:30:00+05:30"</span></span>
@@ -1027,7 +1103,7 @@ information about the current daylight saving time transition points,
 along with information about the offset, the current time zone
 abbreviation, and whether or not daylight saving time is currently
 active or not.</p>
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/zoned-parsing.html">zoned_time_parse_complete</a></span><span class="op">(</span><span class="st">"2019-01-01T00:00:00-05:00[America/New_York]"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">info</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sys_time_info.html">sys_time_info</a></span><span class="op">(</span><span class="fu"><a href="../reference/as_sys_time.html">as_sys_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
@@ -1046,7 +1122,7 @@ was turned off. On 2019-03-10 at 3 o’clock, daylight saving time will be
 considered on again. This is the next moment in time right after a
 daylight saving time gap of 1 hour, which you can see by subtracting 1
 second (in sys-time):</p>
-<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Last moment in time in the current DST range</span></span>
 <span><span class="va">info</span><span class="op">$</span><span class="va">end</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
