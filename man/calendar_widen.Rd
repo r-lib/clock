@@ -27,6 +27,7 @@ can widen to:
 \itemize{
 \item \link[=year-month-day-widen]{year-month-day}
 \item \link[=year-month-weekday-widen]{year-month-weekday}
+\item \link[=year-week-day-widen]{year-week-day}
 \item \link[=iso-year-week-day-widen]{iso-year-week-day}
 \item \link[=year-quarter-day-widen]{year-quarter-day}
 \item \link[=year-day-widen]{year-day}

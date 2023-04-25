@@ -72,6 +72,8 @@ cast_calendar_to_calendar <- function(x, to, ...) {
 #'
 #' - [year_month_weekday()]: February has a weekday that occurs 5 times.
 #'
+#' - [year_week_day()]: There are 53 weeks in the year.
+#'
 #' - [year_day()]: There are 366 days in the year.
 #'
 #' - [year_quarter_day()]: One of the quarters has 1 more day than normal (the
@@ -216,6 +218,8 @@ calendar_month_factor_impl <- function(x, labels, abbreviate, ...) {
 #' - [year-month-day][year-month-day-group]
 #'
 #' - [year-month-weekday][year-month-weekday-group]
+#'
+#' - [year-week-day][year-week-day-group]
 #'
 #' - [iso-year-week-day][iso-year-week-day-group]
 #'
@@ -374,6 +378,8 @@ validate_calendar_group_n <- function(n) {
 #'
 #' - [year-month-weekday][year-month-weekday-narrow]
 #'
+#' - [year-week-day][year-week-day-narrow]
+#'
 #' - [iso-year-week-day][iso-year-week-day-narrow]
 #'
 #' - [year-quarter-day][year-quarter-day-narrow]
@@ -479,6 +485,8 @@ calendar_narrow_time <- function(out_fields, out_precision, x_fields) {
 #' - [year-month-day][year-month-day-widen]
 #'
 #' - [year-month-weekday][year-month-weekday-widen]
+#'
+#' - [year-week-day][year-week-day-widen]
 #'
 #' - [iso-year-week-day][iso-year-week-day-widen]
 #'
@@ -606,6 +614,8 @@ calendar_widen_time <- function(x, x_precision, precision) {
 #' - [year-month-day][year-month-day-boundary]
 #'
 #' - [year-month-weekday][year-month-weekday-boundary]
+#'
+#' - [year-week-day][year-week-day-boundary]
 #'
 #' - [iso-year-week-day][iso-year-week-day-boundary]
 #'
@@ -760,6 +770,8 @@ calendar_start_end_time <- function(x, x_precision, precision, values) {
 #' - [year-month-day][year-month-day-count-between]
 #'
 #' - [year-month-weekday][year-month-weekday-count-between]
+#'
+#' - [year-week-day][year-week-day-count-between]
 #'
 #' - [iso-year-week-day][iso-year-week-day-count-between]
 #'
@@ -1077,6 +1089,11 @@ as_year_month_day.clock_calendar <- function(x) {
 #' @export
 as_year_month_weekday.clock_calendar <- function(x) {
   as_year_month_weekday(as_sys_time(x))
+}
+
+#' @export
+as_year_week_day.clock_calendar <- function(x, ..., start = NULL) {
+  as_year_week_day(as_sys_time(x), ..., start = start)
 }
 
 #' @export

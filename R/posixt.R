@@ -65,6 +65,13 @@ as_year_quarter_day.POSIXt <- function(x, ..., start = NULL) {
 }
 
 #' @export
+as_year_week_day.POSIXt <- function(x, ..., start = NULL) {
+  # Assumes zoned -> naive -> calendar is what the user expects
+  x <- as_naive_time(x)
+  as_year_week_day(x, ..., start = start)
+}
+
+#' @export
 as_iso_year_week_day.POSIXt <- function(x) {
   # Assumes zoned -> naive -> calendar is what the user expects
   x <- as_naive_time(x)

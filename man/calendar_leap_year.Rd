@@ -23,6 +23,7 @@ A particular year is a leap year if:
 \itemize{
 \item \code{\link[=year_month_day]{year_month_day()}}: February has 29 days.
 \item \code{\link[=year_month_weekday]{year_month_weekday()}}: February has a weekday that occurs 5 times.
+\item \code{\link[=year_week_day]{year_week_day()}}: There are 53 weeks in the year.
 \item \code{\link[=year_day]{year_day()}}: There are 366 days in the year.
 \item \code{\link[=year_quarter_day]{year_quarter_day()}}: One of the quarters has 1 more day than normal (the
 quarter with an extra day depends on the \code{start} used, but will always be

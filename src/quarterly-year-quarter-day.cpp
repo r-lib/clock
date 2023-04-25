@@ -71,7 +71,7 @@ format_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
                             const cpp11::integers& start_int) {
   using namespace rclock;
 
-  const quarterly::start start = parse_start(start_int);
+  const quarterly::start start = parse_quarterly_start(start_int);
 
   cpp11::integers year = rquarterly::get_year(fields);
   cpp11::integers quarter = rquarterly::get_quarter(fields);
@@ -115,7 +115,7 @@ invalid_detect_year_quarter_day_cpp(const cpp11::integers& year,
                                     const cpp11::integers& quarter,
                                     const cpp11::integers& day,
                                     const cpp11::integers& start_int) {
-  const quarterly::start start = parse_start(start_int);
+  const quarterly::start start = parse_quarterly_start(start_int);
 
   rclock::rquarterly::yqnqd x{year, quarter, day, start};
 
@@ -141,7 +141,7 @@ invalid_any_year_quarter_day_cpp(const cpp11::integers& year,
                                  const cpp11::integers& quarter,
                                  const cpp11::integers& day,
                                  const cpp11::integers& start_int) {
-  const quarterly::start start = parse_start(start_int);
+  const quarterly::start start = parse_quarterly_start(start_int);
 
   rclock::rquarterly::yqnqd x{year, quarter, day, start};
 
@@ -164,7 +164,7 @@ invalid_count_year_quarter_day_cpp(const cpp11::integers& year,
                                    const cpp11::integers& quarter,
                                    const cpp11::integers& day,
                                    const cpp11::integers& start_int) {
-  const quarterly::start start = parse_start(start_int);
+  const quarterly::start start = parse_quarterly_start(start_int);
 
   rclock::rquarterly::yqnqd x{year, quarter, day, start};
 
@@ -189,7 +189,7 @@ invalid_resolve_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
                                      const cpp11::strings& invalid_string) {
   using namespace rclock;
 
-  const quarterly::start start = parse_start(start_int);
+  const quarterly::start start = parse_quarterly_start(start_int);
   const enum invalid invalid_val = parse_invalid(invalid_string);
 
   cpp11::integers year = rquarterly::get_year(fields);
@@ -227,7 +227,7 @@ cpp11::writable::integers
 get_year_quarter_day_last_cpp(const cpp11::integers& year,
                               const cpp11::integers& quarter,
                               const cpp11::integers& start_int) {
-  const quarterly::start start = parse_start(start_int);
+  const quarterly::start start = parse_quarterly_start(start_int);
 
   rclock::rquarterly::yqn x{year, quarter, start};
 
@@ -238,7 +238,7 @@ get_year_quarter_day_last_cpp(const cpp11::integers& year,
     if (x.is_na(i)) {
       out[i] = r_int_na;
     } else {
-      rclock::rquarterly::quarterly_shim::year_quarternum_quarterday_last elt{x.to_year_quarternum(i)};
+      const auto elt = x.to_year_quarternum(i) / quarterly::last;
       out[i] = static_cast<int>(static_cast<unsigned>(elt.quarterday()));
     }
   }
@@ -257,7 +257,7 @@ year_quarter_day_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields,
                                    const cpp11::integers& start_int) {
   using namespace rclock;
 
-  const quarterly::start start = parse_start(start_int);
+  const quarterly::start start = parse_quarterly_start(start_int);
 
   const enum precision precision_fields_val = parse_precision(precision_fields);
   const enum precision precision_n_val = parse_precision(precision_n);
@@ -352,7 +352,7 @@ as_sys_time_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
                                  const cpp11::integers& start_int) {
   using namespace rclock;
 
-  const quarterly::start start = parse_start(start_int);
+  const quarterly::start start = parse_quarterly_start(start_int);
 
   cpp11::integers year = rquarterly::get_year(fields);
   cpp11::integers quarter = rquarterly::get_quarter(fields);
@@ -426,7 +426,7 @@ as_year_quarter_day_from_sys_time_cpp(cpp11::list_of<cpp11::doubles> fields,
                                       const cpp11::integers& start_int) {
   using namespace rclock;
 
-  const quarterly::start start = parse_start(start_int);
+  const quarterly::start start = parse_quarterly_start(start_int);
 
   switch (parse_precision(precision_int)) {
   case precision::day: return as_year_quarter_day_from_sys_time_impl<duration::days, rquarterly::yqnqd>(fields, start);
@@ -488,7 +488,7 @@ year_quarter_day_minus_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> x,
                                             cpp11::list_of<cpp11::integers> y,
                                             const cpp11::integers& precision_int,
                                             const cpp11::integers& start_int) {
-  quarterly::start start = parse_start(start_int);
+  quarterly::start start = parse_quarterly_start(start_int);
 
   const cpp11::integers x_year = rclock::rquarterly::get_year(x);
   const cpp11::integers x_quarter = rclock::rquarterly::get_quarter(x);
@@ -517,7 +517,7 @@ year_quarter_day_minus_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> x,
 cpp11::writable::logicals
 year_quarter_day_leap_year_cpp(const cpp11::integers& year,
                                const cpp11::integers& start_int) {
-  const quarterly::start start = parse_start(start_int);
+  const quarterly::start start = parse_quarterly_start(start_int);
 
   const r_ssize size = year.size();
   cpp11::writable::logicals out(size);

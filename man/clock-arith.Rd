@@ -2,7 +2,7 @@
 % Please edit documentation in R/gregorian-year-day.R,
 %   R/gregorian-year-month-day.R, R/gregorian-year-month-weekday.R,
 %   R/iso-year-week-day.R, R/naive-time.R, R/quarterly-year-quarter-day.R,
-%   R/sys-time.R, R/weekday.R
+%   R/sys-time.R, R/week-year-week-day.R, R/weekday.R
 \name{vec_arith.clock_year_day}
 \alias{vec_arith.clock_year_day}
 \alias{clock-arith}
@@ -12,6 +12,7 @@
 \alias{vec_arith.clock_naive_time}
 \alias{vec_arith.clock_year_quarter_day}
 \alias{vec_arith.clock_sys_time}
+\alias{vec_arith.clock_year_week_day}
 \alias{vec_arith.clock_weekday}
 \title{Support for vctrs arithmetic}
 \usage{
@@ -28,6 +29,8 @@
 \method{vec_arith}{clock_year_quarter_day}(op, x, y, ...)
 
 \method{vec_arith}{clock_sys_time}(op, x, y, ...)
+
+\method{vec_arith}{clock_year_week_day}(op, x, y, ...)
 
 \method{vec_arith}{clock_weekday}(op, x, y, ...)
 }

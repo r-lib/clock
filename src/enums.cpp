@@ -84,7 +84,27 @@ enum component parse_component(const cpp11::strings& x) {
 // -----------------------------------------------------------------------------
 
 // [[ include("enums.h") ]]
-enum quarterly::start parse_start(const cpp11::integers& x) {
+enum week::start parse_week_start(const cpp11::integers& x) {
+  if (x.size() != 1) {
+    clock_abort("`start` must be an integer with length 1.");
+  }
+
+  const int s = x[0];
+
+  if (s == 1) return week::start::sunday;
+  else if (s == 2) return week::start::monday;
+  else if (s == 3) return week::start::tuesday;
+  else if (s == 4) return week::start::wednesday;
+  else if (s == 5) return week::start::thursday;
+  else if (s == 6) return week::start::friday;
+  else if (s == 7) return week::start::saturday;
+  else clock_abort("'%i' is not a recognized `start` option.", s);
+}
+
+// -----------------------------------------------------------------------------
+
+// [[ include("enums.h") ]]
+enum quarterly::start parse_quarterly_start(const cpp11::integers& x) {
   if (x.size() != 1) {
     clock_abort("`start` must be an integer with length 1.");
   }

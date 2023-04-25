@@ -63,7 +63,11 @@ enum component parse_component(const cpp11::strings& x);
 
 // -----------------------------------------------------------------------------
 
-enum quarterly::start parse_start(const cpp11::integers& x);
+enum week::start parse_week_start(const cpp11::integers& x);
+
+// -----------------------------------------------------------------------------
+
+enum quarterly::start parse_quarterly_start(const cpp11::integers& x);
 
 // -----------------------------------------------------------------------------
 

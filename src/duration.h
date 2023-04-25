@@ -25,7 +25,7 @@ public:
   void assign_na(r_ssize i);
   void assign(const Duration& x, r_ssize i);
 
-  CONSTCD11 Duration operator[](r_ssize i) const NOEXCEPT;
+  CONSTCD14 Duration operator[](r_ssize i) const NOEXCEPT;
 
   cpp11::writable::list to_list() const;
 
@@ -149,6 +149,7 @@ namespace detail {
  * https://github.com/r-lib/vctrs/blob/c27b6988bd2f02aa970b6d14a640eccb299e03bb/src/type-integer64.c#L117-L156
  */
 
+CONSTCD14
 static
 inline
 std::pair<double, double>
@@ -165,6 +166,7 @@ int64_unpack(int64_t x)
   return std::make_pair(left_out, right_out);
 }
 
+CONSTCD14
 static
 inline
 int64_t int64_pack(double left, double right)
@@ -193,7 +195,7 @@ duration<Duration>::assign(const Duration& x, r_ssize i)
 }
 
 template <typename Duration>
-CONSTCD11
+CONSTCD14
 inline
 Duration
 duration<Duration>::operator[](r_ssize i) const NOEXCEPT

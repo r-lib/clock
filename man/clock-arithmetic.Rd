@@ -65,6 +65,7 @@ month, quarters, or years.
 \item \link[=year-month-day-arithmetic]{year-month-day}
 \item \link[=year-month-weekday-arithmetic]{year-month-weekday}
 \item \link[=year-quarter-day-arithmetic]{year-quarter-day}
+\item \link[=year-week-day-arithmetic]{year-week-day}
 \item \link[=iso-year-week-day-arithmetic]{iso-year-week-day}
 \item \link[=year-day-arithmetic]{year-day}
 }

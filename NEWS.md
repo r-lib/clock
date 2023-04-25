@@ -1,5 +1,13 @@
 # clock (development version)
 
+* New `year_week_day()` calendar for specifying a date using the year, the week
+  number, and the day of the week, alongside a `start` value representing the
+  day of the week that is considered the start of the week. Using
+  `start = clock_weekdays$monday` is identical to the `iso_year_week_day()`
+  calendar, and using `start = clock_weekdays$sunday` is useful for representing
+  the Epidemiological calendar used by the US CDC guidelines (similar to what
+  is supported by `lubridate::epiweek()` and `lubridate::epiyear()`) (#110).
+
 * `calendar_leap_year()` now supports the year-quarter-day calendar (#332).
 
 * Documented clock's current stance on leap seconds in the FAQ vignette (clock

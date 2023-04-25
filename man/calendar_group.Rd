@@ -36,6 +36,7 @@ detail:
 \itemize{
 \item \link[=year-month-day-group]{year-month-day}
 \item \link[=year-month-weekday-group]{year-month-weekday}
+\item \link[=year-week-day-group]{year-week-day}
 \item \link[=iso-year-week-day-group]{iso-year-week-day}
 \item \link[=year-quarter-day-group]{year-quarter-day}
 \item \link[=year-day-group]{year-day}

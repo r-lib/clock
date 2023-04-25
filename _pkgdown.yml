@@ -89,6 +89,21 @@ reference:
   - get_year.clock_year_month_weekday
   - set_year.clock_year_month_weekday
 
+- title: Year-week-day
+  contents:
+  - year_week_day
+  - as_year_week_day
+  - is_year_week_day
+  - calendar_group.clock_year_week_day
+  - year-week-day-count-between
+  - year-week-day-boundary
+  - year-week-day-narrow
+  - year-week-day-widen
+  - seq.clock_year_week_day
+  - add_years.clock_year_week_day
+  - get_year.clock_year_week_day
+  - set_year.clock_year_week_day
+
 - title: ISO-year-week-day
   contents:
   - iso_year_week_day
