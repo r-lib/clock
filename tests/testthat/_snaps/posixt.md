@@ -223,6 +223,28 @@
     Ambiguous time due to daylight saving time at location 1.
     i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
+# boundaries are handled right
+
+    Code
+      x$begin
+    Output
+      [1] "-32767-01-01 UTC"
+
+---
+
+    Code
+      x$end
+    Output
+      [1] "32767-12-31 UTC"
+
+# input must be a date-time
+
+    Code
+      date_time_info(1)
+    Condition
+      Error in `date_time_info()`:
+      ! `x` must be a 'POSIXt'.
+
 # start: can't use invalid precisions
 
     `precision` must be a valid precision for a 'year_month_day'.

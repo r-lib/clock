@@ -1540,6 +1540,54 @@ date_now <- function(zone) {
 
 # ------------------------------------------------------------------------------
 
+#' Info: date-time
+#'
+#' @description
+#' `date_time_info()` retrieves a set of low-level information generally not
+#' required for most date-time manipulations. It returns a data frame with the
+#' same columns as [sys_time_info()], but the `begin` and `end` columns are
+#' date-times with the same time zone as `x`, and the `offset` column is an
+#' integer rather than a second based [duration][duration_seconds()] column
+#' since this is part of the high-level API.
+#'
+#' @param x `[POSIXct / POSIXlt]`
+#'
+#'   A date-time.
+#'
+#' @return A data frame of low level information.
+#'
+#' @export
+#' @examples
+#' x <- date_time_build(
+#'   2021, 03, 14, c(01, 03), c(59, 00), c(59, 00),
+#'   zone = "America/New_York"
+#' )
+#'
+#' # x[1] is in EST, x[2] is in EDT
+#' x
+#'
+#' info <- date_time_info(x)
+#' info
+#'
+#' # `end` can be used to iterate through daylight saving time transitions
+#' date_time_info(info$end)
+date_time_info <- function(x) {
+  if (!is_POSIXt(x)) {
+    abort("`x` must be a 'POSIXt'.")
+  }
+
+  x <- as_zoned_time(x)
+
+  out <- zoned_time_info(x)
+  out$begin <- as.POSIXct(out$begin)
+  out$end <- as.POSIXct(out$end)
+  out$offset <- as.integer(out$offset)
+
+  out
+}
+
+# ------------------------------------------------------------------------------
+
 #' Boundaries: date-time
 #'
 #' @description
