@@ -1,5 +1,8 @@
 # clock (development version)
 
+* Renamed `locale.h` to `fill.h` to avoid clock's `locale.h` being chosen over a
+  system header of the same name on some CentOS machines (#310).
+
 * New `year_week_day()` calendar for specifying a date using the year, the week
   number, and the day of the week, alongside a `start` value representing the
   day of the week that is considered the start of the week. Using
