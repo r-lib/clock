@@ -414,3 +414,24 @@ iso_year_week_day_minus_iso_year_week_day_cpp(cpp11::list_of<cpp11::integers> x,
 
   never_reached("iso_year_week_day_minus_iso_year_week_day_cpp");
 }
+
+// -----------------------------------------------------------------------------
+
+[[cpp11::register]]
+cpp11::writable::logicals
+iso_year_week_day_leap_year_cpp(const cpp11::integers& year) {
+  const r_ssize size = year.size();
+  cpp11::writable::logicals out(size);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    const int elt = year[i];
+
+    if (elt == r_int_na) {
+      out[i] = r_lgl_na;
+    } else {
+      out[i] = iso_week::year{elt}.is_leap();
+    }
+  }
+
+  return out;
+}

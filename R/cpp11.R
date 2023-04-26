@@ -316,6 +316,10 @@ iso_year_week_day_minus_iso_year_week_day_cpp <- function(x, y, precision_int) {
   .Call(`_clock_iso_year_week_day_minus_iso_year_week_day_cpp`, x, y, precision_int)
 }
 
+iso_year_week_day_leap_year_cpp <- function(year) {
+  .Call(`_clock_iso_year_week_day_leap_year_cpp`, year)
+}
+
 clock_get_year_max <- function() {
   .Call(`_clock_clock_get_year_max`)
 }

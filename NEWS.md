@@ -8,7 +8,8 @@
   the Epidemiological calendar used by the US CDC guidelines (similar to what
   is supported by `lubridate::epiweek()` and `lubridate::epiyear()`) (#110).
 
-* `calendar_leap_year()` now supports the year-quarter-day calendar (#332).
+* `calendar_leap_year()` now supports the year-quarter-day and iso-year-week-day
+  calendars (#332, #333).
 
 * Documented clock's current stance on leap seconds in the FAQ vignette (clock
   ignores them like POSIXct) (#309).

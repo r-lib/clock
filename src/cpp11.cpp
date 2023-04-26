@@ -558,6 +558,13 @@ extern "C" SEXP _clock_iso_year_week_day_minus_iso_year_week_day_cpp(SEXP x, SEX
     return cpp11::as_sexp(iso_year_week_day_minus_iso_year_week_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(y), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int)));
   END_CPP11
 }
+// iso-year-week-day.cpp
+cpp11::writable::logicals iso_year_week_day_leap_year_cpp(const cpp11::integers& year);
+extern "C" SEXP _clock_iso_year_week_day_leap_year_cpp(SEXP year) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(iso_year_week_day_leap_year_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year)));
+  END_CPP11
+}
 // limits.cpp
 int clock_get_year_max();
 extern "C" SEXP _clock_clock_get_year_max() {
@@ -1018,6 +1025,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_invalid_resolve_year_month_weekday_cpp",               (DL_FUNC) &_clock_invalid_resolve_year_month_weekday_cpp,                3},
     {"_clock_invalid_resolve_year_quarter_day_cpp",                 (DL_FUNC) &_clock_invalid_resolve_year_quarter_day_cpp,                  4},
     {"_clock_invalid_resolve_year_week_day_cpp",                    (DL_FUNC) &_clock_invalid_resolve_year_week_day_cpp,                     4},
+    {"_clock_iso_year_week_day_leap_year_cpp",                      (DL_FUNC) &_clock_iso_year_week_day_leap_year_cpp,                       1},
     {"_clock_iso_year_week_day_minus_iso_year_week_day_cpp",        (DL_FUNC) &_clock_iso_year_week_day_minus_iso_year_week_day_cpp,         3},
     {"_clock_iso_year_week_day_plus_duration_cpp",                  (DL_FUNC) &_clock_iso_year_week_day_plus_duration_cpp,                   4},
     {"_clock_iso_year_week_day_restore",                            (DL_FUNC) &_clock_iso_year_week_day_restore,                             2},
