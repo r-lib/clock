@@ -22,7 +22,7 @@ Depends:
 Imports:
     cli (>= 3.6.1),
     rlang (>= 1.1.0),
-    tzdb (>= 0.3.0),
+    tzdb (>= 0.3.0.9000),
     vctrs (>= 0.6.1)
 Suggests: 
     covr,
@@ -35,7 +35,7 @@ Suggests:
     withr
 LinkingTo: 
     cpp11 (>= 0.4.3),
-    tzdb (>= 0.3.0)
+    tzdb (>= 0.3.0.9000)
 VignetteBuilder: 
     knitr
 Config/Needs/website:
@@ -47,4 +47,4 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Remotes:
-    r-lib/tzdb#27
+    r-lib/tzdb
