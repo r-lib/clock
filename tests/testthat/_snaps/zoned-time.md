@@ -138,6 +138,30 @@
 
     `%Z` must be used and must result in a time zone abbreviation.
 
+# boundaries are handled right
+
+    Code
+      x$begin
+    Output
+      <zoned_time<second><UTC>[1]>
+      [1] "-32767-01-01T00:00:00+00:00"
+
+---
+
+    Code
+      x$end
+    Output
+      <zoned_time<second><UTC>[1]>
+      [1] "32767-12-31T00:00:00+00:00"
+
+# input must be a zoned-time
+
+    Code
+      zoned_time_info(1)
+    Condition
+      Error in `zoned_time_info()`:
+      ! `x` must be a 'clock_zoned_time'.
+
 # zoned-times don't support arithmetic
 
     Zoned-times don't support `add_years()`.
