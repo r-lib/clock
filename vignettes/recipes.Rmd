@@ -750,18 +750,18 @@ as_zoned_time(x, "Asia/Jerusalem", ambiguous = "latest")
 
 ## When is the next daylight saving time event?
 
-Given a particular zoned-time, when will it next be affected by daylight saving time? For this, we can use a relatively low level helper, `sys_time_info()`. It returns a data frame of information about the current daylight saving time transition points, along with information about the offset, the current time zone abbreviation, and whether or not daylight saving time is currently active or not.
+Given a particular zoned-time, when will it next be affected by daylight saving time? For this, we can use a relatively low level helper, `zoned_time_info()`. It returns a data frame of information about the current daylight saving time transition points, along with information about the offset, the current time zone abbreviation, and whether or not daylight saving time is currently active or not.
 
 ```{r}
 x <- zoned_time_parse_complete("2019-01-01T00:00:00-05:00[America/New_York]")
 
-info <- sys_time_info(as_sys_time(x), zoned_time_zone(x))
+info <- zoned_time_info(x)
 
 # Beginning of the current DST range
-as_zoned_time(info$begin, zoned_time_zone(x))
+info$begin
 
 # Beginning of the next DST range
-as_zoned_time(info$end, zoned_time_zone(x))
+info$end
 ```
 
 So on 2018-11-04 at (the second) 1 o'clock hour, daylight saving time was turned off. On 2019-03-10 at 3 o'clock, daylight saving time will be considered on again. This is the next moment in time right after a daylight saving time gap of 1 hour, which you can see by subtracting 1 second (in sys-time):
@@ -769,8 +769,18 @@ So on 2018-11-04 at (the second) 1 o'clock hour, daylight saving time was turned
 ```{r}
 # Last moment in time in the current DST range
 info$end %>%
+  as_sys_time() %>%
   add_seconds(-1) %>%
   as_zoned_time(zoned_time_zone(x))
 ```
 
+### High level API
+
+`date_time_info()` exists in the high level API to do a similar thing. It is basically the same as `zoned_time_info()`, except the `begin` and `end` columns are returned as R POSIXct date-times rather than zoned-times, and the `offset` column is returned as an integer rather than as a clock duration (since we try not to expose high level API users to low level types).
+
+```{r}
+x <- date_time_parse("2019-01-01 00:00:00", zone = "America/New_York")
+
+date_time_info(x)
+```
 
