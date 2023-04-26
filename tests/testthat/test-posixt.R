@@ -551,6 +551,64 @@ test_that("can get the current date-time", {
 })
 
 # ------------------------------------------------------------------------------
+# date_time_info()
+
+test_that("can get info of a date time (#295)", {
+  zone <- "America/New_York"
+
+  x <- date_time_build(2019, 1, 1, zone = zone)
+  x <- date_time_info(x)
+
+  begin <- date_time_build(2018, 11, 4, 1, zone = zone, ambiguous = "latest")
+  end <- date_time_build(2019, 03, 10, 3, zone = zone)
+
+  expect_identical(x$begin, begin)
+  expect_identical(x$end, end)
+  expect_identical(x$offset, -18000L)
+  expect_identical(x$dst, FALSE)
+  expect_identical(x$abbreviation, "EST")
+})
+
+test_that("`NA` propagates", {
+  x <- date_time_build(NA, zone = "UTC")
+  info <- date_time_info(x)
+
+  expect_identical(info$begin, x)
+  expect_identical(info$end, x)
+  expect_identical(info$offset, NA_integer_)
+  expect_identical(info$dst, NA)
+  expect_identical(info$abbreviation, NA_character_)
+})
+
+test_that("boundaries are handled right", {
+  x <- date_time_build(2019, 1, 1, zone = "UTC")
+  x <- date_time_info(x)
+
+  # Only snapshotting in case boundaries are different on CRAN
+  expect_snapshot(x$begin)
+  expect_snapshot(x$end)
+
+  expect_identical(x$offset, 0L)
+  expect_identical(x$dst, FALSE)
+  expect_identical(x$abbreviation, "UTC")
+})
+
+test_that("works with POSIXlt", {
+  x <- date_time_build(2019, 1, 1, zone = "America/New_York")
+
+  expect_identical(
+    date_time_info(as.POSIXlt(x)),
+    date_time_info(x)
+  )
+})
+
+test_that("input must be a date-time", {
+  expect_snapshot(error = TRUE, {
+    date_time_info(1)
+  })
+})
+
+# ------------------------------------------------------------------------------
 # date_start()
 
 test_that("can get the start", {

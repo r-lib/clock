@@ -917,6 +917,51 @@ zoned_time_now <- function(zone) {
 
 # ------------------------------------------------------------------------------
 
+#' Info: zoned-time
+#'
+#' @description
+#' `zoned_time_info()` retrieves a set of low-level information generally not
+#' required for most date-time manipulations. It returns a data frame with the
+#' same columns as [sys_time_info()], but the `begin` and `end` columns are
+#' zoned-times with the same time zone as `x`.
+#'
+#' @param x `[clock_zoned_time]`
+#'
+#'   A zoned-time.
+#'
+#' @return A data frame of low level information.
+#'
+#' @export
+#' @examples
+#' x <- year_month_day(2021, 03, 14, c(01, 03), c(59, 00), c(59, 00))
+#' x <- as_naive_time(x)
+#' x <- as_zoned_time(x, "America/New_York")
+#'
+#' # x[1] is in EST, x[2] is in EDT
+#' x
+#'
+#' info <- zoned_time_info(x)
+#' info
+#'
+#' # `end` can be used to iterate through daylight saving time transitions
+#' zoned_time_info(info$end)
+zoned_time_info <- function(x) {
+  if (!is_zoned_time(x)) {
+    abort("`x` must be a 'clock_zoned_time'.")
+  }
+
+  zone <- zoned_time_zone_attribute(x)
+  x <- as_sys_time(x)
+
+  out <- sys_time_info(x, zone)
+  out$begin <- as_zoned_time(out$begin, zone = zone)
+  out$end <- as_zoned_time(out$end, zone = zone)
+
+  out
+}
+
+# ------------------------------------------------------------------------------
+
 #' Get or set the time zone
 #'
 #' @description

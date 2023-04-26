@@ -32,6 +32,7 @@ reference:
   - date_weekday_factor
   - date_month_factor
   - date_leap_year
+  - date_time_info
   - as_date
   - as_date_time
   - get_year.Date
@@ -198,6 +199,7 @@ reference:
   - zoned_time_now
   - zoned_time_zone
   - zoned_time_precision
+  - zoned_time_info
   - format.clock_zoned_time
 
 - title: Weekdays

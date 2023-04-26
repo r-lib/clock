@@ -1,5 +1,9 @@
 # clock (development version)
 
+* New `date_time_info()` and `zoned_time_info()` low-level helpers for accessing
+  the previous/next transition times, the offset from UTC, and the current time
+  zone abbreviation (#295).
+
 * Renamed `locale.h` to `fill.h` to avoid clock's `locale.h` being chosen over a
   system header of the same name on some CentOS machines (#310).
 

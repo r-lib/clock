@@ -446,6 +446,55 @@ test_that("`x` is translated to UTF-8", {
 })
 
 # ------------------------------------------------------------------------------
+# zoned_time_info()
+
+test_that("can get info of a zoned time (#295)", {
+  zone <- "America/New_York"
+
+  x <- as_zoned_time(as_naive_time(year_month_day(2019, 1, 1)), zone)
+  x <- zoned_time_info(x)
+
+  begin <- as_zoned_time(as_naive_time(year_month_day(2018, 11, 4, 1)), zone, ambiguous = "latest")
+  end <- as_zoned_time(as_naive_time(year_month_day(2019, 03, 10, 3)), zone)
+
+  expect_identical(x$begin, begin)
+  expect_identical(x$end, end)
+  expect_identical(x$offset, duration_seconds(-18000))
+  expect_identical(x$dst, FALSE)
+  expect_identical(x$abbreviation, "EST")
+})
+
+test_that("`NA` propagates", {
+  x <- as_zoned_time(as_naive_time(year_month_day(NA, NA, NA)), "UTC")
+  info <- zoned_time_info(x)
+
+  expect_identical(info$begin, x)
+  expect_identical(info$end, x)
+  expect_identical(info$offset, duration_seconds(NA))
+  expect_identical(info$dst, NA)
+  expect_identical(info$abbreviation, NA_character_)
+})
+
+test_that("boundaries are handled right", {
+  x <- as_zoned_time(as_naive_time(year_month_day(2019, 1, 1)), "UTC")
+  x <- zoned_time_info(x)
+
+  # Only snapshotting in case boundaries are different on CRAN
+  expect_snapshot(x$begin)
+  expect_snapshot(x$end)
+
+  expect_identical(x$offset, duration_seconds(0))
+  expect_identical(x$dst, FALSE)
+  expect_identical(x$abbreviation, "UTC")
+})
+
+test_that("input must be a zoned-time", {
+  expect_snapshot(error = TRUE, {
+    zoned_time_info(1)
+  })
+})
+
+# ------------------------------------------------------------------------------
 # add_*()
 
 test_that("zoned-times don't support arithmetic", {
