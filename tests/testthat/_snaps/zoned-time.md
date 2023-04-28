@@ -1,7 +1,11 @@
 # can't compare zoned-times with different zones
 
-    Can't combine `..1` <zoned_time<second><America/New_York>> and `..2` <zoned_time<second><UTC>>.
-    Zones can't differ.
+    Code
+      x > y
+    Condition
+      Error in `vec_compare()`:
+      ! Can't combine `..1` <zoned_time<second><America/New_York>> and `..2` <zoned_time<second><UTC>>.
+      Zones can't differ.
 
 # normal print method works
 
@@ -117,11 +121,19 @@
 
 # cannot have differing zone names
 
-    All elements of `x` must have the same time zone name. Found different zone names of: 'America/New_York' and 'America/Los_Angeles'.
+    Code
+      zoned_time_parse_complete(x)
+    Condition
+      Error:
+      ! All elements of `x` must have the same time zone name. Found different zone names of: 'America/New_York' and 'America/Los_Angeles'.
 
 # zone name must be valid
 
-    `%Z` must be used, and must result in a valid time zone name, not 'America/New_Yor'.
+    Code
+      zoned_time_parse_complete(x)
+    Condition
+      Error:
+      ! `%Z` must be used, and must result in a valid time zone name, not 'America/New_Yor'.
 
 # abbreviation must match the one implied from naive + time zone name lookup
 
@@ -136,7 +148,11 @@
 
 # %Z must be used
 
-    `%Z` must be used and must result in a time zone abbreviation.
+    Code
+      zoned_time_parse_abbrev(x, "America/New_York", format = "%Y-%m-%d")
+    Condition
+      Error:
+      ! `%Z` must be used and must result in a time zone abbreviation.
 
 # boundaries are handled right
 
@@ -164,49 +180,97 @@
 
 # zoned-times don't support arithmetic
 
-    Zoned-times don't support `add_years()`.
+    Code
+      add_years(x, 1)
+    Condition
+      Error in `stop_clock_unsupported_zoned_time_op()`:
+      ! Zoned-times don't support `add_years()`.
 
 ---
 
-    Zoned-times don't support `add_quarters()`.
+    Code
+      add_quarters(x, 1)
+    Condition
+      Error in `stop_clock_unsupported_zoned_time_op()`:
+      ! Zoned-times don't support `add_quarters()`.
 
 ---
 
-    Zoned-times don't support `add_months()`.
+    Code
+      add_months(x, 1)
+    Condition
+      Error in `stop_clock_unsupported_zoned_time_op()`:
+      ! Zoned-times don't support `add_months()`.
 
 ---
 
-    Zoned-times don't support `add_weeks()`.
+    Code
+      add_weeks(x, 1)
+    Condition
+      Error in `stop_clock_unsupported_zoned_time_op()`:
+      ! Zoned-times don't support `add_weeks()`.
 
 ---
 
-    Zoned-times don't support `add_days()`.
+    Code
+      add_days(x, 1)
+    Condition
+      Error in `stop_clock_unsupported_zoned_time_op()`:
+      ! Zoned-times don't support `add_days()`.
 
 ---
 
-    Zoned-times don't support `add_hours()`.
+    Code
+      add_hours(x, 1)
+    Condition
+      Error in `stop_clock_unsupported_zoned_time_op()`:
+      ! Zoned-times don't support `add_hours()`.
 
 ---
 
-    Zoned-times don't support `add_minutes()`.
+    Code
+      add_minutes(x, 1)
+    Condition
+      Error in `stop_clock_unsupported_zoned_time_op()`:
+      ! Zoned-times don't support `add_minutes()`.
 
 ---
 
-    Zoned-times don't support `add_seconds()`.
+    Code
+      add_seconds(x, 1)
+    Condition
+      Error in `stop_clock_unsupported_zoned_time_op()`:
+      ! Zoned-times don't support `add_seconds()`.
 
 ---
 
-    Zoned-times don't support `add_milliseconds()`.
+    Code
+      add_milliseconds(x, 1)
+    Condition
+      Error in `stop_clock_unsupported_zoned_time_op()`:
+      ! Zoned-times don't support `add_milliseconds()`.
 
 ---
 
-    Zoned-times don't support `add_microseconds()`.
+    Code
+      add_microseconds(x, 1)
+    Condition
+      Error in `stop_clock_unsupported_zoned_time_op()`:
+      ! Zoned-times don't support `add_microseconds()`.
 
 ---
 
-    Zoned-times don't support `add_nanoseconds()`.
+    Code
+      add_nanoseconds(x, 1)
+    Condition
+      Error in `stop_clock_unsupported_zoned_time_op()`:
+      ! Zoned-times don't support `add_nanoseconds()`.
 
 # precision: can only be called on zoned-times
 
-    `x` must be a 'clock_zoned_time'.
+    Code
+      zoned_time_precision(duration_days())
+    Condition
+      Error in `zoned_time_precision()`:
+      ! `x` must be a 'clock_zoned_time'.
 

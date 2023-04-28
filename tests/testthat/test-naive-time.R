@@ -89,14 +89,14 @@ test_that("all rows are NA when x is NA", {
 })
 
 test_that("x must be naive", {
-  expect_snapshot_error(naive_time_info(sys_days(0), "UTC"))
+  expect_snapshot(error = TRUE, naive_time_info(sys_days(0), "UTC"))
 })
 
 test_that("zone is vectorized and recycled against x", {
   info <- naive_time_info(naive_days(0), c("UTC", "America/New_York"))
   expect_identical(nrow(info), 2L)
 
-  expect_snapshot_error(naive_time_info(naive_days(0:3), c("UTC", "America/New_York")))
+  expect_snapshot(error = TRUE, naive_time_info(naive_days(0:3), c("UTC", "America/New_York")))
 })
 
 # ------------------------------------------------------------------------------
@@ -370,7 +370,7 @@ test_that("can resolve ambiguous issues - character", {
   earliest <- as_sys_time(year_month_day(1970, 10, 25, 05, 30, 00, 01, subsecond_precision = "millisecond"))
   latest <- as_sys_time(year_month_day(1970, 10, 25, 06, 30, 00, 01, subsecond_precision = "millisecond"))
 
-  expect_snapshot_error(as_zoned_time(x, zone))
+  expect_snapshot(error = TRUE, as_zoned_time(x, zone))
   expect_error(as_zoned_time(x, zone), class = "clock_error_ambiguous_time")
 
   expect_identical(
@@ -408,7 +408,7 @@ test_that("can resolve ambiguous issues - zoned-time", {
   # Issue at location 2 because zt[2] isn't ambiguous so we can't use offset
   # information from it
   nt_tweaked <- as_naive_time(set_hour(as_year_month_day(nt), 1))
-  expect_snapshot_error(as_zoned_time(nt_tweaked, zone, ambiguous = zt))
+  expect_snapshot(error = TRUE, as_zoned_time(nt_tweaked, zone, ambiguous = zt))
 
   # Jump from one ambiguous time to another. Still can't use offset info,
   # because the ambiguous time transitions are different.
@@ -416,7 +416,7 @@ test_that("can resolve ambiguous issues - zoned-time", {
   nt <- as_naive_time(ymd)
   zt <- as_zoned_time(nt, zone, ambiguous = "earliest")
   nt_tweaked <- nt + duration_days(364)
-  expect_snapshot_error(as_zoned_time(nt_tweaked, zone, ambiguous = zt))
+  expect_snapshot(error = TRUE, as_zoned_time(nt_tweaked, zone, ambiguous = zt))
 })
 
 test_that("can resolve ambiguous issues - list", {
@@ -448,7 +448,7 @@ test_that("can resolve nonexistent issues", {
   zone <- "America/New_York"
   x <- as_naive_time(year_month_day(1970, 04, 26, 02, 30, 00))
 
-  expect_snapshot_error(as_zoned_time(x, zone))
+  expect_snapshot(error = TRUE, as_zoned_time(x, zone))
   expect_error(as_zoned_time(x, zone), class = "clock_error_nonexistent_time")
 
   expect_identical(
@@ -522,37 +522,37 @@ test_that("NA pass through", {
 
 test_that("`ambiguous` is validated", {
   zone <- "America/New_York"
-  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, ambiguous = 1))
-  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, ambiguous = "foo"))
-  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, ambiguous = c("earliest", "latest")))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, ambiguous = 1))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, ambiguous = "foo"))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, ambiguous = c("earliest", "latest")))
 
   ambiguous <- as_zoned_time(naive_seconds(), "America/Los_Angeles")
-  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, ambiguous = ambiguous))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, ambiguous = ambiguous))
 
   reference <- as_zoned_time(naive_seconds(), zone)
-  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, ambiguous = list()))
-  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, ambiguous = list(1, 1)))
-  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, ambiguous = list(reference, 1)))
-  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, ambiguous = list(reference, "foo")))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, ambiguous = list()))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, ambiguous = list(1, 1)))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, ambiguous = list(reference, 1)))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, ambiguous = list(reference, "foo")))
 })
 
 test_that("`nonexistent` is validated", {
   zone <- "America/New_York"
-  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, nonexistent = 1))
-  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, nonexistent = "foo"))
-  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, nonexistent = c("roll-forward", "roll-forward")))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, nonexistent = 1))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, nonexistent = "foo"))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, nonexistent = c("roll-forward", "roll-forward")))
 })
 
 test_that("zone is validated", {
-  expect_snapshot_error(as_zoned_time(naive_seconds(), "foo"))
-  expect_snapshot_error(as_zoned_time(naive_seconds(), 1))
-  expect_snapshot_error(as_zoned_time(naive_seconds(), c("America/New_York", "EST", "EDT")))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), "foo"))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), 1))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), c("America/New_York", "EST", "EDT")))
 })
 
 test_that("strict mode can be activated - nonexistent", {
   local_options(clock.strict = TRUE)
   zone <- "America/New_York"
-  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, ambiguous = "earliest"))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, ambiguous = "earliest"))
 })
 
 test_that("strict mode can be activated - ambiguous", {
@@ -561,13 +561,13 @@ test_that("strict mode can be activated - ambiguous", {
 
   local_options(clock.strict = TRUE)
 
-  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, nonexistent = "roll-forward"))
-  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, nonexistent = "roll-forward", ambiguous = zt))
-  expect_snapshot_error(as_zoned_time(naive_seconds(), zone, nonexistent = "roll-forward", ambiguous = list(zt, NULL)))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, nonexistent = "roll-forward"))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, nonexistent = "roll-forward", ambiguous = zt))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, nonexistent = "roll-forward", ambiguous = list(zt, NULL)))
 })
 
 test_that("empty dots are checked", {
-  expect_snapshot_error(as_zoned_time(naive_seconds(), "UTC", "roll-forward"))
+  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), "UTC", "roll-forward"))
 })
 
 # ------------------------------------------------------------------------------

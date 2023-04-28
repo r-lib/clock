@@ -443,14 +443,26 @@
 
 # only year precision is allowed
 
-    `from` must be 'year' precision.
+    Code
+      seq(year_week_day(2019, 1), by = 1, length.out = 2)
+    Condition
+      Error in `seq()`:
+      ! `from` must be 'year' precision.
 
 # strict mode can be activated
 
-    The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `invalid` must be set and cannot be left as `NULL`.
+    Code
+      invalid_resolve(year_week_day(2019, 1))
+    Condition
+      Error in `strict_validate_invalid()`:
+      ! The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `invalid` must be set and cannot be left as `NULL`.
 
 # throws known classed error
 
-    Invalid date found at location 1.
-    i Resolve invalid date issues by specifying the `invalid` argument.
+    Code
+      invalid_resolve(year_week_day(2019, 53))
+    Condition
+      Error:
+      ! Invalid date found at location 1.
+      i Resolve invalid date issues by specifying the `invalid` argument.
 

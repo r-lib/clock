@@ -1,10 +1,18 @@
 # x must be naive
 
-    `x` must be a naive-time.
+    Code
+      naive_time_info(sys_days(0), "UTC")
+    Condition
+      Error in `naive_time_info()`:
+      ! `x` must be a naive-time.
 
 # zone is vectorized and recycled against x
 
-    Can't recycle `x` (size 4) to match `zone` (size 2).
+    Code
+      naive_time_info(naive_days(0:3), c("UTC", "America/New_York"))
+    Condition
+      Error in `naive_time_info()`:
+      ! Can't recycle `x` (size 4) to match `zone` (size 2).
 
 # cannot parse invalid dates
 
@@ -77,102 +85,196 @@
 
 # can resolve ambiguous issues - character
 
-    Ambiguous time due to daylight saving time at location 1.
-    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Code
+      as_zoned_time(x, zone)
+    Condition
+      Error:
+      ! Ambiguous time due to daylight saving time at location 1.
+      i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 # can resolve ambiguous issues - zoned-time
 
-    Ambiguous time due to daylight saving time at location 2.
-    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Code
+      as_zoned_time(nt_tweaked, zone, ambiguous = zt)
+    Condition
+      Error:
+      ! Ambiguous time due to daylight saving time at location 2.
+      i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 ---
 
-    Ambiguous time due to daylight saving time at location 1.
-    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Code
+      as_zoned_time(nt_tweaked, zone, ambiguous = zt)
+    Condition
+      Error:
+      ! Ambiguous time due to daylight saving time at location 1.
+      i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 # can resolve nonexistent issues
 
-    Nonexistent time due to daylight saving time at location 1.
-    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Code
+      as_zoned_time(x, zone)
+    Condition
+      Error:
+      ! Nonexistent time due to daylight saving time at location 1.
+      i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 # `ambiguous` is validated
 
-    `ambiguous` must be a character vector, a zoned-time, a POSIXct, or a list.
+    Code
+      as_zoned_time(naive_seconds(), zone, ambiguous = 1)
+    Condition
+      Error in `validate_ambiguous()`:
+      ! `ambiguous` must be a character vector, a zoned-time, a POSIXct, or a list.
 
 ---
 
-    'foo' is not a recognized `ambiguous` option.
+    Code
+      as_zoned_time(naive_seconds(), zone, ambiguous = "foo")
+    Condition
+      Error:
+      ! 'foo' is not a recognized `ambiguous` option.
 
 ---
 
-    `ambiguous` must have length 1, or 0.
+    Code
+      as_zoned_time(naive_seconds(), zone, ambiguous = c("earliest", "latest"))
+    Condition
+      Error in `validate_ambiguous_chr()`:
+      ! `ambiguous` must have length 1, or 0.
 
 ---
 
-    A zoned-time or POSIXct `ambiguous` must have the same zone as `zone`.
+    Code
+      as_zoned_time(naive_seconds(), zone, ambiguous = ambiguous)
+    Condition
+      Error in `validate_ambiguous_zoned()`:
+      ! A zoned-time or POSIXct `ambiguous` must have the same zone as `zone`.
 
 ---
 
-    A list `ambiguous` must have length 2.
+    Code
+      as_zoned_time(naive_seconds(), zone, ambiguous = list())
+    Condition
+      Error in `validate_ambiguous_list()`:
+      ! A list `ambiguous` must have length 2.
 
 ---
 
-    The first element of a list `ambiguous` must be a zoned-time or POSIXt.
+    Code
+      as_zoned_time(naive_seconds(), zone, ambiguous = list(1, 1))
+    Condition
+      Error in `validate_ambiguous_list()`:
+      ! The first element of a list `ambiguous` must be a zoned-time or POSIXt.
 
 ---
 
-    The second element of a list `ambiguous` must be a character vector, or `NULL`.
+    Code
+      as_zoned_time(naive_seconds(), zone, ambiguous = list(reference, 1))
+    Condition
+      Error in `validate_ambiguous_list()`:
+      ! The second element of a list `ambiguous` must be a character vector, or `NULL`.
 
 ---
 
-    'foo' is not a recognized `ambiguous` option.
+    Code
+      as_zoned_time(naive_seconds(), zone, ambiguous = list(reference, "foo"))
+    Condition
+      Error:
+      ! 'foo' is not a recognized `ambiguous` option.
 
 # `nonexistent` is validated
 
-    `nonexistent` must be a character vector, or `NULL`.
+    Code
+      as_zoned_time(naive_seconds(), zone, nonexistent = 1)
+    Condition
+      Error in `validate_nonexistent()`:
+      ! `nonexistent` must be a character vector, or `NULL`.
 
 ---
 
-    'foo' is not a recognized `nonexistent` option.
+    Code
+      as_zoned_time(naive_seconds(), zone, nonexistent = "foo")
+    Condition
+      Error:
+      ! 'foo' is not a recognized `nonexistent` option.
 
 ---
 
-    `nonexistent` must have length 1, or 0.
+    Code
+      as_zoned_time(naive_seconds(), zone, nonexistent = c("roll-forward",
+        "roll-forward"))
+    Condition
+      Error in `validate_nonexistent()`:
+      ! `nonexistent` must have length 1, or 0.
 
 # zone is validated
 
-    'foo' is not a known time zone.
+    Code
+      as_zoned_time(naive_seconds(), "foo")
+    Condition
+      Error in `zone_validate()`:
+      ! 'foo' is not a known time zone.
 
 ---
 
-    `zone` must be a single string.
+    Code
+      as_zoned_time(naive_seconds(), 1)
+    Condition
+      Error in `zone_validate()`:
+      ! `zone` must be a single string.
 
 ---
 
-    `zone` must be a single string.
+    Code
+      as_zoned_time(naive_seconds(), c("America/New_York", "EST", "EDT"))
+    Condition
+      Error in `zone_validate()`:
+      ! `zone` must be a single string.
 
 # strict mode can be activated - nonexistent
 
-    The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `nonexistent` must be set and cannot be left as `NULL`.
+    Code
+      as_zoned_time(naive_seconds(), zone, ambiguous = "earliest")
+    Condition
+      Error in `strict_validate_nonexistent()`:
+      ! The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `nonexistent` must be set and cannot be left as `NULL`.
 
 # strict mode can be activated - ambiguous
 
-    The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `ambiguous` must be set and cannot be left as `NULL`. Additionally, `ambiguous` cannot be set to a zoned-time or POSIXct unless it is paired with an ambiguous time resolution strategy, like: `list(<zoned-time>, 'earliest')`.
+    Code
+      as_zoned_time(naive_seconds(), zone, nonexistent = "roll-forward")
+    Condition
+      Error in `strict_validate_ambiguous()`:
+      ! The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `ambiguous` must be set and cannot be left as `NULL`. Additionally, `ambiguous` cannot be set to a zoned-time or POSIXct unless it is paired with an ambiguous time resolution strategy, like: `list(<zoned-time>, 'earliest')`.
 
 ---
 
-    The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `ambiguous` must be set and cannot be left as `NULL`. Additionally, `ambiguous` cannot be set to a zoned-time or POSIXct unless it is paired with an ambiguous time resolution strategy, like: `list(<zoned-time>, 'earliest')`.
+    Code
+      as_zoned_time(naive_seconds(), zone, nonexistent = "roll-forward", ambiguous = zt)
+    Condition
+      Error in `strict_validate_ambiguous()`:
+      ! The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `ambiguous` must be set and cannot be left as `NULL`. Additionally, `ambiguous` cannot be set to a zoned-time or POSIXct unless it is paired with an ambiguous time resolution strategy, like: `list(<zoned-time>, 'earliest')`.
 
 ---
 
-    The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `ambiguous` must be set and cannot be left as `NULL`. Additionally, `ambiguous` cannot be set to a zoned-time or POSIXct unless it is paired with an ambiguous time resolution strategy, like: `list(<zoned-time>, 'earliest')`.
+    Code
+      as_zoned_time(naive_seconds(), zone, nonexistent = "roll-forward", ambiguous = list(
+        zt, NULL))
+    Condition
+      Error in `strict_validate_ambiguous()`:
+      ! The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `ambiguous` must be set and cannot be left as `NULL`. Additionally, `ambiguous` cannot be set to a zoned-time or POSIXct unless it is paired with an ambiguous time resolution strategy, like: `list(<zoned-time>, 'earliest')`.
 
 # empty dots are checked
 
-    `...` must be empty.
-    x Problematic argument:
-    * ..1 = "roll-forward"
-    i Did you forget to name an argument?
+    Code
+      as_zoned_time(naive_seconds(), "UTC", "roll-forward")
+    Condition
+      Error in `as_zoned_time()`:
+      ! `...` must be empty.
+      x Problematic argument:
+      * ..1 = "roll-forward"
+      i Did you forget to name an argument?
 
 # `vec_ptype_full()` prints correctly
 

@@ -398,15 +398,27 @@
 
 # invalid dates must be resolved when converting to another calendar
 
-    Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
+    Code
+      as_year_quarter_day(year_month_day(2019, 2, 31))
+    Condition
+      Error in `calendar_require_all_valid()`:
+      ! Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
 
 # invalid dates must be resolved when converting to a sys-time
 
-    Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
+    Code
+      as_sys_time(year_month_day(2019, 2, 31))
+    Condition
+      Error in `calendar_require_all_valid()`:
+      ! Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
 
 # invalid dates must be resolved when converting to a naive-time
 
-    Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
+    Code
+      as_naive_time(year_month_day(2019, 2, 31))
+    Condition
+      Error in `calendar_require_all_valid()`:
+      ! Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
 
 # default formats are correct
 
@@ -449,23 +461,43 @@
 
 # requires month precision
 
-    `x` must have at least 'month' precision.
+    Code
+      calendar_month_factor(year_month_day(2019))
+    Condition
+      Error in `calendar_month_factor_impl()`:
+      ! `x` must have at least 'month' precision.
 
 # `labels` is validated
 
-    `labels` must be a 'clock_labels' object.
+    Code
+      calendar_month_factor(year_month_day(2019, 1), labels = 1)
+    Condition
+      Error in `calendar_month_factor_impl()`:
+      ! `labels` must be a 'clock_labels' object.
 
 # `abbreviate` is validated
 
-    `abbreviate` must be `TRUE` or `FALSE`.
+    Code
+      calendar_month_factor(year_month_day(2019, 1), abbreviate = "foo")
+    Condition
+      Error in `calendar_month_factor_impl()`:
+      ! `abbreviate` must be `TRUE` or `FALSE`.
 
 ---
 
-    `abbreviate` must be `TRUE` or `FALSE`.
+    Code
+      calendar_month_factor(year_month_day(2019, 1), abbreviate = 1)
+    Condition
+      Error in `calendar_month_factor_impl()`:
+      ! `abbreviate` must be `TRUE` or `FALSE`.
 
 ---
 
-    `abbreviate` must be `TRUE` or `FALSE`.
+    Code
+      calendar_month_factor(year_month_day(2019, 1), abbreviate = c(TRUE, FALSE))
+    Condition
+      Error in `calendar_month_factor_impl()`:
+      ! `abbreviate` must be `TRUE` or `FALSE`.
 
 # can't compute a unsupported count precision
 
@@ -478,14 +510,26 @@
 
 # only granular precisions are allowed
 
-    `from` must be 'year' or 'month' precision.
+    Code
+      seq(year_month_day(2019, 1, 1), by = 1, length.out = 2)
+    Condition
+      Error in `seq()`:
+      ! `from` must be 'year' or 'month' precision.
 
 # strict mode can be activated
 
-    The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `invalid` must be set and cannot be left as `NULL`.
+    Code
+      invalid_resolve(year_month_day(2019, 1, 1))
+    Condition
+      Error in `strict_validate_invalid()`:
+      ! The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `invalid` must be set and cannot be left as `NULL`.
 
 # throws known classed error
 
-    Invalid date found at location 1.
-    i Resolve invalid date issues by specifying the `invalid` argument.
+    Code
+      invalid_resolve(year_month_day(2019, 2, 31))
+    Condition
+      Error:
+      ! Invalid date found at location 1.
+      i Resolve invalid date issues by specifying the `invalid` argument.
 

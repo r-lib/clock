@@ -70,10 +70,14 @@
 
 # empty dots are checked
 
-    `...` must be empty.
-    x Problematic argument:
-    * ..1 = 123
-    i Did you forget to name an argument?
+    Code
+      as_zoned_time(sys_seconds(), "UTC", 123)
+    Condition
+      Error in `as_zoned_time()`:
+      ! `...` must be empty.
+      x Problematic argument:
+      * ..1 = 123
+      i Did you forget to name an argument?
 
 # `vec_ptype_full()` prints correctly
 

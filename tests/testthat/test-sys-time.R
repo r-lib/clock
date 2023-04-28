@@ -213,7 +213,7 @@ test_that("allows `%z` and `%Z`", {
 # as_zoned_time()
 
 test_that("empty dots are checked", {
-  expect_snapshot_error(as_zoned_time(sys_seconds(), "UTC", 123))
+  expect_snapshot(error = TRUE, as_zoned_time(sys_seconds(), "UTC", 123))
 })
 
 # ------------------------------------------------------------------------------

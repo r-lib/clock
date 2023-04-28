@@ -17,16 +17,16 @@ test_that("input is validated", {
   weekdays <- c("Su", "Mo", "Tu", "We", "Th", "Fr", "Sa")
   am_pm <- c("A", "P")
 
-  expect_snapshot_error(clock_labels(1))
-  expect_snapshot_error(clock_labels("x"))
-  expect_snapshot_error(clock_labels(months, 1))
-  expect_snapshot_error(clock_labels(months, "x"))
-  expect_snapshot_error(clock_labels(months, months, 1))
-  expect_snapshot_error(clock_labels(months, months, "x"))
-  expect_snapshot_error(clock_labels(months, months, weekdays, 1))
-  expect_snapshot_error(clock_labels(months, months, weekdays, "x"))
-  expect_snapshot_error(clock_labels(months, months, weekdays, weekdays, 1))
-  expect_snapshot_error(clock_labels(months, months, weekdays, weekdays, "x"))
+  expect_snapshot(error = TRUE, clock_labels(1))
+  expect_snapshot(error = TRUE, clock_labels("x"))
+  expect_snapshot(error = TRUE, clock_labels(months, 1))
+  expect_snapshot(error = TRUE, clock_labels(months, "x"))
+  expect_snapshot(error = TRUE, clock_labels(months, months, 1))
+  expect_snapshot(error = TRUE, clock_labels(months, months, "x"))
+  expect_snapshot(error = TRUE, clock_labels(months, months, weekdays, 1))
+  expect_snapshot(error = TRUE, clock_labels(months, months, weekdays, "x"))
+  expect_snapshot(error = TRUE, clock_labels(months, months, weekdays, weekdays, 1))
+  expect_snapshot(error = TRUE, clock_labels(months, months, weekdays, weekdays, "x"))
 })
 
 test_that("custom labels are converted to UTF-8 upon entry", {
@@ -54,8 +54,8 @@ test_that("can lookup a language", {
 })
 
 test_that("must be a valid language code", {
-  expect_snapshot_error(clock_labels_lookup(1))
-  expect_snapshot_error(clock_labels_lookup("foo"))
+  expect_snapshot(error = TRUE, clock_labels_lookup(1))
+  expect_snapshot(error = TRUE, clock_labels_lookup("foo"))
 })
 
 # ------------------------------------------------------------------------------

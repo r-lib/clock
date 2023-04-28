@@ -447,14 +447,26 @@
 
 # only granular precisions are allowed
 
-    `from` must be 'year' or 'quarter' precision.
+    Code
+      seq(year_quarter_day(2019, 1, 1), by = 1, length.out = 2)
+    Condition
+      Error in `seq()`:
+      ! `from` must be 'year' or 'quarter' precision.
 
 # strict mode can be activated
 
-    The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `invalid` must be set and cannot be left as `NULL`.
+    Code
+      invalid_resolve(year_quarter_day(2019, 1, 1))
+    Condition
+      Error in `strict_validate_invalid()`:
+      ! The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `invalid` must be set and cannot be left as `NULL`.
 
 # throws known classed error
 
-    Invalid date found at location 1.
-    i Resolve invalid date issues by specifying the `invalid` argument.
+    Code
+      invalid_resolve(year_quarter_day(2019, 1, 91))
+    Condition
+      Error:
+      ! Invalid date found at location 1.
+      i Resolve invalid date issues by specifying the `invalid` argument.
 

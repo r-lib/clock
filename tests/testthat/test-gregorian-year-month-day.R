@@ -307,21 +307,21 @@ test_that("setting with named `value` strips its names", {
 # as_year_quarter_day()
 
 test_that("invalid dates must be resolved when converting to another calendar", {
-  expect_snapshot_error(as_year_quarter_day(year_month_day(2019, 2, 31)))
+  expect_snapshot(error = TRUE, as_year_quarter_day(year_month_day(2019, 2, 31)))
 })
 
 # ------------------------------------------------------------------------------
 # as_sys_time()
 
 test_that("invalid dates must be resolved when converting to a sys-time", {
-  expect_snapshot_error(as_sys_time(year_month_day(2019, 2, 31)))
+  expect_snapshot(error = TRUE, as_sys_time(year_month_day(2019, 2, 31)))
 })
 
 # ------------------------------------------------------------------------------
 # as_naive_time()
 
 test_that("invalid dates must be resolved when converting to a naive-time", {
-  expect_snapshot_error(as_naive_time(year_month_day(2019, 2, 31)))
+  expect_snapshot(error = TRUE, as_naive_time(year_month_day(2019, 2, 31)))
 })
 
 # ------------------------------------------------------------------------------
@@ -695,17 +695,17 @@ test_that("can adjust labels language", {
 })
 
 test_that("requires month precision", {
-  expect_snapshot_error(calendar_month_factor(year_month_day(2019)))
+  expect_snapshot(error = TRUE, calendar_month_factor(year_month_day(2019)))
 })
 
 test_that("`labels` is validated", {
-  expect_snapshot_error(calendar_month_factor(year_month_day(2019, 1), labels = 1))
+  expect_snapshot(error = TRUE, calendar_month_factor(year_month_day(2019, 1), labels = 1))
 })
 
 test_that("`abbreviate` is validated", {
-  expect_snapshot_error(calendar_month_factor(year_month_day(2019, 1), abbreviate = "foo"))
-  expect_snapshot_error(calendar_month_factor(year_month_day(2019, 1), abbreviate = 1))
-  expect_snapshot_error(calendar_month_factor(year_month_day(2019, 1), abbreviate = c(TRUE, FALSE)))
+  expect_snapshot(error = TRUE, calendar_month_factor(year_month_day(2019, 1), abbreviate = "foo"))
+  expect_snapshot(error = TRUE, calendar_month_factor(year_month_day(2019, 1), abbreviate = 1))
+  expect_snapshot(error = TRUE, calendar_month_factor(year_month_day(2019, 1), abbreviate = c(TRUE, FALSE)))
 })
 
 # ------------------------------------------------------------------------------
@@ -777,7 +777,7 @@ test_that("positive / negative counts are correct", {
 # seq()
 
 test_that("only granular precisions are allowed", {
-  expect_snapshot_error(seq(year_month_day(2019, 1, 1), by = 1, length.out = 2))
+  expect_snapshot(error = TRUE, seq(year_month_day(2019, 1, 1), by = 1, length.out = 2))
 })
 
 test_that("seq(to, by) works", {
@@ -870,7 +870,7 @@ test_that("`invalid_count()` works", {
 
 test_that("strict mode can be activated", {
   local_options(clock.strict = TRUE)
-  expect_snapshot_error(invalid_resolve(year_month_day(2019, 1, 1)))
+  expect_snapshot(error = TRUE, invalid_resolve(year_month_day(2019, 1, 1)))
 })
 
 test_that("can resolve correctly", {
@@ -907,7 +907,7 @@ test_that("can resolve correctly", {
 })
 
 test_that("throws known classed error", {
-  expect_snapshot_error(invalid_resolve(year_month_day(2019, 2, 31)))
+  expect_snapshot(error = TRUE, invalid_resolve(year_month_day(2019, 2, 31)))
   expect_error(invalid_resolve(year_month_day(2019, 2, 31)), class = "clock_error_invalid_date")
 })
 

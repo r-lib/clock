@@ -1,52 +1,82 @@
 # invalid dates must be resolved when converting to a Date
 
-    Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
-
-# can resolve nonexistent midnight issues
-
-    Nonexistent time due to daylight saving time at location 1.
-    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
-
-# can resolve ambiguous midnight issues
-
-    Ambiguous time due to daylight saving time at location 1.
-    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Code
+      as.Date(year_month_day(2019, 2, 31))
+    Condition
+      Error in `calendar_require_all_valid()`:
+      ! Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
 
 # can't group by finer precisions
 
-    Can't group at a precision (hour) that is more precise than `x` (day).
+    Code
+      date_group(x, "hour")
+    Condition
+      Error in `calendar_group()`:
+      ! Can't group at a precision (hour) that is more precise than `x` (day).
 
 ---
 
-    Can't group at a precision (nanosecond) that is more precise than `x` (day).
+    Code
+      date_group(x, "nanosecond")
+    Condition
+      Error in `calendar_group()`:
+      ! Can't group at a precision (nanosecond) that is more precise than `x` (day).
 
 # can't group by non-year-month-day precisions
 
-    `precision` must be a valid precision for a 'year_month_day'.
+    Code
+      date_group(x, "quarter")
+    Condition
+      Error in `calendar_group()`:
+      ! `precision` must be a valid precision for a 'year_month_day'.
 
 # can only floor by week/day
 
-    Can't floor to a more precise precision.
+    Code
+      date_floor(as.Date("2019-01-01"), "hour")
+    Condition
+      Error in `duration_rounder()`:
+      ! Can't floor to a more precise precision.
 
 ---
 
-    `precision` must be at least 'day' precision.
+    Code
+      date_floor(as.Date("2019-01-01"), "month")
+    Condition
+      Error in `validate_time_point_precision_string()`:
+      ! `precision` must be at least 'day' precision.
 
 # `origin` is validated
 
-    `origin` must be a 'Date'.
+    Code
+      date_floor(x, "day", origin = 1)
+    Condition
+      Error in `collect_date_rounder_origin()`:
+      ! `origin` must be a 'Date'.
 
 ---
 
-    `origin` must not be `NA` or an infinite date.
+    Code
+      date_floor(x, "day", origin = new_date(NA_real_))
+    Condition
+      Error in `collect_date_rounder_origin()`:
+      ! `origin` must not be `NA` or an infinite date.
 
 ---
 
-    `origin` must not be `NA` or an infinite date.
+    Code
+      date_floor(x, "day", origin = new_date(Inf))
+    Condition
+      Error in `collect_date_rounder_origin()`:
+      ! `origin` must not be `NA` or an infinite date.
 
 ---
 
-    `origin` must have length 1.
+    Code
+      date_floor(x, "day", origin = new_date(c(0, 1)))
+    Condition
+      Error in `collect_date_rounder_origin()`:
+      ! `origin` must have length 1.
 
 # can format dates
 
@@ -158,87 +188,157 @@
 
 # can handle invalid dates
 
-    Invalid date found at location 2.
-    i Resolve invalid date issues by specifying the `invalid` argument.
+    Code
+      date_build(2019, 1:12, 31)
+    Condition
+      Error:
+      ! Invalid date found at location 2.
+      i Resolve invalid date issues by specifying the `invalid` argument.
 
 # start: can't use invalid precisions
 
-    `precision` must be a valid precision for a 'year_month_day'.
+    Code
+      date_start(date_build(2019), "quarter")
+    Condition
+      Error in `calendar_start_end_checks()`:
+      ! `precision` must be a valid precision for a 'year_month_day'.
 
 # end: can't use invalid precisions
 
-    `precision` must be a valid precision for a 'year_month_day'.
+    Code
+      date_end(date_build(2019), "quarter")
+    Condition
+      Error in `calendar_start_end_checks()`:
+      ! `precision` must be a valid precision for a 'year_month_day'.
 
 # can resolve invalid dates
 
-    Invalid date found at location 2.
-    i Resolve invalid date issues by specifying the `invalid` argument.
+    Code
+      date_seq(from, to = to, by = duration_months(1))
+    Condition
+      Error:
+      ! Invalid date found at location 2.
+      i Resolve invalid date issues by specifying the `invalid` argument.
 
 # components of `to` more precise than `by` must match `from`
 
-    All components of `from` and `to` more precise than 'month' must match.
+    Code
+      date_seq(date_build(2019, 1, 1), to = date_build(2019, 2, 2), by = duration_months(
+        1))
+    Condition
+      Error in `check_from_to_component_equivalence()`:
+      ! All components of `from` and `to` more precise than 'month' must match.
 
 ---
 
-    All components of `from` and `to` more precise than 'year' must match.
+    Code
+      date_seq(date_build(2019, 1, 1), to = date_build(2019, 3, 1), by = duration_years(
+        1))
+    Condition
+      Error in `check_from_to_component_equivalence()`:
+      ! All components of `from` and `to` more precise than 'year' must match.
 
 # validates integerish `by`
 
-    Can't convert from `by` <double> to <integer> due to loss of precision.
-    * Locations: 1
+    Code
+      date_seq(new_date(1), by = 1.5, total_size = 1)
+    Condition
+      Error in `duration_helper()`:
+      ! Can't convert from `by` <double> to <integer> due to loss of precision.
+      * Locations: 1
 
 # validates `total_size` early
 
-    Can't convert from `total_size` <double> to <integer> due to loss of precision.
-    * Locations: 1
+    Code
+      date_seq(new_date(1), by = 1, total_size = 1.5)
+    Condition
+      Error in `check_length_out()`:
+      ! Can't convert from `total_size` <double> to <integer> due to loss of precision.
+      * Locations: 1
 
 ---
 
-    `total_size` can't be `NA`.
+    Code
+      date_seq(new_date(1), by = 1, total_size = NA)
+    Condition
+      Error in `check_length_out()`:
+      ! `total_size` can't be `NA`.
 
 ---
 
-    `total_size` can't be negative.
+    Code
+      date_seq(new_date(1), by = 1, total_size = -1)
+    Condition
+      Error in `check_length_out()`:
+      ! `total_size` can't be negative.
 
 # `to` and `total_size` must not generate a non-fractional sequence
 
-    The supplied output size does not result in a non-fractional sequence between `from` and `to`.
+    Code
+      date_seq(new_date(0), to = new_date(3), total_size = 3)
+    Condition
+      Error:
+      ! The supplied output size does not result in a non-fractional sequence between `from` and `to`.
 
 # requires exactly two optional arguments
 
-    Must specify exactly two of:
-    - `to`
-    - `by`
-    - `total_size`
+    Code
+      date_seq(new_date(1), by = 1)
+    Condition
+      Error in `check_number_of_supplied_optional_arguments()`:
+      ! Must specify exactly two of:
+      - `to`
+      - `by`
+      - `total_size`
 
 ---
 
-    Must specify exactly two of:
-    - `to`
-    - `by`
-    - `total_size`
+    Code
+      date_seq(new_date(1), total_size = 1)
+    Condition
+      Error in `check_number_of_supplied_optional_arguments()`:
+      ! Must specify exactly two of:
+      - `to`
+      - `by`
+      - `total_size`
 
 ---
 
-    Must specify exactly two of:
-    - `to`
-    - `by`
-    - `total_size`
+    Code
+      date_seq(new_date(1), to = new_date(1))
+    Condition
+      Error in `check_number_of_supplied_optional_arguments()`:
+      ! Must specify exactly two of:
+      - `to`
+      - `by`
+      - `total_size`
 
 # requires `to` to be Date
 
-    If supplied, `to` must be a <Date>.
+    Code
+      date_seq(new_date(1), to = 1, by = 1)
+    Condition
+      Error in `date_seq()`:
+      ! If supplied, `to` must be a <Date>.
 
 # requires year, month, or day precision
 
-    `by` must have a precision of 'year', 'quarter', 'month', 'week', or 'day'.
+    Code
+      date_seq(new_date(1), to = new_date(2), by = duration_nanoseconds(1))
+    Condition
+      Error in `date_seq()`:
+      ! `by` must have a precision of 'year', 'quarter', 'month', 'week', or 'day'.
 
 # checks empty dots
 
-    `...` must be empty.
-    x Problematic argument:
-    * ..1 = new_date(2)
-    i Did you forget to name an argument?
+    Code
+      date_seq(new_date(1), new_date(2))
+    Condition
+      Error in `date_seq()`:
+      ! `...` must be empty.
+      x Problematic argument:
+      * ..1 = new_date(2)
+      i Did you forget to name an argument?
 
 # must use a valid Date precision
 
@@ -260,32 +360,60 @@
 
 # cannot get the zone of a Date
 
-    Can't get the zone of a 'Date'.
+    Code
+      date_zone(new_date(0))
+    Condition
+      Error in `date_zone()`:
+      ! Can't get the zone of a 'Date'.
 
 # cannot set the zone of a Date
 
-    Can't set the zone of a 'Date'.
+    Code
+      date_set_zone(new_date(0), "UTC")
+    Condition
+      Error in `date_set_zone()`:
+      ! Can't set the zone of a 'Date'.
 
 # <date> op <duration>
 
-    no applicable method for 'add_hours' applied to an object of class "Date"
+    Code
+      vec_arith("+", new_date(0), duration_hours(1))
+    Condition
+      Error in `UseMethod()`:
+      ! no applicable method for 'add_hours' applied to an object of class "Date"
 
 ---
 
-    <date> * <duration<year>> is not permitted
+    Code
+      vec_arith("*", new_date(0), duration_years(1))
+    Condition
+      Error in `arith_date_and_duration()`:
+      ! <date> * <duration<year>> is not permitted
 
 # <duration> op <date>
 
-    <duration<year>> - <date> is not permitted
-    Can't subtract a Date from a duration.
+    Code
+      vec_arith("-", duration_years(1), new_date(0))
+    Condition
+      Error in `arith_duration_and_date()`:
+      ! <duration<year>> - <date> is not permitted
+      Can't subtract a Date from a duration.
 
 ---
 
-    no applicable method for 'add_hours' applied to an object of class "Date"
+    Code
+      vec_arith("+", duration_hours(1), new_date(0))
+    Condition
+      Error in `UseMethod()`:
+      ! no applicable method for 'add_hours' applied to an object of class "Date"
 
 ---
 
-    <duration<year>> * <date> is not permitted
+    Code
+      vec_arith("*", duration_years(1), new_date(0))
+    Condition
+      Error in `arith_duration_and_date()`:
+      ! <duration<year>> * <date> is not permitted
 
 # `slide_index()` will error on calendrical arithmetic and invalid dates
 

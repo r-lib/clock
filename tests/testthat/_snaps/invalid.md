@@ -1,4 +1,8 @@
 # errors on unsupported types
 
-    no applicable method for 'invalid_remove' applied to an object of class "c('double', 'numeric')"
+    Code
+      invalid_remove(1)
+    Condition
+      Error in `UseMethod()`:
+      ! no applicable method for 'invalid_remove' applied to an object of class "c('double', 'numeric')"
 

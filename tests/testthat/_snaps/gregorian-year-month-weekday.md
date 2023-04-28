@@ -1,6 +1,10 @@
 # both day and index must be specified
 
-    If either `day` or `index` is specified, both must be specified.
+    Code
+      year_month_weekday(2020, 1, 1)
+    Condition
+      Error in `year_month_weekday()`:
+      ! If either `day` or `index` is specified, both must be specified.
 
 # validates value ranges
 
@@ -94,11 +98,19 @@
 
 # cannot compare / sort with day precision or finer
 
-    'year_month_weekday' types with a precision of >= 'day' cannot be trivially compared or ordered. Convert to 'year_month_day' to compare using day-of-month values.
+    Code
+      x > x
+    Condition
+      Error in `vec_proxy_compare()`:
+      ! 'year_month_weekday' types with a precision of >= 'day' cannot be trivially compared or ordered. Convert to 'year_month_day' to compare using day-of-month values.
 
 ---
 
-    'year_month_weekday' types with a precision of >= 'day' cannot be trivially compared or ordered. Convert to 'year_month_day' to compare using day-of-month values.
+    Code
+      vec_order(x)
+    Condition
+      Error in `vec_proxy_compare()`:
+      ! 'year_month_weekday' types with a precision of >= 'day' cannot be trivially compared or ordered. Convert to 'year_month_day' to compare using day-of-month values.
 
 # full ptype is correct
 
@@ -472,19 +484,35 @@
 
 # can't compute start with a year_month_weekday at day precision or greater
 
-    Computing the start of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
+    Code
+      calendar_start(year_month_weekday(2019, 2, 2, 2), "day")
+    Condition
+      Error in `calendar_start()`:
+      ! Computing the start of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
 
 ---
 
-    Computing the start of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
+    Code
+      calendar_start(year_month_weekday(2019, 2, 2, 2), "month")
+    Condition
+      Error in `calendar_start()`:
+      ! Computing the start of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
 
 # can't compute end with a year_month_weekday at day precision or greater
 
-    Computing the end of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
+    Code
+      calendar_end(year_month_weekday(2019, 2, 2, 2), "day")
+    Condition
+      Error in `calendar_end()`:
+      ! Computing the end of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
 
 ---
 
-    Computing the end of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
+    Code
+      calendar_end(year_month_weekday(2019, 2, 2, 2), "month")
+    Condition
+      Error in `calendar_end()`:
+      ! Computing the end of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
 
 # can't compare a 'year_month_weekday' with day precision!
 
@@ -497,14 +525,26 @@
 
 # only granular precisions are allowed
 
-    `from` must be 'year' or 'month' precision.
+    Code
+      seq(year_month_weekday(2019, 1, 1, 1), by = 1, length.out = 2)
+    Condition
+      Error in `seq.clock_year_month_day()`:
+      ! `from` must be 'year' or 'month' precision.
 
 # strict mode can be activated
 
-    The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `invalid` must be set and cannot be left as `NULL`.
+    Code
+      invalid_resolve(year_month_weekday(2019, 1, 1, 1))
+    Condition
+      Error in `strict_validate_invalid()`:
+      ! The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `invalid` must be set and cannot be left as `NULL`.
 
 # throws known classed error
 
-    Invalid date found at location 1.
-    i Resolve invalid date issues by specifying the `invalid` argument.
+    Code
+      invalid_resolve(year_month_weekday(2019, 1, 1, 5))
+    Condition
+      Error:
+      ! Invalid date found at location 1.
+      i Resolve invalid date issues by specifying the `invalid` argument.
 

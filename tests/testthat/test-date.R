@@ -46,7 +46,7 @@ test_that("can convert zoned-time -> Date", {
 # as.Date()
 
 test_that("invalid dates must be resolved when converting to a Date", {
-  expect_snapshot_error(as.Date(year_month_day(2019, 2, 31)))
+  expect_snapshot(error = TRUE, as.Date(year_month_day(2019, 2, 31)))
 })
 
 test_that("conversion from zoned-time uses naive-time as an intermediate", {
@@ -101,7 +101,7 @@ test_that("can resolve nonexistent midnight issues", {
   zone <- "Asia/Beirut"
   x <- as.Date("2021-03-28")
 
-  expect_snapshot_error(as_zoned_time(x, zone), class = "clock_error_nonexistent_time")
+  expect_snapshot(error = TRUE, as_zoned_time(x, zone), class = "clock_error_nonexistent_time")
 
   expect_identical(
     as_zoned_time(x, zone, nonexistent = "roll-forward"),
@@ -114,7 +114,7 @@ test_that("can resolve ambiguous midnight issues", {
   zone <- "Asia/Amman"
   x <- as.Date("2021-10-29")
 
-  expect_snapshot_error(as_zoned_time(x, zone), class = "clock_error_ambiguous_time")
+  expect_snapshot(error = TRUE, as_zoned_time(x, zone), class = "clock_error_ambiguous_time")
 
   expect_identical(
     as_zoned_time(x, zone, ambiguous = "earliest"),
@@ -164,13 +164,13 @@ test_that("can group by year/month/day", {
 
 test_that("can't group by finer precisions", {
   x <- as.Date("2019-01-01")
-  expect_snapshot_error(date_group(x, "hour"))
-  expect_snapshot_error(date_group(x, "nanosecond"))
+  expect_snapshot(error = TRUE, date_group(x, "hour"))
+  expect_snapshot(error = TRUE, date_group(x, "nanosecond"))
 })
 
 test_that("can't group by non-year-month-day precisions", {
   x <- as.Date("2019-01-01")
-  expect_snapshot_error(date_group(x, "quarter"))
+  expect_snapshot(error = TRUE, date_group(x, "quarter"))
 })
 
 # ------------------------------------------------------------------------------
@@ -193,8 +193,8 @@ test_that("can floor by weeks", {
 })
 
 test_that("can only floor by week/day", {
-  expect_snapshot_error(date_floor(as.Date("2019-01-01"), "hour"))
-  expect_snapshot_error(date_floor(as.Date("2019-01-01"), "month"))
+  expect_snapshot(error = TRUE, date_floor(as.Date("2019-01-01"), "hour"))
+  expect_snapshot(error = TRUE, date_floor(as.Date("2019-01-01"), "month"))
 })
 
 test_that("`origin` can be used", {
@@ -206,10 +206,10 @@ test_that("`origin` can be used", {
 
 test_that("`origin` is validated", {
   x <- as.Date("2019-01-01")
-  expect_snapshot_error(date_floor(x, "day", origin = 1))
-  expect_snapshot_error(date_floor(x, "day", origin = new_date(NA_real_)))
-  expect_snapshot_error(date_floor(x, "day", origin = new_date(Inf)))
-  expect_snapshot_error(date_floor(x, "day", origin = new_date(c(0, 1))))
+  expect_snapshot(error = TRUE, date_floor(x, "day", origin = 1))
+  expect_snapshot(error = TRUE, date_floor(x, "day", origin = new_date(NA_real_)))
+  expect_snapshot(error = TRUE, date_floor(x, "day", origin = new_date(Inf)))
+  expect_snapshot(error = TRUE, date_floor(x, "day", origin = new_date(c(0, 1))))
 })
 
 # ------------------------------------------------------------------------------
@@ -366,7 +366,7 @@ test_that("can build a Date", {
 })
 
 test_that("can handle invalid dates", {
-  expect_snapshot_error(date_build(2019, 1:12, 31))
+  expect_snapshot(error = TRUE, date_build(2019, 1:12, 31))
 
   expect_identical(
     date_build(2019, 1:12, 31, invalid = "previous"),
@@ -394,7 +394,7 @@ test_that("can get the start", {
 })
 
 test_that("start: can't use invalid precisions", {
-  expect_snapshot_error(date_start(date_build(2019), "quarter"))
+  expect_snapshot(error = TRUE, date_start(date_build(2019), "quarter"))
 })
 
 # ------------------------------------------------------------------------------
@@ -408,7 +408,7 @@ test_that("can get the end", {
 })
 
 test_that("end: can't use invalid precisions", {
-  expect_snapshot_error(date_end(date_build(2019), "quarter"))
+  expect_snapshot(error = TRUE, date_end(date_build(2019), "quarter"))
 })
 
 # ------------------------------------------------------------------------------
@@ -457,7 +457,7 @@ test_that("can resolve invalid dates", {
   from <- date_build(2019, 1, 31)
   to <- date_build(2019, 5, 31)
 
-  expect_snapshot_error(date_seq(from, to = to, by = duration_months(1)))
+  expect_snapshot(error = TRUE, date_seq(from, to = to, by = duration_months(1)))
 
   expect_identical(
     date_seq(from, to = to, by = duration_months(1), invalid = "previous"),
@@ -503,40 +503,40 @@ test_that("seq() with `from > to && by > 0` or `from < to && by > 0` results in 
 })
 
 test_that("components of `to` more precise than `by` must match `from`", {
-  expect_snapshot_error(date_seq(date_build(2019, 1, 1), to = date_build(2019, 2, 2), by = duration_months(1)))
-  expect_snapshot_error(date_seq(date_build(2019, 1, 1), to = date_build(2019, 3, 1), by = duration_years(1)))
+  expect_snapshot(error = TRUE, date_seq(date_build(2019, 1, 1), to = date_build(2019, 2, 2), by = duration_months(1)))
+  expect_snapshot(error = TRUE, date_seq(date_build(2019, 1, 1), to = date_build(2019, 3, 1), by = duration_years(1)))
 })
 
 test_that("validates integerish `by`", {
-  expect_snapshot_error(date_seq(new_date(1), by = 1.5, total_size = 1))
+  expect_snapshot(error = TRUE, date_seq(new_date(1), by = 1.5, total_size = 1))
 })
 
 test_that("validates `total_size` early", {
-  expect_snapshot_error(date_seq(new_date(1), by = 1, total_size = 1.5))
-  expect_snapshot_error(date_seq(new_date(1), by = 1, total_size = NA))
-  expect_snapshot_error(date_seq(new_date(1), by = 1, total_size = -1))
+  expect_snapshot(error = TRUE, date_seq(new_date(1), by = 1, total_size = 1.5))
+  expect_snapshot(error = TRUE, date_seq(new_date(1), by = 1, total_size = NA))
+  expect_snapshot(error = TRUE, date_seq(new_date(1), by = 1, total_size = -1))
 })
 
 test_that("`to` and `total_size` must not generate a non-fractional sequence", {
-  expect_snapshot_error(date_seq(new_date(0), to = new_date(3), total_size = 3))
+  expect_snapshot(error = TRUE, date_seq(new_date(0), to = new_date(3), total_size = 3))
 })
 
 test_that("requires exactly two optional arguments", {
-  expect_snapshot_error(date_seq(new_date(1), by = 1))
-  expect_snapshot_error(date_seq(new_date(1), total_size = 1))
-  expect_snapshot_error(date_seq(new_date(1), to = new_date(1)))
+  expect_snapshot(error = TRUE, date_seq(new_date(1), by = 1))
+  expect_snapshot(error = TRUE, date_seq(new_date(1), total_size = 1))
+  expect_snapshot(error = TRUE, date_seq(new_date(1), to = new_date(1)))
 })
 
 test_that("requires `to` to be Date", {
-  expect_snapshot_error(date_seq(new_date(1), to = 1, by = 1))
+  expect_snapshot(error = TRUE, date_seq(new_date(1), to = 1, by = 1))
 })
 
 test_that("requires year, month, or day precision", {
-  expect_snapshot_error(date_seq(new_date(1), to = new_date(2), by = duration_nanoseconds(1)))
+  expect_snapshot(error = TRUE, date_seq(new_date(1), to = new_date(2), by = duration_nanoseconds(1)))
 })
 
 test_that("checks empty dots", {
-  expect_snapshot_error(date_seq(new_date(1), new_date(2)))
+  expect_snapshot(error = TRUE, date_seq(new_date(1), new_date(2)))
 })
 
 test_that("golden test: ensure that we never allow components of `to` to differ with `from` (#224)", {
@@ -580,14 +580,14 @@ test_that("can't count between a Date and a POSIXt", {
 # date_zone()
 
 test_that("cannot get the zone of a Date", {
-  expect_snapshot_error(date_zone(new_date(0)))
+  expect_snapshot(error = TRUE, date_zone(new_date(0)))
 })
 
 # ------------------------------------------------------------------------------
 # date_set_zone()
 
 test_that("cannot set the zone of a Date", {
-  expect_snapshot_error(date_set_zone(new_date(0), "UTC"))
+  expect_snapshot(error = TRUE, date_set_zone(new_date(0), "UTC"))
 })
 
 # ------------------------------------------------------------------------------
@@ -597,16 +597,16 @@ test_that("<date> op <duration>", {
   expect_identical(vec_arith("+", new_date(0), duration_years(1)), new_date(365))
   expect_identical(vec_arith("-", new_date(0), duration_years(1)), new_date(-365))
 
-  expect_snapshot_error(vec_arith("+", new_date(0), duration_hours(1)))
-  expect_snapshot_error(vec_arith("*", new_date(0), duration_years(1)))
+  expect_snapshot(error = TRUE, vec_arith("+", new_date(0), duration_hours(1)))
+  expect_snapshot(error = TRUE, vec_arith("*", new_date(0), duration_years(1)))
 })
 
 test_that("<duration> op <date>", {
   expect_identical(vec_arith("+", duration_years(1), new_date(0)), new_date(365))
 
-  expect_snapshot_error(vec_arith("-", duration_years(1), new_date(0)))
-  expect_snapshot_error(vec_arith("+", duration_hours(1), new_date(0)))
-  expect_snapshot_error(vec_arith("*", duration_years(1), new_date(0)))
+  expect_snapshot(error = TRUE, vec_arith("-", duration_years(1), new_date(0)))
+  expect_snapshot(error = TRUE, vec_arith("+", duration_hours(1), new_date(0)))
+  expect_snapshot(error = TRUE, vec_arith("*", duration_years(1), new_date(0)))
 })
 
 # ------------------------------------------------------------------------------
