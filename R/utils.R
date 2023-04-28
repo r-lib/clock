@@ -166,7 +166,8 @@ stop_clock_unsupported <- function(x, ..., details = NULL, call = caller_env()) 
 }
 
 stop_clock_unsupported_conversion <- function(x, to_arg, ..., call = caller_env()) {
-  message <- cli::format_inline("Can't convert {.cls {class(x)}} to {.cls {to_arg}}.")
+  class <- class(x)[[1L]]
+  message <- cli::format_inline("Can't convert {.cls {class}} to {.cls {to_arg}}.")
   stop_clock(message, ..., call = call, class = "clock_error_unsupported_conversion")
 }
 

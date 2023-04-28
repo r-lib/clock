@@ -102,7 +102,7 @@
     Output
       <error/clock_error_unsupported_conversion>
       Error in `as_year_month_day()`:
-      ! Can't convert <clock_zoned_time/clock_rcrd/vctrs_rcrd/vctrs_vctr> to <clock_year_month_day>.
+      ! Can't convert <clock_zoned_time> to <clock_year_month_day>.
 
 # cannot parse nonexistent time
 
