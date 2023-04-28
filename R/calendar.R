@@ -1134,42 +1134,49 @@ add_months.clock_calendar <- function(x, n, ...) {
 
 #' @export
 add_weeks.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_weeks")
+  stop_clock_unsupported_calendar_op("add_weeks", details = advice_convert_to_time_point())
 }
 
 #' @export
 add_days.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_days")
+  stop_clock_unsupported_calendar_op("add_days", details = advice_convert_to_time_point())
 }
 
 #' @export
 add_hours.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_hours")
+  stop_clock_unsupported_calendar_op("add_hours", details = advice_convert_to_time_point())
 }
 
 #' @export
 add_minutes.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_minutes")
+  stop_clock_unsupported_calendar_op("add_minutes", details = advice_convert_to_time_point())
 }
 
 #' @export
 add_seconds.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_seconds")
+  stop_clock_unsupported_calendar_op("add_seconds", details = advice_convert_to_time_point())
 }
 
 #' @export
 add_milliseconds.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_milliseconds")
+  stop_clock_unsupported_calendar_op("add_milliseconds", details = advice_convert_to_time_point())
 }
 
 #' @export
 add_microseconds.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_microseconds")
+  stop_clock_unsupported_calendar_op("add_microseconds", details = advice_convert_to_time_point())
 }
 
 #' @export
 add_nanoseconds.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_nanoseconds")
+  stop_clock_unsupported_calendar_op("add_nanoseconds", details = advice_convert_to_time_point())
+}
+
+advice_convert_to_time_point <- function() {
+  c(
+    i = "Do you need to convert to a time point first?",
+    i = cli::format_inline("Use {.fn as_naive_time} or {.fn as_sys_time} to convert to a time point.")
+  )
 }
 
 # ------------------------------------------------------------------------------

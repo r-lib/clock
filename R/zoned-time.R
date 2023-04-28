@@ -1057,57 +1057,78 @@ zoned_time_precision <- function(x) {
 
 #' @export
 add_years.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_years")
+  details <- c(
+    i = "Do you need to convert to a calendar first?",
+    i = cli::format_inline(paste0(
+      "Use {.fn as_naive_time} then {.fn as_year_month_day} to convert to a ",
+      "calendar that supports {.fn add_years}."
+    ))
+  )
+  stop_clock_unsupported_zoned_time_op("add_years", details = details)
 }
 
 #' @export
 add_quarters.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_quarters")
+  details <- c(
+    i = "Do you need to convert to a calendar first?",
+    i = cli::format_inline(paste0(
+      "Use {.fn as_naive_time} then {.fn as_year_quarter_day} to convert to a ",
+      "calendar that supports {.fn add_quarters}."
+    ))
+  )
+  stop_clock_unsupported_zoned_time_op("add_quarters", details = details)
 }
 
 #' @export
 add_months.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_months")
+  details <- c(
+    i = "Do you need to convert to a calendar first?",
+    i = cli::format_inline(paste0(
+      "Use {.fn as_naive_time} then {.fn as_year_month_day} to convert to a ",
+      "calendar that supports {.fn add_months}."
+    ))
+  )
+  stop_clock_unsupported_zoned_time_op("add_months", details = details)
 }
 
 #' @export
 add_weeks.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_weeks")
+  stop_clock_unsupported_zoned_time_op("add_weeks", details = advice_convert_to_time_point())
 }
 
 #' @export
 add_days.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_days")
+  stop_clock_unsupported_zoned_time_op("add_days", details = advice_convert_to_time_point())
 }
 
 #' @export
 add_hours.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_hours")
+  stop_clock_unsupported_zoned_time_op("add_hours", details = advice_convert_to_time_point())
 }
 
 #' @export
 add_minutes.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_minutes")
+  stop_clock_unsupported_zoned_time_op("add_minutes", details = advice_convert_to_time_point())
 }
 
 #' @export
 add_seconds.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_seconds")
+  stop_clock_unsupported_zoned_time_op("add_seconds", details = advice_convert_to_time_point())
 }
 
 #' @export
 add_milliseconds.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_milliseconds")
+  stop_clock_unsupported_zoned_time_op("add_milliseconds", details = advice_convert_to_time_point())
 }
 
 #' @export
 add_microseconds.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_microseconds")
+  stop_clock_unsupported_zoned_time_op("add_microseconds", details = advice_convert_to_time_point())
 }
 
 #' @export
 add_nanoseconds.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_nanoseconds")
+  stop_clock_unsupported_zoned_time_op("add_nanoseconds", details = advice_convert_to_time_point())
 }
 
 # ------------------------------------------------------------------------------

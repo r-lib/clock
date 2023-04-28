@@ -381,6 +381,8 @@
     Condition
       Error in `add_weeks()`:
       ! This calendar doesn't support `add_weeks()`.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
 ---
 
@@ -389,6 +391,8 @@
     Condition
       Error in `add_days()`:
       ! This calendar doesn't support `add_days()`.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
 ---
 
@@ -397,6 +401,8 @@
     Condition
       Error in `add_hours()`:
       ! This calendar doesn't support `add_hours()`.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
 ---
 
@@ -405,6 +411,8 @@
     Condition
       Error in `add_minutes()`:
       ! This calendar doesn't support `add_minutes()`.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
 ---
 
@@ -413,6 +421,8 @@
     Condition
       Error in `add_seconds()`:
       ! This calendar doesn't support `add_seconds()`.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
 ---
 
@@ -421,6 +431,8 @@
     Condition
       Error in `add_milliseconds()`:
       ! This calendar doesn't support `add_milliseconds()`.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
 ---
 
@@ -429,6 +441,8 @@
     Condition
       Error in `add_microseconds()`:
       ! This calendar doesn't support `add_microseconds()`.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
 ---
 
@@ -437,6 +451,8 @@
     Condition
       Error in `add_nanoseconds()`:
       ! This calendar doesn't support `add_nanoseconds()`.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
 # getters throw default error
 

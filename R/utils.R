@@ -167,18 +167,21 @@ stop_clock_unsupported_conversion <- function(x, to_arg, ..., call = caller_env(
   stop_clock(message, ..., call = call, class = "clock_error_unsupported_conversion")
 }
 
-stop_clock_unsupported_calendar_op <- function(op, ..., call = caller_env()) {
-  message <- paste0("This calendar doesn't support `", op, "()`.")
+stop_clock_unsupported_calendar_op <- function(op, ..., details = NULL, call = caller_env()) {
+  message <- cli::format_inline("This calendar doesn't support {.fn {op}}.")
+  message <- c(message, details)
   stop_clock(message, ..., call = call, class = "clock_error_unsupported_calendar_op")
 }
 
-stop_clock_unsupported_time_point_op <- function(op, ..., call = caller_env()) {
-  message <- paste0("Time points don't support `", op, "()`.")
+stop_clock_unsupported_time_point_op <- function(op, ..., details = NULL, call = caller_env()) {
+  message <- cli::format_inline("Time points don't support {.fn {op}}.")
+  message <- c(message, details)
   stop_clock(message, ..., call = call, class = "clock_error_unsupported_time_point_op")
 }
 
-stop_clock_unsupported_zoned_time_op <- function(op, ..., call = caller_env()) {
-  message <- paste0("Zoned-times don't support `", op, "()`.")
+stop_clock_unsupported_zoned_time_op <- function(op, ..., details = NULL, call = caller_env()) {
+  message <- cli::format_inline("Zoned-times don't support {.fn {op}}.")
+  message <- c(message, details)
   stop_clock(message, ..., call = call, class = "clock_error_unsupported_zoned_time_op")
 }
 

@@ -193,6 +193,8 @@
     Condition
       Error in `add_years()`:
       ! Zoned-times don't support `add_years()`.
+      i Do you need to convert to a calendar first?
+      i Use `as_naive_time()` then `as_year_month_day()` to convert to a calendar that supports `add_years()`.
 
 ---
 
@@ -201,6 +203,8 @@
     Condition
       Error in `add_quarters()`:
       ! Zoned-times don't support `add_quarters()`.
+      i Do you need to convert to a calendar first?
+      i Use `as_naive_time()` then `as_year_quarter_day()` to convert to a calendar that supports `add_quarters()`.
 
 ---
 
@@ -209,6 +213,8 @@
     Condition
       Error in `add_months()`:
       ! Zoned-times don't support `add_months()`.
+      i Do you need to convert to a calendar first?
+      i Use `as_naive_time()` then `as_year_month_day()` to convert to a calendar that supports `add_months()`.
 
 ---
 
@@ -217,6 +223,8 @@
     Condition
       Error in `add_weeks()`:
       ! Zoned-times don't support `add_weeks()`.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
 ---
 
@@ -225,6 +233,8 @@
     Condition
       Error in `add_days()`:
       ! Zoned-times don't support `add_days()`.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
 ---
 
@@ -233,6 +243,8 @@
     Condition
       Error in `add_hours()`:
       ! Zoned-times don't support `add_hours()`.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
 ---
 
@@ -241,6 +253,8 @@
     Condition
       Error in `add_minutes()`:
       ! Zoned-times don't support `add_minutes()`.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
 ---
 
@@ -249,6 +263,8 @@
     Condition
       Error in `add_seconds()`:
       ! Zoned-times don't support `add_seconds()`.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
 ---
 
@@ -257,6 +273,8 @@
     Condition
       Error in `add_milliseconds()`:
       ! Zoned-times don't support `add_milliseconds()`.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
 ---
 
@@ -265,6 +283,8 @@
     Condition
       Error in `add_microseconds()`:
       ! Zoned-times don't support `add_microseconds()`.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
 ---
 
@@ -273,6 +293,8 @@
     Condition
       Error in `add_nanoseconds()`:
       ! Zoned-times don't support `add_nanoseconds()`.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
 # precision: can only be called on zoned-times
 

@@ -320,6 +320,8 @@
     Condition
       Error in `add_years()`:
       ! Time points don't support `add_years()`.
+      i Do you need to convert to a calendar first?
+      i Use `as_year_month_day()` for a calendar that supports `add_years()`.
 
 ---
 
@@ -328,6 +330,8 @@
     Condition
       Error in `add_quarters()`:
       ! Time points don't support `add_quarters()`.
+      i Do you need to convert to a calendar first?
+      i Use `as_year_quarter_day()` for a calendar that supports `add_quarters()`.
 
 ---
 
@@ -336,4 +340,6 @@
     Condition
       Error in `add_months()`:
       ! Time points don't support `add_months()`.
+      i Do you need to convert to a calendar first?
+      i Use `as_year_month_day()` for a calendar that supports `add_months()`.
 
