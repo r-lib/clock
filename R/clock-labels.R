@@ -121,6 +121,10 @@ is_clock_labels <- function(x) {
   inherits(x, "clock_labels")
 }
 
+check_clock_labels <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
+  check_inherits(x, what = "clock_labels", arg = arg, call = call)
+}
+
 cat_wrap <- function(header, body) {
   body <- strwrap(body, exdent = nchar(header))
   cat(header, paste(body, collapse = "\n"), "\n", sep = "")

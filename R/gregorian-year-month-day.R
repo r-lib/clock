@@ -1021,7 +1021,8 @@ calendar_month_factor.clock_year_month_day <- function(x,
                                                        ...,
                                                        labels = "en",
                                                        abbreviate = FALSE) {
-  calendar_month_factor_impl(x, labels, abbreviate, ...)
+  check_dots_empty0(...)
+  calendar_month_factor_impl(x, labels, abbreviate)
 }
 
 # ------------------------------------------------------------------------------

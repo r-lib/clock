@@ -4,7 +4,7 @@ to_posixct <- function(x) {
   } else if (is_POSIXlt(x)) {
     to_posixct_from_posixlt(x)
   } else {
-    abort("Internal error: Should either be POSIXct/POSIXlt.")
+    abort("Should either be POSIXct/POSIXlt.", .internal = TRUE)
   }
 }
 
@@ -336,6 +336,31 @@ df_list_propagate_missing <- function(x, ..., size = NULL) {
   x <- vec_assign(x, incomplete, NA)
 
   vec_unstructure(x)
+}
+
+# ------------------------------------------------------------------------------
+
+check_inherits <- function(x,
+                           what,
+                           ...,
+                           allow_null = FALSE,
+                           arg = caller_arg(x),
+                           call = caller_env()) {
+  if (!missing(x)) {
+    if (inherits(x, what)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
+  }
+
+  stop_input_type(
+    x = x,
+    what = cli::format_inline("a <{what}>"),
+    arg = arg,
+    call = call
+  )
 }
 
 # ------------------------------------------------------------------------------

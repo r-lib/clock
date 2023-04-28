@@ -175,23 +175,23 @@ calendar_month_factor.clock_calendar <- function(x,
   stop_clock_unsupported_calendar_op("calendar_month_factor")
 }
 
-calendar_month_factor_impl <- function(x, labels, abbreviate, ...) {
-  check_dots_empty()
+calendar_month_factor_impl <- function(x,
+                                       labels,
+                                       abbreviate,
+                                       ...,
+                                       error_call = caller_env()) {
+  check_dots_empty0(...)
 
   if (calendar_precision_attribute(x) < PRECISION_MONTH) {
-    abort("`x` must have at least 'month' precision.")
+    cli::cli_abort("{.arg x} must have at least {.str month} precision.", call = error_call)
   }
 
   if (is_character(labels)) {
     labels <- clock_labels_lookup(labels)
   }
-  if (!is_clock_labels(labels)) {
-    abort("`labels` must be a 'clock_labels' object.")
-  }
+  check_clock_labels(labels, call = error_call)
 
-  if (!is_bool(abbreviate)) {
-    abort("`abbreviate` must be `TRUE` or `FALSE`.")
-  }
+  check_bool(abbreviate, call = error_call)
 
   if (abbreviate) {
     labels <- labels$month_abbrev
@@ -345,7 +345,7 @@ calendar_group_time <- function(x, n, precision) {
     return(x)
   }
 
-  abort("Internal error: Unknown precision.")
+  abort("Unknown precision.", .internal = TRUE)
 }
 
 group_component0 <- function(x, n) {

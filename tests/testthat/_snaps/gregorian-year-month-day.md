@@ -464,40 +464,40 @@
     Code
       calendar_month_factor(year_month_day(2019))
     Condition
-      Error in `calendar_month_factor_impl()`:
-      ! `x` must have at least 'month' precision.
+      Error in `calendar_month_factor()`:
+      ! `x` must have at least "month" precision.
 
 # `labels` is validated
 
     Code
       calendar_month_factor(year_month_day(2019, 1), labels = 1)
     Condition
-      Error in `calendar_month_factor_impl()`:
-      ! `labels` must be a 'clock_labels' object.
+      Error in `calendar_month_factor()`:
+      ! `labels` must be a <clock_labels>, not the number 1.
 
 # `abbreviate` is validated
 
     Code
       calendar_month_factor(year_month_day(2019, 1), abbreviate = "foo")
     Condition
-      Error in `calendar_month_factor_impl()`:
-      ! `abbreviate` must be `TRUE` or `FALSE`.
+      Error in `calendar_month_factor()`:
+      ! `abbreviate` must be `TRUE` or `FALSE`, not the string "foo".
 
 ---
 
     Code
       calendar_month_factor(year_month_day(2019, 1), abbreviate = 1)
     Condition
-      Error in `calendar_month_factor_impl()`:
-      ! `abbreviate` must be `TRUE` or `FALSE`.
+      Error in `calendar_month_factor()`:
+      ! `abbreviate` must be `TRUE` or `FALSE`, not the number 1.
 
 ---
 
     Code
       calendar_month_factor(year_month_day(2019, 1), abbreviate = c(TRUE, FALSE))
     Condition
-      Error in `calendar_month_factor_impl()`:
-      ! `abbreviate` must be `TRUE` or `FALSE`.
+      Error in `calendar_month_factor()`:
+      ! `abbreviate` must be `TRUE` or `FALSE`, not a logical vector.
 
 # can't compute a unsupported count precision
 
