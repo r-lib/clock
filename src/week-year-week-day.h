@@ -89,7 +89,7 @@ public:
   void assign_year(const week_shim::year& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
-  void resolve(r_ssize i, const enum invalid type);
+  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
 
   week_shim::year to_year(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
@@ -112,7 +112,7 @@ public:
   void assign_year_weeknum(const week_shim::year_weeknum& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
-  void resolve(r_ssize i, const enum invalid type);
+  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
 
   week_shim::year_weeknum to_year_weeknum(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
@@ -137,7 +137,7 @@ public:
   void assign_sys_time(const date::sys_time<date::days>& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
-  void resolve(r_ssize i, const enum invalid type);
+  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
 
   date::sys_time<date::days> to_sys_time(r_ssize i) const NOEXCEPT;
   week_shim::year_weeknum_weekday to_year_weeknum_weekday(r_ssize i) const NOEXCEPT;
@@ -163,7 +163,7 @@ public:
   void assign_sys_time(const date::sys_time<std::chrono::hours>& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
-  void resolve(r_ssize i, const enum invalid type);
+  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
 
   date::sys_time<std::chrono::hours> to_sys_time(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
@@ -189,7 +189,7 @@ public:
   void assign_sys_time(const date::sys_time<std::chrono::minutes>& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
-  void resolve(r_ssize i, const enum invalid type);
+  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
 
   date::sys_time<std::chrono::minutes> to_sys_time(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
@@ -216,7 +216,7 @@ public:
   void assign_sys_time(const date::sys_time<std::chrono::seconds>& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
-  void resolve(r_ssize i, const enum invalid type);
+  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
 
   date::sys_time<std::chrono::seconds> to_sys_time(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
@@ -245,7 +245,7 @@ public:
   void assign_sys_time(const date::sys_time<Duration>& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
-  void resolve(r_ssize i, const enum invalid type);
+  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
 
   date::sys_time<Duration> to_sys_time(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
@@ -312,7 +312,7 @@ y::assign_na(r_ssize i) NOEXCEPT
 
 inline
 void
-y::resolve(r_ssize i, const enum invalid type)
+y::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
 {
   // Never invalid
 }
@@ -384,7 +384,7 @@ ywn::assign_na(r_ssize i) NOEXCEPT
 
 inline
 void
-ywn::resolve(r_ssize i, const enum invalid type)
+ywn::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
 {
   const week_shim::year_weeknum elt = to_year_weeknum(i);
 
@@ -414,7 +414,7 @@ ywn::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::error: {
-    rclock::detail::resolve_error(i);
+    rclock::detail::resolve_error(i, call);
   }
   }
 }
@@ -496,7 +496,7 @@ ywnwd::assign_na(r_ssize i) NOEXCEPT
 
 inline
 void
-ywnwd::resolve(r_ssize i, const enum invalid type)
+ywnwd::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
 {
   const week_shim::year_weeknum_weekday elt = to_year_weeknum_weekday(i);
 
@@ -525,7 +525,7 @@ ywnwd::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::error: {
-    rclock::detail::resolve_error(i);
+    rclock::detail::resolve_error(i, call);
   }
   }
 }
@@ -610,7 +610,7 @@ ywnwdh::assign_na(r_ssize i) NOEXCEPT
 
 inline
 void
-ywnwdh::resolve(r_ssize i, const enum invalid type)
+ywnwdh::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
 {
   const week_shim::year_weeknum_weekday elt = to_year_weeknum_weekday(i);
 
@@ -648,7 +648,7 @@ ywnwdh::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::error: {
-    rclock::detail::resolve_error(i);
+    rclock::detail::resolve_error(i, call);
   }
   }
 }
@@ -725,7 +725,7 @@ ywnwdhm::assign_na(r_ssize i) NOEXCEPT
 
 inline
 void
-ywnwdhm::resolve(r_ssize i, const enum invalid type)
+ywnwdhm::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
 {
   const week_shim::year_weeknum_weekday elt = to_year_weeknum_weekday(i);
 
@@ -766,7 +766,7 @@ ywnwdhm::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::error: {
-    rclock::detail::resolve_error(i);
+    rclock::detail::resolve_error(i, call);
   }
   }
 }
@@ -844,7 +844,7 @@ ywnwdhms::assign_na(r_ssize i) NOEXCEPT
 
 inline
 void
-ywnwdhms::resolve(r_ssize i, const enum invalid type)
+ywnwdhms::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
 {
   const week_shim::year_weeknum_weekday elt = to_year_weeknum_weekday(i);
 
@@ -888,7 +888,7 @@ ywnwdhms::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::error: {
-    rclock::detail::resolve_error(i);
+    rclock::detail::resolve_error(i, call);
   }
   }
 }
@@ -974,7 +974,7 @@ ywnwdhmss<Duration>::assign_na(r_ssize i) NOEXCEPT
 template <typename Duration>
 inline
 void
-ywnwdhmss<Duration>::resolve(r_ssize i, const enum invalid type)
+ywnwdhmss<Duration>::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
 {
   const week_shim::year_weeknum_weekday elt = to_year_weeknum_weekday(i);
 
@@ -1021,7 +1021,7 @@ ywnwdhmss<Duration>::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::error: {
-    rclock::detail::resolve_error(i);
+    rclock::detail::resolve_error(i, call);
   }
   }
 }

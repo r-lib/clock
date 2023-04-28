@@ -254,7 +254,7 @@ invalid_resolve.clock_year_day <- function(x, ..., invalid = NULL) {
   if (precision < PRECISION_DAY) {
     x
   } else {
-    fields <- invalid_resolve_year_day_cpp(x, precision, invalid)
+    fields <- invalid_resolve_year_day_cpp(x, precision, invalid, current_env())
     new_year_day_from_fields(fields, precision, names(x))
   }
 }

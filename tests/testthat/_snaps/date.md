@@ -211,7 +211,7 @@
     Code
       date_build(2019, 1:12, 31)
     Condition
-      Error:
+      Error in `invalid_resolve()`:
       ! Invalid date found at location 2.
       i Resolve invalid date issues by specifying the `invalid` argument.
 
@@ -236,7 +236,7 @@
     Code
       date_seq(from, to = to, by = duration_months(1))
     Condition
-      Error:
+      Error in `invalid_resolve()`:
       ! Invalid date found at location 2.
       i Resolve invalid date issues by specifying the `invalid` argument.
 
@@ -440,7 +440,7 @@
     Code
       slider::slide_index(x, i, identity, .after = after)
     Condition
-      Error:
+      Error in `invalid_resolve()`:
       ! Invalid date found at location 2.
       i Resolve invalid date issues by specifying the `invalid` argument.
 

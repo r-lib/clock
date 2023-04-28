@@ -186,7 +186,8 @@ cpp11::writable::list
 invalid_resolve_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
                                      const cpp11::integers& precision_int,
                                      const cpp11::integers& start_int,
-                                     const cpp11::strings& invalid_string) {
+                                     const cpp11::strings& invalid_string,
+                                     const cpp11::sexp& call) {
   using namespace rclock;
 
   const quarterly::start start = parse_quarterly_start(start_int);
@@ -209,13 +210,13 @@ invalid_resolve_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields,
   rquarterly::yqnqdhmss<std::chrono::nanoseconds> yqnqdhmss3{year, quarter, day, hour, minute, second, subsecond, start};
 
   switch (parse_precision(precision_int)) {
-  case precision::day: return invalid_resolve_calendar_impl(yqnqd, invalid_val);
-  case precision::hour: return invalid_resolve_calendar_impl(yqnqdh, invalid_val);
-  case precision::minute: return invalid_resolve_calendar_impl(yqnqdhm, invalid_val);
-  case precision::second: return invalid_resolve_calendar_impl(yqnqdhms, invalid_val);
-  case precision::millisecond: return invalid_resolve_calendar_impl(yqnqdhmss1, invalid_val);
-  case precision::microsecond: return invalid_resolve_calendar_impl(yqnqdhmss2, invalid_val);
-  case precision::nanosecond: return invalid_resolve_calendar_impl(yqnqdhmss3, invalid_val);
+  case precision::day: return invalid_resolve_calendar_impl(yqnqd, invalid_val, call);
+  case precision::hour: return invalid_resolve_calendar_impl(yqnqdh, invalid_val, call);
+  case precision::minute: return invalid_resolve_calendar_impl(yqnqdhm, invalid_val, call);
+  case precision::second: return invalid_resolve_calendar_impl(yqnqdhms, invalid_val, call);
+  case precision::millisecond: return invalid_resolve_calendar_impl(yqnqdhmss1, invalid_val, call);
+  case precision::microsecond: return invalid_resolve_calendar_impl(yqnqdhmss2, invalid_val, call);
+  case precision::nanosecond: return invalid_resolve_calendar_impl(yqnqdhmss3, invalid_val, call);
   default: never_reached("invalid_resolve_year_quarter_day_cpp");
   }
 }

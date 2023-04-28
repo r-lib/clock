@@ -462,7 +462,7 @@
     Code
       invalid_resolve(year_week_day(2019, 53))
     Condition
-      Error:
+      Error in `invalid_resolve()`:
       ! Invalid date found at location 1.
       i Resolve invalid date issues by specifying the `invalid` argument.
 

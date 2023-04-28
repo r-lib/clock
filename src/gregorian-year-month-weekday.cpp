@@ -172,7 +172,8 @@ invalid_count_year_month_weekday_cpp(const cpp11::integers& year,
 cpp11::writable::list
 invalid_resolve_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
                                        const cpp11::integers& precision_int,
-                                       const cpp11::strings& invalid_string) {
+                                       const cpp11::strings& invalid_string,
+                                       const cpp11::sexp& call) {
   using namespace rclock;
   const enum invalid invalid_val = parse_invalid(invalid_string);
 
@@ -194,13 +195,13 @@ invalid_resolve_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields,
   weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
 
   switch (parse_precision(precision_int)) {
-  case precision::day: return invalid_resolve_calendar_impl(ymwd, invalid_val);
-  case precision::hour: return invalid_resolve_calendar_impl(ymwdh, invalid_val);
-  case precision::minute: return invalid_resolve_calendar_impl(ymwdhm, invalid_val);
-  case precision::second: return invalid_resolve_calendar_impl(ymwdhms, invalid_val);
-  case precision::millisecond: return invalid_resolve_calendar_impl(ymwdhmss1, invalid_val);
-  case precision::microsecond: return invalid_resolve_calendar_impl(ymwdhmss2, invalid_val);
-  case precision::nanosecond: return invalid_resolve_calendar_impl(ymwdhmss3, invalid_val);
+  case precision::day: return invalid_resolve_calendar_impl(ymwd, invalid_val, call);
+  case precision::hour: return invalid_resolve_calendar_impl(ymwdh, invalid_val, call);
+  case precision::minute: return invalid_resolve_calendar_impl(ymwdhm, invalid_val, call);
+  case precision::second: return invalid_resolve_calendar_impl(ymwdhms, invalid_val, call);
+  case precision::millisecond: return invalid_resolve_calendar_impl(ymwdhmss1, invalid_val, call);
+  case precision::microsecond: return invalid_resolve_calendar_impl(ymwdhmss2, invalid_val, call);
+  case precision::nanosecond: return invalid_resolve_calendar_impl(ymwdhmss3, invalid_val, call);
   default: never_reached("invalid_resolve_year_month_weekday_cpp");
   }
 }

@@ -544,7 +544,7 @@
     Code
       invalid_resolve(year_month_weekday(2019, 1, 1, 5))
     Condition
-      Error:
+      Error in `invalid_resolve()`:
       ! Invalid date found at location 1.
       i Resolve invalid date issues by specifying the `invalid` argument.
 

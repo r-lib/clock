@@ -466,7 +466,7 @@
     Code
       invalid_resolve(year_quarter_day(2019, 1, 91))
     Condition
-      Error:
+      Error in `invalid_resolve()`:
       ! Invalid date found at location 1.
       i Resolve invalid date issues by specifying the `invalid` argument.
 
