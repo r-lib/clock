@@ -1187,18 +1187,10 @@ check_time_point_precision <- function(x,
                                        ...,
                                        arg = caller_arg(x),
                                        call = caller_env()) {
-  check_precision(x, arg = arg, call = call)
-
-  if (is_time_point_precision(precision_to_integer(x))) {
-    return(invisible(NULL))
-  }
-
-  cli::cli_abort(
-    "{.arg {arg}} must be at least {.str day} precision, not {.str {x}}.",
+  check_precision(
+    x = x,
+    values = c("day", precision_time_names()),
+    arg = arg,
     call = call
   )
-}
-
-is_time_point_precision <- function(x) {
-  x >= PRECISION_DAY
 }

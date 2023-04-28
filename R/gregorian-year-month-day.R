@@ -403,13 +403,11 @@ year_month_day_check_precision <- function(x,
                                            ...,
                                            arg = caller_arg(x),
                                            call = caller_env()) {
-  check_precision(x, arg = arg, call = call)
-
-  arg_match0(
-    arg = x,
+  check_precision(
+    x = x,
     values = year_month_day_precision_names(),
-    arg_nm = arg,
-    error_call = call
+    arg = arg,
+    call = call
   )
 }
 

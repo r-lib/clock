@@ -64,7 +64,8 @@
       date_floor(as.Date("2019-01-01"), "month")
     Condition
       Error in `time_point_rounder()`:
-      ! `precision` must be at least "day" precision, not "month".
+      ! `precision` must be one of "day", "hour", "minute", "second", "millisecond", "microsecond", or "nanosecond", not "month".
+      i Did you mean "minute"?
 
 # `origin` is validated
 

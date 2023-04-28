@@ -1154,20 +1154,12 @@ check_zoned_time_precision <- function(x,
                                        ...,
                                        arg = caller_arg(x),
                                        call = caller_env()) {
-  check_precision(x, arg = arg, call = call)
-
-  if (is_zoned_time_precision(precision_to_integer(x))) {
-    return(invisible(NULL))
-  }
-
-  cli::cli_abort(
-    "{.arg {arg}} must be at least {.str second} precision, not {.str {x}}.",
+  check_precision(
+    x = x,
+    values = c("second", "millisecond", "microsecond", "nanosecond"),
+    arg = arg,
     call = call
   )
-}
-
-is_zoned_time_precision <- function(x) {
-  x >= PRECISION_SECOND
 }
 
 # ------------------------------------------------------------------------------
