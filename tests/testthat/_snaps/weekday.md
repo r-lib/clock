@@ -58,31 +58,23 @@
       weekday_code(1)
     Condition
       Error in `weekday_code()`:
-      ! `x` must be a 'clock_weekday'.
+      ! `x` must be a <clock_weekday>, not the number 1.
 
 # weekday_code - `encoding` is validated
 
     Code
       weekday_code(weekday(1), encoding = "foo")
     Condition
-      Error in `validate_encoding()`:
-      ! `encoding` must be one of "western" or "iso".
+      Error in `weekday_code()`:
+      ! `encoding` must be one of "western" or "iso", not "foo".
 
 ---
 
     Code
       weekday_code(weekday(1), encoding = 1)
     Condition
-      Error in `validate_encoding()`:
-      ! `encoding` must be one of "western" or "iso".
-
----
-
-    Code
-      weekday_code(weekday(1), encoding = c("western", "iso"))
-    Condition
-      Error in `validate_encoding()`:
-      ! `encoding` must be one of "western" or "iso".
+      Error in `weekday_code()`:
+      ! `encoding` must be a string or character vector.
 
 # `x` is validated
 
@@ -90,7 +82,7 @@
       weekday_factor(1)
     Condition
       Error in `weekday_factor()`:
-      ! `x` must be a 'clock_weekday' object.
+      ! `x` must be a <clock_weekday>, not the number 1.
 
 # `labels` is validated
 
@@ -105,24 +97,16 @@
     Code
       weekday_factor(weekday(1), encoding = "foo")
     Condition
-      Error in `validate_encoding()`:
-      ! `encoding` must be one of "western" or "iso".
+      Error in `weekday_factor()`:
+      ! `encoding` must be one of "western" or "iso", not "foo".
 
 ---
 
     Code
       weekday_factor(weekday(1), encoding = 1)
     Condition
-      Error in `validate_encoding()`:
-      ! `encoding` must be one of "western" or "iso".
-
----
-
-    Code
-      weekday_factor(weekday(1), encoding = c("western", "iso"))
-    Condition
-      Error in `validate_encoding()`:
-      ! `encoding` must be one of "western" or "iso".
+      Error in `weekday_factor()`:
+      ! `encoding` must be a string or character vector.
 
 # `abbreviate` is validated
 
@@ -154,7 +138,7 @@
       weekday(1) < weekday(2)
     Condition
       Error in `vec_proxy_compare()`:
-      ! Can't compare or order values of the 'clock_weekday' type, as this type does not specify a 'first' day of the week.
+      ! Can't compare or order values of the <clock_weekday> type, as this type does not specify a "first" day of the week.
 
 ---
 
@@ -162,7 +146,7 @@
       min(weekday(1))
     Condition
       Error in `vec_proxy_compare()`:
-      ! Can't compare or order values of the 'clock_weekday' type, as this type does not specify a 'first' day of the week.
+      ! Can't compare or order values of the <clock_weekday> type, as this type does not specify a "first" day of the week.
 
 ---
 
@@ -170,7 +154,7 @@
       xtfrm(weekday(1:2))
     Condition
       Error in `vec_proxy_compare()`:
-      ! Can't compare or order values of the 'clock_weekday' type, as this type does not specify a 'first' day of the week.
+      ! Can't compare or order values of the <clock_weekday> type, as this type does not specify a "first" day of the week.
 
 ---
 
@@ -178,5 +162,5 @@
       vec_order(weekday(1:2))
     Condition
       Error in `vec_proxy_compare()`:
-      ! Can't compare or order values of the 'clock_weekday' type, as this type does not specify a 'first' day of the week.
+      ! Can't compare or order values of the <clock_weekday> type, as this type does not specify a "first" day of the week.
 
