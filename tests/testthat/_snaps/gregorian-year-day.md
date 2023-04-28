@@ -291,24 +291,30 @@
     Code
       set_millisecond(year_day(year = 1, day = 1, hour = 1, minute = 1), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_millisecond()` does not support a precision of 'minute'.
+      Error in `set_millisecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "millisecond".
+      i `x` has a precision of "minute".
 
 ---
 
     Code
       set_microsecond(year_day(year = 1, day = 1, hour = 1, minute = 1), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_microsecond()` does not support a precision of 'minute'.
+      Error in `set_microsecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "microsecond".
+      i `x` has a precision of "minute".
 
 ---
 
     Code
       set_nanosecond(year_day(year = 1, day = 1, hour = 1, minute = 1), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_nanosecond()` does not support a precision of 'minute'.
+      Error in `set_nanosecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "nanosecond".
+      i `x` has a precision of "minute".
 
 # setters require correct subsecond precision
 
@@ -316,8 +322,10 @@
       set_millisecond(year_day(year = 1, day = 3, hour = 4, minute = 5, second = 6,
         subsecond = 7, subsecond_precision = "microsecond"), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_millisecond()` does not support a precision of 'microsecond'.
+      Error in `set_millisecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "millisecond".
+      i `x` has a precision of "microsecond".
 
 ---
 
@@ -325,8 +333,10 @@
       set_millisecond(year_day(year = 1, day = 3, hour = 4, minute = 5, second = 6,
         subsecond = 7, subsecond_precision = "nanosecond"), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_millisecond()` does not support a precision of 'nanosecond'.
+      Error in `set_millisecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "millisecond".
+      i `x` has a precision of "nanosecond".
 
 ---
 
@@ -334,8 +344,10 @@
       set_microsecond(year_day(year = 1, day = 3, hour = 4, minute = 5, second = 6,
         subsecond = 7, subsecond_precision = "millisecond"), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_microsecond()` does not support a precision of 'millisecond'.
+      Error in `set_microsecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "microsecond".
+      i `x` has a precision of "millisecond".
 
 ---
 
@@ -343,8 +355,10 @@
       set_microsecond(year_day(year = 1, day = 3, hour = 4, minute = 5, second = 6,
         subsecond = 7, subsecond_precision = "nanosecond"), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_microsecond()` does not support a precision of 'nanosecond'.
+      Error in `set_microsecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "microsecond".
+      i `x` has a precision of "nanosecond".
 
 ---
 
@@ -352,8 +366,10 @@
       set_nanosecond(year_day(year = 1, day = 3, hour = 4, minute = 5, second = 6,
         subsecond = 7, subsecond_precision = "millisecond"), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_nanosecond()` does not support a precision of 'millisecond'.
+      Error in `set_nanosecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "nanosecond".
+      i `x` has a precision of "millisecond".
 
 ---
 
@@ -361,8 +377,10 @@
       set_nanosecond(year_day(year = 1, day = 3, hour = 4, minute = 5, second = 6,
         subsecond = 7, subsecond_precision = "microsecond"), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_nanosecond()` does not support a precision of 'microsecond'.
+      Error in `set_nanosecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "nanosecond".
+      i `x` has a precision of "microsecond".
 
 # invalid dates must be resolved when converting to another calendar
 

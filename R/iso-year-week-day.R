@@ -488,7 +488,7 @@ set_second.clock_iso_year_week_day <- function(x, value, ...) {
 #' @export
 set_millisecond.clock_iso_year_week_day <- function(x, value, ...) {
   check_dots_empty()
-  calendar_require_any_of_precisions(x, c(PRECISION_SECOND, PRECISION_MILLISECOND), "set_millisecond")
+  calendar_check_exact_precision(x, c(PRECISION_SECOND, PRECISION_MILLISECOND))
   set_field_iso_year_week_day(x, value, "millisecond")
 }
 
@@ -496,7 +496,7 @@ set_millisecond.clock_iso_year_week_day <- function(x, value, ...) {
 #' @export
 set_microsecond.clock_iso_year_week_day <- function(x, value, ...) {
   check_dots_empty()
-  calendar_require_any_of_precisions(x, c(PRECISION_SECOND, PRECISION_MICROSECOND), "set_microsecond")
+  calendar_check_exact_precision(x, c(PRECISION_SECOND, PRECISION_MICROSECOND))
   set_field_iso_year_week_day(x, value, "microsecond")
 }
 
@@ -504,7 +504,7 @@ set_microsecond.clock_iso_year_week_day <- function(x, value, ...) {
 #' @export
 set_nanosecond.clock_iso_year_week_day <- function(x, value, ...) {
   check_dots_empty()
-  calendar_require_any_of_precisions(x, c(PRECISION_SECOND, PRECISION_NANOSECOND), "set_nanosecond")
+  calendar_check_exact_precision(x, c(PRECISION_SECOND, PRECISION_NANOSECOND))
   set_field_iso_year_week_day(x, value, "nanosecond")
 }
 
