@@ -1541,9 +1541,7 @@ date_seq.Date <- function(from,
 
   check_number_of_supplied_optional_arguments(to, by, total_size)
 
-  if (!is_null(to) && !is_Date(to)) {
-    abort("If supplied, `to` must be a <Date>.")
-  }
+  check_date(to, allow_null = TRUE)
 
   if (!is_null(total_size)) {
     total_size <- check_length_out(total_size, arg = "total_size")
@@ -1912,10 +1910,7 @@ date_count_between <- function(start, end, precision, ..., n = 1L) {
 #' )
 date_count_between.Date <- function(start, end, precision, ..., n = 1L) {
   check_dots_empty()
-
-  if (!is_Date(end)) {
-    abort("`end` must be a <Date>.")
-  }
+  check_date(end)
 
   # Designed to match `add_*()` functions to guarantee that
   # if `start <= end`, then `start + <count> <= end`
@@ -1980,4 +1975,20 @@ date_count_between_impl <- function(start,
   precisions <- paste0(precisions, collapse = ", ")
 
   abort(paste0("`precision` must be one of: ", precisions, "."))
+}
+
+# ------------------------------------------------------------------------------
+
+check_date <- function(x,
+                       ...,
+                       allow_null = FALSE,
+                       arg = caller_arg(x),
+                       call = caller_env()) {
+  check_inherits(
+    x = x,
+    what = "Date",
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
 }

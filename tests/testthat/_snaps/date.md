@@ -340,7 +340,7 @@
       date_seq(new_date(1), to = 1, by = 1)
     Condition
       Error in `date_seq()`:
-      ! If supplied, `to` must be a <Date>.
+      ! `to` must be a <Date>, not the number 1.
 
 # requires year, month, or day precision
 
@@ -377,7 +377,7 @@
     Output
       <error/rlang_error>
       Error in `date_count_between()`:
-      ! `end` must be a <Date>.
+      ! `end` must be a <Date>, not a <POSIXct/POSIXt> object.
 
 # cannot get the zone of a Date
 

@@ -8,9 +8,6 @@ to_posixct <- function(x) {
   }
 }
 
-is_Date <- function(x) {
-  inherits(x, "Date")
-}
 is_POSIXt <- function(x) {
   inherits(x, "POSIXt")
 }
