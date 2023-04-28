@@ -435,7 +435,7 @@
     Code
       slider::slide_index(x, i, identity, .after = after)
     Condition
-      Error in `stop_clock()`:
+      Error:
       ! Ambiguous time due to daylight saving time at location 1.
       i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
@@ -444,7 +444,7 @@
     Code
       slider::slide_index(x, i, identity, .after = after)
     Condition
-      Error in `stop_clock()`:
+      Error:
       ! Nonexistent time due to daylight saving time at location 1.
       i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
@@ -453,7 +453,7 @@
     Code
       slider::slide_index(x, i, identity, .after = after)
     Condition
-      Error in `stop_clock()`:
+      Error:
       ! Ambiguous time due to daylight saving time at location 1.
       i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
@@ -462,7 +462,7 @@
     Code
       slider::slide_index(x, i, identity, .after = after)
     Condition
-      Error in `stop_clock()`:
+      Error:
       ! Nonexistent time due to daylight saving time at location 1.
       i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 

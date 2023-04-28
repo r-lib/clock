@@ -157,29 +157,29 @@ posixt_tzone_standardize <- function(tzone) {
 
 # ------------------------------------------------------------------------------
 
-stop_clock <- function(message, class = character()) {
-  rlang::abort(message, class = c(class, "clock_error"))
+stop_clock <- function(message, ..., call = caller_env(), class = character()) {
+  rlang::abort(message, ..., call = call, class = c(class, "clock_error"))
 }
 
 stop_clock_unsupported_conversion <- function(x, to_arg) {
   to_arg <- paste0("<", to_arg, ">")
   message <- paste0("Can't convert ", paste_class(x), " to ", to_arg, ".")
-  stop_clock(message, "clock_error_unsupported_conversion")
+  stop_clock(message, class = "clock_error_unsupported_conversion")
 }
 
 stop_clock_unsupported_calendar_op <- function(op) {
   message <- paste0("This calendar doesn't support `", op, "()`.")
-  stop_clock(message, "clock_error_unsupported_calendar_op")
+  stop_clock(message, class = "clock_error_unsupported_calendar_op")
 }
 
 stop_clock_unsupported_time_point_op <- function(op) {
   message <- paste0("Time points don't support `", op, "()`.")
-  stop_clock(message, "clock_error_unsupported_time_point_op")
+  stop_clock(message, class = "clock_error_unsupported_time_point_op")
 }
 
 stop_clock_unsupported_zoned_time_op <- function(op) {
   message <- paste0("Zoned-times don't support `", op, "()`.")
-  stop_clock(message, "clock_error_unsupported_zoned_time_op")
+  stop_clock(message, class = "clock_error_unsupported_zoned_time_op")
 }
 
 # Thrown from C++
@@ -191,7 +191,7 @@ stop_clock_invalid_date <- function(i) {
     c(i = "Resolve invalid date issues by specifying the `invalid` argument.")
   )
   message <- paste0(header, "\n", bullet)
-  stop_clock(message, "clock_error_invalid_date")
+  stop_clock(message, class = "clock_error_invalid_date")
 }
 
 # Thrown from C++
@@ -203,7 +203,7 @@ stop_clock_nonexistent_time <- function(i) {
     c(i = "Resolve nonexistent time issues by specifying the `nonexistent` argument.")
   )
   message <- paste0(header, "\n", bullet)
-  stop_clock(message, "clock_error_nonexistent_time")
+  stop_clock(message, class = "clock_error_nonexistent_time")
 }
 
 # Thrown from C++
@@ -215,7 +215,7 @@ stop_clock_ambiguous_time <- function(i) {
     c(i = "Resolve ambiguous time issues by specifying the `ambiguous` argument.")
   )
   message <- paste0(header, "\n", bullet)
-  stop_clock(message, "clock_error_ambiguous_time")
+  stop_clock(message, class = "clock_error_ambiguous_time")
 }
 
 paste_class <- function(x) {
