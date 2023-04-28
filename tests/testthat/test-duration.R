@@ -102,7 +102,7 @@ test_that("input is validated", {
 # seq()
 
 test_that("seq() validates from", {
-  expect_snapshot(error = TRUE, seq(duration_years(1:2)), class = "vctrs_error_assert_size")
+  expect_snapshot(error = TRUE, seq(duration_years(1:2)))
   expect_snapshot(error = TRUE, seq(duration_years(NA_integer_)))
 })
 
@@ -125,18 +125,18 @@ test_that("seq() requires two optional args", {
 })
 
 test_that("seq() validates `to`", {
-  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1:2), by = 1), class = "vctrs_error_assert_size")
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1:2), by = 1))
   expect_snapshot(error = TRUE, seq(duration_years(1L), to = 1, by = 1))
   expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_days(1), by = 1))
   expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(NA_integer_), by = 1))
 })
 
 test_that("seq() validates `by`", {
-  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), by = 1:2), class = "vctrs_error_assert_size")
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), by = 1:2))
   expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), by = NA_integer_))
   expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), by = 0))
   expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), by = duration_years(0)))
-  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), by = "x"), class = "vctrs_error_incompatible_type")
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), by = "x"))
 })
 
 test_that("`by` must be castable to the type of `from`", {
@@ -146,10 +146,10 @@ test_that("`by` must be castable to the type of `from`", {
 })
 
 test_that("seq() validates `length.out`", {
-  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), length.out = 1:2), class = "vctrs_error_assert_size")
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), length.out = 1:2))
   expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), length.out = NA_integer_))
   expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), length.out = -1))
-  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), length.out = "x"), class = "vctrs_error_incompatible_type")
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), length.out = "x"))
 })
 
 test_that("seq() validates dots", {

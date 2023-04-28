@@ -60,7 +60,9 @@ test_that("can resolve nonexistent midnight issues for Date -> POSIXct", {
   zone <- "Asia/Beirut"
   x <- as.Date("2021-03-28")
 
-  expect_snapshot(error = TRUE, as_date_time(x, zone), class = "clock_error_nonexistent_time")
+  expect_snapshot({
+    (expect_error(as_date_time(x, zone), class = "clock_error_nonexistent_time"))
+  })
 
   expect_identical(
     as_date_time(x, zone, nonexistent = "roll-forward"),
@@ -73,7 +75,9 @@ test_that("can resolve ambiguous midnight issues for Date -> POSIXct", {
   zone <- "Asia/Amman"
   x <- as.Date("2021-10-29")
 
-  expect_snapshot(error = TRUE, as_date_time(x, zone), class = "clock_error_ambiguous_time")
+  expect_snapshot({
+    (expect_error(as_date_time(x, zone), class = "clock_error_ambiguous_time"))
+  })
 
   expect_identical(
     as_date_time(x, zone, ambiguous = "earliest"),
@@ -628,7 +632,9 @@ test_that("can resolve nonexistent start issues", {
   zone <- "Asia/Beirut"
   x <- date_time_build(2021, 3, 28, 2, zone = zone)
 
-  expect_snapshot(error = TRUE, date_start(x, "day"), class = "clock_error_nonexistent_time")
+  expect_snapshot({
+    (expect_error(date_start(x, "day"), class = "clock_error_nonexistent_time"))
+  })
 
   expect_identical(
     date_start(x, "day", nonexistent = "roll-forward"),
@@ -641,7 +647,9 @@ test_that("can resolve ambiguous start issues", {
   zone <- "Asia/Amman"
   x <- date_time_build(2021, 10, 29, 2, zone = zone)
 
-  expect_snapshot(error = TRUE, date_start(x, "day"), class = "clock_error_ambiguous_time")
+  expect_snapshot({
+    (expect_error(date_start(x, "day"), class = "clock_error_ambiguous_time"))
+  })
 
   expect_identical(
     date_start(x, "day", ambiguous = "earliest"),

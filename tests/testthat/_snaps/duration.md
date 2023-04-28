@@ -14,6 +14,22 @@
       Error in `duration_rounder()`:
       ! Can't floor from a chronological precision (second) to a calendrical precision (year).
 
+# seq() validates from
+
+    Code
+      seq(duration_years(1:2))
+    Condition
+      Error in `seq()`:
+      ! `from` must have size 1, not size 2.
+
+---
+
+    Code
+      seq(duration_years(NA_integer_))
+    Condition
+      Error in `seq()`:
+      ! `from` can't be `NA`.
+
 # seq() validates length.out / along.with exclusiveness
 
     Code
@@ -88,6 +104,79 @@
       - `by`
       - Either `length.out` or `along.with`
 
+# seq() validates `to`
+
+    Code
+      seq(duration_years(1L), to = duration_years(1:2), by = 1)
+    Condition
+      Error in `seq()`:
+      ! `to` must have size 1, not size 2.
+
+---
+
+    Code
+      seq(duration_years(1L), to = 1, by = 1)
+    Condition
+      Error in `seq()`:
+      ! Can't convert `to` <double> to match type of `from` <duration<year>>.
+
+---
+
+    Code
+      seq(duration_years(1L), to = duration_days(1), by = 1)
+    Condition
+      Error in `seq()`:
+      ! Can't convert `to` <duration<day>> to match type of `from` <duration<year>>.
+      Can't cast between calendrical durations and chronological durations.
+
+---
+
+    Code
+      seq(duration_years(1L), to = duration_years(NA_integer_), by = 1)
+    Condition
+      Error in `seq()`:
+      ! `to` can't be `NA`.
+
+# seq() validates `by`
+
+    Code
+      seq(duration_years(1L), to = duration_years(1L), by = 1:2)
+    Condition
+      Error in `seq()`:
+      ! `by` must have size 1, not size 2.
+
+---
+
+    Code
+      seq(duration_years(1L), to = duration_years(1L), by = NA_integer_)
+    Condition
+      Error in `seq()`:
+      ! `by` can't be `NA`.
+
+---
+
+    Code
+      seq(duration_years(1L), to = duration_years(1L), by = 0)
+    Condition
+      Error in `seq()`:
+      ! `by` can't be `0`.
+
+---
+
+    Code
+      seq(duration_years(1L), to = duration_years(1L), by = duration_years(0))
+    Condition
+      Error in `seq()`:
+      ! `by` can't be `0`.
+
+---
+
+    Code
+      seq(duration_years(1L), to = duration_years(1L), by = "x")
+    Condition
+      Error in `duration_helper()`:
+      ! Can't convert `by` <character> to <integer>.
+
 # `by` must be castable to the type of `from`
 
     Code
@@ -114,6 +203,38 @@
       Error in `duration_collect_by()`:
       ! Can't convert `by` <duration<year>> to <duration<day>>.
       Can't cast between calendrical durations and chronological durations.
+
+# seq() validates `length.out`
+
+    Code
+      seq(duration_years(1L), to = duration_years(1L), length.out = 1:2)
+    Condition
+      Error in `check_length_out()`:
+      ! `length.out` must have size 1, not size 2.
+
+---
+
+    Code
+      seq(duration_years(1L), to = duration_years(1L), length.out = NA_integer_)
+    Condition
+      Error in `check_length_out()`:
+      ! `length.out` can't be `NA`.
+
+---
+
+    Code
+      seq(duration_years(1L), to = duration_years(1L), length.out = -1)
+    Condition
+      Error in `check_length_out()`:
+      ! `length.out` can't be negative.
+
+---
+
+    Code
+      seq(duration_years(1L), to = duration_years(1L), length.out = "x")
+    Condition
+      Error in `check_length_out()`:
+      ! Can't convert `length.out` <character> to <integer>.
 
 # seq() validates dots
 

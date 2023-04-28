@@ -8,6 +8,26 @@
       x Problematic argument:
       * zone = "America/New_York"
 
+# can resolve nonexistent midnight issues for Date -> POSIXct
+
+    Code
+      (expect_error(as_date_time(x, zone), class = "clock_error_nonexistent_time"))
+    Output
+      <error/clock_error_nonexistent_time>
+      Error:
+      ! Nonexistent time due to daylight saving time at location 1.
+      i Resolve nonexistent time issues by specifying the `nonexistent` argument.
+
+# can resolve ambiguous midnight issues for Date -> POSIXct
+
+    Code
+      (expect_error(as_date_time(x, zone), class = "clock_error_ambiguous_time"))
+    Output
+      <error/clock_error_ambiguous_time>
+      Error:
+      ! Ambiguous time due to daylight saving time at location 1.
+      i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+
 # can handle nonexistent times resulting from grouping
 
     Code
@@ -314,6 +334,26 @@
     Condition
       Error in `calendar_start_end_checks()`:
       ! `precision` must be a valid precision for a 'year_month_day'.
+
+# can resolve nonexistent start issues
+
+    Code
+      (expect_error(date_start(x, "day"), class = "clock_error_nonexistent_time"))
+    Output
+      <error/clock_error_nonexistent_time>
+      Error:
+      ! Nonexistent time due to daylight saving time at location 1.
+      i Resolve nonexistent time issues by specifying the `nonexistent` argument.
+
+# can resolve ambiguous start issues
+
+    Code
+      (expect_error(date_start(x, "day"), class = "clock_error_ambiguous_time"))
+    Output
+      <error/clock_error_ambiguous_time>
+      Error:
+      ! Ambiguous time due to daylight saving time at location 1.
+      i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 # end: can't use invalid precisions
 
