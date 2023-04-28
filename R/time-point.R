@@ -467,7 +467,7 @@ add_years.clock_time_point <- function(x, n, ...) {
     i = "Do you need to convert to a calendar first?",
     i = cli::format_inline("Use {.fn as_year_month_day} for a calendar that supports {.fn add_years}.")
   )
-  stop_clock_unsupported_time_point_op("add_years", details = details)
+  stop_clock_unsupported(x, details = details)
 }
 
 #' @export
@@ -476,7 +476,7 @@ add_quarters.clock_time_point <- function(x, n, ...) {
     i = "Do you need to convert to a calendar first?",
     i = cli::format_inline("Use {.fn as_year_quarter_day} for a calendar that supports {.fn add_quarters}.")
   )
-  stop_clock_unsupported_time_point_op("add_quarters", details = details)
+  stop_clock_unsupported(x, details = details)
 }
 
 #' @export
@@ -485,7 +485,7 @@ add_months.clock_time_point <- function(x, n, ...) {
     i = "Do you need to convert to a calendar first?",
     i = cli::format_inline("Use {.fn as_year_month_day} for a calendar that supports {.fn add_months}.")
   )
-  stop_clock_unsupported_time_point_op("add_months", details = details)
+  stop_clock_unsupported(x, details = details)
 }
 
 # ------------------------------------------------------------------------------

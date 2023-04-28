@@ -176,18 +176,6 @@ stop_clock_unsupported_calendar_op <- function(op, ..., details = NULL, call = c
   stop_clock(message, ..., call = call, class = "clock_error_unsupported_calendar_op")
 }
 
-stop_clock_unsupported_time_point_op <- function(op, ..., details = NULL, call = caller_env()) {
-  message <- cli::format_inline("Time points don't support {.fn {op}}.")
-  message <- c(message, details)
-  stop_clock(message, ..., call = call, class = "clock_error_unsupported_time_point_op")
-}
-
-stop_clock_unsupported_zoned_time_op <- function(op, ..., details = NULL, call = caller_env()) {
-  message <- cli::format_inline("Zoned-times don't support {.fn {op}}.")
-  message <- c(message, details)
-  stop_clock(message, ..., call = call, class = "clock_error_unsupported_zoned_time_op")
-}
-
 # Thrown from C++
 stop_clock_invalid_date <- function(i, call) {
   message <- c(

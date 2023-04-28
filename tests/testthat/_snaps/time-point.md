@@ -318,7 +318,7 @@
       add_years(x, 1)
     Condition
       Error in `add_years()`:
-      ! Time points don't support `add_years()`.
+      ! Can't perform this operation on a <clock_naive_time>.
       i Do you need to convert to a calendar first?
       i Use `as_year_month_day()` for a calendar that supports `add_years()`.
 
@@ -328,7 +328,7 @@
       add_quarters(x, 1)
     Condition
       Error in `add_quarters()`:
-      ! Time points don't support `add_quarters()`.
+      ! Can't perform this operation on a <clock_naive_time>.
       i Do you need to convert to a calendar first?
       i Use `as_year_quarter_day()` for a calendar that supports `add_quarters()`.
 
@@ -338,7 +338,7 @@
       add_months(x, 1)
     Condition
       Error in `add_months()`:
-      ! Time points don't support `add_months()`.
+      ! Can't perform this operation on a <clock_naive_time>.
       i Do you need to convert to a calendar first?
       i Use `as_year_month_day()` for a calendar that supports `add_months()`.
 
