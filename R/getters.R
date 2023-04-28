@@ -115,3 +115,65 @@ get_nanosecond <- function(x) {
 get_index <- function(x) {
   UseMethod("get_index")
 }
+
+# ------------------------------------------------------------------------------
+
+#' @export
+get_year.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_quarter.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_month.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_week.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_day.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_hour.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_minute.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_second.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_millisecond.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_microsecond.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_nanosecond.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_index.default <- function(x) {
+  stop_clock_unsupported(x)
+}

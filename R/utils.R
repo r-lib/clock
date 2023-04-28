@@ -158,6 +158,13 @@ stop_clock <- function(message, ..., call = caller_env(), class = character()) {
   rlang::abort(message, ..., call = call, class = c(class, "clock_error"))
 }
 
+stop_clock_unsupported <- function(x, ..., details = NULL, call = caller_env()) {
+  class <- class(x)[[1L]]
+  message <- cli::format_inline("Can't perform this operation on a {.cls {class}}.")
+  message <- c(message, details)
+  stop_clock(message, ..., call = call, class = "clock_error_unsupported")
+}
+
 stop_clock_unsupported_conversion <- function(x, to_arg, ..., call = caller_env()) {
   message <- cli::format_inline("Can't convert {.cls {class(x)}} to {.cls {to_arg}}.")
   stop_clock(message, ..., call = call, class = "clock_error_unsupported_conversion")

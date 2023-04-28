@@ -1188,68 +1188,6 @@ advice_convert_to_time_point <- function() {
 
 # ------------------------------------------------------------------------------
 
-#' @export
-get_year.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_year")
-}
-
-#' @export
-get_quarter.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_quarter")
-}
-
-#' @export
-get_month.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_month")
-}
-
-#' @export
-get_week.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_week")
-}
-
-#' @export
-get_day.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_day")
-}
-
-#' @export
-get_hour.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_hour")
-}
-
-#' @export
-get_minute.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_minute")
-}
-
-#' @export
-get_second.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_second")
-}
-
-#' @export
-get_millisecond.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_millisecond")
-}
-
-#' @export
-get_microsecond.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_microsecond")
-}
-
-#' @export
-get_nanosecond.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_nanosecond")
-}
-
-#' @export
-get_index.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_index")
-}
-
-# ------------------------------------------------------------------------------
-
 field_year <- function(x) {
   # The `year` field is the first field of every calendar type, which makes
   # it the field that names are on. When extracting the field, we don't ever
