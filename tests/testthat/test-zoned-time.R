@@ -56,6 +56,17 @@ test_that("`as_zoned_time()` has good default error", {
 })
 
 # ------------------------------------------------------------------------------
+# as_year_month_day()
+
+test_that("can't convert zoned-time directly to calendar", {
+  x <- as_zoned_time(as_naive_time(year_month_day(2019, 1, 1)), "America/New_York")
+
+  expect_snapshot({
+    (expect_error(as_year_month_day(x), class = "clock_error_unsupported_conversion"))
+  })
+})
+
+# ------------------------------------------------------------------------------
 # as.character()
 
 test_that("as.character() works", {

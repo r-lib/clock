@@ -94,6 +94,16 @@
       Error in `as_zoned_time()`:
       ! Can't convert <numeric> to <clock_zoned_time>.
 
+# can't convert zoned-time directly to calendar
+
+    Code
+      (expect_error(as_year_month_day(x), class = "clock_error_unsupported_conversion")
+      )
+    Output
+      <error/clock_error_unsupported_conversion>
+      Error in `as_year_month_day()`:
+      ! Can't convert <clock_zoned_time/clock_rcrd/vctrs_rcrd/vctrs_vctr> to <clock_year_month_day>.
+
 # cannot parse nonexistent time
 
     Code

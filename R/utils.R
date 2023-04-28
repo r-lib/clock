@@ -162,8 +162,7 @@ stop_clock <- function(message, ..., call = caller_env(), class = character()) {
 }
 
 stop_clock_unsupported_conversion <- function(x, to_arg, ..., call = caller_env()) {
-  to_arg <- paste0("<", to_arg, ">")
-  message <- paste0("Can't convert ", paste_class(x), " to ", to_arg, ".")
+  message <- cli::format_inline("Can't convert {.cls {class(x)}} to {.cls {to_arg}}.")
   stop_clock(message, ..., call = call, class = "clock_error_unsupported_conversion")
 }
 
@@ -210,11 +209,6 @@ stop_clock_ambiguous_time <- function(i, call) {
     i = cli::format_inline("Resolve ambiguous time issues by specifying the {.arg ambiguous} argument.")
   )
   stop_clock(message, call = call, class = "clock_error_ambiguous_time")
-}
-
-paste_class <- function(x) {
-  out <- paste0(class(x), collapse = "/")
-  paste0("<", out, ">")
 }
 
 # ------------------------------------------------------------------------------
