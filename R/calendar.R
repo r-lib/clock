@@ -259,7 +259,7 @@ calendar_month_factor_impl <- function(x,
 #' # Group by two days of the month
 #' calendar_group(x, "day", n = 2)
 calendar_group <- function(x, precision, ..., n = 1L) {
-  check_dots_empty()
+  check_dots_empty0(...)
 
   precision <- validate_precision_string(precision)
   calendar_check_valid_precision(x, precision)
@@ -271,10 +271,10 @@ calendar_group <- function(x, precision, ..., n = 1L) {
     x_precision <- precision_to_string(x_precision)
 
     message <- paste0(
-      "Can't group at a precision (", precision, ") ",
-      "that is more precise than `x` (", x_precision, ")."
+      "Can't group at a precision ({precision}) ",
+      "that is more precise than `x` ({x_precision})."
     )
-    abort(message)
+    cli::cli_abort(message)
   }
 
   if (precision > PRECISION_SECOND && x_precision != precision) {
@@ -284,10 +284,10 @@ calendar_group <- function(x, precision, ..., n = 1L) {
     x_precision <- precision_to_string(x_precision)
 
     message <- paste0(
-      "Can't group a subsecond precision `x` (", x_precision, ") ",
-      "by another subsecond precision (", precision, ")."
+      "Can't group a subsecond precision `x` ({x_precision}) ",
+      "by another subsecond precision ({precision})."
     )
-    abort(message)
+    cli::cli_abort(message)
   }
 
   UseMethod("calendar_group")
@@ -414,10 +414,10 @@ calendar_narrow <- function(x, precision) {
     x_precision <- precision_to_string(x_precision)
 
     message <- paste0(
-      "Can't narrow to a precision (", precision, ") ",
-      "that is wider than `x` (", x_precision, ")."
+      "Can't narrow to a precision ({precision}) ",
+      "that is wider than `x` ({x_precision})."
     )
-    abort(message)
+    cli::cli_abort(message)
   }
 
   if (precision > PRECISION_SECOND && x_precision != precision) {
@@ -427,10 +427,10 @@ calendar_narrow <- function(x, precision) {
     x_precision <- precision_to_string(x_precision)
 
     message <- paste0(
-      "Can't narrow a subsecond precision `x` (", x_precision, ") ",
-      "to another subsecond precision (", precision, ")."
+      "Can't narrow a subsecond precision `x` ({x_precision}) ",
+      "to another subsecond precision ({precision})."
     )
-    abort(message)
+    cli::cli_abort(message)
   }
 
   UseMethod("calendar_narrow")
@@ -798,7 +798,7 @@ calendar_count_between.clock_calendar <- function(start,
                                                   precision,
                                                   ...,
                                                   n = 1L) {
-  check_dots_empty()
+  check_dots_empty0(...)
 
   if (!is_calendar(end)) {
     abort("`end` must be a <clock_calendar>.")
