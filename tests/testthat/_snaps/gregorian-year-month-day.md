@@ -418,24 +418,30 @@
     Code
       as_year_quarter_day(year_month_day(2019, 2, 31))
     Condition
-      Error in `calendar_require_all_valid()`:
-      ! Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
+      Error in `as_sys_time()`:
+      ! Can't convert `x` to another type because some dates are invalid.
+      i The following locations are invalid: 1.
+      i Resolve invalid dates with `invalid_resolve()`.
 
 # invalid dates must be resolved when converting to a sys-time
 
     Code
       as_sys_time(year_month_day(2019, 2, 31))
     Condition
-      Error in `calendar_require_all_valid()`:
-      ! Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
+      Error in `as_sys_time()`:
+      ! Can't convert `x` to another type because some dates are invalid.
+      i The following locations are invalid: 1.
+      i Resolve invalid dates with `invalid_resolve()`.
 
 # invalid dates must be resolved when converting to a naive-time
 
     Code
       as_naive_time(year_month_day(2019, 2, 31))
     Condition
-      Error in `calendar_require_all_valid()`:
-      ! Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
+      Error in `as_sys_time()`:
+      ! Can't convert `x` to another type because some dates are invalid.
+      i The following locations are invalid: 1.
+      i Resolve invalid dates with `invalid_resolve()`.
 
 # default formats are correct
 

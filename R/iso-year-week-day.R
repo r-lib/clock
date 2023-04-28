@@ -767,7 +767,7 @@ as_iso_year_week_day.clock_iso_year_week_day <- function(x) {
 
 #' @export
 as_sys_time.clock_iso_year_week_day <- function(x) {
-  calendar_require_all_valid(x)
+  calendar_check_no_invalid(x)
   precision <- calendar_precision_attribute(x)
   fields <- as_sys_time_iso_year_week_day_cpp(x, precision)
   new_sys_time_from_fields(fields, precision, clock_rcrd_names(x))

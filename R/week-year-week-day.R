@@ -845,7 +845,7 @@ as_year_week_day.clock_year_week_day <- function(x, ..., start = NULL) {
 
 #' @export
 as_sys_time.clock_year_week_day <- function(x) {
-  calendar_require_all_valid(x)
+  calendar_check_no_invalid(x)
   start <- week_start(x)
   precision <- calendar_precision_attribute(x)
   fields <- as_sys_time_year_week_day_cpp(x, precision, start)

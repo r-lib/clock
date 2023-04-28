@@ -1003,7 +1003,7 @@ as_year_month_day.clock_year_month_day <- function(x) {
 
 #' @export
 as_sys_time.clock_year_month_day <- function(x) {
-  calendar_require_all_valid(x)
+  calendar_check_no_invalid(x)
   precision <- calendar_precision_attribute(x)
   fields <- as_sys_time_year_month_day_cpp(x, precision)
   new_sys_time_from_fields(fields, precision, clock_rcrd_names(x))

@@ -992,16 +992,24 @@ calendar_check_subsecond_precision <- function(subsecond_precision,
 
 # ------------------------------------------------------------------------------
 
-calendar_require_all_valid <- function(x) {
-  if (invalid_any(x)) {
-    message <- paste0(
-      "Conversion from a calendar requires that all dates are valid. ",
-      "Resolve invalid dates by calling `invalid_resolve()`."
-    )
-    abort(message)
+calendar_check_no_invalid <- function(x,
+                                      ...,
+                                      arg = caller_arg(x),
+                                      call = caller_env()) {
+  if (!invalid_any(x)) {
+    return(invisible(NULL))
   }
 
-  invisible(x)
+  loc <- invalid_detect(x)
+  loc <- which(loc)
+
+  message <- c(
+    "Can't convert {.arg {arg}} to another type because some dates are invalid.",
+    i = "The following locations are invalid: {loc}.",
+    i = "Resolve invalid dates with {.fn invalid_resolve}."
+  )
+
+  cli::cli_abort(message, call = call)
 }
 
 # ------------------------------------------------------------------------------
