@@ -261,7 +261,8 @@ calendar_month_factor_impl <- function(x,
 calendar_group <- function(x, precision, ..., n = 1L) {
   check_dots_empty0(...)
 
-  precision <- validate_precision_string(precision)
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
   calendar_check_valid_precision(x, precision)
 
   x_precision <- calendar_precision_attribute(x)
@@ -271,8 +272,8 @@ calendar_group <- function(x, precision, ..., n = 1L) {
     x_precision <- precision_to_string(x_precision)
 
     message <- paste0(
-      "Can't group at a precision ({precision}) ",
-      "that is more precise than `x` ({x_precision})."
+      "Can't group at a precision ({.str {precision}}) ",
+      "that is more precise than `x` ({.str {x_precision}})."
     )
     cli::cli_abort(message)
   }
@@ -284,8 +285,8 @@ calendar_group <- function(x, precision, ..., n = 1L) {
     x_precision <- precision_to_string(x_precision)
 
     message <- paste0(
-      "Can't group a subsecond precision `x` ({x_precision}) ",
-      "by another subsecond precision ({precision})."
+      "Can't group a subsecond precision `x` ({.str {x_precision}}) ",
+      "by another subsecond precision ({.str {precision}})."
     )
     cli::cli_abort(message)
   }
@@ -404,7 +405,8 @@ validate_calendar_group_n <- function(n, ..., error_call = caller_env()) {
 #' # Or month precision
 #' calendar_narrow(x, "month")
 calendar_narrow <- function(x, precision) {
-  precision <- validate_precision_string(precision)
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
   calendar_check_valid_precision(x, precision)
 
   x_precision <- calendar_precision_attribute(x)
@@ -414,8 +416,8 @@ calendar_narrow <- function(x, precision) {
     x_precision <- precision_to_string(x_precision)
 
     message <- paste0(
-      "Can't narrow to a precision ({precision}) ",
-      "that is wider than `x` ({x_precision})."
+      "Can't narrow to a precision ({.str {precision}}) ",
+      "that is wider than `x` ({.str {x_precision}})."
     )
     cli::cli_abort(message)
   }
@@ -427,8 +429,8 @@ calendar_narrow <- function(x, precision) {
     x_precision <- precision_to_string(x_precision)
 
     message <- paste0(
-      "Can't narrow a subsecond precision `x` ({x_precision}) ",
-      "to another subsecond precision ({precision})."
+      "Can't narrow a subsecond precision `x` ({.str {x_precision}}) ",
+      "to another subsecond precision ({.str {precision}})."
     )
     cli::cli_abort(message)
   }
@@ -512,7 +514,8 @@ calendar_narrow_time <- function(out_fields, out_precision, x_fields) {
 #' # Or second precision
 #' calendar_widen(x, "second")
 calendar_widen <- function(x, precision) {
-  precision <- validate_precision_string(precision)
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
   calendar_check_valid_precision(x, precision)
 
   x_precision <- calendar_precision_attribute(x)
@@ -522,10 +525,10 @@ calendar_widen <- function(x, precision) {
     x_precision <- precision_to_string(x_precision)
 
     message <- paste0(
-      "Can't widen to a precision (", precision, ") ",
-      "that is narrower than `x` (", x_precision, ")."
+      "Can't widen to a precision ({.str {precision}}) ",
+      "that is narrower than `x` ({.str {x_precision}})."
     )
-    abort(message)
+    cli::cli_abort(message)
   }
 
   if (x_precision > PRECISION_SECOND && x_precision != precision) {
@@ -535,10 +538,10 @@ calendar_widen <- function(x, precision) {
     x_precision <- precision_to_string(x_precision)
 
     message <- paste0(
-      "Can't widen a subsecond precision `x` (", x_precision, ") ",
-      "to another subsecond precision (", precision, ")."
+      "Can't widen a subsecond precision `x` ({.str {x_precision}}) ",
+      "to another subsecond precision ({.str {precision}})."
     )
-    abort(message)
+    cli::cli_abort(message)
   }
 
   UseMethod("calendar_widen")
@@ -655,10 +658,10 @@ calendar_start_end_checks <- function(x, x_precision, precision, which) {
     x_precision <- precision_to_string(x_precision)
 
     message <- paste0(
-      "Can't compute the ", which, " of `x` (", x_precision, ") ",
-      "at a more precise precision (", precision, ")."
+      "Can't compute the {which} of `x` ({.str {x_precision}}) ",
+      "at a more precise precision ({.str {precision}})."
     )
-    abort(message)
+    cli::cli_abort(message)
   }
 
   if (precision > PRECISION_SECOND && x_precision != precision) {
@@ -669,10 +672,10 @@ calendar_start_end_checks <- function(x, x_precision, precision, which) {
     x_precision <- precision_to_string(x_precision)
 
     message <- paste0(
-      "Can't compute the ", which, " of a subsecond precision `x` (", x_precision, ") ",
-      "at another subsecond precision (", precision, ")."
+      "Can't compute the {which} of a subsecond precision `x` ({.str {x_precision}}) ",
+      "at another subsecond precision ({.str {precision}})."
     )
-    abort(message)
+    cli::cli_abort(message)
   }
 
   invisible(x)
@@ -799,10 +802,7 @@ calendar_count_between.clock_calendar <- function(start,
                                                   ...,
                                                   n = 1L) {
   check_dots_empty0(...)
-
-  if (!is_calendar(end)) {
-    abort("`end` must be a <clock_calendar>.")
-  }
+  check_calendar(end)
 
   size <- vec_size_common(start = start, end = end)
 
@@ -814,10 +814,18 @@ calendar_count_between.clock_calendar <- function(start,
   check_number_whole(n, min = 0)
   n <- vec_cast(n, integer())
 
-  precision_int <- validate_precision_string(precision)
+  check_precision(precision)
+  precision_int <- precision_to_integer(precision)
 
   if (calendar_precision_attribute(start) < precision_int) {
-    abort("Precision of inputs must be at least as precise as `precision`.")
+    start_precision <- precision_to_string(calendar_precision_attribute(start))
+
+    message <- paste0(
+      "Precision of inputs ({.str {start_precision}}) must be at least as precise ",
+      "as {.arg precision} ({.str {precision}})."
+    )
+
+    cli::cli_abort(message)
   }
 
   args <- calendar_count_between_standardize_precision_n(start, precision, n)
@@ -1265,3 +1273,8 @@ field_index <- function(x) {
 is_calendar <- function(x) {
   inherits(x, "clock_calendar")
 }
+
+check_calendar <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
+  check_inherits(x, what = "clock_calendar", arg = arg, call = call)
+}
+

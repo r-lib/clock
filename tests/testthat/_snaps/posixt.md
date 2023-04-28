@@ -43,7 +43,7 @@
       date_group(x, "nanosecond")
     Condition
       Error in `calendar_group()`:
-      ! Can't group at a precision (nanosecond) that is more precise than `x` (second).
+      ! Can't group at a precision ("nanosecond") that is more precise than `x` ("second").
 
 # can't group by non-year-month-day precisions
 

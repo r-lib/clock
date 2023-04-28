@@ -32,7 +32,7 @@
       date_group(x, "hour")
     Condition
       Error in `calendar_group()`:
-      ! Can't group at a precision (hour) that is more precise than `x` (day).
+      ! Can't group at a precision ("hour") that is more precise than `x` ("day").
 
 ---
 
@@ -40,7 +40,7 @@
       date_group(x, "nanosecond")
     Condition
       Error in `calendar_group()`:
-      ! Can't group at a precision (nanosecond) that is more precise than `x` (day).
+      ! Can't group at a precision ("nanosecond") that is more precise than `x` ("day").
 
 # can't group by non-year-month-day precisions
 

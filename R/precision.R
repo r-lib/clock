@@ -12,6 +12,33 @@ PRECISION_NANOSECOND = 10L
 
 # ------------------------------------------------------------------------------
 
+check_precision <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
+  check_string(x, allow_empty = FALSE, arg = arg, call = call)
+  arg_match0(x, values = precision_names(), arg_nm = arg, error_call = call)
+}
+
+precision_to_integer <- function(x) {
+  if (!is_string(x)) {
+    abort("`x` must be a string.", .internal = TRUE)
+  }
+
+  switch(
+    x,
+    year = PRECISION_YEAR,
+    quarter = PRECISION_QUARTER,
+    month = PRECISION_MONTH,
+    week = PRECISION_WEEK,
+    day = PRECISION_DAY,
+    hour = PRECISION_HOUR,
+    minute = PRECISION_MINUTE,
+    second = PRECISION_SECOND,
+    millisecond = PRECISION_MILLISECOND,
+    microsecond = PRECISION_MICROSECOND,
+    nanosecond = PRECISION_NANOSECOND,
+    abort("`x` not recognized.", .internal = TRUE)
+  )
+}
+
 validate_precision_string <- function(precision, arg = "precision") {
   if (!is_string(precision)) {
     abort(paste0("`", arg, "` must be a string."))

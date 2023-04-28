@@ -103,8 +103,8 @@
     Code
       calendar_group(year_month_day(2019), "foo")
     Condition
-      Error in `validate_precision_string()`:
-      ! `precision` not recognized.
+      Error in `calendar_group()`:
+      ! `precision` must be one of "year", "quarter", "month", "week", "day", "hour", "minute", "second", "millisecond", "microsecond", or "nanosecond", not "foo".
 
 # group: `precision` must be calendar specific
 
@@ -120,7 +120,7 @@
       calendar_group(year_month_day(2019, 1, 1), "second")
     Condition
       Error in `calendar_group()`:
-      ! Can't group at a precision (second) that is more precise than `x` (day).
+      ! Can't group at a precision ("second") that is more precise than `x` ("day").
 
 # group: can't group a subsecond precision `x` at another subsecond precision
 
@@ -128,15 +128,15 @@
       calendar_group(x, "microsecond")
     Condition
       Error in `calendar_group()`:
-      ! Can't group a subsecond precision `x` (nanosecond) by another subsecond precision (microsecond).
+      ! Can't group a subsecond precision `x` ("nanosecond") by another subsecond precision ("microsecond").
 
 # narrow: `precision` is validated
 
     Code
       calendar_narrow(year_month_day(2019), "foo")
     Condition
-      Error in `validate_precision_string()`:
-      ! `precision` not recognized.
+      Error in `calendar_narrow()`:
+      ! `precision` must be one of "year", "quarter", "month", "week", "day", "hour", "minute", "second", "millisecond", "microsecond", or "nanosecond", not "foo".
 
 # narrow: `precision` must be calendar specific
 
@@ -152,7 +152,7 @@
       calendar_narrow(year_month_day(2019, 1, 1), "second")
     Condition
       Error in `calendar_narrow()`:
-      ! Can't narrow to a precision (second) that is wider than `x` (day).
+      ! Can't narrow to a precision ("second") that is wider than `x` ("day").
 
 # narrow: can't narrow a subsecond precision `x` to another subsecond precision
 
@@ -160,15 +160,15 @@
       calendar_narrow(x, "microsecond")
     Condition
       Error in `calendar_narrow()`:
-      ! Can't narrow a subsecond precision `x` (nanosecond) to another subsecond precision (microsecond).
+      ! Can't narrow a subsecond precision `x` ("nanosecond") to another subsecond precision ("microsecond").
 
 # widen: `precision` is validated
 
     Code
       calendar_widen(year_month_day(2019), "foo")
     Condition
-      Error in `validate_precision_string()`:
-      ! `precision` not recognized.
+      Error in `calendar_widen()`:
+      ! `precision` must be one of "year", "quarter", "month", "week", "day", "hour", "minute", "second", "millisecond", "microsecond", or "nanosecond", not "foo".
 
 # widen: `precision` must be calendar specific
 
@@ -184,7 +184,7 @@
       calendar_widen(year_month_day(2019, 1, 1), "month")
     Condition
       Error in `calendar_widen()`:
-      ! Can't widen to a precision (month) that is narrower than `x` (day).
+      ! Can't widen to a precision ("month") that is narrower than `x` ("day").
 
 # widen: can't widen a subsecond precision `x` to another subsecond precision
 
@@ -192,7 +192,7 @@
       calendar_widen(x, "microsecond")
     Condition
       Error in `calendar_widen()`:
-      ! Can't widen a subsecond precision `x` (millisecond) to another subsecond precision (microsecond).
+      ! Can't widen a subsecond precision `x` ("millisecond") to another subsecond precision ("microsecond").
 
 # start: `x` is validated
 
@@ -232,7 +232,7 @@
       calendar_start(year_month_day(2019), "month")
     Condition
       Error in `calendar_start_end_checks()`:
-      ! Can't compute the start of `x` (year) at a more precise precision (month).
+      ! Can't compute the start of `x` ("year") at a more precise precision ("month").
 
 # start: can't mix different subsecond precisions
 
@@ -240,7 +240,7 @@
       calendar_start(x, "millisecond")
     Condition
       Error in `calendar_start_end_checks()`:
-      ! Can't compute the start of a subsecond precision `x` (microsecond) at another subsecond precision (millisecond).
+      ! Can't compute the start of a subsecond precision `x` ("microsecond") at another subsecond precision ("millisecond").
 
 # end: `x` is validated
 
@@ -280,7 +280,7 @@
       calendar_end(year_month_day(2019), "month")
     Condition
       Error in `calendar_start_end_checks()`:
-      ! Can't compute the end of `x` (year) at a more precise precision (month).
+      ! Can't compute the end of `x` ("year") at a more precise precision ("month").
 
 # end: can't mix different subsecond precisions
 
@@ -288,7 +288,7 @@
       calendar_end(x, "millisecond")
     Condition
       Error in `calendar_start_end_checks()`:
-      ! Can't compute the end of a subsecond precision `x` (microsecond) at another subsecond precision (millisecond).
+      ! Can't compute the end of a subsecond precision `x` ("microsecond") at another subsecond precision ("millisecond").
 
 # `end` must be a calendar
 
@@ -297,7 +297,7 @@
     Output
       <error/rlang_error>
       Error in `calendar_count_between()`:
-      ! `end` must be a <clock_calendar>.
+      ! `end` must be a <clock_calendar>, not the number 1.
 
 # can't count with a precision finer than the calendar precision
 
@@ -306,7 +306,7 @@
     Output
       <error/rlang_error>
       Error in `calendar_count_between()`:
-      ! Precision of inputs must be at least as precise as `precision`.
+      ! Precision of inputs ("year") must be at least as precise as `precision` ("month").
 
 # `n` is validated
 
