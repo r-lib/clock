@@ -71,32 +71,32 @@
     Code
       print(x, max = -1)
     Condition
-      Error in `max_collect()`:
-      ! `max` must be a positive number.
+      Error in `print()`:
+      ! `max` must be a whole number larger than or equal to 0, not the number -1.
 
 ---
 
     Code
       print(x, max = c(1, 2))
     Condition
-      Error in `max_collect()`:
-      ! `max` must be a single number, or `NULL`.
+      Error in `print()`:
+      ! `max` must be a whole number, not a double vector.
 
 ---
 
     Code
       print(x, max = NA_integer_)
     Condition
-      Error in `max_collect()`:
-      ! `max` must be a single number, or `NULL`.
+      Error in `print()`:
+      ! `max` must be a whole number, not an integer `NA`.
 
 ---
 
     Code
       print(x, max = "foo")
     Condition
-      Error in `max_collect()`:
-      ! Can't convert `max` <character> to <integer>.
+      Error in `print()`:
+      ! `max` must be a whole number, not the string "foo".
 
 # group: `precision` is validated
 

@@ -257,19 +257,13 @@ warn_clock_format_failures <- function(n, first) {
 
 # ------------------------------------------------------------------------------
 
-max_collect <- function(max) {
+max_collect <- function(max, ..., error_call = caller_env()) {
   if (is_null(max)) {
     max <- getOption("max.print", default = 1000L)
   }
 
-  max <- vec_cast(max, integer(), x_arg = "max")
-
-  if (!is_number(max)) {
-    abort("`max` must be a single number, or `NULL`.")
-  }
-  if (max <= 0L) {
-    abort("`max` must be a positive number.")
-  }
+  check_number_whole(max, min = 0, call = error_call)
+  max <- vec_cast(max, integer(), call = error_call)
 
   max
 }
@@ -282,8 +276,8 @@ max_slice <- function(x, max) {
   }
 }
 
-clock_print <- function(x, max) {
-  max <- max_collect(max)
+clock_print <- function(x, max, ..., error_call = caller_env()) {
+  max <- max_collect(max, error_call = error_call)
   obj_print(x, max = max)
   invisible(x)
 }
