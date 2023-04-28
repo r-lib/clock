@@ -283,12 +283,8 @@ year_month_day_parse <- function(x,
     abort("`x` must be a character vector.")
   }
 
-  check_precision(precision)
+  year_month_day_check_precision(precision)
   precision <- precision_to_integer(precision)
-
-  if (!year_month_day_is_valid_precision(precision)) {
-    abort("`precision` must be a valid precision for 'year_month_day'.")
-  }
 
   if (is_null(format)) {
     format <- year_month_day_format(precision)
@@ -388,20 +384,36 @@ vec_cast.clock_year_month_day.clock_year_month_day <- function(x, to, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
-calendar_is_valid_precision.clock_year_month_day <- function(x, precision) {
-  year_month_day_is_valid_precision(precision)
+calendar_is_precision.clock_year_month_day <- function(x, precision) {
+  year_month_day_is_precision(precision)
 }
 
-year_month_day_is_valid_precision <- function(precision) {
-  if (!is_valid_precision(precision)) {
-    FALSE
-  } else if (precision == PRECISION_YEAR || precision == PRECISION_MONTH) {
+year_month_day_is_precision <- function(precision) {
+  if (precision == PRECISION_YEAR || precision == PRECISION_MONTH) {
     TRUE
   } else if (precision >= PRECISION_DAY && precision <= PRECISION_NANOSECOND) {
     TRUE
   } else {
     FALSE
   }
+}
+
+year_month_day_check_precision <- function(x,
+                                           ...,
+                                           arg = caller_arg(x),
+                                           call = caller_env()) {
+  check_precision(x, arg = arg, call = call)
+
+  arg_match0(
+    arg = x,
+    values = year_month_day_precision_names(),
+    arg_nm = arg,
+    error_call = call
+  )
+}
+
+year_month_day_precision_names <- function() {
+  c("year", "month", "day", precision_time_names())
 }
 
 # ------------------------------------------------------------------------------

@@ -230,14 +230,12 @@ vec_cast.clock_year_month_weekday.clock_year_month_weekday <- function(x, to, ..
 # ------------------------------------------------------------------------------
 
 #' @export
-calendar_is_valid_precision.clock_year_month_weekday <- function(x, precision) {
-  year_month_weekday_is_valid_precision(precision)
+calendar_is_precision.clock_year_month_weekday <- function(x, precision) {
+  year_month_weekday_is_precision(precision)
 }
 
-year_month_weekday_is_valid_precision <- function(precision) {
-  if (!is_valid_precision(precision)) {
-    FALSE
-  } else if (precision == PRECISION_YEAR || precision == PRECISION_MONTH) {
+year_month_weekday_is_precision <- function(precision) {
+  if (precision == PRECISION_YEAR || precision == PRECISION_MONTH) {
     TRUE
   } else if (precision >= PRECISION_DAY && precision <= PRECISION_NANOSECOND) {
     TRUE

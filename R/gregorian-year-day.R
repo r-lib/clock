@@ -188,14 +188,12 @@ vec_cast.clock_year_day.clock_year_day <- function(x, to, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
-calendar_is_valid_precision.clock_year_day <- function(x, precision) {
-  year_day_is_valid_precision(precision)
+calendar_is_precision.clock_year_day <- function(x, precision) {
+  year_day_is_precision(precision)
 }
 
-year_day_is_valid_precision <- function(precision) {
-  if (!is_valid_precision(precision)) {
-    FALSE
-  } else if (precision == PRECISION_YEAR) {
+year_day_is_precision <- function(precision) {
+  if (precision == PRECISION_YEAR) {
     TRUE
   } else if (precision >= PRECISION_DAY && precision <= PRECISION_NANOSECOND) {
     TRUE

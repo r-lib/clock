@@ -263,7 +263,7 @@ calendar_group <- function(x, precision, ..., n = 1L) {
 
   check_precision(precision)
   precision <- precision_to_integer(precision)
-  calendar_check_valid_precision(x, precision)
+  calendar_check_precision(x, precision)
 
   x_precision <- calendar_precision_attribute(x)
 
@@ -407,7 +407,7 @@ validate_calendar_group_n <- function(n, ..., error_call = caller_env()) {
 calendar_narrow <- function(x, precision) {
   check_precision(precision)
   precision <- precision_to_integer(precision)
-  calendar_check_valid_precision(x, precision)
+  calendar_check_precision(x, precision)
 
   x_precision <- calendar_precision_attribute(x)
 
@@ -516,7 +516,7 @@ calendar_narrow_time <- function(out_fields, out_precision, x_fields) {
 calendar_widen <- function(x, precision) {
   check_precision(precision)
   precision <- precision_to_integer(precision)
-  calendar_check_valid_precision(x, precision)
+  calendar_check_precision(x, precision)
 
   x_precision <- calendar_precision_attribute(x)
 
@@ -651,7 +651,7 @@ calendar_end.clock_calendar <- function(x, precision) {
 
 
 calendar_start_end_checks <- function(x, x_precision, precision, which) {
-  calendar_check_valid_precision(x, precision)
+  calendar_check_precision(x, precision)
 
   if (x_precision < precision) {
     precision <- precision_to_string(precision)
@@ -918,12 +918,12 @@ calendar_name <- function(x) {
 # ------------------------------------------------------------------------------
 
 # Internal generic
-calendar_is_valid_precision <- function(x, precision) {
-  UseMethod("calendar_is_valid_precision")
+calendar_is_precision <- function(x, precision) {
+  UseMethod("calendar_is_precision")
 }
 
-calendar_check_valid_precision <- function(x, precision, ..., error_call = caller_env()) {
-  if (calendar_is_valid_precision(x, precision)) {
+calendar_check_precision <- function(x, precision, ..., error_call = caller_env()) {
+  if (calendar_is_precision(x, precision)) {
     return(invisible(NULL))
   }
 

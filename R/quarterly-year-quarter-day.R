@@ -245,14 +245,12 @@ vec_cast.clock_year_quarter_day.clock_year_quarter_day <- function(x, to, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
-calendar_is_valid_precision.clock_year_quarter_day <- function(x, precision) {
-  year_quarter_day_is_valid_precision(precision)
+calendar_is_precision.clock_year_quarter_day <- function(x, precision) {
+  year_quarter_day_is_precision(precision)
 }
 
-year_quarter_day_is_valid_precision <- function(precision) {
-  if (!is_valid_precision(precision)) {
-    FALSE
-  } else if (precision == PRECISION_YEAR || precision == PRECISION_QUARTER) {
+year_quarter_day_is_precision <- function(precision) {
+  if (precision == PRECISION_YEAR || precision == PRECISION_QUARTER) {
     TRUE
   } else if (precision >= PRECISION_DAY && precision <= PRECISION_NANOSECOND) {
     TRUE

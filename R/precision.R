@@ -47,13 +47,6 @@ precision_abbr <- function(precision_string) {
   )
 }
 
-is_valid_precision <- function(precision) {
-  is.integer(precision) &&
-    length(precision) == 1L &&
-    precision >= PRECISION_YEAR &&
-    precision <= PRECISION_NANOSECOND
-}
-
 is_valid_subsecond_precision <- function(precision) {
   is.integer(precision) && precision >= PRECISION_MILLISECOND && precision <= PRECISION_NANOSECOND
 }
@@ -73,6 +66,17 @@ precision_names <- function() {
     "month",
     "week",
     "day",
+    "hour",
+    "minute",
+    "second",
+    "millisecond",
+    "microsecond",
+    "nanosecond"
+  )
+}
+
+precision_time_names <- function() {
+  c(
     "hour",
     "minute",
     "second",
