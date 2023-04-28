@@ -587,16 +587,16 @@
     Code
       vec_arith("+", new_datetime(0, zone), duration_milliseconds(1))
     Condition
-      Error in `UseMethod()`:
-      ! no applicable method for 'add_milliseconds' applied to an object of class "c('POSIXct', 'POSIXt')"
+      Error in `add_milliseconds()`:
+      ! Can't perform this operation on a <POSIXct>.
 
 ---
 
     Code
       vec_arith("+", new_posixlt(0, zone), duration_milliseconds(1))
     Condition
-      Error in `UseMethod()`:
-      ! no applicable method for 'add_milliseconds' applied to an object of class "c('POSIXlt', 'POSIXt')"
+      Error in `add_milliseconds()`:
+      ! Can't perform this operation on a <POSIXlt>.
 
 ---
 
@@ -637,16 +637,16 @@
     Code
       vec_arith("+", duration_milliseconds(1), new_datetime(0, zone))
     Condition
-      Error in `UseMethod()`:
-      ! no applicable method for 'add_milliseconds' applied to an object of class "c('POSIXct', 'POSIXt')"
+      Error in `add_milliseconds()`:
+      ! Can't perform this operation on a <POSIXct>.
 
 ---
 
     Code
       vec_arith("+", duration_milliseconds(1), new_posixlt(0, zone))
     Condition
-      Error in `UseMethod()`:
-      ! no applicable method for 'add_milliseconds' applied to an object of class "c('POSIXlt', 'POSIXt')"
+      Error in `add_milliseconds()`:
+      ! Can't perform this operation on a <POSIXlt>.
 
 ---
 

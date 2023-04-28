@@ -1125,21 +1125,6 @@ as_year_quarter_day.clock_calendar <- function(x, ..., start = NULL) {
 # ------------------------------------------------------------------------------
 
 #' @export
-add_years.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_years")
-}
-
-#' @export
-add_quarters.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_quarters")
-}
-
-#' @export
-add_months.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_months")
-}
-
-#' @export
 add_weeks.clock_calendar <- function(x, n, ...) {
   stop_clock_unsupported_calendar_op("add_weeks", details = advice_convert_to_time_point())
 }

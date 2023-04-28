@@ -349,31 +349,7 @@
       Error in `UseMethod()`:
       ! no applicable method for 'calendar_precision' applied to an object of class "c('clock_sys_time', 'clock_time_point', 'clock_rcrd', 'vctrs_rcrd', 'vctrs_vctr')"
 
-# addition helpers throw default error
-
-    Code
-      add_years(x)
-    Condition
-      Error in `add_years()`:
-      ! This calendar doesn't support `add_years()`.
-
----
-
-    Code
-      add_quarters(x)
-    Condition
-      Error in `add_quarters()`:
-      ! This calendar doesn't support `add_quarters()`.
-
----
-
-    Code
-      add_months(x)
-    Condition
-      Error in `add_months()`:
-      ! This calendar doesn't support `add_months()`.
-
----
+# addition helpers throw error with advice
 
     Code
       add_weeks(x)

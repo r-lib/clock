@@ -144,6 +144,63 @@ add_nanoseconds <- function(x, n, ...) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+add_years.default <- function(x, n, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+add_quarters.default <- function(x, n, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+add_months.default <- function(x, n, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+add_weeks.default <- function(x, n, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+add_days.default <- function(x, n, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+add_hours.default <- function(x, n, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+add_minutes.default <- function(x, n, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+add_seconds.default <- function(x, n, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+add_milliseconds.default <- function(x, n, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+add_microseconds.default <- function(x, n, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+add_nanoseconds.default <- function(x, n, ...) {
+  stop_clock_unsupported(x)
+}
+
+# ------------------------------------------------------------------------------
+
 add_duration <- function(x, duration, ..., swapped = FALSE) {
   check_dots_empty()
 

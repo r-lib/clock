@@ -402,8 +402,8 @@
     Code
       vec_arith("+", new_date(0), duration_hours(1))
     Condition
-      Error in `UseMethod()`:
-      ! no applicable method for 'add_hours' applied to an object of class "Date"
+      Error in `add_hours()`:
+      ! Can't perform this operation on a <Date>.
 
 ---
 
@@ -427,8 +427,8 @@
     Code
       vec_arith("+", duration_hours(1), new_date(0))
     Condition
-      Error in `UseMethod()`:
-      ! no applicable method for 'add_hours' applied to an object of class "Date"
+      Error in `add_hours()`:
+      ! Can't perform this operation on a <Date>.
 
 ---
 

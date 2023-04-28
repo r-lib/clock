@@ -303,18 +303,9 @@ test_that("precision: can only be called on calendars", {
 # ------------------------------------------------------------------------------
 # add_*()
 
-test_that("addition helpers throw default error", {
-  x <- structure(1, class = "clock_calendar")
+test_that("addition helpers throw error with advice", {
+  x <- year_month_day(2019)
 
-  expect_snapshot(error = TRUE, {
-    add_years(x)
-  })
-  expect_snapshot(error = TRUE, {
-    add_quarters(x)
-  })
-  expect_snapshot(error = TRUE, {
-    add_months(x)
-  })
   expect_snapshot(error = TRUE, {
     add_weeks(x)
   })
