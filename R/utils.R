@@ -195,27 +195,21 @@ stop_clock_invalid_date <- function(i, call) {
 }
 
 # Thrown from C++
-stop_clock_nonexistent_time <- function(i) {
-  header <- paste0(
-    "Nonexistent time due to daylight saving time at location ", i, "."
+stop_clock_nonexistent_time <- function(i, call) {
+  message <- c(
+    cli::format_inline("Nonexistent time due to daylight saving time at location {i}."),
+    i = cli::format_inline("Resolve nonexistent time issues by specifying the {.arg nonexistent} argument.")
   )
-  bullet <- format_error_bullets(
-    c(i = "Resolve nonexistent time issues by specifying the `nonexistent` argument.")
-  )
-  message <- paste0(header, "\n", bullet)
-  stop_clock(message, class = "clock_error_nonexistent_time")
+  stop_clock(message, call = call, class = "clock_error_nonexistent_time")
 }
 
 # Thrown from C++
-stop_clock_ambiguous_time <- function(i) {
-  header <- paste0(
-    "Ambiguous time due to daylight saving time at location ", i, "."
+stop_clock_ambiguous_time <- function(i, call) {
+  message <- c(
+    cli::format_inline("Ambiguous time due to daylight saving time at location {i}."),
+    i = cli::format_inline("Resolve ambiguous time issues by specifying the {.arg ambiguous} argument.")
   )
-  bullet <- format_error_bullets(
-    c(i = "Resolve ambiguous time issues by specifying the `ambiguous` argument.")
-  )
-  message <- paste0(header, "\n", bullet)
-  stop_clock(message, class = "clock_error_ambiguous_time")
+  stop_clock(message, call = call, class = "clock_error_ambiguous_time")
 }
 
 paste_class <- function(x) {

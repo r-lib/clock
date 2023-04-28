@@ -34,14 +34,16 @@ public:
                                        const date::local_info& info,
                                        const enum nonexistent& nonexistent_val,
                                        const enum ambiguous& ambiguous_val,
-                                       const r_ssize& i);
+                                       const r_ssize& i,
+                                       const cpp11::sexp& call);
   void convert_local_with_reference_to_sys_and_assign(const date::local_time<Duration>& x,
                                                       const date::local_info& info,
                                                       const enum nonexistent& nonexistent_val,
                                                       const enum ambiguous& ambiguous_val,
                                                       const date::sys_seconds& reference,
                                                       const date::time_zone* p_time_zone,
-                                                      const r_ssize& i);
+                                                      const r_ssize& i,
+                                                      const cpp11::sexp& call);
 
   using chrono_duration = Duration;
 
@@ -267,12 +269,12 @@ info_nonexistent_shift_backward(const date::local_info& info, const date::local_
 
 inline
 void
-info_nonexistent_error(const r_ssize& i)
+info_nonexistent_error(const r_ssize& i, const cpp11::sexp& call)
 {
   cpp11::writable::integers arg(1);
   arg[0] = (int) i + 1;
   auto stop = cpp11::package("clock")["stop_clock_nonexistent_time"];
-  stop(arg);
+  stop(arg, call);
 }
 
 template <typename Duration>
@@ -295,12 +297,12 @@ info_ambiguous_latest(const date::local_info& info, const date::local_time<Durat
 
 inline
 void
-info_ambiguous_error(const r_ssize& i)
+info_ambiguous_error(const r_ssize& i, const cpp11::sexp& call)
 {
   cpp11::writable::integers arg(1);
   arg[0] = (int) i + 1;
   auto stop = cpp11::package("clock")["stop_clock_ambiguous_time"];
-  stop(arg);
+  stop(arg, call);
 }
 
 } // namespace detail
@@ -316,7 +318,8 @@ duration<Duration>::convert_local_to_sys_and_assign(const date::local_time<Durat
                                                     const date::local_info& info,
                                                     const enum nonexistent& nonexistent_val,
                                                     const enum ambiguous& ambiguous_val,
-                                                    const r_ssize& i)
+                                                    const r_ssize& i,
+                                                    const cpp11::sexp& call)
 {
   switch (info.result) {
   case date::local_info::unique: {
@@ -351,7 +354,7 @@ duration<Duration>::convert_local_to_sys_and_assign(const date::local_time<Durat
       break;
     }
     case nonexistent::error: {
-      detail::info_nonexistent_error(i);
+      detail::info_nonexistent_error(i, call);
     }
     }
     break;
@@ -373,7 +376,7 @@ duration<Duration>::convert_local_to_sys_and_assign(const date::local_time<Durat
       break;
     }
     case ambiguous::error: {
-      detail::info_ambiguous_error(i);
+      detail::info_ambiguous_error(i, call);
     }
     }
     break;
@@ -390,12 +393,13 @@ duration<Duration>::convert_local_with_reference_to_sys_and_assign(const date::l
                                                                    const enum ambiguous& ambiguous_val,
                                                                    const date::sys_seconds& reference,
                                                                    const date::time_zone* p_time_zone,
-                                                                   const r_ssize& i)
+                                                                   const r_ssize& i,
+                                                                   const cpp11::sexp& call)
 {
   if (info.result == date::local_info::unique ||
       info.result == date::local_info::nonexistent) {
     // For `unique` and `nonexistent`, nothing changes
-    convert_local_to_sys_and_assign(x, info, nonexistent_val, ambiguous_val, i);
+    convert_local_to_sys_and_assign(x, info, nonexistent_val, ambiguous_val, i, call);
     return;
   }
 
@@ -405,13 +409,13 @@ duration<Duration>::convert_local_with_reference_to_sys_and_assign(const date::l
   if (ref_info.result != date::local_info::ambiguous) {
     // If reference time is not ambiguous, we can't get any offset information
     // from it so fallback to using `ambiguous_val`
-    convert_local_to_sys_and_assign(x, info, nonexistent_val, ambiguous_val, i);
+    convert_local_to_sys_and_assign(x, info, nonexistent_val, ambiguous_val, i, call);
     return;
   }
   if (ref_info.first.end != info.first.end) {
     // If reference time is ambiguous, but the transitions don't match,
     // we again can't get offset information from it
-    convert_local_to_sys_and_assign(x, info, nonexistent_val, ambiguous_val, i);
+    convert_local_to_sys_and_assign(x, info, nonexistent_val, ambiguous_val, i, call);
     return;
   }
 

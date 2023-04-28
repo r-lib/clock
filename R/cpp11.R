@@ -508,12 +508,12 @@ get_naive_time_cpp <- function(fields, precision_int, zone) {
   .Call(`_clock_get_naive_time_cpp`, fields, precision_int, zone)
 }
 
-as_zoned_sys_time_from_naive_time_cpp <- function(fields, precision_int, zone, nonexistent_string, ambiguous_string) {
-  .Call(`_clock_as_zoned_sys_time_from_naive_time_cpp`, fields, precision_int, zone, nonexistent_string, ambiguous_string)
+as_zoned_sys_time_from_naive_time_cpp <- function(fields, precision_int, zone, nonexistent_string, ambiguous_string, call) {
+  .Call(`_clock_as_zoned_sys_time_from_naive_time_cpp`, fields, precision_int, zone, nonexistent_string, ambiguous_string, call)
 }
 
-as_zoned_sys_time_from_naive_time_with_reference_cpp <- function(fields, precision_int, zone, nonexistent_string, ambiguous_string, reference_fields) {
-  .Call(`_clock_as_zoned_sys_time_from_naive_time_with_reference_cpp`, fields, precision_int, zone, nonexistent_string, ambiguous_string, reference_fields)
+as_zoned_sys_time_from_naive_time_with_reference_cpp <- function(fields, precision_int, zone, nonexistent_string, ambiguous_string, reference_fields, call) {
+  .Call(`_clock_as_zoned_sys_time_from_naive_time_with_reference_cpp`, fields, precision_int, zone, nonexistent_string, ambiguous_string, reference_fields, call)
 }
 
 to_sys_duration_fields_from_sys_seconds_cpp <- function(seconds) {

@@ -464,11 +464,11 @@ as_zoned_time.clock_naive_time <- function(x,
 
   if (identical(method, "string")) {
     ambiguous <- info$ambiguous
-    fields <- as_zoned_sys_time_from_naive_time_cpp(x, precision, zone, nonexistent, ambiguous)
+    fields <- as_zoned_sys_time_from_naive_time_cpp(x, precision, zone, nonexistent, ambiguous, current_env())
   } else if (identical(method, "reference")) {
     reference <- info$reference
     ambiguous <- info$ambiguous
-    fields <- as_zoned_sys_time_from_naive_time_with_reference_cpp(x, precision, zone, nonexistent, ambiguous, reference)
+    fields <- as_zoned_sys_time_from_naive_time_with_reference_cpp(x, precision, zone, nonexistent, ambiguous, reference, current_env())
   } else {
     abort("Internal error: Unknown ambiguous handling method.")
   }

@@ -14,7 +14,7 @@
       (expect_error(as_date_time(x, zone), class = "clock_error_nonexistent_time"))
     Output
       <error/clock_error_nonexistent_time>
-      Error:
+      Error in `as_zoned_time()`:
       ! Nonexistent time due to daylight saving time at location 1.
       i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
@@ -24,7 +24,7 @@
       (expect_error(as_date_time(x, zone), class = "clock_error_ambiguous_time"))
     Output
       <error/clock_error_ambiguous_time>
-      Error:
+      Error in `as_zoned_time()`:
       ! Ambiguous time due to daylight saving time at location 1.
       i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
@@ -33,7 +33,7 @@
     Code
       date_group(x, "hour", n = 2)
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Nonexistent time due to daylight saving time at location 1.
       i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
@@ -58,7 +58,7 @@
     Code
       date_floor(x, "hour", n = 2)
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Nonexistent time due to daylight saving time at location 2.
       i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
@@ -218,7 +218,7 @@
     Code
       date_time_parse("1970-04-26 02:30:00", "America/New_York")
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Nonexistent time due to daylight saving time at location 1.
       i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
@@ -227,7 +227,7 @@
     Code
       date_time_parse("1970-10-25 01:30:00", "America/New_York")
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Ambiguous time due to daylight saving time at location 1.
       i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
@@ -266,7 +266,7 @@
     Code
       date_shift(x, as_weekday(x), ambiguous = "error")
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Ambiguous time due to daylight saving time at location 1.
       i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
@@ -292,7 +292,7 @@
     Code
       date_time_build(1970, 4, 26, 2, 30, zone = zone)
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Nonexistent time due to daylight saving time at location 1.
       i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
@@ -301,7 +301,7 @@
     Code
       date_time_build(1970, 10, 25, 1, 30, zone = zone)
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Ambiguous time due to daylight saving time at location 1.
       i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
@@ -341,7 +341,7 @@
       (expect_error(date_start(x, "day"), class = "clock_error_nonexistent_time"))
     Output
       <error/clock_error_nonexistent_time>
-      Error:
+      Error in `as_zoned_time()`:
       ! Nonexistent time due to daylight saving time at location 1.
       i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
@@ -351,7 +351,7 @@
       (expect_error(date_start(x, "day"), class = "clock_error_ambiguous_time"))
     Output
       <error/clock_error_ambiguous_time>
-      Error:
+      Error in `as_zoned_time()`:
       ! Ambiguous time due to daylight saving time at location 1.
       i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
@@ -368,7 +368,7 @@
     Code
       date_seq(from, by = duration_days(1), total_size = 3)
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Nonexistent time due to daylight saving time at location 2.
       i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
@@ -377,7 +377,7 @@
     Code
       date_seq(from, by = duration_days(1), total_size = 3)
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Ambiguous time due to daylight saving time at location 2.
       i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
@@ -386,7 +386,7 @@
     Code
       date_seq(from, by = duration_months(1), total_size = 3)
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Nonexistent time due to daylight saving time at location 2.
       i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
@@ -395,7 +395,7 @@
     Code
       date_seq(from, by = duration_years(1), total_size = 3)
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Ambiguous time due to daylight saving time at location 2.
       i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
@@ -669,7 +669,7 @@
     Code
       slider::slide_index(x, i, identity, .after = after)
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Ambiguous time due to daylight saving time at location 1.
       i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
@@ -678,7 +678,7 @@
     Code
       slider::slide_index(x, i, identity, .after = after)
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Nonexistent time due to daylight saving time at location 1.
       i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
@@ -687,7 +687,7 @@
     Code
       slider::slide_index(x, i, identity, .after = after)
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Ambiguous time due to daylight saving time at location 1.
       i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
@@ -696,7 +696,7 @@
     Code
       slider::slide_index(x, i, identity, .after = after)
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Nonexistent time due to daylight saving time at location 1.
       i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 

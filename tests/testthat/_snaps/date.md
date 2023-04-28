@@ -12,7 +12,7 @@
       (expect_error(as_zoned_time(x, zone), class = "clock_error_nonexistent_time"))
     Output
       <error/clock_error_nonexistent_time>
-      Error:
+      Error in `as_zoned_time()`:
       ! Nonexistent time due to daylight saving time at location 1.
       i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
@@ -22,7 +22,7 @@
       (expect_error(as_zoned_time(x, zone), class = "clock_error_ambiguous_time"))
     Output
       <error/clock_error_ambiguous_time>
-      Error:
+      Error in `as_zoned_time()`:
       ! Ambiguous time due to daylight saving time at location 1.
       i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 

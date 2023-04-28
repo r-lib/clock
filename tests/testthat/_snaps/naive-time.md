@@ -88,7 +88,7 @@
     Code
       as_zoned_time(x, zone)
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Ambiguous time due to daylight saving time at location 1.
       i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
@@ -97,7 +97,7 @@
     Code
       as_zoned_time(nt_tweaked, zone, ambiguous = zt)
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Ambiguous time due to daylight saving time at location 2.
       i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
@@ -106,7 +106,7 @@
     Code
       as_zoned_time(nt_tweaked, zone, ambiguous = zt)
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Ambiguous time due to daylight saving time at location 1.
       i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
@@ -115,7 +115,7 @@
     Code
       as_zoned_time(x, zone)
     Condition
-      Error:
+      Error in `as_zoned_time()`:
       ! Nonexistent time due to daylight saving time at location 1.
       i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 

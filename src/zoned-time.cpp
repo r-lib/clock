@@ -135,7 +135,8 @@ cpp11::writable::list
 as_zoned_sys_time_from_naive_time_impl(cpp11::list_of<cpp11::doubles>& fields,
                                        const date::time_zone* p_time_zone,
                                        const cpp11::strings& nonexistent_string,
-                                       const cpp11::strings& ambiguous_string) {
+                                       const cpp11::strings& ambiguous_string,
+                                       const cpp11::sexp& call) {
   using Duration = typename ClockDuration::chrono_duration;
 
   const ClockDuration x{fields};
@@ -180,7 +181,8 @@ as_zoned_sys_time_from_naive_time_impl(cpp11::list_of<cpp11::doubles>& fields,
       elt_info,
       elt_nonexistent_val,
       elt_ambiguous_val,
-      i
+      i,
+      call
     );
   }
 
@@ -193,7 +195,8 @@ as_zoned_sys_time_from_naive_time_cpp(cpp11::list_of<cpp11::doubles> fields,
                                       const cpp11::integers& precision_int,
                                       const cpp11::strings& zone,
                                       const cpp11::strings& nonexistent_string,
-                                      const cpp11::strings& ambiguous_string) {
+                                      const cpp11::strings& ambiguous_string,
+                                      const cpp11::sexp& call) {
   using namespace rclock;
 
   zone_size_validate(zone);
@@ -201,10 +204,10 @@ as_zoned_sys_time_from_naive_time_cpp(cpp11::list_of<cpp11::doubles> fields,
   const date::time_zone* p_time_zone = zone_name_load(zone_name);
 
   switch (parse_precision(precision_int)) {
-  case precision::second: return as_zoned_sys_time_from_naive_time_impl<duration::seconds>(fields, p_time_zone, nonexistent_string, ambiguous_string);
-  case precision::millisecond: return as_zoned_sys_time_from_naive_time_impl<duration::milliseconds>(fields, p_time_zone, nonexistent_string, ambiguous_string);
-  case precision::microsecond: return as_zoned_sys_time_from_naive_time_impl<duration::microseconds>(fields, p_time_zone, nonexistent_string, ambiguous_string);
-  case precision::nanosecond: return as_zoned_sys_time_from_naive_time_impl<duration::nanoseconds>(fields, p_time_zone, nonexistent_string, ambiguous_string);
+  case precision::second: return as_zoned_sys_time_from_naive_time_impl<duration::seconds>(fields, p_time_zone, nonexistent_string, ambiguous_string, call);
+  case precision::millisecond: return as_zoned_sys_time_from_naive_time_impl<duration::milliseconds>(fields, p_time_zone, nonexistent_string, ambiguous_string, call);
+  case precision::microsecond: return as_zoned_sys_time_from_naive_time_impl<duration::microseconds>(fields, p_time_zone, nonexistent_string, ambiguous_string, call);
+  case precision::nanosecond: return as_zoned_sys_time_from_naive_time_impl<duration::nanoseconds>(fields, p_time_zone, nonexistent_string, ambiguous_string, call);
   default: clock_abort("Internal error: Should never be called.");
   }
 }
@@ -219,7 +222,8 @@ as_zoned_sys_time_from_naive_time_with_reference_impl(cpp11::list_of<cpp11::doub
                                                       const date::time_zone* p_time_zone,
                                                       const cpp11::strings& nonexistent_string,
                                                       const cpp11::strings& ambiguous_string,
-                                                      const rclock::duration::seconds& reference) {
+                                                      const rclock::duration::seconds& reference,
+                                                      const cpp11::sexp& call) {
   using Duration = typename ClockDuration::chrono_duration;
 
   const ClockDuration x{fields};
@@ -276,7 +280,8 @@ as_zoned_sys_time_from_naive_time_with_reference_impl(cpp11::list_of<cpp11::doub
       elt_ambiguous_val,
       elt_reference_val,
       p_time_zone,
-      i
+      i,
+      call
     );
   }
 
@@ -290,7 +295,8 @@ as_zoned_sys_time_from_naive_time_with_reference_cpp(cpp11::list_of<cpp11::doubl
                                                      const cpp11::strings& zone,
                                                      const cpp11::strings& nonexistent_string,
                                                      const cpp11::strings& ambiguous_string,
-                                                     cpp11::list_of<cpp11::doubles> reference_fields) {
+                                                     cpp11::list_of<cpp11::doubles> reference_fields,
+                                                     const cpp11::sexp& call) {
   using namespace rclock;
 
   zone_size_validate(zone);
@@ -300,10 +306,10 @@ as_zoned_sys_time_from_naive_time_with_reference_cpp(cpp11::list_of<cpp11::doubl
   const duration::seconds reference{reference_fields};
 
   switch (parse_precision(precision_int)) {
-  case precision::second: return as_zoned_sys_time_from_naive_time_with_reference_impl<duration::seconds>(fields, p_time_zone, nonexistent_string, ambiguous_string, reference);
-  case precision::millisecond: return as_zoned_sys_time_from_naive_time_with_reference_impl<duration::milliseconds>(fields, p_time_zone, nonexistent_string, ambiguous_string, reference);
-  case precision::microsecond: return as_zoned_sys_time_from_naive_time_with_reference_impl<duration::microseconds>(fields, p_time_zone, nonexistent_string, ambiguous_string, reference);
-  case precision::nanosecond: return as_zoned_sys_time_from_naive_time_with_reference_impl<duration::nanoseconds>(fields, p_time_zone, nonexistent_string, ambiguous_string, reference);
+  case precision::second: return as_zoned_sys_time_from_naive_time_with_reference_impl<duration::seconds>(fields, p_time_zone, nonexistent_string, ambiguous_string, reference, call);
+  case precision::millisecond: return as_zoned_sys_time_from_naive_time_with_reference_impl<duration::milliseconds>(fields, p_time_zone, nonexistent_string, ambiguous_string, reference, call);
+  case precision::microsecond: return as_zoned_sys_time_from_naive_time_with_reference_impl<duration::microseconds>(fields, p_time_zone, nonexistent_string, ambiguous_string, reference, call);
+  case precision::nanosecond: return as_zoned_sys_time_from_naive_time_with_reference_impl<duration::nanoseconds>(fields, p_time_zone, nonexistent_string, ambiguous_string, reference, call);
   default: clock_abort("Internal error: Should never be called.");
   }
 }
