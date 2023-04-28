@@ -357,7 +357,7 @@ get_year.clock_year_month_weekday <- function(x) {
 #' @rdname year-month-weekday-getters
 #' @export
 get_month.clock_year_month_weekday <- function(x) {
-  calendar_require_minimum_precision(x, PRECISION_MONTH, "get_month")
+  calendar_check_minimum_precision(x, PRECISION_MONTH)
   field_month(x)
 }
 
@@ -365,35 +365,35 @@ get_month.clock_year_month_weekday <- function(x) {
 #' @export
 get_day.clock_year_month_weekday <- function(x) {
   # [Sunday, Saturday] -> [1, 7]
-  calendar_require_minimum_precision(x, PRECISION_DAY, "get_day")
+  calendar_check_minimum_precision(x, PRECISION_DAY)
   field_day(x)
 }
 
 #' @rdname year-month-weekday-getters
 #' @export
 get_index.clock_year_month_weekday <- function(x) {
-  calendar_require_minimum_precision(x, PRECISION_DAY, "get_index")
+  calendar_check_minimum_precision(x, PRECISION_DAY)
   field_index(x)
 }
 
 #' @rdname year-month-weekday-getters
 #' @export
 get_hour.clock_year_month_weekday <- function(x) {
-  calendar_require_minimum_precision(x, PRECISION_HOUR, "get_hour")
+  calendar_check_minimum_precision(x, PRECISION_HOUR)
   field_hour(x)
 }
 
 #' @rdname year-month-weekday-getters
 #' @export
 get_minute.clock_year_month_weekday <- function(x) {
-  calendar_require_minimum_precision(x, PRECISION_MINUTE, "get_minute")
+  calendar_check_minimum_precision(x, PRECISION_MINUTE)
   field_minute(x)
 }
 
 #' @rdname year-month-weekday-getters
 #' @export
 get_second.clock_year_month_weekday <- function(x) {
-  calendar_require_minimum_precision(x, PRECISION_SECOND, "get_second")
+  calendar_check_minimum_precision(x, PRECISION_SECOND)
   field_second(x)
 }
 
@@ -509,7 +509,7 @@ set_year.clock_year_month_weekday <- function(x, value, ...) {
 #' @export
 set_month.clock_year_month_weekday <- function(x, value, ...) {
   check_dots_empty()
-  calendar_require_minimum_precision(x, PRECISION_YEAR, "set_month")
+  calendar_check_minimum_precision(x, PRECISION_YEAR)
   set_field_year_month_weekday(x, value, "month")
 }
 
@@ -517,7 +517,7 @@ set_month.clock_year_month_weekday <- function(x, value, ...) {
 #' @export
 set_day.clock_year_month_weekday <- function(x, value, ..., index = NULL) {
   check_dots_empty()
-  calendar_require_minimum_precision(x, PRECISION_MONTH, "set_day")
+  calendar_check_minimum_precision(x, PRECISION_MONTH)
 
   has_index <- !is_null(index)
   precision <- calendar_precision_attribute(x)
@@ -546,7 +546,7 @@ set_day.clock_year_month_weekday <- function(x, value, ..., index = NULL) {
 #' @export
 set_index.clock_year_month_weekday <- function(x, value, ...) {
   check_dots_empty()
-  calendar_require_minimum_precision(x, PRECISION_DAY, "set_index")
+  calendar_check_minimum_precision(x, PRECISION_DAY)
   set_field_year_month_weekday(x, value, "index")
 }
 
@@ -554,7 +554,7 @@ set_index.clock_year_month_weekday <- function(x, value, ...) {
 #' @export
 set_hour.clock_year_month_weekday <- function(x, value, ...) {
   check_dots_empty()
-  calendar_require_minimum_precision(x, PRECISION_DAY, "set_hour")
+  calendar_check_minimum_precision(x, PRECISION_DAY)
   set_field_year_month_weekday(x, value, "hour")
 }
 
@@ -562,7 +562,7 @@ set_hour.clock_year_month_weekday <- function(x, value, ...) {
 #' @export
 set_minute.clock_year_month_weekday <- function(x, value, ...) {
   check_dots_empty()
-  calendar_require_minimum_precision(x, PRECISION_HOUR, "set_minute")
+  calendar_check_minimum_precision(x, PRECISION_HOUR)
   set_field_year_month_weekday(x, value, "minute")
 }
 
@@ -570,7 +570,7 @@ set_minute.clock_year_month_weekday <- function(x, value, ...) {
 #' @export
 set_second.clock_year_month_weekday <- function(x, value, ...) {
   check_dots_empty()
-  calendar_require_minimum_precision(x, PRECISION_MINUTE, "set_second")
+  calendar_check_minimum_precision(x, PRECISION_MINUTE)
   set_field_year_month_weekday(x, value, "second")
 }
 
@@ -821,14 +821,14 @@ add_years.clock_year_month_weekday <- function(x, n, ...) {
 #' @rdname year-month-weekday-arithmetic
 #' @export
 add_quarters.clock_year_month_weekday <- function(x, n, ...) {
-  calendar_require_minimum_precision(x, PRECISION_MONTH, "add_quarters")
+  calendar_check_minimum_precision(x, PRECISION_MONTH)
   year_month_weekday_plus_duration(x, n, PRECISION_QUARTER)
 }
 
 #' @rdname year-month-weekday-arithmetic
 #' @export
 add_months.clock_year_month_weekday <- function(x, n, ...) {
-  calendar_require_minimum_precision(x, PRECISION_MONTH, "add_months")
+  calendar_check_minimum_precision(x, PRECISION_MONTH)
   year_month_weekday_plus_duration(x, n, PRECISION_MONTH)
 }
 

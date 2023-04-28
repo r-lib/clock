@@ -296,32 +296,40 @@
     Code
       set_day(year_quarter_day(year = 1), 1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_day()` requires a minimum precision of 'quarter'.
+      Error in `set_day()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "quarter".
+      i `x` has a precision of "year".
 
 ---
 
     Code
       set_hour(year_quarter_day(year = 1, quarter = 2), 1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_hour()` requires a minimum precision of 'day'.
+      Error in `set_hour()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "day".
+      i `x` has a precision of "quarter".
 
 ---
 
     Code
       set_minute(year_quarter_day(year = 1, quarter = 2, day = 3), 1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_minute()` requires a minimum precision of 'hour'.
+      Error in `set_minute()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "hour".
+      i `x` has a precision of "day".
 
 ---
 
     Code
       set_second(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4), 1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_second()` requires a minimum precision of 'minute'.
+      Error in `set_second()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "minute".
+      i `x` has a precision of "hour".
 
 ---
 

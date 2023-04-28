@@ -339,24 +339,30 @@
     Code
       set_day(year_month_weekday(year = 1), 1, index = 1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_day()` requires a minimum precision of 'month'.
+      Error in `set_day()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "month".
+      i `x` has a precision of "year".
 
 ---
 
     Code
       set_hour(year_month_weekday(year = 1, month = 2), 1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_hour()` requires a minimum precision of 'day'.
+      Error in `set_hour()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "day".
+      i `x` has a precision of "month".
 
 ---
 
     Code
       set_minute(year_month_weekday(year = 1, month = 2, day = 3, index = 1), 1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_minute()` requires a minimum precision of 'hour'.
+      Error in `set_minute()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "hour".
+      i `x` has a precision of "day".
 
 ---
 
@@ -364,8 +370,10 @@
       set_second(year_month_weekday(year = 1, month = 2, day = 3, index = 1, hour = 4),
       1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_second()` requires a minimum precision of 'minute'.
+      Error in `set_second()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "minute".
+      i `x` has a precision of "hour".
 
 ---
 
