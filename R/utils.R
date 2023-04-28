@@ -343,31 +343,3 @@ df_list_propagate_missing <- function(x, ..., size = NULL) {
 is_last <- function(x) {
   identical(x, "last")
 }
-
-if_else <- function(condition, true, false, na = NULL) {
-  vec_assert(condition, logical())
-
-  # output size from `condition`
-  size <- vec_size(condition)
-
-  # output type from `true`/`false`/`na`
-  ptype <- vec_ptype_common(true = true, false = false, na = na)
-
-  args <- vec_recycle_common(true = true, false = false, na = na, .size = size)
-  args <- vec_cast_common(!!!args, .to = ptype)
-
-  out <- vec_init(ptype, size)
-
-  loc_true <- condition
-  loc_false <- !condition
-
-  out <- vec_assign(out, loc_true, vec_slice(args$true, loc_true))
-  out <- vec_assign(out, loc_false, vec_slice(args$false, loc_false))
-
-  if (!is_null(na)) {
-    loc_na <- vec_detect_missing(condition)
-    out <- vec_assign(out, loc_na, vec_slice(args$na, loc_na))
-  }
-
-  out
-}
