@@ -12,9 +12,23 @@ PRECISION_NANOSECOND = 10L
 
 # ------------------------------------------------------------------------------
 
-check_precision <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
+check_precision <- function(x,
+                            ...,
+                            values = NULL,
+                            arg = caller_arg(x),
+                            call = caller_env()) {
+  values <- values %||% precision_names()
   check_string(x, allow_empty = FALSE, arg = arg, call = call)
-  arg_match0(x, values = precision_names(), arg_nm = arg, error_call = call)
+  arg_match0(x, values = values, arg_nm = arg, error_call = call)
+}
+
+check_precision_subsecond <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
+  check_precision(
+    x = x,
+    values = c("millisecond", "microsecond", "nanosecond"),
+    arg = arg,
+    call = call
+  )
 }
 
 precision_to_integer <- function(x) {
@@ -45,10 +59,6 @@ precision_abbr <- function(precision_string) {
     nanosecond = "nano",
     precision_string # fallthrough
   )
-}
-
-is_valid_subsecond_precision <- function(precision) {
-  is.integer(precision) && precision >= PRECISION_MILLISECOND && precision <= PRECISION_NANOSECOND
 }
 
 precision_common2 <- function(x, y) {

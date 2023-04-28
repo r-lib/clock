@@ -101,7 +101,8 @@ year_month_day <- function(year,
     precision <- PRECISION_SECOND
     fields <- list(year = year, month = month, day = day, hour = hour, minute = minute, second = second)
   } else {
-    precision <- calendar_validate_subsecond_precision(subsecond_precision)
+    calendar_check_subsecond_precision(subsecond_precision)
+    precision <- precision_to_integer(subsecond_precision)
     fields <- list(year = year, month = month, day = day, hour = hour, minute = minute, second = second, subsecond = subsecond)
   }
 

@@ -1,3 +1,20 @@
+# requires `subsecond_precision` as needed
+
+    Code
+      year_month_day(2019, 1, 1, 0, 0, 0, 1)
+    Condition
+      Error in `year_month_day()`:
+      ! When `subsecond` is provided, `subsecond_precision` must also be specified.
+
+# validates `subsecond_precision`
+
+    Code
+      year_month_day(2019, 1, 1, 0, 0, 0, 1, subsecond_precision = "second")
+    Condition
+      Error in `year_month_day()`:
+      ! `subsecond_precision` must be one of "millisecond", "microsecond", or "nanosecond", not "second".
+      i Did you mean "nanosecond"?
+
 # validates value ranges
 
     Code

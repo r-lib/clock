@@ -21,6 +21,18 @@ test_that("can create subsecond precision calendars", {
   expect_identical(get_nanosecond(x), 1L)
 })
 
+test_that("requires `subsecond_precision` as needed", {
+  expect_snapshot(error = TRUE, {
+    year_month_day(2019, 1, 1, 0, 0, 0, 1)
+  })
+})
+
+test_that("validates `subsecond_precision`", {
+  expect_snapshot(error = TRUE, {
+    year_month_day(2019, 1, 1, 0, 0, 0, 1, subsecond_precision = "second")
+  })
+})
+
 test_that("validates value ranges", {
   expect_snapshot(error = TRUE, year_month_day(50000))
   expect_snapshot(error = TRUE, year_month_day(2020, 13))

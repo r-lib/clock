@@ -977,19 +977,17 @@ calendar_has_precision <- function(x, precision) {
 }
 
 # For use in calendar constructor helpers
-calendar_validate_subsecond_precision <- function(subsecond_precision) {
+calendar_check_subsecond_precision <- function(subsecond_precision,
+                                               ...,
+                                               call = caller_env()) {
   if (is_null(subsecond_precision)) {
-    abort("If `subsecond` is provided, `subsecond_precision` must be specified.")
+    cli::cli_abort(
+      "When {.arg subsecond} is provided, {.arg subsecond_precision} must also be specified.",
+      call = call
+    )
   }
 
-  check_precision(subsecond_precision)
-  subsecond_precision <- precision_to_integer(subsecond_precision)
-
-  if (!is_valid_subsecond_precision(subsecond_precision)) {
-    abort("`subsecond_precision` must be a valid subsecond precision.")
-  }
-
-  subsecond_precision
+  check_precision_subsecond(subsecond_precision, call = call)
 }
 
 # ------------------------------------------------------------------------------
