@@ -161,25 +161,25 @@ stop_clock <- function(message, ..., call = caller_env(), class = character()) {
   rlang::abort(message, ..., call = call, class = c(class, "clock_error"))
 }
 
-stop_clock_unsupported_conversion <- function(x, to_arg) {
+stop_clock_unsupported_conversion <- function(x, to_arg, ..., call = caller_env()) {
   to_arg <- paste0("<", to_arg, ">")
   message <- paste0("Can't convert ", paste_class(x), " to ", to_arg, ".")
-  stop_clock(message, class = "clock_error_unsupported_conversion")
+  stop_clock(message, ..., call = call, class = "clock_error_unsupported_conversion")
 }
 
-stop_clock_unsupported_calendar_op <- function(op) {
+stop_clock_unsupported_calendar_op <- function(op, ..., call = caller_env()) {
   message <- paste0("This calendar doesn't support `", op, "()`.")
-  stop_clock(message, class = "clock_error_unsupported_calendar_op")
+  stop_clock(message, ..., call = call, class = "clock_error_unsupported_calendar_op")
 }
 
-stop_clock_unsupported_time_point_op <- function(op) {
+stop_clock_unsupported_time_point_op <- function(op, ..., call = caller_env()) {
   message <- paste0("Time points don't support `", op, "()`.")
-  stop_clock(message, class = "clock_error_unsupported_time_point_op")
+  stop_clock(message, ..., call = call, class = "clock_error_unsupported_time_point_op")
 }
 
-stop_clock_unsupported_zoned_time_op <- function(op) {
+stop_clock_unsupported_zoned_time_op <- function(op, ..., call = caller_env()) {
   message <- paste0("Zoned-times don't support `", op, "()`.")
-  stop_clock(message, class = "clock_error_unsupported_zoned_time_op")
+  stop_clock(message, ..., call = call, class = "clock_error_unsupported_zoned_time_op")
 }
 
 # Thrown from C++

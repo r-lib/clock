@@ -313,3 +313,27 @@
       Error in `time_point_precision()`:
       ! `x` must be a 'clock_time_point'.
 
+# unsupported time point addition throws good error
+
+    Code
+      add_years(x, 1)
+    Condition
+      Error in `add_years()`:
+      ! Time points don't support `add_years()`.
+
+---
+
+    Code
+      add_quarters(x, 1)
+    Condition
+      Error in `add_quarters()`:
+      ! Time points don't support `add_quarters()`.
+
+---
+
+    Code
+      add_months(x, 1)
+    Condition
+      Error in `add_months()`:
+      ! Time points don't support `add_months()`.
+

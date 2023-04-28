@@ -299,3 +299,89 @@ test_that("precision: can get the precision", {
 test_that("precision: can only be called on calendars", {
   expect_snapshot(error = TRUE, calendar_precision(sys_days(0)))
 })
+
+# ------------------------------------------------------------------------------
+# add_*()
+
+test_that("addition helpers throw default error", {
+  x <- structure(1, class = "clock_calendar")
+
+  expect_snapshot(error = TRUE, {
+    add_years(x)
+  })
+  expect_snapshot(error = TRUE, {
+    add_quarters(x)
+  })
+  expect_snapshot(error = TRUE, {
+    add_months(x)
+  })
+  expect_snapshot(error = TRUE, {
+    add_weeks(x)
+  })
+  expect_snapshot(error = TRUE, {
+    add_days(x)
+  })
+  expect_snapshot(error = TRUE, {
+    add_hours(x)
+  })
+  expect_snapshot(error = TRUE, {
+    add_minutes(x)
+  })
+  expect_snapshot(error = TRUE, {
+    add_seconds(x)
+  })
+  expect_snapshot(error = TRUE, {
+    add_milliseconds(x)
+  })
+  expect_snapshot(error = TRUE, {
+    add_microseconds(x)
+  })
+  expect_snapshot(error = TRUE, {
+    add_nanoseconds(x)
+  })
+})
+
+# ------------------------------------------------------------------------------
+# get_*()
+
+test_that("getters throw default error", {
+  x <- structure(1, class = "clock_calendar")
+
+  expect_snapshot(error = TRUE, {
+    get_year(x)
+  })
+  expect_snapshot(error = TRUE, {
+    get_quarter(x)
+  })
+  expect_snapshot(error = TRUE, {
+    get_month(x)
+  })
+  expect_snapshot(error = TRUE, {
+    get_week(x)
+  })
+  expect_snapshot(error = TRUE, {
+    get_day(x)
+  })
+  expect_snapshot(error = TRUE, {
+    get_hour(x)
+  })
+  expect_snapshot(error = TRUE, {
+    get_minute(x)
+  })
+  expect_snapshot(error = TRUE, {
+    get_second(x)
+  })
+  expect_snapshot(error = TRUE, {
+    get_millisecond(x)
+  })
+  expect_snapshot(error = TRUE, {
+    get_microsecond(x)
+  })
+  expect_snapshot(error = TRUE, {
+    get_nanosecond(x)
+  })
+  expect_snapshot(error = TRUE, {
+    get_index(x)
+  })
+})
+

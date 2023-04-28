@@ -350,3 +350,187 @@
       Error in `UseMethod()`:
       ! no applicable method for 'calendar_precision' applied to an object of class "c('clock_sys_time', 'clock_time_point', 'clock_rcrd', 'vctrs_rcrd', 'vctrs_vctr')"
 
+# addition helpers throw default error
+
+    Code
+      add_years(x)
+    Condition
+      Error in `add_years()`:
+      ! This calendar doesn't support `add_years()`.
+
+---
+
+    Code
+      add_quarters(x)
+    Condition
+      Error in `add_quarters()`:
+      ! This calendar doesn't support `add_quarters()`.
+
+---
+
+    Code
+      add_months(x)
+    Condition
+      Error in `add_months()`:
+      ! This calendar doesn't support `add_months()`.
+
+---
+
+    Code
+      add_weeks(x)
+    Condition
+      Error in `add_weeks()`:
+      ! This calendar doesn't support `add_weeks()`.
+
+---
+
+    Code
+      add_days(x)
+    Condition
+      Error in `add_days()`:
+      ! This calendar doesn't support `add_days()`.
+
+---
+
+    Code
+      add_hours(x)
+    Condition
+      Error in `add_hours()`:
+      ! This calendar doesn't support `add_hours()`.
+
+---
+
+    Code
+      add_minutes(x)
+    Condition
+      Error in `add_minutes()`:
+      ! This calendar doesn't support `add_minutes()`.
+
+---
+
+    Code
+      add_seconds(x)
+    Condition
+      Error in `add_seconds()`:
+      ! This calendar doesn't support `add_seconds()`.
+
+---
+
+    Code
+      add_milliseconds(x)
+    Condition
+      Error in `add_milliseconds()`:
+      ! This calendar doesn't support `add_milliseconds()`.
+
+---
+
+    Code
+      add_microseconds(x)
+    Condition
+      Error in `add_microseconds()`:
+      ! This calendar doesn't support `add_microseconds()`.
+
+---
+
+    Code
+      add_nanoseconds(x)
+    Condition
+      Error in `add_nanoseconds()`:
+      ! This calendar doesn't support `add_nanoseconds()`.
+
+# getters throw default error
+
+    Code
+      get_year(x)
+    Condition
+      Error in `get_year()`:
+      ! This calendar doesn't support `get_year()`.
+
+---
+
+    Code
+      get_quarter(x)
+    Condition
+      Error in `get_quarter()`:
+      ! This calendar doesn't support `get_quarter()`.
+
+---
+
+    Code
+      get_month(x)
+    Condition
+      Error in `get_month()`:
+      ! This calendar doesn't support `get_month()`.
+
+---
+
+    Code
+      get_week(x)
+    Condition
+      Error in `get_week()`:
+      ! This calendar doesn't support `get_week()`.
+
+---
+
+    Code
+      get_day(x)
+    Condition
+      Error in `get_day()`:
+      ! This calendar doesn't support `get_day()`.
+
+---
+
+    Code
+      get_hour(x)
+    Condition
+      Error in `get_hour()`:
+      ! This calendar doesn't support `get_hour()`.
+
+---
+
+    Code
+      get_minute(x)
+    Condition
+      Error in `get_minute()`:
+      ! This calendar doesn't support `get_minute()`.
+
+---
+
+    Code
+      get_second(x)
+    Condition
+      Error in `get_second()`:
+      ! This calendar doesn't support `get_second()`.
+
+---
+
+    Code
+      get_millisecond(x)
+    Condition
+      Error in `get_millisecond()`:
+      ! This calendar doesn't support `get_millisecond()`.
+
+---
+
+    Code
+      get_microsecond(x)
+    Condition
+      Error in `get_microsecond()`:
+      ! This calendar doesn't support `get_microsecond()`.
+
+---
+
+    Code
+      get_nanosecond(x)
+    Condition
+      Error in `get_nanosecond()`:
+      ! This calendar doesn't support `get_nanosecond()`.
+
+---
+
+    Code
+      get_index(x)
+    Condition
+      Error in `get_index()`:
+      ! This calendar doesn't support `get_index()`.
+

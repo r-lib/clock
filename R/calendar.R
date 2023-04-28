@@ -1117,6 +1117,125 @@ as_year_quarter_day.clock_calendar <- function(x, ..., start = NULL) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+add_years.clock_calendar <- function(x, n, ...) {
+  stop_clock_unsupported_calendar_op("add_years")
+}
+
+#' @export
+add_quarters.clock_calendar <- function(x, n, ...) {
+  stop_clock_unsupported_calendar_op("add_quarters")
+}
+
+#' @export
+add_months.clock_calendar <- function(x, n, ...) {
+  stop_clock_unsupported_calendar_op("add_months")
+}
+
+#' @export
+add_weeks.clock_calendar <- function(x, n, ...) {
+  stop_clock_unsupported_calendar_op("add_weeks")
+}
+
+#' @export
+add_days.clock_calendar <- function(x, n, ...) {
+  stop_clock_unsupported_calendar_op("add_days")
+}
+
+#' @export
+add_hours.clock_calendar <- function(x, n, ...) {
+  stop_clock_unsupported_calendar_op("add_hours")
+}
+
+#' @export
+add_minutes.clock_calendar <- function(x, n, ...) {
+  stop_clock_unsupported_calendar_op("add_minutes")
+}
+
+#' @export
+add_seconds.clock_calendar <- function(x, n, ...) {
+  stop_clock_unsupported_calendar_op("add_seconds")
+}
+
+#' @export
+add_milliseconds.clock_calendar <- function(x, n, ...) {
+  stop_clock_unsupported_calendar_op("add_milliseconds")
+}
+
+#' @export
+add_microseconds.clock_calendar <- function(x, n, ...) {
+  stop_clock_unsupported_calendar_op("add_microseconds")
+}
+
+#' @export
+add_nanoseconds.clock_calendar <- function(x, n, ...) {
+  stop_clock_unsupported_calendar_op("add_nanoseconds")
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
+get_year.clock_calendar <- function(x) {
+  stop_clock_unsupported_calendar_op("get_year")
+}
+
+#' @export
+get_quarter.clock_calendar <- function(x) {
+  stop_clock_unsupported_calendar_op("get_quarter")
+}
+
+#' @export
+get_month.clock_calendar <- function(x) {
+  stop_clock_unsupported_calendar_op("get_month")
+}
+
+#' @export
+get_week.clock_calendar <- function(x) {
+  stop_clock_unsupported_calendar_op("get_week")
+}
+
+#' @export
+get_day.clock_calendar <- function(x) {
+  stop_clock_unsupported_calendar_op("get_day")
+}
+
+#' @export
+get_hour.clock_calendar <- function(x) {
+  stop_clock_unsupported_calendar_op("get_hour")
+}
+
+#' @export
+get_minute.clock_calendar <- function(x) {
+  stop_clock_unsupported_calendar_op("get_minute")
+}
+
+#' @export
+get_second.clock_calendar <- function(x) {
+  stop_clock_unsupported_calendar_op("get_second")
+}
+
+#' @export
+get_millisecond.clock_calendar <- function(x) {
+  stop_clock_unsupported_calendar_op("get_millisecond")
+}
+
+#' @export
+get_microsecond.clock_calendar <- function(x) {
+  stop_clock_unsupported_calendar_op("get_microsecond")
+}
+
+#' @export
+get_nanosecond.clock_calendar <- function(x) {
+  stop_clock_unsupported_calendar_op("get_nanosecond")
+}
+
+#' @export
+get_index.clock_calendar <- function(x) {
+  stop_clock_unsupported_calendar_op("get_index")
+}
+
+# ------------------------------------------------------------------------------
+
 field_year <- function(x) {
   # The `year` field is the first field of every calendar type, which makes
   # it the field that names are on. When extracting the field, we don't ever

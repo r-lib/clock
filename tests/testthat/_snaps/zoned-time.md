@@ -86,6 +86,14 @@
       [3] "2019-02-28T19:00:00-05:00" "2019-03-31T20:00:00-04:00"
       [5] "2019-04-30T20:00:00-04:00"
 
+# `as_zoned_time()` has good default error
+
+    Code
+      as_zoned_time(1)
+    Condition
+      Error in `as_zoned_time()`:
+      ! Can't convert <numeric> to <clock_zoned_time>.
+
 # cannot parse nonexistent time
 
     Code
@@ -183,7 +191,7 @@
     Code
       add_years(x, 1)
     Condition
-      Error in `stop_clock_unsupported_zoned_time_op()`:
+      Error in `add_years()`:
       ! Zoned-times don't support `add_years()`.
 
 ---
@@ -191,7 +199,7 @@
     Code
       add_quarters(x, 1)
     Condition
-      Error in `stop_clock_unsupported_zoned_time_op()`:
+      Error in `add_quarters()`:
       ! Zoned-times don't support `add_quarters()`.
 
 ---
@@ -199,7 +207,7 @@
     Code
       add_months(x, 1)
     Condition
-      Error in `stop_clock_unsupported_zoned_time_op()`:
+      Error in `add_months()`:
       ! Zoned-times don't support `add_months()`.
 
 ---
@@ -207,7 +215,7 @@
     Code
       add_weeks(x, 1)
     Condition
-      Error in `stop_clock_unsupported_zoned_time_op()`:
+      Error in `add_weeks()`:
       ! Zoned-times don't support `add_weeks()`.
 
 ---
@@ -215,7 +223,7 @@
     Code
       add_days(x, 1)
     Condition
-      Error in `stop_clock_unsupported_zoned_time_op()`:
+      Error in `add_days()`:
       ! Zoned-times don't support `add_days()`.
 
 ---
@@ -223,7 +231,7 @@
     Code
       add_hours(x, 1)
     Condition
-      Error in `stop_clock_unsupported_zoned_time_op()`:
+      Error in `add_hours()`:
       ! Zoned-times don't support `add_hours()`.
 
 ---
@@ -231,7 +239,7 @@
     Code
       add_minutes(x, 1)
     Condition
-      Error in `stop_clock_unsupported_zoned_time_op()`:
+      Error in `add_minutes()`:
       ! Zoned-times don't support `add_minutes()`.
 
 ---
@@ -239,7 +247,7 @@
     Code
       add_seconds(x, 1)
     Condition
-      Error in `stop_clock_unsupported_zoned_time_op()`:
+      Error in `add_seconds()`:
       ! Zoned-times don't support `add_seconds()`.
 
 ---
@@ -247,7 +255,7 @@
     Code
       add_milliseconds(x, 1)
     Condition
-      Error in `stop_clock_unsupported_zoned_time_op()`:
+      Error in `add_milliseconds()`:
       ! Zoned-times don't support `add_milliseconds()`.
 
 ---
@@ -255,7 +263,7 @@
     Code
       add_microseconds(x, 1)
     Condition
-      Error in `stop_clock_unsupported_zoned_time_op()`:
+      Error in `add_microseconds()`:
       ! Zoned-times don't support `add_microseconds()`.
 
 ---
@@ -263,7 +271,7 @@
     Code
       add_nanoseconds(x, 1)
     Condition
-      Error in `stop_clock_unsupported_zoned_time_op()`:
+      Error in `add_nanoseconds()`:
       ! Zoned-times don't support `add_nanoseconds()`.
 
 # precision: can only be called on zoned-times

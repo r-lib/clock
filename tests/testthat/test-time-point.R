@@ -367,3 +367,20 @@ test_that("precision: can get the precision", {
 test_that("precision: can only be called on time points", {
   expect_snapshot(error = TRUE, time_point_precision(duration_days()))
 })
+
+# ------------------------------------------------------------------------------
+# add_*()
+
+test_that("unsupported time point addition throws good error", {
+  x <- naive_seconds()
+
+  expect_snapshot(error = TRUE, {
+    add_years(x, 1)
+  })
+  expect_snapshot(error = TRUE, {
+    add_quarters(x, 1)
+  })
+  expect_snapshot(error = TRUE, {
+    add_months(x, 1)
+  })
+})

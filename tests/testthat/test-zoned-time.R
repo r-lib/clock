@@ -47,6 +47,15 @@ test_that("`max` defaults to `getOption('max.print')` but can be overridden", {
 })
 
 # ------------------------------------------------------------------------------
+# as_zoned_time()
+
+test_that("`as_zoned_time()` has good default error", {
+  expect_snapshot(error = TRUE, {
+    as_zoned_time(1)
+  })
+})
+
+# ------------------------------------------------------------------------------
 # as.character()
 
 test_that("as.character() works", {
@@ -367,7 +376,7 @@ test_that("abbreviation must match the one implied from naive + time zone name l
 test_that("%Z must be used", {
   x <- "1970-01-01"
 
-  expect_snapshot(error = TRUE, 
+  expect_snapshot(error = TRUE,
     zoned_time_parse_abbrev(x, "America/New_York", format = "%Y-%m-%d")
   )
 })

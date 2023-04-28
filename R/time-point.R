@@ -462,6 +462,23 @@ time_point_minus_time_point <- function(x, y, names) {
 # ------------------------------------------------------------------------------
 
 #' @export
+add_years.clock_time_point <- function(x, n, ...) {
+  stop_clock_unsupported_time_point_op("add_years")
+}
+
+#' @export
+add_quarters.clock_time_point <- function(x, n, ...) {
+  stop_clock_unsupported_time_point_op("add_quarters")
+}
+
+#' @export
+add_months.clock_time_point <- function(x, n, ...) {
+  stop_clock_unsupported_time_point_op("add_months")
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 as_duration.clock_time_point <- function(x) {
   time_point_duration(x, retain_names = TRUE)
 }
