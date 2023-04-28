@@ -122,13 +122,9 @@ format.clock_weekday <- function(x, ..., labels = "en", abbreviate = TRUE) {
   if (is_character(labels)) {
     labels <- clock_labels_lookup(labels)
   }
-  if (!is_clock_labels(labels)) {
-    abort("`labels` must be a 'clock_labels' object.")
-  }
+  check_clock_labels(labels)
 
-  if (!is_bool(abbreviate)) {
-    abort("`abbreviate` must be `TRUE` or `FALSE`.")
-  }
+  check_bool(abbreviate)
 
   if (abbreviate) {
     labels <- labels$weekday_abbrev
@@ -324,13 +320,9 @@ weekday_factor <- function(x,
   if (is_character(labels)) {
     labels <- clock_labels_lookup(labels)
   }
-  if (!is_clock_labels(labels)) {
-    abort("`labels` must be a 'clock_labels' object.")
-  }
+  check_clock_labels(labels)
 
-  if (!is_bool(abbreviate)) {
-    abort("`abbreviate` must be `TRUE` or `FALSE`.")
-  }
+  check_bool(abbreviate)
 
   if (abbreviate) {
     labels <- labels$weekday_abbrev

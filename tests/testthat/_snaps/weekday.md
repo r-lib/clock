@@ -26,7 +26,7 @@
       format(weekday(1), labels = 1)
     Condition
       Error in `format()`:
-      ! `labels` must be a 'clock_labels' object.
+      ! `labels` must be a <clock_labels>, not the number 1.
 
 # format - `abbreviate` is validated
 
@@ -34,7 +34,7 @@
       format(weekday(1), abbreviate = "foo")
     Condition
       Error in `format()`:
-      ! `abbreviate` must be `TRUE` or `FALSE`.
+      ! `abbreviate` must be `TRUE` or `FALSE`, not the string "foo".
 
 ---
 
@@ -42,7 +42,7 @@
       format(weekday(1), abbreviate = 1)
     Condition
       Error in `format()`:
-      ! `abbreviate` must be `TRUE` or `FALSE`.
+      ! `abbreviate` must be `TRUE` or `FALSE`, not the number 1.
 
 ---
 
@@ -50,7 +50,7 @@
       format(weekday(1), abbreviate = c(TRUE, FALSE))
     Condition
       Error in `format()`:
-      ! `abbreviate` must be `TRUE` or `FALSE`.
+      ! `abbreviate` must be `TRUE` or `FALSE`, not a logical vector.
 
 # validates `x`
 
@@ -98,7 +98,7 @@
       weekday_factor(weekday(1), labels = 1)
     Condition
       Error in `weekday_factor()`:
-      ! `labels` must be a 'clock_labels' object.
+      ! `labels` must be a <clock_labels>, not the number 1.
 
 # `encoding` is validated
 
@@ -130,7 +130,7 @@
       weekday_factor(weekday(1), abbreviate = "foo")
     Condition
       Error in `weekday_factor()`:
-      ! `abbreviate` must be `TRUE` or `FALSE`.
+      ! `abbreviate` must be `TRUE` or `FALSE`, not the string "foo".
 
 ---
 
@@ -138,7 +138,7 @@
       weekday_factor(weekday(1), abbreviate = 1)
     Condition
       Error in `weekday_factor()`:
-      ! `abbreviate` must be `TRUE` or `FALSE`.
+      ! `abbreviate` must be `TRUE` or `FALSE`, not the number 1.
 
 ---
 
@@ -146,7 +146,7 @@
       weekday_factor(weekday(1), abbreviate = c(TRUE, FALSE))
     Condition
       Error in `weekday_factor()`:
-      ! `abbreviate` must be `TRUE` or `FALSE`.
+      ! `abbreviate` must be `TRUE` or `FALSE`, not a logical vector.
 
 # can't compare or order weekdays (#153)
 

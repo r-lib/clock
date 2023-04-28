@@ -117,10 +117,6 @@ print.clock_labels <- function(x, ...) {
   cat_wrap("AM/PM:    ", am_pm)
 }
 
-is_clock_labels <- function(x) {
-  inherits(x, "clock_labels")
-}
-
 check_clock_labels <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
   check_inherits(x, what = "clock_labels", arg = arg, call = call)
 }

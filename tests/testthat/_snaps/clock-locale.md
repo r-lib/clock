@@ -19,7 +19,7 @@
       clock_locale(1)
     Condition
       Error in `clock_locale()`:
-      ! `labels` must be a 'clock_labels' object.
+      ! `labels` must be a <clock_labels>, not the number 1.
 
 # must use a valid decimal-mark
 
