@@ -262,13 +262,7 @@ calendar_group <- function(x, precision, ..., n = 1L) {
   check_dots_empty()
 
   precision <- validate_precision_string(precision)
-
-  if (!calendar_is_valid_precision(x, precision)) {
-    message <- paste0(
-      "`precision` must be a valid precision for a '", calendar_name(x), "'."
-    )
-    abort(message)
-  }
+  calendar_check_valid_precision(x, precision)
 
   x_precision <- calendar_precision_attribute(x)
 
@@ -411,13 +405,7 @@ validate_calendar_group_n <- function(n, ..., error_call = caller_env()) {
 #' calendar_narrow(x, "month")
 calendar_narrow <- function(x, precision) {
   precision <- validate_precision_string(precision)
-
-  if (!calendar_is_valid_precision(x, precision)) {
-    message <- paste0(
-      "`precision` must be a valid precision for a '", calendar_name(x), "'."
-    )
-    abort(message)
-  }
+  calendar_check_valid_precision(x, precision)
 
   x_precision <- calendar_precision_attribute(x)
 
@@ -525,13 +513,7 @@ calendar_narrow_time <- function(out_fields, out_precision, x_fields) {
 #' calendar_widen(x, "second")
 calendar_widen <- function(x, precision) {
   precision <- validate_precision_string(precision)
-
-  if (!calendar_is_valid_precision(x, precision)) {
-    message <- paste0(
-      "`precision` must be a valid precision for a '", calendar_name(x), "'."
-    )
-    abort(message)
-  }
+  calendar_check_valid_precision(x, precision)
 
   x_precision <- calendar_precision_attribute(x)
 
@@ -666,12 +648,7 @@ calendar_end.clock_calendar <- function(x, precision) {
 
 
 calendar_start_end_checks <- function(x, x_precision, precision, which) {
-  if (!calendar_is_valid_precision(x, precision)) {
-    message <- paste0(
-      "`precision` must be a valid precision for a '", calendar_name(x), "'."
-    )
-    abort(message)
-  }
+  calendar_check_valid_precision(x, precision)
 
   if (x_precision < precision) {
     precision <- precision_to_string(precision)
@@ -935,6 +912,19 @@ calendar_name <- function(x) {
 # Internal generic
 calendar_is_valid_precision <- function(x, precision) {
   UseMethod("calendar_is_valid_precision")
+}
+
+calendar_check_valid_precision <- function(x, precision, ..., error_call = caller_env()) {
+  if (calendar_is_valid_precision(x, precision)) {
+    return(invisible(NULL))
+  }
+
+  message <- paste0(
+    "{.arg precision} must be a valid precision for a {.cls {calendar_name(x)}}, ",
+    "not {.str {precision_to_string(precision)}}."
+  )
+
+  cli::cli_abort(message, call = error_call)
 }
 
 # ------------------------------------------------------------------------------

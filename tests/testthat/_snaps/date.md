@@ -48,7 +48,7 @@
       date_group(x, "quarter")
     Condition
       Error in `calendar_group()`:
-      ! `precision` must be a valid precision for a 'year_month_day'.
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # can only floor by week/day
 
@@ -221,7 +221,7 @@
       date_start(date_build(2019), "quarter")
     Condition
       Error in `calendar_start_end_checks()`:
-      ! `precision` must be a valid precision for a 'year_month_day'.
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # end: can't use invalid precisions
 
@@ -229,7 +229,7 @@
       date_end(date_build(2019), "quarter")
     Condition
       Error in `calendar_start_end_checks()`:
-      ! `precision` must be a valid precision for a 'year_month_day'.
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # can resolve invalid dates
 

@@ -51,7 +51,7 @@
       date_group(x, "quarter")
     Condition
       Error in `calendar_group()`:
-      ! `precision` must be a valid precision for a 'year_month_day'.
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # flooring can handle nonexistent times
 
@@ -333,7 +333,7 @@
       date_start(date_time_build(2019, zone = "America/New_York"), "quarter")
     Condition
       Error in `calendar_start_end_checks()`:
-      ! `precision` must be a valid precision for a 'year_month_day'.
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # can resolve nonexistent start issues
 
@@ -361,7 +361,7 @@
       date_end(date_time_build(2019, zone = "America/New_York"), "quarter")
     Condition
       Error in `calendar_start_end_checks()`:
-      ! `precision` must be a valid precision for a 'year_month_day'.
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # daily `by` uses naive-time around DST gaps
 

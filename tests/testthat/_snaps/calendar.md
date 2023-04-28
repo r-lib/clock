@@ -112,7 +112,7 @@
       calendar_group(year_month_day(2019), "quarter")
     Condition
       Error in `calendar_group()`:
-      ! `precision` must be a valid precision for a 'year_month_day'.
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # group: `precision` can't be wider than `x`
 
@@ -144,7 +144,7 @@
       calendar_narrow(year_month_day(2019), "quarter")
     Condition
       Error in `calendar_narrow()`:
-      ! `precision` must be a valid precision for a 'year_month_day'.
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # narrow: `precision` can't be wider than `x`
 
@@ -176,7 +176,7 @@
       calendar_widen(year_month_day(2019), "quarter")
     Condition
       Error in `calendar_widen()`:
-      ! `precision` must be a valid precision for a 'year_month_day'.
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # widen: `precision` can't be narrower than `x`
 
@@ -224,7 +224,7 @@
       calendar_start(year_month_day(2019, 1), "quarter")
     Condition
       Error in `calendar_start_end_checks()`:
-      ! `precision` must be a valid precision for a 'year_month_day'.
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # start: `precision` can't be more precise than `x`
 
@@ -272,7 +272,7 @@
       calendar_end(year_month_day(2019, 1), "quarter")
     Condition
       Error in `calendar_start_end_checks()`:
-      ! `precision` must be a valid precision for a 'year_month_day'.
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # end: `precision` can't be more precise than `x`
 
