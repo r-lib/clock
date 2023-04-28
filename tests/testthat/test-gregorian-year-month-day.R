@@ -137,6 +137,29 @@ test_that("abbreviated ptype is correct", {
 })
 
 # ------------------------------------------------------------------------------
+# get_*()
+
+test_that("subsecond precision getters require exact precisions", {
+  milli <- year_month_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "millisecond")
+  micro <- year_month_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "microsecond")
+  nano <- year_month_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond")
+
+  expect_identical(get_millisecond(milli), 1L)
+  expect_identical(get_microsecond(micro), 1L)
+  expect_identical(get_nanosecond(nano), 1L)
+
+  expect_snapshot(error = TRUE, {
+    get_millisecond(micro)
+  })
+  expect_snapshot(error = TRUE, {
+    get_microsecond(milli)
+  })
+  expect_snapshot(error = TRUE, {
+    get_nanosecond(micro)
+  })
+})
+
+# ------------------------------------------------------------------------------
 # set_*()
 
 test_that("setters work", {

@@ -128,6 +128,36 @@
 
     [1] "ymd<day>"
 
+# subsecond precision getters require exact precisions
+
+    Code
+      get_millisecond(micro)
+    Condition
+      Error in `get_millisecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "millisecond".
+      i `x` has a precision of "microsecond".
+
+---
+
+    Code
+      get_microsecond(milli)
+    Condition
+      Error in `get_microsecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "microsecond".
+      i `x` has a precision of "millisecond".
+
+---
+
+    Code
+      get_nanosecond(micro)
+    Condition
+      Error in `get_nanosecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "nanosecond".
+      i `x` has a precision of "microsecond".
+
 # setters recycling works both ways
 
     Code

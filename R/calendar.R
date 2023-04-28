@@ -963,14 +963,26 @@ calendar_check_minimum_precision <- function(x,
   cli::cli_abort(message, call = call)
 }
 
-calendar_require_precision <- function(x, precision, fn) {
-  if (!calendar_has_precision(x, precision)) {
-    precision_string <- precision_to_string(precision)
-    msg <- paste0("`", fn, "()` requires a precision of '", precision_string, "'.")
-    abort(msg)
+calendar_check_exact_precision <- function(x,
+                                           precision,
+                                           ...,
+                                           arg = caller_arg(x),
+                                           call = caller_env()) {
+  x_precision <- calendar_precision_attribute(x)
+
+  if (x_precision == precision) {
+    return(invisible(NULL))
   }
-  invisible(x)
+
+  message <- c(
+    "Can't perform this operation because of the precision of {.arg {arg}}.",
+    i = "The precision of {.arg {arg}} must be {.str {precision_to_string(precision)}}.",
+    i = "{.arg {arg}} has a precision of {.str {precision_to_string(x_precision)}}."
+  )
+
+  cli::cli_abort(message, call = call)
 }
+
 calendar_require_any_of_precisions <- function(x, precisions, fn) {
   results <- vapply(precisions, calendar_has_precision, FUN.VALUE = logical(1), x = x)
   if (!any(results)) {

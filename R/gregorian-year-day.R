@@ -329,21 +329,21 @@ get_second.clock_year_day <- function(x) {
 #' @rdname year-day-getters
 #' @export
 get_millisecond.clock_year_day <- function(x) {
-  calendar_require_precision(x, PRECISION_MILLISECOND, "get_millisecond")
+  calendar_check_exact_precision(x, PRECISION_MILLISECOND)
   field_subsecond(x)
 }
 
 #' @rdname year-day-getters
 #' @export
 get_microsecond.clock_year_day <- function(x) {
-  calendar_require_precision(x, PRECISION_MICROSECOND, "get_microsecond")
+  calendar_check_exact_precision(x, PRECISION_MICROSECOND)
   field_subsecond(x)
 }
 
 #' @rdname year-day-getters
 #' @export
 get_nanosecond.clock_year_day <- function(x) {
-  calendar_require_precision(x, PRECISION_NANOSECOND, "get_nanosecond")
+  calendar_check_exact_precision(x, PRECISION_NANOSECOND)
   field_subsecond(x)
 }
 
