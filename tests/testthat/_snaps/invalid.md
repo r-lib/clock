@@ -3,6 +3,6 @@
     Code
       invalid_remove(1)
     Condition
-      Error in `UseMethod()`:
-      ! no applicable method for 'invalid_remove' applied to an object of class "c('double', 'numeric')"
+      Error in `invalid_remove()`:
+      ! Can't perform this operation on a <numeric>.
 

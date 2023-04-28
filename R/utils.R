@@ -171,12 +171,6 @@ stop_clock_unsupported_conversion <- function(x, to_arg, ..., call = caller_env(
   stop_clock(message, ..., call = call, class = "clock_error_unsupported_conversion")
 }
 
-stop_clock_unsupported_calendar_op <- function(op, ..., details = NULL, call = caller_env()) {
-  message <- cli::format_inline("This calendar doesn't support {.fn {op}}.")
-  message <- c(message, details)
-  stop_clock(message, ..., call = call, class = "clock_error_unsupported_calendar_op")
-}
-
 # Thrown from C++
 stop_clock_invalid_date <- function(i, call) {
   message <- c(

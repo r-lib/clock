@@ -172,13 +172,13 @@ as_naive_time <- function(x) {
 }
 
 #' @export
-as_naive_time.clock_naive_time <- function(x) {
-  x
+as_naive_time.default <- function(x) {
+  stop_clock_unsupported(x)
 }
 
 #' @export
-as_naive_time.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("as_naive_time")
+as_naive_time.clock_naive_time <- function(x) {
+  x
 }
 
 # ------------------------------------------------------------------------------

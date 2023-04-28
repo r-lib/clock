@@ -314,13 +314,13 @@ as_sys_time <- function(x) {
 }
 
 #' @export
-as_sys_time.clock_sys_time <- function(x) {
-  x
+as_sys_time.default <- function(x) {
+  stop_clock_unsupported(x)
 }
 
 #' @export
-as_sys_time.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("as_sys_time")
+as_sys_time.clock_sys_time <- function(x) {
+  x
 }
 
 # ------------------------------------------------------------------------------

@@ -121,8 +121,8 @@ calendar_leap_year <- function(x) {
 }
 
 #' @export
-calendar_leap_year.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("calendar_leap_year")
+calendar_leap_year.default <- function(x) {
+  stop_clock_unsupported(x)
 }
 
 # ------------------------------------------------------------------------------
@@ -168,11 +168,11 @@ calendar_month_factor <- function(x,
 }
 
 #' @export
-calendar_month_factor.clock_calendar <- function(x,
-                                                 ...,
-                                                 labels = "en",
-                                                 abbreviate = FALSE) {
-  stop_clock_unsupported_calendar_op("calendar_month_factor")
+calendar_month_factor.default <- function(x,
+                                          ...,
+                                          labels = "en",
+                                          abbreviate = FALSE) {
+  stop_clock_unsupported(x)
 }
 
 calendar_month_factor_impl <- function(x,
@@ -295,8 +295,8 @@ calendar_group <- function(x, precision, ..., n = 1L) {
 }
 
 #' @export
-calendar_group.clock_calendar <- function(x, precision, ..., n = 1L) {
-  stop_clock_unsupported_calendar_op("calendar_group")
+calendar_group.default <- function(x, precision, ..., n = 1L) {
+  stop_clock_unsupported(x)
 }
 
 calendar_group_time <- function(x, n, precision) {
@@ -439,8 +439,8 @@ calendar_narrow <- function(x, precision) {
 }
 
 #' @export
-calendar_narrow.clock_calendar <- function(x, precision) {
-  stop_clock_unsupported_calendar_op("calendar_narrow")
+calendar_narrow.default <- function(x, precision) {
+  stop_clock_unsupported(x)
 }
 
 calendar_narrow_time <- function(out_fields, out_precision, x_fields) {
@@ -548,8 +548,8 @@ calendar_widen <- function(x, precision) {
 }
 
 #' @export
-calendar_widen.clock_calendar <- function(x, precision) {
-  stop_clock_unsupported_calendar_op("calendar_widen")
+calendar_widen.default <- function(x, precision) {
+  stop_clock_unsupported(x)
 }
 
 calendar_widen_time <- function(x, x_precision, precision) {
@@ -633,8 +633,8 @@ calendar_start <- function(x, precision) {
 }
 
 #' @export
-calendar_start.clock_calendar <- function(x, precision) {
-  stop_clock_unsupported_calendar_op("calendar_start")
+calendar_start.default <- function(x, precision) {
+  stop_clock_unsupported(x)
 }
 
 
@@ -645,8 +645,8 @@ calendar_end <- function(x, precision) {
 }
 
 #' @export
-calendar_end.clock_calendar <- function(x, precision) {
-  stop_clock_unsupported_calendar_op("calendar_end")
+calendar_end.default <- function(x, precision) {
+  stop_clock_unsupported(x)
 }
 
 
@@ -1126,42 +1126,42 @@ as_year_quarter_day.clock_calendar <- function(x, ..., start = NULL) {
 
 #' @export
 add_weeks.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_weeks", details = advice_convert_to_time_point())
+  stop_clock_unsupported(x, details = advice_convert_to_time_point())
 }
 
 #' @export
 add_days.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_days", details = advice_convert_to_time_point())
+  stop_clock_unsupported(x, details = advice_convert_to_time_point())
 }
 
 #' @export
 add_hours.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_hours", details = advice_convert_to_time_point())
+  stop_clock_unsupported(x, details = advice_convert_to_time_point())
 }
 
 #' @export
 add_minutes.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_minutes", details = advice_convert_to_time_point())
+  stop_clock_unsupported(x, details = advice_convert_to_time_point())
 }
 
 #' @export
 add_seconds.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_seconds", details = advice_convert_to_time_point())
+  stop_clock_unsupported(x, details = advice_convert_to_time_point())
 }
 
 #' @export
 add_milliseconds.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_milliseconds", details = advice_convert_to_time_point())
+  stop_clock_unsupported(x, details = advice_convert_to_time_point())
 }
 
 #' @export
 add_microseconds.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_microseconds", details = advice_convert_to_time_point())
+  stop_clock_unsupported(x, details = advice_convert_to_time_point())
 }
 
 #' @export
 add_nanoseconds.clock_calendar <- function(x, n, ...) {
-  stop_clock_unsupported_calendar_op("add_nanoseconds", details = advice_convert_to_time_point())
+  stop_clock_unsupported(x, details = advice_convert_to_time_point())
 }
 
 advice_convert_to_time_point <- function() {

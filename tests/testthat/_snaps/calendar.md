@@ -199,8 +199,8 @@
     Code
       calendar_start(1)
     Condition
-      Error in `UseMethod()`:
-      ! no applicable method for 'calendar_start' applied to an object of class "c('double', 'numeric')"
+      Error in `calendar_start()`:
+      ! Can't perform this operation on a <numeric>.
 
 # start: `precision` is validated
 
@@ -247,8 +247,8 @@
     Code
       calendar_end(1)
     Condition
-      Error in `UseMethod()`:
-      ! no applicable method for 'calendar_end' applied to an object of class "c('double', 'numeric')"
+      Error in `calendar_end()`:
+      ! Can't perform this operation on a <numeric>.
 
 # end: `precision` is validated
 
@@ -355,7 +355,7 @@
       add_weeks(x)
     Condition
       Error in `add_weeks()`:
-      ! This calendar doesn't support `add_weeks()`.
+      ! Can't perform this operation on a <clock_year_month_day>.
       i Do you need to convert to a time point first?
       i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
@@ -365,7 +365,7 @@
       add_days(x)
     Condition
       Error in `add_days()`:
-      ! This calendar doesn't support `add_days()`.
+      ! Can't perform this operation on a <clock_year_month_day>.
       i Do you need to convert to a time point first?
       i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
@@ -375,7 +375,7 @@
       add_hours(x)
     Condition
       Error in `add_hours()`:
-      ! This calendar doesn't support `add_hours()`.
+      ! Can't perform this operation on a <clock_year_month_day>.
       i Do you need to convert to a time point first?
       i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
@@ -385,7 +385,7 @@
       add_minutes(x)
     Condition
       Error in `add_minutes()`:
-      ! This calendar doesn't support `add_minutes()`.
+      ! Can't perform this operation on a <clock_year_month_day>.
       i Do you need to convert to a time point first?
       i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
@@ -395,7 +395,7 @@
       add_seconds(x)
     Condition
       Error in `add_seconds()`:
-      ! This calendar doesn't support `add_seconds()`.
+      ! Can't perform this operation on a <clock_year_month_day>.
       i Do you need to convert to a time point first?
       i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
@@ -405,7 +405,7 @@
       add_milliseconds(x)
     Condition
       Error in `add_milliseconds()`:
-      ! This calendar doesn't support `add_milliseconds()`.
+      ! Can't perform this operation on a <clock_year_month_day>.
       i Do you need to convert to a time point first?
       i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
@@ -415,7 +415,7 @@
       add_microseconds(x)
     Condition
       Error in `add_microseconds()`:
-      ! This calendar doesn't support `add_microseconds()`.
+      ! Can't perform this operation on a <clock_year_month_day>.
       i Do you need to convert to a time point first?
       i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
@@ -425,7 +425,7 @@
       add_nanoseconds(x)
     Condition
       Error in `add_nanoseconds()`:
-      ! This calendar doesn't support `add_nanoseconds()`.
+      ! Can't perform this operation on a <clock_year_month_day>.
       i Do you need to convert to a time point first?
       i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 

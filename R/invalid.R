@@ -117,8 +117,8 @@ invalid_detect <- function(x) {
 }
 
 #' @export
-invalid_detect.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("invalid_detect")
+invalid_detect.default <- function(x) {
+  stop_clock_unsupported(x)
 }
 
 # ------------------------------------------------------------------------------
@@ -130,8 +130,8 @@ invalid_any <- function(x) {
 }
 
 #' @export
-invalid_any.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("invalid_any")
+invalid_any.default <- function(x) {
+  stop_clock_unsupported(x)
 }
 
 # ------------------------------------------------------------------------------
@@ -143,8 +143,8 @@ invalid_count <- function(x) {
 }
 
 #' @export
-invalid_count.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("invalid_count")
+invalid_count.default <- function(x) {
+  stop_clock_unsupported(x)
 }
 
 # ------------------------------------------------------------------------------
@@ -153,6 +153,11 @@ invalid_count.clock_calendar <- function(x) {
 #' @export
 invalid_remove <- function(x) {
   UseMethod("invalid_remove")
+}
+
+#' @export
+invalid_remove.default <- function(x) {
+  stop_clock_unsupported(x)
 }
 
 #' @export
@@ -169,8 +174,8 @@ invalid_resolve <- function(x, ..., invalid = NULL) {
 }
 
 #' @export
-invalid_resolve.clock_calendar <- function(x, ..., invalid = NULL) {
-  stop_clock_unsupported_calendar_op("invalid_resolve")
+invalid_resolve.default <- function(x, ..., invalid = NULL) {
+  stop_clock_unsupported(x)
 }
 
 validate_invalid <- function(invalid) {
