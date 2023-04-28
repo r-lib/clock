@@ -27,7 +27,7 @@
       clock_locale(decimal_mark = "f")
     Condition
       Error in `clock_locale()`:
-      ! `decimal_mark` must be either ',' or '.'.
+      ! `decimal_mark` must be one of "." or ",", not "f".
 
 # can change the decimal-mark
 

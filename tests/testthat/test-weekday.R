@@ -61,7 +61,6 @@ test_that("validates `x`", {
 test_that("weekday_code - `encoding` is validated", {
   expect_snapshot(error = TRUE, weekday_code(weekday(1), encoding = "foo"))
   expect_snapshot(error = TRUE, weekday_code(weekday(1), encoding = 1))
-  expect_snapshot(error = TRUE, weekday_code(weekday(1), encoding = c("western", "iso")))
 })
 
 # ------------------------------------------------------------------------------
@@ -123,7 +122,6 @@ test_that("`labels` is validated", {
 test_that("`encoding` is validated", {
   expect_snapshot(error = TRUE, weekday_factor(weekday(1), encoding = "foo"))
   expect_snapshot(error = TRUE, weekday_factor(weekday(1), encoding = 1))
-  expect_snapshot(error = TRUE, weekday_factor(weekday(1), encoding = c("western", "iso")))
 })
 
 test_that("`abbreviate` is validated", {

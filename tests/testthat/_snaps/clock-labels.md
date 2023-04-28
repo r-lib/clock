@@ -108,7 +108,7 @@
       clock_labels_lookup(1)
     Condition
       Error in `clock_labels_lookup()`:
-      ! `language` must be a character vector of length 1.
+      ! `language` must be a single string, not the number 1.
 
 ---
 
@@ -116,7 +116,7 @@
       clock_labels_lookup("foo")
     Condition
       Error in `clock_labels_lookup()`:
-      ! Unknown language 'foo'.
+      ! Can't find a locale for "foo".
 
 # can list all the languages
 

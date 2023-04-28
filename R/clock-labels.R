@@ -75,14 +75,12 @@ clock_labels <- function(month,
 #'   available locales.
 #' @export
 clock_labels_lookup <- function(language) {
-  if (!is_character(language, n = 1L)) {
-    abort("`language` must be a character vector of length 1.")
-  }
+  check_string(language)
 
   labels <- clock_labels_list[[language]]
 
   if (is.null(labels)) {
-    abort(paste0("Unknown language '", language, "'."))
+    cli::cli_abort("Can't find a locale for {.str {language}}.")
   }
 
   labels
