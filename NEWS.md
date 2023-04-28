@@ -1,5 +1,7 @@
 # clock (development version)
 
+* Many errors have been improved (#219, #286).
+
 * New `date_time_info()` and `zoned_time_info()` low-level helpers for accessing
   the previous/next transition times, the offset from UTC, and the current time
   zone abbreviation (#295).
