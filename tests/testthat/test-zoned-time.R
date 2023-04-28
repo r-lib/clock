@@ -541,7 +541,7 @@ test_that("ptype is correct", {
 
   for (zone in zones) {
     for (precision in precision_names()) {
-      precision <- validate_precision_string(precision)
+      precision <- precision_to_integer(precision)
 
       if (precision < PRECISION_SECOND) {
         next

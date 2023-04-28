@@ -591,7 +591,8 @@ zoned_time_parse_complete <- function(x,
                                       locale = clock_locale()) {
   check_dots_empty()
 
-  precision <- validate_zoned_time_precision_string(precision)
+  check_zoned_time_precision(precision)
+  precision <- precision_to_integer(precision)
 
   if (!is_clock_locale(locale)) {
     abort("`locale` must be a 'clock_locale' object.")
@@ -630,7 +631,8 @@ zoned_time_parse_abbrev <- function(x,
                                     locale = clock_locale()) {
   check_dots_empty()
 
-  precision <- validate_zoned_time_precision_string(precision)
+  check_zoned_time_precision(precision)
+  precision <- precision_to_integer(precision)
 
   if (!is_clock_locale(locale)) {
     abort("`locale` must be a 'clock_locale' object.")
@@ -1148,18 +1150,24 @@ zone_validate <- function(zone) {
 
 # ------------------------------------------------------------------------------
 
-validate_zoned_time_precision_string <- function(precision) {
-  precision <- validate_precision_string(precision)
+check_zoned_time_precision <- function(x,
+                                       ...,
+                                       arg = caller_arg(x),
+                                       call = caller_env()) {
+  check_precision(x, arg = arg, call = call)
 
-  if (!is_valid_zoned_time_precision(precision)) {
-    abort("`precision` must be at least 'second' precision.")
+  if (is_zoned_time_precision(precision_to_integer(x))) {
+    return(invisible(NULL))
   }
 
-  precision
+  cli::cli_abort(
+    "{.arg {arg}} must be at least {.str second} precision, not {.str {x}}.",
+    call = call
+  )
 }
 
-is_valid_zoned_time_precision <- function(precision) {
-  precision >= PRECISION_SECOND
+is_zoned_time_precision <- function(x) {
+  x >= PRECISION_SECOND
 }
 
 # ------------------------------------------------------------------------------

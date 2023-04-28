@@ -27,8 +27,8 @@
     Code
       duration_floor(duration_seconds(1), "foo")
     Condition
-      Error in `validate_precision_string()`:
-      ! `precision` not recognized.
+      Error in `duration_rounder()`:
+      ! `precision` must be one of "year", "quarter", "month", "week", "day", "hour", "minute", "second", "millisecond", "microsecond", or "nanosecond", not "foo".
 
 ---
 

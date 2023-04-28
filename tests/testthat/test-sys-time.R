@@ -241,7 +241,7 @@ test_that("ptype is correct", {
   ptype <- sys_days(integer())
 
   for (precision in precision_names()) {
-    if (validate_precision_string(precision) < PRECISION_DAY) {
+    if (precision_to_integer(precision) < PRECISION_DAY) {
       next
     }
 

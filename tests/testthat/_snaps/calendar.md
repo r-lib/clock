@@ -207,16 +207,16 @@
     Code
       calendar_start(year_month_day(2019), "foo")
     Condition
-      Error in `validate_precision_string()`:
-      ! `precision` not recognized.
+      Error in `calendar_start()`:
+      ! `precision` must be one of "year", "quarter", "month", "week", "day", "hour", "minute", "second", "millisecond", "microsecond", or "nanosecond", not "foo".
 
 ---
 
     Code
       calendar_start(year_month_day(2019), 1)
     Condition
-      Error in `validate_precision_string()`:
-      ! `precision` must be a string.
+      Error in `calendar_start()`:
+      ! `precision` must be a single string, not the number 1.
 
 # start: errors on unsupported precision
 
@@ -255,16 +255,16 @@
     Code
       calendar_end(year_month_day(2019), "foo")
     Condition
-      Error in `validate_precision_string()`:
-      ! `precision` not recognized.
+      Error in `calendar_end()`:
+      ! `precision` must be one of "year", "quarter", "month", "week", "day", "hour", "minute", "second", "millisecond", "microsecond", or "nanosecond", not "foo".
 
 ---
 
     Code
       calendar_end(year_month_day(2019), 1)
     Condition
-      Error in `validate_precision_string()`:
-      ! `precision` must be a string.
+      Error in `calendar_end()`:
+      ! `precision` must be a single string, not the number 1.
 
 # end: errors on unsupported precision
 

@@ -982,7 +982,8 @@ calendar_validate_subsecond_precision <- function(subsecond_precision) {
     abort("If `subsecond` is provided, `subsecond_precision` must be specified.")
   }
 
-  subsecond_precision <- validate_precision_string(subsecond_precision, "subsecond_precision")
+  check_precision(subsecond_precision)
+  subsecond_precision <- precision_to_integer(subsecond_precision)
 
   if (!is_valid_subsecond_precision(subsecond_precision)) {
     abort("`subsecond_precision` must be a valid subsecond precision.")

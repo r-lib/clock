@@ -976,7 +976,8 @@ calendar_group.clock_year_quarter_day <- function(x, precision, ..., n = 1L) {
   n <- validate_calendar_group_n(n)
   x <- calendar_narrow(x, precision)
 
-  precision <- validate_precision_string(precision)
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
 
   if (precision == PRECISION_YEAR) {
     value <- get_year(x)
@@ -1023,7 +1024,8 @@ calendar_group.clock_year_quarter_day <- function(x, precision, ..., n = 1L) {
 #' # Narrow to quarter precision
 #' calendar_narrow(x, "quarter")
 calendar_narrow.clock_year_quarter_day <- function(x, precision) {
-  precision <- validate_precision_string(precision)
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
 
   start <- quarterly_start(x)
 
@@ -1072,7 +1074,9 @@ calendar_narrow.clock_year_quarter_day <- function(x, precision) {
 #' sec
 calendar_widen.clock_year_quarter_day <- function(x, precision) {
   x_precision <- calendar_precision_attribute(x)
-  precision <- validate_precision_string(precision)
+
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
 
   if (precision >= PRECISION_QUARTER && x_precision < PRECISION_QUARTER) {
     x <- set_quarter(x, 1L)
@@ -1122,7 +1126,9 @@ NULL
 #' @export
 calendar_start.clock_year_quarter_day <- function(x, precision) {
   x_precision <- calendar_precision_attribute(x)
-  precision <- validate_precision_string(precision)
+
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
 
   calendar_start_end_checks(x, x_precision, precision, "start")
 
@@ -1142,7 +1148,9 @@ calendar_start.clock_year_quarter_day <- function(x, precision) {
 #' @export
 calendar_end.clock_year_quarter_day <- function(x, precision) {
   x_precision <- calendar_precision_attribute(x)
-  precision <- validate_precision_string(precision)
+
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
 
   calendar_start_end_checks(x, x_precision, precision, "end")
 
@@ -1207,7 +1215,8 @@ calendar_count_between.clock_year_quarter_day <- function(start,
 calendar_count_between_standardize_precision_n.clock_year_quarter_day <- function(x,
                                                                                   precision,
                                                                                   n) {
-  precision_int <- validate_precision_string(precision)
+  check_precision(precision)
+  precision_int <- precision_to_integer(precision)
 
   allowed_precisions <- c(PRECISION_YEAR, PRECISION_QUARTER)
 
@@ -1221,7 +1230,8 @@ calendar_count_between_standardize_precision_n.clock_year_quarter_day <- functio
 calendar_count_between_compute.clock_year_quarter_day <- function(start,
                                                                   end,
                                                                   precision) {
-  precision <- validate_precision_string(precision)
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
 
   if (precision == PRECISION_YEAR) {
     out <- get_year(end) - get_year(start)
@@ -1240,7 +1250,8 @@ calendar_count_between_compute.clock_year_quarter_day <- function(start,
 calendar_count_between_proxy_compare.clock_year_quarter_day <- function(start,
                                                                         end,
                                                                         precision) {
-  precision <- validate_precision_string(precision)
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
 
   start <- vec_proxy_compare(start)
   end <- vec_proxy_compare(end)

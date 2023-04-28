@@ -111,7 +111,8 @@ naive_time_parse <- function(x,
                              format = NULL,
                              precision = "second",
                              locale = clock_locale()) {
-  precision <- validate_time_point_precision_string(precision)
+  check_time_point_precision(precision)
+  precision <- precision_to_integer(precision)
 
   fields <- time_point_parse(
     x = x,

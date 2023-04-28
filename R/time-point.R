@@ -615,8 +615,11 @@ time_point_cast <- function(x, precision) {
     abort("`x` must be a 'time_point'.")
   }
 
+  check_time_point_precision(precision)
+  precision <- precision_to_integer(precision)
+
   x_precision <- time_point_precision_attribute(x)
-  precision <- validate_time_point_precision_string(precision)
+
 
   fields <- duration_cast_cpp(x, x_precision, precision)
 
@@ -763,7 +766,8 @@ time_point_rounder <- function(x, precision, n, origin, duration_rounder, ...) {
   }
 
   precision_string <- precision
-  precision <- validate_time_point_precision_string(precision)
+  check_time_point_precision(precision)
+  precision <- precision_to_integer(precision)
 
   duration <- time_point_duration(x)
 
@@ -1054,7 +1058,9 @@ time_point_count_between <- function(start, end, precision, ..., n = 1L) {
   start <- args[[1]]
   end <- args[[2]]
 
-  precision_int <- validate_precision_string(precision)
+  check_precision(precision)
+  precision_int <- precision_to_integer(precision)
+
   if (precision_int < PRECISION_WEEK) {
     abort("`precision` must be at least 'week' precision.")
   }
@@ -1177,16 +1183,22 @@ time_point_precision <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-validate_time_point_precision_string <- function(precision) {
-  precision <- validate_precision_string(precision)
+check_time_point_precision <- function(x,
+                                       ...,
+                                       arg = caller_arg(x),
+                                       call = caller_env()) {
+  check_precision(x, arg = arg, call = call)
 
-  if (!is_valid_time_point_precision(precision)) {
-    abort("`precision` must be at least 'day' precision.")
+  if (is_time_point_precision(precision_to_integer(x))) {
+    return(invisible(NULL))
   }
 
-  precision
+  cli::cli_abort(
+    "{.arg {arg}} must be at least {.str day} precision, not {.str {x}}.",
+    call = call
+  )
 }
 
-is_valid_time_point_precision <- function(precision) {
-  precision >= PRECISION_DAY
+is_time_point_precision <- function(x) {
+  x >= PRECISION_DAY
 }

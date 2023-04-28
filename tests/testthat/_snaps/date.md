@@ -63,8 +63,8 @@
     Code
       date_floor(as.Date("2019-01-01"), "month")
     Condition
-      Error in `validate_time_point_precision_string()`:
-      ! `precision` must be at least 'day' precision.
+      Error in `time_point_rounder()`:
+      ! `precision` must be at least "day" precision, not "month".
 
 # `origin` is validated
 

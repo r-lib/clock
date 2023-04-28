@@ -1558,7 +1558,8 @@ date_seq.Date <- function(from,
     by <- duration_helper(by, PRECISION_DAY, n_arg = "by")
   }
 
-  precision_int <- validate_precision_string(precision)
+  check_precision(precision)
+  precision_int <- precision_to_integer(precision)
 
   if (precision_int == PRECISION_QUARTER) {
     by <- duration_cast(by, "month")
@@ -1643,7 +1644,9 @@ date_seq_day_hour_minute_second <- function(from, to, by, total_size, precision,
 
 check_from_to_component_equivalence <- function(from, to, precision, has_time) {
   ok <- TRUE
-  precision_int <- validate_precision_string(precision)
+
+  check_precision(precision)
+  precision_int <- precision_to_integer(precision)
 
   if (precision_int < PRECISION_MONTH) {
     ok <- ok && is_true(get_month(from) == get_month(to))
@@ -1677,7 +1680,8 @@ check_from_to_component_equivalence <- function(from, to, precision, has_time) {
 }
 
 reset_original_components <- function(out, from, precision, has_time) {
-  precision_int <- validate_precision_string(precision)
+  check_precision(precision)
+  precision_int <- precision_to_integer(precision)
 
   if (precision_int < PRECISION_MONTH) {
     out <- set_month(out, get_month(from))
@@ -1942,7 +1946,8 @@ date_count_between_impl <- function(start,
                                     allowed_precisions_calendar,
                                     allowed_precisions_naive_time,
                                     allowed_precisions_sys_time) {
-  precision_int <- validate_precision_string(precision)
+  check_precision(precision)
+  precision_int <- precision_to_integer(precision)
 
   if (precision_int %in% allowed_precisions_calendar) {
     start <- as_year_month_day(start)
