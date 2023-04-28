@@ -234,32 +234,31 @@
     Output
       <error/rlang_error>
       Error in `time_point_count_between()`:
-      ! `n` must be a single positive integer.
+      ! `n` must be a whole number, not an integer `NA`.
     Code
       (expect_error(time_point_count_between(x, x, "day", n = -1)))
     Output
       <error/rlang_error>
       Error in `time_point_count_between()`:
-      ! `n` must be a single positive integer.
+      ! `n` must be a whole number larger than or equal to 0, not the number -1.
     Code
       (expect_error(time_point_count_between(x, x, "day", n = 1.5)))
     Output
-      <error/vctrs_error_cast_lossy>
+      <error/rlang_error>
       Error in `time_point_count_between()`:
-      ! Can't convert from `n` <double> to <integer> due to loss of precision.
-      * Locations: 1
+      ! `n` must be a whole number, not the number 1.5.
     Code
       (expect_error(time_point_count_between(x, x, "day", n = "x")))
     Output
-      <error/vctrs_error_cast>
+      <error/rlang_error>
       Error in `time_point_count_between()`:
-      ! Can't convert `n` <character> to <integer>.
+      ! `n` must be a whole number, not the string "x".
     Code
       (expect_error(time_point_count_between(x, x, "day", n = c(1L, 2L))))
     Output
       <error/rlang_error>
       Error in `time_point_count_between()`:
-      ! `n` must be a single positive integer.
+      ! `n` must be a whole number, not an integer vector.
 
 # `precision` must be a time point precision
 

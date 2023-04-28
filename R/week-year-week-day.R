@@ -1265,20 +1265,13 @@ week_start_prettify <- function(start, ..., abbreviate = FALSE) {
   }
 }
 
-week_validate_start <- function(start) {
+week_validate_start <- function(start, ..., error_call = caller_env()) {
   if (is_null(start)) {
     return(1L)
   }
 
-  start <- vec_cast(start, integer(), x_arg = "start")
-
-  if (!is_number(start)) {
-    abort("`start` must be a single number.")
-  }
-
-  if (start < 1L || start > 7L) {
-    abort("`start` must be a number between [1, 7].")
-  }
+  check_number_whole(start, min = 1, max = 7, call = error_call)
+  start <- vec_cast(start, integer(), call = error_call)
 
   start
 }

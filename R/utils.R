@@ -340,18 +340,6 @@ df_list_propagate_missing <- function(x, ..., size = NULL) {
 
 # ------------------------------------------------------------------------------
 
-is_number <- function(x) {
-  if (length(x) != 1L) {
-    FALSE
-  } else if (typeof(x) != "integer") {
-    FALSE
-  } else if (is.na(x)) {
-    FALSE
-  } else {
-    TRUE
-  }
-}
-
 is_last <- function(x) {
   identical(x, "last")
 }

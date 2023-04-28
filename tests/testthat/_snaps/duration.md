@@ -14,6 +14,30 @@
       Error in `duration_rounder()`:
       ! Can't floor from a chronological precision (second) to a calendrical precision (year).
 
+# input is validated
+
+    Code
+      duration_floor(1, "year")
+    Condition
+      Error in `duration_rounder()`:
+      ! `x` must be a duration object.
+
+---
+
+    Code
+      duration_floor(duration_seconds(1), "foo")
+    Condition
+      Error in `validate_precision_string()`:
+      ! `precision` not recognized.
+
+---
+
+    Code
+      duration_floor(duration_seconds(1), "day", n = -1)
+    Condition
+      Error in `duration_rounder()`:
+      ! `n` must be a whole number larger than or equal to 0, not the number -1.
+
 # seq() validates from
 
     Code

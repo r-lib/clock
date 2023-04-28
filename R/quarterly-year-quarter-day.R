@@ -1339,20 +1339,13 @@ quarterly_start_prettify <- function(start, ..., abbreviate = FALSE) {
   }
 }
 
-quarterly_validate_start <- function(start) {
+quarterly_validate_start <- function(start, ..., error_call = caller_env()) {
   if (is_null(start)) {
     return(1L)
   }
 
-  start <- vec_cast(start, integer(), x_arg = "start")
-
-  if (!is_number(start)) {
-    abort("`start` must be a single number.")
-  }
-
-  if (start < 1L || start > 12L) {
-    abort("`start` must be a number between [1, 12].")
-  }
+  check_number_whole(start, min = 1, max = 12, call = error_call)
+  start <- vec_cast(start, integer(), call = error_call)
 
   start
 }

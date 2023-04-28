@@ -93,9 +93,15 @@ test_that("can't round across common precision boundary", {
 })
 
 test_that("input is validated", {
-  expect_error(duration_floor(1, "year"), "must be a duration object")
-  expect_error(duration_floor(duration_seconds(1), "foo"), "not recognized")
-  expect_error(duration_floor(duration_seconds(1), "day", n = -1), "positive number")
+  expect_snapshot(error = TRUE, {
+    duration_floor(1, "year")
+  })
+  expect_snapshot(error = TRUE, {
+    duration_floor(duration_seconds(1), "foo")
+  })
+  expect_snapshot(error = TRUE, {
+    duration_floor(duration_seconds(1), "day", n = -1)
+  })
 })
 
 # ------------------------------------------------------------------------------

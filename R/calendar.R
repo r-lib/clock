@@ -355,14 +355,9 @@ group_component1 <- function(x, n) {
   ((x - 1L) %/% n) * n + 1L
 }
 
-validate_calendar_group_n <- function(n) {
-  n <- vec_cast(n, integer(), x_arg = "n")
-  if (!is_number(n)) {
-    abort("`n` must be a single number.")
-  }
-  if (n <= 0L) {
-    abort("`n` must be a positive number.")
-  }
+validate_calendar_group_n <- function(n, ..., error_call = caller_env()) {
+  check_number_whole(n, min = 0, call = error_call)
+  n <- vec_cast(n, integer(), call = error_call)
   n
 }
 
@@ -839,10 +834,8 @@ calendar_count_between.clock_calendar <- function(start,
   start <- args[[1]]
   end <- args[[2]]
 
-  n <- vec_cast(n, integer(), x_arg = "n")
-  if (!is_number(n) || n <= 0L) {
-    abort("`n` must be a single positive integer.")
-  }
+  check_number_whole(n, min = 0)
+  n <- vec_cast(n, integer())
 
   precision_int <- validate_precision_string(precision)
 

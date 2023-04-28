@@ -1059,10 +1059,8 @@ time_point_count_between <- function(start, end, precision, ..., n = 1L) {
     abort("`precision` must be at least 'week' precision.")
   }
 
-  n <- vec_cast(n, integer(), x_arg = "n")
-  if (!is_number(n) || n <= 0L) {
-    abort("`n` must be a single positive integer.")
-  }
+  check_number_whole(n, min = 0)
+  n <- vec_cast(n, integer())
 
   out <- end - start
   out <- duration_cast(out, precision)
