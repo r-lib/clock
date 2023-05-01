@@ -213,7 +213,7 @@ test_that("allows `%z` and `%Z`", {
 # as_zoned_time()
 
 test_that("empty dots are checked", {
-  expect_snapshot_error(as_zoned_time(sys_seconds(), "UTC", 123))
+  expect_snapshot(error = TRUE, as_zoned_time(sys_seconds(), "UTC", 123))
 })
 
 # ------------------------------------------------------------------------------
@@ -241,7 +241,7 @@ test_that("ptype is correct", {
   ptype <- sys_days(integer())
 
   for (precision in precision_names()) {
-    if (validate_precision_string(precision) < PRECISION_DAY) {
+    if (precision_to_integer(precision) < PRECISION_DAY) {
       next
     }
 

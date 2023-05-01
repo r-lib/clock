@@ -65,13 +65,13 @@ test_that("can round with `origin` altering starting point", {
 })
 
 test_that("cannot floor to more precise precision", {
-  expect_snapshot_error(time_point_floor(naive_days(), "second"))
+  expect_snapshot(error = TRUE, time_point_floor(naive_days(), "second"))
 })
 
 test_that("rounding with `origin` requires same clock", {
   origin <- sys_days(0)
   x <- naive_days(0)
-  expect_snapshot_error(time_point_floor(x, "day", origin = origin))
+  expect_snapshot(error = TRUE, time_point_floor(x, "day", origin = origin))
 })
 
 test_that("`origin` can be cast to a more precise `precision`, but not to a less precise one", {
@@ -84,27 +84,27 @@ test_that("`origin` can be cast to a more precise `precision`, but not to a less
     time_point_floor(x - as_duration(origin1), "hour", n = 5) + as_duration(origin1)
   )
 
-  expect_snapshot_error(time_point_floor(x, "hour", origin = origin2))
+  expect_snapshot(error = TRUE, time_point_floor(x, "hour", origin = origin2))
 })
 
 test_that("`origin` must be size 1", {
   origin <- naive_days(0:1)
   x <- naive_days(0)
-  expect_snapshot_error(time_point_floor(x, "day", origin = origin))
+  expect_snapshot(error = TRUE, time_point_floor(x, "day", origin = origin))
 })
 
 test_that("`origin` must not be `NA`", {
   origin <- naive_days(NA)
   x <- naive_days(0)
-  expect_snapshot_error(time_point_floor(x, "day", origin = origin))
+  expect_snapshot(error = TRUE, time_point_floor(x, "day", origin = origin))
 })
 
 test_that("`origin` can't be Date or POSIXt", {
   origin1 <- new_date(0)
   origin2 <- new_datetime(0, "America/New_York")
   x <- naive_days(0)
-  expect_snapshot_error(time_point_floor(x, "day", origin = origin1))
-  expect_snapshot_error(time_point_floor(x, "day", origin = origin2))
+  expect_snapshot(error = TRUE, time_point_floor(x, "day", origin = origin1))
+  expect_snapshot(error = TRUE, time_point_floor(x, "day", origin = origin2))
 })
 
 # ------------------------------------------------------------------------------
@@ -168,27 +168,27 @@ test_that("`target` is recycled to size of `x`", {
     sys_days(3:4)
   )
 
-  expect_snapshot_error(time_point_shift(sys_days(0), weekday(1:2)))
+  expect_snapshot(error = TRUE, time_point_shift(sys_days(0), weekday(1:2)))
 })
 
 test_that("`x` is validated", {
-  expect_snapshot_error(time_point_shift(1))
+  expect_snapshot(error = TRUE, time_point_shift(1))
 })
 
 test_that("`target` is validated", {
-  expect_snapshot_error(time_point_shift(sys_days(0), 1))
+  expect_snapshot(error = TRUE, time_point_shift(sys_days(0), 1))
 })
 
 test_that("`which` is validated", {
-  expect_snapshot_error(time_point_shift(sys_days(), weekday(), which = 1))
-  expect_snapshot_error(time_point_shift(sys_days(), weekday(), which = "foo"))
-  expect_snapshot_error(time_point_shift(sys_days(), weekday(), which = c("next", "previous")))
+  expect_snapshot(error = TRUE, time_point_shift(sys_days(), weekday(), which = 1))
+  expect_snapshot(error = TRUE, time_point_shift(sys_days(), weekday(), which = "foo"))
+  expect_snapshot(error = TRUE, time_point_shift(sys_days(), weekday(), which = c("next", "previous")))
 })
 
 test_that("`boundary` is validated", {
-  expect_snapshot_error(time_point_shift(sys_days(), weekday(), boundary = 1))
-  expect_snapshot_error(time_point_shift(sys_days(), weekday(), boundary = "foo"))
-  expect_snapshot_error(time_point_shift(sys_days(), weekday(), boundary = c("keep", "advance")))
+  expect_snapshot(error = TRUE, time_point_shift(sys_days(), weekday(), boundary = 1))
+  expect_snapshot(error = TRUE, time_point_shift(sys_days(), weekday(), boundary = "foo"))
+  expect_snapshot(error = TRUE, time_point_shift(sys_days(), weekday(), boundary = c("keep", "advance")))
 })
 
 # ------------------------------------------------------------------------------
@@ -325,11 +325,11 @@ test_that("`by` can be a duration", {
 })
 
 test_that("can't mix chronological time points and calendrical durations", {
-  expect_snapshot_error(seq(naive_seconds(0), by = duration_years(1), length.out = 2))
+  expect_snapshot(error = TRUE, seq(naive_seconds(0), by = duration_years(1), length.out = 2))
 })
 
 test_that("can't mix clocks in seq()", {
-  expect_snapshot_error(seq(sys_seconds(0), to = naive_seconds(5), by = 1))
+  expect_snapshot(error = TRUE, seq(sys_seconds(0), to = naive_seconds(5), by = 1))
 })
 
 test_that("`to` is always cast to `from`", {
@@ -338,7 +338,7 @@ test_that("`to` is always cast to `from`", {
     seq(naive_seconds(0), to = naive_seconds(12 * 86400), by = 86400 * 2)
   )
 
-  expect_snapshot_error(seq(naive_days(0), to = naive_seconds(5), by = 2))
+  expect_snapshot(error = TRUE, seq(naive_days(0), to = naive_seconds(5), by = 2))
 })
 
 test_that("can make nanosecond precision seqs", {
@@ -353,7 +353,7 @@ test_that("can make nanosecond precision seqs", {
 # vec_arith()
 
 test_that("duration to add to a time-point must have at least week precision (#120)", {
-  expect_snapshot_error(naive_seconds(0) + duration_years(1))
+  expect_snapshot(error = TRUE, naive_seconds(0) + duration_years(1))
 })
 
 # ------------------------------------------------------------------------------
@@ -365,5 +365,22 @@ test_that("precision: can get the precision", {
 })
 
 test_that("precision: can only be called on time points", {
-  expect_snapshot_error(time_point_precision(duration_days()))
+  expect_snapshot(error = TRUE, time_point_precision(duration_days()))
+})
+
+# ------------------------------------------------------------------------------
+# add_*()
+
+test_that("unsupported time point addition throws good error", {
+  x <- naive_seconds()
+
+  expect_snapshot(error = TRUE, {
+    add_years(x, 1)
+  })
+  expect_snapshot(error = TRUE, {
+    add_quarters(x, 1)
+  })
+  expect_snapshot(error = TRUE, {
+    add_months(x, 1)
+  })
 })

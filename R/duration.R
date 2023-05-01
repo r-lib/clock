@@ -418,7 +418,10 @@ duration_cast <- function(x, precision) {
     abort("`x` must be a duration.")
   }
   x_precision <- duration_precision_attribute(x)
-  precision <- validate_precision_string(precision)
+
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
+
   fields <- duration_cast_cpp(x, x_precision, precision)
   new_duration_from_fields(fields, precision, clock_rcrd_names(x))
 }
@@ -509,15 +512,12 @@ duration_rounder <- function(x, precision, n, rounder, verb, ...) {
     abort("`x` must be a duration object.")
   }
 
-  n <- vec_cast(n, integer(), x_arg = "n")
-  if (!is_number(n)) {
-    abort("`n` must be a single number.")
-  }
-  if (n <= 0L) {
-    abort("`n` must be a positive number.")
-  }
+  check_number_whole(n, min = 0)
+  n <- vec_cast(n, integer())
 
-  precision <- validate_precision_string(precision)
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
+
   x_precision <- duration_precision_attribute(x)
 
   if (x_precision < precision) {

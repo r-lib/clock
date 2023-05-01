@@ -12,13 +12,30 @@ PRECISION_NANOSECOND = 10L
 
 # ------------------------------------------------------------------------------
 
-validate_precision_string <- function(precision, arg = "precision") {
-  if (!is_string(precision)) {
-    abort(paste0("`", arg, "` must be a string."))
-  }
+check_precision <- function(x,
+                            ...,
+                            values = NULL,
+                            arg = caller_arg(x),
+                            call = caller_env()) {
+  values <- values %||% precision_names()
+  check_string(x, allow_empty = FALSE, arg = arg, call = call)
+  arg_match0(x, values = values, arg_nm = arg, error_call = call)
+}
+
+check_precision_subsecond <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
+  check_precision(
+    x = x,
+    values = c("millisecond", "microsecond", "nanosecond"),
+    arg = arg,
+    call = call
+  )
+}
+
+precision_to_integer <- function(x) {
+  check_string(x, .internal = TRUE)
 
   switch(
-    precision,
+    x,
     year = PRECISION_YEAR,
     quarter = PRECISION_QUARTER,
     month = PRECISION_MONTH,
@@ -30,7 +47,7 @@ validate_precision_string <- function(precision, arg = "precision") {
     millisecond = PRECISION_MILLISECOND,
     microsecond = PRECISION_MICROSECOND,
     nanosecond = PRECISION_NANOSECOND,
-    abort(paste0("`", arg, "` not recognized."))
+    abort("`x` not recognized.", .internal = TRUE)
   )
 }
 
@@ -42,17 +59,6 @@ precision_abbr <- function(precision_string) {
     nanosecond = "nano",
     precision_string # fallthrough
   )
-}
-
-is_valid_precision <- function(precision) {
-  is.integer(precision) &&
-    length(precision) == 1L &&
-    precision >= PRECISION_YEAR &&
-    precision <= PRECISION_NANOSECOND
-}
-
-is_valid_subsecond_precision <- function(precision) {
-  is.integer(precision) && precision >= PRECISION_MILLISECOND && precision <= PRECISION_NANOSECOND
 }
 
 precision_common2 <- function(x, y) {
@@ -70,6 +76,17 @@ precision_names <- function() {
     "month",
     "week",
     "day",
+    "hour",
+    "minute",
+    "second",
+    "millisecond",
+    "microsecond",
+    "nanosecond"
+  )
+}
+
+precision_time_names <- function() {
+  c(
     "hour",
     "minute",
     "second",

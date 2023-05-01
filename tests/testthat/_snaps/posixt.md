@@ -1,36 +1,66 @@
 # can't accidentally supply `zone` to reinterpret date-time in new zone
 
-    `...` must be empty.
-    x Problematic argument:
-    * zone = "America/New_York"
+    Code
+      as_date_time(new_datetime(0), zone = "America/New_York")
+    Condition
+      Error in `as_date_time()`:
+      ! `...` must be empty.
+      x Problematic argument:
+      * zone = "America/New_York"
 
 # can resolve nonexistent midnight issues for Date -> POSIXct
 
-    Nonexistent time due to daylight saving time at location 1.
-    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Code
+      (expect_error(as_date_time(x, zone), class = "clock_error_nonexistent_time"))
+    Output
+      <error/clock_error_nonexistent_time>
+      Error in `as_zoned_time()`:
+      ! Nonexistent time due to daylight saving time at location 1.
+      i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 # can resolve ambiguous midnight issues for Date -> POSIXct
 
-    Ambiguous time due to daylight saving time at location 1.
-    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Code
+      (expect_error(as_date_time(x, zone), class = "clock_error_ambiguous_time"))
+    Output
+      <error/clock_error_ambiguous_time>
+      Error in `as_zoned_time()`:
+      ! Ambiguous time due to daylight saving time at location 1.
+      i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 # can handle nonexistent times resulting from grouping
 
-    Nonexistent time due to daylight saving time at location 1.
-    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Code
+      date_group(x, "hour", n = 2)
+    Condition
+      Error in `as_zoned_time()`:
+      ! Nonexistent time due to daylight saving time at location 1.
+      i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 # can't group by finer precisions
 
-    Can't group at a precision (nanosecond) that is more precise than `x` (second).
+    Code
+      date_group(x, "nanosecond")
+    Condition
+      Error in `calendar_group()`:
+      ! Can't group at a precision ("nanosecond") that is more precise than `x` ("second").
 
 # can't group by non-year-month-day precisions
 
-    `precision` must be a valid precision for a 'year_month_day'.
+    Code
+      date_group(x, "quarter")
+    Condition
+      Error in `calendar_group()`:
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # flooring can handle nonexistent times
 
-    Nonexistent time due to daylight saving time at location 2.
-    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Code
+      date_floor(x, "hour", n = 2)
+    Condition
+      Error in `as_zoned_time()`:
+      ! Nonexistent time due to daylight saving time at location 2.
+      i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 # `origin` is floored to the precision of `precision` with a potential warning before rounding
 
@@ -44,27 +74,51 @@
 
 # `origin` is validated
 
-    `origin` must be a 'POSIXt'.
+    Code
+      date_floor(x, "day", origin = 1)
+    Condition
+      Error in `collect_date_time_rounder_origin()`:
+      ! `origin` must be a 'POSIXt'.
 
 ---
 
-    `origin` must not be `NA` or an infinite date.
+    Code
+      date_floor(x, "day", origin = new_datetime(NA_real_, zone))
+    Condition
+      Error in `collect_date_time_rounder_origin()`:
+      ! `origin` must not be `NA` or an infinite date.
 
 ---
 
-    `origin` must not be `NA` or an infinite date.
+    Code
+      date_floor(x, "day", origin = new_datetime(Inf, zone))
+    Condition
+      Error in `collect_date_time_rounder_origin()`:
+      ! `origin` must not be `NA` or an infinite date.
 
 ---
 
-    `origin` must have length 1.
+    Code
+      date_floor(x, "day", origin = new_datetime(c(0, 1), zone))
+    Condition
+      Error in `collect_date_time_rounder_origin()`:
+      ! `origin` must have length 1.
 
 ---
 
-    `origin` must have the same time zone as `x`.
+    Code
+      date_floor(x, "day", origin = new_datetime(0, ""))
+    Condition
+      Error in `collect_date_time_rounder_origin()`:
+      ! `origin` must have the same time zone as `x`.
 
 ---
 
-    `origin` must have the same time zone as `x`.
+    Code
+      date_floor(x, "day", origin = new_datetime(0, "America/Los_Angeles"))
+    Condition
+      Error in `collect_date_time_rounder_origin()`:
+      ! `origin` must have the same time zone as `x`.
 
 # default format is correct
 
@@ -161,13 +215,21 @@
 
 # can resolve ambiguity and nonexistent times
 
-    Nonexistent time due to daylight saving time at location 1.
-    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Code
+      date_time_parse("1970-04-26 02:30:00", "America/New_York")
+    Condition
+      Error in `as_zoned_time()`:
+      ! Nonexistent time due to daylight saving time at location 1.
+      i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 ---
 
-    Ambiguous time due to daylight saving time at location 1.
-    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Code
+      date_time_parse("1970-10-25 01:30:00", "America/New_York")
+    Condition
+      Error in `as_zoned_time()`:
+      ! Ambiguous time due to daylight saving time at location 1.
+      i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 # failure to parse throws a warning
 
@@ -201,27 +263,47 @@
 
 # `ambiguous = x` retains the offset of `x` if applicable
 
-    Ambiguous time due to daylight saving time at location 1.
-    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Code
+      date_shift(x, as_weekday(x), ambiguous = "error")
+    Condition
+      Error in `as_zoned_time()`:
+      ! Ambiguous time due to daylight saving time at location 1.
+      i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 # `zone` is required
 
-    `zone` is a required argument to `date_time_build()`.
+    Code
+      date_time_build(2019)
+    Condition
+      Error in `date_time_build()`:
+      ! `zone` is a required argument to `date_time_build()`.
 
 # can handle invalid dates
 
-    Invalid date found at location 2.
-    i Resolve invalid date issues by specifying the `invalid` argument.
+    Code
+      date_time_build(2019, 1:12, 31, zone = zone)
+    Condition
+      Error in `invalid_resolve()`:
+      ! Invalid date found at location 2.
+      i Resolve invalid date issues by specifying the `invalid` argument.
 
 # can handle nonexistent times
 
-    Nonexistent time due to daylight saving time at location 1.
-    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Code
+      date_time_build(1970, 4, 26, 2, 30, zone = zone)
+    Condition
+      Error in `as_zoned_time()`:
+      ! Nonexistent time due to daylight saving time at location 1.
+      i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 # can handle ambiguous times
 
-    Ambiguous time due to daylight saving time at location 1.
-    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Code
+      date_time_build(1970, 10, 25, 1, 30, zone = zone)
+    Condition
+      Error in `as_zoned_time()`:
+      ! Ambiguous time due to daylight saving time at location 1.
+      i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 # boundaries are handled right
 
@@ -247,128 +329,240 @@
 
 # start: can't use invalid precisions
 
-    `precision` must be a valid precision for a 'year_month_day'.
+    Code
+      date_start(date_time_build(2019, zone = "America/New_York"), "quarter")
+    Condition
+      Error in `calendar_start_end_checks()`:
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # can resolve nonexistent start issues
 
-    Nonexistent time due to daylight saving time at location 1.
-    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Code
+      (expect_error(date_start(x, "day"), class = "clock_error_nonexistent_time"))
+    Output
+      <error/clock_error_nonexistent_time>
+      Error in `as_zoned_time()`:
+      ! Nonexistent time due to daylight saving time at location 1.
+      i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 # can resolve ambiguous start issues
 
-    Ambiguous time due to daylight saving time at location 1.
-    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Code
+      (expect_error(date_start(x, "day"), class = "clock_error_ambiguous_time"))
+    Output
+      <error/clock_error_ambiguous_time>
+      Error in `as_zoned_time()`:
+      ! Ambiguous time due to daylight saving time at location 1.
+      i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 # end: can't use invalid precisions
 
-    `precision` must be a valid precision for a 'year_month_day'.
+    Code
+      date_end(date_time_build(2019, zone = "America/New_York"), "quarter")
+    Condition
+      Error in `calendar_start_end_checks()`:
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # daily `by` uses naive-time around DST gaps
 
-    Nonexistent time due to daylight saving time at location 2.
-    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Code
+      date_seq(from, by = duration_days(1), total_size = 3)
+    Condition
+      Error in `as_zoned_time()`:
+      ! Nonexistent time due to daylight saving time at location 2.
+      i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 # daily `by` uses naive-time around DST fallbacks
 
-    Ambiguous time due to daylight saving time at location 2.
-    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Code
+      date_seq(from, by = duration_days(1), total_size = 3)
+    Condition
+      Error in `as_zoned_time()`:
+      ! Ambiguous time due to daylight saving time at location 2.
+      i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 # monthly / yearly `by` uses calendar -> naive-time around DST gaps
 
-    Nonexistent time due to daylight saving time at location 2.
-    i Resolve nonexistent time issues by specifying the `nonexistent` argument.
+    Code
+      date_seq(from, by = duration_months(1), total_size = 3)
+    Condition
+      Error in `as_zoned_time()`:
+      ! Nonexistent time due to daylight saving time at location 2.
+      i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
 # monthly / yearly `by` uses calendar -> naive-time around DST fallbacks
 
-    Ambiguous time due to daylight saving time at location 2.
-    i Resolve ambiguous time issues by specifying the `ambiguous` argument.
+    Code
+      date_seq(from, by = duration_years(1), total_size = 3)
+    Condition
+      Error in `as_zoned_time()`:
+      ! Ambiguous time due to daylight saving time at location 2.
+      i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
 # can resolve invalid dates
 
-    Invalid date found at location 2.
-    i Resolve invalid date issues by specifying the `invalid` argument.
+    Code
+      date_seq(from, to = to, by = duration_months(1))
+    Condition
+      Error in `invalid_resolve()`:
+      ! Invalid date found at location 2.
+      i Resolve invalid date issues by specifying the `invalid` argument.
 
 # components of `to` more precise than `by` must match `from`
 
-    All components of `from` and `to` more precise than 'minute' must match.
+    Code
+      date_seq(date_time_build(2019, 1, 1, 2, 3, 20, zone = zone), to = date_time_build(
+        2019, 2, 2, 1, 3, 5, zone = zone), by = duration_minutes(1))
+    Condition
+      Error in `check_from_to_component_equivalence()`:
+      ! All components of `from` and `to` more precise than 'minute' must match.
 
 ---
 
-    All components of `from` and `to` more precise than 'day' must match.
+    Code
+      date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 2,
+        2, 2, zone = zone), by = duration_days(1))
+    Condition
+      Error in `check_from_to_component_equivalence()`:
+      ! All components of `from` and `to` more precise than 'day' must match.
 
 ---
 
-    All components of `from` and `to` more precise than 'month' must match.
+    Code
+      date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 2,
+        2, zone = zone), by = duration_months(1))
+    Condition
+      Error in `check_from_to_component_equivalence()`:
+      ! All components of `from` and `to` more precise than 'month' must match.
 
 ---
 
-    All components of `from` and `to` more precise than 'month' must match.
+    Code
+      date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 2,
+        1, 1, zone = zone), by = duration_months(1))
+    Condition
+      Error in `check_from_to_component_equivalence()`:
+      ! All components of `from` and `to` more precise than 'month' must match.
 
 ---
 
-    All components of `from` and `to` more precise than 'year' must match.
+    Code
+      date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 1,
+        2, zone = zone), by = duration_years(1))
+    Condition
+      Error in `check_from_to_component_equivalence()`:
+      ! All components of `from` and `to` more precise than 'year' must match.
 
 # `to` must have same time zone as `by`
 
-    `from` and `to` must have identical time zones.
+    Code
+      date_seq(date_time_build(1970, zone = "UTC"), to = date_time_build(1970, zone = "America/New_York"),
+      by = 1)
+    Condition
+      Error in `date_seq()`:
+      ! `from` and `to` must have identical time zones.
 
 # validates integerish `by`
 
-    Can't convert from `by` <double> to <integer> due to loss of precision.
-    * Locations: 1
+    Code
+      date_seq(new_datetime(1), by = 1.5, total_size = 1)
+    Condition
+      Error in `duration_helper()`:
+      ! Can't convert from `by` <double> to <integer> due to loss of precision.
+      * Locations: 1
 
 # validates `total_size` early
 
-    Can't convert from `total_size` <double> to <integer> due to loss of precision.
-    * Locations: 1
+    Code
+      date_seq(new_datetime(1), by = 1, total_size = 1.5)
+    Condition
+      Error in `check_length_out()`:
+      ! Can't convert from `total_size` <double> to <integer> due to loss of precision.
+      * Locations: 1
 
 ---
 
-    `total_size` can't be `NA`.
+    Code
+      date_seq(new_datetime(1), by = 1, total_size = NA)
+    Condition
+      Error in `check_length_out()`:
+      ! `total_size` can't be `NA`.
 
 ---
 
-    `total_size` can't be negative.
+    Code
+      date_seq(new_datetime(1), by = 1, total_size = -1)
+    Condition
+      Error in `check_length_out()`:
+      ! `total_size` can't be negative.
 
 # `to` and `total_size` must not generate a non-fractional sequence
 
-    The supplied output size does not result in a non-fractional sequence between `from` and `to`.
+    Code
+      date_seq(new_datetime(0), to = new_datetime(3), total_size = 3)
+    Condition
+      Error:
+      ! The supplied output size does not result in a non-fractional sequence between `from` and `to`.
 
 # requires exactly two optional arguments
 
-    Must specify exactly two of:
-    - `to`
-    - `by`
-    - `total_size`
+    Code
+      date_seq(new_datetime(1), by = 1)
+    Condition
+      Error in `check_number_of_supplied_optional_arguments()`:
+      ! Must specify exactly two of:
+      - `to`
+      - `by`
+      - `total_size`
 
 ---
 
-    Must specify exactly two of:
-    - `to`
-    - `by`
-    - `total_size`
+    Code
+      date_seq(new_datetime(1), total_size = 1)
+    Condition
+      Error in `check_number_of_supplied_optional_arguments()`:
+      ! Must specify exactly two of:
+      - `to`
+      - `by`
+      - `total_size`
 
 ---
 
-    Must specify exactly two of:
-    - `to`
-    - `by`
-    - `total_size`
+    Code
+      date_seq(new_datetime(1), to = new_datetime(1))
+    Condition
+      Error in `check_number_of_supplied_optional_arguments()`:
+      ! Must specify exactly two of:
+      - `to`
+      - `by`
+      - `total_size`
 
 # requires `to` to be POSIXt
 
-    If supplied, `to` must be a <POSIXct> or <POSIXlt>.
+    Code
+      date_seq(new_datetime(1), to = 1, by = 1)
+    Condition
+      Error in `date_seq()`:
+      ! If supplied, `to` must be a <POSIXct> or <POSIXlt>.
 
 # requires year, month, day, hour, minute, or second precision
 
-    `by` must have a precision of 'year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', or 'second'.
+    Code
+      date_seq(new_datetime(1), to = new_datetime(2), by = duration_nanoseconds(1))
+    Condition
+      Error in `date_seq()`:
+      ! `by` must have a precision of 'year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', or 'second'.
 
 # checks empty dots
 
-    `...` must be empty.
-    x Problematic argument:
-    * ..1 = new_datetime(2)
-    i Did you forget to name an argument?
+    Code
+      date_seq(new_datetime(1), new_datetime(2))
+    Condition
+      Error in `date_seq()`:
+      ! `...` must be empty.
+      x Problematic argument:
+      * ..1 = new_datetime(2)
+      i Did you forget to name an argument?
 
 # must use a valid POSIXt precision
 
@@ -390,52 +584,92 @@
 
 # <posixt> op <duration>
 
-    no applicable method for 'add_milliseconds' applied to an object of class "c('POSIXct', 'POSIXt')"
+    Code
+      vec_arith("+", new_datetime(0, zone), duration_milliseconds(1))
+    Condition
+      Error in `add_milliseconds()`:
+      ! Can't perform this operation on a <POSIXct>.
 
 ---
 
-    no applicable method for 'add_milliseconds' applied to an object of class "c('POSIXlt', 'POSIXt')"
+    Code
+      vec_arith("+", new_posixlt(0, zone), duration_milliseconds(1))
+    Condition
+      Error in `add_milliseconds()`:
+      ! Can't perform this operation on a <POSIXlt>.
 
 ---
 
-    <datetime<America/New_York>> * <duration<year>> is not permitted
+    Code
+      vec_arith("*", new_datetime(0, zone), duration_years(1))
+    Condition
+      Error in `arith_posixt_and_duration()`:
+      ! <datetime<America/New_York>> * <duration<year>> is not permitted
 
 ---
 
-    <POSIXlt<America/New_York>> * <duration<year>> is not permitted
+    Code
+      vec_arith("*", new_posixlt(0, zone), duration_years(1))
+    Condition
+      Error in `arith_posixt_and_duration()`:
+      ! <POSIXlt<America/New_York>> * <duration<year>> is not permitted
 
 # <duration> op <posixt>
 
-    <duration<year>> - <datetime<America/New_York>> is not permitted
-    Can't subtract a POSIXct/POSIXlt from a duration.
+    Code
+      vec_arith("-", duration_years(1), new_datetime(0, zone))
+    Condition
+      Error in `arith_duration_and_posixt()`:
+      ! <duration<year>> - <datetime<America/New_York>> is not permitted
+      Can't subtract a POSIXct/POSIXlt from a duration.
 
 ---
 
-    <duration<year>> - <POSIXlt<America/New_York>> is not permitted
-    Can't subtract a POSIXct/POSIXlt from a duration.
+    Code
+      vec_arith("-", duration_years(1), new_posixlt(0, zone))
+    Condition
+      Error in `arith_duration_and_posixt()`:
+      ! <duration<year>> - <POSIXlt<America/New_York>> is not permitted
+      Can't subtract a POSIXct/POSIXlt from a duration.
 
 ---
 
-    no applicable method for 'add_milliseconds' applied to an object of class "c('POSIXct', 'POSIXt')"
+    Code
+      vec_arith("+", duration_milliseconds(1), new_datetime(0, zone))
+    Condition
+      Error in `add_milliseconds()`:
+      ! Can't perform this operation on a <POSIXct>.
 
 ---
 
-    no applicable method for 'add_milliseconds' applied to an object of class "c('POSIXlt', 'POSIXt')"
+    Code
+      vec_arith("+", duration_milliseconds(1), new_posixlt(0, zone))
+    Condition
+      Error in `add_milliseconds()`:
+      ! Can't perform this operation on a <POSIXlt>.
 
 ---
 
-    <duration<year>> * <datetime<America/New_York>> is not permitted
+    Code
+      vec_arith("*", duration_years(1), new_datetime(0, zone))
+    Condition
+      Error in `arith_duration_and_posixt()`:
+      ! <duration<year>> * <datetime<America/New_York>> is not permitted
 
 ---
 
-    <duration<year>> * <POSIXlt<America/New_York>> is not permitted
+    Code
+      vec_arith("*", duration_years(1), new_posixlt(0, zone))
+    Condition
+      Error in `arith_duration_and_posixt()`:
+      ! <duration<year>> * <POSIXlt<America/New_York>> is not permitted
 
 # `slide_index()` will error on naive-time based arithmetic and ambiguous times
 
     Code
       slider::slide_index(x, i, identity, .after = after)
     Condition
-      Error in `stop_clock()`:
+      Error in `as_zoned_time()`:
       ! Ambiguous time due to daylight saving time at location 1.
       i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
@@ -444,7 +678,7 @@
     Code
       slider::slide_index(x, i, identity, .after = after)
     Condition
-      Error in `stop_clock()`:
+      Error in `as_zoned_time()`:
       ! Nonexistent time due to daylight saving time at location 1.
       i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 
@@ -453,7 +687,7 @@
     Code
       slider::slide_index(x, i, identity, .after = after)
     Condition
-      Error in `stop_clock()`:
+      Error in `as_zoned_time()`:
       ! Ambiguous time due to daylight saving time at location 1.
       i Resolve ambiguous time issues by specifying the `ambiguous` argument.
 
@@ -462,7 +696,7 @@
     Code
       slider::slide_index(x, i, identity, .after = after)
     Condition
-      Error in `stop_clock()`:
+      Error in `as_zoned_time()`:
       ! Nonexistent time due to daylight saving time at location 1.
       i Resolve nonexistent time issues by specifying the `nonexistent` argument.
 

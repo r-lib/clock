@@ -10,5 +10,9 @@
 
 ---
 
-    A POSIXt time zone should either be a character vector or `NULL`.
+    Code
+      posixt_tzone_standardize(1)
+    Condition
+      Error in `posixt_tzone_standardize()`:
+      ! A POSIXt time zone should either be a character vector or `NULL`.
 

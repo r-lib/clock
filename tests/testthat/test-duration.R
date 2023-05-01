@@ -88,77 +88,83 @@ test_that("can't round to more precise precision", {
 })
 
 test_that("can't round across common precision boundary", {
-  expect_snapshot_error(duration_ceiling(duration_weeks(), "month"))
-  expect_snapshot_error(duration_floor(duration_seconds(), "year"))
+  expect_snapshot(error = TRUE, duration_ceiling(duration_weeks(), "month"))
+  expect_snapshot(error = TRUE, duration_floor(duration_seconds(), "year"))
 })
 
 test_that("input is validated", {
-  expect_error(duration_floor(1, "year"), "must be a duration object")
-  expect_error(duration_floor(duration_seconds(1), "foo"), "not recognized")
-  expect_error(duration_floor(duration_seconds(1), "day", n = -1), "positive number")
+  expect_snapshot(error = TRUE, {
+    duration_floor(1, "year")
+  })
+  expect_snapshot(error = TRUE, {
+    duration_floor(duration_seconds(1), "foo")
+  })
+  expect_snapshot(error = TRUE, {
+    duration_floor(duration_seconds(1), "day", n = -1)
+  })
 })
 
 # ------------------------------------------------------------------------------
 # seq()
 
 test_that("seq() validates from", {
-  expect_snapshot_error(seq(duration_years(1:2)), class = "vctrs_error_assert_size")
-  expect_snapshot_error(seq(duration_years(NA_integer_)))
+  expect_snapshot(error = TRUE, seq(duration_years(1:2)))
+  expect_snapshot(error = TRUE, seq(duration_years(NA_integer_)))
 })
 
 test_that("seq() validates length.out / along.with exclusiveness", {
-  expect_snapshot_error(seq(duration_years(1L), length.out = 1, along.with = 2))
+  expect_snapshot(error = TRUE, seq(duration_years(1L), length.out = 1, along.with = 2))
 })
 
 test_that("seq() only takes two optional args", {
   x <- duration_years(1L)
-  expect_snapshot_error(seq(x, to = duration_years(1), by = 1, length.out = 1))
-  expect_snapshot_error(seq(x, to = duration_years(1), by = 1, along.with = 1))
+  expect_snapshot(error = TRUE, seq(x, to = duration_years(1), by = 1, length.out = 1))
+  expect_snapshot(error = TRUE, seq(x, to = duration_years(1), by = 1, along.with = 1))
 })
 
 test_that("seq() requires two optional args", {
   x <- duration_years(1L)
-  expect_snapshot_error(seq(x, to = duration_years(1)))
-  expect_snapshot_error(seq(x, by = 1))
-  expect_snapshot_error(seq(x, length.out = 1))
-  expect_snapshot_error(seq(x, along.with = 1))
+  expect_snapshot(error = TRUE, seq(x, to = duration_years(1)))
+  expect_snapshot(error = TRUE, seq(x, by = 1))
+  expect_snapshot(error = TRUE, seq(x, length.out = 1))
+  expect_snapshot(error = TRUE, seq(x, along.with = 1))
 })
 
 test_that("seq() validates `to`", {
-  expect_snapshot_error(seq(duration_years(1L), to = duration_years(1:2), by = 1), class = "vctrs_error_assert_size")
-  expect_snapshot_error(seq(duration_years(1L), to = 1, by = 1))
-  expect_snapshot_error(seq(duration_years(1L), to = duration_days(1), by = 1))
-  expect_snapshot_error(seq(duration_years(1L), to = duration_years(NA_integer_), by = 1))
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1:2), by = 1))
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = 1, by = 1))
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_days(1), by = 1))
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(NA_integer_), by = 1))
 })
 
 test_that("seq() validates `by`", {
-  expect_snapshot_error(seq(duration_years(1L), to = duration_years(1L), by = 1:2), class = "vctrs_error_assert_size")
-  expect_snapshot_error(seq(duration_years(1L), to = duration_years(1L), by = NA_integer_))
-  expect_snapshot_error(seq(duration_years(1L), to = duration_years(1L), by = 0))
-  expect_snapshot_error(seq(duration_years(1L), to = duration_years(1L), by = duration_years(0)))
-  expect_snapshot_error(seq(duration_years(1L), to = duration_years(1L), by = "x"), class = "vctrs_error_incompatible_type")
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), by = 1:2))
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), by = NA_integer_))
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), by = 0))
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), by = duration_years(0)))
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), by = "x"))
 })
 
 test_that("`by` must be castable to the type of `from`", {
-  expect_snapshot_error(seq(duration_years(0), to = duration_years(1), by = duration_months(1)))
-  expect_snapshot_error(seq(duration_years(0), to = duration_years(1), by = duration_days(1)))
-  expect_snapshot_error(seq(duration_days(0), to = duration_days(1), by = duration_years(1)))
+  expect_snapshot(error = TRUE, seq(duration_years(0), to = duration_years(1), by = duration_months(1)))
+  expect_snapshot(error = TRUE, seq(duration_years(0), to = duration_years(1), by = duration_days(1)))
+  expect_snapshot(error = TRUE, seq(duration_days(0), to = duration_days(1), by = duration_years(1)))
 })
 
 test_that("seq() validates `length.out`", {
-  expect_snapshot_error(seq(duration_years(1L), to = duration_years(1L), length.out = 1:2), class = "vctrs_error_assert_size")
-  expect_snapshot_error(seq(duration_years(1L), to = duration_years(1L), length.out = NA_integer_))
-  expect_snapshot_error(seq(duration_years(1L), to = duration_years(1L), length.out = -1))
-  expect_snapshot_error(seq(duration_years(1L), to = duration_years(1L), length.out = "x"), class = "vctrs_error_incompatible_type")
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), length.out = 1:2))
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), length.out = NA_integer_))
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), length.out = -1))
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), length.out = "x"))
 })
 
 test_that("seq() validates dots", {
-  expect_snapshot_error(seq(duration_years(1), duration_years(1), 1, 1, 1, 1))
+  expect_snapshot(error = TRUE, seq(duration_years(1), duration_years(1), 1, 1, 1, 1))
 })
 
 test_that("seq() enforces non-fractional results", {
-  expect_snapshot_error(seq(duration_years(1L), to = duration_years(2L), length.out = 3))
-  expect_snapshot_error(seq(duration_years(1L), to = duration_years(2L), along.with = 1:3))
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(2L), length.out = 3))
+  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(2L), along.with = 1:3))
 })
 
 test_that("seq() works when from and to are identical", {
@@ -243,8 +249,8 @@ test_that("`to` is always cast to `from`", {
     seq(duration_months(0), to = duration_months(12), by = 2)
   )
 
-  expect_snapshot_error(seq(duration_days(0), to = duration_years(5), by = 2))
-  expect_snapshot_error(seq(duration_years(0), to = duration_months(5), by = 2))
+  expect_snapshot(error = TRUE, seq(duration_days(0), to = duration_years(5), by = 2))
+  expect_snapshot(error = TRUE, seq(duration_years(0), to = duration_months(5), by = 2))
 })
 
 test_that("special test to ensure we never lose precision (i.e. by trying to convert to double)", {
@@ -258,8 +264,8 @@ test_that("special test to ensure we never lose precision (i.e. by trying to con
 # add_*()
 
 test_that("can't add chronological and calendrical durations", {
-  expect_snapshot_error(add_seconds(duration_years(1), 1))
-  expect_snapshot_error(add_years(duration_seconds(1), 1))
+  expect_snapshot(error = TRUE, add_seconds(duration_years(1), 1))
+  expect_snapshot(error = TRUE, add_years(duration_seconds(1), 1))
 })
 
 # ------------------------------------------------------------------------------
@@ -271,8 +277,8 @@ test_that("can convert week precision duration to time point", {
 })
 
 test_that("can't convert calendrical duration to time point", {
-  expect_snapshot_error(as_sys_time(duration_years(0)))
-  expect_snapshot_error(as_naive_time(duration_years(0)))
+  expect_snapshot(error = TRUE, as_sys_time(duration_years(0)))
+  expect_snapshot(error = TRUE, as_naive_time(duration_years(0)))
 })
 
 # ------------------------------------------------------------------------------
@@ -285,7 +291,7 @@ test_that("precision: can get the precision", {
 })
 
 test_that("precision: can only be called on durations", {
-  expect_snapshot_error(duration_precision(sys_days(0)))
+  expect_snapshot(error = TRUE, duration_precision(sys_days(0)))
 })
 
 # ------------------------------------------------------------------------------

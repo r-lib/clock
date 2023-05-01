@@ -47,14 +47,16 @@ template <class Calendar>
 static
 inline
 cpp11::writable::list
-invalid_resolve_calendar_impl(Calendar& x, const enum invalid& invalid_val) {
+invalid_resolve_calendar_impl(Calendar& x,
+                              const enum invalid& invalid_val,
+                              const cpp11::sexp& call) {
   const r_ssize size = x.size();
 
   for (r_ssize i = 0; i < size; ++i) {
     if (x.is_na(i)) {
       continue;
     }
-    x.resolve(i, invalid_val);
+    x.resolve(i, invalid_val, call);
   }
 
   return x.to_list();

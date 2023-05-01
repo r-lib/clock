@@ -50,20 +50,10 @@ get_year <- function(x) {
   UseMethod("get_year")
 }
 
-#' @export
-get_year.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_year")
-}
-
 #' @rdname clock-getters
 #' @export
 get_quarter <- function(x) {
   UseMethod("get_quarter")
-}
-
-#' @export
-get_quarter.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_quarter")
 }
 
 #' @rdname clock-getters
@@ -72,20 +62,10 @@ get_month <- function(x) {
   UseMethod("get_month")
 }
 
-#' @export
-get_month.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_month")
-}
-
 #' @rdname clock-getters
 #' @export
 get_week <- function(x) {
   UseMethod("get_week")
-}
-
-#' @export
-get_week.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_week")
 }
 
 #' @rdname clock-getters
@@ -94,20 +74,10 @@ get_day <- function(x) {
   UseMethod("get_day")
 }
 
-#' @export
-get_day.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_day")
-}
-
 #' @rdname clock-getters
 #' @export
 get_hour <- function(x) {
   UseMethod("get_hour")
-}
-
-#' @export
-get_hour.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_hour")
 }
 
 #' @rdname clock-getters
@@ -116,20 +86,10 @@ get_minute <- function(x) {
   UseMethod("get_minute")
 }
 
-#' @export
-get_minute.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_minute")
-}
-
 #' @rdname clock-getters
 #' @export
 get_second <- function(x) {
   UseMethod("get_second")
-}
-
-#' @export
-get_second.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_second")
 }
 
 #' @rdname clock-getters
@@ -138,20 +98,10 @@ get_millisecond <- function(x) {
   UseMethod("get_millisecond")
 }
 
-#' @export
-get_millisecond.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_millisecond")
-}
-
 #' @rdname clock-getters
 #' @export
 get_microsecond <- function(x) {
   UseMethod("get_microsecond")
-}
-
-#' @export
-get_microsecond.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_microsecond")
 }
 
 #' @rdname clock-getters
@@ -160,18 +110,70 @@ get_nanosecond <- function(x) {
   UseMethod("get_nanosecond")
 }
 
-#' @export
-get_nanosecond.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_nanosecond")
-}
-
 #' @rdname clock-getters
 #' @export
 get_index <- function(x) {
   UseMethod("get_index")
 }
 
+# ------------------------------------------------------------------------------
+
 #' @export
-get_index.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("get_index")
+get_year.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_quarter.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_month.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_week.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_day.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_hour.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_minute.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_second.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_millisecond.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_microsecond.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_nanosecond.default <- function(x) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+get_index.default <- function(x) {
+  stop_clock_unsupported(x)
 }

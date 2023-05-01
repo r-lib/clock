@@ -206,7 +206,8 @@ sys_time_parse <- function(x,
                            format = NULL,
                            precision = "second",
                            locale = clock_locale()) {
-  precision <- validate_time_point_precision_string(precision)
+  check_time_point_precision(precision)
+  precision <- precision_to_integer(precision)
 
   fields <- time_point_parse(
     x = x,
@@ -239,7 +240,8 @@ sys_time_parse_RFC_3339 <- function(x,
 }
 
 validate_RFC_3339_precision_string <- function(precision) {
-  precision <- validate_precision_string(precision)
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
 
   if (!is_valid_RFC_3339_precision(precision)) {
     abort("`precision` must be at least 'second' precision.")
@@ -312,13 +314,13 @@ as_sys_time <- function(x) {
 }
 
 #' @export
-as_sys_time.clock_sys_time <- function(x) {
-  x
+as_sys_time.default <- function(x) {
+  stop_clock_unsupported(x)
 }
 
 #' @export
-as_sys_time.clock_calendar <- function(x) {
-  stop_clock_unsupported_calendar_op("as_sys_time")
+as_sys_time.clock_sys_time <- function(x) {
+  x
 }
 
 # ------------------------------------------------------------------------------

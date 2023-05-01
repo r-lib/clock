@@ -14,13 +14,13 @@ test_that("format - can use a different locale", {
 })
 
 test_that("format - `labels` is validated", {
-  expect_snapshot_error(format(weekday(1), labels = 1))
+  expect_snapshot(error = TRUE, format(weekday(1), labels = 1))
 })
 
 test_that("format - `abbreviate` is validated", {
-  expect_snapshot_error(format(weekday(1), abbreviate = "foo"))
-  expect_snapshot_error(format(weekday(1), abbreviate = 1))
-  expect_snapshot_error(format(weekday(1), abbreviate = c(TRUE, FALSE)))
+  expect_snapshot(error = TRUE, format(weekday(1), abbreviate = "foo"))
+  expect_snapshot(error = TRUE, format(weekday(1), abbreviate = 1))
+  expect_snapshot(error = TRUE, format(weekday(1), abbreviate = c(TRUE, FALSE)))
 })
 
 # ------------------------------------------------------------------------------
@@ -55,13 +55,12 @@ test_that("NA passes through", {
 })
 
 test_that("validates `x`", {
-  expect_snapshot_error(weekday_code(1))
+  expect_snapshot(error = TRUE, weekday_code(1))
 })
 
 test_that("weekday_code - `encoding` is validated", {
-  expect_snapshot_error(weekday_code(weekday(1), encoding = "foo"))
-  expect_snapshot_error(weekday_code(weekday(1), encoding = 1))
-  expect_snapshot_error(weekday_code(weekday(1), encoding = c("western", "iso")))
+  expect_snapshot(error = TRUE, weekday_code(weekday(1), encoding = "foo"))
+  expect_snapshot(error = TRUE, weekday_code(weekday(1), encoding = 1))
 })
 
 # ------------------------------------------------------------------------------
@@ -113,23 +112,22 @@ test_that("can make a weekday factor with alternate labels", {
 })
 
 test_that("`x` is validated", {
-  expect_snapshot_error(weekday_factor(1))
+  expect_snapshot(error = TRUE, weekday_factor(1))
 })
 
 test_that("`labels` is validated", {
-  expect_snapshot_error(weekday_factor(weekday(1), labels = 1))
+  expect_snapshot(error = TRUE, weekday_factor(weekday(1), labels = 1))
 })
 
 test_that("`encoding` is validated", {
-  expect_snapshot_error(weekday_factor(weekday(1), encoding = "foo"))
-  expect_snapshot_error(weekday_factor(weekday(1), encoding = 1))
-  expect_snapshot_error(weekday_factor(weekday(1), encoding = c("western", "iso")))
+  expect_snapshot(error = TRUE, weekday_factor(weekday(1), encoding = "foo"))
+  expect_snapshot(error = TRUE, weekday_factor(weekday(1), encoding = 1))
 })
 
 test_that("`abbreviate` is validated", {
-  expect_snapshot_error(weekday_factor(weekday(1), abbreviate = "foo"))
-  expect_snapshot_error(weekday_factor(weekday(1), abbreviate = 1))
-  expect_snapshot_error(weekday_factor(weekday(1), abbreviate = c(TRUE, FALSE)))
+  expect_snapshot(error = TRUE, weekday_factor(weekday(1), abbreviate = "foo"))
+  expect_snapshot(error = TRUE, weekday_factor(weekday(1), abbreviate = 1))
+  expect_snapshot(error = TRUE, weekday_factor(weekday(1), abbreviate = c(TRUE, FALSE)))
 })
 
 # ------------------------------------------------------------------------------
@@ -167,11 +165,11 @@ test_that("subtraction respects NA", {
 # vec_proxy_compare()
 
 test_that("can't compare or order weekdays (#153)", {
-  expect_snapshot_error(weekday(1) < weekday(2))
-  expect_snapshot_error(min(weekday(1)))
+  expect_snapshot(error = TRUE, weekday(1) < weekday(2))
+  expect_snapshot(error = TRUE, min(weekday(1)))
 
-  expect_snapshot_error(xtfrm(weekday(1:2)))
-  expect_snapshot_error(vec_order(weekday(1:2)))
+  expect_snapshot(error = TRUE, xtfrm(weekday(1:2)))
+  expect_snapshot(error = TRUE, vec_order(weekday(1:2)))
 })
 
 # ------------------------------------------------------------------------------

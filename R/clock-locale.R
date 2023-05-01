@@ -26,14 +26,9 @@ clock_locale <- function(labels = "en", decimal_mark = ".") {
   if (is_character(labels)) {
     labels <- clock_labels_lookup(labels)
   }
-  if (!is_clock_labels(labels)) {
-    abort("`labels` must be a 'clock_labels' object.")
-  }
+  check_clock_labels(labels)
 
-  ok <- identical(decimal_mark, ".") || identical(decimal_mark, ",")
-  if (!ok) {
-    abort("`decimal_mark` must be either ',' or '.'.")
-  }
+  decimal_mark <- arg_match0(decimal_mark, values = c(".", ","))
 
   new_clock_locale(labels, decimal_mark)
 }

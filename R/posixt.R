@@ -1887,7 +1887,8 @@ date_seq.POSIXt <- function(from,
     by <- duration_helper(by, PRECISION_SECOND, n_arg = "by")
   }
 
-  precision_int <- validate_precision_string(precision)
+  check_precision(precision)
+  precision_int <- precision_to_integer(precision)
 
   if (precision_int == PRECISION_QUARTER) {
     by <- duration_cast(by, "month")
@@ -2089,7 +2090,8 @@ date_count_between.POSIXt <- function(start, end, precision, ..., n = 1L) {
     ))
   }
 
-  precision_int <- validate_precision_string(precision)
+  check_precision(precision)
+  precision_int <- precision_to_integer(precision)
 
   # Designed to match `add_*()` functions to guarantee that
   # if `start <= end`, then `start + <count> <= end`

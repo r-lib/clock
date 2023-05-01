@@ -7,7 +7,7 @@ test_that("can't compare zoned-times with different zones", {
   x <- as_zoned_time(sys_days(0), "America/New_York")
   y <- as_zoned_time(sys_days(0), "UTC")
 
-  expect_snapshot_error(x > y)
+  expect_snapshot(error = TRUE, x > y)
 })
 
 test_that("can compare zoned-times with same zone", {
@@ -44,6 +44,26 @@ test_that("`max` defaults to `getOption('max.print')` but can be overridden", {
   expect_snapshot(x)
   expect_snapshot(print(x, max = 4))
   expect_snapshot(print(x, max = 5))
+})
+
+# ------------------------------------------------------------------------------
+# as_zoned_time()
+
+test_that("`as_zoned_time()` has good default error", {
+  expect_snapshot(error = TRUE, {
+    as_zoned_time(1)
+  })
+})
+
+# ------------------------------------------------------------------------------
+# as_year_month_day()
+
+test_that("can't convert zoned-time directly to calendar", {
+  x <- as_zoned_time(as_naive_time(year_month_day(2019, 1, 1)), "America/New_York")
+
+  expect_snapshot({
+    (expect_error(as_year_month_day(x), class = "clock_error_unsupported_conversion"))
+  })
 })
 
 # ------------------------------------------------------------------------------
@@ -186,13 +206,13 @@ test_that("cannot have differing zone names", {
     "2019-01-01T01:02:03-08:00[America/Los_Angeles]"
   )
 
-  expect_snapshot_error(zoned_time_parse_complete(x))
+  expect_snapshot(error = TRUE, zoned_time_parse_complete(x))
 })
 
 test_that("zone name must be valid", {
   x <- "2019-01-01T01:02:03-05:00[America/New_Yor]"
 
-  expect_snapshot_error(zoned_time_parse_complete(x))
+  expect_snapshot(error = TRUE, zoned_time_parse_complete(x))
 })
 
 test_that("empty input uses UTC time zone (#162)", {
@@ -367,7 +387,7 @@ test_that("abbreviation must match the one implied from naive + time zone name l
 test_that("%Z must be used", {
   x <- "1970-01-01"
 
-  expect_snapshot_error(
+  expect_snapshot(error = TRUE,
     zoned_time_parse_abbrev(x, "America/New_York", format = "%Y-%m-%d")
   )
 })
@@ -500,17 +520,17 @@ test_that("input must be a zoned-time", {
 test_that("zoned-times don't support arithmetic", {
   x <- as_zoned_time(as_naive_time(year_month_day(2019, 1, 1)), "America/New_York")
 
-  expect_snapshot_error(add_years(x, 1))
-  expect_snapshot_error(add_quarters(x, 1))
-  expect_snapshot_error(add_months(x, 1))
-  expect_snapshot_error(add_weeks(x, 1))
-  expect_snapshot_error(add_days(x, 1))
-  expect_snapshot_error(add_hours(x, 1))
-  expect_snapshot_error(add_minutes(x, 1))
-  expect_snapshot_error(add_seconds(x, 1))
-  expect_snapshot_error(add_milliseconds(x, 1))
-  expect_snapshot_error(add_microseconds(x, 1))
-  expect_snapshot_error(add_nanoseconds(x, 1))
+  expect_snapshot(error = TRUE, add_years(x, 1))
+  expect_snapshot(error = TRUE, add_quarters(x, 1))
+  expect_snapshot(error = TRUE, add_months(x, 1))
+  expect_snapshot(error = TRUE, add_weeks(x, 1))
+  expect_snapshot(error = TRUE, add_days(x, 1))
+  expect_snapshot(error = TRUE, add_hours(x, 1))
+  expect_snapshot(error = TRUE, add_minutes(x, 1))
+  expect_snapshot(error = TRUE, add_seconds(x, 1))
+  expect_snapshot(error = TRUE, add_milliseconds(x, 1))
+  expect_snapshot(error = TRUE, add_microseconds(x, 1))
+  expect_snapshot(error = TRUE, add_nanoseconds(x, 1))
 })
 
 # ------------------------------------------------------------------------------
@@ -521,7 +541,7 @@ test_that("ptype is correct", {
 
   for (zone in zones) {
     for (precision in precision_names()) {
-      precision <- validate_precision_string(precision)
+      precision <- precision_to_integer(precision)
 
       if (precision < PRECISION_SECOND) {
         next
@@ -569,5 +589,5 @@ test_that("precision: can get the precision", {
 })
 
 test_that("precision: can only be called on zoned-times", {
-  expect_snapshot_error(zoned_time_precision(duration_days()))
+  expect_snapshot(error = TRUE, zoned_time_precision(duration_days()))
 })

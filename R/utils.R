@@ -4,13 +4,10 @@ to_posixct <- function(x) {
   } else if (is_POSIXlt(x)) {
     to_posixct_from_posixlt(x)
   } else {
-    abort("Internal error: Should either be POSIXct/POSIXlt.")
+    abort("Should either be POSIXct/POSIXlt.", .internal = TRUE)
   }
 }
 
-is_Date <- function(x) {
-  inherits(x, "Date")
-}
 is_POSIXt <- function(x) {
   inherits(x, "POSIXt")
 }
@@ -157,70 +154,48 @@ posixt_tzone_standardize <- function(tzone) {
 
 # ------------------------------------------------------------------------------
 
-stop_clock <- function(message, class = character()) {
-  rlang::abort(message, class = c(class, "clock_error"))
+stop_clock <- function(message, ..., call = caller_env(), class = character()) {
+  rlang::abort(message, ..., call = call, class = c(class, "clock_error"))
 }
 
-stop_clock_unsupported_conversion <- function(x, to_arg) {
-  to_arg <- paste0("<", to_arg, ">")
-  message <- paste0("Can't convert ", paste_class(x), " to ", to_arg, ".")
-  stop_clock(message, "clock_error_unsupported_conversion")
+stop_clock_unsupported <- function(x, ..., details = NULL, call = caller_env()) {
+  class <- class(x)[[1L]]
+  message <- cli::format_inline("Can't perform this operation on a {.cls {class}}.")
+  message <- c(message, details)
+  stop_clock(message, ..., call = call, class = "clock_error_unsupported")
 }
 
-stop_clock_unsupported_calendar_op <- function(op) {
-  message <- paste0("This calendar doesn't support `", op, "()`.")
-  stop_clock(message, "clock_error_unsupported_calendar_op")
-}
-
-stop_clock_unsupported_time_point_op <- function(op) {
-  message <- paste0("Time points don't support `", op, "()`.")
-  stop_clock(message, "clock_error_unsupported_time_point_op")
-}
-
-stop_clock_unsupported_zoned_time_op <- function(op) {
-  message <- paste0("Zoned-times don't support `", op, "()`.")
-  stop_clock(message, "clock_error_unsupported_zoned_time_op")
+stop_clock_unsupported_conversion <- function(x, to_arg, ..., call = caller_env()) {
+  class <- class(x)[[1L]]
+  message <- cli::format_inline("Can't convert {.cls {class}} to {.cls {to_arg}}.")
+  stop_clock(message, ..., call = call, class = "clock_error_unsupported_conversion")
 }
 
 # Thrown from C++
-stop_clock_invalid_date <- function(i) {
-  header <- paste0(
-    "Invalid date found at location ", i, "."
+stop_clock_invalid_date <- function(i, call) {
+  message <- c(
+    cli::format_inline("Invalid date found at location {i}."),
+    i = cli::format_inline("Resolve invalid date issues by specifying the {.arg invalid} argument.")
   )
-  bullet <- format_error_bullets(
-    c(i = "Resolve invalid date issues by specifying the `invalid` argument.")
-  )
-  message <- paste0(header, "\n", bullet)
-  stop_clock(message, "clock_error_invalid_date")
+  stop_clock(message, call = call, class = "clock_error_invalid_date")
 }
 
 # Thrown from C++
-stop_clock_nonexistent_time <- function(i) {
-  header <- paste0(
-    "Nonexistent time due to daylight saving time at location ", i, "."
+stop_clock_nonexistent_time <- function(i, call) {
+  message <- c(
+    cli::format_inline("Nonexistent time due to daylight saving time at location {i}."),
+    i = cli::format_inline("Resolve nonexistent time issues by specifying the {.arg nonexistent} argument.")
   )
-  bullet <- format_error_bullets(
-    c(i = "Resolve nonexistent time issues by specifying the `nonexistent` argument.")
-  )
-  message <- paste0(header, "\n", bullet)
-  stop_clock(message, "clock_error_nonexistent_time")
+  stop_clock(message, call = call, class = "clock_error_nonexistent_time")
 }
 
 # Thrown from C++
-stop_clock_ambiguous_time <- function(i) {
-  header <- paste0(
-    "Ambiguous time due to daylight saving time at location ", i, "."
+stop_clock_ambiguous_time <- function(i, call) {
+  message <- c(
+    cli::format_inline("Ambiguous time due to daylight saving time at location {i}."),
+    i = cli::format_inline("Resolve ambiguous time issues by specifying the {.arg ambiguous} argument.")
   )
-  bullet <- format_error_bullets(
-    c(i = "Resolve ambiguous time issues by specifying the `ambiguous` argument.")
-  )
-  message <- paste0(header, "\n", bullet)
-  stop_clock(message, "clock_error_ambiguous_time")
-}
-
-paste_class <- function(x) {
-  out <- paste0(class(x), collapse = "/")
-  paste0("<", out, ">")
+  stop_clock(message, call = call, class = "clock_error_ambiguous_time")
 }
 
 # ------------------------------------------------------------------------------
@@ -269,19 +244,13 @@ warn_clock_format_failures <- function(n, first) {
 
 # ------------------------------------------------------------------------------
 
-max_collect <- function(max) {
+max_collect <- function(max, ..., error_call = caller_env()) {
   if (is_null(max)) {
     max <- getOption("max.print", default = 1000L)
   }
 
-  max <- vec_cast(max, integer(), x_arg = "max")
-
-  if (!is_number(max)) {
-    abort("`max` must be a single number, or `NULL`.")
-  }
-  if (max <= 0L) {
-    abort("`max` must be a positive number.")
-  }
+  check_number_whole(max, min = 0, call = error_call)
+  max <- vec_cast(max, integer(), call = error_call)
 
   max
 }
@@ -294,8 +263,8 @@ max_slice <- function(x, max) {
   }
 }
 
-clock_print <- function(x, max) {
-  max <- max_collect(max)
+clock_print <- function(x, max, ..., error_call = caller_env()) {
+  max <- max_collect(max, error_call = error_call)
   obj_print(x, max = max)
   invisible(x)
 }
@@ -358,46 +327,31 @@ df_list_propagate_missing <- function(x, ..., size = NULL) {
 
 # ------------------------------------------------------------------------------
 
-is_number <- function(x) {
-  if (length(x) != 1L) {
-    FALSE
-  } else if (typeof(x) != "integer") {
-    FALSE
-  } else if (is.na(x)) {
-    FALSE
-  } else {
-    TRUE
+check_inherits <- function(x,
+                           what,
+                           ...,
+                           allow_null = FALSE,
+                           arg = caller_arg(x),
+                           call = caller_env()) {
+  if (!missing(x)) {
+    if (inherits(x, what)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
   }
+
+  stop_input_type(
+    x = x,
+    what = cli::format_inline("a <{what}>"),
+    arg = arg,
+    call = call
+  )
 }
+
+# ------------------------------------------------------------------------------
 
 is_last <- function(x) {
   identical(x, "last")
-}
-
-if_else <- function(condition, true, false, na = NULL) {
-  vec_assert(condition, logical())
-
-  # output size from `condition`
-  size <- vec_size(condition)
-
-  # output type from `true`/`false`/`na`
-  ptype <- vec_ptype_common(true = true, false = false, na = na)
-
-  args <- vec_recycle_common(true = true, false = false, na = na, .size = size)
-  args <- vec_cast_common(!!!args, .to = ptype)
-
-  out <- vec_init(ptype, size)
-
-  loc_true <- condition
-  loc_false <- !condition
-
-  out <- vec_assign(out, loc_true, vec_slice(args$true, loc_true))
-  out <- vec_assign(out, loc_false, vec_slice(args$false, loc_false))
-
-  if (!is_null(na)) {
-    loc_na <- vec_detect_missing(condition)
-    out <- vec_assign(out, loc_na, vec_slice(args$na, loc_na))
-  }
-
-  out
 }

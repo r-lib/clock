@@ -10,5 +10,5 @@ test_that("can remove invalid dates from calendar types", {
 })
 
 test_that("errors on unsupported types", {
-  expect_snapshot_error(invalid_remove(1))
+  expect_snapshot(error = TRUE, invalid_remove(1))
 })

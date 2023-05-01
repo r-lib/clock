@@ -23,7 +23,7 @@ test_that("integer POSIXct are normalized to double", {
 })
 
 test_that("can't accidentally supply `zone` to reinterpret date-time in new zone", {
-  expect_snapshot_error(as_date_time(new_datetime(0), zone = "America/New_York"))
+  expect_snapshot(error = TRUE, as_date_time(new_datetime(0), zone = "America/New_York"))
 })
 
 test_that("can convert Date -> POSIXct (Date assumed to be naive)", {
@@ -60,7 +60,9 @@ test_that("can resolve nonexistent midnight issues for Date -> POSIXct", {
   zone <- "Asia/Beirut"
   x <- as.Date("2021-03-28")
 
-  expect_snapshot_error(as_date_time(x, zone), class = "clock_error_nonexistent_time")
+  expect_snapshot({
+    (expect_error(as_date_time(x, zone), class = "clock_error_nonexistent_time"))
+  })
 
   expect_identical(
     as_date_time(x, zone, nonexistent = "roll-forward"),
@@ -73,7 +75,9 @@ test_that("can resolve ambiguous midnight issues for Date -> POSIXct", {
   zone <- "Asia/Amman"
   x <- as.Date("2021-10-29")
 
-  expect_snapshot_error(as_date_time(x, zone), class = "clock_error_ambiguous_time")
+  expect_snapshot({
+    (expect_error(as_date_time(x, zone), class = "clock_error_ambiguous_time"))
+  })
 
   expect_identical(
     as_date_time(x, zone, ambiguous = "earliest"),
@@ -170,18 +174,18 @@ test_that("can handle nonexistent times resulting from grouping", {
   x <- as.POSIXct("1970-04-26 03:30:00", "America/New_York")
   expect <- set_minute(x, 0)
 
-  expect_snapshot_error(date_group(x, "hour", n = 2))
+  expect_snapshot(error = TRUE, date_group(x, "hour", n = 2))
   expect_identical(date_group(x, "hour", n = 2, nonexistent = "roll-forward"), expect)
 })
 
 test_that("can't group by finer precisions", {
   x <- as.POSIXct("2019-01-01", "America/New_York")
-  expect_snapshot_error(date_group(x, "nanosecond"))
+  expect_snapshot(error = TRUE, date_group(x, "nanosecond"))
 })
 
 test_that("can't group by non-year-month-day precisions", {
   x <- as.POSIXct("2019-01-01", "America/New_York")
-  expect_snapshot_error(date_group(x, "quarter"))
+  expect_snapshot(error = TRUE, date_group(x, "quarter"))
 })
 
 # ------------------------------------------------------------------------------
@@ -207,7 +211,7 @@ test_that("flooring can handle nonexistent times", {
   x <- as.POSIXct("1970-04-26 01:59:59", "America/New_York") + c(0, 1)
   expect <- as.POSIXct(c("1970-04-26 00:00:00", "1970-04-26 03:00:00"), "America/New_York")
 
-  expect_snapshot_error(date_floor(x, "hour", n = 2))
+  expect_snapshot(error = TRUE, date_floor(x, "hour", n = 2))
   expect_identical(date_floor(x, "hour", n = 2, nonexistent = "roll-forward"), expect)
 })
 
@@ -236,12 +240,12 @@ test_that("`origin` is floored to the precision of `precision` with a potential 
 test_that("`origin` is validated", {
   zone <- "America/New_York"
   x <- as.POSIXct("2019-01-01", zone)
-  expect_snapshot_error(date_floor(x, "day", origin = 1))
-  expect_snapshot_error(date_floor(x, "day", origin = new_datetime(NA_real_, zone)))
-  expect_snapshot_error(date_floor(x, "day", origin = new_datetime(Inf, zone)))
-  expect_snapshot_error(date_floor(x, "day", origin = new_datetime(c(0, 1), zone)))
-  expect_snapshot_error(date_floor(x, "day", origin = new_datetime(0, "")))
-  expect_snapshot_error(date_floor(x, "day", origin = new_datetime(0, "America/Los_Angeles")))
+  expect_snapshot(error = TRUE, date_floor(x, "day", origin = 1))
+  expect_snapshot(error = TRUE, date_floor(x, "day", origin = new_datetime(NA_real_, zone)))
+  expect_snapshot(error = TRUE, date_floor(x, "day", origin = new_datetime(Inf, zone)))
+  expect_snapshot(error = TRUE, date_floor(x, "day", origin = new_datetime(c(0, 1), zone)))
+  expect_snapshot(error = TRUE, date_floor(x, "day", origin = new_datetime(0, "")))
+  expect_snapshot(error = TRUE, date_floor(x, "day", origin = new_datetime(0, "America/Los_Angeles")))
 })
 
 # ------------------------------------------------------------------------------
@@ -355,14 +359,14 @@ test_that("can parse into a POSIXct", {
 })
 
 test_that("can resolve ambiguity and nonexistent times", {
-  expect_snapshot_error(date_time_parse("1970-04-26 02:30:00", "America/New_York"))
+  expect_snapshot(error = TRUE, date_time_parse("1970-04-26 02:30:00", "America/New_York"))
 
   expect_identical(
     date_time_parse("1970-04-26 02:30:00", "America/New_York", nonexistent = "roll-forward"),
     date_time_parse("1970-04-26 03:00:00", "America/New_York")
   )
 
-  expect_snapshot_error(date_time_parse("1970-10-25 01:30:00", "America/New_York"))
+  expect_snapshot(error = TRUE, date_time_parse("1970-10-25 01:30:00", "America/New_York"))
 
   expect_identical(
     date_time_parse("1970-10-25 01:30:00", "America/New_York", ambiguous = "earliest"),
@@ -486,7 +490,7 @@ test_that("`ambiguous = x` retains the offset of `x` if applicable", {
   x <- date_time_parse("1970-10-25 01:30:00", "America/New_York", ambiguous = "earliest")
   x <- x + c(0, 3600)
 
-  expect_snapshot_error(date_shift(x, as_weekday(x), ambiguous = "error"))
+  expect_snapshot(error = TRUE, date_shift(x, as_weekday(x), ambiguous = "error"))
   expect_identical(date_shift(x, as_weekday(x)), x)
 })
 
@@ -501,13 +505,13 @@ test_that("can build a POSIXct", {
 })
 
 test_that("`zone` is required", {
-  expect_snapshot_error(date_time_build(2019))
+  expect_snapshot(error = TRUE, date_time_build(2019))
 })
 
 test_that("can handle invalid dates", {
   zone <- "America/New_York"
 
-  expect_snapshot_error(date_time_build(2019, 1:12, 31, zone = zone))
+  expect_snapshot(error = TRUE, date_time_build(2019, 1:12, 31, zone = zone))
 
   expect_identical(
     date_time_build(2019, 1:12, 31, zone = zone, invalid = "previous-day"),
@@ -518,7 +522,7 @@ test_that("can handle invalid dates", {
 test_that("can handle nonexistent times", {
   zone <- "America/New_York"
 
-  expect_snapshot_error(date_time_build(1970, 4, 26, 2, 30, zone = zone))
+  expect_snapshot(error = TRUE, date_time_build(1970, 4, 26, 2, 30, zone = zone))
 
   expect_identical(
     date_time_build(1970, 4, 26, 2, 30, zone = zone, nonexistent = "roll-forward"),
@@ -529,7 +533,7 @@ test_that("can handle nonexistent times", {
 test_that("can handle ambiguous times", {
   zone <- "America/New_York"
 
-  expect_snapshot_error(date_time_build(1970, 10, 25, 1, 30, zone = zone))
+  expect_snapshot(error = TRUE, date_time_build(1970, 10, 25, 1, 30, zone = zone))
 
   expect_identical(
     date_time_build(1970, 10, 25, 1, 30, zone = zone, ambiguous = "earliest"),
@@ -620,7 +624,7 @@ test_that("can get the start", {
 })
 
 test_that("start: can't use invalid precisions", {
-  expect_snapshot_error(date_start(date_time_build(2019, zone = "America/New_York"), "quarter"))
+  expect_snapshot(error = TRUE, date_start(date_time_build(2019, zone = "America/New_York"), "quarter"))
 })
 
 test_that("can resolve nonexistent start issues", {
@@ -628,7 +632,9 @@ test_that("can resolve nonexistent start issues", {
   zone <- "Asia/Beirut"
   x <- date_time_build(2021, 3, 28, 2, zone = zone)
 
-  expect_snapshot_error(date_start(x, "day"), class = "clock_error_nonexistent_time")
+  expect_snapshot({
+    (expect_error(date_start(x, "day"), class = "clock_error_nonexistent_time"))
+  })
 
   expect_identical(
     date_start(x, "day", nonexistent = "roll-forward"),
@@ -641,7 +647,9 @@ test_that("can resolve ambiguous start issues", {
   zone <- "Asia/Amman"
   x <- date_time_build(2021, 10, 29, 2, zone = zone)
 
-  expect_snapshot_error(date_start(x, "day"), class = "clock_error_ambiguous_time")
+  expect_snapshot({
+    (expect_error(date_start(x, "day"), class = "clock_error_ambiguous_time"))
+  })
 
   expect_identical(
     date_start(x, "day", ambiguous = "earliest"),
@@ -683,7 +691,7 @@ test_that("can get the end", {
 })
 
 test_that("end: can't use invalid precisions", {
-  expect_snapshot_error(date_end(date_time_build(2019, zone = "America/New_York"), "quarter"))
+  expect_snapshot(error = TRUE, date_end(date_time_build(2019, zone = "America/New_York"), "quarter"))
 })
 
 # ------------------------------------------------------------------------------
@@ -745,7 +753,7 @@ test_that("daily `by` uses naive-time around DST gaps", {
   zone <- "America/New_York"
   from <- date_time_build(1970, 4, 25, 2, 30, zone = zone)
 
-  expect_snapshot_error(date_seq(from, by = duration_days(1), total_size = 3))
+  expect_snapshot(error = TRUE, date_seq(from, by = duration_days(1), total_size = 3))
 
   expect_identical(
     date_seq(from, by = duration_days(1), total_size = 3, nonexistent = "roll-forward"),
@@ -757,7 +765,7 @@ test_that("daily `by` uses naive-time around DST fallbacks", {
   zone <- "America/New_York"
   from <- date_time_build(1970, 10, 24, 1, 30, zone = zone)
 
-  expect_snapshot_error(date_seq(from, by = duration_days(1), total_size = 3))
+  expect_snapshot(error = TRUE, date_seq(from, by = duration_days(1), total_size = 3))
 
   expect_identical(
     date_seq(from, by = duration_days(1), total_size = 3, ambiguous = "earliest"),
@@ -769,7 +777,7 @@ test_that("monthly / yearly `by` uses calendar -> naive-time around DST gaps", {
   zone <- "America/New_York"
   from <- date_time_build(1970, 3, 26, 2, 30, zone = zone)
 
-  expect_snapshot_error(date_seq(from, by = duration_months(1), total_size = 3))
+  expect_snapshot(error = TRUE, date_seq(from, by = duration_months(1), total_size = 3))
 
   expect_identical(
     date_seq(from, by = duration_months(1), total_size = 3, nonexistent = "roll-forward"),
@@ -781,7 +789,7 @@ test_that("monthly / yearly `by` uses calendar -> naive-time around DST fallback
   zone <- "America/New_York"
   from <- date_time_build(1969, 10, 25, 1, 30, zone = zone)
 
-  expect_snapshot_error(date_seq(from, by = duration_years(1), total_size = 3))
+  expect_snapshot(error = TRUE, date_seq(from, by = duration_years(1), total_size = 3))
 
   expect_identical(
     date_seq(from, by = duration_years(1), total_size = 3, ambiguous = "earliest"),
@@ -813,7 +821,7 @@ test_that("can resolve invalid dates", {
   from <- date_time_build(2019, 1, 31, zone = zone)
   to <- date_time_build(2019, 5, 31, zone = zone)
 
-  expect_snapshot_error(date_seq(from, to = to, by = duration_months(1)))
+  expect_snapshot(error = TRUE, date_seq(from, to = to, by = duration_months(1)))
 
   expect_identical(
     date_seq(from, to = to, by = duration_months(1), invalid = "previous-day"),
@@ -867,14 +875,14 @@ test_that("components of `from` more precise than `by` are restored", {
 test_that("components of `to` more precise than `by` must match `from`", {
   zone <- "America/New_York"
 
-  expect_snapshot_error(date_seq(date_time_build(2019, 1, 1, 2, 3, 20, zone = zone), to = date_time_build(2019, 2, 2, 1, 3, 5, zone = zone), by = duration_minutes(1)))
+  expect_snapshot(error = TRUE, date_seq(date_time_build(2019, 1, 1, 2, 3, 20, zone = zone), to = date_time_build(2019, 2, 2, 1, 3, 5, zone = zone), by = duration_minutes(1)))
 
-  expect_snapshot_error(date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 2, 2, 2, zone = zone), by = duration_days(1)))
+  expect_snapshot(error = TRUE, date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 2, 2, 2, zone = zone), by = duration_days(1)))
 
-  expect_snapshot_error(date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 2, 2, zone = zone), by = duration_months(1)))
-  expect_snapshot_error(date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 2, 1, 1, zone = zone), by = duration_months(1)))
+  expect_snapshot(error = TRUE, date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 2, 2, zone = zone), by = duration_months(1)))
+  expect_snapshot(error = TRUE, date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 2, 1, 1, zone = zone), by = duration_months(1)))
 
-  expect_snapshot_error(date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 1, 2, zone = zone), by = duration_years(1)))
+  expect_snapshot(error = TRUE, date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 1, 2, zone = zone), by = duration_years(1)))
 })
 
 test_that("seq() with `from > to && by > 0` or `from < to && by > 0` results in length 0 output (#282)", {
@@ -892,39 +900,39 @@ test_that("seq() with `from > to && by > 0` or `from < to && by > 0` results in 
 })
 
 test_that("`to` must have same time zone as `by`", {
-  expect_snapshot_error(date_seq(date_time_build(1970, zone = "UTC"), to = date_time_build(1970, zone = "America/New_York"), by = 1))
+  expect_snapshot(error = TRUE, date_seq(date_time_build(1970, zone = "UTC"), to = date_time_build(1970, zone = "America/New_York"), by = 1))
 })
 
 test_that("validates integerish `by`", {
-  expect_snapshot_error(date_seq(new_datetime(1), by = 1.5, total_size = 1))
+  expect_snapshot(error = TRUE, date_seq(new_datetime(1), by = 1.5, total_size = 1))
 })
 
 test_that("validates `total_size` early", {
-  expect_snapshot_error(date_seq(new_datetime(1), by = 1, total_size = 1.5))
-  expect_snapshot_error(date_seq(new_datetime(1), by = 1, total_size = NA))
-  expect_snapshot_error(date_seq(new_datetime(1), by = 1, total_size = -1))
+  expect_snapshot(error = TRUE, date_seq(new_datetime(1), by = 1, total_size = 1.5))
+  expect_snapshot(error = TRUE, date_seq(new_datetime(1), by = 1, total_size = NA))
+  expect_snapshot(error = TRUE, date_seq(new_datetime(1), by = 1, total_size = -1))
 })
 
 test_that("`to` and `total_size` must not generate a non-fractional sequence", {
-  expect_snapshot_error(date_seq(new_datetime(0), to = new_datetime(3), total_size = 3))
+  expect_snapshot(error = TRUE, date_seq(new_datetime(0), to = new_datetime(3), total_size = 3))
 })
 
 test_that("requires exactly two optional arguments", {
-  expect_snapshot_error(date_seq(new_datetime(1), by = 1))
-  expect_snapshot_error(date_seq(new_datetime(1), total_size = 1))
-  expect_snapshot_error(date_seq(new_datetime(1), to = new_datetime(1)))
+  expect_snapshot(error = TRUE, date_seq(new_datetime(1), by = 1))
+  expect_snapshot(error = TRUE, date_seq(new_datetime(1), total_size = 1))
+  expect_snapshot(error = TRUE, date_seq(new_datetime(1), to = new_datetime(1)))
 })
 
 test_that("requires `to` to be POSIXt", {
-  expect_snapshot_error(date_seq(new_datetime(1), to = 1, by = 1))
+  expect_snapshot(error = TRUE, date_seq(new_datetime(1), to = 1, by = 1))
 })
 
 test_that("requires year, month, day, hour, minute, or second precision", {
-  expect_snapshot_error(date_seq(new_datetime(1), to = new_datetime(2), by = duration_nanoseconds(1)))
+  expect_snapshot(error = TRUE, date_seq(new_datetime(1), to = new_datetime(2), by = duration_nanoseconds(1)))
 })
 
 test_that("checks empty dots", {
-  expect_snapshot_error(date_seq(new_datetime(1), new_datetime(2)))
+  expect_snapshot(error = TRUE, date_seq(new_datetime(1), new_datetime(2)))
 })
 
 test_that("golden test: ensure that we never allow components of `to` to differ with `from` (#224)", {
@@ -1035,11 +1043,11 @@ test_that("<posixt> op <duration>", {
   expect_identical(vec_arith("+", new_datetime(0, zone), duration_seconds(1)), new_datetime(1, zone))
   expect_identical(vec_arith("+", new_posixlt(0, zone), duration_seconds(1)), new_datetime(1, zone))
 
-  expect_snapshot_error(vec_arith("+", new_datetime(0, zone), duration_milliseconds(1)))
-  expect_snapshot_error(vec_arith("+", new_posixlt(0, zone), duration_milliseconds(1)))
+  expect_snapshot(error = TRUE, vec_arith("+", new_datetime(0, zone), duration_milliseconds(1)))
+  expect_snapshot(error = TRUE, vec_arith("+", new_posixlt(0, zone), duration_milliseconds(1)))
 
-  expect_snapshot_error(vec_arith("*", new_datetime(0, zone), duration_years(1)))
-  expect_snapshot_error(vec_arith("*", new_posixlt(0, zone), duration_years(1)))
+  expect_snapshot(error = TRUE, vec_arith("*", new_datetime(0, zone), duration_years(1)))
+  expect_snapshot(error = TRUE, vec_arith("*", new_posixlt(0, zone), duration_years(1)))
 })
 
 test_that("<duration> op <posixt>", {
@@ -1055,14 +1063,14 @@ test_that("<duration> op <posixt>", {
   expect_identical(vec_arith("+", duration_seconds(1), new_datetime(0, zone)), new_datetime(1, zone))
   expect_identical(vec_arith("+", duration_seconds(1), new_posixlt(0, zone)), new_datetime(1, zone))
 
-  expect_snapshot_error(vec_arith("-", duration_years(1), new_datetime(0, zone)))
-  expect_snapshot_error(vec_arith("-", duration_years(1), new_posixlt(0, zone)))
+  expect_snapshot(error = TRUE, vec_arith("-", duration_years(1), new_datetime(0, zone)))
+  expect_snapshot(error = TRUE, vec_arith("-", duration_years(1), new_posixlt(0, zone)))
 
-  expect_snapshot_error(vec_arith("+", duration_milliseconds(1), new_datetime(0, zone)))
-  expect_snapshot_error(vec_arith("+", duration_milliseconds(1), new_posixlt(0, zone)))
+  expect_snapshot(error = TRUE, vec_arith("+", duration_milliseconds(1), new_datetime(0, zone)))
+  expect_snapshot(error = TRUE, vec_arith("+", duration_milliseconds(1), new_posixlt(0, zone)))
 
-  expect_snapshot_error(vec_arith("*", duration_years(1), new_datetime(0, zone)))
-  expect_snapshot_error(vec_arith("*", duration_years(1), new_posixlt(0, zone)))
+  expect_snapshot(error = TRUE, vec_arith("*", duration_years(1), new_datetime(0, zone)))
+  expect_snapshot(error = TRUE, vec_arith("*", duration_years(1), new_posixlt(0, zone)))
 })
 
 # ------------------------------------------------------------------------------

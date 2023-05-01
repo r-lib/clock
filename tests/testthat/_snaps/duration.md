@@ -1,181 +1,353 @@
 # can't round across common precision boundary
 
-    Can't ceiling from a chronological precision (week) to a calendrical precision (month).
+    Code
+      duration_ceiling(duration_weeks(), "month")
+    Condition
+      Error in `duration_rounder()`:
+      ! Can't ceiling from a chronological precision (week) to a calendrical precision (month).
 
 ---
 
-    Can't floor from a chronological precision (second) to a calendrical precision (year).
+    Code
+      duration_floor(duration_seconds(), "year")
+    Condition
+      Error in `duration_rounder()`:
+      ! Can't floor from a chronological precision (second) to a calendrical precision (year).
+
+# input is validated
+
+    Code
+      duration_floor(1, "year")
+    Condition
+      Error in `duration_rounder()`:
+      ! `x` must be a duration object.
+
+---
+
+    Code
+      duration_floor(duration_seconds(1), "foo")
+    Condition
+      Error in `duration_rounder()`:
+      ! `precision` must be one of "year", "quarter", "month", "week", "day", "hour", "minute", "second", "millisecond", "microsecond", or "nanosecond", not "foo".
+
+---
+
+    Code
+      duration_floor(duration_seconds(1), "day", n = -1)
+    Condition
+      Error in `duration_rounder()`:
+      ! `n` must be a whole number larger than or equal to 0, not the number -1.
 
 # seq() validates from
 
-    `from` must have size 1, not size 2.
+    Code
+      seq(duration_years(1:2))
+    Condition
+      Error in `seq()`:
+      ! `from` must have size 1, not size 2.
 
 ---
 
-    `from` can't be `NA`.
+    Code
+      seq(duration_years(NA_integer_))
+    Condition
+      Error in `seq()`:
+      ! `from` can't be `NA`.
 
 # seq() validates length.out / along.with exclusiveness
 
-    Can only specify one of `length.out` and `along.with`.
+    Code
+      seq(duration_years(1L), length.out = 1, along.with = 2)
+    Condition
+      Error in `seq()`:
+      ! Can only specify one of `length.out` and `along.with`.
 
 # seq() only takes two optional args
 
-    Must specify exactly two of:
-    - `to`
-    - `by`
-    - Either `length.out` or `along.with`
+    Code
+      seq(x, to = duration_years(1), by = 1, length.out = 1)
+    Condition
+      Error in `seq()`:
+      ! Must specify exactly two of:
+      - `to`
+      - `by`
+      - Either `length.out` or `along.with`
 
 ---
 
-    Must specify exactly two of:
-    - `to`
-    - `by`
-    - Either `length.out` or `along.with`
+    Code
+      seq(x, to = duration_years(1), by = 1, along.with = 1)
+    Condition
+      Error in `seq()`:
+      ! Must specify exactly two of:
+      - `to`
+      - `by`
+      - Either `length.out` or `along.with`
 
 # seq() requires two optional args
 
-    Must specify exactly two of:
-    - `to`
-    - `by`
-    - Either `length.out` or `along.with`
+    Code
+      seq(x, to = duration_years(1))
+    Condition
+      Error in `seq()`:
+      ! Must specify exactly two of:
+      - `to`
+      - `by`
+      - Either `length.out` or `along.with`
 
 ---
 
-    Must specify exactly two of:
-    - `to`
-    - `by`
-    - Either `length.out` or `along.with`
+    Code
+      seq(x, by = 1)
+    Condition
+      Error in `seq()`:
+      ! Must specify exactly two of:
+      - `to`
+      - `by`
+      - Either `length.out` or `along.with`
 
 ---
 
-    Must specify exactly two of:
-    - `to`
-    - `by`
-    - Either `length.out` or `along.with`
+    Code
+      seq(x, length.out = 1)
+    Condition
+      Error in `seq()`:
+      ! Must specify exactly two of:
+      - `to`
+      - `by`
+      - Either `length.out` or `along.with`
 
 ---
 
-    Must specify exactly two of:
-    - `to`
-    - `by`
-    - Either `length.out` or `along.with`
+    Code
+      seq(x, along.with = 1)
+    Condition
+      Error in `seq()`:
+      ! Must specify exactly two of:
+      - `to`
+      - `by`
+      - Either `length.out` or `along.with`
 
 # seq() validates `to`
 
-    `to` must have size 1, not size 2.
+    Code
+      seq(duration_years(1L), to = duration_years(1:2), by = 1)
+    Condition
+      Error in `seq()`:
+      ! `to` must have size 1, not size 2.
 
 ---
 
-    Can't convert `to` <double> to match type of `from` <duration<year>>.
+    Code
+      seq(duration_years(1L), to = 1, by = 1)
+    Condition
+      Error in `seq()`:
+      ! Can't convert `to` <double> to match type of `from` <duration<year>>.
 
 ---
 
-    Can't convert `to` <duration<day>> to match type of `from` <duration<year>>.
-    Can't cast between calendrical durations and chronological durations.
+    Code
+      seq(duration_years(1L), to = duration_days(1), by = 1)
+    Condition
+      Error in `seq()`:
+      ! Can't convert `to` <duration<day>> to match type of `from` <duration<year>>.
+      Can't cast between calendrical durations and chronological durations.
 
 ---
 
-    `to` can't be `NA`.
+    Code
+      seq(duration_years(1L), to = duration_years(NA_integer_), by = 1)
+    Condition
+      Error in `seq()`:
+      ! `to` can't be `NA`.
 
 # seq() validates `by`
 
-    `by` must have size 1, not size 2.
+    Code
+      seq(duration_years(1L), to = duration_years(1L), by = 1:2)
+    Condition
+      Error in `seq()`:
+      ! `by` must have size 1, not size 2.
 
 ---
 
-    `by` can't be `NA`.
+    Code
+      seq(duration_years(1L), to = duration_years(1L), by = NA_integer_)
+    Condition
+      Error in `seq()`:
+      ! `by` can't be `NA`.
 
 ---
 
-    `by` can't be `0`.
+    Code
+      seq(duration_years(1L), to = duration_years(1L), by = 0)
+    Condition
+      Error in `seq()`:
+      ! `by` can't be `0`.
 
 ---
 
-    `by` can't be `0`.
+    Code
+      seq(duration_years(1L), to = duration_years(1L), by = duration_years(0))
+    Condition
+      Error in `seq()`:
+      ! `by` can't be `0`.
 
 ---
 
-    Can't convert `by` <character> to <integer>.
+    Code
+      seq(duration_years(1L), to = duration_years(1L), by = "x")
+    Condition
+      Error in `duration_helper()`:
+      ! Can't convert `by` <character> to <integer>.
 
 # `by` must be castable to the type of `from`
 
-    Can't convert `by` <duration<month>> to <duration<year>>.
-    Can't cast to a less precise precision.
+    Code
+      seq(duration_years(0), to = duration_years(1), by = duration_months(1))
+    Condition
+      Error in `duration_collect_by()`:
+      ! Can't convert `by` <duration<month>> to <duration<year>>.
+      Can't cast to a less precise precision.
 
 ---
 
-    Can't convert `by` <duration<day>> to <duration<year>>.
-    Can't cast between calendrical durations and chronological durations.
+    Code
+      seq(duration_years(0), to = duration_years(1), by = duration_days(1))
+    Condition
+      Error in `duration_collect_by()`:
+      ! Can't convert `by` <duration<day>> to <duration<year>>.
+      Can't cast between calendrical durations and chronological durations.
 
 ---
 
-    Can't convert `by` <duration<year>> to <duration<day>>.
-    Can't cast between calendrical durations and chronological durations.
+    Code
+      seq(duration_days(0), to = duration_days(1), by = duration_years(1))
+    Condition
+      Error in `duration_collect_by()`:
+      ! Can't convert `by` <duration<year>> to <duration<day>>.
+      Can't cast between calendrical durations and chronological durations.
 
 # seq() validates `length.out`
 
-    `length.out` must have size 1, not size 2.
+    Code
+      seq(duration_years(1L), to = duration_years(1L), length.out = 1:2)
+    Condition
+      Error in `check_length_out()`:
+      ! `length.out` must have size 1, not size 2.
 
 ---
 
-    `length.out` can't be `NA`.
+    Code
+      seq(duration_years(1L), to = duration_years(1L), length.out = NA_integer_)
+    Condition
+      Error in `check_length_out()`:
+      ! `length.out` can't be `NA`.
 
 ---
 
-    `length.out` can't be negative.
+    Code
+      seq(duration_years(1L), to = duration_years(1L), length.out = -1)
+    Condition
+      Error in `check_length_out()`:
+      ! `length.out` can't be negative.
 
 ---
 
-    Can't convert `length.out` <character> to <integer>.
+    Code
+      seq(duration_years(1L), to = duration_years(1L), length.out = "x")
+    Condition
+      Error in `check_length_out()`:
+      ! Can't convert `length.out` <character> to <integer>.
 
 # seq() validates dots
 
-    `...` must be empty.
-    x Problematic argument:
-    * ..1 = 1
-    i Did you forget to name an argument?
+    Code
+      seq(duration_years(1), duration_years(1), 1, 1, 1, 1)
+    Condition
+      Error in `seq()`:
+      ! `...` must be empty.
+      x Problematic argument:
+      * ..1 = 1
+      i Did you forget to name an argument?
 
 # seq() enforces non-fractional results
 
-    The supplied output size does not result in a non-fractional sequence between `from` and `to`.
+    Code
+      seq(duration_years(1L), to = duration_years(2L), length.out = 3)
+    Condition
+      Error:
+      ! The supplied output size does not result in a non-fractional sequence between `from` and `to`.
 
 ---
 
-    The supplied output size does not result in a non-fractional sequence between `from` and `to`.
+    Code
+      seq(duration_years(1L), to = duration_years(2L), along.with = 1:3)
+    Condition
+      Error:
+      ! The supplied output size does not result in a non-fractional sequence between `from` and `to`.
 
 # `to` is always cast to `from`
 
-    Can't convert `to` <duration<year>> to match type of `from` <duration<day>>.
-    Can't cast between calendrical durations and chronological durations.
+    Code
+      seq(duration_days(0), to = duration_years(5), by = 2)
+    Condition
+      Error in `seq()`:
+      ! Can't convert `to` <duration<year>> to match type of `from` <duration<day>>.
+      Can't cast between calendrical durations and chronological durations.
 
 ---
 
-    Can't convert `to` <duration<month>> to match type of `from` <duration<year>>.
-    Can't cast to a less precise precision.
+    Code
+      seq(duration_years(0), to = duration_months(5), by = 2)
+    Condition
+      Error in `seq()`:
+      ! Can't convert `to` <duration<month>> to match type of `from` <duration<year>>.
+      Can't cast to a less precise precision.
 
 # can't add chronological and calendrical durations
 
-    Can't combine `x` <duration<year>> and `y` <duration<second>>.
-    Can't combine calendrical durations with chronological durations.
+    Code
+      add_seconds(duration_years(1), 1)
+    Condition
+      Error in `duration_arith()`:
+      ! Can't combine `x` <duration<year>> and `y` <duration<second>>.
+      Can't combine calendrical durations with chronological durations.
 
 ---
 
-    Can't combine `x` <duration<second>> and `y` <duration<year>>.
-    Can't combine calendrical durations with chronological durations.
+    Code
+      add_years(duration_seconds(1), 1)
+    Condition
+      Error in `duration_arith()`:
+      ! Can't combine `x` <duration<second>> and `y` <duration<year>>.
+      Can't combine calendrical durations with chronological durations.
 
 # can't convert calendrical duration to time point
 
-    Can't combine `x` <duration<year>> and <duration<day>>.
-    Can't combine calendrical durations with chronological durations.
+    Code
+      as_sys_time(duration_years(0))
+    Condition
+      Error in `as_sys_time()`:
+      ! Can't combine `x` <duration<year>> and <duration<day>>.
+      Can't combine calendrical durations with chronological durations.
 
 ---
 
-    Can't combine `x` <duration<year>> and <duration<day>>.
-    Can't combine calendrical durations with chronological durations.
+    Code
+      as_naive_time(duration_years(0))
+    Condition
+      Error in `as_sys_time()`:
+      ! Can't combine `x` <duration<year>> and <duration<day>>.
+      Can't combine calendrical durations with chronological durations.
 
 # precision: can only be called on durations
 
-    `x` must be a 'clock_duration'.
+    Code
+      duration_precision(sys_days(0))
+    Condition
+      Error in `duration_precision()`:
+      ! `x` must be a 'clock_duration'.
 
 # `<duration> / <duration>` is not allowed
 

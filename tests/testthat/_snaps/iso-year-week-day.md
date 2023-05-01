@@ -288,32 +288,40 @@
     Code
       set_day(iso_year_week_day(year = 1), 1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_day()` requires a minimum precision of 'week'.
+      Error in `set_day()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "week".
+      i `x` has a precision of "year".
 
 ---
 
     Code
       set_hour(iso_year_week_day(year = 1, week = 2), 1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_hour()` requires a minimum precision of 'day'.
+      Error in `set_hour()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "day".
+      i `x` has a precision of "week".
 
 ---
 
     Code
       set_minute(iso_year_week_day(year = 1, week = 2, day = 3), 1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_minute()` requires a minimum precision of 'hour'.
+      Error in `set_minute()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "hour".
+      i `x` has a precision of "day".
 
 ---
 
     Code
       set_second(iso_year_week_day(year = 1, week = 2, day = 3, hour = 4), 1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_second()` requires a minimum precision of 'minute'.
+      Error in `set_second()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "minute".
+      i `x` has a precision of "hour".
 
 ---
 
@@ -321,8 +329,10 @@
       set_millisecond(iso_year_week_day(year = 1, week = 2, day = 3, hour = 4,
         minute = 5), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_millisecond()` does not support a precision of 'minute'.
+      Error in `set_millisecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "millisecond".
+      i `x` has a precision of "minute".
 
 ---
 
@@ -330,8 +340,10 @@
       set_microsecond(iso_year_week_day(year = 1, week = 2, day = 3, hour = 4,
         minute = 5), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_microsecond()` does not support a precision of 'minute'.
+      Error in `set_microsecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "microsecond".
+      i `x` has a precision of "minute".
 
 ---
 
@@ -339,8 +351,10 @@
       set_nanosecond(iso_year_week_day(year = 1, week = 2, day = 3, hour = 4, minute = 5),
       1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_nanosecond()` does not support a precision of 'minute'.
+      Error in `set_nanosecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "nanosecond".
+      i `x` has a precision of "minute".
 
 # setters require correct subsecond precision
 
@@ -349,8 +363,10 @@
         minute = 5, second = 6, subsecond = 7, subsecond_precision = "microsecond"),
       1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_millisecond()` does not support a precision of 'microsecond'.
+      Error in `set_millisecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "millisecond".
+      i `x` has a precision of "microsecond".
 
 ---
 
@@ -358,8 +374,10 @@
       set_millisecond(iso_year_week_day(year = 1, week = 2, day = 3, hour = 4,
         minute = 5, second = 6, subsecond = 7, subsecond_precision = "nanosecond"), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_millisecond()` does not support a precision of 'nanosecond'.
+      Error in `set_millisecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "millisecond".
+      i `x` has a precision of "nanosecond".
 
 ---
 
@@ -368,8 +386,10 @@
         minute = 5, second = 6, subsecond = 7, subsecond_precision = "millisecond"),
       1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_microsecond()` does not support a precision of 'millisecond'.
+      Error in `set_microsecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "microsecond".
+      i `x` has a precision of "millisecond".
 
 ---
 
@@ -377,8 +397,10 @@
       set_microsecond(iso_year_week_day(year = 1, week = 2, day = 3, hour = 4,
         minute = 5, second = 6, subsecond = 7, subsecond_precision = "nanosecond"), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_microsecond()` does not support a precision of 'nanosecond'.
+      Error in `set_microsecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "microsecond".
+      i `x` has a precision of "nanosecond".
 
 ---
 
@@ -386,8 +408,10 @@
       set_nanosecond(iso_year_week_day(year = 1, week = 2, day = 3, hour = 4, minute = 5,
         second = 6, subsecond = 7, subsecond_precision = "millisecond"), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_nanosecond()` does not support a precision of 'millisecond'.
+      Error in `set_nanosecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "nanosecond".
+      i `x` has a precision of "millisecond".
 
 ---
 
@@ -395,8 +419,10 @@
       set_nanosecond(iso_year_week_day(year = 1, week = 2, day = 3, hour = 4, minute = 5,
         second = 6, subsecond = 7, subsecond_precision = "microsecond"), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_nanosecond()` does not support a precision of 'microsecond'.
+      Error in `set_nanosecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "nanosecond".
+      i `x` has a precision of "microsecond".
 
 # default formats are correct
 
@@ -437,14 +463,26 @@
 
 # only year precision is allowed
 
-    `from` must be 'year' precision.
+    Code
+      seq(iso_year_week_day(2019, 1), by = 1, length.out = 2)
+    Condition
+      Error in `seq()`:
+      ! `from` must be 'year' precision.
 
 # strict mode can be activated
 
-    The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `invalid` must be set and cannot be left as `NULL`.
+    Code
+      invalid_resolve(iso_year_week_day(2019, 1))
+    Condition
+      Error in `strict_validate_invalid()`:
+      ! The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `invalid` must be set and cannot be left as `NULL`.
 
 # throws known classed error
 
-    Invalid date found at location 1.
-    i Resolve invalid date issues by specifying the `invalid` argument.
+    Code
+      invalid_resolve(iso_year_week_day(2019, 53))
+    Condition
+      Error in `invalid_resolve()`:
+      ! Invalid date found at location 1.
+      i Resolve invalid date issues by specifying the `invalid` argument.
 

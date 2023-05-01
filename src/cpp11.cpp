@@ -251,10 +251,10 @@ extern "C" SEXP _clock_invalid_count_year_day_cpp(SEXP year, SEXP day) {
   END_CPP11
 }
 // gregorian-year-day.cpp
-cpp11::writable::list invalid_resolve_year_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::strings& invalid_string);
-extern "C" SEXP _clock_invalid_resolve_year_day_cpp(SEXP fields, SEXP precision_int, SEXP invalid_string) {
+cpp11::writable::list invalid_resolve_year_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::strings& invalid_string, const cpp11::sexp& call);
+extern "C" SEXP _clock_invalid_resolve_year_day_cpp(SEXP fields, SEXP precision_int, SEXP invalid_string, SEXP call) {
   BEGIN_CPP11
-    return cpp11::as_sexp(invalid_resolve_year_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(invalid_string)));
+    return cpp11::as_sexp(invalid_resolve_year_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(invalid_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::sexp&>>(call)));
   END_CPP11
 }
 // gregorian-year-day.cpp
@@ -335,10 +335,10 @@ extern "C" SEXP _clock_invalid_count_year_month_day_cpp(SEXP year, SEXP month, S
   END_CPP11
 }
 // gregorian-year-month-day.cpp
-cpp11::writable::list invalid_resolve_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::strings& invalid_string);
-extern "C" SEXP _clock_invalid_resolve_year_month_day_cpp(SEXP fields, SEXP precision_int, SEXP invalid_string) {
+cpp11::writable::list invalid_resolve_year_month_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::strings& invalid_string, const cpp11::sexp& call);
+extern "C" SEXP _clock_invalid_resolve_year_month_day_cpp(SEXP fields, SEXP precision_int, SEXP invalid_string, SEXP call) {
   BEGIN_CPP11
-    return cpp11::as_sexp(invalid_resolve_year_month_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(invalid_string)));
+    return cpp11::as_sexp(invalid_resolve_year_month_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(invalid_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::sexp&>>(call)));
   END_CPP11
 }
 // gregorian-year-month-day.cpp
@@ -433,10 +433,10 @@ extern "C" SEXP _clock_invalid_count_year_month_weekday_cpp(SEXP year, SEXP mont
   END_CPP11
 }
 // gregorian-year-month-weekday.cpp
-cpp11::writable::list invalid_resolve_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::strings& invalid_string);
-extern "C" SEXP _clock_invalid_resolve_year_month_weekday_cpp(SEXP fields, SEXP precision_int, SEXP invalid_string) {
+cpp11::writable::list invalid_resolve_year_month_weekday_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::strings& invalid_string, const cpp11::sexp& call);
+extern "C" SEXP _clock_invalid_resolve_year_month_weekday_cpp(SEXP fields, SEXP precision_int, SEXP invalid_string, SEXP call) {
   BEGIN_CPP11
-    return cpp11::as_sexp(invalid_resolve_year_month_weekday_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(invalid_string)));
+    return cpp11::as_sexp(invalid_resolve_year_month_weekday_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(invalid_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::sexp&>>(call)));
   END_CPP11
 }
 // gregorian-year-month-weekday.cpp
@@ -517,10 +517,10 @@ extern "C" SEXP _clock_invalid_count_iso_year_week_day_cpp(SEXP year, SEXP week)
   END_CPP11
 }
 // iso-year-week-day.cpp
-cpp11::writable::list invalid_resolve_iso_year_week_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::strings& invalid_string);
-extern "C" SEXP _clock_invalid_resolve_iso_year_week_day_cpp(SEXP fields, SEXP precision_int, SEXP invalid_string) {
+cpp11::writable::list invalid_resolve_iso_year_week_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::strings& invalid_string, const cpp11::sexp& call);
+extern "C" SEXP _clock_invalid_resolve_iso_year_week_day_cpp(SEXP fields, SEXP precision_int, SEXP invalid_string, SEXP call) {
   BEGIN_CPP11
-    return cpp11::as_sexp(invalid_resolve_iso_year_week_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(invalid_string)));
+    return cpp11::as_sexp(invalid_resolve_iso_year_week_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(invalid_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::sexp&>>(call)));
   END_CPP11
 }
 // iso-year-week-day.cpp
@@ -629,10 +629,10 @@ extern "C" SEXP _clock_invalid_count_year_quarter_day_cpp(SEXP year, SEXP quarte
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-cpp11::writable::list invalid_resolve_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::integers& start_int, const cpp11::strings& invalid_string);
-extern "C" SEXP _clock_invalid_resolve_year_quarter_day_cpp(SEXP fields, SEXP precision_int, SEXP start_int, SEXP invalid_string) {
+cpp11::writable::list invalid_resolve_year_quarter_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::integers& start_int, const cpp11::strings& invalid_string, const cpp11::sexp& call);
+extern "C" SEXP _clock_invalid_resolve_year_quarter_day_cpp(SEXP fields, SEXP precision_int, SEXP start_int, SEXP invalid_string, SEXP call) {
   BEGIN_CPP11
-    return cpp11::as_sexp(invalid_resolve_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(invalid_string)));
+    return cpp11::as_sexp(invalid_resolve_year_quarter_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(invalid_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::sexp&>>(call)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
@@ -783,10 +783,10 @@ extern "C" SEXP _clock_invalid_count_year_week_day_cpp(SEXP year, SEXP week, SEX
   END_CPP11
 }
 // week-year-week-day.cpp
-cpp11::writable::list invalid_resolve_year_week_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::integers& start_int, const cpp11::strings& invalid_string);
-extern "C" SEXP _clock_invalid_resolve_year_week_day_cpp(SEXP fields, SEXP precision_int, SEXP start_int, SEXP invalid_string) {
+cpp11::writable::list invalid_resolve_year_week_day_cpp(cpp11::list_of<cpp11::integers> fields, const cpp11::integers& precision_int, const cpp11::integers& start_int, const cpp11::strings& invalid_string, const cpp11::sexp& call);
+extern "C" SEXP _clock_invalid_resolve_year_week_day_cpp(SEXP fields, SEXP precision_int, SEXP start_int, SEXP invalid_string, SEXP call) {
   BEGIN_CPP11
-    return cpp11::as_sexp(invalid_resolve_year_week_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(invalid_string)));
+    return cpp11::as_sexp(invalid_resolve_year_week_day_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(invalid_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::sexp&>>(call)));
   END_CPP11
 }
 // week-year-week-day.cpp
@@ -895,17 +895,17 @@ extern "C" SEXP _clock_get_naive_time_cpp(SEXP fields, SEXP precision_int, SEXP 
   END_CPP11
 }
 // zoned-time.cpp
-cpp11::writable::list as_zoned_sys_time_from_naive_time_cpp(cpp11::list_of<cpp11::doubles> fields, const cpp11::integers& precision_int, const cpp11::strings& zone, const cpp11::strings& nonexistent_string, const cpp11::strings& ambiguous_string);
-extern "C" SEXP _clock_as_zoned_sys_time_from_naive_time_cpp(SEXP fields, SEXP precision_int, SEXP zone, SEXP nonexistent_string, SEXP ambiguous_string) {
+cpp11::writable::list as_zoned_sys_time_from_naive_time_cpp(cpp11::list_of<cpp11::doubles> fields, const cpp11::integers& precision_int, const cpp11::strings& zone, const cpp11::strings& nonexistent_string, const cpp11::strings& ambiguous_string, const cpp11::sexp& call);
+extern "C" SEXP _clock_as_zoned_sys_time_from_naive_time_cpp(SEXP fields, SEXP precision_int, SEXP zone, SEXP nonexistent_string, SEXP ambiguous_string, SEXP call) {
   BEGIN_CPP11
-    return cpp11::as_sexp(as_zoned_sys_time_from_naive_time_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::doubles>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(nonexistent_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(ambiguous_string)));
+    return cpp11::as_sexp(as_zoned_sys_time_from_naive_time_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::doubles>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(nonexistent_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(ambiguous_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::sexp&>>(call)));
   END_CPP11
 }
 // zoned-time.cpp
-cpp11::writable::list as_zoned_sys_time_from_naive_time_with_reference_cpp(cpp11::list_of<cpp11::doubles> fields, const cpp11::integers& precision_int, const cpp11::strings& zone, const cpp11::strings& nonexistent_string, const cpp11::strings& ambiguous_string, cpp11::list_of<cpp11::doubles> reference_fields);
-extern "C" SEXP _clock_as_zoned_sys_time_from_naive_time_with_reference_cpp(SEXP fields, SEXP precision_int, SEXP zone, SEXP nonexistent_string, SEXP ambiguous_string, SEXP reference_fields) {
+cpp11::writable::list as_zoned_sys_time_from_naive_time_with_reference_cpp(cpp11::list_of<cpp11::doubles> fields, const cpp11::integers& precision_int, const cpp11::strings& zone, const cpp11::strings& nonexistent_string, const cpp11::strings& ambiguous_string, cpp11::list_of<cpp11::doubles> reference_fields, const cpp11::sexp& call);
+extern "C" SEXP _clock_as_zoned_sys_time_from_naive_time_with_reference_cpp(SEXP fields, SEXP precision_int, SEXP zone, SEXP nonexistent_string, SEXP ambiguous_string, SEXP reference_fields, SEXP call) {
   BEGIN_CPP11
-    return cpp11::as_sexp(as_zoned_sys_time_from_naive_time_with_reference_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::doubles>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(nonexistent_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(ambiguous_string), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::doubles>>>(reference_fields)));
+    return cpp11::as_sexp(as_zoned_sys_time_from_naive_time_with_reference_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::doubles>>>(fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(zone), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(nonexistent_string), cpp11::as_cpp<cpp11::decay_t<const cpp11::strings&>>(ambiguous_string), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::doubles>>>(reference_fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::sexp&>>(call)));
   END_CPP11
 }
 // zoned-time.cpp
@@ -951,8 +951,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_as_year_month_weekday_from_sys_time_cpp",              (DL_FUNC) &_clock_as_year_month_weekday_from_sys_time_cpp,               2},
     {"_clock_as_year_quarter_day_from_sys_time_cpp",                (DL_FUNC) &_clock_as_year_quarter_day_from_sys_time_cpp,                 3},
     {"_clock_as_year_week_day_from_sys_time_cpp",                   (DL_FUNC) &_clock_as_year_week_day_from_sys_time_cpp,                    3},
-    {"_clock_as_zoned_sys_time_from_naive_time_cpp",                (DL_FUNC) &_clock_as_zoned_sys_time_from_naive_time_cpp,                 5},
-    {"_clock_as_zoned_sys_time_from_naive_time_with_reference_cpp", (DL_FUNC) &_clock_as_zoned_sys_time_from_naive_time_with_reference_cpp,  6},
+    {"_clock_as_zoned_sys_time_from_naive_time_cpp",                (DL_FUNC) &_clock_as_zoned_sys_time_from_naive_time_cpp,                 6},
+    {"_clock_as_zoned_sys_time_from_naive_time_with_reference_cpp", (DL_FUNC) &_clock_as_zoned_sys_time_from_naive_time_with_reference_cpp,  7},
     {"_clock_clock_get_year_max",                                   (DL_FUNC) &_clock_clock_get_year_max,                                    0},
     {"_clock_clock_get_year_min",                                   (DL_FUNC) &_clock_clock_get_year_min,                                    0},
     {"_clock_clock_init_utils",                                     (DL_FUNC) &_clock_clock_init_utils,                                      0},
@@ -1019,12 +1019,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_invalid_detect_year_month_weekday_cpp",                (DL_FUNC) &_clock_invalid_detect_year_month_weekday_cpp,                 4},
     {"_clock_invalid_detect_year_quarter_day_cpp",                  (DL_FUNC) &_clock_invalid_detect_year_quarter_day_cpp,                   4},
     {"_clock_invalid_detect_year_week_day_cpp",                     (DL_FUNC) &_clock_invalid_detect_year_week_day_cpp,                      3},
-    {"_clock_invalid_resolve_iso_year_week_day_cpp",                (DL_FUNC) &_clock_invalid_resolve_iso_year_week_day_cpp,                 3},
-    {"_clock_invalid_resolve_year_day_cpp",                         (DL_FUNC) &_clock_invalid_resolve_year_day_cpp,                          3},
-    {"_clock_invalid_resolve_year_month_day_cpp",                   (DL_FUNC) &_clock_invalid_resolve_year_month_day_cpp,                    3},
-    {"_clock_invalid_resolve_year_month_weekday_cpp",               (DL_FUNC) &_clock_invalid_resolve_year_month_weekday_cpp,                3},
-    {"_clock_invalid_resolve_year_quarter_day_cpp",                 (DL_FUNC) &_clock_invalid_resolve_year_quarter_day_cpp,                  4},
-    {"_clock_invalid_resolve_year_week_day_cpp",                    (DL_FUNC) &_clock_invalid_resolve_year_week_day_cpp,                     4},
+    {"_clock_invalid_resolve_iso_year_week_day_cpp",                (DL_FUNC) &_clock_invalid_resolve_iso_year_week_day_cpp,                 4},
+    {"_clock_invalid_resolve_year_day_cpp",                         (DL_FUNC) &_clock_invalid_resolve_year_day_cpp,                          4},
+    {"_clock_invalid_resolve_year_month_day_cpp",                   (DL_FUNC) &_clock_invalid_resolve_year_month_day_cpp,                    4},
+    {"_clock_invalid_resolve_year_month_weekday_cpp",               (DL_FUNC) &_clock_invalid_resolve_year_month_weekday_cpp,                4},
+    {"_clock_invalid_resolve_year_quarter_day_cpp",                 (DL_FUNC) &_clock_invalid_resolve_year_quarter_day_cpp,                  5},
+    {"_clock_invalid_resolve_year_week_day_cpp",                    (DL_FUNC) &_clock_invalid_resolve_year_week_day_cpp,                     5},
     {"_clock_iso_year_week_day_leap_year_cpp",                      (DL_FUNC) &_clock_iso_year_week_day_leap_year_cpp,                       1},
     {"_clock_iso_year_week_day_minus_iso_year_week_day_cpp",        (DL_FUNC) &_clock_iso_year_week_day_minus_iso_year_week_day_cpp,         3},
     {"_clock_iso_year_week_day_plus_duration_cpp",                  (DL_FUNC) &_clock_iso_year_week_day_plus_duration_cpp,                   4},

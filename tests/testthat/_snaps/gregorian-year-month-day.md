@@ -1,3 +1,20 @@
+# requires `subsecond_precision` as needed
+
+    Code
+      year_month_day(2019, 1, 1, 0, 0, 0, 1)
+    Condition
+      Error in `year_month_day()`:
+      ! When `subsecond` is provided, `subsecond_precision` must also be specified.
+
+# validates `subsecond_precision`
+
+    Code
+      year_month_day(2019, 1, 1, 0, 0, 0, 1, subsecond_precision = "second")
+    Condition
+      Error in `year_month_day()`:
+      ! `subsecond_precision` must be one of "millisecond", "microsecond", or "nanosecond", not "second".
+      i Did you mean "nanosecond"?
+
 # validates value ranges
 
     Code
@@ -110,6 +127,36 @@
 ---
 
     [1] "ymd<day>"
+
+# subsecond precision getters require exact precisions
+
+    Code
+      get_millisecond(micro)
+    Condition
+      Error in `get_millisecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "millisecond".
+      i `x` has a precision of "microsecond".
+
+---
+
+    Code
+      get_microsecond(milli)
+    Condition
+      Error in `get_microsecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "microsecond".
+      i `x` has a precision of "millisecond".
+
+---
+
+    Code
+      get_nanosecond(micro)
+    Condition
+      Error in `get_nanosecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "nanosecond".
+      i `x` has a precision of "microsecond".
 
 # setters recycling works both ways
 
@@ -288,32 +335,40 @@
     Code
       set_day(year_month_day(year = 1), 1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_day()` requires a minimum precision of 'month'.
+      Error in `set_day()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "month".
+      i `x` has a precision of "year".
 
 ---
 
     Code
       set_hour(year_month_day(year = 1, month = 2), 1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_hour()` requires a minimum precision of 'day'.
+      Error in `set_hour()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "day".
+      i `x` has a precision of "month".
 
 ---
 
     Code
       set_minute(year_month_day(year = 1, month = 2, day = 3), 1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_minute()` requires a minimum precision of 'hour'.
+      Error in `set_minute()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "hour".
+      i `x` has a precision of "day".
 
 ---
 
     Code
       set_second(year_month_day(year = 1, month = 2, day = 3, hour = 4), 1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_second()` requires a minimum precision of 'minute'.
+      Error in `set_second()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "minute".
+      i `x` has a precision of "hour".
 
 ---
 
@@ -321,8 +376,10 @@
       set_millisecond(year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5),
       1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_millisecond()` does not support a precision of 'minute'.
+      Error in `set_millisecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "millisecond".
+      i `x` has a precision of "minute".
 
 ---
 
@@ -330,8 +387,10 @@
       set_microsecond(year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5),
       1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_microsecond()` does not support a precision of 'minute'.
+      Error in `set_microsecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "microsecond".
+      i `x` has a precision of "minute".
 
 ---
 
@@ -339,8 +398,10 @@
       set_nanosecond(year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5),
       1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_nanosecond()` does not support a precision of 'minute'.
+      Error in `set_nanosecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "nanosecond".
+      i `x` has a precision of "minute".
 
 # setters require correct subsecond precision
 
@@ -348,8 +409,10 @@
       set_millisecond(year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5,
         second = 6, subsecond = 7, subsecond_precision = "microsecond"), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_millisecond()` does not support a precision of 'microsecond'.
+      Error in `set_millisecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "millisecond".
+      i `x` has a precision of "microsecond".
 
 ---
 
@@ -357,8 +420,10 @@
       set_millisecond(year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5,
         second = 6, subsecond = 7, subsecond_precision = "nanosecond"), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_millisecond()` does not support a precision of 'nanosecond'.
+      Error in `set_millisecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "millisecond".
+      i `x` has a precision of "nanosecond".
 
 ---
 
@@ -366,8 +431,10 @@
       set_microsecond(year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5,
         second = 6, subsecond = 7, subsecond_precision = "millisecond"), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_microsecond()` does not support a precision of 'millisecond'.
+      Error in `set_microsecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "microsecond".
+      i `x` has a precision of "millisecond".
 
 ---
 
@@ -375,8 +442,10 @@
       set_microsecond(year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5,
         second = 6, subsecond = 7, subsecond_precision = "nanosecond"), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_microsecond()` does not support a precision of 'nanosecond'.
+      Error in `set_microsecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "microsecond".
+      i `x` has a precision of "nanosecond".
 
 ---
 
@@ -384,8 +453,10 @@
       set_nanosecond(year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5,
         second = 6, subsecond = 7, subsecond_precision = "millisecond"), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_nanosecond()` does not support a precision of 'millisecond'.
+      Error in `set_nanosecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "nanosecond".
+      i `x` has a precision of "millisecond".
 
 ---
 
@@ -393,20 +464,40 @@
       set_nanosecond(year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5,
         second = 6, subsecond = 7, subsecond_precision = "microsecond"), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_nanosecond()` does not support a precision of 'microsecond'.
+      Error in `set_nanosecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "nanosecond".
+      i `x` has a precision of "microsecond".
 
 # invalid dates must be resolved when converting to another calendar
 
-    Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
+    Code
+      as_year_quarter_day(year_month_day(2019, 2, 31))
+    Condition
+      Error in `as_sys_time()`:
+      ! Can't convert `x` to another type because some dates are invalid.
+      i The following locations are invalid: 1.
+      i Resolve invalid dates with `invalid_resolve()`.
 
 # invalid dates must be resolved when converting to a sys-time
 
-    Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
+    Code
+      as_sys_time(year_month_day(2019, 2, 31))
+    Condition
+      Error in `as_sys_time()`:
+      ! Can't convert `x` to another type because some dates are invalid.
+      i The following locations are invalid: 1.
+      i Resolve invalid dates with `invalid_resolve()`.
 
 # invalid dates must be resolved when converting to a naive-time
 
-    Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.
+    Code
+      as_naive_time(year_month_day(2019, 2, 31))
+    Condition
+      Error in `as_sys_time()`:
+      ! Can't convert `x` to another type because some dates are invalid.
+      i The following locations are invalid: 1.
+      i Resolve invalid dates with `invalid_resolve()`.
 
 # default formats are correct
 
@@ -449,23 +540,43 @@
 
 # requires month precision
 
-    `x` must have at least 'month' precision.
+    Code
+      calendar_month_factor(year_month_day(2019))
+    Condition
+      Error in `calendar_month_factor()`:
+      ! `x` must have at least "month" precision.
 
 # `labels` is validated
 
-    `labels` must be a 'clock_labels' object.
+    Code
+      calendar_month_factor(year_month_day(2019, 1), labels = 1)
+    Condition
+      Error in `calendar_month_factor()`:
+      ! `labels` must be a <clock_labels>, not the number 1.
 
 # `abbreviate` is validated
 
-    `abbreviate` must be `TRUE` or `FALSE`.
+    Code
+      calendar_month_factor(year_month_day(2019, 1), abbreviate = "foo")
+    Condition
+      Error in `calendar_month_factor()`:
+      ! `abbreviate` must be `TRUE` or `FALSE`, not the string "foo".
 
 ---
 
-    `abbreviate` must be `TRUE` or `FALSE`.
+    Code
+      calendar_month_factor(year_month_day(2019, 1), abbreviate = 1)
+    Condition
+      Error in `calendar_month_factor()`:
+      ! `abbreviate` must be `TRUE` or `FALSE`, not the number 1.
 
 ---
 
-    `abbreviate` must be `TRUE` or `FALSE`.
+    Code
+      calendar_month_factor(year_month_day(2019, 1), abbreviate = c(TRUE, FALSE))
+    Condition
+      Error in `calendar_month_factor()`:
+      ! `abbreviate` must be `TRUE` or `FALSE`, not a logical vector.
 
 # can't compute a unsupported count precision
 
@@ -478,14 +589,26 @@
 
 # only granular precisions are allowed
 
-    `from` must be 'year' or 'month' precision.
+    Code
+      seq(year_month_day(2019, 1, 1), by = 1, length.out = 2)
+    Condition
+      Error in `seq()`:
+      ! `from` must be 'year' or 'month' precision.
 
 # strict mode can be activated
 
-    The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `invalid` must be set and cannot be left as `NULL`.
+    Code
+      invalid_resolve(year_month_day(2019, 1, 1))
+    Condition
+      Error in `strict_validate_invalid()`:
+      ! The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `invalid` must be set and cannot be left as `NULL`.
 
 # throws known classed error
 
-    Invalid date found at location 1.
-    i Resolve invalid date issues by specifying the `invalid` argument.
+    Code
+      invalid_resolve(year_month_day(2019, 2, 31))
+    Condition
+      Error in `invalid_resolve()`:
+      ! Invalid date found at location 1.
+      i Resolve invalid date issues by specifying the `invalid` argument.
 

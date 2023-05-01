@@ -11,43 +11,83 @@
 
 # input is validated
 
-    `month` must be a character vector of length 12.
+    Code
+      clock_labels(1)
+    Condition
+      Error in `clock_labels()`:
+      ! `month` must be a character vector of length 12.
 
 ---
 
-    `month` must be a character vector of length 12.
+    Code
+      clock_labels("x")
+    Condition
+      Error in `clock_labels()`:
+      ! `month` must be a character vector of length 12.
 
 ---
 
-    `month_abbrev` must be a character vector of length 12.
+    Code
+      clock_labels(months, 1)
+    Condition
+      Error in `clock_labels()`:
+      ! `month_abbrev` must be a character vector of length 12.
 
 ---
 
-    `month_abbrev` must be a character vector of length 12.
+    Code
+      clock_labels(months, "x")
+    Condition
+      Error in `clock_labels()`:
+      ! `month_abbrev` must be a character vector of length 12.
 
 ---
 
-    `weekday` must be a character vector of length 7.
+    Code
+      clock_labels(months, months, 1)
+    Condition
+      Error in `clock_labels()`:
+      ! `weekday` must be a character vector of length 7.
 
 ---
 
-    `weekday` must be a character vector of length 7.
+    Code
+      clock_labels(months, months, "x")
+    Condition
+      Error in `clock_labels()`:
+      ! `weekday` must be a character vector of length 7.
 
 ---
 
-    `weekday_abbrev` must be a character vector of length 7.
+    Code
+      clock_labels(months, months, weekdays, 1)
+    Condition
+      Error in `clock_labels()`:
+      ! `weekday_abbrev` must be a character vector of length 7.
 
 ---
 
-    `weekday_abbrev` must be a character vector of length 7.
+    Code
+      clock_labels(months, months, weekdays, "x")
+    Condition
+      Error in `clock_labels()`:
+      ! `weekday_abbrev` must be a character vector of length 7.
 
 ---
 
-    `am_pm` must be a character vector of length 2.
+    Code
+      clock_labels(months, months, weekdays, weekdays, 1)
+    Condition
+      Error in `clock_labels()`:
+      ! `am_pm` must be a character vector of length 2.
 
 ---
 
-    `am_pm` must be a character vector of length 2.
+    Code
+      clock_labels(months, months, weekdays, weekdays, "x")
+    Condition
+      Error in `clock_labels()`:
+      ! `am_pm` must be a character vector of length 2.
 
 # can lookup a language
 
@@ -64,11 +104,19 @@
 
 # must be a valid language code
 
-    `language` must be a character vector of length 1.
+    Code
+      clock_labels_lookup(1)
+    Condition
+      Error in `clock_labels_lookup()`:
+      ! `language` must be a single string, not the number 1.
 
 ---
 
-    Unknown language 'foo'.
+    Code
+      clock_labels_lookup("foo")
+    Condition
+      Error in `clock_labels_lookup()`:
+      ! Can't find a locale for "foo".
 
 # can list all the languages
 

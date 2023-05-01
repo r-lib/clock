@@ -143,3 +143,65 @@ set_nanosecond <- function(x, value, ...) {
 set_index <- function(x, value, ...) {
   UseMethod("set_index")
 }
+
+# ------------------------------------------------------------------------------
+
+#' @export
+set_year.default <- function(x, value, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+set_quarter.default <- function(x, value, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+set_month.default <- function(x, value, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+set_week.default <- function(x, value, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+set_day.default <- function(x, value, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+set_hour.default <- function(x, value, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+set_minute.default <- function(x, value, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+set_second.default <- function(x, value, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+set_millisecond.default <- function(x, value, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+set_microsecond.default <- function(x, value, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+set_nanosecond.default <- function(x, value, ...) {
+  stop_clock_unsupported(x)
+}
+
+#' @export
+set_index.default <- function(x, value, ...) {
+  stop_clock_unsupported(x)
+}

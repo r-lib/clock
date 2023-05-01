@@ -54,11 +54,11 @@ resolve_previous_subsecond() {
 
 inline
 void
-resolve_error(r_ssize i) {
+resolve_error(r_ssize i, const cpp11::sexp& call) {
   cpp11::writable::integers arg(1);
   arg[0] = (int) i + 1;
   auto stop = cpp11::package("clock")["stop_clock_invalid_date"];
-  stop(arg);
+  stop(arg, call);
 }
 
 } // namespace detail

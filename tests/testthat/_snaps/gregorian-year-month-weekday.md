@@ -1,6 +1,10 @@
 # both day and index must be specified
 
-    If either `day` or `index` is specified, both must be specified.
+    Code
+      year_month_weekday(2020, 1, 1)
+    Condition
+      Error in `year_month_weekday()`:
+      ! If either `day` or `index` is specified, both must be specified.
 
 # validates value ranges
 
@@ -94,11 +98,19 @@
 
 # cannot compare / sort with day precision or finer
 
-    'year_month_weekday' types with a precision of >= 'day' cannot be trivially compared or ordered. Convert to 'year_month_day' to compare using day-of-month values.
+    Code
+      x > x
+    Condition
+      Error in `vec_proxy_compare()`:
+      ! 'year_month_weekday' types with a precision of >= 'day' cannot be trivially compared or ordered. Convert to 'year_month_day' to compare using day-of-month values.
 
 ---
 
-    'year_month_weekday' types with a precision of >= 'day' cannot be trivially compared or ordered. Convert to 'year_month_day' to compare using day-of-month values.
+    Code
+      vec_order(x)
+    Condition
+      Error in `vec_proxy_compare()`:
+      ! 'year_month_weekday' types with a precision of >= 'day' cannot be trivially compared or ordered. Convert to 'year_month_day' to compare using day-of-month values.
 
 # full ptype is correct
 
@@ -327,24 +339,30 @@
     Code
       set_day(year_month_weekday(year = 1), 1, index = 1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_day()` requires a minimum precision of 'month'.
+      Error in `set_day()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "month".
+      i `x` has a precision of "year".
 
 ---
 
     Code
       set_hour(year_month_weekday(year = 1, month = 2), 1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_hour()` requires a minimum precision of 'day'.
+      Error in `set_hour()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "day".
+      i `x` has a precision of "month".
 
 ---
 
     Code
       set_minute(year_month_weekday(year = 1, month = 2, day = 3, index = 1), 1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_minute()` requires a minimum precision of 'hour'.
+      Error in `set_minute()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "hour".
+      i `x` has a precision of "day".
 
 ---
 
@@ -352,8 +370,10 @@
       set_second(year_month_weekday(year = 1, month = 2, day = 3, index = 1, hour = 4),
       1)
     Condition
-      Error in `calendar_require_minimum_precision()`:
-      ! `set_second()` requires a minimum precision of 'minute'.
+      Error in `set_second()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at least "minute".
+      i `x` has a precision of "hour".
 
 ---
 
@@ -361,8 +381,10 @@
       set_millisecond(year_month_weekday(year = 1, month = 2, day = 3, index = 1,
         hour = 4, minute = 5), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_millisecond()` does not support a precision of 'minute'.
+      Error in `set_millisecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "millisecond".
+      i `x` has a precision of "minute".
 
 ---
 
@@ -370,8 +392,10 @@
       set_microsecond(year_month_weekday(year = 1, month = 2, day = 3, index = 1,
         hour = 4, minute = 5), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_microsecond()` does not support a precision of 'minute'.
+      Error in `set_microsecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "microsecond".
+      i `x` has a precision of "minute".
 
 ---
 
@@ -379,8 +403,10 @@
       set_nanosecond(year_month_weekday(year = 1, month = 2, day = 3, index = 1,
         hour = 4, minute = 5), 1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_nanosecond()` does not support a precision of 'minute'.
+      Error in `set_nanosecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "nanosecond".
+      i `x` has a precision of "minute".
 
 # setters require correct subsecond precision
 
@@ -389,8 +415,10 @@
         hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "microsecond"),
       1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_millisecond()` does not support a precision of 'microsecond'.
+      Error in `set_millisecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "millisecond".
+      i `x` has a precision of "microsecond".
 
 ---
 
@@ -399,8 +427,10 @@
         hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "nanosecond"),
       1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_millisecond()` does not support a precision of 'nanosecond'.
+      Error in `set_millisecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "millisecond".
+      i `x` has a precision of "nanosecond".
 
 ---
 
@@ -409,8 +439,10 @@
         hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "millisecond"),
       1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_microsecond()` does not support a precision of 'millisecond'.
+      Error in `set_microsecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "microsecond".
+      i `x` has a precision of "millisecond".
 
 ---
 
@@ -419,8 +451,10 @@
         hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "nanosecond"),
       1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_microsecond()` does not support a precision of 'nanosecond'.
+      Error in `set_microsecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "microsecond".
+      i `x` has a precision of "nanosecond".
 
 ---
 
@@ -429,8 +463,10 @@
         hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "millisecond"),
       1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_nanosecond()` does not support a precision of 'millisecond'.
+      Error in `set_nanosecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "nanosecond".
+      i `x` has a precision of "millisecond".
 
 ---
 
@@ -439,8 +475,10 @@
         hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "microsecond"),
       1)
     Condition
-      Error in `calendar_require_any_of_precisions()`:
-      ! `set_nanosecond()` does not support a precision of 'microsecond'.
+      Error in `set_nanosecond()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be "second" or "nanosecond".
+      i `x` has a precision of "microsecond".
 
 # default formats are correct
 
@@ -472,19 +510,35 @@
 
 # can't compute start with a year_month_weekday at day precision or greater
 
-    Computing the start of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
+    Code
+      calendar_start(year_month_weekday(2019, 2, 2, 2), "day")
+    Condition
+      Error in `calendar_start()`:
+      ! Computing the start of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
 
 ---
 
-    Computing the start of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
+    Code
+      calendar_start(year_month_weekday(2019, 2, 2, 2), "month")
+    Condition
+      Error in `calendar_start()`:
+      ! Computing the start of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
 
 # can't compute end with a year_month_weekday at day precision or greater
 
-    Computing the end of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
+    Code
+      calendar_end(year_month_weekday(2019, 2, 2, 2), "day")
+    Condition
+      Error in `calendar_end()`:
+      ! Computing the end of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
 
 ---
 
-    Computing the end of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
+    Code
+      calendar_end(year_month_weekday(2019, 2, 2, 2), "month")
+    Condition
+      Error in `calendar_end()`:
+      ! Computing the end of a 'year_month_weekday' with a precision equal to or more precise than 'day' is undefined.
 
 # can't compare a 'year_month_weekday' with day precision!
 
@@ -497,14 +551,26 @@
 
 # only granular precisions are allowed
 
-    `from` must be 'year' or 'month' precision.
+    Code
+      seq(year_month_weekday(2019, 1, 1, 1), by = 1, length.out = 2)
+    Condition
+      Error in `seq.clock_year_month_day()`:
+      ! `from` must be 'year' or 'month' precision.
 
 # strict mode can be activated
 
-    The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `invalid` must be set and cannot be left as `NULL`.
+    Code
+      invalid_resolve(year_month_weekday(2019, 1, 1, 1))
+    Condition
+      Error in `strict_validate_invalid()`:
+      ! The global option, `clock.strict`, is currently set to `TRUE`. In this mode, `invalid` must be set and cannot be left as `NULL`.
 
 # throws known classed error
 
-    Invalid date found at location 1.
-    i Resolve invalid date issues by specifying the `invalid` argument.
+    Code
+      invalid_resolve(year_month_weekday(2019, 1, 1, 5))
+    Condition
+      Error in `invalid_resolve()`:
+      ! Invalid date found at location 1.
+      i Resolve invalid date issues by specifying the `invalid` argument.
 

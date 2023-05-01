@@ -101,7 +101,8 @@ year_month_day <- function(year,
     precision <- PRECISION_SECOND
     fields <- list(year = year, month = month, day = day, hour = hour, minute = minute, second = second)
   } else {
-    precision <- calendar_validate_subsecond_precision(subsecond_precision)
+    calendar_check_subsecond_precision(subsecond_precision)
+    precision <- precision_to_integer(subsecond_precision)
     fields <- list(year = year, month = month, day = day, hour = hour, minute = minute, second = second, subsecond = subsecond)
   }
 
@@ -283,10 +284,8 @@ year_month_day_parse <- function(x,
     abort("`x` must be a character vector.")
   }
 
-  precision <- validate_precision_string(precision)
-  if (!year_month_day_is_valid_precision(precision)) {
-    abort("`precision` must be a valid precision for 'year_month_day'.")
-  }
+  year_month_day_check_precision(precision)
+  precision <- precision_to_integer(precision)
 
   if (is_null(format)) {
     format <- year_month_day_format(precision)
@@ -386,20 +385,34 @@ vec_cast.clock_year_month_day.clock_year_month_day <- function(x, to, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
-calendar_is_valid_precision.clock_year_month_day <- function(x, precision) {
-  year_month_day_is_valid_precision(precision)
+calendar_is_precision.clock_year_month_day <- function(x, precision) {
+  year_month_day_is_precision(precision)
 }
 
-year_month_day_is_valid_precision <- function(precision) {
-  if (!is_valid_precision(precision)) {
-    FALSE
-  } else if (precision == PRECISION_YEAR || precision == PRECISION_MONTH) {
+year_month_day_is_precision <- function(precision) {
+  if (precision == PRECISION_YEAR || precision == PRECISION_MONTH) {
     TRUE
   } else if (precision >= PRECISION_DAY && precision <= PRECISION_NANOSECOND) {
     TRUE
   } else {
     FALSE
   }
+}
+
+year_month_day_check_precision <- function(x,
+                                           ...,
+                                           arg = caller_arg(x),
+                                           call = caller_env()) {
+  check_precision(
+    x = x,
+    values = year_month_day_precision_names(),
+    arg = arg,
+    call = call
+  )
+}
+
+year_month_day_precision_names <- function() {
+  c("year", "month", "day", precision_time_names())
 }
 
 # ------------------------------------------------------------------------------
@@ -455,7 +468,7 @@ invalid_resolve.clock_year_month_day <- function(x, ..., invalid = NULL) {
   if (precision < PRECISION_DAY) {
     x
   } else {
-    fields <- invalid_resolve_year_month_day_cpp(x, precision, invalid)
+    fields <- invalid_resolve_year_month_day_cpp(x, precision, invalid, current_env())
     new_year_month_day_from_fields(fields, precision, names(x))
   }
 }
@@ -506,56 +519,56 @@ get_year.clock_year_month_day <- function(x) {
 #' @rdname year-month-day-getters
 #' @export
 get_month.clock_year_month_day <- function(x) {
-  calendar_require_minimum_precision(x, PRECISION_MONTH, "get_month")
+  calendar_check_minimum_precision(x, PRECISION_MONTH)
   field_month(x)
 }
 
 #' @rdname year-month-day-getters
 #' @export
 get_day.clock_year_month_day <- function(x) {
-  calendar_require_minimum_precision(x, PRECISION_DAY, "get_day")
+  calendar_check_minimum_precision(x, PRECISION_DAY)
   field_day(x)
 }
 
 #' @rdname year-month-day-getters
 #' @export
 get_hour.clock_year_month_day <- function(x) {
-  calendar_require_minimum_precision(x, PRECISION_HOUR, "get_hour")
+  calendar_check_minimum_precision(x, PRECISION_HOUR)
   field_hour(x)
 }
 
 #' @rdname year-month-day-getters
 #' @export
 get_minute.clock_year_month_day <- function(x) {
-  calendar_require_minimum_precision(x, PRECISION_MINUTE, "get_minute")
+  calendar_check_minimum_precision(x, PRECISION_MINUTE)
   field_minute(x)
 }
 
 #' @rdname year-month-day-getters
 #' @export
 get_second.clock_year_month_day <- function(x) {
-  calendar_require_minimum_precision(x, PRECISION_SECOND, "get_second")
+  calendar_check_minimum_precision(x, PRECISION_SECOND)
   field_second(x)
 }
 
 #' @rdname year-month-day-getters
 #' @export
 get_millisecond.clock_year_month_day <- function(x) {
-  calendar_require_precision(x, PRECISION_MILLISECOND, "get_millisecond")
+  calendar_check_exact_precision(x, PRECISION_MILLISECOND)
   field_subsecond(x)
 }
 
 #' @rdname year-month-day-getters
 #' @export
 get_microsecond.clock_year_month_day <- function(x) {
-  calendar_require_precision(x, PRECISION_MICROSECOND, "get_microsecond")
+  calendar_check_exact_precision(x, PRECISION_MICROSECOND)
   field_subsecond(x)
 }
 
 #' @rdname year-month-day-getters
 #' @export
 get_nanosecond.clock_year_month_day <- function(x) {
-  calendar_require_precision(x, PRECISION_NANOSECOND, "get_nanosecond")
+  calendar_check_exact_precision(x, PRECISION_NANOSECOND)
   field_subsecond(x)
 }
 
@@ -624,7 +637,7 @@ set_year.clock_year_month_day <- function(x, value, ...) {
 #' @export
 set_month.clock_year_month_day <- function(x, value, ...) {
   check_dots_empty()
-  calendar_require_minimum_precision(x, PRECISION_YEAR, "set_month")
+  calendar_check_minimum_precision(x, PRECISION_YEAR)
   set_field_year_month_day(x, value, "month")
 }
 
@@ -632,7 +645,7 @@ set_month.clock_year_month_day <- function(x, value, ...) {
 #' @export
 set_day.clock_year_month_day <- function(x, value, ...) {
   check_dots_empty()
-  calendar_require_minimum_precision(x, PRECISION_MONTH, "set_day")
+  calendar_check_minimum_precision(x, PRECISION_MONTH)
   set_field_year_month_day(x, value, "day")
 }
 
@@ -640,7 +653,7 @@ set_day.clock_year_month_day <- function(x, value, ...) {
 #' @export
 set_hour.clock_year_month_day <- function(x, value, ...) {
   check_dots_empty()
-  calendar_require_minimum_precision(x, PRECISION_DAY, "set_hour")
+  calendar_check_minimum_precision(x, PRECISION_DAY)
   set_field_year_month_day(x, value, "hour")
 }
 
@@ -648,7 +661,7 @@ set_hour.clock_year_month_day <- function(x, value, ...) {
 #' @export
 set_minute.clock_year_month_day <- function(x, value, ...) {
   check_dots_empty()
-  calendar_require_minimum_precision(x, PRECISION_HOUR, "set_minute")
+  calendar_check_minimum_precision(x, PRECISION_HOUR)
   set_field_year_month_day(x, value, "minute")
 }
 
@@ -656,7 +669,7 @@ set_minute.clock_year_month_day <- function(x, value, ...) {
 #' @export
 set_second.clock_year_month_day <- function(x, value, ...) {
   check_dots_empty()
-  calendar_require_minimum_precision(x, PRECISION_MINUTE, "set_second")
+  calendar_check_minimum_precision(x, PRECISION_MINUTE)
   set_field_year_month_day(x, value, "second")
 }
 
@@ -664,7 +677,7 @@ set_second.clock_year_month_day <- function(x, value, ...) {
 #' @export
 set_millisecond.clock_year_month_day <- function(x, value, ...) {
   check_dots_empty()
-  calendar_require_any_of_precisions(x, c(PRECISION_SECOND, PRECISION_MILLISECOND), "set_millisecond")
+  calendar_check_exact_precision(x, c(PRECISION_SECOND, PRECISION_MILLISECOND))
   set_field_year_month_day(x, value, "millisecond")
 }
 
@@ -672,7 +685,7 @@ set_millisecond.clock_year_month_day <- function(x, value, ...) {
 #' @export
 set_microsecond.clock_year_month_day <- function(x, value, ...) {
   check_dots_empty()
-  calendar_require_any_of_precisions(x, c(PRECISION_SECOND, PRECISION_MICROSECOND), "set_microsecond")
+  calendar_check_exact_precision(x, c(PRECISION_SECOND, PRECISION_MICROSECOND))
   set_field_year_month_day(x, value, "microsecond")
 }
 
@@ -680,7 +693,7 @@ set_microsecond.clock_year_month_day <- function(x, value, ...) {
 #' @export
 set_nanosecond.clock_year_month_day <- function(x, value, ...) {
   check_dots_empty()
-  calendar_require_any_of_precisions(x, c(PRECISION_SECOND, PRECISION_NANOSECOND), "set_nanosecond")
+  calendar_check_exact_precision(x, c(PRECISION_SECOND, PRECISION_NANOSECOND))
   set_field_year_month_day(x, value, "nanosecond")
 }
 
@@ -923,14 +936,14 @@ add_years.clock_year_month_day <- function(x, n, ...) {
 #' @rdname year-month-day-arithmetic
 #' @export
 add_quarters.clock_year_month_day <- function(x, n, ...) {
-  calendar_require_minimum_precision(x, PRECISION_MONTH, "add_quarters")
+  calendar_check_minimum_precision(x, PRECISION_MONTH)
   year_month_day_plus_duration(x, n, PRECISION_QUARTER)
 }
 
 #' @rdname year-month-day-arithmetic
 #' @export
 add_months.clock_year_month_day <- function(x, n, ...) {
-  calendar_require_minimum_precision(x, PRECISION_MONTH, "add_months")
+  calendar_check_minimum_precision(x, PRECISION_MONTH)
   year_month_day_plus_duration(x, n, PRECISION_MONTH)
 }
 
@@ -990,7 +1003,7 @@ as_year_month_day.clock_year_month_day <- function(x) {
 
 #' @export
 as_sys_time.clock_year_month_day <- function(x) {
-  calendar_require_all_valid(x)
+  calendar_check_no_invalid(x)
   precision <- calendar_precision_attribute(x)
   fields <- as_sys_time_year_month_day_cpp(x, precision)
   new_sys_time_from_fields(fields, precision, clock_rcrd_names(x))
@@ -1021,7 +1034,8 @@ calendar_month_factor.clock_year_month_day <- function(x,
                                                        ...,
                                                        labels = "en",
                                                        abbreviate = FALSE) {
-  calendar_month_factor_impl(x, labels, abbreviate, ...)
+  check_dots_empty0(...)
+  calendar_month_factor_impl(x, labels, abbreviate)
 }
 
 # ------------------------------------------------------------------------------
@@ -1086,7 +1100,8 @@ calendar_group.clock_year_month_day <- function(x, precision, ..., n = 1L) {
   n <- validate_calendar_group_n(n)
   x <- calendar_narrow(x, precision)
 
-  precision <- validate_precision_string(precision)
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
 
   if (precision == PRECISION_YEAR) {
     value <- get_year(x)
@@ -1149,7 +1164,8 @@ calendar_group.clock_year_month_day <- function(x, precision, ..., n = 1L) {
 #' # narrowed to another subsecond precision
 #' try(calendar_narrow(micro, "millisecond"))
 calendar_narrow.clock_year_month_day <- function(x, precision) {
-  precision <- validate_precision_string(precision)
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
 
   out_fields <- list()
   x_fields <- unclass(x)
@@ -1206,7 +1222,9 @@ calendar_narrow.clock_year_month_day <- function(x, precision) {
 #' try(calendar_widen(milli, "microsecond"))
 calendar_widen.clock_year_month_day <- function(x, precision) {
   x_precision <- calendar_precision_attribute(x)
-  precision <- validate_precision_string(precision)
+
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
 
   if (precision >= PRECISION_MONTH && x_precision < PRECISION_MONTH) {
     x <- set_month(x, 1L)
@@ -1259,7 +1277,9 @@ NULL
 #' @export
 calendar_start.clock_year_month_day <- function(x, precision) {
   x_precision <- calendar_precision_attribute(x)
-  precision <- validate_precision_string(precision)
+
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
 
   calendar_start_end_checks(x, x_precision, precision, "start")
 
@@ -1279,7 +1299,9 @@ calendar_start.clock_year_month_day <- function(x, precision) {
 #' @export
 calendar_end.clock_year_month_day <- function(x, precision) {
   x_precision <- calendar_precision_attribute(x)
-  precision <- validate_precision_string(precision)
+
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
 
   calendar_start_end_checks(x, x_precision, precision, "end")
 
@@ -1348,7 +1370,8 @@ calendar_count_between.clock_year_month_day <- function(start,
 calendar_count_between_standardize_precision_n.clock_year_month_day <- function(x,
                                                                                 precision,
                                                                                 n) {
-  precision_int <- validate_precision_string(precision)
+  check_precision(precision)
+  precision_int <- precision_to_integer(precision)
 
   allowed_precisions <- c(PRECISION_YEAR, PRECISION_QUARTER, PRECISION_MONTH)
 
@@ -1368,7 +1391,8 @@ calendar_count_between_standardize_precision_n.clock_year_month_day <- function(
 calendar_count_between_compute.clock_year_month_day <- function(start,
                                                                 end,
                                                                 precision) {
-  precision <- validate_precision_string(precision)
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
 
   if (precision == PRECISION_YEAR) {
     out <- get_year(end) - get_year(start)
@@ -1387,7 +1411,8 @@ calendar_count_between_compute.clock_year_month_day <- function(start,
 calendar_count_between_proxy_compare.clock_year_month_day <- function(start,
                                                                       end,
                                                                       precision) {
-  precision <- validate_precision_string(precision)
+  check_precision(precision)
+  precision <- precision_to_integer(precision)
 
   start <- vec_proxy_compare(start)
   end <- vec_proxy_compare(end)

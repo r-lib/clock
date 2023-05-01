@@ -450,7 +450,7 @@ test_that("positive / negative counts are correct", {
 # seq()
 
 test_that("only year precision is allowed", {
-  expect_snapshot_error(seq(iso_year_week_day(2019, 1), by = 1, length.out = 2))
+  expect_snapshot(error = TRUE, seq(iso_year_week_day(2019, 1), by = 1, length.out = 2))
 })
 
 test_that("seq(to, by) works", {
@@ -527,7 +527,7 @@ test_that("`invalid_count()` works", {
 
 test_that("strict mode can be activated", {
   local_options(clock.strict = TRUE)
-  expect_snapshot_error(invalid_resolve(iso_year_week_day(2019, 1)))
+  expect_snapshot(error = TRUE, invalid_resolve(iso_year_week_day(2019, 1)))
 })
 
 test_that("can resolve correctly", {
@@ -564,7 +564,7 @@ test_that("can resolve correctly", {
 })
 
 test_that("throws known classed error", {
-  expect_snapshot_error(invalid_resolve(iso_year_week_day(2019, 53)))
+  expect_snapshot(error = TRUE, invalid_resolve(iso_year_week_day(2019, 53)))
   expect_error(invalid_resolve(iso_year_week_day(2019, 53)), class = "clock_error_invalid_date")
 })
 

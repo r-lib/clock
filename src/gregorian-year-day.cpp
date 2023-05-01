@@ -161,7 +161,8 @@ invalid_count_year_day_cpp(const cpp11::integers& year,
 cpp11::writable::list
 invalid_resolve_year_day_cpp(cpp11::list_of<cpp11::integers> fields,
                              const cpp11::integers& precision_int,
-                             const cpp11::strings& invalid_string) {
+                             const cpp11::strings& invalid_string,
+                             const cpp11::sexp& call) {
   using namespace rclock;
   const enum invalid invalid_val = parse_invalid(invalid_string);
 
@@ -181,13 +182,13 @@ invalid_resolve_year_day_cpp(cpp11::list_of<cpp11::integers> fields,
   yearday::yydhmss<std::chrono::nanoseconds> yydhmss3{year, day, hour, minute, second, subsecond};
 
   switch (parse_precision(precision_int)) {
-  case precision::day: return invalid_resolve_calendar_impl(yyd, invalid_val);
-  case precision::hour: return invalid_resolve_calendar_impl(yydh, invalid_val);
-  case precision::minute: return invalid_resolve_calendar_impl(yydhm, invalid_val);
-  case precision::second: return invalid_resolve_calendar_impl(yydhms, invalid_val);
-  case precision::millisecond: return invalid_resolve_calendar_impl(yydhmss1, invalid_val);
-  case precision::microsecond: return invalid_resolve_calendar_impl(yydhmss2, invalid_val);
-  case precision::nanosecond: return invalid_resolve_calendar_impl(yydhmss3, invalid_val);
+  case precision::day: return invalid_resolve_calendar_impl(yyd, invalid_val, call);
+  case precision::hour: return invalid_resolve_calendar_impl(yydh, invalid_val, call);
+  case precision::minute: return invalid_resolve_calendar_impl(yydhm, invalid_val, call);
+  case precision::second: return invalid_resolve_calendar_impl(yydhms, invalid_val, call);
+  case precision::millisecond: return invalid_resolve_calendar_impl(yydhmss1, invalid_val, call);
+  case precision::microsecond: return invalid_resolve_calendar_impl(yydhmss2, invalid_val, call);
+  case precision::nanosecond: return invalid_resolve_calendar_impl(yydhmss3, invalid_val, call);
   default: never_reached("invalid_resolve_year_day_cpp");
   }
 }

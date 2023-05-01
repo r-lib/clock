@@ -591,7 +591,8 @@ zoned_time_parse_complete <- function(x,
                                       locale = clock_locale()) {
   check_dots_empty()
 
-  precision <- validate_zoned_time_precision_string(precision)
+  check_zoned_time_precision(precision)
+  precision <- precision_to_integer(precision)
 
   if (!is_clock_locale(locale)) {
     abort("`locale` must be a 'clock_locale' object.")
@@ -630,7 +631,8 @@ zoned_time_parse_abbrev <- function(x,
                                     locale = clock_locale()) {
   check_dots_empty()
 
-  precision <- validate_zoned_time_precision_string(precision)
+  check_zoned_time_precision(precision)
+  precision <- precision_to_integer(precision)
 
   if (!is_clock_locale(locale)) {
     abort("`locale` must be a 'clock_locale' object.")
@@ -1057,57 +1059,78 @@ zoned_time_precision <- function(x) {
 
 #' @export
 add_years.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_years")
+  details <- c(
+    i = "Do you need to convert to a calendar first?",
+    i = cli::format_inline(paste0(
+      "Use {.fn as_naive_time} then {.fn as_year_month_day} to convert to a ",
+      "calendar that supports {.fn add_years}."
+    ))
+  )
+  stop_clock_unsupported(x, details = details)
 }
 
 #' @export
 add_quarters.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_quarters")
+  details <- c(
+    i = "Do you need to convert to a calendar first?",
+    i = cli::format_inline(paste0(
+      "Use {.fn as_naive_time} then {.fn as_year_quarter_day} to convert to a ",
+      "calendar that supports {.fn add_quarters}."
+    ))
+  )
+  stop_clock_unsupported(x, details = details)
 }
 
 #' @export
 add_months.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_months")
+  details <- c(
+    i = "Do you need to convert to a calendar first?",
+    i = cli::format_inline(paste0(
+      "Use {.fn as_naive_time} then {.fn as_year_month_day} to convert to a ",
+      "calendar that supports {.fn add_months}."
+    ))
+  )
+  stop_clock_unsupported(x, details = details)
 }
 
 #' @export
 add_weeks.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_weeks")
+  stop_clock_unsupported(x, details = advice_convert_to_time_point())
 }
 
 #' @export
 add_days.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_days")
+  stop_clock_unsupported(x, details = advice_convert_to_time_point())
 }
 
 #' @export
 add_hours.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_hours")
+  stop_clock_unsupported(x, details = advice_convert_to_time_point())
 }
 
 #' @export
 add_minutes.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_minutes")
+  stop_clock_unsupported(x, details = advice_convert_to_time_point())
 }
 
 #' @export
 add_seconds.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_seconds")
+  stop_clock_unsupported(x, details = advice_convert_to_time_point())
 }
 
 #' @export
 add_milliseconds.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_milliseconds")
+  stop_clock_unsupported(x, details = advice_convert_to_time_point())
 }
 
 #' @export
 add_microseconds.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_microseconds")
+  stop_clock_unsupported(x, details = advice_convert_to_time_point())
 }
 
 #' @export
 add_nanoseconds.clock_zoned_time <- function(x, n, ...) {
-  stop_clock_unsupported_zoned_time_op("add_nanoseconds")
+  stop_clock_unsupported(x, details = advice_convert_to_time_point())
 }
 
 # ------------------------------------------------------------------------------
@@ -1127,18 +1150,16 @@ zone_validate <- function(zone) {
 
 # ------------------------------------------------------------------------------
 
-validate_zoned_time_precision_string <- function(precision) {
-  precision <- validate_precision_string(precision)
-
-  if (!is_valid_zoned_time_precision(precision)) {
-    abort("`precision` must be at least 'second' precision.")
-  }
-
-  precision
-}
-
-is_valid_zoned_time_precision <- function(precision) {
-  precision >= PRECISION_SECOND
+check_zoned_time_precision <- function(x,
+                                       ...,
+                                       arg = caller_arg(x),
+                                       call = caller_env()) {
+  check_precision(
+    x = x,
+    values = c("second", "millisecond", "microsecond", "nanosecond"),
+    arg = arg,
+    call = call
+  )
 }
 
 # ------------------------------------------------------------------------------

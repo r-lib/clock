@@ -11,11 +11,11 @@ test_that("can change labels with either the language name or labels object", {
 })
 
 test_that("must use a valid clock-labels object", {
-  expect_snapshot_error(clock_locale(1))
+  expect_snapshot(error = TRUE, clock_locale(1))
 })
 
 test_that("must use a valid decimal-mark", {
-  expect_snapshot_error(clock_locale(decimal_mark = "f"))
+  expect_snapshot(error = TRUE, clock_locale(decimal_mark = "f"))
 })
 
 test_that("can change the decimal-mark", {

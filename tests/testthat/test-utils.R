@@ -12,5 +12,5 @@ test_that("POSIXt time zones are standardized as expected", {
     expect_identical(posixt_tzone_standardize(character()), "")
   )
 
-  expect_snapshot_error(posixt_tzone_standardize(1))
+  expect_snapshot(error = TRUE, posixt_tzone_standardize(1))
 })

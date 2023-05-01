@@ -1541,9 +1541,7 @@ date_seq.Date <- function(from,
 
   check_number_of_supplied_optional_arguments(to, by, total_size)
 
-  if (!is_null(to) && !is_Date(to)) {
-    abort("If supplied, `to` must be a <Date>.")
-  }
+  check_date(to, allow_null = TRUE)
 
   if (!is_null(total_size)) {
     total_size <- check_length_out(total_size, arg = "total_size")
@@ -1558,7 +1556,8 @@ date_seq.Date <- function(from,
     by <- duration_helper(by, PRECISION_DAY, n_arg = "by")
   }
 
-  precision_int <- validate_precision_string(precision)
+  check_precision(precision)
+  precision_int <- precision_to_integer(precision)
 
   if (precision_int == PRECISION_QUARTER) {
     by <- duration_cast(by, "month")
@@ -1643,7 +1642,9 @@ date_seq_day_hour_minute_second <- function(from, to, by, total_size, precision,
 
 check_from_to_component_equivalence <- function(from, to, precision, has_time) {
   ok <- TRUE
-  precision_int <- validate_precision_string(precision)
+
+  check_precision(precision)
+  precision_int <- precision_to_integer(precision)
 
   if (precision_int < PRECISION_MONTH) {
     ok <- ok && is_true(get_month(from) == get_month(to))
@@ -1677,7 +1678,8 @@ check_from_to_component_equivalence <- function(from, to, precision, has_time) {
 }
 
 reset_original_components <- function(out, from, precision, has_time) {
-  precision_int <- validate_precision_string(precision)
+  check_precision(precision)
+  precision_int <- precision_to_integer(precision)
 
   if (precision_int < PRECISION_MONTH) {
     out <- set_month(out, get_month(from))
@@ -1908,10 +1910,7 @@ date_count_between <- function(start, end, precision, ..., n = 1L) {
 #' )
 date_count_between.Date <- function(start, end, precision, ..., n = 1L) {
   check_dots_empty()
-
-  if (!is_Date(end)) {
-    abort("`end` must be a <Date>.")
-  }
+  check_date(end)
 
   # Designed to match `add_*()` functions to guarantee that
   # if `start <= end`, then `start + <count> <= end`
@@ -1942,7 +1941,8 @@ date_count_between_impl <- function(start,
                                     allowed_precisions_calendar,
                                     allowed_precisions_naive_time,
                                     allowed_precisions_sys_time) {
-  precision_int <- validate_precision_string(precision)
+  check_precision(precision)
+  precision_int <- precision_to_integer(precision)
 
   if (precision_int %in% allowed_precisions_calendar) {
     start <- as_year_month_day(start)
@@ -1975,4 +1975,20 @@ date_count_between_impl <- function(start,
   precisions <- paste0(precisions, collapse = ", ")
 
   abort(paste0("`precision` must be one of: ", precisions, "."))
+}
+
+# ------------------------------------------------------------------------------
+
+check_date <- function(x,
+                       ...,
+                       allow_null = FALSE,
+                       arg = caller_arg(x),
+                       call = caller_env()) {
+  check_inherits(
+    x = x,
+    what = "Date",
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
 }

@@ -71,7 +71,7 @@ public:
   void assign_year(const quarterly_shim::year& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
-  void resolve(r_ssize i, const enum invalid type);
+  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
 
   quarterly_shim::year to_year(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
@@ -96,7 +96,7 @@ public:
   void assign_year_quarternum(const quarterly_shim::year_quarternum& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
-  void resolve(r_ssize i, const enum invalid type);
+  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
 
   quarterly_shim::year_quarternum to_year_quarternum(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
@@ -121,7 +121,7 @@ public:
   void assign_sys_time(const date::sys_time<date::days>& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
-  void resolve(r_ssize i, const enum invalid type);
+  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
 
   date::sys_time<date::days> to_sys_time(r_ssize i) const NOEXCEPT;
   quarterly_shim::year_quarternum_quarterday to_year_quarternum_quarterday(r_ssize i) const NOEXCEPT;
@@ -147,7 +147,7 @@ public:
   void assign_sys_time(const date::sys_time<std::chrono::hours>& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
-  void resolve(r_ssize i, const enum invalid type);
+  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
 
   date::sys_time<std::chrono::hours> to_sys_time(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
@@ -173,7 +173,7 @@ public:
   void assign_sys_time(const date::sys_time<std::chrono::minutes>& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
-  void resolve(r_ssize i, const enum invalid type);
+  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
 
   date::sys_time<std::chrono::minutes> to_sys_time(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
@@ -200,7 +200,7 @@ public:
   void assign_sys_time(const date::sys_time<std::chrono::seconds>& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
-  void resolve(r_ssize i, const enum invalid type);
+  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
 
   date::sys_time<std::chrono::seconds> to_sys_time(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
@@ -229,7 +229,7 @@ public:
   void assign_sys_time(const date::sys_time<Duration>& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
-  void resolve(r_ssize i, const enum invalid type);
+  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
 
   date::sys_time<Duration> to_sys_time(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
@@ -296,7 +296,7 @@ y::assign_na(r_ssize i) NOEXCEPT
 
 inline
 void
-y::resolve(r_ssize i, const enum invalid type)
+y::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
 {
   // Never invalid
 }
@@ -375,7 +375,7 @@ yqn::assign_na(r_ssize i) NOEXCEPT
 
 inline
 void
-yqn::resolve(r_ssize i, const enum invalid type)
+yqn::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
 {
   // Never invalid
 }
@@ -457,7 +457,7 @@ yqnqd::assign_na(r_ssize i) NOEXCEPT
 
 inline
 void
-yqnqd::resolve(r_ssize i, const enum invalid type)
+yqnqd::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
 {
   const quarterly_shim::year_quarternum_quarterday elt = to_year_quarternum_quarterday(i);
 
@@ -486,7 +486,7 @@ yqnqd::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::error: {
-    rclock::detail::resolve_error(i);
+    rclock::detail::resolve_error(i, call);
   }
   }
 }
@@ -569,7 +569,7 @@ yqnqdh::assign_na(r_ssize i) NOEXCEPT
 
 inline
 void
-yqnqdh::resolve(r_ssize i, const enum invalid type)
+yqnqdh::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
 {
   const quarterly_shim::year_quarternum_quarterday elt = yqnqd::to_year_quarternum_quarterday(i);
 
@@ -608,7 +608,7 @@ yqnqdh::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::error: {
-    rclock::detail::resolve_error(i);
+    rclock::detail::resolve_error(i, call);
   }
   }
 }
@@ -685,7 +685,7 @@ yqnqdhm::assign_na(r_ssize i) NOEXCEPT
 
 inline
 void
-yqnqdhm::resolve(r_ssize i, const enum invalid type)
+yqnqdhm::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
 {
   const quarterly_shim::year_quarternum_quarterday elt = yqnqdh::to_year_quarternum_quarterday(i);
 
@@ -727,7 +727,7 @@ yqnqdhm::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::error: {
-    rclock::detail::resolve_error(i);
+    rclock::detail::resolve_error(i, call);
   }
   }
 }
@@ -805,7 +805,7 @@ yqnqdhms::assign_na(r_ssize i) NOEXCEPT
 
 inline
 void
-yqnqdhms::resolve(r_ssize i, const enum invalid type)
+yqnqdhms::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
 {
   const quarterly_shim::year_quarternum_quarterday elt = yqnqdhms::to_year_quarternum_quarterday(i);
 
@@ -850,7 +850,7 @@ yqnqdhms::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::error: {
-    rclock::detail::resolve_error(i);
+    rclock::detail::resolve_error(i, call);
   }
   }
 }
@@ -936,7 +936,7 @@ yqnqdhmss<Duration>::assign_na(r_ssize i) NOEXCEPT
 template <typename Duration>
 inline
 void
-yqnqdhmss<Duration>::resolve(r_ssize i, const enum invalid type)
+yqnqdhmss<Duration>::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
 {
   const quarterly_shim::year_quarternum_quarterday elt = yqnqdhms::to_year_quarternum_quarterday(i);
 
@@ -984,7 +984,7 @@ yqnqdhmss<Duration>::resolve(r_ssize i, const enum invalid type)
     break;
   }
   case invalid::error: {
-    rclock::detail::resolve_error(i);
+    rclock::detail::resolve_error(i, call);
   }
   }
 }

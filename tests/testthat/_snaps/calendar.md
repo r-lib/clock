@@ -68,115 +68,227 @@
 
 # `max` is validated
 
-    `max` must be a positive number.
+    Code
+      print(x, max = -1)
+    Condition
+      Error in `print()`:
+      ! `max` must be a whole number larger than or equal to 0, not the number -1.
 
 ---
 
-    `max` must be a single number, or `NULL`.
+    Code
+      print(x, max = c(1, 2))
+    Condition
+      Error in `print()`:
+      ! `max` must be a whole number, not a double vector.
 
 ---
 
-    `max` must be a single number, or `NULL`.
+    Code
+      print(x, max = NA_integer_)
+    Condition
+      Error in `print()`:
+      ! `max` must be a whole number, not an integer `NA`.
 
 ---
 
-    Can't convert `max` <character> to <integer>.
+    Code
+      print(x, max = "foo")
+    Condition
+      Error in `print()`:
+      ! `max` must be a whole number, not the string "foo".
 
 # group: `precision` is validated
 
-    `precision` not recognized.
+    Code
+      calendar_group(year_month_day(2019), "foo")
+    Condition
+      Error in `calendar_group()`:
+      ! `precision` must be one of "year", "quarter", "month", "week", "day", "hour", "minute", "second", "millisecond", "microsecond", or "nanosecond", not "foo".
 
 # group: `precision` must be calendar specific
 
-    `precision` must be a valid precision for a 'year_month_day'.
+    Code
+      calendar_group(year_month_day(2019), "quarter")
+    Condition
+      Error in `calendar_group()`:
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # group: `precision` can't be wider than `x`
 
-    Can't group at a precision (second) that is more precise than `x` (day).
+    Code
+      calendar_group(year_month_day(2019, 1, 1), "second")
+    Condition
+      Error in `calendar_group()`:
+      ! Can't group at a precision ("second") that is more precise than `x` ("day").
 
 # group: can't group a subsecond precision `x` at another subsecond precision
 
-    Can't group a subsecond precision `x` (nanosecond) by another subsecond precision (microsecond).
+    Code
+      calendar_group(x, "microsecond")
+    Condition
+      Error in `calendar_group()`:
+      ! Can't group a subsecond precision `x` ("nanosecond") by another subsecond precision ("microsecond").
 
 # narrow: `precision` is validated
 
-    `precision` not recognized.
+    Code
+      calendar_narrow(year_month_day(2019), "foo")
+    Condition
+      Error in `calendar_narrow()`:
+      ! `precision` must be one of "year", "quarter", "month", "week", "day", "hour", "minute", "second", "millisecond", "microsecond", or "nanosecond", not "foo".
 
 # narrow: `precision` must be calendar specific
 
-    `precision` must be a valid precision for a 'year_month_day'.
+    Code
+      calendar_narrow(year_month_day(2019), "quarter")
+    Condition
+      Error in `calendar_narrow()`:
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # narrow: `precision` can't be wider than `x`
 
-    Can't narrow to a precision (second) that is wider than `x` (day).
+    Code
+      calendar_narrow(year_month_day(2019, 1, 1), "second")
+    Condition
+      Error in `calendar_narrow()`:
+      ! Can't narrow to a precision ("second") that is wider than `x` ("day").
 
 # narrow: can't narrow a subsecond precision `x` to another subsecond precision
 
-    Can't narrow a subsecond precision `x` (nanosecond) to another subsecond precision (microsecond).
+    Code
+      calendar_narrow(x, "microsecond")
+    Condition
+      Error in `calendar_narrow()`:
+      ! Can't narrow a subsecond precision `x` ("nanosecond") to another subsecond precision ("microsecond").
 
 # widen: `precision` is validated
 
-    `precision` not recognized.
+    Code
+      calendar_widen(year_month_day(2019), "foo")
+    Condition
+      Error in `calendar_widen()`:
+      ! `precision` must be one of "year", "quarter", "month", "week", "day", "hour", "minute", "second", "millisecond", "microsecond", or "nanosecond", not "foo".
 
 # widen: `precision` must be calendar specific
 
-    `precision` must be a valid precision for a 'year_month_day'.
+    Code
+      calendar_widen(year_month_day(2019), "quarter")
+    Condition
+      Error in `calendar_widen()`:
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # widen: `precision` can't be narrower than `x`
 
-    Can't widen to a precision (month) that is narrower than `x` (day).
+    Code
+      calendar_widen(year_month_day(2019, 1, 1), "month")
+    Condition
+      Error in `calendar_widen()`:
+      ! Can't widen to a precision ("month") that is narrower than `x` ("day").
 
 # widen: can't widen a subsecond precision `x` to another subsecond precision
 
-    Can't widen a subsecond precision `x` (millisecond) to another subsecond precision (microsecond).
+    Code
+      calendar_widen(x, "microsecond")
+    Condition
+      Error in `calendar_widen()`:
+      ! Can't widen a subsecond precision `x` ("millisecond") to another subsecond precision ("microsecond").
 
 # start: `x` is validated
 
-    no applicable method for 'calendar_start' applied to an object of class "c('double', 'numeric')"
+    Code
+      calendar_start(1)
+    Condition
+      Error in `calendar_start()`:
+      ! Can't perform this operation on a <numeric>.
 
 # start: `precision` is validated
 
-    `precision` not recognized.
+    Code
+      calendar_start(year_month_day(2019), "foo")
+    Condition
+      Error in `calendar_start()`:
+      ! `precision` must be one of "year", "quarter", "month", "week", "day", "hour", "minute", "second", "millisecond", "microsecond", or "nanosecond", not "foo".
 
 ---
 
-    `precision` must be a string.
+    Code
+      calendar_start(year_month_day(2019), 1)
+    Condition
+      Error in `calendar_start()`:
+      ! `precision` must be a single string, not the number 1.
 
 # start: errors on unsupported precision
 
-    `precision` must be a valid precision for a 'year_month_day'.
+    Code
+      calendar_start(year_month_day(2019, 1), "quarter")
+    Condition
+      Error in `calendar_start_end_checks()`:
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # start: `precision` can't be more precise than `x`
 
-    Can't compute the start of `x` (year) at a more precise precision (month).
+    Code
+      calendar_start(year_month_day(2019), "month")
+    Condition
+      Error in `calendar_start_end_checks()`:
+      ! Can't compute the start of `x` ("year") at a more precise precision ("month").
 
 # start: can't mix different subsecond precisions
 
-    Can't compute the start of a subsecond precision `x` (microsecond) at another subsecond precision (millisecond).
+    Code
+      calendar_start(x, "millisecond")
+    Condition
+      Error in `calendar_start_end_checks()`:
+      ! Can't compute the start of a subsecond precision `x` ("microsecond") at another subsecond precision ("millisecond").
 
 # end: `x` is validated
 
-    no applicable method for 'calendar_end' applied to an object of class "c('double', 'numeric')"
+    Code
+      calendar_end(1)
+    Condition
+      Error in `calendar_end()`:
+      ! Can't perform this operation on a <numeric>.
 
 # end: `precision` is validated
 
-    `precision` not recognized.
+    Code
+      calendar_end(year_month_day(2019), "foo")
+    Condition
+      Error in `calendar_end()`:
+      ! `precision` must be one of "year", "quarter", "month", "week", "day", "hour", "minute", "second", "millisecond", "microsecond", or "nanosecond", not "foo".
 
 ---
 
-    `precision` must be a string.
+    Code
+      calendar_end(year_month_day(2019), 1)
+    Condition
+      Error in `calendar_end()`:
+      ! `precision` must be a single string, not the number 1.
 
 # end: errors on unsupported precision
 
-    `precision` must be a valid precision for a 'year_month_day'.
+    Code
+      calendar_end(year_month_day(2019, 1), "quarter")
+    Condition
+      Error in `calendar_start_end_checks()`:
+      ! `precision` must be a valid precision for a <year_month_day>, not "quarter".
 
 # end: `precision` can't be more precise than `x`
 
-    Can't compute the end of `x` (year) at a more precise precision (month).
+    Code
+      calendar_end(year_month_day(2019), "month")
+    Condition
+      Error in `calendar_start_end_checks()`:
+      ! Can't compute the end of `x` ("year") at a more precise precision ("month").
 
 # end: can't mix different subsecond precisions
 
-    Can't compute the end of a subsecond precision `x` (microsecond) at another subsecond precision (millisecond).
+    Code
+      calendar_end(x, "millisecond")
+    Condition
+      Error in `calendar_start_end_checks()`:
+      ! Can't compute the end of a subsecond precision `x` ("microsecond") at another subsecond precision ("millisecond").
 
 # `end` must be a calendar
 
@@ -185,7 +297,7 @@
     Output
       <error/rlang_error>
       Error in `calendar_count_between()`:
-      ! `end` must be a <clock_calendar>.
+      ! `end` must be a <clock_calendar>, not the number 1.
 
 # can't count with a precision finer than the calendar precision
 
@@ -194,7 +306,7 @@
     Output
       <error/rlang_error>
       Error in `calendar_count_between()`:
-      ! Precision of inputs must be at least as precise as `precision`.
+      ! Precision of inputs ("year") must be at least as precise as `precision` ("month").
 
 # `n` is validated
 
@@ -203,34 +315,117 @@
     Output
       <error/rlang_error>
       Error in `calendar_count_between()`:
-      ! `n` must be a single positive integer.
+      ! `n` must be a whole number, not an integer `NA`.
     Code
       (expect_error(calendar_count_between(x, x, "year", n = -1)))
     Output
       <error/rlang_error>
       Error in `calendar_count_between()`:
-      ! `n` must be a single positive integer.
+      ! `n` must be a whole number larger than or equal to 0, not the number -1.
     Code
       (expect_error(calendar_count_between(x, x, "year", n = 1.5)))
     Output
-      <error/vctrs_error_cast_lossy>
+      <error/rlang_error>
       Error in `calendar_count_between()`:
-      ! Can't convert from `n` <double> to <integer> due to loss of precision.
-      * Locations: 1
+      ! `n` must be a whole number, not the number 1.5.
     Code
       (expect_error(calendar_count_between(x, x, "year", n = "x")))
     Output
-      <error/vctrs_error_cast>
+      <error/rlang_error>
       Error in `calendar_count_between()`:
-      ! Can't convert `n` <character> to <integer>.
+      ! `n` must be a whole number, not the string "x".
     Code
       (expect_error(calendar_count_between(x, x, "year", n = c(1L, 2L))))
     Output
       <error/rlang_error>
       Error in `calendar_count_between()`:
-      ! `n` must be a single positive integer.
+      ! `n` must be a whole number, not an integer vector.
 
 # precision: can only be called on calendars
 
-    no applicable method for 'calendar_precision' applied to an object of class "c('clock_sys_time', 'clock_time_point', 'clock_rcrd', 'vctrs_rcrd', 'vctrs_vctr')"
+    Code
+      calendar_precision(sys_days(0))
+    Condition
+      Error in `UseMethod()`:
+      ! no applicable method for 'calendar_precision' applied to an object of class "c('clock_sys_time', 'clock_time_point', 'clock_rcrd', 'vctrs_rcrd', 'vctrs_vctr')"
+
+# addition helpers throw error with advice
+
+    Code
+      add_weeks(x)
+    Condition
+      Error in `add_weeks()`:
+      ! Can't perform this operation on a <clock_year_month_day>.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
+
+---
+
+    Code
+      add_days(x)
+    Condition
+      Error in `add_days()`:
+      ! Can't perform this operation on a <clock_year_month_day>.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
+
+---
+
+    Code
+      add_hours(x)
+    Condition
+      Error in `add_hours()`:
+      ! Can't perform this operation on a <clock_year_month_day>.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
+
+---
+
+    Code
+      add_minutes(x)
+    Condition
+      Error in `add_minutes()`:
+      ! Can't perform this operation on a <clock_year_month_day>.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
+
+---
+
+    Code
+      add_seconds(x)
+    Condition
+      Error in `add_seconds()`:
+      ! Can't perform this operation on a <clock_year_month_day>.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
+
+---
+
+    Code
+      add_milliseconds(x)
+    Condition
+      Error in `add_milliseconds()`:
+      ! Can't perform this operation on a <clock_year_month_day>.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
+
+---
+
+    Code
+      add_microseconds(x)
+    Condition
+      Error in `add_microseconds()`:
+      ! Can't perform this operation on a <clock_year_month_day>.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
+
+---
+
+    Code
+      add_nanoseconds(x)
+    Condition
+      Error in `add_nanoseconds()`:
+      ! Can't perform this operation on a <clock_year_month_day>.
+      i Do you need to convert to a time point first?
+      i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 

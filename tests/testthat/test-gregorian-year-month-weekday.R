@@ -23,7 +23,7 @@ test_that("can create subsecond precision calendars", {
 })
 
 test_that("both day and index must be specified", {
-  expect_snapshot_error(year_month_weekday(2020, 1, 1))
+  expect_snapshot(error = TRUE, year_month_weekday(2020, 1, 1))
 })
 
 test_that("validates value ranges", {
@@ -115,8 +115,8 @@ test_that("can compare with year / month precision", {
 test_that("cannot compare / sort with day precision or finer", {
   x <- year_month_weekday(2019, 1, 1, 1)
 
-  expect_snapshot_error(x > x)
-  expect_snapshot_error(vec_order(x))
+  expect_snapshot(error = TRUE, x > x)
+  expect_snapshot(error = TRUE, vec_order(x))
 })
 
 # ------------------------------------------------------------------------------
@@ -398,8 +398,8 @@ test_that("can compute month start", {
 })
 
 test_that("can't compute start with a year_month_weekday at day precision or greater", {
-  expect_snapshot_error(calendar_start(year_month_weekday(2019, 2, 2, 2), "day"))
-  expect_snapshot_error(calendar_start(year_month_weekday(2019, 2, 2, 2), "month"))
+  expect_snapshot(error = TRUE, calendar_start(year_month_weekday(2019, 2, 2, 2), "day"))
+  expect_snapshot(error = TRUE, calendar_start(year_month_weekday(2019, 2, 2, 2), "month"))
 })
 
 # ------------------------------------------------------------------------------
@@ -419,8 +419,8 @@ test_that("can compute month end", {
 })
 
 test_that("can't compute end with a year_month_weekday at day precision or greater", {
-  expect_snapshot_error(calendar_end(year_month_weekday(2019, 2, 2, 2), "day"))
-  expect_snapshot_error(calendar_end(year_month_weekday(2019, 2, 2, 2), "month"))
+  expect_snapshot(error = TRUE, calendar_end(year_month_weekday(2019, 2, 2, 2), "day"))
+  expect_snapshot(error = TRUE, calendar_end(year_month_weekday(2019, 2, 2, 2), "month"))
 })
 
 # ------------------------------------------------------------------------------
@@ -502,7 +502,7 @@ test_that("can't compare a 'year_month_weekday' with day precision!", {
 # seq()
 
 test_that("only granular precisions are allowed", {
-  expect_snapshot_error(seq(year_month_weekday(2019, 1, 1, 1), by = 1, length.out = 2))
+  expect_snapshot(error = TRUE, seq(year_month_weekday(2019, 1, 1, 1), by = 1, length.out = 2))
 })
 
 # NOTE: Most tests are done by `year_month_day()` since they share an implementation
@@ -566,7 +566,7 @@ test_that("`invalid_count()` works", {
 
 test_that("strict mode can be activated", {
   local_options(clock.strict = TRUE)
-  expect_snapshot_error(invalid_resolve(year_month_weekday(2019, 1, 1, 1)))
+  expect_snapshot(error = TRUE, invalid_resolve(year_month_weekday(2019, 1, 1, 1)))
 })
 
 test_that("can resolve correctly", {
@@ -603,7 +603,7 @@ test_that("can resolve correctly", {
 })
 
 test_that("throws known classed error", {
-  expect_snapshot_error(invalid_resolve(year_month_weekday(2019, 1, 1, 5)))
+  expect_snapshot(error = TRUE, invalid_resolve(year_month_weekday(2019, 1, 1, 5)))
   expect_error(invalid_resolve(year_month_weekday(2019, 1, 1, 5)), class = "clock_error_invalid_date")
 })
 

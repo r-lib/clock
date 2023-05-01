@@ -462,6 +462,35 @@ time_point_minus_time_point <- function(x, y, names) {
 # ------------------------------------------------------------------------------
 
 #' @export
+add_years.clock_time_point <- function(x, n, ...) {
+  details <- c(
+    i = "Do you need to convert to a calendar first?",
+    i = cli::format_inline("Use {.fn as_year_month_day} for a calendar that supports {.fn add_years}.")
+  )
+  stop_clock_unsupported(x, details = details)
+}
+
+#' @export
+add_quarters.clock_time_point <- function(x, n, ...) {
+  details <- c(
+    i = "Do you need to convert to a calendar first?",
+    i = cli::format_inline("Use {.fn as_year_quarter_day} for a calendar that supports {.fn add_quarters}.")
+  )
+  stop_clock_unsupported(x, details = details)
+}
+
+#' @export
+add_months.clock_time_point <- function(x, n, ...) {
+  details <- c(
+    i = "Do you need to convert to a calendar first?",
+    i = cli::format_inline("Use {.fn as_year_month_day} for a calendar that supports {.fn add_months}.")
+  )
+  stop_clock_unsupported(x, details = details)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 as_duration.clock_time_point <- function(x) {
   time_point_duration(x, retain_names = TRUE)
 }
@@ -586,8 +615,11 @@ time_point_cast <- function(x, precision) {
     abort("`x` must be a 'time_point'.")
   }
 
+  check_time_point_precision(precision)
+  precision <- precision_to_integer(precision)
+
   x_precision <- time_point_precision_attribute(x)
-  precision <- validate_time_point_precision_string(precision)
+
 
   fields <- duration_cast_cpp(x, x_precision, precision)
 
@@ -734,7 +766,8 @@ time_point_rounder <- function(x, precision, n, origin, duration_rounder, ...) {
   }
 
   precision_string <- precision
-  precision <- validate_time_point_precision_string(precision)
+  check_time_point_precision(precision)
+  precision <- precision_to_integer(precision)
 
   duration <- time_point_duration(x)
 
@@ -1025,15 +1058,15 @@ time_point_count_between <- function(start, end, precision, ..., n = 1L) {
   start <- args[[1]]
   end <- args[[2]]
 
-  precision_int <- validate_precision_string(precision)
+  check_precision(precision)
+  precision_int <- precision_to_integer(precision)
+
   if (precision_int < PRECISION_WEEK) {
     abort("`precision` must be at least 'week' precision.")
   }
 
-  n <- vec_cast(n, integer(), x_arg = "n")
-  if (!is_number(n) || n <= 0L) {
-    abort("`n` must be a single positive integer.")
-  }
+  check_number_whole(n, min = 0)
+  n <- vec_cast(n, integer())
 
   out <- end - start
   out <- duration_cast(out, precision)
@@ -1150,16 +1183,14 @@ time_point_precision <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-validate_time_point_precision_string <- function(precision) {
-  precision <- validate_precision_string(precision)
-
-  if (!is_valid_time_point_precision(precision)) {
-    abort("`precision` must be at least 'day' precision.")
-  }
-
-  precision
-}
-
-is_valid_time_point_precision <- function(precision) {
-  precision >= PRECISION_DAY
+check_time_point_precision <- function(x,
+                                       ...,
+                                       arg = caller_arg(x),
+                                       call = caller_env()) {
+  check_precision(
+    x = x,
+    values = c("day", precision_time_names()),
+    arg = arg,
+    call = call
+  )
 }
