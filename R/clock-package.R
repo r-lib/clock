@@ -4,8 +4,8 @@
 # The following block is used by usethis to automatically manage
 # roxygen namespace tags. Modify with care!
 ## usethis namespace: start
-#' @useDynLib clock, .registration = TRUE
-#' @import vctrs
 #' @import rlang
+#' @import vctrs
+#' @useDynLib clock, .registration = TRUE
 ## usethis namespace: end
 NULL
