@@ -455,16 +455,16 @@ zone of your input, it becomes clear:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-01 23:00:00"</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">x</span>, tz <span class="op">=</span> <span class="fu"><a href="../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">x</span>, tz <span class="op">=</span> <span class="fu"><a href="../reference/date-time-zone.html">date_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "2019-01-01"</span></span></code></pre></div>
 <p>If this assumed that Date was UTC, then it would have resulted in
 something like:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">utc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date-zone.html">date_set_zone</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"UTC"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">utc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date-time-zone.html">date_time_set_zone</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"UTC"</span><span class="op">)</span></span>
 <span><span class="va">utc</span></span>
 <span><span class="co">#&gt; [1] "2019-01-02 04:00:00 UTC"</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">utc</span>, tz <span class="op">=</span> <span class="fu"><a href="../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">utc</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">utc</span>, tz <span class="op">=</span> <span class="fu"><a href="../reference/date-time-zone.html">date_time_zone</a></span><span class="op">(</span><span class="va">utc</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "2019-01-02"</span></span></code></pre></div>
 </div>
 <div class="section level2">

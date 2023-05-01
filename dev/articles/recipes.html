@@ -160,7 +160,7 @@ them?</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"2019-01-30 09:00:00"</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/date-zone.html">date_set_zone</a></span><span class="op">(</span><span class="va">my_time</span>, <span class="st">"Asia/Shanghai"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/date-time-zone.html">date_time_set_zone</a></span><span class="op">(</span><span class="va">my_time</span>, <span class="st">"Asia/Shanghai"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "2019-01-30 22:00:00 CST"</span></span></code></pre></div>
 </div>
 </div>
@@ -215,7 +215,7 @@ daylight saving time issues, in which case you might need to set the
 <span><span class="va">my_time</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"Asia/Shanghai"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/date-zone.html">date_set_zone</a></span><span class="op">(</span><span class="st">"America/New_York"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/date-time-zone.html">date_time_set_zone</a></span><span class="op">(</span><span class="st">"America/New_York"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "2019-01-29 20:00:00 EST"</span></span></code></pre></div>
 </div>
 </div>
