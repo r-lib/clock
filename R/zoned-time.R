@@ -914,10 +914,10 @@ as.character.clock_zoned_time <- function(x, ...) {
 #' @examples
 #' x <- zoned_time_now("America/New_York")
 zoned_time_now <- function(zone) {
+  check_zone(zone)
   names <- NULL
   sys_time <- sys_time_now()
   precision <- time_point_precision_attribute(sys_time)
-  zone <- zone_validate(zone)
   new_zoned_time_from_fields(sys_time, precision, zone, names)
 }
 
@@ -1019,7 +1019,7 @@ zoned_time_zone <- function(x) {
 #' @export
 zoned_time_set_zone <- function(x, zone) {
   check_zoned_time(x)
-  zone <- zone_validate(zone)
+  check_zone(zone)
   zoned_time_set_zone_attribute(x, zone)
 }
 
@@ -1126,17 +1126,20 @@ add_nanoseconds.clock_zoned_time <- function(x, n, ...) {
 
 # ------------------------------------------------------------------------------
 
-zone_validate <- function(zone) {
-  if (!is_string(zone)) {
-    abort("`zone` must be a single string.")
+check_zone <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
+  check_string(x, arg = arg, call = call)
+
+  if (zone_is_valid(x)) {
+    return(invisible(NULL))
   }
 
-  if (!zone_is_valid(zone)) {
-    message <- paste0("'", zone, "' is not a known time zone.")
-    abort(message)
-  }
+  message <- c(
+    "{.arg {arg}} must be a valid time zone name.",
+    i = "{.str {x}} is invalid.",
+    i = "Allowed time zone names are listed in {.run clock::tzdb_names()}."
+  )
 
-  zone
+  cli::cli_abort(message, call = call)
 }
 
 # ------------------------------------------------------------------------------

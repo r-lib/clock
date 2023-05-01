@@ -374,7 +374,7 @@ as_naive_time.clock_sys_time <- function(x) {
 as_zoned_time.clock_sys_time <- function(x, zone, ...) {
   check_dots_empty()
 
-  zone <- zone_validate(zone)
+  check_zone(zone)
 
   # Promote to at least seconds precision for `zoned_time`
   x <- vec_cast(x, vec_ptype2(x, clock_empty_sys_time_second))

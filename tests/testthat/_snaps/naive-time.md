@@ -213,24 +213,26 @@
     Code
       as_zoned_time(naive_seconds(), "foo")
     Condition
-      Error in `zone_validate()`:
-      ! 'foo' is not a known time zone.
+      Error in `as_zoned_time()`:
+      ! `zone` must be a valid time zone name.
+      i "foo" is invalid.
+      i Allowed time zone names are listed in `clock::tzdb_names()`.
 
 ---
 
     Code
       as_zoned_time(naive_seconds(), 1)
     Condition
-      Error in `zone_validate()`:
-      ! `zone` must be a single string.
+      Error in `as_zoned_time()`:
+      ! `zone` must be a single string, not the number 1.
 
 ---
 
     Code
       as_zoned_time(naive_seconds(), c("America/New_York", "EST", "EDT"))
     Condition
-      Error in `zone_validate()`:
-      ! `zone` must be a single string.
+      Error in `as_zoned_time()`:
+      ! `zone` must be a single string, not a character vector.
 
 # strict mode can be activated - nonexistent
 

@@ -55,6 +55,6 @@ date_set_zone.Date <- function(x, zone) {
 #' @export
 date_set_zone.POSIXt <- function(x, zone) {
   x <- to_posixct(x)
-  zone <- zone_validate(zone)
+  check_zone(zone)
   posixt_set_tzone(x, zone)
 }

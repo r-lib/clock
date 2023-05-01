@@ -1131,8 +1131,8 @@ date_time_zone <- function(x) {
 date_time_set_zone <- function(x, zone) {
   check_date_zone_error(x)
   check_posixt(x)
+  check_zone(zone)
   x <- to_posixct(x)
-  zone <- zone_validate(zone)
   posixt_set_tzone(x, zone)
 }
 

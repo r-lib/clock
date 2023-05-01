@@ -448,7 +448,7 @@ as_zoned_time.clock_naive_time <- function(x,
                                            ambiguous = NULL) {
   check_dots_empty()
 
-  zone <- zone_validate(zone)
+  check_zone(zone)
 
   # Promote to at least seconds precision for `zoned_time`
   ptype <- vec_ptype2(x, clock_empty_naive_time_second, y_arg = "")
