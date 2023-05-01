@@ -256,7 +256,7 @@ just supply an origin on the weekday you are interested in.</p>
 <span class="r-in"><span><span class="co"># will attempt to generate a time of 1970-04-26 02:00:00, which doesn't</span></span></span>
 <span class="r-in"><span><span class="co"># exist in this time zone</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="date-and-date-time-rounding.html">date_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"hour"</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in stop_clock(message, "clock_error_nonexistent_time") : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in as_zoned_time(x, zone = tz, nonexistent = nonexistent, ambiguous = ambiguous) : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Nonexistent time due to daylight saving time at location 2.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</span>
 <span class="r-in"><span></span></span>

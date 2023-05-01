@@ -199,7 +199,7 @@ unexpected <code>NA</code>.</p>
 default behavior raises an error.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `invalid_resolve()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Invalid date found at location 2.</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve invalid date issues by specifying the `invalid` argument.</span></span></code></pre></div>
 <p>You can handle these issues with an <em>invalid date resolution
@@ -360,7 +360,7 @@ the <code>NA</code>. But what could you do? Possibly:</p>
 times result in an error.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `as_zoned_time()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Nonexistent time due to daylight saving time at location 2.</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</span></span></code></pre></div>
 <p>Solve these issues with a <em>nonexistent time resolution
@@ -433,7 +433,7 @@ of time there, and then converting back to POSIXct.</p>
 <span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `as_zoned_time()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Nonexistent time due to daylight saving time at location 1.</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</span></span>
 <span></span>
@@ -475,7 +475,7 @@ generate an ambiguous time:</p>
 <span></span>
 <span><span class="co"># Which of the two 1 o'clocks are we talking about? It is ambiguous!</span></span>
 <span><span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `as_zoned_time()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Ambiguous time due to daylight saving time at location 1.</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve ambiguous time issues by specifying the `ambiguous` argument.</span></span></code></pre></div>
 <p>You can handle these by setting an <em>ambiguous time resolution
@@ -547,7 +547,7 @@ considered ambiguous.</p>
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="../reference/date-zone.html">date_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `as_zoned_time()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Ambiguous time due to daylight saving time at location 2.</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve ambiguous time issues by specifying the `ambiguous` argument.</span></span></code></pre></div>
 <p><code><a href="../reference/date-and-date-time-rounding.html">date_floor()</a></code> works by flooring while in naive-time, but
@@ -587,7 +587,7 @@ should generate hour groups of <code>[1, 3), [3, 5), ...</code> .</p>
 <span><span class="co">#&gt; [1] "2020-11-01 01:00:00 EDT"</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/date-and-date-time-rounding.html">date_floor</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"hour"</span>, n <span class="op">=</span> <span class="fl">2</span>, origin <span class="op">=</span> <span class="va">origin</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `as_zoned_time()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Ambiguous time due to daylight saving time at location 4.</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve ambiguous time issues by specifying the `ambiguous` argument.</span></span></code></pre></div>
 <p>It seems that we have an ambiguous time issue at location 4, the
@@ -637,7 +637,7 @@ gathered new data, and all of the sudden it started failing?</p>
 <span></span>
 <span><span class="co"># Got new production data. Oh no!</span></span>
 <span><span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `invalid_resolve()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Invalid date found at location 2.</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve invalid date issues by specifying the `invalid` argument.</span></span></code></pre></div>
 <p>To balance the usefulness of clock in interactive development with
@@ -728,7 +728,7 @@ America/New_York time zone.</p>
 <span><span class="co">#&gt; [1] "2020-11-01T00:30:00" "2020-11-01T01:30:00"</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `as_zoned_time()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Ambiguous time due to daylight saving time at location 2.</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve ambiguous time issues by specifying the `ambiguous` argument.</span></span>
 <span></span>
@@ -820,14 +820,23 @@ directly.</p>
 must be resolved is before converting to another type:</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">ymd</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `calendar_require_all_valid()`:</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `as_sys_time()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Can't convert `x` to another type because some dates are</span></span>
+<span><span class="co">#&gt;   invalid.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The following locations are invalid: 2.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Resolve invalid dates with `invalid_resolve()`.</span></span>
 <span><span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="va">ymd</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `calendar_require_all_valid()`:</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `as_sys_time()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Can't convert `x` to another type because some dates are</span></span>
+<span><span class="co">#&gt;   invalid.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The following locations are invalid: 2.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Resolve invalid dates with `invalid_resolve()`.</span></span>
 <span><span class="fu"><a href="../reference/as_year_month_weekday.html">as_year_month_weekday</a></span><span class="op">(</span><span class="va">ymd</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `calendar_require_all_valid()`:</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Conversion from a calendar requires that all dates are valid. Resolve invalid dates by calling `invalid_resolve()`.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `as_sys_time()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Can't convert `x` to another type because some dates are</span></span>
+<span><span class="co">#&gt;   invalid.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The following locations are invalid: 2.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Resolve invalid dates with `invalid_resolve()`.</span></span></code></pre></div>
 <p>In the high-level API for R’s native date and date-time types, the
 <code>invalid</code> argument is forced to bubble up in more places.
 This trades the user benefit of being able to work directly on R’s

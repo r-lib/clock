@@ -163,8 +163,10 @@ last day of the year.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Cannot set a component two levels more precise than where you currently are</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="clock-setters.html">set_hour</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in calendar_require_minimum_precision(x, PRECISION_DAY, "set_hour") : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `set_hour()` requires a minimum precision of 'day'.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in set_hour(x, 5) : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Can't perform this operation because of the precision of `x`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The precision of `x` must be at least "day".</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` has a precision of "year".</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

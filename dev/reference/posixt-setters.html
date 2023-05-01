@@ -222,7 +222,7 @@ a convenient way to make production code robust to ambiguous times.</p></dd>
 <span class="r-in"><span><span class="co"># You cannot set a date-time to an invalid date like you can with</span></span></span>
 <span class="r-in"><span><span class="co"># a year-month-day. Instead, the default strategy is to error.</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="clock-setters.html">set_day</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">31</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in stop_clock(message, "clock_error_invalid_date") : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in invalid_resolve(x, invalid = invalid) : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Invalid date found at location 1.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Resolve invalid date issues by specifying the `invalid` argument.</span>
 <span class="r-in"><span><span class="fu"><a href="clock-setters.html">set_day</a></span><span class="op">(</span><span class="fu"><a href="as_year_month_day.html">as_year_month_day</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fl">31</span><span class="op">)</span></span></span>
@@ -239,7 +239,7 @@ a convenient way to make production code robust to ambiguous times.</p></dd>
 <span class="r-in"><span><span class="co"># Nonexistent and ambiguous times must be resolved immediately when</span></span></span>
 <span class="r-in"><span><span class="co"># working with R's native date-time types. An error is thrown by default.</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="clock-setters.html">set_hour</a></span><span class="op">(</span><span class="va">y</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in stop_clock(message, "clock_error_nonexistent_time") : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in as_zoned_time(x, zone = tz, nonexistent = nonexistent, ambiguous = ambiguous) : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Nonexistent time due to daylight saving time at location 1.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</span>
 <span class="r-in"><span><span class="fu"><a href="clock-setters.html">set_hour</a></span><span class="op">(</span><span class="va">y</span>, <span class="fl">2</span>, nonexistent <span class="op">=</span> <span class="st">"roll-forward"</span><span class="op">)</span></span></span>

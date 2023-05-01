@@ -217,7 +217,7 @@ limited set of types to POSIXct. For parsing characters as date-times, see
 <span class="r-in"><span><span class="co"># skipping the 0th hour entirely.</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2021-03-28"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">as_date_time</span><span class="op">(</span><span class="va">x</span>, <span class="st">"Asia/Beirut"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in stop_clock(message, "clock_error_nonexistent_time") : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in as_zoned_time(x, zone = tz, nonexistent = nonexistent, ambiguous = ambiguous) : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Nonexistent time due to daylight saving time at location 1.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</span>
 <span class="r-in"><span></span></span>

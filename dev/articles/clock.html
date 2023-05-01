@@ -132,7 +132,7 @@ This allows you to specify the components individually.</p>
 error message:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">12</span>, <span class="fl">31</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `invalid_resolve()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Invalid date found at location 2.</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve invalid date issues by specifying the `invalid` argument.</span></span></code></pre></div>
 <p>One way to resolve this is by specifying an invalid date resolution
@@ -168,7 +168,7 @@ o’clock hour entirely. Let’s “accidentally” create a time in that
 gap:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/date_time_build.html">date_time_build</a></span><span class="op">(</span><span class="fl">2019</span><span class="op">:</span><span class="fl">2021</span>, <span class="fl">3</span>, <span class="fl">8</span>, <span class="fl">2</span>, <span class="fl">30</span>, zone <span class="op">=</span> <span class="st">"America/New_York"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `as_zoned_time()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Nonexistent time due to daylight saving time at location 2.</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</span></span></code></pre></div>
 <p>To resolve this issue, we can specify a nonexistent time resolution
@@ -274,7 +274,7 @@ these two 1 o’clocks it belongs to, so it is considered
 <em>ambiguous</em>. Ambiguous times will error when parsing:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/date-time-parse.html">date_time_parse</a></span><span class="op">(</span><span class="st">"2020-11-01 01:30:00"</span>, <span class="st">"America/New_York"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `as_zoned_time()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Ambiguous time due to daylight saving time at location 1.</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve ambiguous time issues by specifying the `ambiguous` argument.</span></span></code></pre></div>
 <p>To fix that, you can specify an ambiguous time resolution strategy
@@ -567,7 +567,7 @@ this date, you’ll get an error.</p>
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">1</span>, <span class="fl">31</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `invalid_resolve()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Invalid date found at location 1.</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve invalid date issues by specifying the `invalid` argument.</span></span></code></pre></div>
 <p>clock gives you the power to handle this through the
@@ -626,7 +626,7 @@ you know when you run into an issue:</p>
 <span></span>
 <span><span class="co"># Daylight saving time gap on the 26th between 01:59:59 -&gt; 03:00:00</span></span>
 <span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `as_zoned_time()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Nonexistent time due to daylight saving time at location 1.</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</span></span></code></pre></div>
 <p>You can solve this using the <code>nonexistent</code> argument to
@@ -677,7 +677,7 @@ requires you to explicitly handle this:</p>
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/clock-setters.html">set_day</a></span><span class="op">(</span><span class="fl">31</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/clock-setters.html">set_month</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `invalid_resolve()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Invalid date found at location 1.</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve invalid date issues by specifying the `invalid` argument.</span></span>
 <span></span>

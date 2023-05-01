@@ -299,7 +299,7 @@ using the <code>nonexistent</code> argument of <code><a href="https://rdrr.io/r/
 <span class="r-in"><span><span class="co"># types, R's native date-time types cannot handle invalid dates, so you must</span></span></span>
 <span class="r-in"><span><span class="co"># resolve them immediately. If you don't you get an error:</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">y</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in stop_clock(message, "clock_error_invalid_date") : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in invalid_resolve(x, invalid = invalid) : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Invalid date found at location 1.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Resolve invalid date issues by specifying the `invalid` argument.</span>
 <span class="r-in"><span><span class="fu"><a href="clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="fu"><a href="as_year_month_day.html">as_year_month_day</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span></span>

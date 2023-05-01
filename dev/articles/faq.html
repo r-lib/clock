@@ -117,8 +117,10 @@
 <p>That you should also be able to do:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> This calendar doesn't support `add_days()`.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `add_days()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Can't perform this operation on a <span style="color: #0000BB;">&lt;clock_year_month_day&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Do you need to convert to a time point first?</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Use `as_naive_time()` or `as_sys_time()` to convert to a time point.</span></span></code></pre></div>
 <p>Generally, calendars don’t support day based arithmetic, nor do they
 support arithmetic at more precise precisions than day. Instead, you
 have to convert to a time point, do the arithmetic there, and then
@@ -197,12 +199,16 @@ sense.</p>
 <p>You might wonder why you can’t add any units of time to it:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Zoned-times don't support `add_days()`.</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `add_days()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Can't perform this operation on a <span style="color: #0000BB;">&lt;clock_zoned_time&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Do you need to convert to a time point first?</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Use `as_naive_time()` or `as_sys_time()` to convert to a time point.</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/clock-arithmetic.html">add_seconds</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Zoned-times don't support `add_seconds()`.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `add_seconds()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Can't perform this operation on a <span style="color: #0000BB;">&lt;clock_zoned_time&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Do you need to convert to a time point first?</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Use `as_naive_time()` or `as_sys_time()` to convert to a time point.</span></span></code></pre></div>
 <p>In clock, you can’t do much with zoned-times directly. The best way
 to understand this is to think of a zoned-time as containing 3 things: a
 sys-time, a naive-time, and a time zone name. You can access those
@@ -256,7 +262,7 @@ sys-time or naive-time matters. Let’s try adding 30 minutes:</p>
 <span>  <span class="fu"><a href="../reference/as_naive_time.html">as_naive_time</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/clock-arithmetic.html">add_minutes</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/as_zoned_time.html">as_zoned_time</a></span><span class="op">(</span><span class="fu"><a href="../reference/zoned-zone.html">zoned_time_zone</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `as_zoned_time()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Nonexistent time due to daylight saving time at location 1.</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve nonexistent time issues by specifying the `nonexistent` argument.</span></span>
 <span></span>

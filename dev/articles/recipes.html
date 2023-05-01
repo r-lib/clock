@@ -443,7 +443,7 @@ handle them.</p>
 <span><span class="va">dec31</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">12</span>, <span class="fl">31</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/date_seq.html">date_seq</a></span><span class="op">(</span><span class="va">jan31</span>, to <span class="op">=</span> <span class="va">dec31</span>, by <span class="op">=</span> <span class="fu"><a href="../reference/duration-helper.html">duration_months</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `stop_clock()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `invalid_resolve()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Invalid date found at location 2.</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Resolve invalid date issues by specifying the `invalid` argument.</span></span></code></pre></div>
 <p>By specifying <code>invalid = "previous"</code> here, we can generate
