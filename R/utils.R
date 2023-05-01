@@ -18,6 +18,10 @@ is_POSIXlt <- function(x) {
   inherits(x, "POSIXlt")
 }
 
+check_posixt <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
+  check_inherits(x, what = "POSIXt", arg = arg, call = call)
+}
+
 posixct_standardize <- function(x) {
   if (identical(typeof(x), "double")) {
     return(x)

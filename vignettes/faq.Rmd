@@ -333,16 +333,16 @@ It is a bit hard to see this, because the `tz` argument of the method defaults t
 ```{r}
 x <- as.POSIXct("2019-01-01 23:00:00", "America/New_York")
 
-as.Date(x, tz = date_zone(x))
+as.Date(x, tz = date_time_zone(x))
 ```
 
 If this assumed that Date was UTC, then it would have resulted in something like:
 
 ```{r}
-utc <- date_set_zone(x, "UTC")
+utc <- date_time_set_zone(x, "UTC")
 utc
 
-as.Date(utc, tz = date_zone(utc))
+as.Date(utc, tz = date_time_zone(utc))
 ```
 
 ## What does clock do with leap seconds?

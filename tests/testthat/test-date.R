@@ -581,20 +581,6 @@ test_that("can't count between a Date and a POSIXt", {
 })
 
 # ------------------------------------------------------------------------------
-# date_zone()
-
-test_that("cannot get the zone of a Date", {
-  expect_snapshot(error = TRUE, date_zone(new_date(0)))
-})
-
-# ------------------------------------------------------------------------------
-# date_set_zone()
-
-test_that("cannot set the zone of a Date", {
-  expect_snapshot(error = TRUE, date_set_zone(new_date(0), "UTC"))
-})
-
-# ------------------------------------------------------------------------------
 # vec_arith()
 
 test_that("<date> op <duration>", {
