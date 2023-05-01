@@ -36,6 +36,14 @@
       <naive_time<second>[1]>
       [1] NA
 
+# `naive_time_parse()` validates `locale`
+
+    Code
+      naive_time_parse("2019-01-01T00:00:00", locale = 1)
+    Condition
+      Error in `naive_time_parse()`:
+      ! `locale` must be a <clock_locale>, not the number 1.
+
 # default format is correct
 
     Code

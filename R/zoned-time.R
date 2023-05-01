@@ -206,9 +206,7 @@ format.clock_zoned_time <- function(x,
                                     format = NULL,
                                     locale = clock_locale(),
                                     abbreviate_zone = FALSE) {
-  if (!is_clock_locale(locale)) {
-    abort("`locale` must be a 'clock_locale' object.")
-  }
+  check_clock_locale(locale)
 
   zone <- zoned_time_zone_attribute(x)
   precision <- zoned_time_precision_attribute(x)
@@ -598,9 +596,7 @@ zoned_time_parse_complete <- function(x,
   check_zoned_time_precision(precision)
   precision <- precision_to_integer(precision)
 
-  if (!is_clock_locale(locale)) {
-    abort("`locale` must be a 'clock_locale' object.")
-  }
+  check_clock_locale(locale)
 
   if (is_null(format)) {
     # Use both %z and %Z
@@ -638,9 +634,7 @@ zoned_time_parse_abbrev <- function(x,
   check_zoned_time_precision(precision)
   precision <- precision_to_integer(precision)
 
-  if (!is_clock_locale(locale)) {
-    abort("`locale` must be a 'clock_locale' object.")
-  }
+  check_clock_locale(locale)
 
   if (is_null(format)) {
     # Like what R POSIXct prints

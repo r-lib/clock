@@ -291,9 +291,7 @@ year_month_day_parse <- function(x,
     format <- year_month_day_format(precision)
   }
 
-  if (!is_clock_locale(locale)) {
-    abort("`locale` must be a 'clock_locale' object.")
-  }
+  check_clock_locale(locale)
 
   labels <- locale$labels
   mark <- locale$decimal_mark

@@ -317,6 +317,12 @@ test_that("parsing fails when undocumented rounding behavior would result in inv
   )
 })
 
+test_that("`naive_time_parse()` validates `locale`", {
+  expect_snapshot(error = TRUE, {
+    naive_time_parse("2019-01-01T00:00:00", locale = 1)
+  })
+})
+
 # ------------------------------------------------------------------------------
 # format()
 

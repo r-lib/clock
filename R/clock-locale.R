@@ -50,6 +50,7 @@ print.clock_locale <- function (x, ...) {
   print(x$labels)
 }
 
-is_clock_locale <- function(x) {
-  inherits(x, "clock_locale")
+check_clock_locale <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
+  check_inherits(x, what = "clock_locale", arg = arg, call = call)
 }
+

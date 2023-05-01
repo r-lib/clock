@@ -30,9 +30,7 @@ format.clock_time_point <- function(x,
                                     ...,
                                     format = NULL,
                                     locale = clock_locale()) {
-  if (!is_clock_locale(locale)) {
-    abort("`locale` must be a 'clock_locale' object.")
-  }
+  check_clock_locale(locale)
 
   clock <- time_point_clock_attribute(x)
   precision <- time_point_precision_attribute(x)
@@ -81,20 +79,19 @@ time_point_precision_format <- function(precision) {
 # ------------------------------------------------------------------------------
 
 time_point_parse <- function(x,
-                             ...,
                              format,
                              precision,
                              locale,
-                             clock) {
-  check_dots_empty()
+                             clock,
+                             ...,
+                             error_call = caller_env()) {
+  check_dots_empty0(...)
 
   if (is_null(format)) {
     format <- time_point_precision_format(precision)
   }
 
-  if (!is_clock_locale(locale)) {
-    abort("`locale` must be a 'clock_locale' object.")
-  }
+  check_clock_locale(locale, call = error_call)
 
   labels <- locale$labels
   mark <- locale$decimal_mark

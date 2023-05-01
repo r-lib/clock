@@ -55,7 +55,7 @@
     Code
       sys_time_parse_RFC_3339(x, 1)
     Condition
-      Error in `time_point_parse()`:
+      Error in `sys_time_parse()`:
       ! `...` must be empty.
       x Problematic argument:
       * ..1 = 1
