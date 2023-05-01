@@ -1,5 +1,10 @@
 # clock (development version)
 
+* `seq()` methods for durations and time points handle the empty sequence cases
+  of `from > to && by > 0` and `from < to && by < 0` better when `from` and `to`
+  are very far apart (i.e. when they would otherwise result in overflow if they
+  were subtracted).
+
 * `as.character()` has been implemented for durations.
 
 * `zoned_time_zone()` and `zoned_time_set_zone()` are no longer generic, and now

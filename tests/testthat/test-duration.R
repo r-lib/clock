@@ -172,12 +172,17 @@ test_that("seq() works when from and to are identical", {
   expect_identical(seq(duration_years(1L), to = duration_years(1L), by = -1), duration_years(1L))
 })
 
-test_that("seq() with `from > to && by > 0` or `from < to && by > 0` results in length 0 output (#282)", {
+test_that("seq() with `from > to && by > 0` or `from < to && by < 0` results in length 0 output (#282)", {
   expect_identical(seq(duration_years(2L), to = duration_years(1L), by = 1), duration_years())
   expect_identical(seq(duration_years(5L), to = duration_years(1L), by = 1), duration_years())
 
   expect_identical(seq(duration_years(1L), to = duration_years(2L), by = -1), duration_years())
   expect_identical(seq(duration_years(1L), to = duration_years(5L), by = -1), duration_years())
+
+  # In particular, handles the case where subtraction of distant `from` and `to` would overflow
+  x <- duration_cast(duration_years(200), "nanosecond")
+  expect_identical(seq(x, -x, by = 1), duration_nanoseconds())
+  expect_identical(seq(-x, x, by = -1), duration_nanoseconds())
 })
 
 test_that("seq(to, by) works", {

@@ -1332,15 +1332,21 @@ duration_seq_to_by_impl(cpp11::list_of<cpp11::doubles>& from_fields,
   const Duration end = to[0];
   const Duration step = by[0];
 
-  const Rep num = clock_safe_subtract(end.count(), start.count());
-  const Rep den = step.count();
-  const Rep length_out = num / den + 1;
+  // To match `rlang::seq2()`, which has nice mathematical properties of
+  // returning an empty sequence when `start > end`
+  const bool is_empty =
+    (step > Duration::zero() && start > end) ||
+    (step < Duration::zero() && start < end);
 
-  // To match `rlang::seq2()`, which has nicer properties.
-  // i.e., when `start > end && step > 0` or `start < end && step < 0`.
-  const Rep length_out2 = std::max(length_out, Rep{0});
+  r_ssize size;
 
-  const r_ssize size = static_cast<r_ssize>(length_out2);
+  if (is_empty) {
+    size = 0;
+  } else {
+    const Rep num = clock_safe_subtract(end.count(), start.count());
+    const Rep den = step.count();
+    size = static_cast<r_ssize>(num / den + 1);
+  }
 
   ClockDuration out(size);
 
