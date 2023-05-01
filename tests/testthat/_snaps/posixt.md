@@ -213,6 +213,42 @@
                                 Z: %Z 
                 "Z: America/New_York" 
 
+# `date_time_zone()` has a special error on Dates
+
+    Code
+      date_time_zone(new_date(0))
+    Condition
+      Error in `date_time_zone()`:
+      ! `x` can't be a <Date>.
+      i <Date> is considered a naive time with an unspecified time zone.
+      i Time zones can only be get or set for date-times (<POSIXct> or <POSIXlt>).
+
+# `date_time_zone()` validates `x`
+
+    Code
+      date_time_zone(1)
+    Condition
+      Error in `date_time_zone()`:
+      ! `x` must be a <POSIXt>, not the number 1.
+
+# `date_time_set_zone()` has a special error on Dates
+
+    Code
+      date_time_set_zone(new_date(), "UTC")
+    Condition
+      Error in `date_time_set_zone()`:
+      ! `x` can't be a <Date>.
+      i <Date> is considered a naive time with an unspecified time zone.
+      i Time zones can only be get or set for date-times (<POSIXct> or <POSIXlt>).
+
+# `date_time_set_zone()` validates `x`
+
+    Code
+      date_time_set_zone(1, "UTC")
+    Condition
+      Error in `date_time_set_zone()`:
+      ! `x` must be a <POSIXt>, not the number 1.
+
 # can resolve ambiguity and nonexistent times
 
     Code

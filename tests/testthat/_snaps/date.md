@@ -381,22 +381,6 @@
       Error in `date_count_between()`:
       ! `end` must be a <Date>, not a <POSIXct/POSIXt> object.
 
-# cannot get the zone of a Date
-
-    Code
-      date_zone(new_date(0))
-    Condition
-      Error in `date_zone()`:
-      ! Can't get the zone of a 'Date'.
-
-# cannot set the zone of a Date
-
-    Code
-      date_set_zone(new_date(0), "UTC")
-    Condition
-      Error in `date_set_zone()`:
-      ! Can't set the zone of a 'Date'.
-
 # <date> op <duration>
 
     Code

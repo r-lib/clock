@@ -28,10 +28,10 @@ reference:
   - date_format
   - date_parse
   - date-time-parse
-  - date-zone
   - date_weekday_factor
   - date_month_factor
   - date_leap_year
+  - date-time-zone
   - date_time_info
   - as_date
   - as_date_time

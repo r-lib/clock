@@ -763,7 +763,7 @@ date_group.POSIXt <- function(x,
                               nonexistent = NULL,
                               ambiguous = x) {
   force(ambiguous)
-  zone <- date_zone(x)
+  zone <- date_time_zone(x)
   x <- as_year_month_day(x)
   x <- calendar_group(x, precision, ..., n = n)
   x <- calendar_widen(x, "second")
@@ -915,7 +915,7 @@ date_time_rounder <- function(x,
   precision <- result$precision
   n <- result$n
 
-  zone <- date_zone(x)
+  zone <- date_time_zone(x)
 
   x <- as_naive_time(x)
 
@@ -942,7 +942,7 @@ collect_date_time_rounder_origin <- function(origin, zone, precision) {
     abort("`origin` must not be `NA` or an infinite date.")
   }
 
-  if (!identical(date_zone(origin), zone)) {
+  if (!identical(date_time_zone(origin), zone)) {
     abort("`origin` must have the same time zone as `x`.")
   }
 
@@ -1051,9 +1051,9 @@ date_format.POSIXt <- function(x,
 #' Get or set the time zone
 #'
 #' @description
-#' - `date_zone()` gets the time zone.
+#' - `date_time_zone()` gets the time zone.
 #'
-#' - `date_set_zone()` sets the time zone. This retains the _underlying
+#' - `date_time_set_zone()` sets the time zone. This retains the _underlying
 #' duration_, but changes the _printed time_ depending on the zone that is
 #' chosen.
 #'
@@ -1070,41 +1070,41 @@ date_format.POSIXt <- function(x,
 #'   A valid time zone to switch to.
 #'
 #' @return
-#' - `date_zone()` returns a string containing the time zone.
+#' - `date_time_zone()` returns a string containing the time zone.
 #'
-#' - `date_set_zone()` returns `x` with an altered printed time. The
+#' - `date_time_set_zone()` returns `x` with an altered printed time. The
 #' underlying duration is not changed.
 #'
-#' @name date-zone
+#' @name date-time-zone
 #'
 #' @examples
 #' library(magrittr)
 #'
 #' # Cannot set or get the zone of Date.
 #' # clock assumes that Dates are naive types, like naive-time.
-#' x <- as.Date("2019-01-01")
-#' try(date_zone(x))
-#' try(date_set_zone(x, "America/New_York"))
+#' x <- date_parse("2019-01-01")
+#' try(date_time_zone(x))
+#' try(date_time_set_zone(x, "America/New_York"))
 #'
-#' x <- as.POSIXct("2019-01-02 01:30:00", tz = "America/New_York")
+#' x <- date_time_parse("2019-01-02 01:30:00", "America/New_York")
 #' x
 #'
-#' date_zone(x)
+#' date_time_zone(x)
 #'
 #' # If it is 1:30am in New York, what time is it in Los Angeles?
 #' # Same underlying duration, new printed time
-#' date_set_zone(x, "America/Los_Angeles")
+#' date_time_set_zone(x, "America/Los_Angeles")
 #'
 #' # If you want to retain the printed time, but change the underlying duration,
 #' # convert to a naive-time to drop the time zone, then convert back to a
 #' # date-time. Be aware that this requires that you handle daylight saving time
 #' # irregularities with the `nonexistent` and `ambiguous` arguments to
-#' # `as.POSIXct()`!
+#' # `as_date_time()`!
 #' x %>%
 #'   as_naive_time() %>%
-#'   as.POSIXct("America/Los_Angeles")
+#'   as_date_time("America/Los_Angeles")
 #'
-#' y <- as.POSIXct("2021-03-28 03:30:00", "America/New_York")
+#' y <- date_time_parse("2021-03-28 03:30:00", "America/New_York")
 #' y
 #'
 #' y_nt <- as_naive_time(y)
@@ -1112,34 +1112,45 @@ date_format.POSIXt <- function(x,
 #'
 #' # Helsinki had a daylight saving time gap where they jumped from
 #' # 02:59:59 -> 04:00:00
-#' try(as.POSIXct(y_nt, "Europe/Helsinki"))
+#' try(as_date_time(y_nt, "Europe/Helsinki"))
 #'
-#' as.POSIXct(y_nt, "Europe/Helsinki", nonexistent = "roll-forward")
-#' as.POSIXct(y_nt, "Europe/Helsinki", nonexistent = "roll-backward")
+#' as_date_time(y_nt, "Europe/Helsinki", nonexistent = "roll-forward")
+#' as_date_time(y_nt, "Europe/Helsinki", nonexistent = "roll-backward")
 NULL
 
-#' @rdname date-zone
+#' @rdname date-time-zone
 #' @export
-date_zone <- function(x) {
-  UseMethod("date_zone")
-}
-
-#' @export
-date_zone.POSIXt <- function(x) {
+date_time_zone <- function(x) {
+  check_date_zone_error(x)
+  check_posixt(x)
   posixt_tzone(x)
 }
 
-#' @rdname date-zone
+#' @rdname date-time-zone
 #' @export
-date_set_zone <- function(x, zone) {
-  UseMethod("date_set_zone")
-}
-
-#' @export
-date_set_zone.POSIXt <- function(x, zone) {
+date_time_set_zone <- function(x, zone) {
+  check_date_zone_error(x)
+  check_posixt(x)
   x <- to_posixct(x)
   zone <- zone_validate(zone)
   posixt_set_tzone(x, zone)
+}
+
+check_date_zone_error <- function(x,
+                                  ...,
+                                  arg = caller_arg(x),
+                                  call = caller_env()) {
+  if (!is_date(x)) {
+    return(invisible(NULL))
+  }
+
+  message <- c(
+    "{.arg {arg}} can't be a {.cls Date}.",
+    i = "{.cls Date} is considered a naive time with an unspecified time zone.",
+    i = "Time zones can only be get or set for date-times ({.cls POSIXct} or {.cls POSIXlt})."
+  )
+
+  cli::cli_abort(message, call = call)
 }
 
 # ------------------------------------------------------------------------------
@@ -1435,7 +1446,7 @@ date_shift.POSIXt <- function(x,
                               nonexistent = NULL,
                               ambiguous = x) {
   force(ambiguous)
-  zone <- date_zone(x)
+  zone <- date_time_zone(x)
   x <- as_naive_time(x)
   x <- time_point_shift(x, target, ..., which = which, boundary = boundary)
   as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
@@ -1649,7 +1660,7 @@ date_start.POSIXt <- function(x,
                               ambiguous = x) {
   check_dots_empty()
   force(ambiguous)
-  zone <- date_zone(x)
+  zone <- date_time_zone(x)
   x <- as_year_month_day(x)
   x <- calendar_start(x, precision)
   as.POSIXct(x, zone, invalid = invalid, nonexistent = nonexistent, ambiguous = ambiguous)
@@ -1665,7 +1676,7 @@ date_end.POSIXt <- function(x,
                             ambiguous = x) {
   check_dots_empty()
   force(ambiguous)
-  zone <- date_zone(x)
+  zone <- date_time_zone(x)
   x <- as_year_month_day(x)
   x <- calendar_end(x, precision)
   as.POSIXct(x, zone, invalid = invalid, nonexistent = nonexistent, ambiguous = ambiguous)
@@ -1860,7 +1871,7 @@ date_seq.POSIXt <- function(from,
   check_number_of_supplied_optional_arguments(to, by, total_size)
 
   from <- to_posixct(from)
-  zone <- date_zone(from)
+  zone <- date_time_zone(from)
 
   if (!is_null(to)) {
     if (!is_POSIXt(to)) {
@@ -1869,7 +1880,7 @@ date_seq.POSIXt <- function(from,
 
     to <- to_posixct(to)
 
-    if (!identical(zone, date_zone(to))) {
+    if (!identical(zone, date_time_zone(to))) {
       abort("`from` and `to` must have identical time zones.")
     }
   }
@@ -2077,8 +2088,8 @@ date_count_between.POSIXt <- function(start, end, precision, ..., n = 1L) {
   start <- to_posixct(start)
   end <- to_posixct(end)
 
-  start_zone <- date_zone(start)
-  end_zone <- date_zone(end)
+  start_zone <- date_time_zone(start)
+  end_zone <- date_time_zone(end)
 
   if (!identical(start_zone, end_zone)) {
     start_zone <- zone_pretty(start_zone)
