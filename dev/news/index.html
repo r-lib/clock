@@ -63,7 +63,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="clock-development-version">clock (development version)<a class="anchor" aria-label="anchor" href="#clock-development-version"></a></h2>
-<ul><li><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character()</a></code> has been implemented for durations.</p></li>
+<ul><li><p><code><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq()</a></code> methods for durations and time points handle the empty sequence cases of <code>from &gt; to &amp;&amp; by &gt; 0</code> and <code>from &lt; to &amp;&amp; by &lt; 0</code> better when <code>from</code> and <code>to</code> are very far apart (i.e. when they would otherwise result in overflow if they were subtracted).</p></li>
+<li><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character()</a></code> has been implemented for durations.</p></li>
 <li><p><code><a href="../reference/zoned-zone.html">zoned_time_zone()</a></code> and <code><a href="../reference/zoned-zone.html">zoned_time_set_zone()</a></code> are no longer generic, and now only work for zoned-times.</p></li>
 <li><p><code><a href="../reference/date-zone.html">date_zone()</a></code> and <code><a href="../reference/date-zone.html">date_set_zone()</a></code> have been soft-deprecated in favor of <code><a href="../reference/date-time-zone.html">date_time_zone()</a></code> and <code><a href="../reference/date-time-zone.html">date_time_set_zone()</a></code> (<a href="https://github.com/r-lib/clock/issues/326" class="external-link">#326</a>).</p></li>
 <li><p>Many errors have been improved (<a href="https://github.com/r-lib/clock/issues/219" class="external-link">#219</a>, <a href="https://github.com/r-lib/clock/issues/286" class="external-link">#286</a>).</p></li>
