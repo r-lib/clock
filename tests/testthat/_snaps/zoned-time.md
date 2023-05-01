@@ -194,7 +194,7 @@
       zoned_time_info(1)
     Condition
       Error in `zoned_time_info()`:
-      ! `x` must be a 'clock_zoned_time'.
+      ! `x` must be a <clock_zoned_time>, not the number 1.
 
 # zoned-times don't support arithmetic
 
@@ -306,11 +306,27 @@
       i Do you need to convert to a time point first?
       i Use `as_naive_time()` or `as_sys_time()` to convert to a time point.
 
+# `zoned_time_zone()` validates `x`
+
+    Code
+      zoned_time_zone(1)
+    Condition
+      Error in `zoned_time_zone()`:
+      ! `x` must be a <clock_zoned_time>, not the number 1.
+
+# `zoned_time_set_zone()` validates `x`
+
+    Code
+      zoned_time_set_zone(1, "UTC")
+    Condition
+      Error in `zoned_time_set_zone()`:
+      ! `x` must be a <clock_zoned_time>, not the number 1.
+
 # precision: can only be called on zoned-times
 
     Code
       zoned_time_precision(duration_days())
     Condition
       Error in `zoned_time_precision()`:
-      ! `x` must be a 'clock_zoned_time'.
+      ! `x` must be a <clock_zoned_time>, not a <clock_duration/clock_rcrd/vctrs_rcrd/vctrs_vctr> object.
 

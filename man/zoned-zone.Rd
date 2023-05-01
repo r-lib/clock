@@ -11,7 +11,7 @@ zoned_time_zone(x)
 zoned_time_set_zone(x, zone)
 }
 \arguments{
-\item{x}{\verb{[zoned_time / Date / POSIXt]}
+\item{x}{\verb{[zoned_time]}
 
 A zoned time to get or set the time zone of.}
 
@@ -20,17 +20,19 @@ A zoned time to get or set the time zone of.}
 A valid time zone to switch to.}
 }
 \value{
-\code{zoned_time_zone()} returns a string containing the time zone.
-
-\code{zoned_time_set_zone()} returns \code{x} with an altered time zone attribute. The
-underlying instant is \emph{not} changed.
+\itemize{
+\item \code{zoned_time_zone()} returns a string containing the time zone.
+\item \code{zoned_time_set_zone()} returns \code{x} with an altered time zone attribute.
+The underlying instant is \emph{not} changed.
+}
 }
 \description{
-\code{zoned_time_zone()} gets the time zone.
-
-\code{zoned_time_set_zone()} sets the time zone \emph{without changing the
+\itemize{
+\item \code{zoned_time_zone()} gets the time zone.
+\item \code{zoned_time_set_zone()} sets the time zone \emph{without changing the
 underlying instant}. This means that the result will represent the equivalent
 time in the new time zone.
+}
 }
 \examples{
 x <- year_month_day(2019, 1, 1)

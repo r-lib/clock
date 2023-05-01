@@ -580,6 +580,41 @@ test_that("is.infinite() works", {
 })
 
 # ------------------------------------------------------------------------------
+# zoned_time_zone()
+
+test_that("can get the time zone of a zoned-time", {
+  zone <- "America/New_York"
+  x <- as_zoned_time(naive_days(0), zone)
+  expect_identical(zoned_time_zone(x), zone)
+})
+
+test_that("`zoned_time_zone()` validates `x`", {
+  expect_snapshot(error = TRUE, {
+    zoned_time_zone(1)
+  })
+})
+
+# ------------------------------------------------------------------------------
+# zoned_time_set_zone()
+
+test_that("can set the time zone of a zoned-time", {
+  zone1 <- "America/New_York"
+  zone2 <- "America/Los_Angeles"
+
+  sys <- sys_days(0)
+  x <- as_zoned_time(sys, zone1)
+  y <- as_zoned_time(sys, zone2)
+
+  expect_identical(zoned_time_set_zone(x, zone2), y)
+})
+
+test_that("`zoned_time_set_zone()` validates `x`", {
+  expect_snapshot(error = TRUE, {
+    zoned_time_set_zone(1, "UTC")
+  })
+})
+
+# ------------------------------------------------------------------------------
 # zoned_time_precision()
 
 test_that("precision: can get the precision", {

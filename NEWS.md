@@ -1,5 +1,8 @@
 # clock (development version)
 
+* `zoned_time_zone()` and `zoned_time_set_zone()` are no longer generic, and now
+  only work for zoned-times.
+
 * `date_zone()` and `date_set_zone()` have been soft-deprecated in favor of
   `date_time_zone()` and `date_time_set_zone()` (#326).
 

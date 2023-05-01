@@ -16,6 +16,10 @@ is_zoned_time <- function(x) {
   inherits(x, "clock_zoned_time")
 }
 
+check_zoned_time <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
+  check_inherits(x, what = "clock_zoned_time", arg = arg, call = call)
+}
+
 # ------------------------------------------------------------------------------
 
 zoned_time_zone_attribute <- function(x) {
@@ -948,9 +952,7 @@ zoned_time_now <- function(zone) {
 #' # `end` can be used to iterate through daylight saving time transitions
 #' zoned_time_info(info$end)
 zoned_time_info <- function(x) {
-  if (!is_zoned_time(x)) {
-    abort("`x` must be a 'clock_zoned_time'.")
-  }
+  check_zoned_time(x)
 
   zone <- zoned_time_zone_attribute(x)
   x <- as_sys_time(x)
@@ -967,13 +969,13 @@ zoned_time_info <- function(x) {
 #' Get or set the time zone
 #'
 #' @description
-#' `zoned_time_zone()` gets the time zone.
+#' - `zoned_time_zone()` gets the time zone.
 #'
-#' `zoned_time_set_zone()` sets the time zone _without changing the
+#' - `zoned_time_set_zone()` sets the time zone _without changing the
 #' underlying instant_. This means that the result will represent the equivalent
 #' time in the new time zone.
 #'
-#' @param x `[zoned_time / Date / POSIXt]`
+#' @param x `[zoned_time]`
 #'
 #'   A zoned time to get or set the time zone of.
 #'
@@ -982,13 +984,12 @@ zoned_time_info <- function(x) {
 #'   A valid time zone to switch to.
 #'
 #' @return
-#' `zoned_time_zone()` returns a string containing the time zone.
+#' - `zoned_time_zone()` returns a string containing the time zone.
 #'
-#' `zoned_time_set_zone()` returns `x` with an altered time zone attribute. The
-#' underlying instant is _not_ changed.
+#' - `zoned_time_set_zone()` returns `x` with an altered time zone attribute.
+#' The underlying instant is _not_ changed.
 #'
 #' @name zoned-zone
-#'
 #' @examples
 #' x <- year_month_day(2019, 1, 1)
 #' x <- as_zoned_time(as_naive_time(x), "America/New_York")
@@ -1010,22 +1011,14 @@ NULL
 #' @rdname zoned-zone
 #' @export
 zoned_time_zone <- function(x) {
-  UseMethod("zoned_time_zone")
-}
-
-#' @export
-zoned_time_zone.clock_zoned_time <- function(x) {
+  check_zoned_time(x)
   zoned_time_zone_attribute(x)
 }
 
 #' @rdname zoned-zone
 #' @export
 zoned_time_set_zone <- function(x, zone) {
-  UseMethod("zoned_time_set_zone")
-}
-
-#' @export
-zoned_time_set_zone.clock_zoned_time <- function(x, zone) {
+  check_zoned_time(x)
   zone <- zone_validate(zone)
   zoned_time_set_zone_attribute(x, zone)
 }
@@ -1047,9 +1040,7 @@ zoned_time_set_zone.clock_zoned_time <- function(x, zone) {
 #' @examples
 #' zoned_time_precision(zoned_time_now("America/New_York"))
 zoned_time_precision <- function(x) {
-  if (!is_zoned_time(x)) {
-    abort("`x` must be a 'clock_zoned_time'.")
-  }
+  check_zoned_time(x)
   precision <- zoned_time_precision_attribute(x)
   precision <- precision_to_string(precision)
   precision
