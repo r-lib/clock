@@ -1,5 +1,7 @@
 # clock (development version)
 
+* `as.character()` has been implemented for durations.
+
 * `zoned_time_zone()` and `zoned_time_set_zone()` are no longer generic, and now
   only work for zoned-times.
 

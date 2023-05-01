@@ -326,6 +326,11 @@ as_naive_time.clock_duration <- function(x) {
 }
 
 #' @export
+as.character.clock_duration <- function(x, ...) {
+  format(x)
+}
+
+#' @export
 as.integer.clock_duration <- function(x, ...) {
   out <- duration_as_integer_cpp(x, duration_precision_attribute(x))
   names(out) <- names(x)

@@ -282,6 +282,22 @@ test_that("can't convert calendrical duration to time point", {
 })
 
 # ------------------------------------------------------------------------------
+# as.character()
+
+test_that("as.character() works", {
+  x <- duration_days(c(1:2, NA))
+  expect_identical(as.character(x), c("1", "2", NA_character_))
+
+  x <- duration_cast(duration_days(1), "nanosecond")
+  expect_identical(as.character(x), "86400000000000")
+})
+
+test_that("as.character() retains names", {
+  x <- set_names(duration_days(1), "x")
+  expect_named(as.character(x), "x")
+})
+
+# ------------------------------------------------------------------------------
 # duration_precision()
 
 test_that("precision: can get the precision", {
