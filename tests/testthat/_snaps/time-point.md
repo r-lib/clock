@@ -283,7 +283,7 @@
     Code
       seq(sys_seconds(0), to = naive_seconds(5), by = 1)
     Condition
-      Error in `seq_impl()`:
+      Error in `seq()`:
       ! Can't convert `to` <naive_time<second>> to match type of `from` <sys_time<second>>.
 
 # `to` is always cast to `from`
@@ -291,7 +291,7 @@
     Code
       seq(naive_days(0), to = naive_seconds(5), by = 2)
     Condition
-      Error in `seq_impl()`:
+      Error in `seq()`:
       ! Can't convert `to` <naive_time<second>> to match type of `from` <naive_time<day>>.
       Can't cast to a less precise precision.
 

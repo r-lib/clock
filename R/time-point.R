@@ -1139,17 +1139,33 @@ seq.clock_time_point <- function(from,
                                  length.out = NULL,
                                  along.with = NULL,
                                  ...) {
+  names <- NULL
+  clock <- time_point_clock_attribute(from)
   precision <- time_point_precision_attribute(from)
 
-  seq_impl(
+  has_to <- !is_null(to)
+
+  if (has_to) {
+    to <- vec_cast(to, from, x_arg = "to", to_arg = "from")
+  }
+
+  from <- time_point_duration(from)
+
+  if (has_to) {
+    to <- time_point_duration(to)
+  }
+
+  fields <- seq(
     from = from,
     to = to,
     by = by,
     length.out = length.out,
     along.with = along.with,
-    precision = precision,
     ...
   )
+
+  new_time_point_from_fields(fields, precision, clock, names)
+}
 }
 
 # ------------------------------------------------------------------------------

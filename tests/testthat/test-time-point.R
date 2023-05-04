@@ -313,6 +313,20 @@ test_that("seq(by, length.out) works", {
   expect_identical(seq(naive_seconds(0L), by = 2, along.with = 1:3), naive_seconds(c(0L, 2L, 4L)))
 })
 
+test_that("seq() with `from > to && by > 0` or `from < to && by < 0` results in length 0 output (#282)", {
+  expect_identical(seq(naive_days(2L), to = naive_days(1L), by = 1), naive_days())
+  expect_identical(seq(naive_days(5L), to = naive_days(1L), by = 1), naive_days())
+
+  expect_identical(seq(naive_days(1L), to = naive_days(2L), by = -1), naive_days())
+  expect_identical(seq(naive_days(1L), to = naive_days(5L), by = -1), naive_days())
+
+  # In particular, handles the case where subtraction of distant `from` and `to` would overflow
+  x <- as_naive_time(duration_cast(duration_years(200), "nanosecond"))
+  y <- as_naive_time(duration_cast(duration_years(-200), "nanosecond"))
+  expect_identical(seq(x, y, by = 1), as_naive_time(duration_nanoseconds()))
+  expect_identical(seq(y, x, by = -1), as_naive_time(duration_nanoseconds()))
+})
+
 test_that("`by` can be a duration", {
   expect_identical(
     seq(naive_seconds(0), to = naive_seconds(1000), by = duration_minutes(1)),
