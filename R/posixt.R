@@ -1937,6 +1937,18 @@ date_seq.POSIXt <- function(from,
 
 # ------------------------------------------------------------------------------
 
+#' @export
+date_spanning_seq.POSIXt <- function(x) {
+  zone <- date_time_zone(x)
+  x <- to_posixct(x)
+  x <- vec_drop_infinite(x)
+  x <- as_sys_time(x)
+  x <- time_point_spanning_seq(x)
+  as.POSIXct(x, zone)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Counting: date-times
 #'
 #' @description

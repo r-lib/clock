@@ -668,10 +668,9 @@ seq.clock_duration <- function(from,
     precision <- duration_precision_attribute(from)
     by <- duration_collect_by(by, precision)
 
-    vec_assert(by, size = 1L, arg = "by")
-    if (is.na(by)) {
-      abort("`by` can't be `NA`.")
-    }
+    vec_check_size(by, size = 1L)
+    check_no_missing(by)
+
     if (by == duration_helper(0L, precision)) {
       abort("`by` can't be `0`.")
     }
@@ -738,7 +737,7 @@ check_length_out <- function(length.out, arg) {
   length.out
 }
 
-# Used by other methods that eventually call the duration seq() method
+# Used by calendar methods that eventually call the duration seq() method
 seq_impl <- function(from, to, by, length.out, along.with, precision, ...) {
   if (!is_null(to)) {
     to <- vec_cast(to, from, x_arg = "to", to_arg = "from")
@@ -758,6 +757,47 @@ seq_impl <- function(from, to, by, length.out, along.with, precision, ...) {
   )
 
   start + steps
+}
+
+# ------------------------------------------------------------------------------
+
+#' Spanning sequence: duration
+#'
+#' @description
+#' `duration_spanning_seq()` generates a regular sequence along the span of `x`,
+#' i.e. along `[min(x), max(x)]`.
+#'
+#' @details
+#' Missing values are automatically removed before the sequence is generated.
+#'
+#' If you need more precise sequence generation, call [range()] and [seq()]
+#' directly.
+#'
+#' @param x `[clock_duration]`
+#'
+#'   A duration vector.
+#'
+#' @return A sequence along `[min(x), max(x)]`.
+#'
+#' @export
+#' @examples
+#' x <- duration_days(c(1, 5, 2))
+#' duration_spanning_seq(x)
+#'
+#' # Missing values are removed before the sequence is created
+#' x <- vctrs::vec_c(NA, x, NA)
+#' duration_spanning_seq(x)
+duration_spanning_seq <- function(x) {
+  check_duration(x)
+  spanning_seq_impl(x)
+}
+
+spanning_seq_impl <- function(x) {
+  range <- range(x, na.rm = TRUE)
+  from <- range[[1L]]
+  to <- range[[2L]]
+
+  seq(from = from, to = to, by = 1L)
 }
 
 # ------------------------------------------------------------------------------
@@ -1121,6 +1161,10 @@ is_duration <- function(x) {
 
 is_duration_with_precision <- function(x, precision) {
   is_duration(x) && duration_precision_attribute(x) == precision
+}
+
+check_duration <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
+  check_inherits(x, what = "clock_duration", arg = arg, call = call)
 }
 
 # ------------------------------------------------------------------------------

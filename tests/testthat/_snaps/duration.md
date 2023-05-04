@@ -175,7 +175,8 @@
       seq(duration_years(1L), to = duration_years(1L), by = NA_integer_)
     Condition
       Error in `seq()`:
-      ! `by` can't be `NA`.
+      ! `by` can't contain missing values.
+      i The following locations are missing: 1.
 
 ---
 
@@ -304,6 +305,14 @@
       Error in `seq()`:
       ! Can't convert `to` <duration<month>> to match type of `from` <duration<year>>.
       Can't cast to a less precise precision.
+
+# validates the input
+
+    Code
+      duration_spanning_seq(1)
+    Condition
+      Error in `duration_spanning_seq()`:
+      ! `x` must be a <clock_duration>, not the number 1.
 
 # can't add chronological and calendrical durations
 

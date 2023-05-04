@@ -288,6 +288,54 @@ test_that("`n` is validated", {
 })
 
 # ------------------------------------------------------------------------------
+# calendar_spanning_seq()
+
+test_that("generates the regular sequence along the full span", {
+  x <- year_month_day(c(2019, 2022, 2020), c(2, 1, 3))
+  expect_identical(
+    calendar_spanning_seq(x),
+    seq(year_month_day(2019, 2), year_month_day(2022, 1), by = 1)
+  )
+})
+
+test_that("missing values are removed", {
+  x <- year_month_day(c(1, NA, 0, 2))
+  expect_identical(calendar_spanning_seq(x), year_month_day(0:2))
+
+  x <- year_month_day(c(NA, NA))
+  expect_identical(calendar_spanning_seq(x), year_month_day(integer()))
+})
+
+test_that("works with empty vectors", {
+  x <- year_month_day(integer())
+  expect_identical(calendar_spanning_seq(x), x)
+})
+
+test_that("validates the input", {
+  expect_snapshot(error = TRUE, {
+    calendar_spanning_seq(1)
+  })
+})
+
+test_that("the input must be at a precision allowed by `seq()`", {
+  expect_snapshot(error = TRUE, {
+    calendar_spanning_seq(year_month_day(2019, 1, 2))
+  })
+})
+
+test_that("errors on types that don't support min/max calls", {
+  # This is fine
+  x <- year_month_weekday(2019, c(1, 4))
+  expect_identical(calendar_spanning_seq(x), year_month_weekday(2019, 1:4))
+
+  # But this is invalid
+  x <- year_month_weekday(2019, 1, 1, 1)
+  expect_snapshot(error = TRUE, {
+    calendar_spanning_seq(x)
+  })
+})
+
+# ------------------------------------------------------------------------------
 # calendar_precision()
 
 test_that("precision: can get the precision", {

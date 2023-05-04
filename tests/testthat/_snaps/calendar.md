@@ -341,6 +341,30 @@
       Error in `calendar_count_between()`:
       ! `n` must be a whole number, not an integer vector.
 
+# validates the input
+
+    Code
+      calendar_spanning_seq(1)
+    Condition
+      Error in `calendar_spanning_seq()`:
+      ! `x` must be a <clock_calendar>, not the number 1.
+
+# the input must be at a precision allowed by `seq()`
+
+    Code
+      calendar_spanning_seq(year_month_day(2019, 1, 2))
+    Condition
+      Error in `seq()`:
+      ! `from` must be 'year' or 'month' precision.
+
+# errors on types that don't support min/max calls
+
+    Code
+      calendar_spanning_seq(x)
+    Condition
+      Error in `vec_proxy_compare()`:
+      ! 'year_month_weekday' types with a precision of >= 'day' cannot be trivially compared or ordered. Convert to 'year_month_day' to compare using day-of-month values.
+
 # precision: can only be called on calendars
 
     Code

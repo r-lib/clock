@@ -3,6 +3,10 @@ is_time_point <- function(x) {
   inherits(x, "clock_time_point")
 }
 
+check_time_point <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
+  check_inherits(x, what = "clock_time_point", arg = arg, call = call)
+}
+
 # ------------------------------------------------------------------------------
 
 time_point_clock_attribute <- function(x) {
@@ -1166,6 +1170,45 @@ seq.clock_time_point <- function(from,
 
   new_time_point_from_fields(fields, precision, clock, names)
 }
+
+# ------------------------------------------------------------------------------
+
+#' Spanning sequence: time points
+#'
+#' @description
+#' `time_point_spanning_seq()` generates a regular sequence along the span of
+#' `x`, i.e. along `[min(x), max(x)]`. The sequence is generated at the
+#' precision of `x`.
+#'
+#' @details
+#' Missing values are automatically removed before the sequence is generated.
+#'
+#' If you need more precise sequence generation, call [range()] and [seq()]
+#' directly.
+#'
+#' @param x `[clock_sys_time / clock_naive_time]`
+#'
+#'   A time point vector.
+#'
+#' @return A sequence along `[min(x), max(x)]`.
+#'
+#' @export
+#' @examples
+#' x <- as_naive_time(year_month_day(2019, c(1, 2, 1, 2), c(15, 4, 12, 2)))
+#' x
+#'
+#' time_point_spanning_seq(x)
+#'
+#' # The sequence is generated at the precision of `x`
+#' x <- as_naive_time(c(
+#'   year_month_day(2019, 1, 1, 5),
+#'   year_month_day(2019, 1, 2, 10),
+#'   year_month_day(2019, 1, 1, 3)
+#' ))
+#' time_point_spanning_seq(x)
+time_point_spanning_seq <- function(x) {
+  check_time_point(x)
+  spanning_seq_impl(x)
 }
 
 # ------------------------------------------------------------------------------

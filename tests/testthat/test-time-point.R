@@ -364,6 +364,33 @@ test_that("can make nanosecond precision seqs", {
 })
 
 # ------------------------------------------------------------------------------
+# time_point_spanning_seq()
+
+test_that("generates the regular sequence along the full span", {
+  x <- naive_days(c(-5, 5, 6, 0))
+  expect_identical(time_point_spanning_seq(x), naive_days(-5:6))
+})
+
+test_that("missing values are removed", {
+  x <- naive_days(c(1, NA, 0, 2))
+  expect_identical(time_point_spanning_seq(x), naive_days(0:2))
+
+  x <- naive_days(c(NA, NA))
+  expect_identical(time_point_spanning_seq(x), naive_days())
+})
+
+test_that("works with empty vectors", {
+  x <- naive_days()
+  expect_identical(time_point_spanning_seq(x), x)
+})
+
+test_that("validates the input", {
+  expect_snapshot(error = TRUE, {
+    time_point_spanning_seq(1)
+  })
+})
+
+# ------------------------------------------------------------------------------
 # vec_arith()
 
 test_that("duration to add to a time-point must have at least week precision (#120)", {

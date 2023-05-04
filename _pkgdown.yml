@@ -25,6 +25,7 @@ reference:
   - date-and-date-time-rounding
   - date-and-date-time-shifting
   - date_seq
+  - date_spanning_seq
   - date_format
   - date_parse
   - date-time-parse
@@ -53,6 +54,7 @@ reference:
   - calendar-boundary
   - calendar_narrow
   - calendar_widen
+  - calendar_spanning_seq
   - calendar_precision
   - calendar_leap_year
   - calendar_month_factor
@@ -162,6 +164,7 @@ reference:
   - duration_cast
   - duration-rounding
   - duration_precision
+  - duration_spanning_seq
   - seq.clock_duration
   - duration-arithmetic
 
@@ -186,6 +189,7 @@ reference:
   - time-point-rounding
   - time_point_shift
   - time_point_precision
+  - time_point_spanning_seq
   - seq.clock_time_point
   - add_weeks.clock_time_point
   - as-zoned-time-naive-time

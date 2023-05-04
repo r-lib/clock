@@ -554,6 +554,38 @@ test_that("golden test: ensure that we never allow components of `to` to differ 
 })
 
 # ------------------------------------------------------------------------------
+# date_spanning_seq()
+
+test_that("generates the regular sequence along the full span", {
+  x <- date_build(c(2019, 2022, 2020), c(2, 1, 3), c(3, 5, 2))
+  expect_identical(
+    date_spanning_seq(x),
+    seq(date_build(2019, 2, 3), date_build(2022, 1, 5), by = 1)
+  )
+})
+
+test_that("missing values are removed", {
+  x <- date_build(2020, 1, c(1, NA, 5, 2))
+  expect_identical(date_spanning_seq(x), date_build(2020, 1, 1:5))
+
+  x <- date_build(c(NA, NA))
+  expect_identical(date_spanning_seq(x), new_date())
+})
+
+test_that("infinite dates are removed", {
+  x <- new_date(c(0, Inf, 3, 6, -Inf))
+  expect_identical(date_spanning_seq(x), new_date(as.double(0:6)))
+
+  x <- new_date(c(Inf, -Inf))
+  expect_identical(date_spanning_seq(x), new_date())
+})
+
+test_that("works with empty vectors", {
+  x <- date_build(integer())
+  expect_identical(date_spanning_seq(x), x)
+})
+
+# ------------------------------------------------------------------------------
 # date_count_between()
 
 test_that("can compute precisions at year / quarter / month / week / day", {
