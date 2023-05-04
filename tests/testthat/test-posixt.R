@@ -1015,7 +1015,7 @@ test_that("uses sys-time when generating the sequence (nonexistent)", {
 
   expect_identical(
     date_spanning_seq(x),
-    c(
+    vec_c(
       date_time_build(1970, 4, 26, 1, 59, 58:59, zone = zone),
       date_time_build(1970, 4, 26, 3, 00, 00:02, zone = zone)
     )
@@ -1035,7 +1035,7 @@ test_that("uses sys-time when generating the sequence (ambiguous)", {
 
   expect_identical(
     date_spanning_seq(x),
-    c(
+    vec_c(
       date_time_build(1970, 10, 25, 1, 59, 58:59, zone = zone, ambiguous = "earliest"),
       date_time_build(1970, 10, 25, 1, 00, 00:02, zone = zone, ambiguous = "latest")
     )
