@@ -1,5 +1,14 @@
+# Internal generic
+clock_minimum <- function(x) {
+  UseMethod("clock_minimum")
+}
+
+# Internal generic
+clock_maximum <- function(x) {
+  UseMethod("clock_maximum")
+}
 
 clock_init_limits_init <- function(env) {
-  assign("clock_year_max", clock_get_year_max(), envir = env)
-  assign("clock_year_min", clock_get_year_min(), envir = env)
+  assign("clock_calendar_year_maximum", clock_get_calendar_year_maximum(), envir = env)
+  assign("clock_calendar_year_minimum", clock_get_calendar_year_minimum(), envir = env)
 }

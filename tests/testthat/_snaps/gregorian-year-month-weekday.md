@@ -574,3 +574,103 @@
       ! Invalid date found at location 1.
       i Resolve invalid date issues by specifying the `invalid` argument.
 
+# minimums are right
+
+    Code
+      clock_minimum(clock_empty_year_month_weekday_year)
+    Output
+      <year_month_weekday<year>[1]>
+      [1] "-32767"
+    Code
+      clock_minimum(clock_empty_year_month_weekday_month)
+    Output
+      <year_month_weekday<month>[1]>
+      [1] "-32767-01"
+
+---
+
+    Code
+      clock_minimum(year_month_weekday(1, 1, 1, 1))
+    Condition
+      Error in `clock_minimum()`:
+      ! Can't compute the minimum of this <year_month_weekday>, as it is undefined.
+      i The most precise allowed precision is "month".
+      i `x` has precision "day".
+
+# maximums are right
+
+    Code
+      clock_maximum(clock_empty_year_month_weekday_year)
+    Output
+      <year_month_weekday<year>[1]>
+      [1] "32767"
+    Code
+      clock_maximum(clock_empty_year_month_weekday_month)
+    Output
+      <year_month_weekday<month>[1]>
+      [1] "32767-12"
+
+---
+
+    Code
+      clock_maximum(year_month_weekday(1, 1, 1, 1))
+    Condition
+      Error in `clock_maximum()`:
+      ! Can't compute the maximum of this <year_month_weekday>, as it is undefined.
+      i The most precise allowed precision is "month".
+      i `x` has precision "day".
+
+# min() / max() / range() aren't defined at or past day precision
+
+    Code
+      min(x)
+    Condition
+      Error in `vec_proxy_compare()`:
+      ! 'year_month_weekday' types with a precision of >= 'day' cannot be trivially compared or ordered. Convert to 'year_month_day' to compare using day-of-month values.
+
+---
+
+    Code
+      max(x)
+    Condition
+      Error in `vec_proxy_compare()`:
+      ! 'year_month_weekday' types with a precision of >= 'day' cannot be trivially compared or ordered. Convert to 'year_month_day' to compare using day-of-month values.
+
+---
+
+    Code
+      range(x)
+    Condition
+      Error in `vec_proxy_compare()`:
+      ! 'year_month_weekday' types with a precision of >= 'day' cannot be trivially compared or ordered. Convert to 'year_month_day' to compare using day-of-month values.
+
+---
+
+    Code
+      min(x)
+    Condition
+      Error in `clock_maximum()`:
+      ! Can't compute the maximum of this <year_month_weekday>, as it is undefined.
+      i The most precise allowed precision is "month".
+      i `x` has precision "day".
+
+---
+
+    Code
+      max(x)
+    Condition
+      Error in `clock_minimum()`:
+      ! Can't compute the minimum of this <year_month_weekday>, as it is undefined.
+      i The most precise allowed precision is "month".
+      i `x` has precision "day".
+
+---
+
+    Code
+      range(x)
+    Condition
+      Error in `clock_maximum()`:
+      ! Can't compute the maximum of this <year_month_weekday>, as it is undefined.
+      i The most precise allowed precision is "month".
+      i `x` has precision "day".
+

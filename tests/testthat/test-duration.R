@@ -428,6 +428,82 @@ test_that("comparisons work", {
 })
 
 # ------------------------------------------------------------------------------
+# clock_minimum() / clock_maximum()
+
+test_that("minimums are right", {
+  skip_if_not_on_os("mac")
+
+  expect_snapshot({
+    clock_minimum(duration_years())
+    clock_minimum(duration_quarters())
+    clock_minimum(duration_months())
+    clock_minimum(duration_weeks())
+    clock_minimum(duration_days())
+    clock_minimum(duration_hours())
+    clock_minimum(duration_minutes())
+    clock_minimum(duration_seconds())
+    clock_minimum(duration_milliseconds())
+    clock_minimum(duration_microseconds())
+    clock_minimum(duration_nanoseconds())
+  })
+})
+
+test_that("maximums are right", {
+  skip_if_not_on_os("mac")
+
+  expect_snapshot({
+    clock_maximum(duration_years())
+    clock_maximum(duration_quarters())
+    clock_maximum(duration_months())
+    clock_maximum(duration_weeks())
+    clock_maximum(duration_days())
+    clock_maximum(duration_hours())
+    clock_maximum(duration_minutes())
+    clock_maximum(duration_seconds())
+    clock_maximum(duration_milliseconds())
+    clock_maximum(duration_microseconds())
+    clock_maximum(duration_nanoseconds())
+  })
+})
+
+# ------------------------------------------------------------------------------
+# min() / max() / range()
+
+test_that("min() / max() / range() works", {
+  x <- duration_years(c(1, 3, 2, 1, -1))
+
+  expect_identical(min(x), duration_years(-1))
+  expect_identical(max(x), duration_years(3))
+  expect_identical(range(x), duration_years(c(-1, 3)))
+})
+
+test_that("min() / max() / range() works with `NA`", {
+  x <- duration_days(c(1, NA, 2, 0))
+
+  expect_identical(min(x), duration_days(NA))
+  expect_identical(max(x), duration_days(NA))
+  expect_identical(range(x), duration_days(c(NA, NA)))
+
+  expect_identical(min(x, na.rm = TRUE), duration_days(0))
+  expect_identical(max(x, na.rm = TRUE), duration_days(2))
+  expect_identical(range(x, na.rm = TRUE), duration_days(c(0, 2)))
+})
+
+test_that("min() / max() / range() works when empty", {
+  x <- duration_days()
+
+  expect_identical(min(x), clock_maximum(x))
+  expect_identical(max(x), clock_minimum(x))
+  expect_identical(range(x), c(clock_maximum(x), clock_minimum(x)))
+
+  x <- duration_days(c(NA, NA))
+
+  expect_identical(min(x, na.rm = TRUE), clock_maximum(x))
+  expect_identical(max(x, na.rm = TRUE), clock_minimum(x))
+  expect_identical(range(x, na.rm = TRUE), c(clock_maximum(x), clock_minimum(x)))
+})
+
+# ------------------------------------------------------------------------------
 # Missing values
 
 test_that("`NA` duration prints as expected", {

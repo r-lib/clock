@@ -1,5 +1,5 @@
 check_between_year <- function(x, ..., call = caller_env(), arg = caller_arg(x)) {
-  check_between(x, lower = clock_year_min, upper = clock_year_max, call = call, arg = arg)
+  check_between(x, lower = clock_calendar_year_minimum, upper = clock_calendar_year_maximum, call = call, arg = arg)
 }
 check_between_quarter <- function(x, ..., call = caller_env(), arg = caller_arg(x)) {
   check_between(x, lower = 1L, upper = 4L, call = call, arg = arg)

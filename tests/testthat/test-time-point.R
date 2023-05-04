@@ -384,3 +384,119 @@ test_that("unsupported time point addition throws good error", {
     add_months(x, 1)
   })
 })
+
+# ------------------------------------------------------------------------------
+# clock_minimum() / clock_maximum()
+
+test_that("minimums are right", {
+  skip_if_not_on_os("mac")
+
+  # Known that the only time point that prints the limits right is nanosecond
+  # due to how the print method goes through year-month-day and the year there
+  # isn't high enough
+  expect_snapshot({
+    # clock_minimum(as_sys_time(duration_days()))
+    # clock_minimum(as_sys_time(duration_hours()))
+    # clock_minimum(as_sys_time(duration_minutes()))
+    # clock_minimum(as_sys_time(duration_seconds()))
+    # clock_minimum(as_sys_time(duration_milliseconds()))
+    # clock_minimum(as_sys_time(duration_microseconds()))
+    clock_minimum(as_sys_time(duration_nanoseconds()))
+
+    # clock_minimum(as_naive_time(duration_days()))
+    # clock_minimum(as_naive_time(duration_hours()))
+    # clock_minimum(as_naive_time(duration_minutes()))
+    # clock_minimum(as_naive_time(duration_seconds()))
+    # clock_minimum(as_naive_time(duration_milliseconds()))
+    # clock_minimum(as_naive_time(duration_microseconds()))
+    clock_minimum(as_naive_time(duration_nanoseconds()))
+  })
+
+  for (precision in precision_names()) {
+    precision <- precision_to_integer(precision)
+
+    if (precision < PRECISION_DAY) {
+      next
+    }
+
+    x <- duration_helper(0L, precision)
+
+    expect_identical(as_duration(clock_minimum(as_sys_time(x))), clock_minimum(x))
+    expect_identical(as_duration(clock_minimum(as_naive_time(x))), clock_minimum(x))
+  }
+})
+
+test_that("maximums are right", {
+  skip_if_not_on_os("mac")
+
+  # Known that the only time point that prints the limits right is nanosecond
+  # due to how the print method goes through year-month-day and the year there
+  # isn't high enough
+  expect_snapshot({
+    # clock_maximum(as_sys_time(duration_days()))
+    # clock_maximum(as_sys_time(duration_hours()))
+    # clock_maximum(as_sys_time(duration_minutes()))
+    # clock_maximum(as_sys_time(duration_seconds()))
+    # clock_maximum(as_sys_time(duration_milliseconds()))
+    # clock_maximum(as_sys_time(duration_microseconds()))
+    clock_maximum(as_sys_time(duration_nanoseconds()))
+
+    # clock_maximum(as_naive_time(duration_days()))
+    # clock_maximum(as_naive_time(duration_hours()))
+    # clock_maximum(as_naive_time(duration_minutes()))
+    # clock_maximum(as_naive_time(duration_seconds()))
+    # clock_maximum(as_naive_time(duration_milliseconds()))
+    # clock_maximum(as_naive_time(duration_microseconds()))
+    clock_maximum(as_naive_time(duration_nanoseconds()))
+  })
+
+  for (precision in precision_names()) {
+    precision <- precision_to_integer(precision)
+
+    if (precision < PRECISION_DAY) {
+      next
+    }
+
+    x <- duration_helper(0L, precision)
+
+    expect_identical(as_duration(clock_maximum(as_sys_time(x))), clock_maximum(x))
+    expect_identical(as_duration(clock_maximum(as_naive_time(x))), clock_maximum(x))
+  }
+})
+
+# ------------------------------------------------------------------------------
+# min() / max() / range()
+
+test_that("min() / max() / range() works", {
+  x <- naive_days(c(1, 3, 2, 1, -1))
+
+  expect_identical(min(x), naive_days(-1))
+  expect_identical(max(x), naive_days(3))
+  expect_identical(range(x), naive_days(c(-1, 3)))
+})
+
+test_that("min() / max() / range() works with `NA`", {
+  x <- naive_days(c(1, NA, 2, 0))
+
+  expect_identical(min(x), naive_days(NA))
+  expect_identical(max(x), naive_days(NA))
+  expect_identical(range(x), naive_days(c(NA, NA)))
+
+  expect_identical(min(x, na.rm = TRUE), naive_days(0))
+  expect_identical(max(x, na.rm = TRUE), naive_days(2))
+  expect_identical(range(x, na.rm = TRUE), naive_days(c(0, 2)))
+})
+
+test_that("min() / max() / range() works when empty", {
+  x <- naive_days()
+
+  expect_identical(min(x), clock_maximum(x))
+  expect_identical(max(x), clock_minimum(x))
+  expect_identical(range(x), c(clock_maximum(x), clock_minimum(x)))
+
+  x <- naive_days(c(NA, NA))
+
+  expect_identical(min(x, na.rm = TRUE), clock_maximum(x))
+  expect_identical(max(x, na.rm = TRUE), clock_minimum(x))
+  expect_identical(range(x, na.rm = TRUE), c(clock_maximum(x), clock_minimum(x)))
+})

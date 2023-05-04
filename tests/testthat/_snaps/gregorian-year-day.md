@@ -474,3 +474,89 @@
       ! Invalid date found at location 1.
       i Resolve invalid date issues by specifying the `invalid` argument.
 
+# minimums are right
+
+    Code
+      clock_minimum(clock_empty_year_day_year)
+    Output
+      <year_day<year>[1]>
+      [1] "-32767"
+    Code
+      clock_minimum(clock_empty_year_day_day)
+    Output
+      <year_day<day>[1]>
+      [1] "-32767-001"
+    Code
+      clock_minimum(clock_empty_year_day_hour)
+    Output
+      <year_day<hour>[1]>
+      [1] "-32767-001T00"
+    Code
+      clock_minimum(clock_empty_year_day_minute)
+    Output
+      <year_day<minute>[1]>
+      [1] "-32767-001T00:00"
+    Code
+      clock_minimum(clock_empty_year_day_second)
+    Output
+      <year_day<second>[1]>
+      [1] "-32767-001T00:00:00"
+    Code
+      clock_minimum(clock_empty_year_day_millisecond)
+    Output
+      <year_day<millisecond>[1]>
+      [1] "-32767-001T00:00:00.000"
+    Code
+      clock_minimum(clock_empty_year_day_microsecond)
+    Output
+      <year_day<microsecond>[1]>
+      [1] "-32767-001T00:00:00.000000"
+    Code
+      clock_minimum(clock_empty_year_day_nanosecond)
+    Output
+      <year_day<nanosecond>[1]>
+      [1] "-32767-001T00:00:00.000000000"
+
+# maximums are right
+
+    Code
+      clock_maximum(clock_empty_year_day_year)
+    Output
+      <year_day<year>[1]>
+      [1] "32767"
+    Code
+      clock_maximum(clock_empty_year_day_day)
+    Output
+      <year_day<day>[1]>
+      [1] "32767-365"
+    Code
+      clock_maximum(clock_empty_year_day_hour)
+    Output
+      <year_day<hour>[1]>
+      [1] "32767-365T23"
+    Code
+      clock_maximum(clock_empty_year_day_minute)
+    Output
+      <year_day<minute>[1]>
+      [1] "32767-365T23:59"
+    Code
+      clock_maximum(clock_empty_year_day_second)
+    Output
+      <year_day<second>[1]>
+      [1] "32767-365T23:59:59"
+    Code
+      clock_maximum(clock_empty_year_day_millisecond)
+    Output
+      <year_day<millisecond>[1]>
+      [1] "32767-365T23:59:59.999"
+    Code
+      clock_maximum(clock_empty_year_day_microsecond)
+    Output
+      <year_day<microsecond>[1]>
+      [1] "32767-365T23:59:59.999999"
+    Code
+      clock_maximum(clock_empty_year_day_nanosecond)
+    Output
+      <year_day<nanosecond>[1]>
+      [1] "32767-365T23:59:59.999999999"
+

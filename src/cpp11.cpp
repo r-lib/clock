@@ -180,6 +180,20 @@ extern "C" SEXP _clock_duration_seq_to_lo_cpp(SEXP from, SEXP precision_int, SEX
     return cpp11::as_sexp(duration_seq_to_lo_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::doubles>>>(from), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::doubles>>>(to), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(length_out)));
   END_CPP11
 }
+// duration.cpp
+cpp11::writable::list duration_minimum_cpp(const cpp11::integers& precision_int);
+extern "C" SEXP _clock_duration_minimum_cpp(SEXP precision_int) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(duration_minimum_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int)));
+  END_CPP11
+}
+// duration.cpp
+cpp11::writable::list duration_maximum_cpp(const cpp11::integers& precision_int);
+extern "C" SEXP _clock_duration_maximum_cpp(SEXP precision_int) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(duration_maximum_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_int)));
+  END_CPP11
+}
 // enums.cpp
 cpp11::writable::strings precision_to_string(const cpp11::integers& precision_int);
 extern "C" SEXP _clock_precision_to_string(SEXP precision_int) {
@@ -566,17 +580,17 @@ extern "C" SEXP _clock_iso_year_week_day_leap_year_cpp(SEXP year) {
   END_CPP11
 }
 // limits.cpp
-int clock_get_year_max();
-extern "C" SEXP _clock_clock_get_year_max() {
+int clock_get_calendar_year_maximum();
+extern "C" SEXP _clock_clock_get_calendar_year_maximum() {
   BEGIN_CPP11
-    return cpp11::as_sexp(clock_get_year_max());
+    return cpp11::as_sexp(clock_get_calendar_year_maximum());
   END_CPP11
 }
 // limits.cpp
-int clock_get_year_min();
-extern "C" SEXP _clock_clock_get_year_min() {
+int clock_get_calendar_year_minimum();
+extern "C" SEXP _clock_clock_get_calendar_year_minimum() {
   BEGIN_CPP11
-    return cpp11::as_sexp(clock_get_year_min());
+    return cpp11::as_sexp(clock_get_calendar_year_minimum());
   END_CPP11
 }
 // naive-time.cpp
@@ -953,8 +967,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_as_year_week_day_from_sys_time_cpp",                   (DL_FUNC) &_clock_as_year_week_day_from_sys_time_cpp,                    3},
     {"_clock_as_zoned_sys_time_from_naive_time_cpp",                (DL_FUNC) &_clock_as_zoned_sys_time_from_naive_time_cpp,                 6},
     {"_clock_as_zoned_sys_time_from_naive_time_with_reference_cpp", (DL_FUNC) &_clock_as_zoned_sys_time_from_naive_time_with_reference_cpp,  7},
-    {"_clock_clock_get_year_max",                                   (DL_FUNC) &_clock_clock_get_year_max,                                    0},
-    {"_clock_clock_get_year_min",                                   (DL_FUNC) &_clock_clock_get_year_min,                                    0},
+    {"_clock_clock_get_calendar_year_maximum",                      (DL_FUNC) &_clock_clock_get_calendar_year_maximum,                       0},
+    {"_clock_clock_get_calendar_year_minimum",                      (DL_FUNC) &_clock_clock_get_calendar_year_minimum,                       0},
     {"_clock_clock_init_utils",                                     (DL_FUNC) &_clock_clock_init_utils,                                      0},
     {"_clock_clock_rcrd_names",                                     (DL_FUNC) &_clock_clock_rcrd_names,                                      1},
     {"_clock_clock_rcrd_proxy",                                     (DL_FUNC) &_clock_clock_rcrd_proxy,                                      1},
@@ -969,6 +983,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_duration_has_common_precision_cpp",                    (DL_FUNC) &_clock_duration_has_common_precision_cpp,                     2},
     {"_clock_duration_helper_cpp",                                  (DL_FUNC) &_clock_duration_helper_cpp,                                   2},
     {"_clock_duration_integer_divide_cpp",                          (DL_FUNC) &_clock_duration_integer_divide_cpp,                           3},
+    {"_clock_duration_maximum_cpp",                                 (DL_FUNC) &_clock_duration_maximum_cpp,                                  1},
+    {"_clock_duration_minimum_cpp",                                 (DL_FUNC) &_clock_duration_minimum_cpp,                                  1},
     {"_clock_duration_minus_cpp",                                   (DL_FUNC) &_clock_duration_minus_cpp,                                    3},
     {"_clock_duration_modulus_cpp",                                 (DL_FUNC) &_clock_duration_modulus_cpp,                                  3},
     {"_clock_duration_plus_cpp",                                    (DL_FUNC) &_clock_duration_plus_cpp,                                     3},

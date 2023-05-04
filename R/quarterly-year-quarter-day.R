@@ -1336,6 +1336,34 @@ seq.clock_year_quarter_day <- function(from,
 
 # ------------------------------------------------------------------------------
 
+#' @export
+clock_minimum.clock_year_quarter_day <- function(x) {
+  names <- NULL
+  start <- quarterly_start(x)
+  fields <- list(year = clock_calendar_year_minimum)
+  year <- new_year_quarter_day_from_fields(fields, PRECISION_YEAR, start, names)
+
+  precision <- calendar_precision_attribute(x)
+  precision <- precision_to_string(precision)
+
+  calendar_minimum(precision, year)
+}
+
+#' @export
+clock_maximum.clock_year_quarter_day <- function(x) {
+  names <- NULL
+  start <- quarterly_start(x)
+  fields <- list(year = clock_calendar_year_maximum)
+  year <- new_year_quarter_day_from_fields(fields, PRECISION_YEAR, start, names)
+
+  precision <- calendar_precision_attribute(x)
+  precision <- precision_to_string(precision)
+
+  calendar_maximum(precision, year)
+}
+
+# ------------------------------------------------------------------------------
+
 quarterly_start <- function(x) {
   attr(x, "start", exact = TRUE)
 }

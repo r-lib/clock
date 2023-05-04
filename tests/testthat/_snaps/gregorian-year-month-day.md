@@ -612,3 +612,99 @@
       ! Invalid date found at location 1.
       i Resolve invalid date issues by specifying the `invalid` argument.
 
+# minimums are right
+
+    Code
+      clock_minimum(clock_empty_year_month_day_year)
+    Output
+      <year_month_day<year>[1]>
+      [1] "-32767"
+    Code
+      clock_minimum(clock_empty_year_month_day_month)
+    Output
+      <year_month_day<month>[1]>
+      [1] "-32767-01"
+    Code
+      clock_minimum(clock_empty_year_month_day_day)
+    Output
+      <year_month_day<day>[1]>
+      [1] "-32767-01-01"
+    Code
+      clock_minimum(clock_empty_year_month_day_hour)
+    Output
+      <year_month_day<hour>[1]>
+      [1] "-32767-01-01T00"
+    Code
+      clock_minimum(clock_empty_year_month_day_minute)
+    Output
+      <year_month_day<minute>[1]>
+      [1] "-32767-01-01T00:00"
+    Code
+      clock_minimum(clock_empty_year_month_day_second)
+    Output
+      <year_month_day<second>[1]>
+      [1] "-32767-01-01T00:00:00"
+    Code
+      clock_minimum(clock_empty_year_month_day_millisecond)
+    Output
+      <year_month_day<millisecond>[1]>
+      [1] "-32767-01-01T00:00:00.000"
+    Code
+      clock_minimum(clock_empty_year_month_day_microsecond)
+    Output
+      <year_month_day<microsecond>[1]>
+      [1] "-32767-01-01T00:00:00.000000"
+    Code
+      clock_minimum(clock_empty_year_month_day_nanosecond)
+    Output
+      <year_month_day<nanosecond>[1]>
+      [1] "-32767-01-01T00:00:00.000000000"
+
+# maximums are right
+
+    Code
+      clock_maximum(clock_empty_year_month_day_year)
+    Output
+      <year_month_day<year>[1]>
+      [1] "32767"
+    Code
+      clock_maximum(clock_empty_year_month_day_month)
+    Output
+      <year_month_day<month>[1]>
+      [1] "32767-12"
+    Code
+      clock_maximum(clock_empty_year_month_day_day)
+    Output
+      <year_month_day<day>[1]>
+      [1] "32767-12-31"
+    Code
+      clock_maximum(clock_empty_year_month_day_hour)
+    Output
+      <year_month_day<hour>[1]>
+      [1] "32767-12-31T23"
+    Code
+      clock_maximum(clock_empty_year_month_day_minute)
+    Output
+      <year_month_day<minute>[1]>
+      [1] "32767-12-31T23:59"
+    Code
+      clock_maximum(clock_empty_year_month_day_second)
+    Output
+      <year_month_day<second>[1]>
+      [1] "32767-12-31T23:59:59"
+    Code
+      clock_maximum(clock_empty_year_month_day_millisecond)
+    Output
+      <year_month_day<millisecond>[1]>
+      [1] "32767-12-31T23:59:59.999"
+    Code
+      clock_maximum(clock_empty_year_month_day_microsecond)
+    Output
+      <year_month_day<microsecond>[1]>
+      [1] "32767-12-31T23:59:59.999999"
+    Code
+      clock_maximum(clock_empty_year_month_day_nanosecond)
+    Output
+      <year_month_day<nanosecond>[1]>
+      [1] "32767-12-31T23:59:59.999999999"
+

@@ -1324,6 +1324,81 @@ seq.clock_year_month_weekday <- function(from,
 
 # ------------------------------------------------------------------------------
 
+#' @export
+clock_minimum.clock_year_month_weekday <- function(x) {
+  check_year_month_weekday_precision_limit(x, "minimum")
+
+  switch(
+    calendar_precision_attribute(x) + 1L,
+    clock_minimum_year_month_weekday_year,
+    abort("Invalid precision", .internal = TRUE),
+    clock_minimum_year_month_weekday_month,
+    abort("Invalid precision", .internal = TRUE),
+    abort("Invalid precision", .internal = TRUE),
+    abort("Invalid precision", .internal = TRUE),
+    abort("Invalid precision", .internal = TRUE),
+    abort("Invalid precision", .internal = TRUE),
+    abort("Invalid precision", .internal = TRUE),
+    abort("Invalid precision", .internal = TRUE),
+    abort("Invalid precision", .internal = TRUE),
+    abort("Invalid precision", .internal = TRUE)
+  )
+}
+
+#' @export
+clock_maximum.clock_year_month_weekday <- function(x) {
+  check_year_month_weekday_precision_limit(x, "maximum")
+
+  switch(
+    calendar_precision_attribute(x) + 1L,
+    clock_maximum_year_month_weekday_year,
+    abort("Invalid precision", .internal = TRUE),
+    clock_maximum_year_month_weekday_month,
+    abort("Invalid precision", .internal = TRUE),
+    abort("Invalid precision", .internal = TRUE),
+    abort("Invalid precision", .internal = TRUE),
+    abort("Invalid precision", .internal = TRUE),
+    abort("Invalid precision", .internal = TRUE),
+    abort("Invalid precision", .internal = TRUE),
+    abort("Invalid precision", .internal = TRUE),
+    abort("Invalid precision", .internal = TRUE),
+    abort("Invalid precision", .internal = TRUE),
+  )
+}
+
+year_month_weekday_minimum <- function(precision) {
+  calendar_minimum(precision, year_month_weekday(clock_calendar_year_minimum))
+}
+year_month_weekday_maximum <- function(precision) {
+  calendar_maximum(precision, year_month_weekday(clock_calendar_year_maximum))
+}
+
+check_year_month_weekday_precision_limit <- function(x,
+                                                     which,
+                                                     ...,
+                                                     arg = caller_arg(x),
+                                                     call = caller_env()) {
+  x_precision <- calendar_precision_attribute(x)
+  precision <- PRECISION_MONTH
+
+  if (x_precision <= precision) {
+    return(invisible(NULL))
+  }
+
+  x_precision <- precision_to_string(x_precision)
+  precision <- precision_to_string(precision)
+
+  message <- c(
+    "Can't compute the {which} of this {.cls year_month_weekday}, as it is undefined.",
+    i = "The most precise allowed precision is {.str {precision}}.",
+    i = "{.arg {arg}} has precision {.str {x_precision}}."
+  )
+
+  cli::cli_abort(message, call = call)
+}
+
+# ------------------------------------------------------------------------------
+
 clock_init_year_month_weekday_utils <- function(env) {
   year <- year_month_weekday(integer())
 
@@ -1336,6 +1411,12 @@ clock_init_year_month_weekday_utils <- function(env) {
   assign("clock_empty_year_month_weekday_millisecond", calendar_widen(year, "millisecond"), envir = env)
   assign("clock_empty_year_month_weekday_microsecond", calendar_widen(year, "microsecond"), envir = env)
   assign("clock_empty_year_month_weekday_nanosecond", calendar_widen(year, "nanosecond"), envir = env)
+
+  assign("clock_minimum_year_month_weekday_year", year_month_weekday_minimum("year"), envir = env)
+  assign("clock_minimum_year_month_weekday_month", year_month_weekday_minimum("month"), envir = env)
+
+  assign("clock_maximum_year_month_weekday_year", year_month_weekday_maximum("year"), envir = env)
+  assign("clock_maximum_year_month_weekday_month", year_month_weekday_maximum("month"), envir = env)
 
   invisible(NULL)
 }

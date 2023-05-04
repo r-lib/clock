@@ -1180,6 +1180,35 @@ time_point_precision <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+# `clock_minimum()` and `clock_maximum()` are known to not print correctly
+# for anything besides nanosecond precision time points. If you convert the
+# values to durations, they will print correctly. This has to do with the
+# print method going through year-month-day, which has a limit on how large the
+# `year` field can be that doesn't align with the limit of time points. See #331
+# for a detailed discussion. The important thing is that the limits still work
+# correctly for comparison purposes!
+
+#' @export
+clock_minimum.clock_time_point <- function(x) {
+  time_point_limit(x, clock_minimum)
+}
+
+#' @export
+clock_maximum.clock_time_point <- function(x) {
+  time_point_limit(x, clock_maximum)
+}
+
+time_point_limit <- function(x, fn) {
+  names <- NULL
+  clock <- time_point_clock_attribute(x)
+  precision <- time_point_precision_attribute(x)
+  x <- time_point_duration(x)
+  x <- fn(x)
+  new_time_point_from_fields(x, precision, clock, names)
+}
+
+# ------------------------------------------------------------------------------
+
 check_time_point_precision <- function(x,
                                        ...,
                                        arg = caller_arg(x),

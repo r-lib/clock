@@ -681,3 +681,78 @@ test_that("is.infinite() works", {
   x <- year_quarter_day(c(2019, NA))
   expect_identical(is.infinite(x), c(FALSE, FALSE))
 })
+
+# ------------------------------------------------------------------------------
+# clock_minimum() / clock_maximum()
+
+test_that("minimums are right", {
+  expect_snapshot({
+    clock_minimum(year_quarter_day(1))
+    clock_minimum(year_quarter_day(1, 1))
+    clock_minimum(year_quarter_day(1, 1, 1))
+    clock_minimum(year_quarter_day(1, 1, 1, 1))
+    clock_minimum(year_quarter_day(1, 1, 1, 1, 1))
+    clock_minimum(year_quarter_day(1, 1, 1, 1, 1, 1))
+    clock_minimum(year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "millisecond"))
+    clock_minimum(year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "microsecond"))
+    clock_minimum(year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond"))
+  })
+})
+
+test_that("maximums are right", {
+  expect_snapshot({
+    clock_maximum(year_quarter_day(1))
+    clock_maximum(year_quarter_day(1, 1))
+    clock_maximum(year_quarter_day(1, 1, 1))
+    clock_maximum(year_quarter_day(1, 1, 1, 1))
+    clock_maximum(year_quarter_day(1, 1, 1, 1, 1))
+    clock_maximum(year_quarter_day(1, 1, 1, 1, 1, 1))
+    clock_maximum(year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "millisecond"))
+    clock_maximum(year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "microsecond"))
+    clock_maximum(year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond"))
+  })
+})
+
+test_that("minimums and maximums respect `start`", {
+  expect_snapshot({
+    clock_minimum(year_quarter_day(1, start = clock_months$february))
+    clock_maximum(year_quarter_day(1, start = clock_months$february))
+  })
+})
+
+# ------------------------------------------------------------------------------
+# min() / max() / range()
+
+test_that("min() / max() / range() works", {
+  x <- year_quarter_day(c(1, 3, 2, 1, -1))
+
+  expect_identical(min(x), year_quarter_day(-1))
+  expect_identical(max(x), year_quarter_day(3))
+  expect_identical(range(x), year_quarter_day(c(-1, 3)))
+})
+
+test_that("min() / max() / range() works with `NA`", {
+  x <- year_quarter_day(c(1, NA, 2, 0))
+
+  expect_identical(min(x), year_quarter_day(NA))
+  expect_identical(max(x), year_quarter_day(NA))
+  expect_identical(range(x), year_quarter_day(c(NA, NA)))
+
+  expect_identical(min(x, na.rm = TRUE), year_quarter_day(0))
+  expect_identical(max(x, na.rm = TRUE), year_quarter_day(2))
+  expect_identical(range(x, na.rm = TRUE), year_quarter_day(c(0, 2)))
+})
+
+test_that("min() / max() / range() works when empty", {
+  x <- year_quarter_day(integer())
+
+  expect_identical(min(x), clock_maximum(x))
+  expect_identical(max(x), clock_minimum(x))
+  expect_identical(range(x), c(clock_maximum(x), clock_minimum(x)))
+
+  x <- year_quarter_day(c(NA, NA))
+
+  expect_identical(min(x, na.rm = TRUE), clock_maximum(x))
+  expect_identical(max(x, na.rm = TRUE), clock_minimum(x))
+  expect_identical(range(x, na.rm = TRUE), c(clock_maximum(x), clock_minimum(x)))
+})

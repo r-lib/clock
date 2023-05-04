@@ -342,3 +342,29 @@
       i Do you need to convert to a calendar first?
       i Use `as_year_month_day()` for a calendar that supports `add_months()`.
 
+# minimums are right
+
+    Code
+      clock_minimum(as_sys_time(duration_nanoseconds()))
+    Output
+      <sys_time<nanosecond>[1]>
+      [1] "1677-09-21T00:12:43.145224192"
+    Code
+      clock_minimum(as_naive_time(duration_nanoseconds()))
+    Output
+      <naive_time<nanosecond>[1]>
+      [1] "1677-09-21T00:12:43.145224192"
+
+# maximums are right
+
+    Code
+      clock_maximum(as_sys_time(duration_nanoseconds()))
+    Output
+      <sys_time<nanosecond>[1]>
+      [1] "2262-04-11T23:47:16.854775807"
+    Code
+      clock_maximum(as_naive_time(duration_nanoseconds()))
+    Output
+      <naive_time<nanosecond>[1]>
+      [1] "2262-04-11T23:47:16.854775807"
+

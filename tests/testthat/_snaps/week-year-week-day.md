@@ -492,3 +492,112 @@
       ! Invalid date found at location 1.
       i Resolve invalid date issues by specifying the `invalid` argument.
 
+# minimums are right
+
+    Code
+      clock_minimum(year_week_day(1))
+    Output
+      <year_week_day<Sunday><year>[1]>
+      [1] "-32767"
+    Code
+      clock_minimum(year_week_day(1, 1))
+    Output
+      <year_week_day<Sunday><week>[1]>
+      [1] "-32767-W01"
+    Code
+      clock_minimum(year_week_day(1, 1, 1))
+    Output
+      <year_week_day<Sunday><day>[1]>
+      [1] "-32767-W01-1"
+    Code
+      clock_minimum(year_week_day(1, 1, 1, 1))
+    Output
+      <year_week_day<Sunday><hour>[1]>
+      [1] "-32767-W01-1T00"
+    Code
+      clock_minimum(year_week_day(1, 1, 1, 1, 1))
+    Output
+      <year_week_day<Sunday><minute>[1]>
+      [1] "-32767-W01-1T00:00"
+    Code
+      clock_minimum(year_week_day(1, 1, 1, 1, 1, 1))
+    Output
+      <year_week_day<Sunday><second>[1]>
+      [1] "-32767-W01-1T00:00:00"
+    Code
+      clock_minimum(year_week_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "millisecond"))
+    Output
+      <year_week_day<Sunday><millisecond>[1]>
+      [1] "-32767-W01-1T00:00:00.000"
+    Code
+      clock_minimum(year_week_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "microsecond"))
+    Output
+      <year_week_day<Sunday><microsecond>[1]>
+      [1] "-32767-W01-1T00:00:00.000000"
+    Code
+      clock_minimum(year_week_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond"))
+    Output
+      <year_week_day<Sunday><nanosecond>[1]>
+      [1] "-32767-W01-1T00:00:00.000000000"
+
+# maximums are right
+
+    Code
+      clock_maximum(year_week_day(1))
+    Output
+      <year_week_day<Sunday><year>[1]>
+      [1] "32767"
+    Code
+      clock_maximum(year_week_day(1, 1))
+    Output
+      <year_week_day<Sunday><week>[1]>
+      [1] "32767-W52"
+    Code
+      clock_maximum(year_week_day(1, 1, 1))
+    Output
+      <year_week_day<Sunday><day>[1]>
+      [1] "32767-W52-7"
+    Code
+      clock_maximum(year_week_day(1, 1, 1, 1))
+    Output
+      <year_week_day<Sunday><hour>[1]>
+      [1] "32767-W52-7T23"
+    Code
+      clock_maximum(year_week_day(1, 1, 1, 1, 1))
+    Output
+      <year_week_day<Sunday><minute>[1]>
+      [1] "32767-W52-7T23:59"
+    Code
+      clock_maximum(year_week_day(1, 1, 1, 1, 1, 1))
+    Output
+      <year_week_day<Sunday><second>[1]>
+      [1] "32767-W52-7T23:59:59"
+    Code
+      clock_maximum(year_week_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "millisecond"))
+    Output
+      <year_week_day<Sunday><millisecond>[1]>
+      [1] "32767-W52-7T23:59:59.999"
+    Code
+      clock_maximum(year_week_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "microsecond"))
+    Output
+      <year_week_day<Sunday><microsecond>[1]>
+      [1] "32767-W52-7T23:59:59.999999"
+    Code
+      clock_maximum(year_week_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond"))
+    Output
+      <year_week_day<Sunday><nanosecond>[1]>
+      [1] "32767-W52-7T23:59:59.999999999"
+
+# minimums and maximums respect `start`
+
+    Code
+      clock_minimum(year_week_day(1, start = clock_weekdays$friday))
+    Output
+      <year_week_day<Friday><year>[1]>
+      [1] "-32767"
+    Code
+      clock_maximum(year_week_day(1, start = clock_weekdays$friday))
+    Output
+      <year_week_day<Friday><year>[1]>
+      [1] "32767"
+
