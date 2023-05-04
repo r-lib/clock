@@ -486,3 +486,99 @@
       ! Invalid date found at location 1.
       i Resolve invalid date issues by specifying the `invalid` argument.
 
+# minimums are right
+
+    Code
+      clock_minimum(clock_empty_iso_year_week_day_year)
+    Output
+      <iso_year_week_day<year>[1]>
+      [1] "-32767"
+    Code
+      clock_minimum(clock_empty_iso_year_week_day_week)
+    Output
+      <iso_year_week_day<week>[1]>
+      [1] "-32767-W01"
+    Code
+      clock_minimum(clock_empty_iso_year_week_day_day)
+    Output
+      <iso_year_week_day<day>[1]>
+      [1] "-32767-W01-1"
+    Code
+      clock_minimum(clock_empty_iso_year_week_day_hour)
+    Output
+      <iso_year_week_day<hour>[1]>
+      [1] "-32767-W01-1T00"
+    Code
+      clock_minimum(clock_empty_iso_year_week_day_minute)
+    Output
+      <iso_year_week_day<minute>[1]>
+      [1] "-32767-W01-1T00:00"
+    Code
+      clock_minimum(clock_empty_iso_year_week_day_second)
+    Output
+      <iso_year_week_day<second>[1]>
+      [1] "-32767-W01-1T00:00:00"
+    Code
+      clock_minimum(clock_empty_iso_year_week_day_millisecond)
+    Output
+      <iso_year_week_day<millisecond>[1]>
+      [1] "-32767-W01-1T00:00:00.000"
+    Code
+      clock_minimum(clock_empty_iso_year_week_day_microsecond)
+    Output
+      <iso_year_week_day<microsecond>[1]>
+      [1] "-32767-W01-1T00:00:00.000000"
+    Code
+      clock_minimum(clock_empty_iso_year_week_day_nanosecond)
+    Output
+      <iso_year_week_day<nanosecond>[1]>
+      [1] "-32767-W01-1T00:00:00.000000000"
+
+# maximums are right
+
+    Code
+      clock_maximum(clock_empty_iso_year_week_day_year)
+    Output
+      <iso_year_week_day<year>[1]>
+      [1] "32767"
+    Code
+      clock_maximum(clock_empty_iso_year_week_day_week)
+    Output
+      <iso_year_week_day<week>[1]>
+      [1] "32767-W52"
+    Code
+      clock_maximum(clock_empty_iso_year_week_day_day)
+    Output
+      <iso_year_week_day<day>[1]>
+      [1] "32767-W52-7"
+    Code
+      clock_maximum(clock_empty_iso_year_week_day_hour)
+    Output
+      <iso_year_week_day<hour>[1]>
+      [1] "32767-W52-7T23"
+    Code
+      clock_maximum(clock_empty_iso_year_week_day_minute)
+    Output
+      <iso_year_week_day<minute>[1]>
+      [1] "32767-W52-7T23:59"
+    Code
+      clock_maximum(clock_empty_iso_year_week_day_second)
+    Output
+      <iso_year_week_day<second>[1]>
+      [1] "32767-W52-7T23:59:59"
+    Code
+      clock_maximum(clock_empty_iso_year_week_day_millisecond)
+    Output
+      <iso_year_week_day<millisecond>[1]>
+      [1] "32767-W52-7T23:59:59.999"
+    Code
+      clock_maximum(clock_empty_iso_year_week_day_microsecond)
+    Output
+      <iso_year_week_day<microsecond>[1]>
+      [1] "32767-W52-7T23:59:59.999999"
+    Code
+      clock_maximum(clock_empty_iso_year_week_day_nanosecond)
+    Output
+      <iso_year_week_day<nanosecond>[1]>
+      [1] "32767-W52-7T23:59:59.999999999"
+

@@ -1173,6 +1173,20 @@ advice_convert_to_time_point <- function() {
 
 # ------------------------------------------------------------------------------
 
+calendar_minimum <- function(precision, year) {
+  out <- calendar_widen(year, precision)
+  out <- calendar_start(out, "year")
+  out
+}
+
+calendar_maximum <- function(precision, year) {
+  out <- calendar_widen(year, precision)
+  out <- calendar_end(out, "year")
+  out
+}
+
+# ------------------------------------------------------------------------------
+
 field_year <- function(x) {
   # The `year` field is the first field of every calendar type, which makes
   # it the field that names are on. When extracting the field, we don't ever

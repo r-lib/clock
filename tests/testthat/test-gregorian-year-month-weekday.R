@@ -629,3 +629,81 @@ test_that("is.infinite() works", {
   x <- year_month_weekday(c(2019, NA))
   expect_identical(is.infinite(x), c(FALSE, FALSE))
 })
+
+# ------------------------------------------------------------------------------
+# clock_minimum() / clock_maximum()
+
+test_that("minimums are right", {
+  expect_snapshot({
+    clock_minimum(clock_empty_year_month_weekday_year)
+    clock_minimum(clock_empty_year_month_weekday_month)
+  })
+
+  # Not defined at or past day precision
+  expect_snapshot(error = TRUE, {
+    clock_minimum(year_month_weekday(1, 1, 1, 1))
+  })
+})
+
+test_that("maximums are right", {
+  expect_snapshot({
+    clock_maximum(clock_empty_year_month_weekday_year)
+    clock_maximum(clock_empty_year_month_weekday_month)
+  })
+
+  # Not defined at or past day precision
+  expect_snapshot(error = TRUE, {
+    clock_maximum(year_month_weekday(1, 1, 1, 1))
+  })
+})
+
+# ------------------------------------------------------------------------------
+# min() / max() / range()
+
+test_that("min() / max() / range() works", {
+  x <- year_month_weekday(c(1, 3, 2, 1, -1))
+
+  expect_identical(min(x), year_month_weekday(-1))
+  expect_identical(max(x), year_month_weekday(3))
+  expect_identical(range(x), year_month_weekday(c(-1, 3)))
+})
+
+test_that("min() / max() / range() works with `NA`", {
+  x <- year_month_weekday(c(1, NA, 2, 0))
+
+  expect_identical(min(x), year_month_weekday(NA))
+  expect_identical(max(x), year_month_weekday(NA))
+  expect_identical(range(x), year_month_weekday(c(NA, NA)))
+
+  expect_identical(min(x, na.rm = TRUE), year_month_weekday(0))
+  expect_identical(max(x, na.rm = TRUE), year_month_weekday(2))
+  expect_identical(range(x, na.rm = TRUE), year_month_weekday(c(0, 2)))
+})
+
+test_that("min() / max() / range() works when empty", {
+  x <- year_month_weekday(integer())
+
+  expect_identical(min(x), clock_maximum(x))
+  expect_identical(max(x), clock_minimum(x))
+  expect_identical(range(x), c(clock_maximum(x), clock_minimum(x)))
+
+  x <- year_month_weekday(c(NA, NA))
+
+  expect_identical(min(x, na.rm = TRUE), clock_maximum(x))
+  expect_identical(max(x, na.rm = TRUE), clock_minimum(x))
+  expect_identical(range(x, na.rm = TRUE), c(clock_maximum(x), clock_minimum(x)))
+})
+
+test_that("min() / max() / range() aren't defined at or past day precision", {
+  x <- year_month_weekday(1, 1, 1, 1)
+
+  expect_snapshot(error = TRUE, min(x))
+  expect_snapshot(error = TRUE, max(x))
+  expect_snapshot(error = TRUE, range(x))
+
+  x <- year_month_weekday(integer(), integer(), integer(), integer())
+
+  expect_snapshot(error = TRUE, min(x))
+  expect_snapshot(error = TRUE, max(x))
+  expect_snapshot(error = TRUE, range(x))
+})

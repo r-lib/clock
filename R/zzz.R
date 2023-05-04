@@ -8,6 +8,7 @@
   clock_ns <- topenv(environment())
 
   # Initializers must run after initializing C++ utils and setting tzdata
+  clock_init_duration_utils(clock_ns)
   clock_init_limits_init(clock_ns)
   clock_init_year_month_day_utils(clock_ns)
   clock_init_year_month_weekday_utils(clock_ns)

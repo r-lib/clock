@@ -100,6 +100,14 @@ duration_seq_to_lo_cpp <- function(from, precision_int, to, length_out) {
   .Call(`_clock_duration_seq_to_lo_cpp`, from, precision_int, to, length_out)
 }
 
+duration_minimum_cpp <- function(precision_int) {
+  .Call(`_clock_duration_minimum_cpp`, precision_int)
+}
+
+duration_maximum_cpp <- function(precision_int) {
+  .Call(`_clock_duration_maximum_cpp`, precision_int)
+}
+
 precision_to_string <- function(precision_int) {
   .Call(`_clock_precision_to_string`, precision_int)
 }
@@ -320,12 +328,12 @@ iso_year_week_day_leap_year_cpp <- function(year) {
   .Call(`_clock_iso_year_week_day_leap_year_cpp`, year)
 }
 
-clock_get_year_max <- function() {
-  .Call(`_clock_clock_get_year_max`)
+clock_get_calendar_year_maximum <- function() {
+  .Call(`_clock_clock_get_calendar_year_maximum`)
 }
 
-clock_get_year_min <- function() {
-  .Call(`_clock_clock_get_year_min`)
+clock_get_calendar_year_minimum <- function() {
+  .Call(`_clock_clock_get_calendar_year_minimum`)
 }
 
 naive_time_info_cpp <- function(fields, precision_int, zone) {

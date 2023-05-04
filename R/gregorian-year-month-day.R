@@ -1500,6 +1500,53 @@ seq.clock_year_month_day <- function(from,
 
 # ------------------------------------------------------------------------------
 
+#' @export
+clock_minimum.clock_year_month_day <- function(x) {
+  switch(
+    calendar_precision_attribute(x) + 1L,
+    clock_minimum_year_month_day_year,
+    abort("Invalid precision", .internal = TRUE),
+    clock_minimum_year_month_day_month,
+    abort("Invalid precision", .internal = TRUE),
+    clock_minimum_year_month_day_day,
+    clock_minimum_year_month_day_hour,
+    clock_minimum_year_month_day_minute,
+    clock_minimum_year_month_day_second,
+    clock_minimum_year_month_day_millisecond,
+    clock_minimum_year_month_day_microsecond,
+    clock_minimum_year_month_day_nanosecond,
+    abort("Invalid precision", .internal = TRUE)
+  )
+}
+
+#' @export
+clock_maximum.clock_year_month_day <- function(x) {
+  switch(
+    calendar_precision_attribute(x) + 1L,
+    clock_maximum_year_month_day_year,
+    abort("Invalid precision", .internal = TRUE),
+    clock_maximum_year_month_day_month,
+    abort("Invalid precision", .internal = TRUE),
+    clock_maximum_year_month_day_day,
+    clock_maximum_year_month_day_hour,
+    clock_maximum_year_month_day_minute,
+    clock_maximum_year_month_day_second,
+    clock_maximum_year_month_day_millisecond,
+    clock_maximum_year_month_day_microsecond,
+    clock_maximum_year_month_day_nanosecond,
+    abort("Invalid precision", .internal = TRUE)
+  )
+}
+
+year_month_day_minimum <- function(precision) {
+  calendar_minimum(precision, year_month_day(clock_calendar_year_minimum))
+}
+year_month_day_maximum <- function(precision) {
+  calendar_maximum(precision, year_month_day(clock_calendar_year_maximum))
+}
+
+# ------------------------------------------------------------------------------
+
 clock_init_year_month_day_utils <- function(env) {
   year <- year_month_day(integer())
 
@@ -1512,6 +1559,26 @@ clock_init_year_month_day_utils <- function(env) {
   assign("clock_empty_year_month_day_millisecond", calendar_widen(year, "millisecond"), envir = env)
   assign("clock_empty_year_month_day_microsecond", calendar_widen(year, "microsecond"), envir = env)
   assign("clock_empty_year_month_day_nanosecond", calendar_widen(year, "nanosecond"), envir = env)
+
+  assign("clock_minimum_year_month_day_year", year_month_day_minimum("year"), envir = env)
+  assign("clock_minimum_year_month_day_month", year_month_day_minimum("month"), envir = env)
+  assign("clock_minimum_year_month_day_day", year_month_day_minimum("day"), envir = env)
+  assign("clock_minimum_year_month_day_hour", year_month_day_minimum("hour"), envir = env)
+  assign("clock_minimum_year_month_day_minute", year_month_day_minimum("minute"), envir = env)
+  assign("clock_minimum_year_month_day_second", year_month_day_minimum("second"), envir = env)
+  assign("clock_minimum_year_month_day_millisecond", year_month_day_minimum("millisecond"), envir = env)
+  assign("clock_minimum_year_month_day_microsecond", year_month_day_minimum("microsecond"), envir = env)
+  assign("clock_minimum_year_month_day_nanosecond", year_month_day_minimum("nanosecond"), envir = env)
+
+  assign("clock_maximum_year_month_day_year", year_month_day_maximum("year"), envir = env)
+  assign("clock_maximum_year_month_day_month", year_month_day_maximum("month"), envir = env)
+  assign("clock_maximum_year_month_day_day", year_month_day_maximum("day"), envir = env)
+  assign("clock_maximum_year_month_day_hour", year_month_day_maximum("hour"), envir = env)
+  assign("clock_maximum_year_month_day_minute", year_month_day_maximum("minute"), envir = env)
+  assign("clock_maximum_year_month_day_second", year_month_day_maximum("second"), envir = env)
+  assign("clock_maximum_year_month_day_millisecond", year_month_day_maximum("millisecond"), envir = env)
+  assign("clock_maximum_year_month_day_microsecond", year_month_day_maximum("microsecond"), envir = env)
+  assign("clock_maximum_year_month_day_nanosecond", year_month_day_maximum("nanosecond"), envir = env)
 
   invisible(NULL)
 }

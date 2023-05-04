@@ -1180,6 +1180,53 @@ seq.clock_iso_year_week_day <- function(from,
 
 # ------------------------------------------------------------------------------
 
+#' @export
+clock_minimum.clock_iso_year_week_day <- function(x) {
+  switch(
+    calendar_precision_attribute(x) + 1L,
+    clock_minimum_iso_year_week_day_year,
+    abort("Invalid precision", .internal = TRUE),
+    abort("Invalid precision", .internal = TRUE),
+    clock_minimum_iso_year_week_day_week,
+    clock_minimum_iso_year_week_day_day,
+    clock_minimum_iso_year_week_day_hour,
+    clock_minimum_iso_year_week_day_minute,
+    clock_minimum_iso_year_week_day_second,
+    clock_minimum_iso_year_week_day_millisecond,
+    clock_minimum_iso_year_week_day_microsecond,
+    clock_minimum_iso_year_week_day_nanosecond,
+    abort("Invalid precision", .internal = TRUE)
+  )
+}
+
+#' @export
+clock_maximum.clock_iso_year_week_day <- function(x) {
+  switch(
+    calendar_precision_attribute(x) + 1L,
+    clock_maximum_iso_year_week_day_year,
+    abort("Invalid precision", .internal = TRUE),
+    abort("Invalid precision", .internal = TRUE),
+    clock_maximum_iso_year_week_day_week,
+    clock_maximum_iso_year_week_day_day,
+    clock_maximum_iso_year_week_day_hour,
+    clock_maximum_iso_year_week_day_minute,
+    clock_maximum_iso_year_week_day_second,
+    clock_maximum_iso_year_week_day_millisecond,
+    clock_maximum_iso_year_week_day_microsecond,
+    clock_maximum_iso_year_week_day_nanosecond,
+    abort("Invalid precision", .internal = TRUE)
+  )
+}
+
+iso_year_week_day_minimum <- function(precision) {
+  calendar_minimum(precision, iso_year_week_day(clock_calendar_year_minimum))
+}
+iso_year_week_day_maximum <- function(precision) {
+  calendar_maximum(precision, iso_year_week_day(clock_calendar_year_maximum))
+}
+
+# ------------------------------------------------------------------------------
+
 clock_init_iso_year_week_day_utils <- function(env) {
   year <- iso_year_week_day(integer())
 
@@ -1192,6 +1239,26 @@ clock_init_iso_year_week_day_utils <- function(env) {
   assign("clock_empty_iso_year_week_day_millisecond", calendar_widen(year, "millisecond"), envir = env)
   assign("clock_empty_iso_year_week_day_microsecond", calendar_widen(year, "microsecond"), envir = env)
   assign("clock_empty_iso_year_week_day_nanosecond", calendar_widen(year, "nanosecond"), envir = env)
+
+  assign("clock_minimum_iso_year_week_day_year", iso_year_week_day_minimum("year"), envir = env)
+  assign("clock_minimum_iso_year_week_day_week", iso_year_week_day_minimum("week"), envir = env)
+  assign("clock_minimum_iso_year_week_day_day", iso_year_week_day_minimum("day"), envir = env)
+  assign("clock_minimum_iso_year_week_day_hour", iso_year_week_day_minimum("hour"), envir = env)
+  assign("clock_minimum_iso_year_week_day_minute", iso_year_week_day_minimum("minute"), envir = env)
+  assign("clock_minimum_iso_year_week_day_second", iso_year_week_day_minimum("second"), envir = env)
+  assign("clock_minimum_iso_year_week_day_millisecond", iso_year_week_day_minimum("millisecond"), envir = env)
+  assign("clock_minimum_iso_year_week_day_microsecond", iso_year_week_day_minimum("microsecond"), envir = env)
+  assign("clock_minimum_iso_year_week_day_nanosecond", iso_year_week_day_minimum("nanosecond"), envir = env)
+
+  assign("clock_maximum_iso_year_week_day_year", iso_year_week_day_maximum("year"), envir = env)
+  assign("clock_maximum_iso_year_week_day_week", iso_year_week_day_maximum("week"), envir = env)
+  assign("clock_maximum_iso_year_week_day_day", iso_year_week_day_maximum("day"), envir = env)
+  assign("clock_maximum_iso_year_week_day_hour", iso_year_week_day_maximum("hour"), envir = env)
+  assign("clock_maximum_iso_year_week_day_minute", iso_year_week_day_maximum("minute"), envir = env)
+  assign("clock_maximum_iso_year_week_day_second", iso_year_week_day_maximum("second"), envir = env)
+  assign("clock_maximum_iso_year_week_day_millisecond", iso_year_week_day_maximum("millisecond"), envir = env)
+  assign("clock_maximum_iso_year_week_day_microsecond", iso_year_week_day_maximum("microsecond"), envir = env)
+  assign("clock_maximum_iso_year_week_day_nanosecond", iso_year_week_day_maximum("nanosecond"), envir = env)
 
   invisible(NULL)
 }

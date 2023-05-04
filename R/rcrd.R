@@ -41,6 +41,45 @@ names.clock_rcrd <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
+min.clock_rcrd <- function(x, ..., na.rm = FALSE) {
+  check_bool(na.rm)
+
+  if (vec_is_empty(x) || (na.rm && vec_all_missing(x))) {
+    clock_maximum(x)
+  } else {
+    NextMethod()
+  }
+}
+
+#' @export
+max.clock_rcrd <- function(x, ..., na.rm = FALSE) {
+  check_bool(na.rm)
+
+  if (vec_is_empty(x) || (na.rm && vec_all_missing(x))) {
+    clock_minimum(x)
+  } else {
+    NextMethod()
+  }
+}
+
+#' @export
+range.clock_rcrd <- function(x, ..., na.rm = FALSE) {
+  check_bool(na.rm)
+
+  if (vec_is_empty(x) || (na.rm && vec_all_missing(x))) {
+    vec_c(clock_maximum(x), clock_minimum(x))
+  } else {
+    NextMethod()
+  }
+}
+
+vec_all_missing <- function(x) {
+  vec_any_missing(x) && all(vec_detect_missing(x))
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 vec_math.clock_rcrd <- function(.fn, .x, ...) {
   switch(
     .fn,

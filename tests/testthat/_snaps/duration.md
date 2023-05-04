@@ -385,6 +385,122 @@
       ! Can't convert from `y` <double> to <integer> due to loss of precision.
       * Locations: 1
 
+# minimums are right
+
+    Code
+      clock_minimum(duration_years())
+    Output
+      <duration<year>[1]>
+      [1] -2147483648
+    Code
+      clock_minimum(duration_quarters())
+    Output
+      <duration<quarter>[1]>
+      [1] -2147483648
+    Code
+      clock_minimum(duration_months())
+    Output
+      <duration<month>[1]>
+      [1] -2147483648
+    Code
+      clock_minimum(duration_weeks())
+    Output
+      <duration<week>[1]>
+      [1] -2147483648
+    Code
+      clock_minimum(duration_days())
+    Output
+      <duration<day>[1]>
+      [1] -2147483648
+    Code
+      clock_minimum(duration_hours())
+    Output
+      <duration<hour>[1]>
+      [1] -9223372036854775808
+    Code
+      clock_minimum(duration_minutes())
+    Output
+      <duration<minute>[1]>
+      [1] -9223372036854775808
+    Code
+      clock_minimum(duration_seconds())
+    Output
+      <duration<second>[1]>
+      [1] -9223372036854775808
+    Code
+      clock_minimum(duration_milliseconds())
+    Output
+      <duration<millisecond>[1]>
+      [1] -9223372036854775808
+    Code
+      clock_minimum(duration_microseconds())
+    Output
+      <duration<microsecond>[1]>
+      [1] -9223372036854775808
+    Code
+      clock_minimum(duration_nanoseconds())
+    Output
+      <duration<nanosecond>[1]>
+      [1] -9223372036854775808
+
+# maximums are right
+
+    Code
+      clock_maximum(duration_years())
+    Output
+      <duration<year>[1]>
+      [1] 2147483647
+    Code
+      clock_maximum(duration_quarters())
+    Output
+      <duration<quarter>[1]>
+      [1] 2147483647
+    Code
+      clock_maximum(duration_months())
+    Output
+      <duration<month>[1]>
+      [1] 2147483647
+    Code
+      clock_maximum(duration_weeks())
+    Output
+      <duration<week>[1]>
+      [1] 2147483647
+    Code
+      clock_maximum(duration_days())
+    Output
+      <duration<day>[1]>
+      [1] 2147483647
+    Code
+      clock_maximum(duration_hours())
+    Output
+      <duration<hour>[1]>
+      [1] 9223372036854775807
+    Code
+      clock_maximum(duration_minutes())
+    Output
+      <duration<minute>[1]>
+      [1] 9223372036854775807
+    Code
+      clock_maximum(duration_seconds())
+    Output
+      <duration<second>[1]>
+      [1] 9223372036854775807
+    Code
+      clock_maximum(duration_milliseconds())
+    Output
+      <duration<millisecond>[1]>
+      [1] 9223372036854775807
+    Code
+      clock_maximum(duration_microseconds())
+    Output
+      <duration<microsecond>[1]>
+      [1] 9223372036854775807
+    Code
+      clock_maximum(duration_nanoseconds())
+    Output
+      <duration<nanosecond>[1]>
+      [1] 9223372036854775807
+
 # `NA` duration prints as expected
 
     Code

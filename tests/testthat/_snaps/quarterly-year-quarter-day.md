@@ -496,3 +496,112 @@
       ! Invalid date found at location 1.
       i Resolve invalid date issues by specifying the `invalid` argument.
 
+# minimums are right
+
+    Code
+      clock_minimum(year_quarter_day(1))
+    Output
+      <year_quarter_day<January><year>[1]>
+      [1] "-32767"
+    Code
+      clock_minimum(year_quarter_day(1, 1))
+    Output
+      <year_quarter_day<January><quarter>[1]>
+      [1] "-32767-Q1"
+    Code
+      clock_minimum(year_quarter_day(1, 1, 1))
+    Output
+      <year_quarter_day<January><day>[1]>
+      [1] "-32767-Q1-01"
+    Code
+      clock_minimum(year_quarter_day(1, 1, 1, 1))
+    Output
+      <year_quarter_day<January><hour>[1]>
+      [1] "-32767-Q1-01T00"
+    Code
+      clock_minimum(year_quarter_day(1, 1, 1, 1, 1))
+    Output
+      <year_quarter_day<January><minute>[1]>
+      [1] "-32767-Q1-01T00:00"
+    Code
+      clock_minimum(year_quarter_day(1, 1, 1, 1, 1, 1))
+    Output
+      <year_quarter_day<January><second>[1]>
+      [1] "-32767-Q1-01T00:00:00"
+    Code
+      clock_minimum(year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "millisecond"))
+    Output
+      <year_quarter_day<January><millisecond>[1]>
+      [1] "-32767-Q1-01T00:00:00.000"
+    Code
+      clock_minimum(year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "microsecond"))
+    Output
+      <year_quarter_day<January><microsecond>[1]>
+      [1] "-32767-Q1-01T00:00:00.000000"
+    Code
+      clock_minimum(year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond"))
+    Output
+      <year_quarter_day<January><nanosecond>[1]>
+      [1] "-32767-Q1-01T00:00:00.000000000"
+
+# maximums are right
+
+    Code
+      clock_maximum(year_quarter_day(1))
+    Output
+      <year_quarter_day<January><year>[1]>
+      [1] "32767"
+    Code
+      clock_maximum(year_quarter_day(1, 1))
+    Output
+      <year_quarter_day<January><quarter>[1]>
+      [1] "32767-Q4"
+    Code
+      clock_maximum(year_quarter_day(1, 1, 1))
+    Output
+      <year_quarter_day<January><day>[1]>
+      [1] "32767-Q4-92"
+    Code
+      clock_maximum(year_quarter_day(1, 1, 1, 1))
+    Output
+      <year_quarter_day<January><hour>[1]>
+      [1] "32767-Q4-92T23"
+    Code
+      clock_maximum(year_quarter_day(1, 1, 1, 1, 1))
+    Output
+      <year_quarter_day<January><minute>[1]>
+      [1] "32767-Q4-92T23:59"
+    Code
+      clock_maximum(year_quarter_day(1, 1, 1, 1, 1, 1))
+    Output
+      <year_quarter_day<January><second>[1]>
+      [1] "32767-Q4-92T23:59:59"
+    Code
+      clock_maximum(year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "millisecond"))
+    Output
+      <year_quarter_day<January><millisecond>[1]>
+      [1] "32767-Q4-92T23:59:59.999"
+    Code
+      clock_maximum(year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "microsecond"))
+    Output
+      <year_quarter_day<January><microsecond>[1]>
+      [1] "32767-Q4-92T23:59:59.999999"
+    Code
+      clock_maximum(year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond"))
+    Output
+      <year_quarter_day<January><nanosecond>[1]>
+      [1] "32767-Q4-92T23:59:59.999999999"
+
+# minimums and maximums respect `start`
+
+    Code
+      clock_minimum(year_quarter_day(1, start = clock_months$february))
+    Output
+      <year_quarter_day<February><year>[1]>
+      [1] "-32767"
+    Code
+      clock_maximum(year_quarter_day(1, start = clock_months$february))
+    Output
+      <year_quarter_day<February><year>[1]>
+      [1] "32767"
+

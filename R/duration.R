@@ -1152,6 +1152,89 @@ duration_precision <- function(x) {
 
 # ------------------------------------------------------------------------------
 
+#' @export
+clock_minimum.clock_duration <- function(x) {
+  switch(
+    duration_precision_attribute(x) + 1L,
+    clock_minimum_duration_year,
+    clock_minimum_duration_quarter,
+    clock_minimum_duration_month,
+    clock_minimum_duration_week,
+    clock_minimum_duration_day,
+    clock_minimum_duration_hour,
+    clock_minimum_duration_minute,
+    clock_minimum_duration_second,
+    clock_minimum_duration_millisecond,
+    clock_minimum_duration_microsecond,
+    clock_minimum_duration_nanosecond,
+    abort("Invalid precision", .internal = TRUE)
+  )
+}
+
+#' @export
+clock_maximum.clock_duration <- function(x) {
+  switch(
+    duration_precision_attribute(x) + 1L,
+    clock_maximum_duration_year,
+    clock_maximum_duration_quarter,
+    clock_maximum_duration_month,
+    clock_maximum_duration_week,
+    clock_maximum_duration_day,
+    clock_maximum_duration_hour,
+    clock_maximum_duration_minute,
+    clock_maximum_duration_second,
+    clock_maximum_duration_millisecond,
+    clock_maximum_duration_microsecond,
+    clock_maximum_duration_nanosecond,
+    abort("Invalid precision", .internal = TRUE)
+  )
+}
+
+duration_minimum <- function(precision) {
+  names <- NULL
+  precision <- precision_to_integer(precision)
+  fields <- duration_minimum_cpp(precision)
+  new_duration_from_fields(fields, precision, names)
+}
+duration_maximum <- function(precision) {
+  names <- NULL
+  precision <- precision_to_integer(precision)
+  fields <- duration_maximum_cpp(precision)
+  new_duration_from_fields(fields, precision, names)
+}
+
+# ------------------------------------------------------------------------------
+
 duration_precision_attribute <- function(x) {
   attr(x, "precision", exact = TRUE)
+}
+
+# ------------------------------------------------------------------------------
+
+clock_init_duration_utils <- function(env) {
+  assign("clock_minimum_duration_year", duration_minimum("year"), envir = env)
+  assign("clock_minimum_duration_quarter", duration_minimum("quarter"), envir = env)
+  assign("clock_minimum_duration_month", duration_minimum("month"), envir = env)
+  assign("clock_minimum_duration_week", duration_minimum("week"), envir = env)
+  assign("clock_minimum_duration_day", duration_minimum("day"), envir = env)
+  assign("clock_minimum_duration_hour", duration_minimum("hour"), envir = env)
+  assign("clock_minimum_duration_minute", duration_minimum("minute"), envir = env)
+  assign("clock_minimum_duration_second", duration_minimum("second"), envir = env)
+  assign("clock_minimum_duration_millisecond", duration_minimum("millisecond"), envir = env)
+  assign("clock_minimum_duration_microsecond", duration_minimum("microsecond"), envir = env)
+  assign("clock_minimum_duration_nanosecond", duration_minimum("nanosecond"), envir = env)
+
+  assign("clock_maximum_duration_year", duration_maximum("year"), envir = env)
+  assign("clock_maximum_duration_quarter", duration_maximum("quarter"), envir = env)
+  assign("clock_maximum_duration_month", duration_maximum("month"), envir = env)
+  assign("clock_maximum_duration_week", duration_maximum("week"), envir = env)
+  assign("clock_maximum_duration_day", duration_maximum("day"), envir = env)
+  assign("clock_maximum_duration_hour", duration_maximum("hour"), envir = env)
+  assign("clock_maximum_duration_minute", duration_maximum("minute"), envir = env)
+  assign("clock_maximum_duration_second", duration_maximum("second"), envir = env)
+  assign("clock_maximum_duration_millisecond", duration_maximum("millisecond"), envir = env)
+  assign("clock_maximum_duration_microsecond", duration_maximum("microsecond"), envir = env)
+  assign("clock_maximum_duration_nanosecond", duration_maximum("nanosecond"), envir = env)
+
+  invisible(NULL)
 }

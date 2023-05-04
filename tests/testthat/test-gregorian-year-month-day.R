@@ -968,3 +968,71 @@ test_that("is.infinite() works", {
   x <- year_month_day(c(2019, NA))
   expect_identical(is.infinite(x), c(FALSE, FALSE))
 })
+
+# ------------------------------------------------------------------------------
+# clock_minimum() / clock_maximum()
+
+test_that("minimums are right", {
+  expect_snapshot({
+    clock_minimum(clock_empty_year_month_day_year)
+    clock_minimum(clock_empty_year_month_day_month)
+    clock_minimum(clock_empty_year_month_day_day)
+    clock_minimum(clock_empty_year_month_day_hour)
+    clock_minimum(clock_empty_year_month_day_minute)
+    clock_minimum(clock_empty_year_month_day_second)
+    clock_minimum(clock_empty_year_month_day_millisecond)
+    clock_minimum(clock_empty_year_month_day_microsecond)
+    clock_minimum(clock_empty_year_month_day_nanosecond)
+  })
+})
+
+test_that("maximums are right", {
+  expect_snapshot({
+    clock_maximum(clock_empty_year_month_day_year)
+    clock_maximum(clock_empty_year_month_day_month)
+    clock_maximum(clock_empty_year_month_day_day)
+    clock_maximum(clock_empty_year_month_day_hour)
+    clock_maximum(clock_empty_year_month_day_minute)
+    clock_maximum(clock_empty_year_month_day_second)
+    clock_maximum(clock_empty_year_month_day_millisecond)
+    clock_maximum(clock_empty_year_month_day_microsecond)
+    clock_maximum(clock_empty_year_month_day_nanosecond)
+  })
+})
+
+# ------------------------------------------------------------------------------
+# min() / max() / range()
+
+test_that("min() / max() / range() works", {
+  x <- year_month_day(c(1, 3, 2, 1, -1))
+
+  expect_identical(min(x), year_month_day(-1))
+  expect_identical(max(x), year_month_day(3))
+  expect_identical(range(x), year_month_day(c(-1, 3)))
+})
+
+test_that("min() / max() / range() works with `NA`", {
+  x <- year_month_day(c(1, NA, 2, 0))
+
+  expect_identical(min(x), year_month_day(NA))
+  expect_identical(max(x), year_month_day(NA))
+  expect_identical(range(x), year_month_day(c(NA, NA)))
+
+  expect_identical(min(x, na.rm = TRUE), year_month_day(0))
+  expect_identical(max(x, na.rm = TRUE), year_month_day(2))
+  expect_identical(range(x, na.rm = TRUE), year_month_day(c(0, 2)))
+})
+
+test_that("min() / max() / range() works when empty", {
+  x <- year_month_day(integer())
+
+  expect_identical(min(x), clock_maximum(x))
+  expect_identical(max(x), clock_minimum(x))
+  expect_identical(range(x), c(clock_maximum(x), clock_minimum(x)))
+
+  x <- year_month_day(c(NA, NA))
+
+  expect_identical(min(x, na.rm = TRUE), clock_maximum(x))
+  expect_identical(max(x, na.rm = TRUE), clock_minimum(x))
+  expect_identical(range(x, na.rm = TRUE), c(clock_maximum(x), clock_minimum(x)))
+})

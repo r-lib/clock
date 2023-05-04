@@ -1457,3 +1457,73 @@ duration_seq_to_lo_cpp(cpp11::list_of<cpp11::doubles> from,
   default: never_reached("duration_seq_to_lo_cpp");
   }
 }
+
+// -----------------------------------------------------------------------------
+
+template <class ClockDuration>
+static
+inline
+cpp11::writable::list
+duration_minimum_impl() {
+  using Duration = typename ClockDuration::chrono_duration;
+
+  ClockDuration out(1);
+  out.assign(Duration::min(), 0);
+
+  return out.to_list();
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+duration_minimum_cpp(const cpp11::integers& precision_int) {
+  using namespace rclock;
+
+  switch (parse_precision(precision_int)) {
+  case precision::year: return duration_minimum_impl<duration::years>();
+  case precision::quarter: return duration_minimum_impl<duration::quarters>();
+  case precision::month: return duration_minimum_impl<duration::months>();
+  case precision::week: return duration_minimum_impl<duration::weeks>();
+  case precision::day: return duration_minimum_impl<duration::days>();
+  case precision::hour: return duration_minimum_impl<duration::hours>();
+  case precision::minute: return duration_minimum_impl<duration::minutes>();
+  case precision::second: return duration_minimum_impl<duration::seconds>();
+  case precision::millisecond: return duration_minimum_impl<duration::milliseconds>();
+  case precision::microsecond: return duration_minimum_impl<duration::microseconds>();
+  case precision::nanosecond: return duration_minimum_impl<duration::nanoseconds>();
+  default: never_reached("duration_minimum_cpp");
+  }
+}
+
+template <class ClockDuration>
+static
+inline
+cpp11::writable::list
+duration_maximum_impl() {
+  using Duration = typename ClockDuration::chrono_duration;
+
+  ClockDuration out(1);
+  out.assign(Duration::max(), 0);
+
+  return out.to_list();
+}
+
+[[cpp11::register]]
+cpp11::writable::list
+duration_maximum_cpp(const cpp11::integers& precision_int) {
+  using namespace rclock;
+
+  switch (parse_precision(precision_int)) {
+  case precision::year: return duration_maximum_impl<duration::years>();
+  case precision::quarter: return duration_maximum_impl<duration::quarters>();
+  case precision::month: return duration_maximum_impl<duration::months>();
+  case precision::week: return duration_maximum_impl<duration::weeks>();
+  case precision::day: return duration_maximum_impl<duration::days>();
+  case precision::hour: return duration_maximum_impl<duration::hours>();
+  case precision::minute: return duration_maximum_impl<duration::minutes>();
+  case precision::second: return duration_maximum_impl<duration::seconds>();
+  case precision::millisecond: return duration_maximum_impl<duration::milliseconds>();
+  case precision::microsecond: return duration_maximum_impl<duration::microseconds>();
+  case precision::nanosecond: return duration_maximum_impl<duration::nanoseconds>();
+  default: never_reached("duration_maximum_cpp");
+  }
+}
