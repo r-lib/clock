@@ -115,6 +115,9 @@
     <loc>https://clock.r-lib.org/dev/reference/calendar_precision.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/dev/reference/calendar_spanning_seq.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/dev/reference/calendar_widen.html</loc>
   </url>
   <url>
@@ -211,6 +214,9 @@
     <loc>https://clock.r-lib.org/dev/reference/date_seq.html</loc>
   </url>
   <url>
+    <loc>https://clock.r-lib.org/dev/reference/date_spanning_seq.html</loc>
+  </url>
+  <url>
     <loc>https://clock.r-lib.org/dev/reference/date_time_build.html</loc>
   </url>
   <url>
@@ -233,6 +239,9 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/dev/reference/duration_precision.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/dev/reference/duration_spanning_seq.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/dev/reference/format.clock_zoned_time.html</loc>
@@ -389,6 +398,9 @@
   </url>
   <url>
     <loc>https://clock.r-lib.org/dev/reference/time_point_shift.html</loc>
+  </url>
+  <url>
+    <loc>https://clock.r-lib.org/dev/reference/time_point_spanning_seq.html</loc>
   </url>
   <url>
     <loc>https://clock.r-lib.org/dev/reference/weekday-arithmetic.html</loc>
