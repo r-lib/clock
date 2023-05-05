@@ -354,6 +354,37 @@ check_inherits <- function(x,
   )
 }
 
+check_no_missing <- function(x,
+                             ...,
+                             arg = caller_arg(x),
+                             call = caller_env()) {
+  if (!vec_any_missing(x)) {
+    return(invisible(NULL))
+  }
+
+  loc <- vec_detect_missing(x)
+  loc <- which(loc)
+
+  message <- c(
+    "{.arg {arg}} can't contain missing values.",
+    i = "The following locations are missing: {loc}."
+  )
+
+  cli::cli_abort(message, call = call)
+}
+
+# ------------------------------------------------------------------------------
+
+vec_drop_infinite <- function(x) {
+  infinite <- is.infinite(x)
+
+  if (any(infinite)) {
+    x <- vec_slice(x, !infinite)
+  }
+
+  x
+}
+
 # ------------------------------------------------------------------------------
 
 is_last <- function(x) {

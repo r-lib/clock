@@ -963,6 +963,86 @@ test_that("golden test: ensure that we never allow components of `to` to differ 
 })
 
 # ------------------------------------------------------------------------------
+# date_spanning_seq()
+
+test_that("generates the regular sequence along the full span", {
+  zone <- "UTC"
+
+  x <- date_time_build(2020, minute = c(2, 1, 5), zone = zone)
+
+  expect_identical(
+    date_spanning_seq(x),
+    seq(
+      date_time_build(2020, minute = 1, zone = zone),
+      date_time_build(2020, minute = 5, zone = zone),
+      by = 1
+    )
+  )
+})
+
+test_that("missing values are removed", {
+  zone <- "America/New_York"
+
+  x <- date_time_build(2020, second = c(1, NA, 5, 2), zone = zone)
+  expect_identical(date_spanning_seq(x), date_time_build(2020, second = 1:5, zone = zone))
+
+  x <- date_time_build(c(NA, NA), zone = zone)
+  expect_identical(date_spanning_seq(x), new_datetime(tzone = zone))
+})
+
+test_that("infinite dates are removed", {
+  zone <- "America/New_York"
+
+  x <- new_datetime(c(0, Inf, 3, 6, -Inf), tzone = zone)
+  expect_identical(date_spanning_seq(x), new_datetime(as.double(0:6), tzone = zone))
+
+  x <- new_datetime(c(Inf, -Inf), tzone = zone)
+  expect_identical(date_spanning_seq(x), new_datetime(tzone = zone))
+})
+
+test_that("works with empty vectors", {
+  zone <- "America/New_York"
+  x <- date_time_build(integer(), zone = zone)
+  expect_identical(date_spanning_seq(x), x)
+})
+
+test_that("uses sys-time when generating the sequence (nonexistent)", {
+  # Because this is happening at second precision and `date_seq()` uses sys-time
+  # when generating second precision sequences
+  zone <- "America/New_York"
+
+  x <- date_time_build(1970, 4, 26, c(1, 3), c(59, 00), c(58, 02), zone = zone)
+
+  expect_identical(
+    date_spanning_seq(x),
+    vec_c(
+      date_time_build(1970, 4, 26, 1, 59, 58:59, zone = zone),
+      date_time_build(1970, 4, 26, 3, 00, 00:02, zone = zone)
+    )
+  )
+})
+
+test_that("uses sys-time when generating the sequence (ambiguous)", {
+  # Because this is happening at second precision and `date_seq()` uses sys-time
+  # when generating second precision sequences
+  zone <- "America/New_York"
+
+  x <- date_time_build(
+    1970, 10, 25, c(1, 1), c(59, 00), c(58, 02),
+    ambiguous = c("earliest", "latest"),
+    zone = zone
+  )
+
+  expect_identical(
+    date_spanning_seq(x),
+    vec_c(
+      date_time_build(1970, 10, 25, 1, 59, 58:59, zone = zone, ambiguous = "earliest"),
+      date_time_build(1970, 10, 25, 1, 00, 00:02, zone = zone, ambiguous = "latest")
+    )
+  )
+})
+
+# ------------------------------------------------------------------------------
 # date_count_between()
 
 test_that("can compute precisions at year / quarter / month / week / day / hour / minute / second", {

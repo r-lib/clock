@@ -881,6 +881,59 @@ calendar_count_between_proxy_compare <- function(start, end, precision) {
 
 # ------------------------------------------------------------------------------
 
+#' Spanning sequence: calendars
+#'
+#' @description
+#' `calendar_spanning_seq()` generates a regular sequence along the span of
+#' `x`, i.e. along `[min(x), max(x)]`. The sequence is generated at the
+#' precision of `x`.
+#'
+#' Importantly, sequences can only be generated if the underlying [seq()] method
+#' for the calendar in question supports a `from` and `to` value at the same
+#' precision as `x`. For example, you can't compute a day precision spanning
+#' sequence for a [year_month_day()] calendar (you can only compute a year
+#' and month one). To create a day precision sequence, you'd have to convert to
+#' a time-point first. See the individual [seq()] method documentation to learn
+#' what precisions are allowed.
+#'
+#' @details
+#' Missing values are automatically removed before the sequence is generated.
+#'
+#' If you need more precise sequence generation, call [range()] and [seq()]
+#' directly.
+#'
+#' @param x `[clock_calendar]`
+#'
+#'   A calendar vector.
+#'
+#' @return A sequence along `[min(x), max(x)]`.
+#'
+#' @export
+#' @examples
+#' x <- year_month_day(c(2019, 2022, 2020), c(2, 5, 3))
+#' x
+#'
+#' # Month precision spanning sequence
+#' calendar_spanning_seq(x)
+#'
+#' # Quarter precision:
+#' x <- year_quarter_day(c(2005, 2006, 2003), c(4, 2, 3))
+#' calendar_spanning_seq(x)
+#'
+#' # Can't generate sequences if `seq()` doesn't allow the precision
+#' x <- year_month_day(2019, c(1, 2, 1), c(20, 3, 25))
+#' try(calendar_spanning_seq(x))
+#'
+#' # Generally this means you need to convert to a time point and use
+#' # `time_point_spanning_seq()` instead
+#' time_point_spanning_seq(as_sys_time(x))
+calendar_spanning_seq <- function(x) {
+  check_calendar(x)
+  spanning_seq_impl(x)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Precision: calendar
 #'
 #' `calendar_precision()` extracts the precision from a calendar object. It

@@ -313,6 +313,20 @@ test_that("seq(by, length.out) works", {
   expect_identical(seq(naive_seconds(0L), by = 2, along.with = 1:3), naive_seconds(c(0L, 2L, 4L)))
 })
 
+test_that("seq() with `from > to && by > 0` or `from < to && by < 0` results in length 0 output (#282)", {
+  expect_identical(seq(naive_days(2L), to = naive_days(1L), by = 1), naive_days())
+  expect_identical(seq(naive_days(5L), to = naive_days(1L), by = 1), naive_days())
+
+  expect_identical(seq(naive_days(1L), to = naive_days(2L), by = -1), naive_days())
+  expect_identical(seq(naive_days(1L), to = naive_days(5L), by = -1), naive_days())
+
+  # In particular, handles the case where subtraction of distant `from` and `to` would overflow
+  x <- as_naive_time(duration_cast(duration_years(200), "nanosecond"))
+  y <- as_naive_time(duration_cast(duration_years(-200), "nanosecond"))
+  expect_identical(seq(x, y, by = 1), as_naive_time(duration_nanoseconds()))
+  expect_identical(seq(y, x, by = -1), as_naive_time(duration_nanoseconds()))
+})
+
 test_that("`by` can be a duration", {
   expect_identical(
     seq(naive_seconds(0), to = naive_seconds(1000), by = duration_minutes(1)),
@@ -347,6 +361,33 @@ test_that("can make nanosecond precision seqs", {
 
   expect_identical(seq(x, by = 2, length.out = 5), x + c(0, 2, 4, 6, 8))
   expect_identical(seq(x, y, by = 3), x + c(0, 3, 6, 9))
+})
+
+# ------------------------------------------------------------------------------
+# time_point_spanning_seq()
+
+test_that("generates the regular sequence along the full span", {
+  x <- naive_days(c(-5, 5, 6, 0))
+  expect_identical(time_point_spanning_seq(x), naive_days(-5:6))
+})
+
+test_that("missing values are removed", {
+  x <- naive_days(c(1, NA, 0, 2))
+  expect_identical(time_point_spanning_seq(x), naive_days(0:2))
+
+  x <- naive_days(c(NA, NA))
+  expect_identical(time_point_spanning_seq(x), naive_days())
+})
+
+test_that("works with empty vectors", {
+  x <- naive_days()
+  expect_identical(time_point_spanning_seq(x), x)
+})
+
+test_that("validates the input", {
+  expect_snapshot(error = TRUE, {
+    time_point_spanning_seq(1)
+  })
 })
 
 # ------------------------------------------------------------------------------

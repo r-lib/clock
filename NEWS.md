@@ -1,5 +1,12 @@
 # clock (development version)
 
+* New `date_spanning_seq()` for generating a regular sequence along the full
+  span of a date or date-time vector (i.e. along `[min(x), max(x)]`). It is
+  similar to `tidyr::full_seq()`, but is a bit simpler and currently has better
+  handling of some edge cases. Additionally included in the low-level API are
+  `calendar_spanning_seq()`, `time_point_spanning_seq()`, and
+  `duration_spanning_seq()` (#279).
+
 * `seq()` methods for durations and time points handle the empty sequence cases
   of `from > to && by > 0` and `from < to && by < 0` better when `from` and `to`
   are very far apart (i.e. when they would otherwise result in overflow if they

@@ -1713,6 +1713,62 @@ check_number_of_supplied_optional_arguments <- function(to, by, total_size) {
 
 # ------------------------------------------------------------------------------
 
+#' Spanning sequence: date and date-time
+#'
+#' @description
+#' `date_spanning_seq()` generates a regular sequence along the span of
+#' `x`, i.e. along `[min(x), max(x)]`. For dates, this generates a day precision
+#' sequence, and for date-times it generates a second precision sequence.
+#'
+#' @details
+#' Missing and infinite values are automatically removed before the sequence is
+#' generated.
+#'
+#' For date-times, sys-time based sequences are generated, consistent with
+#' [`date_seq()`][posixt-sequence] when using a second precision `by` value.
+#'
+#' If you need more precise sequence generation, call [range()] and [date_seq()]
+#' directly.
+#'
+#' @param x `[Date / POSIXct / POSIXlt]`
+#'
+#'   A date or date-time vector.
+#'
+#' @return A sequence along `[min(x), max(x)]`.
+#'
+#' @export
+#' @examples
+#' x <- date_build(2020, c(1, 2, 1), c(10, 5, 12))
+#' date_spanning_seq(x)
+#'
+#' # Missing and infinite dates are removed before the sequence is generated
+#' x <- c(x, NA, Inf, -Inf)
+#' x
+#'
+#' date_spanning_seq(x)
+#'
+#' # For date-times, sequences are generated at second precision
+#' x <- date_time_build(
+#'   2020, 1, 2, 3, c(5, 4, 5), c(10, 48, 12),
+#'   zone = "America/New_York"
+#' )
+#' x
+#'
+#' date_spanning_seq(x)
+date_spanning_seq <- function(x) {
+  UseMethod("date_spanning_seq")
+}
+
+#' @export
+date_spanning_seq.Date <- function(x) {
+  x <- vec_drop_infinite(x)
+  x <- as_sys_time(x)
+  x <- time_point_spanning_seq(x)
+  as.Date(x)
+}
+
+# ------------------------------------------------------------------------------
+
 #' Counting: date and date-time
 #'
 #' @description

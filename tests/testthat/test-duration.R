@@ -266,6 +266,33 @@ test_that("special test to ensure we never lose precision (i.e. by trying to con
 })
 
 # ------------------------------------------------------------------------------
+# duration_spanning_seq()
+
+test_that("generates the regular sequence along the full span", {
+  x <- duration_years(c(-5, 5, 6, 0))
+  expect_identical(duration_spanning_seq(x), duration_years(-5:6))
+})
+
+test_that("missing values are removed", {
+  x <- duration_days(c(1, NA, 0, 2))
+  expect_identical(duration_spanning_seq(x), duration_days(0:2))
+
+  x <- duration_days(c(NA, NA))
+  expect_identical(duration_spanning_seq(x), duration_days())
+})
+
+test_that("works with empty vectors", {
+  x <- duration_days()
+  expect_identical(duration_spanning_seq(x), x)
+})
+
+test_that("validates the input", {
+  expect_snapshot(error = TRUE, {
+    duration_spanning_seq(1)
+  })
+})
+
+# ------------------------------------------------------------------------------
 # add_*()
 
 test_that("can't add chronological and calendrical durations", {
