@@ -1,5 +1,23 @@
 # clock (development version)
 
+* New experimental ggplot2 scales for calendar types, including (#233):
+
+  * `scale_*_year_month_day()`, which supports year and month precision
+    year-month-day vectors.
+    
+  * `scale_*_year_quarter_day()`, which supports year and quarter precision
+    year-quarter-day vectors.
+    
+  * `scale_*_year_week_day()`, which supports year and week precision
+    year-week-day vectors.
+    
+  Note that these scales are limited in the precisions they support. This is
+  purposeful, and for the most part the scales are limited to the precisions
+  that you can perform arithmetic with (i.e. you can't add days to
+  year-month-day, so the scale doesn't support day precision). For precisions at
+  or more precise than day, the native ggplot2 scales for Date and POSIXct are
+  still a better option.
+
 * New `date_spanning_seq()` for generating a regular sequence along the full
   span of a date or date-time vector (i.e. along `[min(x), max(x)]`). It is
   similar to `tidyr::full_seq()`, but is a bit simpler and currently has better
