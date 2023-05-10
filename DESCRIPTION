@@ -27,13 +27,16 @@ Imports:
     vctrs (>= 0.6.1)
 Suggests: 
     covr,
+    ggplot2 (>= 3.4.2.9000),
     knitr,
     magrittr,
     pillar,
     rmarkdown,
+    scales (>= 1.2.1),
     slider (>= 0.3.0),
     testthat (>= 3.0.0),
-    withr
+    withr,
+    vdiffr (>= 1.0.5)
 LinkingTo: 
     cpp11 (>= 0.4.3),
     tzdb (>= 0.3.0.9000)
@@ -48,4 +51,5 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Remotes:
-    r-lib/tzdb
+    r-lib/tzdb,
+    tidyverse/ggplot2#5304

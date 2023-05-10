@@ -224,6 +224,10 @@ reference:
   contents:
   - clock-codes
 
+- title: Scales
+  contents:
+  - starts_with("scale_")
+
 - title: Developer
   contents:
   - vec_arith.clock_year_month_day
