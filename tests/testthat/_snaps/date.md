@@ -266,7 +266,7 @@
     Code
       date_seq(new_date(1), by = 1.5, total_size = 1)
     Condition
-      Error in `duration_helper()`:
+      Error in `date_seq()`:
       ! Can't convert from `by` <double> to <integer> due to loss of precision.
       * Locations: 1
 
@@ -275,7 +275,7 @@
     Code
       date_seq(new_date(1), by = 1, total_size = 1.5)
     Condition
-      Error in `check_length_out()`:
+      Error in `date_seq()`:
       ! Can't convert from `total_size` <double> to <integer> due to loss of precision.
       * Locations: 1
 
@@ -284,15 +284,16 @@
     Code
       date_seq(new_date(1), by = 1, total_size = NA)
     Condition
-      Error in `check_length_out()`:
-      ! `total_size` can't be `NA`.
+      Error in `date_seq()`:
+      ! `total_size` can't contain missing values.
+      i The following locations are missing: 1.
 
 ---
 
     Code
       date_seq(new_date(1), by = 1, total_size = -1)
     Condition
-      Error in `check_length_out()`:
+      Error in `date_seq()`:
       ! `total_size` can't be negative.
 
 # `to` and `total_size` must not generate a non-fractional sequence

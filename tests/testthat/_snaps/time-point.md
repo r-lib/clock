@@ -274,7 +274,7 @@
     Code
       seq(naive_seconds(0), by = duration_years(1), length.out = 2)
     Condition
-      Error in `duration_collect_by()`:
+      Error in `seq()`:
       ! Can't convert `by` <duration<year>> to <duration<second>>.
       Can't cast between calendrical durations and chronological durations.
 

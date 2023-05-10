@@ -1930,7 +1930,7 @@ date_seq.POSIXt <- function(from,
   }
 
   if (!is_null(total_size)) {
-    total_size <- check_length_out(total_size, arg = "total_size")
+    total_size <- check_length_out(total_size)
   }
 
   if (is_null(by)) {
@@ -1939,7 +1939,7 @@ date_seq.POSIXt <- function(from,
     precision <- duration_precision(by)
   } else {
     precision <- "second"
-    by <- duration_helper(by, PRECISION_SECOND, n_arg = "by")
+    by <- duration_helper(by, PRECISION_SECOND)
   }
 
   check_precision(precision)
