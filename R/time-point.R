@@ -90,6 +90,7 @@ time_point_parse <- function(x,
                              ...,
                              error_call = caller_env()) {
   check_dots_empty0(...)
+  check_character(x, call = error_call)
 
   if (is_null(format)) {
     format <- time_point_precision_format(precision)
@@ -612,15 +613,12 @@ as_weekday.clock_time_point <- function(x) {
 #' # Casting to a more precise precision, hour->millisecond
 #' time_point_cast(x, "millisecond")
 time_point_cast <- function(x, precision) {
-  if (!is_time_point(x)) {
-    abort("`x` must be a 'time_point'.")
-  }
+  check_time_point(x)
 
   check_time_point_precision(precision)
   precision <- precision_to_integer(precision)
 
   x_precision <- time_point_precision_attribute(x)
-
 
   fields <- duration_cast_cpp(x, x_precision, precision)
 
@@ -757,15 +755,20 @@ time_point_round <- function(x, precision, ..., n = 1L, origin = NULL) {
   time_point_rounder(x, precision, n, origin, duration_round, ...)
 }
 
-time_point_rounder <- function(x, precision, n, origin, duration_rounder, ...) {
-  check_dots_empty()
+time_point_rounder <- function(x,
+                               precision,
+                               n,
+                               origin,
+                               duration_rounder,
+                               ...,
+                               error_arg = caller_arg(x),
+                               error_call = caller_env()) {
+  check_dots_empty0(...)
 
-  if (!is_time_point(x)) {
-    abort("`x` must be a 'time_point'.")
-  }
+  check_time_point(x, arg = error_arg, call = error_call)
 
   precision_string <- precision
-  check_time_point_precision(precision)
+  check_time_point_precision(precision, call = error_call)
   precision <- precision_to_integer(precision)
 
   duration <- time_point_duration(x)
@@ -773,7 +776,12 @@ time_point_rounder <- function(x, precision, n, origin, duration_rounder, ...) {
   has_origin <- !is_null(origin)
 
   if (has_origin) {
-    origin <- collect_time_point_rounder_origin(origin, x, precision)
+    origin <- collect_time_point_rounder_origin(
+      origin = origin,
+      x = x,
+      precision = precision,
+      error_call = error_call
+    )
     duration <- duration - origin
   }
 
@@ -789,21 +797,20 @@ time_point_rounder <- function(x, precision, n, origin, duration_rounder, ...) {
   new_time_point_from_fields(duration, precision, clock, names)
 }
 
-collect_time_point_rounder_origin <- function(origin, x, precision) {
+collect_time_point_rounder_origin <- function(origin,
+                                              x,
+                                              precision,
+                                              error_call) {
   # Cast `origin` to a time point with the same clock as `x`,
   # but with a precision of `precision`
   to_names <- NULL
   to <- duration_helper(integer(), precision)
   to <- new_time_point_from_fields(to, precision, time_point_clock_attribute(x), to_names)
 
-  origin <- vec_cast(origin, to, x_arg = "origin")
+  origin <- vec_cast(origin, to, x_arg = "origin", call = error_call)
 
-  if (vec_size(origin) != 1L) {
-    abort("`origin` must have length 1.")
-  }
-  if (is.na(origin)) {
-    abort("`origin` must not be `NA`.")
-  }
+  vec_check_size(origin, 1L, call = error_call)
+  check_no_missing(origin, call = error_call)
 
   origin <- as_duration(origin)
 
@@ -885,19 +892,15 @@ time_point_shift <- function(x,
                              ...,
                              which = "next",
                              boundary = "keep") {
-  check_dots_empty()
+  check_dots_empty0(...)
 
-  if (!is_time_point(x)) {
-    abort("`x` must be a 'clock_time_point'.")
-  }
-  if (!is_weekday(target)) {
-    abort("`target` must be a 'clock_weekday'.")
-  }
+  check_time_point(x)
+  check_weekday(target)
 
   target <- vec_recycle(target, vec_size(x), x_arg = "target")
 
-  which <- validate_shift_which(which)
-  boundary <- validate_shift_boundary(boundary)
+  check_shift_which(which)
+  check_shift_boundary(boundary)
 
   if (is_next(which)) {
     if (is_advance(boundary)) {
@@ -914,17 +917,13 @@ time_point_shift <- function(x,
   x
 }
 
-validate_shift_which <- function(which) {
-  if (!is_string(which, string = c("next", "previous"))) {
-    abort("`which` must be either \"next\" or \"previous\".")
-  }
-  which
+check_shift_which <- function(which, call = caller_env()) {
+  check_string(which, call = call)
+  arg_match0(which, values = c("next", "previous"), error_call = call)
 }
-validate_shift_boundary <- function(boundary) {
-  if (!is_string(boundary, string = c("keep", "advance"))) {
-    abort("`boundary` must be either \"keep\" or \"advance\".")
-  }
-  boundary
+check_shift_boundary <- function(boundary, call = caller_env()) {
+  check_string(boundary, call = call)
+  arg_match0(boundary, values = c("keep", "advance"), error_call = call)
 }
 
 is_next <- function(x) {
@@ -1043,14 +1042,10 @@ is_advance <- function(x) {
 #'   microseconds = microseconds
 #' )
 time_point_count_between <- function(start, end, precision, ..., n = 1L) {
-  check_dots_empty()
+  check_dots_empty0(...)
 
-  if (!is_time_point(start)) {
-    abort("`start` must be a <clock_time_point>.")
-  }
-  if (!is_time_point(end)) {
-    abort("`end` must be a <clock_time_point>.")
-  }
+  check_time_point(start)
+  check_time_point(end)
 
   args <- vec_cast_common(start = start, end = end)
   args <- vec_recycle_common(!!!args)
@@ -1061,7 +1056,7 @@ time_point_count_between <- function(start, end, precision, ..., n = 1L) {
   precision_int <- precision_to_integer(precision)
 
   if (precision_int < PRECISION_WEEK) {
-    abort("`precision` must be at least 'week' precision.")
+    cli::cli_abort("{.arg precision} must be at least {.str week} precision.")
   }
 
   check_number_whole(n, min = 0)
@@ -1227,9 +1222,7 @@ time_point_spanning_seq <- function(x) {
 #' time_point_precision(sys_time_now())
 #' time_point_precision(as_naive_time(duration_days(1)))
 time_point_precision <- function(x) {
-  if (!is_time_point(x)) {
-    abort("`x` must be a 'clock_time_point'.")
-  }
+  check_time_point(x)
   precision <- time_point_precision_attribute(x)
   precision <- precision_to_string(precision)
   precision

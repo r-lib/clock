@@ -36,6 +36,10 @@ is_sys_time <- function(x) {
   inherits(x, "clock_sys_time")
 }
 
+check_sys_time <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
+  check_inherits(x, what = "clock_sys_time", arg = arg, call = call)
+}
+
 # ------------------------------------------------------------------------------
 
 #' Parsing: sys-time
@@ -228,23 +232,26 @@ sys_time_parse_RFC_3339 <- function(x,
                                     separator = "T",
                                     offset = "Z",
                                     precision = "second") {
-  separator <- arg_match0(separator, values = c("T", "t", " "), arg_nm = "separator")
-  offset <- arg_match0(offset, values = c("Z", "z", "%z", "%Ez"), arg_nm = "offset")
+  separator <- arg_match0(separator, values = c("T", "t", " "))
+  offset <- arg_match0(offset, values = c("Z", "z", "%z", "%Ez"))
 
   format <- paste0("%Y-%m-%d", separator, "%H:%M:%S", offset)
 
   # Only used for error checking
-  validate_RFC_3339_precision_string(precision)
+  check_RFC_3339_precision_string(precision)
 
   sys_time_parse(x, ..., format = format, precision = precision)
 }
 
-validate_RFC_3339_precision_string <- function(precision) {
-  check_precision(precision)
+check_RFC_3339_precision_string <- function(precision, call = caller_env()) {
+  check_precision(precision, call = call)
   precision <- precision_to_integer(precision)
 
   if (!is_valid_RFC_3339_precision(precision)) {
-    abort("`precision` must be at least 'second' precision.")
+    cli::cli_abort(
+      "{.arg precision} must be at least {.str second} precision.",
+      call = call
+    )
   }
 
   precision
@@ -372,7 +379,7 @@ as_naive_time.clock_sys_time <- function(x) {
 #' x_ny <- as_zoned_time(x, "America/New_York")
 #' x_ny
 as_zoned_time.clock_sys_time <- function(x, zone, ...) {
-  check_dots_empty()
+  check_dots_empty0(...)
 
   check_zone(zone)
 
@@ -506,9 +513,8 @@ sys_time_now <- function() {
 #'   naive_time = x_sys[1] + info2$offset
 #' )
 sys_time_info <- function(x, zone) {
-  if (!is_sys_time(x)) {
-    abort("`x` must be a sys-time.")
-  }
+  check_sys_time(x)
+  check_character(zone)
 
   precision <- time_point_precision_attribute(x)
 

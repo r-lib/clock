@@ -79,7 +79,7 @@
     Code
       time_point_floor(x, "day", origin = origin)
     Condition
-      Error in `collect_time_point_rounder_origin()`:
+      Error in `time_point_floor()`:
       ! Can't convert `origin` <sys_time<day>> to <naive_time<day>>.
 
 # `origin` can be cast to a more precise `precision`, but not to a less precise one
@@ -87,7 +87,7 @@
     Code
       time_point_floor(x, "hour", origin = origin2)
     Condition
-      Error in `collect_time_point_rounder_origin()`:
+      Error in `time_point_floor()`:
       ! Can't convert `origin` <naive_time<millisecond>> to <naive_time<hour>>.
       Can't cast to a less precise precision.
 
@@ -96,23 +96,24 @@
     Code
       time_point_floor(x, "day", origin = origin)
     Condition
-      Error in `collect_time_point_rounder_origin()`:
-      ! `origin` must have length 1.
+      Error in `time_point_floor()`:
+      ! `origin` must have size 1, not size 2.
 
 # `origin` must not be `NA`
 
     Code
       time_point_floor(x, "day", origin = origin)
     Condition
-      Error in `collect_time_point_rounder_origin()`:
-      ! `origin` must not be `NA`.
+      Error in `time_point_floor()`:
+      ! `origin` can't contain missing values.
+      i The following locations are missing: 1.
 
 # `origin` can't be Date or POSIXt
 
     Code
       time_point_floor(x, "day", origin = origin1)
     Condition
-      Error in `collect_time_point_rounder_origin()`:
+      Error in `time_point_floor()`:
       ! Can't convert `origin` <date> to <naive_time<day>>.
 
 ---
@@ -120,7 +121,7 @@
     Code
       time_point_floor(x, "day", origin = origin2)
     Condition
-      Error in `collect_time_point_rounder_origin()`:
+      Error in `time_point_floor()`:
       ! Can't convert `origin` <datetime<America/New_York>> to <naive_time<day>>.
 
 # `target` is recycled to size of `x`
@@ -137,7 +138,7 @@
       time_point_shift(1)
     Condition
       Error in `time_point_shift()`:
-      ! `x` must be a 'clock_time_point'.
+      ! `x` must be a <clock_time_point>, not the number 1.
 
 # `target` is validated
 
@@ -145,55 +146,55 @@
       time_point_shift(sys_days(0), 1)
     Condition
       Error in `time_point_shift()`:
-      ! `target` must be a 'clock_weekday'.
+      ! `target` must be a <clock_weekday>, not the number 1.
 
 # `which` is validated
 
     Code
       time_point_shift(sys_days(), weekday(), which = 1)
     Condition
-      Error in `validate_shift_which()`:
-      ! `which` must be either "next" or "previous".
+      Error in `time_point_shift()`:
+      ! `which` must be a single string, not the number 1.
 
 ---
 
     Code
       time_point_shift(sys_days(), weekday(), which = "foo")
     Condition
-      Error in `validate_shift_which()`:
-      ! `which` must be either "next" or "previous".
+      Error in `time_point_shift()`:
+      ! `which` must be one of "next" or "previous", not "foo".
 
 ---
 
     Code
       time_point_shift(sys_days(), weekday(), which = c("next", "previous"))
     Condition
-      Error in `validate_shift_which()`:
-      ! `which` must be either "next" or "previous".
+      Error in `time_point_shift()`:
+      ! `which` must be a single string, not a character vector.
 
 # `boundary` is validated
 
     Code
       time_point_shift(sys_days(), weekday(), boundary = 1)
     Condition
-      Error in `validate_shift_boundary()`:
-      ! `boundary` must be either "keep" or "advance".
+      Error in `time_point_shift()`:
+      ! `boundary` must be a single string, not the number 1.
 
 ---
 
     Code
       time_point_shift(sys_days(), weekday(), boundary = "foo")
     Condition
-      Error in `validate_shift_boundary()`:
-      ! `boundary` must be either "keep" or "advance".
+      Error in `time_point_shift()`:
+      ! `boundary` must be one of "keep" or "advance", not "foo".
 
 ---
 
     Code
       time_point_shift(sys_days(), weekday(), boundary = c("keep", "advance"))
     Condition
-      Error in `validate_shift_boundary()`:
-      ! `boundary` must be either "keep" or "advance".
+      Error in `time_point_shift()`:
+      ! `boundary` must be a single string, not a character vector.
 
 # OOB results return a warning and NA
 
@@ -210,13 +211,13 @@
     Output
       <error/rlang_error>
       Error in `time_point_count_between()`:
-      ! `end` must be a <clock_time_point>.
+      ! `end` must be a <clock_time_point>, not the number 1.
     Code
       (expect_error(time_point_count_between(1, sys_days(1))))
     Output
       <error/rlang_error>
       Error in `time_point_count_between()`:
-      ! `start` must be a <clock_time_point>.
+      ! `start` must be a <clock_time_point>, not the number 1.
 
 # both inputs must be compatible
 
@@ -267,7 +268,7 @@
     Output
       <error/rlang_error>
       Error in `time_point_count_between()`:
-      ! `precision` must be at least 'week' precision.
+      ! `precision` must be at least "week" precision.
 
 # can't mix chronological time points and calendrical durations
 
@@ -318,7 +319,7 @@
       time_point_precision(duration_days())
     Condition
       Error in `time_point_precision()`:
-      ! `x` must be a 'clock_time_point'.
+      ! `x` must be a <clock_time_point>, not a <clock_duration/clock_rcrd/vctrs_rcrd/vctrs_vctr> object.
 
 # unsupported time point addition throws good error
 
