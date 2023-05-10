@@ -125,14 +125,12 @@ head(x)
 # The implicit origin to start the 20 day counter is 1970-01-01
 time_point_floor(x, "day", n = 20)
 
-# You can easily customize the origin by creating a duration out of the
-# origin date of interest...
+# You can easily customize the origin by supplying a new one
+# as the `origin` argument
 origin <- year_month_day(2019, 01, 01) \%>\%
-  as_naive_time() \%>\%
-  as_duration()
+  as_naive_time()
 
-# Which you can subtract from, floor, and then add to your input
-time_point_floor(x - origin, "day", n = 20) + origin
+time_point_floor(x, "day", n = 20, origin = origin)
 
 # For times on the boundary, floor and ceiling both return the input
 # at the new precision. Notice how the first element is on the boundary,
