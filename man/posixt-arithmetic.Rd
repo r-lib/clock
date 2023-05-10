@@ -201,6 +201,56 @@ naive-time instead of a sys-time manually with \code{\link[=as_naive_time]{as_na
 POSIXct/POSIXlt, dealing with the nonexistent time that gets created by
 using the \code{nonexistent} argument of \code{as.POSIXct()}.
 }
+\section{Relative ordering}{
+
+
+For the most part, adding time based units to date-times will retain the
+relative ordering of the input. For example, if \code{x[1] < x[2]} before the
+\verb{add_*()} call, then it is generally also true of the result. Using
+\code{invalid = "previous" / "next"} and
+\code{nonexistent = "roll-forward" / "roll-backward"} ensures that this holds
+when invalid and nonexistent issues are encountered.
+
+That said, with date-times there is an edge case related to ambiguous times
+where the relative ordering could change. Consider these three date-times:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- c(
+  date_time_build(2012, 4, 1, 2, 30, zone = "Australia/Melbourne", ambiguous = "earliest"),
+  date_time_build(2012, 4, 1, 2, 00, zone = "Australia/Melbourne", ambiguous = "latest"),
+  date_time_build(2012, 4, 1, 2, 30, zone = "Australia/Melbourne", ambiguous = "latest")
+)
+x
+#> [1] "2012-04-01 02:30:00 AEDT" "2012-04-01 02:00:00 AEST"
+#> [3] "2012-04-01 02:30:00 AEST"
+}\if{html}{\out{</div>}}
+
+In this case, there was a daylight saving time fallback on \code{2012-04-01}
+where the clocks went from \verb{02:59:59 AEDT -> 02:00:00 AEST}. So the times
+above are precisely 30 minutes apart, and they are in increasing order.
+
+If we add sys-time based units like hours, minutes, or seconds, then the
+relative ordering of these date-times will be preserved. However, arithmetic
+that goes through naive-time, like adding days or months, won't preserve
+the ordering here:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{add_days(x, 1)
+#> [1] "2012-04-02 02:30:00 AEST" "2012-04-02 02:00:00 AEST"
+#> [3] "2012-04-02 02:30:00 AEST"
+add_months(x, 1)
+#> [1] "2012-05-01 02:30:00 AEST" "2012-05-01 02:00:00 AEST"
+#> [3] "2012-05-01 02:30:00 AEST"
+}\if{html}{\out{</div>}}
+
+Note that the 1st and 3rd values of the result are the same, and the 1st
+value is no longer before the 2nd value.
+
+Adding larger units of time in naive-time generally does make more sense
+than adding it in sys-time, but it does come with this one edge case to be
+aware of when working with date-times (this does not affect dates). If this
+has the potential to be an issue, consider only adding sys-time based units
+(hours, minutes, and seconds) which can't have these issues.
+}
+
 \examples{
 x <- as.POSIXct("2019-01-01", tz = "America/New_York")
 

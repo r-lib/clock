@@ -593,6 +593,50 @@ slider_minus.POSIXlt.clock_duration <- function(x, y) {
 #' POSIXct/POSIXlt, dealing with the nonexistent time that gets created by
 #' using the `nonexistent` argument of `as.POSIXct()`.
 #'
+#' @section Relative ordering:
+#'
+#' For the most part, adding time based units to date-times will retain the
+#' relative ordering of the input. For example, if `x[1] < x[2]` before the
+#' `add_*()` call, then it is generally also true of the result. Using
+#' `invalid = "previous" / "next"` and
+#' `nonexistent = "roll-forward" / "roll-backward"` ensures that this holds
+#' when invalid and nonexistent issues are encountered.
+#'
+#' That said, with date-times there is an edge case related to ambiguous times
+#' where the relative ordering could change. Consider these three date-times:
+#'
+#' ```{r}
+#' x <- c(
+#'   date_time_build(2012, 4, 1, 2, 30, zone = "Australia/Melbourne", ambiguous = "earliest"),
+#'   date_time_build(2012, 4, 1, 2, 00, zone = "Australia/Melbourne", ambiguous = "latest"),
+#'   date_time_build(2012, 4, 1, 2, 30, zone = "Australia/Melbourne", ambiguous = "latest")
+#' )
+#' x
+#' ```
+#'
+#' In this case, there was a daylight saving time fallback on `2012-04-01`
+#' where the clocks went from `02:59:59 AEDT -> 02:00:00 AEST`. So the times
+#' above are precisely 30 minutes apart, and they are in increasing order.
+#'
+#' If we add sys-time based units like hours, minutes, or seconds, then the
+#' relative ordering of these date-times will be preserved. However, arithmetic
+#' that goes through naive-time, like adding days or months, won't preserve
+#' the ordering here:
+#'
+#' ```{r}
+#' add_days(x, 1)
+#' add_months(x, 1)
+#' ```
+#'
+#' Note that the 1st and 3rd values of the result are the same, and the 1st
+#' value is no longer before the 2nd value.
+#'
+#' Adding larger units of time in naive-time generally does make more sense
+#' than adding it in sys-time, but it does come with this one edge case to be
+#' aware of when working with date-times (this does not affect dates). If this
+#' has the potential to be an issue, consider only adding sys-time based units
+#' (hours, minutes, and seconds) which can't have these issues.
+#'
 #' @inheritParams clock-arithmetic
 #' @inheritParams invalid_resolve
 #' @inheritParams as-zoned-time-naive-time
