@@ -1586,10 +1586,22 @@ date_seq.Date <- function(from,
     return(out)
   }
 
-  abort("`by` must have a precision of 'year', 'quarter', 'month', 'week', or 'day'.")
+  precisions <- c("year", "quarter", "month", "week", "day")
+
+  by_precision <- duration_precision(by)
+
+  cli::cli_abort("`by` must have a precision of {.or {.str {precisions}}}, not {.str {by_precision}}.")
 }
 
-date_seq_year_month <- function(from, to, by, total_size, precision) {
+date_seq_year_month <- function(from,
+                                to,
+                                by,
+                                total_size,
+                                precision,
+                                ...,
+                                error_call = caller_env()) {
+  check_dots_empty0(...)
+
   has_time <- is_POSIXt(from)
 
   from <- as_year_month_day(from)
@@ -1598,7 +1610,15 @@ date_seq_year_month <- function(from, to, by, total_size, precision) {
 
   if (!is_null(to)) {
     to <- as_year_month_day(to)
-    check_from_to_component_equivalence(original_from, to, precision, has_time)
+
+    check_from_to_component_equivalence(
+      from = original_from,
+      to = to,
+      precision = precision,
+      has_time = has_time,
+      error_call = error_call
+    )
+
     to <- calendar_narrow(to, precision)
   }
 
@@ -1608,13 +1628,15 @@ date_seq_year_month <- function(from, to, by, total_size, precision) {
   out
 }
 
-date_seq_day <- function(from, to, by, total_size, precision) {
-  date_seq_day_hour_minute_second(from, to, by, total_size, precision, as_naive_time)
+date_seq_day <- function(from, to, by, total_size, precision, ..., error_call = caller_env()) {
+  check_dots_empty0(...)
+  date_seq_day_hour_minute_second(from, to, by, total_size, precision, error_call, as_naive_time)
 }
-date_seq_hour_minute_second <- function(from, to, by, total_size, precision) {
-  date_seq_day_hour_minute_second(from, to, by, total_size, precision, as_sys_time)
+date_seq_hour_minute_second <- function(from, to, by, total_size, precision, ..., error_call = caller_env()) {
+  check_dots_empty0(...)
+  date_seq_day_hour_minute_second(from, to, by, total_size, precision, error_call, as_sys_time)
 }
-date_seq_day_hour_minute_second <- function(from, to, by, total_size, precision, as_time_point_fn) {
+date_seq_day_hour_minute_second <- function(from, to, by, total_size, precision, error_call, as_time_point_fn) {
   has_time <- is_POSIXt(from)
 
   from <- as_time_point_fn(from)
@@ -1628,7 +1650,8 @@ date_seq_day_hour_minute_second <- function(from, to, by, total_size, precision,
       from = as_year_month_day(original_from),
       to = as_year_month_day(to),
       precision = precision,
-      has_time = has_time
+      has_time = has_time,
+      error_call = error_call
     )
 
     to <- time_point_floor(to, precision)
@@ -1642,10 +1665,14 @@ date_seq_day_hour_minute_second <- function(from, to, by, total_size, precision,
   out
 }
 
-check_from_to_component_equivalence <- function(from, to, precision, has_time) {
+check_from_to_component_equivalence <- function(from,
+                                                to,
+                                                precision,
+                                                has_time,
+                                                error_call) {
   ok <- TRUE
 
-  check_precision(precision)
+  check_precision(precision, call = error_call)
   precision_int <- precision_to_integer(precision)
 
   if (precision_int < PRECISION_MONTH) {
@@ -1668,12 +1695,12 @@ check_from_to_component_equivalence <- function(from, to, precision, has_time) {
   }
 
   if (!ok) {
-    message <- paste0(
-      "All components of `from` and `to` more precise than ",
-      "'", precision, "' ",
-      "must match."
+    message <- c(
+      "All components of {.arg from} and {.arg to} more precise than {.str {precision}} must match.",
+      i = "{.arg from} is {.str {format(from)}}.",
+      i = "{.arg to} is {.str {format(to)}}."
     )
-    abort(message)
+    cli::cli_abort(message, call = error_call)
   }
 
   invisible()
@@ -1705,7 +1732,13 @@ reset_original_components <- function(out, from, precision, has_time) {
   out
 }
 
-check_number_of_supplied_optional_arguments <- function(to, by, total_size) {
+check_number_of_supplied_optional_arguments <- function(to,
+                                                        by,
+                                                        total_size,
+                                                        ...,
+                                                        error_call = caller_env()) {
+  check_dots_empty0(...)
+
   has_to <- !is_null(to)
   has_by <- !is_null(by)
   has_ts <- !is_null(total_size)
@@ -1713,13 +1746,14 @@ check_number_of_supplied_optional_arguments <- function(to, by, total_size) {
   n_has <- sum(has_to, has_by, has_ts)
 
   if (n_has != 2L) {
-    message <- paste0(
-      "Must specify exactly two of:\n",
-      "- `to`\n",
-      "- `by`\n",
-      "- `total_size`"
-    )
-    abort(message)
+    header <- "Must specify exactly two of:"
+    bullets <- cli::format_bullets_raw(c(
+      "*" = cli::format_inline("{.arg to}"),
+      "*" = cli::format_inline("{.arg by}"),
+      "*" = cli::format_inline("{.arg total_size}")
+    ))
+    message <- c(header, bullets)
+    cli::cli_abort(message, call = error_call)
   }
 
   invisible()

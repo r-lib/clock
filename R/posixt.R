@@ -1931,14 +1931,19 @@ date_seq.POSIXt <- function(from,
   zone <- date_time_zone(from)
 
   if (!is_null(to)) {
-    if (!is_POSIXt(to)) {
-      abort("If supplied, `to` must be a <POSIXct> or <POSIXlt>.")
-    }
-
+    check_posixt(to)
     to <- to_posixct(to)
 
     if (!identical(zone, date_time_zone(to))) {
-      abort("`from` and `to` must have identical time zones.")
+      to_zone <- date_time_zone(to)
+
+      message <- c(
+        "{.arg from} and {.arg to} must have identical time zones.",
+        i = "{.arg from} has zone {.str {zone}}.",
+        i = "{.arg to} has zone {.str {to_zone}}."
+      )
+
+      cli::cli_abort(message)
     }
   }
 
@@ -1989,7 +1994,11 @@ date_seq.POSIXt <- function(from,
     return(out)
   }
 
-  abort("`by` must have a precision of 'year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', or 'second'.")
+  precisions <- c("year", "quarter", "month", "week", "day", "hour", "minute", "second")
+
+  by_precision <- duration_precision(by)
+
+  cli::cli_abort("`by` must have a precision of {.or {.str {precisions}}}, not {.str {by_precision}}.")
 }
 
 # ------------------------------------------------------------------------------
@@ -2162,7 +2171,7 @@ date_count_between.POSIXt <- function(start, end, precision, ..., n = 1L) {
     end_zone <- zone_pretty(end_zone)
 
     cli::cli_abort(paste0(
-      "`start` ({start_zone}) and `end` ({end_zone}) ",
+      "{.arg start} ({start_zone}) and {.arg end} ({end_zone}) ",
       "must have identical time zones."
     ))
   }

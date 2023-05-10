@@ -250,8 +250,10 @@
       date_seq(date_build(2019, 1, 1), to = date_build(2019, 2, 2), by = duration_months(
         1))
     Condition
-      Error in `check_from_to_component_equivalence()`:
-      ! All components of `from` and `to` more precise than 'month' must match.
+      Error in `date_seq()`:
+      ! All components of `from` and `to` more precise than "month" must match.
+      i `from` is "2019-01-01".
+      i `to` is "2019-02-02".
 
 ---
 
@@ -259,8 +261,10 @@
       date_seq(date_build(2019, 1, 1), to = date_build(2019, 3, 1), by = duration_years(
         1))
     Condition
-      Error in `check_from_to_component_equivalence()`:
-      ! All components of `from` and `to` more precise than 'year' must match.
+      Error in `date_seq()`:
+      ! All components of `from` and `to` more precise than "year" must match.
+      i `from` is "2019-01-01".
+      i `to` is "2019-03-01".
 
 # validates integerish `by`
 
@@ -310,33 +314,33 @@
     Code
       date_seq(new_date(1), by = 1)
     Condition
-      Error in `check_number_of_supplied_optional_arguments()`:
+      Error in `date_seq()`:
       ! Must specify exactly two of:
-      - `to`
-      - `by`
-      - `total_size`
+      * `to`
+      * `by`
+      * `total_size`
 
 ---
 
     Code
       date_seq(new_date(1), total_size = 1)
     Condition
-      Error in `check_number_of_supplied_optional_arguments()`:
+      Error in `date_seq()`:
       ! Must specify exactly two of:
-      - `to`
-      - `by`
-      - `total_size`
+      * `to`
+      * `by`
+      * `total_size`
 
 ---
 
     Code
       date_seq(new_date(1), to = new_date(1))
     Condition
-      Error in `check_number_of_supplied_optional_arguments()`:
+      Error in `date_seq()`:
       ! Must specify exactly two of:
-      - `to`
-      - `by`
-      - `total_size`
+      * `to`
+      * `by`
+      * `total_size`
 
 # requires `to` to be Date
 
@@ -352,7 +356,7 @@
       date_seq(new_date(1), to = new_date(2), by = duration_nanoseconds(1))
     Condition
       Error in `date_seq()`:
-      ! `by` must have a precision of 'year', 'quarter', 'month', 'week', or 'day'.
+      ! `by` must have a precision of "year", "quarter", "month", "week", or "day", not "nanosecond".
 
 # checks empty dots
 

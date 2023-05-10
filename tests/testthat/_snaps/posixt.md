@@ -451,8 +451,10 @@
       date_seq(date_time_build(2019, 1, 1, 2, 3, 20, zone = zone), to = date_time_build(
         2019, 2, 2, 1, 3, 5, zone = zone), by = duration_minutes(1))
     Condition
-      Error in `check_from_to_component_equivalence()`:
-      ! All components of `from` and `to` more precise than 'minute' must match.
+      Error in `date_seq()`:
+      ! All components of `from` and `to` more precise than "minute" must match.
+      i `from` is "2019-01-01T07:03:20".
+      i `to` is "2019-02-02T06:03:05".
 
 ---
 
@@ -460,8 +462,10 @@
       date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 2,
         2, 2, zone = zone), by = duration_days(1))
     Condition
-      Error in `check_from_to_component_equivalence()`:
-      ! All components of `from` and `to` more precise than 'day' must match.
+      Error in `date_seq()`:
+      ! All components of `from` and `to` more precise than "day" must match.
+      i `from` is "2019-01-01T00:00:00".
+      i `to` is "2019-02-02T02:00:00".
 
 ---
 
@@ -469,8 +473,10 @@
       date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 2,
         2, zone = zone), by = duration_months(1))
     Condition
-      Error in `check_from_to_component_equivalence()`:
-      ! All components of `from` and `to` more precise than 'month' must match.
+      Error in `date_seq()`:
+      ! All components of `from` and `to` more precise than "month" must match.
+      i `from` is "2019-01-01T00:00:00".
+      i `to` is "2019-02-02T00:00:00".
 
 ---
 
@@ -478,8 +484,10 @@
       date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 2,
         1, 1, zone = zone), by = duration_months(1))
     Condition
-      Error in `check_from_to_component_equivalence()`:
-      ! All components of `from` and `to` more precise than 'month' must match.
+      Error in `date_seq()`:
+      ! All components of `from` and `to` more precise than "month" must match.
+      i `from` is "2019-01-01T00:00:00".
+      i `to` is "2019-02-01T01:00:00".
 
 ---
 
@@ -487,8 +495,10 @@
       date_seq(date_time_build(2019, 1, 1, zone = zone), to = date_time_build(2019, 1,
         2, zone = zone), by = duration_years(1))
     Condition
-      Error in `check_from_to_component_equivalence()`:
-      ! All components of `from` and `to` more precise than 'year' must match.
+      Error in `date_seq()`:
+      ! All components of `from` and `to` more precise than "year" must match.
+      i `from` is "2019-01-01T00:00:00".
+      i `to` is "2019-01-02T00:00:00".
 
 # `to` must have same time zone as `by`
 
@@ -498,6 +508,8 @@
     Condition
       Error in `date_seq()`:
       ! `from` and `to` must have identical time zones.
+      i `from` has zone "UTC".
+      i `to` has zone "America/New_York".
 
 # validates integerish `by`
 
@@ -547,33 +559,33 @@
     Code
       date_seq(new_datetime(1), by = 1)
     Condition
-      Error in `check_number_of_supplied_optional_arguments()`:
+      Error in `date_seq()`:
       ! Must specify exactly two of:
-      - `to`
-      - `by`
-      - `total_size`
+      * `to`
+      * `by`
+      * `total_size`
 
 ---
 
     Code
       date_seq(new_datetime(1), total_size = 1)
     Condition
-      Error in `check_number_of_supplied_optional_arguments()`:
+      Error in `date_seq()`:
       ! Must specify exactly two of:
-      - `to`
-      - `by`
-      - `total_size`
+      * `to`
+      * `by`
+      * `total_size`
 
 ---
 
     Code
       date_seq(new_datetime(1), to = new_datetime(1))
     Condition
-      Error in `check_number_of_supplied_optional_arguments()`:
+      Error in `date_seq()`:
       ! Must specify exactly two of:
-      - `to`
-      - `by`
-      - `total_size`
+      * `to`
+      * `by`
+      * `total_size`
 
 # requires `to` to be POSIXt
 
@@ -581,7 +593,7 @@
       date_seq(new_datetime(1), to = 1, by = 1)
     Condition
       Error in `date_seq()`:
-      ! If supplied, `to` must be a <POSIXct> or <POSIXlt>.
+      ! `to` must be a <POSIXt>, not the number 1.
 
 # requires year, month, day, hour, minute, or second precision
 
@@ -589,7 +601,7 @@
       date_seq(new_datetime(1), to = new_datetime(2), by = duration_nanoseconds(1))
     Condition
       Error in `date_seq()`:
-      ! `by` must have a precision of 'year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', or 'second'.
+      ! `by` must have a precision of "year", "quarter", "month", "week", "day", "hour", "minute", or "second", not "nanosecond".
 
 # checks empty dots
 
