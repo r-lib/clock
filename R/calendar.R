@@ -117,11 +117,12 @@ cast_calendar_to_calendar <- function(x, to, ...) {
 #' get_day(year_quarter_day(2021, 1:4, "last", start = clock_months$february))
 #' get_day(year_quarter_day(2022, 1:4, "last", start = clock_months$february))
 calendar_leap_year <- function(x) {
+  check_calendar(x)
   UseMethod("calendar_leap_year")
 }
 
 #' @export
-calendar_leap_year.default <- function(x) {
+calendar_leap_year.clock_calendar <- function(x) {
   stop_clock_unsupported(x)
 }
 
@@ -164,14 +165,15 @@ calendar_month_factor <- function(x,
                                   ...,
                                   labels = "en",
                                   abbreviate = FALSE) {
+  check_calendar(x)
   UseMethod("calendar_month_factor")
 }
 
 #' @export
-calendar_month_factor.default <- function(x,
-                                          ...,
-                                          labels = "en",
-                                          abbreviate = FALSE) {
+calendar_month_factor.clock_calendar <- function(x,
+                                                 ...,
+                                                 labels = "en",
+                                                 abbreviate = FALSE) {
   stop_clock_unsupported(x)
 }
 
@@ -261,6 +263,8 @@ calendar_month_factor_impl <- function(x,
 calendar_group <- function(x, precision, ..., n = 1L) {
   check_dots_empty0(...)
 
+  check_calendar(x)
+
   check_precision(precision)
   precision <- precision_to_integer(precision)
   calendar_check_precision(x, precision)
@@ -295,7 +299,7 @@ calendar_group <- function(x, precision, ..., n = 1L) {
 }
 
 #' @export
-calendar_group.default <- function(x, precision, ..., n = 1L) {
+calendar_group.clock_calendar <- function(x, precision, ..., n = 1L) {
   stop_clock_unsupported(x)
 }
 
@@ -405,6 +409,8 @@ validate_calendar_group_n <- function(n, ..., error_call = caller_env()) {
 #' # Or month precision
 #' calendar_narrow(x, "month")
 calendar_narrow <- function(x, precision) {
+  check_calendar(x)
+
   check_precision(precision)
   precision <- precision_to_integer(precision)
   calendar_check_precision(x, precision)
@@ -439,7 +445,7 @@ calendar_narrow <- function(x, precision) {
 }
 
 #' @export
-calendar_narrow.default <- function(x, precision) {
+calendar_narrow.clock_calendar <- function(x, precision) {
   stop_clock_unsupported(x)
 }
 
@@ -514,6 +520,8 @@ calendar_narrow_time <- function(out_fields, out_precision, x_fields) {
 #' # Or second precision
 #' calendar_widen(x, "second")
 calendar_widen <- function(x, precision) {
+  check_calendar(x)
+
   check_precision(precision)
   precision <- precision_to_integer(precision)
   calendar_check_precision(x, precision)
@@ -548,7 +556,7 @@ calendar_widen <- function(x, precision) {
 }
 
 #' @export
-calendar_widen.default <- function(x, precision) {
+calendar_widen.clock_calendar <- function(x, precision) {
   stop_clock_unsupported(x)
 }
 
@@ -629,11 +637,12 @@ NULL
 #' @rdname calendar-boundary
 #' @export
 calendar_start <- function(x, precision) {
+  check_calendar(x)
   UseMethod("calendar_start")
 }
 
 #' @export
-calendar_start.default <- function(x, precision) {
+calendar_start.clock_calendar <- function(x, precision) {
   stop_clock_unsupported(x)
 }
 
@@ -641,11 +650,12 @@ calendar_start.default <- function(x, precision) {
 #' @rdname calendar-boundary
 #' @export
 calendar_end <- function(x, precision) {
+  check_calendar(x)
   UseMethod("calendar_end")
 }
 
 #' @export
-calendar_end.default <- function(x, precision) {
+calendar_end.clock_calendar <- function(x, precision) {
   stop_clock_unsupported(x)
 }
 
@@ -792,6 +802,7 @@ calendar_count_between <- function(start,
                                    precision,
                                    ...,
                                    n = 1L) {
+  check_calendar(start)
   UseMethod("calendar_count_between")
 }
 
@@ -951,6 +962,7 @@ calendar_spanning_seq <- function(x) {
 #' calendar_precision(year_month_day(2019, 1, 1))
 #' calendar_precision(year_quarter_day(2019, 3))
 calendar_precision <- function(x) {
+  check_calendar(x)
   UseMethod("calendar_precision")
 }
 

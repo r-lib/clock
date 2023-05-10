@@ -200,7 +200,7 @@
       calendar_start(1)
     Condition
       Error in `calendar_start()`:
-      ! Can't perform this operation on a <numeric>.
+      ! `x` must be a <clock_calendar>, not the number 1.
 
 # start: `precision` is validated
 
@@ -248,7 +248,7 @@
       calendar_end(1)
     Condition
       Error in `calendar_end()`:
-      ! Can't perform this operation on a <numeric>.
+      ! `x` must be a <clock_calendar>, not the number 1.
 
 # end: `precision` is validated
 
@@ -370,8 +370,8 @@
     Code
       calendar_precision(sys_days(0))
     Condition
-      Error in `UseMethod()`:
-      ! no applicable method for 'calendar_precision' applied to an object of class "c('clock_sys_time', 'clock_time_point', 'clock_rcrd', 'vctrs_rcrd', 'vctrs_vctr')"
+      Error in `calendar_precision()`:
+      ! `x` must be a <clock_calendar>, not a <clock_sys_time/clock_time_point/clock_rcrd/vctrs_rcrd/vctrs_vctr> object.
 
 # addition helpers throw error with advice
 
