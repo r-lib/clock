@@ -68,7 +68,7 @@
       date_floor(x, "day", origin = origin)
     Condition
       Warning:
-      `origin` has been floored from 'second' precision to 'day' precision to match `precision`. This floor has lost information.
+      `origin` has been floored from "second" precision to "day" precision to match `precision`. This floor has resulted in a loss of information.
     Output
       [1] "1970-01-01 EST" "1970-01-02 EST"
 
@@ -77,39 +77,40 @@
     Code
       date_floor(x, "day", origin = 1)
     Condition
-      Error in `collect_date_time_rounder_origin()`:
-      ! `origin` must be a 'POSIXt'.
+      Error in `date_floor()`:
+      ! `origin` must be a <POSIXt>, not the number 1.
 
 ---
 
     Code
       date_floor(x, "day", origin = new_datetime(NA_real_, zone))
     Condition
-      Error in `collect_date_time_rounder_origin()`:
-      ! `origin` must not be `NA` or an infinite date.
+      Error in `date_floor()`:
+      ! `origin` can't contain missing values.
+      i The following locations are missing: 1.
 
 ---
 
     Code
       date_floor(x, "day", origin = new_datetime(Inf, zone))
     Condition
-      Error in `collect_date_time_rounder_origin()`:
-      ! `origin` must not be `NA` or an infinite date.
+      Error in `date_floor()`:
+      ! `origin` can't be an infinite date.
 
 ---
 
     Code
       date_floor(x, "day", origin = new_datetime(c(0, 1), zone))
     Condition
-      Error in `collect_date_time_rounder_origin()`:
-      ! `origin` must have length 1.
+      Error in `date_floor()`:
+      ! `origin` must have size 1, not size 2.
 
 ---
 
     Code
       date_floor(x, "day", origin = new_datetime(0, ""))
     Condition
-      Error in `collect_date_time_rounder_origin()`:
+      Error in `date_floor()`:
       ! `origin` must have the same time zone as `x`.
 
 ---
@@ -117,7 +118,7 @@
     Code
       date_floor(x, "day", origin = new_datetime(0, "America/Los_Angeles"))
     Condition
-      Error in `collect_date_time_rounder_origin()`:
+      Error in `date_floor()`:
       ! `origin` must have the same time zone as `x`.
 
 # default format is correct
@@ -312,7 +313,7 @@
       date_time_build(2019)
     Condition
       Error in `date_time_build()`:
-      ! `zone` is a required argument to `date_time_build()`.
+      ! `zone` must be supplied.
 
 # can handle invalid dates
 
@@ -361,7 +362,7 @@
       date_time_info(1)
     Condition
       Error in `date_time_info()`:
-      ! `x` must be a 'POSIXt'.
+      ! `x` must be a <POSIXt>, not the number 1.
 
 # start: can't use invalid precisions
 
@@ -607,8 +608,8 @@
       (expect_error(date_count_between(x, x, "millisecond")))
     Output
       <error/rlang_error>
-      Error in `date_count_between_impl()`:
-      ! `precision` must be one of: 'year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second'.
+      Error in `date_count_between()`:
+      ! `precision` must be "year", "quarter", "month", "week", "day", "hour", "minute", or "second", not "millisecond".
 
 # can't count between a POSIXt and a Date
 
@@ -617,7 +618,7 @@
     Output
       <error/rlang_error>
       Error in `date_count_between()`:
-      ! `end` must be a <POSIXt>.
+      ! `end` must be a <POSIXt>, not a <Date> object.
 
 # <posixt> op <duration>
 

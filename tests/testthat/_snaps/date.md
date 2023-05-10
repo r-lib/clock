@@ -74,32 +74,33 @@
     Code
       date_floor(x, "day", origin = 1)
     Condition
-      Error in `collect_date_rounder_origin()`:
-      ! `origin` must be a 'Date'.
+      Error in `date_floor()`:
+      ! `origin` must be a <Date>, not the number 1.
 
 ---
 
     Code
       date_floor(x, "day", origin = new_date(NA_real_))
     Condition
-      Error in `collect_date_rounder_origin()`:
-      ! `origin` must not be `NA` or an infinite date.
+      Error in `date_floor()`:
+      ! `origin` can't contain missing values.
+      i The following locations are missing: 1.
 
 ---
 
     Code
       date_floor(x, "day", origin = new_date(Inf))
     Condition
-      Error in `collect_date_rounder_origin()`:
-      ! `origin` must not be `NA` or an infinite date.
+      Error in `date_floor()`:
+      ! `origin` can't be an infinite date.
 
 ---
 
     Code
       date_floor(x, "day", origin = new_date(c(0, 1)))
     Condition
-      Error in `collect_date_rounder_origin()`:
-      ! `origin` must have length 1.
+      Error in `date_floor()`:
+      ! `origin` must have size 1, not size 2.
 
 # can format dates
 
@@ -370,8 +371,8 @@
       (expect_error(date_count_between(x, x, "hour")))
     Output
       <error/rlang_error>
-      Error in `date_count_between_impl()`:
-      ! `precision` must be one of: 'year', 'quarter', 'month', 'week', 'day'.
+      Error in `date_count_between()`:
+      ! `precision` must be "year", "quarter", "month", "week", or "day", not "hour".
 
 # can't count between a Date and a POSIXt
 

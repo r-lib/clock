@@ -591,7 +591,9 @@ zoned_time_parse_complete <- function(x,
                                       format = NULL,
                                       precision = "second",
                                       locale = clock_locale()) {
-  check_dots_empty()
+  check_dots_empty0(...)
+
+  check_character(x)
 
   check_zoned_time_precision(precision)
   precision <- precision_to_integer(precision)
@@ -629,7 +631,9 @@ zoned_time_parse_abbrev <- function(x,
                                     format = NULL,
                                     precision = "second",
                                     locale = clock_locale()) {
-  check_dots_empty()
+  check_dots_empty0(...)
+
+  check_character(x)
 
   check_zoned_time_precision(precision)
   precision <- precision_to_integer(precision)
