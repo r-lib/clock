@@ -63,7 +63,13 @@
     <div class="section level2">
       <h2 id="high-level-api">High Level API<a class="anchor" aria-label="anchor" href="#high-level-api"></a></h2>
       
-      <p class="section-desc"></p><p>This section contains the high level API for usage with R’s native date and date-time types, Date, POSIXct, and POSIXlt. If you are new to clock, this is the best place to start.</p>
+      <p class="section-desc"></p><p>This section contains the high level API for R’s native date and date-time types (Date, POSIXct, and POSIXlt). For most clock users, these are the only functions you’ll need.</p>
+
+      
+    </div><div class="section level2">
+      
+      <h3 id="construction">Construction<a class="anchor" aria-label="anchor" href="#construction"></a></h3>
+      
 
       
     </div><div id="" class="section level2">
@@ -86,7 +92,18 @@
           <code><a href="date-today.html">date_today()</a></code> <code><a href="date-today.html">date_now()</a></code> 
         </dt>
         <dd>Current date and date-time</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      
+      <h3 id="manipulation">Manipulation<a class="anchor" aria-label="anchor" href="#manipulation"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="date_group.html">date_group()</a></code> 
         </dt>
@@ -123,21 +140,6 @@
         <dd>Spanning sequence: date and date-time</dd>
       </dl><dl><dt>
           
-          <code><a href="date_format.html">date_format()</a></code> 
-        </dt>
-        <dd>Formatting: date and date-time</dd>
-      </dl><dl><dt>
-          
-          <code><a href="date_parse.html">date_parse()</a></code> 
-        </dt>
-        <dd>Parsing: date</dd>
-      </dl><dl><dt>
-          
-          <code><a href="date-time-parse.html">date_time_parse()</a></code> <code><a href="date-time-parse.html">date_time_parse_complete()</a></code> <code><a href="date-time-parse.html">date_time_parse_abbrev()</a></code> <code><a href="date-time-parse.html">date_time_parse_RFC_3339()</a></code> 
-        </dt>
-        <dd>Parsing: date-time</dd>
-      </dl><dl><dt>
-          
           <code><a href="date_weekday_factor.html">date_weekday_factor()</a></code> 
         </dt>
         <dd>Convert a date or date-time to a weekday factor</dd>
@@ -161,17 +163,18 @@
           <code><a href="date_time_info.html">date_time_info()</a></code> 
         </dt>
         <dd>Info: date-time</dd>
-      </dl><dl><dt>
-          
-          <code><a href="as_date.html">as_date()</a></code> 
-        </dt>
-        <dd>Convert to a date</dd>
-      </dl><dl><dt>
-          
-          <code><a href="as_date_time.html">as_date_time()</a></code> 
-        </dt>
-        <dd>Convert to a date-time</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      
+      <h3 id="getters-and-setters">Getters and setters<a class="anchor" aria-label="anchor" href="#getters-and-setters"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="Date-getters.html">get_year(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-getters.html">get_month(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-getters.html">get_day(<i>&lt;Date&gt;</i>)</a></code> 
         </dt>
@@ -191,19 +194,9 @@
           <code><a href="posixt-setters.html">set_year(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_month(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_day(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_hour(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_minute(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-setters.html">set_second(<i>&lt;POSIXt&gt;</i>)</a></code> 
         </dt>
         <dd>Setters: date-time</dd>
-      </dl><dl><dt>
-          
-          <code><a href="Date-arithmetic.html">add_years(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_quarters(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_months(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_weeks(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_days(<i>&lt;Date&gt;</i>)</a></code> 
-        </dt>
-        <dd>Arithmetic: date</dd>
-      </dl><dl><dt>
-          
-          <code><a href="posixt-arithmetic.html">add_years(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_quarters(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_months(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_weeks(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_days(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_hours(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_minutes(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_seconds(<i>&lt;POSIXt&gt;</i>)</a></code> 
-        </dt>
-        <dd>Arithmetic: date-time</dd>
       </dl></div><div class="section level2">
-      <h2 id="arithmetic">Arithmetic<a class="anchor" aria-label="anchor" href="#arithmetic"></a></h2>
       
+      <h3 id="parsing-and-formatting">Parsing and formatting<a class="anchor" aria-label="anchor" href="#parsing-and-formatting"></a></h3>
       
 
       
@@ -214,13 +207,65 @@
 
       <dl><dt>
           
-          <code><a href="clock-arithmetic.html">add_years()</a></code> <code><a href="clock-arithmetic.html">add_quarters()</a></code> <code><a href="clock-arithmetic.html">add_months()</a></code> <code><a href="clock-arithmetic.html">add_weeks()</a></code> <code><a href="clock-arithmetic.html">add_days()</a></code> <code><a href="clock-arithmetic.html">add_hours()</a></code> <code><a href="clock-arithmetic.html">add_minutes()</a></code> <code><a href="clock-arithmetic.html">add_seconds()</a></code> <code><a href="clock-arithmetic.html">add_milliseconds()</a></code> <code><a href="clock-arithmetic.html">add_microseconds()</a></code> <code><a href="clock-arithmetic.html">add_nanoseconds()</a></code> 
+          <code><a href="date_format.html">date_format()</a></code> 
         </dt>
-        <dd>Clock arithmetic</dd>
+        <dd>Formatting: date and date-time</dd>
+      </dl><dl><dt>
+          
+          <code><a href="date_parse.html">date_parse()</a></code> 
+        </dt>
+        <dd>Parsing: date</dd>
+      </dl><dl><dt>
+          
+          <code><a href="date-time-parse.html">date_time_parse()</a></code> <code><a href="date-time-parse.html">date_time_parse_complete()</a></code> <code><a href="date-time-parse.html">date_time_parse_abbrev()</a></code> <code><a href="date-time-parse.html">date_time_parse_RFC_3339()</a></code> 
+        </dt>
+        <dd>Parsing: date-time</dd>
+      </dl></div><div class="section level2">
+      
+      <h3 id="arithmetic">Arithmetic<a class="anchor" aria-label="anchor" href="#arithmetic"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="Date-arithmetic.html">add_years(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_quarters(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_months(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_weeks(<i>&lt;Date&gt;</i>)</a></code> <code><a href="Date-arithmetic.html">add_days(<i>&lt;Date&gt;</i>)</a></code> 
+        </dt>
+        <dd>Arithmetic: date</dd>
+      </dl><dl><dt>
+          
+          <code><a href="posixt-arithmetic.html">add_years(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_quarters(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_months(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_weeks(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_days(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_hours(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_minutes(<i>&lt;POSIXt&gt;</i>)</a></code> <code><a href="posixt-arithmetic.html">add_seconds(<i>&lt;POSIXt&gt;</i>)</a></code> 
+        </dt>
+        <dd>Arithmetic: date-time</dd>
+      </dl></div><div class="section level2">
+      
+      <h3 id="conversion">Conversion<a class="anchor" aria-label="anchor" href="#conversion"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="as_date.html">as_date()</a></code> 
+        </dt>
+        <dd>Convert to a date</dd>
+      </dl><dl><dt>
+          
+          <code><a href="as_date_time.html">as_date_time()</a></code> 
+        </dt>
+        <dd>Convert to a date-time</dd>
       </dl></div><div class="section level2">
       <h2 id="calendars">Calendars<a class="anchor" aria-label="anchor" href="#calendars"></a></h2>
       
-      
+      <p class="section-desc"></p><p>This section contains the overarching <code>calendar_*()</code> API that applies to all calendars. See the subsections for details about a specific calendar.</p>
 
       
     </div><div id="" class="section level2">
@@ -273,19 +318,9 @@
           <code><a href="calendar_month_factor.html">calendar_month_factor()</a></code> 
         </dt>
         <dd>Convert a calendar to an ordered factor of month names</dd>
-      </dl><dl><dt>
-          
-          <code><a href="clock-getters.html">get_year()</a></code> <code><a href="clock-getters.html">get_quarter()</a></code> <code><a href="clock-getters.html">get_month()</a></code> <code><a href="clock-getters.html">get_week()</a></code> <code><a href="clock-getters.html">get_day()</a></code> <code><a href="clock-getters.html">get_hour()</a></code> <code><a href="clock-getters.html">get_minute()</a></code> <code><a href="clock-getters.html">get_second()</a></code> <code><a href="clock-getters.html">get_millisecond()</a></code> <code><a href="clock-getters.html">get_microsecond()</a></code> <code><a href="clock-getters.html">get_nanosecond()</a></code> <code><a href="clock-getters.html">get_index()</a></code> 
-        </dt>
-        <dd>Calendar getters</dd>
-      </dl><dl><dt>
-          
-          <code><a href="clock-setters.html">set_year()</a></code> <code><a href="clock-setters.html">set_quarter()</a></code> <code><a href="clock-setters.html">set_month()</a></code> <code><a href="clock-setters.html">set_week()</a></code> <code><a href="clock-setters.html">set_day()</a></code> <code><a href="clock-setters.html">set_hour()</a></code> <code><a href="clock-setters.html">set_minute()</a></code> <code><a href="clock-setters.html">set_second()</a></code> <code><a href="clock-setters.html">set_millisecond()</a></code> <code><a href="clock-setters.html">set_microsecond()</a></code> <code><a href="clock-setters.html">set_nanosecond()</a></code> <code><a href="clock-setters.html">set_index()</a></code> 
-        </dt>
-        <dd>Calendar setters</dd>
       </dl></div><div class="section level2">
-      <h2 id="year-month-day">Year-month-day<a class="anchor" aria-label="anchor" href="#year-month-day"></a></h2>
       
+      <h3 id="year-month-day">Year-month-day<a class="anchor" aria-label="anchor" href="#year-month-day"></a></h3>
       
 
       
@@ -360,8 +395,8 @@
         </dt>
         <dd>Setters: year-month-day</dd>
       </dl></div><div class="section level2">
-      <h2 id="year-month-weekday">Year-month-weekday<a class="anchor" aria-label="anchor" href="#year-month-weekday"></a></h2>
       
+      <h3 id="year-month-weekday">Year-month-weekday<a class="anchor" aria-label="anchor" href="#year-month-weekday"></a></h3>
       
 
       
@@ -431,8 +466,8 @@
         </dt>
         <dd>Setters: year-month-weekday</dd>
       </dl></div><div class="section level2">
-      <h2 id="year-week-day">Year-week-day<a class="anchor" aria-label="anchor" href="#year-week-day"></a></h2>
       
+      <h3 id="year-week-day">Year-week-day<a class="anchor" aria-label="anchor" href="#year-week-day"></a></h3>
       
 
       
@@ -502,8 +537,8 @@
         </dt>
         <dd>Setters: year-week-day</dd>
       </dl></div><div class="section level2">
-      <h2 id="iso-year-week-day">ISO-year-week-day<a class="anchor" aria-label="anchor" href="#iso-year-week-day"></a></h2>
       
+      <h3 id="iso-year-week-day">ISO-year-week-day<a class="anchor" aria-label="anchor" href="#iso-year-week-day"></a></h3>
       
 
       
@@ -573,8 +608,8 @@
         </dt>
         <dd>Setters: iso-year-week-day</dd>
       </dl></div><div class="section level2">
-      <h2 id="year-quarter-day">Year-quarter-day<a class="anchor" aria-label="anchor" href="#year-quarter-day"></a></h2>
       
+      <h3 id="year-quarter-day">Year-quarter-day<a class="anchor" aria-label="anchor" href="#year-quarter-day"></a></h3>
       
 
       
@@ -644,8 +679,8 @@
         </dt>
         <dd>Setters: year-quarter-day</dd>
       </dl></div><div class="section level2">
-      <h2 id="year-day">Year-day<a class="anchor" aria-label="anchor" href="#year-day"></a></h2>
       
+      <h3 id="year-day">Year-day<a class="anchor" aria-label="anchor" href="#year-day"></a></h3>
       
 
       
@@ -794,74 +829,7 @@
       
     </div><div class="section level2">
       
-      <h3 id="sys-time">Sys-time<a class="anchor" aria-label="anchor" href="#sys-time"></a></h3>
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="as_sys_time.html">as_sys_time()</a></code> 
-        </dt>
-        <dd>Convert to a sys-time</dd>
-      </dl><dl><dt>
-          
-          <code><a href="is_sys_time.html">is_sys_time()</a></code> 
-        </dt>
-        <dd>Is <code>x</code> a sys-time?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="sys-parsing.html">sys_time_parse()</a></code> <code><a href="sys-parsing.html">sys_time_parse_RFC_3339()</a></code> 
-        </dt>
-        <dd>Parsing: sys-time</dd>
-      </dl><dl><dt>
-          
-          <code><a href="sys_time_info.html">sys_time_info()</a></code> 
-        </dt>
-        <dd>Info: sys-time</dd>
-      </dl><dl><dt>
-          
-          <code><a href="sys_time_now.html">sys_time_now()</a></code> 
-        </dt>
-        <dd>What is the current sys-time?</dd>
-      </dl></div><div class="section level2">
-      
-      <h3 id="naive-time">Naive-time<a class="anchor" aria-label="anchor" href="#naive-time"></a></h3>
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="as_naive_time.html">as_naive_time()</a></code> 
-        </dt>
-        <dd>Convert to a naive-time</dd>
-      </dl><dl><dt>
-          
-          <code><a href="is_naive_time.html">is_naive_time()</a></code> 
-        </dt>
-        <dd>Is <code>x</code> a naive-time?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="naive_time_parse.html">naive_time_parse()</a></code> 
-        </dt>
-        <dd>Parsing: naive-time</dd>
-      </dl><dl><dt>
-          
-          <code><a href="naive_time_info.html">naive_time_info()</a></code> 
-        </dt>
-        <dd>Info: naive-time</dd>
-      </dl></div><div class="section level2">
-      
-      <h3 id="manipulation">Manipulation<a class="anchor" aria-label="anchor" href="#manipulation"></a></h3>
+      <h3 id="manipulation-1">Manipulation<a class="anchor" aria-label="anchor" href="#manipulation-1"></a></h3>
       
 
       
@@ -910,16 +878,83 @@
           <code><a href="time-point-arithmetic.html">add_weeks(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_days(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_hours(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_minutes(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_seconds(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_milliseconds(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_microseconds(<i>&lt;clock_time_point&gt;</i>)</a></code> <code><a href="time-point-arithmetic.html">add_nanoseconds(<i>&lt;clock_time_point&gt;</i>)</a></code> 
         </dt>
         <dd>Arithmetic: Time points</dd>
+      </dl></div><div class="section level2">
+      
+      <h3 id="sys-time">Sys-time<a class="anchor" aria-label="anchor" href="#sys-time"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="as_sys_time.html">as_sys_time()</a></code> 
+        </dt>
+        <dd>Convert to a sys-time</dd>
       </dl><dl><dt>
           
-          <code><a href="as-zoned-time-naive-time.html">as_zoned_time(<i>&lt;clock_naive_time&gt;</i>)</a></code> 
+          <code><a href="is_sys_time.html">is_sys_time()</a></code> 
         </dt>
-        <dd>Convert to a zoned-time from a naive-time</dd>
+        <dd>Is <code>x</code> a sys-time?</dd>
+      </dl><dl><dt>
+          
+          <code><a href="sys-parsing.html">sys_time_parse()</a></code> <code><a href="sys-parsing.html">sys_time_parse_RFC_3339()</a></code> 
+        </dt>
+        <dd>Parsing: sys-time</dd>
+      </dl><dl><dt>
+          
+          <code><a href="sys_time_info.html">sys_time_info()</a></code> 
+        </dt>
+        <dd>Info: sys-time</dd>
+      </dl><dl><dt>
+          
+          <code><a href="sys_time_now.html">sys_time_now()</a></code> 
+        </dt>
+        <dd>What is the current sys-time?</dd>
       </dl><dl><dt>
           
           <code><a href="as-zoned-time-sys-time.html">as_zoned_time(<i>&lt;clock_sys_time&gt;</i>)</a></code> 
         </dt>
         <dd>Convert to a zoned-time from a sys-time</dd>
+      </dl></div><div class="section level2">
+      
+      <h3 id="naive-time">Naive-time<a class="anchor" aria-label="anchor" href="#naive-time"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="as_naive_time.html">as_naive_time()</a></code> 
+        </dt>
+        <dd>Convert to a naive-time</dd>
+      </dl><dl><dt>
+          
+          <code><a href="is_naive_time.html">is_naive_time()</a></code> 
+        </dt>
+        <dd>Is <code>x</code> a naive-time?</dd>
+      </dl><dl><dt>
+          
+          <code><a href="naive_time_parse.html">naive_time_parse()</a></code> 
+        </dt>
+        <dd>Parsing: naive-time</dd>
+      </dl><dl><dt>
+          
+          <code><a href="naive_time_info.html">naive_time_info()</a></code> 
+        </dt>
+        <dd>Info: naive-time</dd>
+      </dl><dl><dt>
+          
+          <code><a href="as-zoned-time-naive-time.html">as_zoned_time(<i>&lt;clock_naive_time&gt;</i>)</a></code> 
+        </dt>
+        <dd>Convert to a zoned-time from a naive-time</dd>
       </dl></div><div class="section level2">
       <h2 id="zoned-time">Zoned-time<a class="anchor" aria-label="anchor" href="#zoned-time"></a></h2>
       
@@ -1066,9 +1101,9 @@
         </dt>
         <dd>Support for vctrs arithmetic</dd>
       </dl></div><div class="section level2">
-      <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
+      <h2 id="generics-and-methods">Generics and methods<a class="anchor" aria-label="anchor" href="#generics-and-methods"></a></h2>
       
-      
+      <p class="section-desc"></p><p>This section contains documentation about generics and methods that is already exposed elsewhere on this reference page.</p>
 
       
     </div><div id="" class="section level2">
@@ -1077,6 +1112,21 @@
       
 
       <dl><dt>
+          
+          <code><a href="clock-arithmetic.html">add_years()</a></code> <code><a href="clock-arithmetic.html">add_quarters()</a></code> <code><a href="clock-arithmetic.html">add_months()</a></code> <code><a href="clock-arithmetic.html">add_weeks()</a></code> <code><a href="clock-arithmetic.html">add_days()</a></code> <code><a href="clock-arithmetic.html">add_hours()</a></code> <code><a href="clock-arithmetic.html">add_minutes()</a></code> <code><a href="clock-arithmetic.html">add_seconds()</a></code> <code><a href="clock-arithmetic.html">add_milliseconds()</a></code> <code><a href="clock-arithmetic.html">add_microseconds()</a></code> <code><a href="clock-arithmetic.html">add_nanoseconds()</a></code> 
+        </dt>
+        <dd>Clock arithmetic</dd>
+      </dl><dl><dt>
+          
+          <code><a href="clock-getters.html">get_year()</a></code> <code><a href="clock-getters.html">get_quarter()</a></code> <code><a href="clock-getters.html">get_month()</a></code> <code><a href="clock-getters.html">get_week()</a></code> <code><a href="clock-getters.html">get_day()</a></code> <code><a href="clock-getters.html">get_hour()</a></code> <code><a href="clock-getters.html">get_minute()</a></code> <code><a href="clock-getters.html">get_second()</a></code> <code><a href="clock-getters.html">get_millisecond()</a></code> <code><a href="clock-getters.html">get_microsecond()</a></code> <code><a href="clock-getters.html">get_nanosecond()</a></code> <code><a href="clock-getters.html">get_index()</a></code> 
+        </dt>
+        <dd>Calendar getters</dd>
+      </dl><dl><dt>
+          
+          <code><a href="clock-setters.html">set_year()</a></code> <code><a href="clock-setters.html">set_quarter()</a></code> <code><a href="clock-setters.html">set_month()</a></code> <code><a href="clock-setters.html">set_week()</a></code> <code><a href="clock-setters.html">set_day()</a></code> <code><a href="clock-setters.html">set_hour()</a></code> <code><a href="clock-setters.html">set_minute()</a></code> <code><a href="clock-setters.html">set_second()</a></code> <code><a href="clock-setters.html">set_millisecond()</a></code> <code><a href="clock-setters.html">set_microsecond()</a></code> <code><a href="clock-setters.html">set_nanosecond()</a></code> <code><a href="clock-setters.html">set_index()</a></code> 
+        </dt>
+        <dd>Calendar setters</dd>
+      </dl><dl><dt>
           
           <code><a href="date-group.html">date_group(<i>&lt;Date&gt;</i>)</a></code> 
         </dt>
