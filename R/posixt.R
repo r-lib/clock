@@ -1,6 +1,6 @@
 #' @export
 as_sys_time.POSIXt <- function(x) {
-  # The sys-time that would give the equivalent zoned-time when a tz is attached
+  # The sys-time that would give the equivalent zoned-time when a zone is attached
   as_sys_time(as_zoned_time(x))
 }
 
@@ -31,7 +31,7 @@ as_naive_time.POSIXt <- function(x) {
 #' x <- as.POSIXct("2019-01-01", tz = "America/New_York")
 #' as_zoned_time(x)
 as_zoned_time.POSIXt <- function(x, ...) {
-  check_dots_empty()
+  check_dots_empty0(...)
 
   x <- to_posixct(x)
 
@@ -60,15 +60,17 @@ as_year_month_weekday.POSIXt <- function(x) {
 #' @export
 as_year_quarter_day.POSIXt <- function(x, ..., start = NULL) {
   # Assumes zoned -> naive -> calendar is what the user expects
+  check_dots_empty0(...)
   x <- as_naive_time(x)
-  as_year_quarter_day(x, ..., start = start)
+  as_year_quarter_day(x, start = start)
 }
 
 #' @export
 as_year_week_day.POSIXt <- function(x, ..., start = NULL) {
   # Assumes zoned -> naive -> calendar is what the user expects
+  check_dots_empty0(...)
   x <- as_naive_time(x)
-  as_year_week_day(x, ..., start = start)
+  as_year_week_day(x, start = start)
 }
 
 #' @export
@@ -96,9 +98,9 @@ as_weekday.POSIXt <- function(x) {
 
 # Not using `check_dots_empty()` because that might
 # be too aggressive with base generics. Also not passing `...` on to methods
-# that do check empty dots.
+# that do check empty dots. Essentially just silently swallowing them.
 
-# Using `tz = ""` to be compatible with the generic of `as.POSIXct()`
+# Using `tz = ""` to be compatible with the generic of `as.POSIXct()`.
 
 #' @export
 as.POSIXct.clock_calendar <- function(x,
@@ -148,13 +150,13 @@ as.POSIXlt.clock_calendar <- function(x,
                                       ...,
                                       nonexistent = NULL,
                                       ambiguous = NULL) {
-  x <- as.POSIXct(x, tz = tz, ..., nonexistent = nonexistent, ambiguous = ambiguous)
+  x <- as.POSIXct(x, tz = tz, nonexistent = nonexistent, ambiguous = ambiguous)
   as.POSIXlt(x)
 }
 
 #' @export
 as.POSIXlt.clock_sys_time <- function(x, tz = "", ...) {
-  x <- as.POSIXct(x, tz = tz, ...)
+  x <- as.POSIXct(x, tz = tz)
   as.POSIXlt(x)
 }
 
@@ -163,7 +165,7 @@ as.POSIXlt.clock_naive_time <- as.POSIXlt.clock_calendar
 
 #' @export
 as.POSIXlt.clock_zoned_time <- function(x, ...) {
-  x <- as.POSIXct(x, ...)
+  x <- as.POSIXct(x)
   as.POSIXlt(x)
 }
 
@@ -240,42 +242,42 @@ as_date_time <- function(x, ...) {
 #' @rdname as_date_time
 #' @export
 as_date_time.POSIXt <- function(x, ...) {
-  check_dots_empty()
+  check_dots_empty0(...)
   to_posixct(x)
 }
 
 #' @rdname as_date_time
 #' @export
 as_date_time.Date <- function(x, zone, ..., nonexistent = NULL, ambiguous = NULL) {
-  check_dots_empty()
+  check_dots_empty0(...)
   as.POSIXct(as_naive_time(x), tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
 }
 
 #' @rdname as_date_time
 #' @export
 as_date_time.clock_calendar <- function(x, zone, ..., nonexistent = NULL, ambiguous = NULL) {
-  check_dots_empty()
+  check_dots_empty0(...)
   as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
 }
 
 #' @rdname as_date_time
 #' @export
 as_date_time.clock_sys_time <- function(x, zone, ...) {
-  check_dots_empty()
+  check_dots_empty0(...)
   as.POSIXct(x, tz = zone)
 }
 
 #' @rdname as_date_time
 #' @export
 as_date_time.clock_naive_time <- function(x, zone, ..., nonexistent = NULL, ambiguous = NULL) {
-  check_dots_empty()
+  check_dots_empty0(...)
   as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
 }
 
 #' @rdname as_date_time
 #' @export
 as_date_time.clock_zoned_time <- function(x, ...) {
-  check_dots_empty()
+  check_dots_empty0(...)
   as.POSIXct(x)
 }
 
@@ -416,35 +418,46 @@ NULL
 #' @rdname posixt-setters
 #' @export
 set_year.POSIXt <- function(x, value, ..., invalid = NULL, nonexistent = NULL, ambiguous = x) {
-  set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_year, ...)
+  check_dots_empty0(...)
+  force(ambiguous)
+  set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_year)
 }
 #' @rdname posixt-setters
 #' @export
 set_month.POSIXt <- function(x, value, ..., invalid = NULL, nonexistent = NULL, ambiguous = x) {
-  set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_month, ...)
+  check_dots_empty0(...)
+  force(ambiguous)
+  set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_month)
 }
 #' @rdname posixt-setters
 #' @export
 set_day.POSIXt <- function(x, value, ..., invalid = NULL, nonexistent = NULL, ambiguous = x) {
-  set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_day, ...)
+  check_dots_empty0(...)
+  force(ambiguous)
+  set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_day)
 }
 #' @rdname posixt-setters
 #' @export
 set_hour.POSIXt <- function(x, value, ..., invalid = NULL, nonexistent = NULL, ambiguous = x) {
-  set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_hour, ...)
+  check_dots_empty0(...)
+  force(ambiguous)
+  set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_hour)
 }
 #' @rdname posixt-setters
 #' @export
 set_minute.POSIXt <- function(x, value, ..., invalid = NULL, nonexistent = NULL, ambiguous = x) {
-  set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_minute, ...)
+  check_dots_empty0(...)
+  force(ambiguous)
+  set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_minute)
 }
 #' @rdname posixt-setters
 #' @export
 set_second.POSIXt <- function(x, value, ..., invalid = NULL, nonexistent = NULL, ambiguous = x) {
-  set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_second, ...)
+  check_dots_empty0(...)
+  force(ambiguous)
+  set_posixt_field_year_month_day(x, value, invalid, nonexistent, ambiguous, set_second)
 }
-set_posixt_field_year_month_day <- function(x, value, invalid, nonexistent, ambiguous, set_fn, ...) {
-  check_dots_empty()
+set_posixt_field_year_month_day <- function(x, value, invalid, nonexistent, ambiguous, set_fn) {
   zone <- posixt_tzone(x)
   x <- as_year_month_day(x)
   x <- set_fn(x, value)
@@ -676,20 +689,25 @@ NULL
 #' @rdname posixt-arithmetic
 #' @export
 add_years.POSIXt <- function(x, n, ..., invalid = NULL, nonexistent = NULL, ambiguous = x) {
-  add_posixt_duration_year_month_day(x, n, invalid, nonexistent, ambiguous, add_years, ...)
+  check_dots_empty0(...)
+  force(ambiguous)
+  add_posixt_duration_year_month_day(x, n, invalid, nonexistent, ambiguous, add_years)
 }
 #' @rdname posixt-arithmetic
 #' @export
 add_quarters.POSIXt <- function(x, n, ..., invalid = NULL, nonexistent = NULL, ambiguous = x) {
-  add_posixt_duration_year_month_day(x, n, invalid, nonexistent, ambiguous, add_quarters, ...)
+  check_dots_empty0(...)
+  force(ambiguous)
+  add_posixt_duration_year_month_day(x, n, invalid, nonexistent, ambiguous, add_quarters)
 }
 #' @rdname posixt-arithmetic
 #' @export
 add_months.POSIXt <- function(x, n, ..., invalid = NULL, nonexistent = NULL, ambiguous = x) {
-  add_posixt_duration_year_month_day(x, n, invalid, nonexistent, ambiguous, add_months, ...)
+  check_dots_empty0(...)
+  force(ambiguous)
+  add_posixt_duration_year_month_day(x, n, invalid, nonexistent, ambiguous, add_months)
 }
-add_posixt_duration_year_month_day <- function(x, n, invalid, nonexistent, ambiguous, add_fn, ...) {
-  check_dots_empty()
+add_posixt_duration_year_month_day <- function(x, n, invalid, nonexistent, ambiguous, add_fn) {
   zone <- posixt_tzone(x)
   x <- as_year_month_day(x)
   x <- add_fn(x, n)
@@ -700,15 +718,18 @@ add_posixt_duration_year_month_day <- function(x, n, invalid, nonexistent, ambig
 #' @rdname posixt-arithmetic
 #' @export
 add_weeks.POSIXt <- function(x, n, ..., nonexistent = NULL, ambiguous = x) {
-  add_posixt_duration_naive_time_point(x, n, nonexistent, ambiguous, add_weeks, ...)
+  check_dots_empty0(...)
+  force(ambiguous)
+  add_posixt_duration_naive_time_point(x, n, nonexistent, ambiguous, add_weeks)
 }
 #' @rdname posixt-arithmetic
 #' @export
 add_days.POSIXt <- function(x, n, ..., nonexistent = NULL, ambiguous = x) {
-  add_posixt_duration_naive_time_point(x, n, nonexistent, ambiguous, add_days, ...)
+  check_dots_empty0(...)
+  force(ambiguous)
+  add_posixt_duration_naive_time_point(x, n, nonexistent, ambiguous, add_days)
 }
-add_posixt_duration_naive_time_point <- function(x, n, nonexistent, ambiguous, add_fn, ...) {
-  check_dots_empty()
+add_posixt_duration_naive_time_point <- function(x, n, nonexistent, ambiguous, add_fn) {
   zone <- posixt_tzone(x)
   x <- as_naive_time(x)
   x <- add_fn(x, n)
@@ -718,20 +739,22 @@ add_posixt_duration_naive_time_point <- function(x, n, nonexistent, ambiguous, a
 #' @rdname posixt-arithmetic
 #' @export
 add_hours.POSIXt <- function(x, n, ...) {
-  add_posixt_duration_sys_time_point(x, n, add_hours, ...)
+  check_dots_empty0(...)
+  add_posixt_duration_sys_time_point(x, n, add_hours)
 }
 #' @rdname posixt-arithmetic
 #' @export
 add_minutes.POSIXt <- function(x, n, ...) {
-  add_posixt_duration_sys_time_point(x, n, add_minutes, ...)
+  check_dots_empty0(...)
+  add_posixt_duration_sys_time_point(x, n, add_minutes)
 }
 #' @rdname posixt-arithmetic
 #' @export
 add_seconds.POSIXt <- function(x, n, ...) {
-  add_posixt_duration_sys_time_point(x, n, add_seconds, ...)
+  check_dots_empty0(...)
+  add_posixt_duration_sys_time_point(x, n, add_seconds)
 }
-add_posixt_duration_sys_time_point <- function(x, n, add_fn, ...) {
-  check_dots_empty()
+add_posixt_duration_sys_time_point <- function(x, n, add_fn) {
   zone <- posixt_tzone(x)
   x <- as_sys_time(x)
   x <- add_fn(x, n)
@@ -806,10 +829,11 @@ date_group.POSIXt <- function(x,
                               invalid = NULL,
                               nonexistent = NULL,
                               ambiguous = x) {
+  check_dots_empty0(...)
   force(ambiguous)
   zone <- date_time_zone(x)
   x <- as_year_month_day(x)
-  x <- calendar_group(x, precision, ..., n = n)
+  x <- calendar_group(x, precision, n = n)
   x <- calendar_widen(x, "second")
   as.POSIXct(x, zone, invalid = invalid, nonexistent = nonexistent, ambiguous = ambiguous)
 }
@@ -920,7 +944,9 @@ date_floor.POSIXt <- function(x,
                               origin = NULL,
                               nonexistent = NULL,
                               ambiguous = x) {
-  date_time_rounder(x, precision, n, origin, nonexistent, ambiguous, time_point_floor, ...)
+  check_dots_empty0(...)
+  force(ambiguous)
+  date_time_rounder(x, precision, n, origin, nonexistent, ambiguous, time_point_floor)
 }
 
 #' @rdname posixt-rounding
@@ -932,7 +958,9 @@ date_ceiling.POSIXt <- function(x,
                                 origin = NULL,
                                 nonexistent = NULL,
                                 ambiguous = x) {
-  date_time_rounder(x, precision, n, origin, nonexistent, ambiguous, time_point_ceiling, ...)
+  check_dots_empty0(...)
+  force(ambiguous)
+  date_time_rounder(x, precision, n, origin, nonexistent, ambiguous, time_point_ceiling)
 }
 
 #' @rdname posixt-rounding
@@ -944,7 +972,9 @@ date_round.POSIXt <- function(x,
                               origin = NULL,
                               nonexistent = NULL,
                               ambiguous = x) {
-  date_time_rounder(x, precision, n, origin, nonexistent, ambiguous, time_point_round, ...)
+  check_dots_empty0(...)
+  force(ambiguous)
+  date_time_rounder(x, precision, n, origin, nonexistent, ambiguous, time_point_round)
 }
 
 date_time_rounder <- function(x,
@@ -954,7 +984,10 @@ date_time_rounder <- function(x,
                               nonexistent,
                               ambiguous,
                               time_point_rounder,
-                              ...) {
+                              ...,
+                              error_call = caller_env()) {
+  check_dots_empty0(...)
+
   result <- tweak_date_rounder_precision(precision, n)
   precision <- result$precision
   n <- result$n
@@ -964,30 +997,28 @@ date_time_rounder <- function(x,
   x <- as_naive_time(x)
 
   if (!is_null(origin)) {
-    origin <- collect_date_time_rounder_origin(origin, zone, precision)
+    origin <- collect_date_time_rounder_origin(origin, zone, precision, error_call = error_call)
   }
 
-  x <- time_point_rounder(x, precision, ..., n = n, origin = origin)
+  x <- time_point_rounder(x, precision, n = n, origin = origin)
 
   as.POSIXct(x, zone, nonexistent = nonexistent, ambiguous = ambiguous)
 }
 
-collect_date_time_rounder_origin <- function(origin, zone, precision) {
-  if (!inherits(origin, "POSIXt")) {
-    abort("`origin` must be a 'POSIXt'.")
-  }
+collect_date_time_rounder_origin <- function(origin, zone, precision, error_call) {
+  check_posixt(origin, call = error_call)
 
   origin <- to_posixct(origin)
 
-  if (length(origin) != 1L) {
-    abort("`origin` must have length 1.")
-  }
-  if (!is.finite(origin)) {
-    abort("`origin` must not be `NA` or an infinite date.")
+  vec_check_size(origin, 1L, call = error_call)
+  check_no_missing(origin, call = error_call)
+
+  if (is.infinite(origin)) {
+    cli::cli_abort("{.arg origin} can't be an infinite date.", call = error_call)
   }
 
   if (!identical(date_time_zone(origin), zone)) {
-    abort("`origin` must have the same time zone as `x`.")
+    cli::cli_abort("{.arg origin} must have the same time zone as {.arg x}.", call = error_call)
   }
 
   origin <- as_naive_time(origin)
@@ -1006,34 +1037,12 @@ collect_date_time_rounder_origin <- function(origin, zone, precision) {
 
 warn_clock_invalid_rounding_origin <- function(precision) {
   message <- paste0(
-    "`origin` has been floored from 'second' precision to '", precision, "' ",
-    "precision to match `precision`. This floor has lost information."
+    "{.arg origin} has been floored from {.str second} precision to {.str {precision}} ",
+    "precision to match {.arg precision}. This floor has resulted in a loss of information."
   )
+  message <- cli::format_inline(message)
 
   rlang::warn(message, class = "clock_warning_invalid_rounding_origin")
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
-date_weekday_factor.POSIXt <- function(x,
-                                       ...,
-                                       labels = "en",
-                                       abbreviate = TRUE,
-                                       encoding = "western") {
-  x <- as_weekday(x)
-  weekday_factor(x, ..., labels = labels, abbreviate = abbreviate, encoding = encoding)
-}
-
-# ------------------------------------------------------------------------------
-
-#' @export
-date_month_factor.POSIXt <- function(x,
-                                     ...,
-                                     labels = "en",
-                                     abbreviate = FALSE) {
-  x <- as_year_month_day(x)
-  calendar_month_factor(x, ..., labels = labels, abbreviate = abbreviate)
 }
 
 # ------------------------------------------------------------------------------
@@ -1085,7 +1094,7 @@ date_format.POSIXt <- function(x,
                                format = NULL,
                                locale = clock_locale(),
                                abbreviate_zone = FALSE) {
-  check_dots_empty()
+  check_dots_empty0(...)
   x <- as_zoned_time(x)
   format(x, format = format, locale = locale, abbreviate_zone = abbreviate_zone)
 }
@@ -1402,6 +1411,8 @@ date_time_parse <- function(x,
                             locale = clock_locale(),
                             nonexistent = NULL,
                             ambiguous = NULL) {
+  check_dots_empty0(...)
+
   if (is_null(format)) {
     # Default format for `date_time_parse()` doesn't have the `T`, unlike
     # default format for `naive_time_parse()`. This is intended to parse the
@@ -1409,21 +1420,23 @@ date_time_parse <- function(x,
     format <- "%Y-%m-%d %H:%M:%S"
   }
 
-  x <- naive_time_parse(x, ..., format = format, precision = "second", locale = locale)
+  x <- naive_time_parse(x, format = format, precision = "second", locale = locale)
   as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
 }
 
 #' @rdname date-time-parse
 #' @export
 date_time_parse_complete <- function(x, ..., format = NULL, locale = clock_locale()) {
-  x <- zoned_time_parse_complete(x, ..., format = format, precision = "second", locale = locale)
+  check_dots_empty0(...)
+  x <- zoned_time_parse_complete(x, format = format, precision = "second", locale = locale)
   as.POSIXct(x)
 }
 
 #' @rdname date-time-parse
 #' @export
 date_time_parse_abbrev <- function(x, zone, ..., format = NULL, locale = clock_locale()) {
-  x <- zoned_time_parse_abbrev(x, zone, ..., format = format, precision = "second", locale = locale)
+  check_dots_empty0(...)
+  x <- zoned_time_parse_abbrev(x, zone, format = format, precision = "second", locale = locale)
   as.POSIXct(x)
 }
 
@@ -1433,7 +1446,8 @@ date_time_parse_RFC_3339 <- function(x,
                                      ...,
                                      separator = "T",
                                      offset = "Z") {
-  x <- sys_time_parse_RFC_3339(x, ..., separator = separator, offset = offset, precision = "second")
+  check_dots_empty0(...)
+  x <- sys_time_parse_RFC_3339(x, separator = separator, offset = offset, precision = "second")
   # Hard-code UTC because we don't allow optional `zone` arguments that have a
   # default anywhere else in the package. It seems like it would be bad practice
   # to have one here, since parsed RFC 3339 strings should probably always be
@@ -1489,10 +1503,11 @@ date_shift.POSIXt <- function(x,
                               boundary = "keep",
                               nonexistent = NULL,
                               ambiguous = x) {
+  check_dots_empty0(...)
   force(ambiguous)
   zone <- date_time_zone(x)
   x <- as_naive_time(x)
-  x <- time_point_shift(x, target, ..., which = which, boundary = boundary)
+  x <- time_point_shift(x, target, which = which, boundary = boundary)
   as.POSIXct(x, tz = zone, nonexistent = nonexistent, ambiguous = ambiguous)
 }
 
@@ -1574,10 +1589,10 @@ date_time_build <- function(year,
                             invalid = NULL,
                             nonexistent = NULL,
                             ambiguous = NULL) {
-  check_dots_empty()
+  check_dots_empty0(...)
 
   if (is_missing(zone)) {
-    abort("`zone` is a required argument to `date_time_build()`.")
+    abort("`zone` must be supplied.")
   }
 
   x <- year_month_day(year, month, day, hour, minute, second)
@@ -1627,9 +1642,7 @@ date_now <- function(zone) {
 #' # `end` can be used to iterate through daylight saving time transitions
 #' date_time_info(info$end)
 date_time_info <- function(x) {
-  if (!is_POSIXt(x)) {
-    abort("`x` must be a 'POSIXt'.")
-  }
+  check_posixt(x)
 
   x <- as_zoned_time(x)
 
@@ -1702,7 +1715,7 @@ date_start.POSIXt <- function(x,
                               invalid = NULL,
                               nonexistent = NULL,
                               ambiguous = x) {
-  check_dots_empty()
+  check_dots_empty0(...)
   force(ambiguous)
   zone <- date_time_zone(x)
   x <- as_year_month_day(x)
@@ -1718,7 +1731,7 @@ date_end.POSIXt <- function(x,
                             invalid = NULL,
                             nonexistent = NULL,
                             ambiguous = x) {
-  check_dots_empty()
+  check_dots_empty0(...)
   force(ambiguous)
   zone <- date_time_zone(x)
   x <- as_year_month_day(x)
@@ -1910,7 +1923,7 @@ date_seq.POSIXt <- function(from,
                             invalid = NULL,
                             nonexistent = NULL,
                             ambiguous = NULL) {
-  check_dots_empty()
+  check_dots_empty0(...)
 
   check_number_of_supplied_optional_arguments(to, by, total_size)
 
@@ -1918,19 +1931,24 @@ date_seq.POSIXt <- function(from,
   zone <- date_time_zone(from)
 
   if (!is_null(to)) {
-    if (!is_POSIXt(to)) {
-      abort("If supplied, `to` must be a <POSIXct> or <POSIXlt>.")
-    }
-
+    check_posixt(to)
     to <- to_posixct(to)
 
     if (!identical(zone, date_time_zone(to))) {
-      abort("`from` and `to` must have identical time zones.")
+      to_zone <- date_time_zone(to)
+
+      message <- c(
+        "{.arg from} and {.arg to} must have identical time zones.",
+        i = "{.arg from} has zone {.str {zone}}.",
+        i = "{.arg to} has zone {.str {to_zone}}."
+      )
+
+      cli::cli_abort(message)
     }
   }
 
   if (!is_null(total_size)) {
-    total_size <- check_length_out(total_size, arg = "total_size")
+    total_size <- check_length_out(total_size)
   }
 
   if (is_null(by)) {
@@ -1939,7 +1957,7 @@ date_seq.POSIXt <- function(from,
     precision <- duration_precision(by)
   } else {
     precision <- "second"
-    by <- duration_helper(by, PRECISION_SECOND, n_arg = "by")
+    by <- duration_helper(by, PRECISION_SECOND)
   }
 
   check_precision(precision)
@@ -1976,7 +1994,11 @@ date_seq.POSIXt <- function(from,
     return(out)
   }
 
-  abort("`by` must have a precision of 'year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', or 'second'.")
+  precisions <- c("year", "quarter", "month", "week", "day", "hour", "minute", "second")
+
+  by_precision <- duration_precision(by)
+
+  cli::cli_abort("`by` must have a precision of {.or {.str {precisions}}}, not {.str {by_precision}}.")
 }
 
 # ------------------------------------------------------------------------------
@@ -2135,11 +2157,8 @@ date_spanning_seq.POSIXt <- function(x) {
 #'
 #' time_point_count_between(x_st, z_st, "day")
 date_count_between.POSIXt <- function(start, end, precision, ..., n = 1L) {
-  check_dots_empty()
-
-  if (!is_POSIXt(end)) {
-    abort("`end` must be a <POSIXt>.")
-  }
+  check_dots_empty0(...)
+  check_posixt(end)
 
   start <- to_posixct(start)
   end <- to_posixct(end)
@@ -2151,8 +2170,8 @@ date_count_between.POSIXt <- function(start, end, precision, ..., n = 1L) {
     start_zone <- zone_pretty(start_zone)
     end_zone <- zone_pretty(end_zone)
 
-    abort(paste0(
-      "`start` (", start_zone, ") and `end` (", end_zone, ") ",
+    cli::cli_abort(paste0(
+      "{.arg start} ({start_zone}) and {.arg end} ({end_zone}) ",
       "must have identical time zones."
     ))
   }

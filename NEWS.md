@@ -20,7 +20,7 @@
 * `date_zone()` and `date_set_zone()` have been soft-deprecated in favor of
   `date_time_zone()` and `date_time_set_zone()` (#326).
 
-* Many errors have been improved (#219, #286).
+* Many errors have been improved (#219, #286, #595).
 
 * New `date_time_info()` and `zoned_time_info()` low-level helpers for accessing
   the previous/next transition times, the offset from UTC, and the current time

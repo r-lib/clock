@@ -74,32 +74,33 @@
     Code
       date_floor(x, "day", origin = 1)
     Condition
-      Error in `collect_date_rounder_origin()`:
-      ! `origin` must be a 'Date'.
+      Error in `date_floor()`:
+      ! `origin` must be a <Date>, not the number 1.
 
 ---
 
     Code
       date_floor(x, "day", origin = new_date(NA_real_))
     Condition
-      Error in `collect_date_rounder_origin()`:
-      ! `origin` must not be `NA` or an infinite date.
+      Error in `date_floor()`:
+      ! `origin` can't contain missing values.
+      i The following locations are missing: 1.
 
 ---
 
     Code
       date_floor(x, "day", origin = new_date(Inf))
     Condition
-      Error in `collect_date_rounder_origin()`:
-      ! `origin` must not be `NA` or an infinite date.
+      Error in `date_floor()`:
+      ! `origin` can't be an infinite date.
 
 ---
 
     Code
       date_floor(x, "day", origin = new_date(c(0, 1)))
     Condition
-      Error in `collect_date_rounder_origin()`:
-      ! `origin` must have length 1.
+      Error in `date_floor()`:
+      ! `origin` must have size 1, not size 2.
 
 # can format dates
 
@@ -249,8 +250,10 @@
       date_seq(date_build(2019, 1, 1), to = date_build(2019, 2, 2), by = duration_months(
         1))
     Condition
-      Error in `check_from_to_component_equivalence()`:
-      ! All components of `from` and `to` more precise than 'month' must match.
+      Error in `date_seq()`:
+      ! All components of `from` and `to` more precise than "month" must match.
+      i `from` is "2019-01-01".
+      i `to` is "2019-02-02".
 
 ---
 
@@ -258,15 +261,17 @@
       date_seq(date_build(2019, 1, 1), to = date_build(2019, 3, 1), by = duration_years(
         1))
     Condition
-      Error in `check_from_to_component_equivalence()`:
-      ! All components of `from` and `to` more precise than 'year' must match.
+      Error in `date_seq()`:
+      ! All components of `from` and `to` more precise than "year" must match.
+      i `from` is "2019-01-01".
+      i `to` is "2019-03-01".
 
 # validates integerish `by`
 
     Code
       date_seq(new_date(1), by = 1.5, total_size = 1)
     Condition
-      Error in `duration_helper()`:
+      Error in `date_seq()`:
       ! Can't convert from `by` <double> to <integer> due to loss of precision.
       * Locations: 1
 
@@ -275,7 +280,7 @@
     Code
       date_seq(new_date(1), by = 1, total_size = 1.5)
     Condition
-      Error in `check_length_out()`:
+      Error in `date_seq()`:
       ! Can't convert from `total_size` <double> to <integer> due to loss of precision.
       * Locations: 1
 
@@ -284,15 +289,16 @@
     Code
       date_seq(new_date(1), by = 1, total_size = NA)
     Condition
-      Error in `check_length_out()`:
-      ! `total_size` can't be `NA`.
+      Error in `date_seq()`:
+      ! `total_size` can't contain missing values.
+      i The following locations are missing: 1.
 
 ---
 
     Code
       date_seq(new_date(1), by = 1, total_size = -1)
     Condition
-      Error in `check_length_out()`:
+      Error in `date_seq()`:
       ! `total_size` can't be negative.
 
 # `to` and `total_size` must not generate a non-fractional sequence
@@ -308,33 +314,33 @@
     Code
       date_seq(new_date(1), by = 1)
     Condition
-      Error in `check_number_of_supplied_optional_arguments()`:
+      Error in `date_seq()`:
       ! Must specify exactly two of:
-      - `to`
-      - `by`
-      - `total_size`
+      * `to`
+      * `by`
+      * `total_size`
 
 ---
 
     Code
       date_seq(new_date(1), total_size = 1)
     Condition
-      Error in `check_number_of_supplied_optional_arguments()`:
+      Error in `date_seq()`:
       ! Must specify exactly two of:
-      - `to`
-      - `by`
-      - `total_size`
+      * `to`
+      * `by`
+      * `total_size`
 
 ---
 
     Code
       date_seq(new_date(1), to = new_date(1))
     Condition
-      Error in `check_number_of_supplied_optional_arguments()`:
+      Error in `date_seq()`:
       ! Must specify exactly two of:
-      - `to`
-      - `by`
-      - `total_size`
+      * `to`
+      * `by`
+      * `total_size`
 
 # requires `to` to be Date
 
@@ -350,7 +356,7 @@
       date_seq(new_date(1), to = new_date(2), by = duration_nanoseconds(1))
     Condition
       Error in `date_seq()`:
-      ! `by` must have a precision of 'year', 'quarter', 'month', 'week', or 'day'.
+      ! `by` must have a precision of "year", "quarter", "month", "week", or "day", not "nanosecond".
 
 # checks empty dots
 
@@ -369,8 +375,8 @@
       (expect_error(date_count_between(x, x, "hour")))
     Output
       <error/rlang_error>
-      Error in `date_count_between_impl()`:
-      ! `precision` must be one of: 'year', 'quarter', 'month', 'week', 'day'.
+      Error in `date_count_between()`:
+      ! `precision` must be "year", "quarter", "month", "week", or "day", not "hour".
 
 # can't count between a Date and a POSIXt
 

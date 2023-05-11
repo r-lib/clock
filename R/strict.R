@@ -17,16 +17,17 @@ strict_validate_invalid <- function(invalid) {
 
 # ------------------------------------------------------------------------------
 
-strict_validate_nonexistent <- function(nonexistent) {
+check_nonexistent_strict <- function(nonexistent, call = caller_env()) {
   if (!is_null(nonexistent)) {
     return(nonexistent)
   }
 
   if (in_strict_mode()) {
-    abort(paste0(
+    message <- paste0(
       "The global option, `clock.strict`, is currently set to `TRUE`. ",
       "In this mode, `nonexistent` must be set and cannot be left as `NULL`."
-    ))
+    )
+    abort(message, call = call)
   }
 
   "error"
@@ -34,19 +35,20 @@ strict_validate_nonexistent <- function(nonexistent) {
 
 # ------------------------------------------------------------------------------
 
-strict_validate_ambiguous <- function(ambiguous) {
+check_ambiguous_strict <- function(ambiguous, call = caller_env()) {
   if (!is_null(ambiguous)) {
     return(ambiguous)
   }
 
   if (in_strict_mode()) {
-    abort(paste0(
+    message <- paste0(
       "The global option, `clock.strict`, is currently set to `TRUE`. ",
       "In this mode, `ambiguous` must be set and cannot be left as `NULL`. ",
       "Additionally, `ambiguous` cannot be set to a zoned-time or POSIXct ",
       "unless it is paired with an ambiguous time resolution strategy, like: ",
       "`list(<zoned-time>, 'earliest')`."
-    ))
+    )
+    abort(message, call = call)
   }
 
   "error"

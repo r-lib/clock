@@ -14,8 +14,8 @@
     Code
       sys_time_parse_RFC_3339(x, precision = "day")
     Condition
-      Error in `validate_RFC_3339_precision_string()`:
-      ! `precision` must be at least 'second' precision.
+      Error in `sys_time_parse_RFC_3339()`:
+      ! `precision` must be at least "second" precision.
 
 # `separator` is validated
 

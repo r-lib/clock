@@ -3,7 +3,7 @@
     Code
       duration_ceiling(duration_weeks(), "month")
     Condition
-      Error in `duration_rounder()`:
+      Error in `duration_ceiling()`:
       ! Can't ceiling from a chronological precision (week) to a calendrical precision (month).
 
 ---
@@ -11,7 +11,7 @@
     Code
       duration_floor(duration_seconds(), "year")
     Condition
-      Error in `duration_rounder()`:
+      Error in `duration_floor()`:
       ! Can't floor from a chronological precision (second) to a calendrical precision (year).
 
 # input is validated
@@ -19,15 +19,15 @@
     Code
       duration_floor(1, "year")
     Condition
-      Error in `duration_rounder()`:
-      ! `x` must be a duration object.
+      Error in `duration_floor()`:
+      ! `x` must be a <clock_duration>, not the number 1.
 
 ---
 
     Code
       duration_floor(duration_seconds(1), "foo")
     Condition
-      Error in `duration_rounder()`:
+      Error in `duration_floor()`:
       ! `precision` must be one of "year", "quarter", "month", "week", "day", "hour", "minute", "second", "millisecond", "microsecond", or "nanosecond", not "foo".
 
 ---
@@ -35,7 +35,7 @@
     Code
       duration_floor(duration_seconds(1), "day", n = -1)
     Condition
-      Error in `duration_rounder()`:
+      Error in `duration_floor()`:
       ! `n` must be a whole number larger than or equal to 0, not the number -1.
 
 # seq() validates from
@@ -52,7 +52,8 @@
       seq(duration_years(NA_integer_))
     Condition
       Error in `seq()`:
-      ! `from` can't be `NA`.
+      ! `from` can't contain missing values.
+      i The following locations are missing: 1.
 
 # seq() validates length.out / along.with exclusiveness
 
@@ -159,7 +160,8 @@
       seq(duration_years(1L), to = duration_years(NA_integer_), by = 1)
     Condition
       Error in `seq()`:
-      ! `to` can't be `NA`.
+      ! `to` can't contain missing values.
+      i The following locations are missing: 1.
 
 # seq() validates `by`
 
@@ -199,7 +201,7 @@
     Code
       seq(duration_years(1L), to = duration_years(1L), by = "x")
     Condition
-      Error in `duration_helper()`:
+      Error in `seq()`:
       ! Can't convert `by` <character> to <integer>.
 
 # `by` must be castable to the type of `from`
@@ -207,7 +209,7 @@
     Code
       seq(duration_years(0), to = duration_years(1), by = duration_months(1))
     Condition
-      Error in `duration_collect_by()`:
+      Error in `seq()`:
       ! Can't convert `by` <duration<month>> to <duration<year>>.
       Can't cast to a less precise precision.
 
@@ -216,7 +218,7 @@
     Code
       seq(duration_years(0), to = duration_years(1), by = duration_days(1))
     Condition
-      Error in `duration_collect_by()`:
+      Error in `seq()`:
       ! Can't convert `by` <duration<day>> to <duration<year>>.
       Can't cast between calendrical durations and chronological durations.
 
@@ -225,7 +227,7 @@
     Code
       seq(duration_days(0), to = duration_days(1), by = duration_years(1))
     Condition
-      Error in `duration_collect_by()`:
+      Error in `seq()`:
       ! Can't convert `by` <duration<year>> to <duration<day>>.
       Can't cast between calendrical durations and chronological durations.
 
@@ -234,7 +236,7 @@
     Code
       seq(duration_years(1L), to = duration_years(1L), length.out = 1:2)
     Condition
-      Error in `check_length_out()`:
+      Error in `seq()`:
       ! `length.out` must have size 1, not size 2.
 
 ---
@@ -242,15 +244,16 @@
     Code
       seq(duration_years(1L), to = duration_years(1L), length.out = NA_integer_)
     Condition
-      Error in `check_length_out()`:
-      ! `length.out` can't be `NA`.
+      Error in `seq()`:
+      ! `length.out` can't contain missing values.
+      i The following locations are missing: 1.
 
 ---
 
     Code
       seq(duration_years(1L), to = duration_years(1L), length.out = -1)
     Condition
-      Error in `check_length_out()`:
+      Error in `seq()`:
       ! `length.out` can't be negative.
 
 ---
@@ -258,7 +261,7 @@
     Code
       seq(duration_years(1L), to = duration_years(1L), length.out = "x")
     Condition
-      Error in `check_length_out()`:
+      Error in `seq()`:
       ! Can't convert `length.out` <character> to <integer>.
 
 # seq() validates dots
@@ -356,7 +359,7 @@
       duration_precision(sys_days(0))
     Condition
       Error in `duration_precision()`:
-      ! `x` must be a 'clock_duration'.
+      ! `x` must be a <clock_duration>, not a <clock_sys_time/clock_time_point/clock_rcrd/vctrs_rcrd/vctrs_vctr> object.
 
 # `<duration> / <duration>` is not allowed
 
