@@ -294,13 +294,24 @@ duration_arith_impl(cpp11::list_of<cpp11::doubles>& x_fields,
     break;
   }
   case arith_op::modulus: {
+    using Duration = typename ClockDuration::chrono_duration;
+
     for (r_ssize i = 0; i < size; ++i) {
-    if (x.is_na(i) || y.is_na(i)) {
-      out.assign_na(i);
-      continue;
+      if (x.is_na(i) || y.is_na(i)) {
+        out.assign_na(i);
+        continue;
+      }
+
+      const Duration x_elt = x[i];
+      const Duration y_elt = y[i];
+
+      if (y_elt == Duration::zero()) {
+        out.assign_na(i);
+        continue;
+      }
+
+      out.assign(x_elt % y_elt, i);
     }
-    out.assign(x[i] % y[i], i);
-  }
     break;
   }
   }
@@ -387,7 +398,17 @@ duration_integer_divide_impl(cpp11::list_of<cpp11::doubles>& x_fields,
       continue;
     }
 
-    const Rep elt = x[i] / y[i];
+    const Duration x_elt = x[i];
+    const Duration y_elt = y[i];
+
+    if (y_elt == Duration::zero()) {
+      // Consistent with `2L %/% 0L` rather than `2 %/% 0` since infinite
+      // durations aren't supported
+      out[i] = r_int_na;
+      continue;
+    }
+
+    const Rep elt = x_elt / y_elt;
 
     if (elt > REP_INT_MAX || elt <= REP_INT_MIN) {
       out[i] = r_int_na;
@@ -472,7 +493,7 @@ duration_scalar_arith_impl(cpp11::list_of<cpp11::doubles>& x_fields,
   case arith_scalar_op::modulus: {
     for (r_ssize i = 0; i < size; ++i) {
       const int elt_y = y[i];
-      if (x.is_na(i) || elt_y == r_int_na) {
+      if (x.is_na(i) || elt_y == r_int_na || elt_y == 0) {
         out.assign_na(i);
         continue;
       }
@@ -483,7 +504,7 @@ duration_scalar_arith_impl(cpp11::list_of<cpp11::doubles>& x_fields,
   case arith_scalar_op::divide: {
     for (r_ssize i = 0; i < size; ++i) {
       const int elt_y = y[i];
-      if (x.is_na(i) || elt_y == r_int_na) {
+      if (x.is_na(i) || elt_y == r_int_na || elt_y == 0) {
         out.assign_na(i);
         continue;
       }
