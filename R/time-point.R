@@ -523,6 +523,7 @@ as_year_quarter_day.clock_time_point <- function(x, ..., start = NULL) {
 
 #' @export
 as_year_week_day.clock_time_point <- function(x, ..., start = NULL) {
+  check_dots_empty0(...)
   precision <- time_point_precision_attribute(x)
   start <- week_validate_start(start)
   fields <- as_year_week_day_from_sys_time_cpp(x, precision, start)

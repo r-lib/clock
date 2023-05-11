@@ -1170,7 +1170,8 @@ as_year_month_weekday.clock_calendar <- function(x, ...) {
 
 #' @export
 as_year_week_day.clock_calendar <- function(x, ..., start = NULL) {
-  as_year_week_day(as_sys_time(x), ..., start = start)
+  check_dots_empty0(...)
+  as_year_week_day(as_sys_time(x), start = start)
 }
 
 #' @export
