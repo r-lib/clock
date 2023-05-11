@@ -753,6 +753,8 @@ iso_year_week_day_plus_duration <- function(x,
 #' calendar. Time points, Dates, POSIXct, and other calendars can all be
 #' converted to iso-year-week-day.
 #'
+#' @inheritParams rlang::args_dots_empty
+#'
 #' @param x `[vector]`
 #'
 #'   A vector to convert to iso-year-week-day.
@@ -768,17 +770,18 @@ iso_year_week_day_plus_duration <- function(x,
 #'
 #' # From other calendars
 #' as_iso_year_week_day(year_quarter_day(2019, quarter = 2, day = 50))
-as_iso_year_week_day <- function(x)  {
+as_iso_year_week_day <- function(x, ...)  {
   UseMethod("as_iso_year_week_day")
 }
 
 #' @export
-as_iso_year_week_day.default <- function(x) {
+as_iso_year_week_day.default <- function(x, ...) {
   stop_clock_unsupported_conversion(x, "clock_iso_year_week_day")
 }
 
 #' @export
-as_iso_year_week_day.clock_iso_year_week_day <- function(x) {
+as_iso_year_week_day.clock_iso_year_week_day <- function(x, ...) {
+  check_dots_empty0(...)
   x
 }
 

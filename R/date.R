@@ -95,7 +95,8 @@ as_year_week_day.Date <- function(x, ..., start = NULL) {
 }
 
 #' @export
-as_iso_year_week_day.Date <- function(x) {
+as_iso_year_week_day.Date <- function(x, ...) {
+  check_dots_empty0(...)
   as_iso_year_week_day(as_naive_time(x))
 }
 

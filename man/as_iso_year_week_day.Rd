@@ -4,12 +4,14 @@
 \alias{as_iso_year_week_day}
 \title{Convert to iso-year-week-day}
 \usage{
-as_iso_year_week_day(x)
+as_iso_year_week_day(x, ...)
 }
 \arguments{
 \item{x}{\verb{[vector]}
 
 A vector to convert to iso-year-week-day.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
 A iso-year-week-day vector.
