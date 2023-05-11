@@ -1,13 +1,10 @@
 Package: clock
 Title: Date-Time Types and Tools
 Version: 0.6.1.9000
-Authors@R: 
-    c(person(given = "Davis",
-             family = "Vaughan",
-             role = c("aut", "cre"),
-             email = "davis@posit.co"),
-      person(given = "Posit Software, PBC",
-             role = c("cph", "fnd")))
+Authors@R: c(
+    person("Davis", "Vaughan", , "davis@posit.co", role = c("aut", "cre")),
+    person("Posit Software, PBC", role = c("cph", "fnd"))
+  )
 Description: Provides a comprehensive library for date-time manipulations
     using a new family of orthogonal date-time classes (durations, time
     points, zoned-times, and calendars) that partition responsibilities so
@@ -39,6 +36,8 @@ LinkingTo:
     tzdb (>= 0.3.0.9000)
 VignetteBuilder: 
     knitr
+Remotes:
+    r-lib/tzdb
 Config/Needs/website:
     lubridate,
     tidyverse/tidytemplate
@@ -47,5 +46,3 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-Remotes:
-    r-lib/tzdb
