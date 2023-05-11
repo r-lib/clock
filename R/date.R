@@ -157,6 +157,8 @@ as.Date.clock_zoned_time <- function(x, ...) {
 #' [date_parse()]. For converting numerics to dates, see [vctrs::new_date()] or
 #' continue to use `as.Date()`.
 #'
+#' @inheritParams rlang::args_dots_empty
+#'
 #' @param x `[vector]`
 #'
 #'   A vector.
@@ -176,37 +178,42 @@ as.Date.clock_zoned_time <- function(x, ...) {
 #'
 #' # Can also convert from other clock types
 #' as_date(year_month_day(2019, 2, 5))
-as_date <- function(x) {
+as_date <- function(x, ...) {
   UseMethod("as_date")
 }
 
 #' @rdname as_date
 #' @export
-as_date.Date <- function(x) {
+as_date.Date <- function(x, ...) {
+  check_dots_empty0(...)
   date_standardize(x)
 }
 
 #' @rdname as_date
 #' @export
-as_date.POSIXt <- function(x) {
+as_date.POSIXt <- function(x, ...) {
+  check_dots_empty0(...)
   as.Date(as_naive_time(x))
 }
 
 #' @rdname as_date
 #' @export
-as_date.clock_calendar <- function(x) {
+as_date.clock_calendar <- function(x, ...) {
+  check_dots_empty0(...)
   as.Date(x)
 }
 
 #' @rdname as_date
 #' @export
-as_date.clock_time_point <- function(x) {
+as_date.clock_time_point <- function(x, ...) {
+  check_dots_empty0(...)
   as.Date(x)
 }
 
 #' @rdname as_date
 #' @export
-as_date.clock_zoned_time <- function(x) {
+as_date.clock_zoned_time <- function(x, ...) {
+  check_dots_empty0(...)
   as.Date(x)
 }
 
