@@ -156,8 +156,8 @@ get_year_day_last_cpp <- function(year) {
   .Call(`_clock_get_year_day_last_cpp`, year)
 }
 
-year_day_plus_duration_cpp <- function(fields, fields_n, precision_fields, precision_n) {
-  .Call(`_clock_year_day_plus_duration_cpp`, fields, fields_n, precision_fields, precision_n)
+year_day_plus_years_cpp <- function(year, fields_n) {
+  .Call(`_clock_year_day_plus_years_cpp`, year, fields_n)
 }
 
 as_sys_time_year_day_cpp <- function(fields, precision_int) {

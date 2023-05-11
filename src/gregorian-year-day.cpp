@@ -219,78 +219,11 @@ get_year_day_last_cpp(const cpp11::integers& year) {
 
 [[cpp11::register]]
 cpp11::writable::list
-year_day_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields,
-                           cpp11::list_of<cpp11::doubles> fields_n,
-                           const cpp11::integers& precision_fields,
-                           const cpp11::integers& precision_n) {
-  using namespace rclock;
-
-  const enum precision precision_fields_val = parse_precision(precision_fields);
-  const enum precision precision_n_val = parse_precision(precision_n);
-
-  cpp11::integers year = yearday::get_year(fields);
-  cpp11::integers day = yearday::get_day(fields);
-  cpp11::integers hour = yearday::get_hour(fields);
-  cpp11::integers minute = yearday::get_minute(fields);
-  cpp11::integers second = yearday::get_second(fields);
-  cpp11::integers subsecond = yearday::get_subsecond(fields);
-
-  yearday::y y{year};
-  yearday::yyd yyd{year, day};
-  yearday::yydh yydh{year, day, hour};
-  yearday::yydhm yydhm{year, day, hour, minute};
-  yearday::yydhms yydhms{year, day, hour, minute, second};
-  yearday::yydhmss<std::chrono::milliseconds> yydhmss1{year, day, hour, minute, second, subsecond};
-  yearday::yydhmss<std::chrono::microseconds> yydhmss2{year, day, hour, minute, second, subsecond};
-  yearday::yydhmss<std::chrono::nanoseconds> yydhmss3{year, day, hour, minute, second, subsecond};
-
-  duration::years dy{fields_n};
-
-  switch (precision_fields_val) {
-  case precision::year:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(y, dy);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::day:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(yyd, dy);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::hour:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(yydh, dy);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::minute:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(yydhm, dy);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::second:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(yydhms, dy);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::millisecond:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(yydhmss1, dy);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::microsecond:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(yydhmss2, dy);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::nanosecond:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(yydhmss3, dy);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  default: clock_abort("Internal error: Invalid precision.");
-  }
-
-  never_reached("year_day_plus_duration_cpp");
+year_day_plus_years_cpp(const cpp11::integers& year,
+                        cpp11::list_of<cpp11::doubles> fields_n) {
+  rclock::yearday::y x{year};
+  rclock::duration::years n{fields_n};
+  return calendar_plus_duration_impl(x, n);
 }
 
 // -----------------------------------------------------------------------------
