@@ -708,3 +708,11 @@
       <year_month_day<nanosecond>[1]>
       [1] "32767-12-31T23:59:59.999999999"
 
+# add_*() respect recycling rules
+
+    Code
+      add_years(year_month_day(1:2), 1:3)
+    Condition
+      Error in `add_years()`:
+      ! Can't recycle `x` (size 2) to match `n` (size 3).
+
