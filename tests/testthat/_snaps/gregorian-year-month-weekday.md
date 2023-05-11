@@ -674,3 +674,11 @@
       i The most precise allowed precision is "month".
       i `x` has precision "day".
 
+# add_*() respect recycling rules
+
+    Code
+      add_years(year_month_weekday(1:2), 1:3)
+    Condition
+      Error in `add_years()`:
+      ! Can't recycle `x` (size 2) to match `n` (size 3).
+

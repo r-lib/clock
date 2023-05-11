@@ -707,3 +707,67 @@ test_that("min() / max() / range() aren't defined at or past day precision", {
   expect_snapshot(error = TRUE, max(x))
   expect_snapshot(error = TRUE, range(x))
 })
+
+# ------------------------------------------------------------------------------
+# add_*()
+
+test_that("add_years() works", {
+  x <- year_month_weekday(2019, 1, 2, 3:4, 5)
+
+  expect_identical(
+    add_years(x, 1:2),
+    year_month_weekday(c(2020, 2021), 1, 2, 3:4, 5)
+  )
+  expect_identical(
+    add_years(x, NA),
+    vec_init(x, 2L)
+  )
+})
+
+test_that("add_months() works", {
+  x <- year_month_weekday(2019, 1, 2, 3:4, 5)
+
+  expect_identical(
+    add_months(x, 1:2),
+    year_month_weekday(2019, 2:3, 2, 3:4, 5)
+  )
+  expect_identical(
+    add_months(x, NA),
+    vec_init(x, 2L)
+  )
+})
+
+test_that("add_quarters() works (special)", {
+  x <- year_month_weekday(2019, 1, 2, 3:4, 5)
+
+  expect_identical(
+    add_quarters(x, 1:2),
+    add_months(x, (1:2) * 3)
+  )
+  expect_identical(
+    add_quarters(x, NA),
+    vec_init(x, 2L)
+  )
+})
+
+test_that("add_*() respect recycling rules", {
+  expect_length(add_years(year_month_weekday(1), 1:2), 2L)
+  expect_length(add_years(year_month_weekday(1:2), 1), 2L)
+
+  expect_length(add_years(year_month_weekday(1), integer()), 0L)
+  expect_length(add_years(year_month_weekday(integer()), 1), 0L)
+
+  expect_snapshot(error = TRUE, {
+    add_years(year_month_weekday(1:2), 1:3)
+  })
+})
+
+test_that("add_*() retains names", {
+  x <- set_names(year_month_weekday(1), "x")
+  y <- year_month_weekday(1)
+
+  n <- set_names(1, "n")
+
+  expect_named(add_years(x, n), "x")
+  expect_named(add_years(y, n), "n")
+})

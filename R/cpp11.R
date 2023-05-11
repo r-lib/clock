@@ -264,8 +264,12 @@ get_year_month_weekday_last_cpp <- function(year, month, day, index) {
   .Call(`_clock_get_year_month_weekday_last_cpp`, year, month, day, index)
 }
 
-year_month_weekday_plus_duration_cpp <- function(fields, fields_n, precision_fields, precision_n) {
-  .Call(`_clock_year_month_weekday_plus_duration_cpp`, fields, fields_n, precision_fields, precision_n)
+year_month_weekday_plus_years_cpp <- function(year, fields_n) {
+  .Call(`_clock_year_month_weekday_plus_years_cpp`, year, fields_n)
+}
+
+year_month_weekday_plus_months_cpp <- function(year, month, fields_n) {
+  .Call(`_clock_year_month_weekday_plus_months_cpp`, year, month, fields_n)
 }
 
 as_sys_time_year_month_weekday_cpp <- function(fields, precision_int) {
