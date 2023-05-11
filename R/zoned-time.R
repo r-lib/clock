@@ -862,6 +862,7 @@ as_zoned_time.default <- function(x, ...) {
 
 #' @export
 as_zoned_time.clock_zoned_time <- function(x, ...) {
+  check_dots_empty0(...)
   x
 }
 

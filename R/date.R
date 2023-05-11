@@ -66,8 +66,9 @@ as_zoned_time.Date <- function(x,
                                ...,
                                nonexistent = NULL,
                                ambiguous = NULL) {
+  check_dots_empty0(...)
   x <- as_naive_time(x)
-  as_zoned_time(x, zone = zone, ..., nonexistent = nonexistent, ambiguous = ambiguous)
+  as_zoned_time(x, zone = zone, nonexistent = nonexistent, ambiguous = ambiguous)
 }
 
 #' @export
