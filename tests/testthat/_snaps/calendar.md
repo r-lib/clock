@@ -371,7 +371,7 @@
       calendar_precision(sys_days(0))
     Condition
       Error in `calendar_precision()`:
-      ! `x` must be a <clock_calendar>, not a <clock_sys_time/clock_time_point/clock_rcrd/vctrs_rcrd/vctrs_vctr> object.
+      ! `x` must be a <clock_calendar>, not a <clock_sys_time> object.
 
 # addition helpers throw error with advice
 

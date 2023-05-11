@@ -328,5 +328,5 @@
       zoned_time_precision(duration_days())
     Condition
       Error in `zoned_time_precision()`:
-      ! `x` must be a <clock_zoned_time>, not a <clock_duration/clock_rcrd/vctrs_rcrd/vctrs_vctr> object.
+      ! `x` must be a <clock_zoned_time>, not a <clock_duration> object.
 

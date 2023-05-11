@@ -4,7 +4,7 @@
       naive_time_info(sys_days(0), "UTC")
     Condition
       Error in `naive_time_info()`:
-      ! `x` must be a <clock_naive_time>, not a <clock_sys_time/clock_time_point/clock_rcrd/vctrs_rcrd/vctrs_vctr> object.
+      ! `x` must be a <clock_naive_time>, not a <clock_sys_time> object.
 
 # zone is vectorized and recycled against x
 

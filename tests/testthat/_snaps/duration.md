@@ -359,7 +359,7 @@
       duration_precision(sys_days(0))
     Condition
       Error in `duration_precision()`:
-      ! `x` must be a <clock_duration>, not a <clock_sys_time/clock_time_point/clock_rcrd/vctrs_rcrd/vctrs_vctr> object.
+      ! `x` must be a <clock_duration>, not a <clock_sys_time> object.
 
 # `<duration> / <duration>` is not allowed
 

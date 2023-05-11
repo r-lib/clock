@@ -385,7 +385,7 @@
     Output
       <error/rlang_error>
       Error in `date_count_between()`:
-      ! `end` must be a <Date>, not a <POSIXct/POSIXt> object.
+      ! `end` must be a <Date>, not a <POSIXct> object.
 
 # <date> op <duration>
 

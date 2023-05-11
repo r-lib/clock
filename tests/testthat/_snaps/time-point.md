@@ -319,7 +319,7 @@
       time_point_precision(duration_days())
     Condition
       Error in `time_point_precision()`:
-      ! `x` must be a <clock_time_point>, not a <clock_duration/clock_rcrd/vctrs_rcrd/vctrs_vctr> object.
+      ! `x` must be a <clock_time_point>, not a <clock_duration> object.
 
 # unsupported time point addition throws good error
 
