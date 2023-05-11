@@ -336,7 +336,8 @@ as_sys_time.clock_sys_time <- function(x, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
-as_naive_time.clock_sys_time <- function(x) {
+as_naive_time.clock_sys_time <- function(x, ...) {
+  check_dots_empty0(...)
   new_naive_time_from_fields(x, time_point_precision_attribute(x), clock_rcrd_names(x))
 }
 

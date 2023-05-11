@@ -4,12 +4,14 @@
 \alias{as_naive_time}
 \title{Convert to a naive-time}
 \usage{
-as_naive_time(x)
+as_naive_time(x, ...)
 }
 \arguments{
 \item{x}{\verb{[object]}
 
 An object to convert to a naive-time.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
 A naive-time vector.

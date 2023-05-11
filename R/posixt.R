@@ -6,7 +6,8 @@ as_sys_time.POSIXt <- function(x, ...) {
 }
 
 #' @export
-as_naive_time.POSIXt <- function(x) {
+as_naive_time.POSIXt <- function(x, ...) {
+  check_dots_empty0(...)
   as_naive_time(as_zoned_time(x))
 }
 

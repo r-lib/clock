@@ -11,7 +11,8 @@ as_sys_time.Date <- function(x, ...) {
 }
 
 #' @export
-as_naive_time.Date <- function(x) {
+as_naive_time.Date <- function(x, ...) {
+  check_dots_empty0(...)
   as_naive_time(as_sys_time(x))
 }
 

@@ -1037,7 +1037,8 @@ as_sys_time.clock_year_month_day <- function(x, ...) {
 }
 
 #' @export
-as_naive_time.clock_year_month_day <- function(x) {
+as_naive_time.clock_year_month_day <- function(x, ...) {
+  check_dots_empty0(...)
   as_naive_time(as_sys_time(x))
 }
 

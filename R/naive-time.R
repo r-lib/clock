@@ -153,6 +153,8 @@ naive_time_parse <- function(x,
 #' native date and date-time types. Like converting from a zoned-time, these
 #' retain the printed time.
 #'
+#' @inheritParams rlang::args_dots_empty
+#'
 #' @param x `[object]`
 #'
 #'   An object to convert to a naive-time.
@@ -171,17 +173,18 @@ naive_time_parse <- function(x,
 #'
 #' ymd <- set_day(ym, 10)
 #' as_naive_time(ymd)
-as_naive_time <- function(x) {
+as_naive_time <- function(x, ...) {
   UseMethod("as_naive_time")
 }
 
 #' @export
-as_naive_time.default <- function(x) {
+as_naive_time.default <- function(x, ...) {
   stop_clock_unsupported(x)
 }
 
 #' @export
-as_naive_time.clock_naive_time <- function(x) {
+as_naive_time.clock_naive_time <- function(x, ...) {
+  check_dots_empty0(...)
   x
 }
 
