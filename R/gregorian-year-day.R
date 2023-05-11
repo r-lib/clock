@@ -720,6 +720,8 @@ year_day_plus_duration <- function(x,
 #' Time points, Dates, POSIXct, and other calendars can all be converted to
 #' year-day.
 #'
+#' @inheritParams rlang::args_dots_empty
+#'
 #' @param x `[vector]`
 #'
 #'   A vector to convert to year-day.
@@ -735,17 +737,18 @@ year_day_plus_duration <- function(x,
 #'
 #' # From other calendars
 #' as_year_day(year_quarter_day(2019, quarter = 2, day = 50))
-as_year_day <- function(x)  {
+as_year_day <- function(x, ...)  {
   UseMethod("as_year_day")
 }
 
 #' @export
-as_year_day.default <- function(x) {
+as_year_day.default <- function(x, ...) {
   stop_clock_unsupported_conversion(x, "clock_year_day")
 }
 
 #' @export
-as_year_day.clock_year_day <- function(x) {
+as_year_day.clock_year_day <- function(x, ...) {
+  check_dots_empty0(...)
   x
 }
 
