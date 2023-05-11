@@ -1188,7 +1188,8 @@ as_year_day.clock_calendar <- function(x, ...) {
 
 #' @export
 as_year_quarter_day.clock_calendar <- function(x, ..., start = NULL) {
-  as_year_quarter_day(as_sys_time(x), ..., start = start)
+  check_dots_empty0(...)
+  as_year_quarter_day(as_sys_time(x), start = start)
 }
 
 # ------------------------------------------------------------------------------

@@ -86,7 +86,8 @@ as_year_month_weekday.Date <- function(x, ...) {
 
 #' @export
 as_year_quarter_day.Date <- function(x, ..., start = NULL) {
-  as_year_quarter_day(as_naive_time(x), ..., start = start)
+  check_dots_empty0(...)
+  as_year_quarter_day(as_naive_time(x), start = start)
 }
 
 #' @export

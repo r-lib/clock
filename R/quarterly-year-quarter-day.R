@@ -901,7 +901,7 @@ as_year_quarter_day.default <- function(x, ..., start = NULL) {
 
 #' @export
 as_year_quarter_day.clock_year_quarter_day <- function(x, ..., start = NULL) {
-  check_dots_empty()
+  check_dots_empty0(...)
 
   if (is_null(start)) {
     return(x)
