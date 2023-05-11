@@ -226,85 +226,11 @@ get_iso_year_week_day_last_cpp(const cpp11::integers& year) {
 
 [[cpp11::register]]
 cpp11::writable::list
-iso_year_week_day_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields,
-                                    cpp11::list_of<cpp11::doubles> fields_n,
-                                    const cpp11::integers& precision_fields,
-                                    const cpp11::integers& precision_n) {
-  using namespace rclock;
-
-  const enum precision precision_fields_val = parse_precision(precision_fields);
-  const enum precision precision_n_val = parse_precision(precision_n);
-
-  cpp11::integers year = iso::get_year(fields);
-  cpp11::integers week = iso::get_week(fields);
-  cpp11::integers day = iso::get_day(fields);
-  cpp11::integers hour = iso::get_hour(fields);
-  cpp11::integers minute = iso::get_minute(fields);
-  cpp11::integers second = iso::get_second(fields);
-  cpp11::integers subsecond = iso::get_subsecond(fields);
-
-  iso::y y{year};
-  iso::ywn ywn{year, week};
-  iso::ywnwd ywnwd{year, week, day};
-  iso::ywnwdh ywnwdh{year, week, day, hour};
-  iso::ywnwdhm ywnwdhm{year, week, day, hour, minute};
-  iso::ywnwdhms ywnwdhms{year, week, day, hour, minute, second};
-  iso::ywnwdhmss<std::chrono::milliseconds> ywnwdhmss1{year, week, day, hour, minute, second, subsecond};
-  iso::ywnwdhmss<std::chrono::microseconds> ywnwdhmss2{year, week, day, hour, minute, second, subsecond};
-  iso::ywnwdhmss<std::chrono::nanoseconds> ywnwdhmss3{year, week, day, hour, minute, second, subsecond};
-
-  duration::years dy{fields_n};
-
-  switch (precision_fields_val) {
-  case precision::year:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(y, dy);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::week:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(ywn, dy);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::day:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(ywnwd, dy);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::hour:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(ywnwdh, dy);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::minute:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(ywnwdhm, dy);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::second:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(ywnwdhms, dy);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::millisecond:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(ywnwdhmss1, dy);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::microsecond:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(ywnwdhmss2, dy);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::nanosecond:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(ywnwdhmss3, dy);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  default: clock_abort("Internal error: Invalid precision.");
-  }
-
-  never_reached("iso_year_week_day_plus_duration_cpp");
+iso_year_week_day_plus_years_cpp(const cpp11::integers& year,
+                                 cpp11::list_of<cpp11::doubles> fields_n) {
+  rclock::iso::y x{year};
+  rclock::duration::years n{fields_n};
+  return calendar_plus_duration_impl(x, n);
 }
 
 // -----------------------------------------------------------------------------

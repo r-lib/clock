@@ -494,16 +494,6 @@ test_that("seq(by, length.out) works", {
 })
 
 # ------------------------------------------------------------------------------
-# add_*()
-
-test_that("can add quarters", {
-  expect_identical(year_quarter_day(2019, 1, 1) + duration_quarters(1), year_quarter_day(2019, 2, 1))
-  expect_identical(year_quarter_day(2019, 1, 1) + duration_quarters(5), year_quarter_day(2020, 2, 1))
-
-  expect_identical(year_quarter_day(2019, 1, 1, start = 2) + duration_quarters(5), year_quarter_day(2020, 2, 1, start = 2))
-})
-
-# ------------------------------------------------------------------------------
 # miscellaneous
 
 test_that("can roundtrip to naive-time with any `start`", {
@@ -755,4 +745,66 @@ test_that("min() / max() / range() works when empty", {
   expect_identical(min(x, na.rm = TRUE), clock_maximum(x))
   expect_identical(max(x, na.rm = TRUE), clock_minimum(x))
   expect_identical(range(x, na.rm = TRUE), c(clock_maximum(x), clock_minimum(x)))
+})
+
+# ------------------------------------------------------------------------------
+# add_*()
+
+test_that("add_years() works", {
+  x <- year_quarter_day(2019, 1, 2, 3:4)
+
+  expect_identical(
+    add_years(x, 1:2),
+    year_quarter_day(c(2020, 2021), 1, 2, 3:4)
+  )
+  expect_identical(
+    add_years(x, NA),
+    vec_init(x, 2L)
+  )
+})
+
+test_that("add_quarters() works", {
+  x <- year_quarter_day(2019, 1, 2, 3:4)
+
+  expect_identical(
+    add_quarters(x, 1:2),
+    year_quarter_day(2019, c(2, 3), 2, 3:4)
+  )
+  expect_identical(
+    add_quarters(x, NA),
+    vec_init(x, 2L)
+  )
+})
+
+test_that("add_*() respect recycling rules", {
+  expect_length(add_years(year_quarter_day(1), 1:2), 2L)
+  expect_length(add_years(year_quarter_day(1:2), 1), 2L)
+
+  expect_length(add_years(year_quarter_day(1), integer()), 0L)
+  expect_length(add_years(year_quarter_day(integer()), 1), 0L)
+
+  expect_snapshot(error = TRUE, {
+    add_years(year_quarter_day(1:2), 1:3)
+  })
+})
+
+test_that("add_*() retains names", {
+  x <- set_names(year_quarter_day(1), "x")
+  y <- year_quarter_day(1)
+
+  n <- set_names(1, "n")
+
+  expect_named(add_years(x, n), "x")
+  expect_named(add_years(y, n), "n")
+})
+
+test_that("`start` value is retained", {
+  expect_identical(year_quarter_day(2019, 1, 1) + duration_quarters(1), year_quarter_day(2019, 2, 1))
+  expect_identical(year_quarter_day(2019, 1, 1) + duration_quarters(5), year_quarter_day(2020, 2, 1))
+
+  # Ensure that the `start` is retained
+  expect_identical(
+    year_quarter_day(2019, 1, 1, start = 2) + duration_quarters(5),
+    year_quarter_day(2020, 2, 1, start = 2)
+  )
 })

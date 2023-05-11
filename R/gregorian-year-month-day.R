@@ -945,19 +945,47 @@ add_months.clock_year_month_day <- function(x, n, ...) {
   year_month_day_plus_duration(x, n, PRECISION_MONTH)
 }
 
-year_month_day_plus_duration <- function(x, n, precision_n) {
-  precision_fields <- calendar_precision_attribute(x)
+year_month_day_plus_duration <- function(x,
+                                         n,
+                                         n_precision,
+                                         ...,
+                                         error_call = caller_env()) {
+  check_dots_empty0(...)
 
-  n <- duration_collect_n(n, precision_n)
-  args <- vec_recycle_common(x = x, n = n)
+  x_precision <- calendar_precision_attribute(x)
+
+  n <- duration_collect_n(n, n_precision, error_call = error_call)
+
+  if (n_precision == PRECISION_QUARTER) {
+    n <- duration_cast(n, "month")
+    n_precision <- PRECISION_MONTH
+  }
+
+  size <- vec_size_common(x = x, n = n, .call = error_call)
+  args <- vec_recycle_common(x = x, n = n, .size = size)
   x <- args$x
   n <- args$n
 
   names <- names_common(x, n)
 
-  fields <- year_month_day_plus_duration_cpp(x, n, precision_fields, precision_n)
+  x <- vec_unstructure(x)
 
-  new_year_month_day_from_fields(fields, precision_fields, names = names)
+  if (n_precision == PRECISION_YEAR) {
+    fields <- year_month_day_plus_years_cpp(x$year, n)
+    x$year <- fields$year
+  } else if (n_precision == PRECISION_MONTH) {
+    fields <- year_month_day_plus_months_cpp(x$year, x$month, n)
+    x$year <- fields$year
+    x$month <- fields$month
+  } else {
+    abort("Unknown precision.", .internal = TRUE)
+  }
+
+  if (x_precision != n_precision) {
+    x <- df_list_propagate_missing(x, size = size)
+  }
+
+  new_year_month_day_from_fields(x, x_precision, names = names)
 }
 
 # ------------------------------------------------------------------------------

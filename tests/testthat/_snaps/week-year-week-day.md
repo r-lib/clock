@@ -601,3 +601,11 @@
       <year_week_day<Friday><year>[1]>
       [1] "32767"
 
+# add_*() respect recycling rules
+
+    Code
+      add_years(year_week_day(1:2), 1:3)
+    Condition
+      Error in `add_years()`:
+      ! Can't recycle `x` (size 2) to match `n` (size 3).
+

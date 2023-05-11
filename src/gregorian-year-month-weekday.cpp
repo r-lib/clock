@@ -237,104 +237,21 @@ get_year_month_weekday_last_cpp(const cpp11::integers& year,
 
 [[cpp11::register]]
 cpp11::writable::list
-year_month_weekday_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields,
-                                     cpp11::list_of<cpp11::doubles> fields_n,
-                                     const cpp11::integers& precision_fields,
-                                     const cpp11::integers& precision_n) {
-  using namespace rclock;
+year_month_weekday_plus_years_cpp(const cpp11::integers& year,
+                                  cpp11::list_of<cpp11::doubles> fields_n) {
+  rclock::weekday::y x{year};
+  rclock::duration::years n{fields_n};
+  return calendar_plus_duration_impl(x, n);
+}
 
-  const enum precision precision_fields_val = parse_precision(precision_fields);
-  const enum precision precision_n_val = parse_precision(precision_n);
-
-  cpp11::integers year = weekday::get_year(fields);
-  cpp11::integers month = weekday::get_month(fields);
-  cpp11::integers day = weekday::get_day(fields);
-  cpp11::integers index = weekday::get_index(fields);
-  cpp11::integers hour = weekday::get_hour(fields);
-  cpp11::integers minute = weekday::get_minute(fields);
-  cpp11::integers second = weekday::get_second(fields);
-  cpp11::integers subsecond = weekday::get_subsecond(fields);
-
-  weekday::y y{year};
-  weekday::ym ym{year, month};
-  weekday::ymwd ymwd{year, month, day, index};
-  weekday::ymwdh ymwdh{year, month, day, index, hour};
-  weekday::ymwdhm ymwdhm{year, month, day, index, hour, minute};
-  weekday::ymwdhms ymwdhms{year, month, day, index, hour, minute, second};
-  weekday::ymwdhmss<std::chrono::milliseconds> ymwdhmss1{year, month, day, index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::microseconds> ymwdhmss2{year, month, day, index, hour, minute, second, subsecond};
-  weekday::ymwdhmss<std::chrono::nanoseconds> ymwdhmss3{year, month, day, index, hour, minute, second, subsecond};
-
-  duration::years dy{fields_n};
-  duration::quarters dq{fields_n};
-  duration::months dm{fields_n};
-
-  switch (precision_fields_val) {
-  case precision::year:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(y, dy);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::month:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(ym, dy);
-    case precision::quarter: return calendar_plus_duration_impl(ym, dq);
-    case precision::month: return calendar_plus_duration_impl(ym, dm);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::day:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(ymwd, dy);
-    case precision::quarter: return calendar_plus_duration_impl(ymwd, dq);
-    case precision::month: return calendar_plus_duration_impl(ymwd, dm);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::hour:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(ymwdh, dy);
-    case precision::quarter: return calendar_plus_duration_impl(ymwdh, dq);
-    case precision::month: return calendar_plus_duration_impl(ymwdh, dm);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::minute:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(ymwdhm, dy);
-    case precision::quarter: return calendar_plus_duration_impl(ymwdhm, dq);
-    case precision::month: return calendar_plus_duration_impl(ymwdhm, dm);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::second:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(ymwdhms, dy);
-    case precision::quarter: return calendar_plus_duration_impl(ymwdhms, dq);
-    case precision::month: return calendar_plus_duration_impl(ymwdhms, dm);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::millisecond:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(ymwdhmss1, dy);
-    case precision::quarter: return calendar_plus_duration_impl(ymwdhmss1, dq);
-    case precision::month: return calendar_plus_duration_impl(ymwdhmss1, dm);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::microsecond:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(ymwdhmss2, dy);
-    case precision::quarter: return calendar_plus_duration_impl(ymwdhmss2, dq);
-    case precision::month: return calendar_plus_duration_impl(ymwdhmss2, dm);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  case precision::nanosecond:
-    switch (precision_n_val) {
-    case precision::year: return calendar_plus_duration_impl(ymwdhmss3, dy);
-    case precision::quarter: return calendar_plus_duration_impl(ymwdhmss3, dq);
-    case precision::month: return calendar_plus_duration_impl(ymwdhmss3, dm);
-    default: clock_abort("Internal error: Invalid precision.");
-    }
-  default: clock_abort("Internal error: Invalid precision.");
-  }
-
-  never_reached("year_month_weekday_plus_duration_cpp");
+[[cpp11::register]]
+cpp11::writable::list
+year_month_weekday_plus_months_cpp(const cpp11::integers& year,
+                                   const cpp11::integers& month,
+                                   cpp11::list_of<cpp11::doubles> fields_n) {
+  rclock::weekday::ym x{year, month};
+  rclock::duration::months n{fields_n};
+  return calendar_plus_duration_impl(x, n);
 }
 
 // -----------------------------------------------------------------------------
