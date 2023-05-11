@@ -12,13 +12,16 @@ development:
 
 reference:
 - title: High Level API
-  desc: This section contains the high level API for usage with R's native
-    date and date-time types, Date, POSIXct, and POSIXlt. If you are new to
-    clock, this is the best place to start.
+  desc: This section contains the high level API for R's native date and
+    date-time types (Date, POSIXct, and POSIXlt). For most clock users, these
+    are the only functions you'll need.
+- subtitle: Construction
   contents:
   - date_build
   - date_time_build
   - date-today
+- subtitle: Manipulation
+  contents:
   - date_group
   - date_count_between
   - date-and-date-time-boundary
@@ -26,28 +29,34 @@ reference:
   - date-and-date-time-shifting
   - date_seq
   - date_spanning_seq
-  - date_format
-  - date_parse
-  - date-time-parse
   - date_weekday_factor
   - date_month_factor
   - date_leap_year
   - date-time-zone
   - date_time_info
-  - as_date
-  - as_date_time
+- subtitle: Getters and setters
+  contents:
   - get_year.Date
   - get_year.POSIXt
   - set_year.Date
   - set_year.POSIXt
+- subtitle: Parsing and formatting
+  contents:
+  - date_format
+  - date_parse
+  - date-time-parse
+- subtitle: Arithmetic
+  contents:
   - Date-arithmetic
   - posixt-arithmetic
-
-- title: Arithmetic
+- subtitle: Conversion
   contents:
-  - add_years
+  - as_date
+  - as_date_time
 
 - title: Calendars
+  desc: This section contains the overarching `calendar_*()` API that applies to
+    all calendars. See the subsections for details about a specific calendar.
   contents:
   - calendar_group
   - calendar_count_between
@@ -58,10 +67,7 @@ reference:
   - calendar_precision
   - calendar_leap_year
   - calendar_month_factor
-  - get_year
-  - set_year
-
-- title: Year-month-day
+- subtitle: Year-month-day
   contents:
   - year_month_day
   - as_year_month_day
@@ -76,8 +82,7 @@ reference:
   - add_years.clock_year_month_day
   - get_year.clock_year_month_day
   - set_year.clock_year_month_day
-
-- title: Year-month-weekday
+- subtitle: Year-month-weekday
   contents:
   - year_month_weekday
   - as_year_month_weekday
@@ -91,8 +96,7 @@ reference:
   - add_years.clock_year_month_weekday
   - get_year.clock_year_month_weekday
   - set_year.clock_year_month_weekday
-
-- title: Year-week-day
+- subtitle: Year-week-day
   contents:
   - year_week_day
   - as_year_week_day
@@ -106,8 +110,7 @@ reference:
   - add_years.clock_year_week_day
   - get_year.clock_year_week_day
   - set_year.clock_year_week_day
-
-- title: ISO-year-week-day
+- subtitle: ISO-year-week-day
   contents:
   - iso_year_week_day
   - as_iso_year_week_day
@@ -121,8 +124,7 @@ reference:
   - add_years.clock_iso_year_week_day
   - get_year.clock_iso_year_week_day
   - set_year.clock_iso_year_week_day
-
-- title: Year-quarter-day
+- subtitle: Year-quarter-day
   contents:
   - year_quarter_day
   - as_year_quarter_day
@@ -136,8 +138,7 @@ reference:
   - add_years.clock_year_quarter_day
   - get_year.clock_year_quarter_day
   - set_year.clock_year_quarter_day
-
-- title: Year-day
+- subtitle: Year-day
   contents:
   - year_day
   - as_year_day
@@ -169,19 +170,6 @@ reference:
   - duration-arithmetic
 
 - title: Time points
-- subtitle: Sys-time
-  contents:
-  - as_sys_time
-  - is_sys_time
-  - sys-parsing
-  - sys_time_info
-  - sys_time_now
-- subtitle: Naive-time
-  contents:
-  - as_naive_time
-  - is_naive_time
-  - naive_time_parse
-  - naive_time_info
 - subtitle: Manipulation
   contents:
   - time_point_cast
@@ -192,8 +180,21 @@ reference:
   - time_point_spanning_seq
   - seq.clock_time_point
   - add_weeks.clock_time_point
-  - as-zoned-time-naive-time
+- subtitle: Sys-time
+  contents:
+  - as_sys_time
+  - is_sys_time
+  - sys-parsing
+  - sys_time_info
+  - sys_time_now
   - as-zoned-time-sys-time
+- subtitle: Naive-time
+  contents:
+  - as_naive_time
+  - is_naive_time
+  - naive_time_parse
+  - naive_time_info
+  - as-zoned-time-naive-time
 
 - title: Zoned-time
   contents:
@@ -228,8 +229,13 @@ reference:
   contents:
   - vec_arith.clock_year_month_day
 
-- title: Methods
+- title: Generics and methods
+  desc: This section contains documentation about generics and methods that is
+    already exposed elsewhere on this reference page.
   contents:
+  - add_years
+  - get_year
+  - set_year
   - date-group
   - posixt-group
   - date-count-between
