@@ -288,6 +288,8 @@ is_valid_RFC_3339_precision <- function(precision) {
 #' retain the underlying duration, but will change the printed time if the
 #' zone was not already UTC.
 #'
+#' @inheritParams rlang::args_dots_empty
+#'
 #' @param x `[object]`
 #'
 #'   An object to convert to a sys-time.
@@ -316,17 +318,18 @@ is_valid_RFC_3339_precision <- function(precision) {
 #'
 #' ymd <- set_day(ym, 10)
 #' as_sys_time(ymd)
-as_sys_time <- function(x) {
+as_sys_time <- function(x, ...) {
   UseMethod("as_sys_time")
 }
 
 #' @export
-as_sys_time.default <- function(x) {
+as_sys_time.default <- function(x, ...) {
   stop_clock_unsupported(x)
 }
 
 #' @export
-as_sys_time.clock_sys_time <- function(x) {
+as_sys_time.clock_sys_time <- function(x, ...) {
+  check_dots_empty0(...)
   x
 }
 

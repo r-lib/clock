@@ -4,12 +4,14 @@
 \alias{as_sys_time}
 \title{Convert to a sys-time}
 \usage{
-as_sys_time(x)
+as_sys_time(x, ...)
 }
 \arguments{
 \item{x}{\verb{[object]}
 
 An object to convert to a sys-time.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
 A sys-time vector.

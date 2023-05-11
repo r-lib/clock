@@ -313,7 +313,9 @@ as_duration.clock_duration <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-as_sys_time.clock_duration <- function(x) {
+as_sys_time.clock_duration <- function(x, ...) {
+  check_dots_empty0(...)
+
   names <- clock_rcrd_names(x)
 
   # Promote to at least day precision for sys-time

@@ -918,7 +918,8 @@ as_year_month_weekday.clock_year_month_weekday <- function(x, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
-as_sys_time.clock_year_month_weekday <- function(x) {
+as_sys_time.clock_year_month_weekday <- function(x, ...) {
+  check_dots_empty0(...)
   calendar_check_no_invalid(x)
   precision <- calendar_precision_attribute(x)
   fields <- as_sys_time_year_month_weekday_cpp(x, precision)

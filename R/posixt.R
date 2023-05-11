@@ -1,6 +1,7 @@
 #' @export
-as_sys_time.POSIXt <- function(x) {
+as_sys_time.POSIXt <- function(x, ...) {
   # The sys-time that would give the equivalent zoned-time when a zone is attached
+  check_dots_empty0(...)
   as_sys_time(as_zoned_time(x))
 }
 

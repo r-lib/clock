@@ -1,5 +1,6 @@
 #' @export
-as_sys_time.Date <- function(x) {
+as_sys_time.Date <- function(x, ...) {
+  check_dots_empty0(...)
   names <- names(x)
   x <- unstructure(x)
   if (is.double(x)) {
