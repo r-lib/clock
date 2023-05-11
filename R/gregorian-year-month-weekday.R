@@ -883,6 +883,8 @@ year_month_weekday_plus_duration <- function(x,
 #' calendar. Time points, Dates, POSIXct, and other calendars can all be
 #' converted to year-month-weekday.
 #'
+#' @inheritParams rlang::args_dots_empty
+#'
 #' @param x `[vector]`
 #'
 #'   A vector to convert to year-month-weekday.
@@ -898,24 +900,26 @@ year_month_weekday_plus_duration <- function(x,
 #'
 #' # From other calendars
 #' as_year_month_weekday(year_quarter_day(2019, quarter = 2, day = 50))
-as_year_month_weekday <- function(x)  {
+as_year_month_weekday <- function(x, ...)  {
   UseMethod("as_year_month_weekday")
 }
 
 #' @export
-as_year_month_weekday.default <- function(x) {
+as_year_month_weekday.default <- function(x, ...) {
   stop_clock_unsupported_conversion(x, "clock_year_month_weekday")
 }
 
 #' @export
-as_year_month_weekday.clock_year_month_weekday <- function(x) {
+as_year_month_weekday.clock_year_month_weekday <- function(x, ...) {
+  check_dots_empty0(...)
   x
 }
 
 # ------------------------------------------------------------------------------
 
 #' @export
-as_sys_time.clock_year_month_weekday <- function(x) {
+as_sys_time.clock_year_month_weekday <- function(x, ...) {
+  check_dots_empty0(...)
   calendar_check_no_invalid(x)
   precision <- calendar_precision_attribute(x)
   fields <- as_sys_time_year_month_weekday_cpp(x, precision)
@@ -923,7 +927,8 @@ as_sys_time.clock_year_month_weekday <- function(x) {
 }
 
 #' @export
-as_naive_time.clock_year_month_weekday <- function(x) {
+as_naive_time.clock_year_month_weekday <- function(x, ...) {
+  check_dots_empty0(...)
   as_naive_time(as_sys_time(x))
 }
 

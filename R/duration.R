@@ -283,6 +283,8 @@ vec_cast.clock_duration.clock_duration <- function(x, to, ...) {
 #'
 #' To round an existing duration to another precision, see [duration_floor()].
 #'
+#' @inheritParams rlang::args_dots_empty
+#'
 #' @param x `[object]`
 #'
 #'   An object to convert to a duration.
@@ -301,19 +303,22 @@ vec_cast.clock_duration.clock_duration <- function(x, to, ...) {
 #'
 #' # The number of seconds since 1970-01-01 00:00:00 UTC
 #' as_duration(x)
-as_duration <- function(x) {
+as_duration <- function(x, ...) {
   UseMethod("as_duration")
 }
 
 #' @export
-as_duration.clock_duration <- function(x) {
+as_duration.clock_duration <- function(x, ...) {
+  check_dots_empty0(...)
   x
 }
 
 # ------------------------------------------------------------------------------
 
 #' @export
-as_sys_time.clock_duration <- function(x) {
+as_sys_time.clock_duration <- function(x, ...) {
+  check_dots_empty0(...)
+
   names <- clock_rcrd_names(x)
 
   # Promote to at least day precision for sys-time
@@ -326,7 +331,8 @@ as_sys_time.clock_duration <- function(x) {
 }
 
 #' @export
-as_naive_time.clock_duration <- function(x) {
+as_naive_time.clock_duration <- function(x, ...) {
+  check_dots_empty0(...)
   as_naive_time(as_sys_time(x))
 }
 

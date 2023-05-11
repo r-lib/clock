@@ -4,12 +4,14 @@
 \alias{as_year_month_day}
 \title{Convert to year-month-day}
 \usage{
-as_year_month_day(x)
+as_year_month_day(x, ...)
 }
 \arguments{
 \item{x}{\verb{[vector]}
 
 A vector to convert to year-month-day.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
 A year-month-day vector.

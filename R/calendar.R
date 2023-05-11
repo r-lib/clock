@@ -1158,33 +1158,39 @@ arith_numeric_and_calendar <- function(op, x, y, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
-as_year_month_day.clock_calendar <- function(x) {
+as_year_month_day.clock_calendar <- function(x, ...) {
+  check_dots_empty0(...)
   as_year_month_day(as_sys_time(x))
 }
 
 #' @export
-as_year_month_weekday.clock_calendar <- function(x) {
+as_year_month_weekday.clock_calendar <- function(x, ...) {
+  check_dots_empty0(...)
   as_year_month_weekday(as_sys_time(x))
 }
 
 #' @export
 as_year_week_day.clock_calendar <- function(x, ..., start = NULL) {
-  as_year_week_day(as_sys_time(x), ..., start = start)
+  check_dots_empty0(...)
+  as_year_week_day(as_sys_time(x), start = start)
 }
 
 #' @export
-as_iso_year_week_day.clock_calendar <- function(x) {
+as_iso_year_week_day.clock_calendar <- function(x, ...) {
+  check_dots_empty0(...)
   as_iso_year_week_day(as_sys_time(x))
 }
 
 #' @export
-as_year_day.clock_calendar <- function(x) {
+as_year_day.clock_calendar <- function(x, ...) {
+  check_dots_empty0(...)
   as_year_day(as_sys_time(x))
 }
 
 #' @export
 as_year_quarter_day.clock_calendar <- function(x, ..., start = NULL) {
-  as_year_quarter_day(as_sys_time(x), ..., start = start)
+  check_dots_empty0(...)
+  as_year_quarter_day(as_sys_time(x), start = start)
 }
 
 # ------------------------------------------------------------------------------

@@ -4,12 +4,14 @@
 \alias{as_year_month_weekday}
 \title{Convert to year-month-weekday}
 \usage{
-as_year_month_weekday(x)
+as_year_month_weekday(x, ...)
 }
 \arguments{
 \item{x}{\verb{[vector]}
 
 A vector to convert to year-month-weekday.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
 A year-month-weekday vector.

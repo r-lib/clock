@@ -844,7 +844,7 @@ as_year_week_day.default <- function(x, ..., start = NULL) {
 
 #' @export
 as_year_week_day.clock_year_week_day <- function(x, ..., start = NULL) {
-  check_dots_empty()
+  check_dots_empty0(...)
 
   if (is_null(start)) {
     return(x)
@@ -863,7 +863,8 @@ as_year_week_day.clock_year_week_day <- function(x, ..., start = NULL) {
 # ------------------------------------------------------------------------------
 
 #' @export
-as_sys_time.clock_year_week_day <- function(x) {
+as_sys_time.clock_year_week_day <- function(x, ...) {
+  check_dots_empty0(...)
   calendar_check_no_invalid(x)
   start <- week_start(x)
   precision <- calendar_precision_attribute(x)
@@ -872,7 +873,8 @@ as_sys_time.clock_year_week_day <- function(x) {
 }
 
 #' @export
-as_naive_time.clock_year_week_day <- function(x) {
+as_naive_time.clock_year_week_day <- function(x, ...) {
+  check_dots_empty0(...)
   as_naive_time(as_sys_time(x))
 }
 

@@ -1,5 +1,9 @@
 # clock (development version)
 
+* All `as_*()` generics exported by clock now include `...` in their signature
+  to help with extensibility of converting to clock types. These are the only
+  clock generics that are currently "blessed" as fully extensible (#348).
+
 * `%%` and `%/%` operators now return a missing value when the right-hand side
   is `0`. For `%/%`, this is consistent with `2L %/% 0L`, which returns a
   missing value, rather than with `2 %/% 0`, which returns `Inf`, since 

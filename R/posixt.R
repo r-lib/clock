@@ -1,11 +1,13 @@
 #' @export
-as_sys_time.POSIXt <- function(x) {
+as_sys_time.POSIXt <- function(x, ...) {
   # The sys-time that would give the equivalent zoned-time when a zone is attached
+  check_dots_empty0(...)
   as_sys_time(as_zoned_time(x))
 }
 
 #' @export
-as_naive_time.POSIXt <- function(x) {
+as_naive_time.POSIXt <- function(x, ...) {
+  check_dots_empty0(...)
   as_naive_time(as_zoned_time(x))
 }
 
@@ -44,15 +46,17 @@ as_zoned_time.POSIXt <- function(x, ...) {
 }
 
 #' @export
-as_year_month_day.POSIXt <- function(x) {
+as_year_month_day.POSIXt <- function(x, ...) {
   # Assumes zoned -> naive -> calendar is what the user expects
+  check_dots_empty0(...)
   x <- as_naive_time(x)
   as_year_month_day(x)
 }
 
 #' @export
-as_year_month_weekday.POSIXt <- function(x) {
+as_year_month_weekday.POSIXt <- function(x, ...) {
   # Assumes zoned -> naive -> calendar is what the user expects
+  check_dots_empty0(...)
   x <- as_naive_time(x)
   as_year_month_weekday(x)
 }
@@ -74,22 +78,25 @@ as_year_week_day.POSIXt <- function(x, ..., start = NULL) {
 }
 
 #' @export
-as_iso_year_week_day.POSIXt <- function(x) {
+as_iso_year_week_day.POSIXt <- function(x, ...) {
   # Assumes zoned -> naive -> calendar is what the user expects
+  check_dots_empty0(...)
   x <- as_naive_time(x)
   as_iso_year_week_day(x)
 }
 
 #' @export
-as_year_day.POSIXt <- function(x) {
+as_year_day.POSIXt <- function(x, ...) {
   # Assumes zoned -> naive -> calendar is what the user expects
+  check_dots_empty0(...)
   x <- as_naive_time(x)
   as_year_day(x)
 }
 
 #' @export
-as_weekday.POSIXt <- function(x) {
+as_weekday.POSIXt <- function(x, ...) {
   # Assumes zoned -> naive is what the user expects
+  check_dots_empty0(...)
   x <- as_naive_time(x)
   as_weekday(x)
 }

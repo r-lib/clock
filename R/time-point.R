@@ -493,19 +493,22 @@ add_months.clock_time_point <- function(x, n, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
-as_duration.clock_time_point <- function(x) {
+as_duration.clock_time_point <- function(x, ...) {
+  check_dots_empty0(...)
   time_point_duration(x, retain_names = TRUE)
 }
 
 #' @export
-as_year_month_day.clock_time_point <- function(x) {
+as_year_month_day.clock_time_point <- function(x, ...) {
+  check_dots_empty0(...)
   precision <- time_point_precision_attribute(x)
   fields <- as_year_month_day_from_sys_time_cpp(x, precision)
   new_year_month_day_from_fields(fields, precision, names = names(x))
 }
 
 #' @export
-as_year_month_weekday.clock_time_point <- function(x) {
+as_year_month_weekday.clock_time_point <- function(x, ...) {
+  check_dots_empty0(...)
   precision <- time_point_precision_attribute(x)
   fields <- as_year_month_weekday_from_sys_time_cpp(x, precision)
   new_year_month_weekday_from_fields(fields, precision, names = names(x))
@@ -513,7 +516,7 @@ as_year_month_weekday.clock_time_point <- function(x) {
 
 #' @export
 as_year_quarter_day.clock_time_point <- function(x, ..., start = NULL) {
-  check_dots_empty()
+  check_dots_empty0(...)
   precision <- time_point_precision_attribute(x)
   start <- quarterly_validate_start(start)
   fields <- as_year_quarter_day_from_sys_time_cpp(x, precision, start)
@@ -522,6 +525,7 @@ as_year_quarter_day.clock_time_point <- function(x, ..., start = NULL) {
 
 #' @export
 as_year_week_day.clock_time_point <- function(x, ..., start = NULL) {
+  check_dots_empty0(...)
   precision <- time_point_precision_attribute(x)
   start <- week_validate_start(start)
   fields <- as_year_week_day_from_sys_time_cpp(x, precision, start)
@@ -529,21 +533,24 @@ as_year_week_day.clock_time_point <- function(x, ..., start = NULL) {
 }
 
 #' @export
-as_iso_year_week_day.clock_time_point <- function(x) {
+as_iso_year_week_day.clock_time_point <- function(x, ...) {
+  check_dots_empty0(...)
   precision <- time_point_precision_attribute(x)
   fields <- as_iso_year_week_day_from_sys_time_cpp(x, precision)
   new_iso_year_week_day_from_fields(fields, precision, names = names(x))
 }
 
 #' @export
-as_year_day.clock_time_point <- function(x) {
+as_year_day.clock_time_point <- function(x, ...) {
+  check_dots_empty0(...)
   precision <- time_point_precision_attribute(x)
   fields <- as_year_day_from_sys_time_cpp(x, precision)
   new_year_day_from_fields(fields, precision, names = names(x))
 }
 
 #' @export
-as_weekday.clock_time_point <- function(x) {
+as_weekday.clock_time_point <- function(x, ...) {
+  check_dots_empty0(...)
   x <- time_point_cast(x, "day")
   day <- weekday_from_time_point_cpp(x)
   names(day) <- clock_rcrd_names(x)

@@ -1,5 +1,6 @@
 #' @export
-as_sys_time.Date <- function(x) {
+as_sys_time.Date <- function(x, ...) {
+  check_dots_empty0(...)
   names <- names(x)
   x <- unstructure(x)
   if (is.double(x)) {
@@ -10,7 +11,8 @@ as_sys_time.Date <- function(x) {
 }
 
 #' @export
-as_naive_time.Date <- function(x) {
+as_naive_time.Date <- function(x, ...) {
+  check_dots_empty0(...)
   as_naive_time(as_sys_time(x))
 }
 
@@ -66,42 +68,50 @@ as_zoned_time.Date <- function(x,
                                ...,
                                nonexistent = NULL,
                                ambiguous = NULL) {
+  check_dots_empty0(...)
   x <- as_naive_time(x)
-  as_zoned_time(x, zone = zone, ..., nonexistent = nonexistent, ambiguous = ambiguous)
+  as_zoned_time(x, zone = zone, nonexistent = nonexistent, ambiguous = ambiguous)
 }
 
 #' @export
-as_year_month_day.Date <- function(x) {
+as_year_month_day.Date <- function(x, ...) {
+  check_dots_empty0(...)
   as_year_month_day(as_naive_time(x))
 }
 
 #' @export
-as_year_month_weekday.Date <- function(x) {
+as_year_month_weekday.Date <- function(x, ...) {
+  check_dots_empty0(...)
   as_year_month_weekday(as_naive_time(x))
 }
 
 #' @export
 as_year_quarter_day.Date <- function(x, ..., start = NULL) {
-  as_year_quarter_day(as_naive_time(x), ..., start = start)
+  check_dots_empty0(...)
+  as_year_quarter_day(as_naive_time(x), start = start)
 }
 
 #' @export
 as_year_week_day.Date <- function(x, ..., start = NULL) {
-  as_year_week_day(as_naive_time(x), ..., start = start)
+  check_dots_empty0(...)
+  as_year_week_day(as_naive_time(x), start = start)
 }
 
 #' @export
-as_iso_year_week_day.Date <- function(x) {
+as_iso_year_week_day.Date <- function(x, ...) {
+  check_dots_empty0(...)
   as_iso_year_week_day(as_naive_time(x))
 }
 
 #' @export
-as_year_day.Date <- function(x) {
+as_year_day.Date <- function(x, ...) {
+  check_dots_empty0(...)
   as_year_day(as_naive_time(x))
 }
 
 #' @export
-as_weekday.Date <- function(x) {
+as_weekday.Date <- function(x, ...) {
+  check_dots_empty0(...)
   as_weekday(as_naive_time(x))
 }
 
@@ -152,6 +162,8 @@ as.Date.clock_zoned_time <- function(x, ...) {
 #' [date_parse()]. For converting numerics to dates, see [vctrs::new_date()] or
 #' continue to use `as.Date()`.
 #'
+#' @inheritParams rlang::args_dots_empty
+#'
 #' @param x `[vector]`
 #'
 #'   A vector.
@@ -171,37 +183,42 @@ as.Date.clock_zoned_time <- function(x, ...) {
 #'
 #' # Can also convert from other clock types
 #' as_date(year_month_day(2019, 2, 5))
-as_date <- function(x) {
+as_date <- function(x, ...) {
   UseMethod("as_date")
 }
 
 #' @rdname as_date
 #' @export
-as_date.Date <- function(x) {
+as_date.Date <- function(x, ...) {
+  check_dots_empty0(...)
   date_standardize(x)
 }
 
 #' @rdname as_date
 #' @export
-as_date.POSIXt <- function(x) {
+as_date.POSIXt <- function(x, ...) {
+  check_dots_empty0(...)
   as.Date(as_naive_time(x))
 }
 
 #' @rdname as_date
 #' @export
-as_date.clock_calendar <- function(x) {
+as_date.clock_calendar <- function(x, ...) {
+  check_dots_empty0(...)
   as.Date(x)
 }
 
 #' @rdname as_date
 #' @export
-as_date.clock_time_point <- function(x) {
+as_date.clock_time_point <- function(x, ...) {
+  check_dots_empty0(...)
   as.Date(x)
 }
 
 #' @rdname as_date
 #' @export
-as_date.clock_zoned_time <- function(x) {
+as_date.clock_zoned_time <- function(x, ...) {
+  check_dots_empty0(...)
   as.Date(x)
 }
 

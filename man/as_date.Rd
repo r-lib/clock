@@ -9,22 +9,24 @@
 \alias{as_date.clock_zoned_time}
 \title{Convert to a date}
 \usage{
-as_date(x)
+as_date(x, ...)
 
-\method{as_date}{Date}(x)
+\method{as_date}{Date}(x, ...)
 
-\method{as_date}{POSIXt}(x)
+\method{as_date}{POSIXt}(x, ...)
 
-\method{as_date}{clock_calendar}(x)
+\method{as_date}{clock_calendar}(x, ...)
 
-\method{as_date}{clock_time_point}(x)
+\method{as_date}{clock_time_point}(x, ...)
 
-\method{as_date}{clock_zoned_time}(x)
+\method{as_date}{clock_zoned_time}(x, ...)
 }
 \arguments{
 \item{x}{\verb{[vector]}
 
 A vector.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
 A date with the same length as \code{x}.

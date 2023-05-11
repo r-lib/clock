@@ -862,20 +862,23 @@ as_zoned_time.default <- function(x, ...) {
 
 #' @export
 as_zoned_time.clock_zoned_time <- function(x, ...) {
+  check_dots_empty0(...)
   x
 }
 
 # ------------------------------------------------------------------------------
 
 #' @export
-as_sys_time.clock_zoned_time <- function(x) {
+as_sys_time.clock_zoned_time <- function(x, ...) {
+  check_dots_empty0(...)
   names <- clock_rcrd_names(x)
   precision <- zoned_time_precision_attribute(x)
   new_sys_time_from_fields(x, precision, names)
 }
 
 #' @export
-as_naive_time.clock_zoned_time <- function(x) {
+as_naive_time.clock_zoned_time <- function(x, ...) {
+  check_dots_empty0(...)
   names <- clock_rcrd_names(x)
   zone <- zoned_time_zone_attribute(x)
   precision <- zoned_time_precision_attribute(x)
