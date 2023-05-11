@@ -356,6 +356,11 @@ test_that("`<duration> %/% <duration>` works", {
   expect_identical(duration_days(10) %/% duration_hours(7), 34L)
 })
 
+test_that("`<duration> %/% <duration>` handles `0` (#349)", {
+  expect_identical(duration_years(5) %/% duration_years(0), NA_integer_)
+  expect_identical(duration_days(NA) %/% duration_hours(0), NA_integer_)
+})
+
 test_that("`<duration> %/% <duration>` propagates NA", {
   expect_identical(duration_hours(NA) %/% duration_hours(1), NA_integer_)
   expect_identical(duration_hours(1) %/% duration_hours(NA), NA_integer_)
@@ -384,8 +389,34 @@ test_that("`<duration> %/% <duration>` results in NA for OOB values", {
   expect_identical(out, NA_integer_)
 })
 
+test_that("`<duration> %% <duration>` works", {
+  expect_identical(duration_hours(7) %% duration_hours(3), duration_hours(1))
+  expect_identical(duration_hours(7) %% duration_hours(4), duration_hours(3))
+})
+
+test_that("`<duration> %% <duration>` handles `0` (#349)", {
+  expect_identical(duration_hours(7) %% duration_hours(0), duration_hours(NA))
+  expect_identical(duration_hours(NA) %% duration_hours(0), duration_hours(NA))
+})
+
+test_that("`<duration> %/% <numeric>` works", {
+  expect_identical(duration_years(5) %/% 2, duration_years(2))
+  expect_identical(duration_years(NA) %/% 2, duration_years(NA))
+  expect_identical(duration_years(5) %/% NA_integer_, duration_years(NA))
+})
+
+test_that("`<duration> %/% <numeric>` handles `0` (#349)", {
+  expect_identical(duration_years(5) %/% 0, duration_years(NA))
+  expect_identical(duration_days(NA) %/% 0, duration_days(NA))
+})
+
 test_that("`<duration> %% <numeric>` works (#273)", {
   expect_identical(duration_hours(7) %% 4, duration_hours(3))
+})
+
+test_that("`<duration> %% <numeric>` handles `0` (#349)", {
+  expect_identical(duration_hours(7) %% 0, duration_hours(NA))
+  expect_identical(duration_hours(NA) %% 0, duration_hours(NA))
 })
 
 test_that("`<duration> %% <numeric>` propagates `NA`", {
