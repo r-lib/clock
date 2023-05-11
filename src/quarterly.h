@@ -214,8 +214,6 @@ public:
     CONSTCD11 explicit operator int() const NOEXCEPT;
     CONSTCD11 bool ok() const NOEXCEPT;
 
-    CONSTCD11 quarterly::start start() const NOEXCEPT;
-
     CONSTCD11 bool is_leap() const NOEXCEPT;
 
     CONSTCD11 year<S> min() const NOEXCEPT;
@@ -929,15 +927,6 @@ bool
 year<S>::ok() const NOEXCEPT
 {
     return y_ != std::numeric_limits<short>::min();
-}
-
-template <start S>
-CONSTCD11
-inline
-quarterly::start
-year<S>::start() const NOEXCEPT
-{
-    return S;
 }
 
 template <start S>

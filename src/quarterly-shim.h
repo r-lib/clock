@@ -193,7 +193,7 @@ CONSTCD14
 inline
 quarterly_shim::year
 from_quarterly(const quarterly::year<S>& y) NOEXCEPT {
-  return quarterly_shim::year(static_cast<int>(y), y.start());
+  return quarterly_shim::year(static_cast<int>(y), S);
 }
 
 template <quarterly::start S>
