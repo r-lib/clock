@@ -4,12 +4,14 @@
 \alias{as_duration}
 \title{Convert to a duration}
 \usage{
-as_duration(x)
+as_duration(x, ...)
 }
 \arguments{
 \item{x}{\verb{[object]}
 
 An object to convert to a duration.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
 A duration with the same precision as \code{x}.

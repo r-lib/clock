@@ -493,7 +493,8 @@ add_months.clock_time_point <- function(x, n, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
-as_duration.clock_time_point <- function(x) {
+as_duration.clock_time_point <- function(x, ...) {
+  check_dots_empty0(...)
   time_point_duration(x, retain_names = TRUE)
 }
 
