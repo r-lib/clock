@@ -671,10 +671,17 @@ extern "C" SEXP _clock_get_year_quarter_day_last_cpp(SEXP year, SEXP quarter, SE
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
-cpp11::writable::list year_quarter_day_plus_duration_cpp(cpp11::list_of<cpp11::integers> fields, cpp11::list_of<cpp11::doubles> fields_n, const cpp11::integers& precision_fields, const cpp11::integers& precision_n, const cpp11::integers& start_int);
-extern "C" SEXP _clock_year_quarter_day_plus_duration_cpp(SEXP fields, SEXP fields_n, SEXP precision_fields, SEXP precision_n, SEXP start_int) {
+cpp11::writable::list year_quarter_day_plus_years_cpp(const cpp11::integers& year, const cpp11::integers& start_int, cpp11::list_of<cpp11::doubles> fields_n);
+extern "C" SEXP _clock_year_quarter_day_plus_years_cpp(SEXP year, SEXP start_int, SEXP fields_n) {
   BEGIN_CPP11
-    return cpp11::as_sexp(year_quarter_day_plus_duration_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::integers>>>(fields), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::doubles>>>(fields_n), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_fields), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(precision_n), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int)));
+    return cpp11::as_sexp(year_quarter_day_plus_years_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::doubles>>>(fields_n)));
+  END_CPP11
+}
+// quarterly-year-quarter-day.cpp
+cpp11::writable::list year_quarter_day_plus_quarters_cpp(const cpp11::integers& year, const cpp11::integers& quarter, const cpp11::integers& start_int, cpp11::list_of<cpp11::doubles> fields_n);
+extern "C" SEXP _clock_year_quarter_day_plus_quarters_cpp(SEXP year, SEXP quarter, SEXP start_int, SEXP fields_n) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(year_quarter_day_plus_quarters_cpp(cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(year), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(quarter), cpp11::as_cpp<cpp11::decay_t<const cpp11::integers&>>(start_int), cpp11::as_cpp<cpp11::decay_t<cpp11::list_of<cpp11::doubles>>>(fields_n)));
   END_CPP11
 }
 // quarterly-year-quarter-day.cpp
@@ -1093,7 +1100,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_clock_year_month_weekday_restore",                           (DL_FUNC) &_clock_year_month_weekday_restore,                            2},
     {"_clock_year_quarter_day_leap_year_cpp",                       (DL_FUNC) &_clock_year_quarter_day_leap_year_cpp,                        2},
     {"_clock_year_quarter_day_minus_year_quarter_day_cpp",          (DL_FUNC) &_clock_year_quarter_day_minus_year_quarter_day_cpp,           4},
-    {"_clock_year_quarter_day_plus_duration_cpp",                   (DL_FUNC) &_clock_year_quarter_day_plus_duration_cpp,                    5},
+    {"_clock_year_quarter_day_plus_quarters_cpp",                   (DL_FUNC) &_clock_year_quarter_day_plus_quarters_cpp,                    4},
+    {"_clock_year_quarter_day_plus_years_cpp",                      (DL_FUNC) &_clock_year_quarter_day_plus_years_cpp,                       3},
     {"_clock_year_quarter_day_restore",                             (DL_FUNC) &_clock_year_quarter_day_restore,                              2},
     {"_clock_year_week_day_leap_year_cpp",                          (DL_FUNC) &_clock_year_week_day_leap_year_cpp,                           2},
     {"_clock_year_week_day_minus_year_week_day_cpp",                (DL_FUNC) &_clock_year_week_day_minus_year_week_day_cpp,                 4},

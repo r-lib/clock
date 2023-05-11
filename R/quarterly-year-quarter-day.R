@@ -803,20 +803,43 @@ add_quarters.clock_year_quarter_day <- function(x, n, ...) {
   year_quarter_day_plus_duration(x, n, PRECISION_QUARTER)
 }
 
-year_quarter_day_plus_duration <- function(x, n, precision_n) {
-  start <- quarterly_start(x)
-  precision_fields <- calendar_precision_attribute(x)
+year_quarter_day_plus_duration <- function(x,
+                                           n,
+                                           n_precision,
+                                           ...,
+                                           error_call = caller_env()) {
+  check_dots_empty0(...)
 
-  n <- duration_collect_n(n, precision_n)
-  args <- vec_recycle_common(x = x, n = n)
+  start <- quarterly_start(x)
+  x_precision <- calendar_precision_attribute(x)
+
+  n <- duration_collect_n(n, n_precision, error_call = error_call)
+
+  size <- vec_size_common(x = x, n = n, .call = error_call)
+  args <- vec_recycle_common(x = x, n = n, .size = size)
   x <- args$x
   n <- args$n
 
   names <- names_common(x, n)
 
-  fields <- year_quarter_day_plus_duration_cpp(x, n, precision_fields, precision_n, start)
+  x <- vec_unstructure(x)
 
-  new_year_quarter_day_from_fields(fields, precision_fields, start, names = names)
+  if (n_precision == PRECISION_YEAR) {
+    fields <- year_quarter_day_plus_years_cpp(x$year, start, n)
+    x$year <- fields$year
+  } else if (n_precision == PRECISION_QUARTER) {
+    fields <- year_quarter_day_plus_quarters_cpp(x$year, x$quarter, start, n)
+    x$year <- fields$year
+    x$quarter <- fields$quarter
+  } else {
+    abort("Unknown precision.", .internal = TRUE)
+  }
+
+  if (x_precision != n_precision) {
+    x <- df_list_propagate_missing(x, size = size)
+  }
+
+  new_year_quarter_day_from_fields(x, x_precision, start, names = names)
 }
 
 # ------------------------------------------------------------------------------
