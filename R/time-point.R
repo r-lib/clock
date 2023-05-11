@@ -499,7 +499,8 @@ as_duration.clock_time_point <- function(x, ...) {
 }
 
 #' @export
-as_year_month_day.clock_time_point <- function(x) {
+as_year_month_day.clock_time_point <- function(x, ...) {
+  check_dots_empty0(...)
   precision <- time_point_precision_attribute(x)
   fields <- as_year_month_day_from_sys_time_cpp(x, precision)
   new_year_month_day_from_fields(fields, precision, names = names(x))

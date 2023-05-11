@@ -74,7 +74,8 @@ as_zoned_time.Date <- function(x,
 }
 
 #' @export
-as_year_month_day.Date <- function(x) {
+as_year_month_day.Date <- function(x, ...) {
+  check_dots_empty0(...)
   as_year_month_day(as_naive_time(x))
 }
 
