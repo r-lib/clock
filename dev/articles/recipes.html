@@ -433,8 +433,11 @@ here, so the sequence isn’t defined.</p>
 <span>  to <span class="op">=</span> <span class="fu"><a href="../reference/date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">10</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  by <span class="op">=</span> <span class="fu"><a href="../reference/duration-helper.html">duration_months</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `check_from_to_component_equivalence()`:</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> All components of `from` and `to` more precise than 'month' must match.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `date_seq()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> All components of `from` and `to` more precise than "month" must</span></span>
+<span><span class="co">#&gt;   match.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> `from` is "2019-01-01".</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> `to` is "2019-10-02".</span></span></code></pre></div>
 <p><code><a href="../reference/date_seq.html">date_seq()</a></code> also catches invalid dates for you, forcing
 you to specify the <code>invalid</code> argument to specify how to
 handle them.</p>

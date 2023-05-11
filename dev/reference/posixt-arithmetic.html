@@ -284,6 +284,48 @@ naive-time instead of a sys-time manually with <code><a href="as_naive_time.html
 POSIXct/POSIXlt, dealing with the nonexistent time that gets created by
 using the <code>nonexistent</code> argument of <code><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct()</a></code>.</p>
     </div>
+    <div class="section level2">
+    <h2 id="relative-ordering">Relative ordering<a class="anchor" aria-label="anchor" href="#relative-ordering"></a></h2>
+    
+
+
+<p>For the most part, adding time based units to date-times will retain the
+relative ordering of the input. For example, if <code>x[1] &lt; x[2]</code> before the
+<code>add_*()</code> call, then it is generally also true of the result. Using
+<code>invalid = "previous" / "next"</code> and
+<code>nonexistent = "roll-forward" / "roll-backward"</code> ensures that this holds
+when invalid and nonexistent issues are encountered.</p>
+<p>That said, with date-times there is an edge case related to ambiguous times
+where the relative ordering could change. Consider these three date-times:</p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/date_time_build.html">date_time_build</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">30</span>, zone <span class="op">=</span> <span class="st">"Australia/Melbourne"</span>, ambiguous <span class="op">=</span> <span class="st">"earliest"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/date_time_build.html">date_time_build</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">00</span>, zone <span class="op">=</span> <span class="st">"Australia/Melbourne"</span>, ambiguous <span class="op">=</span> <span class="st">"latest"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/date_time_build.html">date_time_build</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">30</span>, zone <span class="op">=</span> <span class="st">"Australia/Melbourne"</span>, ambiguous <span class="op">=</span> <span class="st">"latest"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">x</span></span>
+<span><span class="co">#&gt; [1] "2012-04-01 02:30:00 AEDT" "2012-04-01 02:00:00 AEST"</span></span>
+<span><span class="co">#&gt; [3] "2012-04-01 02:30:00 AEST"</span></span></code></pre><p></p></div>
+<p>In this case, there was a daylight saving time fallback on <code>2012-04-01</code>
+where the clocks went from <code>02:59:59 AEDT -&gt; 02:00:00 AEST</code>. So the times
+above are precisely 30 minutes apart, and they are in increasing order.</p>
+<p>If we add sys-time based units like hours, minutes, or seconds, then the
+relative ordering of these date-times will be preserved. However, arithmetic
+that goes through naive-time, like adding days or months, won't preserve
+the ordering here:</p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/clock-arithmetic.html">add_days</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "2012-04-02 02:30:00 AEST" "2012-04-02 02:00:00 AEST"</span></span>
+<span><span class="co">#&gt; [3] "2012-04-02 02:30:00 AEST"</span></span>
+<span><span class="fu"><a href="../reference/clock-arithmetic.html">add_months</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "2012-05-01 02:30:00 AEST" "2012-05-01 02:00:00 AEST"</span></span>
+<span><span class="co">#&gt; [3] "2012-05-01 02:30:00 AEST"</span></span></code></pre><p></p></div>
+<p>Note that the 1st and 3rd values of the result are the same, and the 1st
+value is no longer before the 2nd value.</p>
+<p>Adding larger units of time in naive-time generally does make more sense
+than adding it in sys-time, but it does come with this one edge case to be
+aware of when working with date-times (this does not affect dates). If this
+has the potential to be an issue, consider only adding sys-time based units
+(hours, minutes, and seconds) which can't have these issues.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

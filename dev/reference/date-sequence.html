@@ -182,8 +182,11 @@ to invalid dates.</p></dd>
 <span class="r-in"><span><span class="va">from</span> <span class="op">&lt;-</span> <span class="fu"><a href="date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2019</span>, <span class="fl">5</span>, <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">to</span> <span class="op">&lt;-</span> <span class="fu"><a href="date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2025</span>, <span class="fl">7</span>, <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="date_seq.html">date_seq</a></span><span class="op">(</span><span class="va">from</span>, to <span class="op">=</span> <span class="va">to</span>, by <span class="op">=</span> <span class="fu"><a href="duration-helper.html">duration_years</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in check_from_to_component_equivalence(original_from, to, precision,  : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   All components of `from` and `to` more precise than 'year' must match.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in date_seq(from, to = to, by = duration_years(1)) : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   All components of `from` and `to` more precise than "year" must</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> match.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `from` is "2019-05-02".</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `to` is "2025-07-05".</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The month and day components of `to` must match `from`</span></span></span>
 <span class="r-in"><span><span class="va">to</span> <span class="op">&lt;-</span> <span class="fu"><a href="date_build.html">date_build</a></span><span class="op">(</span><span class="fl">2025</span>, <span class="fl">5</span>, <span class="fl">2</span><span class="op">)</span></span></span>
