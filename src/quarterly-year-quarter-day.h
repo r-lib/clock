@@ -71,8 +71,6 @@ public:
   void assign_year(const quarterly_shim::year& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
-  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
-
   quarterly_shim::year to_year(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
 };
@@ -95,8 +93,6 @@ public:
   void assign_quarternum(const quarterly::quarternum& x, r_ssize i) NOEXCEPT;
   void assign_year_quarternum(const quarterly_shim::year_quarternum& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
-
-  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
 
   quarterly_shim::year_quarternum to_year_quarternum(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
@@ -295,13 +291,6 @@ y::assign_na(r_ssize i) NOEXCEPT
 }
 
 inline
-void
-y::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
-{
-  // Never invalid
-}
-
-inline
 quarterly_shim::year
 y::to_year(r_ssize i) const NOEXCEPT
 {
@@ -371,13 +360,6 @@ yqn::assign_na(r_ssize i) NOEXCEPT
 {
   y::assign_na(i);
   quarter_.assign_na(i);
-}
-
-inline
-void
-yqn::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
-{
-  // Never invalid
 }
 
 inline

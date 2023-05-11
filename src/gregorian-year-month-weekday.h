@@ -63,8 +63,6 @@ public:
   void assign_year(const date::year& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
-  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
-
   date::year to_year(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
 };
@@ -86,8 +84,6 @@ public:
   void assign_month(const date::month& x, r_ssize i) NOEXCEPT;
   void assign_year_month(const date::year_month& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
-
-  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
 
   date::year_month to_year_month(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
@@ -286,13 +282,6 @@ y::assign_na(r_ssize i) NOEXCEPT
 }
 
 inline
-void
-y::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
-{
-  // Never invalid
-}
-
-inline
 date::year
 y::to_year(r_ssize i) const NOEXCEPT
 {
@@ -362,13 +351,6 @@ ym::assign_na(r_ssize i) NOEXCEPT
 {
   y::assign_na(i);
   month_.assign_na(i);
-}
-
-inline
-void
-ym::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
-{
-  // Never invalid
 }
 
 inline

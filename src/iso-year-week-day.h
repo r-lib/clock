@@ -81,8 +81,6 @@ public:
   void assign_year(const iso_week::year& x, r_ssize i) NOEXCEPT;
   void assign_na(r_ssize i) NOEXCEPT;
 
-  void resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call);
-
   iso_week::year to_year(r_ssize i) const NOEXCEPT;
   cpp11::writable::list to_list() const;
 };
@@ -292,13 +290,6 @@ void
 y::assign_na(r_ssize i) NOEXCEPT
 {
   year_.assign_na(i);
-}
-
-inline
-void
-y::resolve(r_ssize i, const enum invalid type, const cpp11::sexp& call)
-{
-  // Never invalid
 }
 
 inline
