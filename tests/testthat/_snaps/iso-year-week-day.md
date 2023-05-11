@@ -582,3 +582,11 @@
       <iso_year_week_day<nanosecond>[1]>
       [1] "32767-W52-7T23:59:59.999999999"
 
+# add_*() respect recycling rules
+
+    Code
+      add_years(iso_year_week_day(1:2), 1:3)
+    Condition
+      Error in `add_years()`:
+      ! Can't recycle `x` (size 2) to match `n` (size 3).
+

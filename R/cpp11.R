@@ -316,8 +316,8 @@ get_iso_year_week_day_last_cpp <- function(year) {
   .Call(`_clock_get_iso_year_week_day_last_cpp`, year)
 }
 
-iso_year_week_day_plus_duration_cpp <- function(fields, fields_n, precision_fields, precision_n) {
-  .Call(`_clock_iso_year_week_day_plus_duration_cpp`, fields, fields_n, precision_fields, precision_n)
+iso_year_week_day_plus_years_cpp <- function(year, fields_n) {
+  .Call(`_clock_iso_year_week_day_plus_years_cpp`, year, fields_n)
 }
 
 as_sys_time_iso_year_week_day_cpp <- function(fields, precision_int) {
