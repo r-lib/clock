@@ -190,6 +190,8 @@ vec_proxy_compare.clock_weekday <- function(x, ...) {
 #' function along with the _circular arithmetic_ that weekday implements to
 #' easily get to the "next Monday" or "previous Sunday".
 #'
+#' @inheritParams rlang::args_dots_empty
+#'
 #' @param x `[object]`
 #'
 #'   An object to convert to a weekday. Usually a sys-time or naive-time.
@@ -204,17 +206,18 @@ vec_proxy_compare.clock_weekday <- function(x, ...) {
 #' as_weekday(x)
 #'
 #' # See the examples in `?weekday` for more usage.
-as_weekday <- function(x) {
+as_weekday <- function(x, ...) {
   UseMethod("as_weekday")
 }
 
 #' @export
-as_weekday.clock_weekday <- function(x) {
+as_weekday.clock_weekday <- function(x, ...) {
+  check_dots_empty0(...)
   x
 }
 
 #' @export
-as_weekday.clock_calendar <- function(x) {
+as_weekday.clock_calendar <- function(x, ...) {
   abort(c(
     "Can't extract the weekday from a calendar.",
     i = "Do you need to convert to a time point first?"

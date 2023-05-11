@@ -4,12 +4,14 @@
 \alias{as_weekday}
 \title{Convert to a weekday}
 \usage{
-as_weekday(x)
+as_weekday(x, ...)
 }
 \arguments{
 \item{x}{\verb{[object]}
 
 An object to convert to a weekday. Usually a sys-time or naive-time.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
 A weekday.

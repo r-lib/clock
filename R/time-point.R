@@ -548,7 +548,8 @@ as_year_day.clock_time_point <- function(x, ...) {
 }
 
 #' @export
-as_weekday.clock_time_point <- function(x) {
+as_weekday.clock_time_point <- function(x, ...) {
+  check_dots_empty0(...)
   x <- time_point_cast(x, "day")
   day <- weekday_from_time_point_cpp(x)
   names(day) <- clock_rcrd_names(x)

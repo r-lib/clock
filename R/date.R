@@ -108,7 +108,8 @@ as_year_day.Date <- function(x, ...) {
 }
 
 #' @export
-as_weekday.Date <- function(x) {
+as_weekday.Date <- function(x, ...) {
+  check_dots_empty0(...)
   as_weekday(as_naive_time(x))
 }
 
