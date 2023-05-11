@@ -1,5 +1,10 @@
 # clock (development version)
 
+* `%%` and `%/%` operators now return a missing value when the right-hand side
+  is `0`. For `%/%`, this is consistent with `2L %/% 0L`, which returns a
+  missing value, rather than with `2 %/% 0`, which returns `Inf`, since 
+  infinite durations are not supported (#349).
+
 * New `date_spanning_seq()` for generating a regular sequence along the full
   span of a date or date-time vector (i.e. along `[min(x), max(x)]`). It is
   similar to `tidyr::full_seq()`, but is a bit simpler and currently has better
