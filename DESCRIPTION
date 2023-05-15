@@ -20,7 +20,7 @@ Imports:
     cli (>= 3.6.1),
     lifecycle (>= 1.0.3),
     rlang (>= 1.1.0),
-    tzdb (>= 0.3.0.9000),
+    tzdb (>= 0.4.0),
     vctrs (>= 0.6.1)
 Suggests: 
     covr,
@@ -33,11 +33,9 @@ Suggests:
     withr
 LinkingTo: 
     cpp11 (>= 0.4.3),
-    tzdb (>= 0.3.0.9000)
+    tzdb (>= 0.4.0)
 VignetteBuilder: 
     knitr
-Remotes:
-    r-lib/tzdb
 Config/Needs/website:
     lubridate,
     tidyverse/tidytemplate
