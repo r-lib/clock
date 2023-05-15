@@ -1,42 +1,6 @@
 # clock (development version)
 
-* All `as_*()` generics exported by clock now include `...` in their signature
-  to help with extensibility of converting to clock types. These are the only
-  clock generics that are currently "blessed" as fully extensible (#348).
-
-* `%%` and `%/%` operators now return a missing value when the right-hand side
-  is `0`. For `%/%`, this is consistent with `2L %/% 0L`, which returns a
-  missing value, rather than with `2 %/% 0`, which returns `Inf`, since 
-  infinite durations are not supported (#349).
-
-* New `date_spanning_seq()` for generating a regular sequence along the full
-  span of a date or date-time vector (i.e. along `[min(x), max(x)]`). It is
-  similar to `tidyr::full_seq()`, but is a bit simpler and currently has better
-  handling of some edge cases. Additionally included in the low-level API are
-  `calendar_spanning_seq()`, `time_point_spanning_seq()`, and
-  `duration_spanning_seq()` (#279).
-
-* `seq()` methods for durations and time points handle the empty sequence cases
-  of `from > to && by > 0` and `from < to && by < 0` better when `from` and `to`
-  are very far apart (i.e. when they would otherwise result in overflow if they
-  were subtracted).
-
-* `as.character()` has been implemented for durations.
-
-* `zoned_time_zone()` and `zoned_time_set_zone()` are no longer generic, and now
-  only work for zoned-times.
-
-* `date_zone()` and `date_set_zone()` have been soft-deprecated in favor of
-  `date_time_zone()` and `date_time_set_zone()` (#326).
-
-* Many errors have been improved (#219, #286, #595).
-
-* New `date_time_info()` and `zoned_time_info()` low-level helpers for accessing
-  the previous/next transition times, the offset from UTC, and the current time
-  zone abbreviation (#295).
-
-* Renamed `locale.h` to `fill.h` to avoid clock's `locale.h` being chosen over a
-  system header of the same name on some CentOS machines (#310).
+## New features
 
 * New `year_week_day()` calendar for specifying a date using the year, the week
   number, and the day of the week, alongside a `start` value representing the
@@ -46,11 +10,21 @@
   the Epidemiological calendar used by the US CDC guidelines (similar to what
   is supported by `lubridate::epiweek()` and `lubridate::epiyear()`) (#110).
 
+* New `date_spanning_seq()` for generating a regular sequence along the full
+  span of a date or date-time vector (i.e. along `[min(x), max(x)]`). It is
+  similar to `tidyr::full_seq()`, but is a bit simpler and currently has better
+  handling of some edge cases. Additionally included in the low-level API are
+  `calendar_spanning_seq()`, `time_point_spanning_seq()`, and
+  `duration_spanning_seq()` (#279).
+  
+* New `date_time_info()` and `zoned_time_info()` low-level helpers for accessing
+  the previous/next transition times, the offset from UTC, and the current time
+  zone abbreviation (#295).
+  
 * `calendar_leap_year()` now supports the year-quarter-day and iso-year-week-day
   calendars (#332, #333).
 
-* Documented clock's current stance on leap seconds in the FAQ vignette (clock
-  ignores them like POSIXct) (#309).
+## Breaking changes
 
 * The storage mechanism for the duration, sys-time, naive-time, and zoned-time
   types has been altered to more correctly represent the full range of values
@@ -64,16 +38,50 @@
   This simplifies the implementation and allows us to represent the full range
   of possible `int64_t` values (#331).
 
+## Lifecycle changes
+
+* `date_zone()` and `date_set_zone()` have been soft-deprecated in favor of
+  `date_time_zone()` and `date_time_set_zone()` (#326).
+
+## Minor changes and bug fixes
+
 * clock now compiles significantly faster (on a 2018 Intel Mac, it used to take
   ~70 seconds for a full compilation, and now takes ~25 seconds) (#322).
 
-* Skipped a test on 32-bit architectures to work around a bug in base R (#312).
+* `%%` and `%/%` operators now return a missing value when the right-hand side
+  is `0`. For `%/%`, this is consistent with `2L %/% 0L`, which returns a
+  missing value, rather than with `2 %/% 0`, which returns `Inf`, since 
+  infinite durations are not supported (#349).
 
-* Fixed `vec_ptype_full()` and `vec_ptype_abbr()` methods for sys-time and
-  naive-time objects (#302).
+* `seq()` methods for durations and time points handle the empty sequence cases
+  of `from > to && by > 0` and `from < to && by < 0` better when `from` and `to`
+  are very far apart (i.e. when they would otherwise result in overflow if they
+  were subtracted).
+
+* `zoned_time_zone()` and `zoned_time_set_zone()` are no longer generic, and now
+  only work for zoned-times.
+
+* Documented clock's current stance on leap seconds in the FAQ vignette (clock
+  ignores them like POSIXct) (#309).
 
 * Duration vectors now work as `.before` and `.after` arguments of
   `slider::slide_index()` and friends (#306).
+  
+* All `as_*()` generics exported by clock now include `...` in their signature
+  to help with extensibility of converting to clock types. These are the only
+  clock generics that are currently "blessed" as fully extensible (#348).
+  
+* `as.character()` has been implemented for durations.
+
+* Fixed `vec_ptype_full()` and `vec_ptype_abbr()` methods for sys-time and
+  naive-time objects (#302).
+  
+* Many errors have been improved (#219, #286, #595).
+  
+* Renamed `locale.h` to `fill.h` to avoid clock's `locale.h` being chosen over a
+  system header of the same name on some CentOS machines (#310).
+  
+* Skipped a test on 32-bit architectures to work around a bug in base R (#312).
 
 * R >=3.5.0 is now required, which is in line with tidyverse standards.
 
