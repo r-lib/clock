@@ -21,11 +21,11 @@
   handling of some edge cases. Additionally included in the low-level API are
   `calendar_spanning_seq()`, `time_point_spanning_seq()`, and
   `duration_spanning_seq()` (#279).
-  
+
 * New `date_time_info()` and `zoned_time_info()` low-level helpers for accessing
   the previous/next transition times, the offset from UTC, and the current time
   zone abbreviation (#295).
-  
+
 * `calendar_leap_year()` now supports the year-quarter-day and iso-year-week-day
   calendars (#332, #333).
 
@@ -36,7 +36,7 @@
   allowed by the underlying C++ types. This means that if you have serialized
   a value of one of these types with an old version of clock, then it will no
   longer unserialize correctly going forward.
-  
+
   Technically, rather than storing a variable number of integer vectors
   representing ticks, ticks of a day, and ticks of a second, we now always store
   values of these types within two double vectors, regardless of the precision.
@@ -55,7 +55,7 @@
 
 * `%%` and `%/%` operators now return a missing value when the right-hand side
   is `0`. For `%/%`, this is consistent with `2L %/% 0L`, which returns a
-  missing value, rather than with `2 %/% 0`, which returns `Inf`, since 
+  missing value, rather than with `2 %/% 0`, which returns `Inf`, since
   infinite durations are not supported (#349).
 
 * `seq()` methods for durations and time points handle the empty sequence cases
@@ -71,21 +71,21 @@
 
 * Duration vectors now work as `.before` and `.after` arguments of
   `slider::slide_index()` and friends (#306).
-  
+
 * All `as_*()` generics exported by clock now include `...` in their signature
   to help with extensibility of converting to clock types. These are the only
   clock generics that are currently "blessed" as fully extensible (#348).
-  
+
 * `as.character()` has been implemented for durations.
 
 * Fixed `vec_ptype_full()` and `vec_ptype_abbr()` methods for sys-time and
   naive-time objects (#302).
-  
+
 * Many errors have been improved (#219, #286, #595).
-  
+
 * Renamed `locale.h` to `fill.h` to avoid clock's `locale.h` being chosen over a
   system header of the same name on some CentOS machines (#310).
-  
+
 * Skipped a test on 32-bit architectures to work around a bug in base R (#312).
 
 * R >=3.5.0 is now required, which is in line with tidyverse standards.
@@ -129,7 +129,7 @@
   number of uses, like computing the age of an individual in years, or
   determining the number of weeks that have passed since the start of the year
   (#266).
-  
+
 * Modulus is now defined between a duration vector and an integer vector
   through `<duration> %% <integer>`. This returns a duration vector containing
   the remainder of the division (#273).
@@ -155,45 +155,45 @@
 * To align more with RFC 3339 and ISO 8601 standards, the default formats used
   in many of the date formatting and parsing functions have been slightly
   altered. The following changes have been made:
-  
+
   * Date-times (POSIXct):
-  
+
     * `date_format()` now prints a `T` between the date and time.
-    
+
     * `date_time_parse_complete()` now expects a `T` between the date and time
       by default.
-  
+
   * Sys-times:
-  
+
     * `format()` and `as.character()` now print a `T` between the date and time.
-    
+
     * `sys_time_parse()` now expects a `T` between the date and time by default.
-    
+
   * Naive-times:
-  
+
     * `format()` and `as.character()` now print a `T` between the date and time.
-    
+
     * `naive_time_parse()` now expects a `T` between the date and time by
       default.
-      
+
   * Zoned-times:
-  
+
     * `format()` and `as.character()` now print a `T` between the date and time.
-    
+
     * `zoned_time_parse_complete()` now expects a `T` between the date and time
       by default.
-      
+
   * Calendars:
-  
+
     * `format()` and `as.character()` now print a `T` between the date and time.
-    
+
     * `year_month_day_parse()` now expects a `T` between the date and time by
       default.
 
 * Further improved documentation of undefined behavior resulting from attempting
   to parse sub-daily components of a string that is intended to be parsed into
   a Date (#258).
-  
+
 * Bumped required minimum version of tzdb to 0.2.0 to get access to the latest
   time zone database information (2021e) and to fix a Unicode bug on Windows.
 
@@ -211,7 +211,7 @@
 
 * New `invalid_remove()` for removing invalid dates. This is just a wrapper
   around `x[!invalid_detect(x)]`, but works nicely with the pipe (#229).
-  
+
 * All clock types now support `is.nan()`, `is.finite()`, and `is.infinite()`.
   Additionally, duration types now support `abs()` and `sign()` (#235).
 
@@ -228,26 +228,26 @@
   full string, with fractional seconds, into a clock type that can handle them,
   then round to seconds using whatever rounding convention is required for your
   use case, such as `time_point_floor()` (#230).
-  
+
   For example:
-  
+
   ```
   x <- c("2019-01-01 00:00:59.123", "2019-01-01 00:00:59.556")
-  
+
   x <- naive_time_parse(x, precision = "millisecond")
   x
   #> <time_point<naive><millisecond>[2]>
   #> [1] "2019-01-01 00:00:59.123" "2019-01-01 00:00:59.556"
-  
+
   x <- time_point_round(x, "second")
   x
   #> <time_point<naive><second>[2]>
   #> [1] "2019-01-01 00:00:59" "2019-01-01 00:01:00"
-  
+
   as_date_time(x, "America/New_York")
   #> [1] "2019-01-01 00:00:59 EST" "2019-01-01 00:01:00 EST"
   ```
-  
+
 * Preemptively updated tests related to upcoming changes in testthat (#236).
 
 # clock 0.3.0
@@ -257,7 +257,7 @@
 * clock now uses the tzdb package to access the date library's API. This
   means that the experimental API that was to be used for vroom has been
   removed in favor of using the one exposed in tzdb.
-  
+
 * `zone_database_names()` and `zone_database_version()` have been removed in
   favor of re-exporting `tzdb_names()` and `tzdb_version()` from the tzdb
   package.
@@ -268,22 +268,22 @@
   This means that it no longer assumes that Date has an implied time zone of
   UTC (#203). This generally aligns better with how users think Date should
   work. This resulted in the following changes:
-  
+
   * `date_zone()` now errors with Date input, as naive-times do not have a
     specified time zone.
-    
+
   * `date_parse()` now parses into a naive-time, rather than a sys-time, before
     converting to Date. This means that `%z` and `%Z` are now completely
     ignored.
-    
+
   * The Date method for `date_format()` now uses the naive-time `format()`
     method rather than the zoned-time one. This means that `%z` and `%Z` are
     no longer valid format commands.
-    
+
   * The zoned-time method for `as.Date()` now converts to Date through an
     intermediate naive-time, rather than a sys-time. This means that the
     printed date will always be retained, which is generally what is expected.
-    
+
   * The Date method for `as_zoned_time()` now converts to zoned-time through
     an intermediate naive-time, rather than a sys-time. This means that the
     printed date will always attempt to be retained, if possible, which is
@@ -301,7 +301,7 @@
 * Added two new convenient helpers (#197):
 
   * `date_today()` for getting the current date (Date)
-  
+
   * `date_now()` for getting the current date-time (POSIXct)
 
 * Fixed a bug where converting from a time point to a Date or POSIXct could
@@ -309,7 +309,7 @@
 
 * Errors resulting from invalid dates or nonexistent/ambiguous times are now
   a little nicer to read through the usage of an info bullet (#200).
-  
+
 * Formatting a naive-time with `%Z` or `%z` now warns that there were
   format failures (#204).
 
