@@ -110,18 +110,15 @@ static
 inline
 const SEXP*
 r_chr_deref_const(SEXP x) {
-  return (const SEXP*) STRING_PTR(x);
+  return STRING_PTR_RO(x);
 }
 
 static
 inline
 const SEXP*
 r_list_deref_const(SEXP x) {
-#if (R_VERSION < R_Version(3, 5, 0))
-  return ((const SEXP*) STRING_PTR(x));
-#else
-  return ((const SEXP*) DATAPTR_RO(x));
-#endif
+  // TODO: Use `VECTOR_PTR_RO()` in R >=4.5.0 after it is released
+  return (const SEXP*) DATAPTR_RO(x);
 }
 
 // -----------------------------------------------------------------------------

@@ -1,5 +1,7 @@
 # clock (development version)
 
+* Removed usage of non-API `STRING_PTR()` in favor of `STRING_PTR_RO()`.
+
 * Fixed a gcc warning reported by CRAN related to templated C++ constructors
   (#371).
 
