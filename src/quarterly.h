@@ -200,8 +200,8 @@ class year
     short y_;
 
 public:
-    year<S>() = default;
-    explicit CONSTCD11 year<S>(int y) NOEXCEPT;
+    year() = default;
+    explicit CONSTCD11 year(int y) NOEXCEPT;
 
     CONSTCD14 year<S>& operator++()    NOEXCEPT;
     CONSTCD14 year<S>  operator++(int) NOEXCEPT;
@@ -255,9 +255,9 @@ class year_quarternum
     quarterly::quarternum qn_;
 
 public:
-    year_quarternum<S>() = default;
-    CONSTCD11 year_quarternum<S>(const quarterly::year<S>& y,
-                                 const quarterly::quarternum& qn) NOEXCEPT;
+    year_quarternum() = default;
+    CONSTCD11 year_quarternum(const quarterly::year<S>& y,
+                              const quarterly::quarternum& qn) NOEXCEPT;
 
     CONSTCD11 quarterly::year<S> year() const NOEXCEPT;
     CONSTCD11 quarterly::quarternum quarternum() const NOEXCEPT;
@@ -368,10 +368,10 @@ class year_quarternum_quarterday_last
     quarterly::quarternum qn_;
 
 public:
-    year_quarternum_quarterday_last<S>() = default;
-    CONSTCD11 year_quarternum_quarterday_last<S>(const quarterly::year<S>& y,
-                                                 const quarterly::quarternum& qn) NOEXCEPT;
-    CONSTCD11 year_quarternum_quarterday_last<S>(const quarterly::year_quarternum<S>& yqn) NOEXCEPT;
+    year_quarternum_quarterday_last() = default;
+    CONSTCD11 year_quarternum_quarterday_last(const quarterly::year<S>& y,
+                                              const quarterly::quarternum& qn) NOEXCEPT;
+    CONSTCD11 year_quarternum_quarterday_last(const quarterly::year_quarternum<S>& yqn) NOEXCEPT;
 
     CONSTCD14 year_quarternum_quarterday_last<S>& operator+=(const quarters& dq) NOEXCEPT;
     CONSTCD14 year_quarternum_quarterday_last<S>& operator-=(const quarters& dq) NOEXCEPT;
@@ -429,15 +429,15 @@ class year_quarternum_quarterday
     quarterly::quarterday qd_;
 
 public:
-    year_quarternum_quarterday<S>() = default;
-    CONSTCD11 year_quarternum_quarterday<S>(const quarterly::year<S>& y,
-                                            const quarterly::quarternum& qn,
-                                            const quarterly::quarterday& qd) NOEXCEPT;
-    CONSTCD11 year_quarternum_quarterday<S>(const quarterly::year_quarternum<S>& yqn,
-                                            const quarterly::quarterday& qd) NOEXCEPT;
-    CONSTCD14 year_quarternum_quarterday<S>(const year_quarternum_quarterday_last<S>& yqnqdl) NOEXCEPT;
-    CONSTCD14 year_quarternum_quarterday<S>(const sys_days& dp) NOEXCEPT;
-    CONSTCD14 year_quarternum_quarterday<S>(const local_days& dp) NOEXCEPT;
+    year_quarternum_quarterday() = default;
+    CONSTCD11 year_quarternum_quarterday(const quarterly::year<S>& y,
+                                         const quarterly::quarternum& qn,
+                                         const quarterly::quarterday& qd) NOEXCEPT;
+    CONSTCD11 year_quarternum_quarterday(const quarterly::year_quarternum<S>& yqn,
+                                         const quarterly::quarterday& qd) NOEXCEPT;
+    CONSTCD14 year_quarternum_quarterday(const year_quarternum_quarterday_last<S>& yqnqdl) NOEXCEPT;
+    CONSTCD14 year_quarternum_quarterday(const sys_days& dp) NOEXCEPT;
+    CONSTCD14 year_quarternum_quarterday(const local_days& dp) NOEXCEPT;
 
     CONSTCD14 year_quarternum_quarterday<S>& operator+=(const quarters& dq) NOEXCEPT;
     CONSTCD14 year_quarternum_quarterday<S>& operator-=(const quarters& dq) NOEXCEPT;
