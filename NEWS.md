@@ -1,5 +1,7 @@
 # clock (development version)
 
+* Fixed a gcc warning reported by CRAN related to templated C++ constructors (#371).
+
 # clock 0.7.0
 
 ## New features
