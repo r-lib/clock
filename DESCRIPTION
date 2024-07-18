@@ -14,7 +14,7 @@ Description: Provides a comprehensive library for date-time manipulations
 License: MIT + file LICENSE
 URL: https://clock.r-lib.org, https://github.com/r-lib/clock
 BugReports: https://github.com/r-lib/clock/issues
-Depends: 
+Depends:
     R (>= 3.5.0)
 Imports:
     cli (>= 3.6.1),
@@ -22,7 +22,7 @@ Imports:
     rlang (>= 1.1.0),
     tzdb (>= 0.4.0),
     vctrs (>= 0.6.1)
-Suggests: 
+Suggests:
     covr,
     knitr,
     magrittr,
@@ -31,11 +31,12 @@ Suggests:
     slider (>= 0.3.0),
     testthat (>= 3.0.0),
     withr
-LinkingTo: 
+LinkingTo:
     cpp11 (>= 0.4.3),
     tzdb (>= 0.4.0)
-VignetteBuilder: 
+VignetteBuilder:
     knitr
+Config/build/compilation-database: true
 Config/Needs/website:
     lubridate,
     tidyverse/tidytemplate
