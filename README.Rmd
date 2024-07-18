@@ -1,6 +1,6 @@
 ---
 output: github_document
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -18,9 +18,8 @@ knitr::opts_chunk$set(
 # clock <a href="https://clock.r-lib.org"><img src="man/figures/logo.png" align="right" height="138"/></a>
 
 <!-- badges: start -->
-
-[![Codecov test coverage](https://codecov.io/gh/r-lib/clock/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/clock?branch=main) [![R-CMD-check](https://github.com/r-lib/clock/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/clock/actions/workflows/R-CMD-check.yaml)
-
+[![Codecov test coverage](https://codecov.io/gh/r-lib/clock/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/clock?branch=main)
+[![R-CMD-check](https://github.com/r-lib/clock/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/clock/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 clock is an R package for working with date-times.
