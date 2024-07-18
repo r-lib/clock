@@ -1284,18 +1284,21 @@ calendar_count_between.clock_year_month_weekday <- function(start,
   NextMethod()
 }
 
+#' @export
 calendar_count_between_standardize_precision_n.clock_year_month_weekday <- function(x,
                                                                                     precision,
                                                                                     n) {
   calendar_count_between_standardize_precision_n.clock_year_month_day(x, precision, n)
 }
 
+#' @export
 calendar_count_between_compute.clock_year_month_weekday <- function(start,
                                                                     end,
                                                                     precision) {
   calendar_count_between_compute.clock_year_month_day(start, end, precision)
 }
 
+#' @export
 calendar_count_between_proxy_compare.clock_year_month_weekday <- function(start,
                                                                           end,
                                                                           precision) {

@@ -1087,6 +1087,7 @@ calendar_count_between.clock_iso_year_week_day <- function(start,
   NextMethod()
 }
 
+#' @export
 calendar_count_between_standardize_precision_n.clock_iso_year_week_day <- function(x,
                                                                                    precision,
                                                                                    n) {
@@ -1102,6 +1103,7 @@ calendar_count_between_standardize_precision_n.clock_iso_year_week_day <- functi
   list(precision = precision, n = n)
 }
 
+#' @export
 calendar_count_between_compute.clock_iso_year_week_day <- function(start,
                                                                    end,
                                                                    precision) {
@@ -1116,6 +1118,7 @@ calendar_count_between_compute.clock_iso_year_week_day <- function(start,
   abort("Internal error: `precision` should be 'year' at this point.")
 }
 
+#' @export
 calendar_count_between_proxy_compare.clock_iso_year_week_day <- function(start,
                                                                          end,
                                                                          precision) {
