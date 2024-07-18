@@ -40,7 +40,7 @@ undefined, as the 53rd ISO week of 2019 doesn't exist to begin with.
 }
 \details{
 \code{x} and \code{n} are recycled against each other using
-\link[vctrs:vector_recycling_rules]{tidyverse recycling rules}.
+\link[vctrs:theory-faq-recycling]{tidyverse recycling rules}.
 }
 \examples{
 x <- iso_year_week_day(2019, 1, 1)

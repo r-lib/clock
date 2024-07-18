@@ -85,7 +85,7 @@ add a chronological duration to a calendrical duration
 documentation on the \link[=duration-helper]{duration helper} page.
 
 \code{x} and \code{n} are recycled against each other using
-\link[vctrs:vector_recycling_rules]{tidyverse recycling rules}.
+\link[vctrs:theory-faq-recycling]{tidyverse recycling rules}.
 }
 \examples{
 x <- duration_seconds(5)

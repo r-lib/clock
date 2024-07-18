@@ -170,7 +170,7 @@ Adding a single quarter with \code{add_quarters()} is equivalent to adding
 3 months.
 
 \code{x} and \code{n} are recycled against each other using
-\link[vctrs:vector_recycling_rules]{tidyverse recycling rules}.
+\link[vctrs:theory-faq-recycling]{tidyverse recycling rules}.
 
 Calendrical based arithmetic has the potential to generate invalid dates
 (like the 31st of February), nonexistent times (due to daylight saving
