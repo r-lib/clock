@@ -1,570 +1,192 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://clock.r-lib.org/dev/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/articles/clock.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/articles/faq.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/articles/motivations.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/articles/recipes.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/index.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/Date-arithmetic.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/Date-getters.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/Date-setters.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/as-zoned-time-Date.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/as-zoned-time-naive-time.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/as-zoned-time-posixt.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/as-zoned-time-sys-time.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/as_date.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/as_date_time.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/as_duration.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/as_iso_year_week_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/as_naive_time.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/as_sys_time.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/as_weekday.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/as_year_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/as_year_month_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/as_year_month_weekday.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/as_year_quarter_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/as_year_week_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/as_zoned_time.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/calendar-boundary.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/calendar-count-between.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/calendar_group.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/calendar_leap_year.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/calendar_month_factor.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/calendar_narrow.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/calendar_precision.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/calendar_spanning_seq.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/calendar_widen.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/clock-arith.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/clock-arithmetic.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/clock-codes.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/clock-getters.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/clock-invalid.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/clock-package.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/clock-setters.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/clock_labels.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/clock_locale.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date-and-date-time-boundary.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date-and-date-time-rounding.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date-and-date-time-shifting.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date-boundary.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date-count-between.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date-formatting.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date-group.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date-rounding.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date-sequence.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date-shifting.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date-time-parse.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date-time-zone.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date-today.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date-zone.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date_build.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date_count_between.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date_format.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date_group.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date_leap_year.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date_month_factor.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date_parse.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date_seq.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date_spanning_seq.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date_time_build.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date_time_info.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/date_weekday_factor.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/duration-arithmetic.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/duration-helper.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/duration-rounding.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/duration_cast.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/duration_precision.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/duration_spanning_seq.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/format.clock_zoned_time.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/is_duration.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/is_iso_year_week_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/is_naive_time.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/is_sys_time.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/is_weekday.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/is_year_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/is_year_month_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/is_year_month_weekday.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/is_year_quarter_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/is_year_week_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/is_zoned_time.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/iso-year-week-day-arithmetic.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/iso-year-week-day-boundary.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/iso-year-week-day-count-between.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/iso-year-week-day-getters.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/iso-year-week-day-group.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/iso-year-week-day-narrow.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/iso-year-week-day-setters.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/iso-year-week-day-widen.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/iso_year_week_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/naive_time_info.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/naive_time_parse.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/posixt-arithmetic.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/posixt-boundary.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/posixt-count-between.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/posixt-formatting.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/posixt-getters.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/posixt-group.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/posixt-rounding.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/posixt-sequence.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/posixt-setters.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/posixt-shifting.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/seq.clock_duration.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/seq.clock_iso_year_week_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/seq.clock_time_point.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/seq.clock_year_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/seq.clock_year_month_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/seq.clock_year_month_weekday.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/seq.clock_year_quarter_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/seq.clock_year_week_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/sys-parsing.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/sys_time_info.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/sys_time_now.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/time-point-arithmetic.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/time-point-rounding.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/time_point_cast.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/time_point_count_between.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/time_point_precision.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/time_point_shift.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/time_point_spanning_seq.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/weekday-arithmetic.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/weekday.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/weekday_code.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/weekday_factor.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-day-arithmetic.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-day-boundary.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-day-count-between.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-day-getters.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-day-group.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-day-narrow.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-day-setters.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-day-widen.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-month-day-arithmetic.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-month-day-boundary.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-month-day-count-between.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-month-day-getters.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-month-day-group.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-month-day-narrow.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-month-day-setters.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-month-day-widen.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-month-weekday-arithmetic.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-month-weekday-boundary.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-month-weekday-count-between.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-month-weekday-getters.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-month-weekday-group.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-month-weekday-narrow.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-month-weekday-setters.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-month-weekday-widen.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-quarter-day-arithmetic.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-quarter-day-boundary.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-quarter-day-count-between.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-quarter-day-getters.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-quarter-day-group.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-quarter-day-narrow.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-quarter-day-setters.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-quarter-day-widen.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-week-day-arithmetic.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-week-day-boundary.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-week-day-count-between.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-week-day-getters.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-week-day-group.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-week-day-narrow.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-week-day-setters.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year-week-day-widen.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year_month_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year_month_day_parse.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year_month_weekday.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year_quarter_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/year_week_day.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/zoned-parsing.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/zoned-zone.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/zoned_time_info.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/zoned_time_now.html</loc>
-  </url>
-  <url>
-    <loc>https://clock.r-lib.org/dev/reference/zoned_time_precision.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://clock.r-lib.org/dev/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/LICENSE-text.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/LICENSE.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/articles/clock.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/articles/faq.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/articles/index.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/articles/motivations.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/articles/recipes.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/authors.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/index.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/news/index.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/Date-arithmetic.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/Date-getters.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/Date-setters.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/as-zoned-time-Date.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/as-zoned-time-naive-time.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/as-zoned-time-posixt.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/as-zoned-time-sys-time.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/as_date.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/as_date_time.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/as_duration.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/as_iso_year_week_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/as_naive_time.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/as_sys_time.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/as_weekday.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/as_year_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/as_year_month_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/as_year_month_weekday.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/as_year_quarter_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/as_year_week_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/as_zoned_time.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/calendar-boundary.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/calendar-count-between.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/calendar_group.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/calendar_leap_year.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/calendar_month_factor.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/calendar_narrow.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/calendar_precision.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/calendar_spanning_seq.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/calendar_widen.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/clock-arith.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/clock-arithmetic.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/clock-codes.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/clock-getters.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/clock-invalid.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/clock-package.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/clock-setters.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/clock_labels.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/clock_locale.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date-and-date-time-boundary.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date-and-date-time-rounding.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date-and-date-time-shifting.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date-boundary.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date-count-between.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date-formatting.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date-group.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date-rounding.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date-sequence.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date-shifting.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date-time-parse.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date-time-zone.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date-today.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date-zone.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date_build.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date_count_between.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date_format.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date_group.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date_leap_year.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date_month_factor.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date_parse.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date_seq.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date_spanning_seq.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date_time_build.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date_time_info.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/date_weekday_factor.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/duration-arithmetic.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/duration-helper.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/duration-rounding.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/duration_cast.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/duration_precision.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/duration_spanning_seq.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/format.clock_zoned_time.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/index.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/is_duration.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/is_iso_year_week_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/is_naive_time.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/is_sys_time.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/is_weekday.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/is_year_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/is_year_month_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/is_year_month_weekday.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/is_year_quarter_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/is_year_week_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/is_zoned_time.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/iso-year-week-day-arithmetic.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/iso-year-week-day-boundary.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/iso-year-week-day-count-between.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/iso-year-week-day-getters.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/iso-year-week-day-group.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/iso-year-week-day-narrow.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/iso-year-week-day-setters.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/iso-year-week-day-widen.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/iso_year_week_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/naive_time_info.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/naive_time_parse.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/posixt-arithmetic.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/posixt-boundary.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/posixt-count-between.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/posixt-formatting.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/posixt-getters.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/posixt-group.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/posixt-rounding.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/posixt-sequence.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/posixt-setters.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/posixt-shifting.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/reexports.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/seq.clock_duration.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/seq.clock_iso_year_week_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/seq.clock_time_point.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/seq.clock_year_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/seq.clock_year_month_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/seq.clock_year_month_weekday.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/seq.clock_year_quarter_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/seq.clock_year_week_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/sys-parsing.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/sys_time_info.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/sys_time_now.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/time-point-arithmetic.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/time-point-rounding.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/time_point_cast.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/time_point_count_between.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/time_point_precision.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/time_point_shift.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/time_point_spanning_seq.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/weekday-arithmetic.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/weekday.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/weekday_code.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/weekday_factor.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-day-arithmetic.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-day-boundary.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-day-count-between.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-day-getters.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-day-group.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-day-narrow.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-day-setters.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-day-widen.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-month-day-arithmetic.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-month-day-boundary.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-month-day-count-between.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-month-day-getters.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-month-day-group.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-month-day-narrow.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-month-day-setters.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-month-day-widen.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-month-weekday-arithmetic.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-month-weekday-boundary.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-month-weekday-count-between.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-month-weekday-getters.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-month-weekday-group.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-month-weekday-narrow.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-month-weekday-setters.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-month-weekday-widen.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-quarter-day-arithmetic.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-quarter-day-boundary.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-quarter-day-count-between.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-quarter-day-getters.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-quarter-day-group.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-quarter-day-narrow.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-quarter-day-setters.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-quarter-day-widen.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-week-day-arithmetic.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-week-day-boundary.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-week-day-count-between.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-week-day-getters.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-week-day-group.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-week-day-narrow.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-week-day-setters.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year-week-day-widen.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year_month_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year_month_day_parse.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year_month_weekday.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year_quarter_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/year_week_day.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/zoned-parsing.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/zoned-zone.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/zoned_time_info.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/zoned_time_now.html</loc></url>
+<url><loc>https://clock.r-lib.org/dev/reference/zoned_time_precision.html</loc></url>
 </urlset>
+
