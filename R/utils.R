@@ -319,8 +319,6 @@ df_list_propagate_missing <- function(x, ..., size = NULL) {
     return(vec_unstructure(x))
   }
 
-  n <- length(x)
-
   # Propagate missings
   x <- vec_assign(x, incomplete, NA)
 
