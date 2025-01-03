@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![Codecov test
-coverage](https://codecov.io/gh/r-lib/clock/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/clock?branch=main)
+coverage](https://codecov.io/gh/r-lib/clock/graph/badge.svg)](https://app.codecov.io/gh/r-lib/clock)
 [![R-CMD-check](https://github.com/r-lib/clock/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/clock/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
