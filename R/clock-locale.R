@@ -44,13 +44,17 @@ new_clock_locale <- function(labels, decimal_mark) {
 }
 
 #' @export
-print.clock_locale <- function (x, ...) {
+print.clock_locale <- function(x, ...) {
   cat("<clock_locale>\n")
   cat("Decimal Mark: ", x$decimal_mark, "\n", sep = "")
   print(x$labels)
 }
 
-check_clock_locale <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
+check_clock_locale <- function(
+  x,
+  ...,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   check_inherits(x, what = "clock_locale", arg = arg, call = call)
 }
-

@@ -63,14 +63,21 @@ as_naive_time.Date <- function(x, ...) {
 #'
 #' # To resolve this, set a `nonexistent` time resolution strategy
 #' as_zoned_time(x, "Asia/Beirut", nonexistent = "roll-forward")
-as_zoned_time.Date <- function(x,
-                               zone,
-                               ...,
-                               nonexistent = NULL,
-                               ambiguous = NULL) {
+as_zoned_time.Date <- function(
+  x,
+  zone,
+  ...,
+  nonexistent = NULL,
+  ambiguous = NULL
+) {
   check_dots_empty0(...)
   x <- as_naive_time(x)
-  as_zoned_time(x, zone = zone, nonexistent = nonexistent, ambiguous = ambiguous)
+  as_zoned_time(
+    x,
+    zone = zone,
+    nonexistent = nonexistent,
+    ambiguous = ambiguous
+  )
 }
 
 #' @export
@@ -373,7 +380,13 @@ arith_duration_and_date <- function(op, x, y, ...) {
   switch(
     op,
     "+" = add_duration(y, x, swapped = TRUE),
-    "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a Date from a duration.", ...),
+    "-" = stop_incompatible_op(
+      op,
+      x,
+      y,
+      details = "Can't subtract a Date from a duration.",
+      ...
+    ),
     stop_incompatible_op(op, x, y, ...)
   )
 }
@@ -794,13 +807,15 @@ date_round.Date <- function(x, precision, ..., n = 1L, origin = NULL) {
   date_rounder(x, precision, n, origin, time_point_round)
 }
 
-date_rounder <- function(x,
-                         precision,
-                         n,
-                         origin,
-                         time_point_rounder,
-                         ...,
-                         error_call = caller_env()) {
+date_rounder <- function(
+  x,
+  precision,
+  n,
+  origin,
+  time_point_rounder,
+  ...,
+  error_call = caller_env()
+) {
   check_dots_empty0(...)
 
   result <- tweak_date_rounder_precision(precision, n)
@@ -838,7 +853,10 @@ collect_date_rounder_origin <- function(origin, error_call) {
   check_no_missing(origin, call = error_call)
 
   if (is.infinite(origin)) {
-    cli::cli_abort("{.arg origin} can't be an infinite date.", call = error_call)
+    cli::cli_abort(
+      "{.arg origin} can't be an infinite date.",
+      call = error_call
+    )
   }
 
   origin <- as_naive_time(origin)
@@ -877,15 +895,22 @@ collect_date_rounder_origin <- function(origin, error_call) {
 #'
 #' # Or a different language
 #' date_weekday_factor(x, labels = "fr")
-date_weekday_factor <- function(x,
-                                ...,
-                                labels = "en",
-                                abbreviate = TRUE,
-                                encoding = "western") {
+date_weekday_factor <- function(
+  x,
+  ...,
+  labels = "en",
+  abbreviate = TRUE,
+  encoding = "western"
+) {
   check_dots_empty0(...)
   check_date_or_date_time(x)
   x <- as_weekday(x)
-  weekday_factor(x, labels = labels, abbreviate = abbreviate, encoding = encoding)
+  weekday_factor(
+    x,
+    labels = labels,
+    abbreviate = abbreviate,
+    encoding = encoding
+  )
 }
 
 # ------------------------------------------------------------------------------
@@ -912,10 +937,7 @@ date_weekday_factor <- function(x,
 #' date_month_factor(x)
 #' date_month_factor(x, abbreviate = TRUE)
 #' date_month_factor(x, labels = "fr")
-date_month_factor <- function(x,
-                              ...,
-                              labels = "en",
-                              abbreviate = FALSE) {
+date_month_factor <- function(x, ..., labels = "en", abbreviate = FALSE) {
   check_dots_empty0(...)
   check_date_or_date_time(x)
   x <- as_year_month_day(x)
@@ -992,10 +1014,7 @@ date_format <- function(x, ...) {
 #' # With different locales
 #' date_format(x, format = "%A, %B %d, %Y")
 #' date_format(x, format = "%A, %B %d, %Y", locale = clock_locale("fr"))
-date_format.Date <- function(x,
-                             ...,
-                             format = NULL,
-                             locale = clock_locale()) {
+date_format.Date <- function(x, ..., format = NULL, locale = clock_locale()) {
   check_dots_empty0(...)
   x <- as_naive_time(x)
   format(x, format = format, locale = locale)
@@ -1120,11 +1139,7 @@ date_parse <- function(x, ..., format = NULL, locale = clock_locale()) {
 #'
 #' # Shift to the next Monday
 #' date_shift(x, monday)
-date_shift <- function(x,
-                       target,
-                       ...,
-                       which = "next",
-                       boundary = "keep") {
+date_shift <- function(x, target, ..., which = "next", boundary = "keep") {
   check_date_or_date_time(x)
   UseMethod("date_shift")
 }
@@ -1175,11 +1190,7 @@ date_shift <- function(x,
 #'
 #' # You can force it to `"advance"`
 #' date_shift(x, tuesday, boundary = "advance")
-date_shift.Date <- function(x,
-                            target,
-                            ...,
-                            which = "next",
-                            boundary = "keep") {
+date_shift.Date <- function(x, target, ..., which = "next", boundary = "keep") {
   check_dots_empty0(...)
   x <- as_naive_time(x)
   x <- time_point_shift(x, target, which = which, boundary = boundary)
@@ -1337,7 +1348,6 @@ date_end <- function(x, precision, ...) {
   UseMethod("date_end")
 }
 
-
 #' Boundaries: date
 #'
 #' @description
@@ -1442,11 +1452,7 @@ date_end.Date <- function(x, precision, ..., invalid = NULL) {
 #'
 #' x <- as.Date("2019-01-01")
 #' date_seq(x, by = duration_months(2), total_size = 20)
-date_seq <- function(from,
-                     ...,
-                     to = NULL,
-                     by = NULL,
-                     total_size = NULL) {
+date_seq <- function(from, ..., to = NULL, by = NULL, total_size = NULL) {
   check_date_or_date_time(from)
   UseMethod("date_seq")
 }
@@ -1550,12 +1556,14 @@ date_seq <- function(from,
 #'
 #' # But this is not!
 #' try(date_seq(from, to = to, total_size = 3))
-date_seq.Date <- function(from,
-                          ...,
-                          to = NULL,
-                          by = NULL,
-                          total_size = NULL,
-                          invalid = NULL) {
+date_seq.Date <- function(
+  from,
+  ...,
+  to = NULL,
+  by = NULL,
+  total_size = NULL,
+  invalid = NULL
+) {
   check_dots_empty0(...)
 
   check_number_of_supplied_optional_arguments(to, by, total_size)
@@ -1607,16 +1615,20 @@ date_seq.Date <- function(from,
 
   by_precision <- duration_precision(by)
 
-  cli::cli_abort("`by` must have a precision of {.or {.str {precisions}}}, not {.str {by_precision}}.")
+  cli::cli_abort(
+    "`by` must have a precision of {.or {.str {precisions}}}, not {.str {by_precision}}."
+  )
 }
 
-date_seq_year_month <- function(from,
-                                to,
-                                by,
-                                total_size,
-                                precision,
-                                ...,
-                                error_call = caller_env()) {
+date_seq_year_month <- function(
+  from,
+  to,
+  by,
+  total_size,
+  precision,
+  ...,
+  error_call = caller_env()
+) {
   check_dots_empty0(...)
 
   has_time <- is_POSIXt(from)
@@ -1645,15 +1657,55 @@ date_seq_year_month <- function(from,
   out
 }
 
-date_seq_day <- function(from, to, by, total_size, precision, ..., error_call = caller_env()) {
+date_seq_day <- function(
+  from,
+  to,
+  by,
+  total_size,
+  precision,
+  ...,
+  error_call = caller_env()
+) {
   check_dots_empty0(...)
-  date_seq_day_hour_minute_second(from, to, by, total_size, precision, error_call, as_naive_time)
+  date_seq_day_hour_minute_second(
+    from,
+    to,
+    by,
+    total_size,
+    precision,
+    error_call,
+    as_naive_time
+  )
 }
-date_seq_hour_minute_second <- function(from, to, by, total_size, precision, ..., error_call = caller_env()) {
+date_seq_hour_minute_second <- function(
+  from,
+  to,
+  by,
+  total_size,
+  precision,
+  ...,
+  error_call = caller_env()
+) {
   check_dots_empty0(...)
-  date_seq_day_hour_minute_second(from, to, by, total_size, precision, error_call, as_sys_time)
+  date_seq_day_hour_minute_second(
+    from,
+    to,
+    by,
+    total_size,
+    precision,
+    error_call,
+    as_sys_time
+  )
 }
-date_seq_day_hour_minute_second <- function(from, to, by, total_size, precision, error_call, as_time_point_fn) {
+date_seq_day_hour_minute_second <- function(
+  from,
+  to,
+  by,
+  total_size,
+  precision,
+  error_call,
+  as_time_point_fn
+) {
   has_time <- is_POSIXt(from)
 
   from <- as_time_point_fn(from)
@@ -1682,11 +1734,13 @@ date_seq_day_hour_minute_second <- function(from, to, by, total_size, precision,
   out
 }
 
-check_from_to_component_equivalence <- function(from,
-                                                to,
-                                                precision,
-                                                has_time,
-                                                error_call) {
+check_from_to_component_equivalence <- function(
+  from,
+  to,
+  precision,
+  has_time,
+  error_call
+) {
   ok <- TRUE
 
   check_precision(precision, call = error_call)
@@ -1749,11 +1803,13 @@ reset_original_components <- function(out, from, precision, has_time) {
   out
 }
 
-check_number_of_supplied_optional_arguments <- function(to,
-                                                        by,
-                                                        total_size,
-                                                        ...,
-                                                        error_call = caller_env()) {
+check_number_of_supplied_optional_arguments <- function(
+  to,
+  by,
+  total_size,
+  ...,
+  error_call = caller_env()
+) {
   check_dots_empty0(...)
 
   has_to <- !is_null(to)
@@ -1764,11 +1820,13 @@ check_number_of_supplied_optional_arguments <- function(to,
 
   if (n_has != 2L) {
     header <- "Must specify exactly two of:"
-    bullets <- cli::format_bullets_raw(c(
-      "*" = cli::format_inline("{.arg to}"),
-      "*" = cli::format_inline("{.arg by}"),
-      "*" = cli::format_inline("{.arg total_size}")
-    ))
+    bullets <- cli::format_bullets_raw(
+      c(
+        "*" = cli::format_inline("{.arg to}"),
+        "*" = cli::format_inline("{.arg by}"),
+        "*" = cli::format_inline("{.arg total_size}")
+      )
+    )
     message <- c(header, bullets)
     cli::cli_abort(message, call = error_call)
   }
@@ -2026,13 +2084,15 @@ date_count_between.Date <- function(start, end, precision, ..., n = 1L) {
   # Designed to match `add_*()` functions to guarantee that
   # if `start <= end`, then `start + <count> <= end`
   allowed_precisions_calendar <- c(
-    PRECISION_YEAR, PRECISION_QUARTER, PRECISION_MONTH
+    PRECISION_YEAR,
+    PRECISION_QUARTER,
+    PRECISION_MONTH
   )
   allowed_precisions_naive_time <- c(
-    PRECISION_WEEK, PRECISION_DAY
+    PRECISION_WEEK,
+    PRECISION_DAY
   )
-  allowed_precisions_sys_time <- c(
-  )
+  allowed_precisions_sys_time <- c()
 
   date_count_between_impl(
     start = start,
@@ -2045,15 +2105,17 @@ date_count_between.Date <- function(start, end, precision, ..., n = 1L) {
   )
 }
 
-date_count_between_impl <- function(start,
-                                    end,
-                                    precision,
-                                    n,
-                                    allowed_precisions_calendar,
-                                    allowed_precisions_naive_time,
-                                    allowed_precisions_sys_time,
-                                    ...,
-                                    error_call = caller_env()) {
+date_count_between_impl <- function(
+  start,
+  end,
+  precision,
+  n,
+  allowed_precisions_calendar,
+  allowed_precisions_naive_time,
+  allowed_precisions_sys_time,
+  ...,
+  error_call = caller_env()
+) {
   check_precision(precision, call = error_call)
   precision_int <- precision_to_integer(precision)
 
@@ -2097,11 +2159,13 @@ is_date <- function(x) {
   inherits(x, "Date")
 }
 
-check_date <- function(x,
-                       ...,
-                       allow_null = FALSE,
-                       arg = caller_arg(x),
-                       call = caller_env()) {
+check_date <- function(
+  x,
+  ...,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   check_inherits(
     x = x,
     what = "Date",
@@ -2111,11 +2175,13 @@ check_date <- function(x,
   )
 }
 
-check_date_or_date_time <- function(x,
-                                    ...,
-                                    allow_null = FALSE,
-                                    arg = caller_arg(x),
-                                    call = caller_env()) {
+check_date_or_date_time <- function(
+  x,
+  ...,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   if (!missing(x)) {
     if (is_date(x) || is_POSIXt(x)) {
       return(invisible(NULL))

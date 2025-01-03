@@ -56,16 +56,18 @@
 #' # fiscal year start months
 #' as_year_month_day(x)
 #' as_year_month_day(y)
-year_quarter_day <- function(year,
-                             quarter = NULL,
-                             day = NULL,
-                             hour = NULL,
-                             minute = NULL,
-                             second = NULL,
-                             subsecond = NULL,
-                             ...,
-                             start = NULL,
-                             subsecond_precision = NULL) {
+year_quarter_day <- function(
+  year,
+  quarter = NULL,
+  day = NULL,
+  hour = NULL,
+  minute = NULL,
+  second = NULL,
+  subsecond = NULL,
+  ...,
+  start = NULL,
+  subsecond_precision = NULL
+) {
   check_dots_empty()
 
   start <- quarterly_validate_start(start)
@@ -85,14 +87,35 @@ year_quarter_day <- function(year,
     fields <- list(year = year, quarter = quarter, day = day, hour = hour)
   } else if (is_null(second)) {
     precision <- PRECISION_MINUTE
-    fields <- list(year = year, quarter = quarter, day = day, hour = hour, minute = minute)
+    fields <- list(
+      year = year,
+      quarter = quarter,
+      day = day,
+      hour = hour,
+      minute = minute
+    )
   } else if (is_null(subsecond)) {
     precision <- PRECISION_SECOND
-    fields <- list(year = year, quarter = quarter, day = day, hour = hour, minute = minute, second = second)
+    fields <- list(
+      year = year,
+      quarter = quarter,
+      day = day,
+      hour = hour,
+      minute = minute,
+      second = second
+    )
   } else {
     calendar_check_subsecond_precision(subsecond_precision)
     precision <- precision_to_integer(subsecond_precision)
-    fields <- list(year = year, quarter = quarter, day = day, hour = hour, minute = minute, second = second, subsecond = subsecond)
+    fields <- list(
+      year = year,
+      quarter = quarter,
+      day = day,
+      hour = hour,
+      minute = minute,
+      second = second,
+      subsecond = subsecond
+    )
   }
 
   if (is_last(fields$day)) {
@@ -155,7 +178,11 @@ vec_restore.clock_year_quarter_day <- function(x, to, ...) {
 
 #' @export
 format.clock_year_quarter_day <- function(x, ...) {
-  out <- format_year_quarter_day_cpp(x, calendar_precision_attribute(x), quarterly_start(x))
+  out <- format_year_quarter_day_cpp(
+    x,
+    calendar_precision_attribute(x),
+    quarterly_start(x)
+  )
   names(out) <- names(x)
   out
 }
@@ -212,13 +239,59 @@ vec_ptype.clock_year_quarter_day <- function(x, ...) {
     list(year = f, quarter = f),
     abort("Internal error: Invalid precision"),
     abort("Internal error: Invalid precision"),
-    list(year = f, quarter = f, day = f),
-    list(year = f, quarter = f, day = f, hour = f),
-    list(year = f, quarter = f, day = f, hour = f, minute = f),
-    list(year = f, quarter = f, day = f, hour = f, minute = f, second = f),
-    list(year = f, quarter = f, day = f, hour = f, minute = f, second = f, subsecond = f),
-    list(year = f, quarter = f, day = f, hour = f, minute = f, second = f, subsecond = f),
-    list(year = f, quarter = f, day = f, hour = f, minute = f, second = f, subsecond = f),
+    list(
+      year = f,
+      quarter = f,
+      day = f
+    ),
+    list(
+      year = f,
+      quarter = f,
+      day = f,
+      hour = f
+    ),
+    list(
+      year = f,
+      quarter = f,
+      day = f,
+      hour = f,
+      minute = f
+    ),
+    list(
+      year = f,
+      quarter = f,
+      day = f,
+      hour = f,
+      minute = f,
+      second = f
+    ),
+    list(
+      year = f,
+      quarter = f,
+      day = f,
+      hour = f,
+      minute = f,
+      second = f,
+      subsecond = f
+    ),
+    list(
+      year = f,
+      quarter = f,
+      day = f,
+      hour = f,
+      minute = f,
+      second = f,
+      subsecond = f
+    ),
+    list(
+      year = f,
+      quarter = f,
+      day = f,
+      hour = f,
+      minute = f,
+      second = f,
+      subsecond = f
+    ),
     abort("Internal error: Invalid precision.")
   )
 
@@ -226,9 +299,18 @@ vec_ptype.clock_year_quarter_day <- function(x, ...) {
 }
 
 #' @export
-vec_ptype2.clock_year_quarter_day.clock_year_quarter_day <- function(x, y, ...) {
+vec_ptype2.clock_year_quarter_day.clock_year_quarter_day <- function(
+  x,
+  y,
+  ...
+) {
   if (quarterly_start(x) != quarterly_start(y)) {
-    stop_incompatible_type(x, y, ..., details = "Can't combine quarterly types with different `start`s.")
+    stop_incompatible_type(
+      x,
+      y,
+      ...,
+      details = "Can't combine quarterly types with different `start`s."
+    )
   }
 
   ptype2_calendar_and_calendar(x, y, ...)
@@ -237,7 +319,12 @@ vec_ptype2.clock_year_quarter_day.clock_year_quarter_day <- function(x, y, ...) 
 #' @export
 vec_cast.clock_year_quarter_day.clock_year_quarter_day <- function(x, to, ...) {
   if (quarterly_start(x) != quarterly_start(to)) {
-    stop_incompatible_cast(x, to, ..., details = "Can't cast between quarterly types with different `start`s.")
+    stop_incompatible_cast(
+      x,
+      to,
+      ...,
+      details = "Can't cast between quarterly types with different `start`s."
+    )
   }
 
   cast_calendar_to_calendar(x, to, ...)
@@ -317,7 +404,13 @@ invalid_resolve.clock_year_quarter_day <- function(x, ..., invalid = NULL) {
   if (precision < PRECISION_DAY) {
     x
   } else {
-    fields <- invalid_resolve_year_quarter_day_cpp(x, precision, start, invalid, current_env())
+    fields <- invalid_resolve_year_quarter_day_cpp(
+      x,
+      precision,
+      start,
+      invalid,
+      current_env()
+    )
     new_year_quarter_day_from_fields(fields, precision, start, names = names(x))
   }
 }
@@ -616,7 +709,12 @@ set_field_year_quarter_day <- function(x, value, component) {
   out <- vec_unstructure(x)
   out[[field]] <- value
 
-  new_year_quarter_day_from_fields(out, precision_out, start_out, names = names_out)
+  new_year_quarter_day_from_fields(
+    out,
+    precision_out,
+    start_out,
+    names = names_out
+  )
 }
 
 set_field_year_quarter_day_last <- function(x) {
@@ -633,7 +731,12 @@ set_field_year_quarter_day_last <- function(x) {
   out <- vec_unstructure(x)
   out[["day"]] <- value
 
-  new_year_quarter_day_from_fields(out, precision_out, start_out, names = names_out)
+  new_year_quarter_day_from_fields(
+    out,
+    precision_out,
+    start_out,
+    names = names_out
+  )
 }
 
 # ------------------------------------------------------------------------------
@@ -662,7 +765,7 @@ year_quarter_day_component_to_precision <- function(component) {
 }
 
 year_quarter_day_component_to_field <- function(component) {
-  switch (
+  switch(
     component,
     year = component,
     quarter = component,
@@ -694,8 +797,19 @@ vec_arith.clock_year_quarter_day.MISSING <- function(op, x, y, ...) {
 
 #' @method vec_arith.clock_year_quarter_day clock_year_quarter_day
 #' @export
-vec_arith.clock_year_quarter_day.clock_year_quarter_day <- function(op, x, y, ...) {
-  arith_calendar_and_calendar(op, x, y, ..., calendar_minus_calendar_fn = year_quarter_day_minus_year_quarter_day)
+vec_arith.clock_year_quarter_day.clock_year_quarter_day <- function(
+  op,
+  x,
+  y,
+  ...
+) {
+  arith_calendar_and_calendar(
+    op,
+    x,
+    y,
+    ...,
+    calendar_minus_calendar_fn = year_quarter_day_minus_year_quarter_day
+  )
 }
 
 #' @method vec_arith.clock_year_quarter_day clock_duration
@@ -803,11 +917,13 @@ add_quarters.clock_year_quarter_day <- function(x, n, ...) {
   year_quarter_day_plus_duration(x, n, PRECISION_QUARTER)
 }
 
-year_quarter_day_plus_duration <- function(x,
-                                           n,
-                                           n_precision,
-                                           ...,
-                                           error_call = caller_env()) {
+year_quarter_day_plus_duration <- function(
+  x,
+  n,
+  n_precision,
+  ...,
+  error_call = caller_env()
+) {
   check_dots_empty0(...)
 
   start <- quarterly_start(x)
@@ -890,7 +1006,7 @@ year_quarter_day_plus_duration <- function(x,
 #'
 #' # But you can change it
 #' as_year_quarter_day(x, start = 1)
-as_year_quarter_day <- function(x, ..., start = NULL)  {
+as_year_quarter_day <- function(x, ..., start = NULL) {
   UseMethod("as_year_quarter_day")
 }
 
@@ -1068,7 +1184,12 @@ calendar_narrow.clock_year_quarter_day <- function(x, precision) {
 
   out_fields <- calendar_narrow_time(out_fields, precision, x_fields)
 
-  new_year_quarter_day_from_fields(out_fields, precision, start, names = names(x))
+  new_year_quarter_day_from_fields(
+    out_fields,
+    precision,
+    start,
+    names = names(x)
+  )
 }
 
 # ------------------------------------------------------------------------------
@@ -1228,18 +1349,22 @@ calendar_end.clock_year_quarter_day <- function(x, precision) {
 #' x <- as_year_month_day(x)
 #' y <- as_year_month_day(y)
 #' calendar_count_between(x, y, "month", n = 3)
-calendar_count_between.clock_year_quarter_day <- function(start,
-                                                          end,
-                                                          precision,
-                                                          ...,
-                                                          n = 1L) {
+calendar_count_between.clock_year_quarter_day <- function(
+  start,
+  end,
+  precision,
+  ...,
+  n = 1L
+) {
   NextMethod()
 }
 
 #' @export
-calendar_count_between_standardize_precision_n.clock_year_quarter_day <- function(x,
-                                                                                  precision,
-                                                                                  n) {
+calendar_count_between_standardize_precision_n.clock_year_quarter_day <- function(
+  x,
+  precision,
+  n
+) {
   check_precision(precision)
   precision_int <- precision_to_integer(precision)
 
@@ -1253,9 +1378,11 @@ calendar_count_between_standardize_precision_n.clock_year_quarter_day <- functio
 }
 
 #' @export
-calendar_count_between_compute.clock_year_quarter_day <- function(start,
-                                                                  end,
-                                                                  precision) {
+calendar_count_between_compute.clock_year_quarter_day <- function(
+  start,
+  end,
+  precision
+) {
   check_precision(precision)
   precision <- precision_to_integer(precision)
 
@@ -1270,13 +1397,17 @@ calendar_count_between_compute.clock_year_quarter_day <- function(start,
     return(out)
   }
 
-  abort("Internal error: `precision` should be 'year' or 'quarter' at this point.")
+  abort(
+    "Internal error: `precision` should be 'year' or 'quarter' at this point."
+  )
 }
 
 #' @export
-calendar_count_between_proxy_compare.clock_year_quarter_day <- function(start,
-                                                                        end,
-                                                                        precision) {
+calendar_count_between_proxy_compare.clock_year_quarter_day <- function(
+  start,
+  end,
+  precision
+) {
   check_precision(precision)
   precision <- precision_to_integer(precision)
 
@@ -1339,12 +1470,14 @@ calendar_count_between_proxy_compare.clock_year_quarter_day <- function(start,
 #'
 #' # Which we can then set the day of the quarter of
 #' set_day(x, "last")
-seq.clock_year_quarter_day <- function(from,
-                                       to = NULL,
-                                       by = NULL,
-                                       length.out = NULL,
-                                       along.with = NULL,
-                                       ...) {
+seq.clock_year_quarter_day <- function(
+  from,
+  to = NULL,
+  by = NULL,
+  length.out = NULL,
+  along.with = NULL,
+  ...
+) {
   precision <- calendar_precision_attribute(from)
 
   if (precision > PRECISION_QUARTER) {

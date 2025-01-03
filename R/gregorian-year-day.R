@@ -31,14 +31,16 @@
 #'
 #' # Precision can go all the way out to nanosecond
 #' year_day(2019, 100, 2, 40, 45, 200, subsecond_precision = "nanosecond")
-year_day <- function(year,
-                     day = NULL,
-                     hour = NULL,
-                     minute = NULL,
-                     second = NULL,
-                     subsecond = NULL,
-                     ...,
-                     subsecond_precision = NULL) {
+year_day <- function(
+  year,
+  day = NULL,
+  hour = NULL,
+  minute = NULL,
+  second = NULL,
+  subsecond = NULL,
+  ...,
+  subsecond_precision = NULL
+) {
   check_dots_empty()
 
   # Stop on the first `NULL` argument
@@ -56,11 +58,24 @@ year_day <- function(year,
     fields <- list(year = year, day = day, hour = hour, minute = minute)
   } else if (is_null(subsecond)) {
     precision <- PRECISION_SECOND
-    fields <- list(year = year, day = day, hour = hour, minute = minute, second = second)
+    fields <- list(
+      year = year,
+      day = day,
+      hour = hour,
+      minute = minute,
+      second = second
+    )
   } else {
     calendar_check_subsecond_precision(subsecond_precision)
     precision <- precision_to_integer(subsecond_precision)
-    fields <- list(year = year, day = day, hour = hour, minute = minute, second = second, subsecond = subsecond)
+    fields <- list(
+      year = year,
+      day = day,
+      hour = hour,
+      minute = minute,
+      second = second,
+      subsecond = subsecond
+    )
   }
 
   if (is_last(fields$day)) {
@@ -541,7 +556,7 @@ year_day_component_to_precision <- function(component) {
 }
 
 year_day_component_to_field <- function(component) {
-  switch (
+  switch(
     component,
     year = component,
     day = component,
@@ -573,7 +588,13 @@ vec_arith.clock_year_day.MISSING <- function(op, x, y, ...) {
 #' @method vec_arith.clock_year_day clock_year_day
 #' @export
 vec_arith.clock_year_day.clock_year_day <- function(op, x, y, ...) {
-  arith_calendar_and_calendar(op, x, y, ..., calendar_minus_calendar_fn = year_day_minus_year_day)
+  arith_calendar_and_calendar(
+    op,
+    x,
+    y,
+    ...,
+    calendar_minus_calendar_fn = year_day_minus_year_day
+  )
 }
 
 #' @method vec_arith.clock_year_day clock_duration
@@ -678,11 +699,13 @@ add_years.clock_year_day <- function(x, n, ...) {
   year_day_plus_duration(x, n, PRECISION_YEAR)
 }
 
-year_day_plus_duration <- function(x,
-                                   n,
-                                   n_precision,
-                                   ...,
-                                   error_call = caller_env()) {
+year_day_plus_duration <- function(
+  x,
+  n,
+  n_precision,
+  ...,
+  error_call = caller_env()
+) {
   check_dots_empty0(...)
 
   x_precision <- calendar_precision_attribute(x)
@@ -737,7 +760,7 @@ year_day_plus_duration <- function(x,
 #'
 #' # From other calendars
 #' as_year_day(year_quarter_day(2019, quarter = 2, day = 50))
-as_year_day <- function(x, ...)  {
+as_year_day <- function(x, ...) {
   UseMethod("as_year_day")
 }
 
@@ -1050,18 +1073,22 @@ calendar_end.clock_year_day <- function(x, precision) {
 #'
 #' # Or in a whole number multiple of years
 #' calendar_count_between(x, y, "year", n = 3)
-calendar_count_between.clock_year_day <- function(start,
-                                                  end,
-                                                  precision,
-                                                  ...,
-                                                  n = 1L) {
+calendar_count_between.clock_year_day <- function(
+  start,
+  end,
+  precision,
+  ...,
+  n = 1L
+) {
   NextMethod()
 }
 
 #' @export
-calendar_count_between_standardize_precision_n.clock_year_day <- function(x,
-                                                                          precision,
-                                                                          n) {
+calendar_count_between_standardize_precision_n.clock_year_day <- function(
+  x,
+  precision,
+  n
+) {
   check_precision(precision)
   precision_int <- precision_to_integer(precision)
 
@@ -1075,9 +1102,11 @@ calendar_count_between_standardize_precision_n.clock_year_day <- function(x,
 }
 
 #' @export
-calendar_count_between_compute.clock_year_day <- function(start,
-                                                          end,
-                                                          precision) {
+calendar_count_between_compute.clock_year_day <- function(
+  start,
+  end,
+  precision
+) {
   check_precision(precision)
   precision <- precision_to_integer(precision)
 
@@ -1090,9 +1119,11 @@ calendar_count_between_compute.clock_year_day <- function(start,
 }
 
 #' @export
-calendar_count_between_proxy_compare.clock_year_day <- function(start,
-                                                                end,
-                                                                precision) {
+calendar_count_between_proxy_compare.clock_year_day <- function(
+  start,
+  end,
+  precision
+) {
   check_precision(precision)
   precision <- precision_to_integer(precision)
 
@@ -1152,12 +1183,14 @@ calendar_count_between_proxy_compare.clock_year_day <- function(start,
 #' # Daily sequences are not allowed. Use a naive-time for this instead.
 #' try(seq(year_day(2019, 1), by = 2, length.out = 2))
 #' as_year_day(seq(as_naive_time(year_day(2019, 1)), by = 2, length.out = 2))
-seq.clock_year_day <- function(from,
-                               to = NULL,
-                               by = NULL,
-                               length.out = NULL,
-                               along.with = NULL,
-                               ...) {
+seq.clock_year_day <- function(
+  from,
+  to = NULL,
+  by = NULL,
+  length.out = NULL,
+  along.with = NULL,
+  ...
+) {
   precision <- calendar_precision_attribute(from)
 
   if (precision > PRECISION_YEAR) {
@@ -1230,29 +1263,89 @@ clock_init_year_day_utils <- function(env) {
   assign("clock_empty_year_day_year", year, envir = env)
   assign("clock_empty_year_day_day", calendar_widen(year, "day"), envir = env)
   assign("clock_empty_year_day_hour", calendar_widen(year, "hour"), envir = env)
-  assign("clock_empty_year_day_minute", calendar_widen(year, "minute"), envir = env)
-  assign("clock_empty_year_day_second", calendar_widen(year, "second"), envir = env)
-  assign("clock_empty_year_day_millisecond", calendar_widen(year, "millisecond"), envir = env)
-  assign("clock_empty_year_day_microsecond", calendar_widen(year, "microsecond"), envir = env)
-  assign("clock_empty_year_day_nanosecond", calendar_widen(year, "nanosecond"), envir = env)
+  assign(
+    "clock_empty_year_day_minute",
+    calendar_widen(year, "minute"),
+    envir = env
+  )
+  assign(
+    "clock_empty_year_day_second",
+    calendar_widen(year, "second"),
+    envir = env
+  )
+  assign(
+    "clock_empty_year_day_millisecond",
+    calendar_widen(year, "millisecond"),
+    envir = env
+  )
+  assign(
+    "clock_empty_year_day_microsecond",
+    calendar_widen(year, "microsecond"),
+    envir = env
+  )
+  assign(
+    "clock_empty_year_day_nanosecond",
+    calendar_widen(year, "nanosecond"),
+    envir = env
+  )
 
   assign("clock_minimum_year_day_year", year_day_minimum("year"), envir = env)
   assign("clock_minimum_year_day_day", year_day_minimum("day"), envir = env)
   assign("clock_minimum_year_day_hour", year_day_minimum("hour"), envir = env)
-  assign("clock_minimum_year_day_minute", year_day_minimum("minute"), envir = env)
-  assign("clock_minimum_year_day_second", year_day_minimum("second"), envir = env)
-  assign("clock_minimum_year_day_millisecond", year_day_minimum("millisecond"), envir = env)
-  assign("clock_minimum_year_day_microsecond", year_day_minimum("microsecond"), envir = env)
-  assign("clock_minimum_year_day_nanosecond", year_day_minimum("nanosecond"), envir = env)
+  assign(
+    "clock_minimum_year_day_minute",
+    year_day_minimum("minute"),
+    envir = env
+  )
+  assign(
+    "clock_minimum_year_day_second",
+    year_day_minimum("second"),
+    envir = env
+  )
+  assign(
+    "clock_minimum_year_day_millisecond",
+    year_day_minimum("millisecond"),
+    envir = env
+  )
+  assign(
+    "clock_minimum_year_day_microsecond",
+    year_day_minimum("microsecond"),
+    envir = env
+  )
+  assign(
+    "clock_minimum_year_day_nanosecond",
+    year_day_minimum("nanosecond"),
+    envir = env
+  )
 
   assign("clock_maximum_year_day_year", year_day_maximum("year"), envir = env)
   assign("clock_maximum_year_day_day", year_day_maximum("day"), envir = env)
   assign("clock_maximum_year_day_hour", year_day_maximum("hour"), envir = env)
-  assign("clock_maximum_year_day_minute", year_day_maximum("minute"), envir = env)
-  assign("clock_maximum_year_day_second", year_day_maximum("second"), envir = env)
-  assign("clock_maximum_year_day_millisecond", year_day_maximum("millisecond"), envir = env)
-  assign("clock_maximum_year_day_microsecond", year_day_maximum("microsecond"), envir = env)
-  assign("clock_maximum_year_day_nanosecond", year_day_maximum("nanosecond"), envir = env)
+  assign(
+    "clock_maximum_year_day_minute",
+    year_day_maximum("minute"),
+    envir = env
+  )
+  assign(
+    "clock_maximum_year_day_second",
+    year_day_maximum("second"),
+    envir = env
+  )
+  assign(
+    "clock_maximum_year_day_millisecond",
+    year_day_maximum("millisecond"),
+    envir = env
+  )
+  assign(
+    "clock_maximum_year_day_microsecond",
+    year_day_maximum("microsecond"),
+    envir = env
+  )
+  assign(
+    "clock_maximum_year_day_nanosecond",
+    year_day_maximum("nanosecond"),
+    envir = env
+  )
 
   invisible(NULL)
 }

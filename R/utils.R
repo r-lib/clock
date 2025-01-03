@@ -137,10 +137,12 @@ posixt_tzone_standardize <- function(tzone) {
   n <- length(tzone)
 
   if (n == 0L) {
-    warning(paste0(
-      "POSIXt input had a corrupt time zone attribute of `character(0)`. ",
-      "Defaulting to the current zone by assuming the zone is `\"\"`."
-    ))
+    warning(
+      paste0(
+        "POSIXt input had a corrupt time zone attribute of `character(0)`. ",
+        "Defaulting to the current zone by assuming the zone is `\"\"`."
+      )
+    )
     return("")
   }
 
@@ -162,24 +164,45 @@ stop_clock <- function(message, ..., call = caller_env(), class = character()) {
   rlang::abort(message, ..., call = call, class = c(class, "clock_error"))
 }
 
-stop_clock_unsupported <- function(x, ..., details = NULL, call = caller_env()) {
+stop_clock_unsupported <- function(
+  x,
+  ...,
+  details = NULL,
+  call = caller_env()
+) {
   class <- class(x)[[1L]]
-  message <- cli::format_inline("Can't perform this operation on a {.cls {class}}.")
+  message <- cli::format_inline(
+    "Can't perform this operation on a {.cls {class}}."
+  )
   message <- c(message, details)
   stop_clock(message, ..., call = call, class = "clock_error_unsupported")
 }
 
-stop_clock_unsupported_conversion <- function(x, to_arg, ..., call = caller_env()) {
+stop_clock_unsupported_conversion <- function(
+  x,
+  to_arg,
+  ...,
+  call = caller_env()
+) {
   class <- class(x)[[1L]]
-  message <- cli::format_inline("Can't convert {.cls {class}} to {.cls {to_arg}}.")
-  stop_clock(message, ..., call = call, class = "clock_error_unsupported_conversion")
+  message <- cli::format_inline(
+    "Can't convert {.cls {class}} to {.cls {to_arg}}."
+  )
+  stop_clock(
+    message,
+    ...,
+    call = call,
+    class = "clock_error_unsupported_conversion"
+  )
 }
 
 # Thrown from C++
 stop_clock_invalid_date <- function(i, call) {
   message <- c(
     cli::format_inline("Invalid date found at location {i}."),
-    i = cli::format_inline("Resolve invalid date issues by specifying the {.arg invalid} argument.")
+    i = cli::format_inline(
+      "Resolve invalid date issues by specifying the {.arg invalid} argument."
+    )
   )
   stop_clock(message, call = call, class = "clock_error_invalid_date")
 }
@@ -187,8 +210,12 @@ stop_clock_invalid_date <- function(i, call) {
 # Thrown from C++
 stop_clock_nonexistent_time <- function(i, call) {
   message <- c(
-    cli::format_inline("Nonexistent time due to daylight saving time at location {i}."),
-    i = cli::format_inline("Resolve nonexistent time issues by specifying the {.arg nonexistent} argument.")
+    cli::format_inline(
+      "Nonexistent time due to daylight saving time at location {i}."
+    ),
+    i = cli::format_inline(
+      "Resolve nonexistent time issues by specifying the {.arg nonexistent} argument."
+    )
   )
   stop_clock(message, call = call, class = "clock_error_nonexistent_time")
 }
@@ -196,8 +223,12 @@ stop_clock_nonexistent_time <- function(i, call) {
 # Thrown from C++
 stop_clock_ambiguous_time <- function(i, call) {
   message <- c(
-    cli::format_inline("Ambiguous time due to daylight saving time at location {i}."),
-    i = cli::format_inline("Resolve ambiguous time issues by specifying the {.arg ambiguous} argument.")
+    cli::format_inline(
+      "Ambiguous time due to daylight saving time at location {i}."
+    ),
+    i = cli::format_inline(
+      "Resolve ambiguous time issues by specifying the {.arg ambiguous} argument."
+    )
   )
   stop_clock(message, call = call, class = "clock_error_ambiguous_time")
 }
@@ -214,12 +245,18 @@ warn_clock_parse_failures <- function(n, first) {
     abort("Internal error: warning thrown with zero failures.")
   } else if (n == 1) {
     message <- paste0(
-      "Failed to parse 1 string at location ", first, ". ",
+      "Failed to parse 1 string at location ",
+      first,
+      ". ",
       "Returning `NA` at that location."
     )
   } else {
     message <- paste0(
-      "Failed to parse ", n, " strings, beginning at location ", first, ". ",
+      "Failed to parse ",
+      n,
+      " strings, beginning at location ",
+      first,
+      ". ",
       "Returning `NA` at the locations where there were parse failures."
     )
   }
@@ -233,12 +270,18 @@ warn_clock_format_failures <- function(n, first) {
     abort("Internal error: warning thrown with zero failures.")
   } else if (n == 1) {
     message <- paste0(
-      "Failed to format 1 string at location ", first, ". ",
+      "Failed to format 1 string at location ",
+      first,
+      ". ",
       "Returning `NA` at that location."
     )
   } else {
     message <- paste0(
-      "Failed to format ", n, " strings, beginning at location ", first, ". ",
+      "Failed to format ",
+      n,
+      " strings, beginning at location ",
+      first,
+      ". ",
       "Returning `NA` at the locations where there were format failures."
     )
   }
@@ -290,7 +333,9 @@ clock_print_footer <- function(x, max) {
 
   cat(
     "Reached `max` or `getOption('max.print')`. ",
-    "Omitted ", n_omitted, value,
+    "Omitted ",
+    n_omitted,
+    value,
     "\n",
     sep = ""
   )
@@ -327,12 +372,14 @@ df_list_propagate_missing <- function(x, ..., size = NULL) {
 
 # ------------------------------------------------------------------------------
 
-check_inherits <- function(x,
-                           what,
-                           ...,
-                           allow_null = FALSE,
-                           arg = caller_arg(x),
-                           call = caller_env()) {
+check_inherits <- function(
+  x,
+  what,
+  ...,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   if (!missing(x)) {
     if (inherits(x, what)) {
       return(invisible(NULL))
@@ -350,10 +397,7 @@ check_inherits <- function(x,
   )
 }
 
-check_no_missing <- function(x,
-                             ...,
-                             arg = caller_arg(x),
-                             call = caller_env()) {
+check_no_missing <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
   if (!vec_any_missing(x)) {
     return(invisible(NULL))
   }

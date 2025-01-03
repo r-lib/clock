@@ -140,12 +140,14 @@ duration_nanoseconds <- function(n = integer()) {
   duration_helper(n, PRECISION_NANOSECOND)
 }
 
-duration_helper <- function(n,
-                            precision,
-                            ...,
-                            retain_names = FALSE,
-                            error_arg = caller_arg(n),
-                            error_call = caller_env()) {
+duration_helper <- function(
+  n,
+  precision,
+  ...,
+  retain_names = FALSE,
+  error_arg = caller_arg(n),
+  error_call = caller_env()
+) {
   check_dots_empty0(...)
 
   # Generally don't retain names for helpers like `duration_years()`,
@@ -519,14 +521,16 @@ duration_round <- function(x, precision, ..., n = 1L) {
   duration_rounder(x, precision, n, duration_round_cpp, "round", ...)
 }
 
-duration_rounder <- function(x,
-                             precision,
-                             n,
-                             rounder,
-                             verb,
-                             ...,
-                             error_arg = caller_arg(x),
-                             error_call = caller_env()) {
+duration_rounder <- function(
+  x,
+  precision,
+  n,
+  rounder,
+  verb,
+  ...,
+  error_arg = caller_arg(x),
+  error_call = caller_env()
+) {
   check_dots_empty0(...)
 
   check_duration(x, arg = error_arg, call = error_call)
@@ -540,7 +544,10 @@ duration_rounder <- function(x,
   x_precision <- duration_precision_attribute(x)
 
   if (x_precision < precision) {
-    cli::cli_abort("Can't {verb} to a more precise precision.", call = error_call)
+    cli::cli_abort(
+      "Can't {verb} to a more precise precision.",
+      call = error_call
+    )
   }
   if (!duration_has_common_precision_cpp(x_precision, precision)) {
     precision <- precision_to_string(precision)
@@ -630,12 +637,14 @@ duration_rounder <- function(x,
 #' seq(duration_months(0), duration_years(5), by = duration_quarters(1))
 #'
 #' seq(duration_days(20), by = 2, length.out = 5)
-seq.clock_duration <- function(from,
-                               to = NULL,
-                               by = NULL,
-                               length.out = NULL,
-                               along.with = NULL,
-                               ...) {
+seq.clock_duration <- function(
+  from,
+  to = NULL,
+  by = NULL,
+  length.out = NULL,
+  along.with = NULL,
+  ...
+) {
   check_dots_empty0(...)
 
   vec_check_size(from, 1L)
@@ -721,18 +730,25 @@ duration_seq_by_lo <- function(from, by, length.out) {
   new_duration_from_fields(fields, precision, names)
 }
 
-duration_collect_by <- function(by,
-                                precision,
-                                ...,
-                                error_arg = caller_arg(by),
-                                error_call = caller_env()) {
+duration_collect_by <- function(
+  by,
+  precision,
+  ...,
+  error_arg = caller_arg(by),
+  error_call = caller_env()
+) {
   check_dots_empty0(...)
 
   if (is_duration(by)) {
     to <- duration_helper(integer(), precision)
     vec_cast(by, to, x_arg = error_arg, call = error_call)
   } else {
-    duration_helper(by, precision, error_arg = error_arg, error_call = error_call)
+    duration_helper(
+      by,
+      precision,
+      error_arg = error_arg,
+      error_call = error_call
+    )
   }
 }
 
@@ -864,7 +880,12 @@ vec_arith.clock_duration.clock_duration <- function(op, x, y, ...) {
     op,
     "+" = duration_plus(x, y, names_common(x, y)),
     "-" = duration_minus(x, y, names_common(x, y)),
-    "/" = stop_incompatible_op(op, x, y, details = "Durations only support integer division. Did you want `%/%`?"),
+    "/" = stop_incompatible_op(
+      op,
+      x,
+      y,
+      details = "Durations only support integer division. Did you want `%/%`?"
+    ),
     "%%" = duration_modulus(x, y, names_common(x, y)),
     "%/%" = duration_integer_divide(x, y, names_common(x, y)),
     stop_incompatible_op(op, x, y)
@@ -877,7 +898,12 @@ vec_arith.clock_duration.numeric <- function(op, x, y, ...) {
   switch(
     op,
     "*" = duration_scalar_multiply(x, y, names_common(x, y)),
-    "/" = stop_incompatible_op(op, x, y, details = "Durations only support integer division. Did you want `%/%`?"),
+    "/" = stop_incompatible_op(
+      op,
+      x,
+      y,
+      details = "Durations only support integer division. Did you want `%/%`?"
+    ),
     "%%" = duration_scalar_modulus(x, y, names_common(x, y)),
     "%/%" = duration_scalar_divide(x, y, names_common(x, y)),
     stop_incompatible_op(op, x, y)
@@ -890,8 +916,18 @@ vec_arith.numeric.clock_duration <- function(op, x, y, ...) {
   switch(
     op,
     "*" = duration_scalar_multiply(y, x, names_common(x, y)),
-    "/" = stop_incompatible_op(op, x, y, details = "Durations only support integer division. Did you want `%/%`?"),
-    "%/%" = stop_incompatible_op(op, x, y, details = "Cannot divide a numeric by a duration."),
+    "/" = stop_incompatible_op(
+      op,
+      x,
+      y,
+      details = "Durations only support integer division. Did you want `%/%`?"
+    ),
+    "%/%" = stop_incompatible_op(
+      op,
+      x,
+      y,
+      details = "Cannot divide a numeric by a duration."
+    ),
     stop_incompatible_op(op, x, y)
   )
 }
@@ -1043,11 +1079,13 @@ add_nanoseconds.clock_duration <- function(x, n, ...) {
   duration_plus(x, n, names_common(x, n))
 }
 
-duration_collect_n <- function(n,
-                               precision,
-                               ...,
-                               error_arg = caller_arg(n),
-                               error_call = caller_env()) {
+duration_collect_n <- function(
+  n,
+  precision,
+  ...,
+  error_arg = caller_arg(n),
+  error_call = caller_env()
+) {
   check_dots_empty0(...)
 
   if (is_duration_with_precision(n, precision)) {
@@ -1280,28 +1318,76 @@ duration_precision_attribute <- function(x) {
 
 clock_init_duration_utils <- function(env) {
   assign("clock_minimum_duration_year", duration_minimum("year"), envir = env)
-  assign("clock_minimum_duration_quarter", duration_minimum("quarter"), envir = env)
+  assign(
+    "clock_minimum_duration_quarter",
+    duration_minimum("quarter"),
+    envir = env
+  )
   assign("clock_minimum_duration_month", duration_minimum("month"), envir = env)
   assign("clock_minimum_duration_week", duration_minimum("week"), envir = env)
   assign("clock_minimum_duration_day", duration_minimum("day"), envir = env)
   assign("clock_minimum_duration_hour", duration_minimum("hour"), envir = env)
-  assign("clock_minimum_duration_minute", duration_minimum("minute"), envir = env)
-  assign("clock_minimum_duration_second", duration_minimum("second"), envir = env)
-  assign("clock_minimum_duration_millisecond", duration_minimum("millisecond"), envir = env)
-  assign("clock_minimum_duration_microsecond", duration_minimum("microsecond"), envir = env)
-  assign("clock_minimum_duration_nanosecond", duration_minimum("nanosecond"), envir = env)
+  assign(
+    "clock_minimum_duration_minute",
+    duration_minimum("minute"),
+    envir = env
+  )
+  assign(
+    "clock_minimum_duration_second",
+    duration_minimum("second"),
+    envir = env
+  )
+  assign(
+    "clock_minimum_duration_millisecond",
+    duration_minimum("millisecond"),
+    envir = env
+  )
+  assign(
+    "clock_minimum_duration_microsecond",
+    duration_minimum("microsecond"),
+    envir = env
+  )
+  assign(
+    "clock_minimum_duration_nanosecond",
+    duration_minimum("nanosecond"),
+    envir = env
+  )
 
   assign("clock_maximum_duration_year", duration_maximum("year"), envir = env)
-  assign("clock_maximum_duration_quarter", duration_maximum("quarter"), envir = env)
+  assign(
+    "clock_maximum_duration_quarter",
+    duration_maximum("quarter"),
+    envir = env
+  )
   assign("clock_maximum_duration_month", duration_maximum("month"), envir = env)
   assign("clock_maximum_duration_week", duration_maximum("week"), envir = env)
   assign("clock_maximum_duration_day", duration_maximum("day"), envir = env)
   assign("clock_maximum_duration_hour", duration_maximum("hour"), envir = env)
-  assign("clock_maximum_duration_minute", duration_maximum("minute"), envir = env)
-  assign("clock_maximum_duration_second", duration_maximum("second"), envir = env)
-  assign("clock_maximum_duration_millisecond", duration_maximum("millisecond"), envir = env)
-  assign("clock_maximum_duration_microsecond", duration_maximum("microsecond"), envir = env)
-  assign("clock_maximum_duration_nanosecond", duration_maximum("nanosecond"), envir = env)
+  assign(
+    "clock_maximum_duration_minute",
+    duration_maximum("minute"),
+    envir = env
+  )
+  assign(
+    "clock_maximum_duration_second",
+    duration_maximum("second"),
+    envir = env
+  )
+  assign(
+    "clock_maximum_duration_millisecond",
+    duration_maximum("millisecond"),
+    envir = env
+  )
+  assign(
+    "clock_maximum_duration_microsecond",
+    duration_maximum("microsecond"),
+    envir = env
+  )
+  assign(
+    "clock_maximum_duration_nanosecond",
+    duration_maximum("nanosecond"),
+    envir = env
+  )
 
   invisible(NULL)
 }

@@ -205,11 +205,13 @@ NULL
 
 #' @rdname sys-parsing
 #' @export
-sys_time_parse <- function(x,
-                           ...,
-                           format = NULL,
-                           precision = "second",
-                           locale = clock_locale()) {
+sys_time_parse <- function(
+  x,
+  ...,
+  format = NULL,
+  precision = "second",
+  locale = clock_locale()
+) {
   check_dots_empty0(...)
   check_time_point_precision(precision)
   precision <- precision_to_integer(precision)
@@ -227,11 +229,13 @@ sys_time_parse <- function(x,
 
 #' @rdname sys-parsing
 #' @export
-sys_time_parse_RFC_3339 <- function(x,
-                                    ...,
-                                    separator = "T",
-                                    offset = "Z",
-                                    precision = "second") {
+sys_time_parse_RFC_3339 <- function(
+  x,
+  ...,
+  separator = "T",
+  offset = "Z",
+  precision = "second"
+) {
   separator <- arg_match0(separator, values = c("T", "t", " "))
   offset <- arg_match0(offset, values = c("Z", "z", "%z", "%Ez"))
 
@@ -338,7 +342,11 @@ as_sys_time.clock_sys_time <- function(x, ...) {
 #' @export
 as_naive_time.clock_sys_time <- function(x, ...) {
   check_dots_empty0(...)
-  new_naive_time_from_fields(x, time_point_precision_attribute(x), clock_rcrd_names(x))
+  new_naive_time_from_fields(
+    x,
+    time_point_precision_attribute(x),
+    clock_rcrd_names(x)
+  )
 }
 
 #' Convert to a zoned-time from a sys-time
@@ -535,9 +543,21 @@ sys_time_info <- function(x, zone) {
 new_sys_time_info_from_fields <- function(fields) {
   names <- NULL
 
-  fields[["begin"]] <- new_sys_time_from_fields(fields[["begin"]], PRECISION_SECOND, names)
-  fields[["end"]] <- new_sys_time_from_fields(fields[["end"]], PRECISION_SECOND, names)
-  fields[["offset"]] <- new_duration_from_fields(fields[["offset"]], PRECISION_SECOND, names)
+  fields[["begin"]] <- new_sys_time_from_fields(
+    fields[["begin"]],
+    PRECISION_SECOND,
+    names
+  )
+  fields[["end"]] <- new_sys_time_from_fields(
+    fields[["end"]],
+    PRECISION_SECOND,
+    names
+  )
+  fields[["offset"]] <- new_duration_from_fields(
+    fields[["offset"]],
+    PRECISION_SECOND,
+    names
+  )
 
   new_data_frame(fields)
 }
@@ -637,11 +657,31 @@ clock_init_sys_time_utils <- function(env) {
 
   assign("clock_empty_sys_time_day", day, envir = env)
   assign("clock_empty_sys_time_hour", time_point_cast(day, "hour"), envir = env)
-  assign("clock_empty_sys_time_minute", time_point_cast(day, "minute"), envir = env)
-  assign("clock_empty_sys_time_second", time_point_cast(day, "second"), envir = env)
-  assign("clock_empty_sys_time_millisecond", time_point_cast(day, "millisecond"), envir = env)
-  assign("clock_empty_sys_time_microsecond", time_point_cast(day, "microsecond"), envir = env)
-  assign("clock_empty_sys_time_nanosecond", time_point_cast(day, "nanosecond"), envir = env)
+  assign(
+    "clock_empty_sys_time_minute",
+    time_point_cast(day, "minute"),
+    envir = env
+  )
+  assign(
+    "clock_empty_sys_time_second",
+    time_point_cast(day, "second"),
+    envir = env
+  )
+  assign(
+    "clock_empty_sys_time_millisecond",
+    time_point_cast(day, "millisecond"),
+    envir = env
+  )
+  assign(
+    "clock_empty_sys_time_microsecond",
+    time_point_cast(day, "microsecond"),
+    envir = env
+  )
+  assign(
+    "clock_empty_sys_time_nanosecond",
+    time_point_cast(day, "nanosecond"),
+    envir = env
+  )
 
   invisible(NULL)
 }

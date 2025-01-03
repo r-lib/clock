@@ -34,11 +34,13 @@
 #' clock_labels_lookup("en")
 #' clock_labels_lookup("ko")
 #' clock_labels_lookup("fr")
-clock_labels <- function(month,
-                         month_abbrev = month,
-                         weekday,
-                         weekday_abbrev = weekday,
-                         am_pm) {
+clock_labels <- function(
+  month,
+  month_abbrev = month,
+  weekday,
+  weekday_abbrev = weekday,
+  am_pm
+) {
   if (!is_character(month, n = 12L)) {
     abort("`month` must be a character vector of length 12.")
   }
@@ -115,7 +117,12 @@ print.clock_labels <- function(x, ...) {
   cat_wrap("AM/PM:    ", am_pm)
 }
 
-check_clock_labels <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
+check_clock_labels <- function(
+  x,
+  ...,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   check_inherits(x, what = "clock_labels", arg = arg, call = call)
 }
 
