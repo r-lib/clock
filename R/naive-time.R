@@ -110,11 +110,13 @@ check_naive_time <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
 #'
 #' # Finally, convert to POSIXct
 #' as_date_time(time_point_round(x, "second"), zone = "UTC")
-naive_time_parse <- function(x,
-                             ...,
-                             format = NULL,
-                             precision = "second",
-                             locale = clock_locale()) {
+naive_time_parse <- function(
+  x,
+  ...,
+  format = NULL,
+  precision = "second",
+  locale = clock_locale()
+) {
   check_dots_empty0(...)
   check_time_point_precision(precision)
   precision <- precision_to_integer(precision)
@@ -193,7 +195,11 @@ as_naive_time.clock_naive_time <- function(x, ...) {
 #' @export
 as_sys_time.clock_naive_time <- function(x, ...) {
   check_dots_empty0(...)
-  new_sys_time_from_fields(x, time_point_precision_attribute(x), clock_rcrd_names(x))
+  new_sys_time_from_fields(
+    x,
+    time_point_precision_attribute(x),
+    clock_rcrd_names(x)
+  )
 }
 
 #' Convert to a zoned-time from a naive-time
@@ -449,11 +455,13 @@ as_sys_time.clock_naive_time <- function(x, ...) {
 #' # list containing `x` and an ambiguous time resolution strategy to use
 #' # when information from `x` can't resolve ambiguities:
 #' as_zoned_time(x_naive, zoned_time_zone(x), ambiguous = list(x, "latest"))
-as_zoned_time.clock_naive_time <- function(x,
-                                           zone,
-                                           ...,
-                                           nonexistent = NULL,
-                                           ambiguous = NULL) {
+as_zoned_time.clock_naive_time <- function(
+  x,
+  zone,
+  ...,
+  nonexistent = NULL,
+  ambiguous = NULL
+) {
   check_dots_empty0(...)
 
   check_zone(zone)
@@ -473,11 +481,26 @@ as_zoned_time.clock_naive_time <- function(x,
 
   if (identical(method, "string")) {
     ambiguous <- info$ambiguous
-    fields <- as_zoned_sys_time_from_naive_time_cpp(x, precision, zone, nonexistent, ambiguous, current_env())
+    fields <- as_zoned_sys_time_from_naive_time_cpp(
+      x,
+      precision,
+      zone,
+      nonexistent,
+      ambiguous,
+      current_env()
+    )
   } else if (identical(method, "reference")) {
     reference <- info$reference
     ambiguous <- info$ambiguous
-    fields <- as_zoned_sys_time_from_naive_time_with_reference_cpp(x, precision, zone, nonexistent, ambiguous, reference, current_env())
+    fields <- as_zoned_sys_time_from_naive_time_with_reference_cpp(
+      x,
+      precision,
+      zone,
+      nonexistent,
+      ambiguous,
+      reference,
+      current_env()
+    )
   } else {
     abort("Internal error: Unknown ambiguous handling method.")
   }
@@ -493,7 +516,10 @@ check_nonexistent <- function(nonexistent, size, ..., call = caller_env()) {
   nonexistent_size <- vec_size(nonexistent)
 
   if (nonexistent_size != 1L && nonexistent_size != size) {
-    cli::cli_abort("{.arg nonexistent} must have length 1 or {size}.", call = call)
+    cli::cli_abort(
+      "{.arg nonexistent} must have length 1 or {size}.",
+      call = call
+    )
   }
 
   check_character(nonexistent, allow_null = TRUE, call = call)
@@ -523,7 +549,9 @@ check_ambiguous <- function(ambiguous, size, zone, ..., call = caller_env()) {
     result <- check_ambiguous_list(ambiguous, size, zone, call = call)
     reference <- result$reference
     ambiguous <- result$ambiguous
-    return(list(method = "reference", reference = reference, ambiguous = ambiguous))
+    return(
+      list(method = "reference", reference = reference, ambiguous = ambiguous)
+    )
   }
 
   cli::cli_abort(
@@ -536,7 +564,10 @@ check_ambiguous_chr <- function(ambiguous, size, call) {
   ambiguous_size <- vec_size(ambiguous)
 
   if (ambiguous_size != 1L && ambiguous_size != size) {
-    cli::cli_abort("{.arg ambiguous} must have length 1 or {size}.", call = call)
+    cli::cli_abort(
+      "{.arg ambiguous} must have length 1 or {size}.",
+      call = call
+    )
   }
 
   ambiguous
@@ -550,10 +581,16 @@ check_ambiguous_zoned <- function(ambiguous, size, zone, call) {
   reference_zone <- zoned_time_zone_attribute(reference)
 
   if (reference_size != 1L && reference_size != size) {
-    cli::cli_abort("A zoned-time or POSIXct {.arg ambiguous} must have length 1 or {size}.", call = call)
+    cli::cli_abort(
+      "A zoned-time or POSIXct {.arg ambiguous} must have length 1 or {size}.",
+      call = call
+    )
   }
   if (reference_zone != zone) {
-    cli::cli_abort("A zoned-time or POSIXct {.arg ambiguous} must have the same zone as {.arg zone}.", call = call)
+    cli::cli_abort(
+      "A zoned-time or POSIXct {.arg ambiguous} must have the same zone as {.arg zone}.",
+      call = call
+    )
   }
 
   # Force seconds precision to avoid the need for C++ templating
@@ -572,7 +609,10 @@ check_ambiguous_list <- function(ambiguous, size, zone, call) {
   reference <- ambiguous[[1]]
 
   if (!is_zoned_time(reference) && !inherits(reference, "POSIXt")) {
-    cli::cli_abort("The first element of a list {.arg ambiguous} must be a zoned-time or POSIXt.", call = call)
+    cli::cli_abort(
+      "The first element of a list {.arg ambiguous} must be a zoned-time or POSIXt.",
+      call = call
+    )
   }
 
   reference <- check_ambiguous_zoned(reference, size, zone, call = call)
@@ -583,14 +623,16 @@ check_ambiguous_list <- function(ambiguous, size, zone, call) {
     ambiguous <- check_ambiguous_strict(ambiguous, call = call)
   }
   if (!is_character(ambiguous)) {
-    cli::cli_abort("The second element of a list {.arg ambiguous} must be a character vector, or `NULL`.", call = call)
+    cli::cli_abort(
+      "The second element of a list {.arg ambiguous} must be a character vector, or `NULL`.",
+      call = call
+    )
   }
 
   ambiguous <- check_ambiguous_chr(ambiguous, size, call = call)
 
   list(reference = reference, ambiguous = ambiguous)
 }
-
 
 #' @export
 as.character.clock_naive_time <- function(x, ...) {
@@ -841,12 +883,36 @@ clock_init_naive_time_utils <- function(env) {
   day <- as_naive_time(year_month_day(integer(), integer(), integer()))
 
   assign("clock_empty_naive_time_day", day, envir = env)
-  assign("clock_empty_naive_time_hour", time_point_cast(day, "hour"), envir = env)
-  assign("clock_empty_naive_time_minute", time_point_cast(day, "minute"), envir = env)
-  assign("clock_empty_naive_time_second", time_point_cast(day, "second"), envir = env)
-  assign("clock_empty_naive_time_millisecond", time_point_cast(day, "millisecond"), envir = env)
-  assign("clock_empty_naive_time_microsecond", time_point_cast(day, "microsecond"), envir = env)
-  assign("clock_empty_naive_time_nanosecond", time_point_cast(day, "nanosecond"), envir = env)
+  assign(
+    "clock_empty_naive_time_hour",
+    time_point_cast(day, "hour"),
+    envir = env
+  )
+  assign(
+    "clock_empty_naive_time_minute",
+    time_point_cast(day, "minute"),
+    envir = env
+  )
+  assign(
+    "clock_empty_naive_time_second",
+    time_point_cast(day, "second"),
+    envir = env
+  )
+  assign(
+    "clock_empty_naive_time_millisecond",
+    time_point_cast(day, "millisecond"),
+    envir = env
+  )
+  assign(
+    "clock_empty_naive_time_microsecond",
+    time_point_cast(day, "microsecond"),
+    envir = env
+  )
+  assign(
+    "clock_empty_naive_time_nanosecond",
+    time_point_cast(day, "nanosecond"),
+    envir = env
+  )
 
   invisible(NULL)
 }

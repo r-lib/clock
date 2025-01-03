@@ -6,10 +6,12 @@ strict_validate_invalid <- function(invalid) {
   }
 
   if (in_strict_mode()) {
-    abort(paste0(
-      "The global option, `clock.strict`, is currently set to `TRUE`. ",
-      "In this mode, `invalid` must be set and cannot be left as `NULL`."
-    ))
+    abort(
+      paste0(
+        "The global option, `clock.strict`, is currently set to `TRUE`. ",
+        "In this mode, `invalid` must be set and cannot be left as `NULL`."
+      )
+    )
   }
 
   "error"

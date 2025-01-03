@@ -1,4 +1,3 @@
-
 is_time_point <- function(x) {
   inherits(x, "clock_time_point")
 }
@@ -30,10 +29,12 @@ time_point_duration <- function(x, retain_names = FALSE) {
 # ------------------------------------------------------------------------------
 
 #' @export
-format.clock_time_point <- function(x,
-                                    ...,
-                                    format = NULL,
-                                    locale = clock_locale()) {
+format.clock_time_point <- function(
+  x,
+  ...,
+  format = NULL,
+  locale = clock_locale()
+) {
   check_clock_locale(locale)
 
   clock <- time_point_clock_attribute(x)
@@ -82,13 +83,15 @@ time_point_precision_format <- function(precision) {
 
 # ------------------------------------------------------------------------------
 
-time_point_parse <- function(x,
-                             format,
-                             precision,
-                             locale,
-                             clock,
-                             ...,
-                             error_call = caller_env()) {
+time_point_parse <- function(
+  x,
+  format,
+  precision,
+  locale,
+  clock,
+  ...,
+  error_call = caller_env()
+) {
   check_dots_empty0(...)
   check_character(x, call = error_call)
 
@@ -214,7 +217,12 @@ cast_time_point_to_time_point <- function(x, to, ...) {
   }
 
   if (x_precision > to_precision) {
-    stop_incompatible_cast(x, to, ..., details = "Can't cast to a less precise precision.")
+    stop_incompatible_cast(
+      x,
+      to,
+      ...,
+      details = "Can't cast to a less precise precision."
+    )
   }
 
   fields <- duration_cast_cpp(x, x_precision, to_precision)
@@ -228,7 +236,7 @@ cast_time_point_to_time_point <- function(x, to, ...) {
 # ------------------------------------------------------------------------------
 
 arith_time_point_and_missing <- function(op, x, y, ...) {
-  switch (
+  switch(
     op,
     "+" = x,
     stop_incompatible_op(op, x, y, ...)
@@ -236,7 +244,7 @@ arith_time_point_and_missing <- function(op, x, y, ...) {
 }
 
 arith_time_point_and_time_point <- function(op, x, y, ...) {
-  switch (
+  switch(
     op,
     "-" = time_point_minus_time_point(x, y, names_common(x, y)),
     stop_incompatible_op(op, x, y, ...)
@@ -244,19 +252,40 @@ arith_time_point_and_time_point <- function(op, x, y, ...) {
 }
 
 arith_time_point_and_duration <- function(op, x, y, ...) {
-  switch (
+  switch(
     op,
-    "+" = time_point_plus_duration(x, y, duration_precision_attribute(y), names_common(x, y)),
-    "-" = time_point_minus_duration(x, y, duration_precision_attribute(y), names_common(x, y)),
+    "+" = time_point_plus_duration(
+      x,
+      y,
+      duration_precision_attribute(y),
+      names_common(x, y)
+    ),
+    "-" = time_point_minus_duration(
+      x,
+      y,
+      duration_precision_attribute(y),
+      names_common(x, y)
+    ),
     stop_incompatible_op(op, x, y, ...)
   )
 }
 
 arith_duration_and_time_point <- function(op, x, y, ...) {
-  switch (
+  switch(
     op,
-    "+" = time_point_plus_duration(y, x, duration_precision_attribute(x), names_common(x, y)),
-    "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a time point from a duration.", ...),
+    "+" = time_point_plus_duration(
+      y,
+      x,
+      duration_precision_attribute(x),
+      names_common(x, y)
+    ),
+    "-" = stop_incompatible_op(
+      op,
+      x,
+      y,
+      details = "Can't subtract a time point from a duration.",
+      ...
+    ),
     stop_incompatible_op(op, x, y, ...)
   )
 }
@@ -264,7 +293,7 @@ arith_duration_and_time_point <- function(op, x, y, ...) {
 arith_time_point_and_numeric <- function(op, x, y, ...) {
   precision <- time_point_precision_attribute(x)
 
-  switch (
+  switch(
     op,
     "+" = time_point_plus_duration(x, y, precision, names_common(x, y)),
     "-" = time_point_minus_duration(x, y, precision, names_common(x, y)),
@@ -275,10 +304,16 @@ arith_time_point_and_numeric <- function(op, x, y, ...) {
 arith_numeric_and_time_point <- function(op, x, y, ...) {
   precision <- time_point_precision_attribute(y)
 
-  switch (
+  switch(
     op,
     "+" = time_point_plus_duration(y, x, precision, names_common(x, y)),
-    "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a time point from a duration.", ...),
+    "-" = stop_incompatible_op(
+      op,
+      x,
+      y,
+      details = "Can't subtract a time point from a duration.",
+      ...
+    ),
     stop_incompatible_op(op, x, y, ...)
   )
 }
@@ -467,7 +502,9 @@ time_point_minus_time_point <- function(x, y, names) {
 add_years.clock_time_point <- function(x, n, ...) {
   details <- c(
     i = "Do you need to convert to a calendar first?",
-    i = cli::format_inline("Use {.fn as_year_month_day} for a calendar that supports {.fn add_years}.")
+    i = cli::format_inline(
+      "Use {.fn as_year_month_day} for a calendar that supports {.fn add_years}."
+    )
   )
   stop_clock_unsupported(x, details = details)
 }
@@ -476,7 +513,9 @@ add_years.clock_time_point <- function(x, n, ...) {
 add_quarters.clock_time_point <- function(x, n, ...) {
   details <- c(
     i = "Do you need to convert to a calendar first?",
-    i = cli::format_inline("Use {.fn as_year_quarter_day} for a calendar that supports {.fn add_quarters}.")
+    i = cli::format_inline(
+      "Use {.fn as_year_quarter_day} for a calendar that supports {.fn add_quarters}."
+    )
   )
   stop_clock_unsupported(x, details = details)
 }
@@ -485,7 +524,9 @@ add_quarters.clock_time_point <- function(x, n, ...) {
 add_months.clock_time_point <- function(x, n, ...) {
   details <- c(
     i = "Do you need to convert to a calendar first?",
-    i = cli::format_inline("Use {.fn as_year_month_day} for a calendar that supports {.fn add_months}.")
+    i = cli::format_inline(
+      "Use {.fn as_year_month_day} for a calendar that supports {.fn add_months}."
+    )
   )
   stop_clock_unsupported(x, details = details)
 }
@@ -762,14 +803,16 @@ time_point_round <- function(x, precision, ..., n = 1L, origin = NULL) {
   time_point_rounder(x, precision, n, origin, duration_round, ...)
 }
 
-time_point_rounder <- function(x,
-                               precision,
-                               n,
-                               origin,
-                               duration_rounder,
-                               ...,
-                               error_arg = caller_arg(x),
-                               error_call = caller_env()) {
+time_point_rounder <- function(
+  x,
+  precision,
+  n,
+  origin,
+  duration_rounder,
+  ...,
+  error_arg = caller_arg(x),
+  error_call = caller_env()
+) {
   check_dots_empty0(...)
 
   check_time_point(x, arg = error_arg, call = error_call)
@@ -804,15 +847,22 @@ time_point_rounder <- function(x,
   new_time_point_from_fields(duration, precision, clock, names)
 }
 
-collect_time_point_rounder_origin <- function(origin,
-                                              x,
-                                              precision,
-                                              error_call) {
+collect_time_point_rounder_origin <- function(
+  origin,
+  x,
+  precision,
+  error_call
+) {
   # Cast `origin` to a time point with the same clock as `x`,
   # but with a precision of `precision`
   to_names <- NULL
   to <- duration_helper(integer(), precision)
-  to <- new_time_point_from_fields(to, precision, time_point_clock_attribute(x), to_names)
+  to <- new_time_point_from_fields(
+    to,
+    precision,
+    time_point_clock_attribute(x),
+    to_names
+  )
 
   origin <- vec_cast(origin, to, x_arg = "origin", call = error_call)
 
@@ -894,11 +944,13 @@ collect_time_point_rounder_origin <- function(origin,
 #'
 #' # You can force it to `"advance"`
 #' time_point_shift(x, tuesday, boundary = "advance")
-time_point_shift <- function(x,
-                             target,
-                             ...,
-                             which = "next",
-                             boundary = "keep") {
+time_point_shift <- function(
+  x,
+  target,
+  ...,
+  which = "next",
+  boundary = "keep"
+) {
   check_dots_empty0(...)
 
   check_time_point(x)
@@ -1137,12 +1189,14 @@ time_point_count_between <- function(start, end, precision, ..., n = 1L) {
 #' from <- time_point_cast(from, "nanosecond")
 #' to <- from + 100
 #' seq(from, to, by = 10)
-seq.clock_time_point <- function(from,
-                                 to = NULL,
-                                 by = NULL,
-                                 length.out = NULL,
-                                 along.with = NULL,
-                                 ...) {
+seq.clock_time_point <- function(
+  from,
+  to = NULL,
+  by = NULL,
+  length.out = NULL,
+  along.with = NULL,
+  ...
+) {
   names <- NULL
   clock <- time_point_clock_attribute(from)
   precision <- time_point_precision_attribute(from)
@@ -1266,10 +1320,12 @@ time_point_limit <- function(x, fn) {
 
 # ------------------------------------------------------------------------------
 
-check_time_point_precision <- function(x,
-                                       ...,
-                                       arg = caller_arg(x),
-                                       call = caller_env()) {
+check_time_point_precision <- function(
+  x,
+  ...,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   check_precision(
     x = x,
     values = c("day", precision_time_names()),

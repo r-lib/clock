@@ -216,7 +216,7 @@ add_duration <- function(x, duration, ..., swapped = FALSE) {
   precision <- duration_precision_attribute(duration)
   precision <- precision_to_string(precision)
 
-  switch (
+  switch(
     precision,
     year = add_years(x, duration),
     quarter = add_quarters(x, duration),
