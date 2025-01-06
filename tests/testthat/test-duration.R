@@ -73,7 +73,20 @@ test_that("round rounds to nearest, ties round up", {
   x <- duration_days(2) + duration_seconds(-1:3)
   x <- c(-x, x)
 
-  expect2 <- duration_seconds(c(-172800, -172800, -172800, -172800, -172804, 172800, 172800, 172800, 172804, 172804))
+  expect2 <- duration_seconds(
+    c(
+      -172800,
+      -172800,
+      -172800,
+      -172800,
+      -172804,
+      172800,
+      172800,
+      172800,
+      172804,
+      172804
+    )
+  )
   expect3 <- duration_days(c(-2, -2, -2, -2, -2, 2, 2, 2, 2, 2))
   expect4 <- duration_days(c(0, 0, -4, -4, -4, 0, 4, 4, 4, 4))
 
@@ -131,31 +144,73 @@ test_that("seq() requires two optional args", {
 })
 
 test_that("seq() validates `to`", {
-  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1:2), by = 1))
+  expect_snapshot(
+    error = TRUE,
+    seq(duration_years(1L), to = duration_years(1:2), by = 1)
+  )
   expect_snapshot(error = TRUE, seq(duration_years(1L), to = 1, by = 1))
   expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_days(1), by = 1))
-  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(NA_integer_), by = 1))
+  expect_snapshot(
+    error = TRUE,
+    seq(duration_years(1L), to = duration_years(NA_integer_), by = 1)
+  )
 })
 
 test_that("seq() validates `by`", {
-  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), by = 1:2))
-  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), by = NA_integer_))
-  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), by = 0))
-  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), by = duration_years(0)))
-  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), by = "x"))
+  expect_snapshot(
+    error = TRUE,
+    seq(duration_years(1L), to = duration_years(1L), by = 1:2)
+  )
+  expect_snapshot(
+    error = TRUE,
+    seq(duration_years(1L), to = duration_years(1L), by = NA_integer_)
+  )
+  expect_snapshot(
+    error = TRUE,
+    seq(duration_years(1L), to = duration_years(1L), by = 0)
+  )
+  expect_snapshot(
+    error = TRUE,
+    seq(duration_years(1L), to = duration_years(1L), by = duration_years(0))
+  )
+  expect_snapshot(
+    error = TRUE,
+    seq(duration_years(1L), to = duration_years(1L), by = "x")
+  )
 })
 
 test_that("`by` must be castable to the type of `from`", {
-  expect_snapshot(error = TRUE, seq(duration_years(0), to = duration_years(1), by = duration_months(1)))
-  expect_snapshot(error = TRUE, seq(duration_years(0), to = duration_years(1), by = duration_days(1)))
-  expect_snapshot(error = TRUE, seq(duration_days(0), to = duration_days(1), by = duration_years(1)))
+  expect_snapshot(
+    error = TRUE,
+    seq(duration_years(0), to = duration_years(1), by = duration_months(1))
+  )
+  expect_snapshot(
+    error = TRUE,
+    seq(duration_years(0), to = duration_years(1), by = duration_days(1))
+  )
+  expect_snapshot(
+    error = TRUE,
+    seq(duration_days(0), to = duration_days(1), by = duration_years(1))
+  )
 })
 
 test_that("seq() validates `length.out`", {
-  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), length.out = 1:2))
-  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), length.out = NA_integer_))
-  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), length.out = -1))
-  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(1L), length.out = "x"))
+  expect_snapshot(
+    error = TRUE,
+    seq(duration_years(1L), to = duration_years(1L), length.out = 1:2)
+  )
+  expect_snapshot(
+    error = TRUE,
+    seq(duration_years(1L), to = duration_years(1L), length.out = NA_integer_)
+  )
+  expect_snapshot(
+    error = TRUE,
+    seq(duration_years(1L), to = duration_years(1L), length.out = -1)
+  )
+  expect_snapshot(
+    error = TRUE,
+    seq(duration_years(1L), to = duration_years(1L), length.out = "x")
+  )
 })
 
 test_that("seq() validates dots", {
@@ -163,21 +218,45 @@ test_that("seq() validates dots", {
 })
 
 test_that("seq() enforces non-fractional results", {
-  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(2L), length.out = 3))
-  expect_snapshot(error = TRUE, seq(duration_years(1L), to = duration_years(2L), along.with = 1:3))
+  expect_snapshot(
+    error = TRUE,
+    seq(duration_years(1L), to = duration_years(2L), length.out = 3)
+  )
+  expect_snapshot(
+    error = TRUE,
+    seq(duration_years(1L), to = duration_years(2L), along.with = 1:3)
+  )
 })
 
 test_that("seq() works when from and to are identical", {
-  expect_identical(seq(duration_years(1L), to = duration_years(1L), by = 1), duration_years(1L))
-  expect_identical(seq(duration_years(1L), to = duration_years(1L), by = -1), duration_years(1L))
+  expect_identical(
+    seq(duration_years(1L), to = duration_years(1L), by = 1),
+    duration_years(1L)
+  )
+  expect_identical(
+    seq(duration_years(1L), to = duration_years(1L), by = -1),
+    duration_years(1L)
+  )
 })
 
 test_that("seq() with `from > to && by > 0` or `from < to && by < 0` results in length 0 output (#282)", {
-  expect_identical(seq(duration_years(2L), to = duration_years(1L), by = 1), duration_years())
-  expect_identical(seq(duration_years(5L), to = duration_years(1L), by = 1), duration_years())
+  expect_identical(
+    seq(duration_years(2L), to = duration_years(1L), by = 1),
+    duration_years()
+  )
+  expect_identical(
+    seq(duration_years(5L), to = duration_years(1L), by = 1),
+    duration_years()
+  )
 
-  expect_identical(seq(duration_years(1L), to = duration_years(2L), by = -1), duration_years())
-  expect_identical(seq(duration_years(1L), to = duration_years(5L), by = -1), duration_years())
+  expect_identical(
+    seq(duration_years(1L), to = duration_years(2L), by = -1),
+    duration_years()
+  )
+  expect_identical(
+    seq(duration_years(1L), to = duration_years(5L), by = -1),
+    duration_years()
+  )
 
   # In particular, handles the case where subtraction of distant `from` and `to` would overflow
   x <- duration_cast(duration_years(200), "nanosecond")
@@ -186,14 +265,32 @@ test_that("seq() with `from > to && by > 0` or `from < to && by < 0` results in 
 })
 
 test_that("seq(to, by) works", {
-  expect_identical(seq(duration_years(0L), to = duration_years(4L), by = 2), duration_years(c(0L, 2L, 4L)))
-  expect_identical(seq(duration_years(0L), to = duration_years(5L), by = 2), duration_years(c(0L, 2L, 4L)))
+  expect_identical(
+    seq(duration_years(0L), to = duration_years(4L), by = 2),
+    duration_years(c(0L, 2L, 4L))
+  )
+  expect_identical(
+    seq(duration_years(0L), to = duration_years(5L), by = 2),
+    duration_years(c(0L, 2L, 4L))
+  )
 
-  expect_identical(seq(duration_years(0L), to = duration_years(-4L), by = -2), duration_years(c(0L, -2L, -4L)))
-  expect_identical(seq(duration_years(0L), to = duration_years(-5L), by = -2), duration_years(c(0L, -2L, -4L)))
+  expect_identical(
+    seq(duration_years(0L), to = duration_years(-4L), by = -2),
+    duration_years(c(0L, -2L, -4L))
+  )
+  expect_identical(
+    seq(duration_years(0L), to = duration_years(-5L), by = -2),
+    duration_years(c(0L, -2L, -4L))
+  )
 
-  expect_identical(seq(duration_years(4L), to = duration_years(0L), by = -2), duration_years(c(4L, 2L, 0L)))
-  expect_identical(seq(duration_years(4L), to = duration_years(-1L), by = -2), duration_years(c(4L, 2L, 0L)))
+  expect_identical(
+    seq(duration_years(4L), to = duration_years(0L), by = -2),
+    duration_years(c(4L, 2L, 0L))
+  )
+  expect_identical(
+    seq(duration_years(4L), to = duration_years(-1L), by = -2),
+    duration_years(c(4L, 2L, 0L))
+  )
 })
 
 test_that("seq(to, by = <duration>) works", {
@@ -218,20 +315,42 @@ test_that("seq(to, by = <duration>) works", {
     duration_nanoseconds(0) + duration_days(seq(0L, 100000L, by = 10000L))
   )
   expect_identical(
-    seq(duration_nanoseconds(0), to = -duration_days(100000), by = -duration_days(10000)),
+    seq(
+      duration_nanoseconds(0),
+      to = -duration_days(100000),
+      by = -duration_days(10000)
+    ),
     duration_nanoseconds(0) - duration_days(seq(0L, 100000L, by = 10000L))
   )
 })
 
 test_that("seq(to, length.out) works", {
-  expect_identical(seq(duration_years(0L), to = duration_years(4L), length.out = 2), duration_years(c(0L, 4L)))
-  expect_identical(seq(duration_years(0L), to = duration_years(4L), length.out = 1), duration_years(c(0L)))
-  expect_identical(seq(duration_years(0L), to = duration_years(4L), length.out = 5), duration_years(c(0:4)))
+  expect_identical(
+    seq(duration_years(0L), to = duration_years(4L), length.out = 2),
+    duration_years(c(0L, 4L))
+  )
+  expect_identical(
+    seq(duration_years(0L), to = duration_years(4L), length.out = 1),
+    duration_years(c(0L))
+  )
+  expect_identical(
+    seq(duration_years(0L), to = duration_years(4L), length.out = 5),
+    duration_years(c(0:4))
+  )
 
-  expect_identical(seq(duration_years(0L), to = duration_years(-4L), length.out = 2), duration_years(c(0L, -4L)))
-  expect_identical(seq(duration_years(0L), to = duration_years(-6L), length.out = 3), duration_years(c(0L, -3L, -6L)))
+  expect_identical(
+    seq(duration_years(0L), to = duration_years(-4L), length.out = 2),
+    duration_years(c(0L, -4L))
+  )
+  expect_identical(
+    seq(duration_years(0L), to = duration_years(-6L), length.out = 3),
+    duration_years(c(0L, -3L, -6L))
+  )
 
-  expect_identical(seq(duration_years(0L), to = duration_years(4L), along.with = 1:2), duration_years(c(0L, 4L)))
+  expect_identical(
+    seq(duration_years(0L), to = duration_years(4L), along.with = 1:2),
+    duration_years(c(0L, 4L))
+  )
 })
 
 test_that("seq(to, length.out = 1) is special cased to return `from`", {
@@ -242,10 +361,19 @@ test_that("seq(to, length.out = 1) is special cased to return `from`", {
 })
 
 test_that("seq(by, length.out) works", {
-  expect_identical(seq(duration_years(0L), by = 2, length.out = 3), duration_years(c(0L, 2L, 4L)))
-  expect_identical(seq(duration_years(0L), by = -2, length.out = 3), duration_years(c(0L, -2L, -4L)))
+  expect_identical(
+    seq(duration_years(0L), by = 2, length.out = 3),
+    duration_years(c(0L, 2L, 4L))
+  )
+  expect_identical(
+    seq(duration_years(0L), by = -2, length.out = 3),
+    duration_years(c(0L, -2L, -4L))
+  )
 
-  expect_identical(seq(duration_years(0L), by = 2, along.with = 1:3), duration_years(c(0L, 2L, 4L)))
+  expect_identical(
+    seq(duration_years(0L), by = 2, along.with = 1:3),
+    duration_years(c(0L, 2L, 4L))
+  )
 })
 
 test_that("`to` is always cast to `from`", {
@@ -260,7 +388,11 @@ test_that("`to` is always cast to `from`", {
 
 test_that("special test to ensure we never lose precision (i.e. by trying to convert to double)", {
   expect_identical(
-    seq(duration_nanoseconds(0), duration_cast(duration_years(10), "nanosecond"), length.out = 3),
+    seq(
+      duration_nanoseconds(0),
+      duration_cast(duration_years(10), "nanosecond"),
+      length.out = 3
+    ),
     duration_nanoseconds(0) + duration_cast(duration_years(c(0, 5, 10)), "nanosecond")
   )
 })
@@ -579,4 +711,3 @@ test_that("`NA` duration prints as expected", {
     duration_nanoseconds(NA)
   })
 })
-

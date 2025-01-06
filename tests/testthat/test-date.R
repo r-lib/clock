@@ -93,7 +93,10 @@ test_that("Dates are assumed to be naive", {
   nt <- as_naive_time(year_month_day(1970, 1, 1))
 
   expect_identical(as_zoned_time(x, "UTC"), as_zoned_time(nt, "UTC"))
-  expect_identical(as_zoned_time(x, "America/New_York"), as_zoned_time(nt, "America/New_York"))
+  expect_identical(
+    as_zoned_time(x, "America/New_York"),
+    as_zoned_time(nt, "America/New_York")
+  )
 })
 
 test_that("can resolve nonexistent midnight issues", {
@@ -223,7 +226,10 @@ test_that("can ceiling", {
   x <- c("1970-01-01", "1970-01-07", "1970-01-08")
   x <- as.Date(x)
   expect_identical(date_ceiling(x, "week"), x[c(1, 3, 3)])
-  expect_identical(date_ceiling(x, "week", n = 2), as.Date(c("1970-01-01", "1970-01-15", "1970-01-15")))
+  expect_identical(
+    date_ceiling(x, "week", n = 2),
+    as.Date(c("1970-01-01", "1970-01-15", "1970-01-15"))
+  )
 })
 
 # ------------------------------------------------------------------------------
@@ -233,7 +239,10 @@ test_that("can round", {
   x <- c("1970-01-01", "1970-01-03", "1970-01-05", "1970-01-08")
   x <- as.Date(x)
   expect_identical(date_round(x, "week"), x[c(1, 1, 4, 4)])
-  expect_identical(date_round(x, "week", n = 2), as.Date(c("1970-01-01", "1970-01-01", "1970-01-01", "1970-01-15")))
+  expect_identical(
+    date_round(x, "week", n = 2),
+    as.Date(c("1970-01-01", "1970-01-01", "1970-01-01", "1970-01-15"))
+  )
 })
 
 # ------------------------------------------------------------------------------
@@ -281,7 +290,9 @@ test_that("can format dates", {
   expect_snapshot(
     vapply(
       X = formats,
-      FUN = function(format) date_format(x, format = format, locale = clock_locale("fr")),
+      FUN = function(format) {
+        date_format(x, format = format, locale = clock_locale("fr"))
+      },
       FUN.VALUE = character(1)
     )
   )
@@ -434,11 +445,19 @@ test_that("day precision seq works", {
 
 test_that("granular `by` are allowed", {
   expect_identical(
-    date_seq(date_build(2019, 1, 1), to = date_build(2019, 6, 1), by = duration_months(2)),
+    date_seq(
+      date_build(2019, 1, 1),
+      to = date_build(2019, 6, 1),
+      by = duration_months(2)
+    ),
     date_build(2019, c(1, 3, 5), 1)
   )
   expect_identical(
-    date_seq(date_build(2019, 1, 1), to = date_build(2025, 1, 1), by = duration_years(2)),
+    date_seq(
+      date_build(2019, 1, 1),
+      to = date_build(2025, 1, 1),
+      by = duration_years(2)
+    ),
     date_build(c(2019, 2021, 2023, 2025), 1, 1)
   )
 })
@@ -507,8 +526,22 @@ test_that("seq() with `from > to && by > 0` or `from < to && by > 0` results in 
 })
 
 test_that("components of `to` more precise than `by` must match `from`", {
-  expect_snapshot(error = TRUE, date_seq(date_build(2019, 1, 1), to = date_build(2019, 2, 2), by = duration_months(1)))
-  expect_snapshot(error = TRUE, date_seq(date_build(2019, 1, 1), to = date_build(2019, 3, 1), by = duration_years(1)))
+  expect_snapshot(
+    error = TRUE,
+    date_seq(
+      date_build(2019, 1, 1),
+      to = date_build(2019, 2, 2),
+      by = duration_months(1)
+    )
+  )
+  expect_snapshot(
+    error = TRUE,
+    date_seq(
+      date_build(2019, 1, 1),
+      to = date_build(2019, 3, 1),
+      by = duration_years(1)
+    )
+  )
 })
 
 test_that("validates integerish `by`", {
@@ -536,7 +569,10 @@ test_that("requires `to` to be Date", {
 })
 
 test_that("requires year, month, or day precision", {
-  expect_snapshot(error = TRUE, date_seq(new_date(1), to = new_date(2), by = duration_nanoseconds(1)))
+  expect_snapshot(
+    error = TRUE,
+    date_seq(new_date(1), to = new_date(2), by = duration_nanoseconds(1))
+  )
 })
 
 test_that("checks empty dots", {

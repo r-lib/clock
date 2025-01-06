@@ -12,10 +12,30 @@ test_that("helper can create different precisions", {
 })
 
 test_that("can create subsecond precision calendars", {
-  x <- year_month_weekday(2019, 1, 1, 1, 0, 0, 0, 1, subsecond_precision = "millisecond")
+  x <- year_month_weekday(
+    2019,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
+    1,
+    subsecond_precision = "millisecond"
+  )
   expect_identical(get_millisecond(x), 1L)
 
-  x <- year_month_weekday(2019, 1, 1, 1, 0, 0, 0, 1, subsecond_precision = "microsecond")
+  x <- year_month_weekday(
+    2019,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
+    1,
+    subsecond_precision = "microsecond"
+  )
   expect_identical(get_microsecond(x), 1L)
 
   x <- year_month_weekday(2019, 1, 1, 1, 0, 0, 0, 1, subsecond_precision = "nanosecond")
@@ -34,9 +54,48 @@ test_that("validates value ranges", {
   expect_snapshot(error = TRUE, year_month_weekday(2020, 1, 1, 1, 24))
   expect_snapshot(error = TRUE, year_month_weekday(2020, 1, 1, 1, 1, 60))
   expect_snapshot(error = TRUE, year_month_weekday(2020, 1, 1, 1, 1, 1, 60))
-  expect_snapshot(error = TRUE, year_month_weekday(2020, 1, 1, 1, 1, 1, 1, 1000, subsecond_precision = "millisecond"))
-  expect_snapshot(error = TRUE, year_month_weekday(2020, 1, 1, 1, 1, 1, 1, 1000000, subsecond_precision = "microsecond"))
-  expect_snapshot(error = TRUE, year_month_weekday(2020, 1, 1, 1, 1, 1, 1, 1000000000, subsecond_precision = "nanosecond"))
+  expect_snapshot(
+    error = TRUE,
+    year_month_weekday(
+      2020,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1000,
+      subsecond_precision = "millisecond"
+    )
+  )
+  expect_snapshot(
+    error = TRUE,
+    year_month_weekday(
+      2020,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1000000,
+      subsecond_precision = "microsecond"
+    )
+  )
+  expect_snapshot(
+    error = TRUE,
+    year_month_weekday(
+      2020,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1000000000,
+      subsecond_precision = "nanosecond"
+    )
+  )
 })
 
 test_that("can get the last indexed weekday of the month", {
@@ -83,7 +142,10 @@ test_that("ptype is correct", {
 
 test_that("proxy is a data frame", {
   expect_identical(vec_proxy(year_month_weekday(2019)), data_frame(year = 2019L))
-  expect_identical(vec_proxy(year_month_weekday(2019, 1)), data_frame(year = 2019L, month = 1L))
+  expect_identical(
+    vec_proxy(year_month_weekday(2019, 1)),
+    data_frame(year = 2019L, month = 1L)
+  )
 })
 
 test_that("proxy has names on `year`", {
@@ -125,7 +187,11 @@ test_that("cannot compare / sort with day precision or finer", {
 test_that("full ptype is correct", {
   expect_snapshot_output(vec_ptype_full(year_month_weekday(2019)))
   expect_snapshot_output(vec_ptype_full(year_month_weekday(2019, 1, 1, 2)))
-  expect_snapshot_output(vec_ptype_full(year_month_weekday(2019, 1, 1, 2, 1, 1, 1, 1, subsecond_precision = "nanosecond")))
+  expect_snapshot_output(
+    vec_ptype_full(
+      year_month_weekday(2019, 1, 1, 2, 1, 1, 1, 1, subsecond_precision = "nanosecond")
+    )
+  )
   expect_snapshot_output(vec_ptype_full(year_month_weekday(2019, 1, 1, 5)))
 })
 
@@ -135,7 +201,11 @@ test_that("full ptype is correct", {
 test_that("abbreviated ptype is correct", {
   expect_snapshot_output(vec_ptype_abbr(year_month_weekday(2019)))
   expect_snapshot_output(vec_ptype_abbr(year_month_weekday(2019, 1, 1, 2)))
-  expect_snapshot_output(vec_ptype_abbr(year_month_weekday(2019, 1, 1, 2, 1, 1, 1, 1, subsecond_precision = "nanosecond")))
+  expect_snapshot_output(
+    vec_ptype_abbr(
+      year_month_weekday(2019, 1, 1, 2, 1, 1, 1, 1, subsecond_precision = "nanosecond")
+    )
+  )
   expect_snapshot_output(vec_ptype_abbr(year_month_weekday(2019, 1, 1, 5)))
 })
 
@@ -283,36 +353,123 @@ test_that("setters require minimum precision", {
     set_second(year_month_weekday(year = 1, month = 2, day = 3, index = 1, hour = 4), 1)
   })
   expect_snapshot(error = TRUE, {
-    set_millisecond(year_month_weekday(year = 1, month = 2, day = 3, index = 1, hour = 4, minute = 5), 1)
+    set_millisecond(
+      year_month_weekday(year = 1, month = 2, day = 3, index = 1, hour = 4, minute = 5),
+      1
+    )
   })
   expect_snapshot(error = TRUE, {
-    set_microsecond(year_month_weekday(year = 1, month = 2, day = 3, index = 1, hour = 4, minute = 5), 1)
+    set_microsecond(
+      year_month_weekday(year = 1, month = 2, day = 3, index = 1, hour = 4, minute = 5),
+      1
+    )
   })
   expect_snapshot(error = TRUE, {
-    set_nanosecond(year_month_weekday(year = 1, month = 2, day = 3, index = 1, hour = 4, minute = 5), 1)
+    set_nanosecond(
+      year_month_weekday(year = 1, month = 2, day = 3, index = 1, hour = 4, minute = 5),
+      1
+    )
   })
 })
 
 test_that("setters require correct subsecond precision", {
   expect_snapshot(error = TRUE, {
-    set_millisecond(year_month_weekday(year = 1, month = 2, day = 3, index = 1, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "microsecond"), 1)
+    set_millisecond(
+      year_month_weekday(
+        year = 1,
+        month = 2,
+        day = 3,
+        index = 1,
+        hour = 4,
+        minute = 5,
+        second = 6,
+        subsecond = 7,
+        subsecond_precision = "microsecond"
+      ),
+      1
+    )
   })
   expect_snapshot(error = TRUE, {
-    set_millisecond(year_month_weekday(year = 1, month = 2, day = 3, index = 1, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "nanosecond"), 1)
+    set_millisecond(
+      year_month_weekday(
+        year = 1,
+        month = 2,
+        day = 3,
+        index = 1,
+        hour = 4,
+        minute = 5,
+        second = 6,
+        subsecond = 7,
+        subsecond_precision = "nanosecond"
+      ),
+      1
+    )
   })
 
   expect_snapshot(error = TRUE, {
-    set_microsecond(year_month_weekday(year = 1, month = 2, day = 3, index = 1, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "millisecond"), 1)
+    set_microsecond(
+      year_month_weekday(
+        year = 1,
+        month = 2,
+        day = 3,
+        index = 1,
+        hour = 4,
+        minute = 5,
+        second = 6,
+        subsecond = 7,
+        subsecond_precision = "millisecond"
+      ),
+      1
+    )
   })
   expect_snapshot(error = TRUE, {
-    set_microsecond(year_month_weekday(year = 1, month = 2, day = 3, index = 1, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "nanosecond"), 1)
+    set_microsecond(
+      year_month_weekday(
+        year = 1,
+        month = 2,
+        day = 3,
+        index = 1,
+        hour = 4,
+        minute = 5,
+        second = 6,
+        subsecond = 7,
+        subsecond_precision = "nanosecond"
+      ),
+      1
+    )
   })
 
   expect_snapshot(error = TRUE, {
-    set_nanosecond(year_month_weekday(year = 1, month = 2, day = 3, index = 1, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "millisecond"), 1)
+    set_nanosecond(
+      year_month_weekday(
+        year = 1,
+        month = 2,
+        day = 3,
+        index = 1,
+        hour = 4,
+        minute = 5,
+        second = 6,
+        subsecond = 7,
+        subsecond_precision = "millisecond"
+      ),
+      1
+    )
   })
   expect_snapshot(error = TRUE, {
-    set_nanosecond(year_month_weekday(year = 1, month = 2, day = 3, index = 1, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "microsecond"), 1)
+    set_nanosecond(
+      year_month_weekday(
+        year = 1,
+        month = 2,
+        day = 3,
+        index = 1,
+        hour = 4,
+        minute = 5,
+        second = 6,
+        subsecond = 7,
+        subsecond_precision = "microsecond"
+      ),
+      1
+    )
   })
 })
 
@@ -335,7 +492,21 @@ test_that("default formats are correct", {
   expect_snapshot(format(year_month_weekday(2019)))
   expect_snapshot(format(year_month_weekday(2019, 1)))
   expect_snapshot(format(year_month_weekday(2019, 1, 1, 2, 1)))
-  expect_snapshot(format(year_month_weekday(2019, 1, 1, 2, 1, 2, 3, 50, subsecond_precision = "microsecond")))
+  expect_snapshot(
+    format(
+      year_month_weekday(
+        2019,
+        1,
+        1,
+        2,
+        1,
+        2,
+        3,
+        50,
+        subsecond_precision = "microsecond"
+      )
+    )
+  )
 })
 
 # ------------------------------------------------------------------------------
@@ -398,8 +569,14 @@ test_that("can compute month start", {
 })
 
 test_that("can't compute start with a year_month_weekday at day precision or greater", {
-  expect_snapshot(error = TRUE, calendar_start(year_month_weekday(2019, 2, 2, 2), "day"))
-  expect_snapshot(error = TRUE, calendar_start(year_month_weekday(2019, 2, 2, 2), "month"))
+  expect_snapshot(
+    error = TRUE,
+    calendar_start(year_month_weekday(2019, 2, 2, 2), "day")
+  )
+  expect_snapshot(
+    error = TRUE,
+    calendar_start(year_month_weekday(2019, 2, 2, 2), "month")
+  )
 })
 
 # ------------------------------------------------------------------------------
@@ -420,7 +597,10 @@ test_that("can compute month end", {
 
 test_that("can't compute end with a year_month_weekday at day precision or greater", {
   expect_snapshot(error = TRUE, calendar_end(year_month_weekday(2019, 2, 2, 2), "day"))
-  expect_snapshot(error = TRUE, calendar_end(year_month_weekday(2019, 2, 2, 2), "month"))
+  expect_snapshot(
+    error = TRUE,
+    calendar_end(year_month_weekday(2019, 2, 2, 2), "month")
+  )
 })
 
 # ------------------------------------------------------------------------------
@@ -466,7 +646,6 @@ test_that("can compute a quarter count", {
 test_that("positive / negative counts are correct", {
   start <- year_month_weekday(1972, 04)
 
-
   end <- year_month_weekday(1973, 03)
   expect_identical(calendar_count_between(start, end, "year"), 0L)
   expect_identical(calendar_count_between(start, end, "month"), 11L)
@@ -478,7 +657,6 @@ test_that("positive / negative counts are correct", {
   end <- year_month_weekday(1973, 05)
   expect_identical(calendar_count_between(start, end, "year"), 1L)
   expect_identical(calendar_count_between(start, end, "month"), 13L)
-
 
   end <- year_month_weekday(1971, 03)
   expect_identical(calendar_count_between(start, end, "year"), -1L)
@@ -502,12 +680,18 @@ test_that("can't compare a 'year_month_weekday' with day precision!", {
 # seq()
 
 test_that("only granular precisions are allowed", {
-  expect_snapshot(error = TRUE, seq(year_month_weekday(2019, 1, 1, 1), by = 1, length.out = 2))
+  expect_snapshot(
+    error = TRUE,
+    seq(year_month_weekday(2019, 1, 1, 1), by = 1, length.out = 2)
+  )
 })
 
 # NOTE: Most tests are done by `year_month_day()` since they share an implementation
 test_that("can generate a sequence", {
-  expect_identical(seq(year_month_day(2019, 1), to = year_month_day(2019, 6), by = 2), year_month_day(2019, c(1, 3, 5)))
+  expect_identical(
+    seq(year_month_day(2019, 1), to = year_month_day(2019, 6), by = 2),
+    year_month_day(2019, c(1, 3, 5))
+  )
 })
 
 # ------------------------------------------------------------------------------
@@ -570,41 +754,124 @@ test_that("strict mode can be activated", {
 })
 
 test_that("can resolve correctly", {
-  x <- year_month_weekday(2019, 1, clock_weekdays$friday, 5, 2, 3, 4, 5, subsecond_precision = "millisecond")
+  x <- year_month_weekday(
+    2019,
+    1,
+    clock_weekdays$friday,
+    5,
+    2,
+    3,
+    4,
+    5,
+    subsecond_precision = "millisecond"
+  )
 
   expect_identical(
     invalid_resolve(x, invalid = "previous"),
-    year_month_weekday(2019, 1, clock_weekdays$thursday, 5, 23, 59, 59, 999, subsecond_precision = "millisecond")
+    year_month_weekday(
+      2019,
+      1,
+      clock_weekdays$thursday,
+      5,
+      23,
+      59,
+      59,
+      999,
+      subsecond_precision = "millisecond"
+    )
   )
   expect_identical(
     invalid_resolve(x, invalid = "previous-day"),
-    year_month_weekday(2019, 1, clock_weekdays$thursday, 5, 2, 3, 4, 5, subsecond_precision = "millisecond")
+    year_month_weekday(
+      2019,
+      1,
+      clock_weekdays$thursday,
+      5,
+      2,
+      3,
+      4,
+      5,
+      subsecond_precision = "millisecond"
+    )
   )
   expect_identical(
     invalid_resolve(x, invalid = "next"),
-    year_month_weekday(2019, 2, clock_weekdays$friday, 1, 0, 0, 0, 0, subsecond_precision = "millisecond")
+    year_month_weekday(
+      2019,
+      2,
+      clock_weekdays$friday,
+      1,
+      0,
+      0,
+      0,
+      0,
+      subsecond_precision = "millisecond"
+    )
   )
   expect_identical(
     invalid_resolve(x, invalid = "next-day"),
-    year_month_weekday(2019, 2, clock_weekdays$friday, 1, 2, 3, 4, 5, subsecond_precision = "millisecond")
+    year_month_weekday(
+      2019,
+      2,
+      clock_weekdays$friday,
+      1,
+      2,
+      3,
+      4,
+      5,
+      subsecond_precision = "millisecond"
+    )
   )
   expect_identical(
     invalid_resolve(x, invalid = "overflow"),
-    year_month_weekday(2019, 2, clock_weekdays$friday, 1, 0, 0, 0, 0, subsecond_precision = "millisecond")
+    year_month_weekday(
+      2019,
+      2,
+      clock_weekdays$friday,
+      1,
+      0,
+      0,
+      0,
+      0,
+      subsecond_precision = "millisecond"
+    )
   )
   expect_identical(
     invalid_resolve(x, invalid = "overflow-day"),
-    year_month_weekday(2019, 2, clock_weekdays$friday, 1, 2, 3, 4, 5, subsecond_precision = "millisecond")
+    year_month_weekday(
+      2019,
+      2,
+      clock_weekdays$friday,
+      1,
+      2,
+      3,
+      4,
+      5,
+      subsecond_precision = "millisecond"
+    )
   )
   expect_identical(
     invalid_resolve(x, invalid = "NA"),
-    year_month_weekday(NA, NA, NA, NA, NA, NA, NA, NA, subsecond_precision = "millisecond")
+    year_month_weekday(
+      NA,
+      NA,
+      NA,
+      NA,
+      NA,
+      NA,
+      NA,
+      NA,
+      subsecond_precision = "millisecond"
+    )
   )
 })
 
 test_that("throws known classed error", {
   expect_snapshot(error = TRUE, invalid_resolve(year_month_weekday(2019, 1, 1, 5)))
-  expect_error(invalid_resolve(year_month_weekday(2019, 1, 1, 5)), class = "clock_error_invalid_date")
+  expect_error(
+    invalid_resolve(year_month_weekday(2019, 1, 1, 5)),
+    class = "clock_error_invalid_date"
+  )
 })
 
 test_that("works with always valid precisions", {

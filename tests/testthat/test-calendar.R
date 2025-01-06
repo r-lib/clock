@@ -218,7 +218,16 @@ test_that("end: can compute day end", {
   expect_identical(calendar_end(x, "day"), x)
 
   x <- year_month_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "nanosecond")
-  expect <- year_month_day(2019, 2, 2, 23, 59, 59, 999999999L, subsecond_precision = "nanosecond")
+  expect <- year_month_day(
+    2019,
+    2,
+    2,
+    23,
+    59,
+    59,
+    999999999L,
+    subsecond_precision = "nanosecond"
+  )
   expect_identical(calendar_end(x, "day"), expect)
 })
 
@@ -227,7 +236,16 @@ test_that("end: can compute hour end", {
   expect_identical(calendar_end(x, "hour"), x)
 
   x <- year_month_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "nanosecond")
-  expect <- year_month_day(2019, 2, 2, 2, 59, 59, 999999999L, subsecond_precision = "nanosecond")
+  expect <- year_month_day(
+    2019,
+    2,
+    2,
+    2,
+    59,
+    59,
+    999999999L,
+    subsecond_precision = "nanosecond"
+  )
   expect_identical(calendar_end(x, "hour"), expect)
 })
 
@@ -236,7 +254,16 @@ test_that("end: can compute minute end", {
   expect_identical(calendar_end(x, "minute"), x)
 
   x <- year_month_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "nanosecond")
-  expect <- year_month_day(2019, 2, 2, 2, 2, 59, 999999999L, subsecond_precision = "nanosecond")
+  expect <- year_month_day(
+    2019,
+    2,
+    2,
+    2,
+    2,
+    59,
+    999999999L,
+    subsecond_precision = "nanosecond"
+  )
   expect_identical(calendar_end(x, "minute"), expect)
 })
 
@@ -245,7 +272,16 @@ test_that("end: can compute second end", {
   expect_identical(calendar_end(x, "second"), x)
 
   x <- year_month_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "nanosecond")
-  expect <- year_month_day(2019, 2, 2, 2, 2, 2, 999999999L, subsecond_precision = "nanosecond")
+  expect <- year_month_day(
+    2019,
+    2,
+    2,
+    2,
+    2,
+    2,
+    999999999L,
+    subsecond_precision = "nanosecond"
+  )
   expect_identical(calendar_end(x, "second"), expect)
 })
 
@@ -341,7 +377,12 @@ test_that("errors on types that don't support min/max calls", {
 test_that("precision: can get the precision", {
   expect_identical(calendar_precision(year_month_day(2019, 1)), "month")
   expect_identical(calendar_precision(year_day(2019, 100)), "day")
-  expect_identical(calendar_precision(year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond")), "nanosecond")
+  expect_identical(
+    calendar_precision(
+      year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond")
+    ),
+    "nanosecond"
+  )
 })
 
 test_that("precision: can only be called on calendars", {

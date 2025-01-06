@@ -23,14 +23,18 @@ test_that("can lookup sys-info", {
 
   info <- sys_time_info(as_sys_time(x), zoned_time_zone(x))
 
-  beginend1 <- as_sys_time(c(
-    year_month_day(2020, 11, 1, 6, 0, 0),
-    year_month_day(2021, 03, 14, 7, 0, 0)
-  ))
-  beginend2 <- as_sys_time(c(
-    year_month_day(2021, 03, 14, 7, 0, 0),
-    year_month_day(2021, 11, 7, 6, 0, 0)
-  ))
+  beginend1 <- as_sys_time(
+    c(
+      year_month_day(2020, 11, 1, 6, 0, 0),
+      year_month_day(2021, 03, 14, 7, 0, 0)
+    )
+  )
+  beginend2 <- as_sys_time(
+    c(
+      year_month_day(2021, 03, 14, 7, 0, 0),
+      year_month_day(2021, 11, 7, 6, 0, 0)
+    )
+  )
 
   expect_identical(info$begin, c(beginend1[1], beginend2[1]))
   expect_identical(info$end, c(beginend1[2], beginend2[2]))
@@ -135,7 +139,9 @@ test_that("can parse with fractional seconds", {
   x <- "2019-01-01T00:00:00.123Z"
   expect_identical(
     sys_time_parse_RFC_3339(x, precision = "millisecond"),
-    as_sys_time(year_month_day(2019, 1, 1, 0, 0, 0, 123, subsecond_precision = "millisecond"))
+    as_sys_time(
+      year_month_day(2019, 1, 1, 0, 0, 0, 123, subsecond_precision = "millisecond")
+    )
   )
 })
 

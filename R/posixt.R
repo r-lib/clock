@@ -2304,9 +2304,7 @@ date_seq.POSIXt <- function(
     return(out)
   }
 
-  if (
-    precision_int %in% c(PRECISION_HOUR, PRECISION_MINUTE, PRECISION_SECOND)
-  ) {
+  if (precision_int %in% c(PRECISION_HOUR, PRECISION_MINUTE, PRECISION_SECOND)) {
     out <- date_seq_hour_minute_second(from, to, by, total_size, precision)
     out <- as.POSIXct(out, tz = zone)
     return(out)

@@ -134,7 +134,7 @@ test_that("`abbreviate` is validated", {
 # add_days()
 
 test_that("can add days with circular arithmetic", {
-  expect_identical(add_days(weekday(6:7), 1), weekday(c(7,1)))
+  expect_identical(add_days(weekday(6:7), 1), weekday(c(7, 1)))
 })
 
 test_that("can add days with NA", {

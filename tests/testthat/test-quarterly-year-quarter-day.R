@@ -28,9 +28,27 @@ test_that("validates value ranges", {
   expect_snapshot(error = TRUE, year_quarter_day(2020, 1, 1, 24))
   expect_snapshot(error = TRUE, year_quarter_day(2020, 1, 1, 1, 60))
   expect_snapshot(error = TRUE, year_quarter_day(2020, 1, 1, 1, 1, 60))
-  expect_snapshot(error = TRUE, year_quarter_day(2020, 1, 1, 1, 1, 1, 1000, subsecond_precision = "millisecond"))
-  expect_snapshot(error = TRUE, year_quarter_day(2020, 1, 1, 1, 1, 1, 1000000, subsecond_precision = "microsecond"))
-  expect_snapshot(error = TRUE, year_quarter_day(2020, 1, 1, 1, 1, 1, 1000000000, subsecond_precision = "nanosecond"))
+  expect_snapshot(
+    error = TRUE,
+    year_quarter_day(2020, 1, 1, 1, 1, 1, 1000, subsecond_precision = "millisecond")
+  )
+  expect_snapshot(
+    error = TRUE,
+    year_quarter_day(2020, 1, 1, 1, 1, 1, 1000000, subsecond_precision = "microsecond")
+  )
+  expect_snapshot(
+    error = TRUE,
+    year_quarter_day(
+      2020,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1000000000,
+      subsecond_precision = "nanosecond"
+    )
+  )
 })
 
 test_that("can get the last day of the quarter", {
@@ -77,7 +95,10 @@ test_that("ptype is correct", {
 
 test_that("proxy is a data frame", {
   expect_identical(vec_proxy(year_quarter_day(2019)), data_frame(year = 2019L))
-  expect_identical(vec_proxy(year_quarter_day(2019, 1)), data_frame(year = 2019L, quarter = 1L))
+  expect_identical(
+    vec_proxy(year_quarter_day(2019, 1)),
+    data_frame(year = 2019L, quarter = 1L)
+  )
 })
 
 test_that("proxy has names on `year`", {
@@ -99,7 +120,11 @@ test_that("full ptype is correct", {
   expect_snapshot_output(vec_ptype_full(year_quarter_day(2019)))
   expect_snapshot_output(vec_ptype_full(year_quarter_day(2019, start = 2)))
   expect_snapshot_output(vec_ptype_full(year_quarter_day(2019, 1, 1)))
-  expect_snapshot_output(vec_ptype_full(year_quarter_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond")))
+  expect_snapshot_output(
+    vec_ptype_full(
+      year_quarter_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond")
+    )
+  )
   expect_snapshot_output(vec_ptype_full(year_quarter_day(2019, 1, 92)))
 })
 
@@ -110,7 +135,11 @@ test_that("abbreviated ptype is correct", {
   expect_snapshot_output(vec_ptype_abbr(year_quarter_day(2019)))
   expect_snapshot_output(vec_ptype_abbr(year_quarter_day(2019, start = 2)))
   expect_snapshot_output(vec_ptype_abbr(year_quarter_day(2019, 1, 1)))
-  expect_snapshot_output(vec_ptype_abbr(year_quarter_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond")))
+  expect_snapshot_output(
+    vec_ptype_abbr(
+      year_quarter_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond")
+    )
+  )
   expect_snapshot_output(vec_ptype_abbr(year_quarter_day(2019, 1, 92)))
 })
 
@@ -248,36 +277,117 @@ test_that("setters require minimum precision", {
     set_second(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4), 1)
   })
   expect_snapshot(error = TRUE, {
-    set_millisecond(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4, minute = 5), 1)
+    set_millisecond(
+      year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4, minute = 5),
+      1
+    )
   })
   expect_snapshot(error = TRUE, {
-    set_microsecond(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4, minute = 5), 1)
+    set_microsecond(
+      year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4, minute = 5),
+      1
+    )
   })
   expect_snapshot(error = TRUE, {
-    set_nanosecond(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4, minute = 5), 1)
+    set_nanosecond(
+      year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4, minute = 5),
+      1
+    )
   })
 })
 
 test_that("setters require correct subsecond precision", {
   expect_snapshot(error = TRUE, {
-    set_millisecond(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "microsecond"), 1)
+    set_millisecond(
+      year_quarter_day(
+        year = 1,
+        quarter = 2,
+        day = 3,
+        hour = 4,
+        minute = 5,
+        second = 6,
+        subsecond = 7,
+        subsecond_precision = "microsecond"
+      ),
+      1
+    )
   })
   expect_snapshot(error = TRUE, {
-    set_millisecond(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "nanosecond"), 1)
+    set_millisecond(
+      year_quarter_day(
+        year = 1,
+        quarter = 2,
+        day = 3,
+        hour = 4,
+        minute = 5,
+        second = 6,
+        subsecond = 7,
+        subsecond_precision = "nanosecond"
+      ),
+      1
+    )
   })
 
   expect_snapshot(error = TRUE, {
-    set_microsecond(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "millisecond"), 1)
+    set_microsecond(
+      year_quarter_day(
+        year = 1,
+        quarter = 2,
+        day = 3,
+        hour = 4,
+        minute = 5,
+        second = 6,
+        subsecond = 7,
+        subsecond_precision = "millisecond"
+      ),
+      1
+    )
   })
   expect_snapshot(error = TRUE, {
-    set_microsecond(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "nanosecond"), 1)
+    set_microsecond(
+      year_quarter_day(
+        year = 1,
+        quarter = 2,
+        day = 3,
+        hour = 4,
+        minute = 5,
+        second = 6,
+        subsecond = 7,
+        subsecond_precision = "nanosecond"
+      ),
+      1
+    )
   })
 
   expect_snapshot(error = TRUE, {
-    set_nanosecond(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "millisecond"), 1)
+    set_nanosecond(
+      year_quarter_day(
+        year = 1,
+        quarter = 2,
+        day = 3,
+        hour = 4,
+        minute = 5,
+        second = 6,
+        subsecond = 7,
+        subsecond_precision = "millisecond"
+      ),
+      1
+    )
   })
   expect_snapshot(error = TRUE, {
-    set_nanosecond(year_quarter_day(year = 1, quarter = 2, day = 3, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "microsecond"), 1)
+    set_nanosecond(
+      year_quarter_day(
+        year = 1,
+        quarter = 2,
+        day = 3,
+        hour = 4,
+        minute = 5,
+        second = 6,
+        subsecond = 7,
+        subsecond_precision = "microsecond"
+      ),
+      1
+    )
   })
 })
 
@@ -300,7 +410,11 @@ test_that("default formats are correct", {
   expect_snapshot(format(year_quarter_day(2019)))
   expect_snapshot(format(year_quarter_day(2019, 1)))
   expect_snapshot(format(year_quarter_day(2019, 1, 1, 1)))
-  expect_snapshot(format(year_quarter_day(2019, 1, 1, 1, 2, 3, 50, subsecond_precision = "microsecond")))
+  expect_snapshot(
+    format(
+      year_quarter_day(2019, 1, 1, 1, 2, 3, 50, subsecond_precision = "microsecond")
+    )
+  )
 })
 
 # ------------------------------------------------------------------------------
@@ -354,7 +468,16 @@ test_that("can compute year start", {
   expect_identical(calendar_start(x, "year"), x)
 
   x <- year_quarter_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "millisecond")
-  expect <- year_quarter_day(2019, 1, 1, 0, 0, 0, 0, subsecond_precision = "millisecond")
+  expect <- year_quarter_day(
+    2019,
+    1,
+    1,
+    0,
+    0,
+    0,
+    0,
+    subsecond_precision = "millisecond"
+  )
   expect_identical(calendar_start(x, "year"), expect)
 })
 
@@ -363,7 +486,16 @@ test_that("can compute quarter start", {
   expect_identical(calendar_start(x, "quarter"), x)
 
   x <- year_quarter_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "millisecond")
-  expect <- year_quarter_day(2019, 2, 1, 0, 0, 0, 0, subsecond_precision = "millisecond")
+  expect <- year_quarter_day(
+    2019,
+    2,
+    1,
+    0,
+    0,
+    0,
+    0,
+    subsecond_precision = "millisecond"
+  )
   expect_identical(calendar_start(x, "quarter"), expect)
 })
 
@@ -375,7 +507,16 @@ test_that("can compute year end", {
   expect_identical(calendar_end(x, "year"), x)
 
   x <- year_quarter_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "millisecond")
-  expect <- year_quarter_day(2019, 4, 92, 23, 59, 59, 999L, subsecond_precision = "millisecond")
+  expect <- year_quarter_day(
+    2019,
+    4,
+    92,
+    23,
+    59,
+    59,
+    999L,
+    subsecond_precision = "millisecond"
+  )
   expect_identical(calendar_end(x, "year"), expect)
 })
 
@@ -384,7 +525,16 @@ test_that("can compute quarter end", {
   expect_identical(calendar_end(x, "quarter"), x)
 
   x <- year_quarter_day(2019, 2:3, 2, 2, 2, 2, 2, subsecond_precision = "millisecond")
-  expect <- year_quarter_day(2019, 2:3, 91:92, 23, 59, 59, 999L, subsecond_precision = "millisecond")
+  expect <- year_quarter_day(
+    2019,
+    2:3,
+    91:92,
+    23,
+    59,
+    59,
+    999L,
+    subsecond_precision = "millisecond"
+  )
   expect_identical(calendar_end(x, "quarter"), expect)
 })
 
@@ -440,7 +590,6 @@ test_that("can't compute a unsupported count precision", {
 test_that("positive / negative counts are correct", {
   start <- year_quarter_day(1972, 03, 04)
 
-
   end <- year_quarter_day(1973, 03, 03)
   expect_identical(calendar_count_between(start, end, "year"), 0L)
   expect_identical(calendar_count_between(start, end, "quarter"), 3L)
@@ -452,7 +601,6 @@ test_that("positive / negative counts are correct", {
   end <- year_quarter_day(1973, 03, 05)
   expect_identical(calendar_count_between(start, end, "year"), 1L)
   expect_identical(calendar_count_between(start, end, "quarter"), 4L)
-
 
   end <- year_quarter_day(1971, 03, 03)
   expect_identical(calendar_count_between(start, end, "year"), -1L)
@@ -471,26 +619,53 @@ test_that("positive / negative counts are correct", {
 # seq()
 
 test_that("only granular precisions are allowed", {
-  expect_snapshot(error = TRUE, seq(year_quarter_day(2019, 1, 1), by = 1, length.out = 2))
+  expect_snapshot(
+    error = TRUE,
+    seq(year_quarter_day(2019, 1, 1), by = 1, length.out = 2)
+  )
 })
 
 test_that("seq(to, by) works", {
-  expect_identical(seq(year_quarter_day(2019, 1), to = year_quarter_day(2020, 2), by = 2), year_quarter_day(c(2019, 2019, 2020), c(1, 3, 1)))
-  expect_identical(seq(year_quarter_day(2019, 1), to = year_quarter_day(2020, 1), by = 2), year_quarter_day(c(2019, 2019, 2020), c(1, 3, 1)))
+  expect_identical(
+    seq(year_quarter_day(2019, 1), to = year_quarter_day(2020, 2), by = 2),
+    year_quarter_day(c(2019, 2019, 2020), c(1, 3, 1))
+  )
+  expect_identical(
+    seq(year_quarter_day(2019, 1), to = year_quarter_day(2020, 1), by = 2),
+    year_quarter_day(c(2019, 2019, 2020), c(1, 3, 1))
+  )
 })
 
 test_that("seq(to, length.out) works", {
-  expect_identical(seq(year_quarter_day(2019, 1), to = year_quarter_day(2020, 2), length.out = 2), year_quarter_day(c(2019, 2020), c(1, 2)))
-  expect_identical(seq(year_quarter_day(2019, 1), to = year_quarter_day(2020, 2), length.out = 6), year_quarter_day(2019, 1) + 0:5)
+  expect_identical(
+    seq(year_quarter_day(2019, 1), to = year_quarter_day(2020, 2), length.out = 2),
+    year_quarter_day(c(2019, 2020), c(1, 2))
+  )
+  expect_identical(
+    seq(year_quarter_day(2019, 1), to = year_quarter_day(2020, 2), length.out = 6),
+    year_quarter_day(2019, 1) + 0:5
+  )
 
-  expect_identical(seq(year_quarter_day(2019, 1), to = year_quarter_day(2020, 2), along.with = 1:2), year_quarter_day(c(2019, 2020), c(1, 2)))
+  expect_identical(
+    seq(year_quarter_day(2019, 1), to = year_quarter_day(2020, 2), along.with = 1:2),
+    year_quarter_day(c(2019, 2020), c(1, 2))
+  )
 })
 
 test_that("seq(by, length.out) works", {
-  expect_identical(seq(year_quarter_day(2019, 1), by = 2, length.out = 3), year_quarter_day(2019, 1) + c(0, 2, 4))
-  expect_identical(seq(year_quarter_day(2019, 1), by = -2, length.out = 3), year_quarter_day(2019, 1) + c(0, -2, -4))
+  expect_identical(
+    seq(year_quarter_day(2019, 1), by = 2, length.out = 3),
+    year_quarter_day(2019, 1) + c(0, 2, 4)
+  )
+  expect_identical(
+    seq(year_quarter_day(2019, 1), by = -2, length.out = 3),
+    year_quarter_day(2019, 1) + c(0, -2, -4)
+  )
 
-  expect_identical(seq(year_quarter_day(2019, 1), by = 2, along.with = 1:3), year_quarter_day(2019, 1) + c(0, 2, 4))
+  expect_identical(
+    seq(year_quarter_day(2019, 1), by = 2, along.with = 1:3),
+    year_quarter_day(2019, 1) + c(0, 2, 4)
+  )
 })
 
 # ------------------------------------------------------------------------------
@@ -646,7 +821,10 @@ test_that("can resolve correctly", {
 
 test_that("throws known classed error", {
   expect_snapshot(error = TRUE, invalid_resolve(year_quarter_day(2019, 1, 91)))
-  expect_error(invalid_resolve(year_quarter_day(2019, 1, 91)), class = "clock_error_invalid_date")
+  expect_error(
+    invalid_resolve(year_quarter_day(2019, 1, 91)),
+    class = "clock_error_invalid_date"
+  )
 })
 
 test_that("works with always valid precisions", {
@@ -683,9 +861,15 @@ test_that("minimums are right", {
     clock_minimum(year_quarter_day(1, 1, 1, 1))
     clock_minimum(year_quarter_day(1, 1, 1, 1, 1))
     clock_minimum(year_quarter_day(1, 1, 1, 1, 1, 1))
-    clock_minimum(year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "millisecond"))
-    clock_minimum(year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "microsecond"))
-    clock_minimum(year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond"))
+    clock_minimum(
+      year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "millisecond")
+    )
+    clock_minimum(
+      year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "microsecond")
+    )
+    clock_minimum(
+      year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond")
+    )
   })
 })
 
@@ -697,9 +881,15 @@ test_that("maximums are right", {
     clock_maximum(year_quarter_day(1, 1, 1, 1))
     clock_maximum(year_quarter_day(1, 1, 1, 1, 1))
     clock_maximum(year_quarter_day(1, 1, 1, 1, 1, 1))
-    clock_maximum(year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "millisecond"))
-    clock_maximum(year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "microsecond"))
-    clock_maximum(year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond"))
+    clock_maximum(
+      year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "millisecond")
+    )
+    clock_maximum(
+      year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "microsecond")
+    )
+    clock_maximum(
+      year_quarter_day(1, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond")
+    )
   })
 })
 
@@ -799,8 +989,14 @@ test_that("add_*() retains names", {
 })
 
 test_that("`start` value is retained", {
-  expect_identical(year_quarter_day(2019, 1, 1) + duration_quarters(1), year_quarter_day(2019, 2, 1))
-  expect_identical(year_quarter_day(2019, 1, 1) + duration_quarters(5), year_quarter_day(2020, 2, 1))
+  expect_identical(
+    year_quarter_day(2019, 1, 1) + duration_quarters(1),
+    year_quarter_day(2019, 2, 1)
+  )
+  expect_identical(
+    year_quarter_day(2019, 1, 1) + duration_quarters(5),
+    year_quarter_day(2020, 2, 1)
+  )
 
   # Ensure that the `start` is retained
   expect_identical(
