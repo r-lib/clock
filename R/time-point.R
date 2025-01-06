@@ -534,6 +534,17 @@ add_months.clock_time_point <- function(x, n, ...) {
 # ------------------------------------------------------------------------------
 
 #' @export
+diff.clock_time_point <- function(x, lag = 1L, differences = 1L, ...) {
+  # Special care to ensure that when `lag * differences >= n`, we still
+  # return a duration type rather than `vec_slice(x, 0L)` which vctrs does by
+  # default. It is always valid to diff the duration in place of the time point.
+  x <- as_duration(x)
+  diff(x, lag = lag, differences = differences, ...)
+}
+
+# ------------------------------------------------------------------------------
+
+#' @export
 as_duration.clock_time_point <- function(x, ...) {
   check_dots_empty0(...)
   time_point_duration(x, retain_names = TRUE)

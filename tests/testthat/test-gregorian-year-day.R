@@ -771,6 +771,41 @@ test_that("is.infinite() works", {
 })
 
 # ------------------------------------------------------------------------------
+# diff()
+
+test_that("works with `lag` and `differences`", {
+  x <- year_day(2019:2026)
+  expect_identical(diff(x), rep(duration_years(1), 7))
+  expect_identical(diff(x, lag = 2), rep(duration_years(2), 6))
+  expect_identical(diff(x, differences = 2), rep(duration_years(0), 6))
+  expect_identical(
+    diff(x, lag = 3, differences = 2),
+    rep(duration_years(0), 2)
+  )
+})
+
+test_that("works with `lag` and `differences` that force an empty result (#364)", {
+  expect_identical(diff(year_day(integer())), duration_years())
+  expect_identical(diff(year_day(1)), duration_years())
+  expect_identical(
+    diff(year_day(1:8), lag = 4, differences = 3),
+    duration_years()
+  )
+})
+
+test_that("errors on invalid precisions", {
+  expect_snapshot(error = TRUE, {
+    diff(year_day(2019, 1))
+  })
+})
+
+test_that("errors on invalid lag/differences", {
+  # These are base R errors we don't control
+  expect_error(diff(year_day(2019), lag = 1:2))
+  expect_error(diff(year_day(2019), differences = 1:2))
+})
+
+# ------------------------------------------------------------------------------
 # clock_minimum() / clock_maximum()
 
 test_that("minimums are right", {
