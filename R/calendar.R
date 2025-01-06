@@ -46,7 +46,12 @@ ptype2_calendar_and_calendar <- function(x, y, ...) {
   if (calendar_precision_attribute(x) == calendar_precision_attribute(y)) {
     x
   } else {
-    stop_incompatible_type(x, y, ..., details = "Can't combine calendars with different precisions.")
+    stop_incompatible_type(
+      x,
+      y,
+      ...,
+      details = "Can't combine calendars with different precisions."
+    )
   }
 }
 
@@ -54,7 +59,12 @@ cast_calendar_to_calendar <- function(x, to, ...) {
   if (calendar_precision_attribute(x) == calendar_precision_attribute(to)) {
     x
   } else {
-    stop_incompatible_cast(x, to, ..., details = "Can't cast between calendars with different precisions.")
+    stop_incompatible_cast(
+      x,
+      to,
+      ...,
+      details = "Can't cast between calendars with different precisions."
+    )
   }
 }
 
@@ -161,31 +171,35 @@ calendar_leap_year.clock_calendar <- function(x) {
 #' calendar_month_factor(x)
 #' calendar_month_factor(x, abbreviate = TRUE)
 #' calendar_month_factor(x, labels = "fr")
-calendar_month_factor <- function(x,
-                                  ...,
-                                  labels = "en",
-                                  abbreviate = FALSE) {
+calendar_month_factor <- function(x, ..., labels = "en", abbreviate = FALSE) {
   check_calendar(x)
   UseMethod("calendar_month_factor")
 }
 
 #' @export
-calendar_month_factor.clock_calendar <- function(x,
-                                                 ...,
-                                                 labels = "en",
-                                                 abbreviate = FALSE) {
+calendar_month_factor.clock_calendar <- function(
+  x,
+  ...,
+  labels = "en",
+  abbreviate = FALSE
+) {
   stop_clock_unsupported(x)
 }
 
-calendar_month_factor_impl <- function(x,
-                                       labels,
-                                       abbreviate,
-                                       ...,
-                                       error_call = caller_env()) {
+calendar_month_factor_impl <- function(
+  x,
+  labels,
+  abbreviate,
+  ...,
+  error_call = caller_env()
+) {
   check_dots_empty0(...)
 
   if (calendar_precision_attribute(x) < PRECISION_MONTH) {
-    cli::cli_abort("{.arg x} must have at least {.str month} precision.", call = error_call)
+    cli::cli_abort(
+      "{.arg x} must have at least {.str month} precision.",
+      call = error_call
+    )
   }
 
   if (is_character(labels)) {
@@ -633,7 +647,6 @@ calendar_widen_time <- function(x, x_precision, precision) {
 #' calendar_end(x, "month")
 NULL
 
-
 #' @rdname calendar-boundary
 #' @export
 calendar_start <- function(x, precision) {
@@ -646,7 +659,6 @@ calendar_start.clock_calendar <- function(x, precision) {
   stop_clock_unsupported(x)
 }
 
-
 #' @rdname calendar-boundary
 #' @export
 calendar_end <- function(x, precision) {
@@ -658,7 +670,6 @@ calendar_end <- function(x, precision) {
 calendar_end.clock_calendar <- function(x, precision) {
   stop_clock_unsupported(x)
 }
-
 
 calendar_start_end_checks <- function(x, x_precision, precision, which) {
   calendar_check_precision(x, precision)
@@ -797,21 +808,19 @@ NULL
 
 #' @rdname calendar-count-between
 #' @export
-calendar_count_between <- function(start,
-                                   end,
-                                   precision,
-                                   ...,
-                                   n = 1L) {
+calendar_count_between <- function(start, end, precision, ..., n = 1L) {
   check_calendar(start)
   UseMethod("calendar_count_between")
 }
 
 #' @export
-calendar_count_between.clock_calendar <- function(start,
-                                                  end,
-                                                  precision,
-                                                  ...,
-                                                  n = 1L) {
+calendar_count_between.clock_calendar <- function(
+  start,
+  end,
+  precision,
+  ...,
+  n = 1L
+) {
   check_dots_empty0(...)
   check_calendar(end)
 
@@ -987,7 +996,12 @@ calendar_is_precision <- function(x, precision) {
   UseMethod("calendar_is_precision")
 }
 
-calendar_check_precision <- function(x, precision, ..., error_call = caller_env()) {
+calendar_check_precision <- function(
+  x,
+  precision,
+  ...,
+  error_call = caller_env()
+) {
   if (calendar_is_precision(x, precision)) {
     return(invisible(NULL))
   }
@@ -1008,11 +1022,13 @@ calendar_precision_attribute <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-calendar_check_minimum_precision <- function(x,
-                                             precision,
-                                             ...,
-                                             arg = caller_arg(x),
-                                             call = caller_env()) {
+calendar_check_minimum_precision <- function(
+  x,
+  precision,
+  ...,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   x_precision <- calendar_precision_attribute(x)
 
   if (x_precision >= precision) {
@@ -1028,11 +1044,13 @@ calendar_check_minimum_precision <- function(x,
   cli::cli_abort(message, call = call)
 }
 
-calendar_check_exact_precision <- function(x,
-                                           precision,
-                                           ...,
-                                           arg = caller_arg(x),
-                                           call = caller_env()) {
+calendar_check_exact_precision <- function(
+  x,
+  precision,
+  ...,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   x_precision <- calendar_precision_attribute(x)
 
   if (x_precision %in% precision) {
@@ -1051,9 +1069,11 @@ calendar_check_exact_precision <- function(x,
 }
 
 # For use in calendar constructor helpers
-calendar_check_subsecond_precision <- function(subsecond_precision,
-                                               ...,
-                                               call = caller_env()) {
+calendar_check_subsecond_precision <- function(
+  subsecond_precision,
+  ...,
+  call = caller_env()
+) {
   if (is_null(subsecond_precision)) {
     cli::cli_abort(
       "When {.arg subsecond} is provided, {.arg subsecond_precision} must also be specified.",
@@ -1066,10 +1086,12 @@ calendar_check_subsecond_precision <- function(subsecond_precision,
 
 # ------------------------------------------------------------------------------
 
-calendar_check_no_invalid <- function(x,
-                                      ...,
-                                      arg = caller_arg(x),
-                                      call = caller_env()) {
+calendar_check_no_invalid <- function(
+  x,
+  ...,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   if (!invalid_any(x)) {
     return(invisible(NULL))
   }
@@ -1104,15 +1126,21 @@ calendar_ptype_abbr <- function(x, abbr) {
 # ------------------------------------------------------------------------------
 
 arith_calendar_and_missing <- function(op, x, y, ...) {
-  switch (
+  switch(
     op,
     "+" = x,
     stop_incompatible_op(op, x, y, ...)
   )
 }
 
-arith_calendar_and_calendar <- function(op, x, y, ..., calendar_minus_calendar_fn) {
-  switch (
+arith_calendar_and_calendar <- function(
+  op,
+  x,
+  y,
+  ...,
+  calendar_minus_calendar_fn
+) {
+  switch(
     op,
     "-" = calendar_minus_calendar_fn(op, x, y, ...),
     stop_incompatible_op(op, x, y, ...)
@@ -1120,7 +1148,7 @@ arith_calendar_and_calendar <- function(op, x, y, ..., calendar_minus_calendar_f
 }
 
 arith_calendar_and_duration <- function(op, x, y, ...) {
-  switch (
+  switch(
     op,
     "+" = add_duration(x, y),
     "-" = add_duration(x, -y),
@@ -1129,28 +1157,50 @@ arith_calendar_and_duration <- function(op, x, y, ...) {
 }
 
 arith_duration_and_calendar <- function(op, x, y, ...) {
-  switch (
+  switch(
     op,
     "+" = add_duration(y, x, swapped = TRUE),
-    "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a calendar from a duration.", ...),
+    "-" = stop_incompatible_op(
+      op,
+      x,
+      y,
+      details = "Can't subtract a calendar from a duration.",
+      ...
+    ),
     stop_incompatible_op(op, x, y, ...)
   )
 }
 
 arith_calendar_and_numeric <- function(op, x, y, ...) {
-  switch (
+  switch(
     op,
-    "+" = add_duration(x, duration_helper(y, calendar_precision_attribute(x), retain_names = TRUE)),
-    "-" = add_duration(x, duration_helper(-y, calendar_precision_attribute(x), retain_names = TRUE)),
+    "+" = add_duration(
+      x,
+      duration_helper(y, calendar_precision_attribute(x), retain_names = TRUE)
+    ),
+    "-" = add_duration(
+      x,
+      duration_helper(-y, calendar_precision_attribute(x), retain_names = TRUE)
+    ),
     stop_incompatible_op(op, x, y, ...)
   )
 }
 
 arith_numeric_and_calendar <- function(op, x, y, ...) {
-  switch (
+  switch(
     op,
-    "+" = add_duration(y, duration_helper(x, calendar_precision_attribute(y), retain_names = TRUE), swapped = TRUE),
-    "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a calendar from a duration.", ...),
+    "+" = add_duration(
+      y,
+      duration_helper(x, calendar_precision_attribute(y), retain_names = TRUE),
+      swapped = TRUE
+    ),
+    "-" = stop_incompatible_op(
+      op,
+      x,
+      y,
+      details = "Can't subtract a calendar from a duration.",
+      ...
+    ),
     stop_incompatible_op(op, x, y, ...)
   )
 }
@@ -1238,7 +1288,9 @@ add_nanoseconds.clock_calendar <- function(x, n, ...) {
 advice_convert_to_time_point <- function() {
   c(
     i = "Do you need to convert to a time point first?",
-    i = cli::format_inline("Use {.fn as_naive_time} or {.fn as_sys_time} to convert to a time point.")
+    i = cli::format_inline(
+      "Use {.fn as_naive_time} or {.fn as_sys_time} to convert to a time point."
+    )
   )
 }
 
@@ -1301,4 +1353,3 @@ is_calendar <- function(x) {
 check_calendar <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
   check_inherits(x, what = "clock_calendar", arg = arg, call = call)
 }
-

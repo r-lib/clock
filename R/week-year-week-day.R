@@ -58,16 +58,18 @@
 #' # Last days of the year
 #' as_year_month_day(set_day(x, 7))
 #' as_year_month_day(set_day(y, 7))
-year_week_day <- function(year,
-                          week = NULL,
-                          day = NULL,
-                          hour = NULL,
-                          minute = NULL,
-                          second = NULL,
-                          subsecond = NULL,
-                          ...,
-                          start = NULL,
-                          subsecond_precision = NULL) {
+year_week_day <- function(
+  year,
+  week = NULL,
+  day = NULL,
+  hour = NULL,
+  minute = NULL,
+  second = NULL,
+  subsecond = NULL,
+  ...,
+  start = NULL,
+  subsecond_precision = NULL
+) {
   check_dots_empty()
 
   start <- week_validate_start(start)
@@ -87,14 +89,35 @@ year_week_day <- function(year,
     fields <- list(year = year, week = week, day = day, hour = hour)
   } else if (is_null(second)) {
     precision <- PRECISION_MINUTE
-    fields <- list(year = year, week = week, day = day, hour = hour, minute = minute)
+    fields <- list(
+      year = year,
+      week = week,
+      day = day,
+      hour = hour,
+      minute = minute
+    )
   } else if (is_null(subsecond)) {
     precision <- PRECISION_SECOND
-    fields <- list(year = year, week = week, day = day, hour = hour, minute = minute, second = second)
+    fields <- list(
+      year = year,
+      week = week,
+      day = day,
+      hour = hour,
+      minute = minute,
+      second = second
+    )
   } else {
     calendar_check_subsecond_precision(subsecond_precision)
     precision <- precision_to_integer(subsecond_precision)
-    fields <- list(year = year, week = week, day = day, hour = hour, minute = minute, second = second, subsecond = subsecond)
+    fields <- list(
+      year = year,
+      week = week,
+      day = day,
+      hour = hour,
+      minute = minute,
+      second = second,
+      subsecond = subsecond
+    )
   }
 
   if (is_last(fields$week)) {
@@ -217,14 +240,63 @@ vec_ptype.clock_year_week_day <- function(x, ...) {
     list(year = f),
     abort("Internal error: Invalid precision"),
     abort("Internal error: Invalid precision"),
-    list(year = f, week = f),
-    list(year = f, week = f, day = f),
-    list(year = f, week = f, day = f, hour = f),
-    list(year = f, week = f, day = f, hour = f, minute = f),
-    list(year = f, week = f, day = f, hour = f, minute = f, second = f),
-    list(year = f, week = f, day = f, hour = f, minute = f, second = f, subsecond = f),
-    list(year = f, week = f, day = f, hour = f, minute = f, second = f, subsecond = f),
-    list(year = f, week = f, day = f, hour = f, minute = f, second = f, subsecond = f),
+    list(
+      year = f,
+      week = f
+    ),
+    list(
+      year = f,
+      week = f,
+      day = f
+    ),
+    list(
+      year = f,
+      week = f,
+      day = f,
+      hour = f
+    ),
+    list(
+      year = f,
+      week = f,
+      day = f,
+      hour = f,
+      minute = f
+    ),
+    list(
+      year = f,
+      week = f,
+      day = f,
+      hour = f,
+      minute = f,
+      second = f
+    ),
+    list(
+      year = f,
+      week = f,
+      day = f,
+      hour = f,
+      minute = f,
+      second = f,
+      subsecond = f
+    ),
+    list(
+      year = f,
+      week = f,
+      day = f,
+      hour = f,
+      minute = f,
+      second = f,
+      subsecond = f
+    ),
+    list(
+      year = f,
+      week = f,
+      day = f,
+      hour = f,
+      minute = f,
+      second = f,
+      subsecond = f
+    ),
     abort("Internal error: Invalid precision.")
   )
 
@@ -234,7 +306,12 @@ vec_ptype.clock_year_week_day <- function(x, ...) {
 #' @export
 vec_ptype2.clock_year_week_day.clock_year_week_day <- function(x, y, ...) {
   if (week_start(x) != week_start(y)) {
-    stop_incompatible_type(x, y, ..., details = "Can't combine week types with different `start`s.")
+    stop_incompatible_type(
+      x,
+      y,
+      ...,
+      details = "Can't combine week types with different `start`s."
+    )
   }
 
   ptype2_calendar_and_calendar(x, y, ...)
@@ -243,7 +320,12 @@ vec_ptype2.clock_year_week_day.clock_year_week_day <- function(x, y, ...) {
 #' @export
 vec_cast.clock_year_week_day.clock_year_week_day <- function(x, to, ...) {
   if (week_start(x) != week_start(to)) {
-    stop_incompatible_cast(x, to, ..., details = "Can't cast between week types with different `start`s.")
+    stop_incompatible_cast(
+      x,
+      to,
+      ...,
+      details = "Can't cast between week types with different `start`s."
+    )
   }
 
   cast_calendar_to_calendar(x, to, ...)
@@ -320,7 +402,13 @@ invalid_resolve.clock_year_week_day <- function(x, ..., invalid = NULL) {
   if (precision < PRECISION_WEEK) {
     x
   } else {
-    fields <- invalid_resolve_year_week_day_cpp(x, precision, start, invalid, current_env())
+    fields <- invalid_resolve_year_week_day_cpp(
+      x,
+      precision,
+      start,
+      invalid,
+      current_env()
+    )
     new_year_week_day_from_fields(fields, precision, start, names(x))
   }
 }
@@ -595,7 +683,12 @@ set_field_year_week_day <- function(x, value, component) {
   out <- vec_unstructure(x)
   out[[field]] <- value
 
-  new_year_week_day_from_fields(out, precision_out, start_out, names = names_out)
+  new_year_week_day_from_fields(
+    out,
+    precision_out,
+    start_out,
+    names = names_out
+  )
 }
 
 set_field_year_week_day_last <- function(x) {
@@ -611,7 +704,12 @@ set_field_year_week_day_last <- function(x) {
   out <- vec_unstructure(x)
   out[["week"]] <- value
 
-  new_year_week_day_from_fields(out, precision_out, start_out, names = names_out)
+  new_year_week_day_from_fields(
+    out,
+    precision_out,
+    start_out,
+    names = names_out
+  )
 }
 
 # ------------------------------------------------------------------------------
@@ -640,7 +738,7 @@ year_week_day_component_to_precision <- function(component) {
 }
 
 year_week_day_component_to_field <- function(component) {
-  switch (
+  switch(
     component,
     year = component,
     week = component,
@@ -673,7 +771,13 @@ vec_arith.clock_year_week_day.MISSING <- function(op, x, y, ...) {
 #' @method vec_arith.clock_year_week_day clock_year_week_day
 #' @export
 vec_arith.clock_year_week_day.clock_year_week_day <- function(op, x, y, ...) {
-  arith_calendar_and_calendar(op, x, y, ..., calendar_minus_calendar_fn = year_week_day_minus_year_week_day)
+  arith_calendar_and_calendar(
+    op,
+    x,
+    y,
+    ...,
+    calendar_minus_calendar_fn = year_week_day_minus_year_week_day
+  )
 }
 
 #' @method vec_arith.clock_year_week_day clock_duration
@@ -762,11 +866,13 @@ add_years.clock_year_week_day <- function(x, n, ...) {
   year_week_day_plus_duration(x, n, PRECISION_YEAR)
 }
 
-year_week_day_plus_duration <- function(x,
-                                        n,
-                                        n_precision,
-                                        ...,
-                                        error_call = caller_env()) {
+year_week_day_plus_duration <- function(
+  x,
+  n,
+  n_precision,
+  ...,
+  error_call = caller_env()
+) {
   check_dots_empty0(...)
 
   start <- week_start(x)
@@ -833,7 +939,7 @@ year_week_day_plus_duration <- function(x,
 #'
 #' # From other calendars
 #' as_year_week_day(year_quarter_day(2019, quarter = 2, day = 50))
-as_year_week_day <- function(x, ..., start = NULL)  {
+as_year_week_day <- function(x, ..., start = NULL) {
   UseMethod("as_year_week_day")
 }
 
@@ -1158,18 +1264,22 @@ calendar_end.clock_year_week_day <- function(x, precision) {
 #' x <- year_week_day(2001, 1, 2)
 #' y <- year_week_day(2021, 1, c(1, 3))
 #' calendar_count_between(x, y, "year")
-calendar_count_between.clock_year_week_day <- function(start,
-                                                       end,
-                                                       precision,
-                                                       ...,
-                                                       n = 1L) {
+calendar_count_between.clock_year_week_day <- function(
+  start,
+  end,
+  precision,
+  ...,
+  n = 1L
+) {
   NextMethod()
 }
 
 #' @export
-calendar_count_between_standardize_precision_n.clock_year_week_day <- function(x,
-                                                                               precision,
-                                                                               n) {
+calendar_count_between_standardize_precision_n.clock_year_week_day <- function(
+  x,
+  precision,
+  n
+) {
   check_precision(precision)
   precision_int <- precision_to_integer(precision)
 
@@ -1183,9 +1293,11 @@ calendar_count_between_standardize_precision_n.clock_year_week_day <- function(x
 }
 
 #' @export
-calendar_count_between_compute.clock_year_week_day <- function(start,
-                                                               end,
-                                                               precision) {
+calendar_count_between_compute.clock_year_week_day <- function(
+  start,
+  end,
+  precision
+) {
   check_precision(precision)
   precision <- precision_to_integer(precision)
 
@@ -1198,9 +1310,11 @@ calendar_count_between_compute.clock_year_week_day <- function(start,
 }
 
 #' @export
-calendar_count_between_proxy_compare.clock_year_week_day <- function(start,
-                                                                     end,
-                                                                     precision) {
+calendar_count_between_proxy_compare.clock_year_week_day <- function(
+  start,
+  end,
+  precision
+) {
   check_precision(precision)
   precision <- precision_to_integer(precision)
 
@@ -1261,12 +1375,14 @@ calendar_count_between_proxy_compare.clock_year_week_day <- function(start,
 #' # Which we can then set the week of.
 #' # Some years have 53 weeks, some have 52.
 #' set_week(x, "last")
-seq.clock_year_week_day <- function(from,
-                                    to = NULL,
-                                    by = NULL,
-                                    length.out = NULL,
-                                    along.with = NULL,
-                                    ...) {
+seq.clock_year_week_day <- function(
+  from,
+  to = NULL,
+  by = NULL,
+  length.out = NULL,
+  along.with = NULL,
+  ...
+) {
   precision <- calendar_precision_attribute(from)
 
   if (precision > PRECISION_YEAR) {
@@ -1321,9 +1437,25 @@ week_start <- function(x) {
 week_start_prettify <- function(start, ..., abbreviate = FALSE) {
   check_dots_empty()
   if (abbreviate) {
-    c("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")[start]
+    c(
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    )[start]
   } else {
-    c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")[start]
+    c(
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    )[start]
   }
 }
 

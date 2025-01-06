@@ -44,16 +44,18 @@
 #'
 #' # Resolve this invalid date by using the previous valid date
 #' invalid_resolve(x, invalid = "previous")
-year_month_weekday <- function(year,
-                               month = NULL,
-                               day = NULL,
-                               index = NULL,
-                               hour = NULL,
-                               minute = NULL,
-                               second = NULL,
-                               subsecond = NULL,
-                               ...,
-                               subsecond_precision = NULL) {
+year_month_weekday <- function(
+  year,
+  month = NULL,
+  day = NULL,
+  index = NULL,
+  hour = NULL,
+  minute = NULL,
+  second = NULL,
+  subsecond = NULL,
+  ...,
+  subsecond_precision = NULL
+) {
   if (xor(is_null(day), is_null(index))) {
     abort("If either `day` or `index` is specified, both must be specified.")
   }
@@ -70,17 +72,47 @@ year_month_weekday <- function(year,
     fields <- list(year = year, month = month, day = day, index = index)
   } else if (is_null(minute)) {
     precision <- PRECISION_HOUR
-    fields <- list(year = year, month = month, day = day, index = index, hour = hour)
+    fields <- list(
+      year = year,
+      month = month,
+      day = day,
+      index = index,
+      hour = hour
+    )
   } else if (is_null(second)) {
     precision <- PRECISION_MINUTE
-    fields <- list(year = year, month = month, day = day, index = index, hour = hour, minute = minute)
+    fields <- list(
+      year = year,
+      month = month,
+      day = day,
+      index = index,
+      hour = hour,
+      minute = minute
+    )
   } else if (is_null(subsecond)) {
     precision <- PRECISION_SECOND
-    fields <- list(year = year, month = month, day = day, index = index, hour = hour, minute = minute, second = second)
+    fields <- list(
+      year = year,
+      month = month,
+      day = day,
+      index = index,
+      hour = hour,
+      minute = minute,
+      second = second
+    )
   } else {
     calendar_check_subsecond_precision(subsecond_precision)
     precision <- precision_to_integer(subsecond_precision)
-    fields <- list(year = year, month = month, day = day, index = index, hour = hour, minute = minute, second = second, subsecond = subsecond)
+    fields <- list(
+      year = year,
+      month = month,
+      day = day,
+      index = index,
+      hour = hour,
+      minute = minute,
+      second = second,
+      subsecond = subsecond
+    )
   }
 
   if (is_last(fields$index)) {
@@ -219,12 +251,20 @@ vec_ptype.clock_year_month_weekday <- function(x, ...) {
 }
 
 #' @export
-vec_ptype2.clock_year_month_weekday.clock_year_month_weekday <- function(x, y, ...) {
+vec_ptype2.clock_year_month_weekday.clock_year_month_weekday <- function(
+  x,
+  y,
+  ...
+) {
   ptype2_calendar_and_calendar(x, y, ...)
 }
 
 #' @export
-vec_cast.clock_year_month_weekday.clock_year_month_weekday <- function(x, to, ...) {
+vec_cast.clock_year_month_weekday.clock_year_month_weekday <- function(
+  x,
+  to,
+  ...
+) {
   cast_calendar_to_calendar(x, to, ...)
 }
 
@@ -301,7 +341,12 @@ invalid_resolve.clock_year_month_weekday <- function(x, ..., invalid = NULL) {
   if (precision < PRECISION_DAY) {
     x
   } else {
-    fields <- invalid_resolve_year_month_weekday_cpp(x, precision, invalid, current_env())
+    fields <- invalid_resolve_year_month_weekday_cpp(
+      x,
+      precision,
+      invalid,
+      current_env()
+    )
     new_year_month_weekday_from_fields(fields, precision, names(x))
   }
 }
@@ -524,12 +569,19 @@ set_day.clock_year_month_weekday <- function(x, value, ..., index = NULL) {
 
   if (precision == PRECISION_MONTH) {
     if (!has_index) {
-      abort("For 'month' precision 'year_month_weekday', both the day and index must be set simultaneously.")
+      abort(
+        "For 'month' precision 'year_month_weekday', both the day and index must be set simultaneously."
+      )
     }
 
     # Promote up to day precision so we can assign to fields individually
     ones <- ones_along(x, na_propagate = TRUE)
-    fields <- list(year = get_year(x), month = get_month(x), day = ones, index = ones)
+    fields <- list(
+      year = get_year(x),
+      month = get_month(x),
+      day = ones,
+      index = ones
+    )
     x <- new_year_month_weekday_from_fields(fields, PRECISION_DAY, names(x))
   }
 
@@ -686,7 +738,7 @@ year_month_weekday_component_to_precision <- function(component) {
 }
 
 year_month_weekday_component_to_field <- function(component) {
-  switch (
+  switch(
     component,
     year = component,
     month = component,
@@ -719,8 +771,19 @@ vec_arith.clock_year_month_weekday.MISSING <- function(op, x, y, ...) {
 
 #' @method vec_arith.clock_year_month_weekday clock_year_month_weekday
 #' @export
-vec_arith.clock_year_month_weekday.clock_year_month_weekday <- function(op, x, y, ...) {
-  arith_calendar_and_calendar(op, x, y, ..., calendar_minus_calendar_fn = year_month_weekday_minus_year_month_weekday)
+vec_arith.clock_year_month_weekday.clock_year_month_weekday <- function(
+  op,
+  x,
+  y,
+  ...
+) {
+  arith_calendar_and_calendar(
+    op,
+    x,
+    y,
+    ...,
+    calendar_minus_calendar_fn = year_month_weekday_minus_year_month_weekday
+  )
 }
 
 #' @method vec_arith.clock_year_month_weekday clock_duration
@@ -832,11 +895,13 @@ add_months.clock_year_month_weekday <- function(x, n, ...) {
   year_month_weekday_plus_duration(x, n, PRECISION_MONTH)
 }
 
-year_month_weekday_plus_duration <- function(x,
-                                             n,
-                                             n_precision,
-                                             ...,
-                                             error_call = caller_env()) {
+year_month_weekday_plus_duration <- function(
+  x,
+  n,
+  n_precision,
+  ...,
+  error_call = caller_env()
+) {
   check_dots_empty0(...)
 
   x_precision <- calendar_precision_attribute(x)
@@ -900,7 +965,7 @@ year_month_weekday_plus_duration <- function(x,
 #'
 #' # From other calendars
 #' as_year_month_weekday(year_quarter_day(2019, quarter = 2, day = 50))
-as_year_month_weekday <- function(x, ...)  {
+as_year_month_weekday <- function(x, ...) {
   UseMethod("as_year_month_weekday")
 }
 
@@ -948,10 +1013,12 @@ calendar_leap_year.clock_year_month_weekday <- function(x) {
 # ------------------------------------------------------------------------------
 
 #' @export
-calendar_month_factor.clock_year_month_weekday <- function(x,
-                                                           ...,
-                                                           labels = "en",
-                                                           abbreviate = FALSE) {
+calendar_month_factor.clock_year_month_weekday <- function(
+  x,
+  ...,
+  labels = "en",
+  abbreviate = FALSE
+) {
   check_dots_empty0(...)
   calendar_month_factor_impl(x, labels, abbreviate)
 }
@@ -1276,33 +1343,49 @@ calendar_end.clock_year_month_weekday <- function(x, precision) {
 #' # are not comparable, so this won't work
 #' x <- year_month_weekday(2001, 2, 1, 1)
 #' try(calendar_count_between(x, x, "month"))
-calendar_count_between.clock_year_month_weekday <- function(start,
-                                                            end,
-                                                            precision,
-                                                            ...,
-                                                            n = 1L) {
+calendar_count_between.clock_year_month_weekday <- function(
+  start,
+  end,
+  precision,
+  ...,
+  n = 1L
+) {
   NextMethod()
 }
 
 #' @export
-calendar_count_between_standardize_precision_n.clock_year_month_weekday <- function(x,
-                                                                                    precision,
-                                                                                    n) {
-  calendar_count_between_standardize_precision_n.clock_year_month_day(x, precision, n)
+calendar_count_between_standardize_precision_n.clock_year_month_weekday <- function(
+  x,
+  precision,
+  n
+) {
+  calendar_count_between_standardize_precision_n.clock_year_month_day(
+    x,
+    precision,
+    n
+  )
 }
 
 #' @export
-calendar_count_between_compute.clock_year_month_weekday <- function(start,
-                                                                    end,
-                                                                    precision) {
+calendar_count_between_compute.clock_year_month_weekday <- function(
+  start,
+  end,
+  precision
+) {
   calendar_count_between_compute.clock_year_month_day(start, end, precision)
 }
 
 #' @export
-calendar_count_between_proxy_compare.clock_year_month_weekday <- function(start,
-                                                                          end,
-                                                                          precision) {
-  calendar_count_between_proxy_compare.clock_year_month_day(start, end, precision)
+calendar_count_between_proxy_compare.clock_year_month_weekday <- function(
+  start,
+  end,
+  precision
+) {
+  calendar_count_between_proxy_compare.clock_year_month_day(
+    start,
+    end,
+    precision
+  )
 }
 
 # ------------------------------------------------------------------------------
@@ -1349,12 +1432,14 @@ calendar_count_between_proxy_compare.clock_year_month_weekday <- function(start,
 #'
 #' # Which we can then set the indexed weekday of
 #' set_day(x, clock_weekdays$sunday, index = "last")
-seq.clock_year_month_weekday <- function(from,
-                                         to = NULL,
-                                         by = NULL,
-                                         length.out = NULL,
-                                         along.with = NULL,
-                                         ...) {
+seq.clock_year_month_weekday <- function(
+  from,
+  to = NULL,
+  by = NULL,
+  length.out = NULL,
+  along.with = NULL,
+  ...
+) {
   seq.clock_year_month_day(from, to, by, length.out, along.with, ...)
 }
 
@@ -1409,11 +1494,13 @@ year_month_weekday_maximum <- function(precision) {
   calendar_maximum(precision, year_month_weekday(clock_calendar_year_maximum))
 }
 
-check_year_month_weekday_precision_limit <- function(x,
-                                                     which,
-                                                     ...,
-                                                     arg = caller_arg(x),
-                                                     call = caller_env()) {
+check_year_month_weekday_precision_limit <- function(
+  x,
+  which,
+  ...,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   x_precision <- calendar_precision_attribute(x)
   precision <- PRECISION_MONTH
 
@@ -1439,20 +1526,68 @@ clock_init_year_month_weekday_utils <- function(env) {
   year <- year_month_weekday(integer())
 
   assign("clock_empty_year_month_weekday_year", year, envir = env)
-  assign("clock_empty_year_month_weekday_month", calendar_widen(year, "month"), envir = env)
-  assign("clock_empty_year_month_weekday_day", calendar_widen(year, "day"), envir = env)
-  assign("clock_empty_year_month_weekday_hour", calendar_widen(year, "hour"), envir = env)
-  assign("clock_empty_year_month_weekday_minute", calendar_widen(year, "minute"), envir = env)
-  assign("clock_empty_year_month_weekday_second", calendar_widen(year, "second"), envir = env)
-  assign("clock_empty_year_month_weekday_millisecond", calendar_widen(year, "millisecond"), envir = env)
-  assign("clock_empty_year_month_weekday_microsecond", calendar_widen(year, "microsecond"), envir = env)
-  assign("clock_empty_year_month_weekday_nanosecond", calendar_widen(year, "nanosecond"), envir = env)
+  assign(
+    "clock_empty_year_month_weekday_month",
+    calendar_widen(year, "month"),
+    envir = env
+  )
+  assign(
+    "clock_empty_year_month_weekday_day",
+    calendar_widen(year, "day"),
+    envir = env
+  )
+  assign(
+    "clock_empty_year_month_weekday_hour",
+    calendar_widen(year, "hour"),
+    envir = env
+  )
+  assign(
+    "clock_empty_year_month_weekday_minute",
+    calendar_widen(year, "minute"),
+    envir = env
+  )
+  assign(
+    "clock_empty_year_month_weekday_second",
+    calendar_widen(year, "second"),
+    envir = env
+  )
+  assign(
+    "clock_empty_year_month_weekday_millisecond",
+    calendar_widen(year, "millisecond"),
+    envir = env
+  )
+  assign(
+    "clock_empty_year_month_weekday_microsecond",
+    calendar_widen(year, "microsecond"),
+    envir = env
+  )
+  assign(
+    "clock_empty_year_month_weekday_nanosecond",
+    calendar_widen(year, "nanosecond"),
+    envir = env
+  )
 
-  assign("clock_minimum_year_month_weekday_year", year_month_weekday_minimum("year"), envir = env)
-  assign("clock_minimum_year_month_weekday_month", year_month_weekday_minimum("month"), envir = env)
+  assign(
+    "clock_minimum_year_month_weekday_year",
+    year_month_weekday_minimum("year"),
+    envir = env
+  )
+  assign(
+    "clock_minimum_year_month_weekday_month",
+    year_month_weekday_minimum("month"),
+    envir = env
+  )
 
-  assign("clock_maximum_year_month_weekday_year", year_month_weekday_maximum("year"), envir = env)
-  assign("clock_maximum_year_month_weekday_month", year_month_weekday_maximum("month"), envir = env)
+  assign(
+    "clock_maximum_year_month_weekday_year",
+    year_month_weekday_maximum("year"),
+    envir = env
+  )
+  assign(
+    "clock_maximum_year_month_weekday_month",
+    year_month_weekday_maximum("month"),
+    envir = env
+  )
 
   invisible(NULL)
 }

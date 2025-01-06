@@ -9,6 +9,14 @@ clock_maximum <- function(x) {
 }
 
 clock_init_limits_init <- function(env) {
-  assign("clock_calendar_year_maximum", clock_get_calendar_year_maximum(), envir = env)
-  assign("clock_calendar_year_minimum", clock_get_calendar_year_minimum(), envir = env)
+  assign(
+    "clock_calendar_year_maximum",
+    clock_get_calendar_year_maximum(),
+    envir = env
+  )
+  assign(
+    "clock_calendar_year_minimum",
+    clock_get_calendar_year_minimum(),
+    envir = env
+  )
 }

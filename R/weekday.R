@@ -175,10 +175,12 @@ vec_cast.clock_weekday.clock_weekday <- function(x, to, ...) {
 
 #' @export
 vec_proxy_compare.clock_weekday <- function(x, ...) {
-  cli::cli_abort(paste0(
-    "Can't compare or order values of the {.cls clock_weekday} type, ",
-    "as this type does not specify a {.str first} day of the week."
-  ))
+  cli::cli_abort(
+    paste0(
+      "Can't compare or order values of the {.cls clock_weekday} type, ",
+      "as this type does not specify a {.str first} day of the week."
+    )
+  )
 }
 
 # ------------------------------------------------------------------------------
@@ -218,10 +220,12 @@ as_weekday.clock_weekday <- function(x, ...) {
 
 #' @export
 as_weekday.clock_calendar <- function(x, ...) {
-  abort(c(
-    "Can't extract the weekday from a calendar.",
-    i = "Do you need to convert to a time point first?"
-  ))
+  abort(
+    c(
+      "Can't extract the weekday from a calendar.",
+      i = "Do you need to convert to a time point first?"
+    )
+  )
 }
 
 # ------------------------------------------------------------------------------
@@ -312,11 +316,13 @@ weekday_code <- function(x, ..., encoding = "western") {
 #'
 #' # Or a different language
 #' weekday_factor(x, labels = "fr")
-weekday_factor <- function(x,
-                           ...,
-                           labels = "en",
-                           abbreviate = TRUE,
-                           encoding = "western") {
+weekday_factor <- function(
+  x,
+  ...,
+  labels = "en",
+  abbreviate = TRUE,
+  encoding = "western"
+) {
   check_dots_empty0(...)
   check_weekday(x)
 
@@ -391,7 +397,13 @@ vec_arith.clock_duration.clock_weekday <- function(op, x, y, ...) {
   switch(
     op,
     "+" = add_duration(y, x, swapped = TRUE),
-    "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a weekday from a duration.", ...),
+    "-" = stop_incompatible_op(
+      op,
+      x,
+      y,
+      details = "Can't subtract a weekday from a duration.",
+      ...
+    ),
     stop_incompatible_op(op, x, y, ...)
   )
 }
@@ -401,8 +413,14 @@ vec_arith.clock_duration.clock_weekday <- function(op, x, y, ...) {
 vec_arith.clock_weekday.numeric <- function(op, x, y, ...) {
   switch(
     op,
-    "+" = add_duration(x, duration_helper(y, PRECISION_DAY, retain_names = TRUE)),
-    "-" = add_duration(x, duration_helper(-y, PRECISION_DAY, retain_names = TRUE)),
+    "+" = add_duration(
+      x,
+      duration_helper(y, PRECISION_DAY, retain_names = TRUE)
+    ),
+    "-" = add_duration(
+      x,
+      duration_helper(-y, PRECISION_DAY, retain_names = TRUE)
+    ),
     stop_incompatible_op(op, x, y, ...)
   )
 }
@@ -412,8 +430,18 @@ vec_arith.clock_weekday.numeric <- function(op, x, y, ...) {
 vec_arith.numeric.clock_weekday <- function(op, x, y, ...) {
   switch(
     op,
-    "+" = add_duration(y, duration_helper(x, PRECISION_DAY, retain_names = TRUE), swapped = TRUE),
-    "-" = stop_incompatible_op(op, x, y, details = "Can't subtract a weekday from a duration.", ...),
+    "+" = add_duration(
+      y,
+      duration_helper(x, PRECISION_DAY, retain_names = TRUE),
+      swapped = TRUE
+    ),
+    "-" = stop_incompatible_op(
+      op,
+      x,
+      y,
+      details = "Can't subtract a weekday from a duration.",
+      ...
+    ),
     stop_incompatible_op(op, x, y, ...)
   )
 }

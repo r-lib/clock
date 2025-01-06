@@ -201,11 +201,13 @@ zoned_time_precision_attribute <- function(x) {
 #' format(x)
 #' format(x, format = "%B %d, %Y")
 #' format(x, format = "%B %d, %Y", locale = clock_locale("fr"))
-format.clock_zoned_time <- function(x,
-                                    ...,
-                                    format = NULL,
-                                    locale = clock_locale(),
-                                    abbreviate_zone = FALSE) {
+format.clock_zoned_time <- function(
+  x,
+  ...,
+  format = NULL,
+  locale = clock_locale(),
+  abbreviate_zone = FALSE
+) {
   check_clock_locale(locale)
 
   zone <- zoned_time_zone_attribute(x)
@@ -586,11 +588,13 @@ NULL
 
 #' @rdname zoned-parsing
 #' @export
-zoned_time_parse_complete <- function(x,
-                                      ...,
-                                      format = NULL,
-                                      precision = "second",
-                                      locale = clock_locale()) {
+zoned_time_parse_complete <- function(
+  x,
+  ...,
+  format = NULL,
+  precision = "second",
+  locale = clock_locale()
+) {
   check_dots_empty0(...)
 
   check_character(x)
@@ -625,12 +629,14 @@ zoned_time_parse_complete <- function(x,
 
 #' @rdname zoned-parsing
 #' @export
-zoned_time_parse_abbrev <- function(x,
-                                    zone,
-                                    ...,
-                                    format = NULL,
-                                    precision = "second",
-                                    locale = clock_locale()) {
+zoned_time_parse_abbrev <- function(
+  x,
+  zone,
+  ...,
+  format = NULL,
+  precision = "second",
+  locale = clock_locale()
+) {
   check_dots_empty0(...)
 
   check_character(x)
@@ -1053,10 +1059,12 @@ zoned_time_precision <- function(x) {
 add_years.clock_zoned_time <- function(x, n, ...) {
   details <- c(
     i = "Do you need to convert to a calendar first?",
-    i = cli::format_inline(paste0(
-      "Use {.fn as_naive_time} then {.fn as_year_month_day} to convert to a ",
-      "calendar that supports {.fn add_years}."
-    ))
+    i = cli::format_inline(
+      paste0(
+        "Use {.fn as_naive_time} then {.fn as_year_month_day} to convert to a ",
+        "calendar that supports {.fn add_years}."
+      )
+    )
   )
   stop_clock_unsupported(x, details = details)
 }
@@ -1065,10 +1073,12 @@ add_years.clock_zoned_time <- function(x, n, ...) {
 add_quarters.clock_zoned_time <- function(x, n, ...) {
   details <- c(
     i = "Do you need to convert to a calendar first?",
-    i = cli::format_inline(paste0(
-      "Use {.fn as_naive_time} then {.fn as_year_quarter_day} to convert to a ",
-      "calendar that supports {.fn add_quarters}."
-    ))
+    i = cli::format_inline(
+      paste0(
+        "Use {.fn as_naive_time} then {.fn as_year_quarter_day} to convert to a ",
+        "calendar that supports {.fn add_quarters}."
+      )
+    )
   )
   stop_clock_unsupported(x, details = details)
 }
@@ -1077,10 +1087,12 @@ add_quarters.clock_zoned_time <- function(x, n, ...) {
 add_months.clock_zoned_time <- function(x, n, ...) {
   details <- c(
     i = "Do you need to convert to a calendar first?",
-    i = cli::format_inline(paste0(
-      "Use {.fn as_naive_time} then {.fn as_year_month_day} to convert to a ",
-      "calendar that supports {.fn add_months}."
-    ))
+    i = cli::format_inline(
+      paste0(
+        "Use {.fn as_naive_time} then {.fn as_year_month_day} to convert to a ",
+        "calendar that supports {.fn add_months}."
+      )
+    )
   )
   stop_clock_unsupported(x, details = details)
 }
@@ -1145,10 +1157,12 @@ check_zone <- function(x, ..., arg = caller_arg(x), call = caller_env()) {
 
 # ------------------------------------------------------------------------------
 
-check_zoned_time_precision <- function(x,
-                                       ...,
-                                       arg = caller_arg(x),
-                                       call = caller_env()) {
+check_zoned_time_precision <- function(
+  x,
+  ...,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   check_precision(
     x = x,
     values = c("second", "millisecond", "microsecond", "nanosecond"),
@@ -1160,10 +1174,26 @@ check_zoned_time_precision <- function(x,
 # ------------------------------------------------------------------------------
 
 clock_init_zoned_time_utils <- function(env) {
-  assign("clock_empty_zoned_time_utc_second", as_zoned_time(as_sys_time(duration_seconds()), "UTC"), envir = env)
-  assign("clock_empty_zoned_time_utc_millisecond", as_zoned_time(as_sys_time(duration_milliseconds()), "UTC"), envir = env)
-  assign("clock_empty_zoned_time_utc_microsecond", as_zoned_time(as_sys_time(duration_microseconds()), "UTC"), envir = env)
-  assign("clock_empty_zoned_time_utc_nanosecond", as_zoned_time(as_sys_time(duration_nanoseconds()), "UTC"), envir = env)
+  assign(
+    "clock_empty_zoned_time_utc_second",
+    as_zoned_time(as_sys_time(duration_seconds()), "UTC"),
+    envir = env
+  )
+  assign(
+    "clock_empty_zoned_time_utc_millisecond",
+    as_zoned_time(as_sys_time(duration_milliseconds()), "UTC"),
+    envir = env
+  )
+  assign(
+    "clock_empty_zoned_time_utc_microsecond",
+    as_zoned_time(as_sys_time(duration_microseconds()), "UTC"),
+    envir = env
+  )
+  assign(
+    "clock_empty_zoned_time_utc_nanosecond",
+    as_zoned_time(as_sys_time(duration_nanoseconds()), "UTC"),
+    envir = env
+  )
 
   invisible(NULL)
 }
