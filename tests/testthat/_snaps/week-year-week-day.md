@@ -609,3 +609,13 @@
       Error in `add_years()`:
       ! Can't recycle `x` (size 2) to match `n` (size 3).
 
+# errors on invalid precisions
+
+    Code
+      diff(year_week_day(2019, 1))
+    Condition
+      Error in `diff()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at most "year".
+      i `x` has a precision of "week".
+

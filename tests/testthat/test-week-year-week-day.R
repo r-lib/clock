@@ -945,3 +945,34 @@ test_that("`start` value is retained", {
     year_week_day(2024, 1, 1, start = 2)
   )
 })
+
+# ------------------------------------------------------------------------------
+# diff()
+
+test_that("works with `lag` and `differences`", {
+  x <- year_week_day(2019:2026)
+  expect_identical(diff(x), rep(duration_years(1), 7))
+  expect_identical(diff(x, lag = 2), rep(duration_years(2), 6))
+  expect_identical(diff(x, differences = 2), rep(duration_years(0), 6))
+})
+
+test_that("works with `lag` and `differences` that force an empty result (#364)", {
+  expect_identical(diff(year_week_day(integer())), duration_years())
+  expect_identical(diff(year_week_day(1)), duration_years())
+  expect_identical(
+    diff(year_week_day(1:8), lag = 4, differences = 3),
+    duration_years()
+  )
+})
+
+test_that("errors on invalid precisions", {
+  expect_snapshot(error = TRUE, {
+    diff(year_week_day(2019, 1))
+  })
+})
+
+test_that("errors on invalid lag/differences", {
+  # These are base R errors we don't control
+  expect_error(diff(year_week_day(2019), lag = 1:2))
+  expect_error(diff(year_week_day(2019), differences = 1:2))
+})

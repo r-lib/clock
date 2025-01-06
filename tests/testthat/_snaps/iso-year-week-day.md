@@ -486,6 +486,16 @@
       ! Invalid date found at location 1.
       i Resolve invalid date issues by specifying the `invalid` argument.
 
+# errors on invalid precisions
+
+    Code
+      diff(iso_year_week_day(2019, 1))
+    Condition
+      Error in `diff()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at most "year".
+      i `x` has a precision of "week".
+
 # minimums are right
 
     Code

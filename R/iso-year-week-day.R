@@ -796,6 +796,18 @@ iso_year_week_day_plus_duration <- function(
 
 # ------------------------------------------------------------------------------
 
+#' @export
+diff.clock_iso_year_week_day <- function(x, lag = 1L, differences = 1L, ...) {
+  calendar_check_maximum_precision(x, PRECISION_YEAR)
+  if (calendar_diff_is_empty(x, lag, differences)) {
+    duration_helper(integer(), calendar_precision_attribute(x))
+  } else {
+    NextMethod()
+  }
+}
+
+# ------------------------------------------------------------------------------
+
 #' Convert to iso-year-week-day
 #'
 #' `as_iso_year_week_day()` converts a vector to the iso-year-week-day

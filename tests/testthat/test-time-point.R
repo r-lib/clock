@@ -491,6 +491,39 @@ test_that("unsupported time point addition throws good error", {
 })
 
 # ------------------------------------------------------------------------------
+# diff()
+
+test_that("works with `lag` and `differences`", {
+  x <- naive_seconds(1:8)
+  expect_identical(diff(x), rep(duration_seconds(1), 7))
+  expect_identical(diff(x, lag = 2), rep(duration_seconds(2), 6))
+  expect_identical(diff(x, differences = 2), rep(duration_seconds(0), 6))
+  expect_identical(
+    diff(x, lag = 3, differences = 2),
+    rep(duration_seconds(0), 2)
+  )
+
+  x <- sys_seconds(1:8)
+  expect_identical(diff(x), rep(duration_seconds(1), 7))
+  expect_identical(diff(x, lag = 2), rep(duration_seconds(2), 6))
+  expect_identical(diff(x, differences = 2), rep(duration_seconds(0), 6))
+  expect_identical(
+    diff(x, lag = 3, differences = 2),
+    rep(duration_seconds(0), 2)
+  )
+})
+
+test_that("works with `lag` and `differences` that force an empty result (#364)", {
+  expect_identical(diff(naive_seconds()), duration_seconds())
+  expect_identical(diff(naive_seconds(1)), duration_seconds())
+  expect_identical(diff(naive_seconds(1:2)), duration_seconds(1))
+  expect_identical(
+    diff(naive_seconds(1:8), lag = 4, differences = 3),
+    duration_seconds()
+  )
+})
+
+# ------------------------------------------------------------------------------
 # clock_minimum() / clock_maximum()
 
 test_that("minimums are right", {

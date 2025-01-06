@@ -613,3 +613,13 @@
       Error in `add_years()`:
       ! Can't recycle `x` (size 2) to match `n` (size 3).
 
+# errors on invalid precisions
+
+    Code
+      diff(year_quarter_day(2019, 1, 1))
+    Condition
+      Error in `diff()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at most "quarter".
+      i `x` has a precision of "day".
+

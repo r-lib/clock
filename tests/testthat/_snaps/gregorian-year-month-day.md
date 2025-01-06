@@ -612,6 +612,16 @@
       ! Invalid date found at location 1.
       i Resolve invalid date issues by specifying the `invalid` argument.
 
+# errors on invalid precisions
+
+    Code
+      diff(year_month_day(2019, 1, 2))
+    Condition
+      Error in `diff()`:
+      ! Can't perform this operation because of the precision of `x`.
+      i The precision of `x` must be at most "month".
+      i `x` has a precision of "day".
+
 # minimums are right
 
     Code
