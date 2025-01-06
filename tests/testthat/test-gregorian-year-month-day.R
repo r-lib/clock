@@ -40,9 +40,18 @@ test_that("validates value ranges", {
   expect_snapshot(error = TRUE, year_month_day(2020, 1, 1, 24))
   expect_snapshot(error = TRUE, year_month_day(2020, 1, 1, 1, 60))
   expect_snapshot(error = TRUE, year_month_day(2020, 1, 1, 1, 1, 60))
-  expect_snapshot(error = TRUE, year_month_day(2020, 1, 1, 1, 1, 1, 1000, subsecond_precision = "millisecond"))
-  expect_snapshot(error = TRUE, year_month_day(2020, 1, 1, 1, 1, 1, 1000000, subsecond_precision = "microsecond"))
-  expect_snapshot(error = TRUE, year_month_day(2020, 1, 1, 1, 1, 1, 1000000000, subsecond_precision = "nanosecond"))
+  expect_snapshot(
+    error = TRUE,
+    year_month_day(2020, 1, 1, 1, 1, 1, 1000, subsecond_precision = "millisecond")
+  )
+  expect_snapshot(
+    error = TRUE,
+    year_month_day(2020, 1, 1, 1, 1, 1, 1000000, subsecond_precision = "microsecond")
+  )
+  expect_snapshot(
+    error = TRUE,
+    year_month_day(2020, 1, 1, 1, 1, 1, 1000000000, subsecond_precision = "nanosecond")
+  )
 })
 
 test_that("can create a date at the boundary", {
@@ -101,7 +110,10 @@ test_that("ptype is correct", {
 
 test_that("proxy is a data frame", {
   expect_identical(vec_proxy(year_month_day(2019)), data_frame(year = 2019L))
-  expect_identical(vec_proxy(year_month_day(2019, 1)), data_frame(year = 2019L, month = 1L))
+  expect_identical(
+    vec_proxy(year_month_day(2019, 1)),
+    data_frame(year = 2019L, month = 1L)
+  )
 })
 
 test_that("proxy has names on `year`", {
@@ -122,7 +134,11 @@ test_that("restore works", {
 test_that("full ptype is correct", {
   expect_snapshot_output(vec_ptype_full(year_month_day(2019)))
   expect_snapshot_output(vec_ptype_full(year_month_day(2019, 1, 1)))
-  expect_snapshot_output(vec_ptype_full(year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond")))
+  expect_snapshot_output(
+    vec_ptype_full(
+      year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond")
+    )
+  )
   expect_snapshot_output(vec_ptype_full(year_month_day(2019, 2, 31)))
 })
 
@@ -132,7 +148,11 @@ test_that("full ptype is correct", {
 test_that("abbreviated ptype is correct", {
   expect_snapshot_output(vec_ptype_abbr(year_month_day(2019)))
   expect_snapshot_output(vec_ptype_abbr(year_month_day(2019, 1, 1)))
-  expect_snapshot_output(vec_ptype_abbr(year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond")))
+  expect_snapshot_output(
+    vec_ptype_abbr(
+      year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond")
+    )
+  )
   expect_snapshot_output(vec_ptype_abbr(year_month_day(2019, 2, 31)))
 })
 
@@ -293,36 +313,117 @@ test_that("setters require minimum precision", {
     set_second(year_month_day(year = 1, month = 2, day = 3, hour = 4), 1)
   })
   expect_snapshot(error = TRUE, {
-    set_millisecond(year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5), 1)
+    set_millisecond(
+      year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5),
+      1
+    )
   })
   expect_snapshot(error = TRUE, {
-    set_microsecond(year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5), 1)
+    set_microsecond(
+      year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5),
+      1
+    )
   })
   expect_snapshot(error = TRUE, {
-    set_nanosecond(year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5), 1)
+    set_nanosecond(
+      year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5),
+      1
+    )
   })
 })
 
 test_that("setters require correct subsecond precision", {
   expect_snapshot(error = TRUE, {
-    set_millisecond(year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "microsecond"), 1)
+    set_millisecond(
+      year_month_day(
+        year = 1,
+        month = 2,
+        day = 3,
+        hour = 4,
+        minute = 5,
+        second = 6,
+        subsecond = 7,
+        subsecond_precision = "microsecond"
+      ),
+      1
+    )
   })
   expect_snapshot(error = TRUE, {
-    set_millisecond(year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "nanosecond"), 1)
+    set_millisecond(
+      year_month_day(
+        year = 1,
+        month = 2,
+        day = 3,
+        hour = 4,
+        minute = 5,
+        second = 6,
+        subsecond = 7,
+        subsecond_precision = "nanosecond"
+      ),
+      1
+    )
   })
 
   expect_snapshot(error = TRUE, {
-    set_microsecond(year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "millisecond"), 1)
+    set_microsecond(
+      year_month_day(
+        year = 1,
+        month = 2,
+        day = 3,
+        hour = 4,
+        minute = 5,
+        second = 6,
+        subsecond = 7,
+        subsecond_precision = "millisecond"
+      ),
+      1
+    )
   })
   expect_snapshot(error = TRUE, {
-    set_microsecond(year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "nanosecond"), 1)
+    set_microsecond(
+      year_month_day(
+        year = 1,
+        month = 2,
+        day = 3,
+        hour = 4,
+        minute = 5,
+        second = 6,
+        subsecond = 7,
+        subsecond_precision = "nanosecond"
+      ),
+      1
+    )
   })
 
   expect_snapshot(error = TRUE, {
-    set_nanosecond(year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "millisecond"), 1)
+    set_nanosecond(
+      year_month_day(
+        year = 1,
+        month = 2,
+        day = 3,
+        hour = 4,
+        minute = 5,
+        second = 6,
+        subsecond = 7,
+        subsecond_precision = "millisecond"
+      ),
+      1
+    )
   })
   expect_snapshot(error = TRUE, {
-    set_nanosecond(year_month_day(year = 1, month = 2, day = 3, hour = 4, minute = 5, second = 6, subsecond = 7, subsecond_precision = "microsecond"), 1)
+    set_nanosecond(
+      year_month_day(
+        year = 1,
+        month = 2,
+        day = 3,
+        hour = 4,
+        minute = 5,
+        second = 6,
+        subsecond = 7,
+        subsecond_precision = "microsecond"
+      ),
+      1
+    )
   })
 })
 
@@ -366,7 +467,9 @@ test_that("default formats are correct", {
   expect_snapshot(format(year_month_day(2019)))
   expect_snapshot(format(year_month_day(2019, 1)))
   expect_snapshot(format(year_month_day(2019, 1, 1, 1)))
-  expect_snapshot(format(year_month_day(2019, 1, 1, 1, 2, 3, 50, subsecond_precision = "microsecond")))
+  expect_snapshot(
+    format(year_month_day(2019, 1, 1, 1, 2, 3, 50, subsecond_precision = "microsecond"))
+  )
 })
 
 # ------------------------------------------------------------------------------
@@ -461,15 +564,42 @@ test_that("failure to parse results in `NA`", {
 })
 
 test_that("failure to parse results in a warning", {
-  expect_warning(year_month_day_parse("foo", precision = "year"), class = "clock_warning_parse_failures")
-  expect_warning(year_month_day_parse("foo", precision = "month"), class = "clock_warning_parse_failures")
-  expect_warning(year_month_day_parse("foo", precision = "day"), class = "clock_warning_parse_failures")
-  expect_warning(year_month_day_parse("foo", precision = "hour"), class = "clock_warning_parse_failures")
-  expect_warning(year_month_day_parse("foo", precision = "minute"), class = "clock_warning_parse_failures")
-  expect_warning(year_month_day_parse("foo", precision = "second"), class = "clock_warning_parse_failures")
-  expect_warning(year_month_day_parse("foo", precision = "millisecond"), class = "clock_warning_parse_failures")
-  expect_warning(year_month_day_parse("foo", precision = "microsecond"), class = "clock_warning_parse_failures")
-  expect_warning(year_month_day_parse("foo", precision = "nanosecond"), class = "clock_warning_parse_failures")
+  expect_warning(
+    year_month_day_parse("foo", precision = "year"),
+    class = "clock_warning_parse_failures"
+  )
+  expect_warning(
+    year_month_day_parse("foo", precision = "month"),
+    class = "clock_warning_parse_failures"
+  )
+  expect_warning(
+    year_month_day_parse("foo", precision = "day"),
+    class = "clock_warning_parse_failures"
+  )
+  expect_warning(
+    year_month_day_parse("foo", precision = "hour"),
+    class = "clock_warning_parse_failures"
+  )
+  expect_warning(
+    year_month_day_parse("foo", precision = "minute"),
+    class = "clock_warning_parse_failures"
+  )
+  expect_warning(
+    year_month_day_parse("foo", precision = "second"),
+    class = "clock_warning_parse_failures"
+  )
+  expect_warning(
+    year_month_day_parse("foo", precision = "millisecond"),
+    class = "clock_warning_parse_failures"
+  )
+  expect_warning(
+    year_month_day_parse("foo", precision = "microsecond"),
+    class = "clock_warning_parse_failures"
+  )
+  expect_warning(
+    year_month_day_parse("foo", precision = "nanosecond"),
+    class = "clock_warning_parse_failures"
+  )
 
   expect_snapshot(year_month_day_parse("foo"))
 })
@@ -483,7 +613,11 @@ test_that("can use a different locale", {
     year_month_day(2020, 1, 5)
   )
   expect_identical(
-    year_month_day_parse(y, locale = clock_locale(decimal_mark = ","), precision = "microsecond"),
+    year_month_day_parse(
+      y,
+      locale = clock_locale(decimal_mark = ","),
+      precision = "microsecond"
+    ),
     year_month_day(2019, 1, 1, 0, 0, 0, 123456, subsecond_precision = "microsecond")
   )
 })
@@ -557,7 +691,11 @@ test_that("parsing rounds parsed subsecond components more precise than the resu
   # Requesting `%7S` parses the full `01.1238`, and the `1238` portion is rounded up immediately
   # after parsing the `%S` command, not at the very end
   expect_identical(
-    year_month_day_parse("2019-01-01 01:01:01.1238", format = "%Y-%m-%d %H:%M:%7S", precision = "millisecond"),
+    year_month_day_parse(
+      "2019-01-01 01:01:01.1238",
+      format = "%Y-%m-%d %H:%M:%7S",
+      precision = "millisecond"
+    ),
     year_month_day(2019, 1, 1, 1, 1, 1, 124, subsecond_precision = "millisecond")
   )
 })
@@ -656,7 +794,16 @@ test_that("can widen to second", {
 test_that("can widen to subsecond precision", {
   x <- year_month_day(2019)
   y <- year_month_day(2019, 02, 02, 02, 02, 02)
-  x_expect <- year_month_day(2019, 1, 1, 0, 0, 0, 0, subsecond_precision = "microsecond")
+  x_expect <- year_month_day(
+    2019,
+    1,
+    1,
+    0,
+    0,
+    0,
+    0,
+    subsecond_precision = "microsecond"
+  )
   y_expect <- set_nanosecond(y, 0)
   expect_identical(calendar_widen(x, "microsecond"), x_expect)
   expect_identical(calendar_widen(y, "nanosecond"), y_expect)
@@ -691,7 +838,16 @@ test_that("can compute year end", {
   expect_identical(calendar_end(x, "year"), x)
 
   x <- year_month_day(2019, 2, 2, 2, 2, 2, 2, subsecond_precision = "millisecond")
-  expect <- year_month_day(2019, 12, 31, 23, 59, 59, 999L, subsecond_precision = "millisecond")
+  expect <- year_month_day(
+    2019,
+    12,
+    31,
+    23,
+    59,
+    59,
+    999L,
+    subsecond_precision = "millisecond"
+  )
   expect_identical(calendar_end(x, "year"), expect)
 })
 
@@ -700,7 +856,16 @@ test_that("can compute month end", {
   expect_identical(calendar_end(x, "month"), x)
 
   x <- year_month_day(2019, 2:3, 2, 2, 2, 2, 2, subsecond_precision = "microsecond")
-  expect <- year_month_day(2019, 2:3, c(28, 31), 23, 59, 59, 999999L, subsecond_precision = "microsecond")
+  expect <- year_month_day(
+    2019,
+    2:3,
+    c(28, 31),
+    23,
+    59,
+    59,
+    999999L,
+    subsecond_precision = "microsecond"
+  )
   expect_identical(calendar_end(x, "month"), expect)
 })
 
@@ -734,13 +899,25 @@ test_that("requires month precision", {
 })
 
 test_that("`labels` is validated", {
-  expect_snapshot(error = TRUE, calendar_month_factor(year_month_day(2019, 1), labels = 1))
+  expect_snapshot(
+    error = TRUE,
+    calendar_month_factor(year_month_day(2019, 1), labels = 1)
+  )
 })
 
 test_that("`abbreviate` is validated", {
-  expect_snapshot(error = TRUE, calendar_month_factor(year_month_day(2019, 1), abbreviate = "foo"))
-  expect_snapshot(error = TRUE, calendar_month_factor(year_month_day(2019, 1), abbreviate = 1))
-  expect_snapshot(error = TRUE, calendar_month_factor(year_month_day(2019, 1), abbreviate = c(TRUE, FALSE)))
+  expect_snapshot(
+    error = TRUE,
+    calendar_month_factor(year_month_day(2019, 1), abbreviate = "foo")
+  )
+  expect_snapshot(
+    error = TRUE,
+    calendar_month_factor(year_month_day(2019, 1), abbreviate = 1)
+  )
+  expect_snapshot(
+    error = TRUE,
+    calendar_month_factor(year_month_day(2019, 1), abbreviate = c(TRUE, FALSE))
+  )
 })
 
 # ------------------------------------------------------------------------------
@@ -781,7 +958,6 @@ test_that("can't compute a unsupported count precision", {
 test_that("positive / negative counts are correct", {
   start <- year_month_day(1972, 03, 04)
 
-
   end <- year_month_day(1973, 03, 03)
   expect_identical(calendar_count_between(start, end, "year"), 0L)
   expect_identical(calendar_count_between(start, end, "month"), 11L)
@@ -793,7 +969,6 @@ test_that("positive / negative counts are correct", {
   end <- year_month_day(1973, 03, 05)
   expect_identical(calendar_count_between(start, end, "year"), 1L)
   expect_identical(calendar_count_between(start, end, "month"), 12L)
-
 
   end <- year_month_day(1971, 03, 03)
   expect_identical(calendar_count_between(start, end, "year"), -1L)
@@ -816,26 +991,59 @@ test_that("only granular precisions are allowed", {
 })
 
 test_that("seq(to, by) works", {
-  expect_identical(seq(year_month_day(2019, 1), to = year_month_day(2019, 6), by = 2), year_month_day(2019, c(1, 3, 5)))
-  expect_identical(seq(year_month_day(2019, 1), to = year_month_day(2019, 5), by = 2), year_month_day(2019, c(1, 3, 5)))
+  expect_identical(
+    seq(year_month_day(2019, 1), to = year_month_day(2019, 6), by = 2),
+    year_month_day(2019, c(1, 3, 5))
+  )
+  expect_identical(
+    seq(year_month_day(2019, 1), to = year_month_day(2019, 5), by = 2),
+    year_month_day(2019, c(1, 3, 5))
+  )
 
-  expect_identical(seq(year_month_day(2019, 1), to = year_month_day(2018, 9), by = -2), year_month_day(c(2019, 2018, 2018), c(1, 11, 9)))
-  expect_identical(seq(year_month_day(2019, 1), to = year_month_day(2018, 8), by = -2), year_month_day(c(2019, 2018, 2018), c(1, 11, 9)))
+  expect_identical(
+    seq(year_month_day(2019, 1), to = year_month_day(2018, 9), by = -2),
+    year_month_day(c(2019, 2018, 2018), c(1, 11, 9))
+  )
+  expect_identical(
+    seq(year_month_day(2019, 1), to = year_month_day(2018, 8), by = -2),
+    year_month_day(c(2019, 2018, 2018), c(1, 11, 9))
+  )
 })
 
 test_that("seq(to, length.out) works", {
-  expect_identical(seq(year_month_day(2019, 1), to = year_month_day(2019, 5), length.out = 2), year_month_day(2019, c(1, 5)))
-  expect_identical(seq(year_month_day(2019, 1), to = year_month_day(2019, 5), length.out = 1), year_month_day(2019, 1))
-  expect_identical(seq(year_month_day(2019, 1), to = year_month_day(2019, 5), length.out = 5), year_month_day(2019, 1:5))
+  expect_identical(
+    seq(year_month_day(2019, 1), to = year_month_day(2019, 5), length.out = 2),
+    year_month_day(2019, c(1, 5))
+  )
+  expect_identical(
+    seq(year_month_day(2019, 1), to = year_month_day(2019, 5), length.out = 1),
+    year_month_day(2019, 1)
+  )
+  expect_identical(
+    seq(year_month_day(2019, 1), to = year_month_day(2019, 5), length.out = 5),
+    year_month_day(2019, 1:5)
+  )
 
-  expect_identical(seq(year_month_day(2019, 1), to = year_month_day(2019, 5), along.with = 1:2), year_month_day(2019, c(1, 5)))
+  expect_identical(
+    seq(year_month_day(2019, 1), to = year_month_day(2019, 5), along.with = 1:2),
+    year_month_day(2019, c(1, 5))
+  )
 })
 
 test_that("seq(by, length.out) works", {
-  expect_identical(seq(year_month_day(2019, 1), by = 2, length.out = 3), year_month_day(2019, c(1, 3, 5)))
-  expect_identical(seq(year_month_day(2019, 1), by = -2, length.out = 3), year_month_day(c(2019, 2018, 2018), c(1, 11, 9)))
+  expect_identical(
+    seq(year_month_day(2019, 1), by = 2, length.out = 3),
+    year_month_day(2019, c(1, 3, 5))
+  )
+  expect_identical(
+    seq(year_month_day(2019, 1), by = -2, length.out = 3),
+    year_month_day(c(2019, 2018, 2018), c(1, 11, 9))
+  )
 
-  expect_identical(seq(year_month_day(2019, 1), by = 2, along.with = 1:3), year_month_day(2019, c(1, 3, 5)))
+  expect_identical(
+    seq(year_month_day(2019, 1), by = 2, along.with = 1:3),
+    year_month_day(2019, c(1, 3, 5))
+  )
 })
 
 test_that("`by` can be a duration", {
@@ -943,7 +1151,10 @@ test_that("can resolve correctly", {
 
 test_that("throws known classed error", {
   expect_snapshot(error = TRUE, invalid_resolve(year_month_day(2019, 2, 31)))
-  expect_error(invalid_resolve(year_month_day(2019, 2, 31)), class = "clock_error_invalid_date")
+  expect_error(
+    invalid_resolve(year_month_day(2019, 2, 31)),
+    class = "clock_error_invalid_date"
+  )
 })
 
 test_that("works with always valid precisions", {

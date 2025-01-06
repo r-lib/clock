@@ -182,13 +182,22 @@ test_that("`target` is validated", {
 test_that("`which` is validated", {
   expect_snapshot(error = TRUE, time_point_shift(sys_days(), weekday(), which = 1))
   expect_snapshot(error = TRUE, time_point_shift(sys_days(), weekday(), which = "foo"))
-  expect_snapshot(error = TRUE, time_point_shift(sys_days(), weekday(), which = c("next", "previous")))
+  expect_snapshot(
+    error = TRUE,
+    time_point_shift(sys_days(), weekday(), which = c("next", "previous"))
+  )
 })
 
 test_that("`boundary` is validated", {
   expect_snapshot(error = TRUE, time_point_shift(sys_days(), weekday(), boundary = 1))
-  expect_snapshot(error = TRUE, time_point_shift(sys_days(), weekday(), boundary = "foo"))
-  expect_snapshot(error = TRUE, time_point_shift(sys_days(), weekday(), boundary = c("keep", "advance")))
+  expect_snapshot(
+    error = TRUE,
+    time_point_shift(sys_days(), weekday(), boundary = "foo")
+  )
+  expect_snapshot(
+    error = TRUE,
+    time_point_shift(sys_days(), weekday(), boundary = c("keep", "advance"))
+  )
 })
 
 # ------------------------------------------------------------------------------
@@ -262,9 +271,13 @@ test_that("both inputs must be compatible", {
   x <- sys_days(1)
   y <- naive_days(1)
 
-  expect_snapshot((expect_error(
-    time_point_count_between(x, y)
-  )))
+  expect_snapshot(
+    (
+      expect_error(
+        time_point_count_between(x, y)
+      )
+    )
+  )
 })
 
 test_that("`n` is validated", {
@@ -282,35 +295,72 @@ test_that("`n` is validated", {
 test_that("`precision` must be a time point precision", {
   x <- sys_days(1)
 
-  expect_snapshot((expect_error(
-    time_point_count_between(x, x, "year")
-  )))
+  expect_snapshot(
+    (
+      expect_error(
+        time_point_count_between(x, x, "year")
+      )
+    )
+  )
 })
 
 # ------------------------------------------------------------------------------
 # seq()
 
 test_that("seq(to, by) works", {
-  expect_identical(seq(sys_days(0L), to = sys_days(4L), by = 2), sys_days(c(0L, 2L, 4L)))
-  expect_identical(seq(sys_days(0L), to = sys_days(5L), by = 2), sys_days(c(0L, 2L, 4L)))
+  expect_identical(
+    seq(sys_days(0L), to = sys_days(4L), by = 2),
+    sys_days(c(0L, 2L, 4L))
+  )
+  expect_identical(
+    seq(sys_days(0L), to = sys_days(5L), by = 2),
+    sys_days(c(0L, 2L, 4L))
+  )
 
-  expect_identical(seq(sys_seconds(0L), to = sys_seconds(-4L), by = -2), sys_seconds(c(0L, -2L, -4L)))
-  expect_identical(seq(sys_seconds(0L), to = sys_seconds(-5L), by = -2), sys_seconds(c(0L, -2L, -4L)))
+  expect_identical(
+    seq(sys_seconds(0L), to = sys_seconds(-4L), by = -2),
+    sys_seconds(c(0L, -2L, -4L))
+  )
+  expect_identical(
+    seq(sys_seconds(0L), to = sys_seconds(-5L), by = -2),
+    sys_seconds(c(0L, -2L, -4L))
+  )
 })
 
 test_that("seq(to, length.out) works", {
-  expect_identical(seq(naive_days(0L), to = naive_days(4L), length.out = 2), naive_days(c(0L, 4L)))
-  expect_identical(seq(naive_days(0L), to = naive_days(4L), length.out = 1), naive_days(c(0L)))
-  expect_identical(seq(naive_days(0L), to = naive_days(4L), length.out = 5), naive_days(c(0:4)))
+  expect_identical(
+    seq(naive_days(0L), to = naive_days(4L), length.out = 2),
+    naive_days(c(0L, 4L))
+  )
+  expect_identical(
+    seq(naive_days(0L), to = naive_days(4L), length.out = 1),
+    naive_days(c(0L))
+  )
+  expect_identical(
+    seq(naive_days(0L), to = naive_days(4L), length.out = 5),
+    naive_days(c(0:4))
+  )
 
-  expect_identical(seq(naive_seconds(0L), to = naive_seconds(4L), along.with = 1:2), naive_seconds(c(0L, 4L)))
+  expect_identical(
+    seq(naive_seconds(0L), to = naive_seconds(4L), along.with = 1:2),
+    naive_seconds(c(0L, 4L))
+  )
 })
 
 test_that("seq(by, length.out) works", {
-  expect_identical(seq(naive_seconds(0L), by = 2, length.out = 3), naive_seconds(c(0L, 2L, 4L)))
-  expect_identical(seq(naive_seconds(0L), by = -2, length.out = 3), naive_seconds(c(0L, -2L, -4L)))
+  expect_identical(
+    seq(naive_seconds(0L), by = 2, length.out = 3),
+    naive_seconds(c(0L, 2L, 4L))
+  )
+  expect_identical(
+    seq(naive_seconds(0L), by = -2, length.out = 3),
+    naive_seconds(c(0L, -2L, -4L))
+  )
 
-  expect_identical(seq(naive_seconds(0L), by = 2, along.with = 1:3), naive_seconds(c(0L, 2L, 4L)))
+  expect_identical(
+    seq(naive_seconds(0L), by = 2, along.with = 1:3),
+    naive_seconds(c(0L, 2L, 4L))
+  )
 })
 
 test_that("seq() with `from > to && by > 0` or `from < to && by < 0` results in length 0 output (#282)", {
@@ -333,13 +383,24 @@ test_that("`by` can be a duration", {
     seq(naive_seconds(0), to = naive_seconds(1000), by = 60)
   )
   expect_identical(
-    seq(as_naive_time(duration_nanoseconds(0)), to = as_naive_time(duration_nanoseconds(2e9)), by = duration_seconds(1)),
-    seq(as_naive_time(duration_nanoseconds(0)), to = as_naive_time(duration_nanoseconds(2e9)), by = 1e9)
+    seq(
+      as_naive_time(duration_nanoseconds(0)),
+      to = as_naive_time(duration_nanoseconds(2e9)),
+      by = duration_seconds(1)
+    ),
+    seq(
+      as_naive_time(duration_nanoseconds(0)),
+      to = as_naive_time(duration_nanoseconds(2e9)),
+      by = 1e9
+    )
   )
 })
 
 test_that("can't mix chronological time points and calendrical durations", {
-  expect_snapshot(error = TRUE, seq(naive_seconds(0), by = duration_years(1), length.out = 2))
+  expect_snapshot(
+    error = TRUE,
+    seq(naive_seconds(0), by = duration_years(1), length.out = 2)
+  )
 })
 
 test_that("can't mix clocks in seq()", {
@@ -402,7 +463,10 @@ test_that("duration to add to a time-point must have at least week precision (#1
 
 test_that("precision: can get the precision", {
   expect_identical(time_point_precision(as_naive_time(duration_days(2:5))), "day")
-  expect_identical(time_point_precision(as_naive_time(duration_nanoseconds(2:5))), "nanosecond")
+  expect_identical(
+    time_point_precision(as_naive_time(duration_nanoseconds(2:5))),
+    "nanosecond"
+  )
 })
 
 test_that("precision: can only be called on time points", {

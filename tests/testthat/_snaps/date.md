@@ -144,8 +144,9 @@
 ---
 
     Code
-      vapply(X = formats, FUN = function(format) date_format(x, format = format,
-        locale = clock_locale("fr")), FUN.VALUE = character(1))
+      vapply(X = formats, FUN = function(format) {
+        date_format(x, format = format, locale = clock_locale("fr"))
+      }, FUN.VALUE = character(1))
     Output
                                 C: %C                           y: %y 
                               "C: 20"                         "y: 18" 

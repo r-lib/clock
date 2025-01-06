@@ -96,7 +96,10 @@ test_that("zone is vectorized and recycled against x", {
   info <- naive_time_info(naive_days(0), c("UTC", "America/New_York"))
   expect_identical(nrow(info), 2L)
 
-  expect_snapshot(error = TRUE, naive_time_info(naive_days(0:3), c("UTC", "America/New_York")))
+  expect_snapshot(
+    error = TRUE,
+    naive_time_info(naive_days(0:3), c("UTC", "America/New_York"))
+  )
 })
 
 # ------------------------------------------------------------------------------
@@ -226,12 +229,23 @@ test_that("can use a different locale", {
   y <- "2019-01-01T00:00:00,123456"
 
   expect_identical(
-    naive_time_parse(x, format = "%B %d, %Y", precision = "day", locale = clock_locale("fr")),
+    naive_time_parse(
+      x,
+      format = "%B %d, %Y",
+      precision = "day",
+      locale = clock_locale("fr")
+    ),
     as_naive_time(year_month_day(2019, 1, 1))
   )
   expect_identical(
-    naive_time_parse(y, precision = "microsecond", locale = clock_locale(decimal_mark = ",")),
-    as_naive_time(year_month_day(2019, 1, 1, 0, 0, 0, 123456, subsecond_precision = "microsecond"))
+    naive_time_parse(
+      y,
+      precision = "microsecond",
+      locale = clock_locale(decimal_mark = ",")
+    ),
+    as_naive_time(
+      year_month_day(2019, 1, 1, 0, 0, 0, 123456, subsecond_precision = "microsecond")
+    )
   )
 })
 
@@ -296,21 +310,37 @@ test_that("parsing rounds parsed components more precise than the resulting cont
 test_that("parsing rounds parsed subsecond components more precise than the resulting container (#207) (#230) (undocumented)", {
   # Default N for milliseconds is 6, so `%6S` (2 hour seconds, 1 for decimal, 3 for subseconds)
   expect_identical(
-    naive_time_parse("2019-01-01 01:01:01.1238", format = "%Y-%m-%d %H:%M:%S", precision = "millisecond"),
-    as_naive_time(year_month_day(2019, 1, 1, 1, 1, 1, 123, subsecond_precision = "millisecond"))
+    naive_time_parse(
+      "2019-01-01 01:01:01.1238",
+      format = "%Y-%m-%d %H:%M:%S",
+      precision = "millisecond"
+    ),
+    as_naive_time(
+      year_month_day(2019, 1, 1, 1, 1, 1, 123, subsecond_precision = "millisecond")
+    )
   )
 
   # Requesting `%7S` parses the full `01.1238`, and the `1238` portion is rounded up
   expect_identical(
-    naive_time_parse("2019-01-01 01:01:01.1238", format = "%Y-%m-%d %H:%M:%7S", precision = "millisecond"),
-    as_naive_time(year_month_day(2019, 1, 1, 1, 1, 1, 124, subsecond_precision = "millisecond"))
+    naive_time_parse(
+      "2019-01-01 01:01:01.1238",
+      format = "%Y-%m-%d %H:%M:%7S",
+      precision = "millisecond"
+    ),
+    as_naive_time(
+      year_month_day(2019, 1, 1, 1, 1, 1, 124, subsecond_precision = "millisecond")
+    )
   )
 })
 
 test_that("parsing fails when undocumented rounding behavior would result in invalid 60 second component (#230) (undocumented)", {
   expect_warning(
     expect_identical(
-      naive_time_parse("2019-01-01 01:01:59.550", format = "%Y-%m-%d %H:%M:%6S", precision = "second"),
+      naive_time_parse(
+        "2019-01-01 01:01:59.550",
+        format = "%Y-%m-%d %H:%M:%6S",
+        precision = "second"
+      ),
       as_naive_time(year_month_day(NA, NA, NA, NA, NA, NA))
     ),
     class = "clock_warning_parse_failures"
@@ -360,21 +390,35 @@ test_that("can convert non-ambiguous/nonexistent times to zoned time", {
 
 test_that("sub daily time point precision is retained", {
   zone <- "America/New_York"
-  x <- as_naive_time(year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond"))
-  expect_identical(zoned_time_precision_attribute(as_zoned_time(x, zone)), PRECISION_NANOSECOND)
+  x <- as_naive_time(
+    year_month_day(2019, 1, 1, 1, 1, 1, 1, subsecond_precision = "nanosecond")
+  )
+  expect_identical(
+    zoned_time_precision_attribute(as_zoned_time(x, zone)),
+    PRECISION_NANOSECOND
+  )
 })
 
 test_that("day precision time point is promoted", {
   zone <- "America/New_York"
   x <- as_naive_time(year_month_day(2019, 1, 1))
-  expect_identical(zoned_time_precision_attribute(as_zoned_time(x, zone)), PRECISION_SECOND)
+  expect_identical(
+    zoned_time_precision_attribute(as_zoned_time(x, zone)),
+    PRECISION_SECOND
+  )
 })
 
 test_that("can resolve ambiguous issues - character", {
   zone <- "America/New_York"
-  x <- as_naive_time(year_month_day(1970, 10, 25, 01, 30, 00, 01, subsecond_precision = "millisecond"))
-  earliest <- as_sys_time(year_month_day(1970, 10, 25, 05, 30, 00, 01, subsecond_precision = "millisecond"))
-  latest <- as_sys_time(year_month_day(1970, 10, 25, 06, 30, 00, 01, subsecond_precision = "millisecond"))
+  x <- as_naive_time(
+    year_month_day(1970, 10, 25, 01, 30, 00, 01, subsecond_precision = "millisecond")
+  )
+  earliest <- as_sys_time(
+    year_month_day(1970, 10, 25, 05, 30, 00, 01, subsecond_precision = "millisecond")
+  )
+  latest <- as_sys_time(
+    year_month_day(1970, 10, 25, 06, 30, 00, 01, subsecond_precision = "millisecond")
+  )
 
   expect_snapshot(error = TRUE, as_zoned_time(x, zone))
   expect_error(as_zoned_time(x, zone), class = "clock_error_ambiguous_time")
@@ -530,35 +574,69 @@ test_that("`ambiguous` is validated", {
   zone <- "America/New_York"
   expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, ambiguous = 1))
   expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, ambiguous = "foo"))
-  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, ambiguous = c("earliest", "latest")))
+  expect_snapshot(
+    error = TRUE,
+    as_zoned_time(naive_seconds(), zone, ambiguous = c("earliest", "latest"))
+  )
 
   ambiguous <- as_zoned_time(naive_seconds(), "America/Los_Angeles")
-  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, ambiguous = ambiguous))
+  expect_snapshot(
+    error = TRUE,
+    as_zoned_time(naive_seconds(), zone, ambiguous = ambiguous)
+  )
 
   reference <- as_zoned_time(naive_seconds(), zone)
-  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, ambiguous = list()))
-  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, ambiguous = list(1, 1)))
-  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, ambiguous = list(reference, 1)))
-  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, ambiguous = list(reference, "foo")))
+  expect_snapshot(
+    error = TRUE,
+    as_zoned_time(naive_seconds(), zone, ambiguous = list())
+  )
+  expect_snapshot(
+    error = TRUE,
+    as_zoned_time(naive_seconds(), zone, ambiguous = list(1, 1))
+  )
+  expect_snapshot(
+    error = TRUE,
+    as_zoned_time(naive_seconds(), zone, ambiguous = list(reference, 1))
+  )
+  expect_snapshot(
+    error = TRUE,
+    as_zoned_time(naive_seconds(), zone, ambiguous = list(reference, "foo"))
+  )
 })
 
 test_that("`nonexistent` is validated", {
   zone <- "America/New_York"
   expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, nonexistent = 1))
-  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, nonexistent = "foo"))
-  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, nonexistent = c("roll-forward", "roll-forward")))
+  expect_snapshot(
+    error = TRUE,
+    as_zoned_time(naive_seconds(), zone, nonexistent = "foo")
+  )
+  expect_snapshot(
+    error = TRUE,
+    as_zoned_time(
+      naive_seconds(),
+      zone,
+      nonexistent = c("roll-forward", "roll-forward")
+    )
+  )
 })
 
 test_that("zone is validated", {
   expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), "foo"))
   expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), 1))
-  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), c("America/New_York", "EST", "EDT")))
+  expect_snapshot(
+    error = TRUE,
+    as_zoned_time(naive_seconds(), c("America/New_York", "EST", "EDT"))
+  )
 })
 
 test_that("strict mode can be activated - nonexistent", {
   local_options(clock.strict = TRUE)
   zone <- "America/New_York"
-  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, ambiguous = "earliest"))
+  expect_snapshot(
+    error = TRUE,
+    as_zoned_time(naive_seconds(), zone, ambiguous = "earliest")
+  )
 })
 
 test_that("strict mode can be activated - ambiguous", {
@@ -567,9 +645,23 @@ test_that("strict mode can be activated - ambiguous", {
 
   local_options(clock.strict = TRUE)
 
-  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, nonexistent = "roll-forward"))
-  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, nonexistent = "roll-forward", ambiguous = zt))
-  expect_snapshot(error = TRUE, as_zoned_time(naive_seconds(), zone, nonexistent = "roll-forward", ambiguous = list(zt, NULL)))
+  expect_snapshot(
+    error = TRUE,
+    as_zoned_time(naive_seconds(), zone, nonexistent = "roll-forward")
+  )
+  expect_snapshot(
+    error = TRUE,
+    as_zoned_time(naive_seconds(), zone, nonexistent = "roll-forward", ambiguous = zt)
+  )
+  expect_snapshot(
+    error = TRUE,
+    as_zoned_time(
+      naive_seconds(),
+      zone,
+      nonexistent = "roll-forward",
+      ambiguous = list(zt, NULL)
+    )
+  )
 })
 
 test_that("empty dots are checked", {
