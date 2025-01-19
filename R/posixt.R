@@ -45,6 +45,48 @@ as_zoned_time.POSIXt <- function(x, ...) {
   new_zoned_time_from_fields(fields, PRECISION_SECOND, zone, names)
 }
 
+#' @rdname as-zoned-time-posixt
+#' @export
+as_zoned_time.POSIXlt <- function(x, ...) {
+  check_dots_empty0(...)
+
+  names <- names(x)
+  zone <- posixt_tzone(x)
+  ambiguous <- ifelse(x$isdst == 0, "latest", "earliest")
+
+  second <- as.integer(x$sec)
+  subsecond <- as.integer((x$sec - second) * 1e9)
+
+  # POSIXlt supports leap seconds, but year_month_day does not
+  non_leap_second <- second %% 60L
+  minute_diff <- second %/% 60L
+
+  y_m_d <- year_month_day(
+    year = x$year + 1900L,
+    month = x$mon + 1L,
+    day = x$mday,
+    hour = x$hour,
+    minute = x$min,
+    second = non_leap_second,
+    subsecond = subsecond,
+    subsecond_precision = "nanosecond"
+  )
+
+  # For to remain names, we should construct naive time via new_sys_time_from_fields
+  precision <- calendar_precision_attribute(y_m_d)
+  s_time <- new_sys_time_from_fields(
+    as_sys_time_year_month_day_cpp(y_m_d, precision),
+    precision,
+    names
+  ) + duration_minutes(minute_diff)
+
+  as_zoned_time(
+    as_naive_time(s_time),
+    zone,
+    ambiguous = ambiguous
+  )
+}
+
 #' @export
 as_year_month_day.POSIXt <- function(x, ...) {
   # Assumes zoned -> naive -> calendar is what the user expects

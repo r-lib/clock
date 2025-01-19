@@ -3,9 +3,12 @@
 \name{as-zoned-time-posixt}
 \alias{as-zoned-time-posixt}
 \alias{as_zoned_time.POSIXt}
+\alias{as_zoned_time.POSIXlt}
 \title{Convert to a zoned-time from a date-time}
 \usage{
 \method{as_zoned_time}{POSIXt}(x, ...)
+
+\method{as_zoned_time}{POSIXlt}(x, ...)
 }
 \arguments{
 \item{x}{\verb{[POSIXct / POSIXlt]}
