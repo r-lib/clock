@@ -594,7 +594,8 @@ test_that("golden test: ensure that we never allow components of `to` to differ 
 
 test_that("generates the regular sequence along the full span", {
   x <- date_build(c(2019, 2022, 2020), c(2, 1, 3), c(3, 5, 2))
-  expect_identical(
+  # `seq()` here generates integer dates, so we use `expect_equal()`
+  expect_equal(
     date_spanning_seq(x),
     seq(date_build(2019, 2, 3), date_build(2022, 1, 5), by = 1)
   )
