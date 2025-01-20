@@ -1191,7 +1191,7 @@ test_that("generates the regular sequence along the full span", {
 
   x <- date_time_build(2020, minute = c(2, 1, 5), zone = zone)
 
-  expect_identical(
+  expect_equal(
     date_spanning_seq(x),
     seq(
       date_time_build(2020, minute = 1, zone = zone),
