@@ -1,5 +1,8 @@
 # clock (development version)
 
+* Fixed an issue where clock would not compile on Centos 7 using gcc-5.4.0 due
+  to a `constexpr` issue (#357).
+
 * Fixed a test that failed due to `seq.Date()` now returning integer storage in
   some cases in the development version of R.
 
