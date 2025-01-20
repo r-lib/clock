@@ -1,5 +1,8 @@
 # clock (development version)
 
+* Added a `diff()` method for time points and calendars to ensure that durations
+  are always returned, even in the empty result case (#364).
+
 # clock 0.7.1
 
 * Removed usage of non-API `STRING_PTR()` in favor of `STRING_PTR_RO()`.

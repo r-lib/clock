@@ -1044,6 +1044,28 @@ calendar_check_minimum_precision <- function(
   cli::cli_abort(message, call = call)
 }
 
+calendar_check_maximum_precision <- function(
+  x,
+  precision,
+  ...,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
+  x_precision <- calendar_precision_attribute(x)
+
+  if (x_precision <= precision) {
+    return(invisible(NULL))
+  }
+
+  message <- c(
+    "Can't perform this operation because of the precision of {.arg {arg}}.",
+    i = "The precision of {.arg {arg}} must be at most {.str {precision_to_string(precision)}}.",
+    i = "{.arg {arg}} has a precision of {.str {precision_to_string(x_precision)}}."
+  )
+
+  cli::cli_abort(message, call = call)
+}
+
 calendar_check_exact_precision <- function(
   x,
   precision,
@@ -1203,6 +1225,21 @@ arith_numeric_and_calendar <- function(op, x, y, ...) {
     ),
     stop_incompatible_op(op, x, y, ...)
   )
+}
+
+# ------------------------------------------------------------------------------
+
+# Special support for when `lag * differences >= n`
+#
+# In vctrs, this forces a return value of `vec_slice(x, 0L)`, but this is
+# not correct for calendar types. See also, `diff.Date()` which exists for a
+# similar reason.
+calendar_diff_is_empty <- function(x, lag, differences) {
+  # Same errors as vctrs
+  stopifnot(length(lag) == 1L, lag >= 1L)
+  stopifnot(length(differences) == 1L, differences >= 1L)
+  n <- vec_size(x)
+  lag * differences >= n
 }
 
 # ------------------------------------------------------------------------------

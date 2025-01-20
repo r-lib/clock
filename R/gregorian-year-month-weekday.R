@@ -942,6 +942,18 @@ year_month_weekday_plus_duration <- function(
 
 # ------------------------------------------------------------------------------
 
+#' @export
+diff.clock_year_month_weekday <- function(x, lag = 1L, differences = 1L, ...) {
+  calendar_check_maximum_precision(x, PRECISION_MONTH)
+  if (calendar_diff_is_empty(x, lag, differences)) {
+    duration_helper(integer(), calendar_precision_attribute(x))
+  } else {
+    NextMethod()
+  }
+}
+
+# ------------------------------------------------------------------------------
+
 #' Convert to year-month-weekday
 #'
 #' `as_year_month_weekday()` converts a vector to the year-month-weekday
