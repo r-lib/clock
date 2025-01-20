@@ -16,7 +16,6 @@ clock_months <- as.environment(clock_months)
 lockEnvironment(clock_months, bindings = TRUE)
 usethis::use_data(clock_months, internal = FALSE, overwrite = TRUE)
 
-
 clock_weekdays <- list(
   sunday = 1L,
   monday = 2L,
@@ -29,7 +28,6 @@ clock_weekdays <- list(
 clock_weekdays <- as.environment(clock_weekdays)
 lockEnvironment(clock_weekdays, bindings = TRUE)
 usethis::use_data(clock_weekdays, internal = FALSE, overwrite = TRUE)
-
 
 clock_iso_weekdays <- list(
   monday = 1L,
