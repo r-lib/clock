@@ -301,7 +301,7 @@ year::is_leap() const NOEXCEPT {
   case start::thursday: return to_week<start::thursday>(*this).is_leap();
   case start::friday: return to_week<start::friday>(*this).is_leap();
   case start::saturday: return to_week<start::saturday>(*this).is_leap();
-  default: throw std::runtime_error("[[unreachable]]");
+  default: return /* unreachable */ false;
   }
 }
 
@@ -322,7 +322,7 @@ operator+(const year& x, const week::years& y) NOEXCEPT
   case start::thursday: return from_week(to_week<start::thursday>(x) + y);
   case start::friday: return from_week(to_week<start::friday>(x) + y);
   case start::saturday: return from_week(to_week<start::saturday>(x) + y);
-  default: throw std::runtime_error("[[unreachable]]");
+  default: return /* unreachable */ year();
   }
 }
 
@@ -343,7 +343,7 @@ operator-(const year& x, const year& y) NOEXCEPT
   case start::thursday: return to_week<start::thursday>(x) - to_week<start::thursday>(y);
   case start::friday: return to_week<start::friday>(x) - to_week<start::friday>(y);
   case start::saturday: return to_week<start::saturday>(x) - to_week<start::saturday>(y);
-  default: throw std::runtime_error("[[unreachable]]");
+  default: return /* unreachable */ week::years();
   }
 }
 
@@ -411,7 +411,7 @@ year_weeknum::ok() const NOEXCEPT
   case start::thursday: return to_week<start::thursday>(*this).ok();
   case start::friday: return to_week<start::friday>(*this).ok();
   case start::saturday: return to_week<start::saturday>(*this).ok();
-  default: throw std::runtime_error("[[unreachable]]");
+  default: return /* unreachable */ false;
   }
 }
 
@@ -441,7 +441,7 @@ year_lastweek::weeknum() const NOEXCEPT
   case start::thursday: return to_week<start::thursday>(*this).weeknum();
   case start::friday: return to_week<start::friday>(*this).weeknum();
   case start::saturday: return to_week<start::saturday>(*this).weeknum();
-  default: throw std::runtime_error("[[unreachable]]");
+  default: return /* unreachable */ week::weeknum();
   }
 }
 
@@ -501,7 +501,7 @@ year_weeknum_weekday::from_sys_days(const date::sys_days& dp, week::start s) NOE
   case start::thursday: return from_week(week::year_weeknum_weekday<start::thursday>(dp));
   case start::friday: return from_week(week::year_weeknum_weekday<start::friday>(dp));
   case start::saturday: return from_week(week::year_weeknum_weekday<start::saturday>(dp));
-  default: throw std::runtime_error("[[unreachable]]");
+  default: return /* unreachable */ year_weeknum_weekday();
   }
 }
 
@@ -551,7 +551,7 @@ year_weeknum_weekday::operator date::sys_days() const NOEXCEPT
   case start::thursday: return to_week<start::thursday>(*this);
   case start::friday: return to_week<start::friday>(*this);
   case start::saturday: return to_week<start::saturday>(*this);
-  default: throw std::runtime_error("[[unreachable]]");
+  default: return /* unreachable */ date::sys_days();
   }
 }
 
@@ -570,7 +570,7 @@ year_weeknum_weekday::operator date::local_days() const NOEXCEPT
   case start::thursday: return date::local_days(to_week<start::thursday>(*this));
   case start::friday: return date::local_days(to_week<start::friday>(*this));
   case start::saturday: return date::local_days(to_week<start::saturday>(*this));
-  default: throw std::runtime_error("[[unreachable]]");
+  default: return /* unreachable */ date::local_days();
   }
 }
 
@@ -590,7 +590,7 @@ year_weeknum_weekday::ok() const NOEXCEPT
   case start::thursday: return to_week<start::thursday>(*this).ok();
   case start::friday: return to_week<start::friday>(*this).ok();
   case start::saturday: return to_week<start::saturday>(*this).ok();
-  default: throw std::runtime_error("[[unreachable]]");
+  default: return /* unreachable */ false;
   }
 }
 
@@ -628,7 +628,7 @@ year_lastweek_weekday::weeknum() const NOEXCEPT
   case start::thursday: return to_week<start::thursday>(*this).weeknum();
   case start::friday: return to_week<start::friday>(*this).weeknum();
   case start::saturday: return to_week<start::saturday>(*this).weeknum();
-  default: throw std::runtime_error("[[unreachable]]");
+  default: return /* unreachable */ week::weeknum();
   }
 }
 
