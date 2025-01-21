@@ -107,12 +107,11 @@ You’ll also want to take a look at clock’s vignettes:
   Questions](https://clock.r-lib.org/articles/faq.html)
 
 You can also watch this [5 minute lightning
-talk](https://www.rstudio.com/conference/2022/talks/its-about-time/)
-about clock:
+talk](https://www.youtube.com/watch?v=DPU7TJZXWvo) about clock:
 
 <p>
 
-<a href="https://www.rstudio.com/conference/2022/talks/its-about-time/?wvideo=pzuyostdz8">
+<a href="https://www.youtube.com/watch?v=DPU7TJZXWvo">
 <img src="https://embed-ssl.wistia.com/deliveries/3ee43fc82b901742748feddc5d3e9796dcd7d7b9.jpg?image_play_button_size=2x&amp;image_crop_resized=960x540&amp;image_play_button=1&amp;image_play_button_color=4287c7e0" width="600" height="337" style="width: 600px; height: 337px;"/></a>
 
 </p>
