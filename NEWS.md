@@ -1,4 +1,4 @@
-# clock (development version)
+# clock 0.7.2
 
 * Added a `diff()` method for time points and calendars to ensure that durations
   are always returned, even in the empty result case (#364).
