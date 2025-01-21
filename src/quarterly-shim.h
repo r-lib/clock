@@ -133,19 +133,6 @@ public:
 
 namespace detail {
 
-static
-inline
-void
-never_reached [[noreturn]] () {
-  // Compiler hint to allow [[noreturn]] attribute. This is never executed since
-  // `never_reached()` is never actually called.
-  throw std::runtime_error("[[noreturn]]");
-}
-
-} // namespace detail
-
-namespace detail {
-
 template <quarterly::start S>
 CONSTCD14
 inline
@@ -264,7 +251,7 @@ year::is_leap() const NOEXCEPT {
   case start::october: return to_quarterly<start::october>(*this).is_leap();
   case start::november: return to_quarterly<start::november>(*this).is_leap();
   case start::december: return to_quarterly<start::december>(*this).is_leap();
-  default: detail::never_reached();
+  default: return /* unreachable */ false;
   }
 }
 
@@ -290,7 +277,7 @@ operator+(const year& x, const quarterly::years& y) NOEXCEPT
   case start::october: return from_quarterly(to_quarterly<start::october>(x) + y);
   case start::november: return from_quarterly(to_quarterly<start::november>(x) + y);
   case start::december: return from_quarterly(to_quarterly<start::december>(x) + y);
-  default: detail::never_reached();
+  default: return /* unreachable */ year();
   }
 }
 
@@ -316,7 +303,7 @@ operator-(const year& x, const year& y) NOEXCEPT
   case start::october: return to_quarterly<start::october>(x) - to_quarterly<start::october>(y);
   case start::november: return to_quarterly<start::november>(x) - to_quarterly<start::november>(y);
   case start::december: return to_quarterly<start::december>(x) - to_quarterly<start::december>(y);
-  default: detail::never_reached();
+  default: return /* unreachable */ quarterly::years();
   }
 }
 
@@ -368,7 +355,7 @@ operator+(const year_quarternum& yqn, const quarterly::quarters& dq) NOEXCEPT
   case start::october: return from_quarterly(to_quarterly<start::october>(yqn) + dq);
   case start::november: return from_quarterly(to_quarterly<start::november>(yqn) + dq);
   case start::december: return from_quarterly(to_quarterly<start::december>(yqn) + dq);
-  default: detail::never_reached();
+  default: return /* unreachable */ year_quarternum();
   }
 }
 
@@ -394,7 +381,7 @@ operator-(const year_quarternum& x, const year_quarternum& y) NOEXCEPT
   case start::october: return to_quarterly<start::october>(x) - to_quarterly<start::october>(y);
   case start::november: return to_quarterly<start::november>(x) - to_quarterly<start::november>(y);
   case start::december: return to_quarterly<start::december>(x) - to_quarterly<start::december>(y);
-  default: detail::never_reached();
+  default: return /* unreachable */ quarterly::quarters();
   }
 }
 
@@ -459,7 +446,7 @@ year_quarternum_quarterday::from_sys_days(const date::sys_days& dp, quarterly::s
   case start::october: return from_quarterly(quarterly::year_quarternum_quarterday<start::october>(dp));
   case start::november: return from_quarterly(quarterly::year_quarternum_quarterday<start::november>(dp));
   case start::december: return from_quarterly(quarterly::year_quarternum_quarterday<start::december>(dp));
-  default: detail::never_reached();
+  default: return /* unreachable */ year_quarternum_quarterday();
   }
 }
 
@@ -514,7 +501,7 @@ year_quarternum_quarterday::operator date::sys_days() const NOEXCEPT
   case start::october: return to_quarterly<start::october>(*this);
   case start::november: return to_quarterly<start::november>(*this);
   case start::december: return to_quarterly<start::december>(*this);
-  default: detail::never_reached();
+  default: return /* unreachable */ date::sys_days();
   }
 }
 
@@ -538,7 +525,7 @@ year_quarternum_quarterday::operator date::local_days() const NOEXCEPT
   case start::october: return date::local_days(to_quarterly<start::october>(*this));
   case start::november: return date::local_days(to_quarterly<start::november>(*this));
   case start::december: return date::local_days(to_quarterly<start::december>(*this));
-  default: detail::never_reached();
+  default: return /* unreachable */ date::local_days();
   }
 }
 
@@ -563,7 +550,7 @@ year_quarternum_quarterday::ok() const NOEXCEPT
   case start::october: return to_quarterly<start::october>(*this).ok();
   case start::november: return to_quarterly<start::november>(*this).ok();
   case start::december: return to_quarterly<start::december>(*this).ok();
-  default: detail::never_reached();
+  default: return /* unreachable */ false;
   }
 }
 
@@ -621,7 +608,7 @@ year_quarternum_quarterday_last::quarterday() const NOEXCEPT
   case start::october: return to_quarterly<start::october>(*this).quarterday();
   case start::november: return to_quarterly<start::november>(*this).quarterday();
   case start::december: return to_quarterly<start::december>(*this).quarterday();
-  default: detail::never_reached();
+  default: return /* unreachable */ quarterly::quarterday();
   }
 }
 
