@@ -1,6 +1,6 @@
 Package: clock
 Title: Date-Time Types and Tools
-Version: 0.7.1.9000
+Version: 0.7.2
 Authors@R: c(
     person("Davis", "Vaughan", , "davis@posit.co", role = c("aut", "cre")),
     person("Posit Software, PBC", role = c("cph", "fnd"))
@@ -32,7 +32,7 @@ Suggests:
     testthat (>= 3.0.0),
     withr
 LinkingTo:
-    cpp11 (>= 0.4.3),
+    cpp11 (>= 0.5.1),
     tzdb (>= 0.4.0)
 VignetteBuilder:
     knitr
