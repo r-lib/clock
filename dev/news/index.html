@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">clock</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.7.1.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.7.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,6 +46,9 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="clock-development-version">clock (development version)<a class="anchor" aria-label="anchor" href="#clock-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.7.2" id="clock-072">clock 0.7.2<a class="anchor" aria-label="anchor" href="#clock-072"></a></h2><p class="text-muted">CRAN release: 2025-01-21</p>
 <ul><li><p>Added a <code><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff()</a></code> method for time points and calendars to ensure that durations are always returned, even in the empty result case (<a href="https://github.com/r-lib/clock/issues/364" class="external-link">#364</a>).</p></li>
 <li><p>Fixed an issue where clock would not compile on Centos 7 using gcc-5.4.0 due to a <code>constexpr</code> issue (<a href="https://github.com/r-lib/clock/issues/357" class="external-link">#357</a>).</p></li>
 <li><p>Fixed a test that failed due to <code><a href="https://rdrr.io/r/base/seq.Date.html" class="external-link">seq.Date()</a></code> now returning integer storage in some cases in the development version of R.</p></li>
