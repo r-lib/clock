@@ -823,7 +823,12 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                     {
                         auto c = static_cast<char>(Traits::to_char_type(ic));
                         if (c == '-')
+                        {
                             neg = true;
+                            (void)is.get();
+                        }
+                        else if (c == '+')
+                            (void)is.get();
                     }
                     if (modified == CharT{})
                     {
