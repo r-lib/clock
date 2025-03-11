@@ -1044,9 +1044,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                 year_month_day ymd_trial = sys_days(year{Y}/January/Sunday[1]) +
                                            weeks{U-1} +
                                            (date::weekday{static_cast<unsigned>(wd)} - Sunday);
-                if (Y == not_a_year)
-                    Y = static_cast<int>(ymd_trial.year());
-                else if (year{Y} != ymd_trial.year())
+                if (year{Y} != ymd_trial.year())
                     goto broken;
                 if (m == not_a_month)
                     m = static_cast<int>(static_cast<unsigned>(ymd_trial.month()));
@@ -1063,9 +1061,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
                 year_month_day ymd_trial = sys_days(year{Y}/January/Monday[1]) +
                                            weeks{W-1} +
                                            (date::weekday{static_cast<unsigned>(wd)} - Monday);
-                if (Y == not_a_year)
-                    Y = static_cast<int>(ymd_trial.year());
-                else if (year{Y} != ymd_trial.year())
+                if (year{Y} != ymd_trial.year())
                     goto broken;
                 if (m == not_a_month)
                     m = static_cast<int>(static_cast<unsigned>(ymd_trial.month()));
