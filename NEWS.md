@@ -1,5 +1,11 @@
 # clock (development version)
 
+* `%Y`, `%F`, `%G`, and `%c` now parse up to 4 _characters_ by default, rather
+  than 4 _digits_. This is more in line with the C++20 specification and was a
+  change made in the upstream `<date.h>` parser. Practically, this means that
+  negative years such as `-1000-01-01` will no longer parse with `%Y-%m-%d`, and
+  instead requires `%5Y-%m-%d` to capture the leading `-` (#387).
+
 * tzdb >=0.5.0 is required. Note that older versions of clock are not compatible
   with tzdb 0.5.0 and above, so if you are having issues (particularly with
   parsing) please make sure that both clock and tzdb are fully updated (#387).
