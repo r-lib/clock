@@ -49,6 +49,7 @@
 <ul><li><p><code>%Y</code>, <code>%F</code>, <code>%G</code>, and <code>%c</code> now parse up to 4 <em>characters</em> by default, rather than 4 <em>digits</em>. This is more in line with the C++20 specification and was a change made in the upstream <code>&lt;date.h&gt;</code> parser. Practically, this means that negative years such as <code>-1000-01-01</code> will no longer parse with <code>%Y-%m-%d</code>, and instead requires <code>%5Y-%m-%d</code> to capture the leading <code>-</code> (<a href="https://github.com/r-lib/clock/issues/387" class="external-link">#387</a>).</p></li>
 <li><p>tzdb &gt;=0.5.0 is required. Note that older versions of clock are not compatible with tzdb 0.5.0 and above, so if you are having issues (particularly with parsing) please make sure that both clock and tzdb are fully updated (<a href="https://github.com/r-lib/clock/issues/387" class="external-link">#387</a>).</p></li>
 <li><p>Fixed <code>-Wdeprecated-literal-operator</code> reported by clang (<a href="https://github.com/r-lib/clock/issues/386" class="external-link">#386</a>, <a href="https://github.com/MichaelChirico" class="external-link">@MichaelChirico</a>).</p></li>
+<li><p>R &gt;=4.0.0 is now required. This is consistent with the standards of the tidyverse.</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.7.2" id="clock-072">clock 0.7.2<a class="anchor" aria-label="anchor" href="#clock-072"></a></h2><p class="text-muted">CRAN release: 2025-01-21</p>
