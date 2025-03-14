@@ -237,8 +237,8 @@ operator<<(std::basic_ostream<CharT, Traits>& os, const year_yearday_last& yydl)
 inline namespace literals
 {
 
-CONSTCD11 ordinal::yearday operator "" _yd(unsigned long long yd) NOEXCEPT;
-CONSTCD11 ordinal::year    operator "" _y(unsigned long long y) NOEXCEPT;
+CONSTCD11 ordinal::yearday operator ""_yd(unsigned long long yd) NOEXCEPT;
+CONSTCD11 ordinal::year    operator ""_y(unsigned long long y) NOEXCEPT;
 
 }  // inline namespace literals
 #endif // !defined(_MSC_VER) || (_MSC_VER >= 1900)
@@ -628,7 +628,7 @@ inline namespace literals
 CONSTCD11
 inline
 ordinal::yearday
-operator "" _yd(unsigned long long yd) NOEXCEPT
+operator ""_yd(unsigned long long yd) NOEXCEPT
 {
     return ordinal::yearday{static_cast<unsigned>(yd)};
 }
@@ -636,7 +636,7 @@ operator "" _yd(unsigned long long yd) NOEXCEPT
 CONSTCD11
 inline
 ordinal::year
-operator "" _y(unsigned long long y) NOEXCEPT
+operator ""_y(unsigned long long y) NOEXCEPT
 {
     return ordinal::year(static_cast<int>(y));
 }

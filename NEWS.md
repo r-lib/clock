@@ -1,5 +1,8 @@
 # clock (development version)
 
+* Fixed `-Wdeprecated-literal-operator` reported by clang (#386,
+  @MichaelChirico).
+
 # clock 0.7.2
 
 * Added a `diff()` method for time points and calendars to ensure that durations
