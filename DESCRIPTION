@@ -17,22 +17,22 @@ BugReports: https://github.com/r-lib/clock/issues
 Depends:
     R (>= 3.6.0)
 Imports:
-    cli (>= 3.6.1),
-    lifecycle (>= 1.0.3),
-    rlang (>= 1.1.0),
+    cli (>= 3.6.4),
+    lifecycle (>= 1.0.4),
+    rlang (>= 1.1.5),
     tzdb (>= 0.4.0.9000),
-    vctrs (>= 0.6.1)
+    vctrs (>= 0.6.5)
 Suggests:
     covr,
     knitr,
     magrittr,
     pillar,
     rmarkdown,
-    slider (>= 0.3.0),
+    slider (>= 0.3.2),
     testthat (>= 3.0.0),
     withr
 LinkingTo:
-    cpp11 (>= 0.5.1),
+    cpp11 (>= 0.5.2),
     tzdb (>= 0.4.0.9000)
 VignetteBuilder:
     knitr
