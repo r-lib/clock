@@ -13,6 +13,9 @@
 * Fixed `-Wdeprecated-literal-operator` reported by clang (#386,
   @MichaelChirico).
 
+* R >=4.0.0 is now required. This is consistent with the standards of the
+  tidyverse.
+
 # clock 0.7.2
 
 * Added a `diff()` method for time points and calendars to ensure that durations
