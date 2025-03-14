@@ -700,6 +700,38 @@ test_that("parsing rounds parsed subsecond components more precise than the resu
   )
 })
 
+test_that("negative years don't parse by default, but can parse with usage of `N` (#387)", {
+  # `%Y`
+  expect_warning(
+    year_month_day_parse("-1000-01-01", format = "%Y-%m-%d"),
+    class = "clock_warning_parse_failures"
+  )
+  expect_identical(
+    year_month_day_parse("-1000-01-01", format = "%5Y-%m-%d"),
+    year_month_day(-1000, 1, 1)
+  )
+
+  # `%F`
+  expect_warning(
+    year_month_day_parse("-1000-01-01", format = "%F"),
+    class = "clock_warning_parse_failures"
+  )
+  expect_identical(
+    year_month_day_parse("-1000-01-01", format = "%5F"),
+    year_month_day(-1000, 1, 1)
+  )
+
+  # `%G`
+  expect_warning(
+    year_month_day_parse("-1000-01-01", format = "%G-%V-%u"),
+    class = "clock_warning_parse_failures"
+  )
+  expect_identical(
+    year_month_day_parse("-1000-1-1", format = "%5G-%V-%u"),
+    year_month_day(-1001, 12, 30)
+  )
+})
+
 # ------------------------------------------------------------------------------
 # calendar_group()
 
