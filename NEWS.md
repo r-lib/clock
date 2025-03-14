@@ -1,5 +1,9 @@
 # clock (development version)
 
+* tzdb >=0.5.0 is required. Note that older versions of clock are not compatible
+  with tzdb 0.5.0 and above, so if you are having issues (particularly with
+  parsing) please make sure that both clock and tzdb are fully updated (#387).
+
 * Fixed `-Wdeprecated-literal-operator` reported by clang (#386,
   @MichaelChirico).
 
