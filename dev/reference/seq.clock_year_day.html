@@ -127,8 +127,8 @@ precision of <code>from</code>.</p>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="year_day.html">year_day</a></span><span class="op">(</span><span class="fl">2020</span><span class="op">)</span>, <span class="fu"><a href="year_day.html">year_day</a></span><span class="op">(</span><span class="fl">2040</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;year_day&lt;year&gt;[11]&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "2020" "2022" "2024" "2026" "2028" "2030" "2032" "2034" "2036" "2038"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "2040"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "2020" "2022" "2024" "2026" "2028" "2030" "2032" "2034" "2036"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "2038" "2040"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Which we can then set the day of to get a sequence of end-of-year values</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="clock-setters.html">set_day</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"last"</span><span class="op">)</span></span></span>

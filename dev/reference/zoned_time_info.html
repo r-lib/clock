@@ -93,18 +93,24 @@ zoned-times with the same time zone as <code>x</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                         begin</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 2020-11-01T01:00:00-05:00[America/New_York]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 2021-03-14T03:00:00-04:00[America/New_York]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                           end offset   dst abbreviation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2021-03-14T03:00:00-04:00[America/New_York] -18000 FALSE          EST</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2021-11-07T01:00:00-05:00[America/New_York] -14400  TRUE          EDT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                           end offset   dst</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2021-03-14T03:00:00-04:00[America/New_York] -18000 FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2021-11-07T01:00:00-05:00[America/New_York] -14400  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   abbreviation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          EST</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          EDT</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `end` can be used to iterate through daylight saving time transitions</span></span></span>
 <span class="r-in"><span><span class="fu">zoned_time_info</span><span class="op">(</span><span class="va">info</span><span class="op">$</span><span class="va">end</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                         begin</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 2021-03-14T03:00:00-04:00[America/New_York]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 2021-11-07T01:00:00-05:00[America/New_York]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                           end offset   dst abbreviation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2021-11-07T01:00:00-05:00[America/New_York] -14400  TRUE          EDT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2022-03-13T03:00:00-04:00[America/New_York] -18000 FALSE          EST</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                           end offset   dst</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2021-11-07T01:00:00-05:00[America/New_York] -14400  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2022-03-13T03:00:00-04:00[America/New_York] -18000 FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   abbreviation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          EDT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          EST</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

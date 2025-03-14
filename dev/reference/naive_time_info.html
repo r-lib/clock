@@ -215,12 +215,12 @@ to a tibble with <code>as_tibble()</code>, as that will print the df-cols much n
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Maps uniquely to a time in London</span></span></span>
 <span class="r-in"><span><span class="fu">naive_time_info</span><span class="op">(</span><span class="va">x</span>, <span class="st">"Europe/London"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     type         first.begin           first.end first.offset first.dst</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 unique 1968-10-26T23:00:00 1971-10-31T02:00:00         3600     FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   first.abbreviation second.begin second.end second.offset second.dst</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                BST         &lt;NA&gt;       &lt;NA&gt;          &lt;NA&gt;         NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   second.abbreviation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     type         first.begin           first.end first.offset</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 unique 1968-10-26T23:00:00 1971-10-31T02:00:00         3600</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   first.dst first.abbreviation second.begin second.end second.offset</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     FALSE                BST         &lt;NA&gt;       &lt;NA&gt;          &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   second.dst second.abbreviation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         NA                &lt;NA&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># This naive-time never existed in New York!</span></span></span>
 <span class="r-in"><span><span class="co"># A DST gap jumped the time from 01:59:59 -&gt; 03:00:00,</span></span></span>

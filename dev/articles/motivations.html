@@ -841,15 +841,18 @@ every month in 2019. What days are those?</p>
 <span></span>
 <span><span class="va">meetings</span></span>
 <span><span class="co">#&gt; &lt;year_month_weekday&lt;day&gt;[36]&gt;</span></span>
-<span><span class="co">#&gt;  [1] "2019-01-Fri[1]" "2019-01-Fri[3]" "2019-01-Fri[5]" "2019-02-Fri[1]"</span></span>
-<span><span class="co">#&gt;  [5] "2019-02-Fri[3]" "2019-02-Fri[5]" "2019-03-Fri[1]" "2019-03-Fri[3]"</span></span>
-<span><span class="co">#&gt;  [9] "2019-03-Fri[5]" "2019-04-Fri[1]" "2019-04-Fri[3]" "2019-04-Fri[5]"</span></span>
-<span><span class="co">#&gt; [13] "2019-05-Fri[1]" "2019-05-Fri[3]" "2019-05-Fri[5]" "2019-06-Fri[1]"</span></span>
-<span><span class="co">#&gt; [17] "2019-06-Fri[3]" "2019-06-Fri[5]" "2019-07-Fri[1]" "2019-07-Fri[3]"</span></span>
-<span><span class="co">#&gt; [21] "2019-07-Fri[5]" "2019-08-Fri[1]" "2019-08-Fri[3]" "2019-08-Fri[5]"</span></span>
-<span><span class="co">#&gt; [25] "2019-09-Fri[1]" "2019-09-Fri[3]" "2019-09-Fri[5]" "2019-10-Fri[1]"</span></span>
-<span><span class="co">#&gt; [29] "2019-10-Fri[3]" "2019-10-Fri[5]" "2019-11-Fri[1]" "2019-11-Fri[3]"</span></span>
-<span><span class="co">#&gt; [33] "2019-11-Fri[5]" "2019-12-Fri[1]" "2019-12-Fri[3]" "2019-12-Fri[5]"</span></span>
+<span><span class="co">#&gt;  [1] "2019-01-Fri[1]" "2019-01-Fri[3]" "2019-01-Fri[5]"</span></span>
+<span><span class="co">#&gt;  [4] "2019-02-Fri[1]" "2019-02-Fri[3]" "2019-02-Fri[5]"</span></span>
+<span><span class="co">#&gt;  [7] "2019-03-Fri[1]" "2019-03-Fri[3]" "2019-03-Fri[5]"</span></span>
+<span><span class="co">#&gt; [10] "2019-04-Fri[1]" "2019-04-Fri[3]" "2019-04-Fri[5]"</span></span>
+<span><span class="co">#&gt; [13] "2019-05-Fri[1]" "2019-05-Fri[3]" "2019-05-Fri[5]"</span></span>
+<span><span class="co">#&gt; [16] "2019-06-Fri[1]" "2019-06-Fri[3]" "2019-06-Fri[5]"</span></span>
+<span><span class="co">#&gt; [19] "2019-07-Fri[1]" "2019-07-Fri[3]" "2019-07-Fri[5]"</span></span>
+<span><span class="co">#&gt; [22] "2019-08-Fri[1]" "2019-08-Fri[3]" "2019-08-Fri[5]"</span></span>
+<span><span class="co">#&gt; [25] "2019-09-Fri[1]" "2019-09-Fri[3]" "2019-09-Fri[5]"</span></span>
+<span><span class="co">#&gt; [28] "2019-10-Fri[1]" "2019-10-Fri[3]" "2019-10-Fri[5]"</span></span>
+<span><span class="co">#&gt; [31] "2019-11-Fri[1]" "2019-11-Fri[3]" "2019-11-Fri[5]"</span></span>
+<span><span class="co">#&gt; [34] "2019-12-Fri[1]" "2019-12-Fri[3]" "2019-12-Fri[5]"</span></span>
 <span></span>
 <span><span class="va">meetings</span><span class="op">[</span><span class="fu"><a href="../reference/clock-invalid.html">invalid_detect</a></span><span class="op">(</span><span class="va">meetings</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt; &lt;year_month_weekday&lt;day&gt;[8]&gt;</span></span>
@@ -863,28 +866,34 @@ meetings!</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">meetings</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="../reference/clock-invalid.html">invalid_detect</a></span><span class="op">(</span><span class="va">meetings</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt; &lt;year_month_weekday&lt;day&gt;[28]&gt;</span></span>
-<span><span class="co">#&gt;  [1] "2019-01-Fri[1]" "2019-01-Fri[3]" "2019-02-Fri[1]" "2019-02-Fri[3]"</span></span>
-<span><span class="co">#&gt;  [5] "2019-03-Fri[1]" "2019-03-Fri[3]" "2019-03-Fri[5]" "2019-04-Fri[1]"</span></span>
-<span><span class="co">#&gt;  [9] "2019-04-Fri[3]" "2019-05-Fri[1]" "2019-05-Fri[3]" "2019-05-Fri[5]"</span></span>
-<span><span class="co">#&gt; [13] "2019-06-Fri[1]" "2019-06-Fri[3]" "2019-07-Fri[1]" "2019-07-Fri[3]"</span></span>
-<span><span class="co">#&gt; [17] "2019-08-Fri[1]" "2019-08-Fri[3]" "2019-08-Fri[5]" "2019-09-Fri[1]"</span></span>
-<span><span class="co">#&gt; [21] "2019-09-Fri[3]" "2019-10-Fri[1]" "2019-10-Fri[3]" "2019-11-Fri[1]"</span></span>
-<span><span class="co">#&gt; [25] "2019-11-Fri[3]" "2019-11-Fri[5]" "2019-12-Fri[1]" "2019-12-Fri[3]"</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] "2019-01-Fri[1]" "2019-01-Fri[3]" "2019-02-Fri[1]"</span></span>
+<span><span class="co">#&gt;  [4] "2019-02-Fri[3]" "2019-03-Fri[1]" "2019-03-Fri[3]"</span></span>
+<span><span class="co">#&gt;  [7] "2019-03-Fri[5]" "2019-04-Fri[1]" "2019-04-Fri[3]"</span></span>
+<span><span class="co">#&gt; [10] "2019-05-Fri[1]" "2019-05-Fri[3]" "2019-05-Fri[5]"</span></span>
+<span><span class="co">#&gt; [13] "2019-06-Fri[1]" "2019-06-Fri[3]" "2019-07-Fri[1]"</span></span>
+<span><span class="co">#&gt; [16] "2019-07-Fri[3]" "2019-08-Fri[1]" "2019-08-Fri[3]"</span></span>
+<span><span class="co">#&gt; [19] "2019-08-Fri[5]" "2019-09-Fri[1]" "2019-09-Fri[3]"</span></span>
+<span><span class="co">#&gt; [22] "2019-10-Fri[1]" "2019-10-Fri[3]" "2019-11-Fri[1]"</span></span>
+<span><span class="co">#&gt; [25] "2019-11-Fri[3]" "2019-11-Fri[5]" "2019-12-Fri[1]"</span></span>
+<span><span class="co">#&gt; [28] "2019-12-Fri[3]"</span></span></code></pre></div>
 <p>Or, you could resolve them by selecting the previous valid day:</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">meetings_valid</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clock-invalid.html">invalid_resolve</a></span><span class="op">(</span><span class="va">meetings</span>, invalid <span class="op">=</span> <span class="st">"previous"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">meetings_valid</span></span>
 <span><span class="co">#&gt; &lt;year_month_weekday&lt;day&gt;[36]&gt;</span></span>
-<span><span class="co">#&gt;  [1] "2019-01-Fri[1]" "2019-01-Fri[3]" "2019-01-Thu[5]" "2019-02-Fri[1]"</span></span>
-<span><span class="co">#&gt;  [5] "2019-02-Fri[3]" "2019-02-Thu[4]" "2019-03-Fri[1]" "2019-03-Fri[3]"</span></span>
-<span><span class="co">#&gt;  [9] "2019-03-Fri[5]" "2019-04-Fri[1]" "2019-04-Fri[3]" "2019-04-Tue[5]"</span></span>
-<span><span class="co">#&gt; [13] "2019-05-Fri[1]" "2019-05-Fri[3]" "2019-05-Fri[5]" "2019-06-Fri[1]"</span></span>
-<span><span class="co">#&gt; [17] "2019-06-Fri[3]" "2019-06-Sun[5]" "2019-07-Fri[1]" "2019-07-Fri[3]"</span></span>
-<span><span class="co">#&gt; [21] "2019-07-Wed[5]" "2019-08-Fri[1]" "2019-08-Fri[3]" "2019-08-Fri[5]"</span></span>
-<span><span class="co">#&gt; [25] "2019-09-Fri[1]" "2019-09-Fri[3]" "2019-09-Mon[5]" "2019-10-Fri[1]"</span></span>
-<span><span class="co">#&gt; [29] "2019-10-Fri[3]" "2019-10-Thu[5]" "2019-11-Fri[1]" "2019-11-Fri[3]"</span></span>
-<span><span class="co">#&gt; [33] "2019-11-Fri[5]" "2019-12-Fri[1]" "2019-12-Fri[3]" "2019-12-Tue[5]"</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] "2019-01-Fri[1]" "2019-01-Fri[3]" "2019-01-Thu[5]"</span></span>
+<span><span class="co">#&gt;  [4] "2019-02-Fri[1]" "2019-02-Fri[3]" "2019-02-Thu[4]"</span></span>
+<span><span class="co">#&gt;  [7] "2019-03-Fri[1]" "2019-03-Fri[3]" "2019-03-Fri[5]"</span></span>
+<span><span class="co">#&gt; [10] "2019-04-Fri[1]" "2019-04-Fri[3]" "2019-04-Tue[5]"</span></span>
+<span><span class="co">#&gt; [13] "2019-05-Fri[1]" "2019-05-Fri[3]" "2019-05-Fri[5]"</span></span>
+<span><span class="co">#&gt; [16] "2019-06-Fri[1]" "2019-06-Fri[3]" "2019-06-Sun[5]"</span></span>
+<span><span class="co">#&gt; [19] "2019-07-Fri[1]" "2019-07-Fri[3]" "2019-07-Wed[5]"</span></span>
+<span><span class="co">#&gt; [22] "2019-08-Fri[1]" "2019-08-Fri[3]" "2019-08-Fri[5]"</span></span>
+<span><span class="co">#&gt; [25] "2019-09-Fri[1]" "2019-09-Fri[3]" "2019-09-Mon[5]"</span></span>
+<span><span class="co">#&gt; [28] "2019-10-Fri[1]" "2019-10-Fri[3]" "2019-10-Thu[5]"</span></span>
+<span><span class="co">#&gt; [31] "2019-11-Fri[1]" "2019-11-Fri[3]" "2019-11-Fri[5]"</span></span>
+<span><span class="co">#&gt; [34] "2019-12-Fri[1]" "2019-12-Fri[3]" "2019-12-Tue[5]"</span></span></code></pre></div>
 <p>If you didn’t want to meet on Saturday or Sunday, you could convert
 to a naive-time and <em>shift</em> any Saturdays or Sundays to the
 previous Friday.</p>
@@ -894,9 +903,9 @@ previous Friday.</p>
 <span></span>
 <span><span class="va">meetings_wday</span></span>
 <span><span class="co">#&gt; &lt;weekday[36]&gt;</span></span>
-<span><span class="co">#&gt;  [1] Fri Fri Thu Fri Fri Thu Fri Fri Fri Fri Fri Tue Fri Fri Fri Fri Fri</span></span>
-<span><span class="co">#&gt; [18] Sun Fri Fri Wed Fri Fri Fri Fri Fri Mon Fri Fri Thu Fri Fri Fri Fri</span></span>
-<span><span class="co">#&gt; [35] Fri Tue</span></span>
+<span><span class="co">#&gt;  [1] Fri Fri Thu Fri Fri Thu Fri Fri Fri Fri Fri Tue Fri Fri Fri Fri</span></span>
+<span><span class="co">#&gt; [17] Fri Sun Fri Fri Wed Fri Fri Fri Fri Fri Mon Fri Fri Thu Fri Fri</span></span>
+<span><span class="co">#&gt; [33] Fri Fri Fri Tue</span></span>
 <span></span>
 <span><span class="va">friday</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/weekday.html">weekday</a></span><span class="op">(</span><span class="va">clock_weekdays</span><span class="op">$</span><span class="va">friday</span><span class="op">)</span></span>
 <span><span class="va">saturday</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/weekday.html">weekday</a></span><span class="op">(</span><span class="va">clock_weekdays</span><span class="op">$</span><span class="va">saturday</span><span class="op">)</span></span>
@@ -912,15 +921,18 @@ previous Friday.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/as_year_month_weekday.html">as_year_month_weekday</a></span><span class="op">(</span><span class="va">meetings_naive</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;year_month_weekday&lt;day&gt;[36]&gt;</span></span>
-<span><span class="co">#&gt;  [1] "2019-01-Fri[1]" "2019-01-Fri[3]" "2019-01-Thu[5]" "2019-02-Fri[1]"</span></span>
-<span><span class="co">#&gt;  [5] "2019-02-Fri[3]" "2019-02-Thu[4]" "2019-03-Fri[1]" "2019-03-Fri[3]"</span></span>
-<span><span class="co">#&gt;  [9] "2019-03-Fri[5]" "2019-04-Fri[1]" "2019-04-Fri[3]" "2019-04-Tue[5]"</span></span>
-<span><span class="co">#&gt; [13] "2019-05-Fri[1]" "2019-05-Fri[3]" "2019-05-Fri[5]" "2019-06-Fri[1]"</span></span>
-<span><span class="co">#&gt; [17] "2019-06-Fri[3]" "2019-06-Fri[4]" "2019-07-Fri[1]" "2019-07-Fri[3]"</span></span>
-<span><span class="co">#&gt; [21] "2019-07-Wed[5]" "2019-08-Fri[1]" "2019-08-Fri[3]" "2019-08-Fri[5]"</span></span>
-<span><span class="co">#&gt; [25] "2019-09-Fri[1]" "2019-09-Fri[3]" "2019-09-Mon[5]" "2019-10-Fri[1]"</span></span>
-<span><span class="co">#&gt; [29] "2019-10-Fri[3]" "2019-10-Thu[5]" "2019-11-Fri[1]" "2019-11-Fri[3]"</span></span>
-<span><span class="co">#&gt; [33] "2019-11-Fri[5]" "2019-12-Fri[1]" "2019-12-Fri[3]" "2019-12-Tue[5]"</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] "2019-01-Fri[1]" "2019-01-Fri[3]" "2019-01-Thu[5]"</span></span>
+<span><span class="co">#&gt;  [4] "2019-02-Fri[1]" "2019-02-Fri[3]" "2019-02-Thu[4]"</span></span>
+<span><span class="co">#&gt;  [7] "2019-03-Fri[1]" "2019-03-Fri[3]" "2019-03-Fri[5]"</span></span>
+<span><span class="co">#&gt; [10] "2019-04-Fri[1]" "2019-04-Fri[3]" "2019-04-Tue[5]"</span></span>
+<span><span class="co">#&gt; [13] "2019-05-Fri[1]" "2019-05-Fri[3]" "2019-05-Fri[5]"</span></span>
+<span><span class="co">#&gt; [16] "2019-06-Fri[1]" "2019-06-Fri[3]" "2019-06-Fri[4]"</span></span>
+<span><span class="co">#&gt; [19] "2019-07-Fri[1]" "2019-07-Fri[3]" "2019-07-Wed[5]"</span></span>
+<span><span class="co">#&gt; [22] "2019-08-Fri[1]" "2019-08-Fri[3]" "2019-08-Fri[5]"</span></span>
+<span><span class="co">#&gt; [25] "2019-09-Fri[1]" "2019-09-Fri[3]" "2019-09-Mon[5]"</span></span>
+<span><span class="co">#&gt; [28] "2019-10-Fri[1]" "2019-10-Fri[3]" "2019-10-Thu[5]"</span></span>
+<span><span class="co">#&gt; [31] "2019-11-Fri[1]" "2019-11-Fri[3]" "2019-11-Fri[5]"</span></span>
+<span><span class="co">#&gt; [34] "2019-12-Fri[1]" "2019-12-Fri[3]" "2019-12-Tue[5]"</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="variable-precision">Variable precision<a class="anchor" aria-label="anchor" href="#variable-precision"></a>
