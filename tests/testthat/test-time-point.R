@@ -272,11 +272,9 @@ test_that("both inputs must be compatible", {
   y <- naive_days(1)
 
   expect_snapshot(
-    (
-      expect_error(
-        time_point_count_between(x, y)
-      )
-    )
+    (expect_error(
+      time_point_count_between(x, y)
+    ))
   )
 })
 
@@ -296,11 +294,9 @@ test_that("`precision` must be a time point precision", {
   x <- sys_days(1)
 
   expect_snapshot(
-    (
-      expect_error(
-        time_point_count_between(x, x, "year")
-      )
-    )
+    (expect_error(
+      time_point_count_between(x, x, "year")
+    ))
   )
 })
 
