@@ -877,7 +877,7 @@ inline namespace literals
 CONSTCD11
 inline
 week::weeknum
-operator "" _w(unsigned long long wn) NOEXCEPT
+operator ""_w(unsigned long long wn) NOEXCEPT
 {
     return week::weeknum(static_cast<unsigned>(wn));
 }
