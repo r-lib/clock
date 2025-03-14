@@ -616,7 +616,7 @@ from_stream(std::basic_istream<CharT, Traits>& is,
             case 'S':
                 if (command)
                 {
-                   if (modified != CharT{'E'})
+                    if (modified != CharT{'E'})
                     {
                         using dfs = date::detail::decimal_format_seconds<Duration>;
                         CONSTDATA auto w = Duration::period::den == 1 ? 2 : 3 + dfs::width;
