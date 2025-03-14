@@ -1,6 +1,7 @@
 # clock (development version)
 
-* Fixed `-Wdeprecated-literal-operator` reported by clang (#386, @MichaelChirico).
+* Fixed `-Wdeprecated-literal-operator` reported by clang (#386,
+  @MichaelChirico).
 
 # clock 0.7.2
 
