@@ -20,7 +20,7 @@ Imports:
     cli (>= 3.6.4),
     lifecycle (>= 1.0.4),
     rlang (>= 1.1.5),
-    tzdb (>= 0.4.0.9000),
+    tzdb (>= 0.5.0),
     vctrs (>= 0.6.5)
 Suggests:
     covr,
@@ -33,7 +33,7 @@ Suggests:
     withr
 LinkingTo:
     cpp11 (>= 0.5.2),
-    tzdb (>= 0.4.0.9000)
+    tzdb (>= 0.5.0)
 VignetteBuilder:
     knitr
 Config/build/compilation-database: true
@@ -45,5 +45,3 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-Remotes:
-    r-lib/tzdb
