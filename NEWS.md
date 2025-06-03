@@ -1,4 +1,4 @@
-# clock (development version)
+# clock 0.7.3
 
 * `%Y`, `%F`, `%G`, and `%c` now parse up to 4 _characters_ by default, rather
   than 4 _digits_. This is more in line with the C++20 specification and was a
