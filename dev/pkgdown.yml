@@ -1,12 +1,12 @@
 pandoc: 3.1.11
-pkgdown: 2.1.1
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   clock: clock.html
   faq: faq.html
   articles/motivations: motivations.html
   recipes: recipes.html
-last_built: 2025-03-17T14:14Z
+last_built: 2025-06-03T12:52Z
 urls:
   reference: https://clock.r-lib.org/reference
   article: https://clock.r-lib.org/articles
