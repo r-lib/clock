@@ -5,6 +5,7 @@ template:
   package: tidytemplate
   includes:
     in_header: |
+      <script src="https://cdn.jsdelivr.net/gh/posit-dev/supported-by-posit/js/badge.min.js" data-max-height="43" data-light-bg="#666f76" data-light-fg="#f9f9f9"></script>
       <script defer data-domain="clock.r-lib.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
 
 development:
@@ -12,9 +13,7 @@ development:
 
 reference:
 - title: High Level API
-  desc: This section contains the high level API for R's native date and
-    date-time types (Date, POSIXct, and POSIXlt). For most clock users, these
-    are the only functions you'll need.
+  desc: This section contains the high level API for R's native date and date-time types (Date, POSIXct, and POSIXlt). For most clock users, these are the only functions you'll need.
 - subtitle: Construction
   contents:
   - date_build
@@ -55,8 +54,7 @@ reference:
   - as_date_time
 
 - title: Calendars
-  desc: This section contains the overarching `calendar_*()` API that applies to
-    all calendars. See the subsections for details about a specific calendar.
+  desc: This section contains the overarching `calendar_*()` API that applies to all calendars. See the subsections for details about a specific calendar.
   contents:
   - calendar_group
   - calendar_count_between
@@ -230,8 +228,7 @@ reference:
   - vec_arith.clock_year_month_day
 
 - title: Generics and methods
-  desc: This section contains documentation about generics and methods that is
-    already exposed elsewhere on this reference page.
+  desc: This section contains documentation about generics and methods that is already exposed elsewhere on this reference page.
   contents:
   - add_years
   - get_year
