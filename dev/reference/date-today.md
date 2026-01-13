@@ -48,5 +48,5 @@ date_today("Europe/London")
 
 # Current date-time in that same time zone
 date_now("Europe/London")
-#> [1] "2026-01-13 14:22:16 GMT"
+#> [1] "2026-01-13 16:20:32 GMT"
 ```
