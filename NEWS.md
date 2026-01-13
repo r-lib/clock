@@ -1,4 +1,4 @@
-# clock (development version)
+# clock 0.7.4
 
 * Avoid non-API `SET_ATTRIB()`.
 
