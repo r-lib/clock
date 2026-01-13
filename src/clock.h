@@ -29,4 +29,13 @@
 #define r_chr_na NA_STRING
 #define r_lgl_na NA_LOGICAL
 
+#if R_VERSION < R_Version(4, 5, 0)
+static inline
+void CLEAR_ATTRIB(SEXP x) {
+  SET_ATTRIB(x, R_NilValue);
+  SET_OBJECT(x, 0);
+  UNSET_S4_OBJECT(x);
+}
+#endif
+
 #endif

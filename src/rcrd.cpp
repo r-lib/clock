@@ -15,8 +15,8 @@ new_clock_rcrd_from_fields(SEXP fields, SEXP names, SEXP classes) {
 
   // Clear all attributes except for `names`, as we often
   // pass in other duration or time point objects as `fields`
-  SEXP field_names = Rf_getAttrib(fields, R_NamesSymbol);
-  SET_ATTRIB(fields, r_null);
+  SEXP field_names = PROTECT(Rf_getAttrib(fields, R_NamesSymbol));
+  CLEAR_ATTRIB(fields);
   Rf_setAttrib(fields, R_NamesSymbol, field_names);
 
   const r_ssize n_fields = Rf_xlength(fields);
@@ -54,7 +54,7 @@ new_clock_rcrd_from_fields(SEXP fields, SEXP names, SEXP classes) {
     SET_VECTOR_ELT(fields, 0, field0);
   }
 
-  UNPROTECT(1);
+  UNPROTECT(2);
   return fields;
 }
 
