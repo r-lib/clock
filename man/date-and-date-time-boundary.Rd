@@ -32,11 +32,10 @@ A precision. Allowed precisions are dependent on the input used.}
 \code{precision}, such as the "end of the month".
 }
 
-There are separate help pages for computing boundaries for dates and
-date-times:
+They are both S3 generics with built-in methods for:
 \itemize{
-\item \link[=date-boundary]{dates (Date)}
-\item \link[=posixt-boundary]{date-times (POSIXct/POSIXlt)}
+\item \code{\link[=date-boundary]{Date}}
+\item \code{\link[=posixt-boundary]{POSIXt}}
 }
 }
 \examples{

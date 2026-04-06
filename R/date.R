@@ -521,13 +521,10 @@ add_date_duration_time_point <- function(x, n, add_fn) {
 #'
 #' @description
 #' `date_group()` groups by a single component of a date-time, such as month
-#' of the year, or day of the month.
-#'
-#' There are separate help pages for grouping dates and date-times:
-#'
-#' - [dates (Date)][date-group]
-#'
-#' - [date-times (POSIXct/POSIXlt)][posixt-group]
+#' of the year, or day of the month. It is an S3 generic with built-in
+#' methods:
+#' 
+#' `R doclisting::methods_list("date_group")`
 #'
 #' @inheritParams calendar_group
 #'
@@ -650,11 +647,8 @@ date_leap_year.Date <- function(x) {
 #' - `date_round()` rounds up or down depending on what is closer,
 #'   rounding up on ties.
 #'
-#' There are separate help pages for rounding dates and date-times:
-#'
-#' - [dates (Date)][date-rounding]
-#'
-#' - [date-times (POSIXct/POSIXlt)][posixt-rounding]
+#' They are all S3 generics with built-in methods for: 
+#' `r doclisting::methods_list("date_floor")`
 #'
 #' These functions round the underlying duration itself, relative to an
 #' `origin`. For example, rounding to 15 hours will construct groups of
@@ -950,13 +944,9 @@ date_month_factor <- function(x, ..., labels = "en", abbreviate = FALSE) {
 #'
 #' @description
 #' `date_format()` formats a date (Date) or date-time (POSIXct/POSIXlt) using
-#' a `format` string.
-#'
-#' There are separate help pages for formatting dates and date-times:
-#'
-#' - [dates (Date)][date-formatting]
-#'
-#' - [date-times (POSIXct/POSIXlt)][posixt-formatting]
+#' a `format` string. This is an S3 generic with built-in methods for:
+#' 
+#' `r doclisting::methods_list("date_format")`
 #'
 #' @inheritParams rlang::args_dots_empty
 #'
@@ -1109,12 +1099,9 @@ date_parse <- function(x, ..., format = NULL, locale = clock_locale()) {
 #' `date_shift()` shifts `x` to the `target` weekday. You can shift to the next
 #' or previous weekday. If `x` is currently on the `target` weekday, you can
 #' choose to leave it alone or advance it to the next instance of the `target`.
-#'
-#' There are separate help pages for shifting dates and date-times:
-#'
-#' - [dates (Date)][date-shifting]
-#'
-#' - [date-times (POSIXct/POSIXlt)][posixt-shifting]
+#' 
+#' It is an S3 generic with built-in methods for: 
+#' `r doclisting::methods_list("date_shift")`
 #'
 #' @inheritParams time_point_shift
 #'
@@ -1300,12 +1287,8 @@ date_today <- function(zone) {
 #' - `date_end()` computes the date at the end of a particular
 #'   `precision`, such as the "end of the month".
 #'
-#' There are separate help pages for computing boundaries for dates and
-#' date-times:
-#'
-#' - [dates (Date)][date-boundary]
-#'
-#' - [date-times (POSIXct/POSIXlt)][posixt-boundary]
+#' They are both S3 generics with built-in methods for: 
+#' `r doclisting::methods_list("date_start")`
 #'
 #' @inheritParams date_group
 #'
@@ -1412,13 +1395,8 @@ date_end.Date <- function(x, precision, ..., invalid = NULL) {
 #'
 #' @description
 #' `date_seq()` generates a date (Date) or date-time (POSIXct/POSIXlt) sequence.
-#'
-#' There are separate help pages for generating sequences for dates and
-#' date-times:
-#'
-#' - [dates (Date)][date-sequence]
-#'
-#' - [date-times (POSIXct/POSIXlt)][posixt-sequence]
+#' It is an S3 generic with built-in methods for: 
+#' `r doclisting::methods_list("date_seq")`
 #'
 #' @inheritParams rlang::args_dots_empty
 #'
@@ -1903,12 +1881,9 @@ date_spanning_seq.Date <- function(x) {
 #'
 #' This is suitable for, say, computing the whole number of years or months
 #' between two dates, accounting for the day and time of day.
-#'
-#' There are separate help pages for counting for dates and date-times:
-#'
-#' - [dates (Date)][date-count-between]
-#'
-#' - [date-times (POSIXct/POSIXlt)][posixt-count-between]
+#' 
+#' It is an S3 generic with built-in methods for: 
+#' `r doclisting::methods_list("date_count_between")`
 #'
 #' @inheritSection calendar_count_between Comparison Direction
 #'

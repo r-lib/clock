@@ -45,10 +45,10 @@ anyways.
 or previous weekday. If \code{x} is currently on the \code{target} weekday, you can
 choose to leave it alone or advance it to the next instance of the \code{target}.
 
-There are separate help pages for shifting dates and date-times:
+It is an S3 generic with built-in methods for:
 \itemize{
-\item \link[=date-shifting]{dates (Date)}
-\item \link[=posixt-shifting]{date-times (POSIXct/POSIXlt)}
+\item \code{\link[=date-shifting]{Date}}
+\item \code{\link[=posixt-shifting]{POSIXt}}
 }
 }
 \examples{
