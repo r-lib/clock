@@ -18,12 +18,11 @@ A character vector of the formatted input.
 }
 \description{
 \code{date_format()} formats a date (Date) or date-time (POSIXct/POSIXlt) using
-a \code{format} string.
+a \code{format} string. This is an S3 generic with built-in methods for:
 
-There are separate help pages for formatting dates and date-times:
 \itemize{
-\item \link[=date-formatting]{dates (Date)}
-\item \link[=posixt-formatting]{date-times (POSIXct/POSIXlt)}
+\item \code{\link[=date-formatting]{Date}}
+\item \code{\link[=posixt-formatting]{POSIXt}}
 }
 }
 \examples{

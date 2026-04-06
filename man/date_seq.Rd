@@ -36,12 +36,10 @@ A date or date-time vector.
 }
 \description{
 \code{date_seq()} generates a date (Date) or date-time (POSIXct/POSIXlt) sequence.
-
-There are separate help pages for generating sequences for dates and
-date-times:
+It is an S3 generic with built-in methods for:
 \itemize{
-\item \link[=date-sequence]{dates (Date)}
-\item \link[=posixt-sequence]{date-times (POSIXct/POSIXlt)}
+\item \code{\link[=date-sequence]{Date}}
+\item \code{\link[=posixt-sequence]{POSIXt}}
 }
 }
 \examples{

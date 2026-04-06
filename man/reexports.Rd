@@ -12,6 +12,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{tzdb}{\code{\link[tzdb]{tzdb_names}}, \code{\link[tzdb]{tzdb_version}}}
+  \item{tzdb}{\code{\link[tzdb:tzdb_names]{tzdb_names()}}, \code{\link[tzdb:tzdb_version]{tzdb_version()}}}
 }}
 

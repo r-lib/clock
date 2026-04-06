@@ -22,6 +22,11 @@ Useful links:
 \author{
 \strong{Maintainer}: Davis Vaughan \email{davis@posit.co}
 
+Authors:
+\itemize{
+  \item Davis Vaughan \email{davis@posit.co}
+}
+
 Other contributors:
 \itemize{
   \item Posit Software, PBC [copyright holder, funder]

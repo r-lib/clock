@@ -35,10 +35,10 @@ fractional value.
 This is suitable for, say, computing the whole number of years or months
 between two dates, accounting for the day and time of day.
 
-There are separate help pages for counting for dates and date-times:
+It is an S3 generic with built-in methods for:
 \itemize{
-\item \link[=date-count-between]{dates (Date)}
-\item \link[=posixt-count-between]{date-times (POSIXct/POSIXlt)}
+\item \code{\link[=date-count-between]{Date}}
+\item \code{\link[=posixt-count-between]{POSIXt}}
 }
 }
 \section{Comparison Direction}{

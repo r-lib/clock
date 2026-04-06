@@ -26,12 +26,12 @@ A single positive integer specifying a multiple of \code{precision} to use.}
 }
 \description{
 \code{date_group()} groups by a single component of a date-time, such as month
-of the year, or day of the month.
+of the year, or day of the month. It is an S3 generic with built-in
+methods:
 
-There are separate help pages for grouping dates and date-times:
 \itemize{
-\item \link[=date-group]{dates (Date)}
-\item \link[=posixt-group]{date-times (POSIXct/POSIXlt)}
+\item \code{\link[=date-group]{Date}}
+\item \code{\link[=posixt-group]{POSIXt}}
 }
 }
 \examples{

@@ -46,10 +46,10 @@ the specified \code{precision}.
 rounding up on ties.
 }
 
-There are separate help pages for rounding dates and date-times:
+They are all S3 generics with built-in methods for:
 \itemize{
-\item \link[=date-rounding]{dates (Date)}
-\item \link[=posixt-rounding]{date-times (POSIXct/POSIXlt)}
+\item \code{\link[=date-rounding]{Date}}
+\item \code{\link[=posixt-rounding]{POSIXt}}
 }
 
 These functions round the underlying duration itself, relative to an
