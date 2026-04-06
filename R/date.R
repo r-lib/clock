@@ -524,7 +524,7 @@ add_date_duration_time_point <- function(x, n, add_fn) {
 #' of the year, or day of the month. It is an S3 generic with built-in
 #' methods:
 #' 
-#' `R doclisting::methods_list("date_group")`
+#' `r doclisting::methods_list("date_group")`
 #'
 #' @inheritParams calendar_group
 #'

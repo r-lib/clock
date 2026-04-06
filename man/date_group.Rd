@@ -29,7 +29,10 @@ A single positive integer specifying a multiple of \code{precision} to use.}
 of the year, or day of the month. It is an S3 generic with built-in
 methods:
 
-\verb{R doclisting::methods_list("date_group")}
+\itemize{
+\item \code{\link[=date-group]{Date}}
+\item \code{\link[=posixt-group]{POSIXt}}
+}
 }
 \examples{
 # See type specific documentation for more examples
