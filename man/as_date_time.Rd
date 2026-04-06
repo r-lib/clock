@@ -118,7 +118,7 @@ explicitly supplying \code{nonexistent} or \code{ambiguous}.
 This is not a drop-in replacement for \code{as.POSIXct()}, as it only converts a
 limited set of types to POSIXct. For parsing characters as date-times, see
 \code{\link[=date_time_parse]{date_time_parse()}}. For converting numerics to date-times, see
-\code{\link[vctrs:new_date]{vctrs::new_datetime()}} or continue to use \code{as.POSIXct()}.
+\code{\link[vctrs:new_datetime]{vctrs::new_datetime()}} or continue to use \code{as.POSIXct()}.
 }
 \examples{
 x <- as.Date("2019-01-01")
